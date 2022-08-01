@@ -1177,12 +1177,20 @@ package body SPARK_Util.Types is
       Proc   : Opt_E_Procedure_Id;
    begin
       while Present (Rep_Ty) and then Has_DIC (Rep_Ty) loop
+
+         --  Go to base type, default initial conditions cannot be specified on
+         --  subtypes.
+
+         Rep_Ty := Base_Retysp (Rep_Ty);
          Proc := Partial_DIC_Procedure (Rep_Ty);
          if Present (Proc) then
             Process_DIC_Expression
               (First_Formal (Proc),
                Get_Expr_From_Check_Only_Proc (Proc));
          end if;
+
+         --  Go to parent subtype
+
          Rep_Ty := Parent_Retysp (Rep_Ty);
       end loop;
    end Iterate_Applicable_DIC;

@@ -5,7 +5,7 @@
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
-<prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="0" memlimit="1000"/>
+<prover id="3" name="CVC5_CE" version="0.0.7-gnatprove" timelimit="0" steplimit="190000" memlimit="1000"/>
 <prover id="4" name="colibri" version="2137" timelimit="20" steplimit="0" memlimit="1000"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
@@ -19,22 +19,22 @@
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="1964"/></proof>
-  <proof prover="2"><result status="unknown" steps="14991"/></proof>
-  <proof prover="4"><result status="unknown" steps="77"/></proof>
+  <proof prover="2"><result status="unknown" steps="15078"/></proof>
+  <proof prover="4"><result status="unknown" steps="80"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.1.0">
-   <proof prover="3"><result status="unknown" steps="110"/></proof>
+   <proof prover="3"><result status="unknown" steps="2192"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="def&#39;vc.2">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="1977"/></proof>
-  <proof prover="2"><result status="unknown" steps="15333"/></proof>
-  <proof prover="4"><result status="unknown" steps="118"/></proof>
+  <proof prover="2"><result status="unknown" steps="15346"/></proof>
+  <proof prover="4"><result status="unknown" steps="123"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.2.0">
-   <proof prover="3"><result status="unknown" steps="89"/></proof>
+   <proof prover="3"><result status="unknown" steps="2281"/></proof>
    </goal>
   </transf>
   </goal>

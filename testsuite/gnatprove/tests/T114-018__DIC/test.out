@@ -1,4 +1,5 @@
 test.ads:9:09: info: default initial condition proved (CVC5: 1 VC)
+test.ads:9:09: info: in default initialization of array component at test.ads:5
 test_dic.adb:1:11: warning: subprogram "Test_DIC" has no effect
 test_dic.adb:9:29: info: in default value of private type at test_dic.adb:3
 test_dic.adb:9:29: info: range check proved (CVC5: 2 VC)

@@ -71,6 +71,7 @@ with Why.Atree.Builders;             use Why.Atree.Builders;
 with Why.Atree.Accessors;            use Why.Atree.Accessors;
 with Why.Atree.Mutators;             use Why.Atree.Mutators;
 with Why.Atree.Modules;              use Why.Atree.Modules;
+with Why.Atree.Tables;               use Why.Atree.Tables;
 with Why.Gen.Arrays;                 use Why.Gen.Arrays;
 with Why.Gen.Binders;                use Why.Gen.Binders;
 with Why.Gen.Decl;                   use Why.Gen.Decl;
@@ -120,6 +121,13 @@ package body Gnat2Why.Expr is
    -- Local Subprograms --
    -----------------------
 
+   function All_DICs_But_Last
+     (E      : Type_Kind_Id;
+      W_Expr : W_Term_Id;
+      Params : Transformation_Params) return W_Pred_Id;
+   --  Compute all default initial conditions applicable to E on W_Expr except
+   --  for E's own DIC if it should be checked at declaration.
+
    function Assignment_Of_Obj_Decl
      (N : N_Object_Declaration_Id)
       return W_Prog_Id;
@@ -153,6 +161,18 @@ package body Gnat2Why.Expr is
    --  @param Is_Uncheck_Dealloc whether this is a call to an instance of
    --    Ada.Unchecked_Deallocation
    --  @return program checking the absence of resource leak
+
+   procedure Check_Or_Assume_All_DICs_At_Use
+     (Ada_Node : Node_Id;
+      E        : Type_Kind_Id;
+      W_Expr   : W_Term_Id;
+      Params   : Transformation_Params;
+      Prog     : in out W_Prog_Id;
+      Check    : Boolean);
+   --  Go over all the default initial conditions applicable to E an either
+   --  check (if Check is True) or assume those that should be checked at
+   --  use. Default initial conditions that are checked at declaration are
+   --  ignored. Generated checks and assumptions are prepended to Prog.
 
    function Check_Subprogram_Variants
      (Call   : Node_Id;
@@ -260,6 +280,21 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params)
       return W_Prog_Id;
    --  ???
+
+   function DIC_Expression
+     (Expr               : W_Expr_Id;
+      Default_Init_Param : Formal_Kind_Id;
+      Default_Init_Expr  : Node_Id;
+      Params             : Transformation_Params;
+      Domain             : EW_Domain)
+      return W_Expr_Id;
+   --  Transform the expression of a default initial condition
+   --  @param Expr expression on which the DIC is called
+   --  @param Default_Init_Expr expression of the DIC
+   --  @param Default_Init_Param formal for the type instance
+   --  @param Params transformation parameters
+   --  @return the translation of the expression contained in the DIC
+   --  applied on Expr.
 
    function Dynamic_Predicate_Expression
      (Expr       : W_Term_Id;
@@ -979,6 +1014,54 @@ package body Gnat2Why.Expr is
    function Havoc_Overlay_Aliases (Aliases : Node_Sets.Set) return W_Prog_Id;
    --  For each variable in the parameter set, havoc its contents and assume
    --  its invariants.
+
+   -----------------------
+   -- All_DICs_But_Last --
+   -----------------------
+
+   function All_DICs_But_Last
+     (E      : Type_Kind_Id;
+      W_Expr : W_Term_Id;
+      Params : Transformation_Params) return W_Pred_Id
+   is
+      Pred : W_Pred_Id := True_Pred;
+
+      procedure Add_DIC_Except_Last
+        (Default_Init_Param : Formal_Kind_Id;
+         Default_Init_Expr  : Node_Id);
+      --  Add the DIC to Pred if it does not apply to E itself
+
+      -------------------------
+      -- Add_DIC_Except_Last --
+      -------------------------
+
+      procedure Add_DIC_Except_Last
+        (Default_Init_Param : Formal_Kind_Id;
+         Default_Init_Expr  : Node_Id)
+      is
+         Ty      : constant Entity_Id := Etype (Default_Init_Param);
+         Use_DIC : constant Boolean :=
+           Needs_DIC_Check_At_Use (Ty)
+           or else Retysp (Ty) /= Retysp (E);
+      begin
+         if Use_DIC then
+            Pred := New_And_Pred
+              (Left  => +DIC_Expression
+                 (+W_Expr,
+                  Default_Init_Param,
+                  Default_Init_Expr,
+                  Params,
+                  EW_Pred),
+               Right => Pred);
+         end if;
+      end Add_DIC_Except_Last;
+
+      procedure Add_All_DICs_But_Last is new
+        Iterate_Applicable_DIC (Add_DIC_Except_Last);
+   begin
+      Add_All_DICs_But_Last (E);
+      return Pred;
+   end All_DICs_But_Last;
 
    ----------------------------
    -- Assignment_Of_Obj_Decl --
@@ -2035,6 +2118,94 @@ package body Gnat2Why.Expr is
       return +Result;
    end Check_No_Memory_Leaks_At_End_Of_Scope;
 
+   -------------------------------------
+   -- Check_Or_Assume_All_DICs_At_Use --
+   -------------------------------------
+
+   procedure Check_Or_Assume_All_DICs_At_Use
+     (Ada_Node : Node_Id;
+      E        : Type_Kind_Id;
+      W_Expr   : W_Term_Id;
+      Params   : Transformation_Params;
+      Prog     : in out W_Prog_Id;
+      Check    : Boolean)
+   is
+      First_DIC : Boolean := True;
+
+      procedure Check_Or_Assume_DIC_At_Use
+        (Default_Init_Param : Formal_Kind_Id;
+         Default_Init_Expr  : Node_Id);
+      --  Append to Prog a program either checking (if Check is True) or
+      --  assuming the DIC of Default_Init_Param if it shall be checked at
+      --  use. DICs that are checked at declaration are ignored.
+
+      --------------------------------
+      -- Check_Or_Assume_DIC_At_Use --
+      --------------------------------
+
+      procedure Check_Or_Assume_DIC_At_Use
+        (Default_Init_Param : Formal_Kind_Id;
+         Default_Init_Expr  : Node_Id)
+      is
+         Check_Info : Check_Info_Type := New_Check_Info;
+
+      begin
+         --  If the DIC was inherited, add a continuation
+
+         if not First_DIC then
+            Check_Info.Continuation.Append
+              (Continuation_Type'
+                 (Default_Init_Expr,
+                  To_Unbounded_String
+                    ("for inherited default initial condition")));
+         else
+            First_DIC := False;
+         end if;
+
+         if Needs_DIC_Check_At_Use (Etype (Default_Init_Param)) then
+
+            if Check then
+               Prepend (New_Ignore
+                        (Ada_Node   => Ada_Node,
+                         Prog       => +DIC_Expression
+                           (+W_Expr,
+                            Default_Init_Param,
+                            Default_Init_Expr,
+                            Params,
+                            EW_Prog)),
+                        New_Located_Assert
+                          (Ada_Node   => Ada_Node,
+                           Kind       => EW_Check,
+                           Reason     => VC_Default_Initial_Condition,
+                           Pred       => +DIC_Expression
+                             (+W_Expr,
+                              Default_Init_Param,
+                              Default_Init_Expr,
+                              Params,
+                              EW_Pred),
+                           Check_Info => Check_Info),
+                        Prog);
+            elsif Prog /= +Void then
+               Prepend (New_Assume_Statement
+                        (Ada_Node => Ada_Node,
+                         Pred     => +DIC_Expression
+                           (+W_Expr,
+                            Default_Init_Param,
+                            Default_Init_Expr,
+                            Params,
+                            EW_Pred)),
+                        Prog);
+            end if;
+         end if;
+      end Check_Or_Assume_DIC_At_Use;
+
+      procedure Check_Or_Assume_All_DICs_At_Use is new
+        Iterate_Applicable_DIC (Check_Or_Assume_DIC_At_Use);
+
+   begin
+      Check_Or_Assume_All_DICs_At_Use (E);
+   end Check_Or_Assume_All_DICs_At_Use;
+
    -------------------------
    -- Check_Type_With_DIC --
    -------------------------
@@ -2069,21 +2240,20 @@ package body Gnat2Why.Expr is
            New_Result_Ident (Type_Of_Node (Ty_Ext));
          Tmp_Post : constant W_Pred_Id :=
            New_And_Pred
-             (Left   =>
-                Compute_Dynamic_Invariant
-                  (Expr        => +Result,
-                   Ty          => Ty_Ext,
-                   Initialized => True_Term,
-                   Only_Var    => False_Term,
-                   Params      => Params),
-              Right  =>
-                Compute_Default_Init
-                  (Expr             => +Result,
-                   Ty               => Ty_Ext,
-                   Include_Subtypes => True,
-                   Skip_Last_Cond   => True_Term));
+             ((1 => Compute_Dynamic_Invariant
+                 (Expr        => +Result,
+                  Ty          => Ty_Ext,
+                  Initialized => True_Term,
+                  Only_Var    => False_Term,
+                  Params      => Params),
+               2 => Compute_Default_Init
+                 (Expr             => +Result,
+                  Ty               => Ty_Ext,
+                  Include_Subtypes => True,
+                  Skip_Last_Cond   => True_Term),
+               3 => All_DICs_But_Last (Ty_Ext, +Result, Params)));
          --  Assume default initialization of the expression. Do not assume
-         --  the DIC itself.
+         --  the Ty_Ext's own DIC if any.
 
          Tmp_Def : constant W_Prog_Id :=
            New_Any_Expr (Ada_Node    => Ty,
@@ -2183,15 +2353,22 @@ package body Gnat2Why.Expr is
       --  Check that the default values of the type and all its subtypes
       --  respect its invariant.
 
-      Inv_Check :=
-        Sequence
-        (Left  => New_Assume_Statement
-           (Ty, Compute_Default_Init
-                (+Tmp_Id, N, Params, Include_Subtypes => True,
-                 Skip_Last_Cond =>
-                   (if Has_DIC (Ty) and then Needs_DIC_Check_At_Use (Ty)
-                    then False_Term else True_Term))),
-         Right => New_Invariant_Check (N, Ty, +Tmp_Id, True));
+      declare
+         Default_Init : constant W_Pred_Id := Compute_Default_Init
+           (+Tmp_Id, N, Params, Include_Subtypes => True,
+            Skip_Last_Cond => True_Term);
+         DICs         : constant W_Pred_Id :=
+           All_DICs_But_Last (N, +Tmp_Id, Params);
+           --  Do not assume N's own DIC if it is checked at declaration as it
+           --  might contain a boundary call.
+
+      begin
+         Inv_Check :=
+           Sequence
+             (Left  => New_Assume_Statement
+                (Ty, New_And_Pred (Default_Init, DICs)),
+              Right => New_Invariant_Check (N, Ty, +Tmp_Id, True));
+      end;
 
       return New_Ignore (Ty,
                          New_Typed_Binding
@@ -3037,7 +3214,7 @@ package body Gnat2Why.Expr is
      (Ada_Node         : Node_Id;
       Ty               : Type_Kind_Id;
       Params           : Transformation_Params;
-      Assume_Last_DIC  : Boolean := False;
+      At_Declaration   : Boolean := False;
       Include_Subtypes : Boolean := False;
       Decl_Node        : Opt_N_Declaration_Id := Empty)
       return W_Prog_Id
@@ -3046,8 +3223,8 @@ package body Gnat2Why.Expr is
       function Compute_Default_Check_Rec
         (Ada_Node         : Node_Id;
          Ty               : Type_Kind_Id;
-         Assume_Last_DIC  : Boolean := False;
          Include_Subtypes : Boolean := False;
+         At_Declaration   : Boolean := False;
          Decl_Node        : Opt_N_Declaration_Id := Empty)
          return W_Prog_Id;
       --  Recursively traverse the type to generate the checks
@@ -3059,8 +3236,8 @@ package body Gnat2Why.Expr is
       function Compute_Default_Check_Rec
         (Ada_Node         : Node_Id;
          Ty               : Type_Kind_Id;
-         Assume_Last_DIC  : Boolean := False;
          Include_Subtypes : Boolean := False;
+         At_Declaration   : Boolean := False;
          Decl_Node        : Opt_N_Declaration_Id := Empty)
          return W_Prog_Id
       is
@@ -3071,81 +3248,103 @@ package body Gnat2Why.Expr is
          Tmp_Exp : W_Identifier_Id := Why_Empty;
          --  Temporary variable for the type instance of Ty_Ext
 
-         procedure Check_Or_Assume_DIC_At_Use
-           (Default_Init_Param : Formal_Kind_Id;
-            Default_Init_Expr  : Node_Id)
-           with Pre => Ekind (Default_Init_Param) = E_In_Parameter
-           and then Nkind (Default_Init_Expr) in N_Subexpr
-           and then (not Has_Discriminants (Ty_Ext)
-                     or else Tmp_Exp /= Why_Empty);
-         --  If the current DIC needs to be checked at use, generate a program
-         --  expression which asserts or assumes Default_Init_Expr and prepend
-         --  it to Checks. If the Expr is asserted, also introduce checks for
-         --  it. If Ty_Ext has discriminants, Tmp_Exp should hold an identifier
-         --  for the type instance.
+         Post    : W_Pred_Id := True_Pred;
+         --  Post used for the assignment of tmp_exp
 
-         --------------------------------
-         -- Check_Or_Assume_DIC_At_Use --
-         --------------------------------
-
-         procedure Check_Or_Assume_DIC_At_Use
-           (Default_Init_Param : Formal_Kind_Id;
-            Default_Init_Expr  : Node_Id)
-         is
-         begin
-            if Needs_DIC_Check_At_Use (Etype (Default_Init_Param)) then
-
-               --  Add the binder for the reference to the type to the
-               --  Symbol_Table if the temporary is not empty. If the temporary
-               --  is empty, it means that the type has no discriminants, and
-               --  therefore that the DIC expression should have no reference
-               --  to the type instance at all (see the definition of
-               --  Needs_DIC_Check_At_Use).
-
-               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-               if Tmp_Exp /= Why_Empty then
-                  Insert_Tmp_Item_For_Entity
-                    (Default_Init_Param,
-                     Tmp_Exp,
-                     Mutable => False);
-               end if;
-
-               if Assume_Last_DIC then
-                  if Checks /= +Void then
-                     Prepend (New_Assume_Statement
-                              (Ada_Node => Ada_Node,
-                               Pred     => Transform_Pred
-                                 (Expr   => Default_Init_Expr,
-                                  Params => Params)),
-                              Checks);
-                  end if;
-               else
-                  Prepend (New_Ignore
-                           (Ada_Node => Ada_Node,
-                            Prog     => Transform_Prog
-                              (Expr   => Default_Init_Expr,
-                               Params => Params)),
-                           New_Located_Assert
-                             (Ada_Node => Ada_Node,
-                              Kind     => EW_Check,
-                              Reason   => VC_Default_Initial_Condition,
-                              Pred     => Transform_Pred
-                                (Expr   => Default_Init_Expr,
-                                 Params => Params)),
-                           Checks);
-               end if;
-
-               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-            end if;
-         end Check_Or_Assume_DIC_At_Use;
-
-         procedure Check_Or_Assume_All_DIC_At_Use is new
-           Iterate_Applicable_DIC (Check_Or_Assume_DIC_At_Use);
+         Discrs  : constant Natural := Count_Discriminants (Ty_Ext);
+         Tmps    : W_Identifier_Array (1 .. Discrs);
+         Binds   : W_Prog_Array (1 .. Discrs);
+         --  Arrays to store the bindings for discriminants
 
       begin
+         --  If Ty has discriminants, first fill the bindings for them
 
-         if Has_Predicates (Ty)
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+         if Discrs > 0 then
+            Tmp_Exp :=
+              New_Temp_Identifier (Ty_Ext, EW_Abstract (Ty_Ext));
+
+            declare
+               Discr : Node_Id := First_Discriminant (Ty_Ext);
+               Elmt  : Elmt_Id :=
+                 (if Is_Constrained (Ty_Ext)
+                  then First_Elmt (Discriminant_Constraint (Ty_Ext))
+                  else No_Elmt);
+               I     : Positive := 1;
+
+            begin
+               --  Go through discriminants to create the bindings for
+               --  let tmp1 = Discr1.default in <if Ty_Ext is unconstrained>
+               --  let tmp1 = Discr1 in         <if Ty_Ext is constrained>
+               --  Also fills Post with { result.discr1 = tmp1 /\ .. }
+
+               while Present (Discr) loop
+                  Tmps (I) := New_Temp_Identifier
+                    (Discr, Type_Of_Node (Etype (Discr)));
+
+                  Insert_Tmp_Item_For_Entity (Discr, Tmps (I));
+
+                  --  Store constrained value of discriminants
+
+                  if Is_Constrained (Ty_Ext) then
+                     Binds (I) :=
+                       Transform_Prog
+                         (Expr          => Node (Elmt),
+                          Expected_Type => Type_Of_Node (Etype (Discr)),
+                          Params        => Params);
+                     Next_Elmt (Elmt);
+
+                  --  Store default value of discriminants for unconstrained
+                  --  record types with default discriminants.
+
+                  elsif not Include_Subtypes then
+                     pragma Assert (Has_Defaulted_Discriminants (Ty_Ext));
+
+                     Binds (I) :=
+                       Transform_Prog
+                         (Expr          => Discriminant_Default_Value (Discr),
+                          Expected_Type => Type_Of_Node (Etype (Discr)),
+                          Params        => Params);
+                  else
+                     Binds (I) :=
+                       New_Any_Statement
+                         (Post        => Compute_Dynamic_Invariant
+                            (Expr        => +New_Result_Ident
+                               (Type_Of_Node (Etype (Discr))),
+                             Ty          => Etype (Discr),
+                             Initialized => True_Term,
+                             Params      => Body_Params),
+                          Return_Type => Type_Of_Node (Etype (Discr)));
+                  end if;
+
+                  --  Add new Equality tmp = result.discr to Post
+
+                  Post := New_And_Pred
+                    (Left   => Post,
+                     Right  => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => +Tmps (I),
+                        Right  => Insert_Simple_Conversion
+                          (Expr   => New_Ada_Record_Access
+                               (Name     =>
+                                    +New_Result_Ident (EW_Abstract (Ty_Ext)),
+                                Field    => Discr,
+                                Ty       => Ty_Ext),
+                           To     => Type_Of_Node (Etype (Discr)))));
+
+                  Next_Discriminant (Discr);
+                  I := I + 1;
+               end loop;
+            end;
+         end if;
+
+         --  If Ty is checked at declaration, do not recheck its predicate
+         --  at use.
+
+         if (At_Declaration
+             or else not Needs_Default_Checks_At_Decl (Ty))
+           and then Has_Predicates (Ty)
            and then Default_Initialization (Ty) /= No_Default_Initialization
          then
             declare
@@ -3163,9 +3362,10 @@ package body Gnat2Why.Expr is
                --  Temporary variable for tmp_exp
 
                --  Create a value of type Ty_Ext that respects the default
-               --  initialization value for Ty_Ext, except its default initial
-               --  condition when specified. Since we use an any-expr, the
-               --  predicate needs to apply to the special "result" term.
+               --  initialization value for Ty_Ext, except its default
+               --  initial condition when specified. Since we use an
+               --  any-expr, the predicate needs to apply to the special
+               --  "result" term.
 
                Default_Init_Pred : constant W_Pred_Id :=
                  Compute_Default_Init
@@ -3173,25 +3373,28 @@ package body Gnat2Why.Expr is
                     Ty               => Ty_Ext,
                     Params           => Params,
                     Include_Subtypes => Include_Subtypes,
-                    Skip_Last_Cond   =>
-                      (if Has_DIC (Ty_Ext)
-                       and then Needs_DIC_Check_At_Decl (Ty_Ext)
-                       then True_Term
-                       else False_Term));
-               --  If the DIC is checked at use, we can safely assume it here.
-               --  If it is checked on declaration, then it is checked assuming
-               --  that the predicate of Ty_Ext holds, so we should not assume
-               --  it here.
+                    Skip_Last_Cond   => True_Term);
+               --  DICs are checked assuming that the predicate holds, so we
+               --  cannot blindly assume all DICs here.
+
+               DICs : constant W_Pred_Id :=
+                 All_DICs_But_Last (Ty_Ext, +New_Result_Ident (W_Typ), Params);
+               --  Assume all default initial conditions but the top-level one
+               --  if any. If there is an inherited DIC applying to a type
+               --  with a predicate, the predicate will be checked when
+               --  checking the type itself.
 
                Default_Init_Prog : constant W_Prog_Id :=
                  New_Any_Expr (Ada_Node    => Ty_Ext,
                                Labels      => Symbol_Sets.Empty_Set,
-                               Post        => Default_Init_Pred,
+                               Post        => New_And_Pred
+                                 (Left  => Default_Init_Pred,
+                                  Right => DICs),
                                Return_Type => W_Typ);
 
-               --  Generate the predicate check, specifying that it applies to
-               --  the default value of a type, so that a special VC kind is
-               --  used for better messages.
+               --  Generate the predicate check, specifying that it applies
+               --  to the default value of a type, so that a special VC kind
+               --  is used for better messages.
 
                Pred_Check : constant W_Prog_Id :=
                  New_Predicate_Check
@@ -3279,16 +3482,24 @@ package body Gnat2Why.Expr is
 
                if Has_Default_Aspect (Ty_Ext) then
                   T_Comp := Transform_Prog
-                    (Expr          => Default_Aspect_Component_Value (Ty_Ext),
-                     Expected_Type => Type_Of_Node (Component_Type (Ty_Ext)),
+                    (Expr          =>
+                       Default_Aspect_Component_Value (Ty_Ext),
+                     Expected_Type =>
+                       Type_Of_Node (Component_Type (Ty_Ext)),
                      Params        => Params);
 
-                  --  Otherwise, use its Component_Type default value
+               --  Otherwise, use its Component_Type default value
 
                else
+                  Continuation_Stack.Append
+                    (Continuation_Type'
+                       (Ada_Node => Component_Type (Ty_Ext),
+                        Message  => To_Unbounded_String
+                          ("in default initialization of array component")));
                   T_Comp := Compute_Default_Check_Rec
                     (Ada_Node => Ada_Node,
                      Ty       => Component_Type (Ty_Ext));
+                  Continuation_Stack.Delete_Last;
                end if;
 
                if T_Comp /= +Void then
@@ -3304,244 +3515,150 @@ package body Gnat2Why.Expr is
 
          elsif Is_Record_Type_In_Why (Ty) then
 
-            --  Generates:
-            --  let tmp1 = Discr1.default in <if Ty_Ext is unconstrained>
-            --  let tmp1 = Discr1 in         <if Ty_Ext is constrained>
-            --  let tmp_exp = any <type> ensures { result.discr1 = tmp1 .. } in
+            --  Go through other fields to create the expression
             --  (check_for_f1 expr ->
-            --        Field1.default                  <if Field1 has a default>
-            --        default_check (Etype (Field1))) <otherwise>
+            --     Field1.default                  <if Field1 has a default>
+            --     default_check (Etype (Field1))) <otherwise>
             --  /\ ..
+            --  Components of protected types are checked when generating VCs
+            --  for the protected type.
+            --  If At_Declaration is False, do not generate checks for
+            --  components of private types.
+            --  If Decl_Node is a private extension, do not generate checks for
+            --  inherited components.
+            --  Do not generate checks for hidden components, they will be
+            --  checked at the place where they are hidden.
 
-            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-            Tmp_Exp :=
-              New_Temp_Identifier (Ty_Ext, EW_Abstract (Ty_Ext));
-
-            declare
-               Post    : W_Pred_Id := True_Pred;
-               --  Post used for the assignment of tmp_exp
-
-               Discrs  : constant Natural := Count_Discriminants (Ty_Ext);
-               Tmps    : W_Identifier_Array (1 .. Discrs);
-               Binds   : W_Prog_Array (1 .. Discrs);
-               --  Arrays to store the bindings for discriminants
-
-               Discr   : Node_Id := (if Discrs > 0
-                                     then First_Discriminant (Ty_Ext)
-                                     else Empty);
-               Elmt    : Elmt_Id :=
-                 (if Discrs > 0
-                  and then Is_Constrained (Ty_Ext) then
-                       First_Elmt (Discriminant_Constraint (Ty_Ext))
-                  else No_Elmt);
-               T_Comp  : W_Prog_Id;
-               I       : Positive := 1;
-            begin
-
-               --  Go through discriminants to create the bindings for
-               --  let tmp1 = Discr1.default in <if Ty_Ext is unconstrained>
-               --  let tmp1 = Discr1 in         <if Ty_Ext is constrained>
-               --  Also fills Post with { result.discr1 = tmp1 /\ .. }
-
-               while Present (Discr) loop
-                  Tmps (I) := New_Temp_Identifier
-                    (Discr, Type_Of_Node (Etype (Discr)));
-
-                  Insert_Tmp_Item_For_Entity (Discr, Tmps (I));
-
-                  --  Store constrained value of discriminants
-
-                  if Is_Constrained (Ty_Ext) then
-                     Binds (I) :=
-                       Transform_Prog
-                         (Expr          => Node (Elmt),
-                          Expected_Type => Type_Of_Node (Etype (Discr)),
-                          Params        => Params);
-                     Next_Elmt (Elmt);
-
-                  --  Store default value of discriminants for unconstrained
-                  --  record types with default discriminants.
-
-                  elsif not Include_Subtypes then
-                     pragma Assert (Has_Defaulted_Discriminants (Ty_Ext));
-
-                     Binds (I) :=
-                       Transform_Prog
-                         (Expr          => Discriminant_Default_Value (Discr),
-                          Expected_Type => Type_Of_Node (Etype (Discr)),
-                          Params        => Params);
-                  else
-                     Binds (I) :=
-                       New_Any_Statement
-                         (Post        => Compute_Dynamic_Invariant
-                            (Expr        => +New_Result_Ident
-                               (Type_Of_Node (Etype (Discr))),
-                             Ty          => Etype (Discr),
-                             Initialized => True_Term,
-                             Params      => Body_Params),
-                          Return_Type => Type_Of_Node (Etype (Discr)));
-                  end if;
-
-                  --  Add new Equality tmp = result.discr to Post
-
-                  Post := New_And_Pred
-                    (Left   => Post,
-                     Right  => New_Comparison
-                       (Symbol => Why_Eq,
-                        Left   => +Tmps (I),
-                        Right  => Insert_Simple_Conversion
-                          (Expr   => New_Ada_Record_Access
-                               (Name     =>
-                                    +New_Result_Ident (EW_Abstract (Ty_Ext)),
-                                Field    => Discr,
-                                Ty       => Ty_Ext),
-                           To     => Type_Of_Node (Etype (Discr)))));
-
-                  Next_Discriminant (Discr);
-                  I := I + 1;
-               end loop;
-
-               --  Go through other fields to create the expression
-               --  (check_for_f1 expr ->
-               --     Field1.default                  <if Field1 has a default>
-               --     default_check (Etype (Field1))) <otherwise>
-               --  /\ ..
-               --  Components of protected types are checked when generating
-               --  VCs for the protected type.
-               --  If Decl_Node is Empty, do not generate checks for components
-               --  of private types.
-               --  If Decl_Node is a private extension, do not generate checks
-               --  for inherited components.
-               --  Do not generate checks for hidden components, they will be
-               --  checked at the place where they are hidden.
-
-               if not Is_Concurrent_Type (Ty_Ext)
-                 and then (Is_Record_Type (Ty) or else Present (Decl_Node))
-               then
-                  declare
-                     Checks_Seq : W_Statement_Sequence_Id := Void_Sequence;
-                  begin
-                     for Field of Get_Component_Set (Ty_Ext) loop
-                        if Component_Is_Visible_In_Type (Ty, Field)
-                          and then
-                            (Nkind (Decl_Node) /=
-                                   N_Private_Extension_Declaration
-                             or else Original_Declaration (Field) = Ty_Ext)
+            if not Is_Concurrent_Type (Ty_Ext)
+              and then (Is_Record_Type (Ty) or else At_Declaration)
+            then
+               declare
+                  Checks_Seq : W_Statement_Sequence_Id := Void_Sequence;
+                  T_Comp     : W_Prog_Id;
+               begin
+                  for Field of Get_Component_Set (Ty_Ext) loop
+                     if Component_Is_Visible_In_Type (Ty, Field)
+                       and then
+                         (Nkind (Decl_Node) /=
+                                N_Private_Extension_Declaration
+                          or else Original_Declaration (Field) = Ty_Ext)
+                     then
+                        if Present
+                          (Expression (Enclosing_Declaration (Field)))
                         then
-                           if Present
-                             (Expression (Enclosing_Declaration (Field)))
-                           then
 
-                              --  If Field has a default expression, use it
+                           --  If Field has a default expression, use it
 
-                              declare
-                                 F_Ty   : constant Entity_Id := Etype (Field);
-                                 Exp_Ty : constant W_Type_Id :=
-                                   (if Is_Scalar_Type (F_Ty)
-                                    then Type_Of_Node (F_Ty)
-                                    else EW_Abstract
-                                      (F_Ty, Has_Relaxed_Init (F_Ty)));
-                                 --  For scalar types, if we have a value, it
-                                 --  is initialized. Otherwise we only expect a
-                                 --  partially initialized type if the type of
-                                 --  the component is marked with
-                                 --  Relaxed_Initialization.
+                           declare
+                              F_Ty   : constant Entity_Id := Etype (Field);
+                              Exp_Ty : constant W_Type_Id :=
+                                (if Is_Scalar_Type (F_Ty)
+                                 then Type_Of_Node (F_Ty)
+                                 else EW_Abstract
+                                   (F_Ty, Has_Relaxed_Init (F_Ty)));
+                              --  For scalar types, if we have a value, it is
+                              --  initialized. Otherwise we only expect a
+                              --  partially initialized type if the type of the
+                              --  is marked with Relaxed_Initialization.
 
-                              begin
-                                 T_Comp := Transform_Prog
-                                   (Expr          => Expression
-                                      (Enclosing_Declaration (Field)),
-                                    Expected_Type => Exp_Ty,
-                                    Params        => Params);
-                              end;
+                           begin
+                              T_Comp := Transform_Prog
+                                (Expr          => Expression
+                                   (Enclosing_Declaration (Field)),
+                                 Expected_Type => Exp_Ty,
+                                 Params        => Params);
+                           end;
 
-                           --  Otherwise, use its Field's Etype default value
+                        --  Otherwise, use its Field's Etype default value
 
-                           else
-                              Continuation_Stack.Append
-                                (Continuation_Type'
-                                   (Ada_Node => Field,
-                                    Message  => To_Unbounded_String
-                                      ("in default initialization of "
-                                       & "component """ & Source_Name (Field)
-                                       & """")));
-                              T_Comp :=
-                                Compute_Default_Check_Rec
-                                  (Ada_Node => Field,
-                                   Ty       => Etype (Field));
-                              Continuation_Stack.Delete_Last;
-                           end if;
+                        else
+                           Continuation_Stack.Append
+                             (Continuation_Type'
+                                (Ada_Node => Field,
+                                 Message  => To_Unbounded_String
+                                   ("in default initialization of "
+                                    & "component """ & Source_Name (Field)
+                                    & """")));
+                           T_Comp :=
+                             Compute_Default_Check_Rec
+                               (Ada_Node => Field,
+                                Ty       => Etype (Field));
+                           Continuation_Stack.Delete_Last;
+                        end if;
 
-                           if T_Comp /= +Void then
+                        if T_Comp /= +Void then
+                           T_Comp  := New_Ignore
+                             (Ada_Node => Etype (Field),
+                              Prog     => T_Comp);
 
-                              --  Check values of record fields only if they
-                              --  are in the proper variant part.
+                           --  Check values of record fields only if they
+                           --  are in the proper variant part.
 
+                           if Discrs > 0 then
                               T_Comp  := New_Conditional
                                 (Condition => New_Ada_Record_Check_For_Field
                                    (Empty, +Tmp_Exp, Field, Ty_Ext),
-                                 Then_Part =>
-                                   New_Ignore
-                                     (Ada_Node => Etype (Field),
-                                      Prog     => T_Comp));
-                              Append (Checks_Seq, T_Comp);
-
+                                 Then_Part => T_Comp);
                            end if;
+
+                           Append (Checks_Seq, T_Comp);
                         end if;
-                     end loop;
-
-                     Append (Checks, +Checks_Seq);
-                  end;
-               end if;
-
-               --  Assume the default initial condition here as it may refer to
-               --  discriminant values.
-
-               if Has_Discriminants (Ty_Ext) and then Has_DIC (Ty) then
-                  Check_Or_Assume_All_DIC_At_Use (Ty);
-               end if;
-
-               --  Create bindings for Tmp_Exp
-               --  let expr = any <type> ensures { expr.discr1 = tmp1 .. } in
-
-               if Checks /= +Void then
-                  Checks := New_Typed_Binding
-                    (Name     => Tmp_Exp,
-                     Def      =>
-                       New_Any_Expr (Ada_Node    => Ty_Ext,
-                                     Labels      => Symbol_Sets.Empty_Set,
-                                     Post        => Post,
-                                     Return_Type => EW_Abstract (Ty_Ext)),
-                     Context  => Checks);
-
-               end if;
-
-               Tmp_Exp := Why_Empty;
-
-               --  Generate the bindings if we have some fields to check or if
-               --  we need to check the bindings themselves.
-
-               if Checks /= +Void or else not Is_Constrained (Ty) then
-                  for I in 1 .. Discrs loop
-                     Checks := New_Typed_Binding
-                       (Name     => Tmps (I),
-                        Def      => Binds (I),
-                        Context  => Checks);
+                     end if;
                   end loop;
-               end if;
-            end;
-            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+                  Append (Checks, +Checks_Seq);
+               end;
+            end if;
          end if;
 
-         --  If Ty has a DIC and this DIC should be checked at use (it does not
-         --  reference the current type instance), check that there is no
-         --  runtime error in the DIC and that the DIC holds.
-         --  If Ty has discriminants, this has been done earlier.
+         --  If Ty has a DIC and this DIC should be checked at use (it does
+         --  not reference the current type instance), check that there is
+         --  no runtime error in the DIC and that the DIC holds. The checks
+         --  are inserted before Checks.
 
-         if Has_DIC (Ty) and then not Has_Discriminants (Ty_Ext) then
-            Check_Or_Assume_All_DIC_At_Use (Ty);
+         if Has_DIC (Ty) then
+            Check_Or_Assume_All_DICs_At_Use
+              (Ada_Node, Ty, +Tmp_Exp, Params, Checks,
+               Check => not At_Declaration);
          end if;
+
+         --  If Ty has discriminants, introduce the necessary let bindings:
+         --  let tmp1 = Discr1.default in <if Ty_Ext is unconstrained>
+         --  let tmp1 = Discr1 in         <if Ty_Ext is constrained>
+         --  let expr = any <type> ensures { expr.discr1 = tmp1 .. } in
+         --    <Checks>
+
+         if Discrs > 0 then
+
+            --  Create bindings for Tmp_Exp
+            --  let expr = any <type> ensures { expr.discr1 = tmp1 .. } in
+
+            if Checks /= +Void then
+               Checks := New_Typed_Binding
+                 (Name     => Tmp_Exp,
+                  Def      =>
+                    New_Any_Expr (Ada_Node    => Ty_Ext,
+                                  Labels      => Symbol_Sets.Empty_Set,
+                                  Post        => Post,
+                                  Return_Type => EW_Abstract (Ty_Ext)),
+                  Context  => Checks);
+
+            end if;
+
+            --  Generate the bindings if we have some fields to check or if
+            --  we need to check the bindings themselves.
+
+            if Checks /= +Void or else not Is_Constrained (Ty) then
+               for I in 1 .. Discrs loop
+                  Checks := New_Typed_Binding
+                    (Name     => Tmps (I),
+                     Def      => Binds (I),
+                     Context  => Checks);
+               end loop;
+            end if;
+         end if;
+
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
          return Checks;
       end Compute_Default_Check_Rec;
@@ -3566,8 +3683,8 @@ package body Gnat2Why.Expr is
       Checks := Compute_Default_Check_Rec
         (Ada_Node         => Ada_Node,
          Ty               => Ty,
-         Assume_Last_DIC  => Assume_Last_DIC,
          Include_Subtypes => Include_Subtypes,
+         At_Declaration   => At_Declaration,
          Decl_Node        => Decl_Node);
       Continuation_Stack.Delete_Last;
       return Checks;
@@ -5882,6 +5999,64 @@ package body Gnat2Why.Expr is
          return 0;
       end if;
    end Count_Numerical_Variants;
+
+   --------------------
+   -- DIC_Expression --
+   --------------------
+
+   function DIC_Expression
+     (Expr               : W_Expr_Id;
+      Default_Init_Param : Formal_Kind_Id;
+      Default_Init_Expr  : Node_Id;
+      Params             : Transformation_Params;
+      Domain             : EW_Domain)
+      return W_Expr_Id
+   is
+      Result : W_Expr_Id;
+      Need_Tmp : constant Boolean :=
+        Expr /= Why_Empty and then Get_Kind (+Expr) not in W_Identifier;
+      --  Only introduce a new identifier for Expr if it is not already an
+      --  identifier. Expr might be empty if the expression does not reference
+      --  the current type instance.
+      DIC_Id : constant W_Identifier_Id :=
+        (if Need_Tmp
+         then New_Temp_Identifier (Default_Init_Param, Get_Type (+Expr))
+         else +Expr);
+
+   begin
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+      --  Register the temporary identifier DIC_Id for parameter
+      --  Default_Init_Param in the symbol table. This ensures both that a
+      --  distinct name is used each time (preventing name capture), and that
+      --  the type of Expr is used as the type used to represent
+      --  Default_Init_Param (avoiding type conversion).
+
+      if DIC_Id /= Why_Empty then
+         Insert_Tmp_Item_For_Entity (Default_Init_Param, DIC_Id);
+      end if;
+
+      --  Transform the DIC expression into Why3
+
+      Result := Transform_Expr
+        (Expr   => Default_Init_Expr,
+         Params => Params,
+         Domain => Domain);
+
+      --  Relate the name DIC_Id used in the DOC expression to the value Expr
+      --  for which the DIC is checked.
+      if Need_Tmp then
+         Result := New_Binding (Name    => DIC_Id,
+                                Def     => Expr,
+                                Context => Result,
+                                Typ     => Get_Type (+Result),
+                                Domain  => Domain);
+      end if;
+
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      return Result;
+   end DIC_Expression;
 
    ------------------------------
    -- Discrete_Choice_Is_Range --
@@ -8931,10 +9106,9 @@ package body Gnat2Why.Expr is
       --  inherited predicates.
 
       Kind       : constant VC_Kind :=
-        (if On_Default_Value then
-            VC_Predicate_Check_On_Default_Value
-         else
-            VC_Predicate_Check);
+        (if On_Default_Value
+         then VC_Predicate_Check_On_Default_Value
+         else VC_Predicate_Check);
       Checks     : W_Prog_Id := +Void;
       First_Pred : Boolean := True;
 

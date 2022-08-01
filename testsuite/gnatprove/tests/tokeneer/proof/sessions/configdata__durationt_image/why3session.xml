@@ -5,7 +5,7 @@
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
-<prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="0" memlimit="1000"/>
+<prover id="3" name="CVC5_CE" version="0.0.7-gnatprove" timelimit="0" steplimit="190000" memlimit="1000"/>
 <prover id="4" name="colibri" version="2137" timelimit="20" steplimit="0" memlimit="1000"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
@@ -19,11 +19,11 @@
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="2033"/></proof>
-  <proof prover="2"><result status="unknown" steps="15385"/></proof>
-  <proof prover="4"><result status="unknown" steps="77"/></proof>
+  <proof prover="2"><result status="unknown" steps="15274"/></proof>
+  <proof prover="4"><result status="unknown" steps="80"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.1.0">
-   <proof prover="3"><result status="unknown" steps="110"/></proof>
+   <proof prover="3"><result status="unknown" steps="2261"/></proof>
    </goal>
   </transf>
   </goal>
@@ -33,11 +33,11 @@
   <goal name="def&#39;vc.3">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="2670"/></proof>
-  <proof prover="2"><result status="unknown" steps="18446"/></proof>
-  <proof prover="4"><result status="unknown" steps="363"/></proof>
+  <proof prover="2"><result status="unknown" steps="18719"/></proof>
+  <proof prover="4"><result status="unknown" steps="265"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.3.0">
-   <proof prover="3"><result status="unknown" steps="141"/></proof>
+   <proof prover="3"><result status="unknown" steps="2864"/></proof>
    </goal>
   </transf>
   </goal>

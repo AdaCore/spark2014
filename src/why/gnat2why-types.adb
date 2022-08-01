@@ -1155,7 +1155,7 @@ package body Gnat2Why.Types is
           (Ada_Node         => E,
            Ty               => Retysp (E),
            Params           => Params,
-           Assume_Last_DIC  => True,
+           At_Declaration   => True,
            Include_Subtypes => True,
            Decl_Node        => Decl);
 

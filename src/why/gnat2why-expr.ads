@@ -171,7 +171,7 @@ package Gnat2Why.Expr is
      (Ada_Node         : Node_Id;
       Ty               : Type_Kind_Id;
       Params           : Transformation_Params;
-      Assume_Last_DIC  : Boolean := False;
+      At_Declaration   : Boolean := False;
       Include_Subtypes : Boolean := False;
       Decl_Node        : Opt_N_Declaration_Id := Empty)
       return W_Prog_Id
@@ -180,8 +180,11 @@ package Gnat2Why.Expr is
    --  @param Ada_Node node to which the checks should be attached
    --  @param Ty The type for which we want to check the default expression
    --  @param Params Transformation parameters
-   --  @param Assume_Last_DIC Assume the top-level Default_Initial_Condition of
-   --         Ty if it should be check at use. Otherwise, check it.
+   --  @param At_Declaration If At_Declaration is True, assume all DICs
+   --         that apply to ancestors Ty and check the one of Ty if it shall be
+   --         checked at declaration. Otherwise, assume all DICs applying to
+   --         Ty that should be checked at declaration and check all those
+   --         which shall be checked at use.
    --  @param Include_Subtypes True if we also check any subtype of Ty. In
    --         particular, if Ty is a record type with defaulted discriminants,
    --         we only assume the value of its discriminants to be the defaults
