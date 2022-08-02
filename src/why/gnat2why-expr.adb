@@ -11003,33 +11003,42 @@ package body Gnat2Why.Expr is
             end if;
          end if;
 
-         --  Localize binders for variables and push them to the symbol
-         --  table. This is important so that the translation of the
-         --  aggregate can be reused even if the mappings in the symbol
-         --  table are updated (typically, for formal parameters in
-         --  postconditions).
+         --  Assume values of the elements if the array is not []
 
-         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+         if Is_Non_Empty_List (Component_Associations (Expr))
+           or else (not In_Delta_Aggregate
+                    and then Is_Non_Empty_List (Expressions (Expr)))
+         then
 
-         Localize_Binders (Binders        => Var_Items,
-                           Only_Variables => False);
-         Var_Params := To_Binder_Array (Var_Items);
-         Var_Args := Get_Args_From_Binders (Var_Params, Ref_Allowed => False);
-         Push_Binders_To_Symbol_Table (Var_Items);
+            --  Localize binders for variables and push them to the symbol
+            --  table. This is important so that the translation of the
+            --  aggregate can be reused even if the mappings in the symbol
+            --  table are updated (typically, for formal parameters in
+            --  postconditions).
 
-         --  Compute the call, guard and proposition for the axiom
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-         Axiom_Body :=
-           New_And_Pred
-             (Left   => Axiom_Body,
-              Right  => Transform_Array_Component_Associations
-                (Expr   => Expr,
-                 Arr    => +Aggr_Temp,
-                 Args   => Args_Map,
-                 Bnds   => Bnd_Args,
-                 Params => Params_No_Ref));
+            Localize_Binders (Binders        => Var_Items,
+                              Only_Variables => False);
+            Var_Params := To_Binder_Array (Var_Items);
+            Var_Args := Get_Args_From_Binders
+              (Var_Params, Ref_Allowed => False);
+            Push_Binders_To_Symbol_Table (Var_Items);
 
-         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+            --  Compute the call, guard and proposition for the axiom
+
+            Axiom_Body :=
+              New_And_Pred
+                (Left   => Axiom_Body,
+                 Right  => Transform_Array_Component_Associations
+                   (Expr   => Expr,
+                    Arr    => +Aggr_Temp,
+                    Args   => Args_Map,
+                    Bnds   => Bnd_Args,
+                    Params => Params_No_Ref));
+
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+         end if;
 
          Aggr :=
            New_Call (Ada_Node => Expr,
@@ -11756,7 +11765,7 @@ package body Gnat2Why.Expr is
          if not In_Delta_Aggregate
            and then
              (Nb_Dim > 1
-              or else No (Component_Associations (Expr))
+              or else Is_Empty_List (Component_Associations (Expr))
               or else not Is_Others_Choice
                 (Choice_List (Nlists.Last (Component_Associations (Expr)))))
          then
