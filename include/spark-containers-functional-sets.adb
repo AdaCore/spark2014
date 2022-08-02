@@ -131,6 +131,15 @@ package body SPARK.Containers.Functional.Sets with SPARK_Mode => Off is
      (Length (Container.Content) = 1
         and New_Item = Get (Container.Content, 1));
 
+   -------------------------------
+   -- Lemma_Contains_Equivalent --
+   -------------------------------
+
+   procedure Lemma_Contains_Equivalent
+     (Container : Set;
+      Item      : Element_Type)
+   is null;
+
    ------------
    -- Length --
    ------------

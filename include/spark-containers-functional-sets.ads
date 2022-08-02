@@ -72,16 +72,20 @@ is
    --  against overflows but it is not actually modeled.
 
    function Contains (Container : Set; Item : Element_Type) return Boolean with
+     Global => null;
    --  Return True if Item is contained in Container
 
+   procedure Lemma_Contains_Equivalent
+     (Container : Set;
+      Item      : Element_Type)
+   --  Contains returns the same result on all equivalent elements
+   with
+     Ghost,
      Global => null,
-     Post   =>
-       (if Enable_Handling_Of_Equivalence then
-
-          --  Contains returns the same result on all equivalent elements
-
-          (if (for some E of Container => Equivalent_Elements (E, Item)) then
-              Contains'Result));
+     Annotate => (GNATprove, Automatic_Instantiation),
+     Pre  => Enable_Handling_Of_Equivalence
+       and then (for some E of Container => Equivalent_Elements (E, Item)),
+     Post => Contains (Container, Item);
 
    function Length (Container : Set) return Big_Natural with
      Global => null;

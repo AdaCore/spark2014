@@ -41,8 +41,9 @@ spark-containers-formal-doubly_linked_lists.ads:1460:14: info: precondition prov
 spark-containers-formal-doubly_linked_lists.ads:1466:23: info: precondition proved (CVC5: 1 VC), in instantiation at my_lists.ads:11
 spark-containers-formal-doubly_linked_lists.ads:1515:14: info: precondition proved (CVC5: 1 VC), in instantiation at my_lists.ads:11
 spark-containers-formal-doubly_linked_lists.ads:1522:23: info: precondition proved (CVC5: 1 VC), in instantiation at my_lists.ads:11
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at my_lists.ads:11
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at my_lists.ads:11
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at my_lists.ads:11
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at my_lists.ads:11
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at my_lists.ads:11
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at my_lists.ads:11
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at my_lists.ads:11
 spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at my_lists.ads:11

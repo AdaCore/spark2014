@@ -75,31 +75,40 @@ is
    --  overflows but it is not actually modeled.
 
    function Has_Key (Container : Map; Key : Key_Type) return Boolean with
+     Global => null;
    --  Return True if Key is present in Container
 
+   procedure Lemma_Has_Key_Equivalent
+     (Container : Map;
+      Key       : Key_Type)
+   --  Has_Key returns the same result on all equivalent keys
+   with
+     Ghost,
      Global => null,
-     Post   =>
-       (if Enable_Handling_Of_Equivalence then
-
-          --  Has_Key returns the same result on all equivalent keys
-
-          (if (for some K of Container => Equivalent_Keys (K, Key)) then
-              Has_Key'Result));
+     Annotate => (GNATprove, Automatic_Instantiation),
+     Pre  => Enable_Handling_Of_Equivalence
+       and then (for some K of Container => Equivalent_Keys (K, Key)),
+     Post => Has_Key (Container, Key);
 
    function Get (Container : Map; Key : Key_Type) return Element_Type with
    --  Return the element associated with Key in Container
 
      Global => null,
-     Pre    => Has_Key (Container, Key),
-     Post   =>
-       (if Enable_Handling_Of_Equivalence then
+     Pre    => Has_Key (Container, Key);
 
-          --  Get returns the same result on all equivalent keys
-
-          Get'Result = W_Get (Container, Witness (Container, Key))
-            and (for all K of Container =>
-                  (Equivalent_Keys (K, Key) =
-                    (Witness (Container, Key) = Witness (Container, K)))));
+   procedure Lemma_Get_Equivalent
+     (Container : Map;
+      Key       : Key_Type)
+   --  Get returns the same result on all equivalent keys
+   with
+     Ghost,
+     Global => null,
+     Annotate => (GNATprove, Automatic_Instantiation),
+     Pre  => Enable_Handling_Of_Equivalence,
+     Post => Get (Container, Key) = W_Get (Container, Witness (Container, Key))
+       and (for all K of Container =>
+              Equivalent_Keys (K, Key) =
+               (Witness (Container, Key) = Witness (Container, K)));
 
    function Length (Container : Map) return Big_Natural with
      Global => null;

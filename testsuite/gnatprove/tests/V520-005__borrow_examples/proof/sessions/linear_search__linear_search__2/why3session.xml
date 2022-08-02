@@ -445,7 +445,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.141" proved="true">
-  <proof prover="1"><result status="valid" steps="40370"/></proof>
+  <proof prover="1"><result status="valid" steps="40367"/></proof>
   </goal>
   <goal name="def&#39;vc.142" proved="true">
   <proof prover="1"><result status="valid" steps="116803"/></proof>
@@ -572,7 +572,7 @@
   <proof prover="5"><result status="timeout"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.179.0">
-   <proof prover="4"><result status="steplimitexceeded" steps="190007"/></proof>
+   <proof prover="4"><result status="steplimitexceeded" steps="190004"/></proof>
    </goal>
   </transf>
   </goal>

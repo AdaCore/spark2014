@@ -241,6 +241,24 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
       return True;
    end Keys_Included_Except;
 
+   --------------------------
+   -- Lemma_Get_Equivalent --
+   --------------------------
+
+   procedure Lemma_Get_Equivalent
+     (Container : Map;
+      Key       : Key_Type)
+   is null;
+
+   ------------------------------
+   -- Lemma_Has_Key_Equivalent --
+   ------------------------------
+
+   procedure Lemma_Has_Key_Equivalent
+     (Container : Map;
+      Key       : Key_Type)
+   is null;
+
    ------------
    -- Length --
    ------------

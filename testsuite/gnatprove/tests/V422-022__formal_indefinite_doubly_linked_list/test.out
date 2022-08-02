@@ -41,10 +41,12 @@ spark-containers-formal-indefinite_doubly_linked_lists.ads:1508:14: info: precon
 spark-containers-formal-indefinite_doubly_linked_lists.ads:1515:23: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
 spark-containers-formal-indefinite_doubly_linked_lists.ads:1515:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
 spark-containers-formal-indefinite_doubly_linked_lists.ads:1613:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:9
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_doubly_linked_lists.ads:160, in instantiation at test.adb:11
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_doubly_linked_lists.ads:160, in instantiation at test_list.ads:6
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_doubly_linked_lists.ads:160, in instantiation at test.adb:11
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_doubly_linked_lists.ads:160, in instantiation at test_list.ads:6
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-indefinite_doubly_linked_lists.ads:160, in instantiation at test.adb:11
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-indefinite_doubly_linked_lists.ads:160, in instantiation at test_list.ads:6
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_doubly_linked_lists.ads:160, in instantiation at test.adb:11
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_doubly_linked_lists.ads:160, in instantiation at test_list.ads:6
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_doubly_linked_lists.ads:160, in instantiation at test.adb:11
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_doubly_linked_lists.ads:160, in instantiation at test_list.ads:6
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_doubly_linked_lists.ads:75, in instantiation at test.adb:11
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_doubly_linked_lists.ads:75, in instantiation at test_list.ads:6
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-indefinite_doubly_linked_lists.ads:75, in instantiation at test.adb:11
@@ -193,12 +195,12 @@ test_list.adb:61:07: medium: precondition might fail
 test_list.adb:62:12: medium: precondition might fail [possible fix: call at line 51 should mention Position (for argument C) in a postcondition]
 test_list.adb:63:07: medium: precondition might fail
 test_list.adb:64:12: medium: precondition might fail [possible fix: call at line 51 should mention Position (for argument C) in a postcondition]
-test_list.adb:66:10: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Length or turning it into an expression function]
+test_list.adb:66:10: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Length and function Get or turning them into expression functions]
 test_list.adb:66:26: medium: precondition might fail
 test_list.adb:66:65: medium: overflow check might fail, cannot prove upper bound for M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 test_list.adb:67:07: medium: precondition might fail
 test_list.adb:68:12: medium: precondition might fail [possible fix: call at line 51 should mention Position (for argument C) in a postcondition]
-test_list.adb:70:10: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Length or turning it into an expression function]
+test_list.adb:70:10: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Length and function Get or turning them into expression functions]
 test_list.adb:70:26: medium: precondition might fail
 test_list.adb:70:65: medium: overflow check might fail, cannot prove upper bound for M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 test_list.adb:71:07: medium: precondition might fail
@@ -318,9 +320,9 @@ test_list.adb:333:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:336:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:338:07: info: precondition proved (CVC5: 2 VC)
 test_list.adb:341:07: info: precondition proved (CVC5: 1 VC)
-test_list.adb:343:22: medium: assertion might fail
+test_list.adb:343:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:343:46: info: precondition proved (CVC5: 2 VC)
-test_list.adb:345:07: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible fix: call at line 341 should mention Position (for argument C) in a postcondition]
+test_list.adb:345:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.adb:347:22: medium: assertion might fail
 test_list.adb:347:46: info: precondition proved (CVC5: 2 VC)
 test_list.adb:348:22: info: assertion proved (Z3: 1 VC)

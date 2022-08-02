@@ -28,10 +28,12 @@ spark-containers-formal-ordered_maps.ads:1026:20: info: precondition proved (Z3:
 spark-containers-formal-ordered_maps.ads:1041:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
 spark-containers-formal-ordered_maps.ads:1081:46: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
 spark-containers-formal-ordered_maps.ads:1096:40: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at p.ads:8
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at p.ads:8
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at p.ads:8
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at p.ads:8
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at p.ads:8
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at p.ads:8
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at p.ads:8
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at p.ads:8
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at p.ads:8
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at p.ads:8
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at p.ads:8
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at p.ads:8
 spark-containers-functional-vectors.ads:233:54: info: overflow check proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at p.ads:8

@@ -1,15 +1,8 @@
+init_list_zero.adb:6:11: info: postcondition proved
 init_list_zero.adb:6:12: info: precondition proved
-
-init_list_zero.adb:6:30: medium: postcondition might fail, cannot prove E = 0
-    6 |  Post => (for all E of L => E = 0)
-      |                             ^~~~~
 init_list_zero.adb:11:30: info: loop invariant initialization proved
+init_list_zero.adb:11:30: info: loop invariant preservation proved
 init_list_zero.adb:11:49: info: precondition proved
 init_list_zero.adb:12:32: info: precondition proved
-
-init_list_zero.adb:12:32: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Element (Model (L), I) = 0
-   12 |                               Element (Model (L), I) = 0);
-      |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~
-  possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec
 init_list_zero.adb:13:07: info: precondition proved
 init_list_zero.adb:14:07: info: precondition proved

@@ -12,35 +12,35 @@ spark-containers-formal-ordered_maps.ads:409:13: info: subprogram "At_End" will 
 spark-containers-formal-ordered_maps.ads:409:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:46
 spark-containers-formal-vectors.ads:294:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:37
 spark-containers-formal-vectors.ads:299:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:37
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test_deep_element_type.adb:35
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_deep_element_type.adb:42
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_deep_element_type.adb:45
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_deep_element_type.adb:42
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_deep_element_type.adb:45
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_deep_element_type.adb:39
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at test_deep_element_type.adb:43
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at test_deep_element_type.adb:46
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at test_deep_element_type.adb:43
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at test_deep_element_type.adb:46
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at test_deep_element_type.adb:40
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:44
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:47
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test_deep_element_type.adb:35
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_deep_element_type.adb:42
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_deep_element_type.adb:45
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_deep_element_type.adb:42
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_deep_element_type.adb:45
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_deep_element_type.adb:39
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at test_deep_element_type.adb:43
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at test_deep_element_type.adb:46
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at test_deep_element_type.adb:43
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at test_deep_element_type.adb:46
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at test_deep_element_type.adb:40
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:44
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:47
-spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:104, in instantiation at test_deep_element_type.adb:39
-spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:109, in instantiation at test_deep_element_type.adb:40
-spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:41
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test_deep_element_type.adb:35
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_deep_element_type.adb:42
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_deep_element_type.adb:45
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_deep_element_type.adb:42
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_deep_element_type.adb:45
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_deep_element_type.adb:39
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at test_deep_element_type.adb:43
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at test_deep_element_type.adb:46
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at test_deep_element_type.adb:43
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at test_deep_element_type.adb:46
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at test_deep_element_type.adb:40
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:44
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:47
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test_deep_element_type.adb:35
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_deep_element_type.adb:42
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_deep_element_type.adb:45
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_deep_element_type.adb:42
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_deep_element_type.adb:45
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_deep_element_type.adb:39
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at test_deep_element_type.adb:43
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at test_deep_element_type.adb:46
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at test_deep_element_type.adb:43
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at test_deep_element_type.adb:46
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at test_deep_element_type.adb:40
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:44
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:47
+spark-containers-functional-sets.ads:261:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:104, in instantiation at test_deep_element_type.adb:39
+spark-containers-functional-sets.ads:261:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:109, in instantiation at test_deep_element_type.adb:40
+spark-containers-functional-sets.ads:261:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:41
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_deep_element_type.adb:35
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_deep_element_type.adb:42
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_deep_element_type.adb:45
@@ -90,49 +90,49 @@ test_deep_element_type.adb:39:04: error: "Item" is not writable
 test_deep_element_type.adb:39:04: error: "Item" is not writable
 test_deep_element_type.adb:39:04: error: instantiation error at spark-containers-formal-hashed_sets.ads:104
 test_deep_element_type.adb:39:04: error: instantiation error at spark-containers-formal-hashed_sets.ads:116
-test_deep_element_type.adb:39:04: error: instantiation error at spark-containers-functional-sets.ads:257
+test_deep_element_type.adb:39:04: error: instantiation error at spark-containers-functional-sets.ads:261
 test_deep_element_type.adb:39:04: error: instantiation error at spark-containers-functional-vectors.ads:340
-test_deep_element_type.adb:39:04: error: object was declared as not writable at spark-containers-functional-sets.ads:257, instance at spark-containers-formal-hashed_sets.ads:104, instance at line 39
+test_deep_element_type.adb:39:04: error: object was declared as not writable at spark-containers-functional-sets.ads:261, instance at spark-containers-formal-hashed_sets.ads:104, instance at line 39
 test_deep_element_type.adb:39:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:340, instance at spark-containers-formal-hashed_sets.ads:116, instance at line 39
 test_deep_element_type.adb:40:04: error: "Item" is not writable
 test_deep_element_type.adb:40:04: error: "Item" is not writable
 test_deep_element_type.adb:40:04: error: instantiation error at spark-containers-formal-ordered_sets.ads:109
 test_deep_element_type.adb:40:04: error: instantiation error at spark-containers-formal-ordered_sets.ads:121
-test_deep_element_type.adb:40:04: error: instantiation error at spark-containers-functional-sets.ads:257
+test_deep_element_type.adb:40:04: error: instantiation error at spark-containers-functional-sets.ads:261
 test_deep_element_type.adb:40:04: error: instantiation error at spark-containers-functional-vectors.ads:340
-test_deep_element_type.adb:40:04: error: object was declared as not writable at spark-containers-functional-sets.ads:257, instance at spark-containers-formal-ordered_sets.ads:109, instance at line 40
+test_deep_element_type.adb:40:04: error: object was declared as not writable at spark-containers-functional-sets.ads:261, instance at spark-containers-formal-ordered_sets.ads:109, instance at line 40
 test_deep_element_type.adb:40:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:340, instance at spark-containers-formal-ordered_sets.ads:121, instance at line 40
 test_deep_element_type.adb:41:04: error: "Item" is not writable
-test_deep_element_type.adb:41:04: error: instantiation error at spark-containers-functional-sets.ads:257
-test_deep_element_type.adb:41:04: error: object was declared as not writable at spark-containers-functional-sets.ads:257, instance at line 41
+test_deep_element_type.adb:41:04: error: instantiation error at spark-containers-functional-sets.ads:261
+test_deep_element_type.adb:41:04: error: object was declared as not writable at spark-containers-functional-sets.ads:261, instance at line 41
 test_deep_element_type.adb:42:04: error: "Item" is not writable
 test_deep_element_type.adb:42:04: error: instantiation error at spark-containers-formal-hashed_maps.ads:99
-test_deep_element_type.adb:42:04: error: instantiation error at spark-containers-functional-maps.ads:316
-test_deep_element_type.adb:42:04: error: object was declared as not writable at spark-containers-functional-maps.ads:316, instance at spark-containers-formal-hashed_maps.ads:99, instance at line 42
+test_deep_element_type.adb:42:04: error: instantiation error at spark-containers-functional-maps.ads:325
+test_deep_element_type.adb:42:04: error: object was declared as not writable at spark-containers-functional-maps.ads:325, instance at spark-containers-formal-hashed_maps.ads:99, instance at line 42
 test_deep_element_type.adb:43:04: error: "Item" is not writable
 test_deep_element_type.adb:43:04: error: instantiation error at spark-containers-formal-ordered_maps.ads:104
-test_deep_element_type.adb:43:04: error: instantiation error at spark-containers-functional-maps.ads:316
-test_deep_element_type.adb:43:04: error: object was declared as not writable at spark-containers-functional-maps.ads:316, instance at spark-containers-formal-ordered_maps.ads:104, instance at line 43
+test_deep_element_type.adb:43:04: error: instantiation error at spark-containers-functional-maps.ads:325
+test_deep_element_type.adb:43:04: error: object was declared as not writable at spark-containers-functional-maps.ads:325, instance at spark-containers-formal-ordered_maps.ads:104, instance at line 43
 test_deep_element_type.adb:44:04: error: "Item" is not writable
-test_deep_element_type.adb:44:04: error: instantiation error at spark-containers-functional-maps.ads:316
-test_deep_element_type.adb:44:04: error: object was declared as not writable at spark-containers-functional-maps.ads:316, instance at line 44
+test_deep_element_type.adb:44:04: error: instantiation error at spark-containers-functional-maps.ads:325
+test_deep_element_type.adb:44:04: error: object was declared as not writable at spark-containers-functional-maps.ads:325, instance at line 44
 test_deep_element_type.adb:45:04: error: "Item" is not writable
 test_deep_element_type.adb:45:04: error: "Key" is not writable
 test_deep_element_type.adb:45:04: error: instantiation error at spark-containers-formal-hashed_maps.ads:112
 test_deep_element_type.adb:45:04: error: instantiation error at spark-containers-formal-hashed_maps.ads:99
-test_deep_element_type.adb:45:04: error: instantiation error at spark-containers-functional-maps.ads:315
+test_deep_element_type.adb:45:04: error: instantiation error at spark-containers-functional-maps.ads:324
 test_deep_element_type.adb:45:04: error: instantiation error at spark-containers-functional-vectors.ads:340
-test_deep_element_type.adb:45:04: error: object was declared as not writable at spark-containers-functional-maps.ads:315, instance at spark-containers-formal-hashed_maps.ads:99, instance at line 45
+test_deep_element_type.adb:45:04: error: object was declared as not writable at spark-containers-functional-maps.ads:324, instance at spark-containers-formal-hashed_maps.ads:99, instance at line 45
 test_deep_element_type.adb:45:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:340, instance at spark-containers-formal-hashed_maps.ads:112, instance at line 45
 test_deep_element_type.adb:46:04: error: "Item" is not writable
 test_deep_element_type.adb:46:04: error: "Key" is not writable
 test_deep_element_type.adb:46:04: error: instantiation error at spark-containers-formal-ordered_maps.ads:104
 test_deep_element_type.adb:46:04: error: instantiation error at spark-containers-formal-ordered_maps.ads:117
-test_deep_element_type.adb:46:04: error: instantiation error at spark-containers-functional-maps.ads:315
+test_deep_element_type.adb:46:04: error: instantiation error at spark-containers-functional-maps.ads:324
 test_deep_element_type.adb:46:04: error: instantiation error at spark-containers-functional-vectors.ads:340
-test_deep_element_type.adb:46:04: error: object was declared as not writable at spark-containers-functional-maps.ads:315, instance at spark-containers-formal-ordered_maps.ads:104, instance at line 46
+test_deep_element_type.adb:46:04: error: object was declared as not writable at spark-containers-functional-maps.ads:324, instance at spark-containers-formal-ordered_maps.ads:104, instance at line 46
 test_deep_element_type.adb:46:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:340, instance at spark-containers-formal-ordered_maps.ads:117, instance at line 46
 test_deep_element_type.adb:47:04: error: "Key" is not writable
-test_deep_element_type.adb:47:04: error: instantiation error at spark-containers-functional-maps.ads:315
-test_deep_element_type.adb:47:04: error: object was declared as not writable at spark-containers-functional-maps.ads:315, instance at line 47
+test_deep_element_type.adb:47:04: error: instantiation error at spark-containers-functional-maps.ads:324
+test_deep_element_type.adb:47:04: error: object was declared as not writable at spark-containers-functional-maps.ads:324, instance at line 47
 gnatprove: error during flow analysis and proof

@@ -208,5 +208,7 @@ r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
 r.adb:58:04: warning: no Global contract available for "OS_Exit"
 r.adb:59:04: info: call to nonreturning procedure never executed (CVC5: 1 VC)
 r.adb:59:04: warning: unreachable code
-spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:12
-spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:261:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:261:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26

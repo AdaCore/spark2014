@@ -1,10 +1,6 @@
 map_list_incr.adb:6:12: info: precondition proved
+map_list_incr.adb:7:11: info: postcondition proved
 map_list_incr.adb:9:18: info: precondition proved
-
-map_list_incr.adb:9:18: medium: postcondition might fail, cannot prove Element (Model (L), I) = Element (Model (L'Old), I) + 1
-    9 |                 Element (Model (L), I) = Element (Model (L'Old), I) + 1)
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec
 map_list_incr.adb:9:43: info: precondition proved
 map_list_incr.adb:9:70: info: overflow check proved
 map_list_incr.adb:14:30: info: loop invariant initialization proved

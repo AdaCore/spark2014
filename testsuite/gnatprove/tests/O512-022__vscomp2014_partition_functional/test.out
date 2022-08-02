@@ -216,7 +216,7 @@ partition_refinement.adb:258:33: info: precondition proved (Trivial: 2 VC)
 partition_refinement.adb:258:51: medium: loop invariant might fail in first iteration, cannot prove Has_Element (D, (Find (D_Old, Element (X, C))))
 partition_refinement.adb:258:51: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Has_Element (D, (Find (D_Old, Element (X, C))))
 partition_refinement.adb:258:81: info: precondition proved (CVC5: 2 VC)
-partition_refinement.adb:260:33: info: loop invariant initialization proved (CVC5: 2 VC)
+partition_refinement.adb:260:55: medium: loop invariant might fail in first iteration, cannot prove F(J) in 0 .. Partition_Index'Base (Length (P)) - 1
 partition_refinement.adb:260:55: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove F(J) in 0 .. Partition_Index'Base (Length (P)) - 1
 partition_refinement.adb:261:55: medium: loop invariant might fail in first iteration, cannot prove J in Element (P, F(J)).First .. Element (P, F(J)).Last
 partition_refinement.adb:261:55: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove J in Element (P, F(J)).First .. Element (P, F(J)).Last
@@ -300,12 +300,15 @@ spark-containers-formal-vectors.ads:757:23: info: precondition proved (CVC5: 1 V
 spark-containers-formal-vectors.ads:760:38: info: range check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:34
 spark-containers-formal-vectors.ads:793:14: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:34
 spark-containers-formal-vectors.ads:797:35: info: range check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:34
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at partition_refinement.ads:16
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at partition_refinement.ads:22
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at partition_refinement.ads:22
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at partition_refinement.ads:16
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at partition_refinement.ads:22
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at partition_refinement.ads:22
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at partition_refinement.ads:16
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at partition_refinement.ads:22
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at partition_refinement.ads:22
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at partition_refinement.ads:16
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at partition_refinement.ads:22
+spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at partition_refinement.ads:22
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at partition_refinement.ads:16
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at partition_refinement.ads:22
+spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at partition_refinement.ads:22
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at partition_refinement.ads:16
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at partition_refinement.ads:22
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at partition_refinement.ads:34

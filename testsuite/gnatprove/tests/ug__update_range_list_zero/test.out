@@ -1,49 +1,27 @@
 update_range_list_zero.adb:7:13: info: precondition proved
 update_range_list_zero.adb:7:45: info: precondition proved
-
-update_range_list_zero.adb:9:07: medium: postcondition might fail, cannot prove Positions (L) = Positions (L)'old
-    9 |  and Positions (L) = Positions (L)'Old
-      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+update_range_list_zero.adb:8:11: info: postcondition proved
 update_range_list_zero.adb:11:23: info: precondition proved
 update_range_list_zero.adb:11:55: info: precondition proved
 update_range_list_zero.adb:12:16: info: precondition proved
 update_range_list_zero.adb:13:19: info: precondition proved
 update_range_list_zero.adb:13:44: info: precondition proved
 update_range_list_zero.adb:18:30: info: loop invariant initialization proved
-
-update_range_list_zero.adb:18:30: medium: loop invariant might not be preserved by an arbitrary iteration
-   18 |      pragma Loop_Invariant (Has_Element (L, Cu));
-      |                             ^~~~~~~~~~~~~~~~~~
-
-update_range_list_zero.adb:19:30: medium: loop invariant might not be preserved by an arbitrary iteration
-   19 |      pragma Loop_Invariant (P.Get (Positions (L), Cu) in P.Get (Positions (L), First) .. P.Get (Positions (L), Last));
-      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+update_range_list_zero.adb:18:30: info: loop invariant preservation proved
+update_range_list_zero.adb:19:30: info: loop invariant preservation proved
 update_range_list_zero.adb:19:30: info: loop invariant initialization proved
-
-update_range_list_zero.adb:19:31: medium: precondition might fail
-   19 |      pragma Loop_Invariant (P.Get (Positions (L), Cu) in P.Get (Positions (L), First) .. P.Get (Positions (L), Last));
-      |                             ~^~~~~~~~~~~~~~~~~~~~~~~
+update_range_list_zero.adb:19:31: info: precondition proved
 update_range_list_zero.adb:19:60: info: precondition proved
 update_range_list_zero.adb:19:92: info: precondition proved
 update_range_list_zero.adb:20:30: info: loop invariant preservation proved
 update_range_list_zero.adb:20:30: info: loop invariant initialization proved
-
-update_range_list_zero.adb:21:30: medium: loop invariant might not be preserved by an arbitrary iteration
-   21 |      pragma Loop_Invariant (Positions (L) = Positions (L)'Loop_Entry);
-      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+update_range_list_zero.adb:21:30: info: loop invariant preservation proved
 update_range_list_zero.adb:21:30: info: loop invariant initialization proved
+update_range_list_zero.adb:22:30: info: loop invariant preservation proved
 update_range_list_zero.adb:22:30: info: loop invariant initialization proved
 update_range_list_zero.adb:23:42: info: precondition proved
-
-update_range_list_zero.adb:23:74: medium: precondition might fail
-   23 |                               (if I in P.Get (Positions (L), First) .. P.Get (Positions (L), Cu) - 1 then
-      |                                                                        ~^~~~~~~~~~~~~~~~~~~~~~~
+update_range_list_zero.adb:23:74: info: precondition proved
 update_range_list_zero.adb:24:36: info: precondition proved
-
-update_range_list_zero.adb:24:36: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Element (Model (L), I) = 0
-   24 |                                   Element (Model (L), I) = 0
-      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
-  possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec
 update_range_list_zero.adb:25:38: info: precondition proved
 update_range_list_zero.adb:25:63: info: precondition proved
 update_range_list_zero.adb:26:07: info: precondition proved
