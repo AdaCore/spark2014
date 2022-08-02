@@ -1,0 +1,45 @@
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:7
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at test.adb:7
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test.adb:7
+spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:40
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test.adb:40
+test.adb:6:14: warning: subprogram "Test_Maps" has no effect
+test.adb:7:07: info: no contextual analysis of "Test_Maps" (nested package instantiation)
+test.adb:10:07: info: initialization of "M" proved
+test.adb:11:07: info: initialization of "K" proved
+test.adb:13:12: info: precondition proved (CVC5: 1 VC)
+test.adb:14:12: info: precondition proved (CVC5: 1 VC)
+test.adb:15:12: info: precondition proved (CVC5: 1 VC)
+test.adb:16:12: info: precondition proved (CVC5: 1 VC)
+test.adb:18:12: info: precondition proved (CVC5: 1 VC)
+test.adb:20:22: info: assertion proved (CVC5: 1 VC)
+test.adb:21:22: info: precondition proved (CVC5: 1 VC)
+test.adb:21:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function]
+test.adb:21:37: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
+test.adb:27:18: info: precondition proved (CVC5: 2 VC)
+test.adb:29:28: info: precondition proved (CVC5: 2 VC)
+test.adb:29:28: medium: assertion might fail [possible fix: loop invariant at line 34 should mention K]
+test.adb:29:48: medium: overflow check might fail, cannot prove upper bound for K + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+test.adb:31:23: info: precondition proved (CVC5: 2 VC)
+test.adb:33:34: info: loop variant proved (CVC5: 1 VC)
+test.adb:33:47: info: range check proved (CVC5: 2 VC)
+test.adb:34:36: info: loop invariant initialization proved (CVC5: 1 VC)
+test.adb:34:36: info: loop invariant preservation proved (Z3: 1 VC)
+test.adb:39:14: warning: subprogram "Test_Set" has no effect
+test.adb:40:07: info: no contextual analysis of "Test_Set" (nested package instantiation)
+test.adb:43:07: info: initialization of "S" proved
+test.adb:44:07: info: initialization of "E" proved
+test.adb:46:12: info: precondition proved (CVC5: 1 VC)
+test.adb:47:12: info: precondition proved (CVC5: 1 VC)
+test.adb:48:12: info: precondition proved (CVC5: 1 VC)
+test.adb:50:12: info: precondition proved (CVC5: 1 VC)
+test.adb:52:22: info: assertion proved (CVC5: 1 VC)
+test.adb:53:22: info: assertion proved (CVC5: 1 VC)
+test.adb:59:18: info: precondition proved (CVC5: 2 VC)
+test.adb:61:28: info: assertion proved (CVC5: 2 VC)
+test.adb:62:28: info: assertion proved (CVC5: 2 VC)
+test.adb:64:23: info: precondition proved (CVC5: 2 VC)
+test.adb:66:34: info: loop variant proved (CVC5: 1 VC)
+test.adb:66:47: info: range check proved (CVC5: 2 VC)
+test.adb:67:36: info: loop invariant initialization proved (CVC5: 1 VC)
+test.adb:67:36: info: loop invariant preservation proved (CVC5: 1 VC)

@@ -78,6 +78,13 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
              (Container.Elements, Length (Container.Elements) + 1, New_Item));
    end Add;
 
+   ------------
+   -- Choose --
+   ------------
+
+   function Choose (Container : Map) return Key_Type is
+     (Get (Container.Keys, Length (Container.Keys)));
+
    ---------------------------
    -- Elements_Equal_Except --
    ---------------------------

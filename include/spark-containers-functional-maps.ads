@@ -53,7 +53,7 @@ package SPARK.Containers.Functional.Maps with
 is
 
    type Map is private with
-     Default_Initial_Condition => Is_Empty (Map) and Length (Map) = 0,
+     Default_Initial_Condition => Is_Empty (Map),
      Iterable                  => (First       => Iter_First,
                                    Next        => Iter_Next,
                                    Has_Element => Iter_Has_Element,
@@ -110,6 +110,13 @@ is
               Equivalent_Keys (K, Key) =
                (Witness (Container, Key) = Witness (Container, K)));
 
+   function Choose (Container : Map) return Key_Type with
+   --  Return an arbitrary key in container
+
+     Global => null,
+     Pre    => not Is_Empty (Container),
+     Post   => Has_Key (Container, Choose'Result);
+
    function Length (Container : Map) return Big_Natural with
      Global => null;
    --  Return the number of mappings in Container
@@ -143,7 +150,8 @@ is
    --  A map is empty if it contains no key
 
      Global => null,
-     Post   => Is_Empty'Result = (for all Key of Container => False);
+     Post   => Is_Empty'Result = (for all Key of Container => False)
+       and Is_Empty'Result = (Length (Container) = 0);
    pragma Warnings (On, "unused variable ""Key""");
 
    function Keys_Included (Left : Map; Right : Map) return Boolean
@@ -258,9 +266,7 @@ is
    --  Return an empty Map
 
      Global => null,
-     Post   =>
-       Length (Empty_Map'Result) = 0
-         and Is_Empty (Empty_Map'Result);
+     Post   => Is_Empty (Empty_Map'Result);
 
    function Remove
      (Container : Map;

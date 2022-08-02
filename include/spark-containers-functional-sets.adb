@@ -63,6 +63,13 @@ package body SPARK.Containers.Functional.Sets with SPARK_Mode => Off is
    function Contains (Container : Set; Item : Element_Type) return Boolean is
      (Find (Container.Content, Item) > 0);
 
+   ------------
+   -- Choose --
+   ------------
+
+   function Choose (Container : Set) return Element_Type is
+     (Get (Container.Content, Length (Container.Content)));
+
    ---------------
    -- Empty_Set --
    ---------------

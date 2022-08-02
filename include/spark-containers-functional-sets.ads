@@ -87,6 +87,13 @@ is
        and then (for some E of Container => Equivalent_Elements (E, Item)),
      Post => Contains (Container, Item);
 
+   function Choose (Container : Set) return Element_Type with
+   --  Return an arbitrary element in Container
+
+   Global => null,
+   Pre    => not Is_Empty (Container),
+   Post   => Contains (Container, Choose'Result);
+
    function Length (Container : Set) return Big_Natural with
      Global => null;
    --  Return the number of elements in Container

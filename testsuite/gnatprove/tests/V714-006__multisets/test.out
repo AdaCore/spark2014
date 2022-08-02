@@ -8,7 +8,7 @@ multiset.adb:14:13: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 multiset.adb:14:15: info: predicate check proved (Trivial: 1 VC)
 multiset.adb:14:15: info: subprogram variant proved (CVC5: 1 VC)
 multiset.adb:14:32: info: precondition proved (CVC5: 1 VC)
-multiset.adb:14:51: medium: precondition might fail [possible fix: subprogram at multiset.ads:103 should mention Container in a precondition]
+multiset.adb:14:51: info: precondition proved (CVC5: 1 VC)
 multiset.adb:32:08: info: precondition proved (CVC5: 1 VC)
 multiset.adb:34:04: info: no contextual analysis of "Empty_Multiset" (controlled return type)
 multiset.adb:34:13: info: subprogram "Empty_Multiset" will terminate, terminating annotation has been proved
@@ -64,5 +64,5 @@ multiset.ads:113:13: info: subprogram "Invariant" will terminate, terminating an
 multiset.ads:130:07: info: precondition proved (CVC5: 1 VC)
 multiset.ads:136:07: info: precondition proved (CVC5: 1 VC)
 spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at multiset.ads:88
-spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at multiset.ads:88
-spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at multiset.ads:88

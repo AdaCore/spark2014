@@ -1,4 +1,4 @@
-recursive_mergesort.adb:14:14: info: postcondition proved (CVC5: 5 VC; Z3: 1 VC)
+recursive_mergesort.adb:14:14: info: postcondition proved (CVC5: 5 VC; altergo: 1 VC)
 recursive_mergesort.adb:14:24: info: precondition proved (CVC5: 1 VC)
 recursive_mergesort.adb:15:24: info: precondition proved (CVC5: 1 VC)
 recursive_mergesort.adb:15:42: info: overflow check proved (CVC5: 2 VC)
@@ -54,7 +54,7 @@ recursive_mergesort.adb:92:42: info: overflow check proved (CVC5: 2 VC)
 recursive_mergesort.adb:92:52: info: overflow check proved (CVC5: 2 VC)
 recursive_mergesort.adb:96:13: info: precondition proved (CVC5: 7 VC)
 recursive_mergesort.adb:100:13: info: precondition proved (CVC5: 7 VC)
-recursive_mergesort.adb:104:13: info: precondition proved (CVC5: 10 VC; altergo: 4 VC)
+recursive_mergesort.adb:104:13: info: precondition proved (CVC5: 14 VC)
 recursive_mergesort.adb:104:29: info: precondition proved (CVC5: 1 VC)
 recursive_mergesort.adb:104:52: info: precondition proved (CVC5: 1 VC)
 recursive_mergesort.adb:104:79: info: precondition proved (CVC5: 1 VC)
@@ -132,8 +132,8 @@ recursive_mergesort.adb:144:234: info: index check proved (CVC5: 4 VC)
 recursive_mergesort.adb:144:234: info: overflow check proved (CVC5: 4 VC)
 recursive_mergesort.adb:146:24: info: overflow check proved (CVC5: 4 VC)
 recursive_mergesort.adb:148:21: info: overflow check proved (CVC5: 4 VC)
-recursive_mergesort.adb:150:33: info: loop invariant initialization proved (CVC5: 4 VC; altergo: 2 VC)
-recursive_mergesort.adb:150:33: info: loop invariant preservation proved (altergo: 6 VC)
+recursive_mergesort.adb:150:33: info: loop invariant initialization proved (CVC5: 6 VC)
+recursive_mergesort.adb:150:33: info: loop invariant preservation proved (CVC5: 2 VC; altergo: 4 VC)
 recursive_mergesort.adb:150:43: info: precondition proved (CVC5: 2 VC)
 recursive_mergesort.adb:150:69: info: overflow check proved (CVC5: 4 VC)
 recursive_mergesort.adb:150:81: info: precondition proved (CVC5: 2 VC)
@@ -248,5 +248,5 @@ recursive_mergesort.ads:110:15: info: overflow check proved (CVC5: 2 VC)
 recursive_mergesort.ads:110:33: info: range check proved (CVC5: 4 VC)
 recursive_mergesort.ads:110:41: info: overflow check proved (CVC5: 2 VC)
 spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at recursive_mergesort.ads:15
-spark-containers-functional-maps.ads:324:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at recursive_mergesort.ads:15
-spark-containers-functional-maps.ads:325:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at recursive_mergesort.ads:15
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at recursive_mergesort.ads:15
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at recursive_mergesort.ads:15

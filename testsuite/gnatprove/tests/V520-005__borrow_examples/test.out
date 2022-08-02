@@ -60,7 +60,7 @@ binary_search.adb:163:16: info: loop invariant initialization proved (CVC5: 1 VC
 binary_search.adb:163:16: info: loop invariant preservation proved (CVC5: 1 VC)
 binary_search.adb:163:16: info: precondition proved (Trivial: 2 VC)
 binary_search.adb:165:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-binary_search.adb:165:16: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC)
+binary_search.adb:165:16: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_search.adb:172:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_search.adb:172:16: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_search.adb:176:17: info: pointer dereference check proved (CVC5: 1 VC)
@@ -382,7 +382,7 @@ spark-containers-functional-infinite_sequences.ads:299:16: info: predicate check
 spark-containers-functional-infinite_sequences.ads:299:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_route.ads:53
 spark-containers-functional-infinite_sequences.ads:314:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_route.ads:53
 spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at binary_search.ads:91
-spark-containers-functional-sets.ads:261:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at binary_search.ads:91
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at binary_search.ads:91
 test_list.adb:3:26: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_list.adb:12:33: info: loop invariant initialization proved (CVC5: 1 VC)
 test_list.adb:12:33: info: loop invariant preservation proved (CVC5: 1 VC)
