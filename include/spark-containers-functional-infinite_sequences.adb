@@ -56,8 +56,11 @@ is
 
    function "<" (Left : Sequence; Right : Sequence) return Boolean is
      (Length (Left) < Length (Right)
-      and then (for all N in Left =>
-                     Get (Left, N) = Get (Right, N)));
+      and then
+        (Ptr_Eq (Left.Content, Right.Content)
+         or else
+           (for all N in Left =>
+                     Get (Left, N) = Get (Right, N))));
 
    ----------
    -- "<=" --
@@ -65,8 +68,11 @@ is
 
    function "<=" (Left : Sequence; Right : Sequence) return Boolean is
      (Length (Left) <= Length (Right)
-      and then (for all N in Left =>
-                     Get (Left, N) = Get (Right, N)));
+      and then
+        (Ptr_Eq (Left.Content, Right.Content)
+         or else
+            (for all N in Left =>
+                     Get (Left, N) = Get (Right, N))));
 
    ---------
    -- "=" --
@@ -157,6 +163,8 @@ is
    begin
       if Length (Left) /= Length (Right) then
          return False;
+      elsif Ptr_Eq (Left.Content, Right.Content) then
+         return True;
       end if;
 
       for J in 1 .. Count_Lst loop
@@ -183,6 +191,8 @@ is
    begin
       if Length (Left) /= Length (Right) then
          return False;
+      elsif Ptr_Eq (Left.Content, Right.Content) then
+         return True;
       end if;
 
       for J in 1 .. Count_Lst loop
@@ -234,6 +244,10 @@ is
       Count_Lst : constant Count_Type := To_Count (Lst);
 
    begin
+      if Ptr_Eq (Left.Content, Right.Content) then
+         return True;
+      end if;
+
       for J in Count_Fst .. Count_Lst loop
          if Get (Left.Content, J) /= Get (Right.Content, J) then
             return False;

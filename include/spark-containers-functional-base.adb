@@ -42,7 +42,14 @@ package body SPARK.Containers.Functional.Base with SPARK_Mode => Off is
    --  Conversion functions between Index_Type and Count_Type
 
    function Find (C : Container; E : access Element_Type) return Count_Type;
-   --  Search a container C for an element equal to E.all, returning the
+   --  Search a container C for the first element equal to E.all, returning the
+   --  position in the underlying array.
+
+   function Find_Rev
+     (C : Container;
+      E : access Element_Type)
+      return Count_Type;
+   --  Search a container C for the last element equal to E.all, returning the
    --  position in the underlying array.
 
    procedure Resize (Base : Array_Base_Access);
@@ -73,6 +80,12 @@ package body SPARK.Containers.Functional.Base with SPARK_Mode => Off is
 
    function "<=" (C1 : Container; C2 : Container) return Boolean is
    begin
+      if C1.Length > C2.Length then
+         return False;
+      elsif C1.Controlled_Base = C2.Controlled_Base then
+         return True;
+      end if;
+
       for I in 1 .. C1.Length loop
          if Find (C2, Get (Elements (C1), I)) = 0 then
             return False;
@@ -90,7 +103,10 @@ package body SPARK.Containers.Functional.Base with SPARK_Mode => Off is
    begin
       if C1.Length /= C2.Length then
          return False;
+      elsif C1.Controlled_Base = C2.Controlled_Base then
+         return True;
       end if;
+
       for I in 1 .. C1.Length loop
          if Get (Elements (C1), I).all /= Get (Elements (C2), I).all then
             return False;
@@ -259,6 +275,25 @@ package body SPARK.Containers.Functional.Base with SPARK_Mode => Off is
    function Find (C : Container; E : Element_Type) return Extended_Index is
      (To_Index (Find (C, E'Unrestricted_Access)));
 
+   --------------
+   -- Find_Rev --
+   --------------
+
+   function Find_Rev (C : Container; E : access Element_Type) return Count_Type
+   is
+   begin
+      for I in reverse 1 .. C.Length loop
+         if Get (Elements (C), I).all = E.all then
+            return I;
+         end if;
+      end loop;
+
+      return 0;
+   end Find_Rev;
+
+   function Find_Rev (C : Container; E : Element_Type) return Extended_Index is
+     (To_Index (Find_Rev (C, E'Unrestricted_Access)));
+
    ---------
    -- Get --
    ---------
@@ -308,6 +343,13 @@ package body SPARK.Containers.Functional.Base with SPARK_Mode => Off is
 
       return P;
    end Num_Overlaps;
+
+   ------------
+   -- Ptr_Eq --
+   ------------
+
+   function Ptr_Eq (C1 : Container; C2 : Container) return Boolean is
+     (C1.Controlled_Base = C2.Controlled_Base);
 
    ------------
    -- Remove --

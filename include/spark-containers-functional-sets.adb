@@ -39,7 +39,7 @@ package body SPARK.Containers.Functional.Sets with SPARK_Mode => Off is
    ---------
 
    function "=" (Left : Set; Right : Set) return Boolean is
-     (Left.Content <= Right.Content and Right.Content <= Left.Content);
+     (Length (Right) = Length (Left) and then Left.Content <= Right.Content);
 
    ----------
    -- "<=" --
@@ -61,7 +61,7 @@ package body SPARK.Containers.Functional.Sets with SPARK_Mode => Off is
    --------------
 
    function Contains (Container : Set; Item : Element_Type) return Boolean is
-     (Find (Container.Content, Item) > 0);
+     (Find_Rev (Container.Content, Item) > 0);
 
    ------------
    -- Choose --
@@ -185,7 +185,8 @@ package body SPARK.Containers.Functional.Sets with SPARK_Mode => Off is
    ------------
 
    function Remove (Container : Set; Item : Element_Type) return Set is
-     (Content => Remove (Container.Content, Find (Container.Content, Item)));
+     (Content =>
+         Remove (Container.Content, Find_Rev (Container.Content, Item)));
 
    -----------
    -- Union --

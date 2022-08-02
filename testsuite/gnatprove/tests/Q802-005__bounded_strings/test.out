@@ -170,6 +170,7 @@ test.ads:10:03: warning: assuming "=" always returns
 test.ads:10:03: warning: assuming "=" always returns
 test.ads:10:03: warning: assuming "=" always returns
 test.ads:10:03: warning: assuming "=" always returns
+test.ads:10:03: warning: assuming "=" always returns
 test.ads:10:03: warning: in instantiation at spark-containers-formal-hashed_maps.ads:112
 test.ads:10:03: warning: in instantiation at spark-containers-formal-hashed_maps.ads:112
 test.ads:10:03: warning: in instantiation at spark-containers-formal-hashed_maps.ads:112
@@ -205,6 +206,7 @@ test.ads:10:03: warning: in instantiation at spark-containers-formal-hashed_maps
 test.ads:10:03: warning: in instantiation at spark-containers-formal-hashed_maps.ads:99
 test.ads:10:03: warning: in instantiation at spark-containers-formal-hashed_maps.ads:99
 test.ads:10:03: warning: in instantiation at spark-containers-formal-hashed_maps.ads:99
+test.ads:10:03: warning: in instantiation at spark-containers-formal-hashed_maps.ads:99
 test.ads:10:03: warning: in instantiation at spark-containers-functional-maps.ads:110
 test.ads:10:03: warning: in instantiation at spark-containers-functional-maps.ads:187
 test.ads:10:03: warning: in instantiation at spark-containers-functional-maps.ads:202
@@ -212,6 +214,7 @@ test.ads:10:03: warning: in instantiation at spark-containers-functional-maps.ad
 test.ads:10:03: warning: in instantiation at spark-containers-functional-maps.ads:219
 test.ads:10:03: warning: in instantiation at spark-containers-functional-maps.ads:236
 test.ads:10:03: warning: in instantiation at spark-containers-functional-maps.ads:237
+test.ads:10:03: warning: in instantiation at spark-containers-functional-maps.ads:385
 test.ads:10:03: warning: in instantiation at spark-containers-functional-maps.ads:90
 test.ads:10:03: warning: in instantiation at spark-containers-functional-vectors.ads:112
 test.ads:10:03: warning: in instantiation at spark-containers-functional-vectors.ads:123
@@ -226,6 +229,7 @@ test.ads:10:03: warning: in instantiation at spark-containers-functional-vectors
 test.ads:10:03: warning: in instantiation at spark-containers-functional-vectors.ads:272
 test.ads:10:03: warning: in instantiation at spark-containers-functional-vectors.ads:286
 test.ads:10:03: warning: in instantiation at spark-containers-functional-vectors.ads:304
+test.ads:10:03: warning: no returning annotation available for "="
 test.ads:10:03: warning: no returning annotation available for "="
 test.ads:10:03: warning: no returning annotation available for "="
 test.ads:10:03: warning: no returning annotation available for "="

@@ -1536,10 +1536,10 @@ search_trees.adb:36:13: info: loop invariant initialization proved (CVC5: 1 VC; 
 search_trees.adb:37:19: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:37:37: info: range check proved (CVC5: 4 VC)
 search_trees.adb:37:45: info: index check proved (CVC5: 4 VC)
-search_trees.adb:37:55: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Contains (S, T.Values (I))
+search_trees.adb:37:55: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Contains (S, T.Values (I)) [possible fix: you should consider adding a postcondition to function Contains or turning it into an expression function in its unit spec]
 search_trees.adb:37:78: info: index check proved (CVC5: 4 VC)
 search_trees.adb:39:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-search_trees.adb:39:13: medium: loop invariant might not be preserved by an arbitrary iteration
+search_trees.adb:39:13: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Contains or turning it into an expression function in its unit spec]
 search_trees.adb:42:25: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:42:43: info: range check proved (CVC5: 4 VC)
 search_trees.adb:54:10: info: precondition proved (CVC5: 2 VC)
@@ -2519,8 +2519,8 @@ search_trees.adb:1471:58: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1478:10: medium: precondition might fail
 search_trees.adb:1479:20: info: index check proved (CVC5: 2 VC)
 search_trees.adb:1493:36: info: loop invariant initialization proved (CVC5: 1 VC)
+search_trees.adb:1493:36: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1493:36: medium: loop invariant might not be preserved by an arbitrary iteration
-search_trees.adb:1493:36: medium: precondition might fail
 search_trees.adb:1493:54: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1493:62: medium: array index check might fail [reason for check: value must be a valid index into the array]
 search_trees.adb:1500:21: medium: precondition might fail
@@ -2940,8 +2940,10 @@ search_trees.ads:336:07: info: precondition proved (CVC5: 1 VC)
 search_trees.ads:336:25: info: range check proved (CVC5: 2 VC)
 search_trees.ads:342:08: info: range check proved (CVC5: 2 VC)
 search_trees.ads:348:07: info: precondition proved (CVC5: 1 VC)
-spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at binary_trees.adb:10
-spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at tree_model.ads:78
+spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at binary_trees.adb:10
+spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at tree_model.ads:78
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at binary_trees.adb:10
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at tree_model.ads:78
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22

@@ -272,9 +272,84 @@ is
    --  i.e. it does not contain pointers that could be used to alias mutable
    --  data).
 
-   ---------------------------
-   --  Iteration Primitives --
-   ---------------------------
+   ----------------------------------
+   -- Iteration on Functional Sets --
+   ----------------------------------
+
+   --  The Iterable aspect can be used to quantify over a functional set.
+   --  However, if it is used to create a for loop, it will not allow users to
+   --  prove their loops as there is no way to speak about the elements which
+   --  have or have not been traversed already in a loop invariant. The
+   --  function Iterate returns an object of a type Iterable_Set which can be
+   --  used for iteration. The cursor is a functional set containing all the
+   --  elements which have not been traversed yet. The current element being
+   --  traversed being the result of Choose on this set.
+
+   type Iterable_Set is private with
+     Iterable =>
+       (First       => First,
+        Has_Element => Has_Element,
+        Next        => Next,
+        Element     => Element);
+
+   function Set_Logic_Equal (Left, Right : Set) return Boolean with
+     Ghost,
+     Annotate => (GNATprove, Logical_Equal);
+   --  Logical equality on sets
+
+   function Iterate (Container : Set) return Iterable_Set with
+     Global => null,
+     Post   => Set_Logic_Equal (Get_Set (Iterate'Result), Container);
+   --  Return an iterator over a functional set
+
+   function Get_Set (Iterator : Iterable_Set) return Set with
+     Global => null;
+   --  Retrieve the set associated with an iterator
+
+   function Valid_Subset
+     (Iterator : Iterable_Set;
+      Cursor   : Set) return Boolean
+   with
+     Global => null,
+     Post   => (if Valid_Subset'Result then Cursor <= Get_Set (Iterator));
+   --  Return True on all sets which can be reached by iterating over
+   --  Container.
+
+   function Element (Iterator : Iterable_Set; Cursor : Set) return Element_Type
+   with
+     Global => null,
+     Pre    => not Is_Empty (Cursor),
+     Post   => Element'Result = Choose (Cursor);
+   --  The next element to be considered for the iteration is the result of
+   --  choose on Cursor.
+
+   function First (Iterator : Iterable_Set) return Set with
+     Global => null,
+     Post   => Set_Logic_Equal (First'Result, Get_Set (Iterator))
+       and then Valid_Subset (Iterator, First'Result);
+   --  In the first iteration, the cursor is the set associated with Iterator
+
+   function Next (Iterator : Iterable_Set; Cursor : Set) return Set with
+     Global => null,
+     Pre    => Valid_Subset (Iterator, Cursor) and then not Is_Empty (Cursor),
+     Post   => Valid_Subset (Iterator, Next'Result)
+       and then Set_Logic_Equal
+         (Next'Result, Remove (Cursor, Choose (Cursor)));
+   --  At each iteration, remove the considered element from the Cursor set
+
+   function Has_Element
+     (Iterator : Iterable_Set;
+      Cursor   : Set) return Boolean
+   with
+     Global => null,
+     Post   => Has_Element'Result =
+       (Valid_Subset (Iterator, Cursor) and then not Is_Empty (Cursor));
+   --  Return True on non-empty sets which can be reached by iterating over
+   --  Container.
+
+   --------------------------------------------------
+   -- Iteration Primitives Used For Quantification --
+   --------------------------------------------------
 
    type Private_Key is private;
 
@@ -315,12 +390,23 @@ private
    package Containers is new SPARK.Containers.Functional.Base
      (Element_Type => Element_Type,
       Index_Type   => Positive_Count_Type);
+   use all type Containers.Container;
 
    type Set is record
       Content : Containers.Container;
    end record;
 
+   --------------------------------------------------
+   -- Iteration Primitives Used For Quantification --
+   --------------------------------------------------
+
    type Private_Key is new Count_Type;
+
+   function Iter_Element
+     (Container : Set;
+      Key       : Private_Key) return Element_Type
+   is
+     (Containers.Get (Container.Content, Count_Type (Key)));
 
    function Iter_First (Container : Set) return Private_Key is (1);
 
@@ -336,10 +422,47 @@ private
    is
      (if Key = Private_Key'Last then 0 else Key + 1);
 
-   function Iter_Element
-     (Container : Set;
-      Key       : Private_Key) return Element_Type
+   ----------------------------------
+   -- Iteration on Functional Sets --
+   ----------------------------------
+
+   type Iterable_Set is record
+      Container : Set;
+   end record;
+
+   function Element
+     (Iterator : Iterable_Set;
+      Cursor   : Set) return Element_Type
    is
-     (Containers.Get (Container.Content, Count_Type (Key)));
+     (Choose (Cursor));
+
+   function First (Iterator : Iterable_Set) return Set is
+     (Iterator.Container);
+
+   function Get_Set (Iterator : Iterable_Set) return Set is
+     (Iterator.Container);
+
+   function Has_Element
+     (Iterator : Iterable_Set;
+      Cursor   : Set) return Boolean
+   is
+     (Valid_Subset (Iterator, Cursor) and then Length (Cursor) > 0);
+
+   function Iterate (Container : Set) return Iterable_Set is
+     (Iterable_Set'(Container => Container));
+
+   function Next (Iterator : Iterable_Set; Cursor : Set) return Set is
+     (Remove (Cursor, Choose (Cursor)));
+
+   function Set_Logic_Equal (Left, Right : Set) return Boolean is
+     (Ptr_Eq (Left.Content, Right.Content)
+      and then Length (Left.Content) = Length (Right.Content));
+
+   function Valid_Subset
+     (Iterator : Iterable_Set;
+      Cursor   : Set) return Boolean
+   is
+     (Ptr_Eq (Cursor.Content, Iterator.Container.Content)
+      and then Length (Cursor.Content) <= Length (Iterator.Container.Content));
 
 end SPARK.Containers.Functional.Sets;

@@ -48,6 +48,9 @@ package SPARK.Containers.Functional.Base with SPARK_Mode => Off is
 
    type Container is private;
 
+   function Ptr_Eq (C1 : Container; C2 : Container) return Boolean;
+   --  Return True if C1 and C2 have the same content pointer
+
    function "=" (C1 : Container; C2 : Container) return Boolean;
    --  Return True if C1 and C2 contain the same elements at the same position
 
@@ -75,6 +78,10 @@ package SPARK.Containers.Functional.Base with SPARK_Mode => Off is
 
    function Find (C : Container; E : Element_Type) return Extended_Index;
    --  Return the first index for which the element stored in C is I. If there
+   --  are no such indexes, return Extended_Index'First.
+
+   function Find_Rev (C : Container; E : Element_Type) return Extended_Index;
+   --  Return the last index for which the element stored in C is I. If there
    --  are no such indexes, return Extended_Index'First.
 
    --------------------

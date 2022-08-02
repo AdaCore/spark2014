@@ -229,7 +229,7 @@ my_maps.adb:72:07: info: precondition proved (CVC5: 1 VC)
 my_maps.adb:74:07: info: precondition proved (CVC5: 1 VC)
 my_maps.adb:76:07: info: precondition proved (CVC5: 1 VC)
 my_maps.adb:77:22: info: assertion proved (CVC5: 1 VC)
-my_maps.adb:80:22: info: assertion proved (Z3: 1 VC)
+my_maps.adb:80:22: info: assertion proved (CVC5: 1 VC)
 my_maps.adb:82:22: info: assertion proved (CVC5: 1 VC)
 my_maps.adb:83:07: medium: assertion might fail
 my_maps.adb:86:14: warning: subprogram "Test_Map_Rec_2" has no effect
@@ -257,10 +257,10 @@ my_maps.adb:111:07: info: precondition proved (CVC5: 1 VC)
 my_maps.adb:112:22: info: assertion proved (CVC5: 1 VC)
 my_maps.adb:113:07: info: precondition proved (CVC5: 1 VC)
 my_maps.adb:115:07: info: precondition proved (CVC5: 1 VC)
-my_maps.adb:117:07: info: precondition proved (Z3: 1 VC)
+my_maps.adb:117:07: info: precondition proved (CVC5: 1 VC)
 my_maps.adb:118:22: info: assertion proved (altergo: 1 VC)
-my_maps.adb:121:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:123:22: info: assertion proved (Z3: 1 VC)
+my_maps.adb:121:22: info: assertion proved (CVC5: 1 VC)
+my_maps.adb:123:22: info: assertion proved (CVC5: 1 VC)
 my_maps.adb:124:07: medium: assertion might fail
 my_maps.adb:129:07: info: precondition proved (Trivial: 1 VC)
 my_maps.adb:130:07: info: precondition proved (Trivial: 1 VC)
@@ -300,7 +300,7 @@ my_ordered_maps.adb:35:36: info: precondition proved (CVC5: 1 VC)
 my_ordered_maps.adb:36:22: info: assertion proved (CVC5: 1 VC)
 my_ordered_maps.adb:38:22: info: assertion proved (CVC5: 1 VC)
 my_ordered_maps.adb:39:07: info: precondition proved (CVC5: 1 VC)
-my_ordered_maps.adb:40:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+my_ordered_maps.adb:40:07: info: precondition proved (CVC5: 2 VC)
 my_ordered_maps.adb:41:22: info: assertion proved (CVC5: 1 VC)
 my_ordered_maps.adb:46:07: info: precondition proved (CVC5: 1 VC)
 my_ordered_maps.adb:48:07: info: precondition proved (CVC5: 1 VC)
@@ -364,11 +364,11 @@ my_ordered_maps.adb:128:07: info: precondition proved (CVC5: 1 VC)
 my_ordered_maps.adb:129:22: info: assertion proved (CVC5: 1 VC)
 my_ordered_maps.adb:130:07: info: precondition proved (CVC5: 1 VC)
 my_ordered_maps.adb:132:07: info: precondition proved (CVC5: 1 VC)
-my_ordered_maps.adb:134:22: info: assertion proved (Z3: 1 VC)
+my_ordered_maps.adb:134:22: info: assertion proved (CVC5: 1 VC)
 my_ordered_maps.adb:135:07: info: precondition proved (CVC5: 1 VC)
 my_ordered_maps.adb:136:22: info: assertion proved (CVC5: 1 VC)
 my_ordered_maps.adb:139:22: info: assertion proved (CVC5: 1 VC)
-my_ordered_maps.adb:141:22: info: assertion proved (Z3: 1 VC)
+my_ordered_maps.adb:141:22: medium: assertion might fail
 my_ordered_maps.adb:142:07: medium: assertion might fail
 my_ordered_maps.adb:147:07: info: precondition proved (Trivial: 1 VC)
 my_ordered_maps.adb:148:07: info: precondition proved (Trivial: 1 VC)
@@ -461,11 +461,11 @@ my_ordered_sets.adb:123:07: info: precondition proved (CVC5: 1 VC)
 my_ordered_sets.adb:125:07: info: precondition proved (CVC5: 1 VC)
 my_ordered_sets.adb:127:07: info: precondition proved (CVC5: 1 VC)
 my_ordered_sets.adb:128:22: info: assertion proved (CVC5: 1 VC)
-my_ordered_sets.adb:131:22: info: assertion proved (CVC5: 1 VC)
+my_ordered_sets.adb:131:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:133:22: info: assertion proved (CVC5: 1 VC)
 my_ordered_sets.adb:135:07: info: precondition proved (CVC5: 1 VC)
 my_ordered_sets.adb:136:07: info: precondition proved (CVC5: 1 VC)
-my_ordered_sets.adb:138:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:138:22: info: assertion proved (CVC5: 1 VC)
 my_ordered_sets.adb:139:07: info: precondition proved (CVC5: 1 VC)
 my_ordered_sets.adb:140:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:143:22: info: assertion proved (Z3: 1 VC)
@@ -614,7 +614,7 @@ my_sets.adb:162:22: info: assertion proved (altergo: 1 VC)
 my_sets.adb:163:07: info: precondition proved (CVC5: 1 VC)
 my_sets.adb:165:07: info: precondition proved (CVC5: 1 VC)
 my_sets.adb:167:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:168:22: info: assertion proved (Z3: 1 VC)
+my_sets.adb:168:22: info: assertion proved (CVC5: 1 VC)
 my_sets.adb:171:22: info: assertion proved (Z3: 1 VC)
 my_sets.adb:173:22: info: assertion proved (Z3: 1 VC)
 my_sets.adb:174:07: medium: assertion might fail
@@ -885,36 +885,53 @@ spark-containers-formal-vectors.ads:629:57: info: range check proved (CVC5: 2 VC
 spark-containers-formal-vectors.ads:757:23: info: precondition proved (CVC5: 1 VC), in instantiation at my_bounded_vectors.ads:4
 spark-containers-formal-vectors.ads:793:14: info: precondition proved (CVC5: 1 VC), in instantiation at my_bounded_vectors.ads:4
 spark-containers-formal-vectors.ads:891:56: info: overflow check proved (CVC5: 2 VC), in instantiation at my_bounded_vectors.ads:7
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at my_lists.ads:4
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at my_maps.ads:25
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at my_maps.ads:8
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at my_maps.ads:25
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at my_maps.ads:8
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at my_sets.ads:24
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at my_sets.ads:8
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at my_ordered_maps.ads:20
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at my_ordered_maps.ads:6
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at my_ordered_maps.ads:20
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at my_ordered_maps.ads:6
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at my_ordered_sets.ads:18
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at my_ordered_sets.ads:6
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at my_lists.ads:4
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at my_maps.ads:25
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at my_maps.ads:8
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at my_maps.ads:25
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at my_maps.ads:8
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at my_sets.ads:24
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at my_sets.ads:8
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at my_ordered_maps.ads:20
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at my_ordered_maps.ads:6
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at my_ordered_maps.ads:20
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at my_ordered_maps.ads:6
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at my_ordered_sets.ads:18
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at my_ordered_sets.ads:6
-spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:104, in instantiation at my_sets.ads:24
-spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:104, in instantiation at my_sets.ads:8
-spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:109, in instantiation at my_ordered_sets.ads:18
-spark-containers-functional-sets.ads:257:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:109, in instantiation at my_ordered_sets.ads:6
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at my_lists.ads:4
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at my_maps.ads:25
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at my_maps.ads:8
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at my_maps.ads:25
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at my_maps.ads:8
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at my_sets.ads:24
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at my_sets.ads:8
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at my_ordered_maps.ads:20
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at my_ordered_maps.ads:6
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at my_ordered_maps.ads:20
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at my_ordered_maps.ads:6
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at my_ordered_sets.ads:18
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at my_ordered_sets.ads:6
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at my_lists.ads:4
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at my_maps.ads:25
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at my_maps.ads:8
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at my_maps.ads:25
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at my_maps.ads:8
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at my_sets.ads:24
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at my_sets.ads:8
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at my_ordered_maps.ads:20
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at my_ordered_maps.ads:6
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at my_ordered_maps.ads:20
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at my_ordered_maps.ads:6
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at my_ordered_sets.ads:18
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at my_ordered_sets.ads:6
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at my_lists.ads:4
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at my_maps.ads:25
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at my_maps.ads:8
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at my_maps.ads:25
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at my_maps.ads:8
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at my_sets.ads:24
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at my_sets.ads:8
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at my_ordered_maps.ads:20
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at my_ordered_maps.ads:6
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at my_ordered_maps.ads:20
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at my_ordered_maps.ads:6
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at my_ordered_sets.ads:18
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at my_ordered_sets.ads:6
+spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:104, in instantiation at my_sets.ads:24
+spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:104, in instantiation at my_sets.ads:8
+spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:109, in instantiation at my_ordered_sets.ads:18
+spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:109, in instantiation at my_ordered_sets.ads:6
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:104, in instantiation at my_sets.ads:24
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:104, in instantiation at my_sets.ads:8
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:109, in instantiation at my_ordered_sets.ads:18
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:109, in instantiation at my_ordered_sets.ads:6
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at my_lists.ads:4
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at my_maps.ads:25
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at my_maps.ads:8

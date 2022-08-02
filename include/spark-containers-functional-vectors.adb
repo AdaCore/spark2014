@@ -36,8 +36,11 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
 
    function "<" (Left : Sequence; Right : Sequence) return Boolean is
      (Length (Left.Content) < Length (Right.Content)
-       and then (for all I in Index_Type'First .. Last (Left) =>
-                  Get (Left.Content, I) = Get (Right.Content, I)));
+      and then
+        (Ptr_Eq (Left.Content, Right.Content)
+         or else
+           (for all I in Index_Type'First .. Last (Left) =>
+                 Get (Left.Content, I) = Get (Right.Content, I))));
 
    ----------
    -- "<=" --
@@ -45,8 +48,10 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
 
    function "<=" (Left : Sequence; Right : Sequence) return Boolean is
      (Length (Left.Content) <= Length (Right.Content)
-       and then (for all I in Index_Type'First .. Last (Left) =>
-                  Get (Left.Content, I) = Get (Right.Content, I)));
+       and then
+        (Ptr_Eq (Left.Content, Right.Content)
+         or else (for all I in Index_Type'First .. Last (Left) =>
+              Get (Left.Content, I) = Get (Right.Content, I))));
 
    ---------
    -- "=" --
@@ -134,6 +139,8 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
    begin
       if Length (Left.Content) /= Length (Right.Content) then
          return False;
+      elsif Ptr_Eq (Left.Content, Right.Content) then
+         return True;
       end if;
 
       for I in Index_Type'First .. Last (Left) loop
@@ -156,6 +163,8 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
    begin
       if Length (Left.Content) /= Length (Right.Content) then
          return False;
+      elsif Ptr_Eq (Left.Content, Right.Content) then
+         return True;
       end if;
 
       for I in Index_Type'First .. Last (Left) loop
@@ -204,6 +213,10 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
       Lst   : Extended_Index) return Boolean
    is
    begin
+      if Ptr_Eq (Left.Content, Right.Content) then
+         return True;
+      end if;
+
       for I in Fst .. Lst loop
          if Get (Left, I) /= Get (Right, I) then
             return False;

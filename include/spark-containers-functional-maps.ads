@@ -335,9 +335,84 @@ is
    --  i.e. it does not contain pointers that could be used to alias mutable
    --  data).
 
-   ---------------------------
-   --  Iteration Primitives --
-   ---------------------------
+   ----------------------------------
+   -- Iteration on Functional Maps --
+   ----------------------------------
+
+   --  The Iterable aspect can be used to quantify over a functional map.
+   --  However, if it is used to create a for loop, it will not allow users to
+   --  prove their loops as there is no way to speak about the elements which
+   --  have or have not been traversed already in a loop invariant. The
+   --  function Iterate returns an object of a type Iterable_Map which can be
+   --  used for iteration. The cursor is a functional map containing all the
+   --  elements which have not been traversed yet. The current element being
+   --  traversed being the result of Choose on this map.
+
+   type Iterable_Map is private with
+     Iterable =>
+       (First       => First,
+        Has_Element => Has_Element,
+        Next        => Next,
+        Element     => Element);
+
+   function Map_Logic_Equal (Left, Right : Map) return Boolean with
+     Ghost,
+     Annotate => (GNATprove, Logical_Equal);
+   --  Logical equality on maps
+
+   function Iterate (Container : Map) return Iterable_Map with
+     Global => null,
+     Post   => Map_Logic_Equal (Get_Map (Iterate'Result), Container);
+   --  Return an iterator over a functional map
+
+   function Get_Map (Iterator : Iterable_Map) return Map with
+     Global => null;
+   --  Retrieve the map associated with an iterator
+
+   function Valid_Submap
+     (Iterator : Iterable_Map;
+      Cursor   : Map) return Boolean
+   with
+     Global => null,
+     Post   => (if Valid_Submap'Result then Cursor <= Get_Map (Iterator));
+   --  Return True on all maps which can be reached by iterating over
+   --  Container.
+
+   function Element (Iterator : Iterable_Map; Cursor : Map) return Key_Type
+   with
+     Global => null,
+     Pre    => not Is_Empty (Cursor),
+     Post   => Element'Result = Choose (Cursor);
+   --  The next element to be considered for the iteration is the result of
+   --  choose on Cursor.
+
+   function First (Iterator : Iterable_Map) return Map with
+     Global => null,
+     Post   => Map_Logic_Equal (First'Result, Get_Map (Iterator))
+       and then Valid_Submap (Iterator, First'Result);
+   --  In the first iteration, the cursor is the map associated with Iterator
+
+   function Next (Iterator : Iterable_Map; Cursor : Map) return Map with
+     Global => null,
+     Pre    => Valid_Submap (Iterator, Cursor) and then not Is_Empty (Cursor),
+     Post   => Valid_Submap (Iterator, Next'Result)
+       and then
+         Map_Logic_Equal (Next'Result, Remove (Cursor, Choose (Cursor)));
+   --  At each iteration, remove the considered element from the Cursor map
+
+   function Has_Element
+     (Iterator : Iterable_Map;
+      Cursor   : Map) return Boolean
+   with
+     Global => null,
+     Post   => Has_Element'Result =
+       (Valid_Submap (Iterator, Cursor) and then not Is_Empty (Cursor));
+   --  Return True on non-empty maps which can be reached by iterating over
+   --  Container.
+
+   --------------------------------------------------
+   -- Iteration Primitives Used For Quantification --
+   --------------------------------------------------
 
    type Private_Key is private;
 
@@ -374,15 +449,21 @@ private
    package Element_Containers is new SPARK.Containers.Functional.Base
      (Element_Type => Element_Type,
       Index_Type   => Positive_Count_Type);
+   use all type Element_Containers.Container;
 
    package Key_Containers is new SPARK.Containers.Functional.Base
      (Element_Type => Key_Type,
       Index_Type   => Positive_Count_Type);
+   use all type Key_Containers.Container;
 
    type Map is record
       Keys     : Key_Containers.Container;
       Elements : Element_Containers.Container;
    end record;
+
+   --------------------------------------------------
+   -- Iteration Primitives Used For Quantification --
+   --------------------------------------------------
 
    type Private_Key is new Count_Type;
 
@@ -394,16 +475,58 @@ private
    is
      (Count_Type (Key) in 1 .. Key_Containers.Length (Container.Keys));
 
+   function Iter_Element
+     (Container : Map;
+      Key       : Private_Key) return Key_Type
+   is
+     (Key_Containers.Get (Container.Keys, Count_Type (Key)));
+
    function Iter_Next
      (Container : Map;
       Key       : Private_Key) return Private_Key
    is
      (if Key = Private_Key'Last then 0 else Key + 1);
 
-   function Iter_Element
-     (Container : Map;
-      Key       : Private_Key) return Key_Type
+   ----------------------------------
+   -- Iteration on Functional Maps --
+   ----------------------------------
+
+   type Iterable_Map is record
+      Container : Map;
+   end record;
+
+   function Element (Iterator : Iterable_Map; Cursor : Map) return Key_Type is
+     (Choose (Cursor));
+
+   function First (Iterator : Iterable_Map) return Map is
+     (Iterator.Container);
+
+   function Get_Map (Iterator : Iterable_Map) return Map is
+     (Iterator.Container);
+
+   function Has_Element
+     (Iterator : Iterable_Map;
+      Cursor   : Map) return Boolean
    is
-     (Key_Containers.Get (Container.Keys, Count_Type (Key)));
+     (Valid_Submap (Iterator, Cursor) and then Length (Cursor) > 0);
+
+   function Iterate (Container : Map) return Iterable_Map is
+     (Iterable_Map'(Container => Container));
+
+   function Map_Logic_Equal (Left, Right : Map) return Boolean is
+     (Ptr_Eq (Left.Keys, Right.Keys)
+      and then Length (Left.Keys) = Length (Right.Keys)
+      and then Ptr_Eq (Left.Elements, Right.Elements));
+
+   function Next (Iterator : Iterable_Map; Cursor : Map) return Map is
+     (Remove (Cursor, Choose (Cursor)));
+
+   function Valid_Submap
+     (Iterator : Iterable_Map;
+      Cursor   : Map) return Boolean
+   is
+     (Ptr_Eq (Cursor.Keys, Iterator.Container.Keys)
+      and then Length (Cursor.Keys) <= Length (Iterator.Container.Keys)
+      and then Ptr_Eq (Cursor.Elements, Iterator.Container.Elements));
 
 end SPARK.Containers.Functional.Maps;

@@ -46,13 +46,13 @@ infinite_sequences.adb:50:65: info: predicate check proved (CVC5: 2 VC; Trivial:
 infinite_sequences.adb:50:67: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:51:39: info: loop invariant initialization proved (CVC5: 1 VC)
 infinite_sequences.adb:51:39: info: loop invariant preservation proved (CVC5: 1 VC)
-infinite_sequences.adb:51:39: medium: precondition might fail
+infinite_sequences.adb:51:39: info: precondition proved (CVC5: 2 VC)
 infinite_sequences.adb:51:55: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:51:61: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:51:63: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:53:19: info: loop invariant initialization proved (CVC5: 2 VC)
 infinite_sequences.adb:53:19: info: precondition proved (Trivial: 2 VC)
-infinite_sequences.adb:54:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Has_Key (Content, K)
+infinite_sequences.adb:54:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Has_Key (Content, K) [possible fix: you should consider adding a postcondition to function Has_Key or turning it into an expression function]
 infinite_sequences.adb:54:41: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:55:28: info: precondition proved (CVC5: 2 VC)
 infinite_sequences.adb:55:42: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
@@ -1095,5 +1095,8 @@ red_black_trees.ads:147:14: medium: postcondition might fail, cannot prove RBT_I
 red_black_trees.ads:148:20: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:148:52: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:148:59: info: predicate check proved (Trivial: 1 VC)
-spark-containers-functional-maps.ads:315:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
-spark-containers-functional-maps.ads:316:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:90:62: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:90:65: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44

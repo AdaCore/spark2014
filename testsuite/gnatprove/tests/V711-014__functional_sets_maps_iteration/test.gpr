@@ -1,0 +1,11 @@
+with "sparklib";
+
+project Test is
+
+   package Compiler is
+      for Switches ("ada") use ("-g", "-gnata", "-gnat2020");
+   end Compiler;
+
+   for Main use ("run_tests.adb");
+
+end Test;

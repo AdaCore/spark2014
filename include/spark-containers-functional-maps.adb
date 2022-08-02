@@ -39,7 +39,8 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
    ---------
 
    function "=" (Left : Map; Right : Map) return Boolean is
-     (Left.Keys <= Right.Keys and Right <= Left);
+     (Length (Left.Keys) = Length (Right.Keys)
+      and then Left <= Right);
 
    ----------
    -- "<=" --
@@ -49,6 +50,14 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
       I2 : Count_Type;
 
    begin
+      if Length (Left.Keys) > Length (Right.Keys) then
+         return False;
+      elsif Ptr_Eq (Left.Keys, Right.Keys)
+        and then Ptr_Eq (Left.Elements, Right.Elements)
+      then
+         return True;
+      end if;
+
       for I1 in 1 .. Length (Left.Keys) loop
          I2 := Find (Right.Keys, Get (Left.Keys, I1));
          if I2 = 0
@@ -150,7 +159,7 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
 
    function Get (Container : Map; Key : Key_Type) return Element_Type is
    begin
-      return Get (Container.Elements, Find (Container.Keys, Key));
+      return Get (Container.Elements, Find_Rev (Container.Keys, Key));
    end Get;
 
    -------------
@@ -159,7 +168,7 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
 
    function Has_Key (Container : Map; Key : Key_Type) return Boolean is
    begin
-      return Find (Container.Keys, Key) > 0;
+      return Find_Rev (Container.Keys, Key) > 0;
    end Has_Key;
 
    -----------------
@@ -280,7 +289,8 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
    ------------
 
    function Remove (Container : Map; Key : Key_Type) return Map is
-      J : constant Key_Containers.Extended_Index := Find (Container.Keys, Key);
+      J : constant Key_Containers.Extended_Index :=
+        Find_Rev (Container.Keys, Key);
    begin
       return
         (Keys     => Remove (Container.Keys, J),
