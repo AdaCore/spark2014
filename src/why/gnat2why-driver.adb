@@ -1032,13 +1032,17 @@ package body Gnat2Why.Driver is
       Command   : GNAT.OS_Lib.String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path (Why3_Args.First_Element);
    begin
-      --  If the maximum is reached, we wait for one process to finish first
+      --  If the maximum is reached, or we are not allowed to run gnatwhy3 in
+      --  parallel, we wait for one process to finish first.
 
-      if Output_File_Map.Length = Max_Subprocesses then
+      if Output_File_Map.Length = Max_Subprocesses
+        or else (not Output_File_Map.Is_Empty
+                 and then not Gnat2Why_Args.Parallel_Why3)
+      then
          Collect_One_Result;
       end if;
 
-      --  modifying the command line and printing it for debug purposes. We
+      --  Modifying the command line and printing it for debug purposes. We
       --  need to append the file first, then print the debug output, because
       --  this corresponds to the actual command line run, and finally remove
       --  the first argument, which is the executable name.
