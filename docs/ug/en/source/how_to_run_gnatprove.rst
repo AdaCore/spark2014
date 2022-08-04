@@ -1040,3 +1040,14 @@ does not support such folders. To minimize changes for this to occur,
   exists and is writeable, use that; otherwise,
 * if ``/tmp`` exists and is writable, use that; otherwise,
 * use the ``gnatprove`` subfolder of the object directory of the root project.
+
+On Linux, |GNATprove| uses POSIX semaphores to coordinate parallel processes.
+If your system does not provide POSIX semaphores (this may be the case in some
+virtualized environments), |GNATprove| fails with a message similar to the
+following::
+
+  failed to create semaphore: Permission denied
+
+In this case, you can use the switch `--debug-no-semaphore` to avoid the use of
+semaphores. This switch might reduce the performance of the tool in some cases,
+but otherwise should not affect its behavior.
