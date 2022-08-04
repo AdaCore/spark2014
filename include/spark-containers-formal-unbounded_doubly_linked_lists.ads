@@ -2,7 +2,7 @@
 --                                                                          --
 --                        SPARK LIBRARY COMPONENTS                          --
 --                                                                          --
---         SPARK.CONTAINERS.FORMAL.INDEFINITE_DOUBLY_LINKED_LISTS           --
+--          SPARK.CONTAINERS.FORMAL.UNBOUNDED_DOUBLY_LINKED_LISTS           --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -35,7 +35,7 @@ generic
    type Element_Type is private;
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 
-package SPARK.Containers.Formal.Indefinite_Doubly_Linked_Lists with
+package SPARK.Containers.Formal.Unbounded_Doubly_Linked_Lists with
   SPARK_Mode,
   Annotate => (GNATprove, Always_Return)
 is
@@ -1666,4 +1666,4 @@ private
 
    overriding procedure Finalize (Container : in out List);
    overriding procedure Adjust (Container : in out List);
-end SPARK.Containers.Formal.Indefinite_Doubly_Linked_Lists;
+end SPARK.Containers.Formal.Unbounded_Doubly_Linked_Lists;

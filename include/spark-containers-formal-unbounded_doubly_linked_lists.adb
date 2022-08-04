@@ -2,7 +2,7 @@
 --                                                                          --
 --                        SPARK LIBRARY COMPONENTS                          --
 --                                                                          --
---         SPARK.CONTAINERS.FORMAL.INDEFINITE_DOUBLY_LINKED_LISTS           --
+--          SPARK.CONTAINERS.FORMAL.UNBOUNDED_DOUBLY_LINKED_LISTS           --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -35,7 +35,7 @@ with System; use type System.Address;
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
 
-package body SPARK.Containers.Formal.Indefinite_Doubly_Linked_Lists with
+package body SPARK.Containers.Formal.Unbounded_Doubly_Linked_Lists with
   SPARK_Mode => Off
 is
    --  Convert Count_Type to Big_Integer
@@ -2048,4 +2048,5 @@ is
       return True;
    end Vet;
 
-end SPARK.Containers.Formal.Indefinite_Doubly_Linked_Lists;
+end SPARK.Containers.Formal.Unbounded_Doubly_Linked_Lists;
+

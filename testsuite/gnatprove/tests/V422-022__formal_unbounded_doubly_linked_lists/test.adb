@@ -1,6 +1,6 @@
 with Ada;
 with Ada.Containers;
-with SPARK.Containers.Formal.Indefinite_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Unbounded_Doubly_Linked_Lists;
 
 use Ada.Containers;
 with Test_List;
@@ -8,7 +8,7 @@ with Test_List;
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Test with SPARK_Mode is
-   package Lists is new SPARK.Containers.Formal.Indefinite_Doubly_Linked_Lists (Element_Type => Natural);
+   package Lists is new SPARK.Containers.Formal.Unbounded_Doubly_Linked_Lists (Element_Type => Natural);
    use Lists;
    L, K, M : List;
    C, D : Cursor;
