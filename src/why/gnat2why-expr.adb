@@ -10653,6 +10653,8 @@ package body Gnat2Why.Expr is
       --  delta aggregate if and only if Update_Prefix has been supplied.
 
       In_Delta_Aggregate : constant Boolean := Present (Update_Prefix);
+      Empty_Aggregate    : constant Boolean := Is_Null_Aggregate (Expr);
+      --  True if Expr is []
       Expr_Typ           : constant Entity_Id := Type_Of_Node (Expr);
       Ret_Type           : constant W_Type_Id := EW_Abstract
         (Expr_Typ, Relaxed_Init => Relaxed_Init);
@@ -11179,10 +11181,7 @@ package body Gnat2Why.Expr is
 
          --  Assume values of the elements if the array is not []
 
-         if Is_Non_Empty_List (Component_Associations (Expr))
-           or else (not In_Delta_Aggregate
-                    and then Is_Non_Empty_List (Expressions (Expr)))
-         then
+         if not Empty_Aggregate then
 
             --  Localize binders for variables and push them to the symbol
             --  table. This is important so that the translation of the
@@ -11929,6 +11928,78 @@ package body Gnat2Why.Expr is
       --  Start of processing of Insert_Check_For_Choices
 
       begin
+         --  Empty aggregates [] do not have any explicit choices. They use
+         --  the default ranges
+         --  Index_Type'First .. Index_Type'Base'Pred (Index_Type'First).
+         --  Make sure that the computation of the last bound does not
+         --  overflow.
+
+         if Empty_Aggregate then
+            declare
+               Dim        : Positive := 1;
+               Index      : Node_Id := First_Index (Expr_Typ);
+               Index_Base : Node_Id :=
+                 First_Index (Base_Retysp (Expr_Typ));
+            begin
+               while Present (Index) loop
+
+                  --  For multi-dimensional aggregates, add the dimension as a
+                  --  continuation.
+
+                  if Nb_Dim /= 1 then
+                     Continuation_Stack.Append
+                       (Continuation_Type'
+                          (Ada_Node => Index_Base,
+                           Message  => To_Unbounded_String
+                             ("for array dimension" & Dim'Image)));
+                  end if;
+
+                  --  For checks that fail statically, the frontend uses a
+                  --  N_Raise_xxx_Error node for the lower bound.
+
+                  if Nkind (High_Bound (Index)) in N_Raise_xxx_Error then
+                     Emit_Static_Proof_Result
+                       (Expr, VC_Range_Check, False, Current_Subp,
+                        Explanation =>
+                          "empty aggregates cannot be used if there is no"
+                        & " element before the first element of their index"
+                        & " type");
+
+                  --  Otherwise, check that Index'First is not the first
+                  --  element of its base type.
+
+                  else
+                     Append
+                       (Choice_Checks,
+                        New_Located_Assert
+                          (Ada_Node => Expr,
+                           Reason   => VC_Range_Check,
+                           Pred     => New_Not
+                             (Right => New_Comparison
+                                  (Symbol => Why_Eq,
+                                   Left   => Transform_Term
+                                     (Expr          => Low_Bound (Index),
+                                      Expected_Type =>
+                                        Base_Why_Type_No_Bool (Etype (Index)),
+                                      Params        => Body_Params),
+                                   Right  => +New_Attribute_Expr
+                                     (Base_Type (Etype (Index)),
+                                      EW_Term,
+                                      Attribute_First,
+                                      Body_Params))),
+                           Kind     => EW_Assert));
+                  end if;
+
+                  if Nb_Dim /= 1 then
+                     Continuation_Stack.Delete_Last;
+                  end if;
+
+                  Next_Index (Index);
+                  Next_Index (Index_Base);
+                  Dim := Dim + 1;
+               end loop;
+            end;
+
          --  For regular aggregates, check the scalar ranges of the
          --  aggregate subtype against its Etype. It is not necessary for
          --  delta aggregates where the bounds come from the prefix. In a
@@ -11936,7 +12007,7 @@ package body Gnat2Why.Expr is
          --  index type is taken from the context so we do not need to check
          --  it.
 
-         if not In_Delta_Aggregate
+         elsif not In_Delta_Aggregate
            and then
              (Nb_Dim > 1
               or else Is_Empty_List (Component_Associations (Expr))

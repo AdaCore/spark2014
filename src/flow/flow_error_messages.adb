@@ -47,6 +47,7 @@ with GNATCOLL.Utils;            use GNATCOLL.Utils;
 with Lib.Xref;
 with Namet;                     use Namet;
 with Nlists;                    use Nlists;
+with Sem_Aggr;                  use Sem_Aggr;
 with Sem_Aux;                   use Sem_Aux;
 with Sem_Util;                  use Sem_Util;
 with Sinfo.Nodes;               use Sinfo.Nodes;
@@ -1311,10 +1312,14 @@ package body Flow_Error_Messages is
 
          when VC_Range_Check =>
 
-            --  Range check is put on the node itself for slices
+            --  Range check is put on the node itself for slices and empty
+            --  array aggregates.
 
             if Nkind (N) = N_Slice then
                return "slice bounds must fit in the underlying array";
+            elsif Nkind (N) = N_Aggregate and then Is_Null_Aggregate (N) then
+               return "high bound of empty array aggregate must be a valid"
+                 & " value of the base type";
             end if;
 
             --  In the remaining cases, look for the parent node as interesting
@@ -1475,12 +1480,21 @@ package body Flow_Error_Messages is
          return Explanation;
       end if;
 
+      --  Add an explanation for range checks on empty aggregates
+
+      if Tag = VC_Range_Check
+        and then Nkind (N) = N_Aggregate
+        and then Is_Null_Aggregate (N)
+      then
+         return "empty aggregates cannot be used if there is no element before"
+           & " the first element of their index type";
+
       --  If a run-time check fails inside the prefix of a an attribute
       --  reference with 'Old or 'Loop_Entry attribute, and this attribute
       --  reference is potentially unevaluated, it is likely that the user
       --  misunderstood the evaluation rules for 'Old/'Loop_Entry.
 
-      if Tag in VC_RTE_Kind | VC_Precondition | VC_Precondition_Main then
+      elsif Tag in VC_RTE_Kind | VC_Precondition | VC_Precondition_Main then
          declare
             function Is_Old_Or_Loop_Entry (N : Node_Id) return Boolean is
               (Nkind (N) = N_Attribute_Reference

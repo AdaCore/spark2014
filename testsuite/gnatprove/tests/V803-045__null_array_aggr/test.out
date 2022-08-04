@@ -1,0 +1,35 @@
+empty.adb:7:14: warning: subprogram "Signed" has no effect
+empty.adb:9:16: medium: range check might fail [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type]
+empty.adb:9:16: warning: Constraint_Error will be raised at run time
+empty.adb:9:16: warning: Pred of "Integer'First"
+empty.adb:14:14: warning: subprogram "Unsigned" has no effect
+empty.adb:17:16: medium: range check might fail [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type]
+empty.adb:22:14: warning: subprogram "Enum" has no effect
+empty.adb:25:16: medium: range check might fail [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type]
+empty.adb:25:16: warning: Constraint_Error will be raised at run time
+empty.adb:25:16: warning: Pred of "Index'First"
+empty.adb:34:14: warning: subprogram "Signed2" has no effect
+empty.adb:36:16: info: for array dimension 1 at empty.adb:35
+empty.adb:36:16: info: range check proved (CVC5: 1 VC)
+empty.adb:36:16: medium: for array dimension 2 at empty.adb:35
+empty.adb:36:16: medium: range check might fail [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type]
+empty.adb:36:16: warning: Constraint_Error will be raised at run time
+empty.adb:36:16: warning: Pred of "Integer'First"
+empty.adb:41:14: warning: subprogram "Unsigned2" has no effect
+empty.adb:44:16: info: for array dimension 1 at empty.adb:43
+empty.adb:44:16: info: range check proved (CVC5: 1 VC)
+empty.adb:44:16: medium: for array dimension 2 at empty.adb:43
+empty.adb:44:16: medium: range check might fail (e.g. when X'First (1) = 0 and X'Last (1) = 0 and X'First (2) = 0 and X'Last (2) = 0) [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type]
+empty.adb:49:14: warning: subprogram "Enum2" has no effect
+empty.adb:52:16: info: for array dimension 1 at empty.adb:51
+empty.adb:52:16: info: range check proved (CVC5: 1 VC)
+empty.adb:52:16: medium: for array dimension 2 at empty.adb:51
+empty.adb:52:16: medium: range check might fail [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type]
+empty.adb:52:16: warning: Constraint_Error will be raised at run time
+empty.adb:52:16: warning: Pred of "Index'First"
+empty.adb:58:04: info: precondition proved (Trivial: 1 VC)
+empty.adb:59:04: info: precondition proved (Trivial: 1 VC)
+empty.adb:60:04: info: precondition proved (Trivial: 1 VC)
+empty.adb:61:04: info: precondition proved (Trivial: 1 VC)
+empty.adb:62:04: info: precondition proved (Trivial: 1 VC)
+empty.adb:63:04: info: precondition proved (Trivial: 1 VC)

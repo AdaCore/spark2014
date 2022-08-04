@@ -1,0 +1,31 @@
+main.adb:7:06: info: data dependencies proved
+main.adb:10:16: medium: range check might fail [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type]
+main.adb:10:16: warning: Constraint_Error will be raised at run time
+main.adb:10:16: warning: Pred of "Integer'First"
+main.adb:17:06: info: data dependencies proved
+main.adb:21:16: info: range check proved (CVC5: 1 VC)
+main.adb:28:06: info: data dependencies proved
+main.adb:30:12: info: range check proved (CVC5: 2 VC)
+main.adb:32:16: medium: range check might fail (e.g. when CCC = Integer'First and X'First = 0 and X'Last = 0) [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type] [possible fix: subprogram at line 27 should mention CCC in a precondition]
+main.adb:39:06: info: data dependencies proved
+main.adb:42:16: info: range check proved (CVC5: 1 VC)
+main.adb:49:06: info: data dependencies proved
+main.adb:52:16: medium: range check might fail [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type]
+main.adb:59:06: info: data dependencies proved
+main.adb:63:16: info: range check proved (CVC5: 1 VC)
+main.adb:70:06: info: data dependencies proved
+main.adb:72:15: info: range check proved (CVC5: 2 VC)
+main.adb:74:16: medium: range check might fail (e.g. when CCC = 0 and X'First = 0 and X'Last = 0) [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type] [possible fix: subprogram at line 69 should mention CCC in a precondition]
+main.adb:81:06: info: data dependencies proved
+main.adb:84:16: info: range check proved (CVC5: 1 VC)
+main.adb:93:06: info: data dependencies proved
+main.adb:96:16: medium: range check might fail [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type]
+main.adb:96:16: warning: Constraint_Error will be raised at run time
+main.adb:96:16: warning: Pred of "Index'First"
+main.adb:103:06: info: data dependencies proved
+main.adb:107:16: info: range check proved (CVC5: 1 VC)
+main.adb:114:06: info: data dependencies proved
+main.adb:116:12: info: range check proved (CVC5: 2 VC)
+main.adb:118:16: medium: range check might fail (e.g. when CCC = A and X'First = A and X'Last = A) [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type] [possible fix: subprogram at line 113 should mention CCC in a precondition]
+main.adb:125:06: info: data dependencies proved
+main.adb:128:16: info: range check proved (CVC5: 1 VC)
