@@ -500,9 +500,7 @@ package body SPARK_Definition.Annotate is
          end loop;
       end;
 
-      --  The procedure shall not access any global data.
-      --  We could easily allow globals of mode IN, but this does not seem
-      --  necessary for now.
+      --  The procedure shall not update any global data
 
       declare
          Globals : Global_Flow_Ids;
@@ -516,14 +514,11 @@ package body SPARK_Definition.Annotate is
                not Gnat2Why_Args.Global_Gen_Mode,
             Ignore_Depends      => False);
 
-         if not Globals.Proof_Ins.Is_Empty
-           or else not Globals.Inputs.Is_Empty
-           or else not Globals.Outputs.Is_Empty
-         then
+         if not Globals.Outputs.Is_Empty then
             Error_Msg_N
               ("procedure annotated with the " & Aspect_Or_Pragma
-               & " Automatic_Instantiation shall not access"
-               & " any global data", E);
+               & " Automatic_Instantiation shall not have global"
+               & " outputs", E);
             return;
          end if;
       end;

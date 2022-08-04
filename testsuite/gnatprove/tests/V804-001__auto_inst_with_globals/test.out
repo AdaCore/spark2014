@@ -1,0 +1,13 @@
+main.adb:10:44: info: index check proved (CVC5: 2 VC)
+main.adb:14:06: info: data dependencies proved
+main.adb:16:14: info: postcondition proved (Z3: 1 VC)
+main.adb:30:19: info: loop invariant initialization proved (CVC5: 4 VC; Trivial: 4 VC)
+main.adb:30:19: info: loop invariant preservation proved (CVC5: 2 VC; Trivial: 4 VC; Z3: 2 VC)
+main.adb:31:63: info: index check proved (CVC5: 16 VC)
+main.adb:34:16: info: loop invariant initialization proved (CVC5: 2 VC; Trivial: 2 VC)
+main.adb:34:16: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 2 VC; Z3: 1 VC)
+main.adb:36:56: info: index check proved (CVC5: 8 VC)
+main.adb:39:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+main.adb:39:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+main.adb:46:06: info: data dependencies proved
+main.adb:48:14: info: postcondition proved (CVC5: 1 VC)
