@@ -82,7 +82,7 @@ main_test.adb:26:50: low: range check might fail, cannot prove upper bound for F
 main_test.adb:29:43: medium: range check might fail, cannot prove upper bound for Stream_10.Null_String & Stream_06.Null_String [reason for check: default component value must fit in the type]
 main_test.adb:33:20: info: assertion proved (Z3: 1 VC)
 main_test.adb:34:20: info: assertion proved (Z3: 1 VC)
-main_test.adb:36:26: info: range check proved (Z3: 2 VC)
+main_test.adb:36:26: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
 main_test.adb:37:26: info: range check proved (CVC5: 2 VC)
 main_test.adb:38:26: info: range check proved (CVC5: 2 VC)
 main_test.adb:39:26: info: range check proved (Z3: 2 VC)

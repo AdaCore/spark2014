@@ -22,6 +22,8 @@ module Rep_Proj_Base
 
   axiom range_axiom :
     forall x : t [to_rep x]. in_range (to_rep x)
+  meta "remove_unused:dependency" axiom range_axiom, function to_rep
+
 end
 
 module Discrete_Base
@@ -147,6 +149,7 @@ module Rep_Proj_ltBVGen
 
   axiom range_int_axiom :
     forall x : t [to_int x]. in_range_int (to_int x)
+  meta "remove_unused:dependency" axiom range_int_axiom, function to_int
 end
 
 module Rep_Proj_BVGen
@@ -167,6 +170,7 @@ module Rep_Proj_BVGen
 
   axiom range_int_axiom :
     forall x : t [to_int x]. in_range_int (to_int x)
+  meta "remove_unused:dependency" axiom range_int_axiom, function to_int
 end
 
 (* ---- Modular with modulus lower or equal to 128 ---- *)
@@ -625,6 +629,7 @@ module Fixed_Point_Rep
         pos_div_relation (- (fxp_div_int x y)) x (-y)
       else (* y = 0 *)
         true
+  meta "remove_unused:dependency" axiom fxp_div_int_def, function fxp_div_int
 
   (* conversion functions to int
      case 1:
@@ -653,6 +658,7 @@ module Fixed_Point_Rep
         pos_div_relation_round_away (to_int x) (x * num_small) den_small
       else (* x < 0 *)
         pos_div_relation_round_away (- (to_int x)) (-x * num_small) (den_small)
+  meta "remove_unused:dependency" axiom to_int_def, function to_int
 
   (* conversion function from int
      case 1:
@@ -681,6 +687,7 @@ module Fixed_Point_Rep
         pos_div_relation (of_int x) (x * den_small) num_small
       else (* x < 0 *)
         pos_div_relation (- (of_int x)) (-x * den_small) (num_small)
+  meta "remove_unused:dependency" axiom of_int_def, function of_int
 
 end
 
@@ -786,6 +793,7 @@ module Fixed_Point_Mult_Div
         pos_div_relation (- (fxp_mult x y))
           (- (x * y * num_small_x * num_small_y * den_small_res))
           (den_small_x * den_small_y * num_small_res)
+  meta "remove_unused:dependency" axiom fxp_mult_def, function fxp_mult
 
   (* division between two fixed-point values, where the arguments and result
      may have different values of small.
@@ -838,6 +846,7 @@ module Fixed_Point_Mult_Div
           (-y * den_small_x * num_small_y * num_small_res)
       else (* y = 0 *)
         true
+  meta "remove_unused:dependency" axiom fxp_div_def, function fxp_div
 end
 
 module Static_Fixed_Point
@@ -1119,6 +1128,7 @@ module Index_Type
       in_range_base l ->
       (to_rep (first (mk f l)) = f /\
         to_rep (last (mk f l)) = l)
+  meta "remove_unused:dependency" axiom mk_def, function mk
 
   (* The range check that is required by conversion to an unconstrained array.
      See RM 3.6.2(4-6) and 4.6(38) *)
@@ -1155,6 +1165,7 @@ module Array_Comparison_Axiom
     forall a_first a_last b_first b_last : Index.t [compare a a_first a_last b b_first b_last].
       (compare a a_first a_last b b_first b_last = 0 <->
           bool_eq a a_first a_last b b_first b_last = True)
+  meta "remove_unused:dependency" axiom compare_def_eq, function compare
 
   axiom compare_def_lt :
     forall a b : map.
@@ -1165,6 +1176,7 @@ module Array_Comparison_Axiom
              (i = a_last \/
                    Index.lt i a_last /\
                        rep_lt (to_rep (get a (Index.add i Index.one))) (to_rep (get b (Index.add j Index.one))))))
+  meta "remove_unused:dependency" axiom compare_def_lt, function compare
 
   axiom compare_def_gt :
     forall a b : map.
@@ -1174,6 +1186,7 @@ module Array_Comparison_Axiom
              (bool_eq a a_first j b b_first i = True /\
              (i = b_last \/ Index.lt i b_last /\
                        rep_gt (to_rep (get a (Index.add j Index.one))) (to_rep (get b (Index.add i Index.one))))))
+  meta "remove_unused:dependency" axiom compare_def_gt, function compare
 end
 
 module Array_Int_Rep_Comparison_Axiom
@@ -1251,6 +1264,7 @@ module Array_Generic_Op_Axiom
      (Index.le a_first i /\ Index.le i a_last) ->
      get (array_op a a_first a_last b b_first b_last) i =
             of_bool (base_op (to_bool (get a i)) (to_bool (get b (Index.add (Index.sub i a_first) b_first))))
+  meta "remove_unused:dependency" axiom op_def, function array_op
 end
 
 module Array_Logical_Op_Generic_Axioms
@@ -1332,6 +1346,7 @@ module Array_Logical_Op_Generic_Axioms
       (Index.le a_first i /\ Index.le i a_last) ->
       get (notb a a_first a_last) i =
              of_bool (Bool.notb (to_bool (get a i)))
+  meta "remove_unused:dependency" axiom notb_def, function notb
 
    val xorb (a : map) (af : Index.t) (al : Index.t) (b : map) (bf : Index.t) (bl : Index.t) : map
    ensures { result = xorb a af al b bf bl }
@@ -1441,15 +1456,19 @@ module Unconstr_Array
 
   axiom value__size_axiom :
     value__size >= 0
+  meta "remove_unused:dependency" axiom value__size_axiom, function value__size
 
   axiom object__size_axiom :
     object__size >= 0
+  meta "remove_unused:dependency" axiom object__size_axiom, function object__size
 
   axiom component__size_axiom :
     component__size >= 0
+  meta "remove_unused:dependency" axiom component__size_axiom, function component__size
 
   axiom alignment_axiom :
     alignment >= 0
+  meta "remove_unused:dependency" axiom alignment_axiom, function alignment
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq
@@ -1570,15 +1589,19 @@ module Unconstr_Array_2
 
   axiom value__size_axiom :
     value__size >= 0
+  meta "remove_unused:dependency" axiom value__size_axiom, function value__size
 
   axiom object__size_axiom :
     object__size >= 0
+  meta "remove_unused:dependency" axiom object__size_axiom, function object__size
 
   axiom component__size_axiom :
     component__size >= 0
+  meta "remove_unused:dependency" axiom component__size_axiom, function component__size
 
   axiom alignment_axiom:
     alignment >= 0
+  meta "remove_unused:dependency" axiom alignment_axiom, function alignment
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq
@@ -1741,15 +1764,19 @@ module Unconstr_Array_3
 
   axiom value__size_axiom :
     value__size >= 0
+  meta "remove_unused:dependency" axiom value__size_axiom, function value__size
 
   axiom object__size_axiom :
     object__size >= 0
+  meta "remove_unused:dependency" axiom object__size_axiom, function object__size
 
   axiom component__size_axiom :
     component__size >= 0
+  meta "remove_unused:dependency" axiom component__size_axiom, function component__size
 
   axiom alignment_axiom :
     alignment >= 0
+  meta "remove_unused:dependency" axiom alignment_axiom, function alignment
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq
@@ -1955,15 +1982,19 @@ module Unconstr_Array_4
 
   axiom value__size_axiom :
     value__size >= 0
+  meta "remove_unused:dependency" axiom value__size_axiom, function value__size
 
   axiom object__size_axiom :
     object__size >= 0
+  meta "remove_unused:dependency" axiom object__size_axiom, function object__size
 
   axiom component__size_axiom :
     component__size >= 0
+  meta "remove_unused:dependency" axiom component__size_axiom, function component__size
 
   axiom alignment_axiom :
     alignment >= 0
+  meta "remove_unused:dependency" axiom alignment_axiom, function alignment
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq
@@ -2009,15 +2040,19 @@ module Constr_Array
 
   axiom value__size_axiom :
     value__size >= 0
+  meta "remove_unused:dependency" axiom value__size_axiom, function value__size
 
   axiom object__size_axiom :
     object__size >= 0
+  meta "remove_unused:dependency" axiom object__size_axiom, function object__size
 
   axiom component__size_axiom :
     component__size >= 0
+  meta "remove_unused:dependency" axiom component__size_axiom, function component__size
 
   axiom alignment_axiom :
     alignment >= 0
+  meta "remove_unused:dependency" axiom alignment_axiom, function alignment
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq x first last
@@ -2058,15 +2093,19 @@ module Constr_Array_2
 
   axiom value__size_axiom :
     value__size >= 0
+  meta "remove_unused:dependency" axiom value__size_axiom, function value__size
 
   axiom object__size_axiom :
     object__size >= 0
+  meta "remove_unused:dependency" axiom object__size_axiom, function object__size
 
   axiom component__size_axiom :
     component__size >= 0
+  meta "remove_unused:dependency" axiom component__size_axiom, function component__size
 
   axiom alignment_axiom :
     alignment >= 0
+  meta "remove_unused:dependency" axiom alignment_axiom, function alignment
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq x first last first_2 last_2
@@ -2111,15 +2150,19 @@ module Constr_Array_3
 
   axiom value__size_axiom :
     value__size >= 0
+  meta "remove_unused:dependency" axiom value__size_axiom, function value__size
 
   axiom object__size_axiom :
     object__size >= 0
+  meta "remove_unused:dependency" axiom object__size_axiom, function object__size
 
   axiom component__size_axiom :
     component__size >= 0
+  meta "remove_unused:dependency" axiom component__size_axiom, function component__size
 
   axiom alignment_axiom :
     alignment >= 0
+  meta "remove_unused:dependency" axiom alignment_axiom, function alignment
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq x first last first_2 last_2 first_3 last_3
@@ -2168,15 +2211,19 @@ module Constr_Array_4
 
   axiom value__size_axiom :
     value__size >= 0
+  meta "remove_unused:dependency" axiom value__size_axiom, function value__size
 
   axiom object__size_axiom :
     object__size >= 0
+  meta "remove_unused:dependency" axiom object__size_axiom, function object__size
 
   axiom component__size_axiom :
     component__size >= 0
+  meta "remove_unused:dependency" axiom component__size_axiom, function component__size
 
   axiom alignment_axiom :
     alignment >= 0
+  meta "remove_unused:dependency" axiom alignment_axiom, function alignment
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq x first last first_2 last_2 first_3 last_3 first_4 last_4
@@ -2200,9 +2247,11 @@ module Incomplete_type
 
   axiom close_open:
     forall x : abstr_ty [__open x]. __close (__open x) = x
+  meta "remove_unused:dependency" axiom close_open, function __open
 
   axiom open_close:
     forall x : comp_ty [__close x]. __open (__close x) = x
+  meta "remove_unused:dependency" axiom open_close, function __close
 end
 
 (* Module for the pledge of a local borrower. Morally, a pledge is a predicate

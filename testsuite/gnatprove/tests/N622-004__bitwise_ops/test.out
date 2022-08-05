@@ -192,7 +192,7 @@ aco-math-very_longs.adb:372:54: warning: no returning annotation available for "
 aco-math-very_longs.adb:372:85: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:373:32: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:373:57: info: index check proved (CVC5: 2 VC)
-aco-math-very_longs.adb:376:47: info: index check proved (CVC5: 1 VC; Z3: 1 VC)
+aco-math-very_longs.adb:376:47: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:382:11: info: flow dependencies proved
 aco-math-very_longs.adb:385:10: info: initialization of "New_Overflow" proved
 aco-math-very_longs.adb:386:10: info: initialization of "Overflow_Mask" proved
@@ -268,7 +268,7 @@ aco-math-very_longs.adb:477:26: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:477:30: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:477:83: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:477:87: info: index check proved (CVC5: 2 VC)
-aco-math-very_longs.adb:477:120: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+aco-math-very_longs.adb:477:120: info: range check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:483:11: info: data dependencies proved
 aco-math-very_longs.adb:484:11: info: flow dependencies proved
 aco-math-very_longs.adb:486:10: info: initialization of "Carry" proved
@@ -306,7 +306,7 @@ aco-math-very_longs.adb:533:17: info: range check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:537:11: info: range check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:537:58: info: cannot unroll loop (dynamic loop bounds)
 aco-math-very_longs.adb:538:32: info: index check proved (Z3: 2 VC)
-aco-math-very_longs.adb:538:64: info: index check proved (Z3: 2 VC)
+aco-math-very_longs.adb:538:64: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:549:07: info: initialization of "Result" proved
 aco-math-very_longs.adb:549:27: info: range check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:550:07: info: initialization of "Carry" proved

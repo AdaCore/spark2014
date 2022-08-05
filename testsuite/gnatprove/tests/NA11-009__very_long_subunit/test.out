@@ -30,7 +30,7 @@ very_longs-divide.adb:65:35: warning: no returning annotation available for "Shi
 very_longs-divide.adb:65:65: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:66:29: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:66:54: info: index check proved (CVC5: 2 VC)
-very_longs-divide.adb:69:44: info: index check proved (CVC5: 1 VC; Z3: 1 VC)
+very_longs-divide.adb:69:44: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:75:11: info: flow dependencies proved
 very_longs-divide.adb:78:07: info: initialization of "New_Overflow" proved
 very_longs-divide.adb:79:07: info: initialization of "Overflow_Mask" proved

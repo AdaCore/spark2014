@@ -260,8 +260,7 @@ example_recursive.adb:290:27: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:291:10: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:292:41: info: precondition proved (CVC5: 2 VC)
 example_recursive.adb:296:07: info: initialization of "M" proved
-example_recursive.adb:302:10: medium: in inlined expression function body at example_recursive.adb:35
-example_recursive.adb:302:10: medium: precondition might fail, cannot prove Valid_List (Address (L_Cell (Get (M, L)).N), N - 1, M) [possible fix: loop invariant at line 306 should mention M]
+example_recursive.adb:302:10: info: precondition proved (CVC5: 16 VC; Trivial: 2 VC)
 example_recursive.adb:303:30: info: precondition proved (CVC5: 2 VC)
 example_recursive.adb:303:30: info: tag check proved (CVC5: 2 VC)
 example_recursive.adb:303:64: info: overflow check proved (CVC5: 4 VC)
@@ -408,11 +407,11 @@ example_tagged_obj.adb:52:14: warning: assuming "Has_Key" has no effect on globa
 example_tagged_obj.adb:52:14: warning: no Global contract available for "Has_Key"
 example_tagged_obj.adb:52:51: warning: assuming "Has_Key" has no effect on global items
 example_tagged_obj.adb:52:51: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:53:14: info: postcondition proved (CVC5: 5 VC)
 example_tagged_obj.adb:53:14: info: precondition proved (Z3: 1 VC)
 example_tagged_obj.adb:53:26: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:53:44: info: precondition proved (Z3: 1 VC)
 example_tagged_obj.adb:53:56: info: precondition proved (CVC5: 1 VC)
-example_tagged_obj.adb:56:10: medium: postcondition might fail, cannot prove (Writes (Memory'Old, Memory, [for ...))
 example_tagged_obj.adb:58:38: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:60:07: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:60:18: info: precondition proved (CVC5: 1 VC)

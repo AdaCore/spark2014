@@ -261,7 +261,7 @@ norm.adb:75:14: medium: range check might fail [reason for check: returned value
 norm.ads:17:07: info: assertion proved (Trivial)
 norm.ads:19:07: info: assertion proved (Trivial)
 norm.ads:27:13: info: function contract might not be available on recursive calls
-norm.ads:32:14: info: postcondition proved (CVC5: 1 VC; colibri: 2 VC)
+norm.ads:32:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC; colibri: 1 VC)
 norm.ads:34:16: info: subprogram variant proved (CVC5: 1 VC)
 norm.ads:34:46: info: range check proved (CVC5: 2 VC)
 norm.ads:34:51: info: float overflow check proved (CVC5: 1 VC)
@@ -307,8 +307,8 @@ spark-floating_point_arithmetic_lemmas.ads:254:13: info: subprogram "Is_Float" w
 spark-floating_point_arithmetic_lemmas.ads:254:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:256:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:256:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:38
+spark-floating_point_arithmetic_lemmas.ads:258:29: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:258:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:38
-spark-floating_point_arithmetic_lemmas.ads:258:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:258:33: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:258:33: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:262:13: info: subprogram "Is_Integer" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:38

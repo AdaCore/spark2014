@@ -2,7 +2,7 @@ a.adb:16:07: info: initialization of "H" proved
 a.adb:21:25: info: assertion proved (CVC5: 1 VC)
 a.adb:21:31: info: range check proved (Trivial)
 a.adb:22:17: info: division check proved (CVC5: 1 VC)
-a.adb:22:17: info: float overflow check proved (colibri: 1 VC)
+a.adb:22:17: info: float overflow check proved (altergo: 1 VC)
 a.adb:22:26: info: range check proved (Trivial)
 a.adb:27:28: info: assertion proved (CVC5: 1 VC)
 a.adb:28:30: info: range check proved (altergo: 1 VC)

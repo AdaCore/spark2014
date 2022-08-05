@@ -2,7 +2,7 @@ succ_floats.adb:1:11: warning: subprogram "Succ_Floats" has no effect
 succ_floats.adb:2:04: info: initialization of "X" proved
 succ_floats.adb:5:19: info: assertion proved (CVC5: 1 VC)
 succ_floats.adb:5:31: info: float overflow check proved (CVC5: 1 VC)
-succ_floats.adb:6:19: medium: assertion might fail
+succ_floats.adb:6:19: info: assertion proved (Z3: 1 VC)
 succ_floats.adb:6:31: info: float overflow check proved (CVC5: 1 VC)
 succ_floats.adb:7:19: info: assertion proved (CVC5: 1 VC)
 succ_floats.adb:7:31: info: float overflow check proved (CVC5: 1 VC)

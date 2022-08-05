@@ -25,31 +25,37 @@ theory Integer
     forall x:int.
     forall y:int.
       bool_eq x y = True <-> x = y
+  meta "remove_unused:dependency" axiom bool_eq_axiom, function bool_eq
 
   axiom bool_ne_axiom:
     forall x:int.
     forall y:int.
       bool_ne x y = True <-> x <> y
+  meta "remove_unused:dependency" axiom bool_ne_axiom, function bool_ne
 
   axiom bool_lt_axiom:
     forall x:int.
     forall y:int.
       bool_lt x y = True <-> x < y
+  meta "remove_unused:dependency" axiom bool_lt_axiom, function bool_lt
 
   axiom bool_int__le_axiom:
     forall x:int.
     forall y:int.
       bool_le x y = True <-> x <= y
+  meta "remove_unused:dependency" axiom bool_int__le_axiom, function bool_le
 
   axiom bool_gt_axiom:
     forall x:int.
     forall y:int.
         bool_gt x y = True <-> x > y
+  meta "remove_unused:dependency" axiom bool_gt_axiom, function bool_gt
 
   axiom bool_ge_axiom:
     forall x:int.
     forall y:int.
         bool_ge x y = True <-> x >= y
+  meta "remove_unused:dependency" axiom bool_ge_axiom, function bool_ge
 
   function length (x y: int) : int =
     if x <= y then (y-x) + 1 else 0
@@ -71,31 +77,37 @@ theory Real
     forall x:real.
     forall y:real.
       bool_eq x y = True <-> x = y
+  meta "remove_unused:dependency" axiom bool_eq_axiom, function bool_eq
 
   axiom bool_ne_axiom:
     forall x:real.
     forall y:real.
       bool_ne x y = True <-> x <> y
+  meta "remove_unused:dependency" axiom bool_ne_axiom, function bool_ne
 
   axiom bool_lt_axiom:
     forall x:real.
     forall y:real.
       bool_lt x y = True <-> x <. y
+  meta "remove_unused:dependency" axiom bool_lt_axiom, function bool_lt
 
   axiom bool_int__le_axiom:
     forall x:real.
     forall y:real.
       bool_le x y = True <-> x <=. y
+  meta "remove_unused:dependency" axiom bool_int__le_axiom, function bool_le
 
   axiom bool_gt_axiom:
     forall x:real.
     forall y:real.
         bool_gt x y = True <-> x >. y
+  meta "remove_unused:dependency" axiom bool_gt_axiom, function bool_gt
 
   axiom bool_ge_axiom:
     forall x:real.
     forall y:real.
         bool_ge x y = True <-> x >=. y
+  meta "remove_unused:dependency" axiom bool_ge_axiom, function bool_ge
 
 end
 

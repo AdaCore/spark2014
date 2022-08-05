@@ -159,7 +159,7 @@ very_longs.adb:396:32: info: index check proved (CVC5: 2 VC)
 very_longs.adb:396:68: info: index check proved (CVC5: 2 VC)
 very_longs.adb:397:32: info: index check proved (CVC5: 2 VC)
 very_longs.adb:397:57: info: index check proved (CVC5: 2 VC)
-very_longs.adb:400:47: info: index check proved (CVC5: 1 VC; Z3: 1 VC)
+very_longs.adb:400:47: info: index check proved (CVC5: 2 VC)
 very_longs.adb:406:14: info: flow dependencies proved
 very_longs.adb:409:10: info: initialization of "New_Overflow" proved
 very_longs.adb:410:10: info: initialization of "Overflow_Mask" proved

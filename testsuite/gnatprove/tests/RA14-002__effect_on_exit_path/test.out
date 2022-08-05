@@ -29,4 +29,5 @@ test.adb:338:60: info: range check proved (CVC5: 2 VC)
 test.adb:340:16: info: precondition proved (CVC5: 2 VC)
 test.ads:80:30: info: initialization of "status" proved
 test.ads:81:30: info: initialization of "mbx_entry" proved
-test.ads:85:15: info: postcondition proved (Z3: 1 VC)
+test.ads:85:15: medium: in inlined expression function body at test.adb:266
+test.ads:85:15: medium: postcondition might fail, cannot prove os_ghost_task_mbx_are_well_formed (task_id)

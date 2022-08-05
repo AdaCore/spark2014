@@ -15,52 +15,52 @@
  <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
-  <proof prover="1"><result status="valid" steps="1789"/></proof>
+  <proof prover="1"><result status="valid" steps="1453"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="1"><result status="valid" steps="1789"/></proof>
+  <proof prover="1"><result status="valid" steps="1453"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="1"><result status="valid" steps="2322"/></proof>
+  <proof prover="1"><result status="valid" steps="1978"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="1"><result status="valid" steps="2324"/></proof>
+  <proof prover="1"><result status="valid" steps="1980"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="1"><result status="valid" steps="2402"/></proof>
+  <proof prover="1"><result status="valid" steps="2058"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="1"><result status="valid" steps="2476"/></proof>
+  <proof prover="1"><result status="valid" steps="2132"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="1"><result status="valid" steps="1913"/></proof>
+  <proof prover="1"><result status="valid" steps="1577"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="1"><result status="valid" steps="1913"/></proof>
+  <proof prover="1"><result status="valid" steps="1577"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="1"><result status="valid" steps="2714"/></proof>
+  <proof prover="1"><result status="valid" steps="2370"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="1"><result status="valid" steps="2755"/></proof>
+  <proof prover="1"><result status="valid" steps="2411"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.13">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="2844"/></proof>
-  <proof prover="2"><result status="unknown" steps="22181"/></proof>
-  <proof prover="5"><result status="unknown" steps="706"/></proof>
+  <proof prover="1"><result status="unknown" steps="2500"/></proof>
+  <proof prover="2"><result status="unknown" steps="17572"/></proof>
+  <proof prover="5"><result status="unknown" steps="702"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.13.0">
-   <proof prover="4"><result status="unknown" steps="3407"/></proof>
+   <proof prover="4"><result status="unknown" steps="3062"/></proof>
    </goal>
   </transf>
   </goal>
