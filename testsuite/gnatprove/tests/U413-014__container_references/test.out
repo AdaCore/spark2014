@@ -263,7 +263,7 @@ test_hashed_sets.adb:21:27: info: pointer dereference check proved (CVC5: 1 VC)
 test_hashed_sets.adb:25:04: info: initialization of "S" proved
 test_hashed_sets.adb:25:21: info: range check proved (CVC5: 2 VC)
 test_hashed_sets.adb:25:26: info: range check proved (CVC5: 1 VC)
-test_hashed_sets.adb:27:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_hashed_sets.adb:27:04: info: precondition proved (CVC5: 2 VC)
 test_hashed_sets.adb:28:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_hashed_sets.adb:29:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_hashed_sets.adb:30:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)

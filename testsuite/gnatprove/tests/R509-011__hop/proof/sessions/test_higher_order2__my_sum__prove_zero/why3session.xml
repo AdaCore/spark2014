@@ -28,10 +28,10 @@
   </goal>
   <goal name="def&#39;vc.4">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="186"/></proof>
-  <proof prover="2"><result status="unknown" steps="723"/></proof>
-  <proof prover="4"><result status="unknown" steps="209"/></proof>
-  <proof prover="5"><result status="unknown" steps="34"/></proof>
+  <proof prover="1"><result status="unknown" steps="119"/></proof>
+  <proof prover="2"><result status="unknown" steps="243"/></proof>
+  <proof prover="4"><result status="unknown" steps="135"/></proof>
+  <proof prover="5"><result status="unknown" steps="32"/></proof>
   </goal>
  </transf>
  </goal>

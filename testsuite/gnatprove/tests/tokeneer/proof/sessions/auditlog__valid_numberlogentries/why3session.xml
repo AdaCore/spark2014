@@ -11,16 +11,16 @@
  <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="2658"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="2589"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><result status="valid" steps="2443"/></proof>
+  <proof prover="0"><result status="valid" steps="2383"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="0"><result status="valid" steps="2798"/></proof>
+  <proof prover="0"><result status="valid" steps="2729"/></proof>
   </goal>
  </transf>
  </goal>

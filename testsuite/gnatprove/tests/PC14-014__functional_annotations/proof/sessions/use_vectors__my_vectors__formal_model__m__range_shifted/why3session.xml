@@ -14,67 +14,67 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="0"><result status="valid" steps="2072"/></proof>
+  <proof prover="0"><result status="valid" steps="1934"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><result status="valid" steps="2080"/></proof>
+  <proof prover="0"><result status="valid" steps="1942"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="0"><result status="valid" steps="1887"/></proof>
+  <proof prover="0"><result status="valid" steps="1749"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><result status="valid" steps="1889"/></proof>
+  <proof prover="0"><result status="valid" steps="1751"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="0"><result status="valid" steps="2420"/></proof>
+  <proof prover="0"><result status="valid" steps="2282"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="2442"/></proof>
+  <proof prover="0"><result status="valid" steps="2304"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="0"><result status="valid" steps="2633"/></proof>
+  <proof prover="0"><result status="valid" steps="2495"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="0"><result status="valid" steps="2354"/></proof>
+  <proof prover="0"><result status="valid" steps="2216"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="0"><result status="valid" steps="2710"/></proof>
+  <proof prover="0"><result status="valid" steps="2572"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="0"><result status="valid" steps="2397"/></proof>
+  <proof prover="0"><result status="valid" steps="2259"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
-  <proof prover="0"><result status="valid" steps="2528"/></proof>
+  <proof prover="0"><result status="valid" steps="2390"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
-  <proof prover="0"><result status="valid" steps="2846"/></proof>
+  <proof prover="0"><result status="valid" steps="2708"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="0"><result status="valid" steps="2962"/></proof>
+  <proof prover="0"><result status="valid" steps="2824"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
-  <proof prover="0"><result status="valid" steps="2671"/></proof>
+  <proof prover="0"><result status="valid" steps="2533"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
-  <proof prover="0"><result status="valid" steps="2757"/></proof>
+  <proof prover="0"><result status="valid" steps="2619"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
-  <proof prover="0"><result status="valid" steps="2758"/></proof>
+  <proof prover="0"><result status="valid" steps="2620"/></proof>
   </goal>
   <goal name="def&#39;vc.18" proved="true">
-  <proof prover="0"><result status="valid" steps="1494"/></proof>
+  <proof prover="0"><result status="valid" steps="1374"/></proof>
   </goal>
   <goal name="def&#39;vc.19" proved="true">
-  <proof prover="0"><result status="valid" steps="1494"/></proof>
+  <proof prover="0"><result status="valid" steps="1374"/></proof>
   </goal>
   <goal name="def&#39;vc.20" proved="true">
-  <proof prover="0"><result status="valid" steps="3149"/></proof>
+  <proof prover="0"><result status="valid" steps="3011"/></proof>
   </goal>
   <goal name="def&#39;vc.21" proved="true">
-  <proof prover="0"><result status="valid" steps="2834"/></proof>
+  <proof prover="0"><result status="valid" steps="2696"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>

@@ -33,7 +33,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="1"><result status="valid" steps="299"/></proof>
+  <proof prover="1"><result status="valid" steps="219"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -58,12 +58,12 @@
   </goal>
   <goal name="def&#39;vc.14">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="760"/></proof>
-  <proof prover="2"><result status="unknown" steps="12821"/></proof>
-  <proof prover="5"><result status="unknown" steps="99"/></proof>
+  <proof prover="1"><result status="unknown" steps="691"/></proof>
+  <proof prover="2"><result status="unknown" steps="12244"/></proof>
+  <proof prover="5"><result status="unknown" steps="97"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.14.0">
-   <proof prover="4"><result status="unknown" steps="803"/></proof>
+   <proof prover="4"><result status="unknown" steps="737"/></proof>
    </goal>
   </transf>
   </goal>

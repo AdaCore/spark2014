@@ -275,7 +275,7 @@ partition_refinement.adb:213:134: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:213:146: info: range check proved (CVC5: 2 VC)
 partition_refinement.adb:213:157: medium: assertion might fail, cannot prove F(L) = K [possible fix: loop at line 143 should mention F in a loop invariant]
 partition_refinement.adb:213:159: medium: array index check might fail [reason for check: value must be a valid index into the array]
-partition_refinement.adb:244:25: medium: assertion might fail
+partition_refinement.adb:244:25: info: assertion proved (CVC5: 2 VC)
 partition_refinement.adb:244:55: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:246:38: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:247:10: medium: precondition might fail, cannot prove F(Element (D, X_Elem)) in 0 .. Partition_Index'Base (Length (P)) - 1

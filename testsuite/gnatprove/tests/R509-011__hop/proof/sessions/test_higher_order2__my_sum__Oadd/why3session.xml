@@ -34,12 +34,12 @@
   </goal>
   <goal name="def&#39;vc.6">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="520"/></proof>
-  <proof prover="2"><result status="unknown" steps="2081"/></proof>
-  <proof prover="5"><result status="unknown" steps="69"/></proof>
+  <proof prover="1"><result status="unknown" steps="451"/></proof>
+  <proof prover="2"><result status="unknown" steps="1766"/></proof>
+  <proof prover="5"><result status="unknown" steps="67"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.6.0">
-   <proof prover="4"><result status="unknown" steps="581"/></proof>
+   <proof prover="4"><result status="unknown" steps="515"/></proof>
    </goal>
   </transf>
   </goal>
