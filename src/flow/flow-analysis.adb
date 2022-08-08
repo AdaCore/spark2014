@@ -1861,7 +1861,9 @@ package body Flow.Analysis is
                               --  in a borrow checker, but it also works for
                               --  converting an assignable actual parameter.
 
-                              pragma Assert (Is_Easily_Printable (Target));
+                              pragma Assert
+                                (if Present (Target)
+                                 then Is_Easily_Printable (Target));
 
                               Callee : constant Flow_Id :=
                                 Direct_Mapping_Id
@@ -1870,17 +1872,19 @@ package body Flow.Analysis is
                                         (Atr.Call_Vertex)));
 
                            begin
-                              Error_Msg_Flow
-                                (FA       => FA,
-                                 Path     => Mask,
-                                 Msg      => "& is set by &" &
-                                             " but not used after the call",
-                                 N        => N,
-                                 F1       => Target,
-                                 F2       => Callee,
-                                 Tag      => Ineffective,
-                                 Severity => Warning_Kind,
-                                 Vertex   => V);
+                              if Present (Target) then
+                                 Error_Msg_Flow
+                                   (FA       => FA,
+                                    Path     => Mask,
+                                    Msg      => "& is set by &" &
+                                                " but not used after the call",
+                                    N        => N,
+                                    F1       => Target,
+                                    F2       => Callee,
+                                    Tag      => Ineffective,
+                                    Severity => Warning_Kind,
+                                    Vertex   => V);
+                              end if;
                            end;
                         end if;
 

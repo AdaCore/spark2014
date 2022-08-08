@@ -6426,7 +6426,7 @@ package body Flow_Utility is
       --  The flow representation of the object denoted by the Expr path
 
    begin
-      while Nkind (N) not in N_Expanded_Name | N_Identifier loop
+      while Nkind (N) not in N_Expanded_Name | N_Identifier | N_Null loop
          Seq.Prepend (N);
 
          N :=
@@ -6448,6 +6448,10 @@ package body Flow_Utility is
                when others =>
                   raise Program_Error);
       end loop;
+
+      if Nkind (N) = N_Null then
+         return Null_Flow_Id;
+      end if;
 
       declare
          Root_Entity : constant Entity_Id := Entity (N);
