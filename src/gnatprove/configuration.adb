@@ -2072,6 +2072,17 @@ package body Configuration is
                end if;
             end loop;
 
+            --  Check if cvc4 was explicitly requested, and warn in that case
+            --  that it will soon be removed from the install.
+
+            for Prover of FS.Provers loop
+               if Prover = "cvc4" then
+                  Put_Line
+                    (Standard_Error,
+                     "warning: prover CVC4 is deprecated, please use cvc5");
+               end if;
+            end loop;
+
          --  prover switch is set to "all"
 
          else
