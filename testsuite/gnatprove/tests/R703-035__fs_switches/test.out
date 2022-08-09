@@ -1,3 +1,4 @@
 cvc4.adb:4:14: info: overflow check proved (altergo: 2 VC)
 spec.adb:5:17: info: overflow check proved (Z3: 2 VC)
 z3.adb:4:14: info: overflow check proved (Z3: 2 VC)
+warning: prover CVC4 is deprecated, please use cvc5
