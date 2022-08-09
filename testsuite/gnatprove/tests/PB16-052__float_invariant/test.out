@@ -69,7 +69,7 @@ attempt_3.adb:62:25: info: assertion proved (CodePeer)
 attempt_3.adb:62:27: info: overflow check proved (CVC5: 2 VC)
 attempt_3.adb:62:32: info: overflow check proved (CVC5: 2 VC)
 attempt_3.adb:62:45: medium: overflow check might fail, cannot prove upper bound for (N+1) * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-attempt_3.adb:63:25: medium: assertion might fail
+attempt_3.adb:63:25: info: assertion proved (colibri: 1 VC)
 attempt_3.adb:63:35: info: overflow check proved (CodePeer)
 attempt_3.adb:63:40: info: overflow check proved (CVC5: 2 VC)
 attempt_3.adb:63:40: info: range check proved (Trivial)
