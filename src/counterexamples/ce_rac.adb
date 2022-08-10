@@ -28,6 +28,7 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Ordered_Sets;
 with Ada.Containers.Vectors;
 with Ada.Environment_Variables;
+with Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Text_IO;             use Ada.Text_IO;
 with CE_Fuzzer;               use CE_Fuzzer;
 with CE_Parsing;              use CE_Parsing;
@@ -147,6 +148,10 @@ package body CE_RAC is
    function To_Big_Integer (I : Uint) return Big_Integer is
      (To_Big_Integer (To_Integer (I)));
    --  Shortcut to convert an Uint to a Big_Integer
+
+   function To_Long_Float (B : Big_Integer) return Long_Float;
+   --  Convert big integer to Long_Float, raise RAC_Incomplete when out of
+   --  range.
 
    function To_Integer (B : Big_Integer) return Integer;
    --  Convert big integer to integer, raise RAC_Incomplete when out of range
@@ -2709,9 +2714,26 @@ package body CE_RAC is
                    (Value_Integer (Left) + Value_Integer (Right), N);
 
             when N_Op_Expon =>
-               return Integer_Value
-                 (Value_Integer (Left) **
-                    Natural (To_Integer (Value_Integer (Right))), N);
+               declare
+                  Val_Left  : constant Big_Integer := Value_Integer (Left);
+                  Val_Right : constant Big_Integer := Value_Integer (Right);
+
+                  Real_Left : constant Long_Float :=
+                    To_Long_Float (abs (Val_Left));
+                  Int_Right : constant Integer := To_Integer (abs (Val_Right));
+               begin
+                  --  Protect against very large values which exceed what the
+                  --  Big_Integers library can handle. We limit ourselves to
+                  --  2**256 as GNAT currently supports up to 128-bits integers
+                  --  (even if modular types would support larger values).
+                  if Real_Left ** Int_Right >= 2.0 ** 256 then
+                     RAC_Unsupported
+                       ("RAC_Binary_Op too large exponentiation", N);
+                  end if;
+
+                  return Integer_Value
+                    (Val_Left ** Natural (To_Integer (Val_Right)), N);
+               end;
 
             when N_Op_Subtract =>
                return
@@ -3986,6 +4008,21 @@ package body CE_RAC is
       end loop;
       return Array_Value (First, Last, Values, Other, Standard_String);
    end String_Value;
+
+   -------------------
+   -- To_Long_Float --
+   -------------------
+
+   function To_Long_Float (B : Big_Integer) return Long_Float is
+      package Long_Float_Conversions is new
+        Ada.Numerics.Big_Numbers.Big_Reals.Float_Conversions (Long_Float);
+   begin
+      return Long_Float_Conversions.From_Big_Real
+        (Ada.Numerics.Big_Numbers.Big_Reals.To_Big_Real (B));
+   exception
+      when Constraint_Error =>
+         RAC_Incomplete ("Integer too large: " & To_String (B));
+   end To_Long_Float;
 
    ----------------
    -- To_Integer --
