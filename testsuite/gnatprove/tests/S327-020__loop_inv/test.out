@@ -26,7 +26,7 @@ lp.adb:57:33: info: loop invariant preservation proved (CVC5: 2 VC)
 lp.adb:57:39: medium: overflow check might fail, cannot prove lower bound for 2 ** P [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 lp.adb:57:39: medium: range check might fail [reason for check: result of exponentiation must be convertible to the target type of the conversion]
 lp.adb:57:42: medium: array index check might fail [reason for check: value must be a valid index into the array]
-lp.adb:58:37: medium: overflow check might fail, cannot prove bounds for 2 ** P [reason for check: result of exponentiation must fit in a 128-bits machine integer]
+lp.adb:58:37: medium: overflow check might fail, cannot prove lower bound for 2 ** P [reason for check: result of exponentiation must fit in a 128-bits machine integer]
 lp.adb:58:37: medium: range check might fail [reason for check: result of exponentiation must be convertible to the target type of the conversion]
 lp.adb:58:40: info: index check proved (CVC5: 2 VC)
 lp.adb:59:22: info: index check proved (CVC5: 2 VC)

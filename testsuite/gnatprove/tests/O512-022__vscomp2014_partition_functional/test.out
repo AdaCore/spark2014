@@ -166,7 +166,7 @@ partition_refinement.adb:117:22: info: assertion proved (CVC5: 1 VC)
 partition_refinement.adb:117:22: info: precondition proved (Trivial: 1 VC)
 partition_refinement.adb:117:43: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:117:61: info: precondition proved (CVC5: 1 VC)
-partition_refinement.adb:119:36: medium: range check might fail, cannot prove lower bounds for P_Elem.Count + 1 [reason for check: result of addition must fit in the target type of the assignment]
+partition_refinement.adb:119:36: medium: range check might fail, cannot prove lower bound for P_Elem.Count + 1 [reason for check: result of addition must fit in the target type of the assignment]
 partition_refinement.adb:120:07: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:122:22: info: assertion proved (CVC5: 1 VC)
 partition_refinement.adb:135:07: info: initialization of "P_Elem" proved
@@ -274,7 +274,7 @@ partition_refinement.adb:213:122: info: range check proved (CVC5: 2 VC)
 partition_refinement.adb:213:134: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:213:146: info: range check proved (CVC5: 2 VC)
 partition_refinement.adb:213:157: medium: assertion might fail, cannot prove F(L) = K [possible fix: loop at line 143 should mention F in a loop invariant]
-partition_refinement.adb:213:159: medium: array index check might fail [reason for check: value must be a valid index into the array]
+partition_refinement.adb:213:159: info: index check proved (CVC5: 2 VC)
 partition_refinement.adb:244:25: info: assertion proved (CVC5: 2 VC)
 partition_refinement.adb:244:55: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:246:38: info: precondition proved (CVC5: 2 VC)
@@ -299,7 +299,7 @@ partition_refinement.adb:258:33: info: precondition proved (Trivial: 2 VC)
 partition_refinement.adb:258:51: medium: loop invariant might fail in first iteration, cannot prove Has_Element (D, (Find (D_Old, Element (X, C))))
 partition_refinement.adb:258:51: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Has_Element (D, (Find (D_Old, Element (X, C))))
 partition_refinement.adb:258:81: info: precondition proved (CVC5: 2 VC)
-partition_refinement.adb:260:55: medium: loop invariant might fail in first iteration, cannot prove F(J) in 0 .. Partition_Index'Base (Length (P)) - 1
+partition_refinement.adb:260:33: info: loop invariant initialization proved (CVC5: 2 VC)
 partition_refinement.adb:260:55: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove F(J) in 0 .. Partition_Index'Base (Length (P)) - 1
 partition_refinement.adb:261:55: medium: loop invariant might fail in first iteration, cannot prove J in Element (P, F(J)).First .. Element (P, F(J)).Last
 partition_refinement.adb:261:55: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove J in Element (P, F(J)).First .. Element (P, F(J)).Last

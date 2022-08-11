@@ -16,10 +16,10 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="valid" steps="245"/></proof>
+  <proof prover="3"><result status="valid" steps="238"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="1"><result status="valid" steps="26923"/></proof>
+  <proof prover="1"><result status="valid" steps="26849"/></proof>
   </goal>
  </transf>
  </goal>

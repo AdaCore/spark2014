@@ -27,11 +27,11 @@
   <proof prover="2"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="0"><result status="valid" steps="2598"/></proof>
+  <proof prover="0"><result status="valid" steps="1778"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="2634"/></proof>
+  <proof prover="0"><result status="valid" steps="1815"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
  </transf>

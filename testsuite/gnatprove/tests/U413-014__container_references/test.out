@@ -251,7 +251,7 @@ test_hashed_maps.adb:67:22: info: precondition proved (Z3: 1 VC)
 test_hashed_maps.adb:70:04: info: initialization of "M" proved
 test_hashed_maps.adb:70:21: info: range check proved (CVC5: 2 VC)
 test_hashed_maps.adb:70:26: info: range check proved (CVC5: 1 VC)
-test_hashed_maps.adb:72:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_hashed_maps.adb:72:04: info: precondition proved (CVC5: 2 VC)
 test_hashed_maps.adb:73:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_hashed_maps.adb:74:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_hashed_maps.adb:75:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)

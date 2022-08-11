@@ -284,7 +284,7 @@ ar.ads:314:22: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 ar.ads:318:11: info: flow dependencies proved
 ar.ads:319:22: info: postcondition proved (CVC5: 2 VC)
 ar.ads:323:11: info: flow dependencies proved
-ar.ads:324:22: info: postcondition proved (CVC5: 1 VC)
+ar.ads:324:22: medium: postcondition might fail
 ar.ads:324:113: info: index check proved (CVC5: 2 VC)
 ar.ads:324:123: info: range check proved (CVC5: 2 VC)
 ar.ads:324:136: info: index check proved (CVC5: 2 VC)

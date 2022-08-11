@@ -537,7 +537,7 @@ my_maps.adb:72:07: info: precondition proved (CVC5: 1 VC)
 my_maps.adb:74:07: info: precondition proved (CVC5: 1 VC)
 my_maps.adb:76:07: info: precondition proved (CVC5: 1 VC)
 my_maps.adb:77:22: info: assertion proved (CVC5: 1 VC)
-my_maps.adb:80:22: info: assertion proved (Z3: 1 VC)
+my_maps.adb:80:22: info: assertion proved (CVC5: 1 VC)
 my_maps.adb:82:22: info: assertion proved (CVC5: 1 VC)
 my_maps.adb:83:07: medium: assertion might fail
 my_maps.adb:86:14: warning: subprogram "Test_Map_Rec_2" has no effect
@@ -566,7 +566,7 @@ my_maps.adb:112:22: info: assertion proved (CVC5: 1 VC)
 my_maps.adb:113:07: info: precondition proved (CVC5: 1 VC)
 my_maps.adb:115:07: info: precondition proved (CVC5: 1 VC)
 my_maps.adb:117:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:118:22: info: assertion proved (altergo: 1 VC)
+my_maps.adb:118:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:121:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:123:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:124:07: medium: assertion might fail

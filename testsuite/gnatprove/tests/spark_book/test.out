@@ -318,7 +318,7 @@ control_structures.adb:121:06: warning: unused assignment
 control_structures.adb:121:09: info: precondition proved (CVC5: 1 VC)
 control_structures.adb:121:44: info: float overflow check proved (CVC5: 1 VC)
 control_structures.adb:125:04: warning: statement has no effect
-control_structures.adb:125:13: medium: overflow check might fail, cannot prove lower bound for C - D [reason for check: result of subtraction must fit in a 32-bits machine integer]
+control_structures.adb:125:13: info: overflow check proved (CVC5: 2 VC)
 control_structures.adb:129:04: warning: statement has no effect
 control_structures.adb:129:13: info: overflow check proved (CVC5: 2 VC)
 control_structures.adb:133:04: warning: statement has no effect
@@ -1262,7 +1262,7 @@ very_longs-divide.adb:211:29: info: length check proved (CVC5: 3 VC; Trivial: 1 
 very_longs-divide.adb:212:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs-divide.adb:212:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs-divide.adb:215:09: info: range check proved (CVC5: 2 VC)
-very_longs-divide.adb:216:25: medium: range check might fail, cannot prove upper bound for Dividend.Length - N [reason for check: result of subtraction must fit in the target type of the assignment]
+very_longs-divide.adb:216:25: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:219:22: info: precondition proved (CVC5: 1 VC)
 very_longs-divide.adb:219:61: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:220:04: info: precondition proved (CVC5: 1 VC)

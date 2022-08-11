@@ -595,7 +595,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.193" proved="true">
-  <proof prover="0"><result status="valid" steps="7841"/></proof>
+  <proof prover="0"><result status="valid" steps="7837"/></proof>
   <proof prover="1"><result status="unknown" steps="23651"/></proof>
   </goal>
   <goal name="def&#39;vc.194" proved="true">
@@ -608,7 +608,7 @@
   <proof prover="0" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="1" timelimit="60" memlimit="2000"><result status="unknown" steps="21741"/></proof>
   <proof prover="2" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="4"><result status="unknown" steps="3102"/></proof>
+  <proof prover="4"><result status="unknown" steps="3104"/></proof>
   </goal>
  </transf>
  </goal>

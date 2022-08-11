@@ -10,10 +10,10 @@
  <goal name="def&#39;vc" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
-  <proof prover="0"><result status="valid" steps="273289"/></proof>
+  <proof prover="0"><result status="valid" steps="273205"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="0"><result status="valid" steps="26862"/></proof>
+  <proof prover="0"><result status="valid" steps="26788"/></proof>
   </goal>
  </transf>
  </goal>
