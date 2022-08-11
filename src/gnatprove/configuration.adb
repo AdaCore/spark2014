@@ -42,9 +42,9 @@ with VC_Kinds;
 
 package body Configuration is
 
-   Invalid_Level : constant := -1;
-
-   Invalid_Steps : constant := -1;
+   Invalid_Level   : constant := -1;
+   Invalid_Steps   : constant := -1;
+   Invalid_Timeout : constant := -1;
 
    Usage_Message : constant String := "-Pproj [switches] [-cargs switches]";
    --  Used to print part of the help message for gnatprove
@@ -902,6 +902,11 @@ package body Configuration is
            (Config,
             CL_Switches.Timeout'Access,
             Long_Switch => "--timeout=");
+         Define_Switch
+           (Config,
+            CL_Switches.Proof_Warn_Timeout'Access,
+            Long_Switch => "--proof-warnings-timeout=",
+            Initial     => Invalid_Timeout);
       end if;
 
       if Mode in All_Switches | Project_Parsing then
@@ -1302,8 +1307,9 @@ package body Configuration is
       procedure Set_Report_Mode;
 
       procedure Set_Level_Timeout_Steps_Provers (FS : out File_Specific);
-      --  Using the --level, --timeout, --steps, --provers, --ce-steps and
-      --  --counterexamples switches, set the corresponding variables.
+      --  Using the --level, --timeout, --steps, --provers, --ce-steps,
+      --  --counterexamples and --proof-warning-timeout switches, set the
+      --  corresponding variables.
 
       procedure Set_Proof_Mode (FS : in out File_Specific);
       procedure Process_Limit_Switches;
@@ -1767,6 +1773,15 @@ package body Configuration is
                        With_Help => False);
          else
             FS.CE_Steps := CL_Switches.CE_Steps;
+         end if;
+
+         if CL_Switches.Proof_Warn_Timeout = Invalid_Timeout then
+            null;
+         elsif CL_Switches.Proof_Warn_Timeout < 0 then
+            Abort_Msg ("error: wrong argument for --proof-warn-timeout",
+                       With_Help => False);
+         else
+            FS.Proof_Warn_Timeout := CL_Switches.Proof_Warn_Timeout;
          end if;
 
          --  Timeout and CE_Steps are fully set now, we can set CE_Timeout.
@@ -2273,6 +2288,8 @@ package body Configuration is
             CL_Switches.Counterexamples := null;
             CL_Switches.No_Inlining := False;
             CL_Switches.No_Loop_Unrolling := False;
+            CL_Switches.Proof_Warnings := False;
+            CL_Switches.Proof_Warn_Timeout := Invalid_Timeout;
          end Reset_File_Specific_Switches;
 
          Proj_Type : constant Project_Type := Root_Project (Tree);
@@ -2715,6 +2732,11 @@ package body Configuration is
          Args.Append ("cvc5");
       else
          Args.Append ("altergo");
+      end if;
+
+      if FS.Proof_Warn_Timeout /= Invalid_Timeout then
+         Args.Append ("--warn-timeout");
+         Args.Append (Image (FS.Proof_Warn_Timeout, 1));
       end if;
 
       if CL_Switches.Debug_Prover_Errors then

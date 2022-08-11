@@ -131,6 +131,7 @@ package Configuration is
       Pedantic              : aliased Boolean;
       Proof                 : aliased GNAT.Strings.String_Access;
       Proof_Warnings        : aliased Boolean;
+      Proof_Warn_Timeout    : aliased Integer;
       Prover                : aliased GNAT.Strings.String_Access;
       Q                     : aliased Boolean;
       Replay                : aliased Boolean;
@@ -228,6 +229,7 @@ package Configuration is
       Info                  : Boolean;
       No_Loop_Unrolling     : Boolean;
       Proof_Warnings        : Boolean;
+      Proof_Warn_Timeout    : Integer;
       Counterexamples       : Boolean;
       Check_Counterexamples : Boolean;
    end record;
