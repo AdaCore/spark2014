@@ -67,32 +67,17 @@ Others`.
 Suppressing Warnings
 --------------------
 
-|GNATprove| issues two kinds of warnings, which are controlled separately:
+|GNATprove| warnings are controlled with switch ``--warnings``:
 
-.. index:: --warnings
+* ``--warnings=off`` suppresses all warnings
+* ``--warnings=error`` treats warnings as errors
+* ``--warnings=continue`` issues warnings but does not stop analysis (default)
 
-* Compiler warnings are controlled with the usual GNAT compilation switches:
-
-  * ``-gnatws`` suppresses all warnings
-  * ``-gnatwa`` enables all optional warnings
-  * ``-gnatw?`` enables a specific warning denoted by the last character
-
-    See the |GNAT Pro| User's Guide for more details. These should passed
-    through the compilation switches specified in the project file.
-
-.. index:: --gnatw
-
-* |GNATprove| specific warnings are controlled with switch ``--warnings``:
-
-  * ``--warnings=off`` suppresses all warnings
-  * ``--warnings=error`` treats warnings as errors
-  * ``--warnings=continue`` issues warnings but does not stop analysis (default)
-
-    The default is that |GNATprove| issues warnings but does not stop.
+The default is that |GNATprove| issues warnings but does not stop.
 
 .. index:: Warnings (pragma)
 
-Both types of warnings can be suppressed selectively by the use of pragma
+Warnings can be suppressed selectively by the use of pragma
 ``Warnings`` in the source code. For example, |GNATprove| issues three warnings
 on procedure ``Warn``, which are suppressed by the three pragma ``Warnings`` in
 the source code:
@@ -111,20 +96,20 @@ added in a configuration file to suppress the corresponding warnings across all
 units in the project. Pragma ``Warnings Off`` can be specified for an entity to
 suppress all warnings related to this entity.
 
-Pragma ``Warnings`` can also take a first argument of ``GNAT`` or ``GNATprove``
-to specify that it applies only to GNAT compiler or GNATprove. For example, the
-previous example can be modified to use these refined pragma ``Warnings``:
+Pragma ``Warnings`` can also take a first argument of ``GNATprove`` to specify
+that it applies only to |GNATprove|. For example, the previous example can be
+modified to use these refined pragma ``Warnings``:
 
 .. literalinclude:: /examples/ug__warn2/warn2.adb
    :language: ada
    :linenos:
 
 Besides the documentation benefit of using this refined version of pragma
-``Warnings``, it makes it possible to detect useless pragma ``Warnings``, that
-do not suppress any warning, with switch ``-gnatw.w``. Indeed, this switch can
-then be used both during compilation with GNAT and formal verification with
-GNATprove, as pragma ``Warnings`` that apply to only one tool can be identified
-as such.
+``Warnings``, it makes it possible to exclude such pragma ``Warnings`` from the
+detection of useless pragma ``Warnings``, that do not suppress any warning at
+compilation, with compilation switch ``-gnatw.w``. Indeed, this switch can then
+be used during compilation with GNAT, as pragma ``Warnings`` that apply only to
+|GNATprove| can be identified as such.
 
 See the |GNAT Pro| Reference Manual for more details.
 
