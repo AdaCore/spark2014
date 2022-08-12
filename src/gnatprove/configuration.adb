@@ -1725,6 +1725,7 @@ package body Configuration is
 
          FS.Check_Counterexamples := True;
          FS.CE_Steps := 0;
+         FS.Proof_Warn_Timeout := Invalid_Timeout;
 
          --  If option --timeout was not provided, keep timeout corresponding
          --  to level switch/default value. Otherwise, take the user-provided
