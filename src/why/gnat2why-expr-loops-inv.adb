@@ -1403,9 +1403,9 @@ package body Gnat2Why.Expr.Loops.Inv is
       begin
          if Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter
            or else (Has_Access_Type (Etype (Formal))
-                    and then not Is_Access_Constant (Retysp (Etype (Formal))))
+                    and then not Is_Access_Constant (Retysp (Etype (Formal)))
+                    and then Nkind (Actual) /= N_Null)
          then
-
             --  If Formal is an IN parameter of an access-to-variable type, the
             --  designated value only can be updated by the call, not the
             --  access itself.
