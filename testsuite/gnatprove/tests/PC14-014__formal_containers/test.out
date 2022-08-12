@@ -156,9 +156,9 @@ a-cforse.ads:1443:47: info: precondition proved (CVC5: 1 VC), in instantiation a
 a-cforse.ads:1443:47: info: precondition proved (CVC5: 1 VC), in instantiation at my_ordered_sets.ads:6
 a-cforse.ads:1458:40: info: precondition proved (CVC5: 1 VC), in instantiation at my_ordered_sets.ads:18
 a-cforse.ads:1458:40: info: precondition proved (CVC5: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1725:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_ordered_sets.ads:26
-a-cforse.ads:1746:46: info: precondition proved (CVC5: 1 VC), in instantiation at my_ordered_sets.ads:26
-a-cforse.ads:1764:40: info: precondition proved (CVC5: 1 VC), in instantiation at my_ordered_sets.ads:26
+a-cforse.ads:1726:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_ordered_sets.ads:26
+a-cforse.ads:1747:46: info: precondition proved (CVC5: 1 VC), in instantiation at my_ordered_sets.ads:26
+a-cforse.ads:1765:40: info: precondition proved (CVC5: 1 VC), in instantiation at my_ordered_sets.ads:26
 a-cofove.ads:296:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at my_bounded_vectors.ads:4
 a-cofove.ads:297:08: info: dynamic accessibility check proved (Trivial), in instantiation at my_bounded_vectors.ads:4
 a-cofove.ads:301:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at my_bounded_vectors.ads:4
