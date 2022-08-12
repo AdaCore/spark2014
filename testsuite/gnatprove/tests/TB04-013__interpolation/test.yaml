@@ -1,2 +1,3 @@
 prove_all:
-  steps: 120000
+  prover: ["cvc5"]
+  steps: 4000
