@@ -1,4 +1,0 @@
-prove_all:
-  steps: 55000
-large: True
-timeout: 2000
