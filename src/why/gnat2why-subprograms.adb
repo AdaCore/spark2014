@@ -4308,11 +4308,13 @@ package body Gnat2Why.Subprograms is
       for Expr of Get_Precondition_Expressions (E) loop
          if Nkind (Expr) in N_Expanded_Name | N_Identifier
            and then Entity (Expr) = Standard_False
-           and then Original_Node (Expr) /= Expr
          then
             Precondition_Is_Statically_False := True;
-            Error_Msg_N (Msg  => "?precondition is statically False",
-                         N    => Expr);
+
+            if Original_Node (Expr) /= Expr then
+               Error_Msg_N (Msg  => "?precondition is statically False",
+                            N    => Expr);
+            end if;
          end if;
       end loop;
 

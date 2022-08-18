@@ -766,6 +766,7 @@ package SPARK_Util is
    --    . a raise statement or expression
    --    . a pragma Assert (False)
    --    . a call to an error-signaling procedure
+   --    . a call to a function with precondition False
 
    function Is_External_Call (N : N_Call_Id) return Boolean
    with Pre => Within_Protected_Type (Get_Called_Entity (N));
