@@ -6,4 +6,4 @@ neutrino.adb:103:04: info: initialization of "Status" proved
 neutrino.adb:105:25: info: cannot unroll loop (too many loop iterations)
 neutrino.adb:108:10: info: initialization of "Pulse" proved
 neutrino.adb:111:23: medium: initialization check might fail
-neutrino.adb:130:19: info: assertion proved (Z3: 1 VC)
+neutrino.adb:130:19: medium: assertion might fail [possible fix: loop at line 105 should mention Status in a loop invariant]
