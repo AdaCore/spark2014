@@ -51,6 +51,7 @@ project SPARKlib_Light is
                                   "spark-containers-functional-base.ads",
                                   "spark-containers-functional-infinite_sequences.adb",
                                   "spark-containers-functional-maps.adb",
+                                  "spark-containers-functional-multisets.adb",
                                   "spark-containers-functional-sets.adb",
                                   "spark-containers-functional-vectors.adb");
 
@@ -71,6 +72,10 @@ project SPARKlib_Light is
          use "spark-containers-functional-maps__light.ads";
       for Body ("SPARK.Containers.Functional.Maps")
          use "spark-containers-functional-maps__light.adb";
+      for Spec ("SPARK.Containers.Functional.Multisets")
+         use "spark-containers-functional-multisets__light.ads";
+      for Body ("SPARK.Containers.Functional.Multisets")
+         use "spark-containers-functional-multisets__light.adb";
       for Spec ("SPARK.Containers.Functional.Sets")
          use "spark-containers-functional-sets__light.ads";
       for Body ("SPARK.Containers.Functional.Sets")

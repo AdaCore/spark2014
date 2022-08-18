@@ -1,0 +1,12 @@
+with "sparklib";
+
+project Test is
+
+   package Builder is
+      for Switches ("ada") use ("-gnata", "-gnat2022", "-gnateDSPARK_BODY_MODE=On");
+   end Builder;
+
+   package Prove is
+      for Proof_Dir use "proof";
+   end Prove;
+end Test;
