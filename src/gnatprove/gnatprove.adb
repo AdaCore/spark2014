@@ -488,7 +488,7 @@ procedure Gnatprove with SPARK_Mode is
               "gnatprove: error during " & Text_Of_Step (Plan (Step));
          begin
             if Plan (Step) = GS_Gnat2Why then
-               Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Msg);
+               raise GNATprove_Recoverable_Failure with Msg;
             else
                Fail (Msg);
             end if;
@@ -1222,25 +1222,46 @@ begin
       end loop;
    end;
 
-   declare
-      Plan : constant Plan_Type :=
-        (if CodePeer then [GS_ALI, GS_CodePeer, GS_Gnat2Why]
-         else [GS_ALI, GS_Gnat2Why]);
-   begin
-      for Step in Plan'Range loop
-         Execute_Step (Plan, Step, CL_Switches.P.all, Tree);
-      end loop;
-   end;
+   Analysis_And_Report : declare
 
-   declare
-      Obj_Path : constant File_Array :=
-        Object_Path (Tree.Root_Project, Recursive => True);
+      procedure Generate_SPARK_Report;
+      --  Generate the SPARK report both when there was no error, and when
+      --  there was a recoverable error.
+
+      ---------------------------
+      -- Generate_SPARK_Report --
+      ---------------------------
+
+      procedure Generate_SPARK_Report is
+         Obj_Path : constant File_Array :=
+           Object_Path (Tree.Root_Project, Recursive => True);
+      begin
+         Generate_SPARK_Report
+           (Tree.Root_Project,
+            Tree.Root_Project.Artifacts_Dir.Display_Full_Name, Obj_Path);
+      end Generate_SPARK_Report;
+
    begin
-      Generate_SPARK_Report
-        (Tree.Root_Project,
-         Tree.Root_Project.Artifacts_Dir.Display_Full_Name, Obj_Path);
-   end;
-   Cleanup (Tree.Root_Project, "", Success_Exit_Code);
+      Analysis : declare
+         Plan : constant Plan_Type :=
+           (if CodePeer then [GS_ALI, GS_CodePeer, GS_Gnat2Why]
+            else [GS_ALI, GS_Gnat2Why]);
+      begin
+         for Step in Plan'Range loop
+            Execute_Step (Plan, Step, CL_Switches.P.all, Tree);
+         end loop;
+
+      exception
+         when E : GNATprove_Recoverable_Failure =>
+            Generate_SPARK_Report;
+            Fail (Ada.Exceptions.Exception_Message (E));
+      end Analysis;
+
+      Generate_SPARK_Report;
+      Cleanup (Tree.Root_Project, "", Success_Exit_Code);
+
+   end Analysis_And_Report;
+
 exception
    when E : GNATprove_Failure =>
       Cleanup (Tree.Root_Project,

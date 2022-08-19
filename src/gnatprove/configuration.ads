@@ -42,6 +42,10 @@ package Configuration is
    GNATprove_Success, GNATprove_Failure : exception;
    --  Exceptions used to abort execution early
 
+   GNATprove_Recoverable_Failure : exception;
+   --  Exception used to signal that the report should be generated before
+   --  aborting execution.
+
    procedure Succeed with No_Return;
    --  End the program signaling success
 
