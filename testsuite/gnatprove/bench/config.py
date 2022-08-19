@@ -1,1 +1,2 @@
-all_provers = ["altergo", "z3", "cvc5"]
+all_provers = ["cvc5", "z3", "altergo"]
+timelimit = 10
