@@ -1,0 +1,25 @@
+with "sparklib";
+
+project Test is
+
+   for Main use ("test.adb");
+
+   package Builder is
+      for Switches ("ada") use ("-gnata", "-O0", "-g");
+      for Global_Configuration_Pragmas use "pragmas.adc";
+   end Builder;
+
+   package Compiler is
+      for Switches ("ada") use ("-g");
+   end Compiler;
+
+   package Linker is
+      for Switches ("ada") use ("-g");
+   end Linker;
+   
+   package Prove is
+    for Proof_Dir use "proof";
+   end Prove;
+
+end Test;
+
