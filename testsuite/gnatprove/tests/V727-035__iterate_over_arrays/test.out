@@ -1,0 +1,34 @@
+demo_problem.adb:9:14: info: add a contract to analyze it separately from calling contexts
+demo_problem.adb:9:14: info: local subprogram "Print" only analyzed in the context of calls
+demo_problem.adb:12:11: info: precondition proved (Trivial: 1 VC), in call inlined at demo_problem.adb:19
+demo_problem.adb:12:11: medium: in inlined expression function body at q.ads:25
+demo_problem.adb:12:11: medium: precondition might fail, cannot prove C <= Contained_Element'pos, in call inlined at demo_problem.adb:19
+demo_problem.adb:12:11: medium: precondition might fail, cannot prove Position < Cursor'last, in call inlined at demo_problem.adb:19
+demo_problem.adb:19:04: info: analyzing call to "Print" in context
+q.adb:11:14: info: range check proved (CVC5: 2 VC)
+q.adb:12:19: info: precondition proved (CVC5: 1 VC)
+q.adb:18:36: info: loop invariant initialization proved (CVC5: 1 VC)
+q.adb:18:36: info: loop invariant preservation proved (CVC5: 1 VC)
+q.adb:19:36: info: loop invariant initialization proved (CVC5: 1 VC)
+q.adb:19:36: info: loop invariant preservation proved (CVC5: 1 VC)
+q.adb:19:85: info: precondition proved (CVC5: 2 VC)
+q.adb:30:08: info: precondition proved (CVC5: 1 VC)
+q.adb:37:08: info: precondition proved (CVC5: 1 VC)
+q.adb:37:43: info: overflow check proved (CVC5: 2 VC)
+q.adb:51:07: info: precondition proved (CVC5: 1 VC)
+q.ads:5:09: info: default initial condition proved (CVC5: 1 VC)
+q.ads:28:69: info: overflow check proved (CVC5: 2 VC)
+q.ads:30:19: info: assertion proved (CVC5: 1 VC)
+q.ads:39:14: info: postcondition proved (CVC5: 1 VC)
+q.ads:40:14: info: precondition proved (CVC5: 1 VC)
+q.ads:47:14: info: postcondition proved (CVC5: 1 VC)
+q.ads:48:14: info: precondition proved (CVC5: 1 VC)
+q.ads:48:78: info: overflow check proved (CVC5: 2 VC)
+q.ads:76:36: info: range check proved (CVC5: 2 VC)
+q.ads:81:13: info: precondition proved (CVC5: 1 VC)
+q.ads:84:40: info: overflow check proved (CVC5: 2 VC)
+q.ads:84:57: info: precondition proved (CVC5: 1 VC)
+q.ads:87:20: info: precondition proved (CVC5: 1 VC)
+q.ads:92:14: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
+q.ads:92:43: info: precondition proved (CVC5: 1 VC)
+q.ads:94:20: info: precondition proved (CVC5: 1 VC)
