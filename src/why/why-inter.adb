@@ -1222,6 +1222,19 @@ package body Why.Inter is
             end if;
          end;
 
+      --  The name of local parameters should always be prefixed to avoid
+      --  collision with the name of the function.
+
+      elsif Local
+        and then E in Formal_Kind_Id
+      then
+         declare
+            Param : constant String :=
+              To_String (WNE_Param_Prefix) & Suffix;
+         begin
+            return New_Identifier (Ada_Node => E, Name => Param, Typ => Typ);
+         end;
+
       elsif Local then
          return New_Identifier (Ada_Node => E, Name => Suffix, Typ => Typ);
 

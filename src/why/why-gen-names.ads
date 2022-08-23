@@ -321,6 +321,9 @@ package Why.Gen.Names is
       --  Prefix for Why3 field names corresponding to record components
       WNE_Rec_Comp_Prefix,
 
+      --  Prefix for Why3 parameters corresponding to subprogram parameters
+      WNE_Param_Prefix,
+
       --  Symbols for extensions of tagged types
 
       --  Name of the Why3 field representing potential unknown extension
