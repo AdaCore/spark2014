@@ -1,0 +1,27 @@
+proves_false.adb:4:11: high: all paths in "Proves_False" raise exceptions or do not terminate normally
+proves_false.adb:16:11: info: postcondition proved (CVC5: 2 VC), in instantiation at proves_false.adb:42
+proves_false.adb:16:11: info: precondition proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:16:30: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:16:40: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:16:50: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:17:11: info: precondition proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:17:29: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:17:39: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:19:28: warning: unused variable "M", in instantiation at proves_false.adb:42
+proves_false.adb:20:27: warning: unused variable "M", in instantiation at proves_false.adb:42
+proves_false.adb:24:23: info: postcondition proved (CVC5: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:24:23: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:24:46: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:30:34: info: in default value of private type at proves_false.adb:8, in instantiation at proves_false.adb:42
+proves_false.adb:30:34: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:35:63: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:36:79: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:36:81: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:36:83: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:37:75: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:37:79: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:39:59: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:46:18: info: assertion proved (CVC5: 1 VC)
+proves_false.adb:46:31: info: predicate check proved (Trivial: 1 VC)
+proves_false.adb:46:62: info: predicate check proved (Trivial: 1 VC)
+proves_false.adb:47:04: info: assertion proved (CVC5: 1 VC)
