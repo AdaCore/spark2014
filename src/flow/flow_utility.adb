@@ -24,6 +24,7 @@
 with Ada.Containers;                  use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 
+with Aspects;                         use Aspects;
 with Exp_Util;                        use Exp_Util;
 with Errout;                          use Errout;
 with Namet;                           use Namet;
@@ -312,6 +313,42 @@ package body Flow_Utility is
 
             when N_Op =>
                pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
+
+            --  Detect calls via Iterable aspect specification if any
+            --
+            --  This code is intentionally mirroring the marking, so if it ever
+            --  fails we will know where to look for a problem.
+
+            when N_Iterator_Specification =>
+
+               declare
+                  Iterable_Aspect : constant Node_Id :=
+                    Find_Aspect (Id => Etype (Name (N)), A => Aspect_Iterable);
+               begin
+                  if Present (Iterable_Aspect) then
+                     declare
+                        Iterable_Component_Assoc : constant List_Id :=
+                          Component_Associations
+                            (Expression (Iterable_Aspect));
+                        Iterable_Field           : Node_Id :=
+                          First (Iterable_Component_Assoc);
+                     begin
+                        while Present (Iterable_Field) loop
+                           pragma Assert
+                             (Ekind (Entity (Expression (Iterable_Field))) =
+                                E_Function);
+                           Functions_Called.Include
+                             (Entity (Expression (Iterable_Field)));
+                           Next (Iterable_Field);
+                        end loop;
+                     end;
+                  else
+                     pragma Assert
+                       (Of_Present (N)
+                        and then Has_Array_Type (Etype (Name (N)))
+                        and then Number_Dimensions (Etype (Name (N))) = 1);
+                  end if;
+               end;
 
             when others =>
                null;

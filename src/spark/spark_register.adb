@@ -27,9 +27,11 @@ with Aspects;                use Aspects;
 with Atree;                  use Atree;
 with Einfo.Entities;         use Einfo.Entities;
 with Einfo.Utils;            use Einfo.Utils;
+with Namet;                  use Namet;
 with Sem_Util;               use Sem_Util;
 with Sinfo.Nodes;            use Sinfo.Nodes;
 with Sinfo.Utils;            use Sinfo.Utils;
+with Snames;                 use Snames;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util;             use SPARK_Util;
@@ -232,6 +234,45 @@ package body SPARK_Register is
             Register_Aspect (Defining_Entity (N), Aspect_Real_Literal);
             Register_Aspect (Defining_Entity (N), Aspect_Integer_Literal);
             Register_Aspect (Defining_Entity (N), Aspect_String_Literal);
+         end if;
+
+         if Nkind (N) in N_Private_Type_Declaration
+                       | N_Full_Type_Declaration
+         then
+            declare
+               procedure Register_Iterable_Primitive
+                 (Typ : Entity_Id;
+                  Nam : Name_Id);
+               --  For a type Typ register primitive Nam of aspect Iterable
+
+               ---------------------------------
+               -- Register_Iterable_Primitive --
+               ---------------------------------
+
+               procedure Register_Iterable_Primitive
+                 (Typ : Entity_Id;
+                  Nam : Name_Id)
+               is
+                  Prim : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive (Typ, Nam);
+               begin
+                  if Present (Prim) then
+                     Register_Entity (Prim);
+                  end if;
+               end Register_Iterable_Primitive;
+
+               E : constant Entity_Id := Defining_Identifier (N);
+
+            begin
+               if Has_Aspect (E, Aspect_Iterable) then
+                  Register_Iterable_Primitive (E, Name_Element);
+                  Register_Iterable_Primitive (E, Name_First);
+                  Register_Iterable_Primitive (E, Name_Has_Element);
+                  Register_Iterable_Primitive (E, Name_Last);
+                  Register_Iterable_Primitive (E, Name_Next);
+                  Register_Iterable_Primitive (E, Name_Previous);
+               end if;
+            end;
          end if;
 
          --  Special-case type aspect subprograms

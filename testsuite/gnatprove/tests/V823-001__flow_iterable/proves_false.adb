@@ -13,7 +13,7 @@ procedure Proves_False with SPARK_Mode is
 
       function Length (M : Vector) return Big_Natural
       with Post =>
-         (for some k in M => k = Length'Result - 1) and then
+         (for some k in M => k = Length'Result - 1) and then --@POSTCONDITION:FAIL
          (for all k in M => k < Length'Result);
 
       function Iter_First (M : Vector) return Big_Natural;
@@ -44,5 +44,5 @@ procedure Proves_False with SPARK_Mode is
 
 begin
    pragma Assert(NaturalVector.Length(NaturalVector.Empty) = 1);
-   pragma Assert(False);
+   pragma Assert(False); --@ASSERT:FAIL
 end Proves_False;

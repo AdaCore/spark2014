@@ -106,8 +106,10 @@ package Functional_Sets with SPARK_Mode is
 
    --  For quantification purpose
    function First_Element (S : Set) return Element_Type;
+   pragma Annotate (GNATprove, Always_Return, First_Element);
    function Next_Element (S : Set; E : Element_Type) return Element_Type with
      Pre => Mem (S, E);
+   pragma Annotate (GNATprove, Always_Return, Next_Element);
 private
    pragma SPARK_Mode (Off);
 
