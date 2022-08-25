@@ -314,34 +314,40 @@ package body Flow_Utility is
             when N_Op =>
                pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
 
-            --  Detect calls via Iterable aspect specification if any
-            --
-            --  This code is intentionally mirroring the marking, so if it ever
-            --  fails we will know where to look for a problem.
+            --  Detect calls via Iterable aspect specification, if present
 
             when N_Iterator_Specification =>
-
                declare
-                  Iterable_Aspect : constant Node_Id :=
-                    Find_Aspect (Id => Etype (Name (N)), A => Aspect_Iterable);
+                  Typ : constant Entity_Id := Etype (Name (N));
                begin
-                  if Present (Iterable_Aspect) then
-                     declare
-                        Iterable_Component_Assoc : constant List_Id :=
-                          Component_Associations
-                            (Expression (Iterable_Aspect));
-                        Iterable_Field           : Node_Id :=
-                          First (Iterable_Component_Assoc);
-                     begin
-                        while Present (Iterable_Field) loop
-                           pragma Assert
-                             (Ekind (Entity (Expression (Iterable_Field))) =
-                                E_Function);
-                           Functions_Called.Include
-                             (Entity (Expression (Iterable_Field)));
-                           Next (Iterable_Field);
-                        end loop;
-                     end;
+                  if Has_Aspect (Typ, Aspect_Iterable) then
+
+                     --  Has_Element is called always
+
+                     Functions_Called.Include
+                       (Get_Iterable_Type_Primitive (Typ, Name_Has_Element));
+
+                     --  Element is called when OF keyword is present
+
+                     if Of_Present (N) then
+                        Functions_Called.Include
+                          (Get_Iterable_Type_Primitive (Typ, Name_Element));
+                     end if;
+
+                     --  First/Next and Last/Previous are called depening on
+                     --  the REVERSE keyword.
+
+                     if Reverse_Present (N) then
+                        Functions_Called.Include
+                          (Get_Iterable_Type_Primitive (Typ, Name_Last));
+                        Functions_Called.Include
+                          (Get_Iterable_Type_Primitive (Typ, Name_Previous));
+                     else
+                        Functions_Called.Include
+                          (Get_Iterable_Type_Primitive (Typ, Name_First));
+                        Functions_Called.Include
+                          (Get_Iterable_Type_Primitive (Typ, Name_Next));
+                     end if;
                   else
                      pragma Assert
                        (Of_Present (N)
