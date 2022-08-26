@@ -36,3 +36,19 @@ proves_false.adb:46:31: info: predicate check proved (Trivial: 1 VC)
 proves_false.adb:46:52: info: function contract not available for proof ("Empty" might not return)
 proves_false.adb:46:62: info: predicate check proved (Trivial: 1 VC)
 proves_false.adb:47:04: medium: assertion might fail
+statement.adb:15:23: warning: unused variable "M"
+statement.adb:16:22: warning: unused variable "M"
+statement.adb:22:34: info: in default value of private type at statement.adb:6
+statement.adb:22:34: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+statement.adb:25:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+statement.adb:26:74: info: predicate check proved (Trivial: 1 VC)
+statement.adb:26:76: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+statement.adb:26:78: info: predicate check proved (Trivial: 1 VC)
+statement.adb:27:75: info: predicate check proved (Trivial: 1 VC)
+statement.adb:27:79: info: predicate check proved (Trivial: 1 VC)
+statement.adb:33:31: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+statement.adb:35:14: info: precondition proved (Trivial: 1 VC)
+statement.adb:35:19: medium: loop might be nonterminating, terminating annotation on "Length" could be incorrect
+statement.adb:36:20: info: predicate check proved (Trivial: 1 VC)
+statement.adb:36:24: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+statement.adb:36:26: info: predicate check proved (Trivial: 1 VC)
