@@ -69,7 +69,7 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="3270"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="5"><result status="unknown" steps="1089"/></proof>
+  <proof prover="5"><result status="unknown" steps="1081"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.17.0">
    <proof prover="4"><result status="unknown" steps="3996"/></proof>
