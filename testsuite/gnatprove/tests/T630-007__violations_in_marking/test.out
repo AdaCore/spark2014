@@ -26,6 +26,8 @@ bad_access.adb:69:13: warning: assuming "Rand" has no effect on global items
 bad_access.adb:69:13: warning: no Global contract available for "Rand"
 bad_access.adb:69:13: warning: no returning annotation available for "Rand"
 bad_access.adb:95:18: error: "Id" is not allowed in SPARK
+bad_access.adb:95:18: error: "Id" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+bad_access.adb:95:18: error: violation of aspect SPARK_Mode at line 2
 bad_access.adb:95:18: error: violation of aspect SPARK_Mode at line 2
 bad_array_conv.adb:7:19: error: conversion between array types with modular and non-modular index types is not yet supported
 bad_array_conv.adb:9:32: error: "Y" is not allowed in SPARK (due to conversion between array types with modular and non-modular index types)
@@ -39,7 +41,7 @@ bad_at_end_borrow.adb:29:07: error: "Bad" is not allowed in SPARK (due to call t
 bad_at_end_borrow.adb:29:07: error: violation of aspect SPARK_Mode at line 1
 bad_inheritance.ads:17:13: error: subprogram inherited from root and interface is not yet supported
 bad_inheritance.ads:27:13: error: subprogram inherited from root and interface is not yet supported
-bad_inheritance.ads:29:09: error: "Bad_Inter" is not allowed in SPARK
+bad_inheritance.ads:29:09: error: "Bad_Inter" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 bad_inheritance.ads:29:09: error: violation of aspect SPARK_Mode at line 2
 bad_inv_placement.adb:6:10: error: nested packages before loop-invariant is not yet supported
 bad_inv_placement.adb:9:10: error: nested subprogram before loop-invariant is not yet supported

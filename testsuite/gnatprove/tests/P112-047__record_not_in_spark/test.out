@@ -2,6 +2,6 @@ s2.ads:8:07: error: component of anonymous access type is not allowed in SPARK
 s2.ads:8:07: error: violation of aspect SPARK_Mode at line 3
 s2.ads:12:07: error: "Bad_R" is not allowed in SPARK (due to component of anonymous access type)
 s2.ads:12:07: error: violation of aspect SPARK_Mode at line 3
-s2.ads:16:07: error: "T" is not allowed in SPARK
+s2.ads:16:07: error: "T" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 s2.ads:16:07: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof

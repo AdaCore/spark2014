@@ -7197,15 +7197,25 @@ package body SPARK_Definition is
       --  If the entity is declared in the scope of SPARK_Mode => Off, then do
       --  not consider whether it could be in SPARK or not. Restore SPARK_Mode
       --  pragma before returning.
-      --
-      --  ??? We still want to reject unsupported abstract states that are
-      --  Part_Of of a single concurrent object. This exception was added here
-      --  for a different reason and it is not clear if it is still needed.
 
-      if SPARK_Pragma_Is (Opt.Off)
-        and then Ekind (E) /= E_Abstract_State
-      then
-         goto Restore;
+      if SPARK_Pragma_Is (Opt.Off) then
+
+         --  Define the root cause for rejecting use of an entity declared with
+         --  SPARK_Mode Off.
+
+         if Emit_Messages then
+            Add_Violation_Root_Cause
+              (E, Msg => "entity declared with SPARK_Mode Off");
+         end if;
+
+         --  ??? We still want to reject unsupported abstract states that are
+         --  Part_Of of a single concurrent object. This exception was added
+         --  here for a different reason and it is not clear if it is still
+         --  needed.
+
+         if Ekind (E) /= E_Abstract_State then
+            goto Restore;
+         end if;
       end if;
 
       --  For recursive references, start with marking the entity in SPARK
@@ -7921,9 +7931,16 @@ package body SPARK_Definition is
 
       Current_SPARK_Pragma := SPARK_Pragma (Id);
 
-      if not SPARK_Pragma_Is (Opt.Off)
-        and then not Violation_Detected
-      then
+      if SPARK_Pragma_Is (Opt.Off) then
+         --  Define the root cause for rejecting use of an entity declared with
+         --  SPARK_Mode Off.
+
+         if Emit_Messages then
+            Add_Violation_Root_Cause
+              (Id, Msg => "entity declared with SPARK_Mode Off");
+         end if;
+
+      elsif not Violation_Detected then
          Entities_In_SPARK.Include (Id);
       end if;
 

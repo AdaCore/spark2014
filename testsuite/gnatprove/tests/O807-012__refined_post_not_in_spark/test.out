@@ -1,4 +1,4 @@
-refined_post_not_in_spark.adb:17:29: error: "Not_In_SPARK" is not allowed in SPARK
+refined_post_not_in_spark.adb:17:29: error: "Not_In_SPARK" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 refined_post_not_in_spark.adb:17:29: error: separate subprogram declaration from subprogram body to allow calling it from SPARK code
 refined_post_not_in_spark.adb:17:29: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

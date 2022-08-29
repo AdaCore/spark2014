@@ -1,4 +1,4 @@
-p.adb:5:04: error: "Synchronous_Barrier" is not allowed in SPARK
+p.adb:5:04: error: "Synchronous_Barrier" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 p.adb:5:04: error: violation of pragma SPARK_Mode at test.adc:1
 p.ads:3:09: high: possible data race when accessing variable "p.sb"
 p.ads:3:09: high: task "p.t1" accesses "p.sb"
