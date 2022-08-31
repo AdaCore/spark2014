@@ -1,6 +1,6 @@
 with SPARK.Containers.Functional.Vectors;
 with SPARK.Containers.Functional.Sets;
-use Ada.Containers;
+with Ada.Containers; use Ada.Containers;
 
 package Tree_Model with SPARK_Mode is
 

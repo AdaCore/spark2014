@@ -82,8 +82,8 @@ test_vdll.adb:101:30: info: assertion proved (Trivial: 1 VC)
 test_vdll.adb:105:10: info: discriminant check proved (CVC5: 1 VC)
 test_vdll.adb:105:10: info: precondition proved (CVC5: 1 VC)
 test_vdll.adb:109:19: info: assertion proved (CVC5: 1 VC)
-test_vdll.adb:110:19: info: assertion proved (CVC5: 1 VC)
 test_vdll.adb:110:19: info: precondition proved (CVC5: 1 VC)
+test_vdll.adb:110:19: medium: assertion might fail [possible fix: call at line 106 should mention Container (for argument L4) in a postcondition]
 test_vdll.adb:113:19: medium: assertion might fail [possible fix: call at line 106 should mention Container (for argument L4) in a postcondition]
 test_vdll.adb:113:40: medium: precondition might fail
 test_vdll.adb:116:19: info: precondition proved (CVC5: 1 VC)

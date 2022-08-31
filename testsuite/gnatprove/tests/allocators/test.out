@@ -190,8 +190,8 @@ list_mod_allocator.adb:196:15: info: precondition proved (CVC5: 4 VC), in call i
 list_mod_allocator.adb:196:15: info: precondition proved (CVC5: 4 VC), in call inlined at list_mod_allocator.adb:229
 list_mod_allocator.adb:196:33: info: precondition proved (CVC5: 4 VC), in call inlined at list_mod_allocator.adb:216
 list_mod_allocator.adb:196:33: info: precondition proved (CVC5: 4 VC), in call inlined at list_mod_allocator.adb:229
-list_mod_allocator.adb:197:25: info: assertion proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:216
-list_mod_allocator.adb:197:25: info: assertion proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:229
+list_mod_allocator.adb:197:25: info: assertion proved (altergo: 1 VC), in call inlined at list_mod_allocator.adb:216
+list_mod_allocator.adb:197:25: info: assertion proved (altergo: 1 VC), in call inlined at list_mod_allocator.adb:229
 list_mod_allocator.adb:197:45: info: overflow check proved (CVC5: 2 VC), in call inlined at list_mod_allocator.adb:216
 list_mod_allocator.adb:197:45: info: overflow check proved (CVC5: 2 VC), in call inlined at list_mod_allocator.adb:229
 list_mod_allocator.adb:198:27: info: precondition proved (CVC5: 2 VC), in call inlined at list_mod_allocator.adb:216
@@ -251,7 +251,7 @@ list_mod_allocator.ads:91:38: info: contract case proved (CVC5: 3 VC; Trivial: 1
 list_mod_allocator.ads:94:11: info: precondition proved (CVC5: 1 VC)
 list_mod_allocator.ads:94:19: info: precondition proved (CVC5: 1 VC)
 list_mod_allocator.ads:98:16: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
-list_mod_allocator.ads:99:25: info: precondition proved (altergo: 1 VC)
+list_mod_allocator.ads:99:25: info: precondition proved (CVC5: 1 VC)
 list_mod_allocator.ads:99:57: info: precondition proved (CVC5: 1 VC)
 list_mod_allocator.ads:101:19: info: precondition proved (CVC5: 1 VC)
 list_mod_allocator.ads:101:55: info: precondition proved (CVC5: 1 VC)
