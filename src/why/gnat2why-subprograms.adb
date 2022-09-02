@@ -2316,7 +2316,7 @@ package body Gnat2Why.Subprograms is
 
       elsif Is_Recursive (Function_Entity) then
          Error_Msg_N
-           ("?recursive function cannot be inlined for proof",
+           ("info: ?recursive function cannot be inlined for proof",
             Function_Entity);
 
          W_Def := Why_Empty;
@@ -4312,8 +4312,8 @@ package body Gnat2Why.Subprograms is
             Precondition_Is_Statically_False := True;
 
             if Original_Node (Expr) /= Expr then
-               Error_Msg_N (Msg  => "?precondition is statically False",
-                            N    => Expr);
+               Error_Msg_N
+                 (Warning_Message (Warn_Precondition_Statically_False), Expr);
             end if;
          end if;
       end loop;
@@ -4578,7 +4578,7 @@ package body Gnat2Why.Subprograms is
       if Present (Get_Pragma (E, Pragma_Subprogram_Variant))
         and then not Is_Recursive (E)
       then
-         Error_Msg_F ("?no recursive call visible",
+         Error_Msg_F (Warning_Message (Warn_Variant_Not_Recursive),
                       Get_Pragma (E, Pragma_Subprogram_Variant));
       end if;
 
@@ -4809,9 +4809,8 @@ package body Gnat2Why.Subprograms is
       --  non-returning lemmas.
 
       if Is_Potentially_Nonreturning (E) then
-         Error_Msg_N
-           ("?lemma procedure cannot be instanciated automatically", E);
-         Error_Msg_NE ("\procedure & might not return", E, E);
+         Error_Msg_N (Warning_Message (Warn_Lemma_Procedure_No_Return), E);
+         Error_Msg_NE ("\\procedure & might not return", E, E);
          return;
       end if;
 

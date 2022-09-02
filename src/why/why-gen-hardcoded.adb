@@ -368,7 +368,7 @@ package body Why.Gen.Hardcoded is
 
             if Name_String = BIN.Is_Valid and then Args'Length = 1 then
                pragma Assert (Args'Length = 1);
-               Error_Msg_F ("?function Is_Valid is assumed to return True",
+               Error_Msg_F (Warning_Message (Warn_Function_Is_Valid),
                             Ada_Node);
 
                if Domain = EW_Prog then
@@ -655,7 +655,7 @@ package body Why.Gen.Hardcoded is
 
             if Name_String = BRN.Is_Valid and then Args'Length = 1 then
                pragma Assert (Args'Length = 1);
-               Error_Msg_F ("?function Is_Valid is assumed to return True",
+               Error_Msg_F (Warning_Message (Warn_Function_Is_Valid),
                             Ada_Node);
 
                if Domain = EW_Prog then

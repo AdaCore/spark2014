@@ -34,6 +34,8 @@ procedure Table_Generator is
      Compose (Target_Dir, "flow_checks_table.rst");
    Proof_Target : constant String :=
      Compose (Target_Dir, "proof_checks_table.rst");
+   Warnings_Target  : constant String :=
+     Compose (Target_Dir, "misc_warnings_table.rst");
 
    subtype Class_Tag is Character
    with Static_Predicate => Class_Tag in 'E' | 'C' | 'W';
@@ -47,6 +49,7 @@ procedure Table_Generator is
 
    procedure Produce_Flow_Checks_Table;
    procedure Produce_Proof_Checks_Table;
+   procedure Produce_Misc_Warnings_Table;
 
    function Flow_Msg_Type (Tag : Valid_Flow_Tag_Kind) return Class_Tag is
      (case Tag is
@@ -104,6 +107,50 @@ procedure Table_Generator is
                   "suppressed or justified.");
    end Produce_Flow_Checks_Table;
 
+   ---------------------------------
+   -- Produce_Misc_Warnings_Table --
+   ---------------------------------
+
+   procedure Produce_Misc_Warnings_Table is
+      File : File_Type;
+   begin
+      Create (File, Name => Warnings_Target);
+      Put_Line (File, "Miscellaneous warnings reported by GNATprove");
+      Put_Line (File, "--------------------------------------------");
+      New_Line (File);
+      Put_Line (File, "The following table shows default warnings " &
+                  "reported by GNATprove outside of flow analysis and proof.");
+      New_Line (File);
+      Put_Line (File, ".. tabularcolumns:: |p{2in}|p{3in}|");
+      New_Line (File);
+      Put_Line (File, ".. csv-table::");
+      Put_Line (File, "   :header: ""Message Kind"", ""Explanation""");
+      Put_Line (File, "   :widths: 1, 4");
+      New_Line (File);
+      for Kind in Default_Warning_Kind loop
+         Put (File, "    ");
+         Put (File, """" & Kind_Name (Kind) & """, ");
+         Put (File, """" & Description (Kind) & """");
+         New_Line (File);
+      end loop;
+      New_Line (File);
+      Put_Line (File, "The following table shows warnings " &
+                  "reported by GNATprove when using switch ``--pedantic``.");
+      New_Line (File);
+      Put_Line (File, ".. tabularcolumns:: |p{2in}|p{3in}|");
+      New_Line (File);
+      Put_Line (File, ".. csv-table::");
+      Put_Line (File, "   :header: ""Message Kind"", ""Explanation""");
+      Put_Line (File, "   :widths: 1, 4");
+      New_Line (File);
+      for Kind in Pedantic_Warning_Kind loop
+         Put (File, "    ");
+         Put (File, """" & Kind_Name (Kind) & """, ");
+         Put (File, """" & Description (Kind) & """");
+         New_Line (File);
+      end loop;
+   end Produce_Misc_Warnings_Table;
+
    --------------------------------
    -- Produce_Proof_Checks_Table --
    --------------------------------
@@ -122,7 +169,7 @@ procedure Table_Generator is
          Put (File, "   ");
          Put (File, """" & Kind_Name (Kind) & """, ");
          declare
-            Ref : String renames  CWE_Ref (CWE_ID (Kind));
+            Ref : String renames CWE_Ref (CWE_ID (Kind));
          begin
             if Ref /= "" then
                Put (File, """" & Ref & """, ");
@@ -185,4 +232,5 @@ procedure Table_Generator is
 begin
    Produce_Flow_Checks_Table;
    Produce_Proof_Checks_Table;
+   Produce_Misc_Warnings_Table;
 end Table_Generator;
