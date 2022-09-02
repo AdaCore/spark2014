@@ -114,6 +114,17 @@ package body VC_Kinds is
             | VC_UC_Target
             | VC_UC_Same_Size              => "843",
 
+         --  CWE-570 Expression is Always False
+
+         when VC_Inconsistent_Pre
+            | VC_Inconsistent_Post
+            | VC_Inconsistent_Assume       => "570",
+
+         --  CWE-561 Dead Code
+
+         when VC_Unreachable_Branch
+            | VC_Dead_Code                 => "570",
+
          --  We did not find a relevant CWE for the following yet
 
          when VC_Invariant_Check
@@ -144,7 +155,6 @@ package body VC_Kinds is
             | VC_Stronger_Classwide_Post
             | VC_Weaker_Pre_Access
             | VC_Stronger_Post_Access
-            | VC_Warning_Kind
             | VC_Null_Exclusion
             | VC_UC_Alignment
             | VC_Unchecked_Union_Restriction

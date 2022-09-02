@@ -139,6 +139,9 @@ procedure Table_Generator is
       Put_Line (File, "Messages reported by Proof");
       Put_Line (File, "--------------------------");
       New_Line (File);
+      Put_Line (File, "The following table shows all check " &
+                  "messages reported by proof.");
+      New_Line (File);
       Put_Line (File, ".. tabularcolumns:: |p{2in}|l|p{3in}|");
       New_Line (File);
       Put_Line (File, ".. csv-table::");
@@ -158,6 +161,21 @@ procedure Table_Generator is
       New_Line (File);
       Put_Line (File, "   **Liskov Substitution Principle**");
       for Kind in VC_LSP_Kind loop
+         Put_Check_Line (Kind);
+      end loop;
+      New_Line (File);
+      Put_Line (File, "The following table shows all warning " &
+                  "messages reported by proof when using switch " &
+                  "``--proof-warnings``.");
+      New_Line (File);
+      Put_Line (File, ".. tabularcolumns:: |p{2in}|l|p{3in}|");
+      New_Line (File);
+      Put_Line (File, ".. csv-table::");
+      Put_Line (File, "   :header: ""Message Kind"", ""CWE"", " &
+                  """Explanation""");
+      Put_Line (File, "   :widths: 1, 1, 4");
+      New_Line (File);
+      for Kind in VC_Warning_Kind loop
          Put_Check_Line (Kind);
       end loop;
    end Produce_Proof_Checks_Table;
