@@ -1,0 +1,2 @@
+neverending_dispatching.adb:1:11: info: subprogram "Neverending_Dispatching" will terminate, terminating annotation has been proved
+neverending_dispatching.adb:26:21: warning: statement has no effect
