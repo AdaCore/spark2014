@@ -123,7 +123,7 @@ package body VC_Kinds is
          --  CWE-561 Dead Code
 
          when VC_Unreachable_Branch
-            | VC_Dead_Code                 => "570",
+            | VC_Dead_Code                 => "561",
 
          --  We did not find a relevant CWE for the following yet
 
