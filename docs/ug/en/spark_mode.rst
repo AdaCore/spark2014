@@ -129,8 +129,9 @@ There are two possible defaults:
 
 #. A value of ``SPARK_Mode => On`` is specified as a configuration pragma. In
    that case, all the program should be in |SPARK|, except for those parts
-   explicitly marked with ``SPARK_Mode => Off``. This mode is recommended if
-   most of the program is in |SPARK|.
+   explicitly marked with ``SPARK_Mode => Off`` or a configuration pragma of
+   ``Auto`` inside files. This mode is recommended if most of the program is in
+   |SPARK|.
 
 Here is how to specify a value of ``SPARK_Mode => On`` as a configuration
 pragma:
@@ -277,7 +278,7 @@ The form of a pragma SPARK_Mode is as follows:
 
 .. code-block:: ada
 
-   pragma SPARK_Mode [ (On | Off) ]
+   pragma SPARK_Mode [ (Auto | On | Off) ]
 
 For example:
 
@@ -285,6 +286,14 @@ For example:
 
    pragma SPARK_Mode (On);
    package P is
+
+The value ``Auto`` is only allowed in configuration pragmas, either in a
+configuration pragma file, or inside a source file. Thus, value ``Auto`` is not
+allowed in aspect ``SPARK_Mode``. Having a value ``Auto`` means that the
+file is analyzed as if no value of ``SPARK_Mode`` was specified, which is
+useful in cases where ``SPARK_Mode => On`` is specified in a configuration
+pragma file for the complete project, but a file contains both entities
+compatible with SPARK and entities not in SPARK.
 
 The form of an aspect SPARK_Mode is as follows:
 
