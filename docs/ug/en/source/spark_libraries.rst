@@ -120,20 +120,61 @@ computations on real numbers.
       --  are not too big.
    end;
 
+.. index:: SPARK Library
+
+SPARK Library
+-------------
+
+As part of the |SPARK| product, several libraries are available through the
+project file :file:`<spark-install>/lib/gnat/sparklib.gpr` (or through the
+extended project file :file:`<spark-install>/lib/gnat/sparklib_zfp.gpr` in
+an environment without units ``Ada.Numerics.Big_Numbers.Big_Integers`` and
+``Ada.Numerics.Big_Numbers.Big_Reals``, but note that unit
+``Ada.Numerics.Big_Numbers.Big_Integers_Ghost`` could be used as an alternative
+to the former in that context). Header files of the SPARK library are available
+through :menuselection:`Help --> SPARK --> SPARKlib` menu item in GNAT Studio. To
+use this library in a program, you need to add a corresponding dependency in
+your project file, for example:
+
+.. code-block:: gpr
+
+  with "sparklib";
+  project My_Project is
+     ...
+  end My_Project;
+
+.. index:: GPR_PROJECT_PATH; for SPARK library
+
+You may need to update the environment variable ``GPR_PROJECT_PATH`` for the
+lemma library project to be found by GNAT compiler, as described in
+:ref:`Installation of GNATprove`.
+
+You also need to set the environment variable ``SPARKLIB_OBJECT_DIR`` to
+the absolute path of the object directory where you want compilation and
+verification artefacts for the SPARK library to be created. This should be an
+absolute path (not a relative one) otherwise these artefacts will be created
+inside your |SPARK| install.
+
+Finally, if you instantiate in your code a generic from the SPARK library, you
+also need to pass ``-gnateDSPARK_BODY_MODE=Off`` as a compilation switch for
+these generic units.
+
 .. index:: functional containers
 
 Functional Containers Library
 -----------------------------
 
-To model complex data structures, one often needs simpler, mathematical like
-containers. The mathematical containers provided in the |SPARK| library are
-unbounded and may contain indefinite elements. Furthermore, to be usable in
-every context, they are neither controlled nor limited. So that these containers
-can be used safely, we have made them functional, that is, no primitives are
-provided which would allow modifying an existing container. Instead, their API
-features functions creating new containers from existing ones. As an example,
-functional containers provide no ``Insert`` procedure but rather a function
-``Add`` which creates a new container with one more element than its parameter:
+To model complex data structures, one often needs simpler,
+mathematical like containers. The mathematical containers provided in
+the |SPARK| library (see the :ref:`SPARK Library`) are unbounded and
+may contain indefinite elements. Furthermore, to be usable in every
+context, they are neither controlled nor limited. So that these
+containers can be used safely, we have made them functional, that is,
+no primitives are provided which would allow modifying an existing
+container. Instead, their API features functions creating new
+containers from existing ones. As an example, functional containers
+provide no ``Insert`` procedure but rather a function ``Add`` which
+creates a new container with one more element than its parameter:
 
 .. code-block:: ada
 
@@ -144,12 +185,12 @@ consuming as the allocated memory is not reclaimed when the container is no
 longer referenced. Thus, they should in general be used in ghost code and
 annotations so that they can be removed from the final executable.
 
-There are 3 functional containers, which are part of the |GNAT Pro| standard
+There are 3 functional containers, which are part of the |SPARK| 
 library:
 
-* ``Ada.Containers.Functional_Maps``
-* ``Ada.Containers.Functional_Sets``
-* ``Ada.Containers.Functional_Vectors``
+* ``SPARK.Containers.Functional.Maps``
+* ``SPARK.Containers.Functional.Sets``
+* ``SPARK.Containers.Functional.Vectors``
 
 Sequences defined in ``Functional_Vectors`` are no more than ordered collections
 of elements. In an Ada like manner, the user can choose the range used to index
@@ -171,7 +212,6 @@ inclusion, union, and intersection. They are neither ordered nor hashed:
     function "<=" (Left : Set; Right : Set) return Boolean;
 
 Functional maps offer a dictionary between any two types of elements:
-
 
 .. code-block:: ada
 
@@ -249,20 +289,20 @@ particular preconditions) ensuring correct usage in client code.
 The formal containers are a variation of the bounded containers with API
 changes that allow adding suitable contracts, so that |GNATprove| can prove
 that client code manipulates containers correctly. There are 7 formal
-containers, which are part of the |GNAT Pro| standard library:
+containers, which are part of the |SPARK| library:
 
-* ``Ada.Containers.Formal_Vectors``
-* ``Ada.Containers.Formal_Indefinite_Vectors``
-* ``Ada.Containers.Formal_Doubly_Linked_Lists``
-* ``Ada.Containers.Formal_Hashed_Sets``
-* ``Ada.Containers.Formal_Ordered_Sets``
-* ``Ada.Containers.Formal_Hashed_Maps``
-* ``Ada.Containers.Formal_Ordered_Maps``
+* ``SPARK.Containers.Formal.Vectors``
+* ``SPARK.Containers.Formal.Indefinite_Vectors``
+* ``SPARK.Containers.Formal.Doubly_Linked_Lists``
+* ``SPARK.Containers.Formal.Hashed_Sets``
+* ``SPARK.Containers.Formal.Ordered_Sets``
+* ``SPARK.Containers.Formal.Hashed_Maps``
+* ``SPARK.Containers.Formal.Ordered_Maps``
 
 Lists, sets and maps can only be used with definite objects (objects for which
 the compiler can compute the size in memory, hence not ``String`` nor
 ``T'Class``). Vectors come in two flavors for definite objects
-(``Formal_Vectors``) and indefinite objects (``Formal_Indefinite_Vectors``).
+(``Formal.Vectors``) and indefinite objects (``Formal.Indefinite_Vectors``).
 
 Lists, sets, maps, and definite vectors are always bounded. Indefinite vectors
 can be bounded or unbounded
@@ -438,42 +478,9 @@ Reference Manual for details on aspect ``Iterable``.
 SPARK Lemma Library
 -------------------
 
-As part of the |SPARK| product, a library of lemmas is available through the
-project file :file:`<spark-install>/lib/gnat/spark_lemmas.gpr` (or through the
-extended project file :file:`<spark-install>/lib/gnat/spark_lemmas_zfp.gpr` in
-an environment without units ``Ada.Numerics.Big_Numbers.Bit_Integers`` and
-``Ada.Numerics.Big_Numbers.Big_Reals``, but note that unit
-``Ada.Numerics.Big_Numbers.Big_Integers_Ghost`` could be used as an alternative
-to the former in that context). Header files of the lemma library are available
-through :menuselection:`Help --> SPARK --> Lemmas` menu item in GNAT Studio. To
-use this library in a program, you need to add a corresponding dependency in
-your project file, for example:
-
-.. code-block:: gpr
-
-  with "spark_lemmas";
-  project My_Project is
-     ...
-  end My_Project;
-
-.. index:: GPR_PROJECT_PATH; for lemma library
-
-You may need to update the environment variable ``GPR_PROJECT_PATH`` for the
-lemma library project to be found by GNAT compiler, as described in
-:ref:`Installation of GNATprove`.
-
-You also need to set the environment variable ``SPARK_LEMMAS_OBJECT_DIR`` to
-the absolute path of the object directory where you want compilation and
-verification artefacts for the lemma library to be created. This should be an
-absolute path (not a relative one) otherwise these artefacts will be created
-inside you |SPARK| install.
-
-Finally, if you instantiate in your code a generic from the lemma library, you
-also need to pass ``-gnateDSPARK_BODY_MODE=Off`` as a compilation switch for
-these generic units.
-
-This library consists in a set of ghost null procedures with contracts (called
-`lemmas`). Here is an example of such a lemma:
+As part of the SPARK library (see :ref:`SPARK Library`), packages
+declaring a set of ghost null procedures with contracts (called
+`lemmas`) are distributed. Here is an example of such a lemma:
 
 .. code-block:: ada
 
@@ -539,29 +546,29 @@ syntax):
 
 Currenly, the SPARK lemma library provides the following lemmas:
 
-* Lemmas on signed integer arithmetic in file ``spark-arithmetic_lemmas.ads``,
+* Lemmas on signed integer arithmetic in file ``spark-lemmas-arithmetic.ads``,
   that are instantiated for 32 bits signed integers (``Integer``) in file
-  ``spark-integer_arithmetic_lemmas.ads`` and for 64 bits signed integers
-  (``Long_Integer``) in file ``spark-long_integer_arithmetic_lemmas.ads``.
+  ``spark-lemmas-integer_arithmetic.ads`` and for 64 bits signed integers
+  (``Long_Integer``) in file ``spark-lemmas-long_integer_arithmetic.ads``.
 
 * Lemmas on modular integer arithmetic in file
-  ``spark-mod_arithmetic_lemmas.ads``, that are instantiated for 32 bits
+  ``spark-lemmas-mod_arithmetic.ads``, that are instantiated for 32 bits
   modular integers (``Interfaces.Unsigned_32``) in file
-  ``spark-mod32_arithmetic_lemmas.ads`` and for 64 bits modular integers
-  (``Interfaces.Unsigned_64``) in file ``spark-mod64_arithmetic_lemmas.ads``.
+  ``spark-lemmas-mod32_arithmetic.ads`` and for 64 bits modular integers
+  (``Interfaces.Unsigned_64``) in file ``spark-lemmas-mod64_arithmetic.ads``.
 
 * GNAT-specific lemmas on fixed-point arithmetic in file
-  ``spark-fixed_point_arithmetic_lemmas.ads``, that need to be instantiated by
+  ``spark-lemmas-fixed_point_arithmetic.ads``, that need to be instantiated by
   the user for her specific fixed-point type.
 
 * Lemmas on floating point arithmetic in file
-  ``spark-floating_point_arithmetic_lemmas.ads``, that are instantiated for
+  ``spark-lemmas-floating_point_arithmetic.ads``, that are instantiated for
   single-precision floats (``Float``) in file
-  ``spark-float_arithmetic_lemmas.ads`` and for double-precision floats
-  (``Long_Float``) in file ``spark-long_float_arithmetic_lemmas.ads``.
+  ``spark-lemmas-float_arithmetic.ads`` and for double-precision floats
+  (``Long_Float``) in file ``spark-lemmas-long_float_arithmetic.ads``.
 
 * Lemmas on unconstrained arrays in file
-  ``spark-unconstrained_array_lemmas.ads``, that need to be instantiated by the
+  ``spark-lemmas-unconstrained_array.ads``, that need to be instantiated by the
   user for her specific type of index and element, and specific ordering
   function between elements.
 
@@ -581,9 +588,9 @@ passed in arguments, as follows:
 Higher Order Function Library
 -----------------------------
 
-The SPARK product also includes a library of higher order functions for
-unconstrained arrays. It is available using the same project file as the
-:ref:`SPARK Lemma Library`.
+The SPARK product also includes a library of higher order functions
+for unconstrained arrays. It is available using the |SPARK| library
+(see :ref:`SPARK Library`).
 
 This library consists in a set of generic entities defining usual operations on
 arrays. As an example, here is a generic function for the map higher-level

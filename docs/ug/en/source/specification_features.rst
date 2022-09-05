@@ -1322,7 +1322,7 @@ Then, in the usual context where ghost code is not kept in the final executable,
 the user is given more freedom to use in ghost code constructs that are less
 efficient than in normal code, which may be useful to express rich
 properties. For example, the ghost functions defined in the :ref:`Formal
-Containers Library` in |GNAT Pro| typically copy the entire content of the
+Containers Library` in |SPARKlib| typically copy the entire content of the
 argument container, which would not be acceptable for non-ghost functions.
 
 Ghost Variables
