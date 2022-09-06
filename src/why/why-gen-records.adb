@@ -612,9 +612,9 @@ package body Why.Gen.Records is
    procedure Create_Rep_Record_Completion_If_Needed (E : Entity_Id) is
 
       procedure Complete_Extraction_Functions with
-        Pre => E = Root_Retysp (E);
+        Pre => E /= Root_Retysp (E);
       --  Emit axioms definining the extract__<comp> functions for all
-      --  components of the visible extensions of a root record type E.
+      --  components of E.
 
       procedure Complete_Hide_Function with
         Pre => E /= Root_Retysp (E);
@@ -638,68 +638,70 @@ package body Why.Gen.Records is
       -----------------------------------
 
       procedure Complete_Extraction_Functions is
-         Ext_Comps          : constant Node_Sets.Set :=
-           Get_Extension_Components (Root);
          Concrete_Root_Type : constant W_Type_Id :=
            Concrete_Extension_Type (Root);
          Root_Ext_Id        : constant W_Identifier_Id :=
            To_Local (E_Symb (Root, WNE_Rec_Extension));
 
       begin
-         for Field of Ext_Comps loop
+         for Field of Get_Component_Set (E) loop
+            if Original_Declaration (Field) = E then
 
-            --  Generate:
-            --  axiom extract__<comp>__def:
-            --   forall ext : __exp_type.
-            --     extract__<comp> ext = (open ext).<comp>
+               --  Generate:
+               --  axiom extract__<comp>__def:
+               --   forall ext : __ext_type.
+               --     extract__<comp> ext = (root_ext.open ext).<comp>
 
-            declare
-               Orig     : constant Entity_Id := Original_Declaration (Field);
-               Field_Id : constant W_Identifier_Id :=
-                 Hidden_Component_Name (Field, Root);
-               Extract_Call : W_Expr_Id := New_Call
-                 (Domain => EW_Term,
-                  Name   => Extract_Fun
-                    (Field, Rec => Orig, Local => False),
-                  Args   => (1 => +Root_Ext_Id),
-                  Typ    => W_Type_Of_Component
-                    (Field, Orig, Init_Wrapper => False));
-               --  extract__<comp> ext
+               declare
+                  Field_Id     : constant W_Identifier_Id :=
+                    Hidden_Component_Name (Field, Root, Local => False);
+                  Extract_Call : W_Expr_Id := New_Call
+                    (Domain => EW_Term,
+                     Name   => Extract_Fun
+                       (Field, Rec => E, Local => False),
+                     Args   => (1 => +Root_Ext_Id),
+                     Typ    => W_Type_Of_Component
+                       (Field, E, Init_Wrapper => False));
+                  --  extract__<comp> ext
 
-            begin
-               --  If field is a true component, then we might need a
-               --  conversion so that it has the type of the root component.
+               begin
 
-               if not Is_Type (Field) then
-                  Extract_Call := Insert_Simple_Conversion
-                    (Domain         => EW_Term,
-                     Expr           => Extract_Call,
-                     To             => Get_Typ (Field_Id),
-                     Force_No_Slide => True);
-               end if;
+                  --  If field is a true component, then we might need a
+                  --  conversion so that it has the type of the root component.
 
-               Emit (Th,
-                     New_Guarded_Axiom
-                       (Name     =>
-                          NID (Img (Get_Symb
-                            (Get_Name (Extract_Fun (Field, Rec => Orig))))
-                            & "__def"),
-                        Binders  => (1 => (B_Name => Root_Ext_Id,
-                                           others => <>)),
-                        Def      => +New_Comparison
-                          (Symbol => Why_Eq,
-                           Left   => Extract_Call,
-                           Right  => New_Record_Access
-                             (Name  => New_Call
-                                  (Domain  => EW_Term,
-                                   Name    => New_Identifier
-                                     (Name => To_String (WNE_Open)),
-                                   Args    => (1 => +Root_Ext_Id),
-                                   Typ     => Concrete_Root_Type),
-                              Field => Field_Id,
-                              Typ   => Get_Typ (Field_Id)),
-                           Domain => EW_Term)));
-            end;
+                  if not Is_Type (Field) then
+                     Extract_Call := Insert_Simple_Conversion
+                       (Domain         => EW_Term,
+                        Expr           => Extract_Call,
+                        To             => Get_Typ (Field_Id),
+                        Force_No_Slide => True);
+                  end if;
+
+                  Emit (Th,
+                        New_Guarded_Axiom
+                          (Name     =>
+                             NID (Img (Get_Symb
+                               (Get_Name (Extract_Fun (Field, Rec => E))))
+                               & "__def"),
+                           Binders  => (1 => (B_Name => Root_Ext_Id,
+                                              others => <>)),
+                           Def      => +New_Comparison
+                             (Symbol => Why_Eq,
+                              Left   => Extract_Call,
+                              Right  => New_Record_Access
+                                (Name  => New_Call
+                                     (Domain  => EW_Term,
+                                      Name    => New_Identifier
+                                        (Name   => To_String (WNE_Open),
+                                         Module =>
+                                           Get_Rep_Record_Completion (Root)),
+                                      Args    => (1 => +Root_Ext_Id),
+                                      Typ     => Concrete_Root_Type),
+                                 Field => Field_Id,
+                                 Typ   => Get_Typ (Field_Id)),
+                              Domain => EW_Term)));
+               end;
+            end if;
          end loop;
       end Complete_Extraction_Functions;
 
@@ -1033,9 +1035,8 @@ package body Why.Gen.Records is
       --  Add defining axioms for the abstract functions for extraction and
       --  collapse of the type extension.
 
-      if E = Root then
+      if E /= Root then
          Complete_Extraction_Functions;
-      else
          Complete_Hide_Function;
       end if;
 
