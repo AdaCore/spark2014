@@ -25,7 +25,7 @@ instr-child.adb:16:32: info: overflow check proved (CodePeer)
 instr-child.adb:16:39: info: division check proved (CodePeer)
 instr-child.ads:7:14: warning: subprogram "Display_Value" has no effect
 instr.adb:6:24: info: cannot unroll loop (too many loop iterations)
-instr.adb:7:18: medium: array index check might fail [reason for check: value must be a valid index into the array]
+instr.adb:7:18: medium: array index check might fail (e.g. when J = 15) [reason for check: value must be a valid index into the array] [possible fix: add or complete related loop invariants or postconditions]
 instr.adb:14:07: warning: assuming "New_Line" always returns
 instr.adb:14:07: warning: assuming "New_Line" has no effect on global items
 instr.adb:14:07: warning: no Global contract available for "New_Line"

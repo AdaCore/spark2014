@@ -79,7 +79,7 @@ project GNATprove is
          "report_database.ads"); --  spurious codepeer violation U804-011
 
       for Switches use ("-j0",
-                        "-level", "1",
+                        "--level", "1",
                         "-gnatws");
    end CodePeer;
 

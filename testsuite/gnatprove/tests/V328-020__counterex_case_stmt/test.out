@@ -1,15 +1,15 @@
 case_stmt.adb:8:05: info: initialization of "A" proved
 case_stmt.adb:11:51: high: assertion might fail (e.g. when A = Work)
-case_stmt.adb:12:51: high: assertion might fail (e.g. when A = Party)
+case_stmt.adb:12:51: high: assertion might fail (e.g. when A = Party and I = Index'Last-1)
 case_stmt.adb:13:51: high: assertion might fail (e.g. when A = Sleep)
 case_stmt.adb:22:05: info: initialization of "J" proved
-case_stmt.adb:25:54: high: assertion might fail (e.g. when J = 1)
+case_stmt.adb:25:54: high: assertion might fail (e.g. when J = 1 and K = 10)
 case_stmt.adb:26:54: high: assertion might fail (e.g. when J = 2)
-case_stmt.adb:27:54: high: assertion might fail (e.g. when J = 3)
+case_stmt.adb:27:54: high: assertion might fail (e.g. when J = 3 and K = 1)
 case_stmt.adb:28:54: high: assertion might fail (e.g. when J = 4)
 case_stmt.adb:37:05: info: initialization of "A" proved
 case_stmt.adb:40:53: high: assertion might fail (e.g. when A = Work)
-case_stmt.adb:41:53: high: assertion might fail (e.g. when A = Party)
+case_stmt.adb:41:53: high: assertion might fail (e.g. when A = Party and D = Fri)
 case_stmt.adb:42:53: high: assertion might fail (e.g. when A = Sleep)
 case_stmt.adb:51:05: info: initialization of "A" proved
 case_stmt.adb:54:52: high: assertion might fail (e.g. when A = Sleep)

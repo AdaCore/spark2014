@@ -54,7 +54,7 @@ sqrt_subcontract_weakness.adb:9:23: info: overflow check proved (CVC5: 2 VC)
 sqrt_subcontract_weakness.adb:12:30: info: loop invariant initialization proved (CVC5: 1 VC)
 sqrt_subcontract_weakness.adb:12:30: info: loop invariant preservation proved (CVC5: 1 VC)
 sqrt_subcontract_weakness.adb:13:30: info: loop invariant initialization proved (CVC5: 1 VC)
-sqrt_subcontract_weakness.adb:13:30: medium: loop invariant might not be preserved by an arbitrary iteration
+sqrt_subcontract_weakness.adb:13:30: medium: loop invariant might not be preserved by an arbitrary iteration (e.g. when R = 1 and Y = 3) [possible fix: add or complete related loop invariants or postconditions]
 sqrt_subcontract_weakness.adb:13:35: info: overflow check proved (CVC5: 4 VC)
 sqrt_subcontract_weakness.adb:14:30: info: loop invariant initialization proved (CVC5: 1 VC)
 sqrt_subcontract_weakness.adb:14:30: info: loop invariant preservation proved (CVC5: 1 VC)

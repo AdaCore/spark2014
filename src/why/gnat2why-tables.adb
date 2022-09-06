@@ -328,8 +328,9 @@ package body Gnat2Why.Tables is
       Rec_Ty  : constant Entity_Id := Find_Rec_Node_For_Variant (Rec);
       C_I_Map : Component_Info_Map renames
         Comp_Info (Rec_Ty).Variant_Info;
+      R_Comp  : constant Entity_Id := Original_Record_Component (Comp);
       Curs    : constant Component_Info_Maps.Cursor :=
-        C_I_Map.Find (Search_Component_In_Type (Rec_Ty, Comp));
+        C_I_Map.Find (R_Comp);
    begin
       return Component_Info_Maps.Has_Element (Curs)
         and then Present (C_I_Map (Curs).Parent_Variant);
@@ -513,17 +514,14 @@ package body Gnat2Why.Tables is
 
       if Is_Base_Type (E) then
          Init_Component_Info (E, Comp_Info (Position), Visibility => Regular);
-      else
-         Init_Component_Info_For_Subtypes (E, Comp_Info (Position));
-      end if;
 
-      if Is_Tagged_Type (Root_Retysp (E)) then
-         Descendants.Include (E, Node_Sets.Empty_Set);
-         Store_In_Ancestors (E);
-
-         if Ekind (E) /= E_Record_Subtype then
+         if Is_Tagged_Type (Root_Retysp (E)) then
+            Descendants.Include (E, Node_Sets.Empty_Set);
+            Store_In_Ancestors (E);
             Init_Tagged_Components (E);
          end if;
+      else
+         Init_Component_Info_For_Subtypes (E, Comp_Info (Position));
       end if;
    end Init_Component_Info;
 

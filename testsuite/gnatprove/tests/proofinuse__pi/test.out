@@ -55,8 +55,8 @@ pi_compute.adb:76:35: info: overflow check proved (CodePeer)
 pi_compute.adb:76:35: info: range check proved (CodePeer)
 pi_compute.adb:77:07: info: initialization of "Res" proved
 pi_compute.adb:79:18: info: division check proved (CodePeer)
+pi_compute.adb:79:18: info: overflow check proved (CVC5: 2 VC)
 pi_compute.adb:79:18: info: range check proved (CodePeer)
-pi_compute.adb:79:18: medium: overflow check might fail, cannot prove lower bound for Num / Den [reason for check: result of fixed-point division must fit in the underlying 32-bits machine integer]
 pi_compute.adb:80:22: info: assertion proved (CodePeer)
 pi_compute.adb:85:19: info: postcondition proved (CVC5: 1 VC)
 pi_compute.adb:99:25: info: float overflow check proved (CodePeer)

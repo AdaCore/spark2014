@@ -3,7 +3,7 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000"/>
-<prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
+<prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
 <prover id="3" name="altergo" version="1.30-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
 <prover id="4" name="colibri" version="2137" timelimit="5" steplimit="0" memlimit="1000"/>
@@ -17,16 +17,18 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="1" timelimit="1"><result status="valid" steps="3232"/></proof>
+  <proof prover="1" timelimit="1"><result status="valid" steps="41034"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="1"><result status="valid" steps="10172"/></proof>
+  <proof prover="1"><result status="valid" steps="678375"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="1"><result status="valid" steps="4562"/></proof>
+  <proof prover="1"><result status="valid" steps="678265"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="1"><result status="valid" steps="12989"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="3"><result status="valid" steps="1874"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <proof prover="0"><result status="valid" steps="1"/></proof>
@@ -35,7 +37,7 @@
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   <proof prover="3"><result status="outofmemory"/></proof>
-  <proof prover="4"><result status="valid" steps="319"/></proof>
+  <proof prover="4"><result status="valid" steps="317"/></proof>
   </goal>
  </transf>
  </goal>

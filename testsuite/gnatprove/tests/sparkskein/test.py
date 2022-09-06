@@ -10,4 +10,4 @@ def replay():
 
 
 if __name__ == "__main__":
-    prove_all(procs=4, replay=True, no_fail=True)
+    prove_all(replay=True, no_fail=True)

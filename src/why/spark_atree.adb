@@ -27,6 +27,7 @@ with Ada.Text_IO; -- debugging purpose
 with Aspects;
 with Einfo.Utils;
 with Nlists;             use Nlists;
+with Sem_Aggr;
 with Sem_Ch12;
 with Sem_Disp;
 with SPARK_Util.Types;
@@ -1072,6 +1073,13 @@ package body SPARK_Atree is
 
    function Is_Iterator_Over_Array (N : Node_Id) return Boolean renames
      Sem_Util.Is_Iterator_Over_Array;
+
+   -----------------------
+   -- Is_Null_Aggregate --
+   -----------------------
+
+   function Is_Null_Aggregate (N : Node_Id) return Boolean renames
+     Sem_Aggr.Is_Null_Aggregate;
 
    -----------------------------
    -- Is_OK_Static_Expression --

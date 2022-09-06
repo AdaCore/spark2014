@@ -270,17 +270,6 @@ package body SPARK_Definition is
    procedure Discard_Underlying_Type (T : Type_Kind_Id);
    --  Mark T's underlying type as seen and store T as its partial view
 
-   function Decl_Starts_Pragma_Annotate_Range (N : Node_Id) return Boolean is
-     (Comes_From_Source (N)
-      or else (Is_Rewrite_Substitution (N)
-               and then Comes_From_Source (Original_Node (N))));
-   --  When scanning a list of statements or declarations to decide the range
-   --  of application of a pragma Annotate, some statements starts a new range
-   --  for pragma to apply. If the declaration does not come from source, we
-   --  consider it to be part of the preceding one as far as pragma Annotate
-   --  is concerned. The exception to this rule are expression functions, and
-   --  assertions which are rewritten by the front-end into pragma Check.
-
    procedure Queue_For_Marking (E : Entity_Id);
    --  Register E for marking at a later stage
 
@@ -479,6 +468,27 @@ package body SPARK_Definition is
    --  interactive use in IDEs), to avoid reporting messages on pieces of code
    --  not belonging to the analyzed subprogram/line.
 
+   function Is_Incomplete_Type_From_Limited_With (E : Entity_Id) return Boolean
+   is
+     ((Is_Incomplete_Type (E) or else Is_Class_Wide_Type (E))
+      and then From_Limited_With (E));
+   --  Return true of the limited view of a type coming from a limited with
+
+   procedure Reject_Incomplete_Type_From_Limited_With
+     (Limited_View  : Entity_Id;
+      Marked_Entity : Entity_Id)
+   with Pre => Is_Incomplete_Type_From_Limited_With (Limited_View);
+   --  For now, reject incomplete types coming from limited with.
+   --  They need to be handled using their No_Limited_View if they
+   --  have one. Unlike other incomplete types, the frontend does
+   --  not replace them by their non-limited view when they occur as a
+   --  parameter subtype or the result type in a subprogram
+   --  declaration, so we cannot avoid marking them altogether as we
+   --  do for regular incomplete types with a full view.
+   --  As limited view do not have an appropriate location, when an entity
+   --  Marked_Entity has a limited type, the violation is emited on
+   --  Marked_Entity instead.
+
    -----------------------------------
    -- Check_Compatible_Access_Types --
    -----------------------------------
@@ -574,7 +584,7 @@ package body SPARK_Definition is
    --  Start of processing for Check_Source_Of_Borrow_Or_Observe
 
    begin
-      --  SPARK RM 3.10(3): If the target of an assignment operation is an
+      --  SPARK RM 3.10(4): If the target of an assignment operation is an
       --  object of an anonymous access-to-object type (including copy-in for
       --  a parameter), then the source shall be a name denoting a part of a
       --  stand-alone object, a part of a parameter, or a call to a traversal
@@ -587,7 +597,7 @@ package body SPARK_Definition is
              else "borrow or observe of an expression which is not part of "
                   & "stand-alone object or parameter"),
             Expr,
-            SRM_Reference => "SPARK RM 3.10(3))");
+            SRM_Reference => "SPARK RM 3.10(4))");
 
       --  The root object should not be effectively volatile
 
@@ -878,6 +888,14 @@ package body SPARK_Definition is
 
    function In_SPARK (E : Entity_Id) return Boolean is
    begin
+      --  Incomplete types coming from limited with should never be marked as
+      --  they have an inappropriate location. The construct referencing them
+      --  should be rejected instead.
+
+      if Is_Incomplete_Type_From_Limited_With (E) then
+         return False;
+      end if;
+
       Mark_Entity (E);
       return Entities_In_SPARK.Contains (E);
    end In_SPARK;
@@ -1553,7 +1571,7 @@ package body SPARK_Definition is
                   Mark_Violation ("assignment into an access-to-constant part"
                                   & " of an object", Var);
 
-               --  SPARK RM 3.10(7): If the type of the target is an anonymous
+               --  SPARK RM 3.10(8): If the type of the target is an anonymous
                --  access-to-variable type (an owning access type), the source
                --  shall be an owning access object [..] whose root object is
                --  the target object itself.
@@ -1582,7 +1600,7 @@ package body SPARK_Definition is
                         & " expression which does not have the left-hand side"
                         & " as a root",
                         Expr,
-                        SRM_Reference => "SPARK RM 3.10(7)");
+                        SRM_Reference => "SPARK RM 3.10(8)");
                   end if;
 
                --  If we are performing a move operation, check that we are
@@ -1626,10 +1644,16 @@ package body SPARK_Definition is
             Mark_Component_Association (N);
 
          when N_Iterated_Component_Association =>
-            Mark_Actions (N, Loop_Actions (N));
-            Mark_Entity (Defining_Identifier (N));
-            Mark_List (Discrete_Choices (N));
-            Mark (Expression (N));
+            if Present (Iterator_Specification (N)) then
+               Mark_Unsupported
+                 ("iterated component association with iterator specification",
+                  N);
+            else
+               Mark_Actions (N, Loop_Actions (N));
+               Mark_Entity (Defining_Identifier (N));
+               Mark_List (Discrete_Choices (N));
+               Mark (Expression (N));
+            end if;
 
          when N_Delay_Relative_Statement
             | N_Delay_Until_Statement
@@ -3777,8 +3801,10 @@ package body SPARK_Definition is
          if Is_Anonymous_Access_Object_Type (Etype (Formal))
            and then not Is_Function_Or_Function_Type (E)
          then
-            Check_Source_Of_Borrow_Or_Observe
-              (Actual, Is_Access_Constant (Etype (Formal)));
+            if not Is_Null_Owning_Access (Actual) then
+               Check_Source_Of_Borrow_Or_Observe
+                 (Actual, Is_Access_Constant (Etype (Formal)));
+            end if;
 
          --  OUT and IN OUT parameters of an access type are considered to be
          --  moved.
@@ -3823,8 +3849,10 @@ package body SPARK_Definition is
                  or else
                    No (Get_Root_Object (Actual, Through_Traversal => False))
                then
-                  Mark_Violation
-                    ("expression as " & Mode, Actual);
+                  if not Is_Null_Owning_Access (Actual) then
+                     Mark_Violation
+                       ("expression as " & Mode, Actual);
+                  end if;
 
                --  The root object of Actual should not be a constant objects
 
@@ -4874,7 +4902,7 @@ package body SPARK_Definition is
          --  A declaration of a stand-alone object of an anonymous access
          --  type shall have an explicit initial value and shall occur
          --  immediately within a subprogram body, an entry body, or a
-         --  block statement (SPARK RM 3.10(4)).
+         --  block statement (SPARK RM 3.10(5)).
 
          if Nkind (N) = N_Object_Declaration
            and then Is_Anonymous_Access_Object_Type (T)
@@ -4886,14 +4914,14 @@ package body SPARK_Definition is
                   Mark_Violation
                     ("object of anonymous access not declared "
                      & "immediately within a subprogram, entry or block",
-                     N, SRM_Reference => "SPARK RM 3.10(4)");
+                     N, SRM_Reference => "SPARK RM 3.10(5)");
                end if;
             end;
 
             if No (Expr) then
                Mark_Violation
                  ("uninitialized object of anonymous access type",
-                  N, SRM_Reference => "SPARK RM 3.10(4)");
+                  N, SRM_Reference => "SPARK RM 3.10(5)");
             end if;
          end if;
 
@@ -4967,8 +4995,16 @@ package body SPARK_Definition is
 
       procedure Mark_Parameter_Entity (E : Object_Kind_Id) is
          T : constant Type_Kind_Id := Etype (E);
+
       begin
-         if not Retysp_In_SPARK (T) then
+         --  If T is not in SPARK, E is not in SPARK. If T is a limited view
+         --  coming from a limited with, reject E directly to have a better
+         --  location.
+
+         if Is_Incomplete_Type_From_Limited_With (T) then
+            Reject_Incomplete_Type_From_Limited_With (T, E);
+
+         elsif not Retysp_In_SPARK (T) then
             Mark_Violation (E, From => T);
 
          --  If no violations were found and the object is annotated with
@@ -5118,9 +5154,14 @@ package body SPARK_Definition is
             end loop;
 
             --  If the result type of a subprogram is not in SPARK, then the
-            --  subprogram is not in SPARK.
+            --  subprogram is not in SPARK. If the result types is a limited
+            --  view coming from a limited with, reject the function directly
+            --  to have a better location.
 
-            if not Retysp_In_SPARK (Etype (Id)) then
+            if Is_Incomplete_Type_From_Limited_With (Etype (Id)) then
+               Reject_Incomplete_Type_From_Limited_With (Etype (Id), Id);
+
+            elsif not Retysp_In_SPARK (Etype (Id)) then
                Mark_Violation (Id, From => Etype (Id));
 
             --  For now we disallow access designating subprograms returning
@@ -6453,19 +6494,12 @@ package body SPARK_Definition is
 
          elsif Is_Incomplete_Or_Private_Type (E) then
 
-            --  For now, reject incomplete types coming from limited with.
-            --  They need to be handled using their No_Limited_View if they
-            --  have one. Unlike other incomplete types, the frontend does
-            --  not replace them by their non-limited view when they occur as a
-            --  parameter subtype or the result type in a subprogram
-            --  declaration, so we cannot avoid marking them altogether as we
-            --  do for regular incomplete types with a full view.
+            --  Incomplete types coming from limited views should never be
+            --  marked as they have a bad location, so constructs using them
+            --  are rejected instead.
 
-            if Is_Incomplete_Type (E) and then From_Limited_With (E) then
-               Mark_Unsupported
-                 ("incomplete type from limited with", E,
-                  Cont_Msg =>
-                    "consider restructuring code to avoid `LIMITED WITH`");
+            if Is_Incomplete_Type_From_Limited_With (E) then
+               raise Program_Error;
             end if;
 
             --  If the type and its Retysp are different entities, aspects
@@ -6820,6 +6854,16 @@ package body SPARK_Definition is
                   else
                      Access_To_Incomplete_Types.Append (E);
                   end if;
+
+               --  If the designated type is a limited view coming from a
+               --  limited with, reject the access type directly to have a
+               --  better location.
+
+               elsif (Is_Incomplete_Type (Des_Ty)
+                      or else Is_Class_Wide_Type (Des_Ty))
+                 and then From_Limited_With (Des_Ty)
+               then
+                  Reject_Incomplete_Type_From_Limited_With (Des_Ty, E);
 
                elsif not Retysp_In_SPARK (Des_Ty) then
                   Mark_Violation (E, From => Des_Ty);
@@ -7363,6 +7407,87 @@ package body SPARK_Definition is
             end loop;
          end if;
 
+         --  If E is a lemma procedure annotated with Automatic_Instantiation,
+         --  also mark its associated function.
+
+         if Has_Automatic_Instantiation_Annotation (E) then
+            Queue_For_Marking
+              (Retrieve_Automatic_Instantiation_Annotation (E));
+
+         --  Go over the ghost procedure declaration directly following E to
+         --  mark them in case they are lemmas with automatic instantiation.
+         --  We assume that lemma procedures associated to E are declared just
+         --  after E, possibly interspaced with compiler generated stuff and
+         --  pragmas and that the pragma Automatic_Instantiation is always
+         --  located directly after the lemma procedure declaration.
+
+         elsif Ekind (E) = E_Function
+           and then not Is_Volatile_Function (E)
+         then
+            declare
+               Decl_Node : constant Node_Id := Parent (Declaration_Node (E));
+               Cur       : Node_Id;
+               Proc      : Entity_Id := Empty;
+
+            begin
+               if Is_List_Member (Decl_Node)
+                 and then Decl_Starts_Pragma_Annotate_Range (Decl_Node)
+               then
+                  Cur := Next (Decl_Node);
+                  while Present (Cur) loop
+
+                     --  We have found a pragma Automatic_Instantiation that
+                     --  applies to Proc, add Proc to the queue for marking and
+                     --  continue the search.
+
+                     if Present (Proc)
+                       and then Is_Pragma_Annotate_GNATprove (Cur)
+                       and then Is_Pragma_Annotate_Automatic_Instantiation
+                         (Cur, Proc)
+                     then
+                        Queue_For_Marking (Proc);
+                        Proc := Empty;
+
+                     --  Ignore other pragmas
+
+                     elsif Nkind (Cur) = N_Pragma then
+                        null;
+
+                     --  We have found a declaration. If Cur is not a lemma
+                     --  procedure annotated with Automatic_Instantiation we
+                     --  can stop the search.
+
+                     elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
+
+                        --  Cur is a declaration of a ghost procedure. Store
+                        --  it in Proc and continue the search to see if there
+                        --  is an associated Automatic_Instantiation
+                        --  Annotation. If there is already something in Proc,
+                        --  stop the search as no pragma
+                        --  Automatic_Instantiation has been found directly
+                        --  after the declaration of Proc.
+
+                        if Nkind (Cur) = N_Subprogram_Declaration
+                          and then Ekind (Unique_Defining_Entity (Cur))
+                            = E_Procedure
+                          and then Is_Ghost_Entity
+                            (Unique_Defining_Entity (Cur))
+                          and then No (Proc)
+                        then
+                           Proc := Unique_Defining_Entity (Cur);
+
+                        --  We have found a declaration which is not a lemma
+                        --  procedure, we can stop the search.
+
+                        else
+                           exit;
+                        end if;
+                     end if;
+                     Next (Cur);
+                  end loop;
+               end if;
+            end;
+         end if;
       end if;
 
       --  Restore prestate
@@ -7386,13 +7511,13 @@ package body SPARK_Definition is
       Ret_Obj : constant Constant_Or_Variable_Kind_Id := Get_Return_Object (N);
 
    begin
-      --  SPARK RM 3.10(5): return statement of traversal function
+      --  SPARK RM 3.10(6): return statement of traversal function
 
       if Is_Traversal_Function (Subp) then
          Mark_Violation
            ("extended return applying to a traversal function",
             N,
-            SRM_Reference => "SPARK RM 3.10(5)");
+            SRM_Reference => "SPARK RM 3.10(6)");
       end if;
 
       Mark_Stmt_Or_Decl_List (Return_Object_Declarations (N));
@@ -8985,12 +9110,39 @@ package body SPARK_Definition is
       Marking_Queue.Append (E);
    end Queue_For_Marking;
 
+   ----------------------------------------------
+   -- Reject_Incomplete_Type_From_Limited_With --
+   ----------------------------------------------
+
+   procedure Reject_Incomplete_Type_From_Limited_With
+     (Limited_View  : Entity_Id;
+      Marked_Entity : Entity_Id)
+   is
+   begin
+      Error_Msg_Node_1 := Limited_View;
+      Error_Msg_Node_2 := Limited_View;
+      Mark_Unsupported
+        ("limited view of type & coming from limited with", Marked_Entity,
+         E              => Limited_View,
+         Cont_Msg       =>
+           "consider restructuring code to avoid `LIMITED WITH`",
+         Root_Cause_Msg => "limited view coming from limited with");
+   end Reject_Incomplete_Type_From_Limited_With;
+
    ---------------------
    -- Retysp_In_SPARK --
    ---------------------
 
    function Retysp_In_SPARK (E : Type_Kind_Id) return Boolean is
    begin
+      --  Incomplete types coming from limited with should never be marked as
+      --  they have an inappropriate location. The construct referencing them
+      --  should be rejected instead.
+
+      if Is_Incomplete_Type_From_Limited_With (E) then
+         return False;
+      end if;
+
       Mark_Entity (E);
       Mark_Entity (Retysp (E));
       return Entities_In_SPARK.Contains (Retysp (E));

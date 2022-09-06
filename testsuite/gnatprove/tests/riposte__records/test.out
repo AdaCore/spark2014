@@ -112,7 +112,7 @@ records.adb:534:22: medium: assertion might fail [possible fix: you should consi
 counterexample expected for check at records.adb:119
   trace at records.adb:118 --> A = (Exists => False, The_Pair => (A => 1, B => 0))
   trace at records.adb:119 --> A = (Exists => False, The_Pair => (A => 1, B => 0))
-  trace at records.adb:123 --> A = (Exists => False, The_Pair => (A => 1, B => 0)) and Is_Valid_C'Result = True
+  trace at records.adb:123 --> Is_Valid_C'Result = True
 counterexample expected for check at records.adb:142
   trace at records.adb:138 --> Src = (Exists => True, The_Pair => (A => 1, B => 0))
   trace at records.adb:142 --> Dst = (Exists => False, The_Pair => (A => 1, B => 0))
@@ -123,7 +123,7 @@ counterexample expected for check at records.adb:380
   trace at records.adb:380 --> Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0)
   trace at records.adb:386 --> R = (Exists => True, The_Pair => (A => 0, B => 0))
   trace at records.adb:389 --> R = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0)
-  trace at records.adb:390 --> Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and R = (Exists => True, The_Pair => (A => 0, B => 0))
+  trace at records.adb:390 --> Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0))
 counterexample expected for check at records.adb:410
   trace at records.adb:405 --> X = (Exists => True, The_Pair => (A => 1, B => 1))
   trace at records.adb:409 --> X = (Exists => True, The_Pair => (A => 1, B => 1))

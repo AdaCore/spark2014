@@ -15,7 +15,7 @@ norm-reals-errors.adb:45:36: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:47:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:47:43: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:47:52: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:48:37: info: float overflow check proved (colibri: 1 VC)
+norm-reals-errors.adb:48:37: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:48:41: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:48:87: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:49:14: info: predicate check proved (Trivial: 1 VC)
@@ -43,7 +43,7 @@ norm-reals-errors.adb:75:36: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:77:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:77:43: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:77:52: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:78:37: info: float overflow check proved (colibri: 1 VC)
+norm-reals-errors.adb:78:37: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:78:41: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:78:87: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:79:14: info: predicate check proved (Trivial: 1 VC)
@@ -261,7 +261,7 @@ norm.adb:75:14: medium: range check might fail [reason for check: returned value
 norm.ads:17:07: info: assertion proved (Trivial)
 norm.ads:19:07: info: assertion proved (Trivial)
 norm.ads:27:13: info: function contract might not be available on recursive calls
-norm.ads:32:14: info: postcondition proved (CVC5: 1 VC; colibri: 2 VC)
+norm.ads:32:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC; colibri: 1 VC)
 norm.ads:34:16: info: subprogram variant proved (CVC5: 1 VC)
 norm.ads:34:46: info: range check proved (CVC5: 2 VC)
 norm.ads:34:51: info: float overflow check proved (CVC5: 1 VC)
@@ -307,15 +307,15 @@ spark-floating_point_arithmetic_lemmas.ads:254:13: info: subprogram "Is_Float" w
 spark-floating_point_arithmetic_lemmas.ads:254:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:256:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:256:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:38
+spark-floating_point_arithmetic_lemmas.ads:258:29: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:258:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:38
-spark-floating_point_arithmetic_lemmas.ads:258:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:258:33: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:258:33: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:262:13: info: subprogram "Is_Integer" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:262:13: info: subprogram "Is_Integer" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:269:19: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:269:19: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:38
-spark-floating_point_arithmetic_lemmas.ads:269:31: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:38
+spark-floating_point_arithmetic_lemmas.ads:269:31: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:269:31: info: range check proved (CVC5: 2 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:288:19: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:38
 spark-floating_point_arithmetic_lemmas.ads:288:19: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:38

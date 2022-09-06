@@ -6,7 +6,7 @@
 <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="3" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000"/>
-<prover id="4" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="0" memlimit="1000"/>
+<prover id="4" name="CVC5_CE" version="0.0.7-gnatprove" timelimit="0" steplimit="190000" memlimit="1000"/>
 <prover id="5" name="colibri" version="2137" timelimit="20" steplimit="0" memlimit="1000"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
@@ -21,13 +21,13 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="1"><result status="valid" steps="5814"/></proof>
+  <proof prover="1"><result status="valid" steps="5694"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="1"><result status="valid" steps="5818"/></proof>
+  <proof prover="1"><result status="valid" steps="5698"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="1"><result status="valid" steps="13963"/></proof>
+  <proof prover="1"><result status="valid" steps="13857"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -36,13 +36,13 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="1"><result status="valid" steps="6554"/></proof>
+  <proof prover="1"><result status="valid" steps="6434"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="1"><result status="valid" steps="9019"/></proof>
+  <proof prover="1"><result status="valid" steps="8895"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="1"><result status="valid" steps="8934"/></proof>
+  <proof prover="1"><result status="valid" steps="8810"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -69,7 +69,7 @@
   <proof prover="5"><result status="timeout"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.16.0">
-   <proof prover="4"><result status="timeout"/></proof>
+   <proof prover="4"><result status="steplimitexceeded" steps="190017"/></proof>
    </goal>
   </transf>
   </goal>
@@ -83,7 +83,7 @@
   <proof prover="5"><result status="timeout"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.18.0">
-   <proof prover="4"><result status="timeout"/></proof>
+   <proof prover="4"><result status="steplimitexceeded" steps="283789"/></proof>
    </goal>
   </transf>
   </goal>

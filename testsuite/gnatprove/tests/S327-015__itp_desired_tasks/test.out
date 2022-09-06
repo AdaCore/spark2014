@@ -1,7 +1,7 @@
 example.adb:24:14: medium: postcondition might fail
 example.adb:24:16: medium: overflow check might fail, cannot prove lower bound for B * A [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-example.adb:27:14: medium: range check might fail, cannot prove lower bound for A + B [reason for check: result of addition must fit in the target type of the assignment]
-example.adb:28:14: medium: divide by zero might fail
+example.adb:27:14: high: range check might fail, cannot prove bounds for A + B (e.g. when A = 1 and B = 255) [reason for check: result of addition must fit in the target type of the assignment]
+example.adb:28:14: high: divide by zero might fail (e.g. when A = 0 and B = 255)
 example.adb:29:14: medium: range check might fail, cannot prove lower bound for A - B [reason for check: result of subtraction must fit in the target type of the assignment]
 example.adb:30:14: medium: overflow check might fail, cannot prove lower bound for B * A [reason for check: result of multiplication must fit in a 16-bits machine integer]
 example.adb:30:14: medium: range check might fail, cannot prove lower bound for B * A [reason for check: result of multiplication must fit in the target type of the assignment]

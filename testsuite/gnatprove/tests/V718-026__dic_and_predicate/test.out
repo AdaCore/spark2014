@@ -1,0 +1,104 @@
+a-cofove.ads:296:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at q.ads:7
+a-cofove.ads:297:08: info: dynamic accessibility check proved (Trivial), in instantiation at q.ads:7
+a-cofove.ads:301:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at q.ads:7
+a-cofove.ads:303:08: info: dynamic accessibility check proved (Trivial), in instantiation at q.ads:7
+a-cofove.ads:322:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at q.ads:7
+a-cofove.ads:322:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at q.ads:7
+a-cofove.ads:345:51: info: overflow check proved (CVC5: 2 VC), in instantiation at q.ads:7
+a-cofove.ads:387:73: info: overflow check proved (CVC5: 2 VC), in instantiation at q.ads:7
+a-cofove.ads:420:51: info: overflow check proved (CVC5: 2 VC), in instantiation at q.ads:7
+a-cofove.ads:455:59: info: overflow check proved (CVC5: 2 VC), in instantiation at q.ads:7
+a-cofove.ads:501:59: info: overflow check proved (CVC5: 2 VC), in instantiation at q.ads:7
+a-cofove.ads:525:51: info: overflow check proved (CVC5: 2 VC), in instantiation at q.ads:7
+a-cofove.ads:566:59: info: overflow check proved (CVC5: 2 VC), in instantiation at q.ads:7
+a-cofove.ads:631:28: info: overflow check proved (CVC5: 2 VC), in instantiation at q.ads:7
+a-cofove.ads:631:57: info: range check proved (CVC5: 2 VC), in instantiation at q.ads:7
+a-cofove.ads:759:23: info: precondition proved (CVC5: 1 VC), in instantiation at q.ads:7
+a-cofove.ads:795:14: info: precondition proved (CVC5: 1 VC), in instantiation at q.ads:7
+a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cofove.ads:95, in instantiation at q.ads:7
+a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cofove.ads:95, in instantiation at q.ads:7
+a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:95, in instantiation at q.ads:7
+a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:95, in instantiation at q.ads:7
+a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:95, in instantiation at q.ads:7
+a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:95, in instantiation at q.ads:7
+a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cofove.ads:95, in instantiation at q.ads:7
+a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cofove.ads:95, in instantiation at q.ads:7
+a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cofove.ads:95, in instantiation at q.ads:7
+main.adb:23:12: info: default initial condition proved (CVC5: 1 VC)
+main.adb:23:12: medium: predicate check might fail on default value
+main.adb:45:12: medium: default initial condition might fail
+main.adb:50:12: info: predicate check proved on default value (CVC5: 1 VC)
+main.adb:69:12: info: default initial condition proved (CVC5: 1 VC)
+main.adb:69:12: medium: predicate check might fail on default value
+main.adb:89:12: medium: default initial condition might fail
+main.adb:94:12: info: default initial condition proved (CVC5: 1 VC)
+main.adb:94:12: medium: in inlined predicate at main.adb:108
+main.adb:94:12: medium: predicate check might fail on default value, cannot prove Q (f)
+main.adb:119:12: medium: default initial condition might fail
+main.adb:124:12: info: default initial condition proved (CVC5: 1 VC)
+main.adb:124:12: medium: in inlined predicate at main.adb:143
+main.adb:124:12: medium: predicate check might fail on default value, cannot prove Q (f)
+main.adb:129:12: info: default initial condition proved (CVC5: 1 VC)
+main.adb:129:12: info: for inherited predicate at main.adb:143
+main.adb:129:12: info: predicate check proved on default value (CVC5: 2 VC)
+main.adb:129:12: medium: in inlined predicate at main.adb:148
+main.adb:129:12: medium: predicate check might fail on default value, cannot prove R (f)
+main.adb:158:12: info: predicate check proved on default value (CVC5: 1 VC)
+main.adb:168:07: info: initialization of "X" proved
+main.adb:168:07: info: predicate check proved on default value (CVC5: 1 VC)
+main.adb:168:07: medium: default initial condition might fail
+main.adb:168:07: warning: Program_Error will be raised at run time
+main.adb:168:07: warning: cannot call "T1" before body seen
+main.adb:168:20: info: range check proved (CVC5: 2 VC)
+main.adb:179:12: info: predicate check proved on default value (CVC5: 1 VC)
+main.adb:190:07: info: initialization of "X" proved
+main.adb:190:07: info: predicate check proved on default value (CVC5: 1 VC)
+main.adb:190:07: medium: default initial condition might fail
+main.adb:190:20: info: range check proved (CVC5: 2 VC)
+main.adb:203:12: info: predicate check proved on default value (CVC5: 1 VC)
+main.adb:210:07: info: initialization of "X" proved
+main.adb:210:07: info: predicate check proved on default value (CVC5: 1 VC)
+main.adb:210:07: medium: default initial condition might fail
+main.adb:210:20: info: range check proved (CVC5: 2 VC)
+main.adb:221:12: info: default initial condition proved (CVC5: 1 VC)
+main.adb:221:12: medium: in inlined predicate at main.adb:233
+main.adb:221:12: medium: predicate check might fail on default value, cannot prove Q (f)
+main.adb:237:07: info: initialization of "X" proved
+main.adb:237:07: info: predicate check proved on default value (CVC5: 2 VC)
+main.adb:237:07: medium: default initial condition might fail
+main.adb:237:07: medium: for inherited default initial condition at main.adb:219
+main.adb:237:20: info: range check proved (CVC5: 2 VC)
+main.adb:246:12: medium: default initial condition might fail
+main.adb:251:12: info: predicate check proved on default value (CVC5: 2 VC)
+main.adb:265:07: info: initialization of "X" proved
+main.adb:265:07: info: predicate check proved on default value (CVC5: 2 VC)
+main.adb:265:07: medium: default initial condition might fail
+main.adb:265:20: info: range check proved (CVC5: 2 VC)
+main.adb:277:12: info: predicate check proved on default value (CVC5: 2 VC)
+main.adb:289:07: info: initialization of "X" proved
+main.adb:289:07: info: predicate check proved on default value (CVC5: 2 VC)
+main.adb:289:07: medium: default initial condition might fail
+main.adb:289:07: medium: for inherited default initial condition at main.adb:275
+main.adb:289:20: info: range check proved (CVC5: 2 VC)
+main.adb:301:12: info: predicate check proved on default value (CVC5: 2 VC)
+main.adb:304:12: info: for inherited predicate at main.adb:314
+main.adb:304:12: info: predicate check proved on default value (CVC5: 2 VC)
+main.adb:304:12: info: predicate check proved on default value (CVC5: 3 VC)
+main.adb:319:07: info: for inherited predicate at main.adb:314
+main.adb:319:07: info: initialization of "X" proved
+main.adb:319:07: info: predicate check proved on default value (CVC5: 2 VC)
+main.adb:319:07: info: predicate check proved on default value (CVC5: 3 VC)
+main.adb:319:07: medium: default initial condition might fail
+main.adb:319:07: medium: default initial condition might fail
+main.adb:319:07: medium: for inherited default initial condition at main.adb:299
+main.adb:319:07: medium: for inherited default initial condition at main.adb:302
+main.adb:319:20: info: range check proved (CVC5: 2 VC)
+q.adb:4:08: info: initialization of "Result" proved
+q.adb:4:08: info: predicate check proved on default value (CVC5: 1 VC; Trivial: 1 VC)
+q.adb:6:23: info: assertion proved (CVC5: 1 VC)
+q.ads:11:51: info: range check proved (CVC5: 2 VC)
+q.ads:18:21: info: precondition proved (CVC5: 2 VC)
+q.ads:18:41: info: range check proved (CVC5: 2 VC)
+q.ads:18:46: info: precondition proved (CVC5: 2 VC)
+q.ads:18:68: info: overflow check proved (CVC5: 2 VC)
+q.ads:18:68: info: range check proved (CVC5: 2 VC)

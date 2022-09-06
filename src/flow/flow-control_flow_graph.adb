@@ -7388,6 +7388,7 @@ package body Flow.Control_Flow_Graph is
                      Init_Block := Trivial_Connection (Curr);
                   else
                      Linkup (FA, From => Prev, To => Curr);
+                     Init_Block.Standard_Exits := Vertex_Sets.To_Set (Curr);
                   end if;
 
                   Prev := Curr;

@@ -150,6 +150,17 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Call graph rooted at analyzed subprograms for detecting if a subprogram
    --  is recursive.
 
+   Lemma_Call_Graph : Entity_Name_Graphs.Graph :=
+     Entity_Name_Graphs.Create;
+   --  Same as above but with a phantom link between functions and their lemmas
+   --  if they are instanciated automatically. This map is used by proof to
+   --  avoid recursivity between the proofs of different entities when
+   --  automatically instantiated lemmas are involved. As an example, if a
+   --  function F has a lemma L_F which calls a function G and G has a
+   --  lemma L_G which calls F, we do not want L_F to be used to prove L_G and
+   --  L_G to be used to prove L_F. This graph will allow to detect this case
+   --  by putting L_F and L_G in the same strongly connected component.
+
    Tasking_Call_Graph : Entity_Name_Graphs.Graph := Entity_Name_Graphs.Create;
    --  Call graph for detecting ownership conflicts between tasks
    --
@@ -842,6 +853,42 @@ package body Flow_Generated_Globals.Phase_2 is
             --  Close the call graph
             Call_Graph.Close;
          end Add_Subprogram_Edges;
+
+         --  The Lemma_Call_Graph is similar to the Subprogram_Call_Graph
+         --  except that edges are added between a function and its potential
+         --  associated lemmas. We go over the list of entities to be
+         --  translated to add this link and redo the closure.
+         --  We ensure in marking that, when a lemma entity is marked, the
+         --  associated function is marked too.
+
+         Add_Lemma_Subprogram_Edges : begin
+            Lemma_Call_Graph := Subprogram_Call_Graph;
+
+            --  Add vertex for phantom calls to lemma procedure from their
+            --  associated function.
+
+            for E of Entities_To_Translate loop
+               if Has_Automatic_Instantiation_Annotation (E) then
+                  declare
+                     F      : constant Entity_Id :=
+                       Retrieve_Automatic_Instantiation_Annotation (E);
+                     E_Name : constant Entity_Name := To_Entity_Name (E);
+                     F_Name : constant Entity_Name := To_Entity_Name (F);
+                     V_E    : constant Entity_Name_Graphs.Vertex_Id :=
+                       Lemma_Call_Graph.Get_Vertex (E_Name);
+                     V_F    : constant Entity_Name_Graphs.Vertex_Id :=
+                       Lemma_Call_Graph.Get_Vertex (F_Name);
+                  begin
+                     Lemma_Call_Graph.Add_Edge (V_F, V_E);
+                  end;
+
+               end if;
+            end loop;
+
+            --  Close the call graph
+
+            Lemma_Call_Graph.Close;
+         end Add_Lemma_Subprogram_Edges;
 
          Add_Ceiling_Priority_Edges : declare
             Stack : Name_Sets.Set;
@@ -3274,6 +3321,19 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function Mutually_Recursive (E1, E2 : Entity_Id) return Boolean is
      (Mutually_Recursive (To_Entity_Name (E1), To_Entity_Name (E2)));
+
+   ------------------------------
+   -- Lemma_Mutually_Recursive --
+   ------------------------------
+
+   function Lemma_Mutually_Recursive (EN1, EN2 : Entity_Name) return Boolean is
+     (Lemma_Call_Graph.Contains (EN1)
+      and then Lemma_Call_Graph.Contains (EN2)
+      and then Lemma_Call_Graph.Edge_Exists (EN1, EN2)
+      and then Lemma_Call_Graph.Edge_Exists (EN2, EN1));
+
+   function Lemma_Mutually_Recursive (E1, E2 : Entity_Id) return Boolean is
+     (Lemma_Mutually_Recursive (To_Entity_Name (E1), To_Entity_Name (E2)));
 
    ------------------------
    -- Calls_Current_Task --

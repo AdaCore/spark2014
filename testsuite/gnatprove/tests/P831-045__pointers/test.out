@@ -105,24 +105,24 @@ pointers2.ads:20:14: error: object was moved at pointers2.adb:36
 pointers2.ads:20:14: error: return from "Bad_Move" with moved value for "Y"
 pointers2.ads:20:24: warning: unused initial value of "X"
 pointers2.ads:20:27: warning: "Y" is not modified, could be IN
-simple.adb:12:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+simple.adb:12:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(5))
 simple.adb:12:04: error: violation of aspect SPARK_Mode at line 5
 simple.adb:22:04: error: "X" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 simple.adb:22:04: error: violation of aspect SPARK_Mode at line 5
-simple.adb:22:09: error: borrowed expression which does not have the left-hand side as a root is not allowed in SPARK (SPARK RM 3.10(7))
+simple.adb:22:09: error: borrowed expression which does not have the left-hand side as a root is not allowed in SPARK (SPARK RM 3.10(8))
 simple.adb:22:09: error: violation of aspect SPARK_Mode at line 5
-test.adb:13:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+test.adb:13:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(5))
 test.adb:13:04: error: violation of aspect SPARK_Mode at line 7
 test.adb:24:30: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:24:30: error: violation of aspect SPARK_Mode at line 7
 test.adb:78:03: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:78:03: error: violation of aspect SPARK_Mode at line 7
-test.adb:78:08: error: borrowed expression which does not have the left-hand side as a root is not allowed in SPARK (SPARK RM 3.10(7))
+test.adb:78:08: error: borrowed expression which does not have the left-hand side as a root is not allowed in SPARK (SPARK RM 3.10(8))
 test.adb:78:08: error: violation of aspect SPARK_Mode at line 7
 test.adb:84:08: warning: "B" may be null
 test.adb:87:08: info: analyzing call to "g" in context
 test.adb:89:03: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:89:03: error: violation of aspect SPARK_Mode at line 7
-test.adb:89:08: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
+test.adb:89:08: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)))
 test.adb:89:08: error: violation of aspect SPARK_Mode at line 7
 gnatprove: error during flow analysis and proof

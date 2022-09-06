@@ -210,8 +210,9 @@ package SPARK_Util.Types is
    function May_Need_DIC_Checking (E : Type_Kind_Id) return Boolean;
    --  @param E type entity
    --  @return True iff E is the entity for a declaration that may require
-   --     checking the DIC, either because it has its own DIC, or because it
-   --     is a tagged type which inherits a DIC which requires rechecking.
+   --     checking the DIC. This only occurs if E has its own DIC, as
+   --     primitive subprograms of tagged types cannot be called in their DIC
+   --     so it is not necessary to recheck them on tagged derivations.
 
    function Check_DIC_At_Declaration (E : Type_Kind_Id) return Boolean
      with Pre => Present (Partial_DIC_Procedure (E));

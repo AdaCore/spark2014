@@ -122,6 +122,7 @@ package body Gnat2Why_Opts.Reading is
          Debug_Trivial         := Get_Opt (V, Debug_Trivial_Name);
          Ide_Mode              := Get_Opt (V, Ide_Mode_Name);
          CWE                   := Get_Opt (V, CWE_Name);
+         Parallel_Why3         := Get_Opt (V, Parallel_Why3_Name);
 
          Why3_Dir := Get_Opt (V, Why3_Dir_Name);
 

@@ -197,12 +197,10 @@ def check_counterexamples():
                     return val["name"] + " = " + val["value"]
 
                 def location(arg):
-                    loc, ctx = arg
-                    return loc
+                    return arg[0]
 
                 def trace(arg):
-                    loc, ctx = arg
-                    return ctx
+                    return arg[1]
 
                 if "cntexmp" in msg:
                     for ff, file_value in msg["cntexmp"].items():
@@ -782,6 +780,7 @@ def prove_all(
     sort_output=True,
     filter_output=None,
     codepeer=False,
+    exit_status=None,
     ada=default_ada,
     replay=False,
     warnings="continue",
@@ -858,6 +857,7 @@ def prove_all(
         no_output=no_output,
         sort_output=sort_output,
         cache_allowed=cache_allowed,
+        exit_status=exit_status,
         ada=ada,
         filter_output=filter_output,
     )

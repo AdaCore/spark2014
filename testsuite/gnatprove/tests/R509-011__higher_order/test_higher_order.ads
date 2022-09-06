@@ -1,5 +1,7 @@
 with SPARK.Higher_Order;
 with SPARK.Higher_Order.Fold;
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use  Ada.Numerics.Big_Numbers.Big_Integers;
 package Test_Higher_Order with SPARK_Mode is
 
    type Nat_Array is array (Positive range <>) of Natural;
@@ -74,10 +76,18 @@ package Test_Higher_Order with SPARK_Mode is
 
    function Id (X : Small_Int) return Small_Int is (X);
 
+   function In_Range (X : Big_Integer) return Boolean is
+     (In_Range
+        (X, To_Big_Integer (Integer'First), To_Big_Integer (Integer'Last)));
+
    package Sum_l is new SPARK.Higher_Order.Fold.Sum
      (Index_Type  => Small_Index,
       Element_In  => Small_Int,
-      Element_Out => Small_Int,
+      Element_Out => Integer,
+      Add         => "+",
+      Zero        => 0,
+      To_Big      => To_Big_Integer,
+      In_Range    => In_Range,
       Array_Type  => Small_Int_Array,
       Value       => Id);
 
@@ -97,13 +107,16 @@ package Test_Higher_Order with SPARK_Mode is
      (Index_1     => Small_Index,
       Index_2     => Small_Index,
       Element_In  => Small_Int,
-      Element_Out => Small_Int,
+      Element_Out => Integer,
+      Add         => "+",
+      Zero        => 0,
+      To_Big      => To_Big_Integer,
+      In_Range    => In_Range,
       Array_Type  => Matrix,
       Value       => Id);
 
-   pragma Assert (Sum2_l.Sum (A => (1 => (1, 2, 3, 4, 5, 6, 7, 1, 1),
-                                    2 => (1, 2, 3, 4, 5, 6, 7, 1, 1),
-                                    3 => (1, 2, 3, 4, 5, 6, 7, 1, 0))) = 89);
+   pragma Assert (Sum2_l.Sum (A => (1 => (1, 2, 3, 4, 5, 6, 7),
+                                    2 => (1, 2, 3, 4, 5, 6, 7))) = 56);
 
    package Cnt2 is new SPARK.Higher_Order.Fold.Count_2
      (Index_1     => Small_Index,

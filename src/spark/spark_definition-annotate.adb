@@ -100,6 +100,11 @@ package body SPARK_Definition.Annotate is
    --  Stores function entities with a pragma Annotate
    --  (GNATprove, At_End_Borrow, E).
 
+   Automatic_Instantiation_Annotations : Common_Containers.Node_Maps.Map :=
+     Common_Containers.Node_Maps.Empty_Map;
+   --  Maps lemma procedures annotated with Automatic_Instantiation to their
+   --  associated function.
+
    Inline_Annotations : Common_Containers.Node_Maps.Map :=
      Common_Containers.Node_Maps.Empty_Map;
    --  Maps all the function entities E with a pragma Annotate
@@ -203,6 +208,13 @@ package body SPARK_Definition.Annotate is
    --  the pragma in Result. Result.Present is False if some syntax error
    --  has been detected, or if the pragma Annotate is not used for
    --  justification purposes.
+
+   procedure Check_Automatic_Instantiation_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id)
+   with Pre => Present (Arg3_Exp);
+   --  Check validity of a pragma Annotate (GNATprove, Automatic_Instantiation,
+   --  E) and insert it in the Automatic_Instantiation_Annotations map.
 
    procedure Check_Always_Return_Annotation
      (Arg3_Exp : Node_Id;
@@ -411,6 +423,208 @@ package body SPARK_Definition.Annotate is
 
       At_End_Borrow_Annotations.Include (Get_Renamed_Entity (E));
    end Check_At_End_Borrow_Annotation;
+
+   ----------------------------------------------
+   -- Check_Automatic_Instantiation_Annotation --
+   ----------------------------------------------
+
+   procedure Check_Automatic_Instantiation_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id)
+   is
+      From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
+      Aspect_Or_Pragma : constant String :=
+        (if From_Aspect then "aspect" else "pragma");
+      E : Entity_Id;
+   begin
+      --  The third argument must be an entity
+
+      if Nkind (Arg3_Exp) not in N_Has_Entity then
+         Error_Msg_N
+           ("third argument of pragma Annotate Automatic_Instantiation must be"
+            & " an entity",
+            Arg3_Exp);
+         return;
+      end if;
+
+      E := Entity (Arg3_Exp);
+      pragma Assert (Present (E));
+
+      --  This entity must be a ghost procedure
+
+      if Ekind (E) /= E_Procedure then
+         Error_Msg_N
+           ("entity annotated with the " & Aspect_Or_Pragma
+            & " Automatic_Instantiation must be a procedure",
+            Arg3_Exp);
+         return;
+      elsif not Is_Ghost_Entity (E) then
+         Error_Msg_N
+           ("procedure annotated with the " & Aspect_Or_Pragma
+            & " Automatic_Instantiation must be ghost",
+            E);
+         return;
+      end if;
+
+      --  It shall not have mutable parameters
+
+      declare
+         Formal : Entity_Id := First_Formal (E);
+      begin
+         while Present (Formal) loop
+            if Ekind (Formal) /= E_In_Parameter
+              or else (Is_Access_Object_Type (Etype (Formal))
+                       and then not Is_Access_Constant (Etype (Formal)))
+            then
+               declare
+                  Param_String : constant String :=
+                    (case Ekind (Formal) is
+                        when E_In_Out_Parameter =>
+                          """in out"" parameters",
+                        when E_Out_Parameter =>
+                          """out"" parameters",
+                        when E_In_Parameter =>
+                          "parameters of an access-to-variable type",
+                        when others =>
+                           raise Program_Error);
+               begin
+                  Error_Msg_N
+                    ("procedure annotated with the " & Aspect_Or_Pragma
+                     & " Automatic_Instantiation shall not have "
+                     & Param_String,
+                     Formal);
+                  return;
+               end;
+            end if;
+            Next_Formal (Formal);
+         end loop;
+      end;
+
+      --  The procedure shall not update any global data
+
+      declare
+         Globals : Global_Flow_Ids;
+      begin
+         Get_Globals
+           (Subprogram          => E,
+            Scope               => (Ent => E, Part => Visible_Part),
+            Classwide           => False,
+            Globals             => Globals,
+            Use_Deduced_Globals =>
+               not Gnat2Why_Args.Global_Gen_Mode,
+            Ignore_Depends      => False);
+
+         if not Globals.Outputs.Is_Empty then
+            Error_Msg_N
+              ("procedure annotated with the " & Aspect_Or_Pragma
+               & " Automatic_Instantiation shall not have global"
+               & " outputs", E);
+            return;
+         end if;
+      end;
+
+      --  Check that E is declared directly after a function
+
+      declare
+         Decl      : constant Node_Id := Parent (Declaration_Node (E));
+         AI_Pragma : Node_Id := Empty;
+         Cur       : Node_Id := Decl;
+
+      begin
+         loop
+            Prev (Cur);
+
+            --  No functions were found before E
+
+            if No (Cur) then
+               Error_Msg_N
+                 ("procedure annotated with the " & Aspect_Or_Pragma
+                  & " Automatic_Instantiation shall be declared directly"
+                  & " after a function", E);
+               return;
+
+            --  Remember the last pragma Automatic_Instantiation seen so we
+            --  can check whether a ghost procedure is an automatically
+            --  instantiated lemma if we encounter one.
+
+            elsif Is_Pragma_Annotate_GNATprove (Cur)
+              and then Is_Pragma_Annotate_Automatic_Instantiation (Cur)
+            then
+               AI_Pragma := Cur;
+
+            --  Ignore other pragmas and compiler introduced declarations
+
+            elsif Nkind (Cur) = N_Pragma
+              or else not Decl_Starts_Pragma_Annotate_Range (Cur)
+            then
+               null;
+
+            --  Check that Cur is a function declaration. If so, add the
+            --  association to the Automatic_Instantiation_Annotations map.
+            --  We assume that lemma procedures associated to a function are
+            --  declared just after the function, possibly interspaced with
+            --  compiler generated stuff and pragmas and that the pragma
+            --  Automatic_Instantiation is always located directly after the
+            --  lemma procedure declaration.
+
+            elsif Nkind (Cur) = N_Subprogram_Declaration then
+               declare
+                  Prec : constant Entity_Id := Unique_Defining_Entity (Cur);
+
+               begin
+                  --  Lemmas cannot be associated to volatile functions
+
+                  if Ekind (Prec) = E_Function
+                    and then Is_Volatile_Function (Prec)
+                  then
+                     Error_Msg_N
+                       ("procedure annotated with the " & Aspect_Or_Pragma
+                        & " Automatic_Instantiation shall not be declared"
+                        & " after a volatile function", E);
+                     return;
+
+                  --  A function has been found, add the association to the
+                  --  Automatic_Instantiation_Annotations map and exit the
+                  --  loop.
+
+                  elsif Ekind (Prec) = E_Function then
+                     Automatic_Instantiation_Annotations.Insert (E, Prec);
+                     exit;
+
+                  --  Ignore ghost procedures annotated with automatic
+                  --  instantiation.
+
+                  elsif Is_Ghost_Entity (Prec)
+                    and then Present (AI_Pragma)
+                    and then Is_Pragma_Annotate_Automatic_Instantiation
+                      (AI_Pragma, Prec)
+                  then
+                     pragma Assert (Ekind (Prec) = E_Procedure);
+                     AI_Pragma := Empty;
+
+                  --  Lemmas cannot be associated to procedures
+
+                  else
+                     Error_Msg_N
+                       ("procedure annotated with the " & Aspect_Or_Pragma
+                        & " Automatic_Instantiation shall not be declared"
+                        & " after a procedure", E);
+                     return;
+                  end if;
+               end;
+
+            --  The declaration before E is not a function declaration
+
+            else
+               Error_Msg_N
+                 ("procedure annotated with the " & Aspect_Or_Pragma
+                  & " Automatic_Instantiation shall be declared directly"
+                  & " after a function", E);
+               return;
+            end if;
+         end loop;
+      end;
+   end Check_Automatic_Instantiation_Annotation;
 
    -----------------------------
    -- Check_Inline_Annotation --
@@ -1326,6 +1540,14 @@ package body SPARK_Definition.Annotate is
      (Ekind (E) = E_Function
       and then At_End_Borrow_Annotations.Contains (E));
 
+   --------------------------------------------
+   -- Has_Automatic_Instantiation_Annotation --
+   --------------------------------------------
+
+   function Has_Automatic_Instantiation_Annotation
+     (E : Entity_Id) return Boolean
+   is (Automatic_Instantiation_Annotations.Contains (E));
+
    -------------------------------
    -- Has_Logical_Eq_Annotation --
    -------------------------------
@@ -1355,6 +1577,38 @@ package body SPARK_Definition.Annotate is
 
    function Has_Ownership_Annotation (E : Entity_Id) return Boolean is
      (Ownership_Annotations.Contains (Root_Retysp (E)));
+
+   ------------------------------------------------
+   -- Is_Pragma_Annotate_Automatic_Instantiation --
+   ------------------------------------------------
+
+   function Is_Pragma_Annotate_Automatic_Instantiation
+     (N : Node_Id;
+      P : Entity_Id := Empty) return Boolean
+   is
+      Number_Of_Pragma_Args : constant Nat :=
+        List_Length (Pragma_Argument_Associations (N));
+      Arg1                  : constant Node_Id :=
+        First (Pragma_Argument_Associations (N));
+      Arg2                  : constant Node_Id := Next (Arg1);
+      Name                  : constant String :=
+        (if No (Arg2) then ""
+         else Get_Name_String (Chars (Get_Pragma_Arg (Arg2))));
+      Arg3                  : Node_Id;
+      Arg3_Exp              : Node_Id := Empty;
+
+   begin
+      if Name /= "automatic_instantiation"
+        or else Number_Of_Pragma_Args /= 3
+      then
+         return False;
+      end if;
+
+      Arg3 := Next (Arg2);
+      Arg3_Exp := Expression (Arg3);
+      return Nkind (Arg3_Exp) in N_Has_Entity
+        and then (No (P) or else Entity (Arg3_Exp) = P);
+   end Is_Pragma_Annotate_Automatic_Instantiation;
 
    -----------------------------
    -- Infer_Inline_Annotation --
@@ -1561,6 +1815,14 @@ package body SPARK_Definition.Annotate is
    function Needs_Reclamation (E : Entity_Id) return Boolean is
      (Ownership_Annotations (Root_Retysp (E)).Needs_Reclamation);
 
+   -------------------------------------------------
+   -- Retrieve_Automatic_Instantiation_Annotation --
+   -------------------------------------------------
+
+   function Retrieve_Automatic_Instantiation_Annotation
+     (E : Entity_Id) return Entity_Id
+   is (Automatic_Instantiation_Annotations.Element (E));
+
    --------------------------------
    -- Retrieve_Inline_Annotation --
    --------------------------------
@@ -1700,6 +1962,7 @@ package body SPARK_Definition.Annotate is
          return;
 
       elsif Name = "at_end_borrow"
+        or else Name = "automatic_instantiation"
         or else Name = "init_by_proof"
         or else Name = "inline_for_proof"
         or else Name = "logical_equal"
@@ -1755,6 +2018,9 @@ package body SPARK_Definition.Annotate is
 
       if Name = "at_end_borrow" then
          Check_At_End_Borrow_Annotation (Arg3_Exp);
+
+      elsif Name = "automatic_instantiation" then
+         Check_Automatic_Instantiation_Annotation (Arg3_Exp, Prag);
 
       elsif Name = "inline_for_proof" then
          Check_Inline_Annotation (Arg3_Exp, Prag);

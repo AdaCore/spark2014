@@ -124,6 +124,7 @@ module Boolean__init_wrapper
   val function dummy : boolean__init_wrapper
 
   axiom dummy__def: __attr__init dummy = False
+  meta "remove_unused:dependency" axiom dummy__def, function dummy
 
   type boolean__init_wrapper__ref = {
                                    mutable boolean__init_wrapper__content :
@@ -178,6 +179,7 @@ module Compatible_Tags
   axiom __compatible_tags_refl :
     forall tag : int. __compatible_tags tag tag
   (* Objects of type T'Class also have type T'Class *)
+  meta "remove_unused:dependency" axiom __compatible_tags_refl, predicate __compatible_tags
 
   axiom __compatible_tags_transitive :
     forall tag1, tag2, tag3 : int.
@@ -186,6 +188,7 @@ module Compatible_Tags
   (* If objects of type T2'Class also have type T1'Class and objects of type
      T3'Class also have type T2'Class then objects of type T3'Class also have
      type T1'Class. *)
+  meta "remove_unused:dependency" axiom __compatible_tags_transitive, predicate __compatible_tags
 
   axiom __compatible_tags_separate_trees :
     forall tag1, tag2, tag3 : int.
@@ -194,6 +197,7 @@ module Compatible_Tags
       not __compatible_tags tag3 tag2
   (* If T1'Class and T2'Class are disjoint, then objects of type T3'Class
      cannot be in both. *)
+  meta "remove_unused:dependency" axiom __compatible_tags_separate_trees, predicate __compatible_tags
 end
 
 module Integer
@@ -224,6 +228,7 @@ module Int_Gcd
 
   axiom gcd_pos :
     forall x, y : int. x > 0 /\ y > 0 -> gcd x y = Gcd.gcd x y
+  meta "remove_unused:dependency" axiom gcd_pos, function gcd
 
   val gcd_ (x:int) (y:int) : int
      requires { x <> 0 /\ y <> 0 }
@@ -452,21 +457,28 @@ module Floating_power
   val function power t int : t
 
   axiom Power_0 : forall x: t. is_finite x -> eq (power x 0) (of_int 1)
+  meta "remove_unused:dependency" axiom Power_0, function power
 
   lemma Power_1 : forall x : t. is_finite x -> eq (power x 1) x
+  meta "remove_unused:dependency" lemma Power_1, function power
 
   axiom Power_2 : forall x : t. is_finite x -> eq (power x 2) (x * x)
+  meta "remove_unused:dependency" axiom Power_2, function power
 
   axiom Power_3 : forall x : t. is_finite x -> eq (power x 3) (x * (x * x))
+  meta "remove_unused:dependency" axiom Power_3, function power
 
   axiom Power_neg1 : forall x : t. is_finite x -> not (is_zero x) ->
     eq (power x (-1)) (div (of_int 1) x)
+  meta "remove_unused:dependency" axiom Power_neg1, function power
 
   axiom Power_neg2 : forall x : t. is_finite x -> not (is_zero x) ->
     eq (power x (-2)) (div (of_int 1) (power x 2))
+  meta "remove_unused:dependency" axiom Power_neg2, function power
 
   axiom Power_neg3 : forall x : t. is_finite x -> not (is_zero x) ->
     eq (power x (-2)) (div (of_int 1) (power x 3))
+  meta "remove_unused:dependency" axiom Power_neg3, function power
 end
 
 module Floating_next_prev
@@ -495,21 +507,26 @@ module Floating_next_prev
   (* need to guard with is_finite since the axiom cannot hold when x is NaN *)
   axiom next_representable_def :
     forall x : t [next_representable x]. is_finite x -> gt (next_representable x) x
+  meta "remove_unused:dependency" axiom next_representable_def, function next_representable
 
   axiom prev_representable_def :
     forall x : t [prev_representable x]. is_finite x -> lt (prev_representable x) x
+  meta "remove_unused:dependency" axiom prev_representable_def, function prev_representable
 
   (* does not need is finite since gt y x implies that neither x or y is NaN *)
   axiom next_representable_def2 :
     forall x y : t. gt y x -> ge y (next_representable x)
+  meta "remove_unused:dependency" axiom next_representable_def2, function next_representable
 
   axiom prev_representable_def2 :
     forall x y : t. lt y x -> le y (prev_representable x)
+  meta "remove_unused:dependency" axiom prev_representable_def2, function prev_representable
 
   (* possible addition: *)
 
   (* axiom next_representable_gt :
     forall x y z : t. gt y x -> gt z y -> gt z (next_representable x)
+    meta "remove_unused:dependency" axiom next_representable_gt, function next_representable
 
     and idem for prev.
   *)
@@ -517,10 +534,12 @@ module Floating_next_prev
   axiom next_representable_finite :
     forall x : t [is_finite (next_representable x)].
       is_finite x -> not (eq x max_value) -> is_finite (next_representable x)
+  meta "remove_unused:dependency" axiom next_representable_finite, function next_representable
 
   axiom prev_representable_finite :
     forall x : t [is_finite (prev_representable x)].
       is_finite x -> not (eq x (neg max_value)) -> is_finite (prev_representable x)
+  meta "remove_unused:dependency" axiom prev_representable_finite, function prev_representable
 end
 
 module Floating_operations
@@ -540,12 +559,16 @@ module Floating_operations
   val function ada_sqrt (x : t) : t
   axiom ada_sqrt_pos:
     forall x : t. is_ge_zero (ada_sqrt x)
+  meta "remove_unused:dependency" axiom ada_sqrt_pos, function ada_sqrt
   axiom ada_sqrt_zero:
     forall x : t. is_zero x -> is_zero (ada_sqrt x)
+  meta "remove_unused:dependency" axiom ada_sqrt_zero, function ada_sqrt
   axiom ada_sqrt_non_zero:
     forall x : t. is_gt_zero x -> is_gt_zero (ada_sqrt x)
+  meta "remove_unused:dependency" axiom ada_sqrt_non_zero, function ada_sqrt
   axiom ada_sqrt_one:
     forall x : t. is_one x -> is_one (ada_sqrt x)
+  meta "remove_unused:dependency" axiom ada_sqrt_one, function ada_sqrt
   val ada_sqrt_ (x : t) : t
     requires { is_ge_zero x }
     ensures  { result = ada_sqrt x }
@@ -556,14 +579,19 @@ module Floating_operations
      if y is positive, not too close to 0 otherwise. *)
   axiom ada_power_pos:
     forall x y : t. is_ge_zero (ada_power x y)
+  meta "remove_unused:dependency" axiom ada_power_pos, function ada_power
   axiom ada_power_right_zero:
     forall x y : t. is_zero y -> not (is_zero x) -> is_one (ada_power x y)
+  meta "remove_unused:dependency" axiom ada_power_right_zero, function ada_power
   axiom ada_power_right_one:
     forall x y : t. is_one y -> is_ge_zero x -> ada_power x y = x
+  meta "remove_unused:dependency" axiom ada_power_right_one, function ada_power
   axiom ada_power_left_zero:
     forall x y : t. is_zero x -> not (is_zero y) -> is_zero (ada_power x y)
+  meta "remove_unused:dependency" axiom ada_power_left_zero, function ada_power
   axiom ada_power_left_one:
     forall x y : t. is_one x -> is_one (ada_power x y)
+  meta "remove_unused:dependency" axiom ada_power_left_one, function ada_power
   val ada_power_ (x : t) (y : t) : t
     requires { (not (is_zero x) \/ is_gt_zero y) /\ is_ge_zero x
 		/\ ada_power_no_overflow x y }
@@ -574,6 +602,7 @@ module Floating_operations
   (* This predicate stands for the fact that x is not too close to 0 *)
   axiom log_one:
     forall x : t. is_one x -> is_zero (log x)
+  meta "remove_unused:dependency" axiom log_one, function log
   val log_ (x : t) : t
     requires { is_gt_zero x /\ log_no_overflow x }
     ensures  { result = log x }
@@ -583,6 +612,8 @@ module Floating_operations
   (* This predicate stands for the fact that x is not too close to 0 *)
   axiom log_base_one:
     forall x y : t. is_one x -> is_zero (log_base x y)
+  meta "remove_unused:dependency" axiom log_base_one, function log_base
+
   val log_base_ (x : t) (b : t) : t
     requires { is_gt_zero x /\ is_gt_zero b /\ not (is_one b)
                /\ log_base_no_overflow x b}
@@ -600,16 +631,20 @@ module Floating_operations
   val function sin (x : t) : t
   axiom sin_range:
     forall x : t. abs_le_one (sin x)
+  meta "remove_unused:dependency" axiom sin_range, function sin
   axiom sin_zero:
     forall x : t. is_zero x -> is_zero (sin x)
+  meta "remove_unused:dependency" axiom sin_zero, function sin
   val sin_ (x : t) : t
     ensures  { result = sin x }
 
   val function sin_2 (x : t) (c : t) : t
   axiom sin_2_range:
     forall x c : t. abs_le_one (sin_2 x c)
+  meta "remove_unused:dependency" axiom sin_2_range, function sin_2
   axiom sin_2_zero:
     forall x c : t. is_zero x -> is_zero (sin_2 x c)
+  meta "remove_unused:dependency" axiom sin_2_zero, function sin_2
   val sin_2_ (x : t) (c : t) : t
     requires { is_gt_zero c }
     ensures  { result = sin_2 x c }
@@ -617,16 +652,20 @@ module Floating_operations
   val function cos (x : t) : t
   axiom cos_range:
     forall x : t. abs_le_one (cos x)
+  meta "remove_unused:dependency" axiom cos_range, function cos
   axiom cos_zero:
     forall x : t. is_zero x -> is_one (cos x)
+  meta "remove_unused:dependency" axiom cos_zero, function cos
   val cos_ (x : t) : t
     ensures  { result = cos x }
 
   function cos_2 (x : t) (c : t) : t
   axiom cos_2_range:
     forall x c : t. abs_le_one (cos_2 x c)
+  meta "remove_unused:dependency" axiom cos_2_range, function cos_2
   axiom cos_2_zero:
     forall x c : t. is_zero x -> is_one (cos_2 x c)
+  meta "remove_unused:dependency" axiom cos_2_zero, function cos_2
   val cos_2_ (x : t) (c : t) : t
     requires { is_gt_zero c }
     ensures  { result = cos_2 x c }
@@ -637,6 +676,7 @@ module Floating_operations
      Pi/2 + k * Pi *)
   axiom tan_zero:
     forall x : t. is_zero x -> is_zero (tan x)
+  meta "remove_unused:dependency" axiom tan_zero, function tan
   val tan_ (x : t) : t
     requires { tan_no_overflow x }
     ensures  { result = tan x }
@@ -647,6 +687,7 @@ module Floating_operations
      c/4 or - c/4 *)
   axiom tan_2_zero:
     forall x c : t. is_zero x -> is_zero (tan_2 x c)
+  meta "remove_unused:dependency" axiom tan_2_zero, function tan_2
   val tan_2_ (x : t) (c : t) : t
     requires { is_gt_zero c /\ tan_2_no_overflow x c }
     ensures  { result = tan_2 x c }
@@ -670,6 +711,7 @@ module Floating_operations
   val function arcsin (x : t) : t
   axiom arcsin_zero:
     forall x : t. is_zero x -> is_zero (arcsin x)
+  meta "remove_unused:dependency" axiom arcsin_zero, function arcsin
   val arcsin_ (x : t) : t
     requires { abs_le_one x }
     ensures  { result = arcsin x }
@@ -677,6 +719,7 @@ module Floating_operations
   val function arcsin_2 (x : t) (c : t) : t
   axiom arcsin_2_zero:
     forall x c : t. is_zero x -> is_zero (arcsin_2 x c)
+  meta "remove_unused:dependency" axiom arcsin_2_zero, function arcsin_2
   val arcsin_2_ (x : t) (c : t) : t
     requires { is_gt_zero c /\ abs_le_one x }
     ensures  { result = arcsin_2 x c }
@@ -684,6 +727,7 @@ module Floating_operations
   val function arccos (x : t) : t
   axiom arccos_zero:
     forall x : t. is_one x -> is_zero (arccos x)
+  meta "remove_unused:dependency" axiom arccos_zero, function arccos
   val arccos_ (x : t) : t
     requires { abs_le_one x }
     ensures  { result = arccos x }
@@ -691,6 +735,7 @@ module Floating_operations
   val function arccos_2 (x : t) (c : t) : t
   axiom arccos_2_zero:
     forall x c : t. is_one x -> is_zero (arccos_2 x c)
+  meta "remove_unused:dependency" axiom arccos_2_zero, function arccos_2
   val arccos_2_ (x : t) (c : t) : t
     requires { is_gt_zero c /\ abs_le_one x }
     ensures  { result = arccos_2 x c }
@@ -698,6 +743,7 @@ module Floating_operations
   val function arctan (y : t) (x : t) : t
   axiom arctan_zero:
     forall x y : t. is_gt_zero x -> is_zero y -> is_zero (arctan y x)
+  meta "remove_unused:dependency" axiom arctan_zero, function arctan
   val arctan_ (y : t) (x : t) : t
     requires { not is_zero x \/ not is_zero y }
     ensures  { result = arctan y x }
@@ -705,6 +751,7 @@ module Floating_operations
   val function arctan_2 (y : t) (x : t) (c : t) : t
   axiom arctan_2_zero:
     forall x y c : t. is_gt_zero x -> is_zero y -> is_zero (arctan_2 y x c)
+  meta "remove_unused:dependency" axiom arctan_2_zero, function arctan_2
   val arctan_2_ (y : t) (x : t) (c : t) : t
     requires { is_gt_zero c /\ (not is_zero x \/ not is_zero y) }
     ensures  { result = arctan_2 y x c }
@@ -712,6 +759,7 @@ module Floating_operations
   val function arccot (x : t) (y : t) : t
   axiom arccot_zero:
     forall x y : t. is_gt_zero x -> is_zero y -> is_zero (arccot x y)
+  meta "remove_unused:dependency" axiom arccot_zero, function arccot
   val arccot_ (x : t) (y : t) : t
     requires { not is_zero x \/ not is_zero y }
     ensures  { result = arccot x y }
@@ -719,6 +767,7 @@ module Floating_operations
   val function arccot_2 (x : t) (y : t) (c : t) : t
   axiom arccot_2_zero:
     forall x y c : t. is_gt_zero x -> is_zero y -> is_zero (arccot_2 x y c)
+  meta "remove_unused:dependency" axiom arccot_2_zero, function arccot_2
   val arccot_2_ (x : t) (y : t) (c : t) : t
     requires { is_gt_zero c /\ (not is_zero x \/ not is_zero y) }
     ensures  { result = arccot_2 x y c }
@@ -728,8 +777,10 @@ module Floating_operations
   (* This predicate stands for the fact that abs x is not too big. *)
   axiom sinh_zero_no_overflow:
     forall x : t. is_zero x -> sinh_no_overflow x
+  meta "remove_unused:dependency" axiom sinh_zero_no_overflow, predicate sinh_no_overflow
   axiom sinh_zero:
     forall x : t. is_zero x -> is_zero (sinh x)
+  meta "remove_unused:dependency" axiom sinh_zero, function sinh
   val sinh_ (x : t) : t
     requires { sinh_no_overflow x }
     ensures  { result = sinh x }
@@ -739,10 +790,13 @@ module Floating_operations
   (* This predicate stands for the fact that abs x is not too big. *)
   axiom cosh_zero_no_overflow:
     forall x : t. is_zero x -> cosh_no_overflow x
+  meta "remove_unused:dependency" axiom cosh_zero_no_overflow, predicate cosh_no_overflow
   axiom cosh_range:
     forall x : t. is_ge_one (cosh x)
+  meta "remove_unused:dependency" axiom cosh_range, function cosh
   axiom cosh_zero:
     forall x : t. is_zero x -> is_one (cosh x)
+  meta "remove_unused:dependency" axiom cosh_zero, function cosh
   val cosh_ (x : t) : t
     requires { cosh_no_overflow x }
     ensures  { result = cosh x }
@@ -750,8 +804,10 @@ module Floating_operations
   val function tanh (x : t) : t
   axiom tanh_range:
     forall x : t. abs_le_one (tanh x)
+  meta "remove_unused:dependency" axiom tanh_range, function tanh
   axiom tanh_zero:
     forall x : t. is_zero x -> is_zero (tanh x)
+  meta "remove_unused:dependency" axiom tanh_zero, function tanh
   val tanh_ (x : t) : t
     ensures  { result = tanh x }
 
@@ -760,6 +816,7 @@ module Floating_operations
   (* This predicate stands for the fact that x is not too close to 0. *)
   axiom coth_range:
     forall x : t. abs_ge_one (coth x)
+  meta "remove_unused:dependency" axiom coth_range, function coth
   val coth_ (x : t) : t
     requires { not (is_zero x) /\ coth_no_overflow x }
     ensures  { result = coth x }
@@ -767,14 +824,17 @@ module Floating_operations
   val function arcsinh (x : t) : t
   axiom arcsinh_zero:
     forall x : t. is_zero x -> is_zero (arcsinh x)
+  meta "remove_unused:dependency" axiom arcsinh_zero, function arcsinh
   val arcsinh_ (x : t) : t
     ensures  { result = arcsinh x }
 
   val function arccosh (x : t) : t
   axiom arccosh_pos:
     forall x : t. is_ge_zero (arccosh (x))
+  meta "remove_unused:dependency" axiom arccosh_pos, function arccosh
   axiom arccosh_one:
     forall x : t. is_one x -> is_zero (arccosh x)
+  meta "remove_unused:dependency" axiom arccosh_one, function arccosh
   val arccosh_ (x : t) : t
     requires { is_ge_one x }
     ensures  { result = arccosh x }
@@ -784,8 +844,10 @@ module Floating_operations
   (* This predicate stands for the fact that x is not too close to 1 or -1. *)
   axiom arctanh_zero_overflow:
     forall x : t. is_zero x -> arctanh_no_overflow x
+  meta "remove_unused:dependency" axiom arctanh_zero_overflow, predicate arctanh_no_overflow
   axiom arctanh_zero:
     forall x : t. is_zero x -> is_zero (arctanh x)
+  meta "remove_unused:dependency" axiom arctanh_zero, function arctanh
   val arctanh_ (x : t) : t
     requires { abs_lt_one x /\ arctanh_no_overflow x }
     ensures  { result = arctanh x }
@@ -1044,6 +1106,7 @@ module Float32_next_prev
 
   constant max_value : t
   axiom max_value : max_real = t'real max_value
+  meta "remove_unused:dependency" axiom max_value, function max_real
 
   clone export Floating_next_prev with
     type t = t,
@@ -1062,6 +1125,7 @@ module Float64_next_prev
 
   constant max_value : t
   axiom max_value : max_real = t'real max_value
+  meta "remove_unused:dependency" axiom max_value, function max_real
 
   clone export Floating_next_prev with
     type t = t,
@@ -1080,6 +1144,7 @@ module Float80_next_prev
 
   constant max_value : t
   axiom max_value : max_real = t'real max_value
+  meta "remove_unused:dependency" axiom max_value, function max_real
 
   clone export Floating_next_prev with
     type t = t,
@@ -1111,7 +1176,9 @@ module Float32
   val constant one : t
   ensures { result = (1.0:t) }
   axiom one_is_int: is_int one
+  meta "remove_unused:dependency" axiom one_is_int, function one
   axiom one_of_int: one = of_int RNA 1
+  meta "remove_unused:dependency" axiom one_of_int, function one
 
   type t__ref = { mutable t__content [@model_trace:] : t }
   val t__havoc (x : t__ref) : unit
@@ -1136,7 +1203,9 @@ module Float64
   val constant one : t
   ensures { result = (1.0:t) }
   axiom one_is_int: is_int one
+  meta "remove_unused:dependency" axiom one_is_int, function one
   axiom one_of_int: one = of_int RNA 1
+  meta "remove_unused:dependency" axiom one_of_int, function one
 
   type t__ref = { mutable t__content [@model_trace:] : t }
   val t__havoc (x : t__ref) : unit
@@ -1161,7 +1230,9 @@ module Float80
   val constant one : t
   ensures { result = (1.0:t) }
   axiom one_is_int: is_int one
+  meta "remove_unused:dependency" axiom one_is_int, function one
   axiom one_of_int: one = of_int RNA 1
+  meta "remove_unused:dependency" axiom one_of_int, function one
 
   type t__ref = { mutable t__content [@model_trace:] : t }
   val t__havoc (x : t__ref) : unit
@@ -1651,6 +1722,7 @@ module Array__1
     forall first : I1.t
       [slide a first first].
       slide a first first = a
+  meta "remove_unused:dependency" axiom slide_eq, function slide
 
   axiom slide_def :
     forall a : map.
@@ -1659,6 +1731,7 @@ module Array__1
     forall i : I1.t
       [get (slide a old_first new_first) i].
       get (slide a old_first new_first) i = get a (I1.sub i (I1.sub new_first old_first))
+  meta "remove_unused:dependency" axiom slide_def, function slide
 
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
@@ -1670,6 +1743,7 @@ module Array__1
     forall v : component_type.
     forall i : I1.t  [get (const v) i].
       get (const v) i = v
+   meta "remove_unused:dependency" axiom const_def, function const
 end
 
 module Array__1__Concat
@@ -1701,6 +1775,7 @@ module Array__1__Concat
          /\
       ((Index.gt i a_last) ->
         get (concat a a_first a_last b b_first b_last) i = get b (Index.add (Index.sub i a_last) (Index.sub b_first Index.one)))
+  meta "remove_unused:dependency" axiom concat_def, function concat
 
   (* Special case of concatenation when the left operand is a component. a_first
      is the first index of the new array. The right operand is slided so that it
@@ -1719,6 +1794,7 @@ module Array__1__Concat
     forall i : Index.t [get (concat_singleton_left a a_first b b_first b_last) i].
       ((Index.gt i a_first) ->
         get (concat_singleton_left a a_first b b_first b_last) i = get b (Index.add (Index.sub i a_first) (Index.sub b_first Index.one)))
+  meta "remove_unused:dependency" axiom concat_singleton_left_def, function concat_singleton_left
 
   (* Special case of concatenation when the right operand is a component. *)
 
@@ -1735,6 +1811,7 @@ module Array__1__Concat
     forall i : Index.t [get (concat_singleton_right a a_first a_last b) i | get a i].
       ((Index.le a_first i /\ Index.le i a_last) ->
           get (concat_singleton_right a a_first a_last b) i = get a i)
+  meta "remove_unused:dependency" axiom concat_singleton_right_def, function concat_singleton_right
 
   (* Special case of concatenation when both operands are components. a_first
      is the first index of the resulting array. *)
@@ -1749,6 +1826,7 @@ module Array__1__Concat
     get (concat_singletons a a_first b) a_first = a
   /\
     get (concat_singletons a a_first b) (Index.add a_first Index.one) = b
+  meta "remove_unused:dependency" axiom concat_singletons_def, function concat_singletons
 
   (* An array containing the value v at index i. It is used for the result of
      the concatenation of an empty array with a component. *)
@@ -1760,6 +1838,7 @@ module Array__1__Concat
     forall v : component_type.
     forall i : Index.t  [get (singleton v i) i].
       get (singleton v i) i = v
+  meta "remove_unused:dependency" axiom singleton_def, function singleton
 end
 
 module Array__2
@@ -1785,6 +1864,7 @@ module Array__2
     forall i : I1.t.
     forall j : I2.t.
     forall a : component_type [set m i j a].  get (set m i j a) i j = a
+  meta "remove_unused:dependency" axiom Select_eq, function set
 
   axiom Select_neq :
     forall m : map.
@@ -1792,6 +1872,7 @@ module Array__2
     forall j j2 : I2.t.
     forall a : component_type [get (set m i j a) i2 j2| set m i j a, get m i2 j2].
     not (i = i2 /\ j = j2) -> get (set m i j a) i2 j2 = get m i2 j2
+  meta "remove_unused:dependency" axiom Select_neq, function set
 
   val function slide map I1.t I1.t I2.t I2.t : map
   meta "encoding:lskept" function slide
@@ -1805,6 +1886,7 @@ module Array__2
       [get (slide a old_first new_first old_first_2 new_first_2) i j].
       get (slide a old_first new_first old_first_2 new_first_2) i j =
         get a (I1.sub i (I1.sub new_first old_first)) (I2.sub j (I2.sub new_first_2 old_first_2))
+  meta "remove_unused:dependency" axiom slide_def, function slide
 
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
@@ -1817,6 +1899,7 @@ module Array__2
     forall i : I1.t.
     forall j : I2.t  [get (const v) i j].
       get (const v) i j = v
+   meta "remove_unused:dependency" axiom const_def, function const
 end
 
 module Array__3
@@ -1844,6 +1927,7 @@ module Array__3
     forall j : I2.t.
     forall k : I3.t.
     forall a : component_type [set m i j k a].  get (set m i j k a) i j k = a
+  meta "remove_unused:dependency" axiom Select_eq, function set
 
   axiom Select_neq :
     forall m : map.
@@ -1853,6 +1937,7 @@ module Array__3
     forall a : component_type [get (set m i j k a) i2 j2 k2| set m i j k a, get m i2 j2 k2].
     not (i = i2 /\ j = j2 /\ k = k2) ->
       get (set m i j k a) i2 j2 k2 = get m i2 j2 k2
+  meta "remove_unused:dependency" axiom Select_neq, function set
 
   val function slide map I1.t I1.t I2.t I2.t I3.t I3.t : map
   meta "encoding:lskept" function slide
@@ -1872,6 +1957,7 @@ module Array__3
         get a (I1.sub i (I1.sub new_first old_first))
               (I2.sub j (I2.sub new_first_2 old_first_2))
               (I3.sub k (I3.sub new_first_3 old_first_3))
+  meta "remove_unused:dependency" axiom slide_def, function slide
 
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
@@ -1885,6 +1971,7 @@ module Array__3
     forall j : I2.t.
     forall k : I3.t  [get (const v) i j k].
       get (const v) i j k = v
+   meta "remove_unused:dependency" axiom const_def, function const
 end
 
 module Array__4
@@ -1914,6 +2001,7 @@ module Array__4
     forall k : I3.t.
     forall l : I4.t.
     forall a : component_type [set m i j k l a].  get (set m i j k l a) i j k l = a
+  meta "remove_unused:dependency" axiom Select_eq, function set
 
   axiom Select_neq :
     forall m : map.
@@ -1926,6 +2014,7 @@ module Array__4
        set m i j k l a, get m i2 j2 k2 l2].
     not (i = i2 /\ j = j2 /\ k = k2 /\ l = l2) ->
       get (set m i j k l a) i2 j2 k2 l2 = get m i2 j2 k2 l2
+  meta "remove_unused:dependency" axiom Select_neq, function set
 
   val function slide map I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map
   meta "encoding:lskept" function slide
@@ -1948,6 +2037,7 @@ module Array__4
               (I2.sub j (I2.sub new_first_2 old_first_2))
               (I3.sub k (I3.sub new_first_3 old_first_3))
               (I4.sub l (I4.sub new_first_4 old_first_4))
+  meta "remove_unused:dependency" axiom slide_def, function slide
 
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
@@ -1962,6 +2052,7 @@ module Array__4
     forall k : I3.t.
     forall l : I4.t  [get (const v) i j k l].
       get (const v) i j k l = v
+   meta "remove_unused:dependency" axiom const_def, function const
 end
 
 module BVAda
@@ -2008,21 +2099,28 @@ module BVAda
   val function power t int : t
 
   axiom Power_0 : forall x: t. power x 0 = one
+  meta "remove_unused:dependency" axiom Power_0, function power
 
   lemma Power_1 : forall x : t. power x 1 = x
+  meta "remove_unused:dependency" lemma Power_1, function power
 
   axiom Power_s : forall x: t, n: int. n >= 0 -> power x (n+1) = x * power x n
+  meta "remove_unused:dependency" axiom Power_s, function power
 
   lemma Power_s_alt: forall x: t, n: int. n > 0 -> power x n = x * power x (n-1)
+  meta "remove_unused:dependency" lemma Power_s_alt, function power
 
   lemma Power_sum : forall x: t, n m: int. 0 <= n -> 0 <= m ->
     power x (n+m) = power x n * power x m
+  meta "remove_unused:dependency" lemma Power_sum, function power
 
   lemma Power_mult : forall x:t, n m : int. 0 <= n -> 0 <= m ->
     power x (Int.(*) n m) = power (power x n) m
+  meta "remove_unused:dependency" lemma Power_mult, function power
 
   lemma Power_mult2 : forall x y: t, n: int. 0 <= n ->
     power (x * y) n = power x n * power y n
+  meta "remove_unused:dependency" lemma Power_mult2, function power
 
   function bv_min (x y : t) : t = if ule x y then x else y
   function bv_max (x y : t) : t = if ule x y then y else x
@@ -2036,9 +2134,11 @@ module BVAda
 
   lemma bv_min_to_uint: forall x y.
     to_uint (bv_min x y) = MinMax.min (to_uint x) (to_uint y)
+  meta "remove_unused:dependency" lemma bv_min_to_uint, function bv_min
 
   lemma bv_max_to_uint: forall x y.
     to_uint (bv_max x y) = MinMax.max (to_uint x) (to_uint y)
+  meta "remove_unused:dependency" lemma bv_max_to_uint, function bv_max
 
   (** Unchecked_Conversion from/to integers
       This is used to translate SPARK Unchecked_Conversion between
@@ -2385,6 +2485,8 @@ module Subprogram_Pointer_Rep
 
   axiom __null_pointer__def_axiom:
     __null_pointer.__is_null_pointer
+  meta "remove_unused:dependency" axiom __null_pointer__def_axiom, function __null_pointer
+
 
   val __pointer_value_ (a: __rep) : __subprogram
     requires { not a.__is_null_pointer }

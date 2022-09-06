@@ -1,0 +1,12 @@
+test_illegal.adb:16:06: error: entity annotated with the aspect Automatic_Instantiation must be a procedure
+test_illegal.adb:21:14: error: procedure annotated with the aspect Automatic_Instantiation must be ghost
+test_illegal.adb:32:14: error: procedure annotated with the aspect Automatic_Instantiation shall not have global outputs
+test_illegal.adb:42:24: error: procedure annotated with the aspect Automatic_Instantiation shall not have "in out" parameters
+test_illegal.adb:52:24: error: procedure annotated with the aspect Automatic_Instantiation shall not have "out" parameters
+test_illegal.adb:62:24: error: procedure annotated with the aspect Automatic_Instantiation shall not have parameters of an access-to-variable type
+test_illegal.adb:73:17: error: procedure annotated with the aspect Automatic_Instantiation shall be declared directly after a function
+test_illegal.adb:84:14: error: procedure annotated with the aspect Automatic_Instantiation shall not be declared after a volatile function
+test_illegal.adb:101:14: error: procedure annotated with the aspect Automatic_Instantiation shall not be declared after a procedure
+test_illegal.adb:117:14: error: procedure annotated with the aspect Automatic_Instantiation shall not be declared after a procedure
+test_illegal.adb:129:14: error: procedure annotated with the aspect Automatic_Instantiation shall be declared directly after a function
+gnatprove: error during generation of Global contracts

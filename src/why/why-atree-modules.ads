@@ -29,7 +29,10 @@ with Checked_Types;                  use Checked_Types;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Gnat2Why.Util;                  use Gnat2Why.Util;
 with GNATCOLL.Symbols;
+with SPARK_Atree.Entities;           use SPARK_Atree.Entities;
 with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
+with SPARK_Util.Types;               use SPARK_Util.Types;
 with Why.Ids;                        use Why.Ids;
 with Why.Gen.Names;                  use Why.Gen.Names;
 
@@ -732,27 +735,66 @@ package Why.Atree.Modules is
    function E_Axiom_Module (E : Entity_Id) return W_Module_Id;
 
    function E_Compl_Module (E : Entity_Id) return W_Module_Id;
-   --  Returns the module where File = No_Name and Name = (Full_Name (E) &
+   --  Return the module where File = No_Name and Name = (Full_Name (E) &
    --  "__compl"). Memoization may be used. Returns Empty when it is called
    --  with a node which is not an entity, and no module is known for this
    --  entity.
 
    function E_Rep_Module (E : Entity_Id) return W_Module_Id;
-   --  Returns the module where File = No_Name and Name = (Full_Name (E) &
+   --  Return the module where File = No_Name and Name = (Full_Name (E) &
    --  "__rep"). Memoization may be used. Returns Empty when it is called with
    --  a node which is not an entity, and no module is known for this entity.
 
    function E_Init_Module (E : Entity_Id) return W_Module_Id;
-   --  Returns the module where File = No_Name and Name = (Full_Name (E) &
+   --  Return the module where File = No_Name and Name = (Full_Name (E) &
    --  "__init"). Memoization may be used. Returns Empty when it is called with
    --  a node which is not an entity, and no module is known for this entity.
 
+   function E_Lemma_Axiom_Module (E : Entity_Id) return W_Module_Id with
+     Pre => Has_Automatic_Instantiation_Annotation (E);
+   --  Return the module for the post axiom of a lemma procedure annotated
+   --  with Automatic_Instantiation.
+
    function E_Rec_Axiom_Module (E : Entity_Id) return W_Module_Id with
      Pre => Has_Post_Axiom (E) and then Is_Recursive (E);
-   --  Returns the module where File = No_Name and Name = (Full_Name (E) &
+   --  Return the module where File = No_Name and Name = (Full_Name (E) &
    --  "__rec_axiom"). Memoization may be used. Returns Empty when it is called
    --  with a node which is not an entity, and no module is known for this
    --  entity.
+
+   function E_Record_Rep_Module (E : Entity_Id) return W_Module_Id with
+     Pre => Is_Record_Type_In_Why (E);
+   --  Return the module for representative type of a record type E
+
+   function E_Record_Compl_Module (E : Entity_Id) return W_Module_Id with
+     Pre => Is_Record_Type_In_Why (E);
+   --  Return the module for the completion of the representative type of a
+   --  record type E.
+
+   function E_DIC_Module (Ty : Type_Kind_Id) return W_Module_Id with
+     Pre => not Is_Itype (Ty) and then Can_Be_Default_Initialized (Ty);
+   --  Function returning the extra module for the default assumption of Ty
+
+   function E_Dispatch_Module
+     (Subp  : Subprogram_Kind_Id;
+      Axiom : Boolean := False) return W_Module_Id;
+   --  Function returning the module for the dispatching variant of Subp
+
+   function E_Invariant_Module (Ty : Type_Kind_Id) return W_Module_Id with
+     Pre => Has_Invariants_In_SPARK (Ty);
+   --  Function returning the extra module for the type invariant of Ty
+
+   function E_Dispatch_Eq_Module
+     (Ty    : Type_Kind_Id;
+      Axiom : Boolean := False) return W_Module_Id
+   with Pre => Is_Tagged_Type (Ty) and then Ty = Root_Retysp (Ty);
+   --  Function returning the module for the dispatching equality on Ty
+
+   function E_User_Eq_Module
+     (Ty    : Type_Kind_Id;
+      Axiom : Boolean := False) return W_Module_Id
+   with Pre => not Use_Predefined_Equality_For_Type (Ty);
+   --  Function returning the module for the user equality on Ty
 
    function Get_Logic_Function (E : Function_Kind_Id) return W_Identifier_Id;
    --  Return the logic function __call associated with the profile of a
@@ -780,11 +822,20 @@ package Why.Atree.Modules is
    --  @param M Why3 module associated to N
    --  @param Is_Axiom True if M is an axiom module
 
+   --  Functions returning array module types from the array theory module
+
    function Init_Array_Module (Module : W_Module_Id) return M_Array_Type;
    function Init_Array_1_Module (Module : W_Module_Id) return M_Array_1_Type;
    function Init_Array_1_Comp_Module (Module : W_Module_Id)
                                       return M_Array_1_Comp_Type;
    function Init_Array_1_Bool_Op_Module (Module : W_Module_Id)
                                       return M_Array_1_Bool_Op_Type;
+
+   function Mutually_Recursive_Modules (E : Entity_Id) return Why_Node_Sets.Set
+   with
+     Pre => Is_Subprogram_Or_Entry (E);
+   --  Function returning the set of axiom modules mutually recursive with a
+   --  given entity. Those are the modules which should not be included in the
+   --  VC module for E.
 
 end Why.Atree.Modules;

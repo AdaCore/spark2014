@@ -411,8 +411,11 @@ package body Gnat2Why.Util is
    -- Add_To_Graph --
    ------------------
 
-   procedure Add_To_Graph (Map : in out Node_Graphs.Map; From, To : Node_Id) is
-      Position : Node_Graphs.Cursor;
+   procedure Add_To_Graph
+     (Map      : in out Why_Node_Graphs.Map;
+      From, To : Why_Node_Id)
+   is
+      Position : Why_Node_Graphs.Cursor;
       Ignored  : Boolean;
 
    begin
@@ -896,16 +899,18 @@ package body Gnat2Why.Util is
    -----------------------
 
    function Get_Graph_Closure
-     (Map  : Node_Graphs.Map;
-      From : Node_Sets.Set) return Node_Sets.Set
+     (Map    : Why_Node_Graphs.Map;
+      From   : Why_Node_Sets.Set;
+      Filter : Why_Node_Sets.Set := Why_Node_Sets.Empty)
+      return Why_Node_Sets.Set
    is
-      use Node_Sets;
+      use Why_Node_Sets;
       Result   : Set;
       Work_Set : Set;
-      Cur_Node : Node_Id;
-      Cur_Ptr  : Node_Graphs.Cursor;
+      Cur_Node : Why_Node_Id;
+      Cur_Ptr  : Why_Node_Graphs.Cursor;
 
-      Ignored  : Node_Sets.Cursor;
+      Ignored  : Why_Node_Sets.Cursor;
       Inserted : Boolean;
 
    begin
@@ -917,14 +922,16 @@ package body Gnat2Why.Util is
 
          Cur_Ptr := Map.Find (Cur_Node);
 
-         if Node_Graphs.Has_Element (Cur_Ptr) then
+         if Why_Node_Graphs.Has_Element (Cur_Ptr) then
             for N of Map (Cur_Ptr) loop
-               Result.Insert (New_Item => N,
-                              Position => Ignored,
-                              Inserted => Inserted);
+               if not Filter.Contains (N) then
+                  Result.Insert (New_Item => N,
+                                 Position => Ignored,
+                                 Inserted => Inserted);
 
-               if Inserted then
-                  Work_Set.Include (N);
+                  if Inserted then
+                     Work_Set.Include (N);
+                  end if;
                end if;
             end loop;
          end if;

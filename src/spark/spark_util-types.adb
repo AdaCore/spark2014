@@ -414,10 +414,13 @@ package body SPARK_Util.Types is
    -----------------------------
 
    function Acts_As_Incomplete_Type (Ty : Type_Kind_Id) return Boolean is
-     ((Is_Incomplete_Type (Ty) and then Present (Full_View (Ty)))
+     ((Is_Incomplete_Type (Ty)
+      and then not From_Limited_With (Ty)
+      and then Present (Full_View (Ty)))
       or else Is_Partial_View (Ty)
       or else
         (Is_Class_Wide_Type (Ty)
+         and then not From_Limited_With (Ty)
          and then Nkind (Atree.Parent (Ty)) in
            N_Incomplete_Type_Declaration
          | N_Private_Type_Declaration));
@@ -1174,12 +1177,20 @@ package body SPARK_Util.Types is
       Proc   : Opt_E_Procedure_Id;
    begin
       while Present (Rep_Ty) and then Has_DIC (Rep_Ty) loop
+
+         --  Go to base type, default initial conditions cannot be specified on
+         --  subtypes.
+
+         Rep_Ty := Base_Retysp (Rep_Ty);
          Proc := Partial_DIC_Procedure (Rep_Ty);
          if Present (Proc) then
             Process_DIC_Expression
               (First_Formal (Proc),
                Get_Expr_From_Check_Only_Proc (Proc));
          end if;
+
+         --  Go to parent subtype
+
          Rep_Ty := Parent_Retysp (Rep_Ty);
       end loop;
    end Iterate_Applicable_DIC;

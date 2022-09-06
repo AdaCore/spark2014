@@ -766,6 +766,7 @@ package SPARK_Util is
    --    . a raise statement or expression
    --    . a pragma Assert (False)
    --    . a call to an error-signaling procedure
+   --    . a call to a function with precondition False
 
    function Is_External_Call (N : N_Call_Id) return Boolean
    with Pre => Within_Protected_Type (Get_Called_Entity (N));
@@ -871,6 +872,16 @@ package SPARK_Util is
    --  Block statements are kept to mark the end of the corresponding scope,
    --  in order to apply some treatments at the end of local scopes, like
    --  checking the absence of resource leaks at the end of scope.
+
+   function Is_Null_Owning_Access (Expr : Node_Id) return Boolean is
+     (Nkind (Expr) = N_Null
+      and then
+        (Is_Anonymous_Access_Type (Etype (Expr))
+         or else Is_Access_Variable (Etype (Expr))));
+   --  Return True if Expr is exactly null and has an anomyous access type
+   --  or an access-to-variable type.
+   --  This is used to recognize actuals of calls which are not a part of a
+   --  variable object though they are used as a mutable parameter.
 
    function Is_Others_Choice (Choices : List_Id) return Boolean;
    --  Returns True if Choices is the singleton list with an "others" element

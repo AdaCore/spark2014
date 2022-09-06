@@ -109,6 +109,7 @@ private
    No_Inlining_Name             : constant String := "no_inlining";
    No_Loop_Unrolling_Name       : constant String := "no_loop_unrolling";
    Output_Mode_Name             : constant String := "output_mode";
+   Parallel_Why3_Name           : constant String := "parallel_why3";
    Pedantic_Name                : constant String := "pedantic";
    Proof_Generate_Guards_Name   : constant String :=
      "proof_generate_axiom_guards";

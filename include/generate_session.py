@@ -169,7 +169,7 @@ def kill_and_regenerate(check):
     #   cleaning and regeneration of *.v
     os.system("make clean")
     os.system("make generate")
-    run_automatic("cvc4", level=1)
+    run_automatic("cvc5", level=1)
     #   Do *not* remove this call as it is used to check that coq proofs are
     #   correct after regeneration. And ability to generate session is *necessary*
     #   as there is no way to extend a session in gnatprove.
@@ -181,9 +181,9 @@ def kill_and_regenerate(check):
     print("---------------------------------------------")
     print("")
     print("---------------")
-    print("Start with CVC4")
+    print("Start with CVC5")
     print("---------------")
-    run_automatic("cvc4", level=2)
+    run_automatic("cvc5", level=2)
     print("")
     print("------------")
     print("Then with Z3")

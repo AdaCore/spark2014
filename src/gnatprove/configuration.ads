@@ -42,6 +42,10 @@ package Configuration is
    GNATprove_Success, GNATprove_Failure : exception;
    --  Exceptions used to abort execution early
 
+   GNATprove_Recoverable_Failure : exception;
+   --  Exception used to signal that the report should be generated before
+   --  aborting execution.
+
    procedure Succeed with No_Return;
    --  End the program signaling success
 
@@ -131,6 +135,7 @@ package Configuration is
       Pedantic              : aliased Boolean;
       Proof                 : aliased GNAT.Strings.String_Access;
       Proof_Warnings        : aliased Boolean;
+      Proof_Warn_Timeout    : aliased Integer;
       Prover                : aliased GNAT.Strings.String_Access;
       Q                     : aliased Boolean;
       Replay                : aliased Boolean;
@@ -228,6 +233,7 @@ package Configuration is
       Info                  : Boolean;
       No_Loop_Unrolling     : Boolean;
       Proof_Warnings        : Boolean;
+      Proof_Warn_Timeout    : Integer;
       Counterexamples       : Boolean;
       Check_Counterexamples : Boolean;
    end record;

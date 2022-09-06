@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Flow_Generated_Globals.Phase_2;
 with Gnat2Why.Tables;        use Gnat2Why.Tables;
 with Namet;                  use Namet;
 with Snames;                 use Snames;
@@ -177,6 +176,10 @@ package body Why.Inter is
         (State : in out Search_State;
          Node  : W_Clone_Substitution_Id);
 
+      procedure Include_Declaration_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Include_Declaration_Id);
+
       -------------------------------
       -- Clone_Substitution_Pre_Op --
       -------------------------------
@@ -228,6 +231,19 @@ package body Why.Inter is
          Traverse (State, +Get_Name (Node));
          State.Control := Abandon_Children;
       end Identifier_Pre_Op;
+
+      --------------------------------
+      -- Include_Declaration_Pre_Op --
+      --------------------------------
+
+      procedure Include_Declaration_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Include_Declaration_Id) is
+      begin
+         if Include_Declaration_Get_Use_Kind (+Node) /= EW_Clone_Default then
+            State.S.Include (Include_Declaration_Get_Module (+Node));
+         end if;
+      end Include_Declaration_Pre_Op;
 
       -----------------------------
       -- Integer_Constant_Pre_Op --
@@ -469,72 +485,41 @@ package body Why.Inter is
    is
       S : constant Why_Node_Sets.Set := Compute_Module_Set (+(Th.Th));
 
-      function Is_Relevant_For_Imports
-        (N : Node_Or_Entity_Id)
-         return Boolean
-      with Pre => (if Present (N)
-                   then (if Nkind (N) in N_Entity
-                         then Ekind (N) /= E_Void
-                           and then
-                             (if Is_Full_View (N)
-                              then Present (Partial_View (N)))
-                           and then
-                             (if Ekind (N) = E_Loop_Parameter
-                              then not Is_Quantified_Loop_Param (N))
-                         else (Nkind (N) in N_Aggregate | N_Delta_Aggregate
-                           and then Is_Array_Type (Etype (N)))
-                         or else (Nkind (N) = N_Attribute_Reference
-                           and then Attribute_Name (N) = Name_Access
-                           and then Is_Access_Subprogram_Type (Etype (N)))));
-      --  Returns True if N is relevant for theory imports
-      --
-      --  We need to consider entities and some non-entities such as string
-      --  literals. We do *not* consider its Full_View. Loop parameters are a
-      --  bit special, we want to deal with them only if they are from loop,
-      --  but not from a quantifier.
-
       procedure Add_Definition_Imports
         (Filter_Module : W_Module_Id := Why_Empty);
-      --  Adds imports for the definitions of symbols in S
+      --  Adds imports for the definitions of symbols in S.
 
-      procedure Add_Axiom_Imports (S : Node_Sets.Set);
-      --  Adds imports for the axioms of symbols in S
+      procedure Add_Axiom_Imports;
+      --  Adds imports for the axioms of symbols in S. Filter the axiom
+      --  modules which are mutually recursive with the defined entity if any.
 
-      procedure Record_Dependencies (Defined_Entity : Entity_Id);
-      --  Records the dependencies between Defined_Entity and the nodes in S
+      procedure Record_Dependencies
+        (Filter_Module  : W_Module_Id := Why_Empty);
+      --  Records the dependencies between the current module and the modules
+      --  in S.
 
       -----------------------
       -- Add_Axiom_Imports --
       -----------------------
 
-      procedure Add_Axiom_Imports (S : Node_Sets.Set) is
-         use Flow_Generated_Globals.Phase_2;
+      procedure Add_Axiom_Imports is
+         Filter  : Why_Node_Sets.Set;
+         Closure : Why_Node_Sets.Set;
+
       begin
-         for N of S loop
-            Add_With_Clause (Th,
-                             E_Axiom_Module (N),
-                             EW_Clone_Default);
+         if Present (Defined_Entity)
+           and then Is_Subprogram_Or_Entry (Defined_Entity)
+         then
+            Filter := Mutually_Recursive_Modules (Defined_Entity);
+         end if;
 
-            --  Add a with clause for the theory containing the post axiom
-            --  of a recursive function. We do not include it when proving
-            --  the subprogram itself or mutually recursive subprograms as
-            --  it would be unsound. We do not include it either when
-            --  proving a package elaboration, or VCs for a type declaration
-            --  as it is not clear yet how we can decide whether those are
-            --  mutually recursive with a function or not.
+         Closure := Get_Graph_Closure
+           (Map    => Module_Dependencies,
+            From   => S,
+            Filter => Filter);
 
-            if Present (Defined_Entity)
-              and then Is_Subprogram_Or_Entry (Defined_Entity)
-              and then Nkind (N) in N_Entity
-              and then Is_Subprogram_Or_Entry (N)
-              and then Is_Recursive (N)
-              and then Has_Post_Axiom (N)
-              and then not Mutually_Recursive (Defined_Entity, N)
-            then
-               Add_With_Clause (Th,
-                                E_Rec_Axiom_Module (N),
-                                EW_Clone_Default);
-            end if;
+         for M of Closure loop
+            Add_With_Clause (Th, W_Module_Id (M), EW_Clone_Default);
          end loop;
       end Add_Axiom_Imports;
 
@@ -546,38 +531,25 @@ package body Why.Inter is
         (Filter_Module : W_Module_Id := Why_Empty) is
       begin
          for M of S loop
-            if +M /= Filter_Module then
+            if +M /= Filter_Module and then +M /= Th.Module then
                Add_With_Clause (Th, W_Module_Id (M), EW_Clone_Default);
             end if;
          end loop;
       end Add_Definition_Imports;
 
-      -----------------------------
-      -- Is_Relevant_For_Imports --
-      -----------------------------
-
-      function Is_Relevant_For_Imports
-        (N : Node_Or_Entity_Id)
-         return Boolean
-         renames Present;
-
       -------------------------
       -- Record_Dependencies --
       -------------------------
 
-      procedure Record_Dependencies (Defined_Entity : Entity_Id) is
+      procedure Record_Dependencies
+        (Filter_Module  : W_Module_Id := Why_Empty) is
       begin
          for M of S loop
-            declare
-               Ada_Node : constant Node_Id := Get_Ada_Node (M);
-
-            begin
-               if Is_Relevant_For_Imports (Ada_Node) then
-                  Add_To_Graph (Entity_Dependencies,
-                                Defined_Entity,
-                                Ada_Node);
-               end if;
-            end;
+            if +M /= Filter_Module and then +M /= Th.Module then
+               Add_To_Graph (Module_Dependencies,
+                             +Th.Module,
+                             M);
+            end if;
          end loop;
       end Record_Dependencies;
 
@@ -588,14 +560,14 @@ package body Why.Inter is
       Add_With_Clause (Th.Th, Int_Module, EW_Import);
 
       case Kind is
-         --  case 1: a standalone theory with no imports
+         --  case 1: a standalone theory with no dependencies
 
          when Standalone_Theory =>
             null;
 
          --  case 2: a theory defining the symbols for Defined_Entity
 
-         --  Add dependencies between Defined_Entity and all other entities
+         --  Add dependencies between the current module and all other modules
          --  used in the its definition. This will be used when importing the
          --  axiom theories in case 4 below.
 
@@ -604,17 +576,22 @@ package body Why.Inter is
          --  defining Defined_Entity itself. Add standard imports.
 
          when Definition_Theory =>
-            if Present (Defined_Entity) then
-               Record_Dependencies (Defined_Entity);
-            end if;
-            Add_Definition_Imports
-              (Filter_Module => E_Module (Defined_Entity));
+            declare
+               Filter_Module : constant W_Module_Id :=
+                 (if No (Defined_Entity) then Why_Empty
+                  else E_Module (Defined_Entity));
+            begin
+               Record_Dependencies (Filter_Module);
+               Add_Definition_Imports (Filter_Module);
+            end;
 
          --  case 3: a theory giving axioms for Defined_Entity
 
-         --  Add dependencies between Defined_Entity and all other entities
+         --  Add dependencies between the current module and all other modules
          --  used in the its axioms. This will be used when importing the
          --  axiom theories in case 4 below.
+         --  Also record the dependency between the definition module for
+         --  Defined_Entity and its axiom module.
 
          --  Add imports for all symbols used in the axioms of Defined_Entity.
          --  The definition theory for Defined_Entity will be one of those. Add
@@ -622,7 +599,8 @@ package body Why.Inter is
 
          when Axiom_Theory =>
             pragma Assert (Present (Defined_Entity));
-            Record_Dependencies (Defined_Entity);
+            Record_Dependencies;
+            Record_Extra_Dependency (E_Module (Defined_Entity), Th.Module);
             Add_Definition_Imports;
 
          --  case 4: a theory for generating VCs
@@ -633,9 +611,7 @@ package body Why.Inter is
 
          when VC_Generation_Theory =>
             Add_Definition_Imports;
-            Add_Axiom_Imports
-              (Get_Graph_Closure (Map  => Entity_Dependencies,
-                                  From => Compute_Ada_Node_Set (S)));
+            Add_Axiom_Imports;
       end case;
 
       declare
@@ -1171,13 +1147,28 @@ package body Why.Inter is
       return Theory_UC
    is
    begin
-      return Theory_UC'(Th =>
+      return Theory_UC'(Th       =>
                           New_Theory_Declaration (Name    => Get_Name (Module),
                                                   Kind    => EW_Module,
                                                   Comment => NID (Comment)),
-                        Section => P,
+                        Module   => Module,
+                        Section  => P,
                         Finished => False);
    end Open_Theory;
+
+   -----------------------------
+   -- Record_Extra_Dependency --
+   -----------------------------
+
+   procedure Record_Extra_Dependency
+     (Defining_Module : W_Module_Id;
+      Axiom_Module    : W_Module_Id)
+   is
+   begin
+      Add_To_Graph (Module_Dependencies,
+                    +Defining_Module,
+                    +Axiom_Module);
+   end Record_Extra_Dependency;
 
    ---------------
    -- To_Why_Id --
@@ -1237,7 +1228,9 @@ package body Why.Inter is
       else
          declare
             Module : constant W_Module_Id :=
-              (if Ekind (E) in Subprogram_Kind | Entry_Kind
+              (if Selector = Dispatch then
+                  E_Dispatch_Module (E, Axiom => Domain = EW_Prog)
+               elsif Ekind (E) in Subprogram_Kind | Entry_Kind
                  and then Domain = EW_Prog
                then
                   E_Axiom_Module (E)
@@ -1247,7 +1240,7 @@ package body Why.Inter is
                   E_Module (E));
             Namespace : constant Symbol :=
               (case Selector is
-                 when Dispatch  => NID (To_String (WNE_Dispatch_Module)),
+                 when Dispatch  => No_Symbol,
                  when No_Return => NID (To_String (WNE_No_Return_Module)),
                  when Refine    => NID (To_String (WNE_Refine_Module)),
                  when Standard  => No_Symbol);

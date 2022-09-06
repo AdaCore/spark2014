@@ -5,7 +5,7 @@ lat_long.adb:8:51: info: float overflow check proved (Trivial)
 lat_long.adb:8:55: info: float overflow check proved (Trivial)
 lat_long.adb:9:39: info: float overflow check proved (Trivial)
 lat_long.adb:9:54: info: float overflow check proved (Trivial)
-lat_long.adb:9:58: info: division check proved (Z3: 1 VC)
+lat_long.adb:9:58: info: division check proved (CVC5: 1 VC)
 lat_long.adb:9:58: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at lat_long.ads:28 should mention Destination and Source in a precondition]
 lat_long.adb:10:29: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 lat_long.adb:10:41: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
@@ -13,7 +13,7 @@ lat_long.adb:10:54: medium: float overflow check might fail [reason for check: r
 lat_long.ads:8:34: info: float overflow check proved (CVC5: 1 VC)
 lat_long.ads:15:40: medium: postcondition might fail, cannot prove Cos'Result >= 0.1
 lat_long.ads:18:26: medium: precondition might fail [possible fix: subprogram at line 17 should mention X in a precondition]
-lat_long.ads:29:14: medium: postcondition might fail
+lat_long.ads:29:14: info: postcondition proved (altergo: 1 VC)
 lat_long.ads:30:57: info: float overflow check proved (altergo: 1 VC)
 lat_long.ads:30:101: info: float overflow check proved (altergo: 1 VC)
 lat_long.ads:31:58: info: float overflow check proved (altergo: 1 VC)

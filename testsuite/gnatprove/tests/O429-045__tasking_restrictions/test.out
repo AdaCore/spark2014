@@ -14,9 +14,9 @@ p.ads:3:09: error: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
   violation of pragma SPARK_Mode at bad_profile.adc:1
     1 |pragma SPARK_Mode (On);
       |^ here
-gnatprove: error during fast partial checking of SPARK legality rules
 warning: no bodies have been analyzed by GNATprove
 enable analysis of a non-generic body using SPARK_Mode
+gnatprove: error during fast partial checking of SPARK legality rules
 
 analysis of bad_pep.gpr
 --------------------------
@@ -29,6 +29,6 @@ p.ads:3:09: error: tasking in SPARK requires sequential elaboration (SPARK RM 9(
   violation of pragma SPARK_Mode at bad_pep.adc:1
     1 |pragma SPARK_Mode (On);
       |^ here
-gnatprove: error during fast partial checking of SPARK legality rules
 warning: no bodies have been analyzed by GNATprove
 enable analysis of a non-generic body using SPARK_Mode
+gnatprove: error during fast partial checking of SPARK legality rules

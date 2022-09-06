@@ -197,6 +197,10 @@ package Gnat2Why_Opts.Reading is
 
    No_Loop_Unrolling : Boolean;
 
+   --  True if gnatwhy3 should be run in parallel
+
+   Parallel_Why3 : Boolean;
+
    ---------------------------
    -- Loading option values --
    ---------------------------

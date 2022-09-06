@@ -15,7 +15,7 @@ decadriver.adb:105:10: info: initialization of "RX_FINFO_Reg" proved
 decadriver.adb:107:10: info: initialization of "Frame_Length" proved
 decadriver.adb:108:10: info: initialization of "Next_Idx" proved
 decadriver.adb:112:35: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Notify_Frame_Received"
-decadriver.adb:116:25: info: assertion proved (CVC5: 1 VC)
+decadriver.adb:116:25: info: assertion proved (Z3: 1 VC)
 decadriver.adb:123:63: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
 decadriver.adb:125:37: info: overflow check proved (CVC5: 2 VC)
 decadriver.adb:127:38: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Notify_Frame_Received"
@@ -93,7 +93,7 @@ decadriver.adb:553:37: high: call to potentially blocking subprogram "dw1000.bsp
 decadriver.ads:81:19: info: initialization of "Size" proved
 decadriver.ads:82:19: info: initialization of "Error" proved
 decadriver.ads:83:12: info: flow dependencies proved
-decadriver.ads:88:17: info: postcondition proved (Z3: 3 VC)
+decadriver.ads:88:17: info: postcondition proved (CVC5: 3 VC)
 decadriver.ads:111:22: medium: postcondition might fail
 decadriver.ads:115:28: info: initialization of "Result" proved
 decadriver.ads:116:14: info: data dependencies proved

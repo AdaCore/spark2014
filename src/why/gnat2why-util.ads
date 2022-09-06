@@ -257,12 +257,19 @@ package Gnat2Why.Util is
    subtype Why_Section is Why_Node_Lists.List;
 
    type Theory_UC is record
-      Th      : W_Theory_Declaration_Id;
-      Section : W_Section_Id;
+      Th       : W_Theory_Declaration_Id;
+      Module   : W_Module_Id;
+      Section  : W_Section_Id;
       Finished : Boolean;
    end record;
    --  Used to construct a new theory by adding declarations one by one to it.
    --  Adding is only allowed if "Finished" is False.
+
+   Empty_Theory : constant Theory_UC :=
+     (Th       => Why_Empty,
+      Module   => Why_Empty,
+      Section  => WF_Context,
+      Finished => False);
 
    procedure Init_Why_Sections;
    --  Call this procedure to initialize the predefined sections of the Why
@@ -611,21 +618,28 @@ package Gnat2Why.Util is
    --  Return the size in bit of bitvector type Typ.
    --  raise an exception if Typ is not a bitvector type
 
-   procedure Add_To_Graph (Map : in out Node_Graphs.Map; From, To : Node_Id);
+   procedure Add_To_Graph
+     (Map      : in out Why_Node_Graphs.Map;
+      From, To : Why_Node_Id);
    --  Add the relation From -> To in the given graph
    --  @param Map a graph
    --  @param From the node from which the relation starts
    --  @param To the node to which the relation goes
 
    function Get_Graph_Closure
-     (Map  : Node_Graphs.Map;
-      From : Node_Sets.Set)
-      return Node_Sets.Set
-   with Post => Node_Sets.Is_Subset (Subset => From,
-                                     Of_Set => Get_Graph_Closure'Result);
+     (Map    : Why_Node_Graphs.Map;
+      From   : Why_Node_Sets.Set;
+      Filter : Why_Node_Sets.Set := Why_Node_Sets.Empty)
+      return Why_Node_Sets.Set
+     with Post => Why_Node_Sets.Is_Subset (Subset => From,
+                                           Of_Set => Get_Graph_Closure'Result)
+     and then Why_Node_Sets.Is_Empty
+       (Why_Node_Sets.Intersection (Get_Graph_Closure'Result, Filter));
    --  @param Map the graph
-   --  @param From the node to start from
+   --  @param From the set of nodes to start from
+   --  @param Filter nodes to be filtered from the closure
    --  @return the set of nodes reachable from the node From in the graph Map
+   --     which are not in Filter.
 
    function Avoid_Why3_Keyword (S : String) return String;
    --  @param S any string

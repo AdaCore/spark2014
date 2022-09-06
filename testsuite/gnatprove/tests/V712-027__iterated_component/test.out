@@ -1,0 +1,2 @@
+main.adb:7:18: error: iterated component association with iterator specification is not yet supported
+gnatprove: error during flow analysis and proof

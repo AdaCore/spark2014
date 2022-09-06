@@ -71,7 +71,7 @@ p.adb:87:61: medium: "Tab" might not be initialized
 p.adb:87:66: info: index check proved (CVC5: 4 VC)
 p.adb:93:12: medium: array index check might fail [reason for check: value must be a valid index into the array]
 p.adb:94:14: info: overflow check proved (CVC5: 4 VC)
-p.adb:95:14: info: overflow check proved (CVC5: 2 VC; Z3: 2 VC)
+p.adb:95:14: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
 p.adb:96:28: info: loop variant proved (CVC5: 1 VC)
 p.adb:97:30: info: loop invariant initialization proved (CVC5: 1 VC)
 p.adb:97:30: info: loop invariant preservation proved (CVC5: 1 VC)

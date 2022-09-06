@@ -1781,11 +1781,23 @@ package body Flow_Utility is
    is
       Globals : Global_Flow_Ids;
 
+      --  Flow handles expression functions as if they would be completed in
+      --  the body of an enclosing package, regardless of where the function
+      --  is actually completed. However, we don't want proof to use
+      --  Refined_Global of expression functions declared in WITH-ed package
+      --  specs, because Refined_Global might be tigher than the Global of
+      --  subprograms called from the expression function itself.
+
       S : constant Flow_Scope :=
         (if Present (Scop)
          then Scop
          else Get_Flow_Scope (if Ekind (Subprogram) /= E_Subprogram_Type
                                 and then Entity_Body_In_SPARK (Subprogram)
+                                and then
+                                  not (Is_Expression_Function_Or_Completion
+                                         (Subprogram)
+                                         and then
+                                       not Is_In_Analyzed_Files (Subprogram))
                               then Get_Body_Entity (Subprogram)
                               else Subprogram));
 
@@ -6414,7 +6426,7 @@ package body Flow_Utility is
       --  The flow representation of the object denoted by the Expr path
 
    begin
-      while Nkind (N) not in N_Expanded_Name | N_Identifier loop
+      while Nkind (N) not in N_Expanded_Name | N_Identifier | N_Null loop
          Seq.Prepend (N);
 
          N :=
@@ -6436,6 +6448,10 @@ package body Flow_Utility is
                when others =>
                   raise Program_Error);
       end loop;
+
+      if Nkind (N) = N_Null then
+         return Null_Flow_Id;
+      end if;
 
       declare
          Root_Entity : constant Entity_Id := Entity (N);

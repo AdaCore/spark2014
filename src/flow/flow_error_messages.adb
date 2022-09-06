@@ -47,6 +47,7 @@ with GNATCOLL.Utils;            use GNATCOLL.Utils;
 with Lib.Xref;
 with Namet;                     use Namet;
 with Nlists;                    use Nlists;
+with Sem_Aggr;                  use Sem_Aggr;
 with Sem_Aux;                   use Sem_Aux;
 with Sem_Util;                  use Sem_Util;
 with Sinfo.Nodes;               use Sinfo.Nodes;
@@ -92,14 +93,6 @@ package body Flow_Error_Messages is
    --  @param Explanation if non-empty, explanation passed on by the caller
    --  @result message part suggesting a possible explanation for why the check
    --    was not unproved
-
-   function Get_Filtered_Variables_For_Proof
-     (Expr    : Node_Id;
-      Context : Node_Id)
-      return Flow_Id_Sets.Set;
-   --  Wrapper on Flow_Utility.Get_Variables_For_Proof that excludes the
-   --  special variables __HEAP and SPARK.Heap.Dynamic_Memory used to model
-   --  (de)allocation.
 
    function Get_Fix
      (N          : Node_Id;
@@ -736,23 +729,25 @@ package body Flow_Error_Messages is
    ---------------------
 
    procedure Error_Msg_Proof
-     (N           : Node_Id;
-      Msg         : String;
-      Is_Proved   : Boolean;
-      Tag         : VC_Kind;
-      Cntexmp     : JSON_Value;
-      Verdict     : Cntexmp_Verdict;
-      Check_Tree  : JSON_Value;
-      VC_File     : String;
-      VC_Loc      : Node_Id;
-      Editor_Cmd  : String;
-      Explanation : String;
-      E           : Entity_Id;
-      How_Proved  : Prover_Category;
-      SD_Id       : Session_Dir_Base_ID;
-      Stats       : Prover_Stat_Maps.Map;
-      Place_First : Boolean;
-      Check_Info  : Check_Info_Type)
+     (N             : Node_Id;
+      Msg           : String;
+      Is_Proved     : Boolean;
+      Tag           : VC_Kind;
+      Cntexmp       : JSON_Value;
+      Verdict       : Cntexmp_Verdict;
+      Check_Tree    : JSON_Value;
+      VC_File       : String;
+      VC_Loc        : Node_Id;
+      Editor_Cmd    : String;
+      Explanation   : String;
+      E             : Entity_Id;
+      How_Proved    : Prover_Category;
+      SD_Id         : Session_Dir_Base_ID;
+      Stats         : Prover_Stat_Maps.Map;
+      Place_First   : Boolean;
+      Check_Info    : Check_Info_Type;
+      Fuzzing_Used  : Boolean := False;
+      Print_Fuzzing : Boolean := False)
    is
       function Get_Fix_Or_Verdict
         (N          : Node_Id;
@@ -865,7 +860,8 @@ package body Flow_Error_Messages is
 
       Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
         (if Verdict.Verdict_Category in
-            Not_Checked | Cntexmp_Confirmed_Verdict_Category
+           Not_Checked | Cntexmp_Confirmed_Verdict_Category
+         and then not Fuzzing_Used
          then
             Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc)
          else
@@ -914,7 +910,9 @@ package body Flow_Error_Messages is
                   One_Liner : constant String :=
                     (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
 
-                     elsif Pretty_Cntexmp.Is_Empty then ""
+                     elsif Pretty_Cntexmp.Is_Empty
+                     and then not Fuzzing_Used
+                     then ""
 
                      --  Do not include a one-liner in the message for resource
                      --  leak checks, as the exact values of variables seldom
@@ -925,7 +923,14 @@ package body Flow_Error_Messages is
                                 | VC_Resource_Leak_At_End_Of_Scope
                      then ""
 
-                     else Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc));
+                     else
+                       (if Fuzzing_Used
+                        then
+                          (if Verdict.Verdict_Category /= Bad_Counterexample
+                           and then Print_Fuzzing
+                           then Get_Environment_One_Liner (N)
+                           else "")
+                        else Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc)));
 
                   Details : constant String :=
                     (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
@@ -1311,10 +1316,14 @@ package body Flow_Error_Messages is
 
          when VC_Range_Check =>
 
-            --  Range check is put on the node itself for slices
+            --  Range check is put on the node itself for slices and empty
+            --  array aggregates.
 
             if Nkind (N) = N_Slice then
                return "slice bounds must fit in the underlying array";
+            elsif Nkind (N) = N_Aggregate and then Is_Null_Aggregate (N) then
+               return "high bound of empty array aggregate must be a valid"
+                 & " value of the base type";
             end if;
 
             --  In the remaining cases, look for the parent node as interesting
@@ -1475,12 +1484,21 @@ package body Flow_Error_Messages is
          return Explanation;
       end if;
 
+      --  Add an explanation for range checks on empty aggregates
+
+      if Tag = VC_Range_Check
+        and then Nkind (N) = N_Aggregate
+        and then Is_Null_Aggregate (N)
+      then
+         return "empty aggregates cannot be used if there is no element before"
+           & " the first element of their index type";
+
       --  If a run-time check fails inside the prefix of a an attribute
       --  reference with 'Old or 'Loop_Entry attribute, and this attribute
       --  reference is potentially unevaluated, it is likely that the user
       --  misunderstood the evaluation rules for 'Old/'Loop_Entry.
 
-      if Tag in VC_RTE_Kind | VC_Precondition | VC_Precondition_Main then
+      elsif Tag in VC_RTE_Kind | VC_Precondition | VC_Precondition_Main then
          declare
             function Is_Old_Or_Loop_Entry (N : Node_Id) return Boolean is
               (Nkind (N) = N_Attribute_Reference

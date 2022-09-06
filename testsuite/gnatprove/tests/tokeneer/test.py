@@ -10,7 +10,7 @@ def replay():
 
 
 if __name__ == "__main__":
-    prove_all(procs=4, replay=True, no_fail=True)
+    prove_all(replay=True, no_fail=True)
 
     # testing the proof information in .spark files. See <gnatprove/spark_report>
     # for the format of the .spark files

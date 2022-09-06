@@ -2,7 +2,6 @@ repro.adb:5:30: high: loop invariant might not be preserved by an arbitrary iter
 repro.adb:5:30: info: loop invariant initialization proved (CVC5: 1 VC)
 repro.adb:6:14: info: overflow check proved (CVC5: 2 VC)
 counterexample expected for check at repro.adb:5
-  trace at repro.adb:4 --> I = 0
   trace at repro.adb:5 --> I = 43
 [PREVIOUS]  trace at repro.adb:5 --> I = 42
   trace at repro.adb:6 --> I = 43

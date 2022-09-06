@@ -1,2 +1,2 @@
-test.adb:4:53: medium: overflow check might fail, cannot prove lower bound for Z + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Z <= Integer'Last - 1) to subprogram at line 4]
+test.adb:4:53: high: overflow check might fail, cannot prove bounds for Z + 1 (e.g. when Z = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Z <= Integer'Last - 1) to subprogram at line 4]
 plop: exec of 'plop' failed (No such file or directory)

@@ -137,9 +137,11 @@ then the following command will also prove all checks::
 The next contents in the file are statistics describing:
 
 * which units were analyzed (with flow analysis, proof, or both)
+* if the analysis for a given unit was incomplete because of errors
 * which subprograms in these units were analyzed (with flow analysis, proof, or
   both)
 * the results of this analysis
+
 
 Categories of Messages
 ----------------------
@@ -179,6 +181,29 @@ check messages and information messages.
 
 .. index:: --mode; effect on output
 
+Errors and Completeness of Analysis
+-----------------------------------
+
+As mentioned in the previous section, if errors are encountered (manifested by
+an error message), the analysis may not be complete.
+
+At the project level, |GNATprove| analyzes the units of a project independently,
+and stops when a unit contains an error. Other units may not be analyzed in
+this case. You can use the command line switch `-k` to analyze all units even
+in the presence of errors. Of course this may take more time.
+
+At the unit level, errors in earlier phases stop the analysis and block the
+display of other errors. If this happens, the ``gnatprove.out`` file contains
+information about this, for example::
+
+    flow analysis and proof skipped for this unit (error during ownership checking)
+
+It can be confusing to try to fix errors that come from later stages (e.g.
+proof) while errors in earlier stages are still present (e.g. in other units).
+Therefore we recommend a gradual approach, eliminating simpler errors before
+going to more advanced errors. This can be achieved by usind the ``--mode``
+switch, which is explained in detail in the next section.
+
 Effect of Mode on Output
 ------------------------
 
@@ -212,6 +237,8 @@ mode ``flow`` and for mode ``prove``.
 If switch ``--report=all``, ``--report=provers`` or ``--report=statistics`` is
 specified, |GNATprove| additionally prints on the standard output information
 messages for proved checks.
+
+
 
 Description of Messages
 -----------------------

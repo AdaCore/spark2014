@@ -41,7 +41,7 @@ stack_external_prover.adb:42:27: info: index check proved (CVC5: 2 VC)
 stack_external_prover.adb:42:69: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
 stack_external_prover.adb:43:36: info: index check proved (CVC5: 2 VC)
 stack_external_prover.ads:4:08: info: flow dependencies proved
-stack_external_prover.ads:5:08: medium: initial condition might fail
+stack_external_prover.ads:5:08: medium: initial condition might fail (e.g. when My_Stack = (S => (others => 0), Pointer => 0)) [possible fix: add or complete related loop invariants or postconditions]
 stack_external_prover.ads:44:14: info: subprogram "Push" will terminate, terminating annotation has been proved
 stack_external_prover.ads:45:11: info: data dependencies proved
 stack_external_prover.ads:48:23: medium: postcondition might fail, cannot prove Count = Count'Old + 1 [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]

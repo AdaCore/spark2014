@@ -2291,6 +2291,24 @@ package body SPARK_Util is
                return False;
             end if;
 
+         --  Recognize calls to functions with a precondition of False
+
+         when N_Function_Call =>
+            declare
+               Subp     : constant Entity_Id := Get_Called_Entity (N);
+               Pre_List : constant Node_Lists.List :=
+                 Find_Contracts (Subp, Pragma_Precondition);
+               use type Ada.Containers.Count_Type;
+            begin
+               return Pre_List.Length = 1
+                 and then
+                   (declare
+                      Expr : constant N_Subexpr_Id := Pre_List.First_Element;
+                    begin
+                      Nkind (Expr) in N_Expanded_Name | N_Identifier
+                        and then Entity (Expr) = Standard_False);
+            end;
+
          when N_Call_Marker =>
             return Is_Error_Signaling_Statement (Next (N));
 

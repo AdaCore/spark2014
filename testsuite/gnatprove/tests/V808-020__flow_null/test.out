@@ -1,0 +1,2 @@
+nullparam.adb:1:22: warning: "Dummy" is not modified, could be IN
+nullparam.adb:13:04: warning: statement has no effect

@@ -155,29 +155,28 @@ example_recursive.adb:143:48: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:144:15: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:145:19: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:146:15: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:150:15: info: precondition proved (Z3: 1 VC)
+example_recursive.adb:150:15: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:150:15: warning: assuming "Get" has no effect on global items
 example_recursive.adb:150:15: warning: no Global contract available for "Get"
-example_recursive.adb:151:32: info: precondition proved (Z3: 1 VC)
+example_recursive.adb:151:32: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:151:32: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:151:32: warning: assuming "Get" has no effect on global items
 example_recursive.adb:151:32: warning: no Global contract available for "Get"
 example_recursive.adb:152:28: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:153:14: info: postcondition proved (CVC5: 4 VC)
 example_recursive.adb:153:14: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:153:14: medium: in inlined expression function body at example_recursive.adb:34
-example_recursive.adb:153:14: medium: postcondition might fail, cannot prove Valid (M, L)
 example_recursive.adb:153:33: info: overflow check proved (CVC5: 2 VC)
-example_recursive.adb:157:10: medium: precondition might fail, cannot prove Valid (M2, A)
+example_recursive.adb:157:10: info: precondition proved (CVC5: 8 VC; Trivial: 1 VC)
+example_recursive.adb:159:10: info: precondition proved (CVC5: 13 VC)
 example_recursive.adb:159:10: info: subprogram variant proved (CVC5: 1 VC)
-example_recursive.adb:159:10: medium: precondition might fail, cannot prove Reachable (L1, N1, P, M1)
 example_recursive.adb:159:47: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:159:47: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:159:47: warning: assuming "Get" has no effect on global items
 example_recursive.adb:159:47: warning: no Global contract available for "Get"
 example_recursive.adb:159:75: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:160:25: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:160:25: medium: assertion might fail, cannot prove Valid (M, L)
-example_recursive.adb:160:25: medium: in inlined expression function body at example_recursive.adb:34
+example_recursive.adb:160:25: medium: assertion might fail, cannot prove Valid_List (Address (L_Cell (Get (M, L)).N), N - 1, M)
+example_recursive.adb:160:25: medium: in inlined expression function body at example_recursive.adb:35
 example_recursive.adb:160:44: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:170:06: info: data dependencies proved
 example_recursive.adb:172:15: info: precondition proved (CVC5: 1 VC)
@@ -185,10 +184,10 @@ example_recursive.adb:172:48: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:173:15: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:174:19: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:175:15: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:179:15: info: precondition proved (Z3: 1 VC)
+example_recursive.adb:179:15: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:179:15: warning: assuming "Get" has no effect on global items
 example_recursive.adb:179:15: warning: no Global contract available for "Get"
-example_recursive.adb:180:32: info: precondition proved (Z3: 1 VC)
+example_recursive.adb:180:32: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:180:32: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:180:32: warning: assuming "Get" has no effect on global items
 example_recursive.adb:180:32: warning: no Global contract available for "Get"
@@ -198,9 +197,9 @@ example_recursive.adb:182:44: medium: postcondition might fail, cannot prove Rea
 example_recursive.adb:182:62: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:183:16: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:183:45: info: precondition proved (CVC5: 5 VC)
-example_recursive.adb:187:10: medium: precondition might fail, cannot prove Valid (M2, A)
+example_recursive.adb:187:10: info: precondition proved (CVC5: 8 VC; Trivial: 1 VC)
+example_recursive.adb:189:10: info: precondition proved (CVC5: 13 VC)
 example_recursive.adb:189:10: info: subprogram variant proved (CVC5: 1 VC)
-example_recursive.adb:189:10: medium: precondition might fail, cannot prove Reachable (L1, N1, P, M1)
 example_recursive.adb:189:47: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:189:47: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:189:47: warning: assuming "Get" has no effect on global items
@@ -223,73 +222,66 @@ example_recursive.adb:224:15: info: precondition proved (CVC5: 3 VC)
 example_recursive.adb:226:28: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:228:14: medium: postcondition might fail, cannot prove Valid_Memory (Memory)
 example_recursive.adb:230:15: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:232:41: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
-example_recursive.adb:234:45: medium: in inlined expression function body at example_recursive.adb:32
-example_recursive.adb:234:45: medium: precondition might fail, cannot prove N = 0
-example_recursive.adb:235:19: medium: in inlined expression function body at example_recursive.adb:32
-example_recursive.adb:235:19: medium: precondition might fail, cannot prove N = 0
+example_recursive.adb:232:41: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:234:45: info: precondition proved (CVC5: 5 VC)
+example_recursive.adb:235:19: medium: in inlined expression function body at example_recursive.adb:33
+example_recursive.adb:235:19: medium: precondition might fail, cannot prove N /= 0
 example_recursive.adb:236:22: medium: in inlined expression function body at example_recursive.adb:32
 example_recursive.adb:236:22: medium: precondition might fail, cannot prove N = 0
 example_recursive.adb:241:43: info: precondition proved (CVC5: 2 VC)
+example_recursive.adb:255:39: info: loop invariant initialization proved (CVC5: 1 VC)
 example_recursive.adb:255:39: info: loop invariant preservation proved (CVC5: 1 VC)
-example_recursive.adb:255:39: medium: loop invariant might fail in first iteration
 example_recursive.adb:256:39: info: loop invariant initialization proved (CVC5: 1 VC)
+example_recursive.adb:256:39: info: loop invariant preservation proved (CVC5: 1 VC)
 example_recursive.adb:256:39: info: precondition proved (CVC5: 2 VC)
-example_recursive.adb:256:39: medium: loop invariant might not be preserved by an arbitrary iteration
 example_recursive.adb:257:39: info: loop invariant initialization proved (CVC5: 1 VC)
-example_recursive.adb:257:39: medium: in inlined expression function body at example_recursive.adb:32
-example_recursive.adb:257:39: medium: loop invariant might not be preserved by an arbitrary iteration
-example_recursive.adb:257:39: medium: precondition might fail, cannot prove N = 0
-example_recursive.adb:262:27: medium: precondition might fail
+example_recursive.adb:257:39: info: loop invariant preservation proved (CVC5: 1 VC)
+example_recursive.adb:257:39: info: precondition proved (CVC5: 9 VC; Z3: 1 VC)
+example_recursive.adb:262:27: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:262:58: info: pointer dereference check proved (CVC5: 1 VC)
-example_recursive.adb:262:58: medium: tag check might fail
-example_recursive.adb:269:58: medium: precondition might fail
+example_recursive.adb:262:58: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:269:58: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:269:69: info: null exclusion check proved (CVC5: 1 VC)
-example_recursive.adb:271:22: info: tag check proved (Z3: 1 VC)
+example_recursive.adb:271:22: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:271:36: info: pointer dereference check proved (CVC5: 1 VC)
 example_recursive.adb:273:19: medium: precondition might fail, cannot prove Valid_Memory (M2)
 example_recursive.adb:274:19: medium: precondition might fail, cannot prove Valid_Memory (M2)
-example_recursive.adb:275:42: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
-example_recursive.adb:278:16: medium: precondition might fail, cannot prove Reachable (L2, N2, P, M)
+example_recursive.adb:275:42: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:278:16: info: precondition proved (CVC5: 5 VC)
+example_recursive.adb:278:91: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:278:91: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:278:91: medium: precondition might fail
-example_recursive.adb:279:29: medium: precondition might fail
+example_recursive.adb:279:29: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:279:60: info: pointer dereference check proved (CVC5: 1 VC)
 example_recursive.adb:279:60: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:280:27: medium: range check might fail, cannot prove lower bound for Max - 1 [reason for check: result of subtraction must fit in the target type of the assignment]
+example_recursive.adb:280:27: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:287:47: info: initialization of "L" proved
+example_recursive.adb:289:14: info: postcondition proved (CVC5: 6 VC)
 example_recursive.adb:290:27: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:291:10: info: precondition proved (Z3: 1 VC)
-example_recursive.adb:292:10: medium: postcondition might fail, cannot prove Allocates (Memory'Old, Memory, Reachable_Locations (L))
-example_recursive.adb:292:41: medium: precondition might fail, cannot prove Valid_List (L)
+example_recursive.adb:291:10: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:292:41: info: precondition proved (CVC5: 2 VC)
 example_recursive.adb:296:07: info: initialization of "M" proved
-example_recursive.adb:302:10: medium: in inlined expression function body at example_recursive.adb:21
-example_recursive.adb:302:10: medium: precondition might fail, cannot prove Get (M, A) in L_Cell [possible fix: loop invariant at line 306 should mention M]
+example_recursive.adb:302:10: info: precondition proved (CVC5: 16 VC; Trivial: 2 VC)
 example_recursive.adb:303:30: info: precondition proved (CVC5: 2 VC)
 example_recursive.adb:303:30: info: tag check proved (CVC5: 2 VC)
 example_recursive.adb:303:64: info: overflow check proved (CVC5: 4 VC)
 example_recursive.adb:303:64: info: range check proved (CVC5: 4 VC)
-example_recursive.adb:304:10: medium: in inlined expression function body at example_recursive.adb:21
-example_recursive.adb:304:10: medium: precondition might fail, cannot prove Get (M, A) in L_Cell [possible fix: loop invariant at line 306 should mention M]
+example_recursive.adb:304:10: medium: in inlined expression function body at example_recursive.adb:35
+example_recursive.adb:304:10: medium: precondition might fail, cannot prove Valid_List (Address (L_Cell (Get (M, L)).N), N - 1, M) [possible fix: loop invariant at line 306 should mention M]
 example_recursive.adb:305:30: info: precondition proved (CVC5: 2 VC)
 example_recursive.adb:305:30: info: tag check proved (CVC5: 2 VC)
 example_recursive.adb:305:64: info: overflow check proved (CVC5: 4 VC)
 example_recursive.adb:305:64: info: range check proved (CVC5: 4 VC)
-example_recursive.adb:306:33: medium: in inlined expression function body at example_recursive.adb:21
-example_recursive.adb:306:33: medium: in inlined expression function body at example_recursive.adb:21
-example_recursive.adb:306:33: medium: loop invariant might fail in first iteration, cannot prove Get (M, A) in L_Cell
-example_recursive.adb:306:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Get (M, A) in L_Cell
-example_recursive.adb:308:13: medium: in inlined expression function body at example_recursive.adb:21
-example_recursive.adb:308:13: medium: loop invariant might fail in first iteration
-example_recursive.adb:308:13: medium: loop invariant might not be preserved by an arbitrary iteration
-example_recursive.adb:308:13: medium: precondition might fail, cannot prove Get (M, A) in L_Cell
+example_recursive.adb:306:33: info: loop invariant initialization proved (CVC5: 1 VC)
+example_recursive.adb:306:33: info: loop invariant preservation proved (CVC5: 1 VC)
+example_recursive.adb:308:13: info: loop invariant initialization proved (CVC5: 1 VC)
+example_recursive.adb:308:13: info: loop invariant preservation proved (CVC5: 1 VC)
+example_recursive.adb:308:13: info: precondition proved (CVC5: 2 VC)
 example_recursive.adb:308:57: info: overflow check proved (CVC5: 4 VC)
 example_recursive.adb:308:61: info: overflow check proved (CVC5: 4 VC)
 example_recursive.adb:308:61: info: range check proved (CVC5: 4 VC)
-example_recursive.adb:310:13: medium: loop invariant might fail in first iteration
+example_recursive.adb:310:13: info: loop invariant initialization proved (CVC5: 1 VC)
 example_recursive.adb:310:13: medium: loop invariant might not be preserved by an arbitrary iteration
-example_recursive.adb:311:13: medium: in inlined expression function body at example_recursive.adb:21
-example_recursive.adb:311:13: medium: precondition might fail, cannot prove Get (M, A) in L_Cell
+example_recursive.adb:311:13: info: precondition proved (CVC5: 10 VC)
 example_recursive.adb:311:66: info: overflow check proved (CVC5: 4 VC)
 example_recursive.adb:311:70: info: overflow check proved (CVC5: 4 VC)
 example_recursive.adb:311:70: info: range check proved (CVC5: 4 VC)
@@ -320,30 +312,25 @@ example_recursive.adb:334:19: medium: in inlined expression function body at exa
 example_recursive.adb:335:19: info: precondition proved (CVC5: 3 VC)
 example_recursive.adb:335:19: medium: assertion might fail, cannot prove not Reachable (Address (L2.Values), L2.Length, A, Memory)
 example_recursive.adb:335:19: medium: in inlined expression function body at example_recursive.adb:197
-example_recursive.adb:338:04: info: precondition proved (CVC5: 4 VC; Z3: 1 VC)
-example_recursive.adb:339:04: medium: in inlined expression function body at example_recursive.adb:32
-example_recursive.adb:339:04: medium: precondition might fail, cannot prove N = 0
-example_recursive.adb:340:04: medium: in inlined expression function body at example_recursive.adb:32
-example_recursive.adb:340:04: medium: precondition might fail, cannot prove N = 0
-example_recursive.adb:341:04: medium: in inlined expression function body at example_recursive.adb:32
-example_recursive.adb:341:04: medium: precondition might fail, cannot prove N = 0
-example_recursive.adb:342:04: medium: in inlined expression function body at example_recursive.adb:32
-example_recursive.adb:342:04: medium: precondition might fail, cannot prove N = 0
+example_recursive.adb:338:04: info: precondition proved (CVC5: 5 VC)
+example_recursive.adb:339:04: info: precondition proved (CVC5: 7 VC; Trivial: 1 VC; Z3: 1 VC)
+example_recursive.adb:340:04: medium: precondition might fail, cannot prove Get (M1, A) = Get (M2, A)
+example_recursive.adb:341:04: medium: precondition might fail, cannot prove Get (M1, A) = Get (M2, A)
+example_recursive.adb:342:04: medium: precondition might fail, cannot prove Get (M1, A) = Get (M2, A)
 example_recursive.adb:344:07: info: no contextual analysis of "Rand" (body not seen yet)
 example_recursive.adb:344:07: warning: assuming "Rand" always returns
 example_recursive.adb:344:07: warning: assuming "Rand" has no effect on global items
 example_recursive.adb:344:07: warning: no Global contract available for "Rand"
 example_recursive.adb:344:07: warning: no returning annotation available for "Rand"
-example_recursive.adb:345:07: info: precondition proved (CVC5: 3 VC; Z3: 2 VC)
+example_recursive.adb:345:07: info: precondition proved (CVC5: 4 VC; Z3: 1 VC)
 example_recursive.adb:346:22: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:346:22: medium: assertion might fail
 example_recursive.adb:347:10: warning: assuming "Rand" always returns
 example_recursive.adb:347:10: warning: assuming "Rand" has no effect on global items
 example_recursive.adb:347:10: warning: no Global contract available for "Rand"
 example_recursive.adb:347:10: warning: no returning annotation available for "Rand"
-example_recursive.adb:349:07: info: precondition proved (CVC5: 3 VC; Z3: 2 VC)
-example_recursive.adb:350:07: medium: in inlined expression function body at example_recursive.adb:32
-example_recursive.adb:350:07: medium: precondition might fail, cannot prove N = 0
+example_recursive.adb:349:07: info: precondition proved (CVC5: 5 VC)
+example_recursive.adb:350:07: medium: precondition might fail, cannot prove Get (M1, A) = Get (M2, A)
 example_recursive.adb:351:22: info: assertion proved (CVC5: 1 VC)
 example_recursive.adb:351:22: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:352:10: warning: assuming "Rand" always returns
@@ -420,8 +407,8 @@ example_tagged_obj.adb:52:14: warning: assuming "Has_Key" has no effect on globa
 example_tagged_obj.adb:52:14: warning: no Global contract available for "Has_Key"
 example_tagged_obj.adb:52:51: warning: assuming "Has_Key" has no effect on global items
 example_tagged_obj.adb:52:51: warning: no Global contract available for "Has_Key"
+example_tagged_obj.adb:53:14: info: postcondition proved (CVC5: 5 VC)
 example_tagged_obj.adb:53:14: info: precondition proved (Z3: 1 VC)
-example_tagged_obj.adb:53:14: medium: postcondition might fail, cannot prove Deref (X) = Deref (Y)'old
 example_tagged_obj.adb:53:26: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:53:44: info: precondition proved (Z3: 1 VC)
 example_tagged_obj.adb:53:56: info: precondition proved (CVC5: 1 VC)
@@ -432,34 +419,34 @@ example_tagged_obj.adb:61:07: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:67:13: warning: assuming "Has_Key" has no effect on global items
 example_tagged_obj.adb:67:13: warning: no Global contract available for "Has_Key"
 example_tagged_obj.adb:67:50: info: precondition proved (CVC5: 1 VC)
-example_tagged_obj.adb:70:09: info: postcondition proved (CVC5: 1 VC; Z3: 4 VC)
-example_tagged_obj.adb:70:09: info: precondition proved (Z3: 1 VC)
-example_tagged_obj.adb:70:39: info: precondition proved (Z3: 1 VC)
-example_tagged_obj.adb:70:39: info: tag check proved (Z3: 1 VC)
+example_tagged_obj.adb:70:09: info: postcondition proved (CVC5: 5 VC)
+example_tagged_obj.adb:70:09: info: precondition proved (CVC5: 1 VC)
+example_tagged_obj.adb:70:39: info: precondition proved (CVC5: 1 VC)
+example_tagged_obj.adb:70:39: info: tag check proved (CVC5: 1 VC)
 example_tagged_obj.adb:70:67: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:70:67: info: tag check proved (CVC5: 1 VC)
 example_tagged_obj.adb:76:43: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:76:54: info: null exclusion check proved (CVC5: 1 VC)
-example_tagged_obj.adb:78:07: info: tag check proved (Z3: 1 VC)
+example_tagged_obj.adb:78:07: info: tag check proved (CVC5: 1 VC)
 example_tagged_obj.adb:78:24: info: pointer dereference check proved (CVC5: 1 VC)
 example_tagged_obj.adb:86:19: medium: assertion might fail
-example_tagged_obj.adb:86:26: medium: precondition might fail
-example_tagged_obj.adb:86:26: medium: tag check might fail
-example_tagged_obj.adb:88:04: medium: precondition might fail, cannot prove Valid (Memory, Address (X))
+example_tagged_obj.adb:86:26: info: precondition proved (CVC5: 1 VC)
+example_tagged_obj.adb:86:26: info: tag check proved (CVC5: 1 VC)
+example_tagged_obj.adb:88:04: info: precondition proved (CVC5: 2 VC)
 example_tagged_obj.adb:89:19: medium: assertion might fail
-example_tagged_obj.adb:89:26: medium: precondition might fail
+example_tagged_obj.adb:89:26: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:89:26: medium: tag check might fail
 example_tagged_obj.adb:90:19: medium: assertion might fail
+example_tagged_obj.adb:90:26: info: tag check proved (CVC5: 1 VC)
 example_tagged_obj.adb:90:26: medium: precondition might fail
-example_tagged_obj.adb:90:26: medium: tag check might fail
 example_tagged_obj.adb:91:19: medium: assertion might fail
-example_tagged_obj.adb:91:26: medium: precondition might fail
+example_tagged_obj.adb:91:26: info: precondition proved (CVC5: 1 VC)
 example_tagged_obj.adb:91:26: medium: tag check might fail
 example_tagged_obj.adb:92:19: info: assertion proved (CVC5: 1 VC)
+example_tagged_obj.adb:92:26: info: tag check proved (CVC5: 1 VC)
 example_tagged_obj.adb:92:26: medium: precondition might fail
-example_tagged_obj.adb:92:26: medium: tag check might fail
 example_tagged_obj.adb:93:04: medium: precondition might fail, cannot prove Valid (Memory, Address (X))
-example_tagged_obj.adb:94:19: info: assertion proved (Z3: 1 VC)
+example_tagged_obj.adb:94:19: info: assertion proved (CVC5: 1 VC)
 example_tagged_obj.adb:94:26: info: tag check proved (CVC5: 1 VC)
 example_tagged_obj.adb:94:26: medium: precondition might fail
 example_tagged_obj.adb:95:19: info: assertion proved (CVC5: 1 VC)
@@ -540,25 +527,25 @@ example_untagged_obj.adb:38:18: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:39:07: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:43:13: warning: assuming "Has_Key" has no effect on global items
 example_untagged_obj.adb:43:13: warning: no Global contract available for "Has_Key"
-example_untagged_obj.adb:44:14: info: postcondition proved (Z3: 4 VC)
-example_untagged_obj.adb:44:14: info: precondition proved (Z3: 1 VC)
+example_untagged_obj.adb:44:14: info: postcondition proved (CVC5: 4 VC)
+example_untagged_obj.adb:44:14: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:44:27: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:50:37: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:50:48: info: null exclusion check proved (CVC5: 1 VC)
 example_untagged_obj.adb:52:16: info: pointer dereference check proved (CVC5: 1 VC)
-example_untagged_obj.adb:59:19: medium: assertion might fail
-example_untagged_obj.adb:59:19: medium: precondition might fail
-example_untagged_obj.adb:61:04: medium: precondition might fail, cannot prove Valid (Memory, Address (X))
+example_untagged_obj.adb:59:19: info: assertion proved (CVC5: 1 VC)
+example_untagged_obj.adb:59:19: info: precondition proved (CVC5: 1 VC)
+example_untagged_obj.adb:61:04: info: precondition proved (CVC5: 2 VC)
 example_untagged_obj.adb:62:19: info: assertion proved (CVC5: 1 VC)
-example_untagged_obj.adb:62:19: medium: precondition might fail
-example_untagged_obj.adb:63:19: medium: assertion might fail
-example_untagged_obj.adb:63:19: medium: precondition might fail
-example_untagged_obj.adb:64:19: medium: assertion might fail
-example_untagged_obj.adb:64:19: medium: precondition might fail
+example_untagged_obj.adb:62:19: info: precondition proved (CVC5: 1 VC)
+example_untagged_obj.adb:63:19: info: assertion proved (CVC5: 1 VC)
+example_untagged_obj.adb:63:19: info: precondition proved (CVC5: 1 VC)
+example_untagged_obj.adb:64:19: info: assertion proved (CVC5: 1 VC)
+example_untagged_obj.adb:64:19: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:65:19: info: assertion proved (CVC5: 1 VC)
 example_untagged_obj.adb:65:19: medium: precondition might fail
 example_untagged_obj.adb:66:04: medium: precondition might fail
-example_untagged_obj.adb:67:19: info: assertion proved (Z3: 1 VC)
+example_untagged_obj.adb:67:19: info: assertion proved (CVC5: 1 VC)
 example_untagged_obj.adb:67:19: medium: precondition might fail
 example_untagged_obj.adb:68:19: info: assertion proved (CVC5: 1 VC)
 example_untagged_obj.adb:68:19: medium: precondition might fail

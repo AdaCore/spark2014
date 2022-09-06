@@ -21,7 +21,7 @@ global_access_in.adb:59:35: info: range check proved (CVC5: 2 VC)
 global_access_in.adb:59:50: info: pointer dereference check proved (CVC5: 1 VC)
 global_access_in.adb:61:29: info: range check proved (CVC5: 2 VC)
 global_access_in.adb:61:41: info: pointer dereference check proved (CVC5: 1 VC)
-global_access_in.adb:64:25: low: range check might fail, cannot prove upper bound for "Copied Const_Global into My_Global which is now" & My_Global.all'img [reason for check: input value must fit in parameter type] [possible fix: call at line 62 should mention My_Global in a postcondition]
+global_access_in.adb:64:25: info: range check proved (CVC5: 2 VC)
 global_access_in.adb:64:37: info: pointer dereference check proved (CVC5: 1 VC)
 global_access_in.adb:66:15: info: absence of resource or memory leak proved (CVC5: 1 VC)
 global_access_in.adb:69:04: info: precondition proved (CVC5: 1 VC)

@@ -20,7 +20,7 @@ ring_buf.ads:43:47: high: range check might fail (e.g. when R = (Data => (others
 ring_buf.ads:45:13: info: range check proved (CVC5: 4 VC)
 ring_buf.ads:45:52: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (R.Length in Ar_Index) to subprogram at line 38]
 ring_buf.ads:47:58: info: index check proved (CVC5: 2 VC)
-ring_buf.ads:50:67: medium: range check might fail (e.g. when M = (Ar_Index'Last => 0) and M'First = Ar_Index'Last and M'Last = Ar_Index'Last and X = 0) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 50 should mention M and X in a precondition]
+ring_buf.ads:50:67: medium: range check might fail [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 50 should mention M and X in a precondition]
 ring_buf.ads:51:51: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at line 51 should mention M]
 ring_buf.ads:58:21: info: initialization of "R" proved
 ring_buf.ads:59:19: high: postcondition might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 0))

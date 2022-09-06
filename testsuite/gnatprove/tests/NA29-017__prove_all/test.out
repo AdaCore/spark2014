@@ -1,6 +1,6 @@
 sorting.adb:25:07: info: flow dependencies proved
 sorting.adb:28:18: high: overflow check might fail, cannot prove upper bound for A_First + Length (e.g. when A_First = Natural'Last and Length = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
-sorting.adb:28:37: high: overflow check might fail, cannot prove upper bound for A'Last + 1 (e.g. when A = (others => 1) and A'First = 0 and A'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+sorting.adb:28:37: high: overflow check might fail, cannot prove upper bound for A'Last + 1 (e.g. when A = (others => -1) and A'First = 0 and A'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 sorting.adb:30:18: high: overflow check might fail, cannot prove upper bound for B_First + Length (e.g. when B_First = 1 and Length = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 sorting.adb:30:37: high: overflow check might fail, cannot prove upper bound for B'Last + 1 (e.g. when B'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 sorting.adb:31:15: info: postcondition proved (CVC5: 2 VC; Trivial: 2 VC)
@@ -135,7 +135,7 @@ sorting.adb:145:36: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:147:22: info: range check proved (CVC5: 2 VC)
 sorting.adb:147:39: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:147:44: info: overflow check proved (CVC5: 2 VC)
-sorting.adb:148:10: info: precondition proved (CVC5: 6 VC; Z3: 2 VC)
+sorting.adb:148:10: medium: precondition might fail, cannot prove Sorted (A, A_First + Length1, Length2) [possible fix: loop invariant at line 133 should mention K]
 sorting.adb:148:31: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:149:17: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:149:22: info: overflow check proved (CVC5: 2 VC)

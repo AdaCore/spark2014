@@ -248,8 +248,15 @@ package body CE_Values is
    function Enum_Entity_To_String (E : Entity_Id) return String is
    begin
       if Nkind (E) = N_Character_Literal then
-         return (1 => Get_Character
-           (UI_To_CC (Char_Literal_Value (E))));
+         declare
+            C : constant Char_Code := UI_To_CC (Char_Literal_Value (E));
+         begin
+            if C <= 255 then
+               return (1 => Get_Character (C));
+            else
+               CE_RAC.RAC_Stuck ("Bad value of character");
+            end if;
+         end;
       else
          pragma Assert (Ekind (E) = E_Enumeration_Literal);
          return To_Upper (Get_Name_String (Chars (E)));

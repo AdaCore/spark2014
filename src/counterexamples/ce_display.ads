@@ -47,6 +47,10 @@ package CE_Display is
    --  Get the part of the counterexample corresponding to the location of
    --  the construct that triggers VC.
 
+   function Get_Environment_One_Liner (N : Node_Id) return String;
+   --  Get the elements of the evaluation environment used in the construct
+   --  that triggers VC, with N the AST node corresponding to that construct.
+
    function JSON_Get_Opt
      (Val        : JSON_Value;
       Field      : String;

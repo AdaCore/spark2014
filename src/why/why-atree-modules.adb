@@ -32,10 +32,7 @@ with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Snames;                     use Snames;
 with SPARK_Atree;                use SPARK_Atree;
-with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
-with SPARK_Definition.Annotate;  use SPARK_Definition.Annotate;
 with SPARK_Util;                 use SPARK_Util;
-with SPARK_Util.Types;           use SPARK_Util.Types;
 with Stand;                      use Stand;
 with String_Utils;               use String_Utils;
 with VC_Kinds;                   use VC_Kinds;
@@ -104,42 +101,195 @@ package body Why.Atree.Modules is
       Equivalent_Keys => "=",
       "="             => "=");
 
-   Why_Symb_Map      : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
-   Entity_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Axiom_Modules     : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Compl_Modules     : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Init_Modules      : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Rec_Axiom_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Rep_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   function Hashconsed_Entity_Module
+     (E       : Entity_Id;
+      Name    : String;
+      Modules : in out Ada_To_Why.Map) return W_Module_Id;
+   --  Create a module with name Name and associate it to E in Modules unless
+   --  there is already a module associated to E in Modules, in which case the
+   --  existing module is returned.
+
+   Why_Symb_Map              : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
+   Entity_Modules            : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Axiom_Modules             : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Compl_Modules             : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Init_Modules              : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Lemma_Axiom_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rec_Axiom_Modules         : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Record_Rep_Modules        : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Record_Compl_Modules      : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rep_Modules               : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   DIC_Modules               : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Modules          : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Axiom_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Eq_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Eq_Axiom_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Invariant_Modules         : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   User_Eq_Modules           : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   User_Eq_Axiom_Modules     : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+
+   --------------------
+   -- E_Axiom_Module --
+   --------------------
+
+   function E_Axiom_Module (E : Entity_Id) return W_Module_Id is
+      Name : constant String :=
+        (if Nkind (E) in N_Entity
+         then Full_Name (E) & To_String (WNE_Axiom_Suffix)
+         else "");
+   begin
+      return Hashconsed_Entity_Module (E, Name, Axiom_Modules);
+   end E_Axiom_Module;
+
+   --------------------
+   -- E_Compl_Module --
+   --------------------
+
+   function E_Compl_Module (E : Entity_Id) return W_Module_Id is
+      Name : constant String :=
+        (if Nkind (E) in N_Entity then Full_Name (E) & "__compl" else "");
+   begin
+      return Hashconsed_Entity_Module (E, Name, Compl_Modules);
+   end E_Compl_Module;
+
+   ------------------
+   -- E_DIC_Module --
+   ------------------
+
+   function E_DIC_Module
+     (Ty : Type_Kind_Id) return W_Module_Id
+   is
+      Name : constant String := Full_Name (Ty) & "___dic";
+   begin
+      return Hashconsed_Entity_Module (Ty, Name, DIC_Modules);
+   end E_DIC_Module;
+
+   -----------------------
+   -- E_Dispatch_Module --
+   -----------------------
+
+   function E_Dispatch_Module
+     (Subp  : Subprogram_Kind_Id;
+      Axiom : Boolean := False) return W_Module_Id
+   is
+      Name : constant String := Full_Name (Subp) & "___dispatch" &
+        (if Axiom then "___axiom" else "");
+   begin
+      if Axiom then
+         return Hashconsed_Entity_Module (Subp, Name, Dispatch_Axiom_Modules);
+      else
+         return Hashconsed_Entity_Module (Subp, Name, Dispatch_Modules);
+      end if;
+   end E_Dispatch_Module;
+
+   --------------------------
+   -- E_Dispatch_Eq_Module --
+   --------------------------
+
+   function E_Dispatch_Eq_Module
+     (Ty    : Type_Kind_Id;
+      Axiom : Boolean := False) return W_Module_Id
+   is
+      Name : constant String := Full_Name (Ty) & "___dispatch_eq" &
+        (if Axiom then "___axiom" else "");
+   begin
+      if Axiom then
+         return Hashconsed_Entity_Module (Ty, Name, Dispatch_Eq_Axiom_Modules);
+      else
+         return Hashconsed_Entity_Module (Ty, Name, Dispatch_Eq_Modules);
+      end if;
+   end E_Dispatch_Eq_Module;
+
+   -------------------
+   -- E_Init_Module --
+   -------------------
+
+   function E_Init_Module (E : Entity_Id) return W_Module_Id is
+      Name : constant String :=
+        (if Nkind (E) in N_Entity
+         then Full_Name (E) & To_String (WNE_Init_Wrapper_Suffix)
+         else "");
+   begin
+      return Hashconsed_Entity_Module (E, Name, Init_Modules);
+   end E_Init_Module;
+
+   --------------------------
+   -- E_Lemma_Axiom_Module --
+   --------------------------
+
+   function E_Lemma_Axiom_Module (E : Entity_Id) return W_Module_Id is
+      Name : constant String :=
+        (if Nkind (E) in N_Entity
+         then Full_Name (E) & "___post_axiom" else "");
+   begin
+      return Hashconsed_Entity_Module (E, Name, Lemma_Axiom_Modules);
+   end E_Lemma_Axiom_Module;
 
    --------------
    -- E_Module --
    --------------
 
    function E_Module (E : Entity_Id) return W_Module_Id is
-      use Ada_To_Why;
-      E2 : constant Entity_Id :=
-        (if Nkind (E) in N_Entity then Unique_Entity (E) else E);
-      C  : constant Ada_To_Why.Cursor := Entity_Modules.Find (E2);
+      Name : constant String :=
+        (if Nkind (E) in N_Entity then Full_Name (E) else "");
    begin
-      if Has_Element (C) then
-         return W_Module_Id (Element (C));
-      elsif Nkind (E) in N_Entity then
-         declare
-            M : constant W_Module_Id :=
-              New_Module
-                (Ada_Node => E,
-                 File     => No_Symbol,
-                 Name     => Full_Name (E));
-            --  ??? why New_Mode is called with E and not E2?
-         begin
-            Entity_Modules.Insert (E2, Why_Node_Id (M));
-            return M;
-         end;
-      else
-         return Why_Empty;
-      end if;
+      return Hashconsed_Entity_Module (E, Name, Entity_Modules);
    end E_Module;
+
+   ------------------------
+   -- E_Invariant_Module --
+   ------------------------
+
+   function E_Invariant_Module
+     (Ty : Type_Kind_Id) return W_Module_Id
+   is
+      Name : constant String := Full_Name (Ty) & "___invariant";
+   begin
+      return Hashconsed_Entity_Module (Ty, Name, Invariant_Modules);
+   end E_Invariant_Module;
+
+   ------------------------
+   -- E_Rec_Axiom_Module --
+   ------------------------
+
+   function E_Rec_Axiom_Module (E : Entity_Id) return W_Module_Id is
+      Name : constant String :=
+        (if Nkind (E) in N_Entity then Full_Name (E) & "__rec_axioms" else "");
+   begin
+      return Hashconsed_Entity_Module (E, Name, Rec_Axiom_Modules);
+   end E_Rec_Axiom_Module;
+
+   ---------------------------
+   -- E_Record_Compl_Module --
+   ---------------------------
+
+   function E_Record_Compl_Module (E : Entity_Id) return W_Module_Id is
+      Name : constant String :=
+        Full_Name (E) & To_String (WNE_Rec_Rep) & "__Compl";
+   begin
+      return Hashconsed_Entity_Module (E, Name, Record_Compl_Modules);
+   end E_Record_Compl_Module;
+
+   -------------------------
+   -- E_Record_Rep_Module --
+   -------------------------
+
+   function E_Record_Rep_Module (E : Entity_Id) return W_Module_Id is
+      Name : constant String := Full_Name (E) & To_String (WNE_Rec_Rep);
+   begin
+      return Hashconsed_Entity_Module (E, Name, Record_Rep_Modules);
+   end E_Record_Rep_Module;
+
+   ------------------
+   -- E_Rep_Module --
+   ------------------
+
+   function E_Rep_Module (E : Entity_Id) return W_Module_Id is
+      Name : constant String :=
+        (if Nkind (E) in N_Entity then Full_Name (E) & "__rep" else "");
+   begin
+      return Hashconsed_Entity_Module (E, Name, Rep_Modules);
+   end E_Rep_Module;
 
    ------------
    -- E_Symb --
@@ -151,9 +301,9 @@ package body Why.Atree.Modules is
       Relaxed_Init : Boolean := False) return W_Identifier_Id
    is
       use Why_Symb_Maps;
-      E2 : constant Entity_Id := (if Is_Type (E) then Retysp (E) else E);
+      E2  : constant Entity_Id := (if Is_Type (E) then Retysp (E) else E);
       Key : constant Why_Symb := Why_Symb'(Entity => E2, Symb => S);
-      C : constant Why_Symb_Maps.Cursor := Why_Symb_Map.Find (Key);
+      C   : constant Why_Symb_Maps.Cursor := Why_Symb_Map.Find (Key);
    begin
       return Id : W_Identifier_Id do
          if Has_Element (C) then
@@ -169,140 +319,23 @@ package body Why.Atree.Modules is
       end return;
    end E_Symb;
 
-   --------------------
-   -- E_Axiom_Module --
-   --------------------
+   ----------------------
+   -- E_User_Eq_Module --
+   ----------------------
 
-   function E_Axiom_Module (E : Entity_Id) return W_Module_Id is
-      use Ada_To_Why;
-      C : constant Ada_To_Why.Cursor := Axiom_Modules.Find (E);
+   function E_User_Eq_Module
+     (Ty    : Type_Kind_Id;
+      Axiom : Boolean := False) return W_Module_Id
+   is
+      Name : constant String := Full_Name (Ty) & "___user_eq" &
+        (if Axiom then "___axiom" else "");
    begin
-      if Has_Element (C) then
-         return W_Module_Id (Element (C));
-      elsif Nkind (E) in N_Entity then
-         declare
-            Name : constant String :=
-              Full_Name (E) & To_String (WNE_Axiom_Suffix);
-            M : constant W_Module_Id :=
-              New_Module
-                (Ada_Node => E,
-                 File     => No_Symbol,
-                 Name     => Name);
-         begin
-            Axiom_Modules.Insert (E, Why_Node_Id (M));
-            return M;
-         end;
+      if Axiom then
+         return Hashconsed_Entity_Module (Ty, Name, User_Eq_Axiom_Modules);
       else
-         return Why_Empty;
+         return Hashconsed_Entity_Module (Ty, Name, User_Eq_Modules);
       end if;
-   end E_Axiom_Module;
-
-   --------------------
-   -- E_Compl_Module --
-   --------------------
-
-   function E_Compl_Module (E : Entity_Id) return W_Module_Id is
-      use Ada_To_Why;
-      C : constant Ada_To_Why.Cursor := Compl_Modules.Find (E);
-   begin
-      if Has_Element (C) then
-         return W_Module_Id (Element (C));
-      elsif Nkind (E) in N_Entity then
-         declare
-            M : constant W_Module_Id :=
-              New_Module
-                (Ada_Node => E,
-                 File     => No_Symbol,
-                 Name     => Full_Name (E) & "__compl");
-         begin
-            Compl_Modules.Insert (E, Why_Node_Id (M));
-            return M;
-         end;
-      else
-         return Why_Empty;
-      end if;
-   end E_Compl_Module;
-
-   -------------------
-   -- E_Init_Module --
-   -------------------
-
-   function E_Init_Module (E : Entity_Id) return W_Module_Id is
-      use Ada_To_Why;
-      C : constant Ada_To_Why.Cursor := Init_Modules.Find (E);
-   begin
-      if Has_Element (C) then
-         return W_Module_Id (Element (C));
-      elsif Nkind (E) in N_Entity then
-         declare
-            M : constant W_Module_Id :=
-              New_Module
-                (Ada_Node => E,
-                 File     => No_Symbol,
-                 Name     =>
-                   Full_Name (E) & To_String (WNE_Init_Wrapper_Suffix));
-         begin
-            Init_Modules.Insert (E, Why_Node_Id (M));
-            return M;
-         end;
-      else
-         return Why_Empty;
-      end if;
-   end E_Init_Module;
-
-   ------------------------
-   -- E_Rec_Axiom_Module --
-   ------------------------
-
-   function E_Rec_Axiom_Module (E : Entity_Id) return W_Module_Id is
-      use Ada_To_Why;
-      C : constant Ada_To_Why.Cursor := Rec_Axiom_Modules.Find (E);
-   begin
-      if Has_Element (C) then
-         return W_Module_Id (Element (C));
-      elsif Nkind (E) in N_Entity then
-         declare
-            Name : constant String :=
-              Full_Name (E) & "__rec_axioms";
-            M : constant W_Module_Id :=
-              New_Module
-                (Ada_Node => E,
-                 File     => No_Symbol,
-                 Name     => Name);
-         begin
-            Rec_Axiom_Modules.Insert (E, Why_Node_Id (M));
-            return M;
-         end;
-      else
-         return Why_Empty;
-      end if;
-   end E_Rec_Axiom_Module;
-
-   ------------------
-   -- E_Rep_Module --
-   ------------------
-
-   function E_Rep_Module (E : Entity_Id) return W_Module_Id is
-      use Ada_To_Why;
-      C : constant Ada_To_Why.Cursor := Rep_Modules.Find (E);
-   begin
-      if Has_Element (C) then
-         return W_Module_Id (Element (C));
-      elsif Nkind (E) in N_Entity then
-         declare
-            M : constant W_Module_Id :=
-              New_Module
-                (Ada_Node => E,
-                 File     => No_Symbol,
-                 Name     => Full_Name (E) & "__rep");
-         begin
-            Rep_Modules.Insert (E, Why_Node_Id (M));
-            return M;
-         end;
-      else
-         return Why_Empty;
-      end if;
-   end E_Rep_Module;
+   end E_User_Eq_Module;
 
    ------------------------
    -- Get_Logic_Function --
@@ -373,6 +406,36 @@ package body Why.Atree.Modules is
 
       return NID (To_String (Name));
    end Get_Profile_Theory_Name;
+
+   ------------------------------
+   -- Hashconsed_Entity_Module --
+   ------------------------------
+
+   function Hashconsed_Entity_Module
+     (E       : Entity_Id;
+      Name    : String;
+      Modules : in out Ada_To_Why.Map) return W_Module_Id
+   is
+      use Ada_To_Why;
+      C  : constant Ada_To_Why.Cursor := Modules.Find (E);
+   begin
+      if Has_Element (C) then
+         return W_Module_Id (Element (C));
+      elsif Nkind (E) in N_Entity then
+         declare
+            M : constant W_Module_Id :=
+              New_Module
+                (Ada_Node => E,
+                 File     => No_Symbol,
+                 Name     => Name);
+         begin
+            Modules.Insert (E, Why_Node_Id (M));
+            return M;
+         end;
+      else
+         return Why_Empty;
+      end if;
+   end Hashconsed_Entity_Module;
 
    ----------------
    -- Initialize --
@@ -2772,8 +2835,7 @@ package body Why.Atree.Modules is
                  (E, WNE_Dispatch_Func_Guard,
                   New_Identifier
                     (Symb      => NID (Name & "__" & Function_Guard),
-                     Module    => M,
-                     Namespace => NID (To_String (WNE_Dispatch_Module)),
+                     Module    => E_Dispatch_Module (E),
                      Domain    => EW_Pred,
                      Typ       => EW_Unit_Type));
             end if;
@@ -2784,8 +2846,7 @@ package body Why.Atree.Modules is
               (E, WNE_Specific_Post,
                New_Identifier
                  (Symb      => NID (Name & "__" & Specific_Post),
-                  Module    => M,
-                  Namespace => NID (To_String (WNE_Dispatch_Module)),
+                  Module    => E_Dispatch_Module (E),
                   Domain    => EW_Pred,
                   Typ       => EW_Unit_Type));
          end if;
@@ -2868,6 +2929,16 @@ package body Why.Atree.Modules is
                Domain => EW_Term,
                Typ    => EW_Bool_Type));
 
+         if not Use_Predefined_Equality_For_Type (E) then
+            Insert_Symbol
+              (E, WNE_User_Eq,
+               New_Identifier
+                 (Symb   => NID ("user_eq"),
+                  Module => E_User_Eq_Module (E),
+                  Domain => EW_Term,
+                  Typ    => EW_Int_Type));
+         end if;
+
          Insert_Symbol
            (E, WNE_Dummy,
             New_Identifier
@@ -2905,7 +2976,7 @@ package body Why.Atree.Modules is
               (E, WNE_Type_Invariant,
                New_Identifier
                  (Symb   => NID ("type_invariant"),
-                  Module => AM,
+                  Module => E_Invariant_Module (E),
                   Domain => EW_Term,
                   Typ    => EW_Bool_Type));
          end if;
@@ -2922,7 +2993,7 @@ package body Why.Atree.Modules is
               (E, WNE_Default_Init,
                New_Identifier
                  (Symb   => NID ("default_initial_assumption"),
-                  Module => AM,
+                  Module => E_DIC_Module (E),
                   Domain => EW_Term,
                   Typ    => EW_Bool_Type));
          end if;
@@ -3332,13 +3403,15 @@ package body Why.Atree.Modules is
                end if;
 
                if Is_Tagged_Type (E) then
-                  Insert_Symbol
-                    (E, WNE_Dispatch_Eq,
-                     New_Identifier
-                       (Symb   => NID ("__dispatch_eq"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Bool_Type));
+                  if E = Root then
+                     Insert_Symbol
+                       (E, WNE_Dispatch_Eq,
+                        New_Identifier
+                          (Symb   => NID ("__dispatch_eq"),
+                           Module => E_Dispatch_Eq_Module (E),
+                           Domain => EW_Term,
+                           Typ    => EW_Bool_Type));
+                  end if;
                   Insert_Symbol
                     (E, WNE_Attr_Tag,
                      New_Identifier
@@ -3769,5 +3842,38 @@ package body Why.Atree.Modules is
          raise Program_Error;
       end if;
    end MF_Floats;
+
+   --------------------------------
+   -- Mutually_Recursive_Modules --
+   --------------------------------
+
+   function Mutually_Recursive_Modules (E : Entity_Id) return Why_Node_Sets.Set
+   is
+      S : Why_Node_Sets.Set;
+
+   begin
+      --  For recursive functions, include the axiom module of mutually
+      --  recursive subprograms if any.
+
+      if Is_Recursive (E) then
+         for C in Rec_Axiom_Modules.Iterate loop
+            if Mutually_Recursive (E, Ada_To_Why.Key (C)) then
+               S.Insert (Ada_To_Why.Element (C));
+            end if;
+         end loop;
+      end if;
+
+      --  For all subprograms, include the axiom module of lemma functions
+      --  if they are mutually recursive with the E taking into account the
+      --  phantom link between a function and its lemma.
+
+      for C in Lemma_Axiom_Modules.Iterate loop
+         if Lemma_Mutually_Recursive (Ada_To_Why.Key (C), E) then
+            S.Insert (Ada_To_Why.Element (C));
+         end if;
+      end loop;
+
+      return S;
+   end Mutually_Recursive_Modules;
 
 end Why.Atree.Modules;

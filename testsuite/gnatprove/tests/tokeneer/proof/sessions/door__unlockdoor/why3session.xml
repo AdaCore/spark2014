@@ -59,22 +59,22 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
-  <proof prover="0"><result status="valid" steps="4856"/></proof>
+  <proof prover="0"><result status="valid" steps="4861"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
-  <proof prover="0"><result status="valid" steps="2914"/></proof>
+  <proof prover="0"><result status="valid" steps="2919"/></proof>
   </goal>
   <goal name="def&#39;vc.18" proved="true">
-  <proof prover="0"><result status="valid" steps="2916"/></proof>
+  <proof prover="0"><result status="valid" steps="2923"/></proof>
   </goal>
   <goal name="def&#39;vc.19" proved="true">
-  <proof prover="0"><result status="valid" steps="2918"/></proof>
+  <proof prover="0"><result status="valid" steps="2923"/></proof>
   </goal>
   <goal name="def&#39;vc.20" proved="true">
-  <proof prover="0"><result status="valid" steps="4536"/></proof>
+  <proof prover="0"><result status="valid" steps="4537"/></proof>
   </goal>
   <goal name="def&#39;vc.21" proved="true">
-  <proof prover="0"><result status="valid" steps="4542"/></proof>
+  <proof prover="0"><result status="valid" steps="4543"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -113,13 +113,13 @@
   <proof prover="0"><result status="valid" steps="3122"/></proof>
   </goal>
   <goal name="def&#39;vc.34" proved="true">
-  <proof prover="0"><result status="valid" steps="2557"/></proof>
+  <proof prover="0"><result status="valid" steps="2562"/></proof>
   </goal>
   <goal name="def&#39;vc.35" proved="true">
-  <proof prover="0"><result status="valid" steps="2626"/></proof>
+  <proof prover="0"><result status="valid" steps="2629"/></proof>
   </goal>
   <goal name="def&#39;vc.36" proved="true">
-  <proof prover="0"><result status="valid" steps="2559"/></proof>
+  <proof prover="0"><result status="valid" steps="2562"/></proof>
   </goal>
   <goal name="def&#39;vc.37" proved="true">
   <proof prover="0"><result status="valid" steps="3096"/></proof>

@@ -92,6 +92,8 @@ gnatprove advanced switches:
                       output file
  --pedantic           Use a strict interpretation of the Ada standard
  --proof-warnings     Issue warnings by proof
+ --proof-warnings-timeout
+                      Set the timeout for proof warnings
  --proof=g[:l]        Set the proof modes for generation of formulas
                       (g=per_check*, per_path, progressive) (l=lazy*, all)
  --prover=s[,s]*      Use given provers (s=altergo, cvc5*, z3, ..., or s=all

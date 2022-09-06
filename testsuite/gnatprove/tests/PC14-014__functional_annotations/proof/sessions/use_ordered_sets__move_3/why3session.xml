@@ -32,16 +32,16 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="0"><result status="valid" steps="6593"/></proof>
+  <proof prover="0"><result status="valid" steps="5561"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="0"><result status="valid" steps="6596"/></proof>
+  <proof prover="0"><result status="valid" steps="5564"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="0"><result status="valid" steps="5862"/></proof>
+  <proof prover="0"><result status="valid" steps="4890"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -50,10 +50,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
-  <proof prover="0"><result status="valid" steps="6621"/></proof>
+  <proof prover="0"><result status="valid" steps="5649"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="0"><result status="valid" steps="8319"/></proof>
+  <proof prover="0"><result status="valid" steps="7287"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -77,10 +77,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
-  <proof prover="0"><result status="valid" steps="6822"/></proof>
+  <proof prover="0"><result status="valid" steps="5850"/></proof>
   </goal>
   <goal name="def&#39;vc.23" proved="true">
-  <proof prover="0"><result status="valid" steps="8805"/></proof>
+  <proof prover="0"><result status="valid" steps="7773"/></proof>
   </goal>
   <goal name="def&#39;vc.24" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -95,22 +95,22 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.28" proved="true">
-  <proof prover="0"><result status="valid" steps="13914"/></proof>
+  <proof prover="0"><result status="valid" steps="11469"/></proof>
   </goal>
   <goal name="def&#39;vc.29" proved="true">
-  <proof prover="0"><result status="valid" steps="7435"/></proof>
+  <proof prover="0"><result status="valid" steps="6403"/></proof>
   </goal>
   <goal name="def&#39;vc.30" proved="true">
-  <proof prover="0"><result status="valid" steps="15859"/></proof>
+  <proof prover="0"><result status="valid" steps="13414"/></proof>
   </goal>
   <goal name="def&#39;vc.31" proved="true">
-  <proof prover="0"><result status="valid" steps="6269"/></proof>
+  <proof prover="0"><result status="valid" steps="5297"/></proof>
   </goal>
   <goal name="def&#39;vc.32" proved="true">
-  <proof prover="0"><result status="valid" steps="15678"/></proof>
+  <proof prover="0"><result status="valid" steps="13233"/></proof>
   </goal>
   <goal name="def&#39;vc.33" proved="true">
-  <proof prover="0"><result status="valid" steps="6960"/></proof>
+  <proof prover="0"><result status="valid" steps="5988"/></proof>
   </goal>
   <goal name="def&#39;vc.34" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -119,16 +119,16 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.36" proved="true">
-  <proof prover="0"><result status="valid" steps="10147"/></proof>
+  <proof prover="0"><result status="valid" steps="9115"/></proof>
   </goal>
   <goal name="def&#39;vc.37" proved="true">
-  <proof prover="0"><result status="valid" steps="20728"/></proof>
+  <proof prover="0"><result status="valid" steps="18264"/></proof>
   </goal>
   <goal name="def&#39;vc.38" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.39" proved="true">
-  <proof prover="0"><result status="valid" steps="7164"/></proof>
+  <proof prover="0"><result status="valid" steps="6192"/></proof>
   </goal>
   <goal name="def&#39;vc.40" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -137,10 +137,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.42" proved="true">
-  <proof prover="0"><result status="valid" steps="7921"/></proof>
+  <proof prover="0"><result status="valid" steps="6949"/></proof>
   </goal>
   <goal name="def&#39;vc.43" proved="true">
-  <proof prover="0"><result status="valid" steps="22246"/></proof>
+  <proof prover="0"><result status="valid" steps="19776"/></proof>
   </goal>
   <goal name="def&#39;vc.44" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -164,10 +164,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.51" proved="true">
-  <proof prover="0"><result status="valid" steps="8122"/></proof>
+  <proof prover="0"><result status="valid" steps="7150"/></proof>
   </goal>
   <goal name="def&#39;vc.52" proved="true">
-  <proof prover="0"><result status="valid" steps="22921"/></proof>
+  <proof prover="0"><result status="valid" steps="20446"/></proof>
   </goal>
   <goal name="def&#39;vc.53" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -182,13 +182,13 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.57" proved="true">
-  <proof prover="0"><result status="valid" steps="33585"/></proof>
+  <proof prover="0"><result status="valid" steps="31115"/></proof>
   </goal>
   <goal name="def&#39;vc.58" proved="true">
-  <proof prover="0"><result status="valid" steps="30766"/></proof>
+  <proof prover="0"><result status="valid" steps="28301"/></proof>
   </goal>
   <goal name="def&#39;vc.59" proved="true">
-  <proof prover="0"><result status="valid" steps="67178"/></proof>
+  <proof prover="0"><result status="valid" steps="64713"/></proof>
   </goal>
   <goal name="def&#39;vc.60" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -206,10 +206,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.65" proved="true">
-  <proof prover="0"><result status="valid" steps="100727"/></proof>
+  <proof prover="0"><result status="valid" steps="98214"/></proof>
   </goal>
   <goal name="def&#39;vc.66" proved="true">
-  <proof prover="0"><result status="valid" steps="7228"/></proof>
+  <proof prover="0"><result status="valid" steps="6256"/></proof>
   </goal>
  </transf>
  </goal>

@@ -21,7 +21,7 @@ test.adb:38:56: info: index check proved (CVC5: 4 VC)
 test.ads:15:19: info: postcondition proved (CVC5: 1 VC)
 test.ads:20:07: info: justified that "Result" might not be initialized in "Block_XOR"
 test.ads:22:08: info: flow dependencies proved
-test.ads:30:10: info: postcondition proved (Z3: 1 VC)
+test.ads:30:10: info: postcondition proved (CVC5: 1 VC)
 test.ads:30:19: info: range check proved (CVC5: 2 VC)
 test.ads:31:14: info: justified that "Result" might not be initialized
 test.ads:31:22: info: index check proved (CVC5: 2 VC)
@@ -29,7 +29,7 @@ test.ads:31:39: info: index check proved (CVC5: 2 VC)
 test.ads:31:50: info: index check proved (CVC5: 2 VC)
 test.ads:40:07: info: justified that "Result" might not be initialized in "Block_XOR_2"
 test.ads:42:08: info: flow dependencies proved
-test.ads:50:10: info: postcondition proved (Z3: 1 VC)
+test.ads:50:10: info: postcondition proved (CVC5: 1 VC)
 test.ads:50:19: info: range check proved (CVC5: 2 VC)
 test.ads:51:14: info: justified that "Result" might not be initialized
 test.ads:51:22: info: index check proved (CVC5: 2 VC)

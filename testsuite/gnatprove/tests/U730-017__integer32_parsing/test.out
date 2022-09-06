@@ -71,8 +71,7 @@ integer32_parsing.adb:105:25: info: assertion proved (CVC5: 1 VC)
 integer32_parsing.adb:105:28: info: division check proved (CVC5: 1 VC)
 integer32_parsing.adb:105:40: info: division check proved (CVC5: 1 VC)
 integer32_parsing.adb:107:13: info: subprogram variant proved (CVC5: 1 VC)
-integer32_parsing.adb:107:13: medium: in inlined expression function body at integer32_parsing.adb:80
-integer32_parsing.adb:107:13: medium: precondition might fail, cannot prove Is_Integer_32 (s, First, Last - 1, V / 10)
+integer32_parsing.adb:107:13: medium: precondition might fail, cannot prove V2 >= 0
 integer32_parsing.adb:107:54: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:107:62: info: division check proved (CVC5: 1 VC)
 integer32_parsing.adb:107:71: info: division check proved (CVC5: 1 VC)
@@ -97,7 +96,7 @@ integer32_parsing.adb:130:91: info: division check proved (CVC5: 1 VC)
 integer32_parsing.adb:134:42: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:135:75: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:136:75: info: overflow check proved (CVC5: 2 VC)
-integer32_parsing.adb:138:07: medium: precondition might fail, cannot prove s1 (I) in '0' .. '9'
+integer32_parsing.adb:138:07: medium: precondition might fail, cannot prove s1 (First1 .. Last1) = s2 (First2..Last2)
 integer32_parsing.adb:138:45: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:138:55: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:138:62: info: range check proved (CVC5: 2 VC)
@@ -165,7 +164,7 @@ integer32_parsing.adb:186:25: medium: in inlined expression function body at int
 integer32_parsing.adb:186:25: medium: precondition might fail, cannot prove First <= Last
 integer32_parsing.adb:186:43: medium: range check might fail, cannot prove lower bound for FirstZ [reason for check: input value must fit in parameter type]
 integer32_parsing.adb:186:57: info: overflow check proved (CVC5: 2 VC)
-integer32_parsing.adb:186:57: medium: range check might fail, cannot prove lower bound for I - 1 + First [reason for check: input value must fit in parameter type]
+integer32_parsing.adb:186:57: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:187:19: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:188:28: medium: assertion might fail, cannot prove Is_Integer_32 (s, First, Last - 1, V / 10) [possible fix: loop at line 181 should mention res in a loop invariant]
 integer32_parsing.adb:188:28: medium: in inlined expression function body at integer32_parsing.adb:80
@@ -342,8 +341,8 @@ integer32_parsing.ads:41:14: info: precondition proved (CVC5: 1 VC)
 integer32_parsing.ads:41:14: medium: postcondition might fail, cannot prove Valid_Int (s2)
 integer32_parsing.ads:41:38: info: precondition proved (CVC5: 2 VC)
 integer32_parsing.ads:44:44: info: precondition proved (CVC5: 1 VC)
-integer32_parsing.ads:45:14: medium: in inlined expression function body at integer32_parsing.adb:91
-integer32_parsing.ads:45:14: medium: postcondition might fail, cannot prove V >= 0
+integer32_parsing.ads:45:14: medium: in inlined expression function body at integer32_parsing.adb:92
+integer32_parsing.ads:45:14: medium: postcondition might fail, cannot prove Is_Integer_32 (s, First, s'Last, V)
 integer32_parsing.ads:45:14: medium: precondition might fail, cannot prove Valid_Int (s)
 integer32_parsing.ads:47:39: info: initialization of "V" proved
 integer32_parsing.ads:47:59: info: initialization of "error" proved

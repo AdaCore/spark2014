@@ -41,19 +41,19 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="0"><result status="valid" steps="3836"/></proof>
+  <proof prover="0"><result status="valid" steps="3910"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="0"><result status="valid" steps="2266"/></proof>
+  <proof prover="0"><result status="valid" steps="2331"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
-  <proof prover="0"><result status="valid" steps="2268"/></proof>
+  <proof prover="0"><result status="valid" steps="2335"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
-  <proof prover="0"><result status="valid" steps="2270"/></proof>
+  <proof prover="0"><result status="valid" steps="2335"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="0"><result status="valid" steps="4547"/></proof>
+  <proof prover="0"><result status="valid" steps="4683"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -80,19 +80,19 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.23" proved="true">
-  <proof prover="0"><result status="valid" steps="2567"/></proof>
+  <proof prover="0"><result status="valid" steps="2636"/></proof>
   </goal>
   <goal name="def&#39;vc.24" proved="true">
-  <proof prover="0"><result status="valid" steps="1958"/></proof>
+  <proof prover="0"><result status="valid" steps="2021"/></proof>
   </goal>
   <goal name="def&#39;vc.25" proved="true">
-  <proof prover="0"><result status="valid" steps="2112"/></proof>
+  <proof prover="0"><result status="valid" steps="2179"/></proof>
   </goal>
   <goal name="def&#39;vc.26" proved="true">
-  <proof prover="0"><result status="valid" steps="2051"/></proof>
+  <proof prover="0"><result status="valid" steps="2116"/></proof>
   </goal>
   <goal name="def&#39;vc.27" proved="true">
-  <proof prover="0"><result status="valid" steps="1954"/></proof>
+  <proof prover="0"><result status="valid" steps="2017"/></proof>
   </goal>
  </transf>
  </goal>

@@ -442,15 +442,15 @@ parser_utilities.adb:1000:33: info: loop invariant initialization proved (CVC5: 
 parser_utilities.adb:1000:33: info: loop invariant preservation proved (CVC5: 2 VC)
 parser_utilities.adb:1001:27: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1010:13: info: loop invariant initialization proved (CVC5: 4 VC)
-parser_utilities.adb:1011:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove BegIdx <= EndIdx
-parser_utilities.adb:1014:26: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+parser_utilities.adb:1010:13: info: loop invariant preservation proved (CVC5: 4 VC)
+parser_utilities.adb:1014:26: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1024:14: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1026:16: info: loop invariant initialization proved (CVC5: 6 VC)
 parser_utilities.adb:1028:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove I >= BegIdx
 parser_utilities.adb:1034:42: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 parser_utilities.adb:1034:42: medium: overflow check might fail, cannot prove lower bound for RRSig_Rec.SignatureLength + ((I - BegIdx) + 1) [reason for check: result of addition must fit in a 32-bits machine integer]
-parser_utilities.adb:1034:48: medium: overflow check might fail, cannot prove lower bound for I - BegIdx [reason for check: result of subtraction must fit in a 32-bits machine integer]
-parser_utilities.adb:1034:58: medium: overflow check might fail, cannot prove lower bound for (I - BegIdx) + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+parser_utilities.adb:1034:48: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:1034:58: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:1037:65: medium: range check might fail, cannot prove lower bound for RRSig_Rec.SignatureLength + ((EndIdx - BegIdx) + 1) [reason for check: result of addition must fit in the target type of the assignment]
 parser_utilities.adb:1043:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
 parser_utilities.adb:1044:10: info: precondition proved (CVC5: 1 VC)
@@ -460,15 +460,15 @@ parser_utilities.adb:1070:33: info: loop invariant initialization proved (CVC5: 
 parser_utilities.adb:1070:33: info: loop invariant preservation proved (CVC5: 2 VC)
 parser_utilities.adb:1071:27: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1080:13: info: loop invariant initialization proved (CVC5: 4 VC)
-parser_utilities.adb:1081:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove BegIdx <= EndIdx
+parser_utilities.adb:1080:13: info: loop invariant preservation proved (CVC5: 4 VC)
 parser_utilities.adb:1084:26: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1094:14: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1096:16: info: loop invariant initialization proved (CVC5: 6 VC)
-parser_utilities.adb:1098:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove I >= BegIdx
+parser_utilities.adb:1096:16: info: loop invariant preservation proved (CVC5: 6 VC)
 parser_utilities.adb:1103:50: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 parser_utilities.adb:1103:50: medium: overflow check might fail, cannot prove lower bound for DNSKey_Rec.KeyLength + ((I - BegIdx) + 1) [reason for check: result of addition must fit in a 32-bits machine integer]
-parser_utilities.adb:1103:56: medium: overflow check might fail, cannot prove lower bound for I - BegIdx [reason for check: result of subtraction must fit in a 32-bits machine integer]
-parser_utilities.adb:1103:66: medium: overflow check might fail, cannot prove lower bound for (I - BegIdx) + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+parser_utilities.adb:1103:56: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:1103:66: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:1106:55: medium: range check might fail, cannot prove lower bound for DNSKey_Rec.KeyLength + ((EndIdx - BegIdx) + 1) [reason for check: result of addition must fit in the target type of the assignment]
 parser_utilities.adb:1135:07: info: initialization of "Ctr" proved
 parser_utilities.adb:1136:07: info: initialization of "NumSeparators" proved
@@ -621,11 +621,9 @@ rr_type.ads:109:17: info: range check proved (CVC5: 2 VC)
 rr_type.ads:112:17: info: range check proved (CVC5: 2 VC)
 socket_timeout_linux.adb:27:14: warning: file name does not match unit name, should be "socket_timeout.adb"
 spark-text_io.ads:28:08: info: flow dependencies proved
-spark-text_io.ads:30:42: high: "Standard_Output" is not initialized
-spark-text_io.ads:31:42: high: "Standard_Error" is not initialized
 spark-text_io.ads:80:04: info: initialization of "Standard_Input" proved
-spark-text_io.ads:81:04: high: "Standard_Output" is not initialized in "Text_IO" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Standard_Output" at declaration]
-spark-text_io.ads:82:04: high: "Standard_Error" is not initialized in "Text_IO" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Standard_Error" at declaration]
+spark-text_io.ads:81:04: info: initialization of "Standard_Output" proved
+spark-text_io.ads:82:04: info: initialization of "Standard_Error" proved
 spark-text_io.ads:106:11: info: data dependencies proved
 spark-text_io.ads:112:11: info: data dependencies proved
 spark-text_io.ads:134:31: info: implicit function contract not available for proof ("Mode" might not return)
@@ -1197,7 +1195,7 @@ zone_file_parser.adb:174:54: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:182:27: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:183:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:190:29: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: subprogram at line 149 should mention ZoneFileLine in a precondition]
-zone_file_parser.adb:201:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at line 149 should mention EndIdx in a precondition]
+zone_file_parser.adb:201:27: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:202:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:209:29: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: subprogram at line 149 should mention ZoneFileLine in a precondition]
 zone_file_parser.adb:226:07: info: initialization of "EndIdx" proved
@@ -1231,17 +1229,17 @@ zone_file_parser.adb:365:07: info: initialization of "LengthOfToken" proved
 zone_file_parser.adb:366:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:367:07: warning: initialization of "TimeString" has no effect
 zone_file_parser.adb:372:23: info: precondition proved (CVC5: 1 VC)
-zone_file_parser.adb:385:29: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: subprogram at zone_file_parser.ads:47 should mention ZoneFileLine in a precondition]
+zone_file_parser.adb:385:29: info: precondition proved (CVC5: 2 VC)
 zone_file_parser.adb:393:19: info: loop invariant initialization proved (CVC5: 5 VC; Trivial: 1 VC)
 zone_file_parser.adb:393:19: info: loop invariant preservation proved (CVC5: 5 VC; Trivial: 1 VC)
 zone_file_parser.adb:400:59: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:406:19: info: loop invariant initialization proved (CVC5: 2 VC)
-zone_file_parser.adb:406:27: medium: range check might fail
+zone_file_parser.adb:406:27: info: range check proved (CVC5: 4 VC)
 zone_file_parser.adb:407:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove TimeString (J) >= '0' [possible fix: loop invariant at line 392 should mention TimeString]
 zone_file_parser.adb:407:33: info: index check proved (CVC5: 4 VC)
-zone_file_parser.adb:407:59: medium: array index check might fail [reason for check: value must be a valid index into the array]
+zone_file_parser.adb:407:59: info: index check proved (CVC5: 4 VC)
 zone_file_parser.adb:414:32: medium: precondition might fail, cannot prove TimeString (I) >= '0' [possible fix: loop invariant at line 392 should mention TimeString]
-zone_file_parser.adb:424:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:424:27: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:425:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:432:29: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: subprogram at zone_file_parser.ads:47 should mention ZoneFileLine in a precondition]
 zone_file_parser.adb:443:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
@@ -1334,16 +1332,16 @@ zone_file_parser.adb:726:53: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:727:23: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:729:86: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:729:92: info: division check proved (CVC5: 1 VC)
-zone_file_parser.adb:729:92: medium: range check might fail [reason for check: result of operation must be convertible to the target type of the conversion]
+zone_file_parser.adb:729:92: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:731:43: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:737:80: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:737:86: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:737:90: info: division check proved (CVC5: 1 VC)
-zone_file_parser.adb:748:16: medium: loop invariant might fail in first iteration, cannot prove EndIdx >= 0
 zone_file_parser.adb:748:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove EndIdx >= 0
+zone_file_parser.adb:755:19: medium: loop invariant might fail in first iteration, cannot prove BlockLengthMap(J) >= Rr_Type.Nsec_Record_Type.blockLengthValue'first
 zone_file_parser.adb:760:29: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:766:46: info: precondition proved (CVC5: 1 VC)
-zone_file_parser.adb:769:59: medium: range check might fail, cannot prove lower bound for NumberOfRecordTypes + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:769:59: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:770:29: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:773:62: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:773:68: info: division check proved (CVC5: 1 VC)
@@ -1464,7 +1462,7 @@ zone_file_parser.adb:1293:44: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1302:35: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1304:37: info: loop invariant initialization proved (CVC5: 2 VC)
 zone_file_parser.adb:1304:37: info: loop invariant preservation proved (CVC5: 2 VC)
-zone_file_parser.adb:1326:54: medium: range check might fail, cannot prove upper bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:1326:54: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1327:53: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1333:72: medium: range check might fail, cannot prove upper bound for (EndIdx - BegIdx) + 1 [reason for check: result of addition must fit in the target type of the assignment]
 zone_file_parser.adb:1348:44: info: range check proved (CVC5: 2 VC)
@@ -1543,15 +1541,15 @@ zone_file_parser.adb:1628:19: info: loop invariant initialization proved (CVC5: 
 zone_file_parser.adb:1628:19: info: loop invariant preservation proved (CVC5: 2 VC)
 zone_file_parser.adb:1630:26: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:1638:30: info: range check proved (CVC5: 2 VC)
-zone_file_parser.adb:1645:26: medium: precondition might fail
+zone_file_parser.adb:1645:26: info: precondition proved (CVC5: 2 VC)
 zone_file_parser.adb:1651:33: info: loop invariant initialization proved (CVC5: 1 VC)
 zone_file_parser.adb:1651:33: info: loop invariant preservation proved (CVC5: 1 VC)
 zone_file_parser.adb:1652:14: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1653:36: info: loop invariant initialization proved (CVC5: 2 VC)
 zone_file_parser.adb:1653:36: info: loop invariant preservation proved (CVC5: 2 VC)
 zone_file_parser.adb:1654:23: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1654:28: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:1654:28: info: overflow check proved (CVC5: 2 VC)
-zone_file_parser.adb:1654:28: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
 zone_file_parser.adb:1678:43: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1692:30: medium: range check might fail, cannot prove upper bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
 zone_file_parser.ads:34:07: info: initialization of "DNSKey_Rec" proved

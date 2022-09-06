@@ -29,9 +29,13 @@ with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 with CE_Interval_Sets;
 with CE_Parsing;                  use CE_Parsing;
 with CE_Pretty_Printing;          use CE_Pretty_Printing;
+with CE_RAC;
 with CE_Utils;                    use CE_Utils;
 with CE_Values;                   use CE_Values;
+with Common_Containers;           use Common_Containers;
 with Erroutc;                     use Erroutc;
+with Flow_Error_Messages;         use Flow_Error_Messages;
+with Flow_Types;                  use Flow_Types;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;               use Gnat2Why_Opts;
@@ -47,6 +51,9 @@ with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Types;            use SPARK_Util.Types;
 
 package body CE_Display is
+
+   procedure Before_Next_Element (Str : in out Unbounded_String);
+   --  Action on Str before printing the next element
 
    function Remap_VC_Info
      (Cntexmp : Cntexample_File_Maps.Map;
@@ -102,6 +109,24 @@ package body CE_Display is
    --  Reconstruct a string for the value of the Ada quantified variable
    --  in a FOR OF quantification from the value for the Why3 quantified
    --  variable.
+
+   -------------------------
+   -- Before_Next_Element --
+   -------------------------
+
+   procedure Before_Next_Element (Str : in out Unbounded_String) is
+   begin
+      if Str /= "" then
+         --  When outputting counterexamples on the command-line in
+         --  pretty mode, display each value on a separate line.
+
+         if Gnat2Why_Args.Output_Mode in GPO_Pretty then
+            Append (Str, ASCII.LF & SGR_Note & "      and " & SGR_Reset);
+         else
+            Append (Str, " and ");
+         end if;
+      end if;
+   end Before_Next_Element;
 
    -----------------------
    -- Build_Pretty_Line --
@@ -360,32 +385,8 @@ package body CE_Display is
       function Get_Cntexmp_Line_Str
         (Cntexmp_Line : Cntexample_Elt_Lists.List) return String
       is
-         procedure Before_Next_Element (Str : in out Unbounded_String);
-         --  Action on Str before printing the next element
-
-         -------------------------
-         -- Before_Next_Element --
-         -------------------------
-
-         procedure Before_Next_Element (Str : in out Unbounded_String) is
-         begin
-            if Str /= "" then
-               --  When outputting counterexamples on the command-line in
-               --  pretty mode, display each value on a separate line.
-
-               if Gnat2Why_Args.Output_Mode in GPO_Pretty then
-                  Append (Str, ASCII.LF & SGR_Note & "      and " & SGR_Reset);
-               else
-                  Append (Str, " and ");
-               end if;
-            end if;
-         end Before_Next_Element;
-
-         --  Local variables
 
          Cntexmp_Line_Str : Unbounded_String;
-
-      --  Start of processing for Get_Cntexmp_Line_Str
 
       begin
          for Elt of Cntexmp_Line loop
@@ -459,6 +460,48 @@ package body CE_Display is
       end if;
       return Get_Cntexmp_Line_Str (Cntexmp_Line);
    end Get_Cntexmp_One_Liner;
+
+   -------------------------------
+   -- Get_Environment_One_Liner --
+   -------------------------------
+
+   function Get_Environment_One_Liner (N : Node_Id) return String
+   is
+      Flow_Variables : constant Flow_Id_Sets.Set :=
+        (if Nkind (N) in N_Subexpr
+         then Get_Filtered_Variables_For_Proof (N, N)
+         else Flow_Id_Sets.Empty_Set);
+
+      Ada_Variables : Node_Sets.Set;
+      Env_Line_Str  : Unbounded_String;
+
+      --  Start of processing for Get_Environment_One_Liner
+
+   begin
+      --  Retrieve the nodes corresponding to variable uses in N
+
+      for Flow_Id of Flow_Variables loop
+         Ada_Variables.Insert (Get_Direct_Mapping_Id (Flow_Id));
+      end loop;
+
+      --  Get the value associated to each entity. Append to the final string
+      --  the name of the entity and the string representation of the value.
+
+      for E of Ada_Variables loop
+         declare
+            V        : constant Value_Type := CE_RAC.Find_Binding (E).all;
+            Elt_Name : constant String     := Source_Name (E);
+            Elt_Val  : constant String     := To_String (Print_Value (V).Str);
+         begin
+            Before_Next_Element (Env_Line_Str);
+            Append (Env_Line_Str, Elt_Name);
+            Append (Env_Line_Str, " = ");
+            Append (Env_Line_Str, Elt_Val);
+         end;
+      end loop;
+
+      return To_String (Env_Line_Str);
+   end Get_Environment_One_Liner;
 
    ----------------------
    -- Is_Ada_File_Name --

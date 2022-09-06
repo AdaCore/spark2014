@@ -189,6 +189,22 @@ package SPARK_Definition.Annotate is
    --  For a given type, there shall not be more than one such function
    --  provided. If there is none, the reclamation checks will be unprovable.
 
+   --  A pragma Annotate for automatic instantiation of lemmas has the
+   --  following form:
+   --    pragma Annotate (GNATprove, Automatic_Instantiation, Entity => E);
+
+   --  where
+   --    GNATprove               is a fixed identifier
+   --    Automatic_Instantiation is a fixed identifier
+   --    E                       is a ghost procedure with no Globals nor
+   --                            mutable parameters.
+
+   --  The ghost procedure E shall be located directly after a function
+   --  declaration, possibly separated by some pragmas and other ghost
+   --  procedures with automatic instantiation. The procedure will be
+   --  transformed into an axiom which will be included whenever the function
+   --  is called.
+
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;
       Preceding     : Node_Id;
@@ -210,6 +226,17 @@ package SPARK_Definition.Annotate is
       Last    : Source_Ptr;          --  last source pointer
       Prgma   : Node_Id;             --  the pragma which this range belongs to
    end record;
+
+   function Decl_Starts_Pragma_Annotate_Range (N : Node_Id) return Boolean is
+     (Comes_From_Source (N)
+      or else (Is_Rewrite_Substitution (N)
+               and then Comes_From_Source (Original_Node (N))));
+   --  When scanning a list of statements or declarations to decide the range
+   --  of application of a pragma Annotate, some statements starts a new range
+   --  for pragma to apply. If the declaration does not come from source, we
+   --  consider it to be part of the preceding one as far as pragma Annotate
+   --  is concerned. The exception to this rule are expression functions, and
+   --  assertions which are rewritten by the front-end into pragma Check.
 
    procedure Check_Is_Annotated
      (Node  : Node_Id;
@@ -296,6 +323,13 @@ package SPARK_Definition.Annotate is
    procedure Infer_Inline_Annotation (E : E_Function_Id);
    --  Decide whether pragma Inline_For_Proof can be inferred for E
 
+   function Is_Pragma_Annotate_Automatic_Instantiation
+     (N : Node_Id;
+      P : Entity_Id := Empty) return Boolean
+   with Pre => Is_Pragma_Annotate_GNATprove (N);
+   --  Return True if N is a pragma Annotate (GNATprove,
+   --  Automatic_Instantiation, P). If P is Empty, accept any procedure entity.
+
    function Has_Ownership_Annotation (E : Entity_Id) return Boolean
      with Pre => Is_Type (E);
    --  Return True if E is annotated with ownership
@@ -312,5 +346,16 @@ package SPARK_Definition.Annotate is
      and then Has_Ownership_Annotation (E)
      and then Needs_Reclamation (E);
    --  Retrieve the check function for a type which needs reclamation if any
+
+   function Has_Automatic_Instantiation_Annotation
+     (E : Entity_Id) return Boolean;
+   --  Return True if a pragma Annotate Automatic_Instantiation applies to the
+   --  procedure E.
+
+   function Retrieve_Automatic_Instantiation_Annotation
+     (E : Entity_Id) return Entity_Id
+   with Pre => Has_Automatic_Instantiation_Annotation (E);
+   --  If a pragma Annotate Automatic_Instantiation applies to E then return
+   --  the function to which E is associated.
 
 end SPARK_Definition.Annotate;

@@ -645,6 +645,11 @@ package SPARK_Atree is
    function Is_Iterator_Over_Array (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Iterator_Specification;
 
+   function Is_Null_Aggregate (N : Node_Id) return Boolean with
+     Pre => Nkind (N) in N_Aggregate
+                       | N_Extension_Aggregate
+                       | N_Delta_Aggregate;
+
    function Is_Rewritten_Op_Eq (N : Node_Id) return Boolean;
    --  Return true if N is a function call and its original node is an equality
    --  operation. This is used to handle specifically dispatching calls to

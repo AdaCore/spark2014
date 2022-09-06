@@ -4,7 +4,7 @@ fib.adb:3:13: info: initialization of "t" proved
 fib.adb:7:11: info: range check proved (CVC5: 2 VC)
 fib.adb:8:33: info: loop invariant initialization proved (CVC5: 2 VC)
 fib.adb:8:33: info: loop invariant preservation proved (CVC5: 2 VC)
-fib.adb:10:17: medium: overflow check might fail, cannot prove upper bound for a + b [reason for check: result of addition must fit in a 32-bits machine integer]
+fib.adb:10:17: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC)
 fib.adb:17:07: info: initialization of "a1" proved
 fib.adb:17:11: info: initialization of "a2" proved
 fib.adb:17:15: info: initialization of "b1" proved
@@ -64,8 +64,8 @@ fib.adb:101:28: medium: assertion might fail
 fib.adb:101:51: info: range check proved (CVC5: 2 VC)
 fib.adb:102:22: info: range check proved (CVC5: 2 VC)
 fib.adb:103:22: medium: overflow check might fail, cannot prove lower bound for b1 * p1 [reason for check: result of multiplication must fit in a 32-bits machine integer]
+fib.adb:110:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove a2 ** n2 = p2 * (b2 ** k2)
 fib.adb:111:27: medium: loop invariant might fail in first iteration, cannot prove p2 <= a2 ** n2
-fib.adb:111:27: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove p2 <= a2 ** n2
 fib.adb:112:31: info: loop variant proved (CVC5: 1 VC)
 fib.adb:113:17: info: division check proved (CVC5: 1 VC)
 fib.adb:114:28: medium: assertion might fail

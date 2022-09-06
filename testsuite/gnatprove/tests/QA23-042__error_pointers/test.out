@@ -24,7 +24,7 @@ n04.adb:14:12: error: "MyStruct" is not allowed in SPARK (due to component of an
 n04.adb:14:12: error: violation of pragma SPARK_Mode at test.adc:3
 n04.adb:15:07: error: "MyStruct" is not allowed in SPARK (due to component of anonymous access type)
 n04.adb:15:07: error: violation of pragma SPARK_Mode at test.adc:3
-n04.adb:16:07: error: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
+n04.adb:16:07: error: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(5))
 n04.adb:16:07: error: violation of pragma SPARK_Mode at test.adc:3
 n04.adb:22:11: error: "MyStruct" is not allowed in SPARK (due to component of anonymous access type)
 n04.adb:22:11: error: violation of pragma SPARK_Mode at test.adc:3
@@ -38,7 +38,7 @@ n06.adb:39:22: error: object was declared as not writable at line 33
 n06.adb:39:22: error: part of dereference from "X" is not writable
 n07.adb:10:16: error: anonymous access type for result for non-traversal functions is not allowed in SPARK
 n07.adb:10:16: error: violation of pragma SPARK_Mode at test.adc:3
-n07.adb:23:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+n07.adb:23:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(5))
 n07.adb:23:04: error: violation of pragma SPARK_Mode at test.adc:3
 n07.adb:25:04: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 n07.adb:25:04: error: violation of pragma SPARK_Mode at test.adc:3
@@ -69,7 +69,7 @@ n10.adb:20:10: warning: initialization of "T1" has no effect
 n10.adb:20:21: error: "A" is not readable
 n10.adb:20:21: error: object was moved at line 19
 n10.adb:23:17: warning: unused assignment
-n11.adb:18:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
+n11.adb:18:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)))
 n11.adb:18:37: error: violation of pragma SPARK_Mode at test.adc:3
 n11.adb:21:10: error: "T1" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
 n11.adb:21:10: error: violation of pragma SPARK_Mode at test.adc:3
@@ -90,11 +90,11 @@ n13.adb:15:09: info: data dependencies proved
 n13.adb:19:10: warning: initialization of "B" has no effect
 n13.adb:25:20: error: "A" is not readable
 n13.adb:25:20: error: object was moved at line 19
-n14.adb:21:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
+n14.adb:21:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)))
 n14.adb:21:37: error: violation of pragma SPARK_Mode at test.adc:3
 n14.adb:24:36: error: "T2" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
 n14.adb:24:36: error: violation of pragma SPARK_Mode at test.adc:3
-n15.adb:21:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
+n15.adb:21:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)))
 n15.adb:21:37: error: violation of pragma SPARK_Mode at test.adc:3
 n15.adb:24:25: error: "T2" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
 n15.adb:24:25: error: violation of pragma SPARK_Mode at test.adc:3
@@ -187,9 +187,9 @@ spark03.adb:7:18: info: absence of resource or memory leak proved (CVC5: 1 VC)
 spark03.adb:12:18: info: absence of resource or memory leak proved (CVC5: 1 VC)
 spark03.adb:13:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 spark03.adb:19:09: medium: pointer dereference check might fail [possible fix: subprogram at spark03.ads:21 should mention Y in a precondition]
-spark03.adb:22:16: info: absence of resource or memory leak proved (CVC5: 1 VC)
+spark03.adb:22:16: info: absence of resource or memory leak proved (altergo: 1 VC)
 spark03.adb:23:09: medium: pointer dereference check might fail
-spark03.adb:24:16: info: absence of resource or memory leak proved (CVC5: 1 VC)
+spark03.adb:24:16: info: absence of resource or memory leak proved (altergo: 1 VC)
 spark03.adb:25:09: medium: pointer dereference check might fail
 spark03.ads:8:07: medium: missing dependency "null => AA"
 spark03.ads:8:36: medium: incorrect dependency "AA => AA"

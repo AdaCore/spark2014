@@ -788,8 +788,9 @@ package Flow_Utility is
 
    function Path_To_Flow_Id (Expr : Node_Id) return Flow_Id
    with Pre  => Is_Path_Expression (Expr),
-        Post => Path_To_Flow_Id'Result.Kind in Direct_Mapping | Record_Field
-                and then Path_To_Flow_Id'Result.Variant = Normal_Use;
+        Post => (if Present (Path_To_Flow_Id'Result) then
+                 Path_To_Flow_Id'Result.Kind in Direct_Mapping | Record_Field
+                 and then Path_To_Flow_Id'Result.Variant = Normal_Use);
    --  Converts a "path expression", which is how objects are represented in
    --  the borrow checker, to a "flow_id", which is how objects are represented
    --  in flow.

@@ -1,0 +1,17 @@
+pkg_two.ads:6:07: error: consider restructuring code to avoid "limited with"
+pkg_two.ads:6:07: error: consider restructuring code to avoid "limited with"
+pkg_two.ads:6:07: error: limited view of type "Access_T" coming from limited with is not yet supported
+pkg_two.ads:6:07: error: limited view of type "Access_T" coming from limited with is not yet supported
+pkg_two.ads:9:07: error: "Function_Pointer_T" is not allowed in SPARK
+pkg_two.ads:9:07: error: "Function_Pointer_T" is not allowed in SPARK
+pkg_two.ads:9:07: error: violation of aspect SPARK_Mode at line 3
+pkg_two.ads:9:07: error: violation of aspect SPARK_Mode at line 3
+pkg_two.ads:11:09: error: "Record_T" is not allowed in SPARK
+pkg_two.ads:11:09: error: "Record_T" is not allowed in SPARK
+pkg_two.ads:11:09: error: violation of aspect SPARK_Mode at line 3
+pkg_two.ads:11:09: error: violation of aspect SPARK_Mode at line 3
+pkg_two.ads:12:04: error: consider restructuring code to avoid "limited with"
+pkg_two.ads:12:04: error: limited view of type "Access_T" coming from limited with is not yet supported
+pkg_two.ads:15:09: error: consider restructuring code to avoid "limited with"
+pkg_two.ads:15:09: error: limited view of type "Access_T" coming from limited with is not yet supported
+gnatprove: error during flow analysis and proof

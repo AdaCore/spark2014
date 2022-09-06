@@ -61,33 +61,33 @@ x86.adb:626:07: info: initialization of "Retval" proved
 x86.adb:644:07: info: initialization of "Mem" proved
 x86.adb:660:17: info: postcondition proved (Z3: 1 VC)
 x86.adb:684:23: medium: postcondition might fail, cannot prove ReadMem64(RDI_Start+(I*8)) = RAX
-x86.adb:689:31: info: assertion proved (CVC5: 2 VC)
-x86.adb:691:16: info: precondition proved (CVC5: 6 VC; altergo: 2 VC)
-x86.adb:693:36: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-x86.adb:693:36: info: loop invariant preservation proved (Trivial: 1 VC; altergo: 1 VC)
+x86.adb:690:33: medium: assertion might fail, cannot prove Memory (RDI_Start+(I*8)+J) = Mem (RDI_Start+(I*8)+J)
+x86.adb:691:16: medium: precondition might fail, cannot prove HasMem64(Mem, RDI_Start+(I*8), RAX)
+x86.adb:693:36: info: loop invariant initialization proved (Trivial: 1 VC; Z3: 1 VC)
+x86.adb:695:41: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HasMem64(Memory, RDI_Start+(J*8), RAX)
 x86.adb:703:17: info: postcondition proved (CVC5: 1 VC)
-x86.adb:714:25: info: assertion proved (CVC5: 1 VC; Trivial: 2 VC; Z3: 1 VC)
-x86.adb:722:25: info: assertion proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC)
-x86.adb:725:10: info: precondition proved (CVC5: 12 VC; Trivial: 4 VC)
+x86.adb:716:31: medium: assertion might fail, cannot prove ReadMem64(RDI'Loop_Entry+(I*8)) = RAX
+x86.adb:724:30: medium: assertion might fail, cannot prove HasMem64(Mem, RDI_Start+(I*8), RAX) [possible fix: loop invariant at line 728 should mention Mem]
+x86.adb:725:10: medium: precondition might fail, cannot prove RDI = RDI_Start + (RCX_Start - RCX)*8 [possible fix: loop invariant at line 728 should mention Mem]
 x86.adb:726:10: medium: precondition might fail, cannot prove ReadMem64(RDI) = RAX
-x86.adb:728:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+x86.adb:730:39: medium: loop invariant might fail in first iteration, cannot prove Memory'Loop_Entry(i) = Memory(i)
 x86.adb:730:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Memory'Loop_Entry(i) = Memory(i)
 x86.adb:731:32: info: loop invariant initialization proved (CVC5: 1 VC)
-x86.adb:731:32: info: loop invariant preservation proved (CVC5: 1 VC)
-x86.adb:732:32: info: loop invariant initialization proved (CVC5: 1 VC)
-x86.adb:732:32: info: loop invariant preservation proved (CVC5: 1 VC)
+x86.adb:731:32: medium: loop invariant might not be preserved by an arbitrary iteration
+x86.adb:732:32: medium: loop invariant might fail in first iteration
+x86.adb:732:32: medium: loop invariant might not be preserved by an arbitrary iteration
 x86.adb:733:32: info: loop invariant initialization proved (CVC5: 1 VC)
-x86.adb:733:32: info: loop invariant preservation proved (CVC5: 1 VC)
+x86.adb:733:32: medium: loop invariant might not be preserved by an arbitrary iteration
 x86.adb:734:32: info: loop invariant initialization proved (CVC5: 1 VC)
-x86.adb:734:32: info: loop invariant preservation proved (CVC5: 1 VC)
+x86.adb:734:32: info: loop invariant preservation proved (Z3: 1 VC)
 x86.adb:735:32: info: loop invariant initialization proved (CVC5: 1 VC)
 x86.adb:735:32: info: loop invariant preservation proved (CVC5: 1 VC)
 x86.adb:738:32: info: loop invariant initialization proved (CVC5: 1 VC)
-x86.adb:738:32: info: loop invariant preservation proved (altergo: 1 VC)
-x86.adb:746:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
+x86.adb:739:34: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove ReadMem64(RDI'Loop_Entry+(i*8)) = RAX [possible fix: precondition of subprogram at x86.ads:717 should mention RAX]
+x86.adb:747:25: medium: assertion might fail, cannot prove All_Equal_RAX (RDI_Start, RCX_Start-1)
 x86.adb:755:07: info: initialization of "Val1" proved
 x86.adb:755:13: info: initialization of "Val2" proved
-x86.adb:759:31: info: loop variant proved (CVC5: 1 VC)
+x86.adb:759:31: info: loop variant proved (Z3: 1 VC)
 x86.adb:779:07: info: initialization of "Val1" proved
 x86.adb:779:13: info: initialization of "Val2" proved
 x86.adb:783:31: info: loop variant proved (CVC5: 1 VC)
@@ -268,7 +268,7 @@ x86.ads:633:06: info: postcondition proved (CVC5: 5 VC; Trivial: 1 VC)
 x86.ads:662:06: info: data dependencies proved
 x86.ads:665:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:670:06: info: data dependencies proved
-x86.ads:671:14: info: postcondition proved (CVC5: 2 VC)
+x86.ads:671:14: info: postcondition proved (Z3: 2 VC)
 x86.ads:679:14: info: postcondition proved (CVC5: 2 VC)
 x86.ads:683:14: info: postcondition proved (CVC5: 2 VC)
 x86.ads:690:14: info: postcondition proved (CVC5: 3 VC)
@@ -280,7 +280,7 @@ x86.ads:708:52: info: range check proved (CVC5: 2 VC)
 x86.ads:718:06: info: data dependencies proved
 x86.ads:718:46: low: unused global "ZeroFlag"
 x86.ads:718:46: warning: "ZeroFlag" is not modified, could be INPUT
-x86.ads:721:14: info: postcondition proved (CVC5: 4 VC; Trivial: 2 VC)
+x86.ads:722:08: medium: postcondition might fail, cannot prove RDI = RDI'Old + (8*RCX'old)
 x86.ads:729:06: info: data dependencies proved
 x86.ads:731:14: info: postcondition proved (Trivial: 1 VC)
 x86.ads:735:06: info: data dependencies proved

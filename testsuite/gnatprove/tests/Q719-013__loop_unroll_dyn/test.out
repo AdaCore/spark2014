@@ -49,7 +49,7 @@ loops_static.adb:103:23: info: unrolling loop
 loops_static.adb:104:13: high: array index check might fail (e.g. when A'First = 2 and I = 1) [reason for check: value must be a valid index into the array]
 loops_static.adb:108:35: info: cannot unroll loop (too many loop iterations)
 loops_static.adb:109:22: info: index check proved (CVC5: 4 VC)
-loops_static.adb:115:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, others => 0) and J = 0) [possible fix: subprogram at loops_static.ads:14 should mention A in a precondition]
+loops_static.adb:115:42: medium: assertion might fail, cannot prove A (J) = 0 [possible fix: subprogram at loops_static.ads:14 should mention A in a precondition]
 loops_static.adb:115:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:117:07: medium: assertion might fail
 loops_static.adb:123:23: info: unrolling loop

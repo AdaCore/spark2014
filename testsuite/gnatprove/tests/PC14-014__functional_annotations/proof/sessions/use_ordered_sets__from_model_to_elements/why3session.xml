@@ -32,10 +32,10 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="0"><result status="valid" steps="3999"/></proof>
+  <proof prover="0"><result status="valid" steps="2956"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="0"><result status="valid" steps="4397"/></proof>
+  <proof prover="0"><result status="valid" steps="3304"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>
@@ -47,7 +47,7 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
-  <proof prover="0"><result status="valid" steps="7820"/></proof>
+  <proof prover="0"><result status="valid" steps="5311"/></proof>
   </goal>
  </transf>
  </goal>

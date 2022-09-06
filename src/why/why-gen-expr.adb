@@ -3125,15 +3125,10 @@ package body Why.Gen.Expr is
       Why_Type   : constant W_Type_Id := Type_Of_Node (Typ);
       Use_Predef : constant Boolean :=
         Use_Predefined_Equality_For_Type (Typ);
-      Eq_Str     : constant String :=
-        (if Use_Predef then "bool_eq" else "user_eq");
-      Module     : constant W_Module_Id :=
-        (if Is_Boolean_Type (Typ) then M_Boolean.Module else E_Module (Typ));
       Eq_Id      : constant W_Identifier_Id :=
-        New_Identifier (Module   => Module,
-                        Name     => Eq_Str,
-                        Typ      => EW_Bool_Type,
-                        Ada_Node => Typ);
+        (if Is_Boolean_Type (Typ) then M_Boolean.Bool_Eq
+         elsif Use_Predef then E_Symb (Typ, WNE_Bool_Eq)
+         else E_Symb (Typ, WNE_User_Eq));
       T          : W_Expr_Id;
 
    begin

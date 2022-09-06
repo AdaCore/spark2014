@@ -26,8 +26,11 @@
 --  This package implements small-step (normal) runtime-assertion checking
 --  (RAC) for SPARK to check counterexamples.
 
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use  Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with CE_Values;             use CE_Values;
+with SPARK_Atree.Entities;  use SPARK_Atree.Entities;
 with Types;                 use Types;
 with VC_Kinds;              use VC_Kinds;
 
@@ -36,12 +39,40 @@ package CE_RAC is
    type Result;
    --  Information about the termination of the RAC execution
 
+   type Fuel_Type is new Integer;
+
+   type Fuel_Access is access Fuel_Type;
+   --  If the fuzzer is used, the fuel must be shared and modified by each call
+   --  to the small-step RAC.
+
+   procedure Check_Fuel_Decrease
+     (Fuel   : Fuel_Access;
+      Amount : Fuel_Type := 1);
+   --  Check fuel and decrease by Amount. Raise RAC_Incomplete when fuel
+   --  becomes zero. Do nothing for negative values of Fuel.
+
+   function Find_Binding (E : Entity_Id) return Value_Access;
+   --  Find the binding of a variable in the context environment. If not found,
+   --  it is assumed to be a global constant and initialised as it.
+
+   procedure Get_Integer_Type_Bounds
+     (Ty       :     Entity_Id;
+      Fst, Lst : out Big_Integer)
+   with
+     Pre => Is_Integer_Type (Ty);
+   --  Write the first and last value of an integer type Ty in Fst and Lst
+
+   function Integer_Value (I : Big_Integer; N : Node_Id) return Value_Type;
+   --  Construct an integer value after checking against type bounds or
+   --  applying modulo for type Etype (N), signaling errors for node N.
+
    function RAC_Execute
      (E              : Entity_Id;
       Cntexmp        : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty;
       Do_Sideeffects : Boolean := False;
-      Fuel           : Integer := -1;
-      Stack_Height   : Integer := -1)
+      Fuel           : Fuel_Access := null;
+      Stack_Height   : Integer := -1;
+      Use_Fuzzing    : Boolean := False)
       return Result;
    --  Runtime assertion checking execution of subprogram E using the
    --  counterexample Cntexmp as an oracle for program parameters. When
@@ -51,11 +82,17 @@ package CE_RAC is
    --  when it reaches zero. If Stack_Height is non-zero the execution
    --  terminates as incomplete when the stack of calls to procedures or
    --  functions grows higher than this number. Raises RAC_Unexpected_Error
-   --  when something unforeseen happens.
+   --  when something unforeseen happens. If Use_Fuzzing is set to True,
+   --  randomly chosen values will be used for the program's variables rather
+   --  than the values provided by the counterexample.
 
    procedure RAC_Stuck (Reason : String) with No_Return;
    --  Raise Exn_RAC_Stuck and set result, i.e. the RAC execution failed
    --  due to a false assumption.
+
+   procedure RAC_Unsupported (Str : String; N : Node_Id) with No_Return;
+   --  Raise Exn_RAC_Incomplete and set result, i.e. the RAC execution could
+   --  not complete due to unsupported or unimplemented features.
 
    type Result_Kind is
      (Res_Normal,

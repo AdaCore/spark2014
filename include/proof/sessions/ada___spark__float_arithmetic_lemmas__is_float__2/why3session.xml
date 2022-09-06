@@ -2,7 +2,7 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
-<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
+<prover id="0" name="CVC5" version="0.0.7-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
 <prover id="2" name="altergo" version="1.30-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
 <prover id="3" name="colibri" version="2137" timelimit="5" steplimit="0" memlimit="1000"/>
@@ -13,19 +13,19 @@
  <goal name="def&#39;vc" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
-  <proof prover="0"><result status="valid" steps="25"/></proof>
+  <proof prover="0"><result status="valid" steps="644"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="0"><result status="valid" steps="25"/></proof>
+  <proof prover="0"><result status="valid" steps="684"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="0" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="365115"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="valid" steps="163"/></proof>
+  <proof prover="1"><result status="unknown" steps="861160"/></proof>
+  <proof prover="2"><result status="outofmemory"/></proof>
+  <proof prover="3"><result status="valid" steps="194"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="0"><result status="valid" steps="15389"/></proof>
+  <proof prover="0"><result status="valid" steps="23163"/></proof>
   </goal>
  </transf>
  </goal>
