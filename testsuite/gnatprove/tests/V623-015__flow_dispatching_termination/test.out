@@ -1,2 +1,11 @@
-neverending_dispatching.adb:1:11: info: subprogram "Neverending_Dispatching" will terminate, terminating annotation has been proved
 neverending_dispatching.adb:26:21: warning: statement has no effect
+neverending_dispatching.adb:34:04: medium: call via dispatching operation, terminating annotation could be incorrect
+neverending_dispatching.adb:36:04: medium: call via dispatching operation, terminating annotation could be incorrect
+neverending_dispatching_2.adb:7:16: info: subprogram "Work" will terminate, terminating annotation has been proved
+neverending_dispatching_2.adb:26:21: warning: statement has no effect
+neverending_dispatching_2.adb:34:04: medium: call via dispatching operation, terminating annotation could be incorrect
+neverending_dispatching_2.adb:36:04: medium: call via dispatching operation, terminating annotation could be incorrect
+neverending_dispatching_3.adb:26:21: medium: loop might be nonterminating, terminating annotation on "Work" could be incorrect
+neverending_dispatching_3.adb:26:21: warning: statement has no effect
+neverending_dispatching_3.adb:34:04: medium: call via dispatching operation, terminating annotation could be incorrect
+neverending_dispatching_3.adb:36:04: medium: call via dispatching operation, terminating annotation could be incorrect

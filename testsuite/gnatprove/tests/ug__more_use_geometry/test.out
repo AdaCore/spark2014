@@ -1,3 +1,5 @@
+geometry.ads:43:20: info: class-wide postcondition is stronger than overridden one
+geometry.ads:47:20: info: class-wide postcondition is stronger than overridden one
 more_use_geometry.adb:8:06: info: precondition proved
 more_use_geometry.adb:11:09: info: precondition proved
 more_use_geometry.adb:15:06: info: precondition proved
@@ -8,7 +10,3 @@ more_use_geometry.adb:17:06: medium: precondition might fail
   possible fix: precondition of subprogram at line 3 should mention S4
     3 |procedure More_Use_Geometry (S1, S2, S3, S4 : in out Shape'Class) with
       |^ here
-geometry.ads:10:13: info: subprogram "Valid" will terminate, terminating annotation has been proved
-geometry.ads:28:13: info: subprogram "Valid" will terminate, terminating annotation has been proved
-geometry.ads:36:20: info: class-wide postcondition is stronger than overridden one
-geometry.ads:39:20: info: class-wide postcondition is stronger than overridden one
