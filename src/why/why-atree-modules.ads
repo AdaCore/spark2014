@@ -796,6 +796,12 @@ package Why.Atree.Modules is
    with Pre => not Use_Predefined_Equality_For_Type (Ty);
    --  Function returning the module for the user equality on Ty
 
+   function E_Move_Module
+     (Ty    : Type_Kind_Id;
+      Axiom : Boolean := False) return W_Module_Id
+   with Pre => Contains_Allocated_Parts (Ty);
+   --  Function returning the module for the move predicates for Ty
+
    function Get_Logic_Function (E : Function_Kind_Id) return W_Identifier_Id;
    --  Return the logic function __call associated with the profile of a
    --  function or function type.

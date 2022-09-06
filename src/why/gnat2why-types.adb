@@ -96,13 +96,10 @@ package body Gnat2Why.Types is
         (if Might_Contain_Relaxed_Init (E)
          then EW_Init_Wrapper (Type_Of_Node (E))
          else Type_Of_Node (E));
-      L_Typ    : constant W_Type_Id :=
-        (if Predeclare then New_Named_Type (To_Local (Get_Name (Typ)))
-         else Typ);
       A_Ident  : constant W_Identifier_Id :=
-        New_Identifier (Name => "a", Typ  => L_Typ);
+        New_Identifier (Name => "a", Typ  => Typ);
       B_Ident  : constant W_Identifier_Id :=
-        New_Identifier (Name => "b", Typ  => L_Typ);
+        New_Identifier (Name => "b", Typ  => Typ);
 
    begin
       --  Function to express that all pool-specific access types in E are null
@@ -1051,19 +1048,6 @@ package body Gnat2Why.Types is
          Create_Dynamic_Invariant (Th, E, E_Axiom_Module (E));
       end if;
 
-      if Contains_Allocated_Parts (E)
-        and then (not Has_Access_Type (E)
-                  or else Is_General_Access_Type (E))
-      then
-         if Has_Predeclared_Move_Predicates (E) then
-            Complete_Predicates_For_Move (Th, E);
-         else
-            Create_Predicates_For_Move (Th, E);
-         end if;
-
-         Create_Move_Function (Th, E);
-      end if;
-
       --  If E is a scalar type with dynamic bounds, we give axioms for the
       --  values of its bounds.
 
@@ -1108,6 +1092,46 @@ package body Gnat2Why.Types is
          Create_Type_Invariant (Th, E);
          Close_Theory (Th,
                        Kind => Definition_Theory);
+      end if;
+
+      --  Declare a Move function and possibly move predicates for E
+
+      if Contains_Allocated_Parts (E)
+        and then (not Has_Access_Type (E)
+                  or else Is_General_Access_Type (E))
+      then
+         declare
+            In_Axiom_Module : constant Boolean :=
+              Has_Predeclared_Move_Predicates (E);
+         begin
+            Th :=
+              Open_Theory
+                (WF_Context, E_Move_Module (E, Axiom => In_Axiom_Module),
+                 Comment =>
+                   "Module declaring a move function and possibly move"
+                 & " predicates for type """ & Get_Name_String (Chars (E))
+                 & """"
+                 & (if Sloc (E) > 0 then
+                      " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+            if In_Axiom_Module then
+               Complete_Predicates_For_Move (Th, E);
+            else
+               Create_Predicates_For_Move (Th, E);
+            end if;
+
+            Create_Move_Function (Th, E);
+            Close_Theory (Th,
+                          Kind => Definition_Theory);
+
+            if In_Axiom_Module then
+               Record_Extra_Dependency
+                 (Defining_Module => E_Move_Module (E),
+                  Axiom_Module    => Th.Module);
+            end if;
+         end;
       end if;
 
       if (Is_Tagged_Type (E) and then E = Root_Retysp (E))
@@ -1449,13 +1473,6 @@ package body Gnat2Why.Types is
 
          Generate_Ref_Type_And_Havoc_Fun (Th, E, Relaxed_Init => False);
 
-         if Has_Predeclared_Move_Predicates (E)
-           and then Contains_Allocated_Parts (E)
-           and then not Might_Contain_Relaxed_Init (E)
-         then
-            Create_Predicates_For_Move (Th, E, Predeclare => True);
-         end if;
-
          --  If E is the full view of a private type, use its partial view as
          --  the filtering entity, as it is the entity used everywhere in AST.
 
@@ -1536,16 +1553,33 @@ package body Gnat2Why.Types is
            or else Oldest_Parent_With_Same_Fields (Retysp (E)) = Retysp (E)
          then
             Generate_Ref_Type_And_Havoc_Fun (Th, E, Relaxed_Init => True);
-            if Has_Predeclared_Move_Predicates (E)
-              and then Contains_Allocated_Parts (E)
-            then
-               Create_Predicates_For_Move (Th, E, Predeclare => True);
-            end if;
          elsif Short_Name (Retysp (E))
            /= Short_Name (Oldest_Parent_With_Same_Fields (Retysp (E)))
          then
             Generate_Ref_Type_And_Havoc_Fun (Th, E, Relaxed_Init => True);
          end if;
+
+         Close_Theory (Th, Kind => Definition_Theory);
+      end if;
+
+      --  If needed, predeclare the move predicates. Use their own module to
+      --  avoid introducing a dependency on the reclamation function of
+      --  private types with ownership in the type module.
+
+      if Has_Predeclared_Move_Predicates (E)
+        and then Contains_Allocated_Parts (E)
+      then
+         Th := Open_Theory
+           (WF_Context, E_Move_Module (E),
+            Comment =>
+              "Module for the move predicates for the type "
+            & """" & Get_Name_String (Chars (E)) & """"
+            & (if Sloc (E) > 0 then
+                 " defined at " & Build_Location_String (Sloc (E))
+              else "")
+            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+         Create_Predicates_For_Move (Th, E, Predeclare => True);
 
          Close_Theory (Th, Kind => Definition_Theory);
       end if;
