@@ -309,7 +309,8 @@ class UGTestDriver(DiffTestDriver):
 
     def run(self):
         # Some tests require this environment variable to be set
-        os.environ["SPARKLIB_OBJECT_DIR"] = self.test_env["working_dir"]
+        env = os.environ.copy()
+        env["SPARKLIB_OBJECT_DIR"] = self.test_env["working_dir"]
 
         pattern = os.path.join(self.test_env["working_dir"], "*.gpr")
         gprfiles = glob.glob(pattern)
@@ -326,7 +327,7 @@ class UGTestDriver(DiffTestDriver):
             cmd += ["--steps=200"]
 
         start_time = time.time()
-        self.shell(cmd, catch_error=False)
+        self.shell(cmd, env=env, catch_error=False)
         self.result.time = time.time() - start_time
 
 
