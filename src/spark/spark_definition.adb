@@ -4929,6 +4929,13 @@ package body SPARK_Definition is
             return;
          end if;
 
+         --  Frontend only rejects volatile ghost objects when SPARK_Mode is On
+
+         if Is_Ghost_Entity (E) and then Is_Effectively_Volatile (E) then
+            Mark_Violation
+              ("volatile ghost object", N, SRM_Reference => "SPARK RM 6.9(7)");
+         end if;
+
          if Present (Expr) then
             Mark (Expr);
 
