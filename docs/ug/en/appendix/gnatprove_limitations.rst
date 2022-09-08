@@ -24,6 +24,12 @@ ensure that their programs are not impacted.
   the case if such cycles are due to contracts and the program is compiled with
   assertions disabled.
 
+* If a function annotated with an Ownership annotation assigns or declares
+  an object of the related private type with Ownership either directly or
+  inside a called subprogram, then the contract of the
+  function might be used to prove itself, possibly resulting in a soundness
+  issue if it is incorrect.
+
 Other Tool Limitations
 ----------------------
 
