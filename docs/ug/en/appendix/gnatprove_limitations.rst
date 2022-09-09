@@ -30,12 +30,17 @@ ensure that their programs are not impacted.
   function might be used to prove itself, possibly resulting in a soundness
   issue if it is incorrect.
 
+Tool Limitations Leading to an Error Message
+--------------------------------------------
+
+.. include:: ../source/unsupported_constructs.rst
+
 Other Tool Limitations
 ----------------------
 
-These limitations correspond to limitations of the analysis that do not cause
-soundness issues. When a construct is not supported, GNATprove issues an error
-when analyzing the program.
+The generation of Global contracts by |GNATprove| has limitations. When this
+capability is used in a certification context, the generated contracts should
+be verified by the user. In particular:
 
 * The Global contracts generated automatically by |GNATprove| for subprograms
   without an explicit one, whose body is not in SPARK, do not take into account
@@ -43,75 +48,12 @@ when analyzing the program.
   indirect reads/writes to global variables (through access variables). See
   :ref:`Coarse Generation for non-SPARK Subprograms`.
 
-* A subset of all Ada conversions between array types is supported:
+Some features defined in the reference manual have not been implemented in the
+tool. It is the case of:
 
-  * element types must be exactly the same
-  * matching index types must either be both modular with a base type of the
-    same size, or both non modular
+* classwide Global and Depends contracts as defined in SPARK RM 6.1.6, and
 
-* A subset of all Ada fixed-point types and fixed-point operations is
-  supported:
-
-  * multiplication and division between different fixed-point types and
-    floating-point types are rejected
-  * multiplication and division between a fixed-point type and a real literal
-    are rejected, the fix is to qualify the real literal with a fixed-point
-    type as in ``Fp_Type'(0.25)``
-  * multiplication and division between different fixed-point types are
-    rejected if their smalls are not *compatible* as defined in Ada RM
-    G.2.3(21)
-  * conversions from fixed-point types to floating-point types are rejected
-
-  These restrictions ensure that the result of fixed-point operations always
-  belongs to the *perfect result set* as defined in Ada RM G.2.3.
-
-* Multidimensional array types are supported up to 4 dimensions.
-
-* Loop_Invariant and Loop_Variant pragmas must appear before any non-scalar
-  object declaration.
-
-* Inheriting the same subprogram from multiple interfaces is not supported.
-
-* Quantified expressions with an iterator over a multi dimensional array (for
-  example ``for all Elem of Arr`` where ``Arr`` is a multi dimensional array)
-  are not supported.
-
-* Constrained subtypes of class-wide types and 'Class attributes of
-  constrained record types are not supported.
-
-* Abstract states cannot be marked ``Part_Of`` a single concurrent object (see
-  |SPARK| RM 9(3)).
-
-* Classwide Global and Depends contracts as defined in SPARK RM 6.1.6 are not
-  supported.
-
-* Task attributes Identity and Storage_Size are not supported.
-
-* Type_Invariant and Invariant aspects are not supported:
-
-  * on private types declared in nested packages
-  * on protected types
-  * on tagged types
-  * on components of tagged types if the tagged type is visible from inside the
-    scope of the invariant bearing type.
-
-* Calls to protected subprograms and protected entries whose prefix denotes a
-  formal subprogram parameter are not supported. Similarly, suspension on
-  suspension objects given as formal subprogram parameters is not supported.
-
-* The case of a state abstraction whose Part_Of aspect denotes a task or
-  protected unit is not currently supported.
-
-* The case of a Refined_Post specification for a (protected) entry is not
-  currently supported.
-
-* The use of Ada.Synchronous_Barriers.Synchronous_Barrier type is not currently
-  supported.
-
-* Entry families are not currently supported.
-
-* The 'Update attribute on multidimensional unconstrained arrays is not
-  supported.
+* the use of Ada.Synchronous_Barriers.Synchronous_Barrier type.
 
 Flow Analysis Limitations
 -------------------------

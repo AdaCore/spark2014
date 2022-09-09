@@ -250,12 +250,14 @@ package body SPARK_Definition.Violations is
    ----------------------
 
    procedure Mark_Unsupported
-     (Msg            : String;
+     (Kind           : Unsupported_Kind;
       N              : Node_Id;
       E              : Entity_Id := Types.Empty;
+      Name           : String := "";
       Cont_Msg       : String := "";
       Root_Cause_Msg : String := "")
    is
+      Msg : constant String := Unsupported_Message (Kind, Name);
    begin
       --  Flag the violation, so that the current entity is marked
       --  accordingly.

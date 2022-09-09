@@ -36,6 +36,8 @@ procedure Table_Generator is
      Compose (Target_Dir, "proof_checks_table.rst");
    Warnings_Target  : constant String :=
      Compose (Target_Dir, "misc_warnings_table.rst");
+   Limitations_Target  : constant String :=
+     Compose (Target_Dir, "unsupported_constructs.rst");
 
    subtype Class_Tag is Character
    with Static_Predicate => Class_Tag in 'E' | 'C' | 'W';
@@ -48,6 +50,7 @@ procedure Table_Generator is
    --  "<CWE number> <link to CWE number>"
 
    procedure Produce_Flow_Checks_Table;
+   procedure Produce_Limitation_List;
    procedure Produce_Proof_Checks_Table;
    procedure Produce_Misc_Warnings_Table;
 
@@ -106,6 +109,30 @@ procedure Table_Generator is
                   "classified as errors and consequently cannot be " &
                   "suppressed or justified.");
    end Produce_Flow_Checks_Table;
+
+   -----------------------------
+   -- Produce_Limitation_List --
+   -----------------------------
+
+   procedure Produce_Limitation_List is
+      File : File_Type;
+   begin
+      Create (File, Name => Limitations_Target);
+      Put_Line (File, "The following unsupported constructs " &
+                  "are detected by GNATprove and reported through an error " &
+                  "message:");
+      New_Line (File);
+      for Kind in Unsupported_Kind loop
+         Put (File, "* ");
+         Put (File, Description (Kind));
+         if Kind = Unsupported_Kind'Last then
+            Put_Line (File, ".");
+         else
+            Put_Line (File, ",");
+         end if;
+         New_Line (File);
+      end loop;
+   end Produce_Limitation_List;
 
    ---------------------------------
    -- Produce_Misc_Warnings_Table --
@@ -233,4 +260,5 @@ begin
    Produce_Flow_Checks_Table;
    Produce_Proof_Checks_Table;
    Produce_Misc_Warnings_Table;
+   Produce_Limitation_List;
 end Table_Generator;

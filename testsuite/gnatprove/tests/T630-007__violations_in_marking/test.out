@@ -54,13 +54,13 @@ bad_membership.adb:14:19: error: equality on access types is not allowed in SPAR
 bad_membership.adb:14:19: error: violation of aspect SPARK_Mode at line 1
 bad_raise.adb:4:41: error: raise expression in a complex expression in a precondition is not yet supported
 bad_raise.adb:7:43: error: raise expression in a complex expression in a precondition is not yet supported
-bad_relaxed_init.ads:5:14: error: protected component with initialization by proof is not yet supported
-bad_relaxed_init.ads:12:04: error: Part_Of variable with initialization by proof is not yet supported
-bad_relaxed_init.ads:20:09: error: concurrent type with initialization by proof is not yet supported
+bad_relaxed_init.ads:8:07: error: protected component with relaxed initialization is not yet supported
+bad_relaxed_init.ads:12:04: error: variable annotated as Part_Of a concurrent object with relaxed initialization is not yet supported
+bad_relaxed_init.ads:20:09: error: concurrent type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
 bad_relaxed_init.ads:23:07: error: component "F" of tagged type "Root" with relaxed initialization is not allowed in SPARK
 bad_relaxed_init.ads:23:07: error: violation of aspect SPARK_Mode at line 3
-bad_relaxed_init.ads:26:09: error: tagged type with initialization by proof is not yet supported
-bad_relaxed_init.ads:32:09: error: access type with initialization by proof is not yet supported
+bad_relaxed_init.ads:26:09: error: tagged type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
+bad_relaxed_init.ads:32:09: error: access type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
 case_prefix.adb:5:04: medium: resource or memory leak might occur at end of scope
 case_prefix.adb:5:29: info: null exclusion check proved (CVC5: 1 VC)
 case_prefix.adb:6:04: medium: resource or memory leak might occur at end of scope

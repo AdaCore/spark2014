@@ -33,6 +33,7 @@ with SPARK_Atree.Entities;           use SPARK_Atree.Entities;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
 with SPARK_Util.Types;               use SPARK_Util.Types;
+with VC_Kinds;                       use VC_Kinds;
 with Why.Ids;                        use Why.Ids;
 with Why.Gen.Names;                  use Why.Gen.Names;
 

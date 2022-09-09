@@ -530,9 +530,7 @@ package body SPARK_Definition is
            and then In_SPARK (Expected_Des_Ty)
            and then Retysp (Actual_Des_Ty) /= Retysp (Expected_Des_Ty)
          then
-            Mark_Unsupported
-              ("implicit conversion between access types with different"
-               & " designated types", Expression);
+            Mark_Unsupported (Lim_Access_Conv, Expression);
          end if;
       end if;
    end Check_Compatible_Access_Types;
@@ -1092,20 +1090,16 @@ package body SPARK_Definition is
 
                         Loop_Entity_Set.Include (Defining_Entity (N));
                      else
-                        Mark_Unsupported
-                          ("non-scalar object declared before loop-invariant",
-                           N);
+                        Mark_Unsupported (Lim_Object_Before_Inv, N);
                      end if;
 
                   when N_Package_Declaration =>
-                     Mark_Unsupported
-                       ("nested packages before loop-invariant", N);
+                     Mark_Unsupported (Lim_Package_Before_Inv, N);
 
                   when N_Subprogram_Declaration
                      | N_Subprogram_Body
                   =>
-                     Mark_Unsupported
-                       ("nested subprogram before loop-invariant", N);
+                     Mark_Unsupported (Lim_Subprogram_Before_Inv, N);
 
                   --  Go inside if, case, exended return statements and
                   --  nested loops to check for absence of non-scalar
@@ -1150,10 +1144,11 @@ package body SPARK_Definition is
                        (Statements (N), Goto_Labels, True);
 
                   when N_Goto_Statement =>
+
+                     --  Reject goto statements crossing loop invariants
+
                      if Goto_Labels.Contains (Entity (Name (N))) then
-                        Mark_Unsupported
-                          ("goto statement to label located inside the loop"
-                           & " crossing the loop invariant", N);
+                        Mark_Unsupported (Lim_Goto_Cross_Inv, N);
                      end if;
 
                   when others => null;
@@ -1432,12 +1427,13 @@ package body SPARK_Definition is
             Mark_Subprogram_Declaration (N);
 
          when N_Aggregate =>
+
+            --  Reject 'Update on unconstrained multidimensional array
+
             if Is_Update_Aggregate (N)
               and then Is_Update_Unconstr_Multidim_Aggr (N)
             then
-               Mark_Unsupported
-                 ("attribute """ & Standard_Ada_Case ("Update")
-                  & """ of unconstrained multidimensional array", N);
+               Mark_Unsupported (Lim_Multidim_Update, N);
 
             --  Special aggregates for indexes of updates of multidim arrays do
             --  not have a type, see comment on
@@ -1473,8 +1469,7 @@ package body SPARK_Definition is
               and then Is_Expression_Function_Or_Completion
                   (Unique_Defining_Entity (Enclosing_Declaration (N)))
             then
-               Mark_Unsupported
-                 ("uninitialized allocator inside expression function", N);
+               Mark_Unsupported (Lim_Uninit_Alloc_In_Expr_Fun, N);
 
             --  Check that the type of the allocator is visibly an access
             --  type.
@@ -1646,9 +1641,7 @@ package body SPARK_Definition is
 
          when N_Iterated_Component_Association =>
             if Present (Iterator_Specification (N)) then
-               Mark_Unsupported
-                 ("iterated component association with iterator specification",
-                  N);
+               Mark_Unsupported (Lim_Iterator_In_Component_Assoc, N);
             else
                Mark_Actions (N, Loop_Actions (N));
                Mark_Entity (Defining_Identifier (N));
@@ -1692,8 +1685,7 @@ package body SPARK_Definition is
                --  expression or a subtype.
                --  The second case is not currently supported in SPARK.
 
-               Mark_Unsupported
-                 ("extension aggregate with subtype ancestor part", N);
+               Mark_Unsupported (Lim_Ext_Aggregate_With_Type_Ancestor, N);
             else
                Mark (Ancestor_Part (N));
                Mark_List (Expressions (N));
@@ -1730,7 +1722,7 @@ package body SPARK_Definition is
 
          when N_Iterated_Element_Association =>
 
-            Mark_Unsupported ("iterated element association", N);
+            Mark_Unsupported (Lim_Iterated_Element_Association, N);
 
          when N_Iterator_Specification =>
 
@@ -1758,9 +1750,7 @@ package body SPARK_Definition is
                  and then Has_Array_Type (Etype (Name (N)))
                then
                   if Number_Dimensions (Etype (Name (N))) > 1 then
-                     Mark_Unsupported
-                       ("iterator specification over array of dimension"
-                        & Number_Dimensions (Etype (Name (N)))'Img, N);
+                     Mark_Unsupported (Lim_Multidim_Iterator, N);
                   end if;
 
                   if Present (Subtype_Indication (N)) then
@@ -1822,9 +1812,7 @@ package body SPARK_Definition is
                    (Iterator_Filter
                       (Iterator_Specification (Iteration_Scheme (N))))
                then
-                  Mark_Unsupported
-                    ("loop on an iterator specification with an iterator"
-                     & " filter", N);
+                  Mark_Unsupported (Lim_Loop_With_Iterator_Filter, N);
                end if;
             end if;
 
@@ -2056,9 +2044,8 @@ package body SPARK_Definition is
 
                      if Parent (N) /= Prag then
                         Mark_Unsupported
-                          (Msg => "raise expression in a complex expression in"
-                             & " a precondition",
-                           N   => Expr);
+                          (Kind => Lim_Complex_Raise_Expr_In_Prec,
+                           N    => Expr);
 
                      --  Otherwise, store Expr in Raise_Exprs_From_Pre
 
@@ -2272,24 +2259,26 @@ package body SPARK_Definition is
                      Target_Type := Etype (Target_Index);
                      Source_Type := Etype (Source_Index);
 
+                     --  Reject conversions between array types with modular
+                     --  index types of different sizes.
+
                      if Has_Modular_Integer_Type (Target_Type)
-                          and then
-                        Has_Modular_Integer_Type (Source_Type)
+                       and then Has_Modular_Integer_Type (Source_Type)
                      then
                         if Esize (Target_Type) /= Esize (Source_Type) then
                            Mark_Unsupported
-                             ("conversion between array types with modular"
-                              & " index types of different sizes", N);
+                             (Lim_Array_Conv_Different_Size_Modular_Index, N);
                            exit;
                         end if;
 
+                     --  Reject conversions between array types with modular
+                     --  and non-modular index types.
+
                      elsif Has_Modular_Integer_Type (Target_Type)
-                             or else
-                           Has_Modular_Integer_Type (Source_Type)
+                       or else Has_Modular_Integer_Type (Source_Type)
                      then
                         Mark_Unsupported
-                          ("conversion between array types with modular and"
-                           & " non-modular index types", N);
+                          (Lim_Array_Conv_Signed_Modular_Index, N);
                         exit;
                      end if;
 
@@ -2330,9 +2319,7 @@ package body SPARK_Definition is
                   if Is_Path_Expression (Expression (N))
                     and then Present (Get_Root_Object (Expression (N)))
                   then
-                     Mark_Unsupported
-                       ("move as part of a conversion to an access-to-constant"
-                        & " type", N);
+                     Mark_Unsupported (Lim_Move_To_Access_Constant, N);
                   end if;
                end if;
 
@@ -2369,11 +2356,9 @@ package body SPARK_Definition is
                         = Uintp.UI_From_Int (128);
 
                begin
-                  if (From_Float and To_Fixed)
-                    or (From_Fixed and To_Float)
+                  if (From_Float and To_Fixed) or (From_Fixed and To_Float)
                   then
-                     Mark_Unsupported ("conversion between fixed-point and "
-                                       & "floating-point types", N);
+                     Mark_Unsupported (Lim_Conv_Fixed_Float, N);
 
                   --  For the operation to be in the perfect result set, the
                   --  smalls of the fixed-point types should be "compatible"
@@ -2391,9 +2376,7 @@ package body SPARK_Definition is
                         if Norm_Num (Factor) /= Uint_1
                           and then Norm_Den (Factor) /= Uint_1
                         then
-                           Mark_Unsupported
-                             ("conversion between incompatible "
-                              & "fixed-point types", N);
+                           Mark_Unsupported (Lim_Conv_Incompatible_Fixed, N);
                         end if;
                      end;
 
@@ -2413,8 +2396,7 @@ package body SPARK_Definition is
                           and then Norm_Den (Small) /= Uint_1
                         then
                            Mark_Unsupported
-                             ("conversion between fixed-point "
-                              & "and integer types", N,
+                             (Lim_Conv_Fixed_Integer, N,
                               Cont_Msg => "fixed-point with fractional small "
                               & "leads to imprecise conversion");
                         end if;
@@ -2423,9 +2405,7 @@ package body SPARK_Definition is
                   elsif (From_Modular_128 and To_Float)
                     or (From_Float and To_Modular_128)
                   then
-                     Mark_Unsupported
-                       ("conversion between floating-point "
-                        & "and 128-bits modular types", N);
+                     Mark_Unsupported (Lim_Conv_Float_Modular_128, N);
                   end if;
                end Scalar_Conversion;
             end if;
@@ -2643,9 +2623,9 @@ package body SPARK_Definition is
 
          when N_Target_Name =>
             if Is_Anonymous_Access_Object_Type (Retysp (Etype (N))) then
-               Mark_Unsupported ("'@ inside a reborrow", N);
+               Mark_Unsupported (Lim_Target_Name_In_Borrow, N);
             elsif Is_Deep (Etype (N)) then
-               Mark_Unsupported ("'@ inside a move assignment", N);
+               Mark_Unsupported (Lim_Target_Name_In_Move, N);
             end if;
 
          --  Mark should not be called on other kinds
@@ -2939,13 +2919,9 @@ package body SPARK_Definition is
 
                else
                   if Is_Deep (Etype (E)) then
-                     Mark_Unsupported
-                       ("address clause on an object of an ownership type",
-                        Address);
+                     Mark_Unsupported (Lim_Deep_Object_With_Addr, Address);
                   elsif Is_Deep (Etype (Aliased_Object)) then
-                     Mark_Unsupported
-                       ("overlay with an object of an ownership type",
-                        Address);
+                     Mark_Unsupported (Lim_Overlay_With_Deep_Object, Address);
                   end if;
                end if;
             end if;
@@ -3150,9 +3126,7 @@ package body SPARK_Definition is
             | Attribute_Width
          =>
             Mark_Unsupported
-              ("non-static attribute """
-               & Standard_Ada_Case (Get_Name_String (Aname))
-               & """", N);
+              (Lim_Non_Static_Attribute, N, Name => Get_Name_String (Aname));
 
          --  We assume a maximal length for the image of any type. This length
          --  may be inaccurate for identifiers.
@@ -3169,9 +3143,7 @@ package body SPARK_Definition is
               or else not Has_Scalar_Type (Etype (P))
             then
                Mark_Unsupported
-                 ("attribute """
-                  & Standard_Ada_Case (Get_Name_String (Aname))
-                  & """ on non-scalar type", N);
+                 (Lim_Img_On_Non_Scalar, N, Name => Get_Name_String (Aname));
 
             elsif Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
@@ -3212,7 +3184,7 @@ package body SPARK_Definition is
                       and then Known_Alignment (Entity (P));
                begin
                   if not (Has_Type_Prefix or else Has_Known_Alignment) then
-                     Mark_Unsupported ("unknown value of object alignment", N);
+                     Mark_Unsupported (Lim_Unknown_Alignment, N);
                      return;
                   end if;
                end;
@@ -3278,17 +3250,14 @@ package body SPARK_Definition is
                                    | N_Subtype_Indication
                   then
                      Mark_Unsupported
-                       ("attribute """
-                        & Standard_Ada_Case (Get_Name_String (Aname))
-                        & """ in unsupported context", N);
+                       (Lim_Address_Attr_In_Unsupported_Context, N);
                      exit;
                   elsif Nkind (M) in N_Subexpr then
                      null;
                   else
                      Mark_Violation
-                       ("attribute """
-                        & Standard_Ada_Case (Get_Name_String (Aname))
-                        & """ outside an attribute definition clause", N);
+                       ("attribute ""Address"" outside an attribute definition"
+                        & " clause", N);
                      exit;
                   end if;
                   M := Parent (M);
@@ -3366,8 +3335,7 @@ package body SPARK_Definition is
                      --  currently.
 
                      elsif Is_Dispatching_Operation (Subp) then
-                        Mark_Unsupported
-                          ("access to dispatching operation", N);
+                        Mark_Unsupported (Lim_Access_To_Dispatch_Op, N);
 
                      --  Volatile functions and subprograms declared within a
                      --  protected object have an implicit global parameter. We
@@ -3389,8 +3357,7 @@ package body SPARK_Definition is
                      elsif Has_Aspect (Subp, Aspect_Relaxed_Initialization)
                      then
                         Mark_Unsupported
-                          ("access to subprogram annotated with"
-                           & " Relaxed_Initialization", N);
+                          (Lim_Access_To_Relaxed_Init_Subp, N);
 
                      --  Subprogram with non-null Global contract (either
                      --  explicit or generated).
@@ -3499,18 +3466,9 @@ package body SPARK_Definition is
                                           | N_Simple_Return_Statement
                  or else N /= Expression (Par)
                then
-                  declare
-                     Operation : constant String :=
-                       (if not Is_Anonymous_Access_Type (Etype (N)) then "move"
-                        elsif Is_Access_Constant (Etype (N)) then "observe"
-                        else "borrow");
-                  begin
-                     Mark_Unsupported
-                       (Operation & " through 'Access not directly inside an"
-                        & " assignment statement, an object declaration, or a"
-                        & " simple return statement", N);
-                     return;
-                  end;
+                  Mark_Unsupported
+                    (Lim_Access_Attr_With_Ownership_In_Unsupported_Context, N);
+                  return;
                end if;
             end;
 
@@ -3629,16 +3587,17 @@ package body SPARK_Definition is
                   if Norm_Num (Factor) /= Uint_1
                     and then Norm_Den (Factor) /= Uint_1
                   then
-                     Mark_Unsupported
-                       ("operation between incompatible fixed-point types", N);
+                     Mark_Unsupported (Lim_Op_Incompatible_Fixed, N);
                   end if;
                end;
+
+            --  Operations between fixed point and floating point values are
+            --  not supported yet.
 
             elsif (L_Type_Is_Fixed or R_Type_Is_Fixed or E_Type_Is_Fixed)
               and (L_Type_Is_Float or R_Type_Is_Float or E_Type_Is_Float)
             then
-               Mark_Unsupported
-                 ("operation between fixed-point and floating-point types", N);
+               Mark_Unsupported (Lim_Op_Fixed_Float, N);
             end if;
          end;
       end if;
@@ -3939,6 +3898,7 @@ package body SPARK_Definition is
       pragma Assert (not Subprogram_Is_Ignored_For_Proof (E));
 
       --  External calls to non-library-level objects are not yet supported
+
       if Ekind (Scope (E)) = E_Protected_Type
         and then Is_External_Call (N)
       then
@@ -3949,9 +3909,7 @@ package body SPARK_Definition is
             if Present (Obj) then
                case Ekind (Obj) is
                   when Formal_Kind =>
-                     Mark_Unsupported
-                       ("call to operation of a formal protected parameter",
-                        N);
+                     Mark_Unsupported (Lim_Protected_Operation_Of_Formal, N);
                      return;
 
                   --  Accept external calls prefixed with library-level objects
@@ -3961,8 +3919,7 @@ package body SPARK_Definition is
 
                   when E_Component =>
                      Mark_Unsupported
-                       ("call to operation of a component of a protected type",
-                        N);
+                       (Lim_Protected_Operation_Of_Component, N);
                      return;
 
                   when others =>
@@ -3985,7 +3942,7 @@ package body SPARK_Definition is
             if Present (Obj) then
                case Ekind (Obj) is
                   when Formal_Kind =>
-                     Mark_Unsupported ("suspension on a formal parameter", N);
+                     Mark_Unsupported (Lim_Suspension_On_Formal, N);
                      return;
 
                   --  Suspension on library-level objects is fine
@@ -4957,9 +4914,7 @@ package body SPARK_Definition is
                  and then Has_Deep_Subcomponents_With_Predicates
                    (Get_Observed_Or_Borrowed_Ty (Expr, T))
                then
-                  Mark_Unsupported
-                    ("local borrow of an expression with predicates on"
-                     & " subcomponents of deep type", E);
+                  Mark_Unsupported (Lim_Borrow_With_Predicates_On_Parts, E);
                end if;
 
             --  If we are performing a move operation, check that we are
@@ -5090,9 +5045,7 @@ package body SPARK_Definition is
                if not Is_Anonymous_Access_Type (Etype (First_Formal (Id)))
                  or else not Is_Access_Variable (Etype (First_Formal (Id)))
                then
-                  Mark_Unsupported
-                    ("borrowing traversal functions whose first parameter does"
-                     & " not have an anonymous access-to-variable type", Id);
+                  Mark_Unsupported (Lim_Borrow_Traversal_First_Param, Id);
 
                --  For now we don't support volatile borrowing traversal
                --  functions.
@@ -5101,8 +5054,7 @@ package body SPARK_Definition is
                --  value of the borrowed parameter at end.
 
                elsif Is_Volatile_Func then
-                  Mark_Unsupported
-                    ("volatile borrowing traversal function", Id);
+                  Mark_Unsupported (Lim_Borrow_Traversal_Volatile, Id);
                end if;
             end if;
 
@@ -5115,7 +5067,7 @@ package body SPARK_Definition is
             --  handling of raise expressions).
 
             if No_Return (Id) then
-               Mark_Unsupported ("function annotated with No_Return", Id);
+               Mark_Unsupported (Lim_No_Return_Function, Id);
             end if;
 
             while Present (Formal) loop
@@ -5179,9 +5131,7 @@ package body SPARK_Definition is
             elsif Ekind (Id) in E_Subprogram_Type
               and then Invariant_Check_Needed (Etype (Id))
             then
-               Mark_Unsupported
-                 ("access-to-subprogram returning a type with invariants",
-                  Id);
+               Mark_Unsupported (Lim_Access_Sub_Return_Type_With_Inv, Id);
             end if;
          end Mark_Function_Specification;
 
@@ -5329,7 +5279,7 @@ package body SPARK_Definition is
                   Mark_Function_Specification (Id);
 
                when E_Entry_Family =>
-                  Mark_Violation ("entry family", Id);
+                  Mark_Unsupported (Lim_Entry_Family, Id);
 
                when others =>
                   null;
@@ -5347,9 +5297,7 @@ package body SPARK_Definition is
                elsif Ekind (Id) in E_Subprogram_Type
                  and then Invariant_Check_Needed (Etype (Formal))
                then
-                  Mark_Unsupported
-                    ("formal with type invariants in access-to-subprogram",
-                     Formal);
+                  Mark_Unsupported (Lim_Access_Sub_Formal_With_Inv, Formal);
                end if;
 
                Next_Formal (Formal);
@@ -5709,15 +5657,13 @@ package body SPARK_Definition is
                --  from an interface.
 
                elsif Inherit_Subp_No_Intf'Length /= 0 then
-                  Mark_Unsupported
-                    ("subprogram inherited from root and interface", E);
+                  Mark_Unsupported (Lim_Multiple_Inheritance_Root, E);
 
                --  Do not support yet a subprogram inherited from multiple
                --  interfaces.
 
                else
-                  Mark_Unsupported
-                    ("subprogram inherited from multiple interfaces", E);
+                  Mark_Unsupported (Lim_Multiple_Inheritance_Interfaces, E);
                end if;
             end;
          end if;
@@ -5987,8 +5933,7 @@ package body SPARK_Definition is
             if Expression_Contains_Primitives_Calls_Of
               (Get_Expr_From_Check_Only_Proc (Partial_DIC_Procedure (E)), E)
             then
-               Mark_Unsupported
-                 ("primitive calls in default initial condition", E);
+               Mark_Unsupported (Lim_Primitive_Call_In_DIC, E);
             else
                declare
                   Delayed_Mapping : constant Node_Id :=
@@ -6089,7 +6034,7 @@ package body SPARK_Definition is
                         --  as it is unclear wether we should do discriminant
                         --  checks for them or not.
 
-                        Mark_Unsupported ("constrained class-wide subtype", E);
+                        Mark_Unsupported (Lim_Constrained_Classwide, E);
                      when others =>
                         raise Program_Error;
                   end case;
@@ -6213,14 +6158,12 @@ package body SPARK_Definition is
                   --  given program point.
 
                   elsif not Is_Compilation_Unit (Enclosing_U) then
-                     Mark_Unsupported
-                       ("type invariant in a nested package", E);
+                     Mark_Unsupported (Lim_Type_Inv_Nested_Package, E);
 
                   elsif Is_Child_Unit (Enclosing_U)
                     and then Is_Private_Descendant (Enclosing_U)
                   then
-                     Mark_Unsupported
-                       ("type invariant in private child unit", E);
+                     Mark_Unsupported (Lim_Type_Inv_Private_Child, E);
 
                   --  We currently do not support invariants on protected
                   --  types. To support them, we would probably need some
@@ -6232,7 +6175,7 @@ package body SPARK_Definition is
                        (Xcov, Exempt_On,
                         "Rejected by the frontend because of volatile IN " &
                           "parameter in the invariant function");
-                     Mark_Unsupported ("type invariant on protected types", E);
+                     Mark_Unsupported (Lim_Type_Inv_Protected_Type, E);
                      pragma Annotate (Xcov, Exempt_Off);
 
                   --  We currently do not support invariants on tagged
@@ -6242,7 +6185,7 @@ package body SPARK_Definition is
                   --  test P801-002__invariant_on_tagged_types).
 
                   elsif Is_Tagged_Type (E) then
-                     Mark_Unsupported ("type invariant on tagged types", E);
+                     Mark_Unsupported (Lim_Type_Inv_Tagged_Type, E);
                   else
 
                      --  Add the type invariant to delayed aspects to be marked
@@ -6300,8 +6243,7 @@ package body SPARK_Definition is
                     and then In_SPARK (Etype (Comp))
                     and then Invariant_Check_Needed (Etype (Comp))
                   then
-                     Mark_Unsupported
-                       ("type invariant on components of tagged types", E);
+                     Mark_Unsupported (Lim_Type_Inv_Tagged_Comp, E);
                   end if;
 
                   Next_Component_Or_Discriminant (Comp);
@@ -6316,10 +6258,7 @@ package body SPARK_Definition is
 
             begin
                if Positive (Number_Dimensions (E)) > Max_Array_Dimensions then
-                  Mark_Unsupported
-                    ("array of dimension greater than"
-                     & Max_Array_Dimensions'Img,
-                     E);
+                  Mark_Unsupported (Lim_Max_Array_Dimension, E);
                end if;
 
                --  Check that the component is not of an anonymous access type
@@ -6379,7 +6318,7 @@ package body SPARK_Definition is
                pragma Annotate
                  (Xcov, Exempt_On,
                   "Modulus greater than 2**128 is rejected by the frontend");
-               Mark_Unsupported ("modulus greater than 2 '*'* 128", E);
+               Mark_Unsupported (Lim_Max_Modulus, E);
                return;
                pragma Annotate (Xcov, Exempt_Off);
 
@@ -6479,7 +6418,7 @@ package body SPARK_Definition is
                  and then Is_Constrained (Retysp (Specific_Type))
                then
                   Mark_Unsupported
-                    ("Class attribute of a constrained type", E);
+                    (Lim_Class_Attr_Of_Constrained_Type, E);
 
                --  Predicates are not supported on classwide subtypes as
                --  classwide types are often identified to the associated
@@ -6491,8 +6430,7 @@ package body SPARK_Definition is
                elsif Ekind (E) = E_Class_Wide_Subtype
                  and then Has_Predicates (E)
                then
-                  Mark_Unsupported
-                    ("subtype predicate on a classwide type", E);
+                  Mark_Unsupported (Lim_Classwide_With_Predicate, E);
                end if;
             end;
 
@@ -6530,7 +6468,7 @@ package body SPARK_Definition is
                     or else Has_Own_Invariants (E)
                   then
                      Mark_Unsupported
-                       ("type aspect on type derived from a private type", E);
+                       (Lim_Contract_On_Derived_Private_Type, E);
                   end if;
                end;
             end if;
@@ -6593,8 +6531,7 @@ package body SPARK_Definition is
                         begin
                            if Found and then Full /= N_Full then
                               Mark_Unsupported
-                                ("type with predicates with different"
-                                 & " SPARK_Mode values", E);
+                                (Lim_Predicate_With_Different_SPARK_Mode, E);
                               exit;
                            end if;
                            Found := True;
@@ -6719,9 +6656,7 @@ package body SPARK_Definition is
                                 or else Has_Unconstrained_UU_Component
                                   (Comp_Type))
                            then
-                              Mark_Unsupported
-                                ("component of an unconstrained unchecked"
-                                 & " union type in a tagged extension", Comp);
+                              Mark_Unsupported (Lim_UU_Tagged_Comp, Comp);
                            end if;
 
                            --  Mark default value of component or discriminant
@@ -6793,7 +6728,7 @@ package body SPARK_Definition is
                            E_Access_Protected_Subprogram_Type
                          | E_Anonymous_Access_Protected_Subprogram_Type
                      then
-                        Mark_Unsupported ("access to protected subprogram", E);
+                        Mark_Unsupported (Lim_Access_Sub_Protected, E);
 
                      --  Borrowing traversal functions need a pledge, we do not
                      --  support storing them into an access for now.
@@ -6803,8 +6738,7 @@ package body SPARK_Definition is
                          (Etype (Profile))
                        and then not Is_Access_Constant (Etype (Profile))
                      then
-                        Mark_Unsupported
-                          ("access to borrowing traversal function", E);
+                        Mark_Unsupported (Lim_Access_Sub_Traversal, E);
 
                      --  If the profile has a contract, it is located on a
                      --  wrapper subprogram. We need to mark it to mark the
@@ -6984,8 +6918,7 @@ package body SPARK_Definition is
 
                            if Contains_Relaxed_Init_Parts (Etype (Comp)) then
                               Mark_Unsupported
-                                ("protected component with initialization by"
-                                 & " proof", E);
+                                (Lim_Relaxed_Init_Protected_Component, Comp);
                            end if;
 
                            Next_Component (Comp);
@@ -7022,8 +6955,7 @@ package body SPARK_Definition is
                                             (Etype (Part)))
                               then
                                  Mark_Unsupported
-                                   ("Part_Of variable with initialization by"
-                                    & " proof", Part);
+                                   (Lim_Relaxed_Init_Part_Of_Variable, Part);
                               end if;
                            end loop;
                         end if;
@@ -7286,8 +7218,7 @@ package body SPARK_Definition is
 
             if Is_Part_Of_Concurrent_Object (E) then
                Mark_Unsupported
-                 ("abstract state Part_Of constituent of " &
-                  "a single concurrent object", E);
+                 (Lim_Abstract_State_Part_Of_Concurrent_Obj, E);
             end if;
 
          when Entry_Kind       => Mark_Subprogram_Entity (E);
@@ -8803,7 +8734,10 @@ package body SPARK_Definition is
                --  For subprogram bodies (but not other subprogram-like
                --  nodes which are also processed by this procedure) mark
                --  Refined_Post aspect if present.
-               if Nkind (N) = N_Subprogram_Body then
+               --  Reject refined posts on entries as they do not seem very
+               --  useful.
+
+               if Nkind (N) in N_Subprogram_Body | N_Entry_Body then
                   declare
                      C : constant Node_Id := Contract (Def_E);
 
@@ -8815,6 +8749,12 @@ package body SPARK_Definition is
                            while Present (Prag) loop
                               if Get_Pragma_Id (Prag) = Pragma_Refined_Post
                               then
+                                 if Nkind (N) = N_Entry_Body then
+                                    Mark_Unsupported
+                                      (Lim_Refined_Post_On_Entry, N);
+                                    exit;
+                                 end if;
+
                                  Mark (Expression (First (
                                        Pragma_Argument_Associations (Prag))));
                               end if;
@@ -9003,8 +8943,7 @@ package body SPARK_Definition is
       --  type was already analyzed.
 
       if Has_Predicates (Ty) then
-         Mark_Unsupported
-           ("predicate on a type with initialization by proof", N);
+         Mark_Unsupported (Lim_Relaxed_Init_Predicate, N);
       end if;
 
       --  Store Rep_Ty in the Relaxed_Init map or update its mapping if
@@ -9022,17 +8961,13 @@ package body SPARK_Definition is
       --  Raise violations on currently unsupported cases
 
       if Has_Invariants_In_SPARK (Ty) then
-         Mark_Unsupported
-           ("invariant on a type with initialization by proof", N);
+         Mark_Unsupported (Lim_Relaxed_Init_Invariant, N);
       elsif Is_Tagged_Type (Rep_Ty) then
-         Mark_Unsupported
-           ("tagged type with initialization by proof", N);
+         Mark_Unsupported (Lim_Relaxed_Init_Tagged_Type, N);
       elsif Is_Access_Type (Rep_Ty) then
-         Mark_Unsupported
-           ("access type with initialization by proof", N);
+         Mark_Unsupported (Lim_Relaxed_Init_Access_Type, N);
       elsif Is_Concurrent_Type (Rep_Ty) then
-         Mark_Unsupported
-           ("concurrent type with initialization by proof", N);
+         Mark_Unsupported (Lim_Relaxed_Init_Concurrent_Type, N);
       end if;
 
       --  Using conversions, expressions of any ancestor of Rep_Ty can also
@@ -9144,7 +9079,8 @@ package body SPARK_Definition is
       Error_Msg_Node_1 := Limited_View;
       Error_Msg_Node_2 := Limited_View;
       Mark_Unsupported
-        ("limited view of type & coming from limited with", Marked_Entity,
+        (Lim_Limited_Type_From_Limited_With,
+         N              => Marked_Entity,
          E              => Limited_View,
          Cont_Msg       =>
            "consider restructuring code to avoid `LIMITED WITH`",

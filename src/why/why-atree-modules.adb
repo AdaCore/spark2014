@@ -35,7 +35,6 @@ with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Util;                 use SPARK_Util;
 with Stand;                      use Stand;
 with String_Utils;               use String_Utils;
-with VC_Kinds;                   use VC_Kinds;
 with Why.Atree.Accessors;        use Why.Atree.Accessors;
 with Why.Atree.Builders;         use Why.Atree.Builders;
 with Why.Conversions;            use Why.Conversions;

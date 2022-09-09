@@ -37,7 +37,7 @@ PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
-GENERATED_RST_FILES = en/source/flow_checks_table.rst en/source/proof_checks_table.rst en/source/misc_warnings_table.rst
+GENERATED_RST_FILES = en/source/flow_checks_table.rst en/source/proof_checks_table.rst en/source/misc_warnings_table.rst en/source/unsupported_constructs.rst
 
 .PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest setup generate
 

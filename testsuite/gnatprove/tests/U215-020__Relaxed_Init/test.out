@@ -1,18 +1,18 @@
-int_arith.adb:2:30: error: "Data" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+int_arith.adb:2:30: error: "Data" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
 int_arith.adb:2:30: error: violation of pragma SPARK_Mode at test.adc:1
-int_arith.adb:6:41: error: "Data" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+int_arith.adb:6:41: error: "Data" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
 int_arith.adb:6:41: error: violation of pragma SPARK_Mode at test.adc:1
-int_arith.adb:7:41: error: "Data" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+int_arith.adb:7:41: error: "Data" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
 int_arith.adb:7:41: error: violation of pragma SPARK_Mode at test.adc:1
-int_arith.adb:16:14: error: "Data" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+int_arith.adb:16:14: error: "Data" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
 int_arith.adb:16:14: error: violation of pragma SPARK_Mode at test.adc:1
-int_arith.adb:19:10: error: "Data" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+int_arith.adb:19:10: error: "Data" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
 int_arith.adb:19:10: error: violation of pragma SPARK_Mode at test.adc:1
-int_arith.adb:20:56: error: "Data" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+int_arith.adb:20:56: error: "Data" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
 int_arith.adb:20:56: error: violation of pragma SPARK_Mode at test.adc:1
-int_arith.ads:10:12: error: predicate on a type with initialization by proof is not yet supported
-int_arith.ads:14:32: error: "Data" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+int_arith.ads:10:12: error: subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
+int_arith.ads:14:32: error: "Data" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
 int_arith.ads:14:32: error: violation of pragma SPARK_Mode at test.adc:1
-int_arith.ads:17:45: error: "Data" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+int_arith.ads:17:45: error: "Data" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
 int_arith.ads:17:45: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
