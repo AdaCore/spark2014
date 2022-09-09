@@ -8337,7 +8337,7 @@ package body SPARK_Definition is
                                         Spec,
                                         Consider_Next => False);
                elsif Decl_Starts_Pragma_Annotate_Range (Cur)
-                 and then Nkind (Cur) /= N_Pragma
+                 and then Nkind (Cur) not in N_Pragma | N_Null_Statement
                then
                   exit;
                end if;

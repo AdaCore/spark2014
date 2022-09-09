@@ -156,10 +156,8 @@ a.adb:12:32: warning: assuming "Unit_Vector" has no effect on global items
 a.adb:12:32: warning: no Global contract available for "Unit_Vector"
 a.adb:12:32: warning: no returning annotation available for "Unit_Vector"
 foo.adb:5:09: medium: precondition might fail [possible fix: subprogram at line 3 should mention N in a precondition]
-foo.adb:5:09: warning: assuming "Log" always returns
 foo.adb:5:09: warning: assuming "Log" has no effect on global items
 foo.adb:5:09: warning: no Global contract available for "Log"
-foo.adb:5:09: warning: no returning annotation available for "Log"
 s-gearop.ads:79:46: info: overflow check proved (CVC5: 2 VC), in instantiation at a-ngrear.adb:66, in instantiation at a.adb:5
 s-gearop.ads:81:46: info: overflow check proved (CVC5: 2 VC), in instantiation at a-ngrear.adb:66, in instantiation at a.adb:5
 s-gearop.ads:119:42: info: overflow check proved (CVC5: 2 VC), in instantiation at a-ngrear.adb:102, in instantiation at a.adb:5
