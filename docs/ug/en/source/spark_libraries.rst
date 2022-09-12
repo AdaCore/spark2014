@@ -167,32 +167,30 @@ Functional Containers Library
 To model complex data structures, one often needs simpler,
 mathematical like containers. The mathematical containers provided in
 the |SPARK| library (see the :ref:`SPARK Library`) are unbounded and
-may contain indefinite elements. Furthermore, to be usable in every
-context, they are neither controlled nor limited. So that these
-containers can be used safely, we have made them functional, that is,
-no primitives are provided which would allow modifying an existing
-container. Instead, their API features functions creating new
-containers from existing ones. As an example, functional containers
-provide no ``Insert`` procedure but rather a function ``Add`` which
-creates a new container with one more element than its parameter:
+may contain indefinite elements. However, they are controlled and thus
+not usable in every context. So that these containers can be used safely,
+we have made them functional, that is, no primitives are provided which
+would allow modifying an existing container. Instead, their API features
+functions creating new containers from existing ones. As an example,
+functional containers provide no ``Insert`` procedure but rather a function
+``Add`` which creates a new container with one more element than its parameter:
 
 .. code-block:: ada
 
     function Add (C : Container; E : Element_Type) return Container;
 
-As a consequence, these containers are highly inefficient. They are also memory
-consuming as the allocated memory is not reclaimed when the container is no
-longer referenced. Thus, they should in general be used in ghost code and
-annotations so that they can be removed from the final executable.
+As a consequence, these containers are highly inefficient. Thus, they should in
+general be used in ghost code and annotations so that they can be removed from
+the final executable.
 
-There are 3 functional containers, which are part of the |SPARK| 
-library:
+There are 4 functional containers, which are part of the |SPARK| library:
 
 * ``SPARK.Containers.Functional.Maps``
 * ``SPARK.Containers.Functional.Sets``
 * ``SPARK.Containers.Functional.Vectors``
+* ``SPARK.Containers.Functional.Infinite_Sequences``
 
-Sequences defined in ``Functional_Vectors`` are no more than ordered collections
+Sequences defined in ``Functional.Vectors`` are no more than ordered collections
 of elements. In an Ada like manner, the user can choose the range used to index
 the elements:
 
@@ -202,10 +200,19 @@ the elements:
     function Length (S : Sequence) return Count_Type;
     function Get (S : Sequence; N : Index_Type) return Element_Type;
 
+The sequences defined in ``Functional.Infinite_Sequences`` behave as the one of
+``Functional.Vectors``. The difference between them lies in the fact that the
+inifinte one are indexed by mathematical integers.
+
+.. code-block:: ada
+
+    function Length (Container : Sequence) return Big_Natural;
+    function Get (Container : Sequence; Position  : Big_Integer) return Element_Type;
+
 Functional sets offer standard mathematical set functionalities such as
 inclusion, union, and intersection. They are neither ordered nor hashed:
 
-
+	
 .. code-block:: ada
 
     function Contains (S : Set; E : Element_Type) return Boolean;
@@ -273,11 +280,12 @@ structures.
 The Ada Standard Library defines two kinds of containers:
 
 * The controlled containers using dynamic allocation, for example
-  ``Ada.Containers.Vectors``. They define containers as controlled tagged
-  types, so that memory for the container is automatic reallocated during
-  assignment and automatically freed when the container object's scope ends.
+  ``SPARK.Containers.Formal.Unbounded_Sets``. They define containers as
+  controlled tagged types, so that memory for the container is automatic
+  reallocated during assignment and automatically freed when the container
+  object's scope ends.
 * The bounded containers not using dynamic allocation, for example
-  ``Ada.Containers.Bounded_Vectors``. They define containers as discriminated
+  ``SPARK.Containers.Fromal.Vectors``. They define containers as discriminated
   tagged types, so that the memory for the container can be reserved at
   initialization.
 
@@ -288,27 +296,41 @@ particular preconditions) ensuring correct usage in client code.
 
 The formal containers are a variation of the bounded containers with API
 changes that allow adding suitable contracts, so that |GNATprove| can prove
-that client code manipulates containers correctly. There are 7 formal
-containers, which are part of the |SPARK| library:
+that client code manipulates containers correctly. There are 12 formal
+containers, which are part of the |SPARK| library.
+
+Among them, 6 are bounded and definite:
 
 * ``SPARK.Containers.Formal.Vectors``
-* ``SPARK.Containers.Formal.Indefinite_Vectors``
 * ``SPARK.Containers.Formal.Doubly_Linked_Lists``
 * ``SPARK.Containers.Formal.Hashed_Sets``
 * ``SPARK.Containers.Formal.Ordered_Sets``
 * ``SPARK.Containers.Formal.Hashed_Maps``
 * ``SPARK.Containers.Formal.Ordered_Maps``
 
+The 6 others are unbounded and indefinite but are controlled:
+
+* ``SPARK.Containers.Formal.Unbounded_Vectors``
+* ``SPARK.Containers.Formal.Unbounded_Doubly_Linked_Lists``
+* ``SPARK.Containers.Formal.Unbounded_Hashed_Sets``
+* ``SPARK.Containers.Formal.Unbounded_Ordered_Sets``
+* ``SPARK.Containers.Formal.Unbounded_Hashed_Maps``
+* ``SPARK.Containers.Formal.Unbounded_Ordered_Maps``
+
 Lists, sets and maps can only be used with definite objects (objects for which
 the compiler can compute the size in memory, hence not ``String`` nor
-``T'Class``). Vectors come in two flavors for definite objects
-(``Formal.Vectors``) and indefinite objects (``Formal.Indefinite_Vectors``).
+``T'Class``). However, the unbounded containers can be used with indefinite objects.
 
-Lists, sets, maps, and definite vectors are always bounded. Indefinite vectors
-can be bounded or unbounded
-depending on the value of the formal parameter ``Bounded`` when instantiating
-the generic unit. Bounded containers do not use dynamic allocation. Unbounded
-vectors use dynamic allocation to expand their internal block of memory.
+Lists, sets, maps, and definite vectors are always bounded and do not use dynamic
+allocation. The Unbounded containers are always unbounded and indefinite. They use
+dynamic allocation to expand their internal block of memory.
+
+.. note::
+
+    The size of bounded containers is not set using a descriminent, it is implicitly
+    set to it max value. All the required memory is not reserved at declaration. As
+    all the formal containers are internally indexed by ``Count_Type``, their max size
+    is ``Count_Type'Last``. 
 
 Modified API of Formal Containers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
