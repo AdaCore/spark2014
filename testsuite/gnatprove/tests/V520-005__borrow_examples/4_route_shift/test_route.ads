@@ -13,8 +13,8 @@
 
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
-with Ada.Containers.Functional_Infinite_Sequences;
-with Big_Intervals; use Big_Intervals;
+with SPARK.Containers.Functional.Infinite_Sequences;
+with SPARK.Big_Intervals; use SPARK.Big_Intervals;
 package Test_Route with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
 
@@ -50,7 +50,7 @@ package Test_Route with SPARK_Mode is
      Pre => N <= Length (R);
    --  Value of the X coordinate of the point at position N in Route
 
-   package Int_Seqs is new Ada.Containers.Functional_Infinite_Sequences
+   package Int_Seqs is new SPARK.Containers.Functional.Infinite_Sequences
      (Element_Type => Integer);
    type Int_Seq is new Int_Seqs.Sequence;
    --  Sequence of Integers to be used to model the X coordinates of elements

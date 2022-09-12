@@ -1,4 +1,5 @@
 prove_all:
   steps: 8000
+  sparklib: True
 large: True
 timeout: 1500

@@ -1,4 +1,4 @@
-with "spark_lemmas";
+with "sparklib";
 
 project Test is
    for Source_Dirs use ("dummy");

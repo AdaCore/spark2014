@@ -1,6 +1,6 @@
 -- Ada
 
-with Ada.Containers.Formal_Indefinite_Vectors;
+with SPARK.Containers.Formal.Indefinite_Vectors;
 
 -- Jauge
 
@@ -17,7 +17,7 @@ package Objt_Types_Jauge is
 
    use Objt_Interface_Jauge;
 
-   package Objt_Liste_Jauge is new Ada.Containers.Formal_Indefinite_Vectors(Index_Type                   => tIndex_Liste_Jauge,
+   package Objt_Liste_Jauge is new SPARK.Containers.Formal.Indefinite_Vectors(Index_Type                   => tIndex_Liste_Jauge,
 
                                                                             Element_Type                 => tInterface_Jauge'Class,
 

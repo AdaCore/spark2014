@@ -1,4 +1,5 @@
-with Ada.Containers.Formal_Indefinite_Vectors; use Ada.Containers;
+with SPARK.Containers.Formal.Indefinite_Vectors;
+with Ada.Containers; use Ada.Containers;
 
 package Indefinite_Bounded_Tagged with
   SPARK_Mode
@@ -9,7 +10,7 @@ is
 
    subtype T_Class is T'Class;
 
-   package Vect is new Ada.Containers.Formal_Indefinite_Vectors
+   package Vect is new SPARK.Containers.Formal.Indefinite_Vectors
      (Index_Type   => Positive,
       Element_Type => T_Class,
       Max_Size_In_Storage_Elements => T'Size,

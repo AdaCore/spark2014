@@ -1,11 +1,11 @@
-with Ada.Containers.Formal_Hashed_Sets;
+with SPARK.Containers.Formal.Hashed_Sets;
 with Ada.Containers; use Ada.Containers;
 
 package My_Sets with SPARK_Mode is
 
    function Hash (Id : Natural) return Hash_Type is (Hash_Type (Id));
 
-   package M is new Ada.Containers.Formal_Hashed_Sets
+   package M is new SPARK.Containers.Formal.Hashed_Sets
      (Element_Type        => Positive,
       Hash                => Hash,
       Equivalent_Elements => "=");
@@ -21,7 +21,7 @@ package My_Sets with SPARK_Mode is
 
    function Hash (Id : My_Rec) return Hash_Type is (Hash_Type (Id.F));
 
-   package N is new Ada.Containers.Formal_Hashed_Sets
+   package N is new SPARK.Containers.Formal.Hashed_Sets
      (Element_Type        => My_Rec,
       Hash                => Hash,
       Equivalent_Elements => My_Eq);

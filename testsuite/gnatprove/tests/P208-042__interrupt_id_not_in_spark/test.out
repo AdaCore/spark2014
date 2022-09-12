@@ -1,5 +1,5 @@
 interrupt_handler_with_current_task.ads:5:04: warning: pragma "Unreserve_All_Interrupts" ignored (not yet supported)
-interrupt_handler_with_current_task.ads:12:30: error: "Handle" is not allowed in SPARK
+interrupt_handler_with_current_task.ads:12:30: error: "Handle" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 interrupt_handler_with_current_task.ads:12:30: error: violation of aspect SPARK_Mode at line 3
 interrupt_handler_with_current_task.ads:12:38: error: "Bad_Interrupt_ID_Ptr" is not allowed in SPARK (due to object of anonymous access not declared immediately within a subprogram, entry or block)
 interrupt_handler_with_current_task.ads:12:38: error: violation of aspect SPARK_Mode at line 3

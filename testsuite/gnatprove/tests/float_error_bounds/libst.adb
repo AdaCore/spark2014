@@ -1,4 +1,4 @@
-with SPARK.Float_Arithmetic_Lemmas; use SPARK.Float_Arithmetic_Lemmas;
+with SPARK.Lemmas.Float_Arithmetic; use SPARK.Lemmas.Float_Arithmetic;
 
 package body Libst with SPARK_Mode is
 

@@ -179,22 +179,22 @@
   <proof prover="1"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.56" proved="true">
-  <proof prover="0"><result status="valid" steps="560887"/></proof>
+  <proof prover="0"><result status="valid" steps="469543"/></proof>
   </goal>
   <goal name="def&#39;vc.57" proved="true">
-  <proof prover="0"><result status="valid" steps="216926"/></proof>
+  <proof prover="0"><result status="valid" steps="902764"/></proof>
   </goal>
   <goal name="def&#39;vc.58" proved="true">
-  <proof prover="0"><result status="valid" steps="87280"/></proof>
+  <proof prover="0"><result status="valid" steps="88171"/></proof>
   </goal>
   <goal name="def&#39;vc.59" proved="true">
-  <proof prover="0"><result status="valid" steps="153830"/></proof>
+  <proof prover="0"><result status="valid" steps="190139"/></proof>
   </goal>
   <goal name="def&#39;vc.60" proved="true">
-  <proof prover="0"><result status="valid" steps="241897"/></proof>
+  <proof prover="0"><result status="valid" steps="193757"/></proof>
   </goal>
   <goal name="def&#39;vc.61" proved="true">
-  <proof prover="0"><result status="valid" steps="219969"/></proof>
+  <proof prover="0"><result status="valid" steps="309364"/></proof>
   </goal>
   <goal name="def&#39;vc.62" proved="true">
   <proof prover="1"><result status="valid" steps="1"/></proof>

@@ -1,9 +1,9 @@
 with Ada.Containers;
-with Ada.Containers.Formal_Vectors;
-with Ada.Containers.Formal_Hashed_Maps;
+with SPARK.Containers.Formal.Vectors;
+with SPARK.Containers.Formal.Hashed_Maps;
 
 procedure Prim_Eq_Vect with SPARK_Mode is
-   package Int_Vect is new Ada.Containers.Formal_Vectors
+   package Int_Vect is new SPARK.Containers.Formal.Vectors
      (Index_Type => Positive, Element_Type => Integer);
    use all type Int_Vect.Vector;
    subtype My_Vect is Int_Vect.Vector (Capacity => 200);
@@ -15,7 +15,7 @@ procedure Prim_Eq_Vect with SPARK_Mode is
    function My_Hash (X : Integer) return Ada.Containers.Hash_Type is
      (Ada.Containers.Hash_Type'Mod (X));
 
-   package Int_Vect_Map is new Ada.Containers.Formal_Hashed_Maps
+   package Int_Vect_Map is new SPARK.Containers.Formal.Hashed_Maps
      (Key_Type        => Integer,
       Element_Type    => Two_Vects,
       Hash            => My_Hash,

@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Doubly_Linked_Lists; use Ada.Containers;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
 
 procedure Borrow is
 
@@ -120,7 +120,7 @@ begin
    end;
 
    declare
-      package Lists is new Formal_Doubly_Linked_Lists (Integer);
+      package Lists is new SPARK.Containers.Formal.Doubly_Linked_Lists (Integer);
       use Lists;
       L : List (10);
    begin

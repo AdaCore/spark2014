@@ -1,5 +1,5 @@
 pragma Unevaluated_Use_Of_Old (Allow);
-with Ada.Containers.Functional_Sets;
+with SPARK.Containers.Functional.Sets;
 with Ada.Containers;
 use type Ada.Containers.Count_Type;
 
@@ -23,7 +23,7 @@ is
 
    package M with Ghost is
 
-      package S is new Ada.Containers.Functional_Sets
+      package S is new SPARK.Containers.Functional.Sets
         (Element_Type => Resource, Equivalent_Elements => "=");
       use S;
 

@@ -353,6 +353,100 @@ package VC_Kinds is
        | Initializes_Wrong;
    --  Tags reported as flow dependency errors
 
+   --  Used to categorize warnings that are not issued by proof or flow
+   --  analysis.
+   type Misc_Warning_Kind is
+     (Warn_Address_To_Access,
+      Warn_Assumed_Global_Null,
+      Warn_Assumed_Always_Return,
+      Warn_Attribute_Valid,
+      Warn_Indirect_Writes_Through_Alias,
+      Warn_Indirect_Writes_To_Alias,
+      Warn_Initialization_To_Alias,
+      Warn_Function_Is_Valid,
+      Warn_Lemma_Procedure_No_Return,
+      Warn_Pragma_Annotate_No_Check,
+      Warn_Pragma_Annotate_Proved_Check,
+      Warn_Pragma_Annotate_Terminating,
+      Warn_Pragma_External_Axiomatization,
+      Warn_Pragma_Ignored,
+      Warn_Pragma_Overflow_Mode,
+      Warn_Precondition_Statically_False,
+      Warn_Unreferenced_Function,
+      Warn_Unreferenced_Procedure,
+      Warn_Variant_Not_Recursive,
+
+      --  Warnings only issued when using switch --pedantic
+      Warn_Image_Attribute_Length,
+      Warn_Operator_Reassociation,
+      Warn_Representation_Attribute_Value
+      );
+
+   subtype Default_Warning_Kind is Misc_Warning_Kind range
+     Warn_Address_To_Access .. Warn_Variant_Not_Recursive;
+
+   subtype Pedantic_Warning_Kind is Misc_Warning_Kind range
+     Warn_Image_Attribute_Length .. Warn_Representation_Attribute_Value;
+
+   --  Each warning kind is either a default or a pedantic one
+   pragma Assert (for all Kind in Misc_Warning_Kind =>
+                    (if Kind in Default_Warning_Kind then 1 else 0)
+                  + (if Kind in Pedantic_Warning_Kind then 1 else 0)
+                  = 1);
+
+   function Warning_Message (Kind : Misc_Warning_Kind) return String is
+     (case Kind is
+        when Warn_Address_To_Access =>
+          "?call to & is assumed to return a valid access"
+          & " designating a valid value",
+        when Warn_Assumed_Global_Null =>
+          "?no Global contract available for &",
+        when Warn_Assumed_Always_Return =>
+          "?no returning annotation available for &",
+        when Warn_Attribute_Valid =>
+          "?attribute Valid is assumed to return True",
+        when Warn_Indirect_Writes_Through_Alias =>
+          "?indirect writes to & through a potential alias are ignored",
+        when Warn_Indirect_Writes_To_Alias =>
+          "?writing to & is assumed to have no effects on"
+          & " other non-volatile objects",
+        when Warn_Initialization_To_Alias =>
+          "?initialization of & is assumed to have no effects on"
+          & " other non-volatile objects",
+        when Warn_Function_Is_Valid =>
+          "?function Is_Valid is assumed to return True",
+        when Warn_Lemma_Procedure_No_Return =>
+          "?lemma procedure cannot be instanciated automatically",
+        when Warn_Pragma_Annotate_No_Check =>
+          "?no check message justified by this pragma",
+        when Warn_Pragma_Annotate_Proved_Check =>
+          "?only proved check messages justified by this pragma",
+        when Warn_Pragma_Annotate_Terminating =>
+          "?Terminating annotations are deprecated",
+        when Warn_Pragma_External_Axiomatization =>
+          "?External Axiomatizations are not supported anymore, ignored",
+        when Warn_Pragma_Ignored =>
+          "?pragma % ignored (not yet supported)",
+        when Warn_Pragma_Overflow_Mode =>
+          "?pragma Overflow_Mode in code is ignored",
+        when Warn_Precondition_Statically_False =>
+          "?precondition is statically False",
+        when Warn_Unreferenced_Function =>
+          "?analyzing unreferenced function &",
+        when Warn_Unreferenced_Procedure =>
+          "?analyzing unreferenced procedure &",
+        when Warn_Variant_Not_Recursive =>
+          "?no recursive call visible",
+
+        --  Warnings only issued when using switch --pedantic
+        when Warn_Image_Attribute_Length =>
+          "?attribute % has an implementation-defined length",
+        when Warn_Operator_Reassociation =>
+          "?possible reassociation due to missing parentheses",
+        when Warn_Representation_Attribute_Value =>
+          "?attribute % has an implementation-defined value"
+     );
+
    function CWE_ID (Kind : VC_Kind) return String;
    function CWE_ID (Kind : Valid_Flow_Tag_Kind) return String;
    --  Return the CWE number for a given kind as a string; return the empty
@@ -365,10 +459,12 @@ package VC_Kinds is
 
    function Description (Kind : VC_Kind) return String;
    function Description (Kind : Valid_Flow_Tag_Kind) return String;
+   function Description (Kind : Misc_Warning_Kind) return String;
    --  Return a one-line description for each kind of message as a string
 
    function Kind_Name (Kind : VC_Kind) return String;
    function Kind_Name (Kind : Valid_Flow_Tag_Kind) return String;
+   function Kind_Name (Kind : Misc_Warning_Kind) return String;
    --  Return a short string for each kind of message as a string, e.g. "index
    --  check" for VC_Index_Check.
 

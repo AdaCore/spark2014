@@ -1,11 +1,12 @@
-with Ada.Containers.Formal_Vectors;
-with Ada.Containers.Formal_Ordered_Sets;
+with SPARK.Containers.Formal.Vectors;
+with SPARK.Containers.Formal.Ordered_Sets;
+with Ada.Containers;
 
 with No_SPARK_Mode; use No_SPARK_Mode;
 
 package Common_Formal_Containers with SPARK_Mode is
 
-   package Int64_Vects is new Ada.Containers.Formal_Vectors
+   package Int64_Vects is new SPARK.Containers.Formal.Vectors
      (Index_Type   => Natural,
       Element_Type => Int64);
 
@@ -17,10 +18,10 @@ package Common_Formal_Containers with SPARK_Mode is
      (Ada.Containers.Hash_Type'Mod (X));
 
 --     pragma Assertion_Policy (Post => Ignore);
---     package Int64_Sets is new Ada.Containers.Formal_Hashed_Sets
+--     package Int64_Sets is new SPARK.Containers.Formal.Hashed_Sets
 --       (Element_Type => Int64,
 --        Hash         => Int64_Hash);
-   package Int64_Sets is new Ada.Containers.Formal_Ordered_Sets
+   package Int64_Sets is new SPARK.Containers.Formal.Ordered_Sets
      (Element_Type => Int64);
 --     pragma Assertion_Policy (Post => Suppressible);
 

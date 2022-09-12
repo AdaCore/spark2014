@@ -1,4 +1,4 @@
-with SPARK.Float_Arithmetic_Lemmas; use SPARK.Float_Arithmetic_Lemmas;
+with SPARK.Lemmas.Float_Arithmetic; use SPARK.Lemmas.Float_Arithmetic;
 with Sqrt_Spec;
 
 package body Norm with SPARK_Mode is

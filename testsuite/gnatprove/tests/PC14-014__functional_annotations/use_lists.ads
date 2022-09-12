@@ -1,11 +1,11 @@
 pragma Ada_2012;
-with Ada.Containers.Formal_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
 with Ada.Containers; use Ada.Containers;
 
 package Use_Lists with SPARK_Mode is
    type Element_Type is new Integer;
    package My_Lists is new
-     Ada.Containers.Formal_Doubly_Linked_Lists (Element_Type => Element_Type);
+     SPARK.Containers.Formal.Doubly_Linked_Lists (Element_Type => Element_Type);
 
    use My_Lists;
    use My_Lists.Formal_Model;

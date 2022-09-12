@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
 with Ada.Containers;
 use Ada.Containers;
 with Formal_Container; use Formal_Container;

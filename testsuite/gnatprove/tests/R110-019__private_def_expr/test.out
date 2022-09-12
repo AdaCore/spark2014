@@ -1,4 +1,4 @@
-p.ads:5:27: error: "Wrong" is not allowed in SPARK
+p.ads:5:27: error: "Wrong" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 p.ads:5:27: error: separate subprogram declaration from subprogram body to allow calling it from SPARK code
 p.ads:5:27: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

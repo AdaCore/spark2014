@@ -1,6 +1,6 @@
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
-with Big_Intervals; use Big_Intervals;
+with SPARK.Big_Intervals; use SPARK.Big_Intervals;
 
 package Linear_Search with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);

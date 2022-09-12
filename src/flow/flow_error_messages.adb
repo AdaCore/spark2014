@@ -1567,6 +1567,7 @@ package body Flow_Error_Messages is
                     | N_Statement_Other_Than_Procedure_Call
                     | N_Declaration
                     | N_Later_Decl_Item
+                    | N_Label
                     | N_Handled_Sequence_Of_Statements);
 
       function Enclosing_Stmt_Or_Prag_Or_Decl is new

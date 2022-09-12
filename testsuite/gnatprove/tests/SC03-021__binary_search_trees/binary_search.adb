@@ -1,5 +1,5 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Functional_Sets;
+with SPARK.Containers.Functional.Sets;
 
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
@@ -116,7 +116,7 @@ procedure Binary_Search with SPARK_Mode is
      (if V.Present then I < V.Value else True)
    with Ghost;
 
-   package Int_Sets is new Ada.Containers.Functional_Sets (Integer);
+   package Int_Sets is new SPARK.Containers.Functional.Sets (Integer);
    type Int_Set is new Int_Sets.Set;
 
    function Size (T : access constant Tree) return Natural is

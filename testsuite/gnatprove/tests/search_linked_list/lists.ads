@@ -1,4 +1,5 @@
-with Ada.Containers.Formal_Doubly_Linked_Lists; use Ada.Containers;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
+with Ada.Containers; use Ada.Containers;
 
 ----------------------------------------------------
 -- SPARK 2014 - Linked List Search Example        --
@@ -11,7 +12,7 @@ with Ada.Containers.Formal_Doubly_Linked_Lists; use Ada.Containers;
 package Lists with SPARK_Mode is
    function My_Eq (I1, I2 : Integer) return Boolean is (I1 = I2);
 
-   package L is new Formal_Doubly_Linked_Lists (Integer);
+   package L is new SPARK.Containers.Formal.Doubly_Linked_Lists (Integer);
    use L; use Formal_Model;
      function Search (L : List) return Cursor with
      Contract_Cases =>

@@ -1,8 +1,8 @@
-with Ada.Containers.Formal_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
 
 package Cursors is
 
-   package L is new Ada.Containers.Formal_Doubly_Linked_Lists (Integer);
+   package L is new SPARK.Containers.Formal.Doubly_Linked_Lists (Integer);
    use L;
 
    type R (B : Boolean) is record

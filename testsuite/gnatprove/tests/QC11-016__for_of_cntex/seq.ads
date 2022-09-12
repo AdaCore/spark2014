@@ -1,4 +1,4 @@
 pragma SPARK_Mode (On);
-with Ada.Containers.Functional_Vectors;
+with SPARK.Containers.Functional.Vectors;
 
-package Seq is new Ada.Containers.Functional_Vectors (Positive, Integer);
+package Seq is new SPARK.Containers.Functional.Vectors (Positive, Integer);

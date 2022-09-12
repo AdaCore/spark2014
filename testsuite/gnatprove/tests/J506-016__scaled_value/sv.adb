@@ -1,4 +1,4 @@
-with SPARK.Mod64_Arithmetic_Lemmas; use SPARK.Mod64_Arithmetic_Lemmas;
+with SPARK.Lemmas.Mod64_Arithmetic; use SPARK.Lemmas.Mod64_Arithmetic;
 with Interfaces; use Interfaces;
 
 package body SV

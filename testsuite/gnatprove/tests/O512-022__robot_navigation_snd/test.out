@@ -1,435 +1,436 @@
-a-cfdlli.ads:393:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at algorithm.ads:40
-a-cfdlli.ads:394:08: info: dynamic accessibility check proved (Trivial), in instantiation at algorithm.ads:40
-a-cfdlli.ads:398:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at algorithm.ads:40
-a-cfdlli.ads:400:08: info: dynamic accessibility check proved (Trivial), in instantiation at algorithm.ads:40
-a-cfdlli.ads:419:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:524:49: info: overflow check proved (CVC5: 2 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:657:49: info: overflow check proved (CVC5: 2 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:747:57: info: overflow check proved (CVC5: 2 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:813:57: info: overflow check proved (CVC5: 2 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:900:28: info: overflow check proved (CVC5: 2 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:900:39: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1076:43: info: overflow check proved (CVC5: 2 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1257:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1396:20: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1411:20: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1426:20: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1441:20: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1463:14: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1469:23: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1518:14: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1525:23: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
-a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:162, in instantiation at algorithm.ads:40
-a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:162, in instantiation at algorithm.ads:40
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:77, in instantiation at algorithm.ads:40
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:77, in instantiation at algorithm.ads:40
-a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:77, in instantiation at algorithm.ads:40
-a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:77, in instantiation at algorithm.ads:40
-a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:77, in instantiation at algorithm.ads:40
-a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:77, in instantiation at algorithm.ads:40
-a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfdlli.ads:77, in instantiation at algorithm.ads:40
-a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfdlli.ads:77, in instantiation at algorithm.ads:40
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:77, in instantiation at algorithm.ads:40
-algorithm.adb:84:07: info: cannot unroll loop (too many loop iterations)
-algorithm.adb:87:44: info: function contract not available for proof ("alDiff" might not return)
-algorithm.adb:92:65: info: division check proved (CVC5: 1 VC)
-algorithm.adb:92:65: info: float overflow check proved (Trivial)
-algorithm.adb:93:19: warning: statement has no effect
-algorithm.adb:94:22: warning: this statement is never reached
-algorithm.adb:95:22: warning: this statement is never reached
+algorithm.adb:86:07: info: cannot unroll loop (too many loop iterations)
+algorithm.adb:89:44: info: function contract not available for proof ("alDiff" might not return)
+algorithm.adb:94:65: info: division check proved (CVC5: 1 VC)
+algorithm.adb:94:65: info: float overflow check proved (Trivial)
+algorithm.adb:95:19: warning: statement has no effect
 algorithm.adb:96:22: warning: this statement is never reached
-algorithm.adb:106:22: info: initialization of "d" proved
-algorithm.adb:108:44: medium: precondition might fail
-algorithm.adb:108:64: info: division check proved (CVC5: 1 VC)
-algorithm.adb:108:64: info: float overflow check proved (Trivial)
-algorithm.adb:109:49: medium: divide by zero might fail [possible fix: subprogram at algorithm.ads:68 should mention forwardLength and scans and testBearing in a precondition]
-algorithm.adb:109:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at algorithm.ads:68 should mention forwardLength and scans and testBearing in a precondition]
-algorithm.adb:111:42: info: division check proved (CVC5: 1 VC)
-algorithm.adb:111:42: info: float overflow check proved (Trivial)
-algorithm.adb:111:49: medium: divide by zero might fail [possible fix: subprogram at algorithm.ads:68 should mention scans and testBearing and width in a precondition]
-algorithm.adb:111:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at algorithm.ads:68 should mention scans and testBearing and width in a precondition]
-algorithm.adb:115:25: warning: statement has no effect
-algorithm.adb:116:28: warning: this statement is never reached
-algorithm.adb:117:28: warning: this statement is never reached
+algorithm.adb:97:22: warning: this statement is never reached
+algorithm.adb:98:22: warning: this statement is never reached
+algorithm.adb:108:22: info: initialization of "d" proved
+algorithm.adb:110:44: medium: precondition might fail
+algorithm.adb:110:64: info: division check proved (CVC5: 1 VC)
+algorithm.adb:110:64: info: float overflow check proved (Trivial)
+algorithm.adb:111:49: medium: divide by zero might fail [possible fix: subprogram at algorithm.ads:68 should mention forwardLength and scans and testBearing in a precondition]
+algorithm.adb:111:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at algorithm.ads:68 should mention forwardLength and scans and testBearing in a precondition]
+algorithm.adb:113:42: info: division check proved (CVC5: 1 VC)
+algorithm.adb:113:42: info: float overflow check proved (Trivial)
+algorithm.adb:113:49: medium: divide by zero might fail [possible fix: subprogram at algorithm.ads:68 should mention scans and testBearing and width in a precondition]
+algorithm.adb:113:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at algorithm.ads:68 should mention scans and testBearing and width in a precondition]
+algorithm.adb:117:25: warning: statement has no effect
 algorithm.adb:118:28: warning: this statement is never reached
-algorithm.adb:143:46: info: function contract not available for proof ("Create" might not return)
-algorithm.adb:147:10: info: cannot unroll loop (too many loop iterations)
-algorithm.adb:150:63: info: range check proved (Trivial)
-algorithm.adb:150:70: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:150:72: info: function contract not available for proof ("alDiff" might not return)
-algorithm.adb:154:70: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:156:25: warning: statement has no effect
-algorithm.adb:157:28: warning: this statement is never reached
-algorithm.adb:158:28: warning: this statement is never reached
+algorithm.adb:119:28: warning: this statement is never reached
+algorithm.adb:120:28: warning: this statement is never reached
+algorithm.adb:145:46: info: function contract not available for proof ("Create" might not return)
+algorithm.adb:149:10: info: cannot unroll loop (too many loop iterations)
+algorithm.adb:152:63: info: range check proved (Trivial)
+algorithm.adb:152:70: info: float overflow check proved (CVC5: 1 VC)
+algorithm.adb:152:72: info: function contract not available for proof ("alDiff" might not return)
+algorithm.adb:156:70: info: float overflow check proved (CVC5: 1 VC)
+algorithm.adb:158:25: warning: statement has no effect
 algorithm.adb:159:28: warning: this statement is never reached
 algorithm.adb:160:28: warning: this statement is never reached
-algorithm.adb:182:07: info: initialization of "rayR" proved
-algorithm.adb:182:13: info: initialization of "rayL" proved
-algorithm.adb:184:22: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:195:47: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-algorithm.adb:195:61: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
-algorithm.adb:195:75: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-algorithm.adb:195:89: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: you should consider adding a postcondition to function ccwDiff or turning it into an expression function in its unit spec]
-algorithm.adb:195:95: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-algorithm.adb:195:108: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-algorithm.adb:195:121: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:195:129: info: implicit function contract not available for proof ("ccwDiff" might not return)
-algorithm.adb:198:13: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:202:31: info: assertion proved (CVC5: 2 VC)
-algorithm.adb:207:33: info: loop invariant initialization proved (CVC5: 2 VC)
-algorithm.adb:207:33: info: loop invariant preservation proved (CVC5: 2 VC)
-algorithm.adb:213:49: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:217:16: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:161:28: warning: this statement is never reached
+algorithm.adb:162:28: warning: this statement is never reached
+algorithm.adb:184:07: info: initialization of "rayR" proved
+algorithm.adb:184:13: info: initialization of "rayL" proved
+algorithm.adb:186:22: info: assertion proved (CVC5: 1 VC)
+algorithm.adb:197:47: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:197:61: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
+algorithm.adb:197:75: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:197:89: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: you should consider adding a postcondition to function ccwDiff or turning it into an expression function in its unit spec]
+algorithm.adb:197:95: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:197:108: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:197:121: info: float overflow check proved (CVC5: 1 VC)
+algorithm.adb:197:129: info: implicit function contract not available for proof ("ccwDiff" might not return)
+algorithm.adb:200:13: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:204:31: info: assertion proved (CVC5: 2 VC)
+algorithm.adb:209:33: info: loop invariant initialization proved (CVC5: 2 VC)
+algorithm.adb:209:33: info: loop invariant preservation proved (CVC5: 2 VC)
+algorithm.adb:215:49: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:219:16: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:231:47: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 207 should mention rayR]
-algorithm.adb:231:61: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop invariant at line 207 should mention rayL and rayR]
-algorithm.adb:231:75: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 207 should mention rayL]
-algorithm.adb:231:89: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: loop invariant at line 207 should mention rayL and rayR]
-algorithm.adb:231:95: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 207 should mention rayR]
-algorithm.adb:231:108: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 207 should mention rayL and rayR]
-algorithm.adb:231:121: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:231:129: info: implicit function contract not available for proof ("ccwDiff" might not return)
-algorithm.adb:235:13: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:246:17: info: postcondition proved (CVC5: 1 VC)
-algorithm.adb:250:17: info: postcondition proved (CVC5: 1 VC)
-algorithm.adb:253:10: info: initialization of "iterR" proved
-algorithm.adb:253:17: info: initialization of "iterL" proved
-algorithm.adb:257:10: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:261:35: info: loop invariant initialization proved (CVC5: 4 VC)
-algorithm.adb:261:35: info: loop invariant preservation proved (CVC5: 4 VC)
-algorithm.adb:263:43: info: precondition proved (CVC5: 2 VC)
-algorithm.adb:267:25: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:267:63: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:267:107: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-algorithm.adb:268:15: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:268:62: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:270:16: warning: statement has no effect
-algorithm.adb:271:19: warning: this statement is never reached
-algorithm.adb:272:19: warning: this statement is never reached
-algorithm.adb:272:36: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:279:19: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:282:28: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:283:19: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:284:19: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:290:13: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:299:25: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:299:63: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:299:107: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:300:15: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:300:62: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:302:16: warning: statement has no effect
-algorithm.adb:303:19: warning: this statement is never reached
-algorithm.adb:304:19: warning: this statement is never reached
-algorithm.adb:304:36: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:309:16: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:316:10: info: initialization of "riterR" proved
-algorithm.adb:316:18: info: initialization of "riterL" proved
-algorithm.adb:320:10: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:324:35: info: loop invariant initialization proved (CVC5: 4 VC)
-algorithm.adb:326:35: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove riterL = Next (This.gapVec, riterR)
-algorithm.adb:326:44: info: precondition proved (CVC5: 2 VC)
-algorithm.adb:330:25: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:330:64: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:330:109: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-algorithm.adb:331:15: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:331:64: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:333:16: warning: statement has no effect
-algorithm.adb:334:19: warning: this statement is never reached
-algorithm.adb:335:19: warning: this statement is never reached
-algorithm.adb:335:36: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:335:58: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:340:16: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:345:13: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:351:25: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:351:64: medium: precondition might fail
-algorithm.adb:351:109: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:352:15: medium: precondition might fail
-algorithm.adb:352:64: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:354:16: warning: statement has no effect
-algorithm.adb:355:19: warning: this statement is never reached
-algorithm.adb:356:19: warning: this statement is never reached
-algorithm.adb:356:36: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:356:58: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:361:27: medium: precondition might fail
-algorithm.adb:381:15: info: range check proved (CVC5: 2 VC)
-algorithm.adb:381:71: medium: range check might fail, cannot prove lower bound for Length (This.gapVec) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Length (This.gapVec) in Gap_ID) to subprogram at algorithm.ads:91]
-algorithm.adb:395:22: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:398:33: info: loop invariant initialization proved (CVC5: 2 VC)
-algorithm.adb:398:33: info: loop invariant preservation proved (CVC5: 2 VC)
-algorithm.adb:403:73: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:408:16: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:409:42: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:410:40: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-algorithm.adb:413:19: warning: statement has no effect
-algorithm.adb:414:22: warning: this statement is never reached
-algorithm.adb:415:22: warning: this statement is never reached
-algorithm.adb:415:34: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:221:16: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:233:47: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 209 should mention rayR]
+algorithm.adb:233:61: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop invariant at line 209 should mention rayL and rayR]
+algorithm.adb:233:75: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 209 should mention rayL]
+algorithm.adb:233:89: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: loop invariant at line 209 should mention rayL and rayR]
+algorithm.adb:233:95: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 209 should mention rayR]
+algorithm.adb:233:108: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 209 should mention rayL and rayR]
+algorithm.adb:233:121: info: float overflow check proved (CVC5: 1 VC)
+algorithm.adb:233:129: info: implicit function contract not available for proof ("ccwDiff" might not return)
+algorithm.adb:237:13: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:248:17: info: postcondition proved (CVC5: 1 VC)
+algorithm.adb:252:17: info: postcondition proved (CVC5: 1 VC)
+algorithm.adb:255:10: info: initialization of "iterR" proved
+algorithm.adb:255:17: info: initialization of "iterL" proved
+algorithm.adb:259:10: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:263:35: info: loop invariant initialization proved (CVC5: 4 VC)
+algorithm.adb:263:35: info: loop invariant preservation proved (CVC5: 4 VC)
+algorithm.adb:265:43: info: precondition proved (CVC5: 2 VC)
+algorithm.adb:269:25: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:269:63: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:269:107: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:270:15: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:270:62: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:272:16: warning: statement has no effect
+algorithm.adb:273:19: warning: this statement is never reached
+algorithm.adb:274:19: warning: this statement is never reached
+algorithm.adb:274:36: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:281:19: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:284:28: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:285:19: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:286:19: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:292:13: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:301:25: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:301:63: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:301:107: info: float overflow check proved (CVC5: 1 VC)
+algorithm.adb:302:15: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:302:62: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:304:16: warning: statement has no effect
+algorithm.adb:305:19: warning: this statement is never reached
+algorithm.adb:306:19: warning: this statement is never reached
+algorithm.adb:306:36: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:311:16: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:318:10: info: initialization of "riterR" proved
+algorithm.adb:318:18: info: initialization of "riterL" proved
+algorithm.adb:322:10: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:326:35: info: loop invariant initialization proved (CVC5: 4 VC)
+algorithm.adb:328:35: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove riterL = Next (This.gapVec, riterR)
+algorithm.adb:328:44: info: precondition proved (CVC5: 2 VC)
+algorithm.adb:332:25: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:332:64: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:332:109: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:333:15: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:333:64: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:335:16: warning: statement has no effect
+algorithm.adb:336:19: warning: this statement is never reached
+algorithm.adb:337:19: warning: this statement is never reached
+algorithm.adb:337:36: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:337:58: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:342:16: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:347:13: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:353:25: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:353:64: medium: precondition might fail
+algorithm.adb:353:109: info: float overflow check proved (CVC5: 1 VC)
+algorithm.adb:354:15: medium: precondition might fail
+algorithm.adb:354:64: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:356:16: warning: statement has no effect
+algorithm.adb:357:19: warning: this statement is never reached
+algorithm.adb:358:19: warning: this statement is never reached
+algorithm.adb:358:36: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:358:58: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:363:27: medium: precondition might fail
+algorithm.adb:383:15: info: range check proved (CVC5: 2 VC)
+algorithm.adb:383:71: medium: range check might fail, cannot prove lower bound for Length (This.gapVec) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Length (This.gapVec) in Gap_ID) to subprogram at algorithm.ads:91]
+algorithm.adb:397:22: info: assertion proved (CVC5: 1 VC)
+algorithm.adb:400:33: info: loop invariant initialization proved (CVC5: 2 VC)
+algorithm.adb:400:33: info: loop invariant preservation proved (CVC5: 2 VC)
+algorithm.adb:405:73: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:410:16: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:411:42: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:412:40: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+algorithm.adb:415:19: warning: statement has no effect
 algorithm.adb:416:22: warning: this statement is never reached
-algorithm.adb:421:16: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:422:42: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:427:38: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:427:74: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:428:39: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:428:81: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:428:100: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:430:46: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-algorithm.adb:442:43: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-algorithm.adb:446:19: warning: statement has no effect
-algorithm.adb:447:22: warning: this statement is never reached
-algorithm.adb:448:22: warning: this statement is never reached
-algorithm.adb:448:34: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:417:22: warning: this statement is never reached
+algorithm.adb:417:34: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:418:22: warning: this statement is never reached
+algorithm.adb:423:16: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:424:42: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:429:38: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:429:74: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:430:39: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:430:81: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:430:100: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:432:46: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+algorithm.adb:444:43: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+algorithm.adb:448:19: warning: statement has no effect
 algorithm.adb:449:22: warning: this statement is never reached
-algorithm.adb:458:19: warning: statement has no effect
-algorithm.adb:459:22: warning: this statement is never reached
-algorithm.adb:462:22: warning: this statement is never reached
-algorithm.adb:463:22: warning: this statement is never reached
-algorithm.adb:463:39: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:450:22: warning: this statement is never reached
+algorithm.adb:450:34: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:451:22: warning: this statement is never reached
+algorithm.adb:460:19: warning: statement has no effect
+algorithm.adb:461:22: warning: this statement is never reached
+algorithm.adb:464:22: warning: this statement is never reached
 algorithm.adb:465:22: warning: this statement is never reached
-algorithm.adb:466:22: warning: this statement is never reached
-algorithm.adb:466:34: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:466:76: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:465:39: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:467:22: warning: this statement is never reached
 algorithm.adb:468:22: warning: this statement is never reached
-algorithm.adb:468:58: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:468:100: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:468:119: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:468:34: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:468:76: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:469:22: warning: this statement is never reached
 algorithm.adb:470:22: warning: this statement is never reached
-algorithm.adb:471:22: warning: this statement is never reached
-algorithm.adb:471:34: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:471:71: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:470:58: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:470:100: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:470:119: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:472:22: warning: this statement is never reached
 algorithm.adb:473:22: warning: this statement is never reached
-algorithm.adb:473:58: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:473:95: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:473:114: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:477:35: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:477:77: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:477:96: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:478:36: medium: precondition might fail [possible fix: loop invariant at line 398 should mention Best_Valley_IDS]
-algorithm.adb:478:73: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:478:92: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:480:22: warning: statement has no effect
-algorithm.adb:481:25: warning: this statement is never reached
-algorithm.adb:484:38: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-algorithm.adb:495:19: warning: statement has no effect
-algorithm.adb:496:22: warning: this statement is never reached
-algorithm.adb:499:35: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-algorithm.adb:504:10: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:508:10: warning: statement has no effect
-algorithm.adb:509:13: warning: this statement is never reached
-algorithm.adb:510:13: warning: this statement is never reached
-algorithm.adb:510:30: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:510:67: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:514:20: medium: precondition might fail [possible fix: loop invariant at line 398 should mention Best_Valley_IDS]
-algorithm.adb:514:57: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:515:20: medium: precondition might fail [possible fix: loop invariant at line 398 should mention Best_Valley_IDS]
-algorithm.adb:515:57: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:530:07: info: initialization of "deltaMag" proved
-algorithm.adb:531:07: info: initialization of "deltaAngle" proved
-algorithm.adb:537:33: info: loop invariant initialization proved (CVC5: 1 VC)
-algorithm.adb:537:33: info: loop invariant preservation proved (CVC5: 1 VC)
-algorithm.adb:538:52: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: precondition of subprogram at algorithm.ads:98 should mention This]
-algorithm.adb:539:25: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:539:25: info: range check proved (CVC5: 1 VC)
-algorithm.adb:539:44: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:539:70: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:539:98: info: division check proved (CVC5: 1 VC)
-algorithm.adb:539:98: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at algorithm.ads:98 should mention This]
-algorithm.adb:542:42: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:542:42: info: range check proved (Trivial)
-algorithm.adb:542:53: info: float overflow check proved (Trivial)
-algorithm.adb:544:54: info: float overflow check proved (colibri: 1 VC)
-algorithm.adb:544:65: info: float overflow check proved (Trivial)
-algorithm.adb:544:76: info: float overflow check proved (Trivial)
-algorithm.adb:544:87: info: float overflow check proved (colibri: 1 VC)
-algorithm.adb:549:54: info: division check proved (altergo: 1 VC)
-algorithm.adb:549:54: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: loop invariant at line 537 should mention deltaAreaSum and obstacleAvoidDelta]
-algorithm.adb:558:07: info: initialization of "driveSpeed" proved
-algorithm.adb:559:07: info: initialization of "driveTurnRate" proved
-algorithm.adb:560:07: info: initialization of "relGoal" proved
-algorithm.adb:561:07: info: initialization of "distToGoal" proved
-algorithm.adb:562:07: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:563:07: info: initialization of "safetyDist" proved
-algorithm.adb:565:07: warning: initialization of "midValleyAngle" has no effect
-algorithm.adb:565:07: warning: initialization of "safeRisingGapAngle" has no effect
-algorithm.adb:566:07: info: initialization of "theta" proved
-algorithm.adb:567:07: info: initialization of "robotPose" proved
-algorithm.adb:568:07: info: initialization of "goal" proved
-algorithm.adb:569:07: info: initialization of "pBestValley" proved
-algorithm.adb:570:07: info: initialization of "iNumLPs" proved
-algorithm.adb:576:07: warning: statement has no effect
-algorithm.adb:577:10: warning: this statement is never reached
-algorithm.adb:578:10: warning: this statement is never reached
-algorithm.adb:581:31: info: assertion proved (Trivial: 1 VC)
-algorithm.adb:584:07: warning: statement has no effect
-algorithm.adb:585:10: warning: this statement is never reached
-algorithm.adb:586:10: warning: this statement is never reached
-algorithm.adb:589:31: info: assertion proved (Trivial: 1 VC)
-algorithm.adb:601:31: info: assertion proved (Trivial: 1 VC)
-algorithm.adb:603:37: info: cannot unroll loop (too many loop iterations)
-algorithm.adb:605:67: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 603 should mention This in a loop invariant]
-algorithm.adb:605:101: info: range check proved (Trivial)
-algorithm.adb:605:111: info: division check proved (CVC5: 1 VC)
-algorithm.adb:608:31: info: assertion proved (Trivial: 1 VC)
-algorithm.adb:612:07: warning: statement has no effect
-algorithm.adb:613:10: warning: this statement is never reached
-algorithm.adb:614:10: warning: this statement is never reached
-algorithm.adb:617:31: info: assertion proved (Trivial: 1 VC)
-algorithm.adb:622:13: warning: statement has no effect
-algorithm.adb:623:16: warning: this statement is never reached
-algorithm.adb:624:16: warning: this statement is never reached
-algorithm.adb:634:69: info: division check proved (CVC5: 1 VC)
-algorithm.adb:634:69: info: float overflow check proved (Trivial)
-algorithm.adb:634:114: info: division check proved (CVC5: 1 VC)
-algorithm.adb:634:114: info: float overflow check proved (Trivial)
-algorithm.adb:636:70: info: division check proved (CVC5: 1 VC)
-algorithm.adb:636:70: info: float overflow check proved (Trivial)
+algorithm.adb:473:34: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:473:71: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:474:22: warning: this statement is never reached
+algorithm.adb:475:22: warning: this statement is never reached
+algorithm.adb:475:58: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:475:95: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:475:114: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:479:35: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:479:77: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:479:96: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:480:36: medium: precondition might fail [possible fix: loop invariant at line 400 should mention Best_Valley_IDS]
+algorithm.adb:480:73: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:480:92: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:482:22: warning: statement has no effect
+algorithm.adb:483:25: warning: this statement is never reached
+algorithm.adb:486:38: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+algorithm.adb:497:19: warning: statement has no effect
+algorithm.adb:498:22: warning: this statement is never reached
+algorithm.adb:501:35: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+algorithm.adb:506:10: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:510:10: warning: statement has no effect
+algorithm.adb:511:13: warning: this statement is never reached
+algorithm.adb:512:13: warning: this statement is never reached
+algorithm.adb:512:30: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:512:67: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:516:20: medium: precondition might fail [possible fix: loop invariant at line 400 should mention Best_Valley_IDS]
+algorithm.adb:516:57: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:517:20: medium: precondition might fail [possible fix: loop invariant at line 400 should mention Best_Valley_IDS]
+algorithm.adb:517:57: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:532:07: info: initialization of "deltaMag" proved
+algorithm.adb:533:07: info: initialization of "deltaAngle" proved
+algorithm.adb:539:33: info: loop invariant initialization proved (CVC5: 1 VC)
+algorithm.adb:539:33: info: loop invariant preservation proved (CVC5: 1 VC)
+algorithm.adb:540:52: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: precondition of subprogram at algorithm.ads:98 should mention This]
+algorithm.adb:541:25: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:541:25: info: range check proved (CVC5: 1 VC)
+algorithm.adb:541:44: info: float overflow check proved (CVC5: 1 VC)
+algorithm.adb:541:70: info: float overflow check proved (CVC5: 1 VC)
+algorithm.adb:541:98: info: division check proved (CVC5: 1 VC)
+algorithm.adb:541:98: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at algorithm.ads:98 should mention This]
+algorithm.adb:544:42: info: float overflow check proved (CVC5: 1 VC)
+algorithm.adb:544:42: info: range check proved (Trivial)
+algorithm.adb:544:53: info: float overflow check proved (Trivial)
+algorithm.adb:546:54: info: float overflow check proved (colibri: 1 VC)
+algorithm.adb:546:65: info: float overflow check proved (Trivial)
+algorithm.adb:546:76: info: float overflow check proved (Trivial)
+algorithm.adb:546:87: info: float overflow check proved (colibri: 1 VC)
+algorithm.adb:551:54: info: division check proved (altergo: 1 VC)
+algorithm.adb:551:54: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: loop invariant at line 539 should mention deltaAreaSum and obstacleAvoidDelta]
+algorithm.adb:560:07: info: initialization of "driveSpeed" proved
+algorithm.adb:561:07: info: initialization of "driveTurnRate" proved
+algorithm.adb:562:07: info: initialization of "relGoal" proved
+algorithm.adb:563:07: info: initialization of "distToGoal" proved
+algorithm.adb:564:07: info: initialization of "distToClosestObstacle" proved
+algorithm.adb:565:07: info: initialization of "safetyDist" proved
+algorithm.adb:567:07: warning: initialization of "midValleyAngle" has no effect
+algorithm.adb:567:07: warning: initialization of "safeRisingGapAngle" has no effect
+algorithm.adb:568:07: info: initialization of "theta" proved
+algorithm.adb:569:07: info: initialization of "robotPose" proved
+algorithm.adb:570:07: info: initialization of "goal" proved
+algorithm.adb:571:07: info: initialization of "pBestValley" proved
+algorithm.adb:572:07: info: initialization of "iNumLPs" proved
+algorithm.adb:578:07: warning: statement has no effect
+algorithm.adb:579:10: warning: this statement is never reached
+algorithm.adb:580:10: warning: this statement is never reached
+algorithm.adb:583:31: info: assertion proved (Trivial: 1 VC)
+algorithm.adb:586:07: warning: statement has no effect
+algorithm.adb:587:10: warning: this statement is never reached
+algorithm.adb:588:10: warning: this statement is never reached
+algorithm.adb:591:31: info: assertion proved (Trivial: 1 VC)
+algorithm.adb:603:31: info: assertion proved (Trivial: 1 VC)
+algorithm.adb:605:37: info: cannot unroll loop (too many loop iterations)
+algorithm.adb:607:67: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 605 should mention This in a loop invariant]
+algorithm.adb:607:101: info: range check proved (Trivial)
+algorithm.adb:607:111: info: division check proved (CVC5: 1 VC)
+algorithm.adb:610:31: info: assertion proved (Trivial: 1 VC)
+algorithm.adb:614:07: warning: statement has no effect
+algorithm.adb:615:10: warning: this statement is never reached
+algorithm.adb:616:10: warning: this statement is never reached
+algorithm.adb:619:31: info: assertion proved (Trivial: 1 VC)
+algorithm.adb:624:13: warning: statement has no effect
+algorithm.adb:625:16: warning: this statement is never reached
+algorithm.adb:626:16: warning: this statement is never reached
+algorithm.adb:636:69: info: division check proved (CVC5: 1 VC)
+algorithm.adb:636:69: info: float overflow check proved (Trivial)
 algorithm.adb:636:114: info: division check proved (CVC5: 1 VC)
 algorithm.adb:636:114: info: float overflow check proved (Trivial)
-algorithm.adb:645:51: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:647:22: info: assertion proved (Z3: 1 VC)
-algorithm.adb:648:22: medium: assertion might fail [possible fix: loop at line 603 should mention This in a loop invariant]
-algorithm.adb:650:07: warning: statement has no effect
-algorithm.adb:651:10: warning: this statement is never reached
-algorithm.adb:652:10: warning: this statement is never reached
-algorithm.adb:655:31: info: assertion proved (CVC5: 2 VC)
-algorithm.adb:658:22: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:661:33: info: loop invariant initialization proved (CVC5: 2 VC)
-algorithm.adb:661:33: info: loop invariant preservation proved (CVC5: 2 VC)
-algorithm.adb:664:13: warning: statement has no effect
-algorithm.adb:665:16: warning: this statement is never reached
-algorithm.adb:671:25: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:673:72: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
-algorithm.adb:674:43: info: range check proved (CVC5: 1 VC)
-algorithm.adb:679:31: info: assertion proved (CVC5: 2 VC)
-algorithm.adb:680:22: medium: assertion might fail
-algorithm.adb:680:46: info: division check proved (CVC5: 1 VC)
-algorithm.adb:680:46: info: float overflow check proved (Trivial)
-algorithm.adb:681:21: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:681:21: info: range check proved (altergo: 1 VC)
-algorithm.adb:681:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-algorithm.adb:681:57: info: float overflow check proved (altergo: 1 VC)
-algorithm.adb:681:109: info: division check proved (CVC5: 1 VC)
-algorithm.adb:681:109: info: float overflow check proved (Trivial)
-algorithm.adb:684:42: info: non-aliasing of formal parameters "gapVec" and "laserscan" proved
-algorithm.adb:704:31: info: assertion proved (CVC5: 2 VC)
-algorithm.adb:710:19: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-algorithm.adb:710:22: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:712:31: info: assertion proved (CVC5: 2 VC)
-algorithm.adb:716:25: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:718:56: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:721:10: warning: statement has no effect
-algorithm.adb:722:13: warning: this statement is never reached
-algorithm.adb:724:10: warning: statement has no effect
-algorithm.adb:725:13: warning: this statement is never reached
-algorithm.adb:726:13: warning: this statement is never reached
+algorithm.adb:638:70: info: division check proved (CVC5: 1 VC)
+algorithm.adb:638:70: info: float overflow check proved (Trivial)
+algorithm.adb:638:114: info: division check proved (CVC5: 1 VC)
+algorithm.adb:638:114: info: float overflow check proved (Trivial)
+algorithm.adb:647:51: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:649:22: info: assertion proved (Z3: 1 VC)
+algorithm.adb:650:22: medium: assertion might fail [possible fix: loop at line 605 should mention This in a loop invariant]
+algorithm.adb:652:07: warning: statement has no effect
+algorithm.adb:653:10: warning: this statement is never reached
+algorithm.adb:654:10: warning: this statement is never reached
+algorithm.adb:657:31: info: assertion proved (CVC5: 2 VC)
+algorithm.adb:660:22: info: assertion proved (CVC5: 1 VC)
+algorithm.adb:663:33: info: loop invariant initialization proved (CVC5: 2 VC)
+algorithm.adb:663:33: info: loop invariant preservation proved (CVC5: 2 VC)
+algorithm.adb:666:13: warning: statement has no effect
+algorithm.adb:667:16: warning: this statement is never reached
+algorithm.adb:673:25: info: assertion proved (CVC5: 1 VC)
+algorithm.adb:675:72: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
+algorithm.adb:676:43: info: range check proved (CVC5: 1 VC)
+algorithm.adb:681:31: info: assertion proved (CVC5: 2 VC)
+algorithm.adb:682:22: medium: assertion might fail
+algorithm.adb:682:46: info: division check proved (CVC5: 1 VC)
+algorithm.adb:682:46: info: float overflow check proved (Trivial)
+algorithm.adb:683:21: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:683:21: info: range check proved (altergo: 1 VC)
+algorithm.adb:683:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:683:57: info: float overflow check proved (altergo: 1 VC)
+algorithm.adb:683:109: info: division check proved (CVC5: 1 VC)
+algorithm.adb:683:109: info: float overflow check proved (Trivial)
+algorithm.adb:686:42: info: non-aliasing of formal parameters "gapVec" and "laserscan" proved
+algorithm.adb:706:31: info: assertion proved (CVC5: 2 VC)
+algorithm.adb:712:19: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+algorithm.adb:712:22: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:714:31: info: assertion proved (CVC5: 2 VC)
+algorithm.adb:718:25: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:720:56: info: float overflow check proved (CVC5: 1 VC)
+algorithm.adb:723:10: warning: statement has no effect
+algorithm.adb:724:13: warning: this statement is never reached
+algorithm.adb:726:10: warning: statement has no effect
 algorithm.adb:727:13: warning: this statement is never reached
 algorithm.adb:728:13: warning: this statement is never reached
-algorithm.adb:728:25: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:730:44: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:732:10: warning: statement has no effect
-algorithm.adb:733:13: warning: this statement is never reached
-algorithm.adb:737:52: info: division check proved (CVC5: 1 VC)
-algorithm.adb:737:52: info: float overflow check proved (Trivial)
-algorithm.adb:744:58: medium: precondition might fail
-algorithm.adb:745:88: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
-algorithm.adb:746:104: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:755:13: warning: statement has no effect
-algorithm.adb:756:16: warning: this statement is never reached
-algorithm.adb:757:16: warning: this statement is never reached
-algorithm.adb:757:44: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:729:13: warning: this statement is never reached
+algorithm.adb:730:13: warning: this statement is never reached
+algorithm.adb:730:25: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:732:44: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:734:10: warning: statement has no effect
+algorithm.adb:735:13: warning: this statement is never reached
+algorithm.adb:739:52: info: division check proved (CVC5: 1 VC)
+algorithm.adb:739:52: info: float overflow check proved (Trivial)
+algorithm.adb:746:58: medium: precondition might fail
+algorithm.adb:747:88: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
+algorithm.adb:748:104: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:757:13: warning: statement has no effect
+algorithm.adb:758:16: warning: this statement is never reached
 algorithm.adb:759:16: warning: this statement is never reached
-algorithm.adb:760:16: warning: this statement is never reached
-algorithm.adb:763:37: info: assertion proved (CVC5: 2 VC)
-algorithm.adb:766:46: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:766:99: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:766:115: info: range check proved (Trivial)
-algorithm.adb:766:122: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: you should consider adding a postcondition to function dCast or turning it into an expression function in its unit spec]
-algorithm.adb:768:27: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:769:53: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:769:90: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:771:54: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:771:91: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:774:37: info: assertion proved (CVC5: 2 VC)
-algorithm.adb:777:60: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:778:57: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:795:31: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:798:29: medium: precondition might fail
-algorithm.adb:800:07: warning: statement has no effect
-algorithm.adb:801:10: warning: this statement is never reached
-algorithm.adb:802:10: warning: this statement is never reached
+algorithm.adb:759:44: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:761:16: warning: this statement is never reached
+algorithm.adb:762:16: warning: this statement is never reached
+algorithm.adb:765:37: info: assertion proved (CVC5: 2 VC)
+algorithm.adb:768:46: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:768:99: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:768:115: info: range check proved (Trivial)
+algorithm.adb:768:122: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: you should consider adding a postcondition to function dCast or turning it into an expression function in its unit spec]
+algorithm.adb:770:27: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:771:53: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:771:90: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:773:54: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:773:91: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:776:37: info: assertion proved (CVC5: 2 VC)
+algorithm.adb:779:60: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:780:57: info: discriminant check proved (CVC5: 1 VC)
+algorithm.adb:797:31: info: assertion proved (CVC5: 1 VC)
+algorithm.adb:800:29: medium: precondition might fail
+algorithm.adb:802:07: warning: statement has no effect
 algorithm.adb:803:10: warning: this statement is never reached
-algorithm.adb:806:31: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:823:31: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:826:43: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:831:31: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:833:07: warning: statement has no effect
-algorithm.adb:834:10: warning: this statement is never reached
-algorithm.adb:835:10: warning: this statement is never reached
+algorithm.adb:804:10: warning: this statement is never reached
+algorithm.adb:805:10: warning: this statement is never reached
+algorithm.adb:808:31: info: assertion proved (CVC5: 1 VC)
+algorithm.adb:825:31: info: assertion proved (CVC5: 1 VC)
+algorithm.adb:828:43: info: float overflow check proved (CVC5: 1 VC)
+algorithm.adb:833:31: info: assertion proved (CVC5: 1 VC)
+algorithm.adb:835:07: warning: statement has no effect
+algorithm.adb:836:10: warning: this statement is never reached
 algorithm.adb:837:10: warning: this statement is never reached
-algorithm.adb:838:10: warning: this statement is never reached
 algorithm.adb:839:10: warning: this statement is never reached
 algorithm.adb:840:10: warning: this statement is never reached
 algorithm.adb:841:10: warning: this statement is never reached
 algorithm.adb:842:10: warning: this statement is never reached
 algorithm.adb:843:10: warning: this statement is never reached
-algorithm.adb:846:31: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:848:07: warning: statement has no effect
-algorithm.adb:849:10: warning: this statement is never reached
-algorithm.adb:850:10: warning: this statement is never reached
+algorithm.adb:844:10: warning: this statement is never reached
+algorithm.adb:845:10: warning: this statement is never reached
+algorithm.adb:848:31: info: assertion proved (CVC5: 1 VC)
+algorithm.adb:850:07: warning: statement has no effect
 algorithm.adb:851:10: warning: this statement is never reached
 algorithm.adb:852:10: warning: this statement is never reached
-algorithm.adb:855:31: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:857:16: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:859:49: info: float overflow check proved (altergo: 1 VC)
-algorithm.adb:859:56: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:859:64: info: division check proved (CVC5: 1 VC)
-algorithm.adb:859:64: info: float overflow check proved (Trivial)
-algorithm.adb:860:38: info: float overflow check proved (colibri: 1 VC)
-algorithm.adb:860:40: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:860:47: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:861:22: info: assertion proved (colibri: 1 VC)
-algorithm.adb:861:44: info: float overflow check proved (Z3: 1 VC)
-algorithm.adb:862:22: medium: assertion might fail
-algorithm.adb:862:76: info: assertion proved (CVC5: 2 VC)
-algorithm.adb:862:99: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
-algorithm.adb:863:22: medium: assertion might fail
-algorithm.adb:863:45: info: float overflow check proved (Z3: 1 VC)
-algorithm.adb:863:72: info: division check proved (altergo: 1 VC)
-algorithm.adb:863:72: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
-algorithm.adb:864:22: info: assertion proved (Z3: 1 VC)
-algorithm.adb:864:45: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
-algorithm.adb:864:72: info: division check proved (altergo: 1 VC)
-algorithm.adb:864:72: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
-algorithm.adb:865:38: info: float overflow check proved (colibri: 1 VC)
-algorithm.adb:865:40: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:865:47: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:865:76: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
-algorithm.adb:865:103: info: division check proved (altergo: 1 VC)
-algorithm.adb:865:103: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
-algorithm.adb:867:16: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:870:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-algorithm.adb:870:34: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:870:41: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:871:32: info: float overflow check proved (colibri: 1 VC)
-algorithm.adb:871:34: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:871:41: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:871:70: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:871:97: info: division check proved (altergo: 1 VC)
-algorithm.adb:871:97: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:872:32: info: float overflow check proved (colibri: 1 VC)
+algorithm.adb:853:10: warning: this statement is never reached
+algorithm.adb:854:10: warning: this statement is never reached
+algorithm.adb:857:31: info: assertion proved (CVC5: 1 VC)
+algorithm.adb:859:16: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:861:49: info: float overflow check proved (altergo: 1 VC)
+algorithm.adb:861:56: info: float overflow check proved (CVC5: 1 VC)
+algorithm.adb:861:64: info: division check proved (CVC5: 1 VC)
+algorithm.adb:861:64: info: float overflow check proved (Trivial)
+algorithm.adb:862:38: info: float overflow check proved (colibri: 1 VC)
+algorithm.adb:862:40: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:862:47: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:863:22: info: assertion proved (colibri: 1 VC)
+algorithm.adb:863:44: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
+algorithm.adb:864:22: medium: assertion might fail
+algorithm.adb:864:76: info: assertion proved (CVC5: 2 VC)
+algorithm.adb:864:99: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
+algorithm.adb:865:22: medium: assertion might fail
+algorithm.adb:865:45: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
+algorithm.adb:865:72: info: division check proved (altergo: 1 VC)
+algorithm.adb:865:72: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
+algorithm.adb:866:22: info: assertion proved (Z3: 1 VC)
+algorithm.adb:866:45: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
+algorithm.adb:866:72: info: division check proved (altergo: 1 VC)
+algorithm.adb:866:72: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
+algorithm.adb:867:38: info: float overflow check proved (colibri: 1 VC)
+algorithm.adb:867:40: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:867:47: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:867:76: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
+algorithm.adb:867:103: info: division check proved (altergo: 1 VC)
+algorithm.adb:867:103: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
+algorithm.adb:869:16: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:872:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 algorithm.adb:872:34: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:872:53: info: float overflow check proved (colibri: 1 VC)
-algorithm.adb:872:68: info: division check proved (CVC5: 1 VC)
-algorithm.adb:872:68: info: float overflow check proved (colibri: 1 VC)
-algorithm.adb:876:07: warning: statement has no effect
-algorithm.adb:877:10: warning: this statement is never reached
-algorithm.adb:878:10: warning: this statement is never reached
+algorithm.adb:872:41: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:873:32: info: float overflow check proved (colibri: 1 VC)
+algorithm.adb:873:34: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:873:41: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:873:70: info: float overflow check proved (CVC5: 1 VC)
+algorithm.adb:873:97: info: division check proved (altergo: 1 VC)
+algorithm.adb:873:97: info: float overflow check proved (CVC5: 1 VC)
+algorithm.adb:874:32: info: float overflow check proved (colibri: 1 VC)
+algorithm.adb:874:34: info: precondition proved (CVC5: 1 VC)
+algorithm.adb:874:53: info: float overflow check proved (Z3: 1 VC)
+algorithm.adb:874:68: info: division check proved (CVC5: 1 VC)
+algorithm.adb:874:68: info: float overflow check proved (colibri: 1 VC)
+algorithm.adb:878:07: warning: statement has no effect
 algorithm.adb:879:10: warning: this statement is never reached
 algorithm.adb:880:10: warning: this statement is never reached
+algorithm.adb:881:10: warning: this statement is never reached
+algorithm.adb:882:10: warning: this statement is never reached
 algorithm.ads:43:38: info: range check proved (CVC5: 2 VC)
 algorithm.ads:89:14: info: postcondition proved (CVC5: 1 VC)
 formal-numerics-elementary_functions.ads:91:22: info: division check proved (CVC5: 1 VC)
 formal-numerics-elementary_functions.ads:91:52: info: float overflow check proved (Trivial)
 formal-numerics-elementary_functions.ads:100:23: info: division check proved (CVC5: 1 VC)
 formal-numerics-elementary_functions.ads:100:51: info: float overflow check proved (Trivial)
+spark-containers-formal-doubly_linked_lists.ads:390:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:391:08: info: dynamic accessibility check proved (Trivial), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:395:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:397:08: info: dynamic accessibility check proved (Trivial), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:416:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:521:49: info: overflow check proved (CVC5: 2 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:654:49: info: overflow check proved (CVC5: 2 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:744:57: info: overflow check proved (CVC5: 2 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:810:57: info: overflow check proved (CVC5: 2 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:897:28: info: overflow check proved (CVC5: 2 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:897:39: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:1073:43: info: overflow check proved (CVC5: 2 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:1254:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:1393:20: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:1408:20: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:1423:20: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:1438:20: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:1460:14: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:1466:23: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:1515:14: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:1522:23: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at algorithm.ads:40
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at algorithm.ads:40
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40

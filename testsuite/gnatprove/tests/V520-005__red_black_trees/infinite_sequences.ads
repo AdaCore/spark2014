@@ -1,7 +1,7 @@
-with Ada.Containers.Functional_Maps;
+with SPARK.Containers.Functional.Maps;
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
-with Big_Intervals; use Big_Intervals;
+with SPARK.Big_Intervals; use SPARK.Big_Intervals;
 
 package Infinite_Sequences with SPARK_Mode is
    type Sequence is private;
@@ -41,7 +41,7 @@ package Infinite_Sequences with SPARK_Mode is
      Pre  => First (S3) = Last (S1) + 2,
      Post => Is_Concat (S1, I2, S3, Concat'Result);
 private
-   package Maps is new Ada.Containers.Functional_Maps
+   package Maps is new SPARK.Containers.Functional.Maps
      (Big_Positive, Integer);
 
    function Is_Valid

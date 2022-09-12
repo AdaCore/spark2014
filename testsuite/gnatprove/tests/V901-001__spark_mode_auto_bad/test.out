@@ -1,0 +1,10 @@
+p.ads:5:30: error: only configuration pragma "SPARK_Mode" can have value "Auto"
+p.ads:5:30: error: only configuration pragma "SPARK_Mode" can have value "Auto"
+p.ads:7:23: error: only configuration pragma "SPARK_Mode" can have value "Auto"
+p.ads:7:23: error: only configuration pragma "SPARK_Mode" can have value "Auto"
+p.ads:13:39: error: only configuration pragma "SPARK_Mode" can have value "Auto"
+p.ads:13:39: error: only configuration pragma "SPARK_Mode" can have value "Auto"
+q.adb:3:32: error: only configuration pragma "SPARK_Mode" can have value "Auto"
+q.adb:4:23: error: only configuration pragma "SPARK_Mode" can have value "Auto"
+q.adb:7:39: error: only configuration pragma "SPARK_Mode" can have value "Auto"
+gnatprove: error during generation of Global contracts

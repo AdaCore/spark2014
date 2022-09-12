@@ -1,9 +1,9 @@
-with Ada.Containers.Formal_Doubly_Linked_Lists;
-use type Ada.Containers.Count_Type;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
+with Ada.Containers; use type Ada.Containers.Count_Type;
 
 package Linked_List is pragma SPARK_Mode (On);
 
-   package MyLists is new Ada.Containers.Formal_Doubly_Linked_Lists (Integer);
+   package MyLists is new SPARK.Containers.Formal.Doubly_Linked_Lists (Integer);
    use MyLists; use MyLists.Formal_Model;
 
    function Search (L : in List) return Cursor with

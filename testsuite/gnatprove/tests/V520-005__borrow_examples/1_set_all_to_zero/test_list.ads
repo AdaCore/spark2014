@@ -1,6 +1,6 @@
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
-with Big_Intervals; use Big_Intervals;
+with SPARK.Big_Intervals; use SPARK.Big_Intervals;
 
 package Test_List with SPARK_Mode is
 

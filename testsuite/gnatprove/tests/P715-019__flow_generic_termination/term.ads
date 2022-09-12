@@ -1,4 +1,5 @@
-with Ada.Containers.Formal_Hashed_Sets;
+with SPARK.Containers.Formal.Hashed_Sets;
+with Ada.Containers; use Ada.Containers;
 
 package Term with Annotate => (GNATprove, Always_Return) is
 
@@ -12,7 +13,7 @@ package Term with Annotate => (GNATprove, Always_Return) is
 
    function Hash (X : T) return Ada.Containers.Hash_Type;
 
-   package TSet is new Ada.Containers.Formal_Hashed_Sets
+   package TSet is new SPARK.Containers.Formal.Hashed_Sets
      (Element_Type        => T,
       Hash                => Hash,
       Equivalent_Elements => Eq);

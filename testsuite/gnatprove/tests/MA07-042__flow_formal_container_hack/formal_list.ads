@@ -1,11 +1,11 @@
-with Ada.Containers.Formal_Vectors;
+with SPARK.Containers.Formal.Vectors;
 
 package Formal_List
 is
 
    type Index_T is range 1 .. 100;
 
-   package Vec is new Ada.Containers.Formal_Vectors
+   package Vec is new SPARK.Containers.Formal.Vectors
      (Index_Type   => Index_T,
       Element_Type => Integer);
 

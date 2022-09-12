@@ -1,4 +1,4 @@
-with Spark.Float_Arithmetic_Lemmas; use Spark.Float_Arithmetic_Lemmas;
+with Spark.Lemmas.Float_Arithmetic; use Spark.Lemmas.Float_Arithmetic;
 
 procedure Mul (X1, X2 : in out Float;
                Y      : in Float)

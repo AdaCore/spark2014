@@ -1,0 +1,8 @@
+foo.adb:6:04: warning: analyzing unreferenced procedure "Add4"
+foo.adb:8:07: error: code statement is not allowed in SPARK
+foo.adb:8:07: error: violation of aspect SPARK_Mode at line 4
+foo.adb:24:07: error: "Asm_Input_Operand" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+foo.adb:24:07: error: "Asm_Output_Operand" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+foo.adb:24:07: error: violation of aspect SPARK_Mode at line 4
+foo.adb:24:07: error: violation of aspect SPARK_Mode at line 4
+gnatprove: error during flow analysis and proof

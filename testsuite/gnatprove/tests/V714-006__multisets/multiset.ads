@@ -1,5 +1,5 @@
 pragma Ada_2012;
-private with Ada.Containers.Functional_Maps;
+private with SPARK.Containers.Functional.Maps;
 
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
@@ -85,7 +85,7 @@ is
 
 private
 
-   package Maps is new Ada.Containers.Functional_Maps
+   package Maps is new SPARK.Containers.Functional.Maps
      (Key_Type     => Element_Type,
       Element_Type => Big_Positive);
    use Maps;

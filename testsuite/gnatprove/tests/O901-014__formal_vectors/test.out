@@ -1,29 +1,3 @@
-a-cfinve.ads:317:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:318:08: info: dynamic accessibility check proved (Trivial), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:322:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:324:08: info: dynamic accessibility check proved (Trivial), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:343:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:343:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:366:51: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:408:73: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:441:51: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:476:59: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:522:59: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:546:51: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:587:59: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:652:28: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:652:57: info: range check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:780:23: info: precondition proved (CVC5: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cfinve.ads:816:14: info: precondition proved (CVC5: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfinve.ads:110, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfinve.ads:110, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:235:54: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:110, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:240:63: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:110, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:241:59: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:110, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:241:76: info: overflow check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:110, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:242:30: info: range check proved (CVC5: 2 VC), in instantiation at a-cfinve.ads:110, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:303:52: info: overflow check proved (CVC5: 1 VC), in instantiation at a-cfinve.ads:110, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfinve.ads:110, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:7:68: info: discriminant check proved (CVC5: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:16:41: info: range check proved (CVC5: 2 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:16:62: info: range check proved (CVC5: 2 VC), in instantiation at hnco-test2.ads:8
@@ -97,3 +71,29 @@ hnco-test2.adb:10:22: medium: assertion might fail [possible fix: call at line 8
 hnco-test2.adb:11:22: medium: assertion might fail [possible fix: call at line 8 should mention Container (for argument V) in a postcondition]
 hnco-test2.ads:11:04: info: initialization of "V" proved
 hnco-test2.ads:11:34: info: range check proved (CVC5: 2 VC)
+spark-containers-formal-indefinite_vectors.ads:315:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:316:08: info: dynamic accessibility check proved (Trivial), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:320:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:322:08: info: dynamic accessibility check proved (Trivial), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:341:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:341:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:364:51: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:406:73: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:439:51: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:474:59: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:520:59: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:544:51: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:585:59: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:650:28: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:650:57: info: range check proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:778:23: info: precondition proved (CVC5: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-formal-indefinite_vectors.ads:814:14: info: precondition proved (CVC5: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8

@@ -1,11 +1,11 @@
-with Ada.Containers.Formal_Ordered_Maps;
+with SPARK.Containers.Formal.Ordered_Maps;
 with Ada.Containers; use Ada.Containers;
 package P is pragma SPARK_Mode (On);
 
    type Element_Type is new Integer range 1 .. 100;
    type Key_Type is new Integer range 1 .. 100;
 
-   package My_Maps is new Ada.Containers.Formal_Ordered_Maps
+   package My_Maps is new SPARK.Containers.Formal.Ordered_Maps
      (Key_Type, Element_Type);
    use My_Maps; use Formal_Model;
 

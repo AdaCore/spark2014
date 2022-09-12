@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Vectors;
+with SPARK.Containers.Formal.Vectors;
 with Ada.Containers; use Ada.Containers;
 
 package Sorted_Vectors is pragma SPARK_Mode (On);
@@ -11,7 +11,7 @@ package Sorted_Vectors is pragma SPARK_Mode (On);
 
    subtype Index_Type is Integer range 1 .. 100;
 
-   package My_Vectors is new Ada.Containers.Formal_Vectors
+   package My_Vectors is new SPARK.Containers.Formal.Vectors
      (Index_Type, Element_Type);
    use My_Vectors; use Formal_Model;
 

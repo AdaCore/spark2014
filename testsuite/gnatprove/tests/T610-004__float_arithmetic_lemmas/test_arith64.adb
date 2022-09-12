@@ -1,4 +1,4 @@
-with SPARK.Long_Float_Arithmetic_Lemmas; use SPARK.Long_Float_Arithmetic_Lemmas;
+with SPARK.Lemmas.Long_Float_Arithmetic; use SPARK.Lemmas.Long_Float_Arithmetic;
 
 procedure Test_Arith64 with
   SPARK_Mode

@@ -1,7 +1,10 @@
 from subprocess import call
-from test_support import prove_all
+from test_support import prove_all, TESTDIR
+import os
 
-prove_all(steps=8000)
+os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
 
-call(["gnatmake", "-gnata", "-q", "test_vectors.adb"])
+prove_all(steps=8000, sparklib=True)
+
+call(["gprbuild", "-P", "test.gpr", "-q"])
 call(["./test_vectors"])

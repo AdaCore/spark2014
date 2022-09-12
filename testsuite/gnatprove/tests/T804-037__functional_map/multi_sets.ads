@@ -1,8 +1,8 @@
-with Ada.Containers.Functional_Maps;
+with SPARK.Containers.Functional.Maps;
 
 package Multi_Sets is
 
-   package Occ_Map is new Ada.Containers.Functional_Maps
+   package Occ_Map is new SPARK.Containers.Functional.Maps
         (Key_Type     => Integer,
          Element_Type => Positive);
 

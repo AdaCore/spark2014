@@ -1,11 +1,11 @@
-with Ada.Containers.Formal_Vectors;
+with SPARK.Containers.Formal.Vectors;
 
 package List is
    pragma Spark_Mode (On);
 
    Max : constant := 100;
    subtype T is Integer range 1 .. Max;
-   package My_Lists is new Ada.Containers.Formal_Vectors (T, Integer);
+   package My_Lists is new SPARK.Containers.Formal.Vectors (T, Integer);
    type List is new My_Lists.Vector (Max);
 
    function Reverse_List (L : List) return List with

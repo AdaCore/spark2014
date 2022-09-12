@@ -3554,7 +3554,7 @@ package body Flow.Control_Flow_Graph is
          --  Create vertex for the container expression. We also define the
          --  loop parameter here.
          Collect_Functions_And_Read_Locked_POs
-           (Cont,
+           (I_Spec,
             FA.B_Scope,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,

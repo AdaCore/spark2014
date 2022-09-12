@@ -1,7 +1,7 @@
-with Ada.Containers.Formal_Ordered_Maps;
-with Ada.Containers.Formal_Vectors;
-with Ada.Containers.Formal_Doubly_Linked_Lists;
-use Ada.Containers;
+with SPARK.Containers.Formal.Ordered_Maps;
+with SPARK.Containers.Formal.Vectors;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
+with Ada.Containers; use Ada.Containers;
 
 package Partition_Refinement with
   SPARK_Mode
@@ -14,14 +14,14 @@ is
 
 
    package Partitioning_Sets is new
-     Formal_Doubly_Linked_Lists (Element_Type => Positive);
+     SPARK.Containers.Formal.Doubly_Linked_Lists (Element_Type => Positive);
 
    subtype Partitioning_Set is Partitioning_Sets.List;
    use Partitioning_Sets;
 
    package Inverse_Sets is new
-     Formal_Ordered_Maps (Key_Type     => Positive,
-                          ELement_Type => Index);
+     SPARK.Containers.Formal.Ordered_Maps (Key_Type     => Positive,
+                                           ELement_Type => Index);
    subtype Inverse_Set is Inverse_Sets.Map;
    use Inverse_Sets;
 
@@ -32,8 +32,8 @@ is
    end record;
    type Partition_Index is range 0 .. 10_000;
    package Partitions is new
-     Formal_Vectors (Index_Type   => Partition_Index,
-                     Element_Type => Interval);
+     SPARK.Containers.Formal.Vectors (Index_Type   => Partition_Index,
+                                      Element_Type => Interval);
    subtype Partition is Partitions.Vector;
    use Partitions;
 

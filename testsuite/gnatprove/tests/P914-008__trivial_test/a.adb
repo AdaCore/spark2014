@@ -1,10 +1,10 @@
-with SPARK.Unconstrained_Array_Lemmas;
+with SPARK.Lemmas.Unconstrained_Array;
 
 package body A with SPARK_Mode => On is
 
    type Array_Float_U is array (Index_Type range <>) of Element_Float;
 
-   package SP is new SPARK.Unconstrained_Array_Lemmas
+   package SP is new SPARK.Lemmas.Unconstrained_Array
      (Index_Type => Index_Type,
       Element_T  => Element_Float,
       A          => Array_Float_U,

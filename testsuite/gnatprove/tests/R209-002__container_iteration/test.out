@@ -1,0 +1,39 @@
+id_manager.adb:6:11: info: precondition proved (CVC5: 1 VC), in instantiation at my_id_manager.ads:3
+id_manager.adb:6:11: info: precondition proved (Trivial: 1 VC), in instantiation at my_id_manager.ads:3
+id_manager.adb:9:11: info: precondition proved (CVC5: 1 VC), in instantiation at my_id_manager.ads:3
+id_manager.adb:9:11: info: precondition proved (Trivial: 1 VC), in instantiation at my_id_manager.ads:3
+id_manager.ads:11:14: warning: subprogram "Display" has no effect, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:525:18: info: precondition proved (CVC5: 1 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:894:39: info: precondition proved (CVC5: 1 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:903:17: info: precondition proved (CVC5: 1 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:938:42: info: precondition proved (CVC5: 1 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:946:20: info: precondition proved (CVC5: 1 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:973:42: info: precondition proved (CVC5: 1 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:981:20: info: precondition proved (CVC5: 1 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:998:24: info: overflow check proved (CVC5: 2 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:999:26: info: overflow check proved (CVC5: 2 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:1047:49: info: overflow check proved (CVC5: 2 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:1217:24: info: overflow check proved (CVC5: 2 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:1218:26: info: overflow check proved (CVC5: 2 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:1218:44: info: overflow check proved (CVC5: 2 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:1257:49: info: overflow check proved (CVC5: 2 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:1361:20: info: precondition proved (CVC5: 1 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:1376:20: info: precondition proved (CVC5: 1 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:1391:20: info: precondition proved (CVC5: 1 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:1406:20: info: precondition proved (CVC5: 1 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:1440:47: info: precondition proved (CVC5: 1 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-formal-ordered_sets.ads:1455:40: info: precondition proved (CVC5: 1 VC), in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:109, in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:109, in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at id_manager.ads:8, in instantiation at my_id_manager.ads:3

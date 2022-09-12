@@ -1,4 +1,4 @@
-with Ada.Containers.Functional_Vectors;
+with SPARK.Containers.Functional.Vectors;
 procedure Linear_Search with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
    type Int_Acc is access Integer;

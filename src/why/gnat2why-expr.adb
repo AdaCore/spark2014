@@ -17861,6 +17861,15 @@ package body Gnat2Why.Expr is
                                                       Domain,
                                                       Local_Params)),
                                  Typ      => Base);
+
+                  --  The negation can overflow, so we need to apply a modulus
+                  --  operation.
+
+                  T := Apply_Modulus
+                    (Op     => N_Op_Not,
+                     E      => Expr_Type,
+                     T      => T,
+                     Domain => Domain);
                end;
 
             else

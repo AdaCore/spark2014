@@ -22,11 +22,11 @@ insrc.adb:164:16: info: analyzing call to "AffGenericErr" in context
 insrc.adb:169:16: info: analyzing call to "AffChaineErr" in context
 insrc.adb:208:13: info: analyzing call to "AffGenericErr" in context
 insrc.adb:233:13: info: analyzing call to "AffGenericErr" in context
-insrc.ads:55:04: error: "AFCB_Ptr" is not allowed in SPARK
-insrc.ads:55:04: error: "File_Mode" is not allowed in SPARK
-insrc.ads:55:04: error: "File_Mode" is not allowed in SPARK
-insrc.ads:55:04: error: "File_Type" is not allowed in SPARK
-insrc.ads:55:04: error: "File_Type" is not allowed in SPARK
+insrc.ads:55:04: error: "AFCB_Ptr" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+insrc.ads:55:04: error: "File_Mode" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+insrc.ads:55:04: error: "File_Mode" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+insrc.ads:55:04: error: "File_Type" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+insrc.ads:55:04: error: "File_Type" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 insrc.ads:55:04: error: instantiation error at a-direio.adb:57
 insrc.ads:55:04: error: instantiation error at a-direio.adb:58
 insrc.ads:55:04: error: instantiation error at a-direio.adb:61

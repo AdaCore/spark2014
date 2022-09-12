@@ -1,13 +1,13 @@
 pragma Ada_2012;
 with Ada.Containers;     use Ada.Containers;
-with Ada.Containers.Formal_Hashed_Sets;
+with SPARK.Containers.Formal.Hashed_Sets;
 
 package Use_Sets with SPARK_Mode is
    type Element_Type is new Natural;
 
    function Hash (Id : Element_Type) return Hash_Type is (Hash_Type (Id));
 
-   package My_Sets is new Formal_Hashed_Sets
+   package My_Sets is new SPARK.Containers.Formal.Hashed_Sets
      (Element_Type => Element_Type, Hash => Hash);
    use My_Sets; use My_Sets.Formal_Model;
    pragma Unevaluated_Use_Of_Old (Allow);

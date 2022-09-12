@@ -1,17 +1,17 @@
 pragma Profile (Ravenscar);
 pragma Partition_Elaboration_Policy(Sequential);
 
-with ada.Containers.Formal_Doubly_Linked_Lists;
-with ada.Containers.Formal_Vectors;
-use Ada.Containers;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Vectors;
+with Ada.Containers; use Ada.Containers;
 
 package Instances
 with SPARK_Mode
 is
 
    subtype Indexes is Count_Type range 1 .. 1000;
-   package Lists is new Ada.Containers.Formal_Doubly_Linked_Lists(Integer);
-   package Vectors is new Ada.Containers.Formal_Vectors(Indexes, Integer);
+   package Lists is new SPARK.Containers.Formal.Doubly_Linked_Lists(Integer);
+   package Vectors is new SPARK.Containers.Formal.Vectors(Indexes, Integer);
 
    use Vectors;
 

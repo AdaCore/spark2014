@@ -1,0 +1,413 @@
+spark-containers-formal-doubly_linked_lists.ads:390:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:390:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:391:08: info: dynamic accessibility check proved (Trivial), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:391:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:395:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:395:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:397:08: info: dynamic accessibility check proved (Trivial), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:397:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:416:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:416:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:521:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:521:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:654:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:654:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:744:57: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:744:57: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:810:57: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:810:57: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:897:28: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:897:28: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:897:39: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:897:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1073:43: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1073:43: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1254:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1254:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1393:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1393:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1408:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1408:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1423:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1423:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1438:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1438:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1460:14: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1460:14: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1466:23: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1466:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1515:14: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1515:14: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1522:23: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1522:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1620:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:9
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test.adb:11
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test_list.ads:6
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test.adb:11
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test_list.ads:6
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test.adb:11
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test_list.ads:6
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test.adb:11
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_list.ads:6
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test.adb:11
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_list.ads:6
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test.adb:11
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_list.ads:6
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test.adb:11
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_list.ads:6
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test.adb:11
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_list.ads:6
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test.adb:11
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_list.ads:6
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test.adb:11
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_list.ads:6
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test.adb:11
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_list.ads:6
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test.adb:11
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_list.ads:6
+test.adb:13:04: info: initialization of "L" proved
+test.adb:13:07: info: initialization of "K" proved
+test.adb:13:10: info: initialization of "M" proved
+test.adb:13:20: info: range check proved (CVC5: 2 VC)
+test.adb:14:04: info: initialization of "C" proved
+test.adb:14:07: info: initialization of "D" proved
+test.adb:15:04: info: initialization of "N" proved
+test.adb:22:19: info: assertion proved (CVC5: 1 VC)
+test.adb:26:20: info: unrolling loop
+test.adb:27:07: info: precondition proved (CVC5: 5 VC)
+test.adb:28:07: info: precondition proved (CVC5: 5 VC)
+test.adb:32:29: info: cannot unroll loop (too many loop iterations)
+test.adb:33:22: medium: assertion might fail [possible fix: loop at line 32 should mention C in a loop invariant]
+test.adb:33:22: medium: precondition might fail [possible fix: loop at line 32 should mention C in a loop invariant]
+test.adb:34:07: medium: precondition might fail [possible fix: loop at line 32 should mention C in a loop invariant]
+test.adb:37:19: info: assertion proved (CVC5: 1 VC)
+test.adb:38:19: info: assertion proved (CVC5: 1 VC)
+test.adb:40:19: info: assertion proved (altergo: 1 VC)
+test.adb:42:19: medium: assertion might fail
+test.adb:42:24: info: precondition proved (Trivial: 1 VC)
+test.adb:43:27: info: precondition proved (Trivial: 1 VC)
+test.adb:44:30: info: precondition proved (CVC5: 1 VC)
+test.adb:44:48: info: precondition proved (CVC5: 1 VC)
+test.adb:49:09: info: precondition proved (CVC5: 1 VC)
+test.adb:54:04: info: precondition proved (CVC5: 1 VC)
+test.adb:56:09: info: precondition proved (CVC5: 1 VC)
+test.adb:57:04: info: precondition proved (Z3: 1 VC)
+test.adb:59:19: info: assertion proved (CVC5: 1 VC)
+test.adb:62:19: info: assertion proved (Z3: 1 VC)
+test.adb:62:19: info: precondition proved (CVC5: 1 VC)
+test.adb:64:04: info: precondition proved (CVC5: 1 VC)
+test.adb:66:22: medium: assertion might fail [possible fix: loop at line 65 should mention N in a loop invariant]
+test.adb:66:22: medium: precondition might fail
+test.adb:67:14: medium: overflow check might fail, cannot prove upper bound for N + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 65 should mention N in a loop invariant]
+test.adb:68:07: medium: precondition might fail
+test.adb:71:09: info: precondition proved (CVC5: 1 VC)
+test.adb:76:04: info: precondition proved (CVC5: 2 VC)
+test.adb:77:04: info: precondition proved (CVC5: 2 VC)
+test.adb:79:19: medium: assertion might fail
+test.adb:81:19: info: precondition proved (Trivial: 1 VC)
+test.adb:81:19: medium: assertion might fail
+test.adb:82:23: info: precondition proved (Trivial: 1 VC)
+test.adb:83:25: info: precondition proved (CVC5: 1 VC)
+test.adb:83:43: info: precondition proved (CVC5: 1 VC)
+test.adb:85:09: info: discriminant check proved (CVC5: 1 VC)
+test.adb:85:09: info: precondition proved (CVC5: 1 VC)
+test.adb:89:19: info: assertion proved (CVC5: 1 VC)
+test.adb:90:19: info: assertion proved (altergo: 1 VC)
+test.adb:94:22: medium: assertion might fail
+test.adb:95:22: medium: assertion might fail
+test.adb:95:22: medium: precondition might fail
+test.adb:95:39: medium: precondition might fail
+test.adb:96:07: medium: precondition might fail
+test.adb:97:07: medium: precondition might fail
+test.adb:103:19: info: assertion proved (CVC5: 1 VC)
+test.adb:104:19: info: assertion proved (CVC5: 1 VC)
+test.adb:106:04: info: precondition proved (CVC5: 1 VC)
+test.adb:108:19: info: assertion proved (CVC5: 1 VC)
+test.adb:109:19: info: precondition proved (Trivial: 1 VC)
+test.adb:109:19: medium: assertion might fail
+test.adb:110:23: info: precondition proved (Trivial: 1 VC)
+test.adb:111:25: info: precondition proved (CVC5: 1 VC)
+test.adb:111:43: info: precondition proved (CVC5: 1 VC)
+test.adb:119:04: info: precondition proved (CVC5: 1 VC)
+test.adb:120:04: info: precondition proved (CVC5: 1 VC)
+test.adb:121:04: info: precondition proved (CVC5: 1 VC)
+test.adb:124:04: info: precondition proved (CVC5: 1 VC)
+test.adb:125:04: info: precondition proved (CVC5: 1 VC)
+test.adb:126:04: info: precondition proved (CVC5: 1 VC)
+test.adb:127:04: info: precondition proved (CVC5: 1 VC)
+test.adb:128:04: info: precondition proved (CVC5: 1 VC)
+test.adb:133:04: info: precondition proved (CVC5: 2 VC)
+test.adb:139:09: info: precondition proved (CVC5: 1 VC)
+test.adb:141:04: info: precondition proved (CVC5: 2 VC; Z3: 1 VC)
+test.adb:147:09: info: precondition proved (CVC5: 1 VC)
+test.adb:153:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test.adb:159:04: medium: precondition might fail
+test.adb:160:04: info: precondition proved (CVC5: 1 VC)
+test.adb:162:04: medium: precondition might fail, cannot prove Has_Element (Container, Before) or else Before = No_Element [possible fix: call at line 160 should mention Position (for argument C) in a postcondition]
+test.adb:164:04: medium: precondition might fail
+test.adb:165:04: info: precondition proved (CVC5: 2 VC)
+test.adb:172:04: info: precondition proved (CVC5: 2 VC)
+test.adb:177:22: medium: assertion might fail [possible fix: loop at line 176 should mention N in a loop invariant]
+test.adb:177:22: medium: precondition might fail
+test.adb:178:14: medium: overflow check might fail, cannot prove upper bound for N + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 176 should mention N in a loop invariant]
+test.adb:179:07: medium: precondition might fail
+test.adb:182:19: info: precondition proved (CVC5: 1 VC)
+test.adb:182:19: medium: assertion might fail
+test.adb:183:19: info: precondition proved (CVC5: 1 VC)
+test.adb:183:19: medium: assertion might fail
+test.adb:186:04: info: precondition proved (CVC5: 1 VC)
+test.adb:187:09: info: precondition proved (CVC5: 1 VC)
+test.adb:189:19: medium: assertion might fail
+test.adb:191:09: info: precondition proved (CVC5: 1 VC)
+test.adb:193:19: medium: assertion might fail
+test.adb:193:19: medium: precondition might fail
+test.adb:195:19: medium: assertion might fail
+test.adb:196:19: medium: assertion might fail
+test_list.adb:13:07: info: initialization of "L" proved
+test_list.adb:13:10: info: initialization of "K" proved
+test_list.adb:13:20: info: range check proved (CVC5: 2 VC)
+test_list.adb:14:07: info: initialization of "C" proved
+test_list.adb:14:10: info: initialization of "D" proved
+test_list.adb:16:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:19:12: info: precondition proved (CVC5: 1 VC)
+test_list.adb:20:12: info: precondition proved (CVC5: 1 VC)
+test_list.adb:22:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:23:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:24:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:25:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:27:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:30:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:31:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:32:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:33:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:35:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:38:30: info: assertion proved (CVC5: 2 VC)
+test_list.adb:39:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:40:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:42:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:44:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:46:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:48:22: info: assertion proved (CVC5: 2 VC)
+test_list.adb:49:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:50:22: info: assertion proved (CVC5: 2 VC)
+test_list.adb:51:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:52:12: info: precondition proved (CVC5: 1 VC)
+test_list.adb:54:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:55:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:56:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:58:12: info: discriminant check proved (CVC5: 1 VC)
+test_list.adb:58:12: info: precondition proved (CVC5: 1 VC)
+test_list.adb:60:12: info: precondition proved (CVC5: 1 VC)
+test_list.adb:61:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:62:12: info: precondition proved (CVC5: 1 VC)
+test_list.adb:63:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:64:12: medium: precondition might fail [possible fix: call at line 51 should mention Position (for argument C) in a postcondition]
+test_list.adb:66:10: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function]
+test_list.adb:66:26: medium: precondition might fail
+test_list.adb:66:65: info: overflow check proved (CVC5: 2 VC)
+test_list.adb:67:07: medium: precondition might fail
+test_list.adb:68:12: medium: precondition might fail [possible fix: call at line 51 should mention Position (for argument C) in a postcondition]
+test_list.adb:70:10: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function]
+test_list.adb:70:26: medium: precondition might fail
+test_list.adb:70:65: medium: overflow check might fail, cannot prove upper bound for M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+test_list.adb:71:07: medium: precondition might fail
+test_list.adb:76:30: info: assertion proved (CVC5: 3 VC)
+test_list.adb:77:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:78:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:80:12: info: precondition proved (CVC5: 1 VC)
+test_list.adb:82:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:83:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:84:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:85:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:87:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:90:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:91:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:91:27: info: precondition proved (CVC5: 1 VC)
+test_list.adb:93:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:93:22: medium: assertion might fail
+test_list.adb:94:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:94:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:94:45: info: precondition proved (CVC5: 1 VC)
+test_list.adb:95:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:95:22: medium: assertion might fail
+test_list.adb:96:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:96:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:99:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:100:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:102:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:105:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:107:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:109:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:115:12: info: precondition proved (CVC5: 1 VC)
+test_list.adb:116:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:117:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:119:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:121:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:122:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:124:07: info: precondition proved (CVC5: 3 VC)
+test_list.adb:125:07: info: precondition proved (CVC5: 3 VC)
+test_list.adb:127:30: info: assertion proved (CVC5: 1 VC)
+test_list.adb:130:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:135:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:137:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:140:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:143:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:144:22: info: assertion proved (altergo: 1 VC)
+test_list.adb:149:07: info: initialization of "L" proved
+test_list.adb:149:10: info: initialization of "K" proved
+test_list.adb:149:20: info: range check proved (CVC5: 2 VC)
+test_list.adb:150:07: info: initialization of "C" proved
+test_list.adb:150:10: info: initialization of "D" proved
+test_list.adb:157:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:158:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:159:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:160:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:162:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:169:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:170:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:172:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:173:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:175:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:179:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:181:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:186:10: info: initialization of "S" proved
+test_list.adb:186:20: info: range check proved (CVC5: 2 VC)
+test_list.adb:188:10: info: precondition proved (CVC5: 1 VC)
+test_list.adb:190:10: info: precondition proved (CVC5: 1 VC)
+test_list.adb:192:25: info: assertion proved (CVC5: 1 VC)
+test_list.adb:198:10: info: initialization of "S" proved
+test_list.adb:198:20: info: range check proved (CVC5: 2 VC)
+test_list.adb:200:10: info: precondition proved (CVC5: 1 VC)
+test_list.adb:201:10: info: precondition proved (CVC5: 1 VC)
+test_list.adb:203:10: info: precondition proved (CVC5: 1 VC)
+test_list.adb:205:25: info: assertion proved (CVC5: 1 VC)
+test_list.adb:206:25: info: assertion proved (CVC5: 1 VC)
+test_list.adb:212:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:213:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:214:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:215:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:216:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:216:38: info: precondition proved (CVC5: 2 VC)
+test_list.adb:222:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:223:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:223:38: info: precondition proved (CVC5: 2 VC)
+test_list.adb:229:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:229:38: info: precondition proved (CVC5: 1 VC)
+test_list.adb:237:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:238:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:240:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:242:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:244:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:245:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:250:12: info: discriminant check proved (CVC5: 1 VC)
+test_list.adb:252:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:256:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:259:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:259:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:260:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:260:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:269:35: info: precondition proved (CVC5: 1 VC)
+test_list.adb:269:46: info: null exclusion check proved (CVC5: 1 VC)
+test_list.adb:271:28: info: assertion proved (CVC5: 1 VC)
+test_list.adb:271:30: info: pointer dereference check proved (CVC5: 1 VC)
+test_list.adb:272:15: info: pointer dereference check proved (CVC5: 1 VC)
+test_list.adb:275:25: info: assertion proved (CVC5: 1 VC)
+test_list.adb:275:25: info: precondition proved (CVC5: 1 VC)
+test_list.adb:278:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:278:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:282:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:283:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:287:22: info: assertion proved (CVC5: 2 VC)
+test_list.adb:291:12: info: discriminant check proved (CVC5: 1 VC)
+test_list.adb:291:12: info: precondition proved (CVC5: 1 VC)
+test_list.adb:293:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:297:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:297:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:301:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:302:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:304:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:304:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:310:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:312:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:314:07: medium: precondition might fail
+test_list.adb:315:07: medium: precondition might fail
+test_list.adb:316:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:318:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:318:48: info: precondition proved (CVC5: 1 VC)
+test_list.adb:319:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:321:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:321:48: info: precondition proved (CVC5: 1 VC)
+test_list.adb:322:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:327:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:330:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:332:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:335:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:337:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:337:46: info: precondition proved (CVC5: 2 VC)
+test_list.adb:339:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:341:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:341:46: info: precondition proved (CVC5: 2 VC)
+test_list.adb:342:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:342:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:345:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:347:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:348:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:352:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:354:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:354:22: medium: assertion might fail
+test_list.adb:355:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:355:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:358:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:360:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:361:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:365:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:366:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:368:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:368:22: medium: assertion might fail
+test_list.adb:369:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:369:22: medium: assertion might fail
+test_list.adb:372:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:373:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:374:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:375:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:379:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:381:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:383:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:383:48: info: precondition proved (CVC5: 2 VC)
+test_list.adb:384:22: medium: assertion might fail
+test_list.adb:384:48: info: precondition proved (CVC5: 2 VC)
+test_list.adb:385:22: medium: assertion might fail
+test_list.adb:385:48: info: precondition proved (CVC5: 2 VC)
+test_list.adb:386:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:386:48: info: precondition proved (CVC5: 2 VC)
+test_list.adb:389:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:390:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:391:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:392:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:395:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:397:07: info: precondition proved (CVC5: 1 VC)
+test_list.adb:399:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:401:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:401:48: info: precondition proved (CVC5: 2 VC)
+test_list.adb:402:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:402:48: info: precondition proved (CVC5: 2 VC)
+test_list.adb:403:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:403:48: info: precondition proved (CVC5: 2 VC)
+test_list.adb:404:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:404:48: info: precondition proved (CVC5: 2 VC)
+test_list.adb:408:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:408:22: info: precondition proved (Z3: 1 VC)
+test_list.adb:409:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:409:22: info: precondition proved (Z3: 1 VC)
+test_list.adb:411:07: info: precondition proved (Z3: 2 VC)
+test_list.adb:412:07: info: precondition proved (Z3: 2 VC)
+test_list.adb:414:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:414:48: info: precondition proved (CVC5: 2 VC)
+test_list.adb:415:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:415:48: info: precondition proved (CVC5: 2 VC)
+test_list.adb:416:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:416:48: info: precondition proved (CVC5: 2 VC)
+test_list.adb:417:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:417:48: info: precondition proved (CVC5: 2 VC)
+test_list.ads:11:23: info: data dependencies proved
+test_list.ads:13:29: info: data dependencies proved

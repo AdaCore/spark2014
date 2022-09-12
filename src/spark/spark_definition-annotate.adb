@@ -49,6 +49,7 @@ with SPARK_Util.Types;             use SPARK_Util.Types;
 with Stand;                        use Stand;
 with Stringt;                      use Stringt;
 with String_Utils;                 use String_Utils;
+with VC_Kinds;                     use VC_Kinds;
 
 package body SPARK_Definition.Annotate is
 
@@ -1473,15 +1474,15 @@ package body SPARK_Definition.Annotate is
          if May_Issue_Warning_On_Node (Prag)
            and then not Is_In_Statically_Dead_Branch (Prag)
          then
-            Error_Msg_N ("?no check message justified by this pragma", Prag);
+            Error_Msg_N
+              (Warning_Message (Warn_Pragma_Annotate_No_Check), Prag);
          end if;
       end loop;
 
       for Prag of Proved_Pragma loop
          if Instantiation_Location (Sloc (Prag)) = No_Location then
             Error_Msg_N
-              ("?only proved check messages justified by this pragma",
-               Prag);
+              (Warning_Message (Warn_Pragma_Annotate_Proved_Check), Prag);
          end if;
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
@@ -1956,8 +1957,7 @@ package body SPARK_Definition.Annotate is
       --  Check the name and number of arguments
 
       if Name = "external_axiomatization" then
-         Error_Msg_N ("?External Axiomatizations are not supported anymore, "
-                      & "ignored",
+         Error_Msg_N (Warning_Message (Warn_Pragma_External_Axiomatization),
                       Prag);
          return;
 
@@ -2036,8 +2036,9 @@ package body SPARK_Definition.Annotate is
 
       elsif Name in "always_return" | "terminating" then
          if Name = "terminating" then
-            Error_Msg_N ("?Terminating annotations are deprecated", Prag);
-            Error_Msg_N ("\use Always_Return instead", Prag);
+            Error_Msg_N
+              (Warning_Message (Warn_Pragma_Annotate_Terminating), Prag);
+            Error_Msg_N ("\\use Always_Return instead", Prag);
          end if;
 
          Check_Always_Return_Annotation (Arg3_Exp, Prag);

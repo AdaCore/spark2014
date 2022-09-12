@@ -13,7 +13,7 @@ def run(cmd):
 
 
 def run_manual(check_to_prove, option=""):
-    cmd = "gnatprove -P spark_lemmas.gpr -U --prover=coq"
+    cmd = "gnatprove -P sparklib.gpr -U --prover=coq"
     if ":" not in check_to_prove:
         run(cmd + " " + option + check_to_prove)
     else:
@@ -22,7 +22,7 @@ def run_manual(check_to_prove, option=""):
 
 def run_automatic(prover, level=4):
     cmd = (
-        "gnatprove -P spark_lemmas.gpr --counterexamples=off -j0"
+        "gnatprove -P sparklib.gpr --counterexamples=off -j0"
         + " --prover="
         + prover
         + " --level="
@@ -33,7 +33,7 @@ def run_automatic(prover, level=4):
 
 def run_automatic_timeout(prover, level=4, timeout=100):
     cmd = (
-        "gnatprove -P spark_lemmas.gpr --counterexamples=off -j0"
+        "gnatprove -P sparklib.gpr --counterexamples=off -j0"
         + " --prover="
         + prover
         + " --level="
@@ -45,7 +45,7 @@ def run_automatic_timeout(prover, level=4, timeout=100):
 
 
 def run_options(opt):
-    cmd = "gnatprove -P spark_lemmas.gpr --counterexamples=off -j0 " + opt
+    cmd = "gnatprove -P sparklib.gpr --counterexamples=off -j0 " + opt
     run(cmd)
 
 

@@ -24,6 +24,7 @@
 with Ada.Containers;                  use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 
+with Aspects;                         use Aspects;
 with Exp_Util;                        use Exp_Util;
 with Errout;                          use Errout;
 with Namet;                           use Namet;
@@ -312,6 +313,48 @@ package body Flow_Utility is
 
             when N_Op =>
                pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
+
+            --  Detect calls via Iterable aspect specification, if present
+
+            when N_Iterator_Specification =>
+               declare
+                  Typ : constant Entity_Id := Etype (Name (N));
+               begin
+                  if Has_Aspect (Typ, Aspect_Iterable) then
+
+                     --  Has_Element is called always
+
+                     Functions_Called.Include
+                       (Get_Iterable_Type_Primitive (Typ, Name_Has_Element));
+
+                     --  Element is called when OF keyword is present
+
+                     if Of_Present (N) then
+                        Functions_Called.Include
+                          (Get_Iterable_Type_Primitive (Typ, Name_Element));
+                     end if;
+
+                     --  First/Next and Last/Previous are called depening on
+                     --  the REVERSE keyword.
+
+                     if Reverse_Present (N) then
+                        Functions_Called.Include
+                          (Get_Iterable_Type_Primitive (Typ, Name_Last));
+                        Functions_Called.Include
+                          (Get_Iterable_Type_Primitive (Typ, Name_Previous));
+                     else
+                        Functions_Called.Include
+                          (Get_Iterable_Type_Primitive (Typ, Name_First));
+                        Functions_Called.Include
+                          (Get_Iterable_Type_Primitive (Typ, Name_Next));
+                     end if;
+                  else
+                     pragma Assert
+                       (Of_Present (N)
+                        and then Has_Array_Type (Etype (Name (N)))
+                        and then Number_Dimensions (Etype (Name (N))) = 1);
+                  end if;
+               end;
 
             when others =>
                null;

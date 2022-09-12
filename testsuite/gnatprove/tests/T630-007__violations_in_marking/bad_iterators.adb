@@ -1,5 +1,5 @@
 with Ada.Iterator_Interfaces;
-with Ada.Containers.Formal_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
 procedure Bad_Iterators with SPARK_Mode is
    type Int_Arr is array (Positive range <>) of Integer;
 
@@ -16,7 +16,7 @@ procedure Bad_Iterators with SPARK_Mode is
      (Container : Holder)
       return Vector_Iterator_Interfaces.Reversible_Iterator'Class with Import;
 
-   package My_Lists is new Ada.Containers.Formal_Doubly_Linked_Lists
+   package My_Lists is new SPARK.Containers.Formal.Doubly_Linked_Lists
      (Integer);
 
    C : Int_Arr := (1 .. 10 => 0);

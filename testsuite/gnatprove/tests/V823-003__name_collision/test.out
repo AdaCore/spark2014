@@ -1,0 +1,4 @@
+p.ads:14:10: info: division check proved (CVC5: 1 VC)
+p.ads:14:10: info: overflow check proved (CVC5: 2 VC)
+p.ads:14:18: info: division check proved (CVC5: 1 VC)
+p.ads:14:18: info: overflow check proved (CVC5: 2 VC)

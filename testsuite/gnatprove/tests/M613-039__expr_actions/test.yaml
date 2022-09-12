@@ -1,5 +1,6 @@
 comment: disable z3 for cross-platform stability
 
 prove_all:
+  sparklib: True
   prover: ["cvc5"]
   steps: 400

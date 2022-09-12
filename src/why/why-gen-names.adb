@@ -960,6 +960,7 @@ package body Why.Gen.Names is
          when WNE_Hide_Extension             => "hide_ext__",
          when WNE_Init_Wrapper_Suffix        => "__init_wrapper",
          when WNE_No_Return_Module           => "No_Return",
+         when WNE_Param_Prefix               => "param__",
          when WNE_Rec_Rep                    => "__rep",
          when WNE_Rec_Comp_Prefix            => "rec__",
          when WNE_Rec_Extension_Suffix       => "ext__",

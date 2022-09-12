@@ -1,5 +1,5 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Functional_Vectors;
+with SPARK.Containers.Functional.Vectors;
 
 procedure Bad_Annotate with SPARK_Mode is
    procedure Do_Something is null
@@ -53,7 +53,7 @@ procedure Bad_Annotate with SPARK_Mode is
      (Y in X.F1 | X.F2 | X.F3 | X.F4)
      with Annotate => (GNATprove, Iterable_For_Proof, "Contains");
 
-   package Sequences is new Ada.Containers.Functional_Vectors (Positive, Integer);
+   package Sequences is new SPARK.Containers.Functional.Vectors (Positive, Integer);
 
    function Model (X : T) return Sequences.Sequence with
      Annotate => (GNATprove, Iterable_For_Proof, "Model"),

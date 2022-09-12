@@ -1,18 +1,18 @@
-a-cfdlli.ads:393:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at database.adb:16
-a-cfdlli.ads:398:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at database.adb:16
-a-cofuma.ads:317:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:162, in instantiation at database.adb:16
-a-cofuma.ads:318:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:162, in instantiation at database.adb:16
-a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at database.ads:23
-a-cofuve.ads:98:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:77, in instantiation at database.adb:16
-a-cofuve.ads:99:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:77, in instantiation at database.adb:16
-a-cofuve.ads:342:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at a-cfdlli.ads:77, in instantiation at database.adb:16
 database.adb:16:04: error: "Item" is not writable
-database.adb:16:04: error: instantiation error at a-cfdlli.ads:77
-database.adb:16:04: error: instantiation error at a-cofuve.ads:342
-database.adb:16:04: error: object was declared as not writable at a-cofuve.ads:342, instance at a-cfdlli.ads:77, instance at line 16
+database.adb:16:04: error: instantiation error at spark-containers-formal-doubly_linked_lists.ads:74
+database.adb:16:04: error: instantiation error at spark-containers-functional-vectors.ads:340
+database.adb:16:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:340, instance at spark-containers-formal-doubly_linked_lists.ads:74, instance at line 16
 database.adb:21:04: info: initialization of "Database" proved
 database.adb:22:04: info: initialization of "DB_Model" proved
 database.ads:23:04: error: "Item" is not writable
-database.ads:23:04: error: instantiation error at a-cofuse.ads:259
-database.ads:23:04: error: object was declared as not writable at a-cofuse.ads:259, instance at line 23
+database.ads:23:04: error: instantiation error at spark-containers-functional-sets.ads:268
+database.ads:23:04: error: object was declared as not writable at spark-containers-functional-sets.ads:268, instance at line 23
+spark-containers-formal-doubly_linked_lists.ads:390:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at database.adb:16
+spark-containers-formal-doubly_linked_lists.ads:395:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at database.adb:16
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at database.adb:16
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at database.adb:16
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at database.ads:23
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at database.adb:16
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at database.adb:16
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at database.adb:16
 gnatprove: error during flow analysis and proof

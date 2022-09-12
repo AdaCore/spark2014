@@ -1,4 +1,3 @@
-a-cofuse.ads:259:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at binary_search.adb:119
 binary_search.adb:19:07: info: dynamic accessibility check proved (Trivial)
 binary_search.adb:23:13: info: function contract might not be available on recursive calls
 binary_search.adb:24:08: medium: "M_Contains" is recursive, terminating annotation could be incorrect
@@ -136,3 +135,5 @@ binary_search.adb:224:45: info: precondition proved (CVC5: 1 VC)
 binary_search.adb:224:53: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search.adb:224:62: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search.adb:225:25: info: pointer dereference check proved (CVC5: 1 VC)
+spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at binary_search.adb:119
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at binary_search.adb:119

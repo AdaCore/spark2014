@@ -1,7 +1,7 @@
-with SPARK.Integer_Arithmetic_Lemmas;
-with SPARK.Long_Integer_Arithmetic_Lemmas;
-with SPARK.Float_Arithmetic_Lemmas;
-with SPARK.Long_Float_Arithmetic_Lemmas;
+with SPARK.Lemmas.Integer_Arithmetic;
+with SPARK.Lemmas.Long_Integer_Arithmetic;
+with SPARK.Lemmas.Float_Arithmetic;
+with SPARK.Lemmas.Long_Float_Arithmetic;
 
 procedure Test_Lemmas is
    X, Y, Z : Integer := 1;
@@ -10,9 +10,9 @@ procedure Test_Lemmas is
    D, E, F : Long_Float := 1.0;
 
 begin
-   SPARK.Integer_Arithmetic_Lemmas.Lemma_Div_Is_Monotonic (X, Y, Z);
-   SPARK.Long_Integer_Arithmetic_Lemmas.Lemma_Div_Is_Monotonic (U, V, W);
+   SPARK.Lemmas.Integer_Arithmetic.Lemma_Div_Is_Monotonic (X, Y, Z);
+   SPARK.Lemmas.Long_Integer_Arithmetic.Lemma_Div_Is_Monotonic (U, V, W);
 
-   SPARK.Float_Arithmetic_Lemmas.Lemma_Add_Is_Monotonic (A, B, C);
-   SPARK.Long_Float_Arithmetic_Lemmas.Lemma_Add_Is_Monotonic (D, E, F);
+   SPARK.Lemmas.Float_Arithmetic.Lemma_Add_Is_Monotonic (A, B, C);
+   SPARK.Lemmas.Long_Float_Arithmetic.Lemma_Add_Is_Monotonic (D, E, F);
 end Test_Lemmas;

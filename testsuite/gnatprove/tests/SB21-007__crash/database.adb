@@ -1,5 +1,5 @@
-with Ada.Containers.Formal_Doubly_Linked_Lists;
-use Ada.Containers;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
+with Ada.Containers; use Ada.Containers;
 
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
@@ -13,7 +13,7 @@ is
    function Big (C : Count_Type) return Big_Integer renames
      Big_From_Count.To_Big_Integer;
 
-   package DB_Pack is new Ada.Containers.Formal_Doubly_Linked_Lists
+   package DB_Pack is new SPARK.Containers.Formal.Doubly_Linked_Lists
      (Element_Type => DB_Entry_Type,
       "="          => "=");
    use DB_Pack;

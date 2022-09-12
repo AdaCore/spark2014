@@ -1,9 +1,9 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Formal_Hashed_Maps;
+with SPARK.Containers.Formal.Hashed_Maps;
 
 procedure Test_Hashed_Maps with SPARK_Mode is
    function Hash (Id : Positive) return Hash_Type is (Hash_Type (Id));
-   package Int_Maps is new Ada.Containers.Formal_Hashed_Maps (Positive, Integer, Hash);
+   package Int_Maps is new SPARK.Containers.Formal.Hashed_Maps (Positive, Integer, Hash);
    use Int_Maps;
 
    procedure Test (M : aliased in out Map) with

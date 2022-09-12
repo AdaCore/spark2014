@@ -125,6 +125,8 @@ package body Why.Atree.Modules is
    Dispatch_Eq_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Dispatch_Eq_Axiom_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Invariant_Modules         : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Move_Modules              : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Move_Axiom_Modules        : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    User_Eq_Modules           : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    User_Eq_Axiom_Modules     : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
@@ -247,6 +249,24 @@ package body Why.Atree.Modules is
    begin
       return Hashconsed_Entity_Module (Ty, Name, Invariant_Modules);
    end E_Invariant_Module;
+
+   -------------------
+   -- E_Move_Module --
+   -------------------
+
+   function E_Move_Module
+     (Ty    : Type_Kind_Id;
+      Axiom : Boolean := False) return W_Module_Id
+   is
+      Name : constant String := Full_Name (Ty) & "___move" &
+        (if Axiom then "___axiom" else "");
+   begin
+      if Axiom then
+         return Hashconsed_Entity_Module (Ty, Name, Move_Axiom_Modules);
+      else
+         return Hashconsed_Entity_Module (Ty, Name, Move_Modules);
+      end if;
+   end E_Move_Module;
 
    ------------------------
    -- E_Rec_Axiom_Module --
@@ -2999,40 +3019,34 @@ package body Why.Atree.Modules is
          end if;
 
          --  Symbols for moves of deep types. The Is_Moved and Moved_Relation
-         --  predicates are in the definition module if they are predeclared,
-         --  otherwise they are in the axiom module.
+         --  predicates are in the Move module. The Move function is in the
+         --  axiom module for the move functions if they are predeclared.
 
          if Contains_Allocated_Parts (E)
            and then (not Has_Access_Type (E)
                      or else Is_General_Access_Type (E))
          then
-            declare
-               Pred_Module : constant W_Module_Id :=
-                 (if not Has_Predeclared_Move_Predicates (E) then AM
-                  elsif Might_Contain_Relaxed_Init (E) then E_Init_Module (E)
-                  else M);
-            begin
-               Insert_Symbol
-                 (E, WNE_Is_Moved,
-                  New_Identifier
-                    (Symb   => NID (To_String (WNE_Is_Moved)),
-                     Module => Pred_Module,
-                     Domain => EW_Term,
-                     Typ    => EW_Bool_Type));
-               Insert_Symbol
-                 (E, WNE_Move,
-                  New_Identifier
-                    (Symb   => NID (To_String (WNE_Move)),
-                     Module => AM,
-                     Domain => EW_Prog));
-               Insert_Symbol
-                 (E, WNE_Moved_Relation,
-                  New_Identifier
-                    (Symb   => NID (To_String (WNE_Moved_Relation)),
-                     Module => Pred_Module,
-                     Domain => EW_Term,
-                     Typ    => EW_Bool_Type));
-            end;
+            Insert_Symbol
+              (E, WNE_Is_Moved,
+               New_Identifier
+                 (Symb   => NID (To_String (WNE_Is_Moved)),
+                  Module => E_Move_Module (E),
+                  Domain => EW_Term,
+                  Typ    => EW_Bool_Type));
+            Insert_Symbol
+              (E, WNE_Move,
+               New_Identifier
+                 (Symb   => NID (To_String (WNE_Move)),
+                  Module => E_Move_Module
+                    (E, Axiom => Has_Predeclared_Move_Predicates (E)),
+                  Domain => EW_Prog));
+            Insert_Symbol
+              (E, WNE_Moved_Relation,
+               New_Identifier
+                 (Symb   => NID (To_String (WNE_Moved_Relation)),
+                  Module => E_Move_Module (E),
+                  Domain => EW_Term,
+                  Typ    => EW_Bool_Type));
          end if;
 
          --  Symbols for scalar types

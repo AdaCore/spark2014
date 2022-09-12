@@ -120,11 +120,11 @@ contexts and has the described semantics:
 A default argument of On is assumed for any SPARK_Mode pragma or
 aspect_specification for which no argument is explicitly specified.
 
-A SPARK_Mode of Auto cannot be explicitly specified; the
-cases in which a SPARK_Mode of Auto is implicitly specified are
-described below. Roughly speaking, Auto indicates that it is left up to
-the formal verification tools to determine whether or not a given construct
-is in |SPARK|.
+A SPARK_Mode of Auto can only be explicitly specified for a configuration
+pragma; the cases in which a SPARK_Mode of Auto is implicitly specified are
+described below. Roughly speaking, Auto indicates that it is left up to the
+formal verification tools to determine whether or not a given construct is in
+|SPARK|.
 
 A SPARK_Mode pragma or aspect specification shall only apply to a
 (section of a) package, generic package, subprogram, or

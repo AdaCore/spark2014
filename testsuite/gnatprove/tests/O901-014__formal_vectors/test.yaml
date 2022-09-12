@@ -1,3 +1,4 @@
 prove_all:
   steps: 1
   opt: ["-u","hnco-test2.adb"]
+  sparklib: True

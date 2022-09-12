@@ -1,5 +1,4 @@
-with Ada.Containers.Formal_Ordered_Maps;
-use Ada.Containers;
+with SPARK.Containers.Formal.Ordered_Maps;
 
 package Replacement with
   SPARK_Mode
@@ -7,8 +6,8 @@ is
    type Set is array (Integer range <>) of Integer;
 
    package Inverse_Sets is new
-     Formal_Ordered_Maps (Key_Type     => Integer,
-                          Element_Type => Integer);
+     SPARK.Containers.Formal.Ordered_Maps (Key_Type     => Integer,
+                                           Element_Type => Integer);
    subtype Inverse_Set is Inverse_Sets.Map;
    use Inverse_Sets;
 

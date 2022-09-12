@@ -1,0 +1,248 @@
+spark-containers-formal-vectors.ads:294:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.adb:342
+spark-containers-formal-vectors.ads:294:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:295:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.adb:342
+spark-containers-formal-vectors.ads:295:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:299:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.adb:342
+spark-containers-formal-vectors.ads:299:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:301:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.adb:342
+spark-containers-formal-vectors.ads:301:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:320:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_vectors.adb:342
+spark-containers-formal-vectors.ads:320:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:320:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_vectors.adb:342
+spark-containers-formal-vectors.ads:320:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:343:51: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:385:73: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:418:51: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:453:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:499:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:523:51: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:564:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:629:28: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:629:57: info: range check proved (CVC5: 2 VC), in instantiation at test_vectors.adb:342
+spark-containers-formal-vectors.ads:629:57: info: range check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:757:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_vectors.adb:342
+spark-containers-formal-vectors.ads:757:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:760:38: info: range check proved (CVC5: 2 VC), in instantiation at test_vectors.adb:342
+spark-containers-formal-vectors.ads:793:14: info: precondition proved (CVC5: 1 VC), in instantiation at test_vectors.adb:342
+spark-containers-formal-vectors.ads:793:14: info: precondition proved (CVC5: 1 VC), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:797:35: info: range check proved (CVC5: 2 VC), in instantiation at test_vectors.adb:342
+spark-containers-formal-vectors.ads:891:56: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:6
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.adb:342
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.ads:4
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.adb:342
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.ads:4
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.adb:342
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.ads:4
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.adb:342
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.ads:4
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.ads:4
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.adb:342
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.ads:4
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.adb:342
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.ads:4
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.adb:342
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.ads:4
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.adb:342
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at test_vectors.ads:4
+test_vectors.adb:12:07: info: initialization of "L" proved
+test_vectors.adb:12:10: info: initialization of "K" proved
+test_vectors.adb:12:22: info: range check proved (CVC5: 2 VC)
+test_vectors.adb:16:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:17:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:18:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:19:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:21:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:27:07: info: precondition proved (CVC5: 3 VC)
+test_vectors.adb:28:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:29:07: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:30:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:31:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:33:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:34:27: info: range check proved (CVC5: 2 VC)
+test_vectors.adb:36:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:37:07: info: precondition proved (CVC5: 3 VC)
+test_vectors.adb:38:07: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:41:24: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:43:10: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:44:25: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:47:07: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:48:07: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:49:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:49:24: info: overflow check proved (CVC5: 2 VC)
+test_vectors.adb:50:07: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:51:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:51:24: info: overflow check proved (CVC5: 2 VC)
+test_vectors.adb:52:07: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:58:07: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:59:07: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:60:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_vectors.adb:62:27: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+test_vectors.adb:64:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:66:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_vectors.adb:71:07: info: precondition proved (CVC5: 2 VC; Z3: 1 VC)
+test_vectors.adb:72:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_vectors.adb:74:27: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+test_vectors.adb:76:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:77:07: info: precondition proved (CVC5: 3 VC)
+test_vectors.adb:78:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_vectors.adb:79:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_vectors.adb:81:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_vectors.adb:81:27: info: range check proved (CVC5: 2 VC)
+test_vectors.adb:82:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_vectors.adb:82:29: info: overflow check proved (CVC5: 2 VC)
+test_vectors.adb:84:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:85:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:85:53: info: overflow check proved (CVC5: 2 VC)
+test_vectors.adb:86:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:87:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:90:07: info: precondition proved (CVC5: 4 VC)
+test_vectors.adb:90:19: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+test_vectors.adb:92:30: info: assertion proved (Z3: 2 VC)
+test_vectors.adb:93:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:98:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:100:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:103:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:106:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:107:22: medium: assertion might fail
+test_vectors.adb:112:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:113:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:114:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:116:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:116:22: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:117:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:117:22: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:118:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:118:22: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:120:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:122:07: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:124:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:125:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:125:22: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:126:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:126:22: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:128:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:130:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:131:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:131:22: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:132:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:132:22: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:133:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:133:22: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:139:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:140:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:142:07: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:143:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:143:23: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:148:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:148:23: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:153:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:153:23: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:158:07: medium: assertion might fail
+test_vectors.adb:165:07: info: initialization of "L" proved
+test_vectors.adb:165:10: info: initialization of "K" proved
+test_vectors.adb:165:22: info: range check proved (CVC5: 2 VC)
+test_vectors.adb:171:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:172:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:173:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:175:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:176:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:177:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:179:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:180:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:182:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:183:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:185:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:186:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:190:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:191:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:195:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:196:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:196:22: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:198:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:200:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:201:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:201:38: info: precondition proved (CVC5: 2 VC)
+test_vectors.adb:204:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:207:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:211:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:212:12: info: discriminant check proved (CVC5: 1 VC)
+test_vectors.adb:214:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:215:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:216:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:216:38: info: precondition proved (CVC5: 4 VC; Trivial: 2 VC)
+test_vectors.adb:219:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:220:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:220:38: info: precondition proved (CVC5: 4 VC; Trivial: 2 VC)
+test_vectors.adb:227:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:227:22: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:228:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:228:22: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:233:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:234:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:235:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:236:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:238:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:241:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:242:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:243:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:244:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:245:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:246:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:248:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:251:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:252:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:253:22: info: assertion proved (CVC5: 1 VC; Z3: 1 VC)
+test_vectors.adb:254:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:257:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:258:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:260:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:262:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:263:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:267:07: info: precondition proved (Z3: 1 VC)
+test_vectors.adb:268:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:269:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:270:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:272:07: info: precondition proved (Z3: 1 VC)
+test_vectors.adb:273:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:274:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:275:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:282:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:283:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:284:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:286:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:288:22: medium: assertion might fail
+test_vectors.adb:289:22: medium: assertion might fail
+test_vectors.adb:291:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:293:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:294:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:298:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:298:22: info: precondition proved (Z3: 1 VC)
+test_vectors.adb:298:42: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_vectors.adb:302:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:303:23: info: unrolling loop
+test_vectors.adb:304:25: info: assertion proved (Z3: 4 VC)
+test_vectors.adb:306:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:310:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:312:07: info: precondition proved (Z3: 1 VC)
+test_vectors.adb:314:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:314:22: info: precondition proved (Z3: 1 VC)
+test_vectors.adb:314:42: info: precondition proved (Z3: 1 VC)
+test_vectors.adb:323:07: info: precondition proved (Z3: 1 VC)
+test_vectors.adb:324:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_vectors.adb:325:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:329:07: info: precondition proved (CVC5: 1 VC; Z3: 2 VC)
+test_vectors.adb:331:22: medium: assertion might fail
+test_vectors.adb:333:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:335:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:336:07: medium: assertion might fail
+test_vectors.adb:346:07: info: initialization of "V" proved
+test_vectors.adb:346:19: info: range check proved (CVC5: 2 VC)
+test_vectors.adb:349:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:350:07: info: precondition proved (CVC5: 3 VC)
+test_vectors.adb:352:07: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:353:22: info: assertion proved (CVC5: 1 VC)
+test_vectors.adb:353:22: info: precondition proved (CVC5: 1 VC)
+test_vectors.adb:354:07: medium: assertion might fail
+test_vectors.ads:8:14: warning: subprogram "Run" has no effect
+test_vectors.ads:10:14: warning: subprogram "Large_Run" has no effect
+test_vectors.ads:12:14: warning: subprogram "Index_Negative" has no effect

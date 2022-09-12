@@ -1,10 +1,10 @@
-with Ada.Containers.Formal_Vectors; use Ada.Containers;
+with SPARK.Containers.Formal.Vectors;
 
 package Bounded with
   SPARK_Mode
 is
 
-   package Vect is new Ada.Containers.Formal_Vectors
+   package Vect is new SPARK.Containers.Formal.Vectors
      (Index_Type   => Positive,
       Element_Type => Integer);
    use Vect;

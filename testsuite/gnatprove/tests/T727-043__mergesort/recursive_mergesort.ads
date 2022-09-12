@@ -1,5 +1,5 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Functional_Maps;
+with SPARK.Containers.Functional.Maps;
 
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
@@ -12,7 +12,7 @@ package Recursive_Mergesort with SPARK_Mode is
 
    package Multi_Sets with Ghost is
 
-      package Occ_Map is new Ada.Containers.Functional_Maps
+      package Occ_Map is new SPARK.Containers.Functional.Maps
         (Key_Type     => Integer,
          Element_Type => Positive);
       type Multi_Set is new Occ_Map.Map;

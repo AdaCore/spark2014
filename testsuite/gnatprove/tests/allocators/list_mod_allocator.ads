@@ -1,6 +1,6 @@
 pragma Unevaluated_Use_Of_Old (Allow);
-with Ada.Containers.Functional_Vectors;
-with Ada.Containers.Functional_Sets;
+with SPARK.Containers.Functional.Vectors;
+with SPARK.Containers.Functional.Sets;
 with Ada.Containers;
 use type Ada.Containers.Count_Type;
 
@@ -25,11 +25,11 @@ is
    function All_Available return Boolean with Ghost;
 
    package M with Ghost is
-      package S1 is new Ada.Containers.Functional_Vectors (Index_Type => Positive,
+      package S1 is new SPARK.Containers.Functional.Vectors (Index_Type => Positive,
                                                            Element_Type => Resource);
       use S1;
 
-      package S2 is new Ada.Containers.Functional_Sets
+      package S2 is new SPARK.Containers.Functional.Sets
         (Element_Type => Resource, Equivalent_Elements => "=");
       use S2;
 

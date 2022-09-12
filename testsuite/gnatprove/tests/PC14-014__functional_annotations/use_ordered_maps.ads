@@ -1,12 +1,12 @@
 pragma Ada_2012;
 with Ada.Containers;       use Ada.Containers;
-with Ada.Containers.Formal_Ordered_Maps;
+with SPARK.Containers.Formal.Ordered_Maps;
 
 package Use_Ordered_Maps with SPARK_Mode is
 
    function Hash (Id : Natural) return Hash_Type is (Hash_Type (Id));
 
-   package My_Maps is new Ada.Containers.Formal_Ordered_Maps
+   package My_Maps is new SPARK.Containers.Formal.Ordered_Maps
      (Element_Type    => Integer,
       Key_Type        => Positive);
 

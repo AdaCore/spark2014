@@ -1,4 +1,5 @@
 comment: "colibri disabled because test too slow"
 prove_all:
+  sparklib: True
   steps: 600
   prover: ["cvc5", "altergo", "z3"]

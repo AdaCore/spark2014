@@ -23,8 +23,8 @@
 
 -- pragma Unevaluated_Use_Of_Old (Allow);
 
-with Ada.Containers.Formal_Ordered_Sets;
-with Ada.Containers.Functional_Sets;
+with SPARK.Containers.Formal.Ordered_Sets;
+with SPARK.Containers.Functional.Sets;
 with Ada.Containers;
 with Ada.Numerics.Big_Numbers.Big_Integers;
 
@@ -123,11 +123,11 @@ is
 
          function "<" (Left, Right : os_task_id_param_t) return Boolean;
 
-         package S1 is new Ada.Containers.Formal_Ordered_Sets
+         package S1 is new SPARK.Containers.Formal.Ordered_Sets
             (Element_Type => os_task_id_param_t);
          use S1;
 
-         package S2 is new Ada.Containers.Functional_Sets
+         package S2 is new SPARK.Containers.Functional.Sets
             (Element_Type => os_task_id_param_t);
          use S2;
 

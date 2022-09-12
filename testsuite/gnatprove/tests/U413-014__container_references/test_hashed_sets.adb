@@ -1,9 +1,9 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Formal_Hashed_Sets;
+with SPARK.Containers.Formal.Hashed_Sets;
 
 procedure Test_Hashed_Sets with SPARK_Mode is
    function Hash (Id : Positive) return Hash_Type is (Hash_Type (Id));
-   package Int_Sets is new Ada.Containers.Formal_Hashed_Sets (Positive, Hash);
+   package Int_Sets is new SPARK.Containers.Formal.Hashed_Sets (Positive, Hash);
    use Int_Sets;
 
    procedure Test (S : aliased in out Set) with

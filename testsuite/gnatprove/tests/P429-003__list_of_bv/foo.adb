@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
 
 package body Foo with SPARK_Mode
 is
@@ -7,7 +7,7 @@ is
 
    function Eq (Left, Right : T) return Boolean is (Left = Right);
 
-   package Lists is new Ada.Containers.Formal_Doubly_Linked_Lists
+   package Lists is new SPARK.Containers.Formal.Doubly_Linked_Lists
      (Element_Type => T);
    use Lists;
 

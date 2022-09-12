@@ -1,4 +1,4 @@
-with Ada.Containers.Functional_Vectors;
+with SPARK.Containers.Functional.Vectors;
 with Ada.Containers; use Ada.Containers;
 
 generic
@@ -46,7 +46,7 @@ package Formal_Vectors with SPARK_Mode is
 
    -- function Element (V : Vector; I : Positive) return access Element_Type; --  traversal functions on ownership types not supported by RM yet
 
-   package Model_Sequence is new Ada.Containers.Functional_Vectors (Positive, Element_Model);
+   package Model_Sequence is new SPARK.Containers.Functional.Vectors (Positive, Element_Model);
    use all type Model_Sequence.Sequence;
    subtype Model_Type is Model_Sequence.Sequence;
 

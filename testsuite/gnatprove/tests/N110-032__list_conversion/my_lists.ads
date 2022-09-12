@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
 with Ada.Containers; use Ada.Containers;
 package My_Lists is
    pragma SPARK_Mode (On);
@@ -8,7 +8,7 @@ package My_Lists is
    function My_Eq (I1 : Element_Type; I2 : Element_Type) return Boolean is
      (I1 = I2);
 
-   package My_Lists is new Ada.Containers.Formal_Doubly_Linked_Lists
+   package My_Lists is new SPARK.Containers.Formal.Doubly_Linked_Lists
      (Element_Type);
 
    use My_Lists;

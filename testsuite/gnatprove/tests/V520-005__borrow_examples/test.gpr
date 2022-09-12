@@ -1,3 +1,5 @@
+with "sparklib";
+
 project Test is
 
    for Source_Dirs use (".", "1_set_all_to_zero", "2_linear_search", "3_pointer_based_maps", "4_route_shift", "5_binary_search_trees");

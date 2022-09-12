@@ -1,0 +1,56 @@
+proves_false.adb:4:11: high: all paths in "Proves_False" raise exceptions or do not terminate normally
+proves_false.adb:16:11: info: precondition proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:16:11: medium: postcondition might fail, in instantiation at proves_false.adb:42
+proves_false.adb:16:30: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:16:40: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:16:50: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:17:11: info: precondition proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:17:29: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:17:39: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:19:28: warning: unused variable "M", in instantiation at proves_false.adb:42
+proves_false.adb:20:27: warning: unused variable "M", in instantiation at proves_false.adb:42
+proves_false.adb:24:23: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:24:23: medium: postcondition might fail, in instantiation at proves_false.adb:42
+proves_false.adb:24:46: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:30:34: info: in default value of private type at proves_false.adb:8, in instantiation at proves_false.adb:42
+proves_false.adb:30:34: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:35:63: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:36:79: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:36:81: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:36:83: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:37:75: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:37:79: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:39:59: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at proves_false.adb:42
+proves_false.adb:42:04: info: expression function body not available for proof ("Length" might not return)
+proves_false.adb:42:04: info: expression function body not available for proof ("Length" might not return)
+proves_false.adb:42:04: info: function contract not available for proof ("Length" might not return)
+proves_false.adb:42:04: info: function contract not available for proof ("Length" might not return)
+proves_false.adb:42:04: info: in instantiation at line 24
+proves_false.adb:42:04: info: in instantiation at line 24
+proves_false.adb:42:04: info: in instantiation at line 37
+proves_false.adb:42:04: info: in instantiation at line 37
+proves_false.adb:46:18: medium: assertion might fail
+proves_false.adb:46:31: info: expression function body not available for proof ("Length" might not return)
+proves_false.adb:46:31: info: function contract not available for proof ("Length" might not return)
+proves_false.adb:46:31: info: predicate check proved (Trivial: 1 VC)
+proves_false.adb:46:52: info: function contract not available for proof ("Empty" might not return)
+proves_false.adb:46:62: info: predicate check proved (Trivial: 1 VC)
+proves_false.adb:47:04: medium: assertion might fail
+statement.adb:12:16: info: implicit function contract might not be available on recursive calls
+statement.adb:15:23: warning: unused variable "M"
+statement.adb:16:22: warning: unused variable "M"
+statement.adb:22:34: info: in default value of private type at statement.adb:6
+statement.adb:22:34: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+statement.adb:25:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+statement.adb:26:74: info: predicate check proved (Trivial: 1 VC)
+statement.adb:26:76: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+statement.adb:26:78: info: predicate check proved (Trivial: 1 VC)
+statement.adb:27:75: info: predicate check proved (Trivial: 1 VC)
+statement.adb:27:79: info: predicate check proved (Trivial: 1 VC)
+statement.adb:33:31: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+statement.adb:35:14: info: precondition proved (Trivial: 1 VC)
+statement.adb:35:19: medium: "Length" and "Has_Index" are mutually recursive, terminating annotation on "Length" could be incorrect
+statement.adb:35:19: medium: loop might be nonterminating, terminating annotation on "Length" could be incorrect
+statement.adb:36:20: info: predicate check proved (Trivial: 1 VC)
+statement.adb:36:24: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+statement.adb:36:26: info: predicate check proved (Trivial: 1 VC)

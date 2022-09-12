@@ -1,5 +1,5 @@
 with Interfaces; use Interfaces;
-with Pointers_With_Aliasing;
+with SPARK.Pointers.Pointers_With_Aliasing;
 
 procedure Example_Untagged_Obj with SPARK_Mode is
    type Object is record
@@ -7,7 +7,7 @@ procedure Example_Untagged_Obj with SPARK_Mode is
       G : Integer;
    end record;
 
-   package Pointers_To_Obj is new Pointers_With_Aliasing (Object);
+   package Pointers_To_Obj is new SPARK.Pointers.Pointers_With_Aliasing (Object);
 
    use Pointers_To_Obj;
    use Memory_Model;

@@ -1,8 +1,8 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Formal_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
 
 procedure Test_Lists with SPARK_Mode is
-   package Int_Lists is new Ada.Containers.Formal_Doubly_Linked_Lists (Integer);
+   package Int_Lists is new SPARK.Containers.Formal.Doubly_Linked_Lists (Integer);
    use Int_Lists;
 
    procedure Test (L : aliased in out List) with

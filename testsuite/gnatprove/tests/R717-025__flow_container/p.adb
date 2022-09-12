@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Ordered_Sets;
+with SPARK.Containers.Formal.Ordered_Sets;
 
 package body P with Refined_State => (S => Set), SPARK_Mode => On
 is
@@ -6,7 +6,7 @@ is
    function Less_Than (Left, Right : T) return Boolean is (Left < Right)
    with Global => null;
 
-   package Sets is new Ada.Containers.Formal_Ordered_Sets
+   package Sets is new SPARK.Containers.Formal.Ordered_Sets
      (Element_Type => T,
       "<"          => Less_Than);
 

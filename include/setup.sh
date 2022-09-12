@@ -1,5 +1,5 @@
-# Use "source setup.sh" before opening spark_lemmas.gpr in GNAT Studio
+# Use "source setup.sh" before opening sparklib.gpr in GNAT Studio
 
-export SPARK_LEMMAS_OBJECT_DIR=obj
-export SPARK_LEMMAS_INSTALLED=False
-export SPARK_LEMMAS_BODY_MODE=On
+export SPARKLIB_OBJECT_DIR=obj
+export SPARKLIB_INSTALLED=False
+export SPARKLIB_BODY_MODE=On

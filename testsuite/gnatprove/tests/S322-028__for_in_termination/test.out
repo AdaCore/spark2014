@@ -30,6 +30,9 @@ bounded_table.ads:57:15: info: precondition proved (Trivial: 1 VC), in instantia
 bounded_table.ads:58:15: info: precondition proved (Trivial: 1 VC), in instantiation at repro_main.adb:9
 bounded_table.ads:60:13: info: subprogram "Index_Of" will terminate, terminating annotation has been proved, in instantiation at repro_main.adb:9
 repro_main.adb:4:11: info: subprogram "Repro_Main" will terminate, terminating annotation has been proved
+repro_main.adb:9:04: error: "Member" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+repro_main.adb:9:04: error: instantiation error at bounded_table.ads:45
+repro_main.adb:9:04: error: unsupported recursive subprogram
 repro_main.adb:16:13: info: precondition proved (CVC5: 1 VC)
 repro_main.adb:17:13: info: precondition proved (CVC5: 1 VC)
 repro_main.adb:18:13: info: precondition proved (CVC5: 1 VC)
@@ -39,3 +42,4 @@ repro_main.adb:22:08: info: precondition proved (CVC5: 1 VC)
 repro_main.adb:22:08: info: precondition proved (Trivial: 1 VC)
 repro_main.adb:23:38: info: precondition proved (CVC5: 2 VC)
 repro_main.adb:24:28: info: loop variant proved (CVC5: 1 VC)
+gnatprove: error during flow analysis and proof

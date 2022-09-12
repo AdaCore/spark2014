@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Hashed_Sets;
+with SPARK.Containers.Formal.Hashed_Sets;
 with Ada.Containers; use Ada.Containers;
 package P is pragma SPARK_Mode (On);
 
@@ -9,7 +9,7 @@ package P is pragma SPARK_Mode (On);
 
    function Hash (Id : Element_Type) return Hash_Type is (Hash_Type (Id));
 
-   package My_Sets is new Ada.Containers.Formal_Hashed_Sets
+   package My_Sets is new SPARK.Containers.Formal.Hashed_Sets
      (Element_Type, Hash, My_Eq);
    use My_Sets; use My_Sets.Formal_Model;
 

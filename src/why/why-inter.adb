@@ -24,28 +24,30 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Gnat2Why.Tables;        use Gnat2Why.Tables;
-with Namet;                  use Namet;
-with Snames;                 use Snames;
-with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
-with SPARK_Util;             use SPARK_Util;
-with SPARK_Xrefs;            use SPARK_Xrefs;
-with Stand;                  use Stand;
-with String_Utils;           use String_Utils;
+with Errout;                         use Errout;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Gnat2Why.Tables;                use Gnat2Why.Tables;
+with Namet;                          use Namet;
+with Snames;                         use Snames;
+with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
+with SPARK_Util;                     use SPARK_Util;
+with SPARK_Xrefs;                    use SPARK_Xrefs;
+with Stand;                          use Stand;
+with String_Utils;                   use String_Utils;
 with Uintp;
-with Why.Atree.Accessors;    use Why.Atree.Accessors;
-with Why.Atree.Builders;     use Why.Atree.Builders;
-with Why.Atree.Modules;      use Why.Atree.Modules;
-with Why.Atree.Mutators;     use Why.Atree.Mutators;
-with Why.Atree.Tables;       use Why.Atree.Tables;
-with Why.Atree.Traversal;    use Why.Atree.Traversal;
-with Why.Conversions;        use Why.Conversions;
-with Why.Gen.Arrays;         use Why.Gen.Arrays;
-with Why.Gen.Expr;           use Why.Gen.Expr;
-with Why.Gen.Names;          use Why.Gen.Names;
-with Why.Gen.Scalars;        use Why.Gen.Scalars;
-with Why.Images;             use Why.Images;
+with Why.Atree.Accessors;            use Why.Atree.Accessors;
+with Why.Atree.Builders;             use Why.Atree.Builders;
+with Why.Atree.Modules;              use Why.Atree.Modules;
+with Why.Atree.Mutators;             use Why.Atree.Mutators;
+with Why.Atree.Tables;               use Why.Atree.Tables;
+with Why.Atree.Traversal;            use Why.Atree.Traversal;
+with Why.Conversions;                use Why.Conversions;
+with Why.Gen.Arrays;                 use Why.Gen.Arrays;
+with Why.Gen.Expr;                   use Why.Gen.Expr;
+with Why.Gen.Names;                  use Why.Gen.Names;
+with Why.Gen.Scalars;                use Why.Gen.Scalars;
+with Why.Images;                     use Why.Images;
 
 ---------------
 -- Why.Inter --
@@ -519,7 +521,28 @@ package body Why.Inter is
             Filter => Filter);
 
          for M of Closure loop
-            Add_With_Clause (Th, W_Module_Id (M), EW_Clone_Default);
+
+            --  Safe guard: the post axiom of subprograms and entries should
+            --  not be used to prove the subprogram itself. If the subprogram
+            --  is recursive, then the post axiom is in the Rec_Axiom module.
+
+            if Present (Defined_Entity)
+              and then Is_Subprogram_Or_Entry (Defined_Entity)
+              and then Has_Post_Axiom (Defined_Entity)
+              and then +M = (if Is_Recursive (Defined_Entity)
+                             then E_Rec_Axiom_Module (Defined_Entity)
+                             else E_Axiom_Module (Defined_Entity))
+            then
+               Error_Msg_F
+                 ("unsupported recursive subprogram", Defined_Entity);
+               Error_Msg_NE
+                 ("\& might include a recursive call due to a type invariant"
+                  & " or subtype predicate, or there might be a cycle in the"
+                  & " elaboration of the enclosing unit",
+                  Defined_Entity, Defined_Entity);
+            else
+               Add_With_Clause (Th, W_Module_Id (M), EW_Clone_Default);
+            end if;
          end loop;
       end Add_Axiom_Imports;
 
@@ -1220,6 +1243,19 @@ package body Why.Inter is
                     Module   => Module,
                     Typ      => Typ);
             end if;
+         end;
+
+      --  The name of local parameters should always be prefixed to avoid
+      --  collision with the name of the function.
+
+      elsif Local
+        and then E in Formal_Kind_Id
+      then
+         declare
+            Param : constant String :=
+              To_String (WNE_Param_Prefix) & Suffix;
+         begin
+            return New_Identifier (Ada_Node => E, Name => Param, Typ => Typ);
          end;
 
       elsif Local then

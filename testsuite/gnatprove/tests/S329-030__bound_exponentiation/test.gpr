@@ -1,4 +1,4 @@
-with "spark_lemmas";
+with "sparklib";
 
 project Test is
 end Test;

@@ -1,11 +1,11 @@
-with Ada.Containers.Formal_Hashed_Maps;
+with SPARK.Containers.Formal.Hashed_Maps;
 with Ada.Containers; use Ada.Containers;
 
 package My_Maps with SPARK_Mode is
 
    function Hash (Id : Natural) return Hash_Type is (Hash_Type (Id));
 
-   package M is new Ada.Containers.Formal_Hashed_Maps
+   package M is new SPARK.Containers.Formal.Hashed_Maps
      (Element_Type    => Integer,
       Key_Type        => Positive,
       Hash            => Hash,
@@ -22,7 +22,7 @@ package My_Maps with SPARK_Mode is
 
    function Hash (Id : My_Rec) return Hash_Type is (Hash_Type (Id.F));
 
-   package N is new Ada.Containers.Formal_Hashed_Maps
+   package N is new SPARK.Containers.Formal.Hashed_Maps
      (Element_Type    => Integer,
       Key_Type        => My_Rec,
       Hash            => Hash,

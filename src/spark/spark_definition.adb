@@ -64,6 +64,7 @@ with String_Utils;                    use String_Utils;
 with Tbuild;
 with Uintp;                           use Uintp;
 with Urealp;                          use Urealp;
+with VC_Kinds;                        use VC_Kinds;
 
 package body SPARK_Definition is
 
@@ -2895,8 +2896,8 @@ package body SPARK_Definition is
                 (Ekind (E) /= E_Variable or else not No_Caching_Enabled (E))
             then
                Error_Msg_NE
-                 ("?indirect writes to & through a potential alias are"
-                  & " ignored", Address, E);
+                 (Warning_Message (Warn_Indirect_Writes_Through_Alias),
+                  Address, E);
                Error_Msg_NE
                  ("\consider annotating & with Async_Writers",
                   Address, E);
@@ -2925,8 +2926,8 @@ package body SPARK_Definition is
                         or else not No_Caching_Enabled (E))
                   then
                      Error_Msg_NE
-                       ("?writing to & is assumed to have no effects on"
-                        & " other non-volatile objects", Address, E);
+                       (Warning_Message (Warn_Indirect_Writes_To_Alias),
+                        Address, E);
                      Error_Msg_NE
                        ("\make sure that all overlapping objects have"
                         & " Async_Writers set to True",
@@ -2985,8 +2986,8 @@ package body SPARK_Definition is
 
                   if E_Is_Constant then
                      Error_Msg_NE
-                       ("?initialization of & is assumed to have no effects on"
-                        & " other non-volatile objects", Address, E);
+                       (Warning_Message (Warn_Initialization_To_Alias),
+                        Address, E);
                      Error_Msg_NE
                        ("\consider annotating & with Import",
                         Address, E);
@@ -3178,9 +3179,7 @@ package body SPARK_Definition is
               and then Is_Enumeration_Type (Etype (P))
             then
                Error_Msg_Name_1 := Aname;
-               Error_Msg_N
-                 ("?attribute % has an implementation-defined length",
-                  N);
+               Error_Msg_N (Warning_Message (Warn_Image_Attribute_Length), N);
             end if;
 
          --  These attributes are supported, but generate a warning in
@@ -3225,14 +3224,14 @@ package body SPARK_Definition is
             then
                Error_Msg_Name_1 := Aname;
                Error_Msg_N
-                 ("?attribute % has an implementation-defined value", N);
+                 (Warning_Message (Warn_Representation_Attribute_Value), N);
             end if;
 
          when Attribute_Valid =>
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
             then
-               Error_Msg_F ("?attribute Valid is assumed to return True", N);
+               Error_Msg_F (Warning_Message (Warn_Attribute_Valid), N);
             end if;
 
          --  Attribute Initialized is used on prefixes with relaxed
@@ -3672,7 +3671,7 @@ package body SPARK_Definition is
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
                   Error_Msg_F
-                    ("?possible reassociation due to missing parentheses",
+                    (Warning_Message (Warn_Operator_Reassociation),
                      Left_Opnd (N));
                end if;
 
@@ -3682,7 +3681,7 @@ package body SPARK_Definition is
                   pragma Annotate
                     (Xcov, Exempt_On, "GNAT associates to the left");
                   Error_Msg_F
-                    ("?possible reassociation due to missing parentheses",
+                    (Warning_Message (Warn_Operator_Reassociation),
                      Right_Opnd (N));
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
@@ -3692,7 +3691,7 @@ package body SPARK_Definition is
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
                   Error_Msg_F
-                    ("?possible reassociation due to missing parentheses",
+                    (Warning_Message (Warn_Operator_Reassociation),
                      Left_Opnd (N));
                end if;
 
@@ -3702,7 +3701,7 @@ package body SPARK_Definition is
                   pragma Annotate
                     (Xcov, Exempt_On, "GNAT associates to the left");
                   Error_Msg_F
-                    ("?possible reassociation due to missing parentheses",
+                    (Warning_Message (Warn_Operator_Reassociation),
                      Right_Opnd (N));
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
@@ -4086,14 +4085,14 @@ package body SPARK_Definition is
             if Might_Have_Flow_Assumptions then
                if not Has_User_Supplied_Globals (E) then
                   Error_Msg_NE
-                    ("?no Global contract available for &", N, E);
+                    (Warning_Message (Warn_Assumed_Global_Null), N, E);
                   Error_Msg_NE
                     ("\\assuming & has no effect on global items", N, E);
                end if;
 
                if not Has_Any_Returning_Annotation (E) then
                   Error_Msg_NE
-                    ("?no returning annotation available for &", N, E);
+                    (Warning_Message (Warn_Assumed_Always_Return), N, E);
                   Error_Msg_NE
                     ("\\assuming & always returns", N, E);
                end if;
@@ -4111,16 +4110,14 @@ package body SPARK_Definition is
         or else (Is_Unchecked_Conversion_Instance (E)
                  and then Has_Access_Type (Etype (E)))
       then
-         Error_Msg_NE
-           ("?call to & is assumed to return a valid access"
-            & " designating a valid value", N, E);
+         Error_Msg_NE (Warning_Message (Warn_Address_To_Access), N, E);
          if Is_Access_Constant (Etype (E)) then
             Error_Msg_NE
-              ("?potential aliases of the value returned by a call"
+              ("\\potential aliases of the value returned by a call"
                & " to & are assumed to be constant", N, E);
          else
             Error_Msg_NE
-              ("?the value returned by a call to & is assumed to "
+              ("\\the value returned by a call to & is assumed to "
                & "have no aliases", N, E);
          end if;
       end if;
@@ -7197,15 +7194,25 @@ package body SPARK_Definition is
       --  If the entity is declared in the scope of SPARK_Mode => Off, then do
       --  not consider whether it could be in SPARK or not. Restore SPARK_Mode
       --  pragma before returning.
-      --
-      --  ??? We still want to reject unsupported abstract states that are
-      --  Part_Of of a single concurrent object. This exception was added here
-      --  for a different reason and it is not clear if it is still needed.
 
-      if SPARK_Pragma_Is (Opt.Off)
-        and then Ekind (E) /= E_Abstract_State
-      then
-         goto Restore;
+      if SPARK_Pragma_Is (Opt.Off) then
+
+         --  Define the root cause for rejecting use of an entity declared with
+         --  SPARK_Mode Off.
+
+         if Emit_Messages then
+            Add_Violation_Root_Cause
+              (E, Msg => "entity declared with SPARK_Mode Off");
+         end if;
+
+         --  ??? We still want to reject unsupported abstract states that are
+         --  Part_Of of a single concurrent object. This exception was added
+         --  here for a different reason and it is not clear if it is still
+         --  needed.
+
+         if Ekind (E) /= E_Abstract_State then
+            goto Restore;
+         end if;
       end if;
 
       --  For recursive references, start with marking the entity in SPARK
@@ -7921,9 +7928,16 @@ package body SPARK_Definition is
 
       Current_SPARK_Pragma := SPARK_Pragma (Id);
 
-      if not SPARK_Pragma_Is (Opt.Off)
-        and then not Violation_Detected
-      then
+      if SPARK_Pragma_Is (Opt.Off) then
+         --  Define the root cause for rejecting use of an entity declared with
+         --  SPARK_Mode Off.
+
+         if Emit_Messages then
+            Add_Violation_Root_Cause
+              (Id, Msg => "entity declared with SPARK_Mode Off");
+         end if;
+
+      elsif not Violation_Detected then
          Entities_In_SPARK.Include (Id);
       end if;
 
@@ -8032,7 +8046,7 @@ package body SPARK_Definition is
             elsif Emit_Warning_Info_Messages
               and then not SPARK_Pragma_Is (Opt.Off)
             then
-               Error_Msg_F ("?pragma Overflow_Mode in code is ignored", N);
+               Error_Msg_F (Warning_Message (Warn_Pragma_Overflow_Mode), N);
             end if;
 
          when Pragma_Attach_Handler =>
@@ -8345,7 +8359,7 @@ package body SPARK_Definition is
               and then SPARK_Pragma_Is (Opt.On)
             then
                Error_Msg_Name_1 := Pname;
-               Error_Msg_N ("?pragma % ignored (not yet supported)", N);
+               Error_Msg_N (Warning_Message (Warn_Pragma_Ignored), N);
             end if;
 
          --  Unknown_Pragma is treated here. We use an OTHERS case in order to
@@ -8741,11 +8755,12 @@ package body SPARK_Definition is
                then
                   case Ekind (E) is
                   when E_Function =>
-                     Error_Msg_NE ("?analyzing unreferenced function &", N, E);
+                     Error_Msg_NE
+                       (Warning_Message (Warn_Unreferenced_Function), N, E);
 
                   when E_Procedure =>
                      Error_Msg_NE
-                       ("?analyzing unreferenced procedure &", N, E);
+                       (Warning_Message (Warn_Unreferenced_Procedure), N, E);
 
                   when others =>
                      raise Program_Error;

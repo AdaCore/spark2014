@@ -1,4 +1,4 @@
-with Ada.Containers.Functional_Vectors;
+with SPARK.Containers.Functional.Vectors;
 
 procedure Test with SPARK_Mode is
 
@@ -94,7 +94,7 @@ procedure Test with SPARK_Mode is
       end if;
    end QE_LPS_OK_Depends;
 
-   package My_Sequences is new Ada.Containers.Functional_Vectors
+   package My_Sequences is new SPARK.Containers.Functional.Vectors
      (Index_Type   => Positive,
       Element_Type => Integer);
    type My_Seq is new My_Sequences.Sequence;

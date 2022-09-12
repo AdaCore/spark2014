@@ -2400,7 +2400,7 @@ spark-higher_order-fold.adb:912:19: info: loop invariant initialization proved (
 
 spark-higher_order-fold.adb:912:19: info: loop invariant preservation proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_higher_order3.ads:33
 
-spark-higher_order-fold.adb:912:19: info: loop invariant preservation proved (altergo: 2 VC), in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.adb:912:19: info: loop invariant preservation proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_higher_order3.ads:77
 
 spark-higher_order-fold.adb:913:34: info: precondition proved (CVC5: 6 VC), in instantiation at test_higher_order3.ads:33
 

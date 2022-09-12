@@ -1,0 +1,4 @@
+prove_all:
+  steps: 2000
+  counterexample: False
+  sparklib: True

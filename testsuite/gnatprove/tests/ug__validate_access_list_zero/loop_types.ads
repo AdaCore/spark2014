@@ -1,5 +1,5 @@
-with Ada.Containers.Formal_Doubly_Linked_Lists;
-with Ada.Containers.Formal_Vectors;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Vectors;
 
 package Loop_Types
   with SPARK_Mode
@@ -10,10 +10,10 @@ is
 
    type Arr_T is array (Index_T) of Component_T;
 
-   package Vectors is new Ada.Containers.Formal_Vectors (Index_T, Component_T);
+   package Vectors is new SPARK.Containers.Formal.Vectors (Index_T, Component_T);
    subtype Vec_T is Vectors.Vector;
 
-   package Lists is new Ada.Containers.Formal_Doubly_Linked_Lists (Component_T);
+   package Lists is new SPARK.Containers.Formal.Doubly_Linked_Lists (Component_T);
    subtype List_T is Lists.List;
 
    type List_Cell;

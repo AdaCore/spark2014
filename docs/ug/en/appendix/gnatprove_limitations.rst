@@ -14,6 +14,16 @@ ensure that their programs are not impacted.
 * Checks related to subprogram termination do not take into account dispatching
   calls.
 
+* Calls occuring inside type invariants and subtype predicate are not taken into
+  account by the verification tool while computing the call graph. This can in
+  particular lead to soundness issues when such calls introduce recursion
+  between subprograms.
+
+* Cycles in the elaboration order between entities can lead to soundness issues.
+  These cycles are generally detected during compilation. It might not be
+  the case if such cycles are due to contracts and the program is compiled with
+  assertions disabled.
+
 Other Tool Limitations
 ----------------------
 

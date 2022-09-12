@@ -1,10 +1,10 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Formal_Doubly_Linked_Lists;
+with SPARK.Containers.Formal.Doubly_Linked_Lists;
 
 package Inst_Ext_Ax with SPARK_Mode is
-   package OK_Lists1 is new Ada.Containers.Formal_Doubly_Linked_Lists
+   package OK_Lists1 is new SPARK.Containers.Formal.Doubly_Linked_Lists
      (Element_Type => Natural);
-   package OK_Lists2 is new Ada.Containers.Formal_Doubly_Linked_Lists
+   package OK_Lists2 is new SPARK.Containers.Formal.Doubly_Linked_Lists
      (Element_Type => Natural);
 
    subtype Int100 is Integer range 0 .. 100;

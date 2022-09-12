@@ -1,11 +1,11 @@
 with No_SPARK_Mode; use No_SPARK_Mode;
-with Ada.Containers.Formal_Hashed_Maps;
+with SPARK.Containers.Formal.Hashed_Maps;
 with SPARK_Boundary; use SPARK_Boundary;
 with Common_Formal_Containers; use Common_Formal_Containers;
 
 package Automation_Request_Validation is
 
-   package Int64_Operating_Region_Maps is new Ada.Containers.Formal_Hashed_Maps
+   package Int64_Operating_Region_Maps is new SPARK.Containers.Formal.Hashed_Maps
      (Key_Type     => Int64,
       Element_Type => OperatingRegionAreas,
       Hash         => Int64_Hash);

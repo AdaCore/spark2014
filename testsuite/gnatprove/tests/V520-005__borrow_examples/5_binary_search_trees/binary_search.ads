@@ -1,5 +1,5 @@
 with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Functional_Sets;
+with SPARK.Containers.Functional.Sets;
 
 package Binary_Search with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
@@ -88,7 +88,7 @@ package Binary_Search with SPARK_Mode is
      (if V.Present then I < V.Value else True)
    with Ghost;
 
-   package Int_Sets is new Ada.Containers.Functional_Sets (Integer);
+   package Int_Sets is new SPARK.Containers.Functional.Sets (Integer);
    type Int_Set is new Int_Sets.Set;
    --  An infinite set of integers
 

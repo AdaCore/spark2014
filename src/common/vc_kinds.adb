@@ -114,6 +114,17 @@ package body VC_Kinds is
             | VC_UC_Target
             | VC_UC_Same_Size              => "843",
 
+         --  CWE-570 Expression is Always False
+
+         when VC_Inconsistent_Pre
+            | VC_Inconsistent_Post
+            | VC_Inconsistent_Assume       => "570",
+
+         --  CWE-561 Dead Code
+
+         when VC_Unreachable_Branch
+            | VC_Dead_Code                 => "561",
+
          --  We did not find a relevant CWE for the following yet
 
          when VC_Invariant_Check
@@ -144,7 +155,6 @@ package body VC_Kinds is
             | VC_Stronger_Classwide_Post
             | VC_Weaker_Pre_Access
             | VC_Stronger_Post_Access
-            | VC_Warning_Kind
             | VC_Null_Exclusion
             | VC_UC_Alignment
             | VC_Unchecked_Union_Restriction
@@ -498,6 +508,59 @@ package body VC_Kinds is
             "A parameter or locally declared object is never used.",
          when Volatile_Function_Without_Volatile_Effects  =>
             "A non-volatile function wrongly declared as volatile.");
+
+   function Description (Kind : Misc_Warning_Kind) return String is
+     (case Kind is
+        when Warn_Address_To_Access =>
+          "call to conversion function is assumed to return a valid access"
+          & " designating a valid value",
+        when Warn_Assumed_Global_Null =>
+          "no Global contract available for subprogram, null is assumed",
+        when Warn_Assumed_Always_Return =>
+          "no returning annotation available for subprogram, "
+          & "subprogram is assumed to always return",
+        when Warn_Attribute_Valid =>
+          "attribute Valid is assumed to return True",
+        when Warn_Indirect_Writes_Through_Alias =>
+          "indirect writes to object through a potential alias are ignored",
+        when Warn_Indirect_Writes_To_Alias =>
+          "writing to object is assumed to have no effects on"
+          & " other non-volatile objects",
+        when Warn_Initialization_To_Alias =>
+          "initialization of object is assumed to have no effects on"
+          & " other non-volatile objects",
+        when Warn_Function_Is_Valid =>
+          "function Is_Valid is assumed to return True",
+        when Warn_Lemma_Procedure_No_Return =>
+          "non-returning lemma procedure cannot be instanciated automatically",
+        when Warn_Pragma_Annotate_No_Check =>
+          "no check message justified by this pragma",
+        when Warn_Pragma_Annotate_Proved_Check =>
+          "only proved check messages justified by this pragma",
+        when Warn_Pragma_Annotate_Terminating =>
+          "Terminating annotations are deprecated",
+        when Warn_Pragma_External_Axiomatization =>
+          "External Axiomatizations are not supported anymore, ignored",
+        when Warn_Pragma_Ignored =>
+          "pragma is ignored (it is not yet supported)",
+        when Warn_Pragma_Overflow_Mode =>
+          "pragma Overflow_Mode in code is ignored",
+        when Warn_Precondition_Statically_False =>
+          "precondition is statically False",
+        when Warn_Unreferenced_Function =>
+          "analyzing unreferenced function",
+        when Warn_Unreferenced_Procedure =>
+          "analyzing unreferenced procedure",
+        when Warn_Variant_Not_Recursive =>
+          "no recursive call visible on subprogram with Subprogram_Variant",
+
+        --  Warnings only issued when using switch --pedantic
+        when Warn_Image_Attribute_Length =>
+          "string attribute has an implementation-defined length",
+        when Warn_Operator_Reassociation =>
+          "possible operator reassociation due to missing parentheses",
+        when Warn_Representation_Attribute_Value =>
+          "representation attribute has an implementation-defined value");
 
    pragma Annotate (Xcov, Exempt_Off);
 
@@ -1050,6 +1113,55 @@ package body VC_Kinds is
             "object is not used",
          when Volatile_Function_Without_Volatile_Effects  =>
             "non-volatile function wrongly declared as volatile");
+
+   function Kind_Name (Kind : Misc_Warning_Kind) return String is
+     (case Kind is
+        when Warn_Address_To_Access =>
+          "address to access conversion",
+        when Warn_Assumed_Global_Null =>
+          "assumed Global null",
+        when Warn_Assumed_Always_Return =>
+          "assumed Always_Return",
+        when Warn_Attribute_Valid =>
+          "attribute Valid always True",
+        when Warn_Indirect_Writes_Through_Alias =>
+          "indirect writes through alias",
+        when Warn_Indirect_Writes_To_Alias =>
+          "indirect writes to alias",
+        when Warn_Initialization_To_Alias =>
+          "initialization of alias",
+        when Warn_Function_Is_Valid =>
+          "function Is_Valid always return True",
+        when Warn_Lemma_Procedure_No_Return =>
+          "lemma not instanciated automatically",
+        when Warn_Pragma_Annotate_No_Check =>
+          "no check message justified",
+        when Warn_Pragma_Annotate_Proved_Check =>
+          "proved check message justified",
+        when Warn_Pragma_Annotate_Terminating =>
+          "Terminating deprecated",
+        when Warn_Pragma_External_Axiomatization =>
+          "External Axiomatizations not supported",
+        when Warn_Pragma_Ignored =>
+          "pragma ignored",
+        when Warn_Pragma_Overflow_Mode =>
+          "Overflow_Mode ignored",
+        when Warn_Precondition_Statically_False =>
+          "precondition statically False",
+        when Warn_Unreferenced_Function =>
+          "unreferenced function",
+        when Warn_Unreferenced_Procedure =>
+          "unreferenced procedure",
+        when Warn_Variant_Not_Recursive =>
+          "variant not recursive",
+
+        --  Warnings only issued when using switch --pedantic
+        when Warn_Image_Attribute_Length =>
+          "string attribute length",
+        when Warn_Operator_Reassociation =>
+          "operator reassociation",
+        when Warn_Representation_Attribute_Value =>
+          "representation attribute value");
 
    pragma Annotate (Xcov, Exempt_Off);
 
