@@ -546,6 +546,7 @@ module Floating_operations
   (* Elementary functions on floating point types *)
 
   type t
+  predicate is_finite t
   predicate is_zero t
   predicate is_one t
   predicate is_ge_zero t
@@ -569,6 +570,10 @@ module Floating_operations
   axiom ada_sqrt_one:
     forall x : t. is_one x -> is_one (ada_sqrt x)
   meta "remove_unused:dependency" axiom ada_sqrt_one, function ada_sqrt
+  axiom ada_sqrt_finite :
+    forall x : t [is_finite (ada_sqrt x)].
+      is_finite x -> is_finite (ada_sqrt x)
+  meta "remove_unused:dependency" axiom ada_sqrt_finite, function ada_sqrt
   val ada_sqrt_ (x : t) : t
     requires { is_ge_zero x }
     ensures  { result = ada_sqrt x }
@@ -592,6 +597,12 @@ module Floating_operations
   axiom ada_power_left_one:
     forall x y : t. is_one x -> is_one (ada_power x y)
   meta "remove_unused:dependency" axiom ada_power_left_one, function ada_power
+  axiom ada_power_finite :
+    forall x y : t [is_finite (ada_power x y)].
+      (not (is_zero x) \/ is_gt_zero y) /\ is_ge_zero x
+        /\ ada_power_no_overflow x y ->
+	is_finite (ada_power x y)
+  meta "remove_unused:dependency" axiom ada_power_finite, function ada_power
   val ada_power_ (x : t) (y : t) : t
     requires { (not (is_zero x) \/ is_gt_zero y) /\ is_ge_zero x
 		/\ ada_power_no_overflow x y }
@@ -603,6 +614,10 @@ module Floating_operations
   axiom log_one:
     forall x : t. is_one x -> is_zero (log x)
   meta "remove_unused:dependency" axiom log_one, function log
+  axiom log_finite :
+    forall x : t [is_finite (log x)].
+      is_gt_zero x /\ log_no_overflow x -> is_finite (log x)
+  meta "remove_unused:dependency" axiom log_finite, function log
   val log_ (x : t) : t
     requires { is_gt_zero x /\ log_no_overflow x }
     ensures  { result = log x }
@@ -611,9 +626,13 @@ module Floating_operations
   predicate log_base_no_overflow (x : t) (b : t)
   (* This predicate stands for the fact that x is not too close to 0 *)
   axiom log_base_one:
-    forall x y : t. is_one x -> is_zero (log_base x y)
+    forall x b : t. is_one x -> is_zero (log_base x b)
   meta "remove_unused:dependency" axiom log_base_one, function log_base
-
+  axiom log_base_finite :
+    forall x b : t [is_finite (log_base x b)].
+       is_finite b -> is_gt_zero x /\ is_gt_zero b /\ not (is_one b)
+         /\ log_base_no_overflow x b -> is_finite (log_base x b)
+  meta "remove_unused:dependency" axiom log_base_finite, function log_base
   val log_base_ (x : t) (b : t) : t
     requires { is_gt_zero x /\ is_gt_zero b /\ not (is_one b)
                /\ log_base_no_overflow x b}
@@ -624,6 +643,11 @@ module Floating_operations
   (* This predicate stands for the fact that x is not too big *)
   axiom exp_zero:
     forall x : t. is_zero x -> is_one (exp x)
+  meta "remove_unused:dependency" axiom exp_zero, function exp
+  axiom exp_finite :
+    forall x : t [is_finite (exp x)].
+      exp_no_overflow x -> is_finite (exp x)
+  meta "remove_unused:dependency" axiom exp_finite, function exp
   val exp_ (x : t) : t
     requires { exp_no_overflow x }
     ensures  { result = exp x }
@@ -635,6 +659,10 @@ module Floating_operations
   axiom sin_zero:
     forall x : t. is_zero x -> is_zero (sin x)
   meta "remove_unused:dependency" axiom sin_zero, function sin
+  axiom sin_finite :
+    forall x : t [is_finite (sin x)].
+      is_finite x -> is_finite (sin x)
+  meta "remove_unused:dependency" axiom sin_finite, function sin
   val sin_ (x : t) : t
     ensures  { result = sin x }
 
@@ -645,6 +673,10 @@ module Floating_operations
   axiom sin_2_zero:
     forall x c : t. is_zero x -> is_zero (sin_2 x c)
   meta "remove_unused:dependency" axiom sin_2_zero, function sin_2
+  axiom sin_2_finite :
+    forall x c : t [is_finite (sin_2 x c)].
+      is_finite x /\ is_finite c -> is_gt_zero c -> is_finite (sin_2 x c)
+  meta "remove_unused:dependency" axiom sin_2_finite, function sin_2
   val sin_2_ (x : t) (c : t) : t
     requires { is_gt_zero c }
     ensures  { result = sin_2 x c }
@@ -656,6 +688,10 @@ module Floating_operations
   axiom cos_zero:
     forall x : t. is_zero x -> is_one (cos x)
   meta "remove_unused:dependency" axiom cos_zero, function cos
+  axiom cos_finite :
+    forall x : t [is_finite (cos x)].
+      is_finite x -> is_finite (cos x)
+  meta "remove_unused:dependency" axiom cos_finite, function cos
   val cos_ (x : t) : t
     ensures  { result = cos x }
 
@@ -666,6 +702,10 @@ module Floating_operations
   axiom cos_2_zero:
     forall x c : t. is_zero x -> is_one (cos_2 x c)
   meta "remove_unused:dependency" axiom cos_2_zero, function cos_2
+  axiom cos_2_finite :
+    forall x c : t [is_finite (cos_2 x c)].
+      is_finite x /\ is_finite c -> is_gt_zero c -> is_finite (cos_2 x c)
+  meta "remove_unused:dependency" axiom cos_2_finite, function cos_2
   val cos_2_ (x : t) (c : t) : t
     requires { is_gt_zero c }
     ensures  { result = cos_2 x c }
@@ -677,6 +717,10 @@ module Floating_operations
   axiom tan_zero:
     forall x : t. is_zero x -> is_zero (tan x)
   meta "remove_unused:dependency" axiom tan_zero, function tan
+  axiom tan_finite :
+    forall x : t [is_finite (tan x)].
+      tan_no_overflow x -> is_finite (tan x)
+  meta "remove_unused:dependency" axiom tan_finite, function tan
   val tan_ (x : t) : t
     requires { tan_no_overflow x }
     ensures  { result = tan x }
@@ -688,6 +732,11 @@ module Floating_operations
   axiom tan_2_zero:
     forall x c : t. is_zero x -> is_zero (tan_2 x c)
   meta "remove_unused:dependency" axiom tan_2_zero, function tan_2
+  axiom tan_2_finite :
+    forall x c : t [is_finite (tan_2 x c)].
+       is_finite c /\ is_gt_zero c /\ tan_2_no_overflow x c ->
+       is_finite (tan_2 x c)
+  meta "remove_unused:dependency" axiom tan_2_finite, function tan_2
   val tan_2_ (x : t) (c : t) : t
     requires { is_gt_zero c /\ tan_2_no_overflow x c }
     ensures  { result = tan_2 x c }
@@ -696,6 +745,10 @@ module Floating_operations
   predicate cot_no_overflow (x : t)
   (* This predicate stands for the fact that x is not too close to a
      multiple of Pi *)
+  axiom cot_finite :
+    forall x : t [is_finite (cot x)].
+      cot_no_overflow x -> is_finite (cot x)
+  meta "remove_unused:dependency" axiom cot_finite, function cot
   val cot_ (x : t) : t
     requires { not (is_zero x) /\ cot_no_overflow x }
     ensures  { result = cot x }
@@ -704,6 +757,11 @@ module Floating_operations
   predicate cot_2_no_overflow (x : t) (c : t)
   (* This predicate stands for the fact that x mod c is not too close to
      0 or c/2 *)
+  axiom cot_2_finite :
+    forall x c : t [is_finite (cot_2 x c)].
+       is_finite c /\ is_gt_zero c /\ cot_2_no_overflow x c ->
+       is_finite (cot_2 x c)
+  meta "remove_unused:dependency" axiom cot_2_finite, function cot_2
   val cot_2_ (x : t) (c : t) : t
     requires { is_gt_zero c /\ not (is_zero x) /\ cot_2_no_overflow x c }
     ensures  { result = cot_2 x c }
@@ -712,6 +770,10 @@ module Floating_operations
   axiom arcsin_zero:
     forall x : t. is_zero x -> is_zero (arcsin x)
   meta "remove_unused:dependency" axiom arcsin_zero, function arcsin
+  axiom arcsin_finite :
+    forall x : t [is_finite (arcsin x)].
+      abs_le_one x -> is_finite (arcsin x)
+  meta "remove_unused:dependency" axiom arcsin_finite, function arcsin
   val arcsin_ (x : t) : t
     requires { abs_le_one x }
     ensures  { result = arcsin x }
@@ -720,6 +782,10 @@ module Floating_operations
   axiom arcsin_2_zero:
     forall x c : t. is_zero x -> is_zero (arcsin_2 x c)
   meta "remove_unused:dependency" axiom arcsin_2_zero, function arcsin_2
+  axiom arcsin_2_finite :
+    forall x c : t [is_finite (arcsin_2 x c)].
+      is_finite c /\ is_gt_zero c /\ abs_le_one x -> is_finite (arcsin_2 x c)
+  meta "remove_unused:dependency" axiom arcsin_2_finite, function arcsin_2
   val arcsin_2_ (x : t) (c : t) : t
     requires { is_gt_zero c /\ abs_le_one x }
     ensures  { result = arcsin_2 x c }
@@ -728,6 +794,10 @@ module Floating_operations
   axiom arccos_zero:
     forall x : t. is_one x -> is_zero (arccos x)
   meta "remove_unused:dependency" axiom arccos_zero, function arccos
+  axiom arccos_finite :
+    forall x : t [is_finite (arccos x)].
+      abs_le_one x -> is_finite (arccos x)
+  meta "remove_unused:dependency" axiom arccos_finite, function arccos
   val arccos_ (x : t) : t
     requires { abs_le_one x }
     ensures  { result = arccos x }
@@ -736,6 +806,10 @@ module Floating_operations
   axiom arccos_2_zero:
     forall x c : t. is_one x -> is_zero (arccos_2 x c)
   meta "remove_unused:dependency" axiom arccos_2_zero, function arccos_2
+  axiom arccos_2_finite :
+    forall x c : t [is_finite (arccos_2 x c)].
+      is_finite c /\ is_gt_zero c /\ abs_le_one x -> is_finite (arccos_2 x c)
+  meta "remove_unused:dependency" axiom arccos_2_finite, function arccos_2
   val arccos_2_ (x : t) (c : t) : t
     requires { is_gt_zero c /\ abs_le_one x }
     ensures  { result = arccos_2 x c }
@@ -744,6 +818,11 @@ module Floating_operations
   axiom arctan_zero:
     forall x y : t. is_gt_zero x -> is_zero y -> is_zero (arctan y x)
   meta "remove_unused:dependency" axiom arctan_zero, function arctan
+  axiom arctan_finite :
+    forall x y : t [is_finite (arctan y x)].
+      not is_zero x \/ not is_zero y -> is_finite x -> is_finite y ->
+      is_finite (arctan y x)
+  meta "remove_unused:dependency" axiom arctan_finite, function arctan
   val arctan_ (y : t) (x : t) : t
     requires { not is_zero x \/ not is_zero y }
     ensures  { result = arctan y x }
@@ -752,6 +831,11 @@ module Floating_operations
   axiom arctan_2_zero:
     forall x y c : t. is_gt_zero x -> is_zero y -> is_zero (arctan_2 y x c)
   meta "remove_unused:dependency" axiom arctan_2_zero, function arctan_2
+  axiom arctan_2_finite :
+    forall x y c : t [is_finite (arctan_2 y x c)].
+      is_finite c /\ is_gt_zero c -> (not is_zero x \/ not is_zero y) ->
+      is_finite x -> is_finite y -> is_finite (arctan_2 y x c)
+  meta "remove_unused:dependency" axiom arctan_2_finite, function arctan_2
   val arctan_2_ (y : t) (x : t) (c : t) : t
     requires { is_gt_zero c /\ (not is_zero x \/ not is_zero y) }
     ensures  { result = arctan_2 y x c }
@@ -760,6 +844,11 @@ module Floating_operations
   axiom arccot_zero:
     forall x y : t. is_gt_zero x -> is_zero y -> is_zero (arccot x y)
   meta "remove_unused:dependency" axiom arccot_zero, function arccot
+  axiom arccot_finite :
+    forall x y : t [is_finite (arccot x y)].
+      not is_zero x \/ not is_zero y -> is_finite x -> is_finite y ->
+      is_finite (arccot x y)
+  meta "remove_unused:dependency" axiom arccot_finite, function arccot
   val arccot_ (x : t) (y : t) : t
     requires { not is_zero x \/ not is_zero y }
     ensures  { result = arccot x y }
@@ -768,6 +857,11 @@ module Floating_operations
   axiom arccot_2_zero:
     forall x y c : t. is_gt_zero x -> is_zero y -> is_zero (arccot_2 x y c)
   meta "remove_unused:dependency" axiom arccot_2_zero, function arccot_2
+  axiom arccot_2_finite :
+    forall x y c : t [is_finite (arccot_2 x y c)].
+      is_finite c /\ is_gt_zero c -> (not is_zero x \/ not is_zero y) ->
+      is_finite x -> is_finite y -> is_finite (arccot_2 x y c)
+  meta "remove_unused:dependency" axiom arccot_2_finite, function arccot_2
   val arccot_2_ (x : t) (y : t) (c : t) : t
     requires { is_gt_zero c /\ (not is_zero x \/ not is_zero y) }
     ensures  { result = arccot_2 x y c }
@@ -781,6 +875,10 @@ module Floating_operations
   axiom sinh_zero:
     forall x : t. is_zero x -> is_zero (sinh x)
   meta "remove_unused:dependency" axiom sinh_zero, function sinh
+  axiom sinh_finite :
+    forall x : t [is_finite (sinh x)].
+      sinh_no_overflow x -> is_finite (sinh x)
+  meta "remove_unused:dependency" axiom sinh_finite, function sinh
   val sinh_ (x : t) : t
     requires { sinh_no_overflow x }
     ensures  { result = sinh x }
@@ -797,6 +895,10 @@ module Floating_operations
   axiom cosh_zero:
     forall x : t. is_zero x -> is_one (cosh x)
   meta "remove_unused:dependency" axiom cosh_zero, function cosh
+  axiom cosh_finite :
+    forall x : t [is_finite (cosh x)].
+      cosh_no_overflow x -> is_finite (cosh x)
+  meta "remove_unused:dependency" axiom cosh_finite, function cosh
   val cosh_ (x : t) : t
     requires { cosh_no_overflow x }
     ensures  { result = cosh x }
@@ -808,6 +910,10 @@ module Floating_operations
   axiom tanh_zero:
     forall x : t. is_zero x -> is_zero (tanh x)
   meta "remove_unused:dependency" axiom tanh_zero, function tanh
+  axiom tanh_finite :
+    forall x : t [is_finite (tanh x)].
+      is_finite x -> is_finite (tanh x)
+  meta "remove_unused:dependency" axiom tanh_finite, function tanh
   val tanh_ (x : t) : t
     ensures  { result = tanh x }
 
@@ -817,6 +923,10 @@ module Floating_operations
   axiom coth_range:
     forall x : t. abs_ge_one (coth x)
   meta "remove_unused:dependency" axiom coth_range, function coth
+  axiom coth_finite :
+    forall x : t [is_finite (coth x)].
+      not (is_zero x) /\ coth_no_overflow x -> is_finite (coth x)
+  meta "remove_unused:dependency" axiom coth_finite, function coth
   val coth_ (x : t) : t
     requires { not (is_zero x) /\ coth_no_overflow x }
     ensures  { result = coth x }
@@ -825,6 +935,10 @@ module Floating_operations
   axiom arcsinh_zero:
     forall x : t. is_zero x -> is_zero (arcsinh x)
   meta "remove_unused:dependency" axiom arcsinh_zero, function arcsinh
+  axiom arcsinh_finite :
+    forall x : t [is_finite (arcsinh x)].
+      is_finite x -> is_finite (arcsinh x)
+  meta "remove_unused:dependency" axiom arcsinh_finite, function arcsinh
   val arcsinh_ (x : t) : t
     ensures  { result = arcsinh x }
 
@@ -835,6 +949,10 @@ module Floating_operations
   axiom arccosh_one:
     forall x : t. is_one x -> is_zero (arccosh x)
   meta "remove_unused:dependency" axiom arccosh_one, function arccosh
+  axiom arccosh_finite :
+    forall x : t [is_finite (arccosh x)].
+      is_finite x /\ is_ge_one x -> is_finite (arccosh x)
+  meta "remove_unused:dependency" axiom arccosh_finite, function arccosh
   val arccosh_ (x : t) : t
     requires { is_ge_one x }
     ensures  { result = arccosh x }
@@ -848,6 +966,10 @@ module Floating_operations
   axiom arctanh_zero:
     forall x : t. is_zero x -> is_zero (arctanh x)
   meta "remove_unused:dependency" axiom arctanh_zero, function arctanh
+  axiom arctanh_finite :
+    forall x : t [is_finite (arctanh x)].
+      abs_lt_one x /\ arctanh_no_overflow x -> is_finite (arctanh x)
+  meta "remove_unused:dependency" axiom arctanh_finite, function arctanh
   val arctanh_ (x : t) : t
     requires { abs_lt_one x /\ arctanh_no_overflow x }
     ensures  { result = arctanh x }
@@ -855,6 +977,10 @@ module Floating_operations
   val function arccoth (x : t) : t
   predicate arccoth_no_overflow (x : t)
   (* This predicate stands for the fact that x is not too close to 1 or -1. *)
+  axiom arccoth_finite :
+    forall x : t [is_finite (arccoth x)].
+      abs_gt_one x /\ arccoth_no_overflow x -> is_finite (arccoth x)
+  meta "remove_unused:dependency" axiom arccoth_finite, function arccoth
   val arccoth_ (x : t) : t
     requires { abs_gt_one x /\ arccoth_no_overflow x }
     ensures  { result = arccoth x }
@@ -1258,17 +1384,18 @@ module Float32_operations
 
   predicate abs_gt_one (x : t) = lt x (-1.0:t) \/ lt (1.0:t) x
 
-  predicate log_no_overflow (x : t) = true
+  predicate log_no_overflow (x : t) = t'isFinite x
   (* Log never overflows on 32 bits, ensured by review *)
 
-  predicate log_base_no_overflow (x : t) (b : t) = true
+  predicate log_base_no_overflow (x : t) (b : t) = t'isFinite x /\ t'isFinite b
   (* Log_Base never overflows on 32 bits, ensured by review *)
 
-  predicate tan_no_overflow (x : t) = true
+  predicate tan_no_overflow (x : t) = t'isFinite x
   (* Tan never overflows on 32 bits, ensured by review *)
 
   clone export Floating_operations with
     type t = t,
+    predicate is_finite = t'isFinite,
     predicate is_zero = is_zero,
     predicate is_one = is_one,
     predicate is_ge_zero = is_ge_zero,
@@ -1302,17 +1429,18 @@ module Float64_operations
 
   predicate abs_gt_one (x : t) = lt x (-1.0:t) \/ lt (1.0:t) x
 
-  predicate log_no_overflow (x : t) = true
+  predicate log_no_overflow (x : t) = t'isFinite x
   (* Log never overflows on 64 bits, ensured by review *)
 
-  predicate log_base_no_overflow (x : t) (b : t) = true
+  predicate log_base_no_overflow (x : t) (b : t) = t'isFinite x /\ t'isFinite b
   (* Log_Base never overflows on 64 bits, ensured by review *)
 
-  predicate tan_no_overflow (x : t) = true
+  predicate tan_no_overflow (x : t) = t'isFinite x
   (* Tan never overflows on 64 bits, ensured by review *)
 
   clone export Floating_operations with
     type t = t,
+    predicate is_finite = t'isFinite,
     predicate is_zero = is_zero,
     predicate is_one = is_one,
     predicate is_ge_zero = is_ge_zero,
@@ -1346,17 +1474,18 @@ module Float80_operations
 
   predicate abs_gt_one (x : t) = lt x (-1.0:t) \/ lt (1.0:t) x
 
-  predicate log_no_overflow (x : t) = true
+  predicate log_no_overflow (x : t) = t'isFinite x
   (* Log never overflows on 80 bits, ensured by review *)
 
-  predicate log_base_no_overflow (x : t) (b : t) = true
+  predicate log_base_no_overflow (x : t) (b : t) = t'isFinite x /\ t'isFinite b
   (* Log_Base never overflows on 80 bits, ensured by review *)
 
-  predicate tan_no_overflow (x : t) = true
+  predicate tan_no_overflow (x : t) = t'isFinite x
   (* Tan never overflows on 80 bits, ensured by review *)
 
   clone export Floating_operations with
     type t = t,
+    predicate is_finite = t'isFinite,
     predicate is_zero = is_zero,
     predicate is_one = is_one,
     predicate is_ge_zero = is_ge_zero,
