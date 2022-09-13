@@ -3,8 +3,7 @@ package body Aida.Containers.Formal_Vectors is
 
    function Empty_Vector return Vector_Type is
    begin
-      return V : Vector_Type := (Capacity      => Vector_Type_Owner.Empty_Vector.Capacity,
-                                 Hidden_Vector => Vector_Type_Owner.Empty_Vector)
+      return V : Vector_Type := (Hidden_Vector => Vector_Type_Owner.Empty_Vector)
       do
          null;
       end return;
@@ -20,27 +19,12 @@ package body Aida.Containers.Formal_Vectors is
                        Length   : Capacity_Range)
                        return Vector_Type is
    begin
-      return V : Vector_Type := (Capacity      => Length,
-                                 Hidden_Vector => Vector_Type_Owner.To_Vector (New_Item => New_Item,
+      return V : Vector_Type := (Hidden_Vector => Vector_Type_Owner.To_Vector (New_Item => New_Item,
                                                                                Length   => Length))
       do
          null;
       end return;
    end To_Vector;
-
-   function Capacity (Container : Vector_Type)
-                      return Capacity_Range
-   is
-   begin
-      return Container.Capacity;
-   end Capacity;
-
-   procedure Reserve_Capacity (Container : in out Vector_Type;
-                               Capacity  : Capacity_Range)
-   is
-   begin
-      Vector_Type_Owner.Reserve_Capacity (Container.Hidden_Vector, Capacity);
-   end Reserve_Capacity;
 
    function Length (Container : Vector_Type)
                     return Capacity_Range is
@@ -65,12 +49,10 @@ package body Aida.Containers.Formal_Vectors is
       Vector_Type_Owner.Assign (Target.Hidden_Vector, Source.Hidden_Vector);
    end Assign;
 
-   function Copy (Source   : Vector_Type;
-                  Capacity : Capacity_Range := 0)
+   function Copy (Source   : Vector_Type)
                   return Vector_Type is
    begin
-      return V : Vector_Type := (Capacity      => Capacity,
-                                 Hidden_Vector => Vector_Type_Owner.Copy (Source.Hidden_Vector, Capacity))
+      return V : Vector_Type := (Hidden_Vector => Vector_Type_Owner.Copy (Source.Hidden_Vector))
       do
          null;
       end return;

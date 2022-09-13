@@ -1,15 +1,10 @@
-with SPARK.Containers.Formal.Indefinite_Vectors;
+with SPARK.Containers.Formal.Unbounded_Vectors;
 with Ada.Containers;
 generic
    type Index_Type is range <>;
    type Element_Type is private;
 
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
-
-   Bounded : Boolean := True;
-   --  If True, the containers are bounded; the initial capacity is the maximum
-   --  size, and heap allocation will be avoided. If False, the containers can
-   --  grow via heap allocation.
 package Aida.Containers.Formal_Vectors is
    pragma SPARK_Mode;
 
@@ -21,7 +16,7 @@ package Aida.Containers.Formal_Vectors is
 
    subtype Capacity_Range is Ada.Containers.Count_Type range 0 .. Ada.Containers.Count_Type (Index_Type'Last - Index_Type'First + 1);
 
-   type Vector_Type (Capacity : Capacity_Range) is tagged limited private with
+   type Vector_Type is tagged limited private with
      Default_Initial_Condition => Is_Empty (Vector_Type);
    --  In the bounded case, Capacity is the capacity of the container, which
    --  never changes. In the unbounded case, Capacity is the initial capacity
@@ -44,17 +39,6 @@ package Aida.Containers.Formal_Vectors is
    with
      Global => null;
 
-   function Capacity (Container : Vector_Type) return Capacity_Range with
-     Global => null,
-     Post'Class => Capacity'Result >= Container.Capacity;
-
-   procedure Reserve_Capacity
-     (Container : in out Vector_Type;
-      Capacity  : Capacity_Range)
-   with
-     Global => null,
-     Pre'Class => (if Bounded then Capacity <= Container.Capacity);
-
    function Length (Container : Vector_Type) return Capacity_Range with
      Global => null;
 
@@ -68,15 +52,12 @@ package Aida.Containers.Formal_Vectors is
    --  leaks. In addition, "X := ..." can leak unless you Clear(X) first.
 
    procedure Assign (Target : in out Vector_Type; Source : Vector_Type) with
-     Global => null,
-     Pre'Class => (if Bounded then Length (Source) <= Target.Capacity);
+     Global => null;
 
    function Copy
-     (Source   : Vector_Type;
-      Capacity : Capacity_Range := 0) return Vector_Type
+     (Source   : Vector_Type) return Vector_Type
    with
-     Global => null,
-     Pre'Class    => (if Bounded then (Capacity = 0 or Length (Source) <= Capacity));
+     Global => null;
 
    function Element (Container : Vector_Type;
                      Index     : Index_Type) return Element_Type
@@ -96,17 +77,13 @@ package Aida.Containers.Formal_Vectors is
      (Container : in out Vector_Type;
       New_Item  : Vector_Type)
    with
-     Global => null,
-     Pre'Class    => (if Bounded then
-                 Length (Container) + Length (New_Item) <= Container.Capacity);
+     Global => null;
 
    procedure Append
      (Container : in out Vector_Type;
       New_Item  : Element_Type)
    with
-     Global => null,
-     Pre'Class    => (if Bounded then
-                  Length (Container) < Container.Capacity);
+     Global => null;
 
    procedure Delete_Last
      (Container : in out Vector_Type)
@@ -175,14 +152,12 @@ package Aida.Containers.Formal_Vectors is
 
 private
 
-   package Vector_Type_Owner is new SPARK.Containers.Formal.Indefinite_Vectors (Index_Type   => Index_Type,
-                                                                              Element_Type => Element_Type,
-                                                                              Bounded      => Bounded,
-                                                                              Max_Size_In_Storage_Elements => Element_Type'Size);
+   package Vector_Type_Owner is new SPARK.Containers.Formal.Unbounded_Vectors (Index_Type   => Index_Type,
+                                                                               Element_Type => Element_Type);
 
-   type Vector_Type (Capacity : Capacity_Range) is tagged limited
+   type Vector_Type is tagged limited
       record
-         Hidden_Vector : Vector_Type_Owner.Vector (Capacity);
+         Hidden_Vector : Vector_Type_Owner.Vector;
       end record;
 
 end Aida.Containers.Formal_Vectors;

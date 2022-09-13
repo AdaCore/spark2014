@@ -1,30 +1,30 @@
-spark-containers-formal-indefinite_vectors.ads:39:18: info: subprogram "OEQR" will terminate, terminating annotation has been proved, in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:315:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:316:08: info: dynamic accessibility check proved (Trivial), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:320:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:322:08: info: dynamic accessibility check proved (Trivial), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:341:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:341:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:364:51: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:406:73: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:439:51: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:474:59: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:520:59: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:544:51: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:585:59: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:650:28: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:650:57: info: range check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:778:23: info: precondition proved (CVC5: 1 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-indefinite_vectors.ads:814:14: info: precondition proved (CVC5: 1 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at state_machine_with_oop.ads:75
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at state_machine_with_oop.ads:75
-spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at state_machine_with_oop.ads:75
-spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at state_machine_with_oop.ads:75
-spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at state_machine_with_oop.ads:75
-spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at state_machine_with_oop.ads:75
-spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at state_machine_with_oop.ads:75
-spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at state_machine_with_oop.ads:75
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:36:18: info: subprogram "OEQR" will terminate, terminating annotation has been proved, in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:263:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:264:08: info: dynamic accessibility check proved (Trivial), in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:268:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:270:08: info: dynamic accessibility check proved (Trivial), in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:289:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:289:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:312:41: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:354:73: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:387:41: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:422:49: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:468:49: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:491:49: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:532:49: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:597:28: info: overflow check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:597:57: info: range check proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:725:23: info: precondition proved (CVC5: 1 VC), in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:761:14: info: precondition proved (CVC5: 1 VC), in instantiation at state_machine_with_oop.ads:75
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at state_machine_with_oop.ads:75
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at state_machine_with_oop.ads:75
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at state_machine_with_oop.ads:75
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at state_machine_with_oop.ads:75
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at state_machine_with_oop.ads:75
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at state_machine_with_oop.ads:75
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at state_machine_with_oop.ads:75
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at state_machine_with_oop.ads:75
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at state_machine_with_oop.ads:75
 state_machine_with_discriminant.adb:5:15: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 state_machine_with_discriminant.adb:5:51: info: discriminant check proved (CVC5: 1 VC)
 state_machine_with_discriminant.adb:10:15: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -84,4 +84,3 @@ state_machine_with_oop.ads:65:28: warning: unused variable "Current"
 state_machine_with_oop.ads:66:28: warning: unused variable "Current"
 state_machine_with_oop.ads:69:13: high: all paths in "Move_To_B" raise exceptions or do not terminate normally
 state_machine_with_oop.ads:70:13: high: all paths in "Move_To_C" raise exceptions or do not terminate normally
-state_machine_with_oop.ads:78:49: medium: range check might fail, cannot prove upper bound for Root_State'Size [reason for check: default component value must fit in the type]

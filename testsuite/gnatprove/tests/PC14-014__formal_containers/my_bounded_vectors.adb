@@ -1,11 +1,10 @@
 with Ada.Containers; use Ada.Containers;
-with My_Vectors;
 with Ada.Text_IO;
 
 package body My_Bounded_Vectors with SPARK_Mode is
    procedure Test_Bounded_Vectors with SPARK_Mode is
-      use My_Vectors.V;
-      use My_Vectors.S;
+      use My_Bounded_Vectors.V;
+      use My_Bounded_Vectors.S;
       L, K : Vector (10);
       C    : Natural := No_Index;
    begin

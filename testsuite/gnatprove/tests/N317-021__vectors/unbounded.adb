@@ -22,11 +22,8 @@ is
       pragma Assert (Element (V, 2) = 2);
       pragma Assert (Element (V, 3) = 3);
 
-      Reserve_Capacity (V, 10);
-
       pragma Assert (not Is_Empty (V));
       pragma Assert (Length (V) = 3);
-      pragma Assert (Capacity (V) >= 10);
 
       declare
          W : Vector := Copy (V);

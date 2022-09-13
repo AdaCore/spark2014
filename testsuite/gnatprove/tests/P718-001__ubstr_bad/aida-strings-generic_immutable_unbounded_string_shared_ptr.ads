@@ -27,7 +27,7 @@ package Aida.Strings.Generic_Immutable_Unbounded_String_Shared_Ptr with SPARK_Mo
 private
    pragma SPARK_Mode (Off);
 
-   package US is new Aida.Strings.Generic_Immutable_Unbounded_String (Capacity);
+   package US renames Aida.Strings.Generic_Immutable_Unbounded_String;
 
    type US_Ptr is access US.T;
 

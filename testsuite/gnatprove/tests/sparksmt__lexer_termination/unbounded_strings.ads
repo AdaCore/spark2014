@@ -21,7 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-private with SPARK.Containers.Formal.Indefinite_Vectors;
+private with SPARK.Containers.Formal.Unbounded_Vectors;
 
 --  A helper package for dealing with variable-length char arrays.
 
@@ -59,13 +59,13 @@ private
 
    function Eq (A, B : Character) return Boolean is (A = B);
 
-   package Char_Vectors is new SPARK.Containers.Formal.Indefinite_Vectors
+   package Char_Vectors is new SPARK.Containers.Formal.Unbounded_Vectors
      (Index_Type   => Positive,
-      Element_Type => Character,
-      Bounded      => False,
-      Max_Size_In_Storage_Elements => Character'Size);
+      Element_Type => Character);
    use Char_Vectors;
 
-   type Unbounded_String is new Vector (32);
+   type Unbounded_String is record
+      vec : Vector;
+   end record;
 
 end Unbounded_Strings;
