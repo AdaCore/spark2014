@@ -330,6 +330,10 @@ package SPARK_Util is
    --  @return True iff N can be ignored because it is an internal node and the
    --  current unit analyzed is not internal.
 
+   function In_SPARK_Library_Unit (N : Node_Or_Entity_Id) return Boolean;
+   --  Return True if the source unit for N is in the SPARK library, ie. if
+   --  the unit name starts with "spark-" and ends with ".ads" or ".adb".
+
    function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
    --  Use this routine to ensure that the entity will be processed only by one
    --  invocation of gnat2why within a single pass of gnatprove. Technically,

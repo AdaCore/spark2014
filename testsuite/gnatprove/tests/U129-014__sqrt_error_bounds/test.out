@@ -101,7 +101,7 @@ norm-reals-errors.adb:185:18: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:185:31: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:186:18: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:186:31: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:188:17: medium: postcondition might fail
+norm-reals-errors.adb:188:17: info: postcondition proved (Z3: 1 VC)
 norm-reals-errors.adb:188:22: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:188:22: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:188:22: warning: assuming "Sqrt" always returns
@@ -261,7 +261,7 @@ norm.adb:75:14: medium: range check might fail [reason for check: returned value
 norm.ads:17:07: info: assertion proved (Trivial)
 norm.ads:19:07: info: assertion proved (Trivial)
 norm.ads:27:13: info: function contract might not be available on recursive calls
-norm.ads:32:14: info: postcondition proved (CVC5: 1 VC; colibri: 2 VC)
+norm.ads:32:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC; colibri: 1 VC)
 norm.ads:34:16: info: subprogram variant proved (CVC5: 1 VC)
 norm.ads:34:46: info: range check proved (CVC5: 2 VC)
 norm.ads:34:51: info: float overflow check proved (CVC5: 1 VC)

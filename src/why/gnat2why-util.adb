@@ -1758,6 +1758,12 @@ package body Gnat2Why.Util is
 
         and then not Is_Ignored_Internal (E)
 
+        --  Same for the SPARK library
+
+        and then not In_SPARK_Library_Unit (E)
+
+        --  E has an explicit or implicit postcondition
+
         and then (Type_Needs_Dynamic_Invariant (Etype (E))
                   or else Has_Contracts (E, Pragma_Postcondition)
                   or else Present (Get_Pragma (E, Pragma_Contract_Cases)));
