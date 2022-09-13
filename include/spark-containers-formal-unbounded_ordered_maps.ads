@@ -36,8 +36,8 @@ private with Ada.Containers.Red_Black_Trees;
 private with SPARK.Containers.Formal.Holders;
 
 generic
-   type Key_Type is private;
-   type Element_Type is private;
+   type Key_Type (<>) is private;
+   type Element_Type (<>) is private;
 
    with function "<" (Left, Right : Key_Type) return Boolean is <>;
    with function "=" (Left, Right : Element_Type) return Boolean is <>;

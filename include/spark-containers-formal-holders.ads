@@ -29,7 +29,7 @@
 private with Ada.Finalization;
 
 private generic
-   type Element_Type is private;
+   type Element_Type (<>) is private;
 
 package SPARK.Containers.Formal.Holders is
 

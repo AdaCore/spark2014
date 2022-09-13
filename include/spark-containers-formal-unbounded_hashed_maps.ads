@@ -36,8 +36,8 @@ private with Ada.Containers.Hash_Tables;
 private with Ada.Finalization;
 
 generic
-   type Key_Type is private;
-   type Element_Type is private;
+   type Key_Type (<>) is private;
+   type Element_Type (<>) is private;
 
    with function Hash (Key : Key_Type) return Hash_Type;
    with function Equivalent_Keys

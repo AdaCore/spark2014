@@ -37,7 +37,7 @@ private with Ada.Finalization;
 private with SPARK.Containers.Formal.Holders;
 
 generic
-   type Element_Type is private;
+   type Element_Type (<>) is private;
 
    with function Hash (Element : Element_Type) return Hash_Type;
 
