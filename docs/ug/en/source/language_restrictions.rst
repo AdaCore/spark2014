@@ -117,15 +117,16 @@ Data Validity
 |SPARK| reinforces the strong typing of Ada with a stricter initialization
 policy (see :ref:`Data Initialization Policy`), and thus provides no means
 of specifying that some input data may be invalid. This has some impact on
-language features that process or potentially produce invalid values.
+language features that process or potentially produce invalid values. SPARK
+issues checks specific to data validity on two language constructs:
 
-Calls to instances of  ``Unchecked_Conversion`` could potentially create
-invalid values; however, |SPARK| checks upon creation of such an instance, that
-no such invalid values can be produced. Similarly, |SPARK| checks upon
-specification of an Address clause or aspect for an object (e.g. in so-called
-overlays), that no invalid values can be produced in this way. Conversely, as
-no invalid values can be constructed in |SPARK|, the evaluation of the
-attribute ``Valid`` is assumed to always return True.
+ * Calls to instances of  ``Unchecked_Conversion``
+ * Objects with an address clause of the simple form ``with Address =>
+   Y'Address`` (so-called overlays).
+
+For occurences of these patterns, |SPARK| checks that no invalid values can be
+produced. Given that no invalid values can be constructed in |SPARK|, the
+evaluation of the attribute ``Valid`` is assumed to always return True.
 
 For address clauses, in addition to the above checks, SPARK checks that objects
 whose address clause is more complex than a simple address clause of the form
@@ -158,13 +159,6 @@ clauses that specify ``Object_Size`` are required to prove such checks (see
 also :ref:`Sizes of Objects`). Similarly, for object declarations with an
 Address clause or aspect that refers to the ``'Address`` of another object,
 |SPARK| checks that both objects have the same known ``Object_Size``.
-
-The following example shows some typical usages of unchecked conversions and
-``Object_Size`` clauses:
-
-.. literalinclude:: /examples/ug__uc/uc.ads
-   :language: ada
-   :linenos:
 
 |SPARK| allows conversions from (suitable) integer types or
 ``System.Address_Type`` to general access-to-object types. When
