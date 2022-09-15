@@ -850,9 +850,13 @@ package SPARK_Util is
    --  access-to-constant type.
 
    function Is_Rooted_In_Constant (Expr : N_Subexpr_Id) return Boolean;
-   --  Return True is Expr is a path rooted inside a constant part of an
+   --  Return True if Expr is a path rooted inside a constant part of an
    --  object. We do not return True if Expr is rooted inside an IN parameter,
    --  as the actual might be a variable object.
+
+   function Supported_Alias (Expr : Node_Id) return Entity_Id;
+   --  If Expr is of the form "X'Address", return the root object of X.
+   --  Otherwise, return Empty. This function accepts empty expressions.
 
    ---------------------------------
    -- Misc operations and queries --

@@ -121,16 +121,14 @@ language features that process or potentially produce invalid values. SPARK
 issues checks specific to data validity on two language constructs:
 
  * Calls to instances of  ``Unchecked_Conversion``
- * Objects with an address clause of the simple form ``with Address =>
-   Y'Address`` (so-called overlays).
+ * Objects with a supported address clause (so-called overlays). An address
+   clause is supported if it is of the form ``with Address => Y'Address``,
+   where ``Y`` is another object, and ``Y`` is part of a statically known
+   object.
 
 For occurences of these patterns, |SPARK| checks that no invalid values can be
 produced. Given that no invalid values can be constructed in |SPARK|, the
 evaluation of the attribute ``Valid`` is assumed to always return True.
-
-For address clauses, in addition to the above checks, SPARK checks that objects
-whose address clause is more complex than a simple address clause of the form
-``with Address => Y'Address``, are volatile.
 
 These validity checks are illustrated in the following example:
 

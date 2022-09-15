@@ -2750,18 +2750,9 @@ package body SPARK_Definition is
       if Present (Address) then
          declare
             Address_Expr    : constant Node_Id := Expression (Address);
-            Simple_Address  : constant Boolean :=
-              Nkind (Address_Expr) = N_Attribute_Reference
-              and then Attribute_Name (Address_Expr) = Name_Address;
-            Prefix_Expr     : constant Node_Id :=
-              (if Simple_Address then Prefix (Address_Expr)
-               else Empty);
             Aliased_Object  : constant Entity_Id :=
-              (if Simple_Address
-               then Get_Root_Object (Prefix_Expr, Through_Traversal => False)
-               else Empty);
-            Supported_Alias : constant Boolean :=
-              Present (Aliased_Object) and then Is_Object (Aliased_Object);
+              Supported_Alias (Address_Expr);
+            Supported_Alias : constant Boolean := Present (Aliased_Object);
             E_Is_Constant   : constant Boolean :=
               Is_Object (E) and then Is_Constant_In_SPARK (E);
          begin
@@ -2837,7 +2828,7 @@ package body SPARK_Definition is
             if Supported_Alias
               and then E_Is_Constant /=
                 (Is_Constant_In_SPARK (Aliased_Object)
-                 or else Traverse_Access_To_Constant (Prefix_Expr))
+                 or else Traverse_Access_To_Constant (Prefix (Address_Expr)))
             then
                declare
                   E_Mod : constant String :=

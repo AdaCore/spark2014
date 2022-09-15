@@ -16592,18 +16592,12 @@ package body Gnat2Why.Expr is
                        | N_Subprogram_Declaration
       then
          declare
-            Expr                        : constant Node_Id :=
+            Expr            : constant Node_Id :=
               Get_Address_Expr (Decl);
-            Is_Object_Decl              : constant Boolean :=
+            Is_Object_Decl  : constant Boolean :=
               Nkind (Decl) = N_Object_Declaration;
-            Is_Top_Level_Address_Clause : constant Boolean :=
-              Present (Expr)
-              and then Nkind (Expr) = N_Attribute_Reference
-              and then Attribute_Name (Expr) = Name_Address;
-            Root_Object                 : constant Entity_Id :=
-              (if Is_Top_Level_Address_Clause
-               then Get_Root_Object (Prefix (Expr), False)
-               else Empty);
+            Aliased_Object  : constant Entity_Id := Supported_Alias (Expr);
+            Supported_Alias : constant Boolean := Present (Aliased_Object);
          begin
             if Present (Expr) then
 
@@ -16635,80 +16629,78 @@ package body Gnat2Why.Expr is
                      --  This check is needed only for overlays between two
                      --  SPARK objects.
 
-                     if Is_Top_Level_Address_Clause then
+                     if Supported_Alias then
                         Suitable_For_UC_Target
                           (Retysp (Etype (Defining_Identifier (Decl))),
                            True, Valid, Explanation);
                         Emit_Static_Proof_Result
                           (Decl, VC_UC_Target, Valid, Current_Subp,
                            Explanation => To_String (Explanation));
-                     end if;
 
-                     --  If the address clause has a root object which is a
-                     --  variable, check that we can account for indirect
-                     --  effects to the declared object. Either Expr is a
-                     --  reference to another object, or the defined object
-                     --  should have async writers.
-                     --  If no Root_Object can be found, a warning has already
-                     --  been emitted in marking.
+                        --  If the address clause has a root object which is
+                        --  a variable, check that we can account for indirect
+                        --  effects to the declared object. Either Expr is a
+                        --  reference to another object, or the defined object
+                        --  should have async writers. If no Root_Object can
+                        --  be found, a warning has already been emitted in
+                        --  marking.
 
-                     if Present (Root_Object)
-                       and then not Is_Constant_In_SPARK (Root_Object)
-                       and then Nkind (Prefix (Expr)) not in
-                         N_Identifier | N_Expanded_Name
-                     then
-                        Emit_Static_Proof_Result
-                          (Decl,
-                           VC_UC_Volatile,
-                           Has_Async_Writers
-                             (Direct_Mapping_Id (Defining_Identifier (Decl)))
-                           and Has_Async_Writers
-                             (Direct_Mapping_Id (Root_Object)),
-                           Current_Subp);
+                        if not Is_Constant_In_SPARK (Aliased_Object)
+                          and then Nkind (Prefix (Expr)) not in
+                            N_Identifier | N_Expanded_Name
+                        then
+                           Emit_Static_Proof_Result
+                             (Decl,
+                              VC_UC_Volatile,
+                              Has_Async_Writers
+                                (Direct_Mapping_Id
+                                     (Defining_Identifier (Decl)))
+                              and Has_Async_Writers
+                                (Direct_Mapping_Id (Aliased_Object)),
+                              Current_Subp);
+                        end if;
+
+                        --  We now emit static checks to make sure the two
+                        --  aliased objects are compatible.
+
+                        declare
+                           Valid       : Boolean;
+                           Explanation : Unbounded_String;
+                        begin
+                           Suitable_For_UC_Target
+                             (Retysp (Etype (Prefix (Expr))),
+                              True, Valid, Explanation);
+                           Emit_Static_Proof_Result
+                             (Expr, VC_UC_Target, Valid, Current_Subp,
+                              Explanation => To_String (Explanation));
+
+                           Have_Same_Known_Esize
+                             (Retysp (Etype (Defining_Identifier (Decl))),
+                              Retysp (Etype (Prefix (Expr))),
+                              Valid, Explanation);
+                           Emit_Static_Proof_Result
+                             (Expr, VC_UC_Same_Size, Valid, Current_Subp,
+                              Explanation => To_String (Explanation));
+
+                           if Nkind (Prefix (Expr)) in N_Has_Entity then
+                              Objects_Have_Compatible_Alignments
+                                (Defining_Identifier (Decl),
+                                 Entity (Prefix (Expr)),
+                                 Valid, Explanation);
+                           else
+                              Valid := False;
+                              Explanation :=
+                                To_Unbounded_String
+                                  ("unknown alignment for object");
+                           end if;
+                           Emit_Static_Proof_Result
+                             (Decl, VC_UC_Alignment, Valid, Current_Subp,
+                              Explanation => To_String (Explanation));
+                        end;
+
                      end if;
                   end;
                end if;
-
-               --  We now emit static checks to make sure the two aliased
-               --  objects are compatible.
-
-               if Is_Top_Level_Address_Clause and then Is_Object_Decl then
-                  declare
-                     Valid       : Boolean;
-                     Explanation : Unbounded_String;
-                  begin
-                     Suitable_For_UC_Target
-                       (Retysp (Etype (Prefix (Expr))),
-                        True, Valid, Explanation);
-                     Emit_Static_Proof_Result
-                       (Expr, VC_UC_Target, Valid, Current_Subp,
-                        Explanation => To_String (Explanation));
-
-                     Have_Same_Known_Esize
-                       (Retysp (Etype (Defining_Identifier (Decl))),
-                        Retysp (Etype (Prefix (Expr))),
-                        Valid, Explanation);
-                     Emit_Static_Proof_Result
-                       (Expr, VC_UC_Same_Size, Valid, Current_Subp,
-                        Explanation => To_String (Explanation));
-
-                     if Nkind (Prefix (Expr)) in N_Has_Entity then
-                        Objects_Have_Compatible_Alignments
-                          (Defining_Identifier (Decl),
-                           Entity (Prefix (Expr)),
-                           Valid, Explanation);
-                     else
-                        Valid := False;
-                        Explanation :=
-                          To_Unbounded_String
-                            ("unknown alignment for object");
-                     end if;
-                     Emit_Static_Proof_Result
-                       (Decl, VC_UC_Alignment, Valid, Current_Subp,
-                        Explanation => To_String (Explanation));
-                  end;
-               end if;
-
             end if;
          end;
       end if;
