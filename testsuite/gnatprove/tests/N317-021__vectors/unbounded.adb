@@ -7,7 +7,7 @@ is
    package Sort is new Generic_Sorting ("<" => Lt);
 
    procedure Test is
-      V : Vector (2);
+      V : Vector;
    begin
       Clear (V);
       pragma Assert (Is_Empty (V));
