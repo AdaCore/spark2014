@@ -19,4 +19,4 @@ dynamic.adb:21:17: info: range check proved (CodePeer)
 dynamic.adb:24:09: warning: unused assignment
 dynamic.adb:24:14: info: overflow check proved (CodePeer)
 dynamic.ads:7:21: high: postcondition might fail, cannot prove X + 2 <= P'result (e.g. when P'Result = 10 and X = 9)
-dynamic.ads:7:23: info: overflow check proved (CVC5: 2 VC)
+dynamic.ads:7:23: info: overflow check proved (CodePeer)

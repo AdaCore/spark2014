@@ -166,7 +166,7 @@ complex_trajectory.ads:44:32: info: initialization of "Average" proved
 complex_trajectory.ads:45:09: info: data dependencies proved
 complex_trajectory.ads:48:19: medium: in inlined expression function body at complex_trajectory.ads:35
 complex_trajectory.ads:48:19: medium: postcondition might fail, cannot prove Distance in Float64 (N) * Float64 (N + 1) * (- Bound) * 0.5 .. Float64 (N) * Float64 (N + 1) * Bound * 0.5
-complex_trajectory.ads:48:32: info: range check proved (CVC5: 2 VC)
+complex_trajectory.ads:48:32: info: range check proved (CodePeer)
 complex_trajectory_overflow.adb:14:46: info: float overflow check proved (Trivial)
 complex_trajectory_overflow.adb:14:46: info: range check proved (Trivial)
 complex_trajectory_overflow.adb:14:55: info: float overflow check proved (Trivial)
@@ -234,7 +234,7 @@ complex_trajectory_overflow.ads:22:67: info: float overflow check proved (Trivia
 complex_trajectory_overflow.ads:38:32: info: initialization of "Average" proved
 complex_trajectory_overflow.ads:39:09: info: data dependencies proved
 complex_trajectory_overflow.ads:42:19: info: postcondition proved (CVC5: 1 VC)
-complex_trajectory_overflow.ads:42:32: info: range check proved (CVC5: 2 VC)
+complex_trajectory_overflow.ads:42:32: info: range check proved (CodePeer)
 simple_trajectory.adb:13:46: info: float overflow check proved (Trivial)
 simple_trajectory.adb:13:46: info: range check proved (Trivial)
 simple_trajectory.adb:13:55: info: float overflow check proved (Trivial)
@@ -291,7 +291,7 @@ simple_trajectory.ads:22:67: info: float overflow check proved (Trivial)
 simple_trajectory.ads:37:29: info: initialization of "New_Speed" proved
 simple_trajectory.ads:38:09: info: data dependencies proved
 simple_trajectory.ads:41:19: info: postcondition proved (altergo: 1 VC)
-simple_trajectory.ads:41:32: info: range check proved (CVC5: 2 VC)
+simple_trajectory.ads:41:32: info: range check proved (CodePeer)
 simple_trajectory_overflow.adb:10:46: info: float overflow check proved (Trivial)
 simple_trajectory_overflow.adb:10:46: info: range check proved (Trivial)
 simple_trajectory_overflow.adb:10:55: info: float overflow check proved (Trivial)

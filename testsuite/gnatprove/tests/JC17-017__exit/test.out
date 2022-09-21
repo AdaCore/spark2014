@@ -1,5 +1,5 @@
 p.adb:4:19: info: postcondition proved (CVC5: 1 VC)
-p.adb:4:29: info: overflow check proved (CVC5: 2 VC)
+p.adb:4:29: info: overflow check proved (CodePeer)
 p.adb:15:09: info: overflow check proved (CodePeer)
 p.adb:17:07: medium: assertion might fail
 p.adb:20:27: info: assertion proved (CodePeer)

@@ -30,7 +30,7 @@ biaseddivide.adb:24:16: medium: float overflow check might fail [reason for chec
 biaseddivide.adb:24:23: info: float overflow check proved (CodePeer)
 biaseddivide.ads:16:52: info: initialization of "r" proved
 biaseddivide.ads:19:14: info: postcondition proved (CVC5: 1 VC)
-biaseddivide.ads:19:20: info: division check proved (colibri: 1 VC)
+biaseddivide.ads:19:20: info: division check proved (CodePeer)
 biaseddivide.ads:19:20: info: float overflow check proved (CVC5: 1 VC)
 biaseddivide.ads:19:25: info: float overflow check proved (CodePeer)
 dynamicsaturateassert.adb:24:07: info: initialization of "Saturation_Dynamic_out1" proved
@@ -44,7 +44,7 @@ errorexample.adb:47:22: medium: assertion might fail
 errorexample.adb:47:35: info: range check proved (Trivial)
 errorexample.ads:22:08: info: initialization of "Relative_Error" proved
 errorexample.ads:26:14: info: postcondition proved (CVC5: 1 VC)
-errorexample.ads:26:77: info: division check proved (CVC5: 1 VC)
+errorexample.ads:26:77: info: division check proved (CodePeer)
 errorexamplefloat.adb:24:07: info: initialization of "Abs_out1" proved
 errorexamplefloat.adb:29:22: info: assertion proved (CVC5: 1 VC)
 errorexamplefloat.adb:39:43: info: float overflow check proved (CodePeer)

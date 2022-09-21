@@ -8,7 +8,7 @@ attempt_1.adb:25:33: info: initialization of "New_Speed" proved
 attempt_1.adb:26:33: info: initialization of "Average" proved
 attempt_1.adb:27:09: info: data dependencies proved
 attempt_1.adb:30:19: medium: postcondition might fail
-attempt_1.adb:30:32: info: range check proved (CVC5: 2 VC)
+attempt_1.adb:30:32: info: range check proved (CodePeer)
 attempt_1.adb:33:30: info: float overflow check proved (CodePeer)
 attempt_1.adb:33:40: info: float overflow check proved (Trivial)
 attempt_1.adb:33:44: info: float overflow check proved (Trivial)
@@ -27,7 +27,7 @@ attempt_2.adb:27:33: info: initialization of "New_Speed" proved
 attempt_2.adb:28:33: info: initialization of "Average" proved
 attempt_2.adb:29:09: info: data dependencies proved
 attempt_2.adb:32:19: medium: postcondition might fail
-attempt_2.adb:32:32: info: range check proved (CVC5: 2 VC)
+attempt_2.adb:32:32: info: range check proved (CodePeer)
 attempt_2.adb:35:30: info: float overflow check proved (CodePeer)
 attempt_2.adb:35:40: info: float overflow check proved (Trivial)
 attempt_2.adb:35:44: info: float overflow check proved (Trivial)
@@ -42,7 +42,7 @@ attempt_3.adb:32:33: info: initialization of "New_Speed" proved
 attempt_3.adb:33:33: info: initialization of "Average" proved
 attempt_3.adb:35:09: info: data dependencies proved
 attempt_3.adb:38:19: info: postcondition proved (altergo: 1 VC)
-attempt_3.adb:38:32: info: range check proved (CVC5: 2 VC)
+attempt_3.adb:38:32: info: range check proved (CodePeer)
 attempt_3.adb:40:48: info: float overflow check proved (Trivial)
 attempt_3.adb:40:52: info: float overflow check proved (Trivial)
 attempt_3.adb:40:52: info: range check proved (Trivial)
@@ -131,7 +131,7 @@ attempt_4.adb:30:71: info: float overflow check proved (Trivial)
 attempt_4.adb:36:34: info: initialization of "Average" proved
 attempt_4.adb:37:09: info: data dependencies proved
 attempt_4.adb:40:19: info: postcondition proved (colibri: 1 VC)
-attempt_4.adb:40:32: info: range check proved (CVC5: 2 VC)
+attempt_4.adb:40:32: info: range check proved (CodePeer)
 attempt_4.adb:44:25: info: float overflow check proved (CodePeer)
 attempt_4.adb:44:35: info: float overflow check proved (Trivial)
 attempt_4.adb:44:39: info: float overflow check proved (Trivial)
