@@ -92,13 +92,11 @@ Constant_After_Elaboration    Yes
 Contract_Cases     	      Yes
 Default_Initial_Condition     Yes
 Depends		 	      Yes
-Depends'Class	 	      Yes
 Effective_Reads		      Yes
 Effective_Writes	      Yes
 Extensions_Visible            Yes
 Ghost                         Yes
 Global		 	      Yes
-Global'Class	 	      Yes
 Initial_Condition  	      Yes
 Initializes	  	      Yes
 Part_Of			      Yes
