@@ -1,4 +1,3 @@
-bad_access.adb:4:07: error: local borrow of an expression with predicates on subcomponents of deep type is not yet supported
 bad_access.adb:12:04: info: no contextual analysis of "Do_Something" (multiple returns)
 bad_access.adb:14:10: info: no contextual analysis of "Rand" (body not seen yet)
 bad_access.adb:14:10: warning: assuming "Rand" always returns
