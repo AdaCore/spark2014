@@ -1,2 +1,3 @@
 NT SKIP did not manage to reconcile outputs on different platforms
 assertions SKIP small proof diff on run with assertions
+inverse-prover SKIP diff in output filtering

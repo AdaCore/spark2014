@@ -610,17 +610,17 @@ is
          Left      : M.Sequence;
          Right     : M.Sequence) return Boolean
       is
-         Elem : Element_Type;
-
       begin
          for Index in 1 .. M.Length (Container) loop
-            Elem := Element (Container, Index);
-
-            if not M.Contains (Left, 1, M.Length (Left), Elem)
-               and then not M.Contains (Right, 1, M.Length (Right), Elem)
-            then
-               return False;
-            end if;
+            declare
+               Elem : Element_Type := Element (Container, Index);
+            begin
+               if not M.Contains (Left, 1, M.Length (Left), Elem)
+                 and then not M.Contains (Right, 1, M.Length (Right), Elem)
+               then
+                  return False;
+               end if;
+            end;
          end loop;
 
          return True;

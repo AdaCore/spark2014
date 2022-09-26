@@ -28,6 +28,7 @@ with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Strings.Fixed;               use Ada.Strings.Fixed;
 with Atree;                           use Atree;
 with Opt;                             use Opt;
+with VC_Kinds;                        use VC_Kinds;
 
 private package SPARK_Definition.Violations is
 
@@ -94,9 +95,10 @@ private package SPARK_Definition.Violations is
    --  the given Mode.
 
    procedure Mark_Unsupported
-     (Msg            : String;
+     (Kind           : Unsupported_Kind;
       N              : Node_Id;
       E              : Entity_Id := Types.Empty;
+      Name           : String := "";
       Cont_Msg       : String := "";
       Root_Cause_Msg : String := "")
      with
@@ -106,7 +108,7 @@ private package SPARK_Definition.Violations is
    --  issued if current SPARK_Mode is On. Cont_Msg is a continuous message
    --  when specified. If Root_Cause_Msg is set, the corresponding message is
    --  used as root cause message for cascading violations (typically used if
-   --  Msg has character insertions).
+   --  the message for Kind has character insertions).
 
    procedure Mark_Violation
      (Msg            : String;

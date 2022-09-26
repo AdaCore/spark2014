@@ -1,0 +1,20 @@
+with "sparklib";
+
+project Test is
+
+   for Main use ("test.adb");
+
+   package Builder is
+      for Switches ("ada") use ("-gnata");
+   end Builder;
+
+   package Compiler is
+      for Switches ("ada") use ("-g");
+   end Compiler;
+
+   package Linker is
+      for Switches ("ada") use ("-g");
+   end Linker;
+
+end Test;
+

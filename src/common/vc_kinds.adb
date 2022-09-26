@@ -562,6 +562,208 @@ package body VC_Kinds is
         when Warn_Representation_Attribute_Value =>
           "representation attribute has an implementation-defined value");
 
+   function Description (Kind : Unsupported_Kind) return String is
+     (case Kind is
+         when Lim_Abstract_State_Part_Of_Concurrent_Obj =>
+           "an abstract state marked as Part_Of a concurrent object",
+         when Lim_Access_Attr_With_Ownership_In_Unsupported_Context =>
+           "a reference to the ""Access"" attribute of an ownership type which"
+          & " does not occur directly inside"
+          & " an assignment statement, an object declaration, or a simple"
+          & " return statement",
+         when Lim_Access_Conv =>
+           "an implicit conversion between access types with different "
+          & "designated types",
+         when Lim_Access_Sub_Formal_With_Inv =>
+           "a formal parameter of an access-to-subprogram type which is"
+          & " annotated with a type invariant",
+         when Lim_Access_Sub_Protected =>
+           "an access-to-subprogram type designating a protected subprogram",
+         when Lim_Access_Sub_Return_Type_With_Inv =>
+           "an access-to-subprogram type whose return type is annotated"
+          & " with a type invariant",
+         when Lim_Access_Sub_Traversal =>
+           "an access-to-subprogram type designating a borrowing traversal"
+          & " function",
+         when Lim_Access_To_Dispatch_Op =>
+           "an access-to-subprogram type designating a dispatching operation",
+         when Lim_Access_To_Relaxed_Init_Subp =>
+           "an access-to-subprogram type designating a subprogram annotated"
+          & " with Relaxed_Initialization",
+         when Lim_Address_Attr_In_Unsupported_Context =>
+           "a reference to the ""Address"" attribute occuring within a "
+          & "subtype indication, a range constraint, or a quantified"
+          & " expression",
+         when Lim_Array_Conv_Different_Size_Modular_Index =>
+           "a conversion between array types if some matching index types"
+          & " are modular types of different sizes",
+         when Lim_Array_Conv_Signed_Modular_Index =>
+           "a conversion between array types if some matching index types"
+          & " are not both signed or both modular",
+         when Lim_Borrow_Traversal_First_Param =>
+           "a borrowing traversal function whose first formal parameter does"
+          & " not have an anonymous access-to-variable type",
+         when Lim_Borrow_Traversal_Volatile =>
+           "a borrowing traversal function marked as a volatile function",
+         when Lim_Borrow_With_Predicates_On_Parts =>
+           "a borrowing operation if the borrower has subcomponents of a "
+          & "type annotated with a subtype predicate with access-to-variable"
+          & " parts",
+         when Lim_Class_Attr_Of_Constrained_Type =>
+           "a reference to the ""Class"" attribute on a constrained type",
+         when Lim_Classwide_With_Predicate =>
+           "a subtype predicate on a classwide type",
+         when Lim_Complex_Raise_Expr_In_Prec =>
+           "a raise expression occurring in a precondition, unless it is only"
+          & " used to change the reported error and can safely be interpreted "
+          & "as False",
+         when Lim_Constrained_Classwide =>
+           "a type constraint on a classwide subtype declaration",
+         when Lim_Contract_On_Derived_Private_Type =>
+           "a type contract (subtype predicate, default initial condition, or"
+          & " type invariant) on a private type whose full view is another"
+          & " private type",
+         when Lim_Conv_Fixed_Float =>
+           "a conversion between a fixed-point type and a floating-point type",
+         when Lim_Conv_Fixed_Integer =>
+           "a conversion between a fixed-point type and an integer type "
+          & "when the small of the fixed-point type is neither an integer nor"
+          & " the reciprocal of an integer",
+         when Lim_Conv_Float_Modular_128 =>
+           "a conversion between a floating point type and a modular type of"
+          & " size 128",
+         when Lim_Conv_Incompatible_Fixed =>
+           "a conversion between fixed point types whose smalls are not "
+          & """compatible"" according to Ada RM G.2.3(21-24): the division of"
+          & " smalls is not an integer or the reciprocal of an integer",
+         when Lim_Deep_Object_With_Addr =>
+           "an object with subcomponents of an access-to-variable type "
+          & "annotated with an address clause whose value is the address of "
+          & "another object",
+         when Lim_Entry_Family => "entry families",
+         when Lim_Ext_Aggregate_With_Type_Ancestor =>
+           "an extension aggregate whose ancestor part is a subtype mark",
+         when Lim_Goto_Cross_Inv =>
+           "a goto statement occuring in a loop before the invariant which"
+          & " refers to a label occuring inside the loop but after the "
+          & "invariant",
+         when Lim_Img_On_Non_Scalar =>
+           "a reference to the ""Image"" or ""Img"" attribute on a type or "
+          & "an object of a type which is not a scalar type",
+         when Lim_Iterated_Element_Association => "container aggregates",
+         when Lim_Iterator_In_Component_Assoc =>
+           "an iterated component associations with an iterator specification"
+          & " (""for ... of"") in an array aggregate",
+         when Lim_Limited_Type_From_Limited_With =>
+           "the use of an incomplete view of a type coming from a limited"
+          & " with",
+         when Lim_Loop_With_Iterator_Filter =>
+           "a loop with an iterator filter in its parameter specification",
+         when Lim_Max_Array_Dimension =>
+           "an array type with more than" & Max_Array_Dimensions'Img
+          & " dimensions",
+         when Lim_Max_Modulus =>
+           "a modular type with a modulus greater than 2 ** 128",
+         when Lim_Move_To_Access_Constant =>
+           "a move operation occuring as part of a conversion to an "
+          & "access-to-constant type",
+         when Lim_No_Return_Function =>
+           "a function annotated as No_Return",
+         when Lim_Non_Static_Attribute =>
+           "a reference to a non-static attribute",
+         when Lim_Multiple_Inheritance_Interfaces =>
+           "a primitive operation which is inherited from several interfaces"
+          & " in a tagged derivation",
+         when Lim_Multiple_Inheritance_Root =>
+           "a primitive operation which is inherited both from the parent type"
+          & " and from an interface in a tagged derivation",
+         when Lim_Multidim_Iterator =>
+           "an iterator specification on a multidimensional array",
+         when Lim_Multidim_Update =>
+           "a delta aggregate on a multidimensional array",
+         when Lim_Object_Before_Inv =>
+           "a non-scalar object declared in a loop before the loop invariant",
+         when Lim_Op_Fixed_Float =>
+           "a multiplication or division between a fixed-point and a floating-"
+          & "point value",
+         when Lim_Op_Incompatible_Fixed =>
+           "a multiplication or division between different fixed-point types"
+          & " if the result is not in the ""perfect result set"" according to"
+          & " Ada RM G.2.3(21)",
+         when Lim_Overlay_With_Deep_Object =>
+           "a reference to the ""Address"" attribute in an address clause"
+          & " whose prefix has subcomponents of an access-to-variable type",
+         when Lim_Package_Before_Inv =>
+           "a package declaration occurring in a loop before the loop "
+          & "invariant",
+         when Lim_Predicate_With_Different_SPARK_Mode =>
+           "a private type whose full view is not in SPARK annotated with two"
+          & " subtype predicates, one on the full view and one on the private"
+          & " view",
+         when Lim_Primitive_Call_In_DIC =>
+           "a call to a primitive operation of a tagged type T occurring in "
+          & "the default initial condition of T with the type instance as a "
+          & "parameter",
+         when Lim_Protected_Operation_Of_Component =>
+           "a call to a protected operation of a protected component inside"
+          & " a protected object",
+         when Lim_Protected_Operation_Of_Formal =>
+           "a call to a protected operation of the formal parameter of a"
+          & " subprogram",
+         when Lim_Refined_Post_On_Entry =>
+           "a protected entry annotated with a Refined_Post",
+         when Lim_Relaxed_Init_Access_Type =>
+           "an access type used as a subcomponent of a type or"
+          & " an object annotated with Relaxed_Initialization",
+         when Lim_Relaxed_Init_Concurrent_Type =>
+           "a concurrent type used as a subcomponent of a type or"
+          & " an object annotated with Relaxed_Initialization",
+         when Lim_Relaxed_Init_Invariant =>
+           "a type annotated with an invariant used as a subcomponent of a"
+          & " type or an object annotated with Relaxed_Initialization",
+         when Lim_Relaxed_Init_Part_Of_Variable =>
+           "a variable annotated both with Relaxed_Initialization and as "
+          & "Part_Of a concurrent object",
+         when Lim_Relaxed_Init_Predicate =>
+           "a type annotated with a subtype predicate used as a subcomponent"
+          & " of a type or an object annotated with Relaxed_Initialization",
+         when Lim_Relaxed_Init_Protected_Component =>
+           "a protected component annotated with Relaxed_Initialization",
+         when Lim_Relaxed_Init_Tagged_Type =>
+           "a tagged type used as a subcomponent of a type or"
+          & " an object annotated with Relaxed_Initialization",
+         when Lim_Subprogram_Before_Inv =>
+           "a subprogram declaration occurring in a loop before the loop "
+          & "invariant",
+         when Lim_Suspension_On_Formal =>
+           "a call to a suspend operation on a suspension formal parameter",
+         when Lim_Target_Name_In_Borrow =>
+           "an occurrence of the target name @ in an assignment to an object "
+          & "of an anonymous access-to-variable type",
+         when Lim_Target_Name_In_Move =>
+           "an occurrence of the target name @ in an assignment to an object "
+          & "containing subcomponents of a named access-to-variable type",
+         when Lim_Type_Inv_Nested_Package =>
+           "a private type declared in a nested package annotated with a "
+          & "type invariant",
+         when Lim_Type_Inv_Private_Child =>
+           "a private type declared in a private child package annotated with"
+          & " a type invariant",
+         when Lim_Type_Inv_Protected_Type =>
+           "a protected type annotated with a type invariant",
+         when Lim_Type_Inv_Tagged_Comp =>
+           "a tagged type with a subcomponent annotated with a type invariant",
+         when Lim_Type_Inv_Tagged_Type =>
+           "a tagged type annotated with a type invariant",
+         when Lim_Uninit_Alloc_In_Expr_Fun =>
+           "an uninitialized allocator inside an expression function",
+         when Lim_Unknown_Alignment =>
+           "a reference to the ""Alignment"" attribute on a prefix which is "
+          & "not a type with an alignment clause",
+         when Lim_UU_Tagged_Comp =>
+           "a component of an unconstrained unchecked union type in a tagged "
+          & "extension");
+
    pragma Annotate (Xcov, Exempt_Off);
 
    ---------------

@@ -1,8 +1,8 @@
-bad_access.adb:9:24: error: move through Access not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
-bad_access.adb:10:33: error: move through Access not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
-bad_access.adb:11:27: error: move through Access not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
-bad_access.adb:13:12: error: move through Access not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
-bad_access.adb:13:26: error: move through Access not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
+bad_access.adb:9:24: error: "Access" attribute of a type with ownership not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
+bad_access.adb:10:33: error: "Access" attribute of a type with ownership not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
+bad_access.adb:11:27: error: "Access" attribute of a type with ownership not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
+bad_access.adb:13:12: error: "Access" attribute of a type with ownership not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
+bad_access.adb:13:26: error: "Access" attribute of a type with ownership not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
 bad_moves_of_deep.adb:11:25: info: data dependencies proved
 bad_moves_of_deep.adb:17:23: error: object was moved at line 14
 bad_moves_of_deep.adb:17:23: error: part of "X" is not readable

@@ -1,4 +1,4 @@
-with SPARK.Containers.Formal.Indefinite_Vectors;
+with SPARK.Containers.Formal.Unbounded_Vectors;
 with Ada.Containers; use Ada.Containers;
 
 procedure Main with SPARK_Mode is
@@ -7,13 +7,12 @@ procedure Main with SPARK_Mode is
       X, Y : Integer;
    end record with Size => 64;
 
-   package VCpuVectors is new SPARK.Containers.Formal.Indefinite_Vectors
+   package VCpuVectors is new SPARK.Containers.Formal.Unbounded_Vectors
      (Index_Type                   => VCpuIdType,
-      Element_Type                 => VCpuType,
-      Max_Size_In_Storage_Elements => VCpuType'Size);
+      Element_Type                 => VCpuType);
    use all type VCpuVectors.Vector;
 
-   VCpuVector : aliased VCpuVectors.Vector (10);
+   VCpuVector : aliased VCpuVectors.Vector;
 
    procedure DoStuff (VCpu : in out VCpuType) with Import;
 
@@ -23,9 +22,7 @@ procedure Main with SPARK_Mode is
      with Pre => VCpuId in 1 .. VCpuVectors.Last_Index (VCpuVector)
    is
       VCpuVectorAcc : constant access VCpuVectors.Vector := VCpuVector'Access;
-      pragma Assert (VCpuVectors.At_End (VCpuVectorAcc).Capacity = 10); --@ASSERT:PASS
       VCpu          : access VCpuType := VCpuVectors.Reference (VCpuVectorAcc, VCpuId);
-      pragma Assert (VCpuVectors.At_End (VCpuVectorAcc).Capacity = 10);  --@ASSERT:PASS
    begin
       VCpu.x := VCpu.y;
       DoStuff(VCpu.all);

@@ -1,7 +1,7 @@
 with Ada.Containers; use Ada.Containers;
 with SPARK.Containers.Formal.Doubly_Linked_Lists;
 with SPARK.Containers.Formal.Vectors;
-with SPARK.Containers.Formal.Indefinite_Vectors;
+with SPARK.Containers.Formal.Unbounded_Vectors;
 with SPARK.Containers.Formal.Hashed_Sets;
 with SPARK.Containers.Formal.Ordered_Sets;
 with SPARK.Containers.Formal.Hashed_Maps;
@@ -35,7 +35,7 @@ procedure Test_Deep_Element_Type with SPARK_Mode is
    package Lists is new SPARK.Containers.Formal.Doubly_Linked_Lists (Holder);
    package Sequences is new SPARK.Containers.Functional.Vectors (Positive, Holder);
    package Vectors is new SPARK.Containers.Formal.Vectors (Positive, Holder);
-   package Indef_Vectors is new SPARK.Containers.Formal.Indefinite_Vectors (Positive, Holder, Max_Size_In_Storage_Elements => Holder'Size);
+   package Indef_Vectors is new SPARK.Containers.Formal.Unbounded_Vectors (Positive, Holder);
    package H_Sets is new SPARK.Containers.Formal.Hashed_Sets (Holder, Hash);
    package O_Sets is new SPARK.Containers.Formal.Ordered_Sets (Holder);
    package F_Sets is new SPARK.Containers.Functional.Sets (Holder);

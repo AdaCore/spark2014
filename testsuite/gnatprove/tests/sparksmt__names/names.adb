@@ -37,8 +37,8 @@ package body Names with
 is
 
    Hash_Table  : Hash_Table_T := (others => 0);
-   Char_Table  : Char_Tables.Vector (1024);
-   Entry_Table : Entry_Tables.Vector (256);
+   Char_Table  : Char_Tables.Vector;
+   Entry_Table : Entry_Tables.Vector;
 
    ----------------
    -- Invariants --

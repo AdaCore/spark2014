@@ -1,3 +1,19 @@
-vecs.ads:5:04: error: in instantiation of "Indefinite_Vectors" declared at spark-containers-formal-indefinite_vectors.ads:53
-vecs.ads:5:04: error: missing actual "Max_Size_In_Storage_Elements"
-gnatprove: error during generation of Global contracts
+spark-containers-formal-unbounded_vectors.ads:263:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at vecs.ads:5
+spark-containers-formal-unbounded_vectors.ads:264:08: info: dynamic accessibility check proved (Trivial), in instantiation at vecs.ads:5
+spark-containers-formal-unbounded_vectors.ads:268:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at vecs.ads:5
+spark-containers-formal-unbounded_vectors.ads:270:08: info: dynamic accessibility check proved (Trivial), in instantiation at vecs.ads:5
+spark-containers-formal-unbounded_vectors.ads:289:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at vecs.ads:5
+spark-containers-formal-unbounded_vectors.ads:289:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at vecs.ads:5
+spark-containers-formal-unbounded_vectors.ads:597:57: info: range check proved (CVC5: 2 VC), in instantiation at vecs.ads:5
+spark-containers-formal-unbounded_vectors.ads:725:23: info: precondition proved (CVC5: 1 VC), in instantiation at vecs.ads:5
+spark-containers-formal-unbounded_vectors.ads:728:38: info: range check proved (CVC5: 2 VC), in instantiation at vecs.ads:5
+spark-containers-formal-unbounded_vectors.ads:761:14: info: precondition proved (CVC5: 1 VC), in instantiation at vecs.ads:5
+spark-containers-formal-unbounded_vectors.ads:765:35: info: range check proved (CVC5: 2 VC), in instantiation at vecs.ads:5
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at vecs.ads:5
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at vecs.ads:5
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at vecs.ads:5
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at vecs.ads:5
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at vecs.ads:5
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at vecs.ads:5
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at vecs.ads:5
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at vecs.ads:5

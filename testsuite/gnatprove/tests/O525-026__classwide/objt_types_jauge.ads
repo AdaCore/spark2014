@@ -1,6 +1,6 @@
 -- Ada
 
-with SPARK.Containers.Formal.Indefinite_Vectors;
+with SPARK.Containers.Formal.Unbounded_Vectors;
 
 -- Jauge
 
@@ -17,12 +17,10 @@ package Objt_Types_Jauge is
 
    use Objt_Interface_Jauge;
 
-   package Objt_Liste_Jauge is new SPARK.Containers.Formal.Indefinite_Vectors(Index_Type                   => tIndex_Liste_Jauge,
+   package Objt_Liste_Jauge is new SPARK.Containers.Formal.Unbounded_Vectors(Index_Type                   => tIndex_Liste_Jauge,
 
-                                                                            Element_Type                 => tInterface_Jauge'Class,
+                                                                            Element_Type                 => tInterface_Jauge'Class
 
-                                                                            Max_Size_In_Storage_Elements => Nb_Maximum_Jauge
-
-                                                                           );
+									        );
 
 end Objt_Types_Jauge;

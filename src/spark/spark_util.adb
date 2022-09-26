@@ -2012,6 +2012,21 @@ package body SPARK_Util is
       end case;
    end Has_Volatile_Property;
 
+   ---------------------------
+   -- In_SPARK_Library_Unit --
+   ---------------------------
+
+   function In_SPARK_Library_Unit (N : Node_Or_Entity_Id) return Boolean is
+      Unit     : constant Unit_Number_Type := Get_Source_Unit (N);
+      U_Name   : constant File_Name_Type := Unit_File_Name (Unit);
+      Str_Name : constant String := Get_Name_String (U_Name);
+   begin
+      return Str_Name'Length >= 11
+        and then Str_Name (Str_Name'First .. Str_Name'First + 5) = "spark-"
+        and then Str_Name (Str_Name'Last - 3 .. Str_Name'Last - 1) = ".ad"
+        and then Str_Name (Str_Name'Last) in 's' | 'b';
+   end In_SPARK_Library_Unit;
+
    ------------------------------------------------
    -- Is_Additional_Param_Of_Access_Subp_Wrapper --
    ------------------------------------------------

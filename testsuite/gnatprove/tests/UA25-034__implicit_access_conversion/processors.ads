@@ -1,4 +1,4 @@
-with SPARK.Containers.Formal.Indefinite_Vectors;
+with SPARK.Containers.Formal.Unbounded_Vectors;
 with Ada.Containers; use Ada.Containers;
 
 package Processors with SPARK_Mode is

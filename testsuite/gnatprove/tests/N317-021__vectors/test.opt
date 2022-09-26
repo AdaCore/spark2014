@@ -1,3 +1,4 @@
 assertions SKIP too slow for assertions
 NT SKIP too slow on Windows (PA06-025)
 inverse-prover SKIP too slow
+ALL XFAIL empty ALI file when using no subprojects switch (V804-005)

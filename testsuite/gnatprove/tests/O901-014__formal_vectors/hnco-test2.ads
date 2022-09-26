@@ -8,7 +8,7 @@ package Hnco.Test2 is
    package V_Type_Owner is new Aida.Containers.Formal_Vectors (Index_Type => Positive,
                                                                Element_Type => Integer);
 
-   V : V_Type_Owner.Vector_Type (10);
+   V : V_Type_Owner.Vector_Type;
 
    procedure Add_Elements_To_Vector;
 

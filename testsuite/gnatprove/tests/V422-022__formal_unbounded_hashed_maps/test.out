@@ -1,0 +1,210 @@
+spark-containers-formal-unbounded_hashed_maps.ads:358:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_map.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:358:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_map.ads:8
+spark-containers-formal-unbounded_hashed_maps.ads:360:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:360:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:8
+spark-containers-formal-unbounded_hashed_maps.ads:360:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_map.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:360:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_map.ads:8
+spark-containers-formal-unbounded_hashed_maps.ads:364:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_map.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:364:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_map.ads:8
+spark-containers-formal-unbounded_hashed_maps.ads:366:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:366:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:8
+spark-containers-formal-unbounded_hashed_maps.ads:385:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:385:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:8
+spark-containers-formal-unbounded_hashed_maps.ads:423:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:423:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:8
+spark-containers-formal-unbounded_hashed_maps.ads:738:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:738:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:8
+spark-containers-formal-unbounded_hashed_maps.ads:747:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:747:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:8
+spark-containers-formal-unbounded_hashed_maps.ads:777:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:777:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:8
+spark-containers-formal-unbounded_hashed_maps.ads:792:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:792:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:8
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:139, in instantiation at test_map.ads:25
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:139, in instantiation at test_map.ads:8
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:86, in instantiation at test_map.ads:25
+spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:86, in instantiation at test_map.ads:8
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:139, in instantiation at test_map.ads:25
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:139, in instantiation at test_map.ads:8
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:86, in instantiation at test_map.ads:25
+spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:86, in instantiation at test_map.ads:8
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:139, in instantiation at test_map.ads:25
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:139, in instantiation at test_map.ads:8
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:86, in instantiation at test_map.ads:25
+spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:86, in instantiation at test_map.ads:8
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:25
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:8
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:25
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:8
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:25
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:8
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:25
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:8
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:25
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:8
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:25
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:8
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:25
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:8
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:25
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:8
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:25
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test_map.ads:8
+test_map.adb:4:14: warning: subprogram "Test_Map_Pos" has no effect
+test_map.adb:6:07: info: initialization of "L" proved
+test_map.adb:6:10: info: initialization of "K" proved
+test_map.adb:6:19: info: range check proved (CVC5: 1 VC)
+test_map.adb:7:07: info: initialization of "C" proved
+test_map.adb:8:07: info: initialization of "B" proved
+test_map.adb:11:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:13:12: info: precondition proved (CVC5: 1 VC)
+test_map.adb:15:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:16:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:17:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:18:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:19:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:19:22: info: precondition proved (CVC5: 1 VC)
+test_map.adb:21:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:22:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:28:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:29:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:30:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:31:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:33:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:35:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:36:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:39:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:41:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:42:07: medium: assertion might fail
+test_map.adb:45:14: warning: subprogram "Test_Map_Rec" has no effect
+test_map.adb:47:07: info: initialization of "L" proved
+test_map.adb:47:10: info: initialization of "K" proved
+test_map.adb:47:19: info: range check proved (CVC5: 1 VC)
+test_map.adb:48:07: info: initialization of "C" proved
+test_map.adb:49:07: info: initialization of "B" proved
+test_map.adb:51:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:53:12: info: precondition proved (CVC5: 1 VC)
+test_map.adb:55:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:56:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:57:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:57:22: info: precondition proved (Z3: 1 VC)
+test_map.adb:58:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:59:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:60:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:61:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:61:22: info: precondition proved (CVC5: 1 VC)
+test_map.adb:63:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:64:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:70:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:71:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:72:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:73:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:75:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:77:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:78:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:81:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:83:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:84:07: medium: assertion might fail
+test_map.adb:87:14: warning: subprogram "Test_Map_Rec_2" has no effect
+test_map.adb:89:07: info: initialization of "L" proved
+test_map.adb:89:10: info: initialization of "K" proved
+test_map.adb:89:19: info: range check proved (CVC5: 1 VC)
+test_map.adb:90:07: info: initialization of "C" proved
+test_map.adb:91:07: info: initialization of "B" proved
+test_map.adb:93:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:95:12: info: precondition proved (CVC5: 1 VC)
+test_map.adb:97:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:98:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:99:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:100:22: medium: assertion might fail
+test_map.adb:101:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:102:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:102:22: info: precondition proved (CVC5: 1 VC)
+test_map.adb:104:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:105:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:111:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:112:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:113:22: medium: assertion might fail
+test_map.adb:114:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:116:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:118:07: medium: precondition might fail
+test_map.adb:119:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:122:22: medium: assertion might fail
+test_map.adb:124:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Length or turning it into an expression function]
+test_map.adb:125:07: medium: assertion might fail
+test_map.adb:130:07: info: precondition proved (Trivial: 1 VC)
+test_map.adb:131:07: info: precondition proved (Trivial: 1 VC)
+test_map.adb:132:07: info: precondition proved (Trivial: 1 VC)
+test_map.adb:138:07: info: initialization of "L" proved
+test_map.adb:138:10: info: initialization of "K" proved
+test_map.adb:138:19: info: range check proved (CVC5: 1 VC)
+test_map.adb:139:07: info: initialization of "C" proved
+test_map.adb:145:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:147:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:149:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:151:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:153:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:154:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:155:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:157:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:159:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:159:22: info: precondition proved (CVC5: 2 VC)
+test_map.adb:159:22: info: precondition proved (Trivial: 1 VC)
+test_map.adb:161:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:162:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:164:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:166:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:167:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:169:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:173:12: info: discriminant check proved (CVC5: 1 VC)
+test_map.adb:174:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:176:12: info: discriminant check proved (CVC5: 1 VC)
+test_map.adb:181:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:185:07: info: precondition proved (Z3: 2 VC)
+test_map.adb:186:07: info: precondition proved (Z3: 2 VC)
+test_map.adb:188:12: info: discriminant check proved (CVC5: 1 VC)
+test_map.adb:189:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:190:12: info: discriminant check proved (CVC5: 1 VC)
+test_map.adb:191:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:192:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:197:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:198:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:198:22: info: precondition proved (Z3: 1 VC)
+test_map.adb:203:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:204:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:205:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:210:22: info: precondition proved (Z3: 1 VC)
+test_map.adb:210:22: medium: assertion might fail [possible fix: call at line 204 should mention Position (for argument C) in a postcondition]
+test_map.adb:214:07: info: precondition proved (Z3: 2 VC)
+test_map.adb:215:07: info: precondition proved (Z3: 2 VC)
+test_map.adb:216:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:222:25: info: assertion proved (Z3: 1 VC)
+test_map.adb:223:25: info: assertion proved (Z3: 1 VC)
+test_map.adb:231:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:232:12: info: precondition proved (Z3: 1 VC)
+test_map.adb:233:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:234:12: info: precondition proved (Z3: 1 VC)
+test_map.adb:235:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:236:12: info: precondition proved (Z3: 1 VC)
+test_map.adb:237:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:242:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:242:22: info: precondition proved (Z3: 1 VC)
+test_map.adb:243:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:243:22: info: precondition proved (Z3: 1 VC)
+test_map.adb:245:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:246:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:246:22: info: precondition proved (Z3: 1 VC)
+test_map.adb:247:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:247:22: info: precondition proved (Z3: 1 VC)
+test_map.adb:252:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:254:10: info: precondition proved (Z3: 4 VC)
+test_map.adb:256:33: info: loop invariant initialization proved (Z3: 1 VC)
+test_map.adb:256:33: info: loop invariant preservation proved (CVC5: 1 VC)
+test_map.adb:258:35: medium: loop invariant might fail in first iteration, cannot prove not Contains (K, Idx)
+test_map.adb:258:35: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove not Contains (K, Idx)
+test_map.adb:258:52: info: range check proved (Z3: 4 VC)
+test_map.adb:261:07: info: precondition proved (Z3: 2 VC)
+test_map.adb:262:07: medium: assertion might fail
+test_map.ads:20:17: info: postcondition proved (CVC5: 2 VC)
+test_map.ads:31:14: warning: subprogram "Run_Test" has no effect
+test_map.ads:33:14: warning: subprogram "Large_Test" has no effect

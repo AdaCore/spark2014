@@ -1,88 +1,85 @@
-names.adb:34:04: info: initialization of "Char_Table" proved
-names.adb:34:38: info: range check proved (CVC5: 2 VC)
-names.adb:48:49: medium: range check might fail, cannot prove upper bound for Name_Entry'Size [reason for check: default component value must fit in the type]
-names.adb:51:04: info: initialization of "Entry_Table" proved
-names.adb:51:39: info: range check proved (CVC5: 2 VC)
-names.adb:63:20: warning: assuming "Hash" always returns
-names.adb:63:20: warning: no returning annotation available for "Hash"
-names.adb:63:30: info: division check proved (CVC5: 1 VC)
-names.adb:63:30: info: range check proved (CVC5: 2 VC)
-names.adb:74:16: info: precondition proved (CVC5: 1 VC)
-names.adb:79:23: medium: precondition might fail [possible fix: loop at line 73 should mention Ptr in a loop invariant]
-names.adb:80:20: medium: precondition might fail [possible fix: loop at line 73 should mention Ptr in a loop invariant]
-names.adb:84:21: info: cannot unroll loop (too many loop iterations)
-names.adb:85:10: medium: precondition might fail [possible fix: loop at line 84 should mention Char_Table in a loop invariant]
-names.adb:88:22: info: assertion proved (CVC5: 1 VC)
-names.adb:89:22: info: assertion proved (CVC5: 1 VC)
-names.adb:90:22: info: assertion proved (CVC5: 1 VC)
-names.adb:92:07: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:9 should mention Entry_Table]
-names.adb:93:55: info: overflow check proved (CVC5: 2 VC)
-names.adb:93:55: medium: range check might fail, cannot prove lower bound for Last_Index (Char_Table) - (S'Length - 1) [reason for check: result of subtraction must fit in component type] [possible fix: loop at line 84 should mention Char_Table in a loop invariant]
-names.adb:93:59: info: range check proved (CVC5: 2 VC)
-names.adb:94:32: info: range check proved (CVC5: 2 VC)
-names.adb:99:10: medium: precondition might fail
-names.adb:100:27: info: range check proved (CVC5: 2 VC)
-names.adb:101:27: medium: precondition might fail
-names.adb:120:37: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]
-names.adb:123:17: info: initialization of "S" proved
-names.adb:123:17: info: range check proved (CVC5: 2 VC)
-names.adb:124:17: info: range check proved (CVC5: 2 VC)
-names.adb:124:44: info: cannot unroll loop (too many loop iterations)
-names.adb:125:25: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:15 should mention Char_Table]
-names.adb:126:48: medium: overflow check might fail, cannot prove upper bound for E.Table_Index + Char_Table_Index (I - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]
+names.adb:32:04: info: initialization of "Char_Table" proved
+names.adb:47:04: info: initialization of "Entry_Table" proved
+names.adb:59:20: warning: assuming "Hash" always returns
+names.adb:59:20: warning: no returning annotation available for "Hash"
+names.adb:59:30: info: division check proved (CVC5: 1 VC)
+names.adb:59:30: info: range check proved (CVC5: 2 VC)
+names.adb:70:16: info: precondition proved (CVC5: 1 VC)
+names.adb:75:23: medium: precondition might fail (e.g. when Ptr = 0) [possible fix: loop at line 69 should mention Ptr in a loop invariant]
+names.adb:76:20: medium: precondition might fail (e.g. when Ptr = 0) [possible fix: loop at line 69 should mention Ptr in a loop invariant]
+names.adb:80:21: info: cannot unroll loop (too many loop iterations)
+names.adb:81:10: medium: precondition might fail [possible fix: loop at line 80 should mention Char_Table in a loop invariant]
+names.adb:84:22: info: assertion proved (CVC5: 1 VC)
+names.adb:85:22: info: assertion proved (CVC5: 1 VC)
+names.adb:86:22: info: assertion proved (CVC5: 1 VC)
+names.adb:88:07: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:9 should mention Entry_Table]
+names.adb:89:55: info: overflow check proved (CVC5: 2 VC)
+names.adb:89:55: medium: range check might fail, cannot prove lower bound for Last_Index (Char_Table) - (S'Length - 1) (e.g. when S = (1 => 'NUL') and S'First = 1 and S'Last = 1) [reason for check: result of subtraction must fit in component type] [possible fix: loop at line 80 should mention Char_Table in a loop invariant]
+names.adb:89:59: info: range check proved (CVC5: 2 VC)
+names.adb:90:32: info: range check proved (CVC5: 2 VC)
+names.adb:95:10: medium: precondition might fail
+names.adb:96:27: info: range check proved (CVC5: 2 VC)
+names.adb:97:27: medium: precondition might fail
+names.adb:116:37: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]
+names.adb:119:17: info: initialization of "S" proved
+names.adb:119:17: info: range check proved (CVC5: 2 VC)
+names.adb:120:17: info: range check proved (CVC5: 2 VC)
+names.adb:120:44: info: cannot unroll loop (too many loop iterations)
+names.adb:121:25: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:15 should mention Char_Table]
+names.adb:122:48: medium: overflow check might fail, cannot prove upper bound for E.Table_Index + Char_Table_Index (I - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]
 names.ads:10:22: info: initialization of "N" proved
 names.ads:13:19: info: postcondition proved (CVC5: 1 VC)
-spark-containers-formal-indefinite_vectors.ads:315:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:315:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:316:08: info: dynamic accessibility check proved (Trivial), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:316:08: info: dynamic accessibility check proved (Trivial), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:320:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:320:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:322:08: info: dynamic accessibility check proved (Trivial), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:322:08: info: dynamic accessibility check proved (Trivial), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:341:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:341:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:341:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:341:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:364:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:364:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:406:73: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:406:73: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:439:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:439:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:474:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:474:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:520:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:520:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:544:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:544:51: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:585:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:585:59: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:650:28: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:650:28: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:650:57: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:650:57: info: range check proved (CVC5: 2 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:650:57: info: range check proved (CVC5: 2 VC), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:778:23: info: precondition proved (CVC5: 1 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:778:23: info: precondition proved (CVC5: 1 VC), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:781:38: info: range check proved (CVC5: 2 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:814:14: info: precondition proved (CVC5: 1 VC), in instantiation at names.adb:27
-spark-containers-formal-indefinite_vectors.ads:814:14: info: precondition proved (CVC5: 1 VC), in instantiation at names.adb:44
-spark-containers-formal-indefinite_vectors.ads:818:35: info: range check proved (CVC5: 2 VC), in instantiation at names.adb:27
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:27
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:44
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:27
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:44
-spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:27
-spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:44
-spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:27
-spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:44
-spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:44
-spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:27
-spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:44
-spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:27
-spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:44
-spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:27
-spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:44
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:27
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-indefinite_vectors.ads:108, in instantiation at names.adb:44
+spark-containers-formal-unbounded_vectors.ads:263:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:263:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:264:08: info: dynamic accessibility check proved (Trivial), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:264:08: info: dynamic accessibility check proved (Trivial), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:268:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:268:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:270:08: info: dynamic accessibility check proved (Trivial), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:270:08: info: dynamic accessibility check proved (Trivial), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:289:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:289:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:289:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:289:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:312:41: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:312:41: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:354:73: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:354:73: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:387:41: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:387:41: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:422:49: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:422:49: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:468:49: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:468:49: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:491:49: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:491:49: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:532:49: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:532:49: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:597:28: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:597:28: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:597:57: info: overflow check proved (CVC5: 2 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:597:57: info: range check proved (CVC5: 2 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:597:57: info: range check proved (CVC5: 2 VC), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:725:23: info: precondition proved (CVC5: 1 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:725:23: info: precondition proved (CVC5: 1 VC), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:728:38: info: range check proved (CVC5: 2 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:761:14: info: precondition proved (CVC5: 1 VC), in instantiation at names.adb:27
+spark-containers-formal-unbounded_vectors.ads:761:14: info: precondition proved (CVC5: 1 VC), in instantiation at names.adb:42
+spark-containers-formal-unbounded_vectors.ads:765:35: info: range check proved (CVC5: 2 VC), in instantiation at names.adb:27
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:27
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:42
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:27
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:42
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:27
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:42
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:27
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:42
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:42
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:27
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:42
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:27
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:42
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:27
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:42
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:27
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at names.adb:42

@@ -41,6 +41,7 @@ with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Ordered_Maps;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNATCOLL.JSON;         use GNATCOLL.JSON;
+with String_Utils;          use String_Utils;
 
 package VC_Kinds is
 
@@ -382,6 +383,85 @@ package VC_Kinds is
       Warn_Representation_Attribute_Value
       );
 
+   Max_Array_Dimensions : constant Positive := 4;
+   --  Maximal number of array dimensions that are currently supported
+
+   --  Used to categorize constructs which are not supported currently by the
+   --  tool.
+   type Unsupported_Kind is
+     (Lim_Abstract_State_Part_Of_Concurrent_Obj,
+      Lim_Access_Attr_With_Ownership_In_Unsupported_Context,
+      Lim_Access_Conv,
+      Lim_Access_Sub_Formal_With_Inv,
+      Lim_Access_Sub_Protected,
+      Lim_Access_Sub_Return_Type_With_Inv,
+      Lim_Access_Sub_Traversal,
+      Lim_Access_To_Dispatch_Op,
+      Lim_Access_To_Relaxed_Init_Subp,
+      Lim_Address_Attr_In_Unsupported_Context,
+      Lim_Array_Conv_Different_Size_Modular_Index,
+      Lim_Array_Conv_Signed_Modular_Index,
+      Lim_Borrow_Traversal_First_Param,
+      Lim_Borrow_Traversal_Volatile,
+      Lim_Borrow_With_Predicates_On_Parts,
+      Lim_Class_Attr_Of_Constrained_Type,
+      Lim_Classwide_With_Predicate,
+      Lim_Complex_Raise_Expr_In_Prec,
+      Lim_Constrained_Classwide,
+      Lim_Contract_On_Derived_Private_Type,
+      Lim_Conv_Fixed_Float,
+      Lim_Conv_Fixed_Integer,
+      Lim_Conv_Float_Modular_128,
+      Lim_Conv_Incompatible_Fixed,
+      Lim_Deep_Object_With_Addr,
+      Lim_Entry_Family,
+      Lim_Ext_Aggregate_With_Type_Ancestor,
+      Lim_Goto_Cross_Inv,
+      Lim_Img_On_Non_Scalar,
+      Lim_Iterated_Element_Association,
+      Lim_Iterator_In_Component_Assoc,
+      Lim_Limited_Type_From_Limited_With,
+      Lim_Loop_With_Iterator_Filter,
+      Lim_Max_Array_Dimension,
+      Lim_Max_Modulus,
+      Lim_Move_To_Access_Constant,
+      Lim_No_Return_Function,
+      Lim_Non_Static_Attribute,
+      Lim_Multiple_Inheritance_Interfaces,
+      Lim_Multiple_Inheritance_Root,
+      Lim_Multidim_Iterator,
+      Lim_Multidim_Update,
+      Lim_Object_Before_Inv,
+      Lim_Op_Fixed_Float,
+      Lim_Op_Incompatible_Fixed,
+      Lim_Overlay_With_Deep_Object,
+      Lim_Package_Before_Inv,
+      Lim_Predicate_With_Different_SPARK_Mode,
+      Lim_Primitive_Call_In_DIC,
+      Lim_Protected_Operation_Of_Component,
+      Lim_Protected_Operation_Of_Formal,
+      Lim_Refined_Post_On_Entry,
+      Lim_Relaxed_Init_Access_Type,
+      Lim_Relaxed_Init_Concurrent_Type,
+      Lim_Relaxed_Init_Invariant,
+      Lim_Relaxed_Init_Part_Of_Variable,
+      Lim_Relaxed_Init_Predicate,
+      Lim_Relaxed_Init_Protected_Component,
+      Lim_Relaxed_Init_Tagged_Type,
+      Lim_Subprogram_Before_Inv,
+      Lim_Suspension_On_Formal,
+      Lim_Target_Name_In_Borrow,
+      Lim_Target_Name_In_Move,
+      Lim_Type_Inv_Nested_Package,
+      Lim_Type_Inv_Private_Child,
+      Lim_Type_Inv_Protected_Type,
+      Lim_Type_Inv_Tagged_Comp,
+      Lim_Type_Inv_Tagged_Type,
+      Lim_Uninit_Alloc_In_Expr_Fun,
+      Lim_Unknown_Alignment,
+      Lim_UU_Tagged_Comp
+      );
+
    subtype Default_Warning_Kind is Misc_Warning_Kind range
      Warn_Address_To_Access .. Warn_Variant_Not_Recursive;
 
@@ -447,6 +527,169 @@ package VC_Kinds is
           "?attribute % has an implementation-defined value"
      );
 
+   function Unsupported_Message
+     (Kind : Unsupported_Kind;
+      Name : String := "") return String is
+     (case Kind is
+         when Lim_Abstract_State_Part_Of_Concurrent_Obj =>
+           "abstract state Part_Of constituent of a single concurrent object",
+         when Lim_Access_Attr_With_Ownership_In_Unsupported_Context =>
+           """Access"" attribute of a type with ownership not directly inside"
+          & " an assignment statement, an object declaration, or a simple"
+          & " return statement",
+         when Lim_Access_Conv =>
+           "implicit conversion between access types with different"
+          & " designated types",
+         when Lim_Access_Sub_Formal_With_Inv =>
+           "formal with type invariants in access-to-subprogram",
+         when Lim_Access_Sub_Protected =>
+           "access to protected subprogram",
+         when Lim_Access_Sub_Return_Type_With_Inv =>
+           "access-to-subprogram returning a type with invariants",
+         when Lim_Access_Sub_Traversal =>
+           "access to borrowing traversal function",
+         when Lim_Access_To_Dispatch_Op =>
+           "access to dispatching operation",
+         when Lim_Access_To_Relaxed_Init_Subp =>
+           "access to subprogram annotated with Relaxed_Initialization",
+         when Lim_Address_Attr_In_Unsupported_Context =>
+           "attribute ""Address"" in unsupported context",
+         when Lim_Object_Before_Inv =>
+           "non-scalar object declared before loop-invariant",
+         when Lim_Package_Before_Inv =>
+           "nested packages before loop-invariant",
+         when Lim_Subprogram_Before_Inv =>
+           "nested subprogram before loop-invariant",
+         when Lim_Goto_Cross_Inv =>
+           "goto statement to label located inside the loop crossing the loop"
+          & " invariant",
+         when Lim_Multidim_Update =>
+           "attribute ""Update"" of unconstrained multidimensional array",
+         when Lim_Uninit_Alloc_In_Expr_Fun =>
+           "uninitialized allocator inside expression function",
+         when Lim_Iterator_In_Component_Assoc =>
+           "iterated component association with iterator specification",
+         when Lim_Ext_Aggregate_With_Type_Ancestor =>
+           "extension aggregate with subtype ancestor part",
+         when Lim_Iterated_Element_Association =>
+           "iterated element association",
+         when Lim_Multidim_Iterator =>
+           "iterator specification over multi-dimensional array",
+         when Lim_Loop_With_Iterator_Filter =>
+           "loop on an iterator specification with an iterator filter",
+         when Lim_Complex_Raise_Expr_In_Prec =>
+           "raise expression in a complex expression in a precondition",
+         when Lim_Array_Conv_Different_Size_Modular_Index =>
+           "conversion between array types with modular index types of"
+          & " different sizes",
+         when Lim_Array_Conv_Signed_Modular_Index =>
+           "conversion between array types with modular and non-modular index"
+          & " types",
+         when Lim_Move_To_Access_Constant =>
+           "move as part of a conversion to an access-to-constant type",
+         when Lim_Conv_Fixed_Float =>
+           "conversion between fixed-point and floating-point types",
+         when Lim_Conv_Incompatible_Fixed =>
+           "conversion between incompatible fixed-point types",
+         when Lim_Conv_Fixed_Integer =>
+           "conversion between fixed-point and integer types",
+         when Lim_Conv_Float_Modular_128 =>
+           "conversion between floating-point and 128-bits modular types",
+         when Lim_Target_Name_In_Borrow =>
+           "'@ inside a reborrow",
+         when Lim_Target_Name_In_Move =>
+           "'@ inside a move assignment",
+         when Lim_Deep_Object_With_Addr =>
+           "address clause on an object of an ownership type",
+         when Lim_Overlay_With_Deep_Object =>
+           "overlay with an object of an ownership type",
+         when Lim_Non_Static_Attribute =>
+           "non-static attribute """ & Standard_Ada_Case (Name) & """",
+         when Lim_Img_On_Non_Scalar =>
+           "attribute """ & Standard_Ada_Case (Name) & """ on non-scalar type",
+         when Lim_Unknown_Alignment =>
+           "unknown value of object alignment",
+         when Lim_Op_Fixed_Float =>
+           "operation between fixed-point and floating-point types",
+         when Lim_Op_Incompatible_Fixed =>
+           "operation between incompatible fixed-point types",
+         when Lim_Protected_Operation_Of_Formal =>
+           "call to operation of a formal protected parameter",
+         when Lim_Protected_Operation_Of_Component =>
+           "call to operation of a component of a protected type",
+         when Lim_Suspension_On_Formal =>
+           "suspension on a formal parameter",
+         when Lim_Borrow_With_Predicates_On_Parts =>
+           "local borrow of an expression with predicates on subcomponents of"
+          & " deep type",
+         when Lim_Borrow_Traversal_First_Param =>
+           "borrowing traversal functions whose first parameter does not have"
+          & " an anonymous access-to-variable type",
+         when Lim_Borrow_Traversal_Volatile =>
+           "volatile borrowing traversal function",
+         when Lim_No_Return_Function =>
+           "function annotated with No_Return",
+         when Lim_Multiple_Inheritance_Root =>
+           "subprogram inherited from root and interface",
+         when Lim_Multiple_Inheritance_Interfaces =>
+           "subprogram inherited from multiple interfaces",
+         when Lim_Primitive_Call_In_DIC =>
+           "primitive calls in default initial condition",
+         when Lim_Constrained_Classwide =>
+           "constrained class-wide subtype",
+         when Lim_Type_Inv_Nested_Package =>
+           "type invariant in a nested package",
+         when Lim_Type_Inv_Private_Child =>
+           "type invariant in private child unit",
+         when Lim_Type_Inv_Protected_Type =>
+           "type invariant on protected types",
+         when Lim_Type_Inv_Tagged_Type =>
+           "type invariant on tagged types",
+         when Lim_Type_Inv_Tagged_Comp =>
+           "type invariant on components of tagged types",
+         when Lim_Max_Array_Dimension =>
+            "array of dimension greater than" & Max_Array_Dimensions'Img,
+         when Lim_Max_Modulus =>
+            "modulus greater than 2 '*'* 128",
+         when Lim_Class_Attr_Of_Constrained_Type =>
+            "attribute ""Class"" of a constrained type",
+         when Lim_Classwide_With_Predicate =>
+           "subtype predicate on a classwide type",
+         when Lim_Contract_On_Derived_Private_Type =>
+           "type aspect on type derived from a private type",
+         when Lim_Predicate_With_Different_SPARK_Mode =>
+           "type with predicates with different SPARK_Mode values",
+         when Lim_UU_Tagged_Comp =>
+           "component of an unconstrained unchecked union type in a tagged"
+          & " extension",
+         when Lim_Relaxed_Init_Protected_Component =>
+           "protected component with relaxed initialization",
+         when Lim_Relaxed_Init_Part_Of_Variable =>
+           "variable annotated as Part_Of a concurrent object with relaxed"
+          & " initialization",
+         when Lim_Relaxed_Init_Invariant =>
+           "invariant on a type used as a subcomponent of a type or"
+          & " an object annotated with relaxed initialization",
+         when Lim_Relaxed_Init_Tagged_Type =>
+           "tagged type used as a subcomponent of a type or"
+          & " an object annotated with relaxed initialization",
+         when Lim_Relaxed_Init_Access_Type =>
+           "access type used as a subcomponent of a type or"
+          & " an object annotated with relaxed initialization",
+         when Lim_Relaxed_Init_Concurrent_Type =>
+           "concurrent type used as a subcomponent of a type or"
+          & " an object annotated with relaxed initialization",
+         when Lim_Relaxed_Init_Predicate =>
+           "subtype predicate on a type used as a subcomponent of a type or"
+          & " an object annotated with relaxed initialization",
+         when Lim_Limited_Type_From_Limited_With =>
+           "limited view of type & coming from limited with",
+         when Lim_Refined_Post_On_Entry =>
+           "Refined_Post aspect on a protected entry",
+         when Lim_Entry_Family =>
+           "entry family"
+     );
+
    function CWE_ID (Kind : VC_Kind) return String;
    function CWE_ID (Kind : Valid_Flow_Tag_Kind) return String;
    --  Return the CWE number for a given kind as a string; return the empty
@@ -460,6 +703,7 @@ package VC_Kinds is
    function Description (Kind : VC_Kind) return String;
    function Description (Kind : Valid_Flow_Tag_Kind) return String;
    function Description (Kind : Misc_Warning_Kind) return String;
+   function Description (Kind : Unsupported_Kind) return String;
    --  Return a one-line description for each kind of message as a string
 
    function Kind_Name (Kind : VC_Kind) return String;

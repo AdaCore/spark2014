@@ -8,7 +8,7 @@ is
    package Sort is new Generic_Sorting ("<" => Lt);
 
    procedure Test is
-      V : Vector (2);
+      V : Vector;
    begin
       Clear (V);
       pragma Assert (Is_Empty (V));
@@ -22,8 +22,6 @@ is
       pragma Assert (Element (V, 1) = 1);
       pragma Assert (Element (V, 2) = 2);
       pragma Assert (Element (V, 3) = 3);
-
-      Reserve_Capacity (V, 10);
 
       pragma Assert (not Is_Empty (V));
       pragma Assert (Length (V) = 3);

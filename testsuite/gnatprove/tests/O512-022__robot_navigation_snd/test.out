@@ -357,12 +357,12 @@ algorithm.adb:862:38: info: float overflow check proved (colibri: 1 VC)
 algorithm.adb:862:40: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:862:47: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:863:22: info: assertion proved (colibri: 1 VC)
-algorithm.adb:863:44: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
+algorithm.adb:863:44: info: float overflow check proved (Z3: 1 VC)
 algorithm.adb:864:22: medium: assertion might fail
 algorithm.adb:864:76: info: assertion proved (CVC5: 2 VC)
 algorithm.adb:864:99: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
 algorithm.adb:865:22: medium: assertion might fail
-algorithm.adb:865:45: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
+algorithm.adb:865:45: info: float overflow check proved (Z3: 1 VC)
 algorithm.adb:865:72: info: division check proved (altergo: 1 VC)
 algorithm.adb:865:72: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
 algorithm.adb:866:22: info: assertion proved (Z3: 1 VC)
@@ -387,7 +387,7 @@ algorithm.adb:873:97: info: division check proved (altergo: 1 VC)
 algorithm.adb:873:97: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:874:32: info: float overflow check proved (colibri: 1 VC)
 algorithm.adb:874:34: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:874:53: info: float overflow check proved (Z3: 1 VC)
+algorithm.adb:874:53: info: float overflow check proved (colibri: 1 VC)
 algorithm.adb:874:68: info: division check proved (CVC5: 1 VC)
 algorithm.adb:874:68: info: float overflow check proved (colibri: 1 VC)
 algorithm.adb:878:07: warning: statement has no effect

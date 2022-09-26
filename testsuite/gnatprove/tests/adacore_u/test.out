@@ -339,7 +339,7 @@ ring_buffer.ads:21:57: info: precondition proved (CVC5: 2 VC)
 ring_buffer.ads:21:68: info: overflow check proved (CVC5: 2 VC)
 ring_buffer.ads:21:68: info: range check proved (CVC5: 2 VC)
 ring_buffer.ads:25:04: info: initialization of "Model" proved
-ring_buffer.ads:31:14: medium: postcondition might fail
+ring_buffer.ads:31:14: info: postcondition proved (CVC5: 1 VC)
 ring_buffer.ads:34:28: info: range check proved (CVC5: 2 VC)
 ring_buffer.ads:35:14: info: postcondition proved (CVC5: 3 VC)
 ring_buffer.ads:38:44: info: range check proved (CVC5: 2 VC)

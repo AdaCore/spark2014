@@ -1,3 +1,17 @@
+aida-strings-generic_immutable_unbounded_string.adb:8:26: info: precondition proved (CVC5: 2 VC)
+aida-strings-generic_immutable_unbounded_string.adb:21:13: info: range check proved (CVC5: 2 VC)
+aida-strings-generic_immutable_unbounded_string.adb:21:50: info: range check proved (CVC5: 2 VC)
+aida-strings-generic_immutable_unbounded_string.adb:21:75: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+aida-strings-generic_immutable_unbounded_string.adb:23:17: info: range check proved (CVC5: 2 VC)
+aida-strings-generic_immutable_unbounded_string.adb:23:62: info: range check proved (CVC5: 2 VC)
+aida-strings-generic_immutable_unbounded_string.adb:23:83: info: cannot unroll loop (too many loop iterations)
+aida-strings-generic_immutable_unbounded_string.adb:24:19: info: index check proved (CVC5: 2 VC)
+aida-strings-generic_immutable_unbounded_string.adb:24:37: info: precondition proved (CVC5: 2 VC)
+aida-strings-generic_immutable_unbounded_string.adb:30:10: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+aida-strings-generic_immutable_unbounded_string.ads:11:06: info: data dependencies proved
+aida-strings-generic_immutable_unbounded_string.ads:15:06: info: data dependencies proved
+aida-strings-generic_immutable_unbounded_string.ads:16:59: info: range check proved (CVC5: 2 VC)
+aida-strings-generic_immutable_unbounded_string.ads:20:06: info: data dependencies proved
 aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:20: info: range check proved (CVC5: 2 VC), in instantiation at extension.ads:9
 aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:20: info: range check proved (CVC5: 2 VC), in instantiation at vk.ads:25
 aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:20:59: info: range check proved (CVC5: 2 VC), in instantiation at vk.ads:10
@@ -7,6 +21,32 @@ main.adb:10:04: info: initialization of "Tag_V" proved
 main.adb:16:04: info: initialization of "N" proved
 main.adb:26:30: info: precondition proved (CVC5: 1 VC)
 main.adb:30:30: info: precondition proved (CVC5: 1 VC)
+spark-containers-formal-unbounded_vectors.ads:263:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:264:08: info: dynamic accessibility check proved (Trivial), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:268:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:270:08: info: dynamic accessibility check proved (Trivial), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:289:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:289:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:312:41: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:354:73: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:387:41: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:422:49: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:468:49: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:491:49: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:532:49: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:597:28: info: overflow check proved (CVC5: 2 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:597:57: info: range check proved (CVC5: 2 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:725:23: info: precondition proved (CVC5: 1 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:761:14: info: precondition proved (CVC5: 1 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 vk.ads:10:10: info: implicit function contract not available for proof ("Length" might not return)
 vk.ads:10:10: info: implicit function contract not available for proof ("Length" might not return)
 vk.ads:10:10: info: implicit function contract not available for proof ("Length" might not return)

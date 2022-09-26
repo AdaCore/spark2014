@@ -107,10 +107,8 @@ a-strbou.ads:2567:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), 
 repr2.ads:5:04: warning: in instantiation at a-strbou.ads:2563
 repr2.ads:5:04: warning: pragma "Stream_Convert" ignored (not yet supported)
 repr3.ads:9:40: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
-repr3.ads:9:40: warning: assuming "To_Bounded_String" always returns
 repr3.ads:9:40: warning: assuming "To_Bounded_String" has no effect on global items
 repr3.ads:9:40: warning: no Global contract available for "To_Bounded_String"
-repr3.ads:9:40: warning: no returning annotation available for "To_Bounded_String"
 spark-containers-formal-vectors.ads:294:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at repr2.ads:9
 spark-containers-formal-vectors.ads:295:08: info: dynamic accessibility check proved (Trivial), in instantiation at repr2.ads:9
 spark-containers-formal-vectors.ads:299:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at repr2.ads:9

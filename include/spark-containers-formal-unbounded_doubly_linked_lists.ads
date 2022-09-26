@@ -32,7 +32,7 @@ with SPARK.Containers.Functional.Maps;
 private with Ada.Finalization;
 
 generic
-   type Element_Type is private;
+   type Element_Type (<>) is private;
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 
 package SPARK.Containers.Formal.Unbounded_Doubly_Linked_Lists with

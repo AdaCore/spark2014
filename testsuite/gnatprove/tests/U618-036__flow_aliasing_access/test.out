@@ -1,2 +1,2 @@
-hello.adb:18:21: error: move through Access not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
+hello.adb:18:21: error: "Access" attribute of a type with ownership not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
 gnatprove: error during flow analysis and proof

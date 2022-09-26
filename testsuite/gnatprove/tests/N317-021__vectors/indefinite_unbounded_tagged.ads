@@ -1,4 +1,4 @@
-with SPARK.Containers.Formal.Indefinite_Vectors;
+with SPARK.Containers.Formal.Unbounded_Vectors;
 with Ada.Containers; use Ada.Containers;
 
 package Indefinite_Unbounded_Tagged with
@@ -12,11 +12,9 @@ is
 
    B : constant Boolean := False;
 
-   package Vect is new SPARK.Containers.Formal.Indefinite_Vectors
+   package Vect is new SPARK.Containers.Formal.Unbounded_Vectors
      (Index_Type   => Positive,
-      Element_Type => T_Class,
-      Max_Size_In_Storage_Elements => T'Size,
-      Bounded      => not (if B then False else True));
+      Element_Type => T_Class);
    use Vect;
 
    procedure Test;

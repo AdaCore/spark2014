@@ -1,3 +1,0 @@
-do_flow:
-  sparklib: True
-  opt: ["-u", "indefinite_bounded.adb"]

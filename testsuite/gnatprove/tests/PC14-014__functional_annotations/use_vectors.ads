@@ -1,5 +1,5 @@
 pragma Ada_2012;
-with SPARK.Containers.Formal.Indefinite_Vectors;
+with SPARK.Containers.Formal.Unbounded_Vectors;
 with Ada.Containers; use Ada.Containers;
 
 package Use_Vectors with SPARK_Mode is
@@ -20,11 +20,9 @@ package Use_Vectors with SPARK_Mode is
    subtype Index_Type is Integer range Fst .. Lst;
 
    type Element_Type is new Integer;
-   package My_Vectors is new SPARK.Containers.Formal.Indefinite_Vectors
+   package My_Vectors is new SPARK.Containers.Formal.Unbounded_Vectors
        (Index_Type   => Index_Type,
-        Element_Type => Element_Type,
-        Bounded      => False,
-        Max_Size_In_Storage_Elements => Element_Type'Size);
+        Element_Type => Element_Type);
 
    use My_Vectors;
    use My_Vectors.Formal_Model;
@@ -49,7 +47,7 @@ package Use_Vectors with SPARK_Mode is
    --  Same as before except that elements are stored back in V.
 
    procedure Double_Size (V : in out Vector) with
-     Pre  => Capacity (V) / 2 >= Length (V),
+     Pre  => Count_Type'Last / 2 >= Length (V),
      Post => Length (V) = 2 * Length (V)'Old
      and (for all I in Index_Type'First .. Last_Index (V)'Old =>
        Element (V, I) = Element (Model (V)'Old, I)
@@ -87,7 +85,7 @@ package Use_Vectors with SPARK_Mode is
    --  Insert 0 Count times just before I.
 
    with
-     Pre  => I <= Last_Index (V) and Capacity (V) - Count >= Length (V),
+     Pre  => I <= Last_Index (V) and Count_Type'Last - Count >= Length (V),
      Post => Length (V) = Length (V)'Old + Count
      and (for all J in Index_Type'First .. I - 1 =>
         Element (V, J) = Element (Model (V)'Old, J))

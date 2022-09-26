@@ -1,5 +1,5 @@
 with Ada.Containers;
-with SPARK.Containers.Formal.Indefinite_Vectors;
+with SPARK.Containers.Formal.Unbounded_Vectors;
 package State_Machine_With_Oop with SPARK_Mode, Elaborate_Body is
    type Root_State is abstract tagged record
       Common_Value : Integer;
@@ -72,11 +72,9 @@ package State_Machine_With_Oop with SPARK_Mode, Elaborate_Body is
 
    subtype State_Class is Root_State'Class;
 
-   package State_Vectors is new SPARK.Containers.Formal.Indefinite_Vectors
+   package State_Vectors is new SPARK.Containers.Formal.Unbounded_Vectors
      (Index_Type   => Positive,
-      Element_Type => State_Class,
-      Max_Size_In_Storage_Elements => Root_State'Size,
-      Bounded      => False);
+      Element_Type => State_Class);
 
    procedure Do_Something (States : in out State_Vectors.Vector);
 end State_Machine_With_Oop;

@@ -32,6 +32,7 @@ with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Definition;     use SPARK_Definition;
 with SPARK_Util;           use SPARK_Util;
 with Types;                use Types;
+with VC_Kinds;             use VC_Kinds;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Conversions;      use Why.Conversions;

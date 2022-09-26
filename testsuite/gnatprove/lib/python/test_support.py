@@ -677,7 +677,7 @@ def gnatprove(
     sort_output=True,
     exit_status=None,
     ada=default_ada,
-    sparklib=False
+    sparklib=False,
 ):
     """Invoke gnatprove, and in case of success return list of output lines
 
@@ -722,11 +722,8 @@ def gnatprove(
     # Issue all information messages for tests
     cmd += ["--info"]
     # If the tests uses SPARKlib, do not prove them again
-    # The --no-axiom-guard option is a temporary fix to avoid
-    # generating axioms when translating from the SPARKlib, as it
-    # can reduce proof performance
     if sparklib:
-        cmd += ["--no-subprojects", "--no-axiom-guard"]
+        cmd += ["--no-subprojects"]
     if benchmark_mode() is not None:
         cmd += ["--benchmark", "--debug-save-vcs"]
     if cache_allowed and cache_mode():
@@ -793,7 +790,7 @@ def prove_all(
     ada=default_ada,
     replay=False,
     warnings="continue",
-    sparklib=False
+    sparklib=False,
 ):
     """Call gnatprove with standard options.
 
@@ -884,7 +881,7 @@ def do_flow(
     gg=True,
     sort_output=True,
     ada=default_ada,
-    sparklib=False
+    sparklib=False,
 ):
     """
     Call gnatprove with standard options for flow. We do generate

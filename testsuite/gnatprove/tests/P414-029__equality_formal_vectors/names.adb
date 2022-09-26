@@ -1,7 +1,7 @@
 with Ada.Containers;   use Ada.Containers;
 with Ada.Strings.Hash;
 
-with SPARK.Containers.Formal.Indefinite_Vectors;
+with SPARK.Containers.Formal.Unbounded_Vectors;
 
 package body Names with
    SPARK_Mode
@@ -24,14 +24,12 @@ is
 
    type Char_Table_Index is range 0 .. 2 ** 31 - 2;
 
-   package Char_Tables is new SPARK.Containers.Formal.Indefinite_Vectors
+   package Char_Tables is new SPARK.Containers.Formal.Unbounded_Vectors
      (Index_Type   => Char_Table_Index,
-      Element_Type => Character,
-      Bounded      => False,
-      Max_Size_In_Storage_Elements => Character'Size);
+      Element_Type => Character);
    use Char_Tables;
 
-   Char_Table  : Char_Tables.Vector (1024);
+   Char_Table  : Char_Tables.Vector;
 
    --  Combined table for string table pointers and hash chains.
 
@@ -41,14 +39,12 @@ is
       Next_Hash   : Name_Id;
    end record;
 
-   package Entry_Tables is new SPARK.Containers.Formal.Indefinite_Vectors
+   package Entry_Tables is new SPARK.Containers.Formal.Unbounded_Vectors
      (Index_Type   => Valid_Name_Id,
-      Element_Type => Name_Entry,
-      Bounded      => False,
-      Max_Size_In_Storage_Elements => Name_Entry'Size);
+      Element_Type => Name_Entry);
    use Entry_Tables;
 
-   Entry_Table : Entry_Tables.Vector (128);
+   Entry_Table : Entry_Tables.Vector;
 
    ------------
    -- Lookup --

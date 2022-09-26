@@ -446,13 +446,13 @@ parser_utilities.adb:1010:13: info: loop invariant preservation proved (CVC5: 4 
 parser_utilities.adb:1014:26: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1024:14: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1026:16: info: loop invariant initialization proved (CVC5: 6 VC)
-parser_utilities.adb:1028:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove I >= BegIdx
+parser_utilities.adb:1026:16: info: loop invariant preservation proved (CVC5: 6 VC)
 parser_utilities.adb:1034:42: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 parser_utilities.adb:1034:42: medium: overflow check might fail, cannot prove lower bound for RRSig_Rec.SignatureLength + ((I - BegIdx) + 1) [reason for check: result of addition must fit in a 32-bits machine integer]
 parser_utilities.adb:1034:48: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:1034:58: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:1037:65: medium: range check might fail, cannot prove lower bound for RRSig_Rec.SignatureLength + ((EndIdx - BegIdx) + 1) [reason for check: result of addition must fit in the target type of the assignment]
-parser_utilities.adb:1043:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+parser_utilities.adb:1043:27: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1044:10: info: precondition proved (CVC5: 1 VC)
 parser_utilities.adb:1062:07: info: initialization of "BegIdx" proved
 parser_utilities.adb:1063:07: info: initialization of "EndIdx" proved
@@ -537,7 +537,7 @@ parser_utilities.ads:132:07: info: initialization of "AllDone" proved
 parser_utilities.ads:134:09: info: flow dependencies proved
 parser_utilities.ads:142:09: info: flow dependencies proved
 process_dns_request.ads:130:50: high: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength in Packet_Bytes_Range) to subprogram at line 121]
-process_dns_request.ads:223:50: medium: range check might fail, cannot prove lower bound for Nameserver_Name_Length+Mailbox_Name_Length [reason for check: result of addition must be convertible to the target type of the conversion] [possible fix: use "and then" instead of "and" in precondition]
+process_dns_request.ads:223:50: info: range check proved (CVC5: 2 VC)
 process_first_line_of_record.adb:64:07: info: initialization of "CurrentIPV4" proved
 process_first_line_of_record.adb:65:07: info: initialization of "CurrentIPV6" proved
 process_first_line_of_record.adb:66:07: info: initialization of "CurrentDomainName" proved
@@ -1242,9 +1242,9 @@ zone_file_parser.adb:414:32: medium: precondition might fail, cannot prove TimeS
 zone_file_parser.adb:424:27: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:425:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:432:29: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: subprogram at zone_file_parser.ads:47 should mention ZoneFileLine in a precondition]
-zone_file_parser.adb:443:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:443:27: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:444:26: info: precondition proved (CVC5: 1 VC)
-zone_file_parser.adb:452:48: medium: range check might fail, cannot prove upper bound for (EndIdx - BegIdx) + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:452:48: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:460:20: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:462:22: info: loop invariant initialization proved (CVC5: 3 VC)
 zone_file_parser.adb:462:22: info: loop invariant preservation proved (CVC5: 3 VC)

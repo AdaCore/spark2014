@@ -14,7 +14,7 @@ copy.adb:55:04: info: initialization of "Last_Of_Yes_No" proved
 copy.adb:56:04: info: initialization of "C" proved
 copy.adb:62:30: info: implicit function contract not available for proof ("Status" might not return)
 copy.adb:62:30: info: loop invariant initialization proved (CVC5: 2 VC; altergo: 2 VC)
-copy.adb:62:30: info: loop invariant preservation proved (CVC5: 1 VC; Z3: 1 VC; altergo: 2 VC)
+copy.adb:62:30: info: loop invariant preservation proved (CVC5: 1 VC; altergo: 3 VC)
 copy.adb:66:10: info: precondition proved (CVC5: 1 VC)
 copy.adb:68:10: info: precondition proved (CVC5: 1 VC; altergo: 2 VC)
 copy.adb:82:40: info: range check proved (CVC5: 4 VC)
