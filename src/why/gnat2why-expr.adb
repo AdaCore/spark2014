@@ -2770,20 +2770,42 @@ package body Gnat2Why.Expr is
 
    ---------------------------------
    -- Compute_Borrow_At_End_Value --
-   --------------------------------
+   ---------------------------------
 
-   function Compute_Borrow_At_End_Value
-     (W_Brower      : W_Term_Id;
+   procedure Compute_Borrow_At_End_Value
+     (Check_Node    : Entity_Id := Empty;
+      W_Brower      : W_Term_Id;
       Expr          : N_Subexpr_Id;
-      Borrowed_Expr : Opt_N_Subexpr_Id := Empty)
-      return W_Term_Id
+      Borrowed_Expr : Opt_N_Subexpr_Id := Empty;
+      Reconstructed : out W_Term_Id;
+      Checks        : out W_Statement_Sequence_Id)
    is
-      Result  : W_Expr_Id := +W_Brower;
-      Path    : Node_Id := Expr;
-      Dummy   : Node_Id := Path;
+      Path   : Node_Id := Expr;
+      Dummy  : Node_Id := Path;
+      Result : W_Expr_Id := +W_Brower;
 
    begin
+      Checks := Void_Sequence;
+
       while Path /= Borrowed_Expr loop
+         declare
+            Typ : constant Type_Kind_Id := Retysp (Etype (Path));
+         begin
+            if Present (Check_Node) and then Has_Predicates (Typ) then
+               Continuation_Stack.Append
+                 (Continuation_Type'
+                    (Ada_Node => Check_Node,
+                     Message  => To_Unbounded_String
+                       ("in possible reconstructed values at the end of the"
+                        & " borrow")));
+               Append (Checks,
+                       New_Predicate_Check
+                         (Ada_Node => Path,
+                          Ty       => Typ,
+                          W_Expr   => +Result));
+               Continuation_Stack.Delete_Last;
+            end if;
+         end;
 
          --  If Path is a traversal function call, use the borrowed_at_end
          --  function to reconstruct the first parameter from the result
@@ -2849,7 +2871,7 @@ package body Gnat2Why.Expr is
          end if;
       end loop;
 
-      return +Result;
+      Reconstructed := +Result;
    end Compute_Borrow_At_End_Value;
 
    -----------------------
@@ -7998,14 +8020,22 @@ package body Gnat2Why.Expr is
 
       --  We assign borrowed_at_end to Expr
 
+      Continuation_Stack.Append
+        (Continuation_Type'
+           (Ada_Node => Brower,
+            Message  => To_Unbounded_String
+              ("in reconstructed value at the end of the borrow")));
+
       Assignment := New_Assignment
         (Lvalue => Expr,
          Expr   => +Insert_Checked_Conversion
-           (Ada_Node => Brower,
+           (Ada_Node => Expr,
             Domain   => EW_Prog,
             Expr     => Borrowed_At_End,
             To       => Type_Of_Node (Expr),
             Lvalue   => True));
+
+      Continuation_Stack.Delete_Last;
 
       --  We produce:
       --
@@ -9387,14 +9417,6 @@ package body Gnat2Why.Expr is
       --  refer to the value of the object before the assignment. As a result,
       --  it could be unsound to assume the dynamic invariant here.
 
-      At_End_Value    : constant W_Term_Id := Compute_Borrow_At_End_Value
-        (W_Brower      => W_Brower,
-         Expr          => Path,
-         Borrowed_Expr => (if Ekind (Brower) = E_Function
-                           then Empty
-                           else Get_Borrowed_Expr (Brower)));
-      --  Reconstruct the value of Path from the borrower at end of borrow
-
       Borrowed_Ty     : constant Entity_Id :=
         (if Reborrow
          then Etype (Brower)
@@ -9415,7 +9437,50 @@ package body Gnat2Why.Expr is
       --      borrowed entity,
       --    * otherwise, it is the value of the borrowed expression at end.
 
-      At_End_Assume   : constant W_Prog_Id :=
+      At_End_Value    : W_Term_Id;
+      Pred_Checks     : W_Statement_Sequence_Id;
+      At_End_Assume   : W_Prog_Id;
+      At_End_Checks   : W_Prog_Id;
+
+   --  Start of processing for New_Update_For_Borrow_At_End
+
+   begin
+      --  1. Reconstruct the value of Path from the borrower at end of borrow
+
+      Compute_Borrow_At_End_Value
+        (Check_Node    => Brower,
+         W_Brower      => W_Brower,
+         Expr          => Path,
+         Borrowed_Expr => (if Ekind (Brower) = E_Function
+                           then Empty
+                           else Get_Borrowed_Expr (Brower)),
+         Reconstructed => At_End_Value,
+         Checks        => Pred_Checks);
+
+      --  2. Construct the assumptions and checks to be performed for values at
+      --  the end of the borrow.
+
+      --  Predicates traversed in Path shall be preserved by the borrow. We do
+      --  this check at the beginning of the borrow without any assumptions
+      --  about the actual modifications performed in the borrow. We could
+      --  possibly move this check at the place of havoc/reborrows instead.
+
+      At_End_Checks :=
+        New_Ignore
+          (Ada_Node => Path,
+           Prog     => Sequence
+             (New_Assume_Statement
+                (Pred => Compute_Dynamic_Invariant
+                     (W_Brower, Etype (Brower), Body_Params)),
+              +Pred_Checks));
+
+      --  Store borrowed_at_end = at_end_value in At_End_Assume. Also add
+      --  information about parts of the borrowed_at_end that cannot be
+      --  modified (bounds of unconstrained arrays, immutable discriminants,
+      --  and is_null field of pointer). If we are in a borrow, also add the
+      --  dynamic invariant of the borrowed object.
+
+      At_End_Assume :=
         New_Assume_Statement
           (Pred => New_And_Pred
              ((1 =>
@@ -9440,17 +9505,12 @@ package body Gnat2Why.Expr is
                                 else Get_Borrowed_Expr (Brower)),
                      Domain => EW_Term,
                      Params => Body_Params)))));
-      --  We assume borrowed_at_end = at_end_value. In addition, we assume
-      --  information about parts of the borrowed_at_end that cannot be
-      --  modified (bounds of unconstrained arrays, immutable discriminants,
-      --  and is_null field of pointer). If we are in a borrow, also assume the
-      --  dynamic invariant of the borrowed object.
 
-   --  Start of processing for New_Update_For_Borrow_At_End
+      --  3. Put together all the parts.
 
-   begin
-      --  In reborrows, we emit:
+      --  3.1 In reborrows, we emit:
       --     let tmp_brower = any in
+      --     <at_end_checks> tmp_brower;
       --     assume { !brower_at_end = { brower with path -> tmp_brower } };
       --     brower_at_end := tmp_brower;
 
@@ -9459,21 +9519,23 @@ package body Gnat2Why.Expr is
            (Name     => +W_Brower,
             Def      => New_Brower,
             Context  => Sequence
-              (Left  => At_End_Assume,
-               Right => New_Assignment
-                 (Name   => Brower_At_End,
-                  Value  => +W_Brower,
-                  Typ    => Get_Typ (Brower_At_End),
-                  Labels => Symbol_Sets.Empty_Set)));
+              ((1 => At_End_Checks,
+                2 => At_End_Assume,
+                3 => New_Assignment
+                  (Name   => Brower_At_End,
+                   Value  => +W_Brower,
+                   Typ    => Get_Typ (Brower_At_End),
+                   Labels => Symbol_Sets.Empty_Set))));
 
-      --  For return of traversal functions, we need to assume equalities to
-      --  go up the chain of constant borrows to simulate the end of scope
+      --  3.2 For return of traversal functions, we need to assume equalities
+      --  to go up the chain of constant borrows to simulate the end of scope
       --  of the result. For a return statement rooted at v_1 itself rooted at
       --  v_2 etc. itself rooted at borrowed, we emit:
       --     result_at_end := any;
+      --     <at_end_checks> result_at_end;
       --     assume { w_borrowed = { borrowed with path -> !v_n_at_end } };
       --     ...
-      --     assume { v_1_at_end = { borrowed with path_1 -> !result_at_end } }
+      --     assume { v_1_at_end = { borrowed with path_1 -> !result_at_end }};
 
       elsif Ekind (Brower) = E_Function then
          declare
@@ -9502,26 +9564,29 @@ package body Gnat2Why.Expr is
             end loop;
 
             return Sequence
-              (New_Assignment
+              ((1 => New_Assignment
                  (Name   => Brower_At_End,
                   Value  => New_Brower,
                   Typ    => Get_Typ (Brower_At_End),
                   Labels => Symbol_Sets.Empty_Set),
-               +Assumptions);
+                2 => At_End_Checks,
+                3 => +Assumptions));
          end;
 
-      --  In regular borrows, we emit:
+      --  3.3 In regular borrows, we emit:
       --     brower_at_end := any;
+      --     <at_end_checks> brower_at_end;
       --     assume { w_borrowed = { borrowed with path -> !brower_at_end } };
 
       else
          return Sequence
-           (New_Assignment
-              (Name   => Brower_At_End,
-               Value  => New_Brower,
-               Typ    => Get_Typ (Brower_At_End),
-               Labels => Symbol_Sets.Empty_Set),
-            At_End_Assume);
+           ((1 => New_Assignment
+             (Name   => Brower_At_End,
+              Value  => New_Brower,
+              Typ    => Get_Typ (Brower_At_End),
+              Labels => Symbol_Sets.Empty_Set),
+             2 => At_End_Checks,
+             3 => At_End_Assume));
       end if;
    end New_Update_For_Borrow_At_End;
 

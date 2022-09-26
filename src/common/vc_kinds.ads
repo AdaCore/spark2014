@@ -403,7 +403,6 @@ package VC_Kinds is
       Lim_Array_Conv_Signed_Modular_Index,
       Lim_Borrow_Traversal_First_Param,
       Lim_Borrow_Traversal_Volatile,
-      Lim_Borrow_With_Predicates_On_Parts,
       Lim_Class_Attr_Of_Constrained_Type,
       Lim_Classwide_With_Predicate,
       Lim_Complex_Raise_Expr_In_Prec,
@@ -619,9 +618,6 @@ package VC_Kinds is
            "call to operation of a component of a protected type",
          when Lim_Suspension_On_Formal =>
            "suspension on a formal parameter",
-         when Lim_Borrow_With_Predicates_On_Parts =>
-           "local borrow of an expression with predicates on subcomponents of"
-          & " deep type",
          when Lim_Borrow_Traversal_First_Param =>
            "borrowing traversal functions whose first parameter does not have"
           & " an anonymous access-to-variable type",

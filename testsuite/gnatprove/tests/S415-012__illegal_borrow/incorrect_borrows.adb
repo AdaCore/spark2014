@@ -23,7 +23,9 @@ begin
    declare
       Y : access T1 := X;
    begin
-      Y := Y.N.N;
+      --  Currently, the tool checks that the predicate cannot be broken
+      --  during the borrow at the place of the reborrow.
+      Y := Y.N.N; -- @PREDICATE_CHECK:FAIL
       Y.B := False;  --  Here we break the predicate
    end;
 end Incorrect_Borrows;

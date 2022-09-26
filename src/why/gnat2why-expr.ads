@@ -151,21 +151,36 @@ package Gnat2Why.Expr is
    --  @return a program that checks that no error can appear in N's DIC
    --          and it holds for default values of type N.
 
-   function Compute_Borrow_At_End_Value
-     (W_Brower      : W_Term_Id;
+   procedure Compute_Borrow_At_End_Value
+     (Check_Node    : Entity_Id := Empty;
+      W_Brower      : W_Term_Id;
       Expr          : N_Subexpr_Id;
-      Borrowed_Expr : Opt_N_Subexpr_Id := Empty)
-      return W_Term_Id;
+      Borrowed_Expr : Opt_N_Subexpr_Id := Empty;
+      Reconstructed : out W_Term_Id;
+      Checks        : out W_Statement_Sequence_Id);
    --  Expr should be a path. Reconstruct Borrowed_Expr, or the root of Expr
    --  if Borrowed_Expr is not a prefix of Expr, updated so that the path
-   --  represented by Expr is set to W_Brower.
+   --  represented by Expr is set to W_Brower and store it is Reconstructed.
+   --  If Check_Node is not Empty, Checks contains a sequence of predicate
+   --  checks to ensure that all predicates traversed during the reconstruction
+   --  of the expression hold.
    --
    --  For example, if Expr is Func (X.F (I).G, Z).H and Borrowed_Expr is X.F
-   --  create:
+   --  the following expression is stored in Reconstructed:
    --  { x with f =>
    --      set x.f i { (get x.f i) with g =>
    --          Func.borrowed_at_end (get x.f i).g z
    --               { func (get x.f i).g z with h => w_brower } } }
+   --
+   --  If the types of F, G, and H have a predicate, Checks contains:
+   --    check_predicate_h w_brower;
+   --    check_predicate_g
+   --     (Func.borrowed_at_end (get x.f i).g z
+   --          { func (get x.f i).g z with h => w_brower });
+   --    check_predicate_f
+   --     (set x.f i { (get x.f i) with g =>
+   --          Func.borrowed_at_end (get x.f i).g z
+   --               { func (get x.f i).g z with h => w_brower } });
 
    function Compute_Default_Check
      (Ada_Node         : Node_Id;

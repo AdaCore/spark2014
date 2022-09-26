@@ -6,6 +6,7 @@ traverse_list.adb:14:36: warning: assuming "Get_Nth" always returns
 traverse_list.adb:14:36: warning: assuming "Get_Nth" has no effect on global items
 traverse_list.adb:14:36: warning: no Global contract available for "Get_Nth"
 traverse_list.adb:14:36: warning: no returning annotation available for "Get_Nth"
+traverse_list.adb:14:46: medium: in reconstructed value at the end of the borrow at traverse_list.adb:14
 traverse_list.adb:14:46: medium: pointer dereference check might fail [possible fix: subprogram at line 13 should mention X in a precondition]
 traverse_list.adb:14:55: medium: pointer dereference check might fail [possible fix: subprogram at line 13 should mention X in a precondition]
 traverse_list.adb:14:64: medium: pointer dereference check might fail [possible fix: subprogram at line 13 should mention X in a precondition]

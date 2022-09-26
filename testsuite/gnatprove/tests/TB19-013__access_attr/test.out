@@ -49,7 +49,8 @@ test_access_constraints.adb:33:16: info: length check proved (CVC5: 3 VC; Trivia
 test_access_constraints.adb:33:19: info: range check proved (CVC5: 2 VC)
 test_access_constraints.adb:33:19: medium: length check might fail [reason for check: array must be of the appropriate length]
 test_access_constraints.adb:37:62: info: data dependencies proved
-test_access_constraints.adb:40:10: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_access_constraints.adb:40:34: info: in reconstructed value at the end of the borrow at test_access_constraints.adb:40
+test_access_constraints.adb:40:34: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 test_access_constraints.adb:42:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 test_access_constraints.adb:42:12: info: pointer dereference check proved (CVC5: 1 VC)
 test_access_constraints.adb:42:16: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)

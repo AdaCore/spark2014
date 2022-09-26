@@ -95,7 +95,9 @@ test_borrow.adb:86:74: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:86:77: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:86:78: info: index check proved (CVC5: 2 VC)
 test_borrow.adb:86:85: info: predicate check proved (Trivial: 1 VC)
+test_borrow.adb:88:26: info: in reconstructed value at the end of the borrow at test_borrow.adb:88
 test_borrow.adb:88:26: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:88:29: info: in reconstructed value at the end of the borrow at test_borrow.adb:88
 test_borrow.adb:88:29: info: index check proved (CVC5: 2 VC)
 test_borrow.adb:91:11: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:91:14: info: pointer dereference check proved (CVC5: 1 VC)
@@ -108,9 +110,12 @@ test_borrow.adb:102:04: info: absence of resource or memory leak at end of scope
 test_borrow.adb:103:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_borrow.adb:105:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_borrow.adb:106:04: medium: resource or memory leak might occur at end of scope
+test_borrow.adb:110:28: info: in reconstructed value at the end of the borrow at test_borrow.adb:110
 test_borrow.adb:110:28: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:112:13: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:114:10: info: null exclusion check proved (Z3: 1 VC)
+test_borrow.adb:114:33: info: in reconstructed value at the end of the borrow at test_borrow.adb:114
+test_borrow.adb:114:33: info: in reconstructed value at the end of the borrow at test_borrow.adb:114
+test_borrow.adb:114:33: info: null exclusion check proved (Z3: 1 VC)
 test_borrow.adb:114:33: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:116:25: info: assertion proved (Z3: 1 VC)
 test_borrow.adb:116:41: info: pointer dereference check proved (Z3: 1 VC)
@@ -189,7 +194,9 @@ test_borrow.adb:139:52: warning: no Global contract available for "Model"
 test_borrow.adb:139:52: warning: no returning annotation available for "Model"
 test_borrow.adb:143:16: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:146:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_borrow.adb:148:10: info: null exclusion check proved (Z3: 1 VC)
+test_borrow.adb:148:33: info: in reconstructed value at the end of the borrow at test_borrow.adb:148
+test_borrow.adb:148:33: info: in reconstructed value at the end of the borrow at test_borrow.adb:148
+test_borrow.adb:148:33: info: null exclusion check proved (Z3: 1 VC)
 test_borrow.adb:148:33: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:150:12: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:152:13: info: pointer dereference check proved (Z3: 1 VC)
@@ -246,9 +253,12 @@ test_borrow.adb:191:38: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:192:29: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:192:33: info: index check proved (CVC5: 2 VC)
 test_borrow.adb:192:38: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:193:10: info: null exclusion check proved (CVC5: 1 VC)
+test_borrow.adb:193:33: info: in reconstructed value at the end of the borrow at test_borrow.adb:193
 test_borrow.adb:193:33: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:193:37: info: in reconstructed value at the end of the borrow at test_borrow.adb:193
 test_borrow.adb:193:37: info: index check proved (CVC5: 2 VC)
+test_borrow.adb:193:39: info: in reconstructed value at the end of the borrow at test_borrow.adb:193
+test_borrow.adb:193:39: info: null exclusion check proved (CVC5: 1 VC)
 test_borrow.adb:195:25: info: assertion proved (CVC5: 2 VC)
 test_borrow.adb:195:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:195:44: info: pointer dereference check proved (CVC5: 1 VC)

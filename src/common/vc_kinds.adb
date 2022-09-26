@@ -605,10 +605,6 @@ package body VC_Kinds is
           & " not have an anonymous access-to-variable type",
          when Lim_Borrow_Traversal_Volatile =>
            "a borrowing traversal function marked as a volatile function",
-         when Lim_Borrow_With_Predicates_On_Parts =>
-           "a borrowing operation if the borrower has subcomponents of a "
-          & "type annotated with a subtype predicate with access-to-variable"
-          & " parts",
          when Lim_Class_Attr_Of_Constrained_Type =>
            "a reference to the ""Class"" attribute on a constrained type",
          when Lim_Classwide_With_Predicate =>

@@ -274,11 +274,6 @@ package body SPARK_Definition is
    procedure Queue_For_Marking (E : Entity_Id);
    --  Register E for marking at a later stage
 
-   function Has_Deep_Subcomponents_With_Predicates
-     (E : Type_Kind_Id) return Boolean;
-   --  Return true if E has subcomponents of a deep type which are subjected
-   --  to a subtype predicate.
-
    procedure Check_Source_Of_Borrow_Or_Observe
      (Expr       : N_Subexpr_Id;
       In_Observe : Boolean)
@@ -770,97 +765,6 @@ package body SPARK_Definition is
 
       return SPARK_Status_JSON;
    end Get_SPARK_JSON;
-
-   --------------------------------------------
-   -- Has_Deep_Subcomponents_With_Predicates --
-   --------------------------------------------
-
-   function Has_Deep_Subcomponents_With_Predicates
-     (E : Type_Kind_Id)
-      return Boolean
-   is
-      Seen : Node_Sets.Set;
-
-      function Subcomponents_With_Predicates (E : Type_Kind_Id) return Boolean;
-      --  Auxiliary function doing the actual computation. It stops if E is
-      --  in Seen.
-
-      -----------------------------------
-      -- Subcomponents_With_Predicates --
-      -----------------------------------
-
-      function Subcomponents_With_Predicates (E : Type_Kind_Id) return Boolean
-      is
-         Typ : constant Type_Kind_Id := Retysp (E);
-         Res : Boolean;
-      begin
-         if Seen.Contains (Typ) or not Is_Deep (Typ) then
-            return False;
-         elsif Has_Predicates (Typ) then
-            return True;
-         end if;
-
-         Seen.Insert (Typ);
-
-         case Ekind (Typ) is
-         when Record_Kind =>
-            declare
-               Comp : Opt_E_Component_Id := First_Component (Typ);
-            begin
-               Res := False;
-               while Present (Comp) loop
-                  if Component_Is_Visible_In_SPARK (Comp)
-                    and then Subcomponents_With_Predicates (Etype (Comp))
-                  then
-                     Res := True;
-                     exit;
-                  end if;
-                  Next_Component (Comp);
-               end loop;
-            end;
-
-         when Array_Kind =>
-            Res := Subcomponents_With_Predicates (Component_Type (Typ));
-
-         when Access_Kind =>
-            declare
-               Des_Ty : Type_Kind_Id :=
-                 Directly_Designated_Type (Typ);
-            begin
-               --  If Typ designates an incomplete or private type, the
-               --  designated type may not be marked. We mark it using
-               --  Retysp_In_SPARK. If it is not in SPARK, we consider that its
-               --  full view is private, so we return False.
-
-               if (Is_Partial_View (Des_Ty)
-                   or else Is_Incomplete_Type (Des_Ty))
-                 and then not Retysp_In_SPARK (Full_View (Des_Ty))
-               then
-                  Res := False;
-               else
-                  if Is_Partial_View (Des_Ty)
-                    or else Is_Incomplete_Type (Des_Ty)
-                  then
-                     Des_Ty := Full_View (Des_Ty);
-                  end if;
-
-                  Res := Subcomponents_With_Predicates (Des_Ty);
-               end if;
-            end;
-
-         when E_Private_Type | E_Private_Subtype =>
-            return False;
-
-         when others =>
-            raise Program_Error;
-         end case;
-
-         return Res;
-      end Subcomponents_With_Predicates;
-
-   begin
-      return Subcomponents_With_Predicates (E);
-   end Has_Deep_Subcomponents_With_Predicates;
 
    ----------------------
    -- Has_Relaxed_Init --
@@ -4905,17 +4809,6 @@ package body SPARK_Definition is
             then
                Check_Source_Of_Borrow_Or_Observe
                  (Expr, Is_Access_Constant (T));
-
-               --  We do not support local borrowers if they have predicates
-               --  that can be broken during the traversal.
-
-               if not Violation_Detected
-                 and then Is_Local_Borrower (E)
-                 and then Has_Deep_Subcomponents_With_Predicates
-                   (Get_Observed_Or_Borrowed_Ty (Expr, T))
-               then
-                  Mark_Unsupported (Lim_Borrow_With_Predicates_On_Parts, E);
-               end if;
 
             --  If we are performing a move operation, check that we are
             --  moving a path.

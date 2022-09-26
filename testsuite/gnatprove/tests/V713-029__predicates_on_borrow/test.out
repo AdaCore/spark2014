@@ -1,0 +1,524 @@
+main.adb:11:06: info: data dependencies proved
+main.adb:14:53: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:18:42: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:24:24: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:24:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:24:46: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:30:24: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:30:26: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:30:45: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:30:47: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:30:50: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:35:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:35:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:35:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:39:39: info: in reconstructed value at the end of the borrow at main.adb:39
+main.adb:39:39: info: in reconstructed value at the end of the borrow at main.adb:39
+main.adb:39:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:39:39: info: predicate check proved (CVC5: 1 VC)
+main.adb:39:41: info: in reconstructed value at the end of the borrow at main.adb:39
+main.adb:39:41: info: in reconstructed value at the end of the borrow at main.adb:39
+main.adb:39:41: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:39:41: info: predicate check proved (CVC5: 1 VC)
+main.adb:39:43: info: in reconstructed value at the end of the borrow at main.adb:39
+main.adb:39:43: info: in reconstructed value at the end of the borrow at main.adb:39
+main.adb:39:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:39:43: info: predicate check proved (CVC5: 1 VC)
+main.adb:39:43: medium: in reconstructed value at the end of the borrow at main.adb:39
+main.adb:39:43: medium: predicate check might fail [possible fix: subprogram at line 33 should mention X in a precondition]
+main.adb:41:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:45:39: info: in reconstructed value at the end of the borrow at main.adb:45
+main.adb:45:39: info: in reconstructed value at the end of the borrow at main.adb:45
+main.adb:45:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:45:39: info: predicate check proved (CVC5: 1 VC)
+main.adb:45:41: info: in reconstructed value at the end of the borrow at main.adb:45
+main.adb:45:41: info: in reconstructed value at the end of the borrow at main.adb:45
+main.adb:45:41: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:45:41: info: predicate check proved (CVC5: 1 VC)
+main.adb:45:43: info: in reconstructed value at the end of the borrow at main.adb:45
+main.adb:45:43: info: in reconstructed value at the end of the borrow at main.adb:45
+main.adb:45:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:45:43: info: predicate check proved (CVC5: 1 VC)
+main.adb:45:43: medium: in reconstructed value at the end of the borrow at main.adb:45
+main.adb:45:43: medium: predicate check might fail [possible fix: subprogram at line 33 should mention X in a precondition]
+main.adb:47:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:51:39: info: in reconstructed value at the end of the borrow at main.adb:51
+main.adb:51:39: info: in reconstructed value at the end of the borrow at main.adb:51
+main.adb:51:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:51:39: info: predicate check proved (CVC5: 1 VC)
+main.adb:51:41: info: in reconstructed value at the end of the borrow at main.adb:51
+main.adb:51:41: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:51:41: medium: in reconstructed value at the end of the borrow at main.adb:51
+main.adb:51:41: medium: predicate check might fail [possible fix: subprogram at line 33 should mention X in a precondition]
+main.adb:51:43: info: in reconstructed value at the end of the borrow at main.adb:51
+main.adb:51:43: info: in reconstructed value at the end of the borrow at main.adb:51
+main.adb:51:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:51:43: info: predicate check proved (CVC5: 1 VC)
+main.adb:53:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:57:39: info: in reconstructed value at the end of the borrow at main.adb:57
+main.adb:57:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:57:39: medium: in reconstructed value at the end of the borrow at main.adb:57
+main.adb:57:39: medium: predicate check might fail [possible fix: subprogram at line 33 should mention X in a precondition]
+main.adb:57:41: info: in reconstructed value at the end of the borrow at main.adb:57
+main.adb:57:41: info: in reconstructed value at the end of the borrow at main.adb:57
+main.adb:57:41: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:57:41: info: predicate check proved (CVC5: 1 VC)
+main.adb:57:43: info: in reconstructed value at the end of the borrow at main.adb:57
+main.adb:57:43: info: in reconstructed value at the end of the borrow at main.adb:57
+main.adb:57:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:57:43: info: predicate check proved (CVC5: 1 VC)
+main.adb:59:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:63:39: info: in reconstructed value at the end of the borrow at main.adb:63
+main.adb:63:39: info: in reconstructed value at the end of the borrow at main.adb:63
+main.adb:63:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:63:39: info: predicate check proved (CVC5: 1 VC)
+main.adb:63:41: info: in reconstructed value at the end of the borrow at main.adb:63
+main.adb:63:41: info: in reconstructed value at the end of the borrow at main.adb:63
+main.adb:63:41: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:63:41: info: predicate check proved (CVC5: 1 VC)
+main.adb:63:43: info: in reconstructed value at the end of the borrow at main.adb:63
+main.adb:63:43: info: in reconstructed value at the end of the borrow at main.adb:63
+main.adb:63:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:63:43: info: predicate check proved (CVC5: 1 VC)
+main.adb:65:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:77:06: info: data dependencies proved
+main.adb:83:59: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:92:54: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:94:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:96:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:96:11: medium: in possible reconstructed values at the end of the borrow at main.adb:95
+main.adb:96:11: medium: predicate check might fail [possible fix: subprogram at line 95 should mention X in a precondition]
+main.adb:98:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:98:11: medium: in possible reconstructed values at the end of the borrow at main.adb:97
+main.adb:98:11: medium: predicate check might fail [possible fix: subprogram at line 97 should mention X in a precondition]
+main.adb:107:30: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:107:55: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:107:58: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:117:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:117:11: medium: in possible reconstructed values at the end of the borrow at main.adb:116
+main.adb:117:11: medium: predicate check might fail [possible fix: subprogram at line 116 should mention X in a precondition]
+main.adb:119:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:121:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:123:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:125:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:125:11: medium: in possible reconstructed values at the end of the borrow at main.adb:124
+main.adb:125:11: medium: predicate check might fail [possible fix: subprogram at line 124 should mention X in a precondition]
+main.adb:125:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:127:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:127:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:127:13: medium: in possible reconstructed values at the end of the borrow at main.adb:126
+main.adb:127:13: medium: predicate check might fail [possible fix: subprogram at line 126 should mention X in a precondition]
+main.adb:129:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:129:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:129:13: medium: in possible reconstructed values at the end of the borrow at main.adb:128
+main.adb:129:13: medium: predicate check might fail [possible fix: subprogram at line 128 should mention X in a precondition]
+main.adb:131:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:131:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:141:30: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:141:32: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:141:57: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:141:59: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:141:62: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:155:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:157:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:157:11: medium: in possible reconstructed values at the end of the borrow at main.adb:156
+main.adb:157:11: medium: predicate check might fail [possible fix: subprogram at line 156 should mention X in a precondition]
+main.adb:159:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:161:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:163:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:165:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:165:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:167:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:167:11: medium: in possible reconstructed values at the end of the borrow at main.adb:166
+main.adb:167:11: medium: predicate check might fail [possible fix: subprogram at line 166 should mention X in a precondition]
+main.adb:167:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:169:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:169:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:171:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:171:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:173:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:173:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:173:13: medium: in possible reconstructed values at the end of the borrow at main.adb:172
+main.adb:173:13: medium: predicate check might fail [possible fix: subprogram at line 172 should mention X in a precondition]
+main.adb:175:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:175:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:175:15: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:177:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:177:11: medium: in possible reconstructed values at the end of the borrow at main.adb:176
+main.adb:177:11: medium: predicate check might fail [possible fix: subprogram at line 176 should mention X in a precondition]
+main.adb:177:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:177:15: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:179:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:179:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:179:15: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:179:15: medium: in possible reconstructed values at the end of the borrow at main.adb:178
+main.adb:179:15: medium: predicate check might fail [possible fix: subprogram at line 178 should mention X in a precondition]
+main.adb:181:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:181:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:181:15: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:181:15: medium: in possible reconstructed values at the end of the borrow at main.adb:180
+main.adb:181:15: medium: predicate check might fail [possible fix: subprogram at line 180 should mention X in a precondition]
+main.adb:183:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:183:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:183:13: medium: in possible reconstructed values at the end of the borrow at main.adb:182
+main.adb:183:13: medium: predicate check might fail [possible fix: subprogram at line 182 should mention X in a precondition]
+main.adb:183:15: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:185:29: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:188:33: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:190:22: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:194:32: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:197:36: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:199:22: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:199:22: medium: in possible reconstructed values at the end of the borrow at main.adb:193
+main.adb:199:22: medium: predicate check might fail
+main.adb:203:32: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:206:36: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:208:22: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:208:22: medium: in possible reconstructed values at the end of the borrow at main.adb:202
+main.adb:208:22: medium: predicate check might fail
+main.adb:212:32: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:215:33: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:215:33: medium: in possible reconstructed values at the end of the borrow at main.adb:215
+main.adb:215:33: medium: predicate check might fail
+main.adb:217:22: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:221:29: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:221:29: medium: in possible reconstructed values at the end of the borrow at main.adb:221
+main.adb:221:29: medium: predicate check might fail [possible fix: subprogram at line 220 should mention X in a precondition]
+main.adb:224:33: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:226:22: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:240:06: info: data dependencies proved
+main.adb:247:54: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:249:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:257:30: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:257:55: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:257:58: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:263:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:265:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:267:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:267:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:276:30: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:276:32: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:276:57: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:276:59: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:276:62: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:286:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:288:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:290:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:292:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:292:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:294:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:294:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:296:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:296:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:296:15: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:304:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:304:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:304:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:308:39: info: in reconstructed value at the end of the borrow at main.adb:308
+main.adb:308:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:308:41: info: in reconstructed value at the end of the borrow at main.adb:308
+main.adb:308:41: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:308:43: info: in reconstructed value at the end of the borrow at main.adb:308
+main.adb:308:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:310:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:317:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:317:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:317:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:321:41: info: in reconstructed value at the end of the borrow at main.adb:321
+main.adb:321:41: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:321:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:321:45: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:323:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:330:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:330:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:330:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:334:42: info: in reconstructed value at the end of the borrow at main.adb:334
+main.adb:334:42: info: in reconstructed value at the end of the borrow at main.adb:334
+main.adb:334:42: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:334:42: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:334:45: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:336:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:343:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:343:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:343:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:347:42: info: in reconstructed value at the end of the borrow at main.adb:347
+main.adb:347:42: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:347:44: info: in reconstructed value at the end of the borrow at main.adb:347
+main.adb:347:44: info: in reconstructed value at the end of the borrow at main.adb:347
+main.adb:347:44: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:347:44: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:349:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:356:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:356:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:356:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:360:42: info: in reconstructed value at the end of the borrow at main.adb:360
+main.adb:360:42: info: in reconstructed value at the end of the borrow at main.adb:360
+main.adb:360:42: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:360:42: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:362:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:369:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:369:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:369:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:373:41: info: in reconstructed value at the end of the borrow at main.adb:373
+main.adb:373:41: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:373:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:375:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:382:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:382:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:382:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:386:41: info: in reconstructed value at the end of the borrow at main.adb:386
+main.adb:386:41: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:388:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:395:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:395:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:395:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:399:39: info: in reconstructed value at the end of the borrow at main.adb:399
+main.adb:399:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:399:41: info: in reconstructed value at the end of the borrow at main.adb:399
+main.adb:399:41: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:399:43: info: in reconstructed value at the end of the borrow at main.adb:399
+main.adb:399:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:399:43: medium: in reconstructed value at the end of the borrow at main.adb:399
+main.adb:399:43: medium: predicate check might fail [possible fix: subprogram at line 393 should mention X in a precondition]
+main.adb:401:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:405:39: info: in reconstructed value at the end of the borrow at main.adb:405
+main.adb:405:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:405:41: info: in reconstructed value at the end of the borrow at main.adb:405
+main.adb:405:41: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:405:43: info: in reconstructed value at the end of the borrow at main.adb:405
+main.adb:405:43: info: in reconstructed value at the end of the borrow at main.adb:405
+main.adb:405:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:405:43: info: predicate check proved (CVC5: 1 VC)
+main.adb:407:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:414:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:414:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:414:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:418:41: info: in reconstructed value at the end of the borrow at main.adb:418
+main.adb:418:41: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:418:43: info: pointer dereference check proved (altergo: 1 VC)
+main.adb:418:45: info: pointer dereference check proved (altergo: 1 VC)
+main.adb:418:45: medium: in possible reconstructed values at the end of the borrow at main.adb:418
+main.adb:418:45: medium: predicate check might fail [possible fix: subprogram at line 412 should mention X in a precondition]
+main.adb:420:18: info: pointer dereference check proved (Z3: 1 VC)
+main.adb:424:41: info: in reconstructed value at the end of the borrow at main.adb:424
+main.adb:424:41: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:424:43: info: pointer dereference check proved (altergo: 1 VC)
+main.adb:424:45: info: pointer dereference check proved (altergo: 1 VC)
+main.adb:424:45: medium: in possible reconstructed values at the end of the borrow at main.adb:424
+main.adb:424:45: medium: predicate check might fail [possible fix: subprogram at line 412 should mention X in a precondition]
+main.adb:426:18: info: pointer dereference check proved (Z3: 1 VC)
+main.adb:433:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:433:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:433:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:437:42: info: in reconstructed value at the end of the borrow at main.adb:437
+main.adb:437:42: info: in reconstructed value at the end of the borrow at main.adb:437
+main.adb:437:42: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:437:42: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:437:45: info: pointer dereference check proved (altergo: 1 VC)
+main.adb:437:45: medium: in possible reconstructed values at the end of the borrow at main.adb:437
+main.adb:437:45: medium: predicate check might fail [possible fix: subprogram at line 431 should mention X in a precondition]
+main.adb:439:18: info: pointer dereference check proved (Z3: 1 VC)
+main.adb:443:42: info: in reconstructed value at the end of the borrow at main.adb:443
+main.adb:443:42: info: in reconstructed value at the end of the borrow at main.adb:443
+main.adb:443:42: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:443:42: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:443:45: info: pointer dereference check proved (altergo: 1 VC)
+main.adb:443:45: medium: in possible reconstructed values at the end of the borrow at main.adb:443
+main.adb:443:45: medium: predicate check might fail [possible fix: subprogram at line 431 should mention X in a precondition]
+main.adb:445:18: info: pointer dereference check proved (Z3: 1 VC)
+main.adb:452:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:452:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:452:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:456:41: info: in reconstructed value at the end of the borrow at main.adb:456
+main.adb:456:41: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:456:43: info: pointer dereference check proved (altergo: 1 VC)
+main.adb:456:43: medium: in possible reconstructed values at the end of the borrow at main.adb:456
+main.adb:456:43: medium: predicate check might fail [possible fix: subprogram at line 450 should mention X in a precondition]
+main.adb:458:18: info: pointer dereference check proved (Z3: 1 VC)
+main.adb:462:41: info: in reconstructed value at the end of the borrow at main.adb:462
+main.adb:462:41: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:462:43: info: pointer dereference check proved (altergo: 1 VC)
+main.adb:462:43: medium: in possible reconstructed values at the end of the borrow at main.adb:462
+main.adb:462:43: medium: predicate check might fail [possible fix: subprogram at line 450 should mention X in a precondition]
+main.adb:464:18: info: pointer dereference check proved (Z3: 1 VC)
+main.adb:471:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:471:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:471:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:475:39: info: in reconstructed value at the end of the borrow at main.adb:475
+main.adb:475:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:475:41: info: in reconstructed value at the end of the borrow at main.adb:475
+main.adb:475:41: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:475:41: medium: in reconstructed value at the end of the borrow at main.adb:475
+main.adb:475:41: medium: predicate check might fail [possible fix: subprogram at line 469 should mention X in a precondition]
+main.adb:475:43: info: in reconstructed value at the end of the borrow at main.adb:475
+main.adb:475:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:477:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:481:39: info: in reconstructed value at the end of the borrow at main.adb:481
+main.adb:481:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:481:41: info: in reconstructed value at the end of the borrow at main.adb:481
+main.adb:481:41: info: in reconstructed value at the end of the borrow at main.adb:481
+main.adb:481:41: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:481:41: info: predicate check proved (CVC5: 1 VC)
+main.adb:481:43: info: in reconstructed value at the end of the borrow at main.adb:481
+main.adb:481:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:483:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:490:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:490:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:490:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:494:41: info: in reconstructed value at the end of the borrow at main.adb:494
+main.adb:494:41: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:494:43: info: pointer dereference check proved (altergo: 1 VC)
+main.adb:494:43: medium: in possible reconstructed values at the end of the borrow at main.adb:494
+main.adb:494:43: medium: predicate check might fail [possible fix: subprogram at line 488 should mention X in a precondition]
+main.adb:494:45: info: pointer dereference check proved (altergo: 1 VC)
+main.adb:496:18: info: pointer dereference check proved (Z3: 1 VC)
+main.adb:500:41: info: in reconstructed value at the end of the borrow at main.adb:500
+main.adb:500:41: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:500:43: info: pointer dereference check proved (altergo: 1 VC)
+main.adb:500:43: medium: in possible reconstructed values at the end of the borrow at main.adb:500
+main.adb:500:43: medium: predicate check might fail [possible fix: subprogram at line 488 should mention X in a precondition]
+main.adb:500:45: info: pointer dereference check proved (altergo: 1 VC)
+main.adb:502:18: info: pointer dereference check proved (Z3: 1 VC)
+main.adb:509:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:509:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:509:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:513:42: info: in reconstructed value at the end of the borrow at main.adb:513
+main.adb:513:42: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:513:44: info: in reconstructed value at the end of the borrow at main.adb:513
+main.adb:513:44: info: in reconstructed value at the end of the borrow at main.adb:513
+main.adb:513:44: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:513:44: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:513:44: medium: in reconstructed value at the end of the borrow at main.adb:513
+main.adb:513:44: medium: predicate check might fail [possible fix: subprogram at line 507 should mention X in a precondition]
+main.adb:515:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:519:42: info: in reconstructed value at the end of the borrow at main.adb:519
+main.adb:519:42: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:519:44: info: in reconstructed value at the end of the borrow at main.adb:519
+main.adb:519:44: info: in reconstructed value at the end of the borrow at main.adb:519
+main.adb:519:44: info: in reconstructed value at the end of the borrow at main.adb:519
+main.adb:519:44: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:519:44: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:519:44: info: predicate check proved (altergo: 1 VC)
+main.adb:521:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:528:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:528:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:528:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:532:39: info: in reconstructed value at the end of the borrow at main.adb:532
+main.adb:532:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:532:39: medium: in reconstructed value at the end of the borrow at main.adb:532
+main.adb:532:39: medium: predicate check might fail [possible fix: subprogram at line 526 should mention X in a precondition]
+main.adb:532:41: info: in reconstructed value at the end of the borrow at main.adb:532
+main.adb:532:41: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:532:43: info: in reconstructed value at the end of the borrow at main.adb:532
+main.adb:532:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:534:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:538:39: info: in reconstructed value at the end of the borrow at main.adb:538
+main.adb:538:39: info: in reconstructed value at the end of the borrow at main.adb:538
+main.adb:538:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:538:39: info: predicate check proved (CVC5: 1 VC)
+main.adb:538:41: info: in reconstructed value at the end of the borrow at main.adb:538
+main.adb:538:41: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:538:43: info: in reconstructed value at the end of the borrow at main.adb:538
+main.adb:538:43: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:540:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:547:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:547:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:547:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:551:42: info: in reconstructed value at the end of the borrow at main.adb:551
+main.adb:551:42: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:551:42: medium: in reconstructed value at the end of the borrow at main.adb:551
+main.adb:551:42: medium: predicate check might fail [possible fix: subprogram at line 545 should mention X in a precondition]
+main.adb:551:44: info: in reconstructed value at the end of the borrow at main.adb:551
+main.adb:551:44: info: in reconstructed value at the end of the borrow at main.adb:551
+main.adb:551:44: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:551:44: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:553:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:557:42: info: in reconstructed value at the end of the borrow at main.adb:557
+main.adb:557:42: info: in reconstructed value at the end of the borrow at main.adb:557
+main.adb:557:42: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:557:42: info: predicate check proved (altergo: 1 VC)
+main.adb:557:44: info: in reconstructed value at the end of the borrow at main.adb:557
+main.adb:557:44: info: in reconstructed value at the end of the borrow at main.adb:557
+main.adb:557:44: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:557:44: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:559:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:575:06: info: data dependencies proved
+main.adb:584:24: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:590:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:590:14: info: predicate check proved (CVC5: 1 VC)
+main.adb:590:17: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:591:19: info: in possible reconstructed values at the end of the borrow at main.adb:587
+main.adb:591:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:591:19: info: predicate check proved (CVC5: 1 VC)
+main.adb:600:39: info: in reconstructed value at the end of the borrow at main.adb:600
+main.adb:600:39: info: in reconstructed value at the end of the borrow at main.adb:600
+main.adb:600:39: info: in reconstructed value at the end of the borrow at main.adb:600
+main.adb:600:39: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:600:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:600:39: info: predicate check proved (CVC5: 1 VC)
+main.adb:602:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:604:19: info: in possible reconstructed values at the end of the borrow at main.adb:596
+main.adb:604:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:604:19: info: predicate check proved (CVC5: 1 VC)
+main.adb:612:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:612:14: medium: predicate check might fail
+main.adb:612:17: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:613:19: info: in possible reconstructed values at the end of the borrow at main.adb:609
+main.adb:613:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:613:19: info: predicate check proved (CVC5: 1 VC)
+main.adb:622:39: info: in reconstructed value at the end of the borrow at main.adb:622
+main.adb:622:39: info: in reconstructed value at the end of the borrow at main.adb:622
+main.adb:622:39: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:622:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:622:39: medium: in reconstructed value at the end of the borrow at main.adb:622
+main.adb:622:39: medium: predicate check might fail
+main.adb:624:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:626:19: info: in possible reconstructed values at the end of the borrow at main.adb:618
+main.adb:626:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:626:19: info: predicate check proved (CVC5: 1 VC)
+main.adb:634:06: info: data dependencies proved
+main.adb:643:42: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:643:50: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:643:53: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:650:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:650:14: info: predicate check proved (altergo: 1 VC)
+main.adb:650:17: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:651:19: info: in possible reconstructed values at the end of the borrow at main.adb:647
+main.adb:651:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:651:19: info: predicate check proved (Z3: 1 VC)
+main.adb:660:39: info: in reconstructed value at the end of the borrow at main.adb:660
+main.adb:660:39: info: in reconstructed value at the end of the borrow at main.adb:660
+main.adb:660:39: info: in reconstructed value at the end of the borrow at main.adb:660
+main.adb:660:39: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:660:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:660:39: info: predicate check proved (altergo: 1 VC)
+main.adb:662:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:664:19: info: in possible reconstructed values at the end of the borrow at main.adb:656
+main.adb:664:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:664:19: info: predicate check proved (Z3: 1 VC)
+main.adb:675:06: info: data dependencies proved
+main.adb:684:40: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:685:21: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:685:23: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:685:26: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:685:34: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:685:37: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:692:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:692:14: info: predicate check proved (CVC5: 1 VC)
+main.adb:692:17: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:693:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:693:19: medium: in possible reconstructed values at the end of the borrow at main.adb:689
+main.adb:693:19: medium: predicate check might fail
+main.adb:701:06: info: data dependencies proved
+main.adb:710:40: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:711:21: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:711:23: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:711:26: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:711:34: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:711:37: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:718:14: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:718:14: info: predicate check proved (CVC5: 1 VC)
+main.adb:718:17: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:719:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:719:19: medium: in possible reconstructed values at the end of the borrow at main.adb:715
+main.adb:719:19: medium: predicate check might fail
