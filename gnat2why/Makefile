@@ -96,7 +96,7 @@ codepeer-run: setup force
 	codepeer -P gnat2why.gpr
 
 codepeer:
-	@codepeer -P gnat2why.gpr -quiet -output-msg-only
+	@codepeer -P gnat2why.gpr --quiet --output-msg-only
 
 force:
 

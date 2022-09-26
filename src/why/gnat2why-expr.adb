@@ -392,6 +392,10 @@ package body Gnat2Why.Expr is
      and Args'Length >=
        Item_Array_Length ((1 => Pattern), Ignore_Init => True),
      Post => Need_Store or Context.Length = Context.Length'Old;
+   pragma Annotate
+     (CodePeer, False_Positive,
+      "validity check",
+      "Need_Store initialized as the first line in the body");
    --  Split a Why expression into parts that will be used to call a
    --  subprogram. The parts are stored in Args. Pattern is an item
    --  representing the expected form of the formal parameter. Its variable
@@ -413,6 +417,11 @@ package body Gnat2Why.Expr is
      and Args'Length >=
        Item_Array_Length ((1 => Pattern), Ignore_Init => True),
      Post => Need_Store or Context.Length = Context.Length'Old;
+   pragma Annotate
+     (CodePeer, False_Positive,
+      "validity check",
+      "Need_Store initialized as the first line in the body");
+
    --  Try to reuse parts of the references of the actual Var for the
    --  formal. If the types do not match, fall back to Get_Item_From_Expr. If
    --  Need_Store is True, the Pattern is updated to reference the parts reused

@@ -11,7 +11,7 @@ codepeer-run:
 	codepeer -P gnatprove.gpr
 
 codepeer:
-	@codepeer -P gnatprove.gpr -quiet -output-msg-only
+	@codepeer -P gnatprove.gpr --quiet --output-msg-only
 
 clean:
 	gprclean -P gnatprove.gpr -r
