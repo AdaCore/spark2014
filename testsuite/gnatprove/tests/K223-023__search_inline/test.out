@@ -4,5 +4,5 @@ search.adb:8:21: info: range check proved (CVC5: 4 VC)
 search.adb:8:62: info: index check proved (CVC5: 4 VC)
 search.ads:6:10: info: postcondition proved (CVC5: 2 VC; Trivial: 2 VC)
 search.ads:9:24: high: array index check might fail (e.g. when Search'Result = 0) [reason for check: value must be a valid index into the array]
-search.ads:10:54: info: overflow check proved (CodePeer)
+search.ads:10:54: info: overflow check proved (CVC5: 2 VC)
 search.ads:10:63: info: index check proved (CVC5: 2 VC)

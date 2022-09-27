@@ -1,2 +1,2 @@
-sub.adb:4:18: info: range check proved (CodePeer)
+sub.adb:4:18: info: range check proved (CVC5: 2 VC)
 sub.ads:6:14: warning: subprogram "P" has no effect
