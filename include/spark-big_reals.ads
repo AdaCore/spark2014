@@ -2,7 +2,7 @@
 --                                                                          --
 --                        SPARK LIBRARY COMPONENTS                          --
 --                                                                          --
---  S P A R K . C O N V E R S I O N S . F L O A T _ C O N V E R S I O N S   --
+--                      S P A R K . B I G _ R E A L S                       --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -26,9 +26,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-pragma SPARK_Mode;
+with Ada.Numerics.Big_Numbers.Big_Reals;
 
-with SPARK.Big_Reals;
-
-package SPARK.Conversions.Float_Conversions is new
-  SPARK.Big_Reals.Float_Conversions (Float);
+package SPARK.Big_Reals renames Ada.Numerics.Big_Numbers.Big_Reals;

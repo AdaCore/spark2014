@@ -26,8 +26,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Numerics.Big_Numbers.Big_Integers;
-use  Ada.Numerics.Big_Numbers.Big_Integers;
+with SPARK.Big_Integers;
+use  SPARK.Big_Integers;
 
 package SPARK.Higher_Order.Fold with SPARK_Mode is
 

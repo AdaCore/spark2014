@@ -29,8 +29,8 @@
 pragma Ada_2012;
 with Ada.Containers; use Ada.Containers;
 private with SPARK.Containers.Functional.Base;
-with Ada.Numerics.Big_Numbers.Big_Integers;
-use Ada.Numerics.Big_Numbers.Big_Integers;
+with SPARK.Big_Integers;
+use SPARK.Big_Integers;
 
 generic
    type Element_Type (<>) is private;
