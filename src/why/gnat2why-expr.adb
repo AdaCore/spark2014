@@ -6356,6 +6356,16 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Explicit_Dereference =>
+            declare
+               Pref   : constant Entity_Id :=
+                 Expected_Type_Of_Prefix (Prefix (N));
+               Des_Ty : constant Entity_Id :=
+                 Directly_Designated_Type (Pref);
+            begin
+               return Retysp (Des_Ty);
+            end;
+
+         when N_Function_Call =>
             return Retysp (Etype (N));
 
          when others =>
@@ -6393,12 +6403,16 @@ package body Gnat2Why.Expr is
                end if;
             end;
 
-         when N_Slice | N_Indexed_Component | N_Selected_Component =>
+         when N_Explicit_Dereference
+            | N_Slice
+            | N_Indexed_Component
+            | N_Selected_Component
+         =>
             return
               EW_Abstract
                 (Expected_Type_Of_Prefix (N), Relaxed_Init => Init_Wrapper);
 
-         when N_Explicit_Dereference | N_Function_Call =>
+         when N_Function_Call =>
             return
               EW_Abstract (Etype (N), Relaxed_Init => Init_Wrapper);
 
@@ -9715,7 +9729,11 @@ package body Gnat2Why.Expr is
       --  the correct type.
 
       Pref_Ty       : constant Entity_Id :=
-        (if Nkind (N) in N_Selected_Component | N_Indexed_Component | N_Slice
+        (if Nkind (N) in
+             N_Selected_Component
+           | N_Indexed_Component
+           | N_Slice
+           | N_Explicit_Dereference
          then Expected_Type_Of_Prefix (Prefix (N))
          else Empty);
       Init_Val      : constant W_Expr_Id :=
@@ -9814,9 +9832,10 @@ package body Gnat2Why.Expr is
          when N_Explicit_Dereference =>
 
             declare
+               Des_Ty    : constant Entity_Id :=
+                 Directly_Designated_Type (Pref_Ty);
                To_Type   : constant W_Type_Id := EW_Abstract
-                 (Etype (N),
-                  Relaxed_Init => Expr_Has_Relaxed_Init (N));
+                 (Des_Ty, Relaxed_Init => Expr_Has_Relaxed_Init (N));
                New_Value : constant W_Expr_Id := Insert_Simple_Conversion
                  (Ada_Node => N,
                   Domain   => Domain,
