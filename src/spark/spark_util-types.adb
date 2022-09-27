@@ -101,11 +101,11 @@ package body SPARK_Util.Types is
    --  considers scalar subtypes (otherwise returns False), and looks past
    --  private types.
 
-   -------------------------------
-   -- Has_Static_Scalar_Subtype --
-   -------------------------------
+   ----------------------------------
+   -- Has_OK_Static_Scalar_Subtype --
+   ----------------------------------
 
-   function Has_Static_Scalar_Subtype (T : Type_Kind_Id) return Boolean is
+   function Has_OK_Static_Scalar_Subtype (T : Type_Kind_Id) return Boolean is
       Under_T  : constant Type_Kind_Id := Underlying_Type (T);
       Base_T   : constant Type_Kind_Id := Base_Type (Under_T);
       Anc_Subt : Opt_Type_Kind_Id;
@@ -121,11 +121,11 @@ package body SPARK_Util.Types is
             Anc_Subt := Base_T;
          end if;
 
-         return Has_Static_Scalar_Subtype (Anc_Subt)
-           and then Is_Static_Expression (Type_Low_Bound (Under_T))
-           and then Is_Static_Expression (Type_High_Bound (Under_T));
+         return Has_OK_Static_Scalar_Subtype (Anc_Subt)
+           and then Is_OK_Static_Expression (Type_Low_Bound (Under_T))
+           and then Is_OK_Static_Expression (Type_High_Bound (Under_T));
       end if;
-   end Has_Static_Scalar_Subtype;
+   end Has_OK_Static_Scalar_Subtype;
 
    ------------
    -- Retysp --
@@ -1126,7 +1126,7 @@ package body SPARK_Util.Types is
 
    function Is_Null_Range (T : Type_Kind_Id) return Boolean is
      (Is_Discrete_Type (T)
-      and then Has_Static_Scalar_Subtype (T)
+      and then Has_OK_Static_Scalar_Subtype (T)
       and then Expr_Value (Type_Low_Bound (T)) >
           Expr_Value (Type_High_Bound (T)));
 

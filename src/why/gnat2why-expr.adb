@@ -2407,7 +2407,7 @@ package body Gnat2Why.Expr is
 
       elsif Is_OK_Static_Range (Rng)
         and then Present (Base)
-        and then Has_Static_Scalar_Subtype (Base)
+        and then Has_OK_Static_Scalar_Subtype (Base)
         and then
           ((if Is_Floating_Point_Type (Base) then
               Expr_Value_R (High) < Expr_Value_R (Low)
@@ -4779,7 +4779,7 @@ package body Gnat2Why.Expr is
 
          if T /= True_Pred  and then
            not (Has_Discrete_Type (Ty_Ext)
-                and then Has_Static_Scalar_Subtype (Ty_Ext)
+                and then Has_OK_Static_Scalar_Subtype (Ty_Ext)
                 and then UI_Le (Expr_Value (Type_Low_Bound (Ty_Ext)),
                                 Expr_Value (Type_High_Bound (Ty_Ext))))
          then
@@ -17024,7 +17024,7 @@ package body Gnat2Why.Expr is
 
          if Domain = EW_Prog
            and then (not Is_OK_Static_Expression (Choice)
-                     or else not Has_Static_Scalar_Subtype (Choice_Type))
+                     or else not Has_OK_Static_Scalar_Subtype (Choice_Type))
          then
             pragma Assert (Present (Choice_Type));
             Prepend
