@@ -36,7 +36,7 @@
 --  for use in run-time units.
 
 pragma Ada_2012;
-with Ada.Containers; use Ada.Containers;
+
 with SPARK.Big_Integers;
 use SPARK.Big_Integers;
 

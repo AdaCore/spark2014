@@ -37,7 +37,6 @@
 
 pragma Ada_2012;
 
-with Ada.Containers; use Ada.Containers;
 with SPARK.Big_Integers;
 use SPARK.Big_Integers;
 
@@ -333,14 +332,14 @@ is
    --  These functions are used to specify that Get returns the same value on
    --  equivalent keys. They should not be used directly in user code.
 
-   function Has_Witness (Container : Map; Witness : Count_Type) return Boolean
+   function Has_Witness (Container : Map; Witness : Big_Integer) return Boolean
    with
      Import,
      Ghost,
      Global => null;
    --  Returns True if there is a key with witness Witness in Container
 
-   function Witness (Container : Map; Key : Key_Type) return Count_Type with
+   function Witness (Container : Map; Key : Key_Type) return Big_Integer with
    --  Returns the witness of Key in Container
 
      Import,
@@ -349,7 +348,7 @@ is
      Pre    => Has_Key (Container, Key),
      Post   => Has_Witness (Container, Witness'Result);
 
-   function W_Get (Container : Map; Witness : Count_Type) return Element_Type
+   function W_Get (Container : Map; Witness : Big_Integer) return Element_Type
    with
    --  Returns the element associated with a witness in Container
 
