@@ -506,6 +506,21 @@ of a program:
     :ref:`External State Abstraction` should have specified the correct
     :ref:`Properties of Volatile Variables` corresponding to their usage.
 
+* Aliases between objects annotated with an address clause whose expression
+  is not a reference to the Address attribute on a part of a standalone object
+  or constant are ignored by GNATprove. Reviews are necessary to ensure that:
+
+  * Other objects visible from SPARK code which might be affected by a
+    modification of such a variable have the ``Asynchronous_Writers`` volatile
+    property set to True.
+
+  * The objects themselves are annotated with the ``Asynchronous_Writers``
+    volatile property if they can be affected by the modification of another
+    object.
+
+  GNATprove might issue warnings to alert the user about possible unsoundness
+  in this case.
+
 * The use of instances of ``Unchecked_Conversion`` and address clauses should
   not violate the data initialization and the non-aliasing policies of
   SPARK. See section :ref:`Data Validity` for cases where GNATprove issues a
@@ -524,11 +539,6 @@ of a program:
   the user to ensure that all values read from an external source are
   valid. The use of an invalid value invalidates any proofs associated with the
   value.
-
-* When a warning is issued by GNATprove to alert about a possible soundness
-  issue, as it is the case when using instances of ``Unchecked_Conversion`` or
-  address clauses, supression of warnings should be reviewed (see
-  :ref:`Suppressing Warnings`).
 
 * As explained in section :ref:`Dealing with Storage_Error`, GNATprove does not
   issue messages about possible memory exhaustion, which leads to raising
