@@ -1,0 +1,4 @@
+core.ads:2:36: warning: Constraint_Error will be raised at run time
+core.ads:2:36: warning: value not in range of type "Standard.Natural"
+init.adb:3:17: info: initialization of "X" proved
+init.adb:5:09: high: range check might fail

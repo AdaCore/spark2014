@@ -1533,7 +1533,7 @@ package body Gnat2Why.Util is
    function Type_Is_Modeled_As_Base (T : Type_Kind_Id) return Boolean is
    begin
       return Is_Scalar_Type (T)
-        and then (not Has_Static_Scalar_Subtype (T)
+        and then (not Has_OK_Static_Scalar_Subtype (T)
                   or else Is_Null_Range (T));
    end Type_Is_Modeled_As_Base;
 
