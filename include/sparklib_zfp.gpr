@@ -1,7 +1,27 @@
+with "sparklib_common";
+
 --  This project file is intended for use with reduced runtimes without
 --  Ada.Numerics.Big_Numbers unit.
 
-project SPARKlib_ZFP extends "sparklib" is
+project SPARKlib_ZFP is
+
+   --  Environment variable SPARKLIB_OBJECT_DIR controls the object
+   --  directory used in compilation and/or verification.
+
+   for Object_Dir use External("SPARKLIB_OBJECT_DIR");
+
+   case SPARKlib_common.SPARKlib_Installed is
+      when "True" =>
+         for Source_Dirs use ("../../include/spark");
+      when others =>
+         for Source_Dirs use (".");
+   end case;
+
+   SPARK_Body_Mode := SPARKlib_common.SPARK_Body_Mode;
+
+   package Compiler renames SPARKlib_common.Compiler;
+
+   package Prove renames SPARKlib_common.Prove;
 
    for Excluded_Source_Files use ("spark-conversions-long_integer.ads",
                                   "spark-lemmas-long_integer.ads",

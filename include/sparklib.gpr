@@ -1,3 +1,5 @@
+with "sparklib_common";
+
 project SPARKlib is
 
    --  Environment variable SPARKLIB_OBJECT_DIR controls the object
@@ -5,41 +7,17 @@ project SPARKlib is
 
    for Object_Dir use External("SPARKLIB_OBJECT_DIR");
 
-   --  Environment variable SPARKLIB_INSTALLED controls whether the
-   --  project and its sources are being installed as part of SPARK install
-   --  (value "True") or whether they are in source repository configuration
-   --  (value "False"). Inside SPARK install, this project file is installed
-   --  in <install>/lib/gnat and the sources in <install>/include/spark
-
-   type SPARKlib_Installed_T is ("True", "False");
-   SPARKlib_Installed := External("SPARKLIB_INSTALLED", "True");
-
-   --  Environment variable SPARKLIB_BODY_MODE controls whether the
-   --  project is with'ed in client projects to use lemmas (value "Off"),
-   --  or whether it is being itself formally verified (value "On").
-
-   type SPARK_Body_Mode_T is ("Off", "On");
-   SPARK_Body_Mode := External ("SPARKLIB_BODY_MODE", "Off");
-
-   case SPARKlib_Installed is
+   case SPARKlib_common.SPARKlib_Installed is
       when "True" =>
          for Source_Dirs use ("../../include/spark");
       when others =>
          for Source_Dirs use (".");
    end case;
 
-   package Compiler is
-      --  Enforce GNAT style checks, except for multiple blank lines which does
-      --  not work for preprocessed files, and alphabetical ordering of
-      --  subprogram bodies (although not applicable to null subprograms).
-      for Default_Switches ("Ada") use
-         ("-gnat2022", "-gnata", "-gnatygo-u",
-	  "-gnatwI",  --  disable warnings about SPARKlib using GNAT internal units
-          "-gnateDSPARK_BODY_MODE=" & SPARK_Body_Mode);
-   end Compiler;
+   SPARK_Body_Mode := SPARKlib_common.SPARK_Body_Mode;
 
-   package Prove is
-      for Proof_Dir use "proof";
-   end Prove;
+   package Compiler renames SPARKlib_common.Compiler;
+
+   package Prove renames SPARKlib_common.Prove;
 
 end SPARKlib;
