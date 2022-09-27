@@ -1,17 +1,17 @@
-call_actuals.adb:8:14: info: overflow check proved (CodePeer)
-call_actuals.adb:13:12: info: range check proved (CodePeer)
-call_actuals.adb:14:14: info: overflow check proved (CodePeer)
-call_actuals.adb:14:14: info: range check proved (CodePeer)
-call_actuals.adb:19:14: info: range check proved (CodePeer)
-call_actuals.adb:20:14: info: range check proved (CodePeer)
-call_actuals.adb:20:17: info: range check proved (CodePeer)
-call_actuals.adb:25:15: info: range check proved (CodePeer)
-call_actuals.adb:26:15: info: range check proved (CodePeer)
-call_actuals.adb:26:18: info: range check proved (CodePeer)
-call_actuals.adb:31:12: info: range check proved (CodePeer)
-call_actuals.adb:31:14: info: range check proved (CodePeer)
-call_actuals.adb:32:14: info: range check proved (CodePeer)
-call_actuals.adb:32:17: info: range check proved (CodePeer)
+call_actuals.adb:8:14: high: overflow check might fail, cannot prove upper bound for G + 1 (e.g. when G = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at call_actuals.ads:7 should mention G in a precondition]
+call_actuals.adb:13:12: high: range check might fail, cannot prove lower bound for G (e.g. when G = -1) [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at call_actuals.ads:8 should mention G in a precondition]
+call_actuals.adb:14:14: high: overflow check might fail, cannot prove upper bound for G + 1 (e.g. when G = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at call_actuals.ads:8 should mention G in a precondition]
+call_actuals.adb:14:14: info: range check proved (CVC5: 2 VC)
+call_actuals.adb:19:14: high: range check might fail, cannot prove lower bound for G (e.g. when G = -21) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at call_actuals.ads:9 should mention G in a precondition]
+call_actuals.adb:20:14: info: range check proved (CVC5: 2 VC)
+call_actuals.adb:20:17: high: range check might fail, cannot prove upper bound for T(G) + 1 (e.g. when G = 20) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at call_actuals.ads:9 should mention G in a precondition]
+call_actuals.adb:25:15: high: range check might fail, cannot prove lower bound for G (e.g. when G = -1) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at call_actuals.ads:10 should mention G in a precondition]
+call_actuals.adb:26:15: info: range check proved (CVC5: 2 VC)
+call_actuals.adb:26:18: high: range check might fail, cannot prove upper bound for NT(G) + 1 (e.g. when G = 20) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at call_actuals.ads:10 should mention G in a precondition]
+call_actuals.adb:31:12: high: range check might fail, cannot prove lower bound for T(G) (e.g. when G = -1) [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at call_actuals.ads:11 should mention G in a precondition]
+call_actuals.adb:31:14: high: range check might fail, cannot prove lower bound for G (e.g. when G = -21) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at call_actuals.ads:11 should mention G in a precondition]
+call_actuals.adb:32:14: info: range check proved (CVC5: 2 VC)
+call_actuals.adb:32:17: high: range check might fail, cannot prove upper bound for T(G) + 1 (e.g. when G = 20) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at call_actuals.ads:11 should mention G in a precondition]
 call_actuals.adb:38:11: info: range check proved (CVC5: 2 VC)
 call_actuals.adb:38:11: medium: range check might fail, cannot prove lower bound for A1 (e.g. when A1 = -1) [reason for check: input value must fit in parameter type and output value must fit in argument type] [possible fix: add or complete related loop invariants or postconditions]
 call_actuals.adb:38:15: info: range check proved (CVC5: 2 VC)
@@ -20,11 +20,11 @@ call_actuals.adb:41:18: info: range check proved (CVC5: 2 VC)
 call_actuals.ads:7:18: warning: unused initial value of "X"
 call_actuals.ads:7:21: warning: unused initial value of "Y"
 call_actuals.ads:7:54: info: postcondition proved (CVC5: 1 VC)
-call_actuals.ads:7:60: info: overflow check proved (CodePeer)
+call_actuals.ads:7:60: info: overflow check proved (CVC5: 2 VC)
 call_actuals.ads:8:18: warning: unused initial value of "X"
 call_actuals.ads:8:21: warning: unused initial value of "Y"
 call_actuals.ads:8:54: info: postcondition proved (CVC5: 1 VC)
-call_actuals.ads:8:60: info: overflow check proved (CodePeer)
+call_actuals.ads:8:60: info: overflow check proved (CVC5: 2 VC)
 call_actuals.ads:9:18: warning: unused initial value of "X"
 call_actuals.ads:9:21: warning: unused initial value of "Y"
 call_actuals.ads:9:48: info: postcondition proved (CVC5: 1 VC)

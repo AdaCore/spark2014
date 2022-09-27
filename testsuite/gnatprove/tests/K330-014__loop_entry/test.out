@@ -7,18 +7,21 @@ for_loops.adb:29:33: medium: loop invariant might fail in first iteration [possi
 for_loops.adb:40:30: info: implicit function contract not available for proof ("Sum_Of" might not return)
 for_loops.adb:40:47: info: cannot unroll loop (too many loop iterations)
 for_loops.adb:42:28: info: implicit function contract not available for proof ("Sum_Of" might not return)
-for_loops.adb:44:36: info: loop invariant proved (CodePeer)
+for_loops.adb:44:36: info: loop invariant initialization proved (CVC5: 1 VC)
+for_loops.adb:44:36: info: loop invariant preservation proved (CVC5: 1 VC)
 for_loops.adb:55:30: info: implicit function contract not available for proof ("Sum_Of" might not return)
 for_loops.adb:55:47: info: cannot unroll loop (too many loop iterations)
 for_loops.adb:57:28: info: implicit function contract not available for proof ("Sum_Of" might not return)
-for_loops.adb:61:36: info: loop invariant proved (CodePeer)
-optional.adb:17:33: info: loop invariant proved (CodePeer)
+for_loops.adb:61:36: info: loop invariant initialization proved (CVC5: 1 VC)
+for_loops.adb:61:36: info: loop invariant preservation proved (CVC5: 1 VC)
+optional.adb:17:33: info: loop invariant initialization proved (CVC5: 1 VC)
+optional.adb:17:33: info: loop invariant preservation proved (CVC5: 1 VC)
 optional.adb:19:21: warning: unused assignment
 optional.adb:27:11: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: you should consider adding a postcondition to function Sum_Of or turning it into an expression function in its unit spec]
 optional.adb:29:48: info: unrolling loop
 optional.adb:31:36: info: loop invariant initialization proved (CVC5: 3 VC)
 optional.adb:31:36: medium: loop invariant might not be preserved by an arbitrary iteration
-utils.adb:10:29: info: range check proved (CodePeer)
+utils.adb:10:29: info: range check proved (CVC5: 2 VC)
 utils.adb:10:34: medium: overflow check might fail, cannot prove upper bound for Sum_Of (Val - 1) + Val (e.g. when Val = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Sum_Of (Val - 1) <= Integer'Last - Val) to subprogram at utils.ads:2]
 while_loops.adb:14:21: info: implicit function contract not available for proof ("Sum_Of" might not return)
 while_loops.adb:18:33: info: loop invariant initialization proved (CVC5: 1 VC)

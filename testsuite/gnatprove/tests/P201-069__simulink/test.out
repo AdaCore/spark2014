@@ -3,11 +3,11 @@ abs_controller_oem_with_property.adb:26:07: info: initialization of "Diff_out1" 
 abs_controller_oem_with_property.adb:27:07: info: initialization of "Difference_out1" proved
 abs_controller_oem_with_property.adb:28:07: info: initialization of "Sum_out1" proved
 abs_controller_oem_with_property.adb:33:22: info: assertion proved (CVC5: 1 VC)
-abs_controller_oem_with_property.adb:56:26: info: float overflow check proved (CodePeer)
-abs_controller_oem_with_property.adb:56:43: info: division check proved (CodePeer)
+abs_controller_oem_with_property.adb:56:26: info: float overflow check proved (colibri: 1 VC)
+abs_controller_oem_with_property.adb:56:43: info: division check proved (colibri: 1 VC)
 abs_controller_oem_with_property.adb:56:43: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
-abs_controller_oem_with_property.adb:64:32: info: float overflow check proved (CodePeer)
-abs_controller_oem_with_property.adb:74:71: info: float overflow check proved (CodePeer)
+abs_controller_oem_with_property.adb:64:32: info: float overflow check proved (colibri: 1 VC)
+abs_controller_oem_with_property.adb:74:71: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: you should consider adding a postcondition to function Boolean_To_Long_Float or turning it into an expression function in its unit spec]
 abs_controller_oem_with_property.adb:88:22: medium: assertion might fail [possible fix: precondition of subprogram at abs_controller_oem_with_property.ads:17 should mention Vehicle_Speed]
 abs_controller_oem_with_property.ads:20:08: info: initialization of "Apply_Brakes" proved
 abs_controller_supplier_with_property.adb:27:07: info: initialization of "Sum_out1" proved
@@ -15,40 +15,40 @@ abs_controller_supplier_with_property.adb:28:07: info: initialization of "Sum_1_
 abs_controller_supplier_with_property.adb:29:07: info: initialization of "At_Rest_Switch_out1" proved
 abs_controller_supplier_with_property.adb:30:07: info: initialization of "Sum_1_out1_sat" proved
 abs_controller_supplier_with_property.adb:49:40: high: range check might fail, cannot prove bounds for (10) * (Wheel_Speed) (e.g. when Wheel_Speed = Unsigned_32'Last) [reason for check: result of multiplication must be convertible to the target type of the conversion] [possible fix: add precondition ((10) * (Wheel_Speed) in Integer_32) to subprogram at abs_controller_supplier_with_property.ads:19]
-abs_controller_supplier_with_property.adb:49:58: info: overflow check proved (CodePeer)
+abs_controller_supplier_with_property.adb:49:58: info: overflow check proved (colibri: 2 VC)
 abs_controller_supplier_with_property.adb:49:77: high: range check might fail, cannot prove upper bound for (8) * (Vehicle_Speed) (e.g. when Vehicle_Speed = 536870911) [reason for check: result of multiplication must be convertible to the target type of the conversion] [possible fix: add precondition ((8) * (Vehicle_Speed) in Integer_32) to subprogram at abs_controller_supplier_with_property.ads:19]
 abs_controller_supplier_with_property.adb:53:82: medium: overflow check might fail, cannot prove lower bound for (Boolean_To_Integer_8 ((Sum_out1) > (0))) - (Boolean_To_Integer_8 ((Sum_out1) < (0))) [reason for check: result of subtraction must fit in a 8-bits machine integer] [possible fix: you should consider adding a postcondition to function Boolean_To_Integer_8 or turning it into an expression function in its unit spec]
-abs_controller_supplier_with_property.adb:62:41: info: range check proved (CodePeer)
+abs_controller_supplier_with_property.adb:62:41: info: range check proved (CVC5: 2 VC)
 abs_controller_supplier_with_property.adb:93:22: info: assertion proved (CVC5: 1 VC)
 abs_controller_supplier_with_property.ads:22:08: info: initialization of "Apply_Brakes" proved
 assertionproperties.adb:21:07: info: initialization of "Sqrt_out1" proved
 assertionproperties.adb:36:22: info: assertion proved (CVC5: 1 VC)
 assertionproperties.adb:43:22: medium: assertion might fail
 assertionproperties.ads:18:46: info: initialization of "y" proved
-biaseddivide.adb:24:16: info: division check proved (CodePeer)
+biaseddivide.adb:24:16: info: division check proved (colibri: 1 VC)
 biaseddivide.adb:24:16: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at biaseddivide.ads:16 should mention y]
-biaseddivide.adb:24:23: info: float overflow check proved (CodePeer)
+biaseddivide.adb:24:23: info: float overflow check proved (colibri: 1 VC)
 biaseddivide.ads:16:52: info: initialization of "r" proved
 biaseddivide.ads:19:14: info: postcondition proved (CVC5: 1 VC)
-biaseddivide.ads:19:20: info: division check proved (CodePeer)
+biaseddivide.ads:19:20: info: division check proved (colibri: 1 VC)
 biaseddivide.ads:19:20: info: float overflow check proved (CVC5: 1 VC)
-biaseddivide.ads:19:25: info: float overflow check proved (CodePeer)
+biaseddivide.ads:19:25: info: float overflow check proved (CVC5: 1 VC)
 dynamicsaturateassert.adb:24:07: info: initialization of "Saturation_Dynamic_out1" proved
 dynamicsaturateassert.adb:58:22: info: assertion proved (CVC5: 2 VC)
 dynamicsaturateassert.adb:71:22: info: assertion proved (CVC5: 1 VC)
 dynamicsaturateassert.ads:23:08: info: initialization of "Saturated_Value" proved
 errorexample.adb:23:07: info: initialization of "Abs_out1" proved
 errorexample.adb:28:22: info: assertion proved (CVC5: 1 VC)
-errorexample.adb:38:65: info: division check proved (CodePeer)
+errorexample.adb:38:65: info: division check proved (CVC5: 1 VC)
 errorexample.adb:47:22: medium: assertion might fail
 errorexample.adb:47:35: info: range check proved (Trivial)
 errorexample.ads:22:08: info: initialization of "Relative_Error" proved
 errorexample.ads:26:14: info: postcondition proved (CVC5: 1 VC)
-errorexample.ads:26:77: info: division check proved (CodePeer)
+errorexample.ads:26:77: info: division check proved (CVC5: 1 VC)
 errorexamplefloat.adb:24:07: info: initialization of "Abs_out1" proved
 errorexamplefloat.adb:29:22: info: assertion proved (CVC5: 1 VC)
-errorexamplefloat.adb:39:43: info: float overflow check proved (CodePeer)
-errorexamplefloat.adb:39:65: info: division check proved (CodePeer)
+errorexamplefloat.adb:39:43: info: float overflow check proved (colibri: 1 VC)
+errorexamplefloat.adb:39:65: info: division check proved (CVC5: 1 VC)
 errorexamplefloat.adb:39:65: info: float overflow check proved (colibri: 1 VC)
 errorexamplefloat.adb:48:22: medium: assertion might fail
 errorexamplefloat.ads:21:08: info: initialization of "Relative_Error" proved
@@ -89,106 +89,106 @@ simulink_functions.adb:199:14: medium: precondition might fail [possible fix: su
 simulink_functions.adb:208:47: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:61 should mention F in a precondition]
 simulink_functions.adb:219:14: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:62 should mention F in a precondition]
 simulink_functions.adb:234:40: high: overflow check might fail, cannot prove upper bound for abs (Left) (e.g. when Left = Integer_8'First) [reason for check: result of absolute value must fit in a 8-bits machine integer] [possible fix: add precondition (abs (Left) in -128 .. 127) to subprogram at simulink_functions.ads:64]
-simulink_functions.adb:234:51: info: division check proved (CodePeer)
+simulink_functions.adb:234:51: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:234:51: info: range check proved (CVC5: 2 VC)
 simulink_functions.adb:234:53: high: overflow check might fail, cannot prove upper bound for abs (Right) (e.g. when Right = Integer_8'First) [reason for check: result of absolute value must fit in a 8-bits machine integer] [possible fix: add precondition (abs (Right) in -128 .. 127) to subprogram at simulink_functions.ads:64]
 simulink_functions.adb:236:28: info: overflow check proved (CVC5: 2 VC)
-simulink_functions.adb:236:36: info: overflow check proved (CodePeer)
-simulink_functions.adb:236:47: info: overflow check proved (CodePeer)
+simulink_functions.adb:236:36: info: overflow check proved (CVC5: 2 VC)
+simulink_functions.adb:236:47: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:236:52: high: overflow check might fail, cannot prove bounds for ((-1) * Quotient - 1) * Right (e.g. when Quotient = 127 and Right = -1) [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:64 should mention Left and Right in a precondition]
 simulink_functions.adb:239:25: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:239:33: high: overflow check might fail, cannot prove bounds for Left / Right (e.g. when Left = -128 and Right = -1) [reason for check: result of division must fit in a 8-bits machine integer] [possible fix: add precondition (Left / Right in -128 .. 127) to subprogram at simulink_functions.ads:64]
-simulink_functions.adb:239:33: info: division check proved (CodePeer)
+simulink_functions.adb:239:33: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:239:42: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:255:41: high: overflow check might fail, cannot prove upper bound for abs (Left) (e.g. when Left = Integer_16'First) [reason for check: result of absolute value must fit in a 16-bits machine integer] [possible fix: add precondition (abs (Left) in -32768 .. 32767) to subprogram at simulink_functions.ads:65]
-simulink_functions.adb:255:52: info: division check proved (CodePeer)
+simulink_functions.adb:255:52: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:255:52: info: range check proved (CVC5: 2 VC)
 simulink_functions.adb:255:54: high: overflow check might fail, cannot prove upper bound for abs (Right) (e.g. when Right = Integer_16'First) [reason for check: result of absolute value must fit in a 16-bits machine integer] [possible fix: add precondition (abs (Right) in -32768 .. 32767) to subprogram at simulink_functions.ads:65]
 simulink_functions.adb:257:28: info: overflow check proved (CVC5: 2 VC)
-simulink_functions.adb:257:36: info: overflow check proved (CodePeer)
-simulink_functions.adb:257:47: info: overflow check proved (CodePeer)
+simulink_functions.adb:257:36: info: overflow check proved (CVC5: 2 VC)
+simulink_functions.adb:257:47: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:257:52: high: overflow check might fail, cannot prove bounds for ((-1) * Quotient - 1) * Right (e.g. when Quotient = 32767 and Right = -1) [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:65 should mention Left and Right in a precondition]
 simulink_functions.adb:261:20: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:261:28: high: overflow check might fail, cannot prove bounds for Left / Right (e.g. when Left = -32768 and Right = -1) [reason for check: result of division must fit in a 16-bits machine integer] [possible fix: add precondition (Left / Right in -32768 .. 32767) to subprogram at simulink_functions.ads:65]
-simulink_functions.adb:261:28: info: division check proved (CodePeer)
+simulink_functions.adb:261:28: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:261:37: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:277:41: high: overflow check might fail, cannot prove upper bound for abs (Left) (e.g. when Left = Integer_32'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs (Left) in -2147483648 .. 2147483647) to subprogram at simulink_functions.ads:66]
-simulink_functions.adb:277:52: info: division check proved (CodePeer)
+simulink_functions.adb:277:52: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:277:52: info: range check proved (CVC5: 2 VC)
 simulink_functions.adb:277:54: high: overflow check might fail, cannot prove upper bound for abs (Right) (e.g. when Right = Integer_32'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs (Right) in -2147483648 .. 2147483647) to subprogram at simulink_functions.ads:66]
 simulink_functions.adb:279:28: info: overflow check proved (CVC5: 2 VC)
-simulink_functions.adb:279:36: info: overflow check proved (CodePeer)
-simulink_functions.adb:279:47: info: overflow check proved (CodePeer)
+simulink_functions.adb:279:36: info: overflow check proved (CVC5: 2 VC)
+simulink_functions.adb:279:47: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:279:52: high: overflow check might fail, cannot prove bounds for ((-1) * Quotient - 1) * Right (e.g. when Quotient = 2147483647 and Right = -1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:66 should mention Left and Right in a precondition]
 simulink_functions.adb:283:20: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:283:28: high: overflow check might fail, cannot prove bounds for Left / Right (e.g. when Left = -2147483648 and Right = -1) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (Left / Right in -2147483648 .. 2147483647) to subprogram at simulink_functions.ads:66]
-simulink_functions.adb:283:28: info: division check proved (CodePeer)
+simulink_functions.adb:283:28: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:283:37: info: overflow check proved (CVC5: 2 VC)
-simulink_functions.adb:297:30: info: division check proved (CodePeer)
-simulink_functions.adb:310:30: info: division check proved (CodePeer)
-simulink_functions.adb:323:30: info: division check proved (CodePeer)
+simulink_functions.adb:297:30: info: division check proved (CVC5: 1 VC)
+simulink_functions.adb:310:30: info: division check proved (CVC5: 1 VC)
+simulink_functions.adb:323:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:336:22: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at simulink_functions.ads:72 should mention Left and Right in a precondition]
-simulink_functions.adb:336:42: info: division check proved (CodePeer)
+simulink_functions.adb:336:42: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:336:42: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:72 should mention Left and Right in a precondition]
 simulink_functions.adb:336:51: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:72 should mention Left and Right in a precondition]
 simulink_functions.adb:349:22: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at simulink_functions.ads:73 should mention Left and Right in a precondition]
-simulink_functions.adb:349:47: info: division check proved (CodePeer)
+simulink_functions.adb:349:47: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:349:47: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:73 should mention Left and Right in a precondition]
 simulink_functions.adb:349:56: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:73 should mention Left and Right in a precondition]
 simulink_functions.adb:362:22: medium: overflow check might fail, cannot prove lower bound for Left - Integer_8 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of subtraction must fit in a 8-bits machine integer] [possible fix: add precondition (if Integer_8 (Float'Floor (Float (Left) / Float (Right))) * Right >= 0 then Left >= -128 + Integer_8 (Float'Floor (Float (Left) / Float (Right))) * Right else Left <= 127 + Integer_8 (Float'Floor (Float (Left) / Float (Right))) * Right) to subprogram at simulink_functions.ads:75]
 simulink_functions.adb:363:29: medium: range check might fail, cannot prove upper bound for Float'Floor [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
 simulink_functions.adb:363:44: info: range check proved (Trivial)
-simulink_functions.adb:363:50: info: division check proved (CodePeer)
-simulink_functions.adb:363:50: info: float overflow check proved (CodePeer)
+simulink_functions.adb:363:50: info: division check proved (CVC5: 1 VC)
+simulink_functions.adb:363:50: info: float overflow check proved (colibri: 1 VC)
 simulink_functions.adb:363:59: info: range check proved (Trivial)
 simulink_functions.adb:363:68: medium: overflow check might fail, cannot prove lower bound for Integer_8 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible fix: add precondition (Integer_8 (Float'Floor (Float (Left) / Float (Right))) * Right in -128 .. 127) to subprogram at simulink_functions.ads:75]
 simulink_functions.adb:376:22: medium: overflow check might fail, cannot prove lower bound for Left - Integer_16 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of subtraction must fit in a 16-bits machine integer] [possible fix: add precondition (if Integer_16 (Float'Floor (Float (Left) / Float (Right))) * Right >= 0 then Left >= -32768 + Integer_16 (Float'Floor (Float (Left) / Float (Right))) * Right else Left <= 32767 + Integer_16 (Float'Floor (Float (Left) / Float (Right))) * Right) to subprogram at simulink_functions.ads:76]
 simulink_functions.adb:377:30: medium: range check might fail, cannot prove upper bound for Float'Floor [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
 simulink_functions.adb:377:45: info: range check proved (Trivial)
-simulink_functions.adb:377:51: info: division check proved (CodePeer)
-simulink_functions.adb:377:51: info: float overflow check proved (CodePeer)
+simulink_functions.adb:377:51: info: division check proved (CVC5: 1 VC)
+simulink_functions.adb:377:51: info: float overflow check proved (colibri: 1 VC)
 simulink_functions.adb:377:60: info: range check proved (Trivial)
 simulink_functions.adb:377:69: medium: overflow check might fail, cannot prove lower bound for Integer_16 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: add precondition (Integer_16 (Float'Floor (Float (Left) / Float (Right))) * Right in -32768 .. 32767) to subprogram at simulink_functions.ads:76]
 simulink_functions.adb:390:22: medium: overflow check might fail, cannot prove lower bound for Left - Integer_32 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Integer_32 (Float'Floor (Float (Left) / Float (Right))) * Right >= 0 then Left >= -2147483648 + Integer_32 (Float'Floor (Float (Left) / Float (Right))) * Right else Left <= 2147483647 + Integer_32 (Float'Floor (Float (Left) / Float (Right))) * Right) to subprogram at simulink_functions.ads:77]
 simulink_functions.adb:391:30: medium: range check might fail, cannot prove upper bound for Float'Floor [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:77 should mention Left and Right in a precondition]
 simulink_functions.adb:391:45: info: range check proved (Trivial)
-simulink_functions.adb:391:51: info: division check proved (CodePeer)
-simulink_functions.adb:391:51: info: float overflow check proved (CodePeer)
+simulink_functions.adb:391:51: info: division check proved (CVC5: 1 VC)
+simulink_functions.adb:391:51: info: float overflow check proved (colibri: 1 VC)
 simulink_functions.adb:391:60: info: range check proved (Trivial)
 simulink_functions.adb:391:69: medium: overflow check might fail, cannot prove lower bound for Integer_32 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Integer_32 (Float'Floor (Float (Left) / Float (Right))) * Right in -2147483648 .. 2147483647) to subprogram at simulink_functions.ads:77]
-simulink_functions.adb:404:30: info: division check proved (CodePeer)
-simulink_functions.adb:417:30: info: division check proved (CodePeer)
-simulink_functions.adb:430:30: info: division check proved (CodePeer)
+simulink_functions.adb:404:30: info: division check proved (CVC5: 1 VC)
+simulink_functions.adb:417:30: info: division check proved (CVC5: 1 VC)
+simulink_functions.adb:430:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:443:22: medium: overflow check might fail, cannot prove lower bound for Left - Integer (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Integer (Float'Floor (Float (Left) / Float (Right))) * Right >= 0 then Left >= Integer'First + Integer (Float'Floor (Float (Left) / Float (Right))) * Right else Left <= Integer'Last + Integer (Float'Floor (Float (Left) / Float (Right))) * Right) to subprogram at simulink_functions.ads:83]
 simulink_functions.adb:444:27: medium: range check might fail, cannot prove upper bound for Float'Floor [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:83 should mention Left and Right in a precondition]
 simulink_functions.adb:444:42: info: range check proved (Trivial)
-simulink_functions.adb:444:48: info: division check proved (CodePeer)
-simulink_functions.adb:444:48: info: float overflow check proved (CodePeer)
+simulink_functions.adb:444:48: info: division check proved (CVC5: 1 VC)
+simulink_functions.adb:444:48: info: float overflow check proved (colibri: 1 VC)
 simulink_functions.adb:444:57: info: range check proved (Trivial)
 simulink_functions.adb:444:66: medium: overflow check might fail, cannot prove lower bound for Integer (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Integer (Float'Floor (Float (Left) / Float (Right))) * Right in Integer) to subprogram at simulink_functions.ads:83]
 simulink_functions.adb:457:22: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at simulink_functions.ads:84 should mention Left and Right in a precondition]
-simulink_functions.adb:457:42: info: division check proved (CodePeer)
+simulink_functions.adb:457:42: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:457:42: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:84 should mention Left and Right in a precondition]
 simulink_functions.adb:457:51: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:84 should mention Left and Right in a precondition]
 simulink_functions.adb:470:22: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at simulink_functions.ads:85 should mention Left and Right in a precondition]
-simulink_functions.adb:470:47: info: division check proved (CodePeer)
+simulink_functions.adb:470:47: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:470:47: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:85 should mention Left and Right in a precondition]
 simulink_functions.adb:470:56: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:85 should mention Left and Right in a precondition]
 simulink_functions.adb:483:22: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:483:30: high: overflow check might fail, cannot prove bounds for Left / Right (e.g. when Left = -128 and Right = -1) [reason for check: result of division must fit in a 8-bits machine integer] [possible fix: add precondition (Left / Right in -128 .. 127) to subprogram at simulink_functions.ads:87]
-simulink_functions.adb:483:30: info: division check proved (CodePeer)
+simulink_functions.adb:483:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:483:39: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:496:22: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:496:30: high: overflow check might fail, cannot prove bounds for Left / Right (e.g. when Left = -32768 and Right = -1) [reason for check: result of division must fit in a 16-bits machine integer] [possible fix: add precondition (Left / Right in -32768 .. 32767) to subprogram at simulink_functions.ads:88]
-simulink_functions.adb:496:30: info: division check proved (CodePeer)
+simulink_functions.adb:496:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:496:39: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:509:22: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:509:30: high: overflow check might fail, cannot prove bounds for Left / Right (e.g. when Left = -2147483648 and Right = -1) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (Left / Right in -2147483648 .. 2147483647) to subprogram at simulink_functions.ads:89]
-simulink_functions.adb:509:30: info: division check proved (CodePeer)
+simulink_functions.adb:509:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:509:39: info: overflow check proved (CVC5: 2 VC)
-simulink_functions.adb:522:30: info: division check proved (CodePeer)
-simulink_functions.adb:535:30: info: division check proved (CodePeer)
-simulink_functions.adb:548:30: info: division check proved (CodePeer)
+simulink_functions.adb:522:30: info: division check proved (CVC5: 1 VC)
+simulink_functions.adb:535:30: info: division check proved (CVC5: 1 VC)
+simulink_functions.adb:548:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:558:19: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
 simulink_functions.adb:558:44: medium: divide by zero might fail [possible fix: add precondition (Right /= 0) to subprogram at simulink_functions.ads:95]
 simulink_functions.adb:558:44: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
@@ -238,12 +238,12 @@ simulink_functions.adb:1194:21: medium: range check might fail [reason for check
 simulink_functions.adb:1202:07: info: initialization of "Result" proved
 simulink_functions.adb:1209:31: info: division check proved (colibri: 1 VC)
 simulink_functions.adb:1209:31: info: float overflow check proved (colibri: 1 VC)
-simulink_functions.adb:1212:33: info: float overflow check proved (CodePeer)
-simulink_functions.adb:1214:33: info: float overflow check proved (CodePeer)
-simulink_functions.adb:1219:33: info: division check proved (CodePeer)
+simulink_functions.adb:1212:33: info: float overflow check proved (colibri: 1 VC)
+simulink_functions.adb:1214:33: info: float overflow check proved (colibri: 1 VC)
+simulink_functions.adb:1219:33: info: division check proved (colibri: 1 VC)
 simulink_functions.adb:1219:33: info: float overflow check proved (colibri: 1 VC)
-simulink_functions.adb:1221:30: info: float overflow check proved (CodePeer)
-simulink_functions.adb:1223:30: info: float overflow check proved (CodePeer)
+simulink_functions.adb:1221:30: info: float overflow check proved (colibri: 1 VC)
+simulink_functions.adb:1223:30: info: float overflow check proved (colibri: 1 VC)
 simulink_functions.adb:1327:07: info: initialization of "Res" proved
 simulink_functions.adb:1343:07: info: initialization of "Res" proved
 simulink_functions.adb:1359:07: info: initialization of "Res" proved
@@ -262,32 +262,32 @@ simulink_functions.adb:1504:31: high: range check might fail, cannot prove lower
 simulink_functions.adb:1514:19: medium: overflow check might fail, cannot prove lower bound for Left ** Natural (Right) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (Left ** Natural (Right) in -2147483648 .. 2147483647) to subprogram at simulink_functions.ads:209]
 simulink_functions.adb:1514:31: high: range check might fail, cannot prove lower bound for Right (e.g. when Right = -1) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Right in Natural) to subprogram at simulink_functions.ads:209]
 simulink_functions.adb:1523:41: high: range check might fail, cannot prove upper bound for Right (e.g. when Right = Unsigned_32'Last) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Right in Natural) to subprogram at simulink_functions.ads:211]
-simulink_functions.adb:1523:48: info: division check proved (CodePeer)
+simulink_functions.adb:1523:48: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:1532:51: high: range check might fail, cannot prove upper bound for Right (e.g. when Right = Unsigned_32'Last) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Right in Natural) to subprogram at simulink_functions.ads:212]
-simulink_functions.adb:1532:58: info: division check proved (CodePeer)
+simulink_functions.adb:1532:58: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:1541:50: high: range check might fail, cannot prove upper bound for Right (e.g. when Right = Unsigned_32'Last) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Right in Natural) to subprogram at simulink_functions.ads:213]
-simulink_functions.adb:1541:57: info: division check proved (CodePeer)
+simulink_functions.adb:1541:57: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:1550:53: high: range check might fail, cannot prove upper bound for Right (e.g. when Right = Unsigned_32'Last) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Right in Natural) to subprogram at simulink_functions.ads:214]
-simulink_functions.adb:1550:60: info: division check proved (CodePeer)
+simulink_functions.adb:1550:60: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:1559:53: high: range check might fail, cannot prove upper bound for Right (e.g. when Right = Unsigned_32'Last) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Right in Natural) to subprogram at simulink_functions.ads:215]
-simulink_functions.adb:1559:60: info: division check proved (CodePeer)
+simulink_functions.adb:1559:60: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:1568:52: high: range check might fail, cannot prove upper bound for Right (e.g. when Right = Unsigned_32'Last) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Right in Natural) to subprogram at simulink_functions.ads:216]
-simulink_functions.adb:1568:59: info: division check proved (CodePeer)
-simulink_functions.adb:1577:49: info: division check proved (CodePeer)
-simulink_functions.adb:1586:49: info: division check proved (CodePeer)
+simulink_functions.adb:1568:59: info: division check proved (CVC5: 1 VC)
+simulink_functions.adb:1577:49: info: division check proved (CVC5: 2 VC)
+simulink_functions.adb:1586:49: info: division check proved (CVC5: 2 VC)
 simulink_functions.adb:1595:42: high: range check might fail, cannot prove upper bound for Right (e.g. when Right = Unsigned_32'Last) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Right in Natural) to subprogram at simulink_functions.ads:220]
-simulink_functions.adb:1595:49: info: division check proved (CodePeer)
+simulink_functions.adb:1595:49: info: division check proved (CVC5: 1 VC)
 smoothing.adb:24:07: info: initialization of "Abs_Delta_out1" proved
 smoothing.adb:25:07: info: initialization of "Compare_To_Zero_out1" proved
 smoothing.adb:26:07: info: initialization of "Smoother_Value_out1" proved
 smoothing.adb:27:07: info: initialization of "Abs_New_Delta_out1" proved
-smoothing.adb:33:42: info: float overflow check proved (CodePeer)
+smoothing.adb:33:42: info: float overflow check proved (colibri: 1 VC)
 smoothing.adb:46:22: info: assertion proved (CVC5: 1 VC)
 smoothing.adb:54:22: info: assertion proved (colibri: 1 VC)
 smoothing.adb:65:44: info: float overflow check proved (colibri: 1 VC)
-smoothing.adb:65:60: info: float overflow check proved (CodePeer)
-smoothing.adb:65:77: info: division check proved (CodePeer)
-smoothing.adb:65:77: info: float overflow check proved (CodePeer)
+smoothing.adb:65:60: info: float overflow check proved (CVC5: 1 VC)
+smoothing.adb:65:77: info: division check proved (CVC5: 1 VC)
+smoothing.adb:65:77: info: float overflow check proved (colibri: 1 VC)
 smoothing.adb:76:56: info: float overflow check proved (colibri: 1 VC)
 smoothing.adb:86:22: medium: assertion might fail
 smoothing.adb:98:22: info: assertion proved (colibri: 1 VC)

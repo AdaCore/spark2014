@@ -1,2 +1,2 @@
 assert.adb:1:11: warning: subprogram "Assert" has no effect
-assert.adb:8:19: info: assertion proved (CodePeer)
+assert.adb:8:19: info: assertion proved (CVC5: 1 VC)

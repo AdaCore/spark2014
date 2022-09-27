@@ -1,2 +1,2 @@
-base-annex.adb:4:16: info: overflow check proved (CodePeer)
+base-annex.adb:4:16: info: overflow check proved (CVC5: 2 VC)
 base.adb:6:19: info: precondition proved (CVC5: 4 VC)

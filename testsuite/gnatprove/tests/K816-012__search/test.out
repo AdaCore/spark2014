@@ -6,12 +6,12 @@ search.adb:24:24: medium: assertion might fail (e.g. when Found1 = True and Inde
 search.adb:24:49: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 19 should mention Index1 in a loop invariant]
 search.adb:25:24: medium: assertion might fail (e.g. when Found2 = True and Index2 = 0 and Table = (0 => 1) and Table'First = 0 and Table'Last = 0 and Value2 = 0) [possible fix: loop at line 19 should mention Found2 and Index2 in a loop invariant]
 search.adb:25:49: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 19 should mention Index2 in a loop invariant]
-search.adb:26:24: info: assertion proved (CodePeer)
-search.adb:30:27: info: overflow check proved (CodePeer)
-search.adb:31:27: info: assertion proved (CodePeer)
-search.adb:32:27: info: assertion proved (CodePeer)
-search.adb:37:27: info: overflow check proved (CodePeer)
-search.adb:38:27: info: assertion proved (CodePeer)
+search.adb:26:24: info: assertion proved (CVC5: 1 VC)
+search.adb:30:27: info: overflow check proved (CVC5: 2 VC)
+search.adb:31:27: info: assertion proved (CVC5: 2 VC)
+search.adb:32:27: info: assertion proved (CVC5: 1 VC)
+search.adb:37:27: info: overflow check proved (CVC5: 2 VC)
+search.adb:38:27: info: assertion proved (CVC5: 2 VC)
 search.adb:39:27: info: assertion proved (CVC5: 1 VC)
 search.adb:53:19: info: index check proved (CVC5: 2 VC)
 search.adb:53:51: info: index check proved (CVC5: 2 VC)
