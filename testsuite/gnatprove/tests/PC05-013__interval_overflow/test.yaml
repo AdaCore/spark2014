@@ -1,2 +1,2 @@
 prove_all:
-  codepeer: True
+  opt: ["--RTS=my_rts"]

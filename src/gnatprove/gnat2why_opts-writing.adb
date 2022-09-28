@@ -39,8 +39,7 @@ package body Gnat2Why_Opts.Writing is
 
    function Pass_Extra_Options_To_Gnat2why
       (Translation_Phase : Boolean;
-       Obj_Dir           : String;
-       Proj_Name         : String) return String
+       Obj_Dir           : String) return String
    is
       function Write_To_File (V : JSON_Value) return String;
       --  Write a textual representation of V to file
@@ -173,15 +172,6 @@ package body Gnat2Why_Opts.Writing is
          Set_Field (Obj, Parallel_Why3_Name,    Use_Semaphores);
 
          Set_Field (Obj, Why3_Dir_Name, Obj_Dir);
-
-         if CodePeer then
-            Set_Field (Obj, CP_Dir_Name,
-                       Compose
-                         (Compose
-                            (Compose (Obj_Dir, "codepeer"),
-                             Base_Name (Proj_Name) & ".output"),
-                          "sam"));
-         end if;
       end if;
 
       --  File-specific options

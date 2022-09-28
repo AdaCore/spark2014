@@ -217,7 +217,7 @@ procedure SPARK_Report is
         (Lines => Summary_Entries'Pos (Summary_Entries'Last)
                 - Summary_Entries'Pos (Summary_Entries'First) + 2,
          --  all categories (includes total) + label column
-         Cols  => 5 + 2);
+         Cols  => 4 + 2);
          --  all 5 types + label column + total column
 
       procedure Print_Table_Header;
@@ -262,8 +262,6 @@ procedure SPARK_Report is
          for Entr in Summary_Entries loop
             if Entr /= Total then
                Tot.Flow := Tot.Flow + Summary (Entr).Flow;
-               Tot.CodePeer :=
-                 Tot.CodePeer + Summary (Entr).CodePeer;
                Tot.Provers.Total :=
                  Tot.Provers.Total + Summary (Entr).Provers.Total;
                Tot.Justified := Tot.Justified + Summary (Entr).Justified;
@@ -293,7 +291,6 @@ procedure SPARK_Report is
          Put_Cell (T, "SPARK Analysis results", Align => Left_Align);
          Put_Cell (T, "Total");
          Put_Cell (T, "Flow");
-         Put_Cell (T, "CodePeer");
          Put_Cell (T, "Provers");
          Put_Cell (T, "Justified");
          Put_Cell (T, "Unproved");
@@ -307,13 +304,12 @@ procedure SPARK_Report is
       procedure Print_Table_Line (Line : Summary_Entries) is
          Elt   : Summary_Line renames Summary (Line);
          Total : constant Natural :=
-           Elt.Flow + Elt.CodePeer + Elt.Provers.Total +
+           Elt.Flow + Elt.Provers.Total +
              Elt.Justified + Elt.Unproved;
       begin
          Put_Cell (T, To_String (Line), Align => Left_Align);
          Put_Cell (T, Total);
          Put_Cell (T, Elt.Flow);
-         Put_Cell (T, Elt.CodePeer);
          Put_Provers_Cell (Elt.Provers);
          Put_Cell (T, Elt.Justified);
          Put_Cell (T, Elt.Unproved);
@@ -328,13 +324,12 @@ procedure SPARK_Report is
       is
          Elt : Summary_Line renames Summary (Total);
          Tot : constant Natural :=
-           Elt.Flow + Elt.CodePeer + Elt.Provers.Total + Elt.Justified
+           Elt.Flow + Elt.Provers.Total + Elt.Justified
              + Elt.Unproved;
       begin
          Put_Cell (T, To_String (Total), Align => Left_Align);
          Put_Cell (T, Tot);
          Put_Total_Cell (Elt.Flow, Tot);
-         Put_Total_Cell (Elt.CodePeer, Tot);
          Put_Total_Cell (Elt.Provers.Total, Tot);
          Put_Total_Cell (Elt.Justified, Tot);
          Put_Total_Cell (Elt.Unproved, Tot);
@@ -655,8 +650,6 @@ procedure SPARK_Report is
                                 (Summary (Category).Provers.Provers, M);
                               Increment (Summary (Category).Provers.Total);
                            end;
-                        when PC_Codepeer =>
-                           Increment (Summary (Category).CodePeer);
                         when PC_Prover =>
                            if Has_Field (Result, "stats") then
                               Process_Stats (Category, Get (Result, "stats"));

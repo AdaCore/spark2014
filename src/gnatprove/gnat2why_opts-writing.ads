@@ -32,8 +32,7 @@ package Gnat2Why_Opts.Writing is
 
    function Pass_Extra_Options_To_Gnat2why
      (Translation_Phase : Boolean;
-      Obj_Dir           : String;
-      Proj_Name         : String) return String;
+      Obj_Dir           : String) return String;
    --  Create a file with extra options for gnat2why and return its pathname.
    --  Translation_Phase is False for globals generation, and True for
    --  translation to Why.

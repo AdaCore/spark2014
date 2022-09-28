@@ -801,9 +801,7 @@ package body VC_Kinds is
    function From_JSON (V : JSON_Value) return Prover_Category is
       S : constant String := Get (V);
    begin
-      if S = "codepeer" then
-         return PC_Codepeer;
-      elsif S = "trivial" then
+      if S = "trivial" then
          return PC_Trivial;
       elsif S = "prover" then
          return PC_Prover;
@@ -1408,7 +1406,6 @@ package body VC_Kinds is
         (case P is
             when PC_Prover   => "prover",
             when PC_Trivial  => "trivial",
-            when PC_Codepeer => "codepeer",
             when PC_Flow     => "flow");
    begin
       return Create (S);
@@ -1579,7 +1576,6 @@ package body VC_Kinds is
       return (case P is
                  when PC_Prover   => "Automatic provers",
                  when PC_Trivial  => "Trivial",
-                 when PC_Codepeer => "CodePeer",
                  when PC_Flow     => "Flow analysis");
    end To_String;
 

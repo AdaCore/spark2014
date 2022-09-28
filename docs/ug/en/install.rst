@@ -46,14 +46,6 @@ an x86-64 machine running Linux 64bits or Windows 64bits with at least 8 cores
 and 16 GB of RAM. Slower machines can be used to analyze small subsystems, but
 a minimum of 2.8Ghz CPU and 2 GB of RAM is required.
 
-In addition, if you want to use the integration of |CodePeer| static analysis
-in |GNATprove| (switch ``--codepeer=on``) you will need approximately 1 GB of
-RAM per 10K SLOC of code. In other words, in order to analyze 300K SLOC of code
-with |CodePeer|, you will need a 64bits configuration with at least 30 GB of
-RAM. Note that these numbers will vary depending on the complexity of your
-code. If your code is very simple, you will need less memory. On the other hand
-if your code is very complex, then you will likely need more memory.
-
 Installation under Windows
 --------------------------
 

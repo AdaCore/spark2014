@@ -48,21 +48,21 @@ A summary table at the start of file ``gnatprove.out`` provides an overview of
 the verification results for all checks in the project. The table may look like
 this::
 
-  -----------------------------------------------------------------------------------------------------------------------------
-  SPARK Analysis results        Total          Flow   Interval   CodePeer                        Provers   Justified   Unproved
-  -----------------------------------------------------------------------------------------------------------------------------
-  Data Dependencies               281           281          .          .                              .           .          .
-  Flow Dependencies               228           228          .          .                              .           .          .
-  Initialization                  693           692          .          .                              .           1          .
-  Non-Aliasing                      .             .          .          .                              .           .          .
-  Run-time Checks                 474             .          .          .     458 (CVC5 95%, Trivial 5%)          16          .
-  Assertions                       45             .          .          .     45 (CVC5 82%, Trivial 18%)           .          .
-  Functional Contracts            304             .          .          .    302 (CVC5 82%, Trivial 18%)           2          .
-  LSP Verification                  .             .          .          .                              .           .          .
-  Termination                       .             .          .          .                              .           .          .
-  Concurrency                       .             .          .          .                              .           .          .
-  -----------------------------------------------------------------------------------------------------------------------------
-  Total                          2025    1201 (59%)          .          .                      805 (40%)     19 (1%)          .
+  -------------------------------------------------------------------------------------------------------------------
+  SPARK Analysis results        Total          Flow   Interval                         Provers   Justified   Unproved
+  -------------------------------------------------------------------------------------------------------------------
+  Data Dependencies               281           281          .                               .           .          .
+  Flow Dependencies               228           228          .                               .           .          .
+  Initialization                  693           692          .                               .           1          .
+  Non-Aliasing                      .             .          .                               .           .          .
+  Run-time Checks                 474             .          .      458 (CVC5 95%, Trivial 5%)          16          .
+  Assertions                       45             .          .      45 (CVC5 82%, Trivial 18%)           .          .
+  Functional Contracts            304             .          .     302 (CVC5 82%, Trivial 18%)           2          .
+  LSP Verification                  .             .          .                               .           .          .
+  Termination                       .             .          .                               .           .          .
+  Concurrency                       .             .          .                               .           .          .
+  -------------------------------------------------------------------------------------------------------------------
+  Total                          2025    1201 (59%)          .                       805 (40%)     19 (1%)          .
 
 The following table explains the lines of the summary table:
 
@@ -92,9 +92,6 @@ We now explain the columns of the table.
 * The ``Interval`` column describes the number of checks (overflow and range
   checks) proved by a simple static analysis of bounds for floating-point
   expressions based on type bounds of sub-expressions.
-
-* The ``CodePeer`` column describes the number of checks proved by calling
-  CodePeer when :ref:`Using CodePeer Static Analysis`.
 
 * The ``Provers`` column describes the number of checks proved by automatic or
   manual provers. The column also gives information on the provers used, and

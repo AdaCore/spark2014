@@ -78,7 +78,7 @@ package Configuration is
       --  * single letter variables correspond to single letter switches with
       --    one dash, like -j, -v
       --  * variable UU corresponds to -U
-      --  * other variables are with two dashes, e.g. --codepeer
+      --  * other variables are with two dashes, e.g. --level
       --  * File_List stands for the file arguments (that are not arguments of
       --    some switch)
       --  * Cargs_List is the list of arguments in the --cargs section
@@ -90,7 +90,6 @@ package Configuration is
       CE_Steps              : aliased Integer;
       Check_Counterexamples : aliased GNAT.Strings.String_Access;
       Checks_As_Errors      : aliased Boolean;
-      CodePeer              : aliased GNAT.Strings.String_Access;
       Counterexamples       : aliased GNAT.Strings.String_Access;
       CWE                   : aliased Boolean;
       D                     : aliased Boolean;
@@ -200,7 +199,6 @@ package Configuration is
    --  renamings of the command line switches (for them we still prefer to
    --  use a clearer name, e.g. Continue_On_Error vs K).
 
-   CodePeer       : Boolean;
    Debug          : Boolean;
    Debug_Exec_RAC : Boolean;
    GnateT_Switch  : GNAT.Strings.String_Access;
