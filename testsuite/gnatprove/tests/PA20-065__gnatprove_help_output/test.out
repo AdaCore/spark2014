@@ -11,7 +11,6 @@ All main units in proj are analyzed by default. Switches to change this:
 gnatprove basic switches:
  -aP=p                 Add path p to project path
      --assumptions     Output assumptions information
-     --codepeer=c      Enable or disable CodePeer analysis (c=on,off*)
      --clean           Remove GNATprove intermediate files, and exit
      --cwe             Include CWE ids in message output
  -f                    Force recompilation/analysis of all units

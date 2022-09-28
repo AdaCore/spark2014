@@ -176,15 +176,6 @@ invariant is true but not inductive:
    :language: none
    :lines: 15-19
 
-Note that using |CodePeer| static analysis allows here to fully prove the
-loop invariant, which is possible because |CodePeer| generates its own sound
-approximation of loop invariants (see :ref:`Using CodePeer Static Analysis` for
-details):
-
-.. literalinclude:: /examples/ug__simple_loops_cdp/test.out
-   :language: none
-   :lines: 13
-
 Note also that not using an assertion (:ref:`Pragma Assert`) instead of a loop
 invariant also allows here to fully prove the corresponding property, by
 relying on :ref:`Automatic Unrolling of Simple For-Loops`:
@@ -193,9 +184,9 @@ relying on :ref:`Automatic Unrolling of Simple For-Loops`:
    :language: none
    :lines: 3
 
-Returning to the case where neither automatic loop unrolling nor |CodePeer| are
-used, the reasoning of |GNATprove| for checking property 2 in that case can be
-summarized as follows:
+Returning to the case where automatic loop unrolling is not used, the reasoning
+of |GNATprove| for checking property 2 in that case can be summarized as
+follows:
 
 * Let's take iteration K of the loop, where K > 1 (not the first iteration).
 * Let's assume that the loop invariant held during iteration K-1, so we know

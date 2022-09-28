@@ -86,13 +86,11 @@ A property can also be conceptually provable, but the model used by
 |GNATprove|.) In particular using the following features of the language
 may yield checks that should be true, but cannot be proved:
 
-* Floating point arithmetic (although using |CodePeer| integration may help
-  here)
+* Floating point arithmetic
 * The specific value of dispatching calls when the tag is known
 
-To use |CodePeer| integration, pass the switch ``--codepeer=on`` to
-|GNATprove|. In those cases where no prover, including |CodePeer|, can prove
-the check, the missing information can usually be added using ``pragma Assume``.
+In the cases where no prover can prove the check, the missing information can
+usually be added using ``pragma Assume``.
 
 .. index:: ghost code; investigate unproved checks
 
@@ -156,9 +154,7 @@ line or subprogram.
 A current limitation of automatic provers is that they don't handle
 floating-point arithmetic very precisely, in particular when there are either a
 lot of operations, or some non-linear operations (multiplication, division,
-exponentiation). In that case, it may be profitable to use |CodePeer|
-integration, which is activated with the switch ``--codepeer=on``, as |CodePeer|
-is both fast and precise for proving bounds of floating-point operations.
+exponentiation).
 
 Another common limitation of automatic provers is that they don't handle
 non-linear arithmetic well. For example, they might fail to prove simple checks
@@ -291,10 +287,9 @@ Entries for proof are of the following form::
 * "suppressed" - if present, the message is in fact suppressed by a pragma
   Annotate, and this field contains the justification message.
 * "how_proved" - if present, indicates how the check has been proved (i.e.
-  which prover). Special values are "interval" and "codepeer", which
-  designate the special interval analysis, done in the frontend, and the
-  CodePeer analysis, respectively. Both have their own column in the
-  summary table.
+  which prover). A special value is "interval", which designates the special
+  interval analysis, done in the frontend. It has its own column in the summary
+  table.
 * "check_tree" basically contains a copy of the session
   tree in JSON format. It's a tree structure whose nodes are goals,
   transformations and proof attempts::

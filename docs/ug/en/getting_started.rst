@@ -29,7 +29,6 @@ User's Guide, but is less powerful than |SPARK| Pro. Compared to |SPARK| Pro,
 |SPARK| Discovery:
 
  * only comes with one automatic prover instead of three
- * does not include the static analyzer |CodePeer|
  * does not generate counterexamples for failed proofs
  * has limited proof support for programs using modular arithmetic or
    floating-point arithmetic
@@ -37,7 +36,7 @@ User's Guide, but is less powerful than |SPARK| Pro. Compared to |SPARK| Pro,
 
 |SPARK| Community is a version packaged for free software developers,
 hobbyists, and students, which retains most of the capabilities of |SPARK|
-Pro. |SPARK| Community does not include the static analyzer |CodePeer|.
+Pro.
 
 Note that GNAT Studio is not strictly required for |SPARK| as all the commands can be
 invoked from the command line, or from Eclipse using the GNATbench plug-in, but

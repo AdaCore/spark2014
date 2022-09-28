@@ -121,9 +121,6 @@ package body Configuration is
    procedure Produce_List_Categories_Output;
    --  List information for all messages issued by the tool
 
-   procedure Set_CodePeer_Mode (Input : String);
-   --  Parse the --codepeer option (possibilities are "on" and "off")
-
    function Check_gnateT_Switch (Tree : Project_Tree) return String;
    --  Try to compute the gnateT switch to be used for gnat2why. If there is
    --  a target and runtime set, but we can't compute the switch, a warning
@@ -687,10 +684,6 @@ package body Configuration is
            (Config,
             CL_Switches.Checks_As_Errors'Access,
             Long_Switch => "--checks-as-errors");
-         Define_Switch
-           (Config,
-            CL_Switches.CodePeer'Access,
-            Long_Switch => "--codepeer=");
          Define_Switch
            (Config,
             CL_Switches.CWE'Access,
@@ -1567,7 +1560,6 @@ package body Configuration is
 
          Process_Limit_Switches;
 
-         Set_CodePeer_Mode (CL_Switches.CodePeer.all);
          GnateT_Switch := new String'(Check_gnateT_Switch (Tree));
          Set_Mode;
          Set_Output_Mode;
@@ -1575,7 +1567,6 @@ package body Configuration is
          Set_Report_Mode;
          Set_Proof_Dir;
 
-         CodePeer := CodePeer and then Mode in GPM_Prove | GPM_All;
          Use_Semaphores := (not Debug) and then (not CL_Switches.Dbg_No_Sem);
       end Postprocess;
 
@@ -2476,25 +2467,6 @@ package body Configuration is
          end;
       end loop;
    end Sanitize_File_List;
-
-   -----------------------
-   -- Set_CodePeer_Mode --
-   -----------------------
-
-   procedure Set_CodePeer_Mode (Input : String) is
-   begin
-      if Input = "" then
-         CodePeer := False;
-      elsif Input = "on" then
-         CodePeer := True;
-      elsif Input = "off" then
-         CodePeer := False;
-      else
-         Abort_Msg ("error: wrong argument for --codepeer, " &
-                      "must be one of (on, off)",
-                    With_Help => False);
-      end if;
-   end Set_CodePeer_Mode;
 
    -----------------------
    -- SPARK_Report_File --

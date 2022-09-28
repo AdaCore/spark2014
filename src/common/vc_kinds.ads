@@ -756,7 +756,6 @@ package VC_Kinds is
    GP_Check_Marker          : constant String := "GP_Check:";
    GP_Pretty_Ada_Marker     : constant String := "GP_Pretty_Ada:";
    GP_Shape_Marker          : constant String := "GP_Shape:";
-   GP_Already_Proved_Marker : constant String := "GP_Already_Proved";
    GP_Inline_Marker         : constant String := "GP_Inline";
    GP_Inlined_Marker        : constant String := "GP_Inlined";
 
@@ -802,7 +801,7 @@ package VC_Kinds is
                                              "="          => "=");
    --  The prover stats JSON format is defined in gnat_report.mli
 
-   type Prover_Category is (PC_Trivial, PC_Codepeer, PC_Prover, PC_Flow);
+   type Prover_Category is (PC_Trivial, PC_Prover, PC_Flow);
    --  Type that describes the possible ways a check is proved. PC_Prover
    --  stands for automatic or manual proofs from Why3 and does not specify
    --  which prover proves it.
