@@ -122,10 +122,11 @@ package SPARK_Util.Types is
    function Static_Discrete_Predicate (T : Type_Kind_Id) return List_Id is
      (Einfo.Entities.Static_Discrete_Predicate (Retysp (T)));
 
-   function Has_Static_Scalar_Subtype (T : Type_Kind_Id) return Boolean with
+   function Has_OK_Static_Scalar_Subtype (T : Type_Kind_Id) return Boolean with
      Pre => Has_Scalar_Type (T);
    --  Returns whether type T has a scalar subtype with statically known
-   --  bounds. This includes looking past private types.
+   --  bounds that do not involve constraint errors. This includes looking
+   --  past private types.
 
    -------------------------------
    -- General Queries For Types --

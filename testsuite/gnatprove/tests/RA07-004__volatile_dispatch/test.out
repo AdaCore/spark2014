@@ -1,6 +1,6 @@
 steering.adb:10:29: warning: assuming "Normalize" always returns
 steering.adb:10:29: warning: no returning annotation available for "Normalize"
-steering.adb:11:53: info: division check proved (CodePeer)
+steering.adb:11:53: info: division check proved (CVC5: 1 VC)
 steering.adb:11:53: info: float overflow check proved (Trivial)
 steering.adb:11:53: info: range check proved (Trivial)
 steering.adb:16:83: warning: assuming "Get" always returns

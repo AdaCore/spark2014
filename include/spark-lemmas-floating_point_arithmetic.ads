@@ -39,10 +39,10 @@
 --  these instances instead of instantiating your own version of the generic,
 --  in order to benefit from the proofs already done on the existing instances.
 
-with Ada.Numerics.Big_Numbers.Big_Integers;
-use  Ada.Numerics.Big_Numbers.Big_Integers;
-with Ada.Numerics.Big_Numbers.Big_Reals;
-use  Ada.Numerics.Big_Numbers.Big_Reals;
+with SPARK.Big_Integers;
+use  SPARK.Big_Integers;
+with SPARK.Big_Reals;
+use  SPARK.Big_Reals;
 with SPARK.Lemmas.Float_Base;
 
 generic

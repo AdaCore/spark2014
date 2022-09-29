@@ -47,8 +47,8 @@ with Ada.Containers; use Ada.Containers;
 with SPARK.Containers.Functional.Maps;
 with SPARK.Containers.Functional.Sets;
 with SPARK.Containers.Functional.Vectors;
-with Ada.Numerics.Big_Numbers.Big_Integers;
-use Ada.Numerics.Big_Numbers.Big_Integers;
+with SPARK.Big_Integers;
+use SPARK.Big_Integers;
 private with Ada.Containers.Red_Black_Trees;
 
 generic

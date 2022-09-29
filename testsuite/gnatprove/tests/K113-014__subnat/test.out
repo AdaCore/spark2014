@@ -1,2 +1,2 @@
-subnat.adb:11:14: info: range check proved (CodePeer)
+subnat.adb:11:14: info: range check proved (CVC5: 2 VC)
 subnat.ads:3:20: info: postcondition proved (CVC5: 1 VC)

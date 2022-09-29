@@ -1,3 +1,3 @@
-rec.adb:5:22: info: overflow check proved (CodePeer)
+rec.adb:5:22: info: overflow check proved (CVC5: 2 VC)
 rec.ads:9:19: info: postcondition proved (CVC5: 1 VC)
 rec.ads:9:42: info: overflow check proved (CVC5: 2 VC)

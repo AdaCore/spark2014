@@ -26,8 +26,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Numerics.Big_Numbers.Big_Integers;
-use  Ada.Numerics.Big_Numbers.Big_Integers;
+with SPARK.Big_Integers;
+use  SPARK.Big_Integers;
 
 package SPARK.Big_Intervals with SPARK_Mode is
    --  Intervals of big integers to allow iteration. To be replaced by the

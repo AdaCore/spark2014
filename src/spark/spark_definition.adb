@@ -3488,10 +3488,6 @@ package body SPARK_Definition is
    --------------------
 
    procedure Mark_Binary_Op (N : N_Binary_Op_Id) is
-      --  CodePeer does not understand the raise expressions inside and issues
-      --  false alarms otherwise.
-      pragma Annotate (CodePeer, Skip_Analysis);
-
       E : constant Subprogram_Kind_Id := Entity (N);
 
    begin

@@ -1,4 +1,5 @@
 nested.adb:9:33: info: loop invariant initialization proved (CVC5: 1 VC)
 nested.adb:9:33: info: loop invariant preservation proved (CVC5: 1 VC)
-nested.adb:12:36: info: loop invariant proved (CodePeer)
+nested.adb:12:36: info: loop invariant initialization proved (CVC5: 1 VC)
+nested.adb:12:36: info: loop invariant preservation proved (CVC5: 1 VC)
 nested.ads:4:20: info: postcondition proved (CVC5: 1 VC)

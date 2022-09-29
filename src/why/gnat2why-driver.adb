@@ -1084,7 +1084,7 @@ package body Gnat2Why.Driver is
          --  If spawning fails, for whatever reason, then simply crash
 
          if Pid = Invalid_Pid then
-            raise Program_Error;
+            raise Program_Error with "can't spawn gnatwhy3";
          end if;
 
          Output_File_Map.Insert (Pid, Name);

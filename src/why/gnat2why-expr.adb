@@ -392,6 +392,10 @@ package body Gnat2Why.Expr is
      and Args'Length >=
        Item_Array_Length ((1 => Pattern), Ignore_Init => True),
      Post => Need_Store or Context.Length = Context.Length'Old;
+   pragma Annotate
+     (CodePeer, False_Positive,
+      "validity check",
+      "Need_Store initialized as the first line in the body");
    --  Split a Why expression into parts that will be used to call a
    --  subprogram. The parts are stored in Args. Pattern is an item
    --  representing the expected form of the formal parameter. Its variable
@@ -413,6 +417,11 @@ package body Gnat2Why.Expr is
      and Args'Length >=
        Item_Array_Length ((1 => Pattern), Ignore_Init => True),
      Post => Need_Store or Context.Length = Context.Length'Old;
+   pragma Annotate
+     (CodePeer, False_Positive,
+      "validity check",
+      "Need_Store initialized as the first line in the body");
+
    --  Try to reuse parts of the references of the actual Var for the
    --  formal. If the types do not match, fall back to Get_Item_From_Expr. If
    --  Need_Store is True, the Pattern is updated to reference the parts reused
@@ -2407,7 +2416,7 @@ package body Gnat2Why.Expr is
 
       elsif Is_OK_Static_Range (Rng)
         and then Present (Base)
-        and then Has_Static_Scalar_Subtype (Base)
+        and then Has_OK_Static_Scalar_Subtype (Base)
         and then
           ((if Is_Floating_Point_Type (Base) then
               Expr_Value_R (High) < Expr_Value_R (Low)
@@ -4757,7 +4766,7 @@ package body Gnat2Why.Expr is
 
          if T /= True_Pred  and then
            not (Has_Discrete_Type (Ty_Ext)
-                and then Has_Static_Scalar_Subtype (Ty_Ext)
+                and then Has_OK_Static_Scalar_Subtype (Ty_Ext)
                 and then UI_Le (Expr_Value (Type_Low_Bound (Ty_Ext)),
                                 Expr_Value (Type_High_Bound (Ty_Ext))))
          then
@@ -16940,7 +16949,7 @@ package body Gnat2Why.Expr is
 
          if Domain = EW_Prog
            and then (not Is_OK_Static_Expression (Choice)
-                     or else not Has_Static_Scalar_Subtype (Choice_Type))
+                     or else not Has_OK_Static_Scalar_Subtype (Choice_Type))
          then
             pragma Assert (Present (Choice_Type));
             Prepend

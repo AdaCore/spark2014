@@ -4267,10 +4267,6 @@ package body Why.Gen.Expr is
       Reason : VC_Kind)
       return Symbol
    is
-      --  CodePeer does not understand the result of Get_Name_String and issues
-      --  false alarms otherwise.
-      pragma Annotate (CodePeer, Skip_Analysis);
-
       Prefix  : constant String := "comment:";
       Str_Loc : constant String := Img (Loc);
 
