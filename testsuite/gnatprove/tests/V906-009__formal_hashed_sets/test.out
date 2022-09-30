@@ -23,14 +23,10 @@ spark-containers-formal-hashed_sets.ads:1226:20: info: precondition proved (CVC5
 spark-containers-formal-hashed_sets.ads:1247:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:24
 spark-containers-formal-hashed_sets.ads:1247:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:8
 spark-containers-formal-hashed_sets.ads:1454:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set.ads:33
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_set.ads:24
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_set.ads:8
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_set.ads:24
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_set.ads:8
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_set.ads:24
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_set.ads:8
-spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:104, in instantiation at test_set.ads:24
-spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:104, in instantiation at test_set.ads:8
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_set.ads:24
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_set.ads:8
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_set.ads:24
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_set.ads:8
 spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:104, in instantiation at test_set.ads:24
 spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:104, in instantiation at test_set.ads:8
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:116, in instantiation at test_set.ads:24
@@ -92,15 +88,15 @@ test_set.adb:52:39: info: precondition proved (CVC5: 1 VC)
 test_set.adb:53:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:54:10: info: precondition proved (CVC5: 1 VC)
 test_set.adb:59:10: medium: precondition might fail
-test_set.adb:60:25: info: assertion proved (Z3: 1 VC)
+test_set.adb:60:25: medium: assertion might fail
 test_set.adb:64:23: info: precondition proved (CVC5: 1 VC)
 test_set.adb:66:10: info: precondition proved (CVC5: 1 VC)
 test_set.adb:67:25: medium: assertion might fail
 test_set.adb:67:28: info: precondition proved (CVC5: 1 VC)
 test_set.adb:67:40: info: precondition proved (CVC5: 1 VC)
 test_set.adb:68:10: info: precondition proved (CVC5: 1 VC)
-test_set.adb:72:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:73:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:72:07: info: precondition proved (Z3: 1 VC)
+test_set.adb:73:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:76:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:78:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:79:07: medium: assertion might fail
@@ -116,7 +112,7 @@ test_set.adb:91:12: info: precondition proved (CVC5: 1 VC)
 test_set.adb:93:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:94:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:95:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:96:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:96:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:97:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:99:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:100:07: info: precondition proved (CVC5: 1 VC)
@@ -136,7 +132,7 @@ test_set.adb:123:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:124:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:126:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:127:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:128:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:128:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:131:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:133:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:134:07: medium: assertion might fail
@@ -152,7 +148,7 @@ test_set.adb:145:12: info: precondition proved (CVC5: 1 VC)
 test_set.adb:147:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:148:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:149:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:150:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:150:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:151:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:153:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:154:07: info: precondition proved (CVC5: 1 VC)
@@ -187,10 +183,10 @@ test_set.adb:202:12: info: precondition proved (CVC5: 1 VC)
 test_set.adb:204:12: info: precondition proved (CVC5: 1 VC)
 test_set.adb:204:12: medium: discriminant check might fail
 test_set.adb:205:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:206:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:206:22: info: assertion proved (altergo: 1 VC)
 test_set.adb:206:22: info: precondition proved (CVC5: 1 VC)
 test_set.adb:206:39: info: precondition proved (CVC5: 1 VC)
-test_set.adb:207:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:207:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:207:22: info: precondition proved (CVC5: 1 VC)
 test_set.adb:207:39: info: precondition proved (CVC5: 1 VC)
 test_set.adb:208:22: info: assertion proved (CVC5: 1 VC)
@@ -200,9 +196,9 @@ test_set.adb:211:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:212:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:216:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:217:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:221:22: info: assertion proved (CVC5: 2 VC)
-test_set.adb:222:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:223:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:221:22: info: assertion proved (CVC5: 1 VC; Z3: 1 VC)
+test_set.adb:222:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:223:22: info: assertion proved (altergo: 1 VC)
 test_set.adb:224:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:227:19: info: range check proved (CVC5: 2 VC)
 test_set.adb:227:22: info: range check proved (CVC5: 1 VC)
@@ -266,10 +262,10 @@ test_set.adb:340:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:340:22: info: precondition proved (CVC5: 1 VC)
 test_set.adb:340:44: info: precondition proved (CVC5: 1 VC)
 test_set.adb:346:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:347:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:347:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:350:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:350:18: info: precondition proved (CVC5: 1 VC)
-test_set.adb:351:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:351:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:355:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:356:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:358:07: info: precondition proved (CVC5: 1 VC)
@@ -278,16 +274,16 @@ test_set.adb:359:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:365:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:369:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:371:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:372:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:372:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:373:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:376:10: info: initialization of "S" proved
 test_set.adb:376:19: info: range check proved (CVC5: 2 VC)
 test_set.adb:376:23: info: range check proved (CVC5: 1 VC)
 test_set.adb:378:10: info: precondition proved (CVC5: 1 VC)
-test_set.adb:379:25: info: assertion proved (CVC5: 1 VC)
+test_set.adb:379:25: info: assertion proved (altergo: 1 VC)
 test_set.adb:380:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:382:10: info: precondition proved (CVC5: 1 VC)
-test_set.adb:383:25: info: assertion proved (CVC5: 1 VC)
+test_set.adb:383:25: info: assertion proved (altergo: 1 VC)
 test_set.adb:384:25: info: assertion proved (CVC5: 1 VC)
 test_set.adb:389:07: medium: assertion might fail
 test_set.ads:19:17: info: postcondition proved (CVC5: 2 VC)

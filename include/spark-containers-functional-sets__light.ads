@@ -94,8 +94,8 @@ is
      Global => null,
      Annotate => (GNATprove, Automatic_Instantiation),
      Pre  => Enable_Handling_Of_Equivalence
-       and then (for some E of Container => Equivalent_Elements (E, Item)),
-     Post => Contains (Container, Item);
+       and then not Contains (Container, Item),
+     Post => (for all E of Container => not Equivalent_Elements (Item, E));
 
    function Choose (Container : Set) return Element_Type with
    --  Return an arbitrary element in Container

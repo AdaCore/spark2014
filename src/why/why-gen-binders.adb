@@ -1187,13 +1187,12 @@ package body Why.Gen.Binders is
       return W_Declaration_Id
    is
       Ax_Body : constant W_Pred_Id :=
-                  (if Pre = Why_Empty or else Is_True_Boolean (+Pre) then
-                     Def
-                   else
-                     New_Connection
-                       (Op    => EW_Imply,
-                        Left  => +Pre,
-                        Right => +Def));
+        (if Pre = Why_Empty or else Is_True_Boolean (+Pre)
+         then Def
+         else New_Connection
+           (Op    => EW_Imply,
+            Left  => +Pre,
+            Right => +Def));
    begin
       return New_Axiom
         (Ada_Node => Ada_Node,

@@ -20,18 +20,14 @@ spark-containers-formal-hashed_maps.ads:814:20: info: precondition proved (CVC5:
 spark-containers-formal-hashed_maps.ads:814:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:8
 spark-containers-formal-hashed_maps.ads:829:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:25
 spark-containers-formal-hashed_maps.ads:829:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:8
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_map.ads:25
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_map.ads:8
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_map.ads:25
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_map.ads:8
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_map.ads:25
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_map.ads:8
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_map.ads:25
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_map.ads:8
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_map.ads:25
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_map.ads:8
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_map.ads:25
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_map.ads:8
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_map.ads:25
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_map.ads:8
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_map.ads:25
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_map.ads:8
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_map.ads:25
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_map.ads:8
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_map.ads:25
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_map.ads:8
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_map.ads:25
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_map.ads:8
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_map.ads:25
@@ -69,14 +65,14 @@ test_map.adb:21:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:22:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:25:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:26:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:28:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:28:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:29:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:30:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:31:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:33:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:35:07: info: precondition proved (Z3: 1 VC)
-test_map.adb:36:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:39:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:36:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:39:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:41:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:42:07: medium: assertion might fail
 test_map.adb:45:14: warning: subprogram "Test_Map_Rec" has no effect
@@ -101,13 +97,13 @@ test_map.adb:63:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:64:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:67:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:68:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:70:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:70:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:71:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:72:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:72:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:73:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:75:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:77:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:78:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:77:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:78:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:81:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:83:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:84:07: medium: assertion might fail
@@ -131,9 +127,9 @@ test_map.adb:104:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:105:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:108:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:109:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:111:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:111:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:112:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:113:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:113:22: medium: assertion might fail
 test_map.adb:114:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:116:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:118:07: medium: precondition might fail
@@ -156,20 +152,20 @@ test_map.adb:151:07: info: precondition proved (CVC5: 2 VC)
 test_map.adb:153:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:154:07: info: precondition proved (CVC5: 2 VC)
 test_map.adb:155:07: info: precondition proved (CVC5: 2 VC)
-test_map.adb:157:22: info: assertion proved (altergo: 1 VC)
-test_map.adb:159:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:157:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:159:22: info: assertion proved (altergo: 1 VC)
 test_map.adb:159:22: info: precondition proved (CVC5: 2 VC)
 test_map.adb:159:22: info: precondition proved (Trivial: 1 VC)
 test_map.adb:161:07: info: precondition proved (CVC5: 2 VC)
-test_map.adb:162:07: info: precondition proved (CVC5: 2 VC)
+test_map.adb:162:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_map.adb:164:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:166:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_map.adb:167:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_map.adb:169:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:169:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:174:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:175:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:179:07: info: precondition proved (CVC5: 2 VC)
-test_map.adb:180:07: info: precondition proved (CVC5: 2 VC)
+test_map.adb:179:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_map.adb:180:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_map.adb:182:12: info: precondition proved (CVC5: 1 VC)
 test_map.adb:182:12: medium: discriminant check might fail
 test_map.adb:183:22: info: assertion proved (CVC5: 1 VC)
@@ -177,16 +173,16 @@ test_map.adb:184:12: info: precondition proved (CVC5: 1 VC)
 test_map.adb:184:12: medium: discriminant check might fail
 test_map.adb:185:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:186:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:191:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:192:22: info: assertion proved (altergo: 1 VC)
-test_map.adb:192:22: info: precondition proved (altergo: 1 VC)
+test_map.adb:191:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:192:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:192:22: info: precondition proved (Z3: 1 VC)
 test_map.adb:197:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:198:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:199:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:204:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:204:22: info: precondition proved (CVC5: 1 VC)
 test_map.adb:208:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_map.adb:209:07: info: precondition proved (CVC5: 2 VC)
+test_map.adb:209:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_map.adb:210:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:215:10: info: precondition proved (CVC5: 1 VC)
 test_map.adb:216:25: info: assertion proved (CVC5: 1 VC)
@@ -198,15 +194,15 @@ test_map.adb:228:12: info: precondition proved (CVC5: 1 VC)
 test_map.adb:229:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:230:12: info: precondition proved (CVC5: 1 VC)
 test_map.adb:231:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:236:22: info: assertion proved (altergo: 1 VC)
-test_map.adb:236:22: info: precondition proved (altergo: 1 VC)
-test_map.adb:237:22: info: assertion proved (altergo: 1 VC)
-test_map.adb:237:22: info: precondition proved (altergo: 1 VC)
-test_map.adb:239:07: info: precondition proved (altergo: 1 VC)
+test_map.adb:236:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:236:22: info: precondition proved (Z3: 1 VC)
+test_map.adb:237:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:237:22: info: precondition proved (Z3: 1 VC)
+test_map.adb:239:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:240:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:240:22: info: precondition proved (Z3: 1 VC)
 test_map.adb:241:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:241:22: info: precondition proved (altergo: 1 VC)
+test_map.adb:241:22: info: precondition proved (Z3: 1 VC)
 test_map.adb:246:30: info: assertion proved (CVC5: 1 VC)
 test_map.adb:247:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:249:10: info: precondition proved (CVC5: 4 VC)

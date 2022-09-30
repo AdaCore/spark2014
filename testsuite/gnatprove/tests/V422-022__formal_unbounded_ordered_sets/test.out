@@ -41,14 +41,10 @@ spark-containers-formal-unbounded_ordered_sets.ads:1436:40: info: precondition p
 spark-containers-formal-unbounded_ordered_sets.ads:1704:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set.ads:30
 spark-containers-formal-unbounded_ordered_sets.ads:1725:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:30
 spark-containers-formal-unbounded_ordered_sets.ads:1743:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:30
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:234, in instantiation at test_set.ads:19
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:234, in instantiation at test_set.ads:6
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:234, in instantiation at test_set.ads:19
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:234, in instantiation at test_set.ads:6
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:234, in instantiation at test_set.ads:19
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:234, in instantiation at test_set.ads:6
-spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:92, in instantiation at test_set.ads:19
-spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:92, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:234, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:234, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:234, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:234, in instantiation at test_set.ads:6
 spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:92, in instantiation at test_set.ads:19
 spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:92, in instantiation at test_set.ads:6
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:19
@@ -77,7 +73,7 @@ test_set.adb:9:07: info: initialization of "B" proved
 test_set.adb:11:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:13:12: info: precondition proved (CVC5: 1 VC)
 test_set.adb:15:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:16:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_set.adb:16:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:17:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:18:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:20:07: info: precondition proved (CVC5: 1 VC)
@@ -196,7 +192,7 @@ test_set.adb:224:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:226:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:228:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:230:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:235:22: medium: assertion might fail
+test_set.adb:235:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:239:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:240:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:244:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
@@ -216,7 +212,7 @@ test_set.adb:268:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:274:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:275:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:276:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:278:07: info: precondition proved (Z3: 2 VC)
+test_set.adb:278:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:279:07: info: precondition proved (Z3: 2 VC)
 test_set.adb:280:07: info: precondition proved (Z3: 2 VC)
 test_set.adb:282:07: info: precondition proved (Z3: 2 VC)
@@ -229,7 +225,7 @@ test_set.adb:296:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:300:22: medium: assertion might fail
 test_set.adb:305:07: info: precondition proved (Z3: 2 VC)
 test_set.adb:306:07: medium: precondition might fail, cannot prove not Contains (Container, New_Item)
-test_set.adb:307:07: medium: precondition might fail, cannot prove not Contains (Container, New_Item)
+test_set.adb:307:07: info: precondition proved (Z3: 2 VC)
 test_set.adb:310:22: medium: assertion might fail
 test_set.adb:313:22: medium: assertion might fail
 test_set.adb:313:26: info: precondition proved (Z3: 1 VC)
