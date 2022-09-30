@@ -967,11 +967,12 @@ package body Gnat2Why.Error_Messages is
                then
                   raise;
                else
-                  Verdict :=
-                    (Verdict_Category => Incomplete,
-                     Verdict_Reason   =>
-                       To_Unbounded_String
-                         (Exception_Name (E) & ": " & Exception_Message (E)));
+                  Small_Step_Res :=
+                    (Res_Kind   => Res_Incomplete,
+                     Res_Reason => To_Unbounded_String
+                       (Exception_Name (E) & ": " & Exception_Message (E)));
+                  Verdict := Decide_Cntexmp_Verdict
+                    (Small_Step_Res, Rec.Giant_Step_Res, Rec.Id, VC);
                end if;
          end Check_Counterexample;
 
@@ -1076,16 +1077,18 @@ package body Gnat2Why.Error_Messages is
          --  context, (negation of the Can_Relocate flag) this can happen for
          --  the pre (the node will be in the callee context instead of the
          --  caller context) and LSP VCs as well as predicate checks.
-         VC_Sloc         : constant Node_Id := VC.Node;
-         Small_Step_Res  : CE_RAC.Result;
-         Verdict         : Cntexmp_Verdict;
-         Cntexmp         : constant Cntexample_File_Maps.Map :=
-                             From_JSON (Rec.Cntexmp);
-         Check_Info      : Check_Info_Type := VC.Check_Info;
-         Fuel            : constant Fuel_Access := new Fuel_Type'(250_000);
-         Cntexmp_Present : constant Boolean := not Cntexmp.Is_Empty;
-         Fuzzing_Used    : Boolean := False;
-         Print_Fuzzing   : Boolean := False;
+         VC_Sloc            : constant Node_Id := VC.Node;
+         Small_Step_Res     : CE_RAC.Result;
+         Verdict            : Cntexmp_Verdict;
+         Small_Step_Res_Tmp : CE_RAC.Result;
+         Verdict_Tmp        : Cntexmp_Verdict;
+         Cntexmp            : constant Cntexample_File_Maps.Map :=
+           From_JSON (Rec.Cntexmp);
+         Check_Info         : Check_Info_Type := VC.Check_Info;
+         Fuel               : constant Fuel_Access := new Fuel_Type'(250_000);
+         Cntexmp_Present    : constant Boolean := not Cntexmp.Is_Empty;
+         Fuzzing_Used       : Boolean := False;
+         Print_Fuzzing      : Boolean := False;
 
       --  Start of processing for Handle_Result
 
@@ -1138,12 +1141,20 @@ package body Gnat2Why.Error_Messages is
                --      different execution path in which the RAC won't get
                --      stuck.
 
+               --  Use a temporary copy of the small step RAC result and the
+               --  verdict and operate on it for fuzzing.
+               --  Update the official result and verdict only if fuzzing
+               --  produces a good CE.
+               Small_Step_Res_Tmp := Small_Step_Res;
+               Verdict_Tmp := Verdict;
+
                while Fuel.all > 0
                  and then
-                   ((Small_Step_Res.Res_Kind in Res_Failure
-                     and then Verdict.Verdict_Category in Bad_Counterexample)
+                   ((Small_Step_Res_Tmp.Res_Kind in Res_Failure
+                     and then
+                     Verdict_Tmp.Verdict_Category in Bad_Counterexample)
                     or else
-                    Small_Step_Res.Res_Kind in
+                    Small_Step_Res_Tmp.Res_Kind in
                       Res_Not_Executed | Res_Normal | Res_Stuck)
                loop
                   Check_Fuel_Decrease (Fuel, 100);
@@ -1154,10 +1165,20 @@ package body Gnat2Why.Error_Messages is
                      VC             => VC,
                      Cntexmp        => Cntexmp,
                      Fuel           => Fuel,
-                     Small_Step_Res => Small_Step_Res,
-                     Verdict        => Verdict,
+                     Small_Step_Res => Small_Step_Res_Tmp,
+                     Verdict        => Verdict_Tmp,
                      Use_Fuzzing    => True);
                end loop;
+
+               --  Check if the fuzzing produced a good CE, i.e. not bad nor
+               --  incomplete.
+               if Verdict_Tmp.Verdict_Category not in
+                 Bad_Counterexample | Incomplete
+               then
+                  Small_Step_Res := Small_Step_Res_Tmp;
+                  Verdict := Verdict_Tmp;
+               end if;
+
             end if;
 
          else
