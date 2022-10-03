@@ -2,11 +2,6 @@ main bin/ dir
 gnatprove
 libexec/spark/bin/ dir
 alt-ergo
-codepeer-gcc
-codepeer-gnatls
-codepeer-gprbuild
-codepeer-gprls
-codepeer_be
 colibri
 cvc4
 cvc5
@@ -24,8 +19,6 @@ gprls
 gprname
 gprremote
 gprslave
-scil_reader
-spark_codepeer_wrapper
 spark_memcached_wrapper
 spark_report
 spark_semaphore_wrapper
@@ -39,9 +32,6 @@ why3session.cmxs
 z3
 libexec/spark/share dir
 alt-ergo
-codepeer
-doc
-gnatcheck
 gpr
 gprconfig
 info
