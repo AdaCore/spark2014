@@ -7,13 +7,13 @@ conv.adb:10:60: info: type is suitable for unchecked conversion (Trivial)
 conv.adb:13:29: info: range check proved (CVC5: 1 VC)
 conv.adb:13:77: info: overflow check proved (CVC5: 2 VC)
 conv.adb:13:77: info: range check proved (CVC5: 1 VC)
-conv.adb:16:32: info: range check proved (Z3: 2 VC)
-conv.adb:16:80: info: range check proved (Z3: 2 VC)
+conv.adb:16:32: info: range check proved (altergo: 2 VC)
+conv.adb:16:80: info: range check proved (altergo: 2 VC)
 conv.adb:18:04: warning: analyzing unreferenced procedure "To_Uns_Equiv"
 conv.adb:18:14: high: all paths in "To_Uns_Equiv" raise exceptions or do not terminate normally
-conv.adb:22:22: info: assertion proved (colibri: 1 VC)
+conv.adb:22:22: info: assertion proved (altergo: 1 VC)
 conv.adb:23:07: medium: assertion might fail
 conv.adb:26:04: warning: analyzing unreferenced procedure "To_Int_Equiv"
 conv.adb:26:14: high: all paths in "To_Int_Equiv" raise exceptions or do not terminate normally
-conv.adb:30:22: info: assertion proved (Z3: 1 VC)
+conv.adb:30:22: info: assertion proved (altergo: 1 VC)
 conv.adb:31:07: medium: assertion might fail

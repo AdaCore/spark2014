@@ -19,7 +19,7 @@ traversal_funcs.adb:58:34: info: pointer dereference check proved (Z3: 1 VC)
 traversal_funcs.adb:60:10: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 1 VC)
 traversal_funcs.adb:62:71: info: overflow check proved (CVC5: 2 VC)
 traversal_funcs.adb:65:11: info: pointer dereference check proved (CVC5: 1 VC)
-traversal_funcs.adb:72:14: medium: postcondition might fail
+traversal_funcs.adb:72:14: info: postcondition proved (Z3: 1 VC)
 traversal_funcs.adb:74:26: info: precondition proved (CVC5: 1 VC)
 traversal_funcs.adb:74:33: info: in reconstructed value at the end of the borrow at traversal_funcs.adb:74
 traversal_funcs.adb:74:33: info: pointer dereference check proved (CVC5: 1 VC)

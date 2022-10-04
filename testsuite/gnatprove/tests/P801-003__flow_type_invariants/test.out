@@ -30,7 +30,7 @@ test_06.ads:13:27: medium: invariant check might fail
 gnatprove: error during flow analysis and proof
 
 === test_07.ads ===
-test_07.ads:9:09: medium: invariant check might fail on default value
+test_07.ads:9:09: info: invariant check proved on default value (CVC5: 1 VC)
 
 === test_08.adb ===
 test_08.ads:11:09: info: invariant check proved on default value (CVC5: 1 VC)

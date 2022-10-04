@@ -372,7 +372,7 @@ libst-reals-errors.adb:399:22: info: precondition proved (altergo: 1 VC)
 libst-reals-errors.adb:399:22: info: predicate check proved (Trivial: 1 VC)
 libst-reals-errors.adb:402:22: info: assertion proved (altergo: 1 VC)
 libst-reals-errors.adb:402:22: info: predicate check proved (Trivial: 1 VC)
-libst-reals-errors.adb:407:10: info: assertion proved (Z3: 1 VC)
+libst-reals-errors.adb:407:10: medium: assertion might fail [possible fix: precondition of subprogram at libst-reals-errors.ads:90 should mention Values]
 libst-reals-errors.adb:407:35: info: precondition proved (CVC5: 1 VC)
 libst-reals-errors.adb:408:38: info: predicate check proved (Trivial: 1 VC)
 libst-reals-errors.adb:408:49: info: predicate check proved (Trivial: 1 VC)

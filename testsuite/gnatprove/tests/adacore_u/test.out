@@ -560,11 +560,11 @@ resources.adb:6:24: info: unrolling loop
 resources.ads:9:13: info: implicit function contract might not be available on recursive calls
 resources.ads:10:08: medium: "Sum" is recursive, terminating annotation could be incorrect
 resources.ads:10:32: info: index check proved (CVC5: 2 VC)
-resources.ads:10:36: medium: overflow check might fail, cannot prove upper bound for D(To) + Sum(D,To-1) (e.g. when To = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (D(To) <= Integer'Last - Sum(D,To-1)) to subprogram at line 9]
+resources.ads:10:36: info: overflow check proved (CVC5: 2 VC)
 resources.ads:10:46: info: range check proved (CVC5: 2 VC)
 resources.ads:14:22: info: initialization of "D" proved
-resources.ads:15:14: medium: postcondition might fail (e.g. when D(1) = 1 and D(2) = 2 and D(3) = 3 and D(4) = 4 and D(5) = 5)
-resources.ads:19:14: medium: postcondition might fail
+resources.ads:15:14: info: postcondition proved (CVC5: 1 VC)
+resources.ads:19:14: info: postcondition proved (CVC5: 1 VC)
 spark-big_intervals.ads:48:07: info: predicate check proved (Trivial: 1 VC)
 spark-big_intervals.ads:48:11: info: predicate check proved (Trivial: 1 VC)
 spark-big_intervals.ads:51:17: info: predicate check proved (Trivial: 1 VC)
