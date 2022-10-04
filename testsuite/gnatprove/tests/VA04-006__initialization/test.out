@@ -1,2 +1,1 @@
 mman.ads:5:03: info: flow dependencies proved
-mman.ads:11:04: warning: initialization of "Shm_Revocation_Ledger" has no effect
