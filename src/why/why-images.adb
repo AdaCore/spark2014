@@ -495,6 +495,17 @@ package body Why.Images is
       end case;
    end P;
 
+   procedure P (O : Output_Id; Value : EW_Axiom_Dep_Kind) is
+   begin
+      case Value is
+         when EW_Axdep_Func =>
+            P (O, "function");
+
+         when EW_Axdep_Pred =>
+            P (O, "predicate");
+      end case;
+   end P;
+
    procedure P (O : Output_Id; Node : Node_Id) is
    begin
       P (O, Img (Node));

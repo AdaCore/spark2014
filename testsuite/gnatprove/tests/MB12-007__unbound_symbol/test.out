@@ -16,7 +16,7 @@ pupils.ads:115:38: warning: unused variable "I" in conjunct
 pupils.ads:116:38: info: index check proved (Z3: 2 VC)
 pupils.ads:116:55: warning: consider extracting conjunct from quantified expression
 pupils.ads:116:55: warning: unused variable "I" in conjunct
-pupils.ads:122:68: info: index check proved (CVC5: 1 VC; Z3: 1 VC)
+pupils.ads:122:68: info: index check proved (CVC5: 2 VC)
 pupils.ads:125:28: info: index check proved (CVC5: 2 VC)
 pupils.ads:125:53: info: index check proved (CVC5: 2 VC)
 pupils.ads:126:28: info: index check proved (CVC5: 2 VC)

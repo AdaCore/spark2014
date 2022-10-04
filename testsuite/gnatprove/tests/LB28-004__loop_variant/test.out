@@ -76,7 +76,7 @@ p.adb:96:28: info: loop variant proved (CVC5: 1 VC)
 p.adb:97:30: info: loop invariant initialization proved (CVC5: 1 VC)
 p.adb:97:30: info: loop invariant preservation proved (CVC5: 1 VC)
 p.adb:97:36: info: overflow check proved (CVC5: 4 VC)
-p.adb:98:30: info: loop invariant initialization proved (Z3: 1 VC)
+p.adb:98:30: info: loop invariant initialization proved (CVC5: 1 VC)
 p.adb:98:30: info: loop invariant preservation proved (Z3: 1 VC)
 p.adb:98:50: info: overflow check proved (CVC5: 4 VC)
 p.adb:98:57: medium: "Tab" might not be initialized

@@ -27,6 +27,6 @@ spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 
 test.adb:9:04: info: initialization of "S" proved
 test.adb:9:13: info: range check proved (CVC5: 1 VC)
 test.adb:12:04: info: precondition proved (CVC5: 2 VC)
-test.adb:13:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test.adb:14:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test.adb:16:19: medium: assertion might fail
+test.adb:13:04: info: precondition proved (CVC5: 2 VC)
+test.adb:14:04: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test.adb:16:19: info: assertion proved (CVC5: 1 VC)

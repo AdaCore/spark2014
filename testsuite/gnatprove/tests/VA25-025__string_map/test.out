@@ -41,7 +41,7 @@ test.adb:40:22: info: assertion proved (CVC5: 1 VC)
 test.adb:40:22: info: precondition proved (Trivial: 1 VC)
 test.adb:40:47: info: precondition proved (CVC5: 1 VC)
 test.adb:41:19: info: precondition proved (CVC5: 1 VC)
-test.adb:42:19: medium: precondition might fail
+test.adb:42:19: info: precondition proved (Z3: 1 VC)
 test.adb:43:19: medium: precondition might fail
 test.adb:44:19: medium: precondition might fail
 test.adb:45:22: info: assertion proved (Z3: 1 VC)

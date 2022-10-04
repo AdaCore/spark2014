@@ -149,8 +149,8 @@ frame_condition.adb:205:36: info: loop invariant preservation proved (CVC5: 2 VC
 frame_condition.adb:205:36: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:207:17: info: loop invariant initialization proved (CVC5: 2 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:207:17: info: loop invariant initialization proved (CVC5: 2 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:207:17: info: loop invariant preservation proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:207:17: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at frame_condition.adb:233
+frame_condition.adb:207:17: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:207:47: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:207:47: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:208:51: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:233

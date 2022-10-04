@@ -10,7 +10,7 @@ spark-containers-formal-hashed_maps.ads:407:08: info: dynamic accessibility chec
 spark-containers-formal-hashed_maps.ads:407:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:8
 spark-containers-formal-hashed_maps.ads:426:39: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map.ads:25
 spark-containers-formal-hashed_maps.ads:426:39: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map.ads:8
-spark-containers-formal-hashed_maps.ads:464:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:25
+spark-containers-formal-hashed_maps.ads:464:36: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map.ads:25
 spark-containers-formal-hashed_maps.ads:464:36: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map.ads:8
 spark-containers-formal-hashed_maps.ads:777:39: info: precondition proved (altergo: 1 VC), in instantiation at test_map.ads:25
 spark-containers-formal-hashed_maps.ads:777:39: info: precondition proved (altergo: 1 VC), in instantiation at test_map.ads:8
@@ -54,7 +54,6 @@ test_map.adb:4:14: warning: subprogram "Test_Map_Pos" has no effect
 test_map.adb:6:07: info: initialization of "L" proved
 test_map.adb:6:10: info: initialization of "K" proved
 test_map.adb:6:19: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
-test_map.adb:6:19: info: range check proved (altergo: 2 VC)
 test_map.adb:6:23: info: range check proved (CVC5: 1 VC)
 test_map.adb:6:23: info: range check proved (altergo: 1 VC)
 test_map.adb:7:07: info: initialization of "C" proved
@@ -63,7 +62,7 @@ test_map.adb:11:22: info: assertion proved (altergo: 1 VC)
 test_map.adb:13:12: info: precondition proved (altergo: 1 VC)
 test_map.adb:15:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_map.adb:16:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
-test_map.adb:17:07: info: precondition proved (altergo: 1 VC)
+test_map.adb:17:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:18:22: info: assertion proved (altergo: 1 VC)
 test_map.adb:19:22: info: assertion proved (altergo: 1 VC)
 test_map.adb:19:22: info: precondition proved (altergo: 1 VC)
@@ -71,7 +70,7 @@ test_map.adb:21:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:22:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:25:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:26:07: info: precondition proved (altergo: 1 VC)
-test_map.adb:28:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:28:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:29:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:30:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:31:07: info: precondition proved (CVC5: 1 VC)
@@ -91,21 +90,21 @@ test_map.adb:48:07: info: initialization of "C" proved
 test_map.adb:49:07: info: initialization of "B" proved
 test_map.adb:51:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:53:12: info: precondition proved (altergo: 1 VC)
-test_map.adb:55:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_map.adb:55:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_map.adb:56:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_map.adb:57:22: info: assertion proved (altergo: 1 VC)
 test_map.adb:57:22: info: precondition proved (altergo: 1 VC)
 test_map.adb:58:07: info: precondition proved (altergo: 1 VC)
-test_map.adb:59:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:60:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:59:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:60:22: info: assertion proved (altergo: 1 VC)
 test_map.adb:61:22: info: assertion proved (altergo: 1 VC)
 test_map.adb:61:22: info: precondition proved (altergo: 1 VC)
-test_map.adb:63:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:63:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:64:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:67:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:68:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:70:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:71:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:71:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:72:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:73:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:75:07: info: precondition proved (altergo: 1 VC)
@@ -118,19 +117,18 @@ test_map.adb:87:14: warning: subprogram "Test_Map_Rec_2" has no effect
 test_map.adb:89:07: info: initialization of "L" proved
 test_map.adb:89:10: info: initialization of "K" proved
 test_map.adb:89:19: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
-test_map.adb:89:19: info: range check proved (altergo: 2 VC)
 test_map.adb:89:23: info: range check proved (CVC5: 1 VC)
 test_map.adb:90:07: info: initialization of "C" proved
 test_map.adb:91:07: info: initialization of "B" proved
 test_map.adb:93:22: info: assertion proved (altergo: 1 VC)
 test_map.adb:95:12: info: precondition proved (altergo: 1 VC)
-test_map.adb:97:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
-test_map.adb:98:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_map.adb:97:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_map.adb:98:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_map.adb:99:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:100:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:101:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:102:22: info: assertion proved (altergo: 1 VC)
-test_map.adb:102:22: info: precondition proved (CVC5: 1 VC)
+test_map.adb:102:22: info: precondition proved (altergo: 1 VC)
 test_map.adb:104:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:105:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:108:07: info: precondition proved (altergo: 1 VC)
@@ -138,7 +136,7 @@ test_map.adb:109:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:111:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:112:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:113:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:114:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:114:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:116:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:118:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:119:22: info: assertion proved (Z3: 1 VC)

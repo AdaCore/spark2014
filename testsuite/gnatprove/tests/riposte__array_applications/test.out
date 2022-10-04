@@ -6,9 +6,9 @@ array_applications.adb:26:13: info: loop invariant initialization proved (alterg
 array_applications.adb:26:13: info: loop invariant preservation proved (CVC5: 1 VC; altergo: 2 VC)
 array_applications.adb:26:22: info: range check proved (altergo: 4 VC)
 array_applications.adb:27:18: info: index check proved (altergo: 4 VC)
-array_applications.adb:27:27: info: index check proved (altergo: 4 VC)
+array_applications.adb:27:27: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
 array_applications.adb:27:32: info: overflow check proved (Z3: 1 VC; altergo: 3 VC)
-array_applications.adb:27:38: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
+array_applications.adb:27:38: info: index check proved (altergo: 4 VC)
 array_applications.adb:34:09: info: data dependencies proved
 array_applications.adb:35:09: info: flow dependencies proved
 array_applications.adb:36:20: info: postcondition proved (altergo: 1 VC)
@@ -16,10 +16,10 @@ array_applications.adb:43:27: info: overflow check proved (Z3: 1 VC; altergo: 3 
 array_applications.adb:46:13: info: loop invariant initialization proved (altergo: 3 VC)
 array_applications.adb:46:13: info: loop invariant preservation proved (CVC5: 1 VC; altergo: 2 VC)
 array_applications.adb:46:22: info: range check proved (altergo: 4 VC)
-array_applications.adb:47:18: info: index check proved (altergo: 4 VC)
+array_applications.adb:47:18: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
 array_applications.adb:47:27: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
 array_applications.adb:47:32: info: overflow check proved (Z3: 1 VC; altergo: 3 VC)
-array_applications.adb:47:38: info: index check proved (altergo: 4 VC)
+array_applications.adb:47:38: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
 array_applications.adb:60:09: info: data dependencies proved
 array_applications.adb:61:09: info: flow dependencies proved
 array_applications.adb:62:20: medium: postcondition might fail

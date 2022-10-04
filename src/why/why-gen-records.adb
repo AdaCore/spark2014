@@ -589,7 +589,12 @@ package body Why.Gen.Records is
                      end if;
 
                      Emit
-                       (Th, New_Axiom (Name => NID (Axiom_Name), Def => Def));
+                       (Th, New_Axiom (Name => NID (Axiom_Name),
+                                       Def => Def,
+                                       Dep =>
+                                         New_Axiom_Dep (
+                                           Name => Compat_Tag_Symb,
+                                           Kind => EW_Axdep_Pred)));
                   end;
                end if;
             end loop;
@@ -655,10 +660,11 @@ package body Why.Gen.Records is
                declare
                   Field_Id     : constant W_Identifier_Id :=
                     Hidden_Component_Name (Field, Root, Local => False);
+                  Id           : constant W_Identifier_Id :=
+                    Extract_Fun (Field, Rec => E, Local => False);
                   Extract_Call : W_Expr_Id := New_Call
                     (Domain => EW_Term,
-                     Name   => Extract_Fun
-                       (Field, Rec => E, Local => False),
+                     Name   => Id,
                      Args   => (1 => +Root_Ext_Id),
                      Typ    => W_Type_Of_Component
                        (Field, E, Init_Wrapper => False));
@@ -699,7 +705,11 @@ package body Why.Gen.Records is
                                       Typ     => Concrete_Root_Type),
                                  Field => Field_Id,
                                  Typ   => Get_Typ (Field_Id)),
-                              Domain => EW_Term)));
+                              Domain => EW_Term),
+                           Dep      =>
+                             New_Axiom_Dep
+                               (Name => Id,
+                                Kind => EW_Axdep_Func)));
                end;
             end if;
          end loop;
@@ -856,37 +866,44 @@ package body Why.Gen.Records is
                 (Name   => To_String (WNE_Hide_Extension),
                  Module => Get_Rep_Record_Module (E),
                  Typ    => Root_Ext_Type);
+            Comp      : constant W_Pred_Id :=
+              +New_Comparison
+              (Symbol => Why_Eq,
+               Left   => New_Call
+                 (Domain => EW_Term,
+                  Name   => New_Identifier
+                    (Name   => To_String (WNE_Open),
+                     Module => Get_Rep_Record_Completion (Root)),
+                  Args   => (1 => New_Call
+                             (Domain  => EW_Term,
+                              Name    => Hide_Name,
+                              Binders => Hide_Binders
+                                (1 .. Num_Binders),
+                              Typ     => Root_Ext_Type)),
+                  Typ    => Concrete_Root_Type),
+               Right  => New_Record_Aggregate
+                 (Associations => R_Associations),
+               Domain => EW_Pred);
+            Id        : constant W_Identifier_Id :=
+              New_Identifier (Name => To_String (WNE_Open));
+            Def       : constant W_Pred_Id :=
+              New_Binding
+                (Name     => E_Open_Ext_Id,
+                 Def      => New_Call
+                   (Name   => Id,
+                    Args   =>
+                      (1 => +Hide_Binders (Num_Binders).B_Name),
+                    Typ    => Get_Typ (E_Open_Ext_Id)),
+                 Context  => Comp);
          begin
             Emit (Th,
                   New_Guarded_Axiom
                     (Name     =>
                        NID (To_String (WNE_Hide_Extension) & "def"),
                      Binders  => Hide_Binders (1 .. Num_Binders),
-                     Def      => New_Binding
-                       (Name     => E_Open_Ext_Id,
-                        Def      => New_Call
-                          (Name   => New_Identifier
-                             (Name => To_String (WNE_Open)),
-                           Args   =>
-                             (1 => +Hide_Binders (Num_Binders).B_Name),
-                           Typ    => Get_Typ (E_Open_Ext_Id)),
-                        Context  => +New_Comparison
-                          (Symbol => Why_Eq,
-                           Left   => New_Call
-                             (Domain => EW_Term,
-                              Name   => New_Identifier
-                                (Name   => To_String (WNE_Open),
-                                 Module => Get_Rep_Record_Completion (Root)),
-                              Args   => (1 => New_Call
-                                           (Domain  => EW_Term,
-                                            Name    => Hide_Name,
-                                            Binders => Hide_Binders
-                                              (1 .. Num_Binders),
-                                            Typ     => Root_Ext_Type)),
-                              Typ    => Concrete_Root_Type),
-                           Right  => New_Record_Aggregate
-                             (Associations => R_Associations),
-                           Domain => EW_Pred))));
+                     Def      => Def,
+                     Dep      => New_Axiom_Dep (Name => Id,
+                                                Kind => EW_Axdep_Func)));
          end;
 
          --  For the extension field, generate:
@@ -1332,16 +1349,33 @@ package body Why.Gen.Records is
          Emit (Th,
                New_Axiom (Ada_Node => E,
                           Name     => NID ("value__size_axiom"),
-                          Def      => Value_Size_Axiom));
+                          Def      => Value_Size_Axiom,
+                          Dep      =>
+                            New_Axiom_Dep (
+                              Name =>
+                                To_Local (E_Symb (E, WNE_Attr_Value_Size)),
+                              Kind => EW_Axdep_Func)));
 
          Emit (Th,
                New_Axiom (Ada_Node => E,
                           Name     => NID ("object__size_axiom"),
-                          Def      => Object_Size_Axiom));
+                          Def      => Object_Size_Axiom,
+                          Dep      =>
+                            New_Axiom_Dep (
+                              Name =>
+                                To_Local (E_Symb (E, WNE_Attr_Object_Size)),
+                              Kind => EW_Axdep_Func)));
+
          Emit (Th,
                New_Axiom (Ada_Node => E,
                           Name     => NID ("alignment_axiom"),
-                          Def      => Alignment_Axiom));
+                          Def      => Alignment_Axiom,
+                          Dep      =>
+                            New_Axiom_Dep (
+                              Name =>
+                                To_Local (E_Symb (E, WNE_Attr_Alignment)),
+                              Kind => EW_Axdep_Func)));
+
       end;
    end Declare_Attributes;
 
@@ -1434,17 +1468,29 @@ package body Why.Gen.Records is
          Emit (Th,
                New_Axiom (Ada_Node => Field,
                           Name     => NID (Axiom & "__first__bit_axiom"),
-                          Def      => First_Bit_Axiom));
+                          Def      => First_Bit_Axiom,
+                          Dep      => New_Axiom_Dep (
+                            Name =>
+                              To_Local (E_Symb (Field, WNE_Attr_First_Bit)),
+                            Kind => EW_Axdep_Func)));
 
          Emit (Th,
                New_Axiom (Ada_Node => Field,
                           Name     => NID (Axiom & "__last__bit_axiom"),
-                          Def      => Last_Bit_Axiom));
+                          Def      => Last_Bit_Axiom,
+                          Dep      => New_Axiom_Dep (
+                            Name =>
+                              To_Local (E_Symb (Field, WNE_Attr_Last_Bit)),
+                            Kind => EW_Axdep_Func)));
+
          Emit (Th,
                New_Axiom (Ada_Node => Field,
                           Name     => NID (Axiom & "__position_axiom"),
-                          Def      => Position_Axiom));
-
+                          Def      => Position_Axiom,
+                          Dep      => New_Axiom_Dep (
+                            Name =>
+                              To_Local (E_Symb (Field, WNE_Attr_Position)),
+                            Kind => EW_Axdep_Func)));
       end Declare_Attribute_For_Field;
 
    --  Start of processing for Declare_Component_Attributes

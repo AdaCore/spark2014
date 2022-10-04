@@ -23,7 +23,7 @@ hw-dbc-transfer_rings.adb:177:07: info: initialization of "Current" proved
 hw-dbc-transfer_rings.adb:178:07: info: initialization of "Invalid" proved
 hw-dbc-transfer_rings.adb:182:36: info: division check proved (CVC5: 1 VC)
 hw-dbc-transfer_rings.adb:185:39: info: division check proved (CVC5: 1 VC)
-hw-dbc-transfer_rings.adb:185:39: medium: range check might fail [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition ((Pointer - Physical (EP)) / TRBs.trb_size in Ring_Range) to subprogram at hw-dbc-transfer_rings.ads:38]
+hw-dbc-transfer_rings.adb:185:39: info: range check proved (CVC5: 2 VC)
 hw-dbc-transfer_rings.adb:208:25: warning: assuming "Get_Parameter" always returns
 hw-dbc-transfer_rings.adb:208:25: warning: assuming "Get_Parameter" has no effect on global items
 hw-dbc-transfer_rings.adb:208:25: warning: no Global contract available for "Get_Parameter"

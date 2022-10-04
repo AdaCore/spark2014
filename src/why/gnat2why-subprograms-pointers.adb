@@ -768,11 +768,13 @@ package body Gnat2Why.Subprograms.Pointers is
               (if Binders'Length = 0 then (1 => +Void)
                else Get_Args_From_Binders
                  (To_Binder_Array (Binders), Ref_Allowed => False));
+            Id           : constant W_Identifier_Id :=
+              To_Why_Id (Subp, Domain => EW_Term);
             Call_Eq      : constant W_Pred_Id := +New_Comparison
               (Symbol => Why_Eq,
                Left   => New_Call
                  (Domain => EW_Term,
-                  Name   => To_Why_Id (Subp, Domain => EW_Term),
+                  Name   => Id,
                   Args   => Args,
                   Typ    => Why_Type),
                Right  => New_Call
@@ -785,18 +787,23 @@ package body Gnat2Why.Subprograms.Pointers is
             Result_Ident : constant W_Identifier_Id := New_Temp_Identifier
               (Typ       => Why_Type,
                Base_Name => "result");
+            Guard_Id     : constant W_Identifier_Id :=
+              Get_Logic_Function_Guard
+                (Directly_Designated_Type (Etype (Expr)));
             Pred_Eq      : constant W_Pred_Id := New_Connection
               (Left  => New_Call
                  (Name   => Guard_Predicate_Name (Subp),
                   Args   => (1 => +Result_Ident) & Args,
                   Typ    => EW_Bool_Type),
                Right => New_Call
-                 (Name   => Get_Logic_Function_Guard
-                    (Directly_Designated_Type (Etype (Expr))),
+                 (Name   => Guard_Id,
                   Args   => (1 => +Result_Ident, 2 => +Logic_Id) & Args,
                   Typ    => EW_Bool_Type),
                Op    => EW_Equivalent);
          begin
+
+            --  ??? adding a dependency annotation on this axiom on Id results
+            --  in unproved checks
 
             Emit (Th,
                   New_Guarded_Axiom (Name     => NID (Def_Axiom),
@@ -814,7 +821,9 @@ package body Gnat2Why.Subprograms.Pointers is
                                     Mutable   => False,
                                     Labels    => <>)
                      & To_Binder_Array (Binders),
-                     Def      => Pred_Eq));
+                     Def      => Pred_Eq,
+                     Dep      => New_Axiom_Dep (Name => Guard_Id,
+                                                Kind => EW_Axdep_Pred)));
          end;
       end if;
 

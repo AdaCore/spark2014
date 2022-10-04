@@ -284,7 +284,9 @@ package body Why.Gen.Init is
                  (Field => Attr_Init,
                   Name  => +Dummy,
                   Typ   => EW_Bool_Type),
-               Right  => (if Default_Init then True_Term else False_Term))));
+               Right  => (if Default_Init then True_Term else False_Term)),
+            Dep       =>
+              New_Axiom_Dep (Name => Dummy, Kind => EW_Axdep_Func)));
    end Declare_Simple_Wrapper_Type;
 
    ---------------------

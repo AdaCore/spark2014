@@ -264,7 +264,8 @@ package Why.Gen.Binders is
       Binders  : Binder_Array;
       Triggers : W_Triggers_OId := Why_Empty;
       Pre      : W_Pred_OId := Why_Empty;
-      Def      : W_Pred_Id)
+      Def      : W_Pred_Id;
+      Dep      : W_Axiom_Dep_OId := Why_Empty)
       return W_Declaration_Id;
    --  generate an axiom of the form:
    --
@@ -291,7 +292,8 @@ package Why.Gen.Binders is
       Name     : W_Identifier_Id;
       Binders  : Binder_Array;
       Pre      : W_Pred_Id := Why_Empty;
-      Def      : W_Pred_Id)
+      Def      : W_Pred_Id;
+      Dep_Kind : EW_Axiom_Dep_Kind)
       return W_Declaration_Id;
    --  Same as new_defining_axiom, but for functions returning booleans.
    --  (for those, predicates are generated instead of logics).

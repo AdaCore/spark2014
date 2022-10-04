@@ -11390,7 +11390,10 @@ package body Gnat2Why.Expr is
                  (Name     => NID (Def_Axiom),
                   Binders  =>
                     Call_Params & Bnd_Params & Var_Params & Context_Params,
-                  Def      => Def_Pred));
+                  Def      => Def_Pred,
+                  Dep      =>
+                    New_Axiom_Dep (Name => Func,
+                                   Kind => EW_Axdep_Func)));
 
          Close_Theory (Th,
                        Kind => Axiom_Theory,
@@ -23028,8 +23031,10 @@ package body Gnat2Why.Expr is
                     (Binders  => Binders,
                      Triggers => New_Triggers
                        (Triggers =>
-                          (1 => New_Trigger (Terms => (1 => +Call)))),
-                     Pred     => Def)));
+                            (1 => New_Trigger (Terms => (1 => +Call)))),
+                     Pred     => Def),
+                  Dep      => New_Axiom_Dep (Name => Id,
+                                             Kind => EW_Axdep_Func)));
          end;
       end if;
 
