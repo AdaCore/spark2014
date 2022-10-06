@@ -5,10 +5,13 @@ early_exits.adb:10:19: info: pointer dereference check proved (altergo: 1 VC)
 early_exits.adb:10:37: info: pointer dereference check proved (Z3: 1 VC)
 early_exits.adb:10:64: info: pointer dereference check proved (altergo: 1 VC)
 early_exits.adb:10:74: info: pointer dereference check proved (Z3: 1 VC)
-early_exits.adb:14:10: info: null exclusion check proved (altergo: 1 VC)
+early_exits.adb:14:33: info: in reconstructed value at the end of the borrow at early_exits.adb:14
+early_exits.adb:14:33: info: null exclusion check proved (altergo: 1 VC)
 early_exits.adb:16:31: info: cannot unroll loop (local non-scalar declaration at line 18)
-early_exits.adb:18:16: info: null exclusion check proved (CVC5: 1 VC)
-early_exits.adb:18:16: info: null exclusion check proved (CVC5: 15 VC)
+early_exits.adb:18:39: info: in reconstructed value at the end of the borrow at early_exits.adb:18
+early_exits.adb:18:39: info: in reconstructed value at the end of the borrow at early_exits.adb:18
+early_exits.adb:18:39: info: null exclusion check proved (CVC5: 1 VC)
+early_exits.adb:18:39: info: null exclusion check proved (CVC5: 15 VC)
 early_exits.adb:20:33: info: unrolling loop
 early_exits.adb:21:24: info: pointer dereference check proved (CVC5: 15 VC)
 early_exits.adb:22:24: info: pointer dereference check proved (CVC5: 15 VC)
@@ -25,11 +28,13 @@ early_exits.adb:36:14: info: pointer dereference check proved (CVC5: 1 VC)
 early_exits.adb:36:43: info: pointer dereference check proved (CVC5: 1 VC)
 early_exits.adb:36:60: info: pointer dereference check proved (CVC5: 1 VC)
 early_exits.adb:36:70: info: pointer dereference check proved (CVC5: 1 VC)
-early_exits.adb:40:10: info: null exclusion check proved (CVC5: 1 VC)
+early_exits.adb:40:33: info: in reconstructed value at the end of the borrow at early_exits.adb:40
+early_exits.adb:40:33: info: null exclusion check proved (CVC5: 1 VC)
 early_exits.adb:42:12: info: pointer dereference check proved (CVC5: 1 VC)
 early_exits.adb:42:21: info: pointer dereference check proved (CVC5: 1 VC)
 early_exits.adb:42:25: info: division check proved (CVC5: 1 VC)
-early_exits.adb:44:13: info: null exclusion check proved (CVC5: 1 VC)
+early_exits.adb:44:36: info: in reconstructed value at the end of the borrow at early_exits.adb:44
+early_exits.adb:44:36: info: null exclusion check proved (CVC5: 1 VC)
 early_exits.adb:46:18: info: pointer dereference check proved (CVC5: 1 VC)
 early_exits.adb:47:18: info: pointer dereference check proved (CVC5: 1 VC)
 early_exits.adb:51:12: info: pointer dereference check proved (CVC5: 1 VC)

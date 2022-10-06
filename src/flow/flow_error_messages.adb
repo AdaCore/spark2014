@@ -879,10 +879,10 @@ package body Flow_Error_Messages is
 
    begin
       --  Proof (why3) will only report messages that are relevant wrt
-      --  limit-line option, but Interval and CodePeer messages will be
-      --  issued for all lines. So we add this extra filter here.
+      --  limit-line option, but Interval messages will be issued for all
+      --  lines. So we add this extra filter here.
 
-      if How_Proved in PC_Trivial | PC_Codepeer
+      if How_Proved = PC_Trivial
         and then not Is_Specified_Line (Slc)
       then
          return;

@@ -64,7 +64,6 @@
 --      not done on these units.
 
 with Ada.Command_Line;
-with Ada.Containers;
 with Ada.Directories;            use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Exceptions;             use Ada.Exceptions;
@@ -86,7 +85,7 @@ with String_Utils;               use String_Utils;
 
 procedure Gnatprove with SPARK_Mode is
 
-   type Gnatprove_Step is (GS_ALI, GS_CodePeer, GS_Gnat2Why);
+   type Gnatprove_Step is (GS_ALI, GS_Gnat2Why);
 
    type Plan_Type is array (Positive range <>) of Gnatprove_Step;
 
@@ -139,16 +138,6 @@ procedure Gnatprove with SPARK_Mode is
    --  In the process, do flow analysis. Then call gnatwhy3 inside gnat2why to
    --  prove the program.
 
-   procedure Run_CodePeer
-     (Project_File : String;
-      Proj         : Project_Tree;
-      Status       : out Integer);
-   --  Run CodePeer on the project to get the CodePeer results. Do nothing if
-   --  CodePeer analysis is disabled.
-   --  @param Project_File the project file as a string
-   --  @param Proj the project tree object
-   --  @param Status out parameter which indicates an error; 0 = OK
-
    function Spawn_VC_Server_And_Semaphore
      (Proj_Type : Project_Type)
       return Process_Descriptor;
@@ -193,8 +182,7 @@ procedure Gnatprove with SPARK_Mode is
       Opt_File : constant String :=
          Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
             (Translation_Phase => Translation_Phase,
-             Obj_Dir           => Obj_Dir,
-             Proj_Name         => Project_File);
+             Obj_Dir           => Obj_Dir);
       Del_Succ : Boolean;
 
    begin
@@ -473,9 +461,6 @@ procedure Gnatprove with SPARK_Mode is
          when GS_ALI =>
             Compute_ALI_Information (Project_File, Proj, Status);
 
-         when GS_CodePeer =>
-            Run_CodePeer (Project_File, Proj, Status);
-
          when GS_Gnat2Why =>
             Copy_ALI_Files (Proj);
             Flow_Analysis_And_Proof (Project_File, Proj, Status);
@@ -742,87 +727,6 @@ procedure Gnatprove with SPARK_Mode is
       return Proc;
    end Non_Blocking_Spawn;
 
-   ------------------
-   -- Run_CodePeer --
-   ------------------
-
-   procedure Run_CodePeer
-     (Project_File : String;
-      Proj         : Project_Tree;
-      Status       : out Integer)
-   is
-      pragma Unreferenced (Proj);
-      Args : String_Lists.List;
-
-      use type Ada.Containers.Count_Type;
-   begin
-
-      if Project_File /= "" then
-         Args.Append ("-P");
-         Args.Append (Project_File);
-      end if;
-
-      if Verbose then
-         Args.Append ("-verbose");
-      end if;
-
-      if Parallel > 1 then
-         Args.Append ("-j" & Image (Parallel, Min_Width => 1));
-      end if;
-
-      if All_Projects then
-         Args.Append ("-U");
-      end if;
-
-      declare
-         Steps : constant Integer := File_Specific_Map ("Ada").Steps;
-      begin
-         if Steps /= 0 then
-            Args.Append ("-steps=" & Image (Steps / 10, Min_Width => 1));
-         end if;
-      end;
-
-      if not Null_Or_Empty_String (CL_Switches.RTS) then
-         Args.Append ("--RTS=" & CL_Switches.RTS.all);
-      end if;
-
-      if not Null_Or_Empty_String (CL_Switches.Target) then
-         Args.Append ("--target=" & CL_Switches.Target.all);
-      end if;
-
-      --  ??? we only limit codepeer analysis if the user has given a single
-      --  file, and option -u
-
-      if CL_Switches.File_List.Length = 1 and Only_Given then
-         Args.Append ("-file");
-         for File of CL_Switches.File_List loop
-            Args.Append (File);
-         end loop;
-      end if;
-
-      for Var of CL_Switches.X loop
-         Args.Append (Var);
-      end loop;
-
-      if not Null_Or_Empty_String (CL_Switches.Subdirs) then
-         Args.Append ("--subdirs=" & CL_Switches.Subdirs.all);
-      end if;
-
-      if not CL_Switches.GPR_Project_Path.Is_Empty then
-         for S of CL_Switches.GPR_Project_Path loop
-            Args.Append ("-aP");
-            Args.Append (S);
-         end loop;
-      end if;
-
-      Call_With_Status
-        (Command   => "spark_codepeer_wrapper",
-         Arguments => Args,
-         Status    => Status,
-         Verbose   => Verbose);
-
-   end Run_CodePeer;
-
    ---------------------
    -- Set_Environment --
    ---------------------
@@ -923,9 +827,6 @@ procedure Gnatprove with SPARK_Mode is
             else
                return "generation of Global contracts";
             end if;
-
-         when GS_CodePeer =>
-            return "CodePeer analysis";
 
          when GS_Gnat2Why =>
             case Configuration.Mode is
@@ -1243,9 +1144,7 @@ begin
 
    begin
       Analysis : declare
-         Plan : constant Plan_Type :=
-           (if CodePeer then [GS_ALI, GS_CodePeer, GS_Gnat2Why]
-            else [GS_ALI, GS_Gnat2Why]);
+         Plan : constant Plan_Type := [GS_ALI, GS_Gnat2Why];
       begin
          for Step in Plan'Range loop
             Execute_Step (Plan, Step, CL_Switches.P.all, Tree);

@@ -237,10 +237,11 @@ In order to extend Ada's support for specification of subprogram contracts
    these aspects may be specified for a generic subprogram but not
    for an instance of a generic subprogram.]
 
-2. The Global, Depends and Contract_Cases aspects shall not be specified for an
-   abstract subprogram or a null procedure. Only Global'Class and Depends'Class
-   may be specified for such a subprogram.
+2. The Global and Depends (but not Contract_Cases) aspects may be specified for
+   an abstract subprogram.
 
+3. The Global, Depends and Contract_Cases aspects shall not be specified for a
+   null procedure.
 
 See section :ref:`Contract Cases` for further detail on Contract_Case aspects, section
 :ref:`Global Aspects` for further detail on Global aspects and section :ref:`Depends Aspects`
@@ -1066,79 +1067,56 @@ as it is used purely for static analysis purposes and is not executed.
    -- Depends aspects on functions are only needed for special cases like here where the
    -- parameter Y has no discernible effect on the result of the function.
 
-Class-Wide Global and Depends Aspects
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Global and Depends Aspects of Dispatching Subprograms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Global'Class and Depends'Class aspects may be specified for
-a dispatching subprogram just as the Global and Depends aspects
-may be specified for any subprogram (dispatching or not). [The
-syntax, static semantics, and legality rules are all the same,
-except that the Depends'Class aspect of a subprogram is
-checked for consistency with the Global'Class aspect of the
-subprogram rather than with the Global aspect.]
-
-.. container:: heading
-
-   Verification Rules
-
-When analyzing a dispatching call, the Global and Depends aspects
-of the statically denoted callee play no role; the corresponding
-class-wide aspects are used instead.
-
-[No relationship between the Global'Class/Depends'Class aspects of a
-subprogram and the subprogram's implementation is explicitly verified.
-This is instead accomplished implicitly by
-checking the consistency of the subprogram's implementation with
-its Global/Depends aspects (as described in preceding sections) and then
-checking (as described in this section) the consistency of the
-Global/Depends aspects with the Global'Class/Depends'Class
-aspects.]
+Additional rules apply to the Global and Depends aspects on a dispatching
+subprogram, in order to ensure that the effects of dynamically calling an
+overridding subprogram are properly captured by the aspects of the statically
+denoted callee.
 
 .. container:: heading
 
    Static Semantics
 
-A Global or Global'Class aspect specification G2 is said to be
-a *valid overriding* of another such specification, G1, if the following
-conditions are met:
+1. A Global aspect specification G2 is said to be
+   a *valid overriding* of another such specification, G1, if the following
+   conditions are met:
 
-* each Input-mode item of G2 is an Input-mode or an In_Out-mode
-  item of G1 or a direct or indirect constituent thereof; and
+   * each Input-mode item of G2 is an Input-mode or an In_Out-mode
+     item of G1 or a direct or indirect constituent thereof; and
 
-* each In_Out-mode item of G2 is an In_Out-mode item of G1 or a
-  direct or indirect constituent thereof; and
+   * each In_Out-mode item of G2 is an In_Out-mode item of G1 or a
+     direct or indirect constituent thereof; and
 
-* each Output-mode item of G2 is an Output-mode or In_Out-mode item of G1
-  or a direct or indirect constituent therof; and
+   * each Output-mode item of G2 is an Output-mode or In_Out-mode item of G1
+     or a direct or indirect constituent therof; and
 
-* each Output-mode item of G1 which is not a state abstraction whose
-  refinement is visible at the point of G2 is an Output-mode item of G2; and
+   * each Output-mode item of G1 which is not a state abstraction whose
+     refinement is visible at the point of G2 is an Output-mode item of G2; and
 
-* for each Output-mode item of G1 which is a state abstraction whose
-  refinement is visible at the point of G2, each direct or indirect
-  constituent thereof is an Output-mode item of G2.
+   * for each Output-mode item of G1 which is a state abstraction whose
+     refinement is visible at the point of G2, each direct or indirect
+     constituent thereof is an Output-mode item of G2.
 
-A Depends or Depends'Class aspect specification D2 is said to be a
-*valid overriding* of another such specification, D1, if the set of
-dependencies of D2 is a subset of the dependencies of D1 or, in the
-case where D1 mentions a state abstraction whose refinement is
-visible at the point of D2, if D2 is derivable from such a subset
-as described in :ref:`Refined_Depends Aspects`.
+2. A Depends aspect specification D2 is said to be a
+   *valid overriding* of another such specification, D1, if the set of
+   dependencies of D2 is a subset of the dependencies of D1 or, in the
+   case where D1 mentions a state abstraction whose refinement is
+   visible at the point of D2, if D2 is derivable from such a subset
+   as described in :ref:`Refined_Depends Aspects`.
 
 
 .. container:: heading
 
    Legality Rules
 
-The Global aspect of a subprogram shall be a valid overriding of the
-Global'Class aspect of the subprogram. The Global'Class aspect of an
-an overriding subprogram shall be a valid overriding of the Global'Class
-aspect(s) of the overridden inherited subprogram(s).
+3. The Global aspect of an overriding subprogram shall be a valid overriding
+   of the Global aspect(s) of the overridden inherited subprogram(s).
 
-The Depends aspect of a subprogram shall be a valid overriding of the
-Depends'Class aspect of the subprogram. The Depends'Class aspect of an
-an overriding subprogram shall be a valid overriding of the Depends'Class
-aspect(s) of the overridden inherited subprogram(s).
+4. The Depends aspect of an overriding subprogram shall be a valid
+   overriding of the Depends aspect(s) of the overridden inherited
+   subprogram(s).
 
 .. index:: Extensions_Visible
 

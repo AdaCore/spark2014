@@ -3157,6 +3157,30 @@ package body SPARK_Util is
           --  subprograms nested in the type itself.
    end Is_Synchronized;
 
+   ------------------------
+   -- Is_Supported_Alias --
+   ------------------------
+
+   function Supported_Alias (Expr : Node_Id) return Entity_Id is
+      Simple_Address : constant Boolean :=
+        Present (Expr)
+        and then Nkind (Expr) = N_Attribute_Reference
+        and then Attribute_Name (Expr) = Name_Address;
+      Prefix_Expr     : constant Node_Id :=
+        (if Simple_Address then Prefix (Expr)
+         else Empty);
+      Aliased_Object  : constant Entity_Id :=
+        (if Simple_Address
+         then Get_Root_Object (Prefix_Expr, Through_Traversal => False)
+         else Empty);
+   begin
+      if Present (Aliased_Object) and then Is_Object (Aliased_Object) then
+         return Aliased_Object;
+      else
+         return Empty;
+      end if;
+   end Supported_Alias;
+
    ---------------------------
    -- Is_Writable_Parameter --
    ---------------------------

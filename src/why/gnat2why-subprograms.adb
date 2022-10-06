@@ -6750,10 +6750,6 @@ package body Gnat2Why.Subprograms is
                  (Logic_Func_Binders, Params),
                Right  => +Func_Guard,
                Domain => EW_Pred);
-            Def                  : constant W_Term_Id :=
-              Compute_Borrow_At_End_Value
-                (W_Brower => +Get_Brower_At_End (E),
-                 Expr     => Expr);
             Params               : constant Binder_Array := Flat_Binders
               & Binder_Type'(B_Name => Get_Brower_At_End (E),
                              B_Ent  => Null_Entity_Name,
@@ -6764,7 +6760,19 @@ package body Gnat2Why.Subprograms is
                Name    => Get_Borrowed_At_End (E),
                Binders => Params,
                Typ     => Get_Typ (Get_Borrowed_At_End (E)));
+
+            Def                  : W_Term_Id;
+            Dummy                : W_Statement_Sequence_Id;
+            --  The predicate checks are discarded, they should be checked as
+            --  part of the verification of the body of E.
+
          begin
+            Compute_Borrow_At_End_Value
+              (Check_Node    => Empty,
+               W_Brower      => +Get_Brower_At_End (E),
+               Expr          => Expr,
+               Reconstructed => Def,
+               Checks        => Dummy);
             Emit
               (Th,
                New_Guarded_Axiom

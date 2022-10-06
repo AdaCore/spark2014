@@ -65,23 +65,6 @@ package Gnat2Why.Error_Messages is
    function Num_Registered_VCs_In_Why3 return Natural;
    --  VCs that actually appear in the Why3 file(s)
 
-   procedure Load_Codepeer_Results;
-   --  Load the CodePeer result file and store results. Can be queried with
-   --  "CodePeer_Has_Proved" function.
-   --  Skips loading if Codepeer processing is disabled (CP_Res_Dir set to
-   --  null) or when no result file is found. "CodePeer_Has_Proved" will always
-   --  return False in that case.
-
-   function CodePeer_Has_Proved (Slc : Source_Ptr; Kind : VC_Kind)
-                                 return Boolean;
-   --  @param Slc a source location (possibly an sloc chain)
-   --  @param Kind a VC kind
-   --  @return True if we have received from codepeer the information that the
-   --    check identified by (Slc, Kind) always succeeds; return False
-   --    otherwise or if we are not sure
-   --  It is OK to call this function even when Load_CodePeer_Results was not
-   --  called before. The function will return "False" in that case.
-
    procedure Parse_Why3_Results (Fn : String; Timing : in out Time_Token);
 
    generic
@@ -115,8 +98,8 @@ package Gnat2Why.Error_Messages is
    --  Register the VC identified by node and kind as proved. This will emit
    --  a message if needed and register the result in JSON output. @parameter
    --  How_Proved identifies the prover type (possible values currently are
-   --  "codepeer", "interval" and "", the empty string meaning "some prover
-   --  used by why3 backend".
+   --  "interval" and "", the empty string meaning "some prover used by why3
+   --  backend".
    --  @parameter VC_Loc is the location of the verification check as opposed
    --  to @parameter Node which contains the location of the first failing part
    --  of a VC (raised as location for messages).

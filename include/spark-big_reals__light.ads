@@ -35,24 +35,17 @@
 --  depend on System or Ada.Finalization, which makes it more convenient for
 --  use in run-time units.
 
---  Ghost code in this unit is meant for analysis only, not for run-time
---  checking. This is enforced by setting the assertion policy to Ignore.
-
-pragma Assertion_Policy (Ghost => Ignore);
-
 with Ada.Numerics.Big_Numbers; use Ada.Numerics.Big_Numbers;
-with Ada.Strings.Text_Buffers; use Ada.Strings.Text_Buffers;
 with SPARK.Big_Integers;
 
 package SPARK.Big_Reals with
    SPARK_Mode,
    Ghost
 is
-   pragma Annotate (GNATprove, Always_Return, Big_Reals_Ghost);
+   pragma Annotate (GNATprove, Always_Return, Big_Reals);
 
    type Big_Real is private with
-     Real_Literal => From_Universal_Image,
-     Put_Image    => Put_Image;
+     Real_Literal => From_Universal_Image;
 
    function Is_Valid (Arg : Big_Real) return Boolean
    with
@@ -134,11 +127,9 @@ is
    package Float_Conversions is
 
       function To_Big_Real (Arg : Num) return Valid_Big_Real with
-        Import,
         Global => null;
 
       function From_Big_Real (Arg : Big_Real) return Num with
-        Import,
         Pre    => In_Range (Arg,
                             Low  => To_Big_Real (Num'First),
                             High => To_Big_Real (Num'Last))
@@ -152,11 +143,9 @@ is
    package Fixed_Conversions is
 
       function To_Big_Real (Arg : Num) return Valid_Big_Real with
-        Import,
         Global => null;
 
       function From_Big_Real (Arg : Big_Real) return Num with
-        Import,
         Pre    => In_Range (Arg,
                             Low  => To_Big_Real (Num'First),
                             High => To_Big_Real (Num'Last))
@@ -187,19 +176,7 @@ is
      Import,
      Global => null;
 
-   function To_Quotient_String (Arg : Big_Real) return String is
-     (Big_Integers.To_String (Numerator (Arg)) & " / "
-      & Big_Integers.To_String (Denominator (Arg)))
-   with
-     Import,
-     Global => null;
-
    function From_Quotient_String (Arg : String) return Valid_Big_Real
-   with
-     Import,
-     Global => null;
-
-   procedure Put_Image (S : in out Root_Buffer_Type'Class; V : Big_Real)
    with
      Import,
      Global => null;

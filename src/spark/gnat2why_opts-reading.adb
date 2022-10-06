@@ -125,10 +125,6 @@ package body Gnat2Why_Opts.Reading is
          Parallel_Why3         := Get_Opt (V, Parallel_Why3_Name);
 
          Why3_Dir := Get_Opt (V, Why3_Dir_Name);
-
-         if Has_Field (V, CP_Dir_Name) then
-            CP_Res_Dir := Get_Opt (V, CP_Dir_Name);
-         end if;
       end if;
 
       pragma Assert (Has_Field (V, File_Specific_Name));

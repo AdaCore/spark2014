@@ -154,11 +154,6 @@ package Gnat2Why_Opts.Reading is
 
    Why3_Dir : Unbounded_String;
 
-   --  If CP_Res_Dir is "null", then CodePeer processing will be disabled.
-   --  Otherwise, CodePeer results will be in this directory.
-
-   CP_Res_Dir : Unbounded_String;
-
    --  IDE mode. Error messages may be formatted differently in this mode (e.g.
    --  JSON dict).
 

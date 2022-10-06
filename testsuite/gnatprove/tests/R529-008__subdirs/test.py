@@ -1,7 +1,7 @@
 from test_support import prove_all
 import os.path
 
-prove_all(codepeer=True, opt=["--subdirs", "toto"])
+prove_all(opt=["--subdirs", "toto"])
 
 my_dir = os.path.join("toto", "gnatprove")
 assert os.path.exists(my_dir)

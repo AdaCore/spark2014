@@ -1,7 +1,7 @@
 aggregate.adb:3:07: info: initialization of "Agg" proved
-aggregate.adb:5:28: info: division check proved (CodePeer)
-aggregate.adb:5:45: info: overflow check proved (CodePeer)
-aggregate.adb:6:26: info: overflow check proved (CodePeer)
+aggregate.adb:5:28: info: division check proved (CVC5: 1 VC)
+aggregate.adb:5:45: info: overflow check proved (CVC5: 2 VC)
+aggregate.adb:6:26: info: overflow check proved (CVC5: 2 VC)
 aggregate.ads:8:30: info: initialization of "K" proved
 aggregate.ads:10:20: info: postcondition proved (CVC5: 3 VC)
 arr_aggregate.adb:46:07: info: precondition proved (CVC5: 1 VC)

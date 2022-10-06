@@ -5104,9 +5104,6 @@ usually identifies a subpart of an assertion. If it is negative, it is either
 -1 or -2, and identifies the lower or upper bound, respectively, of a range or
 overflow check.
 
-``GP_Already_Proved`` indicates that the VC is already proved (probably by
-Codepeer).
-
 ``GP_Inline`` indicates that the corresponding symbol should be inlined to
   increase splitting of VCs. This attribute is generated in gnat2why.
 

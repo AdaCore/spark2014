@@ -1,0 +1,3 @@
+project Test extends "sparklib_light" is
+   for Runtime ("Ada") use "light";
+end Test;

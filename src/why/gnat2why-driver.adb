@@ -842,9 +842,6 @@ package body Gnat2Why.Driver is
          if not Gnat2Why_Args.Check_All_Mode
            and then not Gnat2Why_Args.Flow_Analysis_Mode
          then
-            Load_Codepeer_Results;
-            Timing_Phase_Completed (Timing, "codepeer results");
-
             Why.Gen.Names.Initialize;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;

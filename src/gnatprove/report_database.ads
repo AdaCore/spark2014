@@ -82,7 +82,6 @@ package Report_Database is
 
    type Summary_Line is record
       Flow      : Natural;
-      CodePeer  : Natural;
       Provers   : All_Prover_Stat;
       Justified : Natural;
       Unproved  : Natural;

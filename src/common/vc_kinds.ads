@@ -403,7 +403,6 @@ package VC_Kinds is
       Lim_Array_Conv_Signed_Modular_Index,
       Lim_Borrow_Traversal_First_Param,
       Lim_Borrow_Traversal_Volatile,
-      Lim_Borrow_With_Predicates_On_Parts,
       Lim_Class_Attr_Of_Constrained_Type,
       Lim_Classwide_With_Predicate,
       Lim_Complex_Raise_Expr_In_Prec,
@@ -619,9 +618,6 @@ package VC_Kinds is
            "call to operation of a component of a protected type",
          when Lim_Suspension_On_Formal =>
            "suspension on a formal parameter",
-         when Lim_Borrow_With_Predicates_On_Parts =>
-           "local borrow of an expression with predicates on subcomponents of"
-          & " deep type",
          when Lim_Borrow_Traversal_First_Param =>
            "borrowing traversal functions whose first parameter does not have"
           & " an anonymous access-to-variable type",
@@ -760,7 +756,6 @@ package VC_Kinds is
    GP_Check_Marker          : constant String := "GP_Check:";
    GP_Pretty_Ada_Marker     : constant String := "GP_Pretty_Ada:";
    GP_Shape_Marker          : constant String := "GP_Shape:";
-   GP_Already_Proved_Marker : constant String := "GP_Already_Proved";
    GP_Inline_Marker         : constant String := "GP_Inline";
    GP_Inlined_Marker        : constant String := "GP_Inlined";
 
@@ -806,7 +801,7 @@ package VC_Kinds is
                                              "="          => "=");
    --  The prover stats JSON format is defined in gnat_report.mli
 
-   type Prover_Category is (PC_Trivial, PC_Codepeer, PC_Prover, PC_Flow);
+   type Prover_Category is (PC_Trivial, PC_Prover, PC_Flow);
    --  Type that describes the possible ways a check is proved. PC_Prover
    --  stands for automatic or manual proofs from Why3 and does not specify
    --  which prover proves it.

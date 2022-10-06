@@ -707,11 +707,10 @@ package Why.Atree.Modules is
 
    --  Labels
 
-   Model_Trace       : Symbol;
-   Model_Projected   : Symbol;
-   VC_Annotation     : Symbol;
-   Model_VC_Post     : Symbol;
-   GP_Already_Proved : Symbol;
+   Model_Trace     : Symbol;
+   Model_Projected : Symbol;
+   VC_Annotation   : Symbol;
+   Model_VC_Post   : Symbol;
 
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package

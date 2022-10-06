@@ -85,7 +85,6 @@ private
    --  directly rely on them; instead, they should use the writing/reading
    --  routines, respectively.
 
-   CP_Dir_Name                  : constant String := "codepeer_dir";
    CWE_Name                     : constant String := "cwe";
    Check_All_Mode_Name          : constant String := "check_all_mode";
    Check_Counterexamples_Name   : constant String := "check_counterexamples";
