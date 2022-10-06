@@ -4,8 +4,7 @@ project GNAT2Why_GNAT is
    for Exec_Dir use "../install/bin";
 
    for Source_Dirs use ("obj", "gnat_src", "obj-gnat");
-   for Excluded_Source_Files use ("back_end.adb", "gnat1drv.adb",
-                                  "sa_messages.ads", "sa_messages.adb");
+   for Excluded_Source_Files use ("back_end.adb", "gnat1drv.adb");
 
    type Build_Type is ("Debug", "Devel", "Production", "Coverage");
    --  Debug: all checks enabled
