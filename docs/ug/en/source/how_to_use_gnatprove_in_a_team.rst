@@ -495,7 +495,8 @@ of a program:
   Annotate` and when using :ref:`Indirect Justification with Pragma Assume`.
 
 * [SPARK_EXTERNAL]
-  The modeling of :ref:`Interfaces to the Physical World` needs to be reviewed:
+  The modeling of :ref:`Interfaces to the Physical World` needs to be reviewed
+  for objects whose address is specified through an address clause or aspect:
 
   * All objects whose value may be modified concurrently should be `effectively
     volatile` in SPARK (see SPARK RM 7.1.2), so that GNATprove takes into
@@ -664,6 +665,11 @@ of a program:
 In addition, the following assumptions need to be addressed when using SPARK on
 only part of a program:
 
+* [ADA_EXTERNAL]
+  Objects accessed outside of SPARK, either directly for statically allocated
+  objects, or through their address or a pointer for all objects, should comply
+  with the assumptions described in [SPARK_EXTERNAL].
+
 * [ADA_PRIVATE_TYPES]
   Private types whose full view is not analyzed, yet are used in
   SPARK code, need to comply with the implicit or explicit contracts used by
@@ -748,7 +754,9 @@ only part of a program:
   * the aliases constraints of |SPARK| (implicit - the subprogram shall not
     introduce any visible aliases between its parameters, accessed global
     objects, and return value if any, unless it is a traversal function, in
-    which case its return value shall be a part of its traversed parameter)
+    which case its return value shall be a part of its traversed parameter, or
+    unless the aliases introduced are compatible with assumption
+    [SPARK_ALIASING_ADDRESS])
 
   Note that this also applies to subprograms which are called indirectly
   from SPARK code, either through a dispatching call or through a call to
