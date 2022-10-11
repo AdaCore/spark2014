@@ -569,7 +569,7 @@ sort.adb:71:16: warning: unused assignment
 sort.adb:71:19: info: precondition proved (CVC5: 7 VC)
 sort.adb:71:40: info: range check proved (CVC5: 2 VC)
 sort.adb:71:43: info: range check proved (CVC5: 2 VC)
-sort.adb:72:28: info: assertion proved (CVC5: 1 VC)
+sort.adb:72:28: info: assertion proved (Z3: 1 VC)
 sort.adb:72:28: info: precondition proved (CVC5: 4 VC)
 sort.adb:72:36: info: precondition proved (CVC5: 4 VC)
 sort.adb:72:52: info: range check proved (CVC5: 2 VC)
