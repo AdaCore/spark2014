@@ -24,6 +24,8 @@ Generate realization for Rep_Proj_Int
 
 Generate realization for Rep_Proj_ltBVGen
 
+Generate realization for Array_Comparison_Axiom
+
 Check realizations
 Run Coqc on realization file: Integer
 Run Coqc on realization file: Int_Power
@@ -36,4 +38,5 @@ Run Coqc on realization file: Rep_Proj_Base
 Run Coqc on realization file: Rep_Proj_BVGen
 Run Coqc on realization file: Rep_Proj_Int
 Run Coqc on realization file: Rep_Proj_ltBVGen
+Run Coqc on realization file: Array_Comparison_Axiom
 The realizations checks were run
