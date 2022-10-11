@@ -26,18 +26,18 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><result status="valid" steps="52"/></proof>
-  <proof prover="1"><result status="valid" steps="1971"/></proof>
-  <proof prover="2"><result status="valid" steps="1918"/></proof>
-  <proof prover="4"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid" steps="1561"/></proof>
+  <proof prover="2"><result status="valid" steps="1506"/></proof>
+  <proof prover="4"><result status="valid" steps="208"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <proof prover="0"><result status="valid" steps="110"/></proof>
-  <proof prover="1"><result status="valid" steps="5807"/></proof>
-  <proof prover="2"><result status="valid" steps="15284"/></proof>
+  <proof prover="1"><result status="valid" steps="5274"/></proof>
+  <proof prover="2"><result status="valid" steps="13574"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
  </transf>
