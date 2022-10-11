@@ -2,11 +2,11 @@
 --                                                                          --
 --                        SPARK LIBRARY COMPONENTS                          --
 --                                                                          --
---      S P A R K . C O N T A I N E R S . S T A B L E _ S O R T I N G       --
+--                S P A R K . C O N T A I N E R S . T Y P E S               --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 1995-2022, AdaCore                     --
+--                     Copyright (C) 2022-2022, AdaCore                     --
 --                                                                          --
 -- SPARK is free software;  you can  redistribute it and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -26,43 +26,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  Stable_Sorting package
+--  This unit is provided as a replacement for the unit Ada.Containers for
+--  light runtimes when it is not included.
 
---  This package provides a generic stable sorting procedure that is
---  intended for use by the various doubly linked list container generics.
---  If a stable array sorting algorithm with better-than-quadratic worst
---  case execution time is ever needed, then it could also reside here.
-
-with SPARK.Containers.Types; use SPARK.Containers.Types;
-
-private package SPARK.Containers.Stable_Sorting with SPARK_Mode => On is
+package SPARK.Containers.Types is
    pragma Pure;
 
-   --  Stable sorting algorithms with N-log-N worst case execution time.
+   type Hash_Type is mod 2**32;
+   --  Represents the range of the result of a hash function
 
-   generic
-      type Node_Ref is private; -- access value or array index
-      Nil : Node_Ref;
-   package List_Descriptors is
+   type Count_Type is range 0 .. 2**31 - 1;
+   --  Represents the (potential or actual) number of elements of a container
 
-      type List_Descriptor is
-         record
-            First, Last : Node_Ref := Nil;
-            Length      : Count_Type := 0;
-         end record;
+   Capacity_Error : exception;
+   --  Raised when the capacity of a container is exceeded
 
-      --  We use a nested generic here so that the inner generic can
-      --  refer to the List_Descriptor type.
-
-      generic
-         with function Next (N : Node_Ref) return Node_Ref is <>;
-         with procedure Set_Next (N : Node_Ref; Next : Node_Ref) is <>;
-         with procedure Set_Prev (N : Node_Ref; Prev : Node_Ref) is <>;
-         with function "<" (L, R : Node_Ref) return Boolean is <>;
-
-         with procedure Update_Container (List : List_Descriptor) is <>;
-      procedure Doubly_Linked_List_Sort (List : List_Descriptor);
-
-   end List_Descriptors;
-
-end SPARK.Containers.Stable_Sorting;
+end SPARK.Containers.Types;

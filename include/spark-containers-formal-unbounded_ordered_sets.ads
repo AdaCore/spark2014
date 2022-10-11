@@ -26,7 +26,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers; use Ada.Containers;
+with SPARK.Containers.Types; use SPARK.Containers.Types;
 with SPARK.Big_Integers;
 use SPARK.Big_Integers;
 with SPARK.Containers.Functional.Maps;

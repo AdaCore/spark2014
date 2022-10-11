@@ -36,7 +36,7 @@
 --  use in run-time units.
 
 pragma Ada_2012;
-with Ada.Containers; use Ada.Containers;
+with SPARK.Containers.Types; use SPARK.Containers.Types;
 
 generic
    type Index_Type is (<>);
@@ -78,7 +78,6 @@ is
    function Length (Container : Sequence) return Count_Type with
    --  Length of a sequence
 
-     Import,
      Global => null,
      Post   =>
        (Index_Type'Pos (Index_Type'First) - 1) + Length'Result <=
@@ -90,14 +89,12 @@ is
    --  Access the Element at position Position in Container
 
    with
-     Import,
      Global => null,
      Pre    => Position in Index_Type'First .. Last (Container);
 
    function Last (Container : Sequence) return Extended_Index with
    --  Last index of a sequence
 
-     Import,
      Global => null,
      Post =>
        Last'Result =
@@ -106,7 +103,6 @@ is
    pragma Annotate (GNATprove, Inline_For_Proof, Last);
 
    function First return Extended_Index is (Index_Type'First) with
-     Import,
      Global => null;
    --  First index of a sequence
 
@@ -117,7 +113,6 @@ is
    function "=" (Left : Sequence; Right : Sequence) return Boolean with
    --  Extensional equality over sequences
 
-     Import,
      Global => null,
      Post   =>
        "="'Result =
@@ -129,7 +124,6 @@ is
    function "<" (Left : Sequence; Right : Sequence) return Boolean with
    --  Left is a strict subsequence of Right
 
-     Import,
      Global => null,
      Post   =>
        "<"'Result =
@@ -141,7 +135,6 @@ is
    function "<=" (Left : Sequence; Right : Sequence) return Boolean with
    --  Left is a subsequence of Right
 
-     Import,
      Global => null,
      Post   =>
        "<="'Result =
@@ -158,7 +151,6 @@ is
    --  Returns True if Item occurs in the range from Fst to Lst of Container
 
    with
-     Import,
      Global => null,
      Pre    => Lst <= Last (Container),
      Post   =>
@@ -175,7 +167,6 @@ is
    --  is equal to Item.
 
    with
-     Import,
      Global => null,
      Pre    => Lst <= Last (Container),
      Post   =>
@@ -190,7 +181,6 @@ is
    --  Returns True is Left and Right are the same except at position Position
 
    with
-     Import,
      Global => null,
      Pre    => Position <= Last (Left),
      Post   =>
@@ -208,7 +198,6 @@ is
    --  Returns True is Left and Right are the same except at positions X and Y
 
    with
-     Import,
      Global => null,
      Pre    => X <= Last (Left) and Y <= Last (Left),
      Post   =>
@@ -228,7 +217,6 @@ is
    --  Left and Right.
 
    with
-     Import,
      Global => null,
      Pre    => Lst <= Last (Left) and Lst <= Last (Right),
      Post   =>
@@ -246,33 +234,30 @@ is
    --  elements as the range from Fst + Offset to Lst + Offset in Right.
 
    with
-     Import,
-     Global => null;
-     --  Contract commented out because of a crash, see V927-022
-     --
-     --  Pre    =>
-     --    Lst <= Last (Left)
-     --      and then
-     --        (if Offset < 0 then
-     --           Index_Type'Pos (Index_Type'Base'First) - Offset <=
-     --           Index_Type'Pos (Index_Type'First))
-     --      and then
-     --        (if Fst <= Lst then
-     --           Offset in
-     --             Index_Type'Pos (Index_Type'First) - Index_Type'Pos (Fst) ..
-     --              (Index_Type'Pos (Index_Type'First) - 1) + Length (Right) -
-     --                Index_Type'Pos (Lst)),
-     --  Post   =>
-     --    Range_Shifted'Result =
-     --      ((for all I in Fst .. Lst =>
-     --         Get (Left, I) =
-     --         Get (Right, Index_Type'Val (Index_Type'Pos (I) + Offset)))
-     --       and
-     --         (for all I in Index_Type'Val (Index_Type'Pos (Fst) + Offset) ..
-     --            Index_Type'Val (Index_Type'Pos (Lst) + Offset)
-     --          =>
-     --            Get (Left, Index_Type'Val (Index_Type'Pos (I) - Offset)) =
-     --            Get (Right, I)));
+     Global => null,
+     Pre    =>
+       Lst <= Last (Left)
+         and then
+           (if Offset < 0 then
+              Index_Type'Pos (Index_Type'Base'First) - Offset <=
+              Index_Type'Pos (Index_Type'First))
+         and then
+           (if Fst <= Lst then
+              Offset in
+                Index_Type'Pos (Index_Type'First) - Index_Type'Pos (Fst) ..
+                  (Index_Type'Pos (Index_Type'First) - 1) + Length (Right) -
+                   Index_Type'Pos (Lst)),
+     Post   =>
+       Range_Shifted'Result =
+         ((for all I in Fst .. Lst =>
+            Get (Left, I) =
+            Get (Right, Index_Type'Val (Index_Type'Pos (I) + Offset)))
+          and
+            (for all I in Index_Type'Val (Index_Type'Pos (Fst) + Offset) ..
+               Index_Type'Val (Index_Type'Pos (Lst) + Offset)
+             =>
+               Get (Left, Index_Type'Val (Index_Type'Pos (I) - Offset)) =
+               Get (Right, I)));
    pragma Annotate (GNATprove, Inline_For_Proof, Range_Shifted);
 
    ----------------------------
@@ -290,7 +275,6 @@ is
    --  except for the one at position Position which is replaced by New_Item.
 
    with
-     Import,
      Global => null,
      Pre    => Position in Index_Type'First .. Last (Container),
      Post   =>
@@ -302,7 +286,6 @@ is
    --  plus New_Item at the end.
 
    with
-     Import,
      Global => null,
      Pre    =>
        Length (Container) < Count_Type'Last
@@ -320,7 +303,6 @@ is
    --  Returns a new sequence which contains the same elements as Container
    --  except that New_Item has been inserted at position Position.
 
-     Import,
      Global => null,
      Pre    =>
        Length (Container) < Count_Type'Last
@@ -348,7 +330,6 @@ is
    --  except that the element at position Position has been removed.
 
    with
-     Import,
      Global => null,
      Pre    => Position in Index_Type'First .. Last (Container),
      Post   =>
@@ -375,7 +356,6 @@ is
    function Empty_Sequence return Sequence with
    --  Return an empty Sequence
 
-     Import,
      Global => null,
      Post   => Length (Empty_Sequence'Result) = 0;
 
@@ -384,14 +364,12 @@ is
    ---------------------------
 
    function Iter_First (Container : Sequence) return Extended_Index with
-     Import,
      Global => null;
 
    function Iter_Has_Element
      (Container : Sequence;
       Position  : Extended_Index) return Boolean
    with
-     Import,
      Global => null,
      Post   =>
        Iter_Has_Element'Result =
@@ -402,7 +380,6 @@ is
      (Container : Sequence;
       Position  : Extended_Index) return Extended_Index
    with
-     Import,
      Global => null,
      Pre    => Iter_Has_Element (Container, Position);
 
@@ -411,5 +388,20 @@ private
    pragma SPARK_Mode (Off);
 
    type Sequence is null record;
+
+   function Iter_First (Container : Sequence) return Extended_Index is
+     (raise Program_Error);
+
+   function Iter_Next
+     (Container : Sequence;
+      Position  : Extended_Index) return Extended_Index
+   is
+     (raise Program_Error);
+
+   function Iter_Has_Element
+     (Container : Sequence;
+      Position  : Extended_Index) return Boolean
+   is
+     (raise Program_Error);
 
 end SPARK.Containers.Functional.Vectors;

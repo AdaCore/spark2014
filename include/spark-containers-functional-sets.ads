@@ -27,11 +27,11 @@
 ------------------------------------------------------------------------------
 
 pragma Ada_2012;
-private with SPARK.Containers.Functional.Base;
 
-with Ada.Containers; use Ada.Containers;
-with SPARK.Big_Integers;
-use SPARK.Big_Integers;
+private with SPARK.Containers.Functional.Base;
+private with SPARK.Containers.Types;
+
+with SPARK.Big_Integers; use SPARK.Big_Integers;
 
 generic
    type Element_Type (<>) is private;
@@ -380,6 +380,8 @@ is
 private
 
    pragma SPARK_Mode (Off);
+
+   use SPARK.Containers.Types;
 
    subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
 

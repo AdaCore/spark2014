@@ -27,7 +27,7 @@
 ------------------------------------------------------------------------------
 
 pragma Ada_2012;
-with Ada.Containers; use Ada.Containers;
+with SPARK.Containers.Types; use SPARK.Containers.Types;
 private with SPARK.Containers.Functional.Base;
 
 generic

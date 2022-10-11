@@ -42,7 +42,7 @@
 --    which is not possible if cursors encapsulate an access to the underlying
 --    container.
 
-with Ada.Containers; use Ada.Containers;
+with SPARK.Containers.Types; use SPARK.Containers.Types;
 with SPARK.Containers.Functional.Maps;
 with SPARK.Containers.Functional.Sets;
 with SPARK.Containers.Functional.Vectors;

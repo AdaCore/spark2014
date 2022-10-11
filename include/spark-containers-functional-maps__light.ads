@@ -37,8 +37,7 @@
 
 pragma Ada_2012;
 
-with SPARK.Big_Integers;
-use SPARK.Big_Integers;
+with SPARK.Big_Integers; use SPARK.Big_Integers;
 
 generic
    type Key_Type (<>) is private;
@@ -83,7 +82,6 @@ is
    --  overflows but it is not actually modeled.
 
    function Has_Key (Container : Map; Key : Key_Type) return Boolean with
-     Import,
      Global => null;
    --  Return True if Key is present in Container
 
@@ -92,7 +90,6 @@ is
       Key       : Key_Type)
    --  Has_Key returns the same result on all equivalent keys
    with
-     Import,
      Ghost,
      Global => null,
      Annotate => (GNATprove, Automatic_Instantiation),
@@ -103,7 +100,6 @@ is
    function Get (Container : Map; Key : Key_Type) return Element_Type with
    --  Return the element associated with Key in Container
 
-     Import,
      Global => null,
      Pre    => Has_Key (Container, Key);
 
@@ -112,7 +108,6 @@ is
       Key_1, Key_2 : Key_Type)
    --  Get returns the same result on all equivalent keys
    with
-     Import,
      Ghost,
      Global => null,
      Annotate => (GNATprove, Automatic_Instantiation),
@@ -125,13 +120,11 @@ is
    function Choose (Container : Map) return Key_Type with
    --  Return an arbitrary key in container
 
-     Import,
      Global => null,
      Pre    => not Is_Empty (Container),
      Post   => Has_Key (Container, Choose'Result);
 
    function Length (Container : Map) return Big_Natural with
-     Import,
      Global => null;
    --  Return the number of mappings in Container
 
@@ -142,7 +135,6 @@ is
    function "<=" (Left : Map; Right : Map) return Boolean with
    --  Map inclusion
 
-     Import,
      Global => null,
      Post   =>
        "<="'Result =
@@ -152,7 +144,6 @@ is
    function "=" (Left : Map; Right : Map) return Boolean with
    --  Extensional equality over maps
 
-     Import,
      Global => null,
      Post   =>
        "="'Result =
@@ -165,7 +156,6 @@ is
    function Is_Empty (Container : Map) return Boolean with
    --  A map is empty if it contains no key
 
-     Import,
      Global => null,
      Post   => Is_Empty'Result = (for all Key of Container => False)
        and Is_Empty'Result = (Length (Container) = 0);
@@ -175,7 +165,6 @@ is
    --  Returns True if every Key of Left is in Right
 
    with
-     Import,
      Global => null,
      Post   =>
        Keys_Included'Result = (for all Key of Left => Has_Key (Right, Key));
@@ -184,7 +173,6 @@ is
    --  Returns True if Left and Right have the same keys
 
    with
-     Import,
      Global => null,
      Post   =>
        Same_Keys'Result =
@@ -199,7 +187,6 @@ is
    --  Returns True if Left contains only keys of Right and possibly New_Key
 
    with
-     Import,
      Global => null,
      Post   =>
        Keys_Included_Except'Result =
@@ -215,7 +202,6 @@ is
    --  Returns True if Left contains only keys of Right and possibly X and Y
 
    with
-     Import,
      Global => null,
      Post   =>
        Keys_Included_Except'Result =
@@ -233,7 +219,6 @@ is
    --  Left and Right except New_Key.
 
    with
-     Import,
      Global => null,
      Post   =>
        Elements_Equal_Except'Result =
@@ -251,7 +236,6 @@ is
    --  Left and Right except X and Y.
 
    with
-     Import,
      Global => null,
      Post   =>
        Elements_Equal_Except'Result =
@@ -276,7 +260,6 @@ is
    --  Returns Container augmented with the mapping Key -> New_Item
 
    with
-     Import,
      Global => null,
      Pre    => not Has_Key (Container, New_Key),
      Post   =>
@@ -289,7 +272,6 @@ is
    function Empty_Map return Map with
    --  Return an empty Map
 
-     Import,
      Global => null,
      Post   => Is_Empty (Empty_Map'Result);
 
@@ -299,7 +281,6 @@ is
    --  Returns Container without any mapping for Key
 
    with
-     Import,
      Global => null,
      Pre    => Has_Key (Container, Key),
      Post   =>
@@ -316,7 +297,6 @@ is
    --  replaced by New_Item.
 
    with
-     Import,
      Global => null,
      Pre    => Has_Key (Container, Key),
      Post   =>
@@ -354,19 +334,16 @@ is
         Element     => Element);
 
    function Map_Logic_Equal (Left, Right : Map) return Boolean with
-     Import,
      Ghost,
      Annotate => (GNATprove, Logical_Equal);
    --  Logical equality on maps
 
    function Iterate (Container : Map) return Iterable_Map with
-     Import,
      Global => null,
      Post   => Map_Logic_Equal (Get_Map (Iterate'Result), Container);
    --  Return an iterator over a functional map
 
    function Get_Map (Iterator : Iterable_Map) return Map with
-     Import,
      Global => null;
    --  Retrieve the map associated with an iterator
 
@@ -374,7 +351,6 @@ is
      (Iterator : Iterable_Map;
       Cursor   : Map) return Boolean
    with
-     Import,
      Global => null,
      Post   => (if Valid_Submap'Result then Cursor <= Get_Map (Iterator));
    --  Return True on all maps which can be reached by iterating over
@@ -382,7 +358,6 @@ is
 
    function Element (Iterator : Iterable_Map; Cursor : Map) return Key_Type
    with
-     Import,
      Global => null,
      Pre    => not Is_Empty (Cursor),
      Post   => Element'Result = Choose (Cursor);
@@ -390,14 +365,12 @@ is
    --  choose on Cursor.
 
    function First (Iterator : Iterable_Map) return Map with
-     Import,
      Global => null,
      Post   => Map_Logic_Equal (First'Result, Get_Map (Iterator))
        and then Valid_Submap (Iterator, First'Result);
    --  In the first iteration, the cursor is the map associated with Iterator
 
    function Next (Iterator : Iterable_Map; Cursor : Map) return Map with
-     Import,
      Global => null,
      Pre    => Valid_Submap (Iterator, Cursor) and then not Is_Empty (Cursor),
      Post   => Valid_Submap (Iterator, Next'Result)
@@ -409,7 +382,6 @@ is
      (Iterator : Iterable_Map;
       Cursor   : Map) return Boolean
    with
-     Import,
      Global => null,
      Post   => Has_Element'Result =
        (Valid_Submap (Iterator, Cursor) and then not Is_Empty (Cursor));
@@ -423,25 +395,21 @@ is
    type Private_Key is private;
 
    function Iter_First (Container : Map) return Private_Key with
-     Import,
      Global => null;
 
    function Iter_Has_Element
      (Container : Map;
       Key       : Private_Key) return Boolean
    with
-     Import,
      Global => null;
 
    function Iter_Next (Container : Map; Key : Private_Key) return Private_Key
    with
-     Import,
      Global => null,
      Pre    => Iter_Has_Element (Container, Key);
 
    function Iter_Element (Container : Map; Key : Private_Key) return Key_Type
    with
-     Import,
      Global => null,
      Pre    => Iter_Has_Element (Container, Key);
    pragma Annotate (GNATprove, Iterable_For_Proof, "Contains", Has_Key);
@@ -453,5 +421,63 @@ private
    type Map is null record;
    type Iterable_Map is null record;
    type Private_Key is null record;
+
+   --------------------------------------------------
+   -- Iteration Primitives Used For Quantification --
+   --------------------------------------------------
+   function Iter_First (Container : Map) return Private_Key is
+     (raise Program_Error);
+
+   function Iter_Has_Element
+     (Container : Map;
+      Key       : Private_Key) return Boolean
+   is
+     (raise Program_Error);
+
+   function Iter_Element
+     (Container : Map;
+      Key       : Private_Key) return Key_Type
+   is
+     (raise Program_Error);
+
+   function Iter_Next
+     (Container : Map;
+      Key       : Private_Key) return Private_Key
+   is
+     (raise Program_Error);
+
+   ----------------------------------
+   -- Iteration on Functional Maps --
+   ----------------------------------
+
+   function Element (Iterator : Iterable_Map; Cursor : Map) return Key_Type is
+     (raise Program_Error);
+
+   function First (Iterator : Iterable_Map) return Map is
+     (raise Program_Error);
+
+   function Get_Map (Iterator : Iterable_Map) return Map is
+     (raise Program_Error);
+
+   function Has_Element
+     (Iterator : Iterable_Map;
+      Cursor   : Map) return Boolean
+   is
+     (raise Program_Error);
+
+   function Iterate (Container : Map) return Iterable_Map is
+     (raise Program_Error);
+
+   function Map_Logic_Equal (Left, Right : Map) return Boolean is
+     (raise Program_Error);
+
+   function Next (Iterator : Iterable_Map; Cursor : Map) return Map is
+     (raise Program_Error);
+
+   function Valid_Submap
+     (Iterator : Iterable_Map;
+      Cursor   : Map) return Boolean
+   is
+     (raise Program_Error);
 
 end SPARK.Containers.Functional.Maps;
