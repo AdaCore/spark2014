@@ -2,6 +2,6 @@ array_comparison.adb:8:22: info: assertion proved (CVC5: 1 VC)
 array_comparison.adb:9:22: info: assertion proved (CVC5: 1 VC)
 array_comparison.adb:9:22: info: range check proved (CVC5: 4 VC)
 array_comparison.adb:9:35: info: range check proved (CVC5: 4 VC)
-array_comparison.adb:10:22: info: assertion proved (altergo: 1 VC)
+array_comparison.adb:10:22: info: assertion proved (CVC5: 1 VC)
 array_comparison.adb:11:22: medium: assertion might fail
 array_comparison.ads:5:14: warning: subprogram "P" has no effect

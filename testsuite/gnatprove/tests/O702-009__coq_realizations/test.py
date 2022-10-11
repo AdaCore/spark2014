@@ -21,7 +21,13 @@ gp_realized = [
     "Array__1",
     "Array__1__Concat",
 ]
-am_realized = ["Rep_Proj_Base", "Rep_Proj_BVGen", "Rep_Proj_Int", "Rep_Proj_ltBVGen"]
+am_realized = [
+    "Rep_Proj_Base",
+    "Rep_Proj_BVGen",
+    "Rep_Proj_Int",
+    "Rep_Proj_ltBVGen",
+    "Array_Comparison_Axiom",
+]
 realize_subdir = "realize"
 
 
