@@ -1,0 +1,9 @@
+main.adb:11:09: info: range check proved (CVC5: 2 VC)
+main.adb:18:07: info: data dependencies proved
+main.adb:23:05: info: initialization of "y" proved
+main.adb:23:05: info: predicate check proved on default value (CVC5: 1 VC; Trivial: 1 VC)
+main.adb:23:13: info: range check proved (CVC5: 2 VC)
+main.adb:26:23: info: assertion proved (CVC5: 1 VC)
+main.adb:27:12: medium: in inlined predicate at main.adb:16
+main.adb:27:12: medium: in value of subprogram parameter after the call at main.adb:27
+main.adb:27:12: medium: predicate check might fail, cannot prove x.i = 0

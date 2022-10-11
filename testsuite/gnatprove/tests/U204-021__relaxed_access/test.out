@@ -4,6 +4,7 @@ access_to_relaxed.adb:19:28: info: index check proved (CVC5: 2 VC)
 access_to_relaxed.adb:24:32: info: pointer dereference check proved (CVC5: 1 VC)
 access_to_relaxed.adb:27:14: info: postcondition proved (CVC5: 1 VC)
 access_to_relaxed.adb:34:22: info: pointer dereference check proved (CVC5: 1 VC)
+access_to_relaxed.adb:35:21: info: in value of subprogram parameter after the call at access_to_relaxed.adb:35
 access_to_relaxed.adb:35:21: info: pointer dereference check proved (CVC5: 2 VC)
 access_to_relaxed.adb:35:21: info: predicate check proved (CVC5: 8 VC)
 access_to_relaxed.adb:35:31: info: index check proved (CVC5: 4 VC)
@@ -65,8 +66,10 @@ access_to_relaxed.adb:76:16: info: pointer dereference check proved (CVC5: 1 VC)
 access_to_relaxed.adb:76:27: info: index check proved (CVC5: 2 VC)
 access_to_relaxed.adb:76:27: info: pointer dereference check proved (CVC5: 1 VC)
 access_to_relaxed.adb:76:37: info: pointer dereference check proved (CVC5: 1 VC)
+access_to_relaxed.adb:77:21: info: in value of subprogram parameter after the call at access_to_relaxed.adb:77
 access_to_relaxed.adb:77:21: info: pointer dereference check proved (CVC5: 1 VC)
 access_to_relaxed.adb:77:21: info: predicate check proved (CVC5: 4 VC)
+access_to_relaxed.adb:77:32: info: in value of subprogram parameter after the call at access_to_relaxed.adb:77
 access_to_relaxed.adb:77:32: info: index check proved (CVC5: 2 VC)
 access_to_relaxed.adb:77:32: info: pointer dereference check proved (CVC5: 1 VC)
 access_to_relaxed.adb:79:08: info: pointer dereference check proved (CVC5: 1 VC)

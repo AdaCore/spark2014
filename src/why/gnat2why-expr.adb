@@ -5325,6 +5325,16 @@ package body Gnat2Why.Expr is
       Params         :        Transformation_Params)
    is
    begin
+      --  Add a continuation locating the potential checks on the copy-back
+
+      if Present (Actual) then
+         Continuation_Stack.Append
+           (Continuation_Type'
+              (Ada_Node => Actual,
+               Message  => To_Unbounded_String
+                 ("in value of subprogram parameter after the call")));
+      end if;
+
       --  If needed, recompute the actual expression and store it in Actual
 
       if Need_Store then
@@ -5480,6 +5490,12 @@ package body Gnat2Why.Expr is
             end;
          end if;
       end;
+
+      --  Pop the continuation if any
+
+      if Present (Actual) then
+         Continuation_Stack.Delete_Last;
+      end if;
    end Compute_Store;
 
    -------------------------------
