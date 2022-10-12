@@ -65,6 +65,9 @@ gnatprove advanced switches:
  --debug-save-vcs     Do not delete intermediate files for provers
  --debug-exec-rac     Only execute runtime assertion checking (RAC) and exit
  --flow-debug         Extra debugging for flow analysis (requires graphviz)
+ --function-sandboxing=c
+                      Enable or disable the generation of guards for axioms
+                      providing contracts of functions (c=on*,off)
  --limit-line=f:l     Limit analysis to given file and line
  --limit-line=f:l:c:k Limit analysis to given file, line, column and kind of
                       check
@@ -75,8 +78,6 @@ gnatprove advanced switches:
                       caching of proof results.
  --memlimit=nnn       Set the prover memory limit in MB. Use value 0 for
                       no limit (default when no level set)
- --no-axiom-guard     Do not generate guards for axioms defining contracts of
-                      functions
  --no-global-generation
                       Do not generate Global and Initializes contracts from
                       code, instead assume "null". Note that this option also

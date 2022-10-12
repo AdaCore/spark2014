@@ -1,2 +1,2 @@
 prove_all:
-  opt: ["--no-axiom-guard"]
+  opt: ["--function-sandboxing=off"]

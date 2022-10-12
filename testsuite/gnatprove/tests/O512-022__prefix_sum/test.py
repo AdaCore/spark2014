@@ -3,7 +3,7 @@ from test_support import prove_all
 contains_manual_proof = False
 
 options = [
-    "--no-axiom-guard",
+    "--function-sandboxing=off",
     "--proof-warnings",
     "-u",
     "prefixsum.adb",

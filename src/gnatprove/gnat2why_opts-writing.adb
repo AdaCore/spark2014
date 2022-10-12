@@ -156,8 +156,16 @@ package body Gnat2Why_Opts.Writing is
 
          Set_Field (Obj, Pedantic_Name,         CL_Switches.Pedantic);
          Set_Field (Obj, Flow_Show_GG_Name,     CL_Switches.Flow_Show_GG);
-         Set_Field (Obj, Proof_Generate_Guards_Name,
-                    not CL_Switches.No_Axiom_Guard);
+
+         if CL_Switches.Function_Sandboxing.all = ""
+           or else CL_Switches.Function_Sandboxing.all = "on"
+         then
+            Set_Field (Obj, Proof_Generate_Guards_Name, True);
+         else
+            pragma Assert (CL_Switches.Function_Sandboxing.all = "off");
+            Set_Field (Obj, Proof_Generate_Guards_Name, False);
+         end if;
+
          Set_Field (Obj, Debug_Trivial_Name,    CL_Switches.Debug_Trivial);
          Set_Field (Obj, Ide_Mode_Name,         Configuration.IDE_Mode);
          Set_Field (Obj, CWE_Name,              CL_Switches.CWE);

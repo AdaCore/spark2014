@@ -769,6 +769,10 @@ package body Configuration is
             Long_Switch => "--no-axiom-guard");
          Define_Switch
            (Config,
+            CL_Switches.Function_Sandboxing'Access,
+            Long_Switch => "--function-sandboxing=");
+         Define_Switch
+           (Config,
             CL_Switches.No_Global_Generation'Access,
             Long_Switch => "--no-global-generation");
          Define_Switch
@@ -1544,6 +1548,19 @@ package body Configuration is
               ("Note: switch ""--no-counterexample"" is ignored.");
             Ada.Text_IO.Put_Line
               ("Note: use ""--counterexamples=off"" instead.");
+         end if;
+
+         if CL_Switches.No_Axiom_Guard then
+            Ada.Text_IO.Put_Line
+              ("Note: switch ""--no-axiom-guard"" is ignored.");
+            Ada.Text_IO.Put_Line
+              ("Note: use ""--function-sandboxing=off"" instead.");
+         end if;
+
+         if CL_Switches.Function_Sandboxing.all not in "" | "on" | "off" then
+            Abort_Msg ("error: wrong argument for --function-sandboxing, " &
+                         "must be one of (on, off)",
+                       With_Help => False);
          end if;
 
          --  Handling of Only_Given and Filelist
