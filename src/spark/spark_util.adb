@@ -23,32 +23,33 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Latin_1;        use Ada.Characters.Latin_1;
+with Ada.Characters.Latin_1;      use Ada.Characters.Latin_1;
 with Ada.Text_IO;
-with Common_Iterators;              use Common_Iterators;
-with Errout;                        use Errout;
-with Flow_Dependency_Maps;          use Flow_Dependency_Maps;
-with Flow_Refinement;               use Flow_Refinement;
-with Flow_Types;                    use Flow_Types;
-with Flow_Utility;                  use Flow_Utility;
-with Flow_Utility.Initialization;   use Flow_Utility.Initialization;
+with Common_Iterators;            use Common_Iterators;
+with Errout;                      use Errout;
+with Flow_Dependency_Maps;        use Flow_Dependency_Maps;
+with Flow_Refinement;             use Flow_Refinement;
+with Flow_Types;                  use Flow_Types;
+with Flow_Utility;                use Flow_Utility;
+with Flow_Utility.Initialization; use Flow_Utility.Initialization;
+with GNATCOLL.Utils;              use GNATCOLL.Utils;
 with Gnat2Why_Args;
 with Lib.Xref;
 with Opt;
 with Osint;
 with Output;
-with Pprint;                        use Pprint;
-with SPARK_Definition;              use SPARK_Definition;
-with SPARK_Util.Hardcoded;          use SPARK_Util.Hardcoded;
-with SPARK_Util.Subprograms;        use SPARK_Util.Subprograms;
-with SPARK_Util.Types;              use SPARK_Util.Types;
-with Sem_Ch12;                      use Sem_Ch12;
-with Sem_Eval;                      use Sem_Eval;
-with Sem_Prag;                      use Sem_Prag;
-with Sem_Type;                      use Sem_Type;
-with Sinfo.Utils;                   use Sinfo.Utils;
-with Stand;                         use Stand;
-with Stringt;                       use Stringt;
+with Pprint;                      use Pprint;
+with SPARK_Definition;            use SPARK_Definition;
+with SPARK_Util.Hardcoded;        use SPARK_Util.Hardcoded;
+with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
+with SPARK_Util.Types;            use SPARK_Util.Types;
+with Sem_Ch12;                    use Sem_Ch12;
+with Sem_Eval;                    use Sem_Eval;
+with Sem_Prag;                    use Sem_Prag;
+with Sem_Type;                    use Sem_Type;
+with Sinfo.Utils;                 use Sinfo.Utils;
+with Stand;                       use Stand;
+with Stringt;                     use Stringt;
 
 package body SPARK_Util is
 
@@ -3200,6 +3201,61 @@ package body SPARK_Util is
         and then Present (Get_Called_Entity (Expr))
         and then Is_Traversal_Function (Get_Called_Entity (Expr));
    end Is_Traversal_Function_Call;
+
+   ---------------------
+   -- Location_String --
+   ---------------------
+
+   function Location_String (Input         : Source_Ptr;
+                             Columns       : Boolean := True;
+                             Chain_Markers : Boolean := True;
+                             Natural_Order : Boolean := False) return String
+   is
+      Slc : Source_Ptr := Input;
+      Buf : Unbounded_String;
+
+      procedure Combine (A : in out Unbounded_String; B : String);
+
+      -------------
+      -- Combine --
+      -------------
+
+      procedure Combine (A : in out Unbounded_String; B : String) is
+      begin
+         if Natural_Order then
+            A := B & A;
+         else
+            Append (A, B);
+         end if;
+      end Combine;
+
+   --  Start of processing for Location_String
+
+   begin
+      loop
+         declare
+            File   : constant String := File_Name (Slc);
+            Line   : constant Physical_Line_Number :=
+              Get_Physical_Line_Number (Slc);
+            Column : constant Column_Number := Get_Column_Number (Slc);
+         begin
+            Combine (Buf,
+                     File & ':' & Image (Positive (Line), 1)
+                     & (if Columns then
+                          ':' & Image (Positive (Column), 1)
+                        else ""));
+            exit when Instantiation_Location (Slc) = No_Location;
+            Combine (Buf,
+                     (if Chain_Markers then
+                        (if Comes_From_Inlined_Body (Slc)
+                         then ":inlined:"
+                         else ":instantiated:")
+                      else ":"));
+            Slc := Instantiation_Location (Slc);
+         end;
+      end loop;
+      return To_String (Buf);
+   end Location_String;
 
    -----------------------------------
    -- Loop_Entity_Of_Exit_Statement --

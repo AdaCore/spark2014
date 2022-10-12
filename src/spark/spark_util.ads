@@ -602,6 +602,19 @@ package SPARK_Util is
    --  Return a string representing the shape of the Ada code surrounding the
    --  input node. This is used to name the VC file for manual proof.
 
+   function Location_String (Input         : Source_Ptr;
+                             Columns       : Boolean := True;
+                             Chain_Markers : Boolean := True;
+                             Natural_Order : Boolean := False) return String;
+   --  Build a string that represents the source location of the source
+   --  pointer. This includes the chain of generic instantiations.
+   --  Columns - If set to False, remove column information from the string to
+   --    keep only line information.
+   --  Chain_Markers - If set to True, add strings to differentiate
+   --    instances/inlining.
+   --  Natural_Order - If set to True, build instantiation chain outermost
+   --    first (e.g. location of instantiation before location of generic)
+
    ----------------------------------
    -- Queries for particular nodes --
    ----------------------------------
