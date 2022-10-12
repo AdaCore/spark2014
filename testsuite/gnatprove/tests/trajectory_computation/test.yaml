@@ -1,4 +1,4 @@
 prove_all:
   codepeer: True
   steps: 2000
-  opt: ["--no-axiom-guard"]
+  opt: ["--function-sandboxing=off"]

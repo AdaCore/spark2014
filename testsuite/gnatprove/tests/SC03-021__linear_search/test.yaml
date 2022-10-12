@@ -1,4 +1,4 @@
 prove_all:
   sparklib: True
-  opt: ["--no-axiom-guard"]
+  opt: ["--function-sandboxing=off"]
   steps: 2000
