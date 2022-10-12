@@ -2904,6 +2904,76 @@ package body SPARK_Definition is
                end if;
             end if;
 
+            --  If both objects are volatile, issue a warning if volatile
+            --  properties differ. We can only issue this warning in the case
+            --  of supported aliases, as there is no "other object" otherwise.
+
+            if Is_Object (E)
+              and then Has_Volatile (E)
+              and then Supported_Alias
+              and then Has_Volatile (Aliased_Object)
+            then
+               declare
+
+                  function Prop_Differs (P : Volatile_Pragma_Id)
+                                          return Boolean;
+                  function Prop_Name (X : Volatile_Pragma_Id) return String;
+
+                  -------------------
+                  -- Compare_Props --
+                  -------------------
+
+                  function Prop_Differs (P : Volatile_Pragma_Id)
+                                          return Boolean is
+                     (Has_Volatile_Property (E, P) /=
+                         Has_Volatile_Property (Aliased_Object, P));
+
+                  ---------------
+                  -- Prop_Name --
+                  ---------------
+
+                  function Prop_Name (X : Volatile_Pragma_Id) return String is
+                  begin
+                     case X is
+                        when Pragma_Async_Readers    =>
+                           return "Async_Readers";
+                        when Pragma_Async_Writers    =>
+                           return "Async_Writers";
+                        when Pragma_Effective_Reads  =>
+                           return "Effective_Reads";
+                        when Pragma_Effective_Writes =>
+                           return "Effective_Writes";
+                     end case;
+                  end Prop_Name;
+
+                  Buf   : Unbounded_String;
+                  First : Boolean := True;
+
+               begin
+                  if (for some X in Volatile_Pragma_Id => Prop_Differs (X))
+                  then
+                     Error_Msg_NE
+                       (Warning_Message (Warn_Alias_Different_Volatility),
+                        Address, E);
+                     for Prop in Volatile_Pragma_Id loop
+                        if Prop_Differs (Prop) then
+                           if First then
+                              Buf := Buf & Prop_Name (Prop);
+                              First := False;
+                           else
+                              Buf := Buf & ", " & Prop_Name (Prop);
+                           end if;
+                        end if;
+                     end loop;
+                     Error_Msg_NE
+                       ("\values for property "
+                        & To_String (Buf)
+                        & " are different",
+                        Address, E);
+                  end if;
+               end;
+            end if;
+
             if Is_Object (E)
               and then not E_Is_Constant
               and then Supported_Alias
