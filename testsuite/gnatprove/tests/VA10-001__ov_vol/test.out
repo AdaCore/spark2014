@@ -1,0 +1,24 @@
+test.ads:4:04: info: alignment of overlaid objects is compatible (Trivial)
+test.ads:4:04: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:4:23: warning: aliased objects have different volatile properties
+test.ads:4:23: warning: values for property Async_Writers, Effective_Reads, Effective_Writes are different
+test.ads:4:34: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:4:34: info: types of aliased objects have the same size (Trivial)
+test.ads:7:04: info: alignment of overlaid objects is compatible (Trivial)
+test.ads:7:04: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:7:23: warning: aliased objects have different volatile properties
+test.ads:7:23: warning: values for property Async_Readers, Effective_Reads, Effective_Writes are different
+test.ads:7:34: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:7:34: info: types of aliased objects have the same size (Trivial)
+test.ads:10:04: info: alignment of overlaid objects is compatible (Trivial)
+test.ads:10:04: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:10:23: warning: aliased objects have different volatile properties
+test.ads:10:23: warning: values for property Async_Readers, Effective_Writes are different
+test.ads:10:34: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:10:34: info: types of aliased objects have the same size (Trivial)
+test.ads:13:04: info: alignment of overlaid objects is compatible (Trivial)
+test.ads:13:04: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:13:23: warning: aliased objects have different volatile properties
+test.ads:13:23: warning: values for property Async_Writers, Effective_Reads are different
+test.ads:13:34: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:13:34: info: types of aliased objects have the same size (Trivial)

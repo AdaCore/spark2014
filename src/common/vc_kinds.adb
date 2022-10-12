@@ -529,6 +529,8 @@ package body VC_Kinds is
         when Warn_Initialization_To_Alias =>
           "initialization of object is assumed to have no effects on"
           & " other non-volatile objects",
+        when Warn_Alias_Different_Volatility  =>
+            "aliased objects should have the same volatile properties",
         when Warn_Function_Is_Valid =>
           "function Is_Valid is assumed to return True",
         when Warn_Lemma_Procedure_No_Return =>
@@ -1326,6 +1328,8 @@ package body VC_Kinds is
           "indirect writes to alias",
         when Warn_Initialization_To_Alias =>
           "initialization of alias",
+        when Warn_Alias_Different_Volatility =>
+          "volatile properties of aliases",
         when Warn_Function_Is_Valid =>
           "function Is_Valid always return True",
         when Warn_Lemma_Procedure_No_Return =>
