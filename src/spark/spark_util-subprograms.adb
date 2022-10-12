@@ -23,21 +23,21 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Iterators;                   use Common_Iterators;
+with Common_Iterators;               use Common_Iterators;
 with Debug;
-with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
-with Flow_Generated_Globals.Phase_2;     use Flow_Generated_Globals.Phase_2;
-with Flow_Refinement;                    use Flow_Refinement;
-with Flow_Types;                         use Flow_Types;
-with Flow_Utility;                       use Flow_Utility;
-with GNATCOLL.Utils;                     use GNATCOLL.Utils;
-with Rtsfind;                            use Rtsfind;
-with Sem_Ch12;                           use Sem_Ch12;
-with Sem_Prag;                           use Sem_Prag;
-with SPARK_Definition;                   use SPARK_Definition;
-with SPARK_Definition.Annotate;          use SPARK_Definition.Annotate;
-with SPARK_Util.Types;                   use SPARK_Util.Types;
-with Stand;                              use Stand;
+with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Refinement;                use Flow_Refinement;
+with Flow_Types;                     use Flow_Types;
+with Flow_Utility;                   use Flow_Utility;
+with Rtsfind;                        use Rtsfind;
+with Sem_Ch12;                       use Sem_Ch12;
+with Sem_Prag;                       use Sem_Prag;
+with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
+with SPARK_Util.Types;               use SPARK_Util.Types;
+with Stand;                          use Stand;
+with String_Utils;                   use String_Utils;
 
 package body SPARK_Util.Subprograms is
 
@@ -1277,12 +1277,21 @@ package body SPARK_Util.Subprograms is
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean is
       Limit_Str : constant String := To_String (Gnat2Why_Args.Limit_Subp);
    begin
-      return
-        Ekind (E) in Subprogram_Kind | Task_Kind | E_Task_Body | Entry_Kind
-          and then
-        (Limit_Str = SPARK_Util.Subprograms.Subp_Location (E)
-          or else
-         Limit_Str = SPARK_Util.Subprograms.Subp_Body_Location (E));
+      if Limit_Str /= ""
+        and then Ekind (E) in Subprogram_Kind
+                            | Task_Kind
+                            | E_Task_Body
+                            | Entry_Kind
+      then
+         return
+           (Contains (SPARK_Util.Subprograms.Subp_Location (E), Limit_Str)
+            or else
+            Contains (
+              SPARK_Util.Subprograms.Subp_Body_Location (E),
+              Limit_Str));
+      else
+         return False;
+      end if;
    end Is_Requested_Subprogram_Or_Task;
 
    -------------------------------
@@ -1734,19 +1743,21 @@ package body SPARK_Util.Subprograms is
    -- Subp_Location --
    -------------------
 
-   --  Only consider the first location in the chain of locations for an
-   --  instantiation or an inlining. This matches the location given by
-   --  users inside a generic/inlined subprogram.
-
    function Subp_Location (E : Entity_Id) return String is
       Slc : constant Source_Ptr :=
         (if Is_Generic_Instance (Unique_Entity (E)) then
            Sloc (Subprogram_Specification (E))
          else Sloc (E));
-      File : constant String := File_Name (Slc);
-      Line : constant Physical_Line_Number := Get_Physical_Line_Number (Slc);
    begin
-      return File & ":" & Image (Positive (Line), 1);
+
+      --  Compute the location string as a user would provide it with
+      --  --limit-subp. This means dropping columns and chain markers, and
+      --  preserving the order of the locations.
+
+      return Location_String (Slc,
+                              Columns       => False,
+                              Chain_Markers => False,
+                              Natural_Order => True);
    end Subp_Location;
 
    ---------------------------------

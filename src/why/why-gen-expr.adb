@@ -90,10 +90,6 @@ package body Why.Gen.Expr is
    --  not allow retrieving the name of the appropriate conversion function,
    --  only the abstract fixed-point type allows it.
 
-   function New_Located_String (Input : Source_Ptr) return String;
-   --  Build a string that represents the source location of the source
-   --  pointer.
-
    function New_Check_Label
      (Sloc   : Source_Ptr;
       Reason : VC_Kind;
@@ -3971,7 +3967,7 @@ package body Why.Gen.Expr is
    begin
       return NID (GP_Check_Marker & Image (Integer (Id), 1) & ":"
                   & VC_Kind'Image (Reason) & ":"
-                  & New_Located_String (Sloc));
+                  & Location_String (Sloc));
    end New_Check_Label;
 
    --------------------
@@ -4214,34 +4210,6 @@ package body Why.Gen.Expr is
       return New_Call (Name => Havoc_Fun,
                        Args => (1 => +Id));
    end New_Havoc_Call;
-
-   ------------------------
-   -- New_Located_String --
-   ------------------------
-
-   function New_Located_String (Input : Source_Ptr) return String is
-      Slc : Source_Ptr := Input;
-      Buf : Unbounded_String;
-   begin
-      loop
-         declare
-            File   : constant String := File_Name (Slc);
-            Line   : constant Physical_Line_Number :=
-              Get_Physical_Line_Number (Slc);
-            Column : constant Column_Number := Get_Column_Number (Slc);
-         begin
-            Append (Buf, File & ':' &
-                         Image (Positive (Line), 1) & ':' &
-                         Image (Positive (Column), 1));
-            exit when Instantiation_Location (Slc) = No_Location;
-            Append (Buf, (if Comes_From_Inlined_Body (Slc)
-                          then ":inlined:"
-                          else ":instantiated:"));
-            Slc := Instantiation_Location (Slc);
-         end;
-      end loop;
-      return To_String (Buf);
-   end New_Located_String;
 
    ---------------------
    -- New_Shape_Label --
