@@ -1965,8 +1965,8 @@ package body Why.Gen.Records is
            (1 => (B_Name => X_Ident,
                   others => <>));
       begin
-         --  We do not need conversions for discriminants, as we never use
-         --  wrapper types for them.
+         --  Step 1. We do not need conversions for discriminants, as we never
+         --  use wrapper types for them.
 
          if Num_Discrs > 0 then
             declare
@@ -1979,7 +1979,6 @@ package body Why.Gen.Records is
                  New_Record_Access (Name  => +X_Ident,
                                     Field => Discrs_Comp);
             begin
-
                Index := Index + 1;
                To_Wrapper_Aggr (Index) :=
                  New_Field_Association
@@ -1994,7 +1993,8 @@ package body Why.Gen.Records is
             end;
          end if;
 
-         --  For fields, we convert each component to and from the wrapper type
+         --  Step 2. For fields, we convert each component to and from the
+         --  wrapper type.
 
          if Num_Fields > 0 then
             declare
@@ -2127,6 +2127,34 @@ package body Why.Gen.Records is
                       (Associations => To_Wrapper_Field));
             end;
          end if;
+
+         --  Step 3. Copy the is_moved field if the type has ownership
+
+         if Has_Ownership_Annotation (E) and then Needs_Reclamation (E) then
+            declare
+               Moved_Comp    : constant W_Identifier_Id :=
+                 E_Symb (E, WNE_Is_Moved_Field);
+               A_Moved_Access : constant W_Expr_Id :=
+                 New_Record_Access (Name  => +A_Ident,
+                                    Field => To_Ident (WNE_Is_Moved_Field));
+               X_Moved_Access : constant W_Expr_Id :=
+                 New_Record_Access (Name  => +X_Ident,
+                                    Field => Moved_Comp);
+            begin
+               Index := Index + 1;
+               To_Wrapper_Aggr (Index) :=
+                 New_Field_Association
+                   (Domain => EW_Term,
+                    Field  => To_Ident (WNE_Is_Moved_Field),
+                    Value  => X_Moved_Access);
+               From_Wrapper_Aggr (Index) :=
+                 New_Field_Association
+                   (Domain => EW_Term,
+                    Field  => Moved_Comp,
+                    Value  => A_Moved_Access);
+            end;
+         end if;
+
          pragma Assert (Index = Num_All);
 
          Emit
