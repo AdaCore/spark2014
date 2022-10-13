@@ -953,14 +953,9 @@ These settings will speed up |GNATprove|:
 
 .. index:: pair: --function-sandboxing; speeding up
 
-* Use ``--function-sandboxing=off``.
-  Generally, SPARK checks that subprograms  correctly
-  implement their implicit and explicit contracts, and assumes that this is the
-  case as well for subprograms that are not verified by |GNATprove|, see
-  also :ref:`Managing Assumptions`. To limit the impact of incorrect contracts,
-  |GNATprove| inserts by default special guards, so that potentially incorrect
-  postconditions are only used when the unverified subprogram is actually
-  called. These guards have a non-negligible impact on prover performance. If
+* Use ``--function-sandboxing=off``. By default, |GNATprove| sandboxes functions
+  to limit the impact of :ref:`Infeasible Subprogram Contracts`. These guards
+  have a non-negligible impact on prover performance. If
   in your project, all subprograms are in the |SPARK| subset, or you have
   confidence in the contracts you wrote for the subprograms which are not in
   |SPARK|, you can disable these guards using the ``--function-sandboxing=off``
