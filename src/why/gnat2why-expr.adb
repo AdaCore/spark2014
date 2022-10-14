@@ -10762,7 +10762,8 @@ package body Gnat2Why.Expr is
       --  delta aggregate if and only if Update_Prefix has been supplied.
 
       In_Delta_Aggregate : constant Boolean := Present (Update_Prefix);
-      Empty_Aggregate    : constant Boolean := Is_Null_Aggregate (Expr);
+      Empty_Aggregate    : constant Boolean :=
+        Nkind (Expr) = N_Aggregate and then Is_Null_Aggregate (Expr);
       --  True if Expr is []
       Expr_Typ           : constant Entity_Id := Type_Of_Node (Expr);
       Ret_Type           : constant W_Type_Id := EW_Abstract
