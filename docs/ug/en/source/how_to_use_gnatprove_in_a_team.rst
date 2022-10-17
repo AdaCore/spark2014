@@ -542,11 +542,14 @@ of a program:
 .. index:: validity; limitation
 
 * [SPARK_EXTERNAL_VALID]
-  Values read from an external source are assumed to be valid values.
-  Currently there is no model of invalidity or undefinedness. The onus is on
-  the user to ensure that all values read from an external source are
-  valid. The use of an invalid value invalidates any proofs associated with the
-  value.
+  Values read from objects whose address is specified are assumed to be valid
+  values. This assumption is limited to objects annotated with an address
+  clause or aspect whose expression is not a reference to the Address attribute
+  on a part of a standalone object or constant (because an explicit check is
+  emitted for these). Currently there is no model of invalidity or
+  undefinedness. The onus is on the user to ensure that all values read from an
+  external source are valid. The use of an invalid value invalidates any proofs
+  associated with the value.
 
 * [SPARK_STORAGE_ERROR]
   As explained in section :ref:`Dealing with Storage_Error`, GNATprove does not
@@ -668,7 +671,7 @@ only part of a program:
 * [ADA_EXTERNAL]
   Objects accessed outside of SPARK, either directly for statically allocated
   objects, or through their address or a pointer for all objects, should comply
-  with the assumptions described in [SPARK_EXTERNAL].
+  with the assumptions described in [SPARK_EXTERNAL] and [SPARK_EXTERNAL_VALID].
 
 * [ADA_PRIVATE_TYPES]
   Private types whose full view is not analyzed, yet are used in
