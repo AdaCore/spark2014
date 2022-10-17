@@ -537,7 +537,9 @@ of a program:
 
 * [SPARK_VALID]
   Attribute 'Valid is currently assumed to always return True, as no invalid
-  value can be constructed in SPARK (see :ref:`Data Validity`).
+  value can be constructed in SPARK (see :ref:`Data Validity`). This assumption
+  can be seen as a consequence of other assumptions, in particular
+  [SPARK_VALIDITY], [SPARK_EXTERNAL_VALID] and [ADA_EXTERNAL].
 
 .. index:: validity; limitation
 
