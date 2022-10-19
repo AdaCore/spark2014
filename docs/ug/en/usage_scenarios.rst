@@ -37,18 +37,17 @@ SPARK analysis can give strong guarantees that a program:
 * respects key integrity properties (e.g., interaction between components or global invariants),
 * is a correct implementation of software requirements expressed as contracts.
 
-SPARK can analyze either a complete program or :ref:`those parts that are
-marked as being subject to analysis<Identifying SPARK Code>`, but it can only
-be applied to code that follows :ref:`some restrictions designed to facilitate
+SPARK can analyze either a complete program or :ref:`those parts that are marked
+as being subject to analysis<Identifying SPARK Code>`, but it can only be
+applied to code that follows :ref:`some restrictions designed to facilitate
 formal verification<Language Restrictions>`. In particular, handling of
 exceptions is not allowed and use of pointers should follow a strict ownership
-policy aiming at preventing aliasing of data allocated in the heap (pointers to
-the stack are not allowed). Pointers and exceptions are both features that, if
-supported completely, make formal verification, as done by SPARK, infeasible,
-either because of limitations of state-of-the-art technology or because of the
-disproportionate effort required from users to apply formal verification in
-such situations. The large subset of Ada that is analyzed by SPARK is also
-called the SPARK language subset.
+policy aiming at preventing aliasing of allocated data. Pointers and exceptions
+are both features that, if supported completely, make formal verification, as
+done by SPARK, infeasible, either because of limitations of state-of-the-art
+technology or because of the disproportionate effort required from users to
+apply formal verification in such situations. The large subset of Ada that is
+analyzed by SPARK is also called the SPARK language subset.
 
 SPARK builds on the strengths of Ada to provide even more guarantees
 statically rather than dynamically. As summarized in the following table,
