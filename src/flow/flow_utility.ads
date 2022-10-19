@@ -706,6 +706,14 @@ package Flow_Utility is
    --  ??? I think it should also return True for a record whose all components
    --  are empty.
 
+   function Is_Statically_Disabled
+     (N     : Node_Id;
+      Value : Boolean)
+      return Boolean
+   with Pre => Nkind (N) in N_Subexpr and then Is_Boolean_Type (Etype (N));
+   --  Returns True iff N is a "statically disabled" condition as described in
+   --  the SPARK UG (7.3.2).
+
    type Raw_Global_Nodes is record
       Proof_Ins : Node_Sets.Set;
       Inputs    : Node_Sets.Set;
