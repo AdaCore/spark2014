@@ -31,6 +31,7 @@ with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Output;                          use Output;
 with Rtsfind;                         use Rtsfind;
+with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
 with Sem_Type;                        use Sem_Type;
 with Sinfo.Utils;                     use Sinfo.Utils;
@@ -6248,6 +6249,120 @@ package body Flow_Utility is
 
       return False;
    end Is_Empty_Record_Type;
+
+   ----------------------------
+   -- Is_Statically_Disabled --
+   ----------------------------
+
+   function Is_Statically_Disabled
+     (N     : Node_Id;
+      Value : Boolean)
+      return Boolean
+   is
+      function Is_Discrete_Literal (N : Node_Id) return Boolean;
+      --  True iff N is an integer, character or enumeration literal
+
+      -------------------------
+      -- Is_Discrete_Literal --
+      -------------------------
+
+      function Is_Discrete_Literal (N : Node_Id) return Boolean is
+        (Nkind (N) in N_Integer_Literal | N_Character_Literal
+         or else (Nkind (N) in N_Identifier | N_Expanded_Name
+                    and then Ekind (Entity (N)) = E_Enumeration_Literal));
+
+      Expr_N : constant Node_Id :=
+        (if Is_Static_Expression (N)
+           and then Entity (N) in Standard_True | Standard_False
+           and then Is_Rewrite_Substitution (N)
+         then Original_Node (N)
+         else N);
+   begin
+      --  A "statically disabled" condition which evaluates to Value is either:
+
+      case Nkind (Expr_N) is
+
+         --  an and or and then operators when:
+         --  - Value is True and both operands are statically disabled
+         --    conditions evaluated to True.
+         --  - Value is False and at least one operand is a statically disabled
+         --    condition evaluated to False.
+
+         when N_Op_And | N_And_Then =>
+            return
+              (if Value
+               then
+                 (Is_Statically_Disabled (Left_Opnd (Expr_N), Value)
+                    and then
+                  Is_Statically_Disabled (Right_Opnd (Expr_N), Value))
+               else
+                 (Is_Statically_Disabled (Left_Opnd (Expr_N), Value)
+                    or else
+                  Is_Statically_Disabled (Right_Opnd (Expr_N), Value)));
+
+         --  an or or or else operators when:
+         --  - Value is True and at least one operand is a statically disabled
+         --    condition evaluated to True.
+         --  - Value is False and both operands are statically disabled
+         --    conditions evaluated to False.
+
+         when N_Op_Or | N_Or_Else =>
+            return
+              (if Value
+               then
+                 (Is_Statically_Disabled (Left_Opnd (Expr_N), Value)
+                    or else
+                  Is_Statically_Disabled (Right_Opnd (Expr_N), Value))
+               else
+                 (Is_Statically_Disabled (Left_Opnd (Expr_N), Value)
+                    and then
+                  Is_Statically_Disabled (Right_Opnd (Expr_N), Value)));
+
+         --  a not operator when the right operand is a statically disabled
+         --  condition evaluated to the negation of Value.
+
+         when N_Op_Not =>
+            return Is_Statically_Disabled (Right_Opnd (Expr_N), not Value);
+
+         --  a static constant when it is of a boolean type with aspect
+         --  Warnings Off.
+
+         when N_Identifier | N_Expanded_Name =>
+            return Is_Static_Expression (Expr_N)
+              and then Value = Is_True (Expr_Value (Expr_N))
+              and then Ekind (Entity (Expr_N)) = E_Constant
+              and then Has_Warnings_Off (Entity (Expr_N));
+
+         --  a relational_operator where one operand is static constant with
+         --  aspect Warnings Off and the other operand is a literal of the
+         --  corresponding type.
+
+         when N_Op_Compare =>
+            declare
+               Left  : constant Node_Id := Left_Opnd (Expr_N);
+               Right : constant Node_Id := Right_Opnd (Expr_N);
+            begin
+               return
+                 Is_Static_Expression (N)
+                 and then Value = Is_True (Expr_Value (N))
+                 and then
+                   ((Nkind (Left) in N_Identifier | N_Expanded_Name
+                       and then Ekind (Entity (Left)) = E_Constant
+                       and then Has_Warnings_Off (Entity (Left))
+                       and then Is_Discrete_Literal (Right))
+                    or else
+                      (Is_Discrete_Literal (Left)
+                         and then Nkind (Right) in N_Identifier
+                                                 | N_Expanded_Name
+                         and then Ekind (Entity (Right)) = E_Constant
+                         and then Has_Warnings_Off (Entity (Right))));
+            end;
+
+         when others =>
+            return False;
+
+      end case;
+   end Is_Statically_Disabled;
 
    -----------------------------
    -- Is_Dummy_Abstract_State --

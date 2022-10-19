@@ -96,6 +96,39 @@ added in a configuration file to suppress the corresponding warnings across all
 units in the project. Pragma ``Warnings Off`` can be specified for an entity to
 suppress all warnings related to this entity.
 
+Additionally, aspect ``Warnings Off`` on a static stand-alone constant object
+can be used to suppress warnings about unreachable code due to a "statically
+disabled" condition of an IF statement. This is useful when using configuration
+constants, which may trigger spurious warnings about unreachable code.
+
+A "statically disabled" condition which evaluates to Value is either:
+
+* a static stand-alone constant when it is of a boolean type, has aspect
+  ``Warnings Off`` and its initial value evaluates to Value
+
+* a *relational_operator* where one operand is static stand-alone constant with
+  aspect ``Warnings Off``, the other operand is a literal of the corresponding
+  type and the operator evaluates to Value
+
+* an ``and`` or ``and then`` operators when:
+
+  * Value is True and both operands are statically disabled conditions
+    that evaluate to True
+
+  * Value is False and at least one operand is a statically disabled condition
+    that evaluates to False
+
+* an ``or`` or ``or else`` operators when:
+
+  * Value is True and at least one operand is a statically disabled condition
+    that evaluates to True
+
+  * Value is False and both operands are statically disabled conditions
+    that evaluate to False
+
+* a *not* operator when the right operand is a statically disabled condition
+  that evaluates to the negation of Value
+
 Pragma ``Warnings`` can also take a first argument of ``GNATprove`` to specify
 that it applies only to |GNATprove|. For example, the previous example can be
 modified to use these refined pragma ``Warnings``:

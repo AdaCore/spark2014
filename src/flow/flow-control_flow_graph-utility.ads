@@ -30,13 +30,30 @@ with SPARK_Util;                  use SPARK_Util;
 
 package Flow.Control_Flow_Graph.Utility is
 
+   type Vertex_Context is record
+      Current_Loops     : Node_Sets.Set;
+      --  The set of loops currently processed
+
+      In_Nested_Package : Boolean;
+      --  True iff we are processing a nested package
+
+      Warnings_Off      : Boolean;
+      --  True iff we do not want to emit warning on the code (when we are
+      --  processing dead vertices that comes from a statically known condition
+      --  involving a variable with Warnings => Off).
+   end record;
+
+   No_Vertex_Context : constant Vertex_Context :=
+     Vertex_Context'(Current_Loops     => Node_Sets.Empty_Set,
+                     In_Nested_Package => False,
+                     Warnings_Off      => False);
+
    function Make_Basic_Attributes
      (Var_Def       : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Ex_Use    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Im_Use    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Sub_Called    : Node_Sets.Set       := Node_Sets.Empty_Set;
-      Loops         : Node_Sets.Set       := Node_Sets.Empty_Set;
-      In_Nested_Pkg : Boolean;
+      Vertex_Ctx    : Vertex_Context      := No_Vertex_Context;
       E_Loc         : Node_Or_Entity_Id   := Empty;
       Print_Hint    : Pretty_Print_Kind_T := Pretty_Print_Null)
       return V_Attributes
@@ -49,7 +66,7 @@ package Flow.Control_Flow_Graph.Utility is
      (Var_Def         : Flow_Id_Sets.Set;
       Var_Use         : Flow_Id_Sets.Set;
       Object_Returned : Entity_Id;
-      Loops           : Node_Sets.Set     := Node_Sets.Empty_Set;
+      Vertex_Ctx      : Vertex_Context    := No_Vertex_Context;
       E_Loc           : Node_Or_Entity_Id := Empty)
       return V_Attributes
    with Pre  => Is_Return_Object (Object_Returned),
@@ -68,7 +85,7 @@ package Flow.Control_Flow_Graph.Utility is
       Is_Loop_Entry : Boolean           := False;
       Is_Fold_Check : Boolean           := False;
       Is_Type_Decl  : Boolean           := False;
-      In_Nested_Pkg : Boolean;
+      Vertex_Ctx    : Vertex_Context    := No_Vertex_Context;
       E_Loc         : Node_Or_Entity_Id := Empty;
       Execution     : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
@@ -105,12 +122,11 @@ package Flow.Control_Flow_Graph.Utility is
    --  Returns a copy of Leaf, but with blank def/use sets.
 
    function Make_Call_Attributes
-     (Callsite      : Node_Id;
-      Var_Use       : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Sub_Called    : Node_Sets.Set     := Node_Sets.Empty_Set;
-      Loops         : Node_Sets.Set     := Node_Sets.Empty_Set;
-      In_Nested_Pkg : Boolean;
-      E_Loc         : Node_Or_Entity_Id := Empty)
+     (Callsite   : Node_Id;
+      Var_Use    : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Sub_Called : Node_Sets.Set     := Node_Sets.Empty_Set;
+      Vertex_Ctx : Vertex_Context    := No_Vertex_Context;
+      E_Loc      : Node_Or_Entity_Id := Empty)
       return V_Attributes
    with Pre  => Nkind (Callsite) in N_Procedure_Call_Statement
                                   | N_Entry_Call_Statement,
@@ -129,9 +145,8 @@ package Flow.Control_Flow_Graph.Utility is
       Formal                       : Entity_Id;
       In_Vertex                    : Boolean;
       Discriminants_Or_Bounds_Only : Boolean;
-      Sub_Called                   : Node_Sets.Set := Node_Sets.Empty_Set;
-      Loops                        : Node_Sets.Set;
-      In_Nested_Pkg                : Boolean;
+      Sub_Called                   : Node_Sets.Set  := Node_Sets.Empty_Set;
+      Vertex_Ctx                   : Vertex_Context := No_Vertex_Context;
       E_Loc                        : Node_Or_Entity_Id)
       return V_Attributes
    with Pre  => (if In_Vertex
@@ -162,9 +177,8 @@ package Flow.Control_Flow_Graph.Utility is
       Global                       : Flow_Id;
       Scope                        : Flow_Scope;
       Discriminants_Or_Bounds_Only : Boolean;
-      Loops                        : Node_Sets.Set;
-      In_Nested_Pkg                : Boolean;
-      Is_Assertion                 : Boolean := False;
+      Vertex_Ctx                   : Vertex_Context := No_Vertex_Context;
+      Is_Assertion                 : Boolean           := False;
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    with Pre  => (if Discriminants_Or_Bounds_Only
@@ -178,14 +192,13 @@ package Flow.Control_Flow_Graph.Utility is
    --  used are calculated automatically.
 
    function Make_Implicit_Parameter_Attributes
-     (FA            : Flow_Analysis_Graphs;
-      Call_Vertex   : Node_Id;
-      In_Vertex     : Boolean;
-      Scope         : Flow_Scope;
-      Sub_Called    : Node_Sets.Set := Node_Sets.Empty_Set;
-      Loops         : Node_Sets.Set;
-      In_Nested_Pkg : Boolean;
-      E_Loc         : Node_Or_Entity_Id)
+     (FA          : Flow_Analysis_Graphs;
+      Call_Vertex : Node_Id;
+      In_Vertex   : Boolean;
+      Scope       : Flow_Scope;
+      Sub_Called  : Node_Sets.Set  := Node_Sets.Empty_Set;
+      Vertex_Ctx  : Vertex_Context := No_Vertex_Context;
+      E_Loc       : Node_Or_Entity_Id)
       return V_Attributes
    with Post =>
      not Make_Implicit_Parameter_Attributes'Result.Is_Null_Node and
@@ -249,8 +262,7 @@ package Flow.Control_Flow_Graph.Utility is
      (FA            : Flow_Analysis_Graphs;
       Scope         : Flow_Scope;
       F             : Flow_Id;
-      Loops         : Node_Sets.Set := Node_Sets.Empty_Set;
-      In_Nested_Pkg : Boolean)
+      Vertex_Ctx    : Vertex_Context := No_Vertex_Context)
       return V_Attributes
    with Pre  => Is_Default_Initialized (F),
         Post =>
@@ -259,11 +271,11 @@ package Flow.Control_Flow_Graph.Utility is
    --  Create attributes for the default initialization vertices.
 
    function Make_Package_Initialization_Attributes
-     (The_State : Flow_Id;
-      Inputs    : Flow_Id_Sets.Set;
-      Scope     : Flow_Scope;
-      Loops     : Node_Sets.Set;
-      E_Loc     : Node_Or_Entity_Id)
+     (The_State  : Flow_Id;
+      Inputs     : Flow_Id_Sets.Set;
+      Scope      : Flow_Scope;
+      Vertex_Ctx : Vertex_Context := No_Vertex_Context;
+      E_Loc      : Node_Or_Entity_Id)
       return V_Attributes;
    --  Create attributes for package initialization vertices.
 

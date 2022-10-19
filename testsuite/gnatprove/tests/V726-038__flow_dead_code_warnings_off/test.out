@@ -1,0 +1,28 @@
+enum.adb:19:07: warning: this statement is never reached
+int.adb:20:07: warning: this statement is never reached
+int.adb:36:07: warning: this statement is never reached
+int.adb:42:07: warning: this statement is never reached
+main.adb:7:04: info: no contextual analysis of "Foo" (multiple returns)
+main.adb:8:07: warning: initialization of "C" has no effect
+main.adb:14:07: warning: statement has no effect
+main.adb:16:20: info: overflow check proved (CVC5: 2 VC)
+main.adb:17:28: info: assertion proved (CVC5: 1 VC)
+main.adb:26:04: info: no contextual analysis of "Bar" (multiple returns)
+main.adb:27:07: warning: initialization of "C" has no effect
+main.adb:33:07: warning: statement has no effect
+main.adb:34:23: warning: this statement is never reached
+main.adb:35:15: warning: this statement is never reached
+main.adb:35:20: info: overflow check proved (CVC5: 2 VC)
+main.adb:36:28: info: assertion proved (CVC5: 1 VC)
+main.adb:38:10: warning: this statement is never reached
+main.adb:39:10: warning: this statement is never reached
+polarity.adb:26:07: warning: this statement is never reached
+polarity.adb:46:07: warning: this statement is never reached
+polarity.adb:62:07: warning: this statement is never reached
+polarity.adb:74:07: warning: this statement is never reached
+polarity.adb:90:07: warning: this statement is never reached
+polarity.adb:96:07: warning: this statement is never reached
+polarity.adb:106:07: warning: this statement is never reached
+polarity.adb:109:04: warning: this statement is never reached
+polarity.adb:110:07: warning: this statement is never reached
+polarity.adb:112:07: warning: this statement is never reached
