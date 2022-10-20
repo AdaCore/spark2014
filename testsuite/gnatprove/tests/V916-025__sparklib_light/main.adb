@@ -2,6 +2,7 @@ with SPARK.Containers.Functional.Infinite_Sequences;
 with SPARK.Containers.Functional.Maps;
 with SPARK.Containers.Functional.Sets;
 with SPARK.Containers.Functional.Vectors;
+with SPARK.Lemmas.Float_Arithmetic;
 
 with SPARK.Containers.Formal.Doubly_Linked_Lists;
 

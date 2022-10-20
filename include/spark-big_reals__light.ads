@@ -61,8 +61,6 @@ is
    with
      Import,
      Global => null;
---   with Pre => (Big_Integers."/=" (Den, Big_Integers.To_Big_Integer (0))
---                or else Constraint_Error);
 
    function Numerator
      (Arg : Valid_Big_Real) return Big_Integers.Valid_Big_Integer
@@ -87,13 +85,11 @@ is
      (Arg : Big_Integers.Big_Integer)
      return Valid_Big_Real is (Arg / Big_Integers.To_Big_Integer (1))
    with
-     Import,
      Global => null;
 
    function To_Real (Arg : Integer) return Valid_Big_Real is
      (Big_Integers.To_Big_Integer (Arg) / Big_Integers.To_Big_Integer (1))
    with
-     Import,
      Global => null;
 
    function "=" (L, R : Valid_Big_Real) return Boolean with
@@ -119,7 +115,6 @@ is
    function In_Range (Arg, Low, High : Big_Real) return Boolean is
      (Low <= Arg and then Arg <= High)
    with
-     Import,
      Global => null;
 
    generic
@@ -173,7 +168,6 @@ is
      (Big_Integers.From_Universal_Image (Num) /
       Big_Integers.From_Universal_Image (Den))
    with
-     Import,
      Global => null;
 
    function From_Quotient_String (Arg : String) return Valid_Big_Real
