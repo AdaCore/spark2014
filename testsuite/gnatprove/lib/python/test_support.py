@@ -917,15 +917,17 @@ def do_flow_only(opt=None, procs=parallel_procs, no_fail=False, ada=default_ada)
     do_flow(opt, procs, no_fail, mode="flow", ada=ada)
 
 
-def no_crash():
+def no_crash(sparklib=False):
     """
     Only attempt to detect crashes and other unexpected behavior. No expected
     tool output is filed for such tests.
     """
     if benchmark_mode():
-        prove_all()
+        prove_all(sparklib=sparklib)
     else:
-        gnatprove(no_output=True, exit_status=0)
+        if sparklib:
+            os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
+        gnatprove(no_output=True, exit_status=0, sparklib=sparklib)
 
 
 def clean():
