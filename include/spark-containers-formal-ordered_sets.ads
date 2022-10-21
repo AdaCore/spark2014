@@ -43,12 +43,13 @@
 --    container. The operators "<" and ">" that could not be modified that way
 --    have been removed.
 
-with SPARK.Containers.Types; use SPARK.Containers.Types;
+with SPARK.Big_Integers;     use SPARK.Big_Integers;
 with SPARK.Containers.Functional.Maps;
 with SPARK.Containers.Functional.Sets;
 with SPARK.Containers.Functional.Vectors;
-with SPARK.Big_Integers;
-use SPARK.Big_Integers;
+with SPARK.Containers.Parameter_Checks;
+with SPARK.Containers.Types; use SPARK.Containers.Types;
+
 private with Ada.Containers.Red_Black_Trees;
 
 generic
@@ -56,6 +57,27 @@ generic
 
    with function "<" (Left, Right : Element_Type) return Boolean is <>;
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
+
+   --  Ghost lemmas used to prove that "=" is an equivalence relation
+
+   with procedure Eq_Reflexive (X : Element_Type) is null
+     with Ghost;
+   with procedure Eq_Symmetric (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Eq_Transitive (X, Y, Z : Element_Type) is null
+     with Ghost;
+
+   --  Ghost lemmas used to prove that "<" is a strict weak ordering
+   --  relationship.
+
+   with procedure Lt_Irreflexive (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Lt_Asymmetric (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Lt_Transitive (X, Y, Z : Element_Type) is null
+     with Ghost;
+   with procedure Lt_Order (X, Y, Z : Element_Type) is null
+     with Ghost;
 
 package SPARK.Containers.Formal.Ordered_Sets with
   SPARK_Mode,
@@ -105,7 +127,6 @@ is
    pragma Unevaluated_Use_Of_Old (Allow);
 
    package Formal_Model with Ghost is
-      subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
 
       --  Logical equality cannot be safely executed on most element types.
       --  Thus, this package should only be instantiated with ghost code
@@ -117,9 +138,52 @@ is
         Global => null,
         Annotate => (GNATprove, Logical_Equal);
 
+      --------------------------
+      -- Instantiation Checks --
+      --------------------------
+
+      package Eq_Checks is new
+        SPARK.Containers.Parameter_Checks.Equivalence_Checks
+          (T                   => Element_Type,
+           Eq                  => "=",
+           Param_Eq_Reflexive  => Eq_Reflexive,
+           Param_Eq_Symmetric  => Eq_Symmetric,
+           Param_Eq_Transitive => Eq_Transitive);
+      --  Check that the actual parameter for "=" is an equivalence relation
+
+      package Lift_Eq is new
+        SPARK.Containers.Parameter_Checks.Lift_Eq_Reflexive
+          (T                  => Element_Type,
+           "="                => Element_Logic_Equal,
+           Eq                 => "=",
+           Param_Eq_Reflexive => Eq_Checks.Eq_Reflexive);
+
+      package Lt_Checks is new
+        SPARK.Containers.Parameter_Checks.Strict_Weak_Order_Checks_Eq
+          (T                     => Element_Type,
+           "<"                   => "<",
+           "="                   => "=",
+           Param_Eq_Reflexive    => Eq_Checks.Eq_Reflexive,
+           Param_Eq_Symmetric    => Eq_Checks.Eq_Symmetric,
+           Param_Lt_Irreflexive  => Lt_Irreflexive,
+           Param_Lt_Asymmetric   => Lt_Asymmetric,
+           Param_Lt_Transitive   => Lt_Transitive,
+           Param_Lt_Order        => Lt_Order);
+      --  Check that "<" is a strict weak ordering relationship with respect
+      --  to "=".
+
+      ------------------
+      -- Formal Model --
+      ------------------
+
+      subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
+
       package M is new SPARK.Containers.Functional.Sets
-        (Element_Type        => Element_Type,
-         Equivalent_Elements => Equivalent_Elements);
+        (Element_Type                   => Element_Type,
+         Equivalent_Elements            => Equivalent_Elements,
+         Equivalent_Elements_Reflexive  => Lt_Checks.Eq_Reflexive,
+         Equivalent_Elements_Symmetric  => Lt_Checks.Eq_Symmetric,
+         Equivalent_Elements_Transitive => Lt_Checks.Eq_Transitive);
 
       function "="
         (Left  : M.Set;
@@ -130,10 +194,13 @@ is
          Right : M.Set) return Boolean renames M."<=";
 
       package E is new SPARK.Containers.Functional.Vectors
-        (Element_Type        => Element_Type,
-         Index_Type          => Positive_Count_Type,
-         "="                 => Element_Logic_Equal,
-         Equivalent_Elements => "=");
+        (Element_Type                   => Element_Type,
+         Index_Type                     => Positive_Count_Type,
+         "="                            => Element_Logic_Equal,
+         Equivalent_Elements            => "=",
+         Equivalent_Elements_Reflexive  => Lift_Eq.Eq_Reflexive,
+         Equivalent_Elements_Symmetric  => Eq_Checks.Eq_Symmetric,
+         Equivalent_Elements_Transitive => Eq_Checks.Eq_Transitive);
 
       function "="
         (Left  : E.Sequence;
@@ -1538,6 +1605,12 @@ is
 
       with function "<" (Left, Right : Key_Type) return Boolean is <>;
 
+      --  Ghost lemma used to prove that "<" on keys is compatible with "<" on
+      --  elements.
+
+      with procedure Lt_Compatible (X, Y : Element_Type) is null
+        with Ghost;
+
    package Generic_Keys with SPARK_Mode is
 
       function Equivalent_Keys (Left, Right : Key_Type) return Boolean with
@@ -1547,6 +1620,25 @@ is
       pragma Annotate (GNATprove, Inline_For_Proof, Equivalent_Keys);
 
       package Formal_Model with Ghost is
+
+         --------------------------
+         -- Instantiation Checks --
+         --------------------------
+
+         package Lt_Compatibility_Checks is new
+           SPARK.Containers.Parameter_Checks.Op_Compatibility_Checks
+             (T1                  => Element_Type,
+              T2                  => Key_Type,
+              Op1                 => "<",
+              Op2                 => "<",
+              F                   => Key,
+              Param_Op_Compatible => Lt_Compatible);
+         --  Check that "<" on keys is compatible with "<" on elements
+
+         ------------------
+         -- Formal Model --
+         ------------------
+
          function E_Bigger_Than_Range
            (Container : E.Sequence;
             Fst       : Positive_Count_Type;

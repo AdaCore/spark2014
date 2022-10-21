@@ -32,6 +32,7 @@ private with SPARK.Containers.Functional.Base;
 private with SPARK.Containers.Types;
 
 with SPARK.Big_Integers; use SPARK.Big_Integers;
+with SPARK.Containers.Parameter_Checks;
 
 generic
    type Key_Type (<>) is private;
@@ -50,6 +51,36 @@ generic
    --  This constant should only be set to False when no particular handling
    --  of equivalence over keys is needed, that is, Equivalent_Keys defines a
    --  key uniquely.
+
+   --  Ghost lemmas used to prove that "=" is an equivalence relation
+
+   with procedure Eq_Reflexive (X : Element_Type) is null
+     with Ghost;
+   with procedure Eq_Symmetric (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Eq_Transitive (X, Y, Z : Element_Type) is null
+     with Ghost;
+
+   --  Ghost lemmas used to prove that Equivalent_Keys is an equivalence
+   --  relation.
+
+   with procedure Equivalent_Keys_Reflexive (X : Key_Type) is null
+     with Ghost;
+   with procedure Equivalent_Keys_Symmetric (X, Y : Key_Type) is null
+     with Ghost;
+   with procedure Equivalent_Keys_Transitive (X, Y, Z : Key_Type) is null
+     with Ghost;
+
+   --  Ghost lemmas used to prove that Equivalent_Elements is an equivalence
+   --  relation.
+
+   with procedure Equivalent_Elements_Reflexive (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Equivalent_Elements_Symmetric (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Equivalent_Elements_Transitive
+     (X, Y, Z : Element_Type) is null
+     with Ghost;
 
 package SPARK.Containers.Functional.Maps with
   SPARK_Mode,
@@ -230,6 +261,12 @@ is
    --  For better efficiency of both proofs and execution, avoid using
    --  construction functions in annotations and rather use property functions.
 
+   function Empty_Map return Map with
+   --  Return an empty Map
+
+     Global => null,
+     Post   => Is_Empty (Empty_Map'Result);
+
    function Add
      (Container : Map;
       New_Key   : Key_Type;
@@ -245,12 +282,6 @@ is
          and Element_Logic_Equal (Get (Add'Result, New_Key), New_Item)
          and Elements_Equal (Container, Add'Result)
          and Keys_Included_Except (Add'Result, Container, New_Key);
-
-   function Empty_Map return Map with
-   --  Return an empty Map
-
-     Global => null,
-     Post   => Is_Empty (Empty_Map'Result);
 
    function Remove
      (Container : Map;
@@ -281,14 +312,6 @@ is
          and Element_Logic_Equal (Get (Set'Result, Key), New_Item)
          and Same_Keys (Container, Set'Result)
          and Elements_Equal_Except (Container, Set'Result, Key);
-
-   function Copy_Key (Key : Key_Type) return Key_Type is (Key);
-   function Copy_Element (Item : Element_Type) return Element_Type is (Item);
-   --  Elements and Keys of maps are copied by numerous primitives in this
-   --  package. This function causes GNATprove to verify that such a copy is
-   --  valid (in particular, it does not break the ownership policy of SPARK,
-   --  i.e. it does not contain pointers that could be used to alias mutable
-   --  data).
 
    ----------------------------------
    -- Iteration on Functional Maps --
@@ -435,6 +458,51 @@ is
                Has_Key (Right, Key)
                  and then Element_Logic_Equal
                     (Get (Left, Key), Get (Right, Key))));
+
+   --------------------------
+   -- Instantiation Checks --
+   --------------------------
+
+   --  Check that the actual parameters follow the appropriate assumptions.
+
+   function Copy_Key (Key : Key_Type) return Key_Type is (Key);
+   function Copy_Element (Item : Element_Type) return Element_Type is (Item);
+   --  Elements and Keys of maps are copied by numerous primitives in this
+   --  package. This function causes GNATprove to verify that such a copy is
+   --  valid (in particular, it does not break the ownership policy of SPARK,
+   --  i.e. it does not contain pointers that could be used to alias mutable
+   --  data).
+
+   package Eq_Checks is new
+     SPARK.Containers.Parameter_Checks.Equivalence_Checks
+       (T                   => Element_Type,
+        Eq                  => "=",
+        Param_Eq_Reflexive  => Eq_Reflexive,
+        Param_Eq_Symmetric  => Eq_Symmetric,
+        Param_Eq_Transitive => Eq_Transitive);
+   --  Check that the actual parameter for "=" is an equivalence relation
+
+   package Eq_Keys_Checks is new
+     SPARK.Containers.Parameter_Checks.Equivalence_Checks
+       (T                   => Key_Type,
+        Eq                  => Equivalent_Keys,
+        Param_Eq_Reflexive  => Equivalent_Keys_Reflexive,
+        Param_Eq_Symmetric  => Equivalent_Keys_Symmetric,
+        Param_Eq_Transitive => Equivalent_Keys_Transitive);
+   --  Check that the actual parameter for Equivalent_Keys is an equivalence
+   --  relation.
+
+   package Eq_Elements_Checks is new
+     SPARK.Containers.Parameter_Checks.Equivalence_Checks_Eq
+       (T                     => Element_Type,
+        Eq                    => Equivalent_Elements,
+        "="                   => "=",
+        Param_Equal_Reflexive => Eq_Checks.Eq_Reflexive,
+        Param_Eq_Reflexive    => Equivalent_Elements_Reflexive,
+        Param_Eq_Symmetric    => Equivalent_Elements_Symmetric,
+        Param_Eq_Transitive   => Equivalent_Elements_Transitive);
+   --  Check that the actual parameter for Equivalent_Elements is an
+   --  equivalence relation and that it is comptatible with "=".
 
    --------------------------------------------------
    -- Iteration Primitives Used For Quantification --

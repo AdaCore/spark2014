@@ -26,12 +26,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with SPARK.Containers.Types; use SPARK.Containers.Types;
-with SPARK.Big_Integers;
-use SPARK.Big_Integers;
+with SPARK.Big_Integers;     use SPARK.Big_Integers;
 with SPARK.Containers.Functional.Maps;
 with SPARK.Containers.Functional.Sets;
 with SPARK.Containers.Functional.Vectors;
+with SPARK.Containers.Parameter_Checks;
+with SPARK.Containers.Types; use SPARK.Containers.Types;
+
 private with Ada.Containers.Hash_Tables;
 private with Ada.Finalization;
 private with SPARK.Containers.Formal.Holders;
@@ -46,6 +47,32 @@ generic
       Right : Element_Type) return Boolean is "=";
 
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
+
+   --  Ghost lemmas used to prove that "=" is an equivalence relation
+
+   with procedure Eq_Reflexive (X : Element_Type) is null
+     with Ghost;
+   with procedure Eq_Symmetric (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Eq_Transitive (X, Y, Z : Element_Type) is null
+     with Ghost;
+
+   --  Ghost lemmas used to prove that Equivalent_Elements is an equivalence
+   --  relation with respect to "=".
+
+   with procedure Equivalent_Elements_Reflexive (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Equivalent_Elements_Symmetric (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Equivalent_Elements_Transitive
+     (X, Y, Z : Element_Type) is null
+     with Ghost;
+
+   --  Ghost lemma used to prove that Hash returns the same value for all
+   --  equivalent elements.
+
+   with procedure Hash_Equivalent (X, Y : Element_Type) is null
+     with Ghost;
 
 package SPARK.Containers.Formal.Unbounded_Hashed_Sets with
   SPARK_Mode,
@@ -85,7 +112,6 @@ is
    pragma Unevaluated_Use_Of_Old (Allow);
 
    package Formal_Model with Ghost is
-      subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
 
       --  Logical equality cannot be safely executed on most element types.
       --  Thus, this package should only be instantiated with ghost code
@@ -97,9 +123,59 @@ is
         Global => null,
         Annotate => (GNATprove, Logical_Equal);
 
+      --------------------------
+      -- Instantiation Checks --
+      --------------------------
+
+      package Eq_Checks is new
+        SPARK.Containers.Parameter_Checks.Equivalence_Checks
+          (T                   => Element_Type,
+           Eq                  => "=",
+           Param_Eq_Reflexive  => Eq_Reflexive,
+           Param_Eq_Symmetric  => Eq_Symmetric,
+           Param_Eq_Transitive => Eq_Transitive);
+      --  Check that the actual parameter for "=" is an equivalence relation
+
+      package Lift_Eq is new
+        SPARK.Containers.Parameter_Checks.Lift_Eq_Reflexive
+          (T                  => Element_Type,
+           "="                => Element_Logic_Equal,
+           Eq                 => "=",
+           Param_Eq_Reflexive => Eq_Checks.Eq_Reflexive);
+
+      package Eq_Elements_Checks is new
+        SPARK.Containers.Parameter_Checks.Equivalence_Checks_Eq
+          (T                     => Element_Type,
+           Eq                    => Equivalent_Elements,
+           "="                   => "=",
+           Param_Equal_Reflexive => Eq_Checks.Eq_Reflexive,
+           Param_Eq_Reflexive    => Equivalent_Elements_Reflexive,
+           Param_Eq_Symmetric    => Equivalent_Elements_Symmetric,
+           Param_Eq_Transitive   => Equivalent_Elements_Transitive);
+      --  Check that the actual parameter for Equivalent_Elements is an
+      --  equivalence relation and that it is compatible with "=".
+
+      package Hash_Checks is new
+        SPARK.Containers.Parameter_Checks.Hash_Equivalence_Checks
+          (T                     => Element_Type,
+           "="                   => Equivalent_Elements,
+           Hash                  => Hash,
+           Param_Hash_Equivalent => Hash_Equivalent);
+      --  Check that the actual parameter for Hash returns the same value for
+      --  all equivalent elements.
+
+      ------------------
+      -- Formal Model --
+      ------------------
+
+      subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
+
       package M is new SPARK.Containers.Functional.Sets
-        (Element_Type    => Element_Type,
-         Equivalent_Elements => Equivalent_Elements);
+        (Element_Type                   => Element_Type,
+         Equivalent_Elements            => Equivalent_Elements,
+         Equivalent_Elements_Reflexive  => Eq_Elements_Checks.Eq_Reflexive,
+         Equivalent_Elements_Symmetric  => Eq_Elements_Checks.Eq_Symmetric,
+         Equivalent_Elements_Transitive => Eq_Elements_Checks.Eq_Transitive);
 
       function "="
         (Left  : M.Set;
@@ -110,10 +186,13 @@ is
          Right : M.Set) return Boolean renames M."<=";
 
       package E is new SPARK.Containers.Functional.Vectors
-        (Element_Type        => Element_Type,
-         Index_Type          => Positive_Count_Type,
-         "="                 => Element_Logic_Equal,
-         Equivalent_Elements => "=");
+        (Element_Type                   => Element_Type,
+         Index_Type                     => Positive_Count_Type,
+         "="                            => Element_Logic_Equal,
+         Equivalent_Elements            => "=",
+         Equivalent_Elements_Reflexive  => Lift_Eq.Eq_Reflexive,
+         Equivalent_Elements_Symmetric  => Eq_Checks.Eq_Symmetric,
+         Equivalent_Elements_Transitive => Eq_Checks.Eq_Transitive);
 
       function "="
         (Left  : E.Sequence;
@@ -1294,9 +1373,49 @@ is
 
       with function Equivalent_Keys (Left, Right : Key_Type) return Boolean;
 
+      --  Ghost lemma used to prove that Equivalent_Keys is compatible with
+      --  Equivalent_Elements.
+
+      with procedure Eq_Compatible (X, Y : Element_Type) is null
+        with Ghost;
+
+      --  Ghost lemma used to prove that Hash on keys is compatible with Hash
+      --  on elements.
+
+      with procedure Hash_Compatible (X : Element_Type) is null
+        with Ghost;
+
    package Generic_Keys with SPARK_Mode is
 
       package Formal_Model with Ghost is
+
+         --------------------------
+         -- Instantiation Checks --
+         --------------------------
+
+         package Eq_Compatibility_Checks is new
+           SPARK.Containers.Parameter_Checks.Op_Compatibility_Checks
+             (T1                  => Element_Type,
+              T2                  => Key_Type,
+              Op1                 => Equivalent_Elements,
+              Op2                 => Equivalent_Keys,
+              F                   => Key,
+              Param_Op_Compatible => Eq_Compatible);
+         --  Check that Equivalent_Keys is compatible with Equivalent_Elements
+
+         package Hash_Compatibility_Checks is new
+           SPARK.Containers.Parameter_Checks.Hash_Compatibility_Checks
+             (T1                    => Element_Type,
+              T2                    => Key_Type,
+              Hash1                 => Hash,
+              Hash2                 => Hash,
+              F                     => Key,
+              Param_Hash_Compatible => Hash_Compatible);
+         --  Check that Hash on keys is compatible with Hash on elements
+
+         ------------------
+         -- Formal Model --
+         ------------------
 
          function M_Included_Except
            (Left  : M.Set;
