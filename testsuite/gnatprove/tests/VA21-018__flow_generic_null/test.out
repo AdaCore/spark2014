@@ -1,0 +1,14 @@
+foo.adb:4:04: info: no contextual analysis of "Bar" (body not seen yet)
+foo.adb:4:04: warning: assuming "Bar" always returns
+foo.adb:4:04: warning: assuming "Bar" has no effect on global items
+foo.adb:4:04: warning: no Global contract available for "Bar"
+foo.adb:4:04: warning: no returning annotation available for "Bar"
+main.adb:6:17: warning: subprogram "Use_P" has no effect, in instantiation at main.adb:15
+main.adb:15:04: info: in instantiation at line 11
+main.adb:15:04: info: no contextual analysis of "P1" (body not seen yet)
+main.adb:15:04: warning: assuming "P1" always returns
+main.adb:15:04: warning: assuming "P1" has no effect on global items
+main.adb:15:04: warning: in instantiation at line 11
+main.adb:15:04: warning: in instantiation at line 11
+main.adb:15:04: warning: no Global contract available for "P1"
+main.adb:15:04: warning: no returning annotation available for "P1"
