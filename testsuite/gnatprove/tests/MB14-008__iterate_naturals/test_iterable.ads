@@ -1,5 +1,3 @@
-with Ada.Iterator_Interfaces;
-
 package Test_Iterable is pragma SPARK_Mode (On);
 
    type T is new Natural;
