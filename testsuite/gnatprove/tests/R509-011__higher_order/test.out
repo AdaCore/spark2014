@@ -322,4 +322,4 @@ test_higher_order.ads:94:24: info: precondition proved (CVC5: 1 VC; Trivial: 1 V
 test_higher_order.ads:104:19: info: assertion proved (CVC5: 1 VC)
 test_higher_order.ads:118:19: info: assertion proved (altergo: 1 VC)
 test_higher_order.ads:118:25: info: precondition proved (Trivial: 1 VC; altergo: 1 VC)
-test_higher_order.ads:128:19: info: assertion proved (Z3: 1 VC)
+test_higher_order.ads:128:19: info: assertion proved (altergo: 1 VC)

@@ -56,7 +56,7 @@ test_init_by_proof.adb:136:13: info: initialization check proved (CVC5: 2 VC; Tr
 test_init_by_proof.adb:138:04: warning: analyzing unreferenced procedure "Q"
 test_init_by_proof.adb:138:14: warning: subprogram "Q" has no effect
 test_init_by_proof.adb:139:07: info: initialization of parts of "X" without Relaxed_Initialization proved
-test_init_by_proof.adb:143:14: medium: initialization check might fail (e.g. when X.I.Y = 15 and X.I.Z = True and X.F.Y = 15 and X.F.Z = True and X.G.Y = 15 and X.I.Y'Initialized = True and X.F.Y'Initialized = True and X.G.X'Initialized = False and X.G.Y'Initialized = True and X.G.Z'Initialized = True)
+test_init_by_proof.adb:143:14: medium: initialization check might fail (e.g. when X.I.Y = 15 and X.I.Z = True and X.F.Y = 15 and X.F.Z = True and X.G.Y = 15 and X.G.X'Initialized = False and X.G.Y'Initialized = True and X.G.Z'Initialized = True and X.I.Y'Initialized = True and X.F.Y'Initialized = True)
 test_init_by_proof.adb:145:04: warning: analyzing unreferenced procedure "Q1"
 test_init_by_proof.adb:145:14: warning: subprogram "Q1" has no effect
 test_init_by_proof.adb:146:07: info: initialization of parts of "X" without Relaxed_Initialization proved
