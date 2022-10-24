@@ -461,6 +461,9 @@ package SPARK_Util.Subprograms is
       and then Is_Intrinsic_Subprogram (E));
    --  @return True iff E is an intrinsic subprogram
 
+   function Is_Null_Procedure (E : Entity_Id) return Boolean;
+   --  @return True iff E is a null procedure
+
    function Is_Local_Subprogram_Always_Inlined (E : Entity_Id) return Boolean;
    --  @return True iff E is a local subprogram that is always inlined by the
    --     frontend in GNATprove mode

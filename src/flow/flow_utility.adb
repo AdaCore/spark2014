@@ -6306,7 +6306,7 @@ package body Flow_Utility is
          return Parse_Depends_Contract (E, Contract);
       end if;
 
-      pragma Assert (Is_Pure (E));
+      pragma Assert (Is_Pure (E) or else Is_Null_Procedure (E));
 
       return (Proof_Ins => Node_Sets.Empty_Set,
               Inputs    => Node_Sets.Empty_Set,

@@ -10,8 +10,6 @@ main.adb:17:14: warning: subprogram "Dead_Return" has no effect
 main.adb:20:07: warning: this statement is never reached
 main.adb:20:07: warning: unreachable code
 main.adb:22:21: warning: assuming "Call" always returns
-main.adb:22:21: warning: assuming "Call" has no effect on global items
-main.adb:22:21: warning: no Global contract available for "Call"
 main.adb:22:21: warning: no returning annotation available for "Call"
 main.adb:22:21: warning: this statement is never reached
 main.adb:27:04: warning: analyzing unreferenced procedure "Dead_Goto"
@@ -19,7 +17,5 @@ main.adb:27:14: warning: subprogram "Dead_Goto" has no effect
 main.adb:30:07: warning: this statement is never reached
 main.adb:30:07: warning: unreachable code
 main.adb:32:21: warning: assuming "Call" always returns
-main.adb:32:21: warning: assuming "Call" has no effect on global items
-main.adb:32:21: warning: no Global contract available for "Call"
 main.adb:32:21: warning: no returning annotation available for "Call"
 main.adb:32:21: warning: this statement is never reached

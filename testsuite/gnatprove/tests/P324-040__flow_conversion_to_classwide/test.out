@@ -1,8 +1,4 @@
 dummy.adb:5:04: warning: assuming "Foo" always returns
-dummy.adb:5:04: warning: assuming "Foo" has no effect on global items
-dummy.adb:5:04: warning: no Global contract available for "Foo"
 dummy.adb:5:04: warning: no returning annotation available for "Foo"
 q.adb:5:04: warning: assuming "Foo" always returns
-q.adb:5:04: warning: assuming "Foo" has no effect on global items
-q.adb:5:04: warning: no Global contract available for "Foo"
 q.adb:5:04: warning: no returning annotation available for "Foo"
