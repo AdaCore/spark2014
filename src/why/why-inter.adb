@@ -397,7 +397,11 @@ package body Why.Inter is
             return Base_Why_Type (Get_Ada_Node (+W));
 
          when others =>
-            return W;
+            if W = M_Boolean_Init_Wrapper.Wrapper_Ty then
+               return EW_Bool_Type;
+            else
+               return W;
+            end if;
       end case;
    end Base_Why_Type;
 
