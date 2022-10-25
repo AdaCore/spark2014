@@ -625,7 +625,7 @@ of a program:
     False in a finite number of steps.
 
 * [SPARK_ITERABLE_FOR_PROOF]
-  When a type as an ``Iterable_For_Proof`` annotation,
+  When a type has an ``Iterable_For_Proof`` annotation,
 
   * the function ``Contains``
     shall be such that, for any container object ``Container`` and any element

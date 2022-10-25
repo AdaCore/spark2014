@@ -386,6 +386,11 @@ Like with the previous annotation, care should be taken to define the model
 function such that it always return a model containing exactly the same elements
 as ``L``.
 
+.. note::
+
+   It is not possible to specify more than one ``Iterable_For_Proof`` annotation
+   per container type with an ``Iterable`` aspect.
+
 .. index:: Annotate; Inline_For_Proof
 
 Inlining Functions for Proof
