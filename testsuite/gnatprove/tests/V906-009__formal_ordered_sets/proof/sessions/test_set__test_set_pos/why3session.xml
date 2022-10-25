@@ -9,8 +9,8 @@
 <prover id="4" name="CVC5_CE" version="0.0.7-gnatprove" timelimit="0" steplimit="190000" memlimit="1000"/>
 <prover id="5" name="colibri" version="2137" timelimit="1" steplimit="0" memlimit="1000"/>
 <file format="gnat-json">
-<path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
-<path name="test_set__test_set_pos.gnat-json"/>
+<path name=".."/><path name=".."/><path name=".."/><path name="obj"/>
+<path name="gnatprove"/><path name="test_set__test_set_pos.gnat-json"/>
 <theory name="Test_set__test_set_pos__subprogram_def">
  <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
@@ -428,7 +428,9 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.115" proved="true">
-  <proof prover="1"><result status="valid" steps="128976"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="2"><result status="valid" steps="447452"/></proof>
   </goal>
   <goal name="def&#39;vc.116" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -488,7 +490,9 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.131" proved="true">
-  <proof prover="1"><result status="valid" steps="139238"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="2"><result status="valid" steps="2111396"/></proof>
   </goal>
   <goal name="def&#39;vc.132" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>

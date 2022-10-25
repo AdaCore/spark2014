@@ -352,15 +352,17 @@ ring_buffer.ads:52:26: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
 spark-big_intervals.ads:48:07: info: predicate check proved (Trivial: 1 VC)
 spark-big_intervals.ads:48:11: info: predicate check proved (Trivial: 1 VC)
 spark-big_intervals.ads:51:17: info: predicate check proved (Trivial: 1 VC)
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:200:52: info: overflow check proved (CVC5: 1 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:239:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:397:54: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:402:63: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:403:59: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:403:76: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:404:30: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:183:45: info: precondition proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
 spark-conversions-float_conversions.ads:33:01: info: analyzing call to "Log2_Estimate" in context
 spark-conversions-float_conversions.ads:33:01: info: analyzing call to "Minus_Log2_Estimate" in context
 spark-conversions-float_conversions.ads:33:01: info: in instantiation at a-nbnbre.adb:256
@@ -568,15 +570,17 @@ resources.ads:19:14: info: postcondition proved (CVC5: 1 VC)
 spark-big_intervals.ads:48:07: info: predicate check proved (Trivial: 1 VC)
 spark-big_intervals.ads:48:11: info: predicate check proved (Trivial: 1 VC)
 spark-big_intervals.ads:51:17: info: predicate check proved (Trivial: 1 VC)
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:200:52: info: overflow check proved (CVC5: 1 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:239:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:397:54: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:402:63: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:403:59: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:403:76: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:404:30: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:183:45: info: precondition proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
 spark-conversions-float_conversions.ads:33:01: info: analyzing call to "Log2_Estimate" in context
 spark-conversions-float_conversions.ads:33:01: info: analyzing call to "Minus_Log2_Estimate" in context
 spark-conversions-float_conversions.ads:33:01: info: in instantiation at a-nbnbre.adb:256

@@ -19,9 +19,9 @@ borrow.adb:89:07: info: initialization of "YY" proved
 borrow.adb:125:07: info: initialization of "L" proved
 spark-containers-formal-doubly_linked_lists.ads:390:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at borrow.adb:123
 spark-containers-formal-doubly_linked_lists.ads:395:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at borrow.adb:123
-spark-containers-functional-maps.ads:266:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at borrow.adb:123
-spark-containers-functional-maps.ads:267:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at borrow.adb:123
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at borrow.adb:123
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at borrow.adb:123
-spark-containers-functional-vectors.ads:239:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at borrow.adb:123
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at borrow.adb:123
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at borrow.adb:123
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at borrow.adb:123
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at borrow.adb:123
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at borrow.adb:123
 gnatprove: error during flow analysis and proof

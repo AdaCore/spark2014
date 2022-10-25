@@ -136,6 +136,23 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
    function Equal_Prefix (Left, Right : Sequence) return Boolean is
      (raise Program_Error);
 
+   --------------------------
+   -- Equivalent_Sequences --
+   --------------------------
+
+   function Equivalent_Sequences (Left, Right : Sequence) return Boolean is
+     (raise Program_Error);
+
+   ----------
+   -- Find --
+   ----------
+
+   function Find
+     (Container : Sequence;
+      Item      : Element_Type) return Extended_Index
+   is
+     (raise Program_Error);
+
    ---------
    -- Get --
    ---------

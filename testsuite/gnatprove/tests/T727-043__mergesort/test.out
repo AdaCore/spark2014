@@ -247,5 +247,5 @@ recursive_mergesort.ads:110:10: info: range check proved (CVC5: 1 VC; altergo: 3
 recursive_mergesort.ads:110:15: info: overflow check proved (altergo: 2 VC)
 recursive_mergesort.ads:110:33: info: range check proved (CVC5: 1 VC; altergo: 3 VC)
 recursive_mergesort.ads:110:41: info: overflow check proved (altergo: 2 VC)
-spark-containers-functional-maps.ads:266:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at recursive_mergesort.ads:15
-spark-containers-functional-maps.ads:267:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at recursive_mergesort.ads:15
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at recursive_mergesort.ads:15
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at recursive_mergesort.ads:15

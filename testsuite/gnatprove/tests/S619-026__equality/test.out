@@ -30,25 +30,29 @@ spark-containers-formal-vectors.ads:629:28: info: overflow check proved (CVC5: 2
 spark-containers-formal-vectors.ads:629:57: info: range check proved (CVC5: 2 VC), in instantiation at prim_eq_vect.adb:6
 spark-containers-formal-vectors.ads:757:23: info: precondition proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:6
 spark-containers-formal-vectors.ads:793:14: info: precondition proved (CVC5: 1 VC), in instantiation at prim_eq_vect.adb:6
-spark-containers-functional-maps.ads:266:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at prim_eq_vect.adb:18
-spark-containers-functional-maps.ads:266:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at prim_eq_vect.adb:18
-spark-containers-functional-maps.ads:267:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at prim_eq_vect.adb:18
-spark-containers-functional-maps.ads:267:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at prim_eq_vect.adb:18
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
-spark-containers-functional-vectors.ads:200:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
-spark-containers-functional-vectors.ads:200:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
-spark-containers-functional-vectors.ads:239:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
-spark-containers-functional-vectors.ads:239:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
-spark-containers-functional-vectors.ads:397:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
-spark-containers-functional-vectors.ads:397:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
-spark-containers-functional-vectors.ads:402:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
-spark-containers-functional-vectors.ads:402:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
-spark-containers-functional-vectors.ads:403:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
-spark-containers-functional-vectors.ads:403:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
-spark-containers-functional-vectors.ads:403:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
-spark-containers-functional-vectors.ads:403:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
-spark-containers-functional-vectors.ads:404:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
-spark-containers-functional-vectors.ads:404:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
+spark-containers-functional-vectors.ads:183:45: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-vectors.ads:183:45: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at prim_eq_vect.adb:18
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at prim_eq_vect.adb:6

@@ -9,19 +9,21 @@ spark-containers-formal-unbounded_hashed_maps.ads:738:39: info: precondition pro
 spark-containers-formal-unbounded_hashed_maps.ads:747:17: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:6
 spark-containers-formal-unbounded_hashed_maps.ads:777:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:6
 spark-containers-formal-unbounded_hashed_maps.ads:792:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:6
-spark-containers-functional-maps.ads:266:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:139, in instantiation at test.adb:6
-spark-containers-functional-maps.ads:266:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:86, in instantiation at test.adb:6
-spark-containers-functional-maps.ads:267:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:139, in instantiation at test.adb:6
-spark-containers-functional-maps.ads:267:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:86, in instantiation at test.adb:6
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
-spark-containers-functional-vectors.ads:200:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
-spark-containers-functional-vectors.ads:239:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
-spark-containers-functional-vectors.ads:397:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
-spark-containers-functional-vectors.ads:402:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
-spark-containers-functional-vectors.ads:403:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
-spark-containers-functional-vectors.ads:403:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
-spark-containers-functional-vectors.ads:404:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:139, in instantiation at test.adb:6
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:86, in instantiation at test.adb:6
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:139, in instantiation at test.adb:6
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:86, in instantiation at test.adb:6
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
+spark-containers-functional-vectors.ads:183:45: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
 test.adb:10:04: info: initialization of "M" proved
 test.adb:10:13: info: range check proved (CVC5: 1 VC)
 test.adb:17:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)

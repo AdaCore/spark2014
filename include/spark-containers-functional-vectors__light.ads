@@ -45,6 +45,10 @@ generic
 
    type Element_Type (<>) is private;
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
+   with function Equivalent_Elements
+     (Left, Right : Element_Type) return Boolean is "=";
+   --  Function used to compare elements in Contains, Find, and
+   --  Equivalent_Sequences.
 
 package SPARK.Containers.Functional.Vectors with
   SPARK_Mode,
@@ -143,6 +147,23 @@ is
                       Get (Left, N) = Get (Right, N)));
    pragma Annotate (GNATprove, Inline_For_Proof, "<=");
 
+   -----------------------------------------------------
+   -- Properties handling elements modulo equivalence --
+   -----------------------------------------------------
+
+   function Equivalent_Sequences (Left, Right : Sequence) return Boolean
+   with
+   --  Equivalence over sequences
+
+     Global => null,
+     Post   =>
+       Equivalent_Sequences'Result =
+         (Length (Left) = Length (Right)
+           and then
+            (for all N in Index_Type'First .. Last (Left) =>
+               Equivalent_Elements (Get (Left, N), Get (Right, N))));
+   pragma Annotate (GNATprove, Inline_For_Proof, Equivalent_Sequences);
+
    function Contains
      (Container : Sequence;
       Fst       : Index_Type;
@@ -155,8 +176,25 @@ is
      Pre    => Lst <= Last (Container),
      Post   =>
        Contains'Result =
-         (for some I in Fst .. Lst => Get (Container, I) = Item);
+         (for some I in Fst .. Lst =>
+            Equivalent_Elements (Get (Container, I), Item));
    pragma Annotate (GNATprove, Inline_For_Proof, Contains);
+
+   function Find
+     (Container : Sequence;
+      Item      : Element_Type) return Extended_Index
+   --  Search for Item in Container
+
+     with
+       Global => null,
+       Contract_Cases =>
+         ((for all J in Container =>
+             not Equivalent_Elements (Get (Container, J), Item))
+          =>
+            Find'Result = Extended_Index'First,
+          others =>
+            Find'Result in Index_Type'First .. Last (Container) and
+            Equivalent_Elements (Item, Get (Container, Find'Result)));
 
    ----------------------------
    -- Construction Functions --

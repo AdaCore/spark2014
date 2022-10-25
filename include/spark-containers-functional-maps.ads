@@ -41,6 +41,10 @@ generic
      (Left  : Key_Type;
       Right : Key_Type) return Boolean is "=";
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
+   with function Equivalent_Elements
+     (Left  : Element_Type;
+      Right : Element_Type) return Boolean is "=";
+   --  Function used to compare elements in Equivalent_Maps
 
    Enable_Handling_Of_Equivalence : Boolean := True;
    --  This constant should only be set to False when no particular handling
@@ -203,6 +207,21 @@ is
               and not Equivalent_Keys (Key, Y)
             then
                Has_Key (Right, Key)));
+
+   -----------------------------------------------------
+   -- Properties handling elements modulo equivalence --
+   -----------------------------------------------------
+
+   function Equivalent_Maps (Left : Map; Right : Map) return Boolean with
+   --  Equivalence over maps
+
+     Global => null,
+     Post   =>
+       Equivalent_Maps'Result =
+         ((for all Key of Left =>
+            Has_Key (Right, Key)
+              and then Equivalent_Elements (Get (Right, Key), Get (Left, Key)))
+           and (for all Key of Right => Has_Key (Left, Key)));
 
    ----------------------------
    -- Construction Functions --

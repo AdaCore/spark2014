@@ -35,6 +35,10 @@ with SPARK.Big_Integers; use SPARK.Big_Integers;
 generic
    type Element_Type (<>) is private;
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
+   with function Equivalent_Elements
+     (Left, Right : Element_Type) return Boolean is "=";
+   --  Function used to compare elements in Contains, Find, and
+   --  Equivalent_Sequences.
 
 package SPARK.Containers.Functional.Infinite_Sequences with
   SPARK_Mode,
@@ -119,6 +123,23 @@ is
            and then (for all N in Left => Get (Left, N) = Get (Right, N)));
    pragma Annotate (GNATprove, Inline_For_Proof, "<=");
 
+   -----------------------------------------------------
+   -- Properties handling elements modulo equivalence --
+   -----------------------------------------------------
+
+   function Equivalent_Sequences (Left, Right : Sequence) return Boolean
+   with
+   --  Equivalence over sequences
+
+     Global => null,
+     Post   =>
+       Equivalent_Sequences'Result =
+         (Length (Left) = Length (Right)
+           and then
+            (for all N in Left =>
+               Equivalent_Elements (Get (Left, N), Get (Right, N))));
+   pragma Annotate (GNATprove, Inline_For_Proof, Equivalent_Sequences);
+
    function Contains
      (Container : Sequence;
       Fst       : Big_Positive;
@@ -132,8 +153,26 @@ is
      Post   =>
        Contains'Result =
            (for some J in Container =>
-              Fst <= J and J <= Lst and Get (Container, J) = Item);
+              Fst <= J and J <= Lst and
+                Equivalent_Elements (Get (Container, J), Item));
    pragma Annotate (GNATprove, Inline_For_Proof, Contains);
+
+   function Find
+     (Container : Sequence;
+      Item      : Element_Type) return Big_Natural
+   --  Search for Item in Container
+
+     with
+       Global => null,
+       Contract_Cases =>
+         ((for all J in Container =>
+             not Equivalent_Elements (Get (Container, J), Item))
+          =>
+            Find'Result = 0,
+          others =>
+            Find'Result > 0 and
+            Find'Result <= Length (Container) and
+            Equivalent_Elements (Item, Get (Container, Find'Result)));
 
    ----------------------------
    -- Construction Functions --

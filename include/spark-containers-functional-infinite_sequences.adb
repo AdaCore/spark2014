@@ -133,7 +133,7 @@ is
 
    begin
       for J in Count_Fst .. Count_Lst loop
-         if Get (Container.Content, J) = Item then
+         if Equivalent_Elements (Get (Container.Content, J), Item) then
             return True;
          end if;
       end loop;
@@ -230,6 +230,39 @@ is
          or else
             (for all N in Left =>
                   Element_Logic_Equal (Get (Left, N), Get (Right, N)))));
+
+   --------------------------
+   -- Equivalent_Sequences --
+   --------------------------
+
+   function Equivalent_Sequences (Left, Right : Sequence) return Boolean
+   is
+     (Length (Left) = Length (Right)
+      and then
+        (Ptr_Eq (Left.Content, Right.Content)
+         or else
+            (for all N in Left =>
+               Equivalent_Elements (Get (Left, N), Get (Right, N)))));
+
+   ----------
+   -- Find --
+   ----------
+
+   function Find
+     (Container : Sequence;
+      Item      : Element_Type) return Big_Natural
+   is
+      Count_Lst : constant Count_Type := To_Count (Last (Container));
+
+   begin
+      for J in 1 .. Count_Lst loop
+         if Equivalent_Elements (Get (Container.Content, J), Item) then
+            return Big (J);
+         end if;
+      end loop;
+
+      return 0;
+   end Find;
 
    ---------
    -- Get --

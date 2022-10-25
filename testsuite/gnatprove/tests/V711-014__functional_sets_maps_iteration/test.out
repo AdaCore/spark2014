@@ -1,5 +1,5 @@
-spark-containers-functional-maps.ads:266:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at test_maps.adb:4
-spark-containers-functional-maps.ads:267:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_maps.adb:4
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at test_maps.adb:4
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_maps.adb:4
 spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_sets.adb:4
 test_maps.adb:9:04: info: initialization of "M1" proved
 test_maps.adb:10:04: info: initialization of "M2" proved

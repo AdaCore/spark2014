@@ -135,6 +135,23 @@ is
    function Equal_Prefix (Left, Right : Sequence) return Boolean is
      (raise Program_Error);
 
+   --------------------------
+   -- Equivalent_Sequences --
+   --------------------------
+
+   function Equivalent_Sequences (Left, Right : Sequence) return Boolean is
+     (raise Program_Error);
+
+   ----------
+   -- Find --
+   ----------
+
+   function Find
+     (Container : Sequence;
+      Item      : Element_Type) return Big_Natural
+   is
+     (raise Program_Error);
+
    ---------
    -- Get --
    ---------

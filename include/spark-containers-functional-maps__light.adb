@@ -105,6 +105,13 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
    function Empty_Map return Map is
      (raise Program_Error);
 
+   ---------------------
+   -- Equivalent_Maps --
+   ---------------------
+
+   function Equivalent_Maps (Left : Map; Right : Map) return Boolean is
+     (raise Program_Error);
+
    ---------
    -- Get --
    ---------

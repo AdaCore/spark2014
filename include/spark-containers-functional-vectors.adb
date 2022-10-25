@@ -112,7 +112,7 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
    is
    begin
       for I in Fst .. Lst loop
-         if Get (Container.Content, I) = Item then
+         if Equivalent_Elements (Get (Container.Content, I), Item) then
             return True;
          end if;
       end loop;
@@ -203,6 +203,37 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
          or else (for all I in Index_Type'First .. Last (Left) =>
               Element_Logic_Equal
                 (Get (Left.Content, I), Get (Right.Content, I)))));
+
+   --------------------------
+   -- Equivalent_Sequences --
+   --------------------------
+
+   function Equivalent_Sequences (Left, Right : Sequence) return Boolean
+   is
+     (Length (Left) = Length (Right)
+      and then
+        (Ptr_Eq (Left.Content, Right.Content)
+         or else
+            (for all N in Left =>
+               Equivalent_Elements (Get (Left, N), Get (Right, N)))));
+
+   ----------
+   -- Find --
+   ----------
+
+   function Find
+     (Container : Sequence;
+      Item      : Element_Type) return Extended_Index
+   is
+   begin
+      for I in Index_Type'First .. Last (Container) loop
+         if Equivalent_Elements (Get (Container.Content, I), Item) then
+            return I;
+         end if;
+      end loop;
+
+      return Extended_Index'First;
+   end Find;
 
    ---------
    -- Get --
