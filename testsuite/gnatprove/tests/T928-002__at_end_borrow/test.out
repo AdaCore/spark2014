@@ -1,12 +1,12 @@
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test_borrow.adb:34
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at test_borrow.adb:34
-spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
-spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at test_borrow.adb:34
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:200:52: info: overflow check proved (CVC5: 1 VC), in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:239:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:397:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:402:63: info: range check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:403:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:403:76: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:404:30: info: range check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
 test_borrow.adb:15:92: info: dynamic accessibility check proved (Trivial)
 test_borrow.adb:18:86: info: dynamic accessibility check proved (Trivial)
 test_borrow.adb:22:13: info: implicit function contract might not be available on recursive calls

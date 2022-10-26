@@ -96,6 +96,13 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
    is
      (raise Program_Error);
 
+   -------------------------
+   -- Element_Logic_Equal --
+   -------------------------
+
+   function Element_Logic_Equal (Left, Right : Element_Type) return Boolean is
+     (raise Program_Error);
+
    --------------------
    -- Empty_Sequence --
    --------------------
@@ -120,6 +127,13 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
       X     : Index_Type;
       Y     : Index_Type) return Boolean
    is
+     (raise Program_Error);
+
+   ------------------
+   -- Equal_Prefix --
+   ------------------
+
+   function Equal_Prefix (Left, Right : Sequence) return Boolean is
      (raise Program_Error);
 
    ---------

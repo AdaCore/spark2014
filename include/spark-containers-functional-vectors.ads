@@ -149,108 +149,6 @@ is
          (for some I in Fst .. Lst => Get (Container, I) = Item);
    pragma Annotate (GNATprove, Inline_For_Proof, Contains);
 
-   function Constant_Range
-     (Container : Sequence;
-      Fst       : Index_Type;
-      Lst       : Extended_Index;
-      Item      : Element_Type) return Boolean
-   --  Returns True if every element of the range from Fst to Lst of Container
-   --  is equal to Item.
-
-   with
-     Global => null,
-     Pre    => Lst <= Last (Container),
-     Post   =>
-       Constant_Range'Result =
-         (for all I in Fst .. Lst => Get (Container, I) = Item);
-   pragma Annotate (GNATprove, Inline_For_Proof, Constant_Range);
-
-   function Equal_Except
-     (Left     : Sequence;
-      Right    : Sequence;
-      Position : Index_Type) return Boolean
-   --  Returns True is Left and Right are the same except at position Position
-
-   with
-     Global => null,
-     Pre    => Position <= Last (Left),
-     Post   =>
-       Equal_Except'Result =
-         (Length (Left) = Length (Right)
-           and then (for all I in Index_Type'First .. Last (Left) =>
-                      (if I /= Position then Get (Left, I) = Get (Right, I))));
-   pragma Annotate (GNATprove, Inline_For_Proof, Equal_Except);
-
-   function Equal_Except
-     (Left  : Sequence;
-      Right : Sequence;
-      X     : Index_Type;
-      Y     : Index_Type) return Boolean
-   --  Returns True is Left and Right are the same except at positions X and Y
-
-   with
-     Global => null,
-     Pre    => X <= Last (Left) and Y <= Last (Left),
-     Post   =>
-       Equal_Except'Result =
-         (Length (Left) = Length (Right)
-           and then (for all I in Index_Type'First .. Last (Left) =>
-                      (if I /= X and I /= Y then
-                          Get (Left, I) = Get (Right, I))));
-   pragma Annotate (GNATprove, Inline_For_Proof, Equal_Except);
-
-   function Range_Equal
-     (Left  : Sequence;
-      Right : Sequence;
-      Fst   : Index_Type;
-      Lst   : Extended_Index) return Boolean
-   --  Returns True if the ranges from Fst to Lst contain the same elements in
-   --  Left and Right.
-
-   with
-     Global => null,
-     Pre    => Lst <= Last (Left) and Lst <= Last (Right),
-     Post   =>
-       Range_Equal'Result =
-         (for all I in Fst .. Lst => Get (Left, I) = Get (Right, I));
-   pragma Annotate (GNATprove, Inline_For_Proof, Range_Equal);
-
-   function Range_Shifted
-     (Left   : Sequence;
-      Right  : Sequence;
-      Fst    : Index_Type;
-      Lst    : Extended_Index;
-      Offset : Count_Type'Base) return Boolean
-   --  Returns True if the range from Fst to Lst in Left contains the same
-   --  elements as the range from Fst + Offset to Lst + Offset in Right.
-
-   with
-     Global => null,
-     Pre    =>
-       Lst <= Last (Left)
-         and then
-           (if Offset < 0 then
-              Index_Type'Pos (Index_Type'Base'First) - Offset <=
-              Index_Type'Pos (Index_Type'First))
-         and then
-           (if Fst <= Lst then
-              Offset in
-                Index_Type'Pos (Index_Type'First) - Index_Type'Pos (Fst) ..
-                  (Index_Type'Pos (Index_Type'First) - 1) + Length (Right) -
-                   Index_Type'Pos (Lst)),
-     Post   =>
-       Range_Shifted'Result =
-         ((for all I in Fst .. Lst =>
-            Get (Left, I) =
-            Get (Right, Index_Type'Val (Index_Type'Pos (I) + Offset)))
-          and
-            (for all I in Index_Type'Val (Index_Type'Pos (Fst) + Offset) ..
-               Index_Type'Val (Index_Type'Pos (Lst) + Offset)
-             =>
-               Get (Left, Index_Type'Val (Index_Type'Pos (I) - Offset)) =
-               Get (Right, I)));
-   pragma Annotate (GNATprove, Inline_For_Proof, Range_Shifted);
-
    ----------------------------
    -- Construction Functions --
    ----------------------------
@@ -269,7 +167,7 @@ is
      Global => null,
      Pre    => Position in Index_Type'First .. Last (Container),
      Post   =>
-       Get (Set'Result, Position) = New_Item
+       Element_Logic_Equal (Get (Set'Result, Position), New_Item)
          and then Equal_Except (Container, Set'Result, Position);
 
    function Add (Container : Sequence; New_Item : Element_Type) return Sequence
@@ -283,8 +181,9 @@ is
          and then Last (Container) < Index_Type'Last,
      Post   =>
        Length (Add'Result) = Length (Container) + 1
-         and then Get (Add'Result, Last (Add'Result)) = New_Item
-         and then Container <= Add'Result;
+         and then Element_Logic_Equal
+             (Get (Add'Result, Last (Add'Result)), New_Item)
+         and then Equal_Prefix (Container, Add'Result);
 
    function Add
      (Container : Sequence;
@@ -301,7 +200,7 @@ is
          and then Position <= Extended_Index'Succ (Last (Container)),
      Post   =>
        Length (Add'Result) = Length (Container) + 1
-         and then Get (Add'Result, Position) = New_Item
+         and then Element_Logic_Equal (Get (Add'Result, Position), New_Item)
          and then Range_Equal
                     (Left  => Container,
                      Right => Add'Result,
@@ -373,6 +272,150 @@ is
    with
      Global => null,
      Pre    => Iter_Has_Element (Container, Position);
+
+   -------------------------------------------------------------------------
+   -- Ghost non-executable properties used only in internal specification --
+   -------------------------------------------------------------------------
+
+   --  The execution of Element_Logic_Equal might return True on two elements
+   --  which are not logically equal. These properties should not be called in
+   --  user code with ghost code enabled. Uses in the SPARK library are
+   --  correct.
+
+   function Element_Logic_Equal (Left, Right : Element_Type) return Boolean
+   with
+     Ghost,
+     Global => null,
+     Annotate => (GNATprove, Logical_Equal);
+
+   function Constant_Range
+     (Container : Sequence;
+      Fst       : Index_Type;
+      Lst       : Extended_Index;
+      Item      : Element_Type) return Boolean
+   --  Returns True if every element of the range from Fst to Lst of Container
+   --  is equal to Item.
+
+   with
+     Ghost,
+     Global => null,
+     Pre    => Lst <= Last (Container),
+     Post   =>
+       Constant_Range'Result =
+         (for all I in Fst .. Lst =>
+            Element_Logic_Equal (Get (Container, I), Item));
+   pragma Annotate (GNATprove, Inline_For_Proof, Constant_Range);
+
+   function Equal_Prefix
+     (Left     : Sequence;
+      Right    : Sequence) return Boolean
+   --  Returns True is Left and Right are the same except at position Position
+
+   with
+     Ghost,
+     Global => null,
+     Post   =>
+       Equal_Prefix'Result =
+         (Length (Left) <= Length (Right)
+           and then (for all N in Index_Type'First .. Last (Left) =>
+                       Element_Logic_Equal (Get (Left, N), Get (Right, N))));
+   pragma Annotate (GNATprove, Inline_For_Proof, Equal_Prefix);
+
+   function Equal_Except
+     (Left     : Sequence;
+      Right    : Sequence;
+      Position : Index_Type) return Boolean
+   --  Returns True is Left and Right are the same except at position Position
+
+   with
+     Ghost,
+     Global => null,
+     Pre    => Position <= Last (Left),
+     Post   =>
+       Equal_Except'Result =
+         (Length (Left) = Length (Right)
+           and then
+            (for all I in Index_Type'First .. Last (Left) =>
+               (if I /= Position
+                then Element_Logic_Equal (Get (Left, I), Get (Right, I)))));
+   pragma Annotate (GNATprove, Inline_For_Proof, Equal_Except);
+
+   function Equal_Except
+     (Left  : Sequence;
+      Right : Sequence;
+      X     : Index_Type;
+      Y     : Index_Type) return Boolean
+   --  Returns True is Left and Right are the same except at positions X and Y
+
+   with
+     Ghost,
+     Global => null,
+     Pre    => X <= Last (Left) and Y <= Last (Left),
+     Post   =>
+       Equal_Except'Result =
+         (Length (Left) = Length (Right)
+           and then
+            (for all I in Index_Type'First .. Last (Left) =>
+               (if I /= X and I /= Y
+                then Element_Logic_Equal (Get (Left, I), Get (Right, I)))));
+   pragma Annotate (GNATprove, Inline_For_Proof, Equal_Except);
+
+   function Range_Equal
+     (Left  : Sequence;
+      Right : Sequence;
+      Fst   : Index_Type;
+      Lst   : Extended_Index) return Boolean
+   --  Returns True if the ranges from Fst to Lst contain the same elements in
+   --  Left and Right.
+
+   with
+     Ghost,
+     Global => null,
+     Pre    => Lst <= Last (Left) and Lst <= Last (Right),
+     Post   =>
+       Range_Equal'Result =
+         (for all I in Fst .. Lst =>
+            Element_Logic_Equal (Get (Left, I), Get (Right, I)));
+   pragma Annotate (GNATprove, Inline_For_Proof, Range_Equal);
+
+   function Range_Shifted
+     (Left   : Sequence;
+      Right  : Sequence;
+      Fst    : Index_Type;
+      Lst    : Extended_Index;
+      Offset : Count_Type'Base) return Boolean
+   --  Returns True if the range from Fst to Lst in Left contains the same
+   --  elements as the range from Fst + Offset to Lst + Offset in Right.
+
+   with
+     Ghost,
+     Global => null,
+     Pre    =>
+       Lst <= Last (Left)
+         and then
+           (if Offset < 0 then
+              Index_Type'Pos (Index_Type'Base'First) - Offset <=
+              Index_Type'Pos (Index_Type'First))
+         and then
+           (if Fst <= Lst then
+              Offset in
+                Index_Type'Pos (Index_Type'First) - Index_Type'Pos (Fst) ..
+                  (Index_Type'Pos (Index_Type'First) - 1) + Length (Right) -
+                   Index_Type'Pos (Lst)),
+     Post   =>
+       Range_Shifted'Result =
+         ((for all I in Fst .. Lst =>
+            Element_Logic_Equal
+              (Get (Left, I),
+               Get (Right, Index_Type'Val (Index_Type'Pos (I) + Offset))))
+          and
+            (for all I in Index_Type'Val (Index_Type'Pos (Fst) + Offset) ..
+               Index_Type'Val (Index_Type'Pos (Lst) + Offset)
+             =>
+               Element_Logic_Equal
+                 (Get (Left, Index_Type'Val (Index_Type'Pos (I) - Offset)),
+                  Get (Right, I))));
+   pragma Annotate (GNATprove, Inline_For_Proof, Range_Shifted);
 
 private
 

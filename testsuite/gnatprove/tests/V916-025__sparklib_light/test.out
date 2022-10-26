@@ -50,59 +50,59 @@ spark-containers-functional-infinite_sequences__light.ads:91:43: info: predicate
 spark-containers-functional-infinite_sequences__light.ads:94:06: info: data dependencies proved, in instantiation at main.adb:13
 spark-containers-functional-infinite_sequences__light.ads:139:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
 spark-containers-functional-infinite_sequences__light.ads:139:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:156:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:156:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:171:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:171:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:189:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:189:21: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:189:37: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:189:42: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:208:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:208:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:208:39: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:208:46: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:227:08: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:227:15: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:229:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:229:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:230:15: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:230:24: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:230:31: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:230:37: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:230:46: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:230:53: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:258:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:258:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:283:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:283:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:283:47: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:307:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:307:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
-spark-containers-functional-infinite_sequences__light.ads:322:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:13
-spark-containers-functional-maps__light.ads:308:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at main.adb:15
-spark-containers-functional-maps__light.ads:308:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at main.adb:21
-spark-containers-functional-maps__light.ads:309:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:15
-spark-containers-functional-maps__light.ads:309:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at main.adb:21
+spark-containers-functional-infinite_sequences__light.ads:162:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:162:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:188:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:188:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:188:47: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:212:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:212:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:227:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:284:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:284:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:313:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:313:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:332:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:332:21: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:332:37: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:332:42: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:352:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:352:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:352:39: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:352:46: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:372:08: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:372:15: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:374:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:374:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:375:15: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:375:24: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:375:31: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:375:37: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:375:46: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-infinite_sequences__light.ads:375:53: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:13
+spark-containers-functional-maps__light.ads:273:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at main.adb:15
+spark-containers-functional-maps__light.ads:273:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at main.adb:21
+spark-containers-functional-maps__light.ads:274:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:15
+spark-containers-functional-maps__light.ads:274:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at main.adb:21
 spark-containers-functional-sets__light.ads:275:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:16
 spark-containers-functional-vectors__light.ads:105:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at main.adb:17
 spark-containers-functional-vectors__light.ads:105:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
 spark-containers-functional-vectors__light.ads:106:06: info: data dependencies proved, in instantiation at main.adb:17
 spark-containers-functional-vectors__light.ads:106:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
-spark-containers-functional-vectors__light.ads:242:54: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:17
-spark-containers-functional-vectors__light.ads:242:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
-spark-containers-functional-vectors__light.ads:247:63: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:17
-spark-containers-functional-vectors__light.ads:247:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
-spark-containers-functional-vectors__light.ads:248:59: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:17
-spark-containers-functional-vectors__light.ads:248:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
-spark-containers-functional-vectors__light.ads:248:76: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:17
-spark-containers-functional-vectors__light.ads:248:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
-spark-containers-functional-vectors__light.ads:249:30: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:17
-spark-containers-functional-vectors__light.ads:249:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
-spark-containers-functional-vectors__light.ads:310:52: info: overflow check proved (CVC5: 1 VC), in instantiation at main.adb:17
-spark-containers-functional-vectors__light.ads:310:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
-spark-containers-functional-vectors__light.ads:349:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:17
-spark-containers-functional-vectors__light.ads:349:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
+spark-containers-functional-vectors__light.ads:209:52: info: overflow check proved (CVC5: 1 VC), in instantiation at main.adb:17
+spark-containers-functional-vectors__light.ads:209:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
+spark-containers-functional-vectors__light.ads:248:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:17
+spark-containers-functional-vectors__light.ads:248:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
+spark-containers-functional-vectors__light.ads:394:54: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:17
+spark-containers-functional-vectors__light.ads:394:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
+spark-containers-functional-vectors__light.ads:399:63: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:17
+spark-containers-functional-vectors__light.ads:399:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
+spark-containers-functional-vectors__light.ads:400:59: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:17
+spark-containers-functional-vectors__light.ads:400:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
+spark-containers-functional-vectors__light.ads:400:76: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:17
+spark-containers-functional-vectors__light.ads:400:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
+spark-containers-functional-vectors__light.ads:401:30: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:17
+spark-containers-functional-vectors__light.ads:401:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at main.adb:21
 spark-lemmas-arithmetic.ads:116:51: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-integer_arithmetic.ads:37
 spark-lemmas-arithmetic.ads:116:51: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_integer_arithmetic.ads:37
 spark-lemmas-arithmetic.ads:127:56: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-integer_arithmetic.ads:37

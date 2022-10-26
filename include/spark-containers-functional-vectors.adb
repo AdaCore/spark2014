@@ -92,7 +92,7 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
       Item      : Element_Type) return Boolean is
    begin
       for I in Fst .. Lst loop
-         if Get (Container.Content, I) /= Item then
+         if not Element_Logic_Equal (Get (Container.Content, I), Item) then
             return False;
          end if;
       end loop;
@@ -120,6 +120,13 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
       return False;
    end Contains;
 
+   -------------------------
+   -- Element_Logic_Equal --
+   -------------------------
+
+   function Element_Logic_Equal (Left, Right : Element_Type) return Boolean is
+     (Left = Right);
+
    --------------------
    -- Empty_Sequence --
    --------------------
@@ -145,7 +152,9 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
 
       for I in Index_Type'First .. Last (Left) loop
          if I /= Position
-           and then Get (Left.Content, I) /= Get (Right.Content, I)
+           and then not
+             Element_Logic_Equal
+                (Get (Left.Content, I), Get (Right.Content, I))
          then
             return False;
          end if;
@@ -169,7 +178,9 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
 
       for I in Index_Type'First .. Last (Left) loop
          if I /= X and then I /= Y
-           and then Get (Left.Content, I) /= Get (Right.Content, I)
+           and then not
+             Element_Logic_Equal
+                (Get (Left.Content, I), Get (Right.Content, I))
          then
             return False;
          end if;
@@ -177,6 +188,18 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
 
       return True;
    end Equal_Except;
+
+   ------------------
+   -- Equal_Prefix --
+   ------------------
+
+   function Equal_Prefix (Left : Sequence; Right : Sequence) return Boolean is
+     (Length (Left.Content) <= Length (Right.Content)
+       and then
+        (Ptr_Eq (Left.Content, Right.Content)
+         or else (for all I in Index_Type'First .. Last (Left) =>
+              Element_Logic_Equal
+                (Get (Left.Content, I), Get (Right.Content, I)))));
 
    ---------
    -- Get --
@@ -218,7 +241,7 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
       end if;
 
       for I in Fst .. Lst loop
-         if Get (Left, I) /= Get (Right, I) then
+         if not Element_Logic_Equal (Get (Left, I), Get (Right, I)) then
             return False;
          end if;
       end loop;
@@ -239,8 +262,9 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
    is
    begin
       for I in Fst .. Lst loop
-         if Get (Left, I) /=
-              Get (Right, Index_Type'Val (Index_Type'Pos (I) + Offset))
+         if not Element_Logic_Equal
+           (Get (Left, I),
+            Get (Right, Index_Type'Val (Index_Type'Pos (I) + Offset)))
          then
             return False;
          end if;

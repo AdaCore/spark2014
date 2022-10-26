@@ -161,9 +161,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.48" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="2"><result status="valid" steps="252913"/></proof>
+  <proof prover="1"><result status="valid" steps="125935"/></proof>
   </goal>
   <goal name="def&#39;vc.49" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -295,7 +293,7 @@
   <proof prover="5"><result status="timeout"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.86.0">
-   <proof prover="4"><result status="steplimitexceeded" steps="191851"/></proof>
+   <proof prover="4"><result status="steplimitexceeded" steps="191844"/></proof>
    </goal>
   </transf>
   </goal>

@@ -27,6 +27,7 @@
 ------------------------------------------------------------------------------
 
 pragma Ada_2012;
+
 package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
    use Key_Containers;
    use Element_Containers;
@@ -94,6 +95,35 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
    function Choose (Container : Map) return Key_Type is
      (Get (Container.Keys, Length (Container.Keys)));
 
+   -------------------------
+   -- Element_Logic_Equal --
+   -------------------------
+
+   function Element_Logic_Equal (Left, Right : Element_Type) return Boolean is
+     (Left = Right);
+
+   --------------------
+   -- Elements_Equal --
+   --------------------
+
+   function Elements_Equal (Left, Right : Map) return Boolean is
+   begin
+      for J in 1 .. Length (Left.Keys) loop
+         declare
+            K : constant Key_Type := Get (Left.Keys, J);
+         begin
+            if Find (Right.Keys, K) = 0
+              or else not Element_Logic_Equal
+                (Get (Right.Elements, Find (Right.Keys, K)),
+                 Get (Left.Elements, J))
+            then
+               return False;
+            end if;
+         end;
+      end loop;
+      return True;
+   end Elements_Equal;
+
    ---------------------------
    -- Elements_Equal_Except --
    ---------------------------
@@ -111,8 +141,9 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
             if not Equivalent_Keys (K, New_Key)
               and then
                 (Find (Right.Keys, K) = 0
-                  or else Get (Right.Elements, Find (Right.Keys, K)) /=
-                          Get (Left.Elements, J))
+                  or else not Element_Logic_Equal
+                    (Get (Right.Elements, Find (Right.Keys, K)),
+                     Get (Left.Elements, J)))
             then
                return False;
             end if;
@@ -136,8 +167,9 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
               and then not Equivalent_Keys (K, Y)
               and then
                 (Find (Right.Keys, K) = 0
-                  or else Get (Right.Elements, Find (Right.Keys, K)) /=
-                          Get (Left.Elements, J))
+                  or else not Element_Logic_Equal
+                    (Get (Right.Elements, Find (Right.Keys, K)),
+                     Get (Left.Elements, J)))
             then
                return False;
             end if;

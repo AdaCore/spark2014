@@ -23,30 +23,30 @@ spark-containers-formal-unbounded_hashed_sets.ads:1172:20: info: precondition pr
 spark-containers-formal-unbounded_hashed_sets.ads:1193:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:24
 spark-containers-formal-unbounded_hashed_sets.ads:1193:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:8
 spark-containers-formal-unbounded_hashed_sets.ads:1400:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set.ads:33
-spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:185, in instantiation at test_set.ads:24
-spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:185, in instantiation at test_set.ads:8
-spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:185, in instantiation at test_set.ads:24
-spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:185, in instantiation at test_set.ads:8
+spark-containers-functional-maps.ads:266:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:185, in instantiation at test_set.ads:24
+spark-containers-functional-maps.ads:266:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:185, in instantiation at test_set.ads:8
+spark-containers-functional-maps.ads:267:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:185, in instantiation at test_set.ads:24
+spark-containers-functional-maps.ads:267:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:185, in instantiation at test_set.ads:8
 spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:88, in instantiation at test_set.ads:24
 spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:88, in instantiation at test_set.ads:8
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
-spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
-spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
-spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
-spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
-spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
-spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
-spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
-spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
-spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
-spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
-spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
-spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
+spark-containers-functional-vectors.ads:200:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
+spark-containers-functional-vectors.ads:200:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
+spark-containers-functional-vectors.ads:239:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
+spark-containers-functional-vectors.ads:239:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
+spark-containers-functional-vectors.ads:397:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
+spark-containers-functional-vectors.ads:397:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
+spark-containers-functional-vectors.ads:402:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
+spark-containers-functional-vectors.ads:402:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
+spark-containers-functional-vectors.ads:403:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
+spark-containers-functional-vectors.ads:403:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
+spark-containers-functional-vectors.ads:403:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
+spark-containers-functional-vectors.ads:403:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
+spark-containers-functional-vectors.ads:404:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:24
+spark-containers-functional-vectors.ads:404:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:100, in instantiation at test_set.ads:8
 test_set.adb:3:14: warning: subprogram "Test_Set_Pos" has no effect
 test_set.adb:5:07: info: initialization of "L" proved
 test_set.adb:5:10: info: initialization of "K" proved
@@ -150,7 +150,7 @@ test_set.adb:167:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:169:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:171:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:172:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:175:22: medium: assertion might fail
+test_set.adb:175:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:177:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Length or turning it into an expression function]
 test_set.adb:178:07: medium: assertion might fail
 test_set.adb:183:07: info: precondition proved (Trivial: 1 VC)
