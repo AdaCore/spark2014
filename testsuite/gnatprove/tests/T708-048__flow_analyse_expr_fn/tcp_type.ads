@@ -1,4 +1,6 @@
-package Tcp_Type is
+package Tcp_Type
+  with SPARK_Mode
+is
    type Tcp_Syn_Queue_Item;
    type Tcp_Syn_Queue_Item_Acc is access Tcp_Syn_Queue_Item;
    type Tcp_Syn_Queue_Item is
@@ -20,5 +22,6 @@ package Tcp_Type is
       (Queue : access constant Tcp_Syn_Queue_Item) return Boolean is
       (Queue = null or else
          (Tcp_Syn_Queue_Item_Model (Queue.Next)))
-      with Ghost, Annotate => (GNATprove, Always_Return);
+        with Ghost, Annotate => (GNATprove, Always_Return),
+        Subprogram_Variant => (Structural => Queue);
 end Tcp_Type;
