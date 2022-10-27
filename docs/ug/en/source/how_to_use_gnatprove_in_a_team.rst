@@ -793,6 +793,33 @@ only part of a program:
   * the API of the package.
 
 
+In addition, the following assumptions need to be addressed when calling
+GNATprove on only part of a SPARK program at a time (either on an individual
+unit or on a group of units), while providing only the specs of those units
+that are not analyzed (not their bodies), so that the complete SPARK program is
+analyzed by calling GNATprove multiple times with different sets of unit bodies
+being available:
+
+* [PARTIAL_GLOBAL]
+  Subprograms which are called across the boundary of those units analyzed
+  together should have a Global contract describing their effect on global
+  data, otherwise they will be assumed to have no effect on global data.
+
+* [PARTIAL_TERMINATION]
+  Subprograms which are called across the boundary of those units analyzed
+  together and which may not terminate should have a No_Return or
+  Might_Not_Return annotation, otherwise they will be assumed to always return.
+
+* [PARTIAL_RECURSIVE_SUBPROGRAMS]
+  Subprograms which are called across the boundary of those units analyzed
+  together should not be mutually recursive with a subprogram analyzed by
+  GNATprove. This is similar to [ADA_RECURSIVE_SUBPROGRAMS].
+
+* [PARTIAL_TASKING]
+  If tasks are used, one run of GNATprove should analyze all units that define
+  tasks, in order to detect all violations of SPARK rules regarding tasking.
+
+
 In addition, the following assumptions need to be addressed when compiling the
 program with another compiler than GNAT:
 
