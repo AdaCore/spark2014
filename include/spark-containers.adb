@@ -4,7 +4,7 @@
 --                                                                          --
 --                     S P A R K . C O N T A I N E R S                      --
 --                                                                          --
---                                 S p e c                                  --
+--                                 B o d y                                  --
 --                                                                          --
 --                     Copyright (C) 2022-2022, AdaCore                     --
 --                                                                          --
@@ -26,10 +26,22 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package SPARK.Containers with SPARK_Mode, Pure is
-   pragma Elaborate_Body;
+package body SPARK.Containers with SPARK_Mode => Off is
 
-   procedure Check_Or_Fail with Ghost;
-   --  Procedure used to disable unsafe features in user code
+   procedure Fail_When_Body_Off
+#if SPARK_BODY_MODE="On"
+      is null;
+#else
+      with Import;
+#end if;
+
+   -------------------
+   -- Check_Or_Fail --
+   -------------------
+
+   procedure Check_Or_Fail is
+   begin
+      Fail_When_Body_Off;
+   end Check_Or_Fail;
 
 end SPARK.Containers;

@@ -1,11 +1,13 @@
-with "sparklib";
-
-project Test is
-
-   package Compiler is
-      for Switches ("ada") use ("-g", "-gnata", "-gnat2020");
-   end Compiler;
+project Test extends "sparklib" is
 
    for Main use ("run_tests.adb");
+
+   for Object_Dir use "obj";
+
+   package Compiler is
+      for Default_Switches ("Ada") use
+         ("-gnat2022", "-gnata", "-gnatwI",
+          "-gnateDSPARK_BODY_MODE=On");
+   end Compiler;
 
 end Test;

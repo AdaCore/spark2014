@@ -9,4 +9,4 @@ if __name__ == "__main__":
     prove_all(steps=1800, no_fail=True)
 
     call(["gprbuild", "-q", "-P", "test.gpr"])
-    call(["./run_tests"])
+    call(["./obj/run_tests"])

@@ -1,20 +1,13 @@
-with "sparklib";
+project Test extends "sparklib" is
 
-project Test is
-
-   for Object_Dir use "obj";
    for Main use ("test.adb");
 
-   package Builder is
-   end Builder;
+   for Object_Dir use "obj";
 
    package Compiler is
-      for Switches ("ada") use ("-g");
+      for Default_Switches ("Ada") use
+         ("-gnat2022", "-gnata", "-gnatwI",
+          "-gnateDSPARK_BODY_MODE=On");
    end Compiler;
 
-   package Linker is
-      for Switches ("ada") use ("-g");
-   end Linker;
-
 end Test;
-

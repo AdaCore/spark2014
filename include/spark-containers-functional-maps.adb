@@ -100,7 +100,10 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
    -------------------------
 
    function Element_Logic_Equal (Left, Right : Element_Type) return Boolean is
-     (Left = Right);
+   begin
+      Check_Or_Fail;
+      return Left = Right;
+   end Element_Logic_Equal;
 
    --------------------
    -- Elements_Equal --
