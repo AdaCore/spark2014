@@ -1,0 +1,10 @@
+moveghost.adb:10:04: info: initialization of "Y" proved
+moveghost.adb:12:09: error: non-ghost object "X" cannot be moved in an assignment to ghost object "Y"
+updateghost.adb:7:29: error: non-ghost object "X" cannot be borrowed in an assignment to ghost object "Y"
+updateghostincall.adb:10:12: error: non-ghost object "X" cannot be borrowed in a call to ghost subprogram "Update"
+updateghostoverlay.adb:7:07: error: "Y" is not allowed in SPARK (due to overlay with an object of an ownership type)
+updateghostoverlay.adb:7:07: error: violation of pragma SPARK_Mode at line 1
+updateghostoverlay.adb:7:36: error: overlay with an object of an ownership type is not yet supported
+updateghostoverlay.adb:9:07: error: "Y" is not allowed in SPARK (due to overlay with an object of an ownership type)
+updateghostoverlay.adb:9:07: error: violation of pragma SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

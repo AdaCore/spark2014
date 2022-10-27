@@ -957,15 +957,21 @@ X.Link is poisoned by the assignment to Y.]
     also break the invariant on the borrowed object for the time of the
     borrow.]
 
-17. Objects of an anonymous access-to-object types shall not be converted
+17. A path rooted at a non-ghost object shall only be moved, or borrowed, if
+    the target object of the move or borrow is itself non-ghost.  [This rule is
+    meant to avoid introducing aliases between a non-ghost variable and a ghost
+    variable. Otherwise writes or deallocation through the ghost variable would
+    have an effect on the non-ghost underlying memory.]
+
+18. Objects of an anonymous access-to-object types shall not be converted
     (implicitly or explicitly) to a named access type.
 
-18. Evaluation of equality operators, and membership tests where one or more of
+19. Evaluation of equality operators, and membership tests where one or more of
     the choices are expressions, shall not include directly or indirectly calls
     to the primitive equality on access types, unless one of the operands is
     syntactically null.
 
-19. Instances of Unchecked_Deallocation shall not have a general access type
+20. Instances of Unchecked_Deallocation shall not have a general access type
     as a parameter.
 
 .. container:: heading
@@ -975,7 +981,7 @@ X.Link is poisoned by the assignment to Y.]
 .. index:: memory leak; for objects
            deallocation, Unchecked_Deallocation
 
-20. When an object R which does not have an anonymous access-to-object type
+21. When an object R which does not have an anonymous access-to-object type
     is finalized or when it is passed as an actual parameter
     of mode **out**, all extensions of the path extracted from R which denote
     an object of a pool-specific access type and
@@ -995,7 +1001,7 @@ X.Link is poisoned by the assignment to Y.]
     [Redundant:This rule effectively forbids the use of allocators and
     calls to allocating functions inside contracts or assertions.]
 
-21. Allocators and conversions from a pool-specific access type to a named
+22. Allocators and conversions from a pool-specific access type to a named
     access-to-constant type or a general access-to-variable type shall only
     occur at library level.
 
@@ -1008,7 +1014,7 @@ X.Link is poisoned by the assignment to Y.]
     reference to an allocated object.]
 
 
-22. When converting from a [named or anonymous] access-to-subprogram type
+23. When converting from a [named or anonymous] access-to-subprogram type
     to another, if the converted expression is not null,
     a verification condition is introduced to ensure that the
     precondition of the source of the conversion is implied by the

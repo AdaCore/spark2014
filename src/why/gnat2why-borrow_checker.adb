@@ -1115,6 +1115,13 @@ package body Gnat2Why.Borrow_Checker is
 
       --  Local subprograms
 
+      procedure Check_Assignment_To_Ghost
+        (Target_Root : Entity_Id;
+         Expr_Root   : Entity_Id;
+         Mode        : Checking_Mode);
+      --  Check that move or borrow of Expr_Root into Target_Root does not
+      --  violate the rule wrt ghost having no effect on non-ghost.
+
       procedure Handle_Borrow_Or_Observe
         (Map  : in out Variable_Mapping;
          Var  : Entity_Id;
@@ -1137,6 +1144,37 @@ package body Gnat2Why.Borrow_Checker is
       --  Even if the type of Expr is not deep, the assignment can still be a
       --  move. It occurs on allocators and conversions to access-to-constant
       --  types.
+
+      -------------------------------
+      -- Check_Assignment_To_Ghost --
+      -------------------------------
+
+      --  SPARK RM 3.10(17): A path rooted at a non-ghost object shall only
+      --  be moved, or borrowed, if the target object of the move or borrow
+      --  is itself non-ghost.
+
+      procedure Check_Assignment_To_Ghost
+        (Target_Root : Entity_Id;
+         Expr_Root   : Entity_Id;
+         Mode        : Checking_Mode)
+      is
+      begin
+         if Is_Ghost_Entity (Target_Root)
+           and then Present (Expr_Root)
+           and then not Is_Ghost_Entity (Expr_Root)
+         then
+            Error_Msg_Node_2 := Target_Root;
+            Error_Msg_NE
+              ("non-ghost object & cannot be " &
+               (case Mode is
+                  when Borrow => "borrowed",
+                  when Move   => "moved",
+                  when others => raise Program_Error) &
+               " in an assignment to ghost object &",
+               Expr, Expr_Root);
+            Permission_Error := True;
+         end if;
+      end Check_Assignment_To_Ghost;
 
       -------------------
       -- Handle_Borrow --
@@ -1362,22 +1400,33 @@ package body Gnat2Why.Borrow_Checker is
                then Is_Entity_Name (Target) and then Target_Root = Expr_Root);
 
             Check_Expression (Expr, Borrow);
+            Check_Assignment_To_Ghost (Target_Root, Expr_Root, Borrow);
             Handle_Borrow (Target_Root, Expr);
          end if;
 
       elsif Is_Deep (Target_Typ) then
+         Expr_Root := Get_Root_Object (Expr);
+
+         if Is_Decl then
+            Target_Root := Target;
+         else
+            Target_Root := Get_Root_Object (Target);
+         end if;
 
          --  Expression not allowed as source of move
 
          pragma Assert (Is_Path_Expression (Expr));
          Check_Expression (Expr, Move);
+         Check_Assignment_To_Ghost (Target_Root, Expr_Root, Move);
 
       elsif Is_Access_Type (Retysp (Target_Typ))
         and then Is_Access_Constant (Retysp (Target_Typ))
         and then Is_Move_To_Constant (Expr)
       then
 
-         --  The expression of the conversion/allocator is moved
+         --  The expression of the conversion/allocator is moved. No checking
+         --  is required wrt ghost as no write/deallocation is possible through
+         --  the target object.
 
          pragma Assert (Is_Path_Expression (Expression (Expr)));
          Check_Expression (Expression (Expr), Move);
@@ -3548,6 +3597,35 @@ package body Gnat2Why.Borrow_Checker is
 
       if Mode = Assign then
          Check_Expr_Or_Ent (Expr, Read_Subexpr);
+      end if;
+
+      --  SPARK RM 3.10(17): A path rooted at a non-ghost object shall only
+      --  be moved, or borrowed, if the target object of the move or borrow
+      --  is itself non-ghost.
+
+      if not Global_Var
+        and then Mode in Borrow | Free | Move
+        and then Is_Ghost_Entity (Subp)
+      then
+         declare
+            Root : constant Entity_Id := Get_Root_Object (Expr.Expr);
+         begin
+            if Present (Root)
+              and then not Is_Ghost_Entity (Root)
+            then
+               Error_Msg_Node_2 := Subp;
+               Error_Msg_NE
+                 ("non-ghost object & cannot be " &
+                  (case Mode is
+                      when Borrow => "borrowed",
+                      when Free   => "freed",
+                      when Move   => "moved",
+                      when others => raise Program_Error) &
+                  " in a call to ghost subprogram &",
+                  Expr.Expr, Root);
+               Permission_Error := True;
+            end if;
+         end;
       end if;
 
       Check_Expr_Or_Ent (Expr, Mode);
