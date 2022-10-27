@@ -40,6 +40,7 @@ with Flow_Utility;                    use Flow_Utility;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
 with Flow_Types;                      use Flow_Types;
 with Gnat2Why_Args;
+with Lib;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Nmake;
@@ -7684,11 +7685,27 @@ package body SPARK_Definition is
    -----------------------
 
    procedure Mark_Package_Body (N : N_Package_Body_Id) is
+
+      function Spec_Has_SPARK_Mode_Off (E : Package_Kind_Id) return Boolean
+      is (declare
+            Prag     : constant Node_Id := SPARK_Pragma (E);
+            Aux_Prag : constant Node_Id := SPARK_Aux_Pragma (E);
+          begin
+            (Present (Prag)
+              and then Get_SPARK_Mode_From_Annotation (Prag) = Off)
+            or else
+            (Present (Aux_Prag)
+              and then Get_SPARK_Mode_From_Annotation (Aux_Prag) = Off));
+
+      --  Local variables
+
       Body_E : constant E_Package_Body_Id := Defining_Entity (N);
       Spec_E : constant Package_Kind_Id := Unique_Entity (Body_E);
 
       Save_SPARK_Pragma       : constant Node_Id := Current_SPARK_Pragma;
       Save_Violation_Detected : constant Boolean := Violation_Detected;
+
+   --  Start of processing for Mark_Package_Body
 
    begin
       --  Do not analyze generic bodies
@@ -7701,11 +7718,14 @@ package body SPARK_Definition is
 
       Current_SPARK_Pragma := SPARK_Pragma (Body_E);
 
-      --  Only analyze package body when SPARK_Mode /= Off. In particular,
-      --  we still analyze a package body with no SPARK_Mode set, as it may
-      --  contain subprograms or packages with SPARK_Mode => On.
+      --  Only analyze package body when SPARK_Mode /= Off, and the package
+      --  spec does not have SPARK_Mode => Off on its public or private part.
+      --  In particular, we still analyze a package body with no SPARK_Mode
+      --  set, as it may contain subprograms or packages with SPARK_Mode => On.
 
-      if not SPARK_Pragma_Is (Opt.Off) then
+      if not SPARK_Pragma_Is (Opt.Off)
+        and then not Spec_Has_SPARK_Mode_Off (Spec_E)
+      then
          Violation_Detected := False;
          Mark_Stmt_Or_Decl_List (Declarations (N));
          Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
@@ -8630,11 +8650,17 @@ package body SPARK_Definition is
          --  while processing predicate function in discovery mode, which is
          --  recognized by the call to SPARK_Pragma_Is). An exception is made
          --  for expression functions, so that their body is translated into
-         --  an axiom for analysis of its callers even in SPARK_Mode => Auto.
+         --  an axiom for analysis of its callers even in SPARK_Mode => Auto,
+         --  but only for dependencies, not the current unit, as otherwise the
+         --  body of the expression function might be in a package body with
+         --  SPARK_Mode => Auto while the private part of the package spec has
+         --  SPARK_Mode => Off.
 
          if SPARK_Pragma_Is_On
            or else (Is_Expression_Function_Or_Completion (E)
-                    and then not SPARK_Pragma_Is (Opt.Off))
+                    and then not SPARK_Pragma_Is (Opt.Off)
+                    and then not
+                      Is_Declared_In_Unit (E, Scope => Lib.Main_Unit_Entity))
          then
             declare
                Save_Violation_Detected : constant Boolean :=

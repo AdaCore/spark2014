@@ -1,7 +1,7 @@
 package Mode_Auto is
    type T is private;
-   function Is_Null (X : T) return Boolean;
-   function "=" (X, Y : T) return Boolean;
+   function Is_Null (X : T) return Boolean with Global => null;
+   function "=" (X, Y : T) return Boolean with Global => null;
    C : constant T;
    D : constant T;
 private
