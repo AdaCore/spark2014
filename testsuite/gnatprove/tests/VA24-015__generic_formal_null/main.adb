@@ -5,7 +5,7 @@ procedure Main is
 
    procedure G is
    begin
-      P;
+      P;  --@PRECONDITION:FAIL
    end;
 
    procedure I is new G;
