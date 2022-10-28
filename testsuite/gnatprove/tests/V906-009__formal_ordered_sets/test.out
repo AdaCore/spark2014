@@ -1,46 +1,46 @@
-spark-containers-formal-ordered_sets.ads:525:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:525:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:894:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:894:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:903:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:903:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:938:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:938:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:946:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:946:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:973:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:973:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:981:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:981:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:998:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:998:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:999:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:999:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1047:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1047:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1217:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1217:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1218:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1218:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1218:44: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1218:44: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1257:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1257:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1361:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1361:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1376:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1376:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1391:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1391:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1406:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1406:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1440:47: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1440:47: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1455:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1455:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1723:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set.ads:30
-spark-containers-formal-ordered_sets.ads:1744:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:30
-spark-containers-formal-ordered_sets.ads:1762:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:30
+spark-containers-formal-ordered_sets.ads:527:18: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:527:18: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:896:39: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:896:39: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:905:17: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:905:17: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:940:42: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:940:42: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:948:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:948:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:975:42: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:975:42: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:983:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:983:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1000:24: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1000:24: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1001:26: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1001:26: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1049:49: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1049:49: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1219:24: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1219:24: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1220:26: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1220:26: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1220:44: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1220:44: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1259:49: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1259:49: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1363:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1363:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1378:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1378:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1393:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1393:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1408:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1408:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1442:47: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1442:47: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1457:40: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1457:40: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1725:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set.ads:30
+spark-containers-formal-ordered_sets.ads:1746:46: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:30
+spark-containers-formal-ordered_sets.ads:1764:40: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:30
 spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at test_set.ads:19
 spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at test_set.ads:6
 spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at test_set.ads:19
@@ -53,82 +53,83 @@ spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, 
 spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
 spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
 spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
 spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
 spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:440:63: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:440:63: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:442:30: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:442:30: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_set.ads:6
 test_set.adb:5:14: warning: subprogram "Test_Set_Pos" has no effect
 test_set.adb:7:07: info: initialization of "L" proved
 test_set.adb:7:10: info: initialization of "K" proved
+test_set.adb:7:19: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_set.adb:7:19: info: range check proved (CVC5: 2 VC)
 test_set.adb:8:07: info: initialization of "C" proved
 test_set.adb:9:07: info: initialization of "B" proved
-test_set.adb:11:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:13:12: info: precondition proved (CVC5: 1 VC)
-test_set.adb:15:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:16:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:17:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:18:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:11:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:13:12: info: precondition proved (altergo: 1 VC)
+test_set.adb:15:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:16:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:17:07: info: precondition proved (altergo: 1 VC)
+test_set.adb:18:22: info: assertion proved (altergo: 1 VC)
 test_set.adb:20:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:21:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:24:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:25:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:26:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:28:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:29:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:21:07: info: precondition proved (altergo: 1 VC)
+test_set.adb:24:07: info: precondition proved (altergo: 1 VC)
+test_set.adb:25:07: info: precondition proved (altergo: 1 VC)
+test_set.adb:26:07: info: precondition proved (altergo: 1 VC)
+test_set.adb:28:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:29:07: info: precondition proved (altergo: 1 VC)
 test_set.adb:30:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:32:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:32:36: info: precondition proved (CVC5: 1 VC)
+test_set.adb:32:36: info: precondition proved (Z3: 1 VC)
 test_set.adb:33:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:33:36: info: precondition proved (CVC5: 1 VC)
-test_set.adb:34:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:33:36: info: precondition proved (Z3: 1 VC)
+test_set.adb:34:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:35:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:35:36: info: precondition proved (CVC5: 1 VC)
+test_set.adb:35:36: info: precondition proved (Z3: 1 VC)
 test_set.adb:36:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:36:36: info: precondition proved (CVC5: 1 VC)
-test_set.adb:37:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:39:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:37:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:39:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:40:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:41:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:42:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:44:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:42:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:44:07: info: precondition proved (altergo: 1 VC)
 test_set.adb:46:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:47:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:48:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:48:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:49:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:55:10: medium: precondition might fail
 test_set.adb:60:28: medium: assertion might fail
 test_set.adb:65:23: info: precondition proved (CVC5: 1 VC)
-test_set.adb:67:10: info: precondition proved (CVC5: 1 VC)
+test_set.adb:67:10: info: precondition proved (Z3: 1 VC)
 test_set.adb:68:25: medium: assertion might fail
-test_set.adb:68:28: info: precondition proved (CVC5: 1 VC)
-test_set.adb:68:39: info: precondition proved (CVC5: 1 VC)
+test_set.adb:68:28: info: precondition proved (altergo: 1 VC)
+test_set.adb:68:39: info: precondition proved (Z3: 1 VC)
 test_set.adb:69:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:70:10: info: precondition proved (CVC5: 1 VC)
 test_set.adb:76:10: medium: precondition might fail
 test_set.adb:77:25: medium: assertion might fail
-test_set.adb:81:23: info: precondition proved (CVC5: 1 VC)
-test_set.adb:83:10: info: precondition proved (CVC5: 1 VC)
+test_set.adb:81:23: info: precondition proved (Z3: 1 VC)
+test_set.adb:83:10: info: precondition proved (Z3: 1 VC)
 test_set.adb:84:25: medium: assertion might fail
 test_set.adb:84:28: info: precondition proved (CVC5: 1 VC)
 test_set.adb:84:40: info: precondition proved (CVC5: 1 VC)
 test_set.adb:85:10: info: precondition proved (Z3: 1 VC)
-test_set.adb:92:07: info: precondition proved (Z3: 1 VC)
+test_set.adb:92:07: medium: precondition might fail [possible fix: call at line 89 should mention Container (for argument L) in a postcondition]
 test_set.adb:93:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:96:22: medium: assertion might fail
-test_set.adb:98:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:96:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:98:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:99:07: medium: assertion might fail
 test_set.adb:102:14: warning: subprogram "Test_Set_Rec" has no effect
 test_set.adb:105:07: info: initialization of "L" proved
@@ -136,57 +137,58 @@ test_set.adb:105:10: info: initialization of "K" proved
 test_set.adb:105:19: info: range check proved (CVC5: 2 VC)
 test_set.adb:106:07: info: initialization of "C" proved
 test_set.adb:107:07: info: initialization of "B" proved
-test_set.adb:109:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:109:22: info: assertion proved (altergo: 1 VC)
 test_set.adb:111:12: info: precondition proved (CVC5: 1 VC)
-test_set.adb:113:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:114:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:115:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:113:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:114:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_set.adb:115:07: info: precondition proved (altergo: 1 VC)
 test_set.adb:116:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:117:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:119:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:119:07: info: precondition proved (altergo: 1 VC)
 test_set.adb:120:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:123:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:123:07: info: precondition proved (altergo: 1 VC)
 test_set.adb:124:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:125:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:125:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:126:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:127:22: medium: assertion might fail
+test_set.adb:127:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:128:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:130:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:132:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:134:07: info: precondition proved (Z3: 1 VC)
-test_set.adb:135:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:135:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:138:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:140:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:142:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:143:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:145:22: medium: assertion might fail
-test_set.adb:146:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:146:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:147:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:150:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:152:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:152:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:153:07: medium: assertion might fail
 test_set.adb:156:14: warning: subprogram "Test_Set_Rec_2" has no effect
 test_set.adb:158:07: info: initialization of "L" proved
 test_set.adb:158:10: info: initialization of "K" proved
+test_set.adb:158:19: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_set.adb:158:19: info: range check proved (CVC5: 2 VC)
 test_set.adb:159:07: info: initialization of "C" proved
 test_set.adb:160:07: info: initialization of "B" proved
 test_set.adb:162:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:164:12: info: precondition proved (CVC5: 1 VC)
-test_set.adb:166:07: info: precondition proved (CVC5: 2 VC)
+test_set.adb:164:12: info: precondition proved (altergo: 1 VC)
+test_set.adb:166:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_set.adb:167:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:168:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:169:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:170:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:168:07: info: precondition proved (altergo: 1 VC)
+test_set.adb:169:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:170:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:172:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:173:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:176:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:177:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:177:07: info: precondition proved (altergo: 1 VC)
 test_set.adb:179:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:180:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:181:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:182:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:184:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:184:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:186:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:187:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:190:22: medium: assertion might fail
@@ -197,120 +199,120 @@ test_set.adb:200:07: info: precondition proved (Trivial: 1 VC)
 test_set.adb:201:07: info: precondition proved (Trivial: 1 VC)
 test_set.adb:206:04: info: initialization of "L" proved
 test_set.adb:206:07: info: initialization of "K" proved
-test_set.adb:206:16: info: range check proved (CVC5: 2 VC)
+test_set.adb:206:16: info: range check proved (altergo: 2 VC)
 test_set.adb:207:04: info: initialization of "C" proved
 test_set.adb:208:04: info: initialization of "Val" proved
-test_set.adb:213:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:215:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:216:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:218:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:219:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:221:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:223:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:225:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:227:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:229:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:233:12: info: discriminant check proved (CVC5: 1 VC)
-test_set.adb:233:12: info: precondition proved (CVC5: 1 VC)
+test_set.adb:213:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:215:07: info: precondition proved (altergo: 2 VC)
+test_set.adb:216:07: info: precondition proved (altergo: 2 VC)
+test_set.adb:218:07: info: precondition proved (altergo: 2 VC)
+test_set.adb:219:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:221:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:223:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:225:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:227:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:229:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:233:12: info: discriminant check proved (altergo: 1 VC)
+test_set.adb:233:12: info: precondition proved (altergo: 1 VC)
 test_set.adb:234:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:236:07: medium: precondition might fail
-test_set.adb:237:12: info: discriminant check proved (CVC5: 1 VC)
-test_set.adb:237:12: info: precondition proved (CVC5: 1 VC)
-test_set.adb:238:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:237:12: info: discriminant check proved (altergo: 1 VC)
+test_set.adb:237:12: info: precondition proved (altergo: 1 VC)
+test_set.adb:238:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:239:22: medium: assertion might fail
-test_set.adb:243:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:244:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:246:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:243:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:244:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:246:07: info: precondition proved (altergo: 1 VC)
 test_set.adb:247:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:248:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:249:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:253:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:254:14: info: precondition proved (CVC5: 1 VC)
+test_set.adb:248:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:249:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:253:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_set.adb:254:14: info: precondition proved (altergo: 1 VC)
 test_set.adb:256:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:258:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:262:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:263:14: info: precondition proved (CVC5: 1 VC)
+test_set.adb:258:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:262:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_set.adb:263:14: info: precondition proved (altergo: 1 VC)
 test_set.adb:265:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:267:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:273:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:267:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:273:22: info: assertion proved (altergo: 1 VC)
 test_set.adb:274:22: info: assertion proved (altergo: 1 VC)
-test_set.adb:275:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:277:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:278:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:279:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:281:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:282:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_set.adb:275:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:277:07: info: precondition proved (altergo: 2 VC)
+test_set.adb:278:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_set.adb:279:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_set.adb:281:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_set.adb:282:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_set.adb:287:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:288:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:291:25: info: assertion proved (Z3: 1 VC)
-test_set.adb:297:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:298:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:300:12: info: discriminant check proved (CVC5: 1 VC)
+test_set.adb:297:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:298:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:300:12: info: discriminant check proved (altergo: 1 VC)
 test_set.adb:302:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:307:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
-test_set.adb:308:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:309:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_set.adb:307:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_set.adb:308:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_set.adb:309:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_set.adb:312:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:315:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:315:26: info: precondition proved (CVC5: 1 VC)
+test_set.adb:315:26: info: precondition proved (altergo: 1 VC)
 test_set.adb:320:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:320:22: info: precondition proved (CVC5: 1 VC)
-test_set.adb:322:12: info: precondition proved (CVC5: 1 VC)
+test_set.adb:320:22: info: precondition proved (altergo: 1 VC)
+test_set.adb:322:12: info: precondition proved (altergo: 1 VC)
 test_set.adb:323:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:323:22: info: precondition proved (Z3: 1 VC)
-test_set.adb:325:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:323:22: info: precondition proved (CVC5: 1 VC)
+test_set.adb:325:07: info: precondition proved (altergo: 1 VC)
 test_set.adb:326:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:326:22: info: precondition proved (Z3: 1 VC)
-test_set.adb:330:12: info: precondition proved (CVC5: 1 VC)
+test_set.adb:326:22: info: precondition proved (CVC5: 1 VC)
+test_set.adb:330:12: info: precondition proved (altergo: 1 VC)
 test_set.adb:331:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:331:22: info: precondition proved (Z3: 1 VC)
-test_set.adb:333:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:331:22: info: precondition proved (CVC5: 1 VC)
+test_set.adb:333:07: info: precondition proved (altergo: 1 VC)
 test_set.adb:334:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:334:22: info: precondition proved (Z3: 1 VC)
-test_set.adb:338:12: info: discriminant check proved (CVC5: 1 VC)
-test_set.adb:339:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:339:22: info: precondition proved (CVC5: 1 VC)
-test_set.adb:340:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:347:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:348:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:350:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:351:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_set.adb:334:22: info: precondition proved (CVC5: 1 VC)
+test_set.adb:338:12: info: discriminant check proved (altergo: 1 VC)
+test_set.adb:339:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:339:22: info: precondition proved (altergo: 1 VC)
+test_set.adb:340:07: info: precondition proved (altergo: 1 VC)
+test_set.adb:347:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_set.adb:348:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_set.adb:350:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_set.adb:351:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_set.adb:356:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:357:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:360:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:363:07: info: assertion proved (Z3: 1 VC)
 test_set.adb:370:07: info: initialization of "L" proved
 test_set.adb:370:10: info: initialization of "K" proved
-test_set.adb:370:19: info: range check proved (CVC5: 2 VC)
+test_set.adb:370:19: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_set.adb:371:07: info: initialization of "C" proved
-test_set.adb:374:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:376:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:377:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:374:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:376:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:377:22: info: assertion proved (altergo: 1 VC)
 test_set.adb:379:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:380:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:381:07: info: precondition proved (CVC5: 2 VC)
+test_set.adb:380:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_set.adb:381:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_set.adb:386:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:389:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:389:26: info: precondition proved (CVC5: 1 VC)
+test_set.adb:389:26: info: precondition proved (altergo: 1 VC)
 test_set.adb:393:12: info: discriminant check proved (CVC5: 1 VC)
 test_set.adb:394:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:395:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:396:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:395:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:396:22: info: assertion proved (altergo: 1 VC)
 test_set.adb:400:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:400:23: info: precondition proved (CVC5: 1 VC)
-test_set.adb:404:12: info: discriminant check proved (CVC5: 1 VC)
+test_set.adb:404:12: info: discriminant check proved (altergo: 1 VC)
 test_set.adb:407:22: medium: assertion might fail
 test_set.adb:410:22: medium: assertion might fail
 test_set.adb:411:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:415:22: medium: assertion might fail
 test_set.adb:420:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:421:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:422:07: medium: precondition might fail, cannot prove not Contains (Container, New_Item)
-test_set.adb:424:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:426:08: info: precondition proved (CVC5: 1 VC)
+test_set.adb:421:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:422:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:424:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:426:08: info: precondition proved (altergo: 1 VC)
 test_set.adb:428:07: medium: assertion might fail
-test_set.ads:16:12: info: postcondition proved (CVC5: 2 VC)
-test_set.ads:27:17: info: postcondition proved (CVC5: 1 VC)
+test_set.ads:16:12: info: postcondition proved (altergo: 2 VC)
+test_set.ads:27:17: info: postcondition proved (altergo: 1 VC)
 test_set.ads:35:36: info: data dependencies proved
 test_set.ads:37:30: info: data dependencies proved
 test_set.ads:39:34: info: data dependencies proved

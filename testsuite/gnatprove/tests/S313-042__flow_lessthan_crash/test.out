@@ -37,10 +37,10 @@ moth.ads:325:20: info: initialization of "task_id" proved
 spark-containers-formal-ordered_sets.ads:81:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
 spark-containers-formal-ordered_sets.ads:143:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
 spark-containers-formal-ordered_sets.ads:156:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
-spark-containers-formal-ordered_sets.ads:1438:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
-spark-containers-formal-ordered_sets.ads:1438:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:126
-spark-containers-formal-ordered_sets.ads:1453:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
-spark-containers-formal-ordered_sets.ads:1453:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:126
+spark-containers-formal-ordered_sets.ads:1440:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
+spark-containers-formal-ordered_sets.ads:1440:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:126
+spark-containers-formal-ordered_sets.ads:1455:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:126
+spark-containers-formal-ordered_sets.ads:1455:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:126
 spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at moth.ads:126
 spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at moth.ads:126
 spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at moth.ads:130

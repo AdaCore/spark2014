@@ -1,41 +1,41 @@
-spark-containers-formal-unbounded_ordered_maps.ads:380:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:380:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:382:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:382:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:382:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:382:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:386:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:386:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:388:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:388:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:407:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:407:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:445:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:445:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:817:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:817:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:826:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:826:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:861:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:861:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:869:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:869:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:896:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:896:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:904:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:904:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:974:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:974:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:989:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:989:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:1004:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:1004:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:1019:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:1019:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:1060:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:1060:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-unbounded_ordered_maps.ads:1075:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-unbounded_ordered_maps.ads:1075:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:382:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:382:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:384:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:384:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:384:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:384:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:388:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:388:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:390:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:390:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:409:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:409:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:447:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:447:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:819:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:819:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:828:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:828:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:863:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:863:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:871:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:871:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:898:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:898:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:906:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:906:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:976:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:976:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:991:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:991:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:1006:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:1006:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:1021:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:1021:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:1062:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:1062:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-unbounded_ordered_maps.ads:1077:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-unbounded_ordered_maps.ads:1077:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
 spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test_map.ads:20
 spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test_map.ads:6
 spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_map.ads:20
@@ -86,7 +86,7 @@ test_map.adb:29:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:30:07: info: precondition proved (CVC5: 2 VC)
 test_map.adb:32:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:32:36: info: precondition proved (CVC5: 1 VC)
-test_map.adb:33:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:33:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:33:36: info: precondition proved (CVC5: 1 VC)
 test_map.adb:34:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:35:22: info: assertion proved (CVC5: 1 VC)
@@ -98,7 +98,7 @@ test_map.adb:39:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:40:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:41:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_map.adb:42:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:47:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:47:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:49:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:50:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:53:22: info: assertion proved (Z3: 1 VC)
@@ -186,7 +186,7 @@ test_map.adb:191:33: info: precondition proved (CVC5: 1 VC)
 test_map.adb:194:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:194:22: info: precondition proved (CVC5: 1 VC)
 test_map.adb:194:48: info: pointer dereference check proved (CVC5: 1 VC)
-test_map.adb:205:25: info: assertion proved (CVC5: 1 VC)
+test_map.adb:205:25: info: assertion proved (Z3: 1 VC)
 test_map.adb:207:25: info: assertion proved (CVC5: 1 VC)
 test_map.adb:208:25: info: assertion proved (CVC5: 1 VC)
 test_map.adb:208:25: info: precondition proved (CVC5: 1 VC)
@@ -208,7 +208,7 @@ test_map.adb:226:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:226:22: info: precondition proved (CVC5: 1 VC)
 test_map.adb:230:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:230:22: info: precondition proved (CVC5: 1 VC)
-test_map.adb:234:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:234:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:234:22: info: precondition proved (CVC5: 1 VC)
 test_map.adb:235:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:235:22: info: precondition proved (CVC5: 1 VC)
@@ -268,7 +268,7 @@ test_map.adb:307:28: info: assertion proved (CVC5: 1 VC)
 test_map.adb:307:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_map.adb:309:17: info: pointer dereference check proved (CVC5: 1 VC)
 test_map.adb:312:25: info: assertion proved (CVC5: 1 VC)
-test_map.adb:312:25: info: precondition proved (CVC5: 1 VC)
+test_map.adb:312:25: info: precondition proved (Z3: 1 VC)
 test_map.adb:312:36: info: pointer dereference check proved (CVC5: 1 VC)
 test_map.adb:316:07: medium: assertion might fail
 test_map.ads:17:12: info: postcondition proved (CVC5: 2 VC)
