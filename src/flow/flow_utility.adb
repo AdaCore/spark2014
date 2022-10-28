@@ -1824,25 +1824,20 @@ package body Flow_Utility is
    is
       Globals : Global_Flow_Ids;
 
-      --  Flow handles expression functions as if they would be completed in
-      --  the body of an enclosing package, regardless of where the function
-      --  is actually completed. However, we don't want proof to use
-      --  Refined_Global of expression functions declared in WITH-ed package
-      --  specs, because Refined_Global might be tigher than the Global of
-      --  subprograms called from the expression function itself.
+      --  If explicit visibility scope is provided, then use it;
+      --  for access-to-subprograms use the visibility of their declaration;
+      --  otherwise use "the most precise globals" that make sense, i.e.
+      --  Refined_Global if subprogram body is in SPARK and Global otherwise.
 
       S : constant Flow_Scope :=
         (if Present (Scop)
          then Scop
-         else Get_Flow_Scope (if Ekind (Subprogram) /= E_Subprogram_Type
-                                and then Entity_Body_In_SPARK (Subprogram)
-                                and then
-                                  not (Is_Expression_Function_Or_Completion
-                                         (Subprogram)
-                                         and then
-                                       not Is_In_Analyzed_Files (Subprogram))
-                              then Get_Body_Entity (Subprogram)
-                              else Subprogram));
+         elsif Ekind (Subprogram) = E_Subprogram_Type
+         then Get_Flow_Scope (Subprogram)
+         else (Ent  => Subprogram,
+               Part => (if Entity_Body_In_SPARK (Subprogram)
+                        then Body_Part
+                        else Visible_Part)));
 
       function Only_Mutable
         (Objects : Flow_Id_Sets.Set)
