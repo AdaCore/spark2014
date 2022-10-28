@@ -1,0 +1,3 @@
+gencontract.adb:12:22: info: assertion proved (CVC5: 1 VC), in instantiation at gencontract.adb:22
+gencontract.adb:16:19: info: postcondition proved (CVC5: 1 VC)
+gencontract.adb:22:14: warning: subprogram "Local" has no effect
