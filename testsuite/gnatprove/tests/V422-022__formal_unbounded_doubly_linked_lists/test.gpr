@@ -1,4 +1,5 @@
-project Test extends "sparklib" is
+with "sparklib_internal";
+project Test is
 
    for Main use ("test.adb");
 
@@ -6,8 +7,7 @@ project Test extends "sparklib" is
 
    package Compiler is
       for Default_Switches ("Ada") use
-         ("-gnat2022", "-gnata", "-gnatwI",
-          "-gnateDSPARK_BODY_MODE=On");
+         ("-gnat2022", "-gnata");
    end Compiler;
 
 end Test;
