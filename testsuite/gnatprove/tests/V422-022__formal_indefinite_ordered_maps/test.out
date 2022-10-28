@@ -34,7 +34,7 @@ spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC
 spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
 test.adb:8:04: info: initialization of "M" proved
 test.adb:14:04: info: precondition proved (CVC5: 2 VC)
-test.adb:15:04: medium: precondition might fail, cannot prove not Contains (Container, Key)
+test.adb:15:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test.adb:16:04: medium: precondition might fail, cannot prove not Contains (Container, Key)
 test.adb:18:19: medium: assertion might fail
 test.adb:18:19: medium: precondition might fail
