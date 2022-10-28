@@ -16,7 +16,7 @@ spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" wil
 spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
 spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
 spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
-spark-containers-functional-vectors.ads:183:45: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
 spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
 spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
 spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:99, in instantiation at test.adb:6
@@ -27,7 +27,7 @@ spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 
 test.adb:10:04: info: initialization of "M" proved
 test.adb:10:13: info: range check proved (CVC5: 1 VC)
 test.adb:17:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test.adb:18:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test.adb:18:04: info: precondition proved (Z3: 2 VC)
 test.adb:19:04: medium: precondition might fail, cannot prove not Contains (Container, Key)
 test.adb:21:19: info: precondition proved (Z3: 1 VC)
 test.adb:21:19: medium: assertion might fail
