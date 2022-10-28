@@ -7,12 +7,14 @@ is
    end Set;
 
    procedure Read_All is
-      Tmp : Integer := 0;
+      Tmp    : Integer := 0;
+      Val_AW : Integer := AW;
+      Val_ER : Integer := ER;
    begin
       Tmp := Tmp + AR;
-      Tmp := Tmp + AW;
+      Tmp := Tmp + Val_AW;
       EW := Tmp;
-      Set (ER);
+      Set (Val_ER);
    end Read_All;
 
    function Read_ER return Integer is

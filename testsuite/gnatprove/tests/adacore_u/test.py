@@ -13,14 +13,21 @@ prove_all(
 )
 prove_all(
     steps=700,
-    opt=["-U", "-P", "Functional_Correctness/functional_correctness", "--no-subprojects"],
+    opt=[
+        "-U",
+        "-P",
+        "Functional_Correctness/functional_correctness",
+        "--no-subprojects",
+    ],
     check_counterexamples=False,
 )
-# commented out due to crash with volatile float (Q906-010)
-# prove_all(opt=["-U", "-P", "Systems_Programming/systems_programming"])
+prove_all(opt=["-U", "-P", "Systems_Programming/systems_programming"])
 prove_all(opt=["-U", "-P", "Concurrency/concurrency"], check_counterexamples=False)
 prove_all(
     opt=["-U", "-P", "Object_Oriented_Programming/object_oriented_programming"],
     check_counterexamples=False,
 )
-prove_all(opt=["-U", "-P", "Ghost_Code/ghost_code", "--no-subprojects"], check_counterexamples=False)
+prove_all(
+    opt=["-U", "-P", "Ghost_Code/ghost_code", "--no-subprojects"],
+    check_counterexamples=False,
+)
