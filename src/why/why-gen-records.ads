@@ -338,8 +338,7 @@ package Why.Gen.Records is
       Check_Ty : Entity_Id;
       Expr     : W_Prog_Id)
       return W_Prog_Id
-   with Pre => Count_Discriminants (Check_Ty) > 0
-     and then Is_Constrained (Check_Ty);
+   with Pre => Has_Discriminants (Check_Ty) and then Is_Constrained (Check_Ty);
    --  Given a record subtype and an expression, add a call to the subtype
    --  discriminant check function, to generate a discriminant check.
 
@@ -445,7 +444,7 @@ package Why.Gen.Records is
 
    function Get_Discriminants_Of_Subtype (Ty : Entity_Id) return W_Expr_Array
    with
-     Pre  => Count_Discriminants (Ty) > 0 and Is_Constrained (Ty),
+     Pre  => Has_Discriminants (Ty) and Is_Constrained (Ty),
      Post => Get_Discriminants_Of_Subtype'Result'Length =
        Count_Discriminants (Ty);
 

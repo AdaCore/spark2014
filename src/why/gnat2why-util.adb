@@ -787,7 +787,7 @@ package body Gnat2Why.Util is
       --  sub-record by copy instead of by reference (with the split version
       --  of the record).
 
-      if Count_Discriminants (E) > 0 then
+      if Has_Discriminants (E) then
          Count := Count + 1;
       end if;
 
@@ -1213,7 +1213,7 @@ package body Gnat2Why.Util is
       Ty : constant Type_Kind_Id := Retysp (E);
    begin
       return Is_Incomplete_Or_Private_Type (Ty)
-        and then Count_Discriminants (Ty) = 0
+        and then not Has_Discriminants (Ty)
         and then not Is_Tagged_Type (Ty)
         and then (not Has_Ownership_Annotation (Ty)
                   or else not Needs_Reclamation (Ty));
@@ -1620,14 +1620,14 @@ package body Gnat2Why.Util is
            --  For constrained types with discriminants, we supply the value
            --  of the discriminants.
 
-           or else (Count_Discriminants (Ty_Ext) > 0
+           or else (Has_Discriminants (Ty_Ext)
                      and then Is_Constrained (Ty_Ext))
 
            --  For component types with defaulted discriminants, we know the
            --  discriminants have their default value.
 
            or else (not Top_Level
-                     and then Count_Discriminants (Ty_Ext) > 0
+                     and then Has_Discriminants (Ty_Ext)
                      and then Has_Defaulted_Discriminants (Ty_Ext))
 
            --  For access-to-subprogram types, we know that they abide by
@@ -1664,7 +1664,7 @@ package body Gnat2Why.Util is
            or else Is_Incomplete_Or_Private_Type (Ty_Ext)
            or else Is_Concurrent_Type (Ty_Ext)
          then
-            if Count_Discriminants (Ty_Ext) > 0 then
+            if Has_Discriminants (Ty_Ext) then
                declare
                   Discr : Opt_E_Discriminant_Id := First_Discriminant (Ty_Ext);
                begin

@@ -453,7 +453,8 @@ package Gnat2Why.Util is
    --  @param E type.
    --  @return True if E is a private type with only a single private field.
 
-   function Count_Discriminants (E : Type_Kind_Id) return Natural;
+   function Count_Discriminants (E : Type_Kind_Id) return Natural with
+     Post => (Count_Discriminants'Result > 0) = Has_Discriminants (E);
    --  @param E type.
    --  @return the number of discriminants visible in the Retysp of E
    --  In the translation to Why, use Count_Discriminants instead of

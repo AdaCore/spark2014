@@ -815,7 +815,7 @@ package body Why.Gen.Binders is
                        Labels   => <>));
             end if;
 
-            if Count_Discriminants (Ty) > 0 then
+            if Has_Discriminants (Ty) then
                Result.Discrs :=
                  (Present => True,
                   Binder  =>

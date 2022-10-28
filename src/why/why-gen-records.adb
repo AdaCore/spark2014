@@ -3225,7 +3225,7 @@ package body Why.Gen.Records is
                              (1 => New_Ada_Record_Aggregate
                                 (Domain       => EW_Term,
                                  Discr_Expr   =>
-                                   (if Count_Discriminants (E) > 0
+                                   (if Has_Discriminants (E)
                                     then New_Record_Access
                                       (Name  => +A_Ident,
                                        Field => To_Ident
@@ -3236,7 +3236,7 @@ package body Why.Gen.Records is
                               2 => New_Ada_Record_Aggregate
                                 (Domain       => EW_Term,
                                  Discr_Expr   =>
-                                   (if Count_Discriminants (E) > 0
+                                   (if Has_Discriminants (E)
                                     then New_Record_Access
                                       (Name  => +B_Ident,
                                        Field => To_Ident
@@ -4140,7 +4140,7 @@ package body Why.Gen.Records is
       return W_Expr_Id
    is
       Discr_Expr : constant W_Expr_Id :=
-        (if Count_Discriminants (Ty) > 0
+        (if Has_Discriminants (Ty)
          then New_Record_Aggregate (Associations => Discr_Assocs)
          else Why_Empty);
 
