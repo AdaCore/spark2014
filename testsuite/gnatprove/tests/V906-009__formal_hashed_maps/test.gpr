@@ -14,4 +14,8 @@ project Test is
          ("-gnat2022", "-gnata");
    end Compiler;
 
+   package Prove is
+      for Proof_Dir use "proof";
+   end Prove;
+
 end Test;

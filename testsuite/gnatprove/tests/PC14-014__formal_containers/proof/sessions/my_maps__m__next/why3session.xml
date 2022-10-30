@@ -27,9 +27,9 @@
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="3116"/></proof>
+  <proof prover="1"><result status="valid" steps="3241"/></proof>
   <proof prover="2"><result status="valid" steps="1568"/></proof>
-  <proof prover="4"><result status="highfailure"/></proof>
+  <proof prover="4"><result status="failure" steps="0"/></proof>
   </goal>
  </transf>
  </goal>

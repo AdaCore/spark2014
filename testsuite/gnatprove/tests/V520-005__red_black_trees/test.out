@@ -1112,7 +1112,7 @@ red_black_trees.ads:147:14: medium: postcondition might fail, cannot prove RBT_I
 red_black_trees.ads:148:20: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:148:52: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:148:59: info: predicate check proved (Trivial: 1 VC)
-spark-containers-functional-maps.ads:108:34: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
-spark-containers-functional-maps.ads:108:41: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
-spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
-spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:112:34: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:112:41: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44

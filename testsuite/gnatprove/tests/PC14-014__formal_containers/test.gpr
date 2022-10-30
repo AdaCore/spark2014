@@ -1,4 +1,4 @@
-with "sparklib";
+with "sparklib_internal";
 
 project Test is
 

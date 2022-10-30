@@ -10,16 +10,18 @@ spark-containers-formal-hashed_maps.ads:775:39: info: precondition proved (CVC5:
 spark-containers-formal-hashed_maps.ads:784:17: info: precondition proved (CVC5: 1 VC), in instantiation at com_map.ads:30
 spark-containers-formal-hashed_maps.ads:814:20: info: precondition proved (CVC5: 1 VC), in instantiation at com_map.ads:30
 spark-containers-formal-hashed_maps.ads:829:20: info: precondition proved (CVC5: 1 VC), in instantiation at com_map.ads:30
-spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at com_map.ads:30
-spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at com_map.ads:30
-spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at com_map.ads:30
-spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at com_map.ads:30
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at com_map.ads:30
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at com_map.ads:30
-spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at com_map.ads:30
-spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at com_map.ads:30
-spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at com_map.ads:30
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at com_map.ads:30
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at com_map.ads:30
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at com_map.ads:30
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at com_map.ads:30
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at com_map.ads:30
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at com_map.ads:30
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at com_map.ads:30
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at com_map.ads:30
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at com_map.ads:30
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at com_map.ads:30
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at com_map.ads:30
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at com_map.ads:30
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at com_map.ads:30
 deceleration_curve.adb:33:07: info: initialization of "delta_speed" proved
 deceleration_curve.adb:37:25: info: assertion proved (CVC5: 4 VC)
 deceleration_curve.adb:40:13: info: loop invariant initialization proved (CVC5: 2 VC)
@@ -239,7 +241,7 @@ step_function.ads:46:24: info: overflow check proved (CVC5: 2 VC)
 step_function.ads:46:50: info: index check proved (CVC5: 2 VC)
 step_function.ads:52:23: info: index check proved (CVC5: 2 VC)
 step_function.ads:52:49: info: index check proved (CVC5: 2 VC)
-step_function.ads:56:12: info: postcondition proved (CVC5: 1 VC)
+step_function.ads:56:12: info: postcondition proved (Z3: 1 VC)
 step_function.ads:58:27: info: index check proved (CVC5: 2 VC)
 step_function.ads:59:36: info: index check proved (CVC5: 2 VC)
 step_function.ads:60:50: info: index check proved (CVC5: 2 VC)
