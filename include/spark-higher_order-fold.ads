@@ -411,12 +411,19 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
 
       function No_Overflows
         (A : Array_Type; X : Element_Out; I : Index_Type) return Boolean
-      is (In_Range (To_Big (X) + To_Big (Value (A (I))))
-          and then
-            (if I < A'Last then No_Overflows (A, X + Value (A (I)), I + 1)))
       with Ghost,
         Subprogram_Variant => (Increases => I),
         Pre => I in A'Range;
+
+      ------------------
+      -- No_Overflows --
+      ------------------
+
+      function No_Overflows
+        (A : Array_Type; X : Element_Out; I : Index_Type) return Boolean
+      is (In_Range (To_Big (X) + To_Big (Value (A (I))))
+          and then
+            (if I < A'Last then No_Overflows (A, X + Value (A (I)), I + 1)));
 
       function No_Overflows (A : Array_Type) return Boolean is
         (if A'Length > 0 then No_Overflows (A, Zero, A'First))
@@ -732,15 +739,23 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       function No_Overflows
         (A : Array_Type; X : Element_Out; I : Index_1; J : Index_2)
          return Boolean
+      with Ghost,
+        Subprogram_Variant => (Increases => I, Increases => J),
+        Pre => I in A'Range (1) and then J in A'Range (2);
+
+      ------------------
+      -- No_Overflows --
+      ------------------
+
+      function No_Overflows
+        (A : Array_Type; X : Element_Out; I : Index_1; J : Index_2)
+         return Boolean
       is (In_Range (To_Big (X) + To_Big (Value (A (I, J))))
           and then
             (if J < A'Last (2)
              then No_Overflows (A, X + Value (A (I, J)), I, J + 1)
              elsif I < A'Last (1)
-             then No_Overflows (A, X + Value (A (I, J)), I + 1, A'First (2))))
-      with Ghost,
-        Subprogram_Variant => (Increases => I, Increases => J),
-        Pre => I in A'Range (1) and then J in A'Range (2);
+             then No_Overflows (A, X + Value (A (I, J)), I + 1, A'First (2))));
 
       function No_Overflows (A : Array_Type) return Boolean is
         (if A'Length (1) > 0 and A'Length (2) > 0

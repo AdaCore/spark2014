@@ -1,3 +1,4 @@
+from subprocess import call
 from test_support import prove_all, TESTDIR
 import os
 
@@ -8,3 +9,4 @@ prove_all(
     steps=70000,
     opt=["-u", "test_higher_order.ads"],
 )
+call(["gprbuild", "-q", "-P", "test.gpr"])
