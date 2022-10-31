@@ -162,6 +162,22 @@ procedure Table_Generator is
       end loop;
       New_Line (File);
       Put_Line (File, "The following table shows warnings " &
+                  "guaranteed to be reported by GNATprove.");
+      New_Line (File);
+      Put_Line (File, ".. tabularcolumns:: |p{2in}|p{3in}|");
+      New_Line (File);
+      Put_Line (File, ".. csv-table::");
+      Put_Line (File, "   :header: ""Message Kind"", ""Explanation""");
+      Put_Line (File, "   :widths: 1, 4");
+      New_Line (File);
+      for Kind in Guaranteed_Warning_Kind loop
+         Put (File, "    ");
+         Put (File, """" & Kind_Name (Kind) & """, ");
+         Put (File, """" & Description (Kind) & """");
+         New_Line (File);
+      end loop;
+      New_Line (File);
+      Put_Line (File, "The following table shows warnings " &
                   "reported by GNATprove when using switch ``--pedantic``.");
       New_Line (File);
       Put_Line (File, ".. tabularcolumns:: |p{2in}|p{3in}|");
