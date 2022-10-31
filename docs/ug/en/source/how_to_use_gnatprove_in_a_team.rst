@@ -804,11 +804,15 @@ being available:
   Subprograms which are called across the boundary of those units analyzed
   together should have a Global contract describing their effect on global
   data, otherwise they will be assumed to have no effect on global data.
+  A warning is issued in that case.
 
 * [PARTIAL_TERMINATION]
   Subprograms which are called across the boundary of those units analyzed
-  together and which may not terminate should have a No_Return or
-  Might_Not_Return annotation, otherwise they will be assumed to always return.
+  together should be annotated to specify that they will always return (with
+  annotation Always_Return), might not return (with annotation
+  Might_Not_Return) or never return (with aspect or pragma No_Return),
+  otherwise they will be assumed to always return.  A warning is issued in that
+  case.
 
 * [PARTIAL_RECURSIVE_SUBPROGRAMS]
   Subprograms which are called across the boundary of those units analyzed
