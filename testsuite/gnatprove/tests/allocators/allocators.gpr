@@ -3,9 +3,10 @@ with "sparklib";
 project Allocators is
 
    package Prove is
-      for Switches use ("-j0",
-                        "--level=3",
-                        "--function-sandboxing=off");
+      for Proof_Switches ("Ada") use
+         ("-j0",
+          "--level=3",
+          "--function-sandboxing=off");
    end Prove;
 
    package Compiler is
