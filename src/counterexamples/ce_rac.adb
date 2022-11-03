@@ -3128,18 +3128,22 @@ package body CE_RAC is
             when N_Op_Ne =>
                return Left /= Right;
             when others =>
-               declare
-                  L : constant Big_Integer := Value_Enum_Integer (Left);
-                  R : constant Big_Integer := Value_Enum_Integer (Right);
-               begin
-                  case N_Op_Compare (Nkind (N)) is
-                     when N_Op_Lt => return L < R;
-                     when N_Op_Le => return L <= R;
-                     when N_Op_Ge => return L >= R;
-                     when N_Op_Gt => return L > R;
-                     when others  => raise Program_Error;
-                  end case;
-               end;
+               if Is_Array_Type (Etype (Left_Opnd (N))) then
+                  RAC_Unsupported ("RAC_Op_Compare on arrays", N);
+               else
+                  declare
+                     L : constant Big_Integer := Value_Enum_Integer (Left);
+                     R : constant Big_Integer := Value_Enum_Integer (Right);
+                  begin
+                     case N_Op_Compare (Nkind (N)) is
+                        when N_Op_Lt => return L < R;
+                        when N_Op_Le => return L <= R;
+                        when N_Op_Ge => return L >= R;
+                        when N_Op_Gt => return L > R;
+                        when others  => raise Program_Error;
+                     end case;
+                  end;
+               end if;
          end case;
       end RAC_Op_Compare;
 
