@@ -476,6 +476,7 @@ package VC_Kinds is
    --  Each warning kind is either a default or a pedantic one
    pragma Assert (for all Kind in Misc_Warning_Kind =>
                     (if Kind in Default_Warning_Kind then 1 else 0)
+                  + (if Kind in Guaranteed_Warning_Kind then 1 else 0)
                   + (if Kind in Pedantic_Warning_Kind then 1 else 0)
                   = 1);
 
