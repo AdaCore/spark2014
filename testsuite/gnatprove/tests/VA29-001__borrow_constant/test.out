@@ -1,0 +1,7 @@
+main.adb:15:10: error: assignment into a constant object is not allowed in SPARK
+main.adb:15:10: error: violation of aspect SPARK_Mode at line 3
+main.adb:18:32: error: borrow of a constant object is not allowed in SPARK
+main.adb:18:32: error: violation of aspect SPARK_Mode at line 3
+main.adb:20:10: error: "B" is not allowed in SPARK (due to borrow of a constant object)
+main.adb:20:10: error: violation of aspect SPARK_Mode at line 3
+gnatprove: error during flow analysis and proof
