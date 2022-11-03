@@ -600,6 +600,20 @@ package body SPARK_Definition is
          Mark_Violation
            ("borrow or observe of a volatile object", Expr);
 
+      --  In case of a borrow, the root should not be a constant object or it
+      --  should be the first parameter of a borrowing traversal function in
+      --  which case the borrower is constant.
+
+      elsif not In_Observe
+        and then Is_Constant_In_SPARK (Root)
+        and then
+          not (Ekind (Root) = E_In_Parameter
+               and then Ekind (Scope (Root)) = E_Function
+               and then Is_Borrowing_Traversal_Function (Scope (Root))
+               and then Root = First_Formal (Scope (Root)))
+      then
+         Mark_Violation ("borrow of a constant object", Expr);
+
       --  In case of a borrow, the path should not traverse an
       --  access-to-constant type.
 
