@@ -587,7 +587,9 @@ and Refined_Depends.]
 
 
 12. The ``global_items`` in a single Global aspect specification shall denote
-    distinct entities.
+    distinct entities. Additionally, if a ``global_item`` is a state
+    abstraction, none of its constituents shall appear as a ``global_item`` in
+    the same Global aspect specification.
 
 
 13. If a subprogram is nested within another and if the

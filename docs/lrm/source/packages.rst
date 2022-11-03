@@ -806,7 +806,9 @@ grammar of ``initialization_spec`` given below.
    the ``aspect_specification`` containing the Initializes aspect.
 
 
-4. Each entity in a single ``input_list`` shall be distinct.
+4. Each entity in a single ``input_list`` shall be distinct. Additionally, if
+   an entity is a state abstraction, none of its constituents shall appear as
+   an entity in the same ``input_list``.
 
 
 5. An ``initialization_item`` with a **null** ``input_list`` is
