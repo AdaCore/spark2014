@@ -2475,12 +2475,21 @@ package body CE_RAC is
                   return Ctx.Env (Ctx.Env.First).Old_Attrs (P);
                end;
 
+            --  For each expression P'Loop_Entry, the value of the prefix P has
+            --  been stored in the scope for the corresponding loop. This might
+            --  not be the first scope of the environment, in case of local
+            --  declare blocks inside the loop.
+
             when Snames.Name_Loop_Entry =>
-               --  E'Loop_Entry
                declare
                   P : constant Node_Id := Prefix (N);
                begin
-                  return Ctx.Env (Ctx.Env.First).Loop_Entry_Attrs (P);
+                  for Scop of Ctx.Env loop
+                     if Scop.Loop_Entry_Attrs.Contains (P) then
+                        return Scop.Loop_Entry_Attrs (P);
+                     end if;
+                  end loop;
+                  raise Program_Error;
                end;
 
             when Snames.Name_Result =>
