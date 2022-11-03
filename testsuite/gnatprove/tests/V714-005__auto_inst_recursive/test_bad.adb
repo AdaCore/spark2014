@@ -69,7 +69,7 @@ procedure Test_Bad with SPARK_Mode is
    end Test_Rec_2;
 
    --  This test is used to make sure that automatically instantiated lemmas
-   --  are never used to prove other automatically instanciated lemmas of the
+   --  are never used to prove other automatically instantiated lemmas of the
    --  same subprogram.
 
    package Test_Rec_3 is

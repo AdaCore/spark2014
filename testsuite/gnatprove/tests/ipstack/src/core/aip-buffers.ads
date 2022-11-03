@@ -321,7 +321,7 @@ private
    -- General notes on internal data structures and buffer Ids --
    --------------------------------------------------------------
 
-   --  Each buffer instanciates as a common record associated with a
+   --  Each buffer instantiates as a common record associated with a
    --  kind-specific record, all allocated in static arrays in their
    --  respective packages (Buffers.Common, .Data and .No_Data)
 

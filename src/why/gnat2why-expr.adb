@@ -22943,7 +22943,7 @@ package body Gnat2Why.Expr is
 
       --  Generate an abstract logic function for the Why3 map of the literal.
       --  Use a function with a unit parameter instead of a constant so that
-      --  the axiom is only instanciated when the literal is used.
+      --  the axiom is only instantiated when the literal is used.
 
       Emit
         (Th,
