@@ -96,7 +96,7 @@ integer32_parsing.adb:130:91: info: division check proved (CVC5: 1 VC)
 integer32_parsing.adb:134:42: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:135:75: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:136:75: info: overflow check proved (CVC5: 2 VC)
-integer32_parsing.adb:138:07: medium: precondition might fail, cannot prove s1 (First1 .. Last1) = s2 (First2..Last2)
+integer32_parsing.adb:138:07: medium: precondition might fail, cannot prove s1 (I) in '0' .. '9'
 integer32_parsing.adb:138:45: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:138:55: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:138:62: info: range check proved (CVC5: 2 VC)

@@ -308,16 +308,16 @@ natural. To achieve that, a loop is introduced. The inductive proof necessary
 to demonstrate the universally quantified formula is then achieved thanks to
 the loop invariant, playing the role of an induction hypothesis:
 
-.. literalinclude:: /examples/ug__sort/sort.adb
+.. literalinclude:: /examples/ug__long__sort/sort.adb
    :language: ada
 
-.. literalinclude:: /examples/ug__sort/sort.ads
+.. literalinclude:: /examples/ug__long__sort/sort.ads
    :language: ada
 
 The procedure Selection_Sort can be verified using |GNATprove|, with the
 default prover CVC5, in less than 1s per verification condition.
 
-.. literalinclude:: /examples/ug__sort/test.out
+.. literalinclude:: /examples/ug__long__sort/test.out
    :language: none
 
 To complete the verification of our selection sort, the only remaining issue

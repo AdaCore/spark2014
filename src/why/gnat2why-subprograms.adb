@@ -1312,9 +1312,10 @@ package body Gnat2Why.Subprograms is
                else Empty);
             Dyn_Prop : constant W_Pred_Id :=
               (if Present (Ty_Node)  then
-                    Compute_Dynamic_Invariant (Expr   => +Expr,
-                                               Ty     => Ty_Node,
-                                               Params => Params)
+                    Compute_Dynamic_Invariant (Expr     => +Expr,
+                                               Ty       => Ty_Node,
+                                               Params   => Params,
+                                               Only_Var => False_Term)
                else
                   True_Pred);
          begin

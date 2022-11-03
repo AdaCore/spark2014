@@ -35,10 +35,10 @@ sorters.adb:73:13: info: precondition proved (CVC5: 10 VC)
 sorters.adb:74:29: info: range check proved (CVC5: 4 VC)
 sorters.adb:80:33: info: loop invariant initialization proved (CVC5: 1 VC)
 sorters.adb:80:33: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Perm or turning it into an expression function in its unit spec]
-sorters.adb:82:13: info: loop invariant initialization proved (CVC5: 1 VC)
+sorters.adb:83:18: medium: loop invariant might fail in first iteration, cannot prove Values (Current) <= Values (J)
 sorters.adb:83:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (Current) <= Values (J)
-sorters.adb:83:26: info: index check proved (CVC5: 4 VC)
-sorters.adb:83:46: info: index check proved (CVC5: 4 VC)
+sorters.adb:83:26: medium: array index check might fail [reason for check: value must be a valid index into the array]
+sorters.adb:83:46: medium: array index check might fail [reason for check: value must be a valid index into the array]
 sorters.adb:85:13: info: loop invariant initialization proved (CVC5: 1 VC)
 sorters.adb:86:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (J) <= Values (J + 1)
 sorters.adb:86:24: medium: array index check might fail [reason for check: value must be a valid index into the array]
