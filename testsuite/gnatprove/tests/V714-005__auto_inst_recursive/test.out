@@ -7,7 +7,7 @@ test_bad.adb:133:17: info: postcondition proved (CVC5: 1 VC)
 test_bad.adb:137:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
 test_bad.adb:148:17: info: postcondition proved (CVC5: 1 VC)
 test_bad.adb:152:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
-test_bad.adb:193:17: warning: lemma procedure cannot be instanciated automatically
+test_bad.adb:193:17: warning: lemma procedure cannot be instantiated automatically
 test_bad.adb:193:17: warning: procedure "Lemma_Prove_P" might not return
 test_bad.adb:196:17: info: postcondition proved (CVC5: 1 VC)
 test_bad.adb:201:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
