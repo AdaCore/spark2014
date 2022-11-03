@@ -1,7 +1,7 @@
 aliasing.adb:21:14: info: non-aliasing of formal parameters "X" and "Y" proved
 aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
-aliasing.adb:26:16: medium: array index check might fail (e.g. when A'First = 1 and I = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in A'First .. A'Last) to subprogram at aliasing.ads:17]
-aliasing.adb:26:23: medium: array index check might fail (e.g. when A'First = 1 and J = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in A'First .. A'Last) to subprogram at aliasing.ads:17]
+aliasing.adb:26:16: high: array index check might fail (e.g. when A'First = 1 and I = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in A'First .. A'Last) to subprogram at aliasing.ads:17]
+aliasing.adb:26:23: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in A'First .. A'Last) to subprogram at aliasing.ads:17]
 global_stack.ads:4:12: error: function with output global "Top" is not allowed in SPARK
 search_array.adb:7:24: info: cannot unroll loop (too many loop iterations)
 search_array.adb:9:20: info: range check proved (CVC5: 2 VC)
@@ -30,17 +30,17 @@ p.adb:63:24: info: cannot unroll loop (too many loop iterations)
 p.adb:65:20: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 p.adb:70:14: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 p.adb:76:07: info: initialization of "End_Of_Seq" proved
-p.adb:78:38: medium: overflow check might fail, cannot prove lower bound for A'First - 1 (e.g. when A'First = Integer'First and A'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer]
+p.adb:78:38: high: overflow check might fail, cannot prove lower bound for A'First - 1 (e.g. when A'First = Integer'First and A'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 p.adb:81:09: info: data dependencies proved
 p.adb:82:31: info: initialization of "End_Of_Seq" proved
 p.adb:84:09: info: flow dependencies proved
-p.adb:88:30: medium: overflow check might fail, cannot prove upper bound for Beginning + 1 (e.g. when Beginning = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+p.adb:88:30: high: overflow check might fail, cannot prove upper bound for Beginning + 1 (e.g. when Beginning = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 p.adb:89:20: info: postcondition proved (CVC5: 2 VC)
-p.adb:89:41: medium: overflow check might fail, cannot prove lower bound for A'First - 1 (e.g. when A = (others => 1) and A'First = Integer'First and A'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+p.adb:89:41: high: overflow check might fail, cannot prove lower bound for A'First - 1 (e.g. when A = (others => 1) and A'First = Integer'First and A'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 p.adb:93:16: info: index check proved (CVC5: 2 VC)
 p.adb:94:23: info: index check proved (CVC5: 2 VC)
+p.adb:99:42: high: overflow check might fail, cannot prove upper bound for Current_Index - Beginning (e.g. when Beginning = Integer'First and Current_Index = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 p.adb:99:42: info: range check proved (CVC5: 2 VC)
-p.adb:99:42: medium: overflow check might fail, cannot prove upper bound for Current_Index - Beginning (e.g. when Beginning = Integer'First and Current_Index = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 p.adb:107:33: info: loop invariant initialization proved (CVC5: 2 VC)
 p.adb:107:33: info: loop invariant preservation proved (CVC5: 2 VC)
 p.adb:107:43: info: overflow check proved (CVC5: 4 VC)
@@ -88,7 +88,7 @@ p.adb:32:17: info: overflow check proved (CVC5: 2 VC)
 p.adb:34:17: info: overflow check proved (CVC5: 2 VC)
 p.adb:36:17: info: overflow check proved (CVC5: 2 VC)
 p.ads:18:06: info: disjoint contract cases proved (CVC5: 1 VC)
-p.ads:18:06: medium: contract cases might not be complete (e.g. when X = 0)
+p.ads:18:06: medium: contract cases might not be complete
 p.ads:18:41: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 p.ads:19:43: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 p.ads:20:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -99,17 +99,17 @@ stacks.adb:9:19: info: index check proved (CVC5: 2 VC)
 stacks.ads:8:14: info: postcondition proved (CVC5: 1 VC)
 stacks.ads:27:52: info: index check proved (CVC5: 2 VC)
 communication.adb:5:15: medium: length check might fail (e.g. when Address = (1 => 'NUL') and Address'First = 1 and Address'Last = 1) [reason for check: array must be of the appropriate length] [possible fix: subprogram at communication.ads:9 should mention Address in a precondition]
-communication.adb:19:25: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0)) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
-communication.adb:20:32: medium: overflow check might fail, cannot prove upper bound for B.First + 1 (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
-communication.adb:21:24: medium: overflow check might fail, cannot prove upper bound for B.First + B.Length (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => 1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:19:25: high: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0)) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:20:32: high: overflow check might fail, cannot prove upper bound for B.First + 1 (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:21:24: high: overflow check might fail, cannot prove upper bound for B.First + B.Length (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => 1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:22:32: info: overflow check proved (CVC5: 2 VC)
+communication.adb:22:43: high: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and Max = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:22:43: info: overflow check proved (CVC5: 2 VC)
-communication.adb:22:43: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and Max = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:23:34: info: overflow check proved (CVC5: 2 VC)
 communication.adb:25:32: info: index check proved (CVC5: 2 VC)
 communication.adb:25:32: info: overflow check proved (CVC5: 2 VC)
 communication.adb:26:34: info: overflow check proved (CVC5: 2 VC)
-communication.adb:35:30: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 1)) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:18 should mention B in a precondition]
+communication.adb:35:30: high: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 1)) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:18 should mention B in a precondition]
 communication.adb:36:34: info: range check proved (CVC5: 2 VC)
 communication.adb:39:30: info: index check proved (CVC5: 2 VC)
 communication.adb:40:34: info: range check proved (CVC5: 2 VC)
@@ -142,13 +142,13 @@ data_package.ads:6:04: info: initialization of "Data_1" proved
 data_package.ads:7:04: info: initialization of "Data_2" proved
 data_package.ads:8:04: info: initialization of "Data_3" proved
 external_interface.ads:2:49: info: flow dependencies proved
-stack.adb:9:21: medium: array index check might fail (e.g. when Top = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at stack.ads:12 should mention Top in a precondition]
+stack.adb:9:21: high: array index check might fail (e.g. when Top = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at stack.ads:12 should mention Top in a precondition]
 stack.adb:10:18: info: range check proved (CVC5: 2 VC)
-stack.adb:14:18: medium: range check might fail, cannot prove upper bound for Top + 1 (e.g. when Top = Length_Type'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at stack.ads:17 should mention Top in a precondition]
+stack.adb:14:18: high: range check might fail, cannot prove upper bound for Top + 1 (e.g. when Top = Length_Type'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at stack.ads:17 should mention Top in a precondition]
 stack.adb:15:16: info: index check proved (CVC5: 2 VC)
-stack.adb:24:23: medium: array index check might fail (e.g. when B_Top = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at stack.ads:22 should mention B_Top in a precondition]
+stack.adb:24:23: high: array index check might fail (e.g. when B_Top = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at stack.ads:22 should mention B_Top in a precondition]
 stack.adb:25:22: info: range check proved (CVC5: 2 VC)
-stack.adb:32:22: medium: range check might fail, cannot prove upper bound for B_Top + 1 (e.g. when B_Top = Length_Type'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at stack.ads:25 should mention B_Top in a precondition]
+stack.adb:32:22: high: range check might fail, cannot prove upper bound for B_Top + 1 (e.g. when B_Top = Length_Type'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at stack.ads:25 should mention B_Top in a precondition]
 stack.adb:33:18: info: index check proved (CVC5: 2 VC)
 stack.adb:41:22: info: range check proved (CVC5: 2 VC)
 stack.adb:42:18: info: index check proved (CVC5: 2 VC)
@@ -180,7 +180,7 @@ use_stack.adb:7:09: info: precondition proved (CVC5: 1 VC)
 use_stack.adb:7:09: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:8:04: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:9:19: info: precondition proved (CVC5: 1 VC)
-use_stack.adb:9:19: medium: assertion might fail (e.g. when E = 1 and F = 1) [possible fix: you should consider adding a postcondition to function Peek or turning it into an expression function in its unit spec]
+use_stack.adb:9:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Peek or turning it into an expression function in its unit spec]
 use_stack.adb:9:31: info: precondition proved (CVC5: 1 VC)
 use_stack.adb:10:09: info: precondition proved (CVC5: 1 VC)
 use_stack.adb:10:09: medium: "Stack.P_Stack" might not be initialized after elaboration of main program "Use_Stack"

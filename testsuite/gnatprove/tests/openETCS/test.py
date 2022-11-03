@@ -16,7 +16,6 @@ for f in sorted(files):
         prover=["cvc5", "z3"],
         vc_timeout=0,
         steps=3000,
-        counterexample=False,
         opt=["-u", f],
         sparklib=True,
     )

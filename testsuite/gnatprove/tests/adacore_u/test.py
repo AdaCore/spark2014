@@ -3,14 +3,10 @@ import os
 
 os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
 
-prove_all(opt=["-U", "-P", "Overview/overview"], check_counterexamples=False)
-prove_all(opt=["-U", "-P", "Flow_Analysis/flow_analysis"], check_counterexamples=False)
-prove_all(
-    opt=["-U", "-P", "Proof_Integrity/proof_integrity"], check_counterexamples=False
-)
-prove_all(
-    opt=["-U", "-P", "State_Abstraction/state_abstraction"], check_counterexamples=False
-)
+prove_all(opt=["-U", "-P", "Overview/overview"])
+prove_all(opt=["-U", "-P", "Flow_Analysis/flow_analysis"])
+prove_all(opt=["-U", "-P", "Proof_Integrity/proof_integrity"])
+prove_all(opt=["-U", "-P", "State_Abstraction/state_abstraction"])
 prove_all(
     steps=700,
     opt=[
@@ -22,7 +18,7 @@ prove_all(
     check_counterexamples=False,
 )
 prove_all(opt=["-U", "-P", "Systems_Programming/systems_programming"])
-prove_all(opt=["-U", "-P", "Concurrency/concurrency"], check_counterexamples=False)
+prove_all(opt=["-U", "-P", "Concurrency/concurrency"])
 prove_all(
     opt=["-U", "-P", "Object_Oriented_Programming/object_oriented_programming"],
     check_counterexamples=False,
