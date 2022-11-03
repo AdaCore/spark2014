@@ -27,7 +27,7 @@ spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 
 test.adb:10:04: info: initialization of "M" proved
 test.adb:10:13: info: range check proved (CVC5: 1 VC)
 test.adb:17:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test.adb:18:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test.adb:18:04: info: precondition proved (Z3: 2 VC)
 test.adb:19:04: medium: precondition might fail, cannot prove not Contains (Container, Key)
 test.adb:21:19: info: precondition proved (Z3: 1 VC)
 test.adb:21:19: medium: assertion might fail
