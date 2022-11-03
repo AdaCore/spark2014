@@ -321,5 +321,6 @@ test_higher_order.ads:94:19: info: assertion proved (CVC5: 1 VC)
 test_higher_order.ads:94:24: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
 test_higher_order.ads:104:19: info: assertion proved (CVC5: 1 VC)
 test_higher_order.ads:118:19: info: assertion proved (altergo: 1 VC)
-test_higher_order.ads:118:25: info: precondition proved (Trivial: 1 VC; altergo: 1 VC)
+test_higher_order.ads:118:25: medium: in inlined expression function body at spark-higher_order-fold.ads:762, in instantiation at test_higher_order.ads:106
+test_higher_order.ads:118:25: medium: precondition might fail, cannot prove No_Overflows (A, Zero, A'First (1), A'first)
 test_higher_order.ads:128:19: info: assertion proved (altergo: 1 VC)

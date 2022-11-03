@@ -195,7 +195,7 @@ partition_refinement.adb:213:159: info: index check proved (CVC5: 2 VC)
 partition_refinement.adb:244:25: info: assertion proved (CVC5: 2 VC)
 partition_refinement.adb:244:55: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:246:38: info: precondition proved (CVC5: 2 VC)
-partition_refinement.adb:247:10: medium: precondition might fail, cannot prove F(Element (D, X_Elem)) in 0 .. Partition_Index'Base (Length (P)) - 1
+partition_refinement.adb:247:10: info: precondition proved (CVC5: 12 VC)
 partition_refinement.adb:247:34: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:248:10: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:251:33: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -229,7 +229,7 @@ partition_refinement.adb:262:142: info: range check proved (CVC5: 4 VC)
 partition_refinement.adb:262:153: medium: loop invariant might fail in first iteration, cannot prove F(K) = J
 partition_refinement.adb:262:153: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove F(K) = J
 partition_refinement.adb:262:155: medium: array index check might fail [reason for check: value must be a valid index into the array]
-partition_refinement.adb:268:07: medium: precondition might fail, cannot prove F(J) in 0 .. Partition_Index'Base (Length (P)) - 1
+partition_refinement.adb:268:07: medium: precondition might fail, cannot prove J in Element (P, F(J)).First .. Element (P, F(J)).Last
 partition_refinement.ads:54:16: info: precondition proved (Trivial: 1 VC)
 partition_refinement.ads:54:37: info: precondition proved (CVC5: 1 VC)
 partition_refinement.ads:54:55: info: precondition proved (CVC5: 1 VC)

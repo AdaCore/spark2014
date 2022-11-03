@@ -168,19 +168,19 @@ test_conts.adb:38:07: info: initialization of "L" proved
 test_conts.adb:38:16: info: range check proved (CVC5: 2 VC)
 test_conts.adb:39:07: info: initialization of "C" proved
 test_conts.adb:41:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_conts.adb:43:07: info: precondition proved (Z3: 1 VC)
+test_conts.adb:43:07: info: precondition proved (CVC5: 1 VC)
 test_conts.adb:45:17: info: overflow check proved (CVC5: 2 VC)
 test_conts.adb:50:07: info: initialization of "L" proved
 test_conts.adb:50:16: info: range check proved (CVC5: 2 VC)
 test_conts.adb:50:21: info: range check proved (CVC5: 1 VC)
 test_conts.adb:51:07: info: initialization of "C" proved
-test_conts.adb:53:07: info: precondition proved (Z3: 2 VC)
-test_conts.adb:55:07: info: precondition proved (Z3: 1 VC)
-test_conts.adb:57:17: info: overflow check proved (Z3: 2 VC)
+test_conts.adb:53:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_conts.adb:55:07: info: precondition proved (CVC5: 1 VC)
+test_conts.adb:57:17: info: overflow check proved (CVC5: 2 VC)
 test_conts.adb:62:07: info: initialization of "L" proved
 test_conts.adb:62:16: info: range check proved (CVC5: 2 VC)
 test_conts.adb:63:07: info: initialization of "C" proved
-test_conts.adb:65:07: info: precondition proved (Z3: 2 VC)
+test_conts.adb:65:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_conts.adb:67:07: info: precondition proved (Z3: 1 VC)
 test_conts.adb:69:17: info: overflow check proved (Z3: 2 VC)
 test_conts.adb:74:07: info: initialization of "L" proved
