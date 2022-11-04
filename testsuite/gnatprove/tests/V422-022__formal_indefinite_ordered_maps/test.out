@@ -17,12 +17,10 @@ spark-containers-formal-unbounded_ordered_maps.ads:1004:20: info: precondition p
 spark-containers-formal-unbounded_ordered_maps.ads:1019:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
 spark-containers-formal-unbounded_ordered_maps.ads:1060:46: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
 spark-containers-formal-unbounded_ordered_maps.ads:1075:40: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test.adb:4
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test.adb:4
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test.adb:4
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test.adb:4
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test.adb:4
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test.adb:4
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test.adb:4
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test.adb:4
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test.adb:4
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test.adb:4
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
 spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
@@ -33,8 +31,12 @@ spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 
 spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
 spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
 test.adb:8:04: info: initialization of "M" proved
-test.adb:14:04: info: precondition proved (CVC5: 2 VC)
-test.adb:15:04: medium: precondition might fail, cannot prove not Contains (Container, Key)
-test.adb:16:04: medium: precondition might fail, cannot prove not Contains (Container, Key)
-test.adb:18:19: medium: assertion might fail
-test.adb:18:19: medium: precondition might fail
+test.adb:15:19: info: assertion proved (CVC5: 1 VC)
+test.adb:16:19: info: assertion proved (CVC5: 1 VC)
+test.adb:17:19: info: assertion proved (CVC5: 1 VC)
+test.adb:18:04: info: precondition proved (CVC5: 2 VC)
+test.adb:19:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test.adb:20:04: medium: precondition might fail, cannot prove not Contains (Container, Key)
+test.adb:24:22: medium: assertion might fail
+test.adb:25:22: info: precondition proved (Z3: 1 VC)
+test.adb:25:22: medium: assertion might fail

@@ -97,8 +97,8 @@ is
      Global => null,
      Annotate => (GNATprove, Automatic_Instantiation),
      Pre  => Enable_Handling_Of_Equivalence
-       and then (for some K of Container => Equivalent_Keys (K, Key)),
-     Post => Has_Key (Container, Key);
+       and then not Has_Key (Container, Key),
+     Post => (for all K of Container => not Equivalent_Keys (Key, K));
 
    function Get (Container : Map; Key : Key_Type) return Element_Type with
    --  Return the element associated with Key in Container
@@ -108,19 +108,19 @@ is
      Pre    => Has_Key (Container, Key);
 
    procedure Lemma_Get_Equivalent
-     (Container : Map;
-      Key       : Key_Type)
+     (Container    : Map;
+      Key_1, Key_2 : Key_Type)
    --  Get returns the same result on all equivalent keys
    with
      Import,
      Ghost,
      Global => null,
      Annotate => (GNATprove, Automatic_Instantiation),
-     Pre  => Enable_Handling_Of_Equivalence,
-     Post => Get (Container, Key) = W_Get (Container, Witness (Container, Key))
-       and (for all K of Container =>
-              Equivalent_Keys (K, Key) =
-               (Witness (Container, Key) = Witness (Container, K)));
+     Pre  => Enable_Handling_Of_Equivalence
+       and then Equivalent_Keys (Key_1, Key_2)
+       and then
+         (Has_Key (Container, Key_1) or else Has_Key (Container, Key_2)),
+     Post => Get (Container, Key_1) = Get (Container, Key_2);
 
    function Choose (Container : Map) return Key_Type with
    --  Return an arbitrary key in container
@@ -324,38 +324,6 @@ is
          and Get (Set'Result, Key) = New_Item
          and Same_Keys (Container, Set'Result)
          and Elements_Equal_Except (Container, Set'Result, Key);
-
-   ------------------------------
-   --  Handling of Equivalence --
-   ------------------------------
-
-   --  These functions are used to specify that Get returns the same value on
-   --  equivalent keys. They should not be used directly in user code.
-
-   function Has_Witness (Container : Map; Witness : Big_Integer) return Boolean
-   with
-     Import,
-     Ghost,
-     Global => null;
-   --  Returns True if there is a key with witness Witness in Container
-
-   function Witness (Container : Map; Key : Key_Type) return Big_Integer with
-   --  Returns the witness of Key in Container
-
-     Import,
-     Ghost,
-     Global => null,
-     Pre    => Has_Key (Container, Key),
-     Post   => Has_Witness (Container, Witness'Result);
-
-   function W_Get (Container : Map; Witness : Big_Integer) return Element_Type
-   with
-   --  Returns the element associated with a witness in Container
-
-     Import,
-     Ghost,
-     Global => null,
-     Pre    => Has_Witness (Container, Witness);
 
    function Copy_Key (Key : Key_Type) return Key_Type is (Key);
    function Copy_Element (Item : Element_Type) return Element_Type is (Item);

@@ -1148,14 +1148,48 @@ module Array_Comparison_Axiom
 
   clone _gnatprove_standard.Array__Index as Index
 
-  function get map Index.t : component_type
-  function bool_eq map Index.t Index.t map Index.t Index.t : bool
-
   predicate rep_lt rep_type rep_type
   predicate rep_gt rep_type rep_type
 
   function to_rep component_type : rep_type
   meta "model_projection" function to_rep
+
+  function get map Index.t : component_type
+  function bool_eq map Index.t Index.t map Index.t Index.t : bool
+
+  val function lcp map Index.t Index.t map Index.t Index.t : Index.t
+  (* Compute the last index of the longest common prefix between 2 arrays.
+     To preserve soundness and not assume the existence of an index smaller
+     than the first index of any arrays, it is only defined if a and b have
+     at least an element in common. *)
+  meta "encoding:lskept" function lcp
+
+  axiom lcp_def :
+    forall a b : map.
+    forall a_first a_last b_first b_last : Index.t [lcp a a_first a_last b b_first b_last].
+      (* Conditions of applications:
+           a and b are non empty, and a (a_first) = b (b_first) *)
+      Index.le a_first a_last /\ Index.le b_first b_last /\
+      to_rep (get a a_first) = to_rep (get b b_first) ->
+      (* Use lcp to find the last index of the longest common prefix
+         in a and b *)
+      let a_i = lcp a a_first a_last b b_first b_last in
+      let b_i = lcp b b_first b_last a a_first a_last in
+      (* a_i - a_first = b_i - b_first *)
+      Index.sub a_i a_first = Index.sub b_i b_first /\
+      (* a_first <= a_i <= a_last *)
+      Index.le a_first a_i /\ Index.le a_i a_last /\
+      (* b_first <= b_i <= b_last *)
+      Index.le b_first b_i /\ Index.le b_i b_last /\
+      (* a (a_first .. a_i) = b (b_first .. b_i) *)
+      bool_eq a a_first a_i b b_first b_i = True /\
+      (* It is the longest prefix, ie either we have reached the end of a or b,
+         or the next elements in a and b are not equal. *)
+      (a_i = a_last \/ b_i = b_last \/
+        (Index.lt a_i a_last /\ Index.lt b_i b_last /\
+         to_rep (get a (Index.add a_i Index.one)) <>
+         to_rep (get b (Index.add b_i Index.one))))
+  meta "remove_unused:dependency" axiom lcp_def, function lcp
 
   val function compare map Index.t Index.t map Index.t Index.t : int
   meta "encoding:lskept" function compare
@@ -1171,21 +1205,58 @@ module Array_Comparison_Axiom
     forall a b : map.
     forall a_first a_last b_first b_last : Index.t [compare a a_first a_last b b_first b_last].
       (compare a a_first a_last b b_first b_last < 0 <->
-         exists i j : Index.t. Index.le i a_last /\ Index.lt j b_last /\
-             (bool_eq a a_first i b b_first j = True /\
-             (i = a_last \/
-                   Index.lt i a_last /\
-                       rep_lt (to_rep (get a (Index.add i Index.one))) (to_rep (get b (Index.add j Index.one))))))
+       (* b is non empty and ... *)
+       (Index.le b_first b_last /\
+         (* a is empty or ... *)
+         (Index.lt a_last a_first \/
+          (* a is non empty and ... *)
+          Index.le a_first a_last /\
+           (* a (a_first) < b (b_first) or ... *)
+           (rep_lt (to_rep (get a a_first)) (to_rep (get b b_first)) \/
+            (* a (a_first) = b (b_first) and ... *)
+            (to_rep (get a a_first) = to_rep (get b b_first) /\
+              (* Use lcp to find the last index of the longest common prefix
+                 in a and b. *)
+              (let a_i = lcp a a_first a_last b b_first b_last in
+               let b_i = lcp b b_first b_last a a_first a_last in
+                  (* b_i is not the last element of b and ... *)
+                  Index.lt b_i b_last /\
+                  (* a_i is the last element of a or ... *)
+                    (a_i = a_last \/
+                    (* the next element of a is smaller than the next element
+                         of b. *)
+                      Index.lt a_i a_last /\
+                         rep_lt (to_rep (get a (Index.add a_i Index.one)))
+                                (to_rep (get b (Index.add b_i Index.one))))))))))
   meta "remove_unused:dependency" axiom compare_def_lt, function compare
 
   axiom compare_def_gt :
     forall a b : map.
     forall a_first a_last b_first b_last : Index.t [compare a a_first a_last b b_first b_last].
       (compare a a_first a_last b b_first b_last > 0 <->
-         exists i j : Index.t. Index.le i b_last /\ Index.lt j a_last /\
-             (bool_eq a a_first j b b_first i = True /\
-             (i = b_last \/ Index.lt i b_last /\
-                       rep_gt (to_rep (get a (Index.add j Index.one))) (to_rep (get b (Index.add i Index.one))))))
+        (* a is non empty and ... *)
+        (Index.le a_first a_last /\
+        (* b is empty or ... *)
+        (Index.lt b_last b_first \/
+          (* b is non empty and ... *)
+          Index.le b_first b_last /\
+           (* a (a_first) > b (b_first) or ... *)
+           (rep_gt (to_rep (get a a_first)) (to_rep (get b b_first)) \/
+            (* a (a_first) = b (b_first) and ... *)
+            (to_rep (get a a_first) = to_rep (get b b_first) /\
+              (* Use lcp to find the last index of the longest common prefix
+                 in a and b. *)
+              (let a_i = lcp a a_first a_last b b_first b_last in
+               let b_i = lcp b b_first b_last a a_first a_last in
+                  (* a_i is not the last element of a and ... *)
+                  Index.lt a_i a_last /\
+                     (* b_i is the last element of b or ... *)
+                     (b_i = b_last \/
+                     (* the next element of a is bigger than the next element
+                         of b. *)
+                      Index.lt b_i b_last /\
+                         rep_gt (to_rep (get a (Index.add a_i Index.one)))
+                                (to_rep (get b (Index.add b_i Index.one))))))))))
   meta "remove_unused:dependency" axiom compare_def_gt, function compare
 end
 

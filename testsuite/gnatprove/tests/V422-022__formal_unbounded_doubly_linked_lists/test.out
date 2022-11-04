@@ -41,12 +41,10 @@ spark-containers-formal-unbounded_doubly_linked_lists.ads:1508:14: info: precond
 spark-containers-formal-unbounded_doubly_linked_lists.ads:1515:23: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
 spark-containers-formal-unbounded_doubly_linked_lists.ads:1515:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
 spark-containers-formal-unbounded_doubly_linked_lists.ads:1613:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:9
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:160, in instantiation at test.adb:11
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:160, in instantiation at test_list.ads:6
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:160, in instantiation at test.adb:11
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:160, in instantiation at test_list.ads:6
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:160, in instantiation at test.adb:11
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:160, in instantiation at test_list.ads:6
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:160, in instantiation at test.adb:11
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:160, in instantiation at test_list.ads:6
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:160, in instantiation at test.adb:11
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:160, in instantiation at test_list.ads:6
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:75, in instantiation at test.adb:11
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:75, in instantiation at test_list.ads:6
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:75, in instantiation at test.adb:11
@@ -320,13 +318,13 @@ test_list.adb:333:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:336:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:338:07: info: precondition proved (CVC5: 2 VC)
 test_list.adb:341:07: info: precondition proved (CVC5: 1 VC)
-test_list.adb:343:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:343:22: medium: assertion might fail
 test_list.adb:343:46: info: precondition proved (CVC5: 2 VC)
 test_list.adb:345:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.adb:347:22: medium: assertion might fail
 test_list.adb:347:46: info: precondition proved (CVC5: 2 VC)
 test_list.adb:348:22: info: assertion proved (Z3: 1 VC)
-test_list.adb:348:22: info: precondition proved (Z3: 1 VC)
+test_list.adb:348:22: info: precondition proved (CVC5: 1 VC)
 test_list.adb:351:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:353:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:354:07: info: precondition proved (CVC5: 1 VC)
@@ -365,9 +363,9 @@ test_list.adb:398:07: info: precondition proved (Z3: 1 VC)
 test_list.adb:401:07: info: precondition proved (Z3: 1 VC)
 test_list.adb:403:07: info: precondition proved (Z3: 1 VC)
 test_list.adb:405:07: info: precondition proved (Z3: 2 VC)
-test_list.adb:407:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:407:22: medium: assertion might fail
 test_list.adb:407:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_list.adb:408:22: medium: assertion might fail
+test_list.adb:408:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:408:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.adb:409:22: medium: assertion might fail
 test_list.adb:409:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
@@ -375,7 +373,7 @@ test_list.adb:410:22: medium: assertion might fail
 test_list.adb:410:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.adb:414:22: medium: assertion might fail [possible fix: call at line 401 should mention Position (for argument C) in a postcondition]
 test_list.adb:414:22: medium: precondition might fail [possible fix: call at line 401 should mention Position (for argument C) in a postcondition]
-test_list.adb:415:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:415:22: medium: assertion might fail [possible fix: call at line 403 should mention Position (for argument D) in a postcondition]
 test_list.adb:415:22: medium: precondition might fail [possible fix: call at line 403 should mention Position (for argument D) in a postcondition]
 test_list.adb:417:07: medium: precondition might fail, cannot prove Has_Element (Container, I) [possible fix: call at line 403 should mention Position (for argument D) in a postcondition]
 test_list.adb:418:07: medium: precondition might fail, cannot prove Has_Element (Container, I) [possible fix: call at line 403 should mention Position (for argument D) in a postcondition]

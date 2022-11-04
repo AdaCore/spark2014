@@ -7358,6 +7358,11 @@ package body Flow.Control_Flow_Graph is
                   The_Out : Flow_Id renames Dependency_Maps.Key (Clause);
                   The_Ins : Flow_Id_Sets.Set renames DM (Clause);
 
+                  Out_Id : constant Entity_Id :=
+                    (if Present (The_Out)
+                     then Get_Direct_Mapping_Id (The_Out)
+                     else Types.Empty);
+
                   A : V_Attributes;
 
                   Split_Out : constant Flow_Id_Sets.Set :=
@@ -7367,6 +7372,20 @@ package body Flow.Control_Flow_Graph is
 
                   Split_Ins : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
                begin
+                  --  The extra vertex is only needed for objects and states
+                  --  that would be otherwise uninitialized.
+
+                  if Present (Out_Id)
+                    and then
+                      (Ekind (Out_Id) = E_Constant
+                       or else (Ekind (Out_Id) = E_Variable
+                                  and then (Has_Initial_Value (Out_Id)
+                                              or else
+                                            Is_Default_Initialized (The_Out))))
+                  then
+                     goto Next_Clause;
+                  end if;
+
                   --  We will get a relation from an initializes like X => Y.
                   --  But X and Y may be records, and so we need to split up
                   --  both the state and the list of inputs.
@@ -7392,6 +7411,7 @@ package body Flow.Control_Flow_Graph is
                   end if;
 
                   Prev := Curr;
+                  <<Next_Clause>>
                end;
             end loop;
 

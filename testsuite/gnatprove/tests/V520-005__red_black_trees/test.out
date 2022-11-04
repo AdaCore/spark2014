@@ -28,7 +28,7 @@ infinite_sequences.adb:41:45: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.adb:45:19: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:45:26: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:46:27: medium: precondition might fail
-infinite_sequences.adb:46:44: medium: precondition might fail
+infinite_sequences.adb:46:44: info: precondition proved (CVC5: 2 VC)
 infinite_sequences.adb:47:37: info: loop variant proved (CVC5: 1 VC)
 infinite_sequences.adb:47:52: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:47:58: info: range check proved (CVC5: 2 VC)
@@ -38,15 +38,15 @@ infinite_sequences.adb:48:39: info: loop invariant preservation proved (CVC5: 1 
 infinite_sequences.adb:48:39: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:48:46: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:49:39: info: loop invariant initialization proved (CVC5: 1 VC)
-infinite_sequences.adb:49:39: medium: loop invariant might not be preserved by an arbitrary iteration
+infinite_sequences.adb:49:39: info: loop invariant preservation proved (CVC5: 1 VC)
 infinite_sequences.adb:50:39: info: loop invariant initialization proved (CVC5: 1 VC)
-infinite_sequences.adb:50:39: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Has_Key or turning it into an expression function]
+infinite_sequences.adb:50:39: info: loop invariant preservation proved (CVC5: 1 VC)
 infinite_sequences.adb:50:59: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:50:65: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:50:67: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:51:39: info: loop invariant initialization proved (CVC5: 1 VC)
-infinite_sequences.adb:51:39: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function]
-infinite_sequences.adb:51:39: medium: precondition might fail
+infinite_sequences.adb:51:39: info: loop invariant preservation proved (CVC5: 1 VC)
+infinite_sequences.adb:51:39: info: precondition proved (CVC5: 2 VC)
 infinite_sequences.adb:51:55: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:51:61: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:51:63: info: predicate check proved (Trivial: 2 VC)
@@ -369,7 +369,7 @@ red_black_trees.adb:304:56: info: predicate check proved (Trivial: 2 VC)
 red_black_trees.adb:304:62: info: predicate check proved (Trivial: 2 VC)
 red_black_trees.adb:305:33: medium: loop invariant might fail in first iteration
 red_black_trees.adb:305:33: medium: loop invariant might not be preserved by an arbitrary iteration
-red_black_trees.adb:307:13: medium: loop invariant might fail in first iteration
+red_black_trees.adb:307:13: info: loop invariant initialization proved (CVC5: 2 VC)
 red_black_trees.adb:307:13: medium: loop invariant might not be preserved by an arbitrary iteration
 red_black_trees.adb:311:10: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:312:27: info: pointer dereference check proved (CVC5: 1 VC)
@@ -380,7 +380,7 @@ red_black_trees.adb:314:41: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:314:48: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:314:55: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:314:57: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:319:10: medium: precondition might fail
+red_black_trees.adb:319:10: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:320:27: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:321:20: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:322:27: info: pointer dereference check proved (CVC5: 1 VC)
@@ -552,17 +552,16 @@ red_black_trees.adb:414:30: medium: pointer dereference check might fail
 red_black_trees.adb:414:54: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:421:07: medium: precondition might fail, cannot prove Is_Concat (X1, X2, X3, Y1)
 red_black_trees.adb:422:18: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:422:23: medium: pointer dereference check might fail
+red_black_trees.adb:422:23: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:422:38: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:422:43: medium: pointer dereference check might fail
+red_black_trees.adb:422:43: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:422:59: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:422:64: medium: pointer dereference check might fail
+red_black_trees.adb:422:64: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:422:72: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:422:79: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:422:84: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:422:93: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:422:97: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:422:97: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 397 should mention Pos]
+red_black_trees.adb:422:97: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:422:99: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:423:18: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:423:32: info: pointer dereference check proved (CVC5: 1 VC)
@@ -960,7 +959,7 @@ red_black_trees.adb:705:67: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:705:74: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:705:81: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:705:83: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:710:13: medium: precondition might fail, cannot prove Is_Concat (X1, X2, X3, R)
+red_black_trees.adb:710:13: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:710:49: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:710:63: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:710:79: info: pointer dereference check proved (CVC5: 1 VC)
@@ -1113,8 +1112,7 @@ red_black_trees.ads:147:14: medium: postcondition might fail, cannot prove RBT_I
 red_black_trees.ads:148:20: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:148:52: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:148:59: info: predicate check proved (Trivial: 1 VC)
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
-spark-containers-functional-maps.ads:90:62: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
-spark-containers-functional-maps.ads:90:65: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:108:34: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:108:41: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44

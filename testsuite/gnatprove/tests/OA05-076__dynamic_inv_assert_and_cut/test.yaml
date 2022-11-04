@@ -6,6 +6,6 @@ comment: "The original ticket mentioned an issue in only Mont_Exp_Window, and
 prove_all:
   steps: 1
   prover: ["z3"]
-  opt: ["--no-axiom-guard"]
+  opt: ["--function-sandboxing=off"]
 large: True
 timeout: 1000

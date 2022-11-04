@@ -34,7 +34,7 @@ sorting.adb:49:18: info: range check proved (CVC5: 2 VC)
 sorting.adb:50:41: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:50:46: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:51:19: info: index check proved (CVC5: 2 VC)
-sorting.adb:51:35: medium: overflow check might fail, cannot prove upper bound for A_First + J [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+sorting.adb:51:35: medium: overflow check might fail, cannot prove bounds for A_First + J [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 sorting.adb:51:39: info: index check proved (CVC5: 2 VC)
 sorting.adb:51:39: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:52:45: medium: overflow check might fail, cannot prove upper bound for B_First + (I + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]

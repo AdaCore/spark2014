@@ -4,8 +4,8 @@ contains_manual_proof = False
 
 
 def replay():
-    prove_all(procs=0, opt=["--no-axiom-guard"])
+    prove_all(procs=0, opt=["--function-sandboxing=off"])
 
 
 if __name__ == "__main__":
-    prove_all(opt=["--no-axiom-guard"], replay=True)
+    prove_all(opt=["--function-sandboxing=off"], replay=True)

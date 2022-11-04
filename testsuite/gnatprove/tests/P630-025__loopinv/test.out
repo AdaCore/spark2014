@@ -20,6 +20,7 @@ decadriver.adb:123:63: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
 decadriver.adb:125:37: info: overflow check proved (CVC5: 2 VC)
 decadriver.adb:127:38: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Notify_Frame_Received"
 decadriver.adb:127:38: info: precondition proved (CVC5: 1 VC)
+decadriver.adb:131:43: info: in value of subprogram parameter after the call at decadriver.adb:131
 decadriver.adb:131:43: info: predicate check proved (Z3: 2 VC)
 decadriver.adb:131:43: info: range check proved (CVC5: 4 VC)
 decadriver.adb:133:38: medium: in inlined predicate at decadriver.ads:67

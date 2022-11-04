@@ -737,8 +737,8 @@ prime_search.adb:21:77: info: index check proved (CVC5: 2 VC)
 prime_search.adb:22:04: info: precondition proved (CVC5: 1 VC)
 raster_graphics.adb:12:11: info: data dependencies proved
 raster_graphics.adb:13:32: info: initialization of "Status" proved
-raster_graphics.adb:15:39: medium: range check might fail, cannot prove lower bound for abs (A.X - B.X) [reason for check: default component value must fit in the type]
-raster_graphics.adb:16:39: medium: range check might fail, cannot prove lower bound for abs (A.Y - B.Y) [reason for check: default component value must fit in the type]
+raster_graphics.adb:15:39: medium: range check might fail, cannot prove lower bound for abs (A.X - B.X) (e.g. when A = (X => 1, Y => 1) and B = (X => 1, Y => 1)) [reason for check: default component value must fit in the type]
+raster_graphics.adb:16:39: medium: range check might fail, cannot prove lower bound for abs (A.Y - B.Y) (e.g. when A = (X => 2, Y => 1) and B = (X => 1, Y => 1)) [reason for check: default component value must fit in the type]
 raster_graphics.adb:31:41: medium: overflow check might fail, cannot prove upper bound for Line_Count + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at raster_graphics.ads:18 should mention Line_Count in a precondition]
 raster_graphics.ads:20:08: info: data dependencies proved
 raster_graphics.ads:21:29: info: initialization of "Status" proved

@@ -171,16 +171,6 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
       return Find_Rev (Container.Keys, Key) > 0;
    end Has_Key;
 
-   -----------------
-   -- Has_Witness --
-   -----------------
-
-   function Has_Witness
-     (Container : Map;
-      Witness   : Count_Type) return Boolean
-   is
-     (Witness in 1 .. Length (Container.Keys));
-
    --------------
    -- Is_Empty --
    --------------
@@ -262,8 +252,8 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
    --------------------------
 
    procedure Lemma_Get_Equivalent
-     (Container : Map;
-      Key       : Key_Type)
+     (Container    : Map;
+      Key_1, Key_2 : Key_Type)
    is null;
 
    ------------------------------
@@ -317,22 +307,5 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
      (Keys     => Container.Keys,
       Elements =>
         Set (Container.Elements, Find (Container.Keys, Key), New_Item));
-
-   -----------
-   -- W_Get --
-   -----------
-
-   function W_Get
-     (Container : Map;
-      Witness   : Count_Type) return Element_Type
-   is
-     (Get (Container.Elements, Witness));
-
-   -------------
-   -- Witness --
-   -------------
-
-   function Witness (Container : Map; Key : Key_Type) return Count_Type is
-     (Find (Container.Keys, Key));
 
 end SPARK.Containers.Functional.Maps;

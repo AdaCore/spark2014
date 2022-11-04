@@ -17,8 +17,6 @@ Type Contracts
   ``Default_Initial_Condition`` on a private type specifies the initialization
   status and possibly properties of the default initialization for a type.
 
-Note that |SPARK| does not yet support aspect ``Type_Invariant`` from Ada.
-
 .. index:: range
 
 Scalar Ranges

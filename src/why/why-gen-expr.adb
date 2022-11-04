@@ -4686,30 +4686,28 @@ package body Why.Gen.Expr is
       Typ      : W_Type_Id)
       return W_Expr_Id
    is
-      Call : constant W_Expr_Id :=
-        (if Domain /= EW_Pterm or else not Use_Guard_For_Function (Subp)
-         then New_Call
-           (Name     => Name,
-            Args     => Args,
-            Ada_Node => Ada_Node,
-            Domain   => Domain,
-            Typ      => Typ)
-         else Why_Empty);
-      --  In the EW_Pterm domain, we introduce temporary for the parameters
-      --  of the call, so Why node for the call is constructed specifically.
-
    begin
       if Check then
          pragma Assert (Domain = EW_Prog);
          return New_VC_Expr (Ada_Node => Ada_Node,
                              Reason   => VC_Precondition,
-                             Expr     => Call,
+                             Expr     => New_Call
+                               (Name     => Name,
+                                Args     => Args,
+                                Ada_Node => Ada_Node,
+                                Domain   => Domain,
+                                Typ      => Typ),
                              Domain   => Domain);
 
       elsif Domain = EW_Prog
         or else not Use_Guard_For_Function (Subp)
       then
-         return Call;
+         return New_Call
+           (Name     => Name,
+            Args     => Args,
+            Ada_Node => Ada_Node,
+            Domain   => Domain,
+            Typ      => Typ);
       else
 
          --  Here we do not call directly the logic function introduced for
@@ -4775,21 +4773,49 @@ package body Why.Gen.Expr is
                Result_Id : constant W_Identifier_Id :=
                  New_Temp_Identifier
                    (Base_Name => "result", Typ => Typ);
-               Pred_Call : constant W_Pred_Id := New_Call
+               Pred_Call : W_Pred_Id;
+               Arg_Tmps  : W_Expr_Array (Args'Range);
+               Result    : W_Term_Id;
+
+            begin
+               --  Introduce temporary variables for the parameters to avoid
+               --  introducing an exponential blow-up in case of nested calls.
+
+               for I in Args'Range loop
+                  Arg_Tmps (I) := New_Temp_For_Expr (Args (I));
+               end loop;
+
+               Pred_Call := New_Call
                  (Name     => Guard_Predicate_Name (Subp, Selector),
-                  Args     => +Result_Id & Args,
+                  Args     => +Result_Id & Arg_Tmps,
                   Ada_Node => Ada_Node,
                   Typ      => EW_Bool_Type);
-            begin
-               return New_Epsilon
+
+               Result := New_Epsilon
                  (Name   => Result_Id,
                   Typ    => Typ,
-                  Domain => EW_Term,
                   Pred   => New_And_Pred
-                    (New_Comparison (Symbol => Why_Eq,
-                                     Left   => +Result_Id,
-                                     Right  => +Call),
+                    (New_Comparison
+                         (Symbol => Why_Eq,
+                          Left   => +Result_Id,
+                          Right  => New_Call
+                            (Name     => Name,
+                             Args     => Arg_Tmps,
+                             Ada_Node => Ada_Node,
+                             Typ      => Typ)),
                      Pred_Call));
+
+               --  Introduce bindings for the temporary identifiers for the
+               --  arguments.
+
+               for Arg_Tmp of Arg_Tmps loop
+                  Result := +Binding_For_Temp
+                    (Domain  => EW_Term,
+                     Tmp     => Arg_Tmp,
+                     Context => +Result);
+               end loop;
+
+               return +Result;
             end;
          end if;
       end if;

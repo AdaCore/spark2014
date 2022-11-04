@@ -364,6 +364,7 @@ package VC_Kinds is
       Warn_Indirect_Writes_Through_Alias,
       Warn_Indirect_Writes_To_Alias,
       Warn_Initialization_To_Alias,
+      Warn_Alias_Different_Volatility,
       Warn_Function_Is_Valid,
       Warn_Lemma_Procedure_No_Return,
       Warn_Pragma_Annotate_No_Check,
@@ -492,6 +493,8 @@ package VC_Kinds is
         when Warn_Initialization_To_Alias =>
           "?initialization of & is assumed to have no effects on"
           & " other non-volatile objects",
+        when Warn_Alias_Different_Volatility =>
+          "?aliased objects have different volatile properties",
         when Warn_Function_Is_Valid =>
           "?function Is_Valid is assumed to return True",
         when Warn_Lemma_Procedure_No_Return =>

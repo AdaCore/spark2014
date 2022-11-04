@@ -4780,13 +4780,68 @@ package body Gnat2Why.Subprograms is
    ------------------------------
 
    procedure Generate_Axiom_For_Lemma (E : E_Procedure_Id) is
-      Binders : Item_Array := Compute_Binders (E, EW_Term);
-      Params  : Transformation_Params;
-      Pre     : W_Pred_Id;
-      Post    : W_Pred_Id;
-      Th      : Theory_UC;
+      Binders  : Item_Array := Compute_Binders (E, EW_Term);
+      Params   : Transformation_Params;
+      Pre      : W_Pred_Id;
+      Post     : W_Pred_Id;
+      Th       : Theory_UC;
+
+      function Is_Disabled return Boolean;
+      --  Return True if there is a conjunct in the precondition of E which is
+      --  known to be False at compile time.
+
+      -----------------
+      -- Is_Disabled --
+      -----------------
+
+      function Is_Disabled return Boolean is
+
+         function Is_Statically_False (N : N_Subexpr_Id) return Boolean;
+         --  Return True if there is a conjunct in N which is known to be False
+         --  at compile time.
+
+         -------------------------
+         -- Is_Statically_False --
+         -------------------------
+
+         function Is_Statically_False (N : N_Subexpr_Id) return Boolean is
+         begin
+            case Nkind (N) is
+               when N_And_Then | N_Op_And =>
+                  return Is_Statically_False (Left_Opnd (N))
+                    or else Is_Statically_False (Right_Opnd (N));
+               when others =>
+                  return Compile_Time_Known_Value (N)
+                    and then not Is_True (Expr_Value (N));
+            end case;
+         end Is_Statically_False;
+
+         Pre_List : constant Node_Lists.List :=
+           Find_Contracts (E, Pragma_Precondition);
+
+      begin
+         --  Loop over the list of preconditions of E to see if one is
+         --  statically false.
+
+         for Pre_N of Pre_List loop
+            if Is_Statically_False (Pre_N) then
+               return True;
+            end if;
+         end loop;
+         return False;
+      end Is_Disabled;
 
    begin
+      --  Do not emit an axiom if E has a precondition which evaluates
+      --  statically to False. This optimization is useful for functional
+      --  containers which have specific axioms for the handling of
+      --  equivalence which can be removed at instantiation using a boolean
+      --  formal parameter.
+
+      if Is_Disabled then
+         return;
+      end if;
+
       Params :=
         (Phase       => Generate_Logic,
          Gen_Marker  => GM_None,
@@ -4842,12 +4897,13 @@ package body Gnat2Why.Subprograms is
          Emit
            (Th,
             New_Guarded_Axiom
-              (Name     => NID (Short_Name (E) & "__" & Post_Axiom),
-               Binders  => To_Binder_Array (Binders),
-               Pre      =>
-                 New_And_Pred (Left   => Guard,
-                               Right  => Pre),
-               Def      => Post));
+              (Name    => NID (Short_Name (E) & "__" & Post_Axiom),
+               Binders => To_Binder_Array (Binders),
+               Pre     =>
+                 New_And_Pred
+                   (Left  => Guard,
+                    Right => Pre),
+               Def     => Post));
       end;
 
       Close_Theory (Th, Kind => Definition_Theory);

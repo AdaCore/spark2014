@@ -2,6 +2,6 @@ comment: All VCs here are provable in theory, but there are various encoding iss
 
 prove_all:
   prover: ["cvc5"]
-  opt: ["--no-axiom-guard"]
+  opt: ["--function-sandboxing=off"]
   steps: 1000
 large: True

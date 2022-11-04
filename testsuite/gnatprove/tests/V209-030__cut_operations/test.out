@@ -127,7 +127,7 @@ main.adb:96:22: warning: no Global contract available for "Lemma_Find_First_0_De
 main.adb:96:22: warning: no returning annotation available for "Lemma_Find_First_0_Def"
 main.adb:96:49: info: range check proved (CVC5: 6 VC)
 main.adb:98:16: info: index check proved (CVC5: 6 VC)
-main.adb:101:13: info: assertion premise proved (CVC5: 3 VC; Z3: 2 VC)
+main.adb:101:13: info: assertion premise proved (CVC5: 5 VC)
 main.adb:102:16: info: assertion step proved (CVC5: 1 VC)
 main.adb:102:20: info: assertion step proved (CVC5: 1 VC)
 main.adb:102:20: info: precondition proved (CVC5: 2 VC)
@@ -186,7 +186,7 @@ main.adb:116:43: warning: assuming "Lemma_Has_Less_Than_3_0_Def" always returns
 main.adb:116:43: warning: assuming "Lemma_Has_Less_Than_3_0_Def" has no effect on global items
 main.adb:116:43: warning: no Global contract available for "Lemma_Has_Less_Than_3_0_Def"
 main.adb:116:43: warning: no returning annotation available for "Lemma_Has_Less_Than_3_0_Def"
-main.adb:117:28: info: assertion step proved (Z3: 1 VC)
+main.adb:117:28: info: assertion step proved (CVC5: 1 VC)
 main.adb:117:32: info: assertion step proved (CVC5: 1 VC)
 main.adb:117:48: warning: assuming "Lemma_Find_First_0_Def" always returns
 main.adb:117:48: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items

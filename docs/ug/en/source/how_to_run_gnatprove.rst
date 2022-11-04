@@ -951,9 +951,10 @@ These settings will speed up |GNATprove|:
   only runs previously successful provers and is therefore much faster than a
   run of |GNATprove| without this option.
 
-.. index:: pair: --no-axiom-guard; speeding up
+.. index:: pair: --function-sandboxing; speeding up
 
-* Use ``--no-axiom-guard``. Generally, SPARK checks that subprograms  correctly
+* Use ``--function-sandboxing=off``.
+  Generally, SPARK checks that subprograms  correctly
   implement their implicit and explicit contracts, and assumes that this is the
   case as well for subprograms that are not verified by |GNATprove|, see
   also :ref:`Managing Assumptions`. To limit the impact of incorrect contracts,
@@ -962,7 +963,8 @@ These settings will speed up |GNATprove|:
   called. These guards have a non-negligible impact on prover performance. If
   in your project, all subprograms are in the |SPARK| subset, or you have
   confidence in the contracts you wrote for the subprograms which are not in
-  |SPARK|, you can disable these guards using the ``--no-axiom-guard`` option.
+  |SPARK|, you can disable these guards using the ``--function-sandboxing=off``
+  option.
 
 * Use ``--memcached-server`` switch for :ref:`Sharing Proof Results Via a
   Memcached Server`.

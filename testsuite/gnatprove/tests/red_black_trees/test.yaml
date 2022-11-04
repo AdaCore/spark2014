@@ -1,6 +1,6 @@
 prove_all:
   counterexample: False
-  opt: ["--no-axiom-guard"]
+  opt: ["--function-sandboxing=off"]
   steps: 1
   prover: ["cvc5"]
   sparklib: True
