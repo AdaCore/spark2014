@@ -1,2 +1,0 @@
-prove_all:
-  opt: ["--RTS=my_rts"]
