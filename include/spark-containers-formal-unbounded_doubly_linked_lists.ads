@@ -72,9 +72,21 @@ is
    package Formal_Model with Ghost is
       subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
 
+      --  Logical equality cannot be safely executed on most element types.
+      --  Thus, this package should only be instantiated with ghost code
+      --  disabled. This is enforced by having a special imported procedure
+      --  Fail_When_Body_Off that will lead to link-time errors otherwise.
+
+      function Element_Logic_Equal (Left, Right : Element_Type) return Boolean
+      with
+        Global => null,
+        Annotate => (GNATprove, Logical_Equal);
+
       package M is new SPARK.Containers.Functional.Vectors
-        (Index_Type   => Positive_Count_Type,
-         Element_Type => Element_Type);
+        (Index_Type          => Positive_Count_Type,
+         Element_Type        => Element_Type,
+         "="                 => Element_Logic_Equal,
+         Equivalent_Elements => "=");
 
       function "="
         (Left  : M.Sequence;
@@ -99,9 +111,11 @@ is
           M_Elements_In_Union'Result =
             (for all I in 1 .. M.Length (Container) =>
               (for some J in 1 .. M.Length (Left) =>
-                Element (Container, I) = Element (Left, J))
-                  or (for some J in 1 .. M.Length (Right) =>
-                       Element (Container, I) = Element (Right, J)));
+                 Element_Logic_Equal
+                   (Element (Container, I), Element (Left, J)))
+              or (for some J in 1 .. M.Length (Right) =>
+                    Element_Logic_Equal
+                      (Element (Container, I), Element (Right, J))));
       pragma Annotate (GNATprove, Inline_For_Proof, M_Elements_In_Union);
 
       function M_Elements_Included
@@ -120,7 +134,7 @@ is
           M_Elements_Included'Result =
             (for all I in L_Fst .. L_Lst =>
               (for some J in R_Fst .. R_Lst =>
-                Element (Left, I) = Element (Right, J)));
+                Element_Logic_Equal (Element (Left, I), Element (Right, J))));
       pragma Annotate (GNATprove, Inline_For_Proof, M_Elements_Included);
 
       function M_Elements_Reversed
@@ -133,11 +147,13 @@ is
           M_Elements_Reversed'Result =
             (M.Length (Left) = M.Length (Right)
               and (for all I in 1 .. M.Length (Left) =>
-                    Element (Left, I) =
-                      Element (Right, M.Length (Left) - I + 1))
+                     Element_Logic_Equal
+                       (Element (Left, I),
+                        Element (Right, M.Length (Left) - I + 1)))
               and (for all I in 1 .. M.Length (Left) =>
-                    Element (Right, I) =
-                      Element (Left, M.Length (Left) - I + 1)));
+                     Element_Logic_Equal
+                       (Element (Right, I),
+                        Element (Left, M.Length (Left) - I + 1))));
       pragma Annotate (GNATprove, Inline_For_Proof, M_Elements_Reversed);
 
       function M_Elements_Swapped
@@ -152,8 +168,8 @@ is
         Post   =>
           M_Elements_Swapped'Result =
             (M.Length (Left) = M.Length (Right)
-              and Element (Left, X) = Element (Right, Y)
-              and Element (Left, Y) = Element (Right, X)
+              and Element_Logic_Equal (Element (Left, X), Element (Right, Y))
+              and Element_Logic_Equal (Element (Left, Y), Element (Right, X))
               and M.Equal_Except (Left, Right, X, Y));
       pragma Annotate (GNATprove, Inline_For_Proof, M_Elements_Swapped);
 
@@ -261,8 +277,9 @@ is
                --  and M_Right, P_Right are the same.
 
                and (for all C of P_Left =>
-                     M.Get (M_Left, P.Get (P_Left, C)) =
-                     M.Get (M_Right, P.Get (P_Right, C))));
+                      Element_Logic_Equal
+                        (M.Get (M_Left, P.Get (P_Left, C)),
+                         M.Get (M_Right, P.Get (P_Right, C)))));
 
       function Model (Container : List) return M.Sequence with
       --  The high-level model of a list is a sequence of elements. Cursors are
@@ -310,8 +327,9 @@ is
         Post   =>
           (for all Elt of Model (Container) =>
             (for some I of Positions (Container) =>
-              M.Get (Model (Container), P.Get (Positions (Container), I)) =
-                Elt));
+              Element_Logic_Equal
+                 (M.Get (Model (Container), P.Get (Positions (Container), I)),
+                  Elt)));
 
       function Element
         (S : M.Sequence;
@@ -324,7 +342,8 @@ is
 
    function "=" (Left, Right : List) return Boolean with
      Global => null,
-     Post   => "="'Result = (Model (Left) = Model (Right));
+     Post   => "="'Result =
+       (M.Equivalent_Sequences (Model (Left), Model (Right)));
 
    function Is_Empty (Container : List) return Boolean with
      Global => null,
@@ -371,9 +390,11 @@ is
 
          --  The element at the position of Position in Container is New_Item
 
-         and Element
-               (Model (Container),
-                P.Get (Positions (Container), Position)) = New_Item
+         and Element_Logic_Equal
+               (Element
+                  (Model (Container),
+                   P.Get (Positions (Container), Position)),
+                New_Item)
 
          --  Other elements are preserved
 
@@ -400,8 +421,10 @@ is
      Global => null,
      Pre    => Has_Element (Container, Position),
      Post   =>
-       Constant_Reference'Result.all =
-         Element (Model (Container), P.Get (Positions (Container), Position));
+       Element_Logic_Equal
+         (Constant_Reference'Result.all,
+          Element (Model (Container),
+                   P.Get (Positions (Container), Position)));
 
    function Reference
      (Container : not null access List;
@@ -418,9 +441,10 @@ is
 
          --  Container will have Result.all at position Position
 
-         and At_End (Reference'Result).all =
-           Element (Model (At_End (Container).all),
-                    P.Get (Positions (At_End (Container).all), Position))
+         and Element_Logic_Equal
+               (At_End (Reference'Result).all,
+                Element (Model (At_End (Container).all),
+                         P.Get (Positions (At_End (Container).all), Position)))
 
          --  All other elements are preserved
 
@@ -465,7 +489,8 @@ is
 
             --  Model contains a new element New_Item at the end
 
-            and Element (Model (Container), Length (Container)) = New_Item
+            and Element_Logic_Equal
+                  (Element (Model (Container), Length (Container)), New_Item)
 
             --  Elements of Container'Old are preserved
 
@@ -493,9 +518,11 @@ is
             --  New_Item is stored at the previous position of Before in
             --  Container.
 
-            and Element
-                  (Model (Container),
-                   P.Get (Positions (Container)'Old, Before)) = New_Item
+            and Element_Logic_Equal
+                  (Element
+                     (Model (Container),
+                      P.Get (Positions (Container)'Old, Before)),
+                   New_Item)
 
             --  A new cursor has been inserted at position Before in Container
 
@@ -625,9 +652,11 @@ is
 
           --  New_Item is stored at Position in Container
 
-          and Element
-                (Model (Container),
-                 P.Get (Positions (Container), Position)) = New_Item
+          and Element_Logic_Equal
+                (Element
+                   (Model (Container),
+                    P.Get (Positions (Container), Position)),
+                 New_Item)
 
           --  A new cursor has been inserted at position Position in Container
 
@@ -720,7 +749,7 @@ is
 
          --  New_Item is the first element of Container
 
-         and Element (Model (Container), 1) = New_Item
+         and Element_Logic_Equal (Element (Model (Container), 1), New_Item)
 
          --  A new cursor has been inserted at the beginning of Container
 
@@ -789,7 +818,8 @@ is
 
          --  Model contains a new element New_Item at the end
 
-         and Element (Model (Container), Length (Container)) = New_Item
+         and Element_Logic_Equal
+               (Element (Model (Container), Length (Container)), New_Item)
 
          --  Elements of Container'Old are preserved
 
@@ -1222,10 +1252,11 @@ is
 
          --  The element located at Position in Source is moved to Target
 
-         and Element (Model (Target),
-                      P.Get (Positions (Target), Position)) =
-             Element (Model (Source)'Old,
-                      P.Get (Positions (Source)'Old, Position'Old))
+         and Element_Logic_Equal
+               (Element (Model (Target),
+                         P.Get (Positions (Target), Position)),
+                Element (Model (Source)'Old,
+                         P.Get (Positions (Source)'Old, Position'Old)))
 
          --  A new cursor has been inserted at position Position in Target
 
@@ -1271,10 +1302,10 @@ is
           --  The last element of Container is the one that was previously at
           --  Position.
 
-          and Element (Model (Container),
-                       Length (Container)) =
-              Element (Model (Container)'Old,
-                       P.Get (Positions (Container)'Old, Position))
+          and Element_Logic_Equal
+                (Element (Model (Container), Length (Container)),
+                 Element (Model (Container)'Old,
+                          P.Get (Positions (Container)'Old, Position)))
 
           --  Cursors from Container continue designating the same elements
 
@@ -1330,12 +1361,13 @@ is
 
             --  The element previously at Position is now before Before
 
-            and Element
-                  (Model (Container),
-                   P.Get (Positions (Container)'Old, Before)) =
-                Element
-                  (Model (Container)'Old,
-                   P.Get (Positions (Container)'Old, Position))
+            and Element_Logic_Equal
+                  (Element
+                     (Model (Container),
+                      P.Get (Positions (Container)'Old, Before)),
+                   Element
+                     (Model (Container)'Old,
+                      P.Get (Positions (Container)'Old, Position)))
 
             --  Cursors from Container continue designating the same elements
 
@@ -1358,7 +1390,8 @@ is
    function First_Element (Container : List) return Element_Type with
      Global => null,
      Pre    => not Is_Empty (Container),
-     Post   => First_Element'Result = M.Get (Model (Container), 1);
+     Post   => Element_Logic_Equal
+       (First_Element'Result, M.Get (Model (Container), 1));
 
    function Last (Container : List) return Cursor with
      Global         => null,
@@ -1374,8 +1407,8 @@ is
    function Last_Element (Container : List) return Element_Type with
      Global => null,
      Pre    => not Is_Empty (Container),
-     Post   =>
-       Last_Element'Result = M.Get (Model (Container), Length (Container));
+     Post   => Element_Logic_Equal
+       (Last_Element'Result, M.Get (Model (Container), Length (Container)));
 
    function Next (Container : List; Position : Cursor) return Cursor with
      Global         => null,

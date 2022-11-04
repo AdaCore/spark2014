@@ -556,6 +556,17 @@ is
 
    package body Formal_Model is
 
+      -------------------------
+      -- Element_Logic_Equal --
+      -------------------------
+
+      function Element_Logic_Equal (Left, Right : Element_Type) return Boolean
+      is
+      begin
+         Check_Or_Fail;
+         return Left = Right;
+      end Element_Logic_Equal;
+
       ----------
       -- Find --
       ----------
@@ -638,6 +649,16 @@ is
          end loop;
          return True;
       end K_Smaller_Than_Range;
+
+      ---------------------
+      -- Key_Logic_Equal --
+      ---------------------
+
+      function Key_Logic_Equal (Left, Right : Key_Type) return Boolean is
+      begin
+         Check_Or_Fail;
+         return Equivalent_Keys (Left, Right);
+      end Key_Logic_Equal;
 
       ----------
       -- Keys --

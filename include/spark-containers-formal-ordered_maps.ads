@@ -101,10 +101,26 @@ is
    package Formal_Model with Ghost is
       subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
 
+      --  Logical equality cannot be safely executed on most element or key
+      --  types. Thus, this package should only be instantiated with ghost code
+      --  disabled. This is enforced by having a special imported procedure
+      --  Fail_When_Body_Off that will lead to link-time errors otherwise.
+
+      function Key_Logic_Equal (Left, Right : Key_Type) return Boolean with
+        Global => null,
+        Annotate => (GNATprove, Logical_Equal);
+
+      function Element_Logic_Equal (Left, Right : Element_Type) return Boolean
+      with
+        Global => null,
+        Annotate => (GNATprove, Logical_Equal);
+
       package M is new SPARK.Containers.Functional.Maps
-        (Element_Type    => Element_Type,
-         Key_Type        => Key_Type,
-         Equivalent_Keys => Equivalent_Keys);
+        (Element_Type        => Element_Type,
+         Key_Type            => Key_Type,
+         Equivalent_Keys     => Equivalent_Keys,
+         "="                 => Element_Logic_Equal,
+         Equivalent_Elements => "=");
 
       function "="
         (Left  : M.Map;
@@ -115,8 +131,10 @@ is
          Right : M.Map) return Boolean renames M."<=";
 
       package K is new SPARK.Containers.Functional.Vectors
-        (Element_Type => Key_Type,
-         Index_Type   => Positive_Count_Type);
+        (Element_Type        => Key_Type,
+         Index_Type          => Positive_Count_Type,
+         "="                 => Key_Logic_Equal,
+         Equivalent_Elements => Equivalent_Keys);
 
       function "="
         (Left  : K.Sequence;
@@ -306,8 +324,9 @@ is
         Post   =>
           (for all Key of Keys (Container) =>
             (for some I of Positions (Container) =>
-              K.Get (Keys (Container), P.Get (Positions (Container), I)) =
-                Key));
+               Key_Logic_Equal
+                 (K.Get (Keys (Container), P.Get (Positions (Container), I)),
+                  Key)));
 
       function Contains
         (C : M.Map;
@@ -325,7 +344,7 @@ is
 
    function "=" (Left, Right : Map) return Boolean with
      Global => null,
-     Post   => "="'Result = (Model (Left) = Model (Right));
+     Post   => "="'Result = (M.Equivalent_Maps (Model (Left), Model (Right)));
 
    function Is_Empty (Container : Map) return Boolean with
      Global => null,
@@ -392,7 +411,7 @@ is
          --  New_Item is now associated with the key at position Position in
          --  Container.
 
-         and Element (Container, Position) = New_Item
+         and Element_Logic_Equal (Element (Container, Position), New_Item)
 
          --  Elements associated with other keys are preserved
 
@@ -421,8 +440,9 @@ is
      Global => null,
      Pre    => Has_Element (Container, Position),
      Post   =>
-       Constant_Reference'Result.all =
-           Element (Model (Container), Key (Container, Position));
+       Element_Logic_Equal
+         (Constant_Reference'Result.all,
+          Element (Model (Container), Key (Container, Position)));
 
    function Reference
      (Container : not null access Map;
@@ -440,8 +460,9 @@ is
          --  The value designated by the result of Reference is now associated
          --  with the key at position Position in Container.
 
-         and Element (At_End (Container).all, Position) =
-               At_End (Reference'Result).all
+         and Element_Logic_Equal
+               (Element (At_End (Container).all, Position),
+                At_End (Reference'Result).all)
 
          --  Elements associated with other keys are preserved
 
@@ -460,7 +481,8 @@ is
      Global => null,
      Pre    => Contains (Container, Key),
      Post   =>
-       Constant_Reference'Result.all = Element (Model (Container), Key);
+       Element_Logic_Equal
+         (Constant_Reference'Result.all, Element (Model (Container), Key));
 
    function Reference
      (Container : not null access Map;
@@ -478,8 +500,9 @@ is
          --  The value designated by the result of Reference is now associated
          --  with Key in Container.
 
-         and Element (Model (At_End (Container).all), Key) =
-               At_End (Reference'Result).all
+         and Element_Logic_Equal
+               (Element (Model (At_End (Container).all), Key),
+                At_End (Reference'Result).all)
 
          --  Elements associated with other keys are preserved
 
@@ -538,8 +561,9 @@ is
 
             --  Key now maps to New_Item
 
-            and Ordered_Maps.Key (Container, Position) = Key
-            and Element (Model (Container), Key) = New_Item
+            and Key_Logic_Equal (Ordered_Maps.Key (Container, Position), Key)
+            and Element_Logic_Equal
+                  (Element (Model (Container), Key), New_Item)
 
             --  Other mappings are preserved
 
@@ -589,8 +613,9 @@ is
 
          --  Key now maps to New_Item
 
-         and K.Get (Keys (Container), Find (Keys (Container), Key)) = Key
-         and Element (Model (Container), Key) = New_Item
+         and Key_Logic_Equal
+               (K.Get (Keys (Container), Find (Keys (Container), Key)), Key)
+         and Element_Logic_Equal (Element (Model (Container), Key), New_Item)
 
          --  Other mappings are preserved
 
@@ -633,7 +658,8 @@ is
      Pre            =>
        Length (Container) < Container.Capacity or Contains (Container, Key),
      Post           =>
-       Contains (Container, Key) and Element (Container, Key) = New_Item,
+       Contains (Container, Key)
+         and Element_Logic_Equal (Element (Container, Key), New_Item),
      Contract_Cases =>
 
        --  If Key is already in Container, Key is mapped to New_Item
@@ -646,8 +672,8 @@ is
 
             --  The key equivalent to Key in Container is replaced by Key
 
-            and K.Get
-                  (Keys (Container), Find (Keys (Container), Key)) = Key
+            and Key_Logic_Equal
+                  (K.Get (Keys (Container), Find (Keys (Container), Key)), Key)
 
             and K.Equal_Except
                   (Keys (Container)'Old,
@@ -677,8 +703,8 @@ is
 
             --  Key is inserted in Container
 
-            and K.Get
-                  (Keys (Container), Find (Keys (Container), Key)) = Key
+            and Key_Logic_Equal
+                  (K.Get (Keys (Container), Find (Keys (Container), Key)), Key)
 
             --  The keys of Container located before Key are preserved
 
@@ -719,7 +745,8 @@ is
 
          --  The key equivalent to Key in Container is replaced by Key
 
-         and K.Get (Keys (Container), Find (Keys (Container), Key)) = Key
+         and Key_Logic_Equal
+              (K.Get (Keys (Container), Find (Keys (Container), Key)), Key)
          and K.Equal_Except
               (Keys (Container)'Old,
                Keys (Container),
@@ -727,7 +754,7 @@ is
 
          --  New_Item is now associated with the Key in Container
 
-         and Element (Model (Container), Key) = New_Item
+         and Element_Logic_Equal (Element (Model (Container), Key), New_Item)
 
          --  Elements associated with other keys are preserved
 

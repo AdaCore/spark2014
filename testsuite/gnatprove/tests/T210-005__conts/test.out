@@ -1,162 +1,162 @@
-spark-containers-formal-doubly_linked_lists.ads:390:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:391:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:395:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:397:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:416:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:521:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:654:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:744:57: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:810:57: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:897:28: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:897:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:1073:43: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:1254:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:1393:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:1408:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:1423:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:1438:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:1460:14: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:1466:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:1515:14: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:1522:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
-spark-containers-formal-doubly_linked_lists.ads:1666:04: warning: unused variable constant without variable input "Empty_List", in instantiation at test_conts.adb:9
-spark-containers-formal-hashed_maps.ads:399:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_conts.adb:17
-spark-containers-formal-hashed_maps.ads:401:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:17
-spark-containers-formal-hashed_maps.ads:401:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
-spark-containers-formal-hashed_maps.ads:405:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_conts.adb:17
-spark-containers-formal-hashed_maps.ads:407:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:17
-spark-containers-formal-hashed_maps.ads:426:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
-spark-containers-formal-hashed_maps.ads:464:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
-spark-containers-formal-hashed_maps.ads:777:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
-spark-containers-formal-hashed_maps.ads:786:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
-spark-containers-formal-hashed_maps.ads:816:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
-spark-containers-formal-hashed_maps.ads:831:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
-spark-containers-formal-hashed_maps.ads:910:04: warning: unused variable constant without variable input "Empty_Map", in instantiation at test_conts.adb:17
-spark-containers-formal-hashed_sets.ads:512:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
-spark-containers-formal-hashed_sets.ads:838:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
-spark-containers-formal-hashed_sets.ads:847:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
-spark-containers-formal-hashed_sets.ads:868:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
-spark-containers-formal-hashed_sets.ads:869:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
-spark-containers-formal-hashed_sets.ads:917:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
-spark-containers-formal-hashed_sets.ads:1094:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
-spark-containers-formal-hashed_sets.ads:1095:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
-spark-containers-formal-hashed_sets.ads:1095:44: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
-spark-containers-formal-hashed_sets.ads:1135:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
-spark-containers-formal-hashed_sets.ads:1227:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
-spark-containers-formal-hashed_sets.ads:1248:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
-spark-containers-formal-hashed_sets.ads:1499:04: warning: unused variable constant without variable input "Empty_Set", in instantiation at test_conts.adb:19
-spark-containers-formal-ordered_maps.ads:405:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:407:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:407:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:411:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:413:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:432:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:470:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:841:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:850:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:885:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:893:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:920:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:928:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:998:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:1013:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:1028:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:1043:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:1083:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:1098:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_maps.ads:1149:04: warning: unused variable constant without variable input "Empty_Map", in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_sets.ads:527:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:896:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:905:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:940:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:948:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:975:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:983:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:1000:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:1001:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:1049:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:1219:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:1220:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:1220:44: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:1259:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:1363:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:1378:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:1393:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:1408:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:1442:47: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:1457:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
-spark-containers-formal-ordered_sets.ads:1811:04: warning: unused variable constant without variable input "Empty_Set", in instantiation at test_conts.adb:13
-spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test_conts.adb:9
-spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_conts.adb:17
-spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_conts.adb:17
-spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_conts.adb:19
-spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at test_conts.adb:11
-spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at test_conts.adb:11
-spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at test_conts.adb:13
-spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test_conts.adb:9
-spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:152, in instantiation at test_conts.adb:17
-spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:99, in instantiation at test_conts.adb:17
-spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:201, in instantiation at test_conts.adb:19
-spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at test_conts.adb:11
-spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at test_conts.adb:11
-spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:251, in instantiation at test_conts.adb:13
-spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:104, in instantiation at test_conts.adb:19
-spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:109, in instantiation at test_conts.adb:13
-spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_conts.adb:9
-spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_conts.adb:17
-spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:116, in instantiation at test_conts.adb:19
-spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at test_conts.adb:11
-spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_conts.adb:13
-spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_conts.adb:9
-spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_conts.adb:17
-spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:116, in instantiation at test_conts.adb:19
-spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at test_conts.adb:11
-spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_conts.adb:13
-spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_conts.adb:9
-spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_conts.adb:17
-spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:116, in instantiation at test_conts.adb:19
-spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at test_conts.adb:11
-spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_conts.adb:13
-spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_conts.adb:9
-spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_conts.adb:17
-spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:116, in instantiation at test_conts.adb:19
-spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at test_conts.adb:11
-spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_conts.adb:13
-spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_conts.adb:9
-spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_conts.adb:17
-spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:116, in instantiation at test_conts.adb:19
-spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at test_conts.adb:11
-spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_conts.adb:13
-spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_conts.adb:9
-spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_conts.adb:17
-spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:116, in instantiation at test_conts.adb:19
-spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at test_conts.adb:11
-spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_conts.adb:13
-spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_conts.adb:9
-spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_conts.adb:17
-spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:116, in instantiation at test_conts.adb:19
-spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at test_conts.adb:11
-spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_conts.adb:13
-spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_conts.adb:9
-spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_conts.adb:17
-spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:116, in instantiation at test_conts.adb:19
-spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at test_conts.adb:11
-spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_conts.adb:13
-spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_conts.adb:9
-spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_conts.adb:17
-spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:116, in instantiation at test_conts.adb:19
-spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at test_conts.adb:11
-spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_conts.adb:13
-spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_conts.adb:9
-spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_conts.adb:17
-spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:116, in instantiation at test_conts.adb:19
-spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at test_conts.adb:11
-spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_conts.adb:13
-spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_conts.adb:9
-spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:112, in instantiation at test_conts.adb:17
-spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:116, in instantiation at test_conts.adb:19
-spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at test_conts.adb:11
-spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:121, in instantiation at test_conts.adb:13
+spark-containers-formal-doubly_linked_lists.ads:411:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:412:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:416:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:418:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:439:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:548:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:683:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:773:57: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:840:57: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:927:28: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:927:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:1103:43: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:1285:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:1426:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:1441:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:1456:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:1471:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:1493:14: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:1499:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:1548:14: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:1555:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:9
+spark-containers-formal-doubly_linked_lists.ads:1699:04: warning: unused variable constant without variable input "Empty_List", in instantiation at test_conts.adb:9
+spark-containers-formal-hashed_maps.ads:420:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_conts.adb:17
+spark-containers-formal-hashed_maps.ads:422:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:17
+spark-containers-formal-hashed_maps.ads:422:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
+spark-containers-formal-hashed_maps.ads:426:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_conts.adb:17
+spark-containers-formal-hashed_maps.ads:428:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:17
+spark-containers-formal-hashed_maps.ads:448:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
+spark-containers-formal-hashed_maps.ads:488:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
+spark-containers-formal-hashed_maps.ads:812:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
+spark-containers-formal-hashed_maps.ads:821:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
+spark-containers-formal-hashed_maps.ads:851:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
+spark-containers-formal-hashed_maps.ads:866:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:17
+spark-containers-formal-hashed_maps.ads:945:04: warning: unused variable constant without variable input "Empty_Map", in instantiation at test_conts.adb:17
+spark-containers-formal-hashed_sets.ads:549:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
+spark-containers-formal-hashed_sets.ads:880:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
+spark-containers-formal-hashed_sets.ads:889:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
+spark-containers-formal-hashed_sets.ads:910:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
+spark-containers-formal-hashed_sets.ads:911:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
+spark-containers-formal-hashed_sets.ads:959:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
+spark-containers-formal-hashed_sets.ads:1136:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
+spark-containers-formal-hashed_sets.ads:1137:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
+spark-containers-formal-hashed_sets.ads:1137:44: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
+spark-containers-formal-hashed_sets.ads:1177:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:19
+spark-containers-formal-hashed_sets.ads:1269:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
+spark-containers-formal-hashed_sets.ads:1290:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:19
+spark-containers-formal-hashed_sets.ads:1541:04: warning: unused variable constant without variable input "Empty_Set", in instantiation at test_conts.adb:19
+spark-containers-formal-ordered_maps.ads:424:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:426:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:426:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:430:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:432:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:452:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:492:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:868:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:877:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:912:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:920:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:947:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:955:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:1025:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:1040:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:1055:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:1070:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:1110:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:1125:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_maps.ads:1176:04: warning: unused variable constant without variable input "Empty_Map", in instantiation at test_conts.adb:11
+spark-containers-formal-ordered_sets.ads:565:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:945:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:954:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:989:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:997:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1024:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1032:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1049:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1050:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1098:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1268:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1269:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1269:44: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1308:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1415:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1430:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1445:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1460:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1494:47: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1509:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_conts.adb:13
+spark-containers-formal-ordered_sets.ads:1864:04: warning: unused variable constant without variable input "Empty_Set", in instantiation at test_conts.adb:13
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:175, in instantiation at test_conts.adb:9
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:113, in instantiation at test_conts.adb:17
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:171, in instantiation at test_conts.adb:17
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:233, in instantiation at test_conts.adb:19
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:118, in instantiation at test_conts.adb:11
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:208, in instantiation at test_conts.adb:11
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:283, in instantiation at test_conts.adb:13
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:175, in instantiation at test_conts.adb:9
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:113, in instantiation at test_conts.adb:17
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:171, in instantiation at test_conts.adb:17
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:233, in instantiation at test_conts.adb:19
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:118, in instantiation at test_conts.adb:11
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:208, in instantiation at test_conts.adb:11
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:283, in instantiation at test_conts.adb:13
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:116, in instantiation at test_conts.adb:19
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:120, in instantiation at test_conts.adb:13
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:84, in instantiation at test_conts.adb:9
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:128, in instantiation at test_conts.adb:17
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:128, in instantiation at test_conts.adb:19
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at test_conts.adb:11
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_conts.adb:13
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:84, in instantiation at test_conts.adb:9
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_maps.ads:128, in instantiation at test_conts.adb:17
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:128, in instantiation at test_conts.adb:19
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at test_conts.adb:11
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_conts.adb:13
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:84, in instantiation at test_conts.adb:9
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:128, in instantiation at test_conts.adb:17
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:128, in instantiation at test_conts.adb:19
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at test_conts.adb:11
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_conts.adb:13
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:84, in instantiation at test_conts.adb:9
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:128, in instantiation at test_conts.adb:17
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:128, in instantiation at test_conts.adb:19
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at test_conts.adb:11
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_conts.adb:13
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:84, in instantiation at test_conts.adb:9
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:128, in instantiation at test_conts.adb:17
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:128, in instantiation at test_conts.adb:19
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at test_conts.adb:11
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_conts.adb:13
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:84, in instantiation at test_conts.adb:9
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:128, in instantiation at test_conts.adb:17
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:128, in instantiation at test_conts.adb:19
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at test_conts.adb:11
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_conts.adb:13
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:84, in instantiation at test_conts.adb:9
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:128, in instantiation at test_conts.adb:17
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:128, in instantiation at test_conts.adb:19
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at test_conts.adb:11
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_conts.adb:13
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:84, in instantiation at test_conts.adb:9
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:128, in instantiation at test_conts.adb:17
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:128, in instantiation at test_conts.adb:19
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at test_conts.adb:11
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_conts.adb:13
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:84, in instantiation at test_conts.adb:9
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:128, in instantiation at test_conts.adb:17
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:128, in instantiation at test_conts.adb:19
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at test_conts.adb:11
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_conts.adb:13
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:84, in instantiation at test_conts.adb:9
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:128, in instantiation at test_conts.adb:17
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:128, in instantiation at test_conts.adb:19
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at test_conts.adb:11
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_conts.adb:13
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:84, in instantiation at test_conts.adb:9
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:128, in instantiation at test_conts.adb:17
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:128, in instantiation at test_conts.adb:19
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at test_conts.adb:11
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_conts.adb:13
 test_conts.adb:8:23: info: initialization of "X" proved
 test_conts.adb:26:07: info: initialization of "L" proved
 test_conts.adb:26:17: info: range check proved (CVC5: 2 VC)

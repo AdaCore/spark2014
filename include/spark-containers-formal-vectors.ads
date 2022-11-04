@@ -90,9 +90,21 @@ is
 
    package Formal_Model with Ghost is
 
+      --  Logical equality cannot be safely executed on most element types.
+      --  Thus, this package should only be instantiated with ghost code
+      --  disabled. This is enforced by having a special imported procedure
+      --  Fail_When_Body_Off that will lead to link-time errors otherwise.
+
+      function Element_Logic_Equal (Left, Right : Element_Type) return Boolean
+      with
+        Global => null,
+        Annotate => (GNATprove, Logical_Equal);
+
       package M is new SPARK.Containers.Functional.Vectors
-        (Index_Type   => Index_Type,
-         Element_Type => Element_Type);
+        (Index_Type          => Index_Type,
+         Element_Type        => Element_Type,
+         "="                 => Element_Logic_Equal,
+         Equivalent_Elements => "=");
 
       function "="
         (Left  : M.Sequence;
@@ -117,9 +129,11 @@ is
           M_Elements_In_Union'Result =
             (for all I in Index_Type'First .. M.Last (Container) =>
               (for some J in Index_Type'First .. M.Last (Left) =>
-                Element (Container, I) = Element (Left, J))
-                  or (for some J in Index_Type'First .. M.Last (Right) =>
-                       Element (Container, I) = Element (Right, J)));
+                 Element_Logic_Equal
+                   (Element (Container, I), Element (Left, J)))
+              or (for some J in Index_Type'First .. M.Last (Right) =>
+                    Element_Logic_Equal
+                      (Element (Container, I), Element (Right, J))));
       pragma Annotate (GNATprove, Inline_For_Proof, M_Elements_In_Union);
 
       function M_Elements_Included
@@ -138,7 +152,7 @@ is
           M_Elements_Included'Result =
             (for all I in L_Fst .. L_Lst =>
               (for some J in R_Fst .. R_Lst =>
-                Element (Left, I) = Element (Right, J)));
+                 Element_Logic_Equal (Element (Left, I), Element (Right, J))));
       pragma Annotate (GNATprove, Inline_For_Proof, M_Elements_Included);
 
       function M_Elements_Reversed
@@ -151,11 +165,13 @@ is
           M_Elements_Reversed'Result =
             (M.Length (Left) = M.Length (Right)
               and (for all I in Index_Type'First .. M.Last (Left) =>
-                    Element (Left, I) =
-                      Element (Right, M.Last (Left) - I + 1))
+                     Element_Logic_Equal
+                       (Element (Left, I),
+                        Element (Right, M.Last (Left) - I + 1)))
               and (for all I in Index_Type'First .. M.Last (Right) =>
-                    Element (Right, I) =
-                      Element (Left, M.Last (Left) - I + 1)));
+                     Element_Logic_Equal
+                       (Element (Right, I),
+                        Element (Left, M.Last (Left) - I + 1))));
       pragma Annotate (GNATprove, Inline_For_Proof, M_Elements_Reversed);
 
       function M_Elements_Swapped
@@ -170,8 +186,8 @@ is
         Post   =>
           M_Elements_Swapped'Result =
             (M.Length (Left) = M.Length (Right)
-              and Element (Left, X) = Element (Right, Y)
-              and Element (Left, Y) = Element (Right, X)
+              and Element_Logic_Equal (Element (Left, X), Element (Right, Y))
+              and Element_Logic_Equal (Element (Left, Y), Element (Right, X))
               and M.Equal_Except (Left, Right, X, Y));
       pragma Annotate (GNATprove, Inline_For_Proof, M_Elements_Swapped);
 
@@ -200,7 +216,8 @@ is
 
    function "=" (Left, Right : Vector) return Boolean with
      Global => null,
-     Post   => "="'Result = (Model (Left) = Model (Right));
+     Post   => "="'Result =
+       (M.Equivalent_Sequences (Model (Left), Model (Right)));
 
    function To_Vector
      (New_Item : Element_Type;
@@ -282,7 +299,7 @@ is
 
          --  Container now has New_Item at index Index
 
-         and Element (Model (Container), Index) = New_Item
+         and Element_Logic_Equal (Element (Model (Container), Index), New_Item)
 
          --  All other elements are preserved
 
@@ -309,7 +326,8 @@ is
      Global => null,
      Pre    => Index in First_Index (Container) .. Last_Index (Container),
      Post   =>
-         Constant_Reference'Result.all = Element (Model (Container), Index);
+       Element_Logic_Equal
+         (Constant_Reference'Result.all, Element (Model (Container), Index));
 
    function Reference
      (Container : not null access Vector;
@@ -323,8 +341,9 @@ is
 
          --  Container will have Result.all at index Index
 
-         and At_End (Reference'Result).all =
-           Element (Model (At_End (Container).all), Index)
+         and Element_Logic_Equal
+               (At_End (Reference'Result).all,
+                Element (Model (At_End (Container).all), Index))
 
          --  All other elements are preserved
 
@@ -396,7 +415,8 @@ is
 
          --  Container now has New_Item at index Before
 
-         and Element (Model (Container), Before) = New_Item
+         and Element_Logic_Equal
+               (Element (Model (Container), Before), New_Item)
 
          --  Elements located after Before in Container are shifted by 1
 
@@ -479,7 +499,8 @@ is
 
          --  Container now has New_Item at Index_Type'First
 
-         and Element (Model (Container), Index_Type'First) = New_Item
+         and Element_Logic_Equal
+               (Element (Model (Container), Index_Type'First), New_Item)
 
          --  Elements of Container are shifted by 1
 
@@ -552,8 +573,9 @@ is
 
          --  Container now has New_Item at the end of Container
 
-         and Element
-               (Model (Container), Last_Index (Container)'Old + 1) = New_Item;
+         and Element_Logic_Equal
+               (Element (Model (Container), Last_Index (Container)'Old + 1),
+                New_Item);
 
    procedure Append
      (Container : in out Vector;

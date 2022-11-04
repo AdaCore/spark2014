@@ -1,74 +1,74 @@
-spark-containers-formal-unbounded_ordered_sets.ads:508:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:508:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:877:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:877:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:886:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:886:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:921:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:921:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:929:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:929:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:956:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:956:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:964:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:964:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:981:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:981:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:982:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:982:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:1030:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:1030:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:1200:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:1200:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:1201:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:1201:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:1201:44: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:1201:44: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:1240:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:1240:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:1344:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:1344:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:1359:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:1359:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:1374:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:1374:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:1389:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:1389:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:1423:47: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:1423:47: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:1438:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-unbounded_ordered_sets.ads:1438:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-unbounded_ordered_sets.ads:1706:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set.ads:30
-spark-containers-formal-unbounded_ordered_sets.ads:1727:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:30
-spark-containers-formal-unbounded_ordered_sets.ads:1745:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:30
-spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:234, in instantiation at test_set.ads:19
-spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:234, in instantiation at test_set.ads:6
-spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:234, in instantiation at test_set.ads:19
-spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:234, in instantiation at test_set.ads:6
-spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:92, in instantiation at test_set.ads:19
-spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:92, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:104, in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:546:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:546:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:924:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:924:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:933:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:933:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:968:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:968:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:976:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:976:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1003:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1003:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1011:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1011:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1028:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1028:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1029:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1029:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1077:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1077:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1247:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1247:24: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1248:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1248:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1248:44: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1248:44: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1287:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1287:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1394:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1394:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1409:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1409:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1424:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1424:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1439:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1439:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1473:47: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1473:47: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1488:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-unbounded_ordered_sets.ads:1488:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-unbounded_ordered_sets.ads:1757:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set.ads:30
+spark-containers-formal-unbounded_ordered_sets.ads:1778:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:30
+spark-containers-formal-unbounded_ordered_sets.ads:1796:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:30
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:266, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:266, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:266, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:266, in instantiation at test_set.ads:6
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:103, in instantiation at test_set.ads:19
+spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:103, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:115, in instantiation at test_set.ads:6
 test_set.adb:5:14: warning: subprogram "Test_Set_Pos" has no effect
 test_set.adb:7:07: info: initialization of "L" proved
 test_set.adb:7:10: info: initialization of "K" proved
@@ -87,7 +87,7 @@ test_set.adb:29:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:30:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:32:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:32:36: info: precondition proved (CVC5: 1 VC)
-test_set.adb:33:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function]
+test_set.adb:33:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:33:36: info: precondition proved (CVC5: 1 VC)
 test_set.adb:34:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:35:22: info: assertion proved (Z3: 1 VC)
@@ -221,7 +221,7 @@ test_set.adb:279:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:280:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:282:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:283:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:286:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Length or turning it into an expression function]
+test_set.adb:286:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:287:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:290:22: medium: assertion might fail
 test_set.adb:295:22: info: assertion proved (Z3: 1 VC)
@@ -267,7 +267,7 @@ test_set.adb:374:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:375:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:376:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:381:22: medium: assertion might fail
-test_set.adb:384:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:384:22: medium: assertion might fail
 test_set.adb:384:26: info: precondition proved (CVC5: 1 VC)
 test_set.adb:389:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:390:22: info: assertion proved (CVC5: 1 VC)

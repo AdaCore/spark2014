@@ -45,6 +45,8 @@ generic
      (Left  : Element_Type;
       Right : Element_Type) return Boolean is "=";
 
+   with function "=" (Left, Right : Element_Type) return Boolean is <>;
+
 package SPARK.Containers.Formal.Unbounded_Hashed_Sets with
   SPARK_Mode,
   Annotate => (GNATprove, Always_Return)
@@ -85,6 +87,16 @@ is
    package Formal_Model with Ghost is
       subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
 
+      --  Logical equality cannot be safely executed on most element types.
+      --  Thus, this package should only be instantiated with ghost code
+      --  disabled. This is enforced by having a special imported procedure
+      --  Fail_When_Body_Off that will lead to link-time errors otherwise.
+
+      function Element_Logic_Equal (Left, Right : Element_Type) return Boolean
+      with
+        Global => null,
+        Annotate => (GNATprove, Logical_Equal);
+
       package M is new SPARK.Containers.Functional.Sets
         (Element_Type    => Element_Type,
          Equivalent_Elements => Equivalent_Elements);
@@ -98,8 +110,10 @@ is
          Right : M.Set) return Boolean renames M."<=";
 
       package E is new SPARK.Containers.Functional.Vectors
-        (Element_Type => Element_Type,
-         Index_Type   => Positive_Count_Type);
+        (Element_Type        => Element_Type,
+         Index_Type          => Positive_Count_Type,
+         "="                 => Element_Logic_Equal,
+         Equivalent_Elements => "=");
 
       function "="
         (Left  : E.Sequence;
@@ -126,6 +140,21 @@ is
                 and Equivalent_Elements
                       (Item, E.Get (Container, Find'Result)));
 
+      function E_Elements_Equal
+        (Left  : E.Sequence;
+         Right : E.Sequence) return Boolean
+      --  The elements of Left are "=" to the equivalent element in Right
+
+      with
+        Global => null,
+        Post   =>
+          E_Elements_Equal'Result =
+            (for all I in 1 .. E.Length (Left) =>
+              Find (Right, E.Get (Left, I)) > 0
+                and then E.Get (Right, Find (Right, E.Get (Left, I))) =
+                         E.Get (Left, I));
+      pragma Annotate (GNATprove, Inline_For_Proof, E_Elements_Equal);
+
       function E_Elements_Included
         (Left  : E.Sequence;
          Right : E.Sequence) return Boolean
@@ -137,8 +166,9 @@ is
           E_Elements_Included'Result =
             (for all I in 1 .. E.Length (Left) =>
               Find (Right, E.Get (Left, I)) > 0
-                and then E.Get (Right, Find (Right, E.Get (Left, I))) =
-                         E.Get (Left, I));
+                and then Element_Logic_Equal
+                   (E.Get (Right, Find (Right, E.Get (Left, I))),
+                    E.Get (Left, I)));
       pragma Annotate (GNATprove, Inline_For_Proof, E_Elements_Included);
 
       function E_Elements_Included
@@ -154,8 +184,9 @@ is
             (for all I in 1 .. E.Length (Left) =>
               (if M.Contains (Model, E.Get (Left, I)) then
                   Find (Right, E.Get (Left, I)) > 0
-                    and then E.Get (Right, Find (Right, E.Get (Left, I))) =
-                             E.Get (Left, I)));
+                    and then Element_Logic_Equal
+                       (E.Get (Right, Find (Right, E.Get (Left, I))),
+                        E.Get (Left, I))));
       pragma Annotate (GNATprove, Inline_For_Proof, E_Elements_Included);
 
       function E_Elements_Included
@@ -173,13 +204,14 @@ is
             (for all I in 1 .. E.Length (Container) =>
               (if M.Contains (Model, E.Get (Container, I)) then
                   Find (Left, E.Get (Container, I)) > 0
-                    and then E.Get (Left, Find (Left, E.Get (Container, I))) =
-                             E.Get (Container, I)
+                    and then Element_Logic_Equal
+                       (E.Get (Left, Find (Left, E.Get (Container, I))),
+                        E.Get (Container, I))
                else
                   Find (Right, E.Get (Container, I)) > 0
-                    and then E.Get
-                               (Right, Find (Right, E.Get (Container, I))) =
-                             E.Get (Container, I)));
+                    and then Element_Logic_Equal
+                       (E.Get (Right, Find (Right, E.Get (Container, I))),
+                        E.Get (Container, I))));
       pragma Annotate (GNATprove, Inline_For_Proof, E_Elements_Included);
 
       package P is new SPARK.Containers.Functional.Maps
@@ -219,8 +251,9 @@ is
                --  and E_Right, P_Right are the same.
 
                and (for all C of P_Left =>
-                     E.Get (E_Left, P.Get (P_Left, C)) =
-                     E.Get (E_Right, P.Get (P_Right, C))));
+                     Element_Logic_Equal
+                       (E.Get (E_Left, P.Get (P_Left, C)),
+                        E.Get (E_Right, P.Get (P_Right, C)))));
 
       function Mapping_Preserved_Except
         (E_Left   : E.Sequence;
@@ -243,8 +276,9 @@ is
 
                and (for all C of P_Left =>
                      (if C /= Position then
-                         E.Get (E_Left, P.Get (P_Left, C)) =
-                         E.Get (E_Right, P.Get (P_Right, C)))));
+                         Element_Logic_Equal
+                           (E.Get (E_Left, P.Get (P_Left, C)),
+                            E.Get (E_Right, P.Get (P_Right, C))))));
 
       function Model (Container : Set) return M.Set with
       --  The high-level model of a set is a set of elements. Neither cursors
@@ -329,8 +363,10 @@ is
         Post   =>
           (for all Item of Elements (Container) =>
             (for some I of Positions (Container) =>
-              E.Get (Elements (Container), P.Get (Positions (Container), I)) =
-                Item));
+               Element_Logic_Equal
+                 (E.Get (Elements (Container),
+                         P.Get (Positions (Container), I)),
+                  Item)));
 
       function Contains
         (C : M.Set;
@@ -351,11 +387,11 @@ is
      Post   =>
          "="'Result =
            (Length (Left) = Length (Right)
-             and E_Elements_Included (Elements (Left), Elements (Right)))
+             and E_Elements_Equal (Elements (Left), Elements (Right)))
        and
          "="'Result =
-           (E_Elements_Included (Elements (Left), Elements (Right))
-             and E_Elements_Included (Elements (Right), Elements (Left)));
+           (E_Elements_Equal (Elements (Left), Elements (Right))
+             and E_Elements_Equal (Elements (Right), Elements (Left)));
    --  For each element in Left, set equality attempts to find the equal
    --  element in Right; if a search fails, then set equality immediately
    --  returns False. The search works by calling Hash to find the bucket in
@@ -380,7 +416,8 @@ is
      Post   =>
        M.Is_Singleton (Model (To_Set'Result), New_Item)
          and Length (To_Set'Result) = 1
-         and E.Get (Elements (To_Set'Result), 1) = New_Item;
+         and Element_Logic_Equal
+               (E.Get (Elements (To_Set'Result), 1), New_Item);
    --  Constructs a singleton set comprising New_Element. To_Set calls Hash to
    --  determine the bucket for New_Item.
 
@@ -445,7 +482,7 @@ is
 
           --  Position now maps to New_Item
 
-          and Element (Container, Position) = New_Item
+          and Element_Logic_Equal (Element (Container, Position), New_Item)
 
           --  New_Item is contained in Container
 
@@ -530,7 +567,7 @@ is
 
             --  Position now maps to New_Item
 
-            and Element (Container, Position) = New_Item
+            and Element_Logic_Equal (Element (Container, Position), New_Item)
 
             --  Other elements are preserved
 
@@ -571,7 +608,8 @@ is
      Post   =>
        Length (Container) = Length (Container)'Old + 1
          and Contains (Container, New_Item)
-         and Element (Container, Find (Container, New_Item)) = New_Item
+         and Element_Logic_Equal
+               (Element (Container, Find (Container, New_Item)), New_Item)
 
          --  Other elements are preserved
 
@@ -607,7 +645,8 @@ is
          or Contains (Container, New_Item),
      Post           =>
        Contains (Container, New_Item)
-         and Element (Container, Find (Container, New_Item)) = New_Item,
+         and Element_Logic_Equal
+               (Element (Container, Find (Container, New_Item)), New_Item),
      Contract_Cases =>
 
        --  If an element equivalent to New_Item is already in Container, it is
@@ -679,7 +718,8 @@ is
          --  The element equivalent to New_Item in Container is replaced by
          --  New_Item.
 
-         and Element (Container, Find (Container, New_Item)) = New_Item
+         and Element_Logic_Equal
+               (Element (Container, Find (Container, New_Item)), New_Item)
          and E.Equal_Except
                (Elements (Container)'Old,
                 Elements (Container),

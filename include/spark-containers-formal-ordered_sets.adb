@@ -644,6 +644,25 @@ is
          return True;
       end E_Bigger_Than_Range;
 
+      ----------------------
+      -- E_Elements_Equal --
+      ----------------------
+
+      function E_Elements_Equal
+        (Left  : E.Sequence;
+         Right : E.Sequence) return Boolean
+      is
+      begin
+         for I in 1 .. E.Length (Left) loop
+            if not E.Contains (Right, 1, E.Length (Right), E.Get (Left, I))
+            then
+               return False;
+            end if;
+         end loop;
+
+         return True;
+      end E_Elements_Equal;
+
       -------------------------
       -- E_Elements_Included --
       -------------------------
@@ -654,10 +673,17 @@ is
       is
       begin
          for I in 1 .. E.Length (Left) loop
-            if not E.Contains (Right, 1, E.Length (Right), E.Get (Left, I))
-            then
-               return False;
-            end if;
+            declare
+               J : constant Count_Type :=
+                 E.Find (Right, E.Get (Left, I));
+            begin
+               if J = 0
+                 or else not Element_Logic_Equal
+                   (E.Get (Left, I), E.Get (Right, J))
+               then
+                  return False;
+               end if;
+            end;
          end loop;
 
          return True;
@@ -674,9 +700,16 @@ is
                Item : constant Element_Type := E.Get (Left, I);
             begin
                if M.Contains (Model, Item) then
-                  if not E.Contains (Right, 1, E.Length (Right), Item) then
-                     return False;
-                  end if;
+                  declare
+                     J : constant Count_Type :=
+                       E.Find (Right, E.Get (Left, I));
+                  begin
+                     if J = 0
+                       or else not Element_Logic_Equal (Item, E.Get (Right, J))
+                     then
+                        return False;
+                     end if;
+                  end;
                end if;
             end;
          end loop;
@@ -696,13 +729,27 @@ is
                Item : constant Element_Type := E.Get (Container, I);
             begin
                if M.Contains (Model, Item) then
-                  if not E.Contains (Left, 1, E.Length (Left), Item) then
-                     return False;
-                  end if;
+                  declare
+                     J : constant Count_Type :=
+                       E.Find (Left, E.Get (Container, I));
+                  begin
+                     if J = 0
+                       or else not Element_Logic_Equal (Item, E.Get (Left, J))
+                     then
+                        return False;
+                     end if;
+                  end;
                else
-                  if not E.Contains (Right, 1, E.Length (Right), Item) then
-                     return False;
-                  end if;
+                  declare
+                     J : constant Count_Type :=
+                       E.Find (Right, E.Get (Container, I));
+                  begin
+                     if J = 0
+                       or else not Element_Logic_Equal (Item, E.Get (Right, J))
+                     then
+                        return False;
+                     end if;
+                  end;
                end if;
             end;
          end loop;
@@ -756,6 +803,17 @@ is
 
          return True;
       end E_Smaller_Than_Range;
+
+      -------------------------
+      -- Element_Logic_Equal --
+      -------------------------
+
+      function Element_Logic_Equal (Left, Right : Element_Type) return Boolean
+      is
+      begin
+         Check_Or_Fail;
+         return Left = Right;
+      end Element_Logic_Equal;
 
       --------------
       -- Elements --
@@ -816,8 +874,9 @@ is
             if not P.Has_Key (P_Right, C)
               or else P.Get (P_Left,  C) > E.Length (E_Left)
               or else P.Get (P_Right, C) > E.Length (E_Right)
-              or else E.Get (E_Left,  P.Get (P_Left,  C)) /=
-                      E.Get (E_Right, P.Get (P_Right, C))
+              or else not Element_Logic_Equal
+                (E.Get (E_Left,  P.Get (P_Left,  C)),
+                 E.Get (E_Right, P.Get (P_Right, C)))
             then
                return False;
             end if;
@@ -843,8 +902,9 @@ is
               and (not P.Has_Key (P_Right, C)
                     or else P.Get (P_Left,  C) > E.Length (E_Left)
                     or else P.Get (P_Right, C) > E.Length (E_Right)
-                    or else E.Get (E_Left,  P.Get (P_Left,  C)) /=
-                            E.Get (E_Right, P.Get (P_Right, C)))
+                    or else not Element_Logic_Equal
+                     (E.Get (E_Left,  P.Get (P_Left,  C)),
+                      E.Get (E_Right, P.Get (P_Right, C))))
             then
                return False;
             end if;

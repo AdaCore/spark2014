@@ -5,37 +5,37 @@ replacement.adb:9:22: info: assertion proved (Z3: 1 VC)
 replacement.adb:9:22: info: precondition proved (Trivial: 1 VC)
 replacement.adb:9:44: info: precondition proved (CVC5: 1 VC)
 replacement.adb:9:61: info: precondition proved (CVC5: 1 VC)
-spark-containers-formal-ordered_maps.ads:405:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:407:08: info: dynamic accessibility check proved (Trivial), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:407:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:411:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:413:08: info: dynamic accessibility check proved (Trivial), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:432:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:470:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:841:39: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:850:17: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:885:42: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:893:21: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:920:42: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:928:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:998:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:1013:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:1028:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:1043:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:1083:46: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-formal-ordered_maps.ads:1098:40: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
-spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at replacement.ads:7
-spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at replacement.ads:7
-spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:104, in instantiation at replacement.ads:7
-spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:190, in instantiation at replacement.ads:7
-spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at replacement.ads:7
-spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at replacement.ads:7
-spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at replacement.ads:7
-spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at replacement.ads:7
-spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at replacement.ads:7
-spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at replacement.ads:7
-spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at replacement.ads:7
-spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at replacement.ads:7
-spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at replacement.ads:7
-spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at replacement.ads:7
-spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:117, in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:424:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:426:08: info: dynamic accessibility check proved (Trivial), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:426:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:430:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:432:08: info: dynamic accessibility check proved (Trivial), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:452:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:492:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:868:39: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:877:17: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:912:42: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:920:21: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:947:42: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:955:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:1025:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:1040:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:1055:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:1070:20: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:1110:46: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-formal-ordered_maps.ads:1125:40: info: precondition proved (CVC5: 1 VC), in instantiation at replacement.ads:7
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:118, in instantiation at replacement.ads:7
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:208, in instantiation at replacement.ads:7
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:118, in instantiation at replacement.ads:7
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:208, in instantiation at replacement.ads:7
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at replacement.ads:7
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at replacement.ads:7
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at replacement.ads:7
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at replacement.ads:7
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at replacement.ads:7
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at replacement.ads:7
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at replacement.ads:7
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at replacement.ads:7
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at replacement.ads:7
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at replacement.ads:7
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:133, in instantiation at replacement.ads:7
