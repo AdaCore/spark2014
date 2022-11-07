@@ -176,11 +176,23 @@ and ``gold``, you can choose which analysis is performed:
 Using the option ``--limit-line=`` one can limit proofs to a particular file
 and line of an Ada file. For example, if you want to prove only line 12 of
 file ``example.adb``, you can add the option ``--limit-line=example.adb:12`` to
-the call to |GNATprove|. Using the option ``--limit-subp=`` one can limit proofs
-to a subprogram declared in a particular file at a particular line. Using
-``--limit-region=`` one can limit proofs to a range of lines in a particular
-file. For example, ``--limit-region=example.adb:12:14`` will limit analysis to
-lines 12 to 14 in ``example.adb``.
+the call to |GNATprove|. Using ``--limit-region=`` one can limit proofs to a
+range of lines in a particular file. For example,
+``--limit-region=example.adb:12:14`` will limit analysis to lines 12 to 14 in
+``example.adb``.
+
+Using the ``--limit-subp=`` option, one can limit the analysis to a particular
+subprogram. As an example, the option ``--limit-subp=example.ads:12`` limits
+the analysis to the subprogram declared at line 12 in ``example.ads``. If
+``example.ads`` is a generic unit, SPARK skips analysis of such units by
+default, as only instances of generics are analyzed. You can specify the switch
+``-U`` in this case to analyze all instances of the generic subprogram.  One
+can specify a specific instance to analyze by specifying the place of
+instantiation: the option ``--limit-subp=inst.adb:10:example.ads:12`` analyzes
+the same subprogram, but only the instance that was created via the
+instantiation at line 10 of ``inst.adb``. One can specify a longer chain if
+``inst.adb`` is also part of a generic subprogram or package. In all cases, the
+``-U`` switch is only needed if the first unit is a generic unit.
 
 .. index:: --prover, --timeout, --memlimit, --steps, -j
 
@@ -953,14 +965,9 @@ These settings will speed up |GNATprove|:
 
 .. index:: pair: --function-sandboxing; speeding up
 
-* Use ``--function-sandboxing=off``.
-  Generally, SPARK checks that subprograms  correctly
-  implement their implicit and explicit contracts, and assumes that this is the
-  case as well for subprograms that are not verified by |GNATprove|, see
-  also :ref:`Managing Assumptions`. To limit the impact of incorrect contracts,
-  |GNATprove| inserts by default special guards, so that potentially incorrect
-  postconditions are only used when the unverified subprogram is actually
-  called. These guards have a non-negligible impact on prover performance. If
+* Use ``--function-sandboxing=off``. By default, |GNATprove| sandboxes functions
+  to limit the impact of :ref:`Infeasible Subprogram Contracts`. These guards
+  have a non-negligible impact on prover performance. If
   in your project, all subprograms are in the |SPARK| subset, or you have
   confidence in the contracts you wrote for the subprograms which are not in
   |SPARK|, you can disable these guards using the ``--function-sandboxing=off``

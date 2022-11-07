@@ -537,16 +537,21 @@ of a program:
 
 * [SPARK_VALID]
   Attribute 'Valid is currently assumed to always return True, as no invalid
-  value can be constructed in SPARK (see :ref:`Data Validity`).
+  value can be constructed in SPARK (see :ref:`Data Validity`). This assumption
+  can be seen as a consequence of other assumptions, in particular
+  [SPARK_VALIDITY], [SPARK_EXTERNAL_VALID] and [ADA_EXTERNAL].
 
 .. index:: validity; limitation
 
 * [SPARK_EXTERNAL_VALID]
-  Values read from an external source are assumed to be valid values.
-  Currently there is no model of invalidity or undefinedness. The onus is on
-  the user to ensure that all values read from an external source are
-  valid. The use of an invalid value invalidates any proofs associated with the
-  value.
+  Values read from objects whose address is specified are assumed to be valid
+  values. This assumption is limited to objects annotated with an address
+  clause or aspect whose expression is not a reference to the Address attribute
+  on a part of a standalone object or constant (because an explicit check is
+  emitted for these). Currently there is no model of invalidity or
+  undefinedness. The onus is on the user to ensure that all values read from an
+  external source are valid. The use of an invalid value invalidates any proofs
+  associated with the value.
 
 * [SPARK_STORAGE_ERROR]
   As explained in section :ref:`Dealing with Storage_Error`, GNATprove does not
@@ -658,8 +663,8 @@ of a program:
   * does not call protected entries,
   * does not suspend on suspection objects,
   * does not access unsynchronised global objects,
-  * does not lock protected objects with calls to protected procedures.
-  * does not call Ada.Task_Identification.Current_Task
+  * does not lock protected objects with calls to protected subprograms,
+  * does not call Ada.Task_Identification.Current_Task.
 
 
 In addition, the following assumptions need to be addressed when using SPARK on
@@ -668,7 +673,7 @@ only part of a program:
 * [ADA_EXTERNAL]
   Objects accessed outside of SPARK, either directly for statically allocated
   objects, or through their address or a pointer for all objects, should comply
-  with the assumptions described in [SPARK_EXTERNAL].
+  with the assumptions described in [SPARK_EXTERNAL] and [SPARK_EXTERNAL_VALID].
 
 * [ADA_PRIVATE_TYPES]
   Private types whose full view is not analyzed, yet are used in
