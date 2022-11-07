@@ -62,7 +62,7 @@
   <proof prover="0"><result status="valid" steps="301"/></proof>
   <proof prover="1"><result status="valid" steps="9041"/></proof>
   <proof prover="2"><result status="valid" steps="15100"/></proof>
-  <proof prover="4"><result status="valid" steps="296"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -194,7 +194,7 @@
   <proof prover="0"><result status="valid" steps="1617"/></proof>
   <proof prover="1"><result status="valid" steps="77021"/></proof>
   <proof prover="2"><result status="valid" steps="54584"/></proof>
-  <proof prover="4"><result status="timeout"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.33" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -374,7 +374,7 @@
   <proof prover="0"><result status="valid" steps="1588"/></proof>
   <proof prover="1"><result status="valid" steps="31190"/></proof>
   <proof prover="2"><result status="valid" steps="50100"/></proof>
-  <proof prover="4"><result status="valid" steps="1181"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.66" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -401,7 +401,7 @@
   <proof prover="0"><result status="valid" steps="1415"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="valid" steps="110040"/></proof>
-  <proof prover="4"><result status="timeout"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.71" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -485,7 +485,7 @@
   <proof prover="0"><result status="valid" steps="2912"/></proof>
   <proof prover="1"><result status="valid" steps="30900"/></proof>
   <proof prover="2"><result status="valid" steps="50879"/></proof>
-  <proof prover="4"><result status="valid" steps="953"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.87" proved="true">
   <proof prover="0"><result status="valid" steps="729"/></proof>
@@ -590,7 +590,7 @@
   <proof prover="0"><result status="valid" steps="1628"/></proof>
   <proof prover="1"><result status="valid" steps="6624"/></proof>
   <proof prover="2"><result status="valid" steps="40062"/></proof>
-  <proof prover="4"><result status="valid" steps="851"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.107" proved="true">
   <proof prover="0"><result status="valid" steps="1308"/></proof>
@@ -600,7 +600,7 @@
   </goal>
   <goal name="def&#39;vc.108" proved="true">
   <proof prover="0"><result status="valid" steps="1308"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="1"><result status="highfailure"/></proof>
   <proof prover="2"><result status="valid" steps="50288"/></proof>
   <proof prover="4"><result status="unknown" steps="1178"/></proof>
   </goal>
@@ -707,7 +707,7 @@
   <proof prover="0"><result status="valid" steps="1223"/></proof>
   <proof prover="1"><result status="valid" steps="26745"/></proof>
   <proof prover="2"><result status="valid" steps="53726"/></proof>
-  <proof prover="4"><result status="timeout"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.128" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -773,7 +773,7 @@
   <proof prover="0"><result status="valid" steps="1993"/></proof>
   <proof prover="1"><result status="valid" steps="78480"/></proof>
   <proof prover="2"><result status="valid" steps="129993"/></proof>
-  <proof prover="4"><result status="timeout"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.140" proved="true">
   <proof prover="0"><result status="valid" steps="745"/></proof>
