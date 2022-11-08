@@ -1,4 +1,4 @@
-with SPARK.Big_Integers; use SPARK.Big_Integers;
+with Ada.Numerics.Big_Numbers.Big_Integers; use Ada.Numerics.Big_Numbers.Big_Integers;
 with SPARK.Higher_Order.Fold;
 package Sum_Test with
     SPARK_Mode => On,
