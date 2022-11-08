@@ -17210,6 +17210,13 @@ package body Gnat2Why.Expr is
           not (Nkind (Expr) = N_Function_Call
              and then Ekind (Get_Called_Entity (Expr)) = E_Function
              and then Is_Hardcoded_Comparison (Get_Called_Entity (Expr)))
+
+        --  Calls to logical equality
+
+        and then
+          not (Nkind (Expr) = N_Function_Call
+             and then Ekind (Get_Called_Entity (Expr)) = E_Function
+             and then Has_Logical_Eq_Annotation (Get_Called_Entity (Expr)))
       then
          T := +Pred_Of_Boolean_Term
                  (Transform_Term (Expr, EW_Bool_Type, Local_Params));
@@ -18438,6 +18445,30 @@ package body Gnat2Why.Expr is
                        (Expr, Left, Right, Domain, Local_Params);
                   end;
 
+               elsif Has_Logical_Eq_Annotation (Subp)
+                 and then Domain in EW_Term | EW_Pred
+               then
+                  declare
+                     Left       : constant Node_Id := First_Actual (Expr);
+                     Right      : constant Node_Id := Next_Actual (Left);
+                     Left_Type  : constant Entity_Id := Etype (Left);
+                     Right_Type : constant Entity_Id := Etype (Right);
+                     Subdomain  : constant EW_Domain :=
+                       (if Domain = EW_Pred then EW_Term else Domain);
+
+                     BT         : constant W_Type_Id :=
+                       Base_Why_Type (Left_Type, Right_Type);
+                     Left_Expr  : constant W_Expr_Id :=
+                       Transform_Expr (Left, BT, Subdomain, Params);
+                     Right_Expr : constant W_Expr_Id :=
+                       Transform_Expr (Right, BT, Subdomain, Params);
+                  begin
+                     T := New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => Left_Expr,
+                        Right  => Right_Expr,
+                        Domain => Domain);
+                  end;
                else
                   T := Transform_Function_Call (Expr, Domain, Local_Params);
                end if;

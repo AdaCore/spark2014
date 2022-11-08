@@ -95,7 +95,6 @@ is
      (Arg : Valid_Big_Integer; Low, High : Big_Integer) return Boolean
    is (Low <= Arg and Arg <= High)
    with
-     Import,
      Global => null;
 
    function To_Integer (Arg : Valid_Big_Integer) return Integer

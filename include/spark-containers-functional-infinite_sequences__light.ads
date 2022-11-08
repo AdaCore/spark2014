@@ -37,8 +37,7 @@
 
 pragma Ada_2012;
 
-with SPARK.Big_Integers;
-use SPARK.Big_Integers;
+with SPARK.Big_Integers; use SPARK.Big_Integers;
 
 generic
    type Element_Type (<>) is private;
@@ -70,7 +69,6 @@ is
    function Length (Container : Sequence) return Big_Natural with
    --  Length of a sequence
 
-     Import,
      Global => null;
 
    function Get
@@ -79,14 +77,12 @@ is
    --  Access the Element at position Position in Container
 
    with
-     Import,
      Global => null,
      Pre    => Iter_Has_Element (Container, Position);
 
    function Last (Container : Sequence) return Big_Natural with
    --  Last index of a sequence
 
-     Import,
      Global => null,
      Post =>
        Last'Result = Length (Container);
@@ -95,7 +91,6 @@ is
    function First return Big_Positive is (1) with
    --  First index of a sequence
 
-     Import,
      Global => null;
 
    ------------------------
@@ -105,7 +100,6 @@ is
    function "=" (Left : Sequence; Right : Sequence) return Boolean with
    --  Extensional equality over sequences
 
-     Import,
      Global => null,
      Post   =>
        "="'Result =
@@ -116,7 +110,6 @@ is
    function "<" (Left : Sequence; Right : Sequence) return Boolean with
    --  Left is a strict subsequence of Right
 
-     Import,
      Global => null,
      Post   =>
        "<"'Result =
@@ -127,7 +120,6 @@ is
    function "<=" (Left : Sequence; Right : Sequence) return Boolean with
    --  Left is a subsequence of Right
 
-     Import,
      Global => null,
      Post   =>
        "<="'Result =
@@ -143,7 +135,6 @@ is
    --  Returns True if Item occurs in the range from Fst to Lst of Container
 
    with
-     Import,
      Global => null,
      Pre    => Lst <= Last (Container),
      Post   =>
@@ -161,7 +152,6 @@ is
    --  is equal to Item.
 
    with
-     Import,
      Global => null,
      Pre    => Lst <= Last (Container),
      Post   =>
@@ -177,7 +167,6 @@ is
    --  Returns True is Left and Right are the same except at position Position
 
    with
-     Import,
      Global => null,
      Pre    => Position <= Last (Left),
      Post   =>
@@ -196,7 +185,6 @@ is
    --  Returns True is Left and Right are the same except at positions X and Y
 
    with
-     Import,
      Global => null,
      Pre    => X <= Last (Left) and Y <= Last (Left),
      Post   =>
@@ -216,7 +204,6 @@ is
    --  Left and Right.
 
    with
-     Import,
      Global => null,
      Pre    => Lst <= Last (Left) and Lst <= Last (Right),
      Post   =>
@@ -235,7 +222,6 @@ is
    --  elements as the range from Fst + Offset to Lst + Offset in Right.
 
    with
-     Import,
      Global => null,
      Pre    =>
        Lst <= Last (Left)
@@ -268,7 +254,6 @@ is
    --  except for the one at position Position which is replaced by New_Item.
 
    with
-     Import,
      Global => null,
      Pre    => Position <= Last (Container),
      Post   =>
@@ -280,7 +265,6 @@ is
    --  plus New_Item at the end.
 
    with
-     Import,
      Global => null,
      Post   =>
        Length (Add'Result) = Length (Container) + 1
@@ -295,7 +279,6 @@ is
    --  Returns a new sequence which contains the same elements as Container
    --  except that New_Item has been inserted at position Position.
 
-     Import,
      Global => null,
      Pre    => Position <= Last (Container) + 1,
      Post   =>
@@ -320,7 +303,6 @@ is
    --  except that the element at position Position has been removed.
 
    with
-     Import,
      Global => null,
      Pre    => Position <= Last (Container),
      Post   =>
@@ -347,7 +329,6 @@ is
    function Empty_Sequence return Sequence with
    --  Return an empty Sequence
 
-     Import,
      Global => null,
      Post   => Length (Empty_Sequence'Result) = 0;
 
@@ -356,7 +337,6 @@ is
    ---------------------------
 
    function Iter_First (Container : Sequence) return Big_Integer with
-     Import,
      Global => null,
      Post   => Iter_First'Result = 1;
 
@@ -364,7 +344,6 @@ is
      (Container : Sequence;
       Position  : Big_Integer) return Boolean
    with
-     Import,
      Global => null,
      Post   => Iter_Has_Element'Result =
                    In_Range (Position, 1, Length (Container));
@@ -374,7 +353,6 @@ is
      (Container : Sequence;
       Position  : Big_Integer) return Big_Integer
    with
-     Import,
      Global => null,
      Pre    => Iter_Has_Element (Container, Position),
      Post   => Iter_Next'Result = Position + 1;
@@ -383,5 +361,19 @@ private
    pragma SPARK_Mode (Off);
 
    type Sequence is null record;
+
+   function Iter_First (Container : Sequence) return Big_Integer is (1);
+
+   function Iter_Next
+     (Container : Sequence;
+      Position  : Big_Integer) return Big_Integer
+   is
+     (raise Program_Error);
+
+   function Iter_Has_Element
+     (Container : Sequence;
+      Position  : Big_Integer) return Boolean
+   is
+     (raise Program_Error);
 
 end SPARK.Containers.Functional.Infinite_Sequences;

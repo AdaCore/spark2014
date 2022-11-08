@@ -490,11 +490,6 @@ class SPARKTestsuite(Testsuite):
         )
         parser.add_argument("--disc", type=str, help="discriminants to be used")
         parser.add_argument(
-            "--inverse-prover",
-            action="store_true",
-            help="run testsuite in inverse-prover mode",
-        )
-        parser.add_argument(
             "--benchmark",
             type=str,
             help="run testsuite in benchmark mode for given prover",
@@ -559,8 +554,6 @@ class SPARKTestsuite(Testsuite):
             os.environ["PYTHONPATH"] = python_lib
         if self.main.args.cache:
             os.environ["cache"] = "true"
-        if self.main.args.inverse_prover:
-            os.environ["inverse_prover"] = "true"
         if self.main.args.benchmark:
             os.environ["benchmark"] = self.main.args.benchmark
         if self.main.args.share_why3server:
@@ -576,8 +569,6 @@ class SPARKTestsuite(Testsuite):
         self.env.discs = self.env.discriminants
         if self.main.args.disc:
             self.env.discs += self.main.args.disc.split(",")
-        if self.main.args.inverse_prover:
-            self.env.discs += ["inverse-prover"]
         if self.main.args.only_large:
             self.env.only_large = True
             self.env.discs += ["large"]

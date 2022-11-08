@@ -228,23 +228,24 @@ package body SPARK_Util.Hardcoded is
             end if;
 
             --  Then check that we are in the Big_Numbers unit of the
-            --  standard library.
+            --  standard library or in the SPARK library.
 
             S_Ptr := Scope (S_Ptr);
 
-            if Get_Name_String (Chars (S_Ptr)) /= "big_numbers" then
-               return False;
-            end if;
+            if Get_Name_String (Chars (S_Ptr)) = "big_numbers" then
+               S_Ptr := Scope (S_Ptr);
 
-            S_Ptr := Scope (S_Ptr);
+               if Get_Name_String (Chars (S_Ptr)) /= "numerics" then
+                  return False;
+               end if;
 
-            if Get_Name_String (Chars (S_Ptr)) /= "numerics" then
-               return False;
-            end if;
+               S_Ptr := Scope (S_Ptr);
 
-            S_Ptr := Scope (S_Ptr);
+               if Chars (S_Ptr) /= Name_Ada then
+                  return False;
+               end if;
 
-            if Chars (S_Ptr) /= Name_Ada then
+            elsif Get_Name_String (Chars (S_Ptr)) /= "spark" then
                return False;
             end if;
 

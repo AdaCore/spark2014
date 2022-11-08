@@ -1,0 +1,2 @@
+repro.adb:7:15: medium: initialization check might fail
+repro.ads:12:22: info: initialization of "Item" proved

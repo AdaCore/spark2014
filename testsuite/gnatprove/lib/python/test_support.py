@@ -53,10 +53,6 @@ is_msg = re.compile(
 is_mark = re.compile(r"@(\w*):(\w*)")
 
 
-def inverse_prover():
-    return "inverse_prover" in os.environ and os.environ["inverse_prover"] == "true"
-
-
 def benchmark_mode():
     if "benchmark" in os.environ:
         return os.environ["benchmark"]
@@ -743,10 +739,6 @@ def gnatprove(
     # running the tool
     # strlist = str.splitlines(process)
 
-    if inverse_prover():
-        strlist = [strip_provers_output(s) for s in strlist]
-        strip_provers_output_from_testout()
-
     check_marks(strlist)
     check_fail(strlist, no_fail)
     # Check that the exit status is as expected
@@ -831,12 +823,7 @@ def prove_all(
     fullopt += ["--mode=%s" % (mode)]
     fullopt += ["-j%d" % (procs)]
     if prover:
-        if inverse_prover():
-            inverse = prover[:]
-            inverse.reverse()
-            prover_arg = build_prover_switch(inverse)
-        else:
-            prover_arg = build_prover_switch(prover)
+        prover_arg = build_prover_switch(prover)
     else:
         prover_arg = []
     if benchmark_mode():
@@ -917,15 +904,17 @@ def do_flow_only(opt=None, procs=parallel_procs, no_fail=False, ada=default_ada)
     do_flow(opt, procs, no_fail, mode="flow", ada=ada)
 
 
-def no_crash():
+def no_crash(sparklib=False):
     """
     Only attempt to detect crashes and other unexpected behavior. No expected
     tool output is filed for such tests.
     """
     if benchmark_mode():
-        prove_all()
+        prove_all(sparklib=sparklib)
     else:
-        gnatprove(no_output=True, exit_status=0)
+        if sparklib:
+            os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
+        gnatprove(no_output=True, exit_status=0, sparklib=sparklib)
 
 
 def clean():

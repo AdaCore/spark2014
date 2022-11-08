@@ -69,7 +69,7 @@ ethernet_dissector.adb:58:73: info: range check proved (CVC5: 2 VC)
 ethernet_dissector.adb:58:81: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:58:86: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:60:22: info: range check proved (CVC5: 2 VC)
-ethernet_dissector.ads:13:17: info: postcondition proved (CVC5: 1 VC)
+ethernet_dissector.ads:13:17: medium: postcondition might fail
 ethernet_dissector.ads:13:38: info: range check proved (CVC5: 2 VC)
 types.adb:29:55: info: index check proved (CVC5: 12 VC), in instantiation at ethernet_dissector.adb:7
 types.adb:29:55: info: index check proved (CVC5: 4 VC), in instantiation at ethernet_dissector.adb:5
@@ -154,7 +154,7 @@ ethernet_dissector.adb:58:73: info: range check proved (CVC5: 2 VC)
 ethernet_dissector.adb:58:81: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:58:86: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:60:22: info: range check proved (CVC5: 2 VC)
-ethernet_dissector.ads:13:17: info: postcondition proved (CVC5: 1 VC)
+ethernet_dissector.ads:13:17: medium: postcondition might fail
 ethernet_dissector.ads:13:38: info: range check proved (CVC5: 2 VC)
 types.adb:29:55: info: index check proved (CVC5: 12 VC), in instantiation at ethernet_dissector.adb:7
 types.adb:29:55: info: index check proved (CVC5: 4 VC), in instantiation at ethernet_dissector.adb:5

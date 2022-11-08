@@ -434,7 +434,7 @@ binary_trees.adb:686:46: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:686:48: medium: array index check might fail [reason for check: value must be a valid index into the array]
 binary_trees.adb:699:30: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:699:30: medium: precondition might fail
-binary_trees.adb:705:30: info: invariant check proved (CVC5: 1 VC)
+binary_trees.adb:705:30: medium: invariant check might fail
 binary_trees.adb:705:30: medium: precondition might fail
 binary_trees.adb:709:11: medium: invariant check might fail
 binary_trees.adb:709:11: medium: postcondition might fail, cannot prove Model (F, Root) (V).K
@@ -895,8 +895,8 @@ binary_trees.ads:181:23: medium: invariant check might fail [possible explanatio
 binary_trees.ads:183:37: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:183:37: medium: invariant check might fail [possible explanation: enclosing 'Old attribute reference is unconditionally evaluated on subprogram entry]
 binary_trees.ads:183:58: medium: array index check might fail [reason for check: value must be a valid index into the array]
-binary_trees.ads:183:66: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:183:66: info: precondition proved (CVC5: 1 VC)
+binary_trees.ads:183:66: medium: invariant check might fail [possible explanation: enclosing 'Old attribute reference is unconditionally evaluated on subprogram entry]
 binary_trees.ads:184:31: medium: invariant check might fail
 binary_trees.ads:184:31: medium: precondition might fail
 binary_trees.ads:184:41: info: range check proved (CVC5: 2 VC)
@@ -1581,7 +1581,7 @@ search_trees.adb:138:31: medium: loop variant might fail
 search_trees.adb:139:33: info: loop invariant initialization proved (CVC5: 2 VC)
 search_trees.adb:139:51: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove M (KI).A <= M (I).A
 search_trees.adb:140:33: info: loop invariant initialization proved (CVC5: 2 VC)
-search_trees.adb:140:51: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove M (KJ).A <= M (J).A
+search_trees.adb:140:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove M (KJ).K
 search_trees.adb:142:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 search_trees.adb:142:59: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove KJ = J
 search_trees.adb:144:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -2519,8 +2519,8 @@ search_trees.adb:1471:58: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1478:10: medium: precondition might fail
 search_trees.adb:1479:20: info: index check proved (CVC5: 2 VC)
 search_trees.adb:1493:36: info: loop invariant initialization proved (CVC5: 1 VC)
-search_trees.adb:1493:36: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1493:36: medium: loop invariant might not be preserved by an arbitrary iteration
+search_trees.adb:1493:36: medium: precondition might fail
 search_trees.adb:1493:54: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1493:62: medium: array index check might fail [reason for check: value must be a valid index into the array]
 search_trees.adb:1500:21: medium: precondition might fail
