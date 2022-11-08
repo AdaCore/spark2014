@@ -205,7 +205,7 @@ integer32_parsing.adb:219:46: medium: in inlined expression function body at int
 integer32_parsing.adb:219:46: medium: precondition might fail, cannot prove s (I) in '0' .. '9' [possible fix: precondition of subprogram at integer32_parsing.ads:47 should mention s]
 integer32_parsing.adb:219:64: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:219:78: info: overflow check proved (CVC5: 2 VC)
-integer32_parsing.adb:219:78: info: range check proved (CVC5: 2 VC)
+integer32_parsing.adb:219:78: medium: range check might fail, cannot prove lower bound for First - 1 [reason for check: input value must fit in parameter type]
 integer32_parsing.adb:222:22: medium: array index check might fail (e.g. when First = 1 and I = 2 and s = (1 => 'NUL') and s'First = 1 and s'Last = 1) [reason for check: result of addition must be a valid index into the array]
 integer32_parsing.adb:222:22: medium: overflow check might fail, cannot prove upper bound for I - 1 + First (e.g. when First = 2147483639 and I = 10) [reason for check: result of addition must fit in a 32-bits machine integer]
 integer32_parsing.adb:226:14: medium: overflow check might fail, cannot prove upper bound for abs (V) (e.g. when V = Integer_32'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: loop at line 221 should mention V in a loop invariant]

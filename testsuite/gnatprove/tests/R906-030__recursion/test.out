@@ -6,7 +6,7 @@ test_rec.adb:9:44: info: overflow check proved (CVC5: 2 VC)
 test_rec.adb:9:50: info: index check proved (CVC5: 2 VC)
 test_rec.adb:10:21: info: postcondition proved (CVC5: 1 VC)
 test_rec.adb:10:42: info: range check proved (CVC5: 2 VC)
-test_rec.adb:16:14: medium: postcondition might fail
+test_rec.adb:16:14: info: postcondition proved (Z3: 1 VC)
 test_rec.adb:22:07: info: precondition proved (CVC5: 1 VC)
 test_rec.adb:22:21: info: range check proved (CVC5: 4 VC)
 test_rec.adb:22:42: info: overflow check proved (CVC5: 2 VC)
