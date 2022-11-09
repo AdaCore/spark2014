@@ -12870,7 +12870,8 @@ package body Gnat2Why.Expr is
                Else_Part   : constant W_Pred_Id :=
                  (if In_Delta_Aggregate
                   then Constrain_Value_At_Index (Update_Prefix, Indexes)
-                  elsif Has_Others and then Assocs_Len > 1
+                  elsif Has_Others
+                    and then (Assocs_Len > 1 or else Present (Expression))
                   then Transform_Complex_Association (Dim, Association)
                   else True_Pred);
 
@@ -12886,7 +12887,9 @@ package body Gnat2Why.Expr is
                --  the semantics of delta aggregates.
 
                if Present (Expression) then
-                  pragma Assert (No (Association));
+                  pragma Assert
+                    (No (Association)
+                     or else (Assocs_Len = 1 and then Has_Others));
 
                   declare
                      Then_Part   : constant W_Pred_Id :=
