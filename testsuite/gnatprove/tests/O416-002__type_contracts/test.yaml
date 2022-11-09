@@ -1,3 +1,4 @@
 comment: "removed colibri and alt-ergo from provers due to time limit"
 prove_all:
     prover: ["cvc5", "z3"]
+    counterexample: False
