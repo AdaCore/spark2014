@@ -4,8 +4,8 @@ communications.adb:7:19: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 communications.adb:11:07: info: initialization of "Coms" proved
 communications.adb:11:30: info: in default value at communications.adb:11
 communications.adb:11:30: info: range check proved (CVC5: 2 VC)
-communications.adb:11:30: medium: range check might fail, cannot prove lower bound for A'Length (e.g. when A'First = 0 and A'Last = -1)
-communications.adb:11:30: medium: range check might fail, cannot prove upper bound for A'Length (e.g. when A = (others => (Sent => (others => 'NUL'), Received => (others => 'NUL'))) and A'First = 0 and A'Last = Integer'Last)
+communications.adb:11:30: medium: range check might fail, cannot prove lower bound for A'Length
+communications.adb:11:30: medium: range check might fail, cannot prove upper bound for A'Length
 communications.adb:13:17: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 communications.adb:13:20: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 communications.ads:10:13: medium: invariant check might fail
@@ -21,4 +21,4 @@ days.adb:20:12: info: predicate check proved (CVC5: 1 VC)
 main.adb:5:07: medium: predicate check might fail
 main.adb:6:07: info: predicate check proved (CVC5: 1 VC)
 main.adb:7:26: info: range check proved (CVC5: 2 VC)
-messages.adb:6:12: medium: predicate check might fail (e.g. when M = (Sent => (others => 'NUL'), Received => (1 => 'SOH', others => 'NUL'))) [possible fix: subprogram at messages.ads:12 should mention M in a precondition]
+messages.adb:6:12: medium: predicate check might fail [possible fix: subprogram at messages.ads:12 should mention M in a precondition]
