@@ -27,10 +27,10 @@
 ------------------------------------------------------------------------------
 
 pragma SPARK_Mode;
-with Ada.Numerics.Big_Numbers.Big_Integers;
-use  Ada.Numerics.Big_Numbers.Big_Integers;
-with Ada.Numerics.Big_Numbers.Big_Reals;
-use  Ada.Numerics.Big_Numbers.Big_Reals;
+with SPARK.Big_Integers;
+use  SPARK.Big_Integers;
+with SPARK.Big_Reals;
+use  SPARK.Big_Reals;
 with SPARK.Conversions.Float_Conversions;
 use SPARK.Conversions.Float_Conversions;
 with SPARK.Lemmas.Floating_Point_Arithmetic;

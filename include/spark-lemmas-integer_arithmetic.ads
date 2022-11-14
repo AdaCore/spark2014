@@ -28,8 +28,8 @@
 
 pragma SPARK_Mode;
 
-with Ada.Numerics.Big_Numbers.Big_Integers;
-use Ada.Numerics.Big_Numbers.Big_Integers;
+with SPARK.Big_Integers;
+use SPARK.Big_Integers;
 
 with SPARK.Lemmas.Arithmetic;
 pragma Elaborate_All (SPARK.Lemmas.Arithmetic);

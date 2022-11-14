@@ -27,11 +27,11 @@
 ------------------------------------------------------------------------------
 
 pragma Ada_2012;
-private with SPARK.Containers.Functional.Base;
 
-with Ada.Containers; use Ada.Containers;
-with Ada.Numerics.Big_Numbers.Big_Integers;
-use Ada.Numerics.Big_Numbers.Big_Integers;
+private with SPARK.Containers.Functional.Base;
+private with SPARK.Containers.Types;
+
+with SPARK.Big_Integers; use SPARK.Big_Integers;
 
 generic
    type Key_Type (<>) is private;
@@ -41,6 +41,10 @@ generic
      (Left  : Key_Type;
       Right : Key_Type) return Boolean is "=";
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
+   with function Equivalent_Elements
+     (Left  : Element_Type;
+      Right : Element_Type) return Boolean is "=";
+   --  Function used to compare elements in Equivalent_Maps
 
    Enable_Handling_Of_Equivalence : Boolean := True;
    --  This constant should only be set to False when no particular handling
@@ -87,8 +91,8 @@ is
      Global => null,
      Annotate => (GNATprove, Automatic_Instantiation),
      Pre  => Enable_Handling_Of_Equivalence
-       and then (for some K of Container => Equivalent_Keys (K, Key)),
-     Post => Has_Key (Container, Key);
+       and then not Has_Key (Container, Key),
+     Post => (for all K of Container => not Equivalent_Keys (Key, K));
 
    function Get (Container : Map; Key : Key_Type) return Element_Type with
    --  Return the element associated with Key in Container
@@ -97,18 +101,18 @@ is
      Pre    => Has_Key (Container, Key);
 
    procedure Lemma_Get_Equivalent
-     (Container : Map;
-      Key       : Key_Type)
+     (Container    : Map;
+      Key_1, Key_2 : Key_Type)
    --  Get returns the same result on all equivalent keys
    with
      Ghost,
      Global => null,
      Annotate => (GNATprove, Automatic_Instantiation),
-     Pre  => Enable_Handling_Of_Equivalence,
-     Post => Get (Container, Key) = W_Get (Container, Witness (Container, Key))
-       and (for all K of Container =>
-              Equivalent_Keys (K, Key) =
-               (Witness (Container, Key) = Witness (Container, K)));
+     Pre  => Enable_Handling_Of_Equivalence
+       and then Equivalent_Keys (Key_1, Key_2)
+       and then
+         (Has_Key (Container, Key_1) or else Has_Key (Container, Key_2)),
+     Post => Get (Container, Key_1) = Get (Container, Key_2);
 
    function Choose (Container : Map) return Key_Type with
    --  Return an arbitrary key in container
@@ -143,7 +147,7 @@ is
          ((for all Key of Left =>
             Has_Key (Right, Key)
               and then Get (Right, Key) = Get (Left, Key))
-              and (for all Key of Right => Has_Key (Left, Key)));
+          and (for all Key of Right => Has_Key (Left, Key)));
 
    pragma Warnings (Off, "unused variable ""Key""");
    function Is_Empty (Container : Map) return Boolean with
@@ -204,40 +208,20 @@ is
             then
                Has_Key (Right, Key)));
 
-   function Elements_Equal_Except
-     (Left    : Map;
-      Right   : Map;
-      New_Key : Key_Type) return Boolean
-   --  Returns True if all the keys of Left are mapped to the same elements in
-   --  Left and Right except New_Key.
+   -----------------------------------------------------
+   -- Properties handling elements modulo equivalence --
+   -----------------------------------------------------
 
-   with
+   function Equivalent_Maps (Left : Map; Right : Map) return Boolean with
+   --  Equivalence over maps
+
      Global => null,
      Post   =>
-       Elements_Equal_Except'Result =
-         (for all Key of Left =>
-           (if not Equivalent_Keys (Key, New_Key) then
-               Has_Key (Right, Key)
-                 and then Get (Left, Key) = Get (Right, Key)));
-
-   function Elements_Equal_Except
-     (Left  : Map;
-      Right : Map;
-      X     : Key_Type;
-      Y     : Key_Type) return Boolean
-   --  Returns True if all the keys of Left are mapped to the same elements in
-   --  Left and Right except X and Y.
-
-   with
-     Global => null,
-     Post   =>
-       Elements_Equal_Except'Result =
-         (for all Key of Left =>
-           (if not Equivalent_Keys (Key, X)
-              and not Equivalent_Keys (Key, Y)
-            then
-               Has_Key (Right, Key)
-                 and then Get (Left, Key) = Get (Right, Key)));
+       Equivalent_Maps'Result =
+         ((for all Key of Left =>
+            Has_Key (Right, Key)
+              and then Equivalent_Elements (Get (Right, Key), Get (Left, Key)))
+           and (for all Key of Right => Has_Key (Left, Key)));
 
    ----------------------------
    -- Construction Functions --
@@ -258,8 +242,8 @@ is
      Post   =>
        Length (Container) + 1 = Length (Add'Result)
          and Has_Key (Add'Result, New_Key)
-         and Get (Add'Result, New_Key) = New_Item
-         and Container <= Add'Result
+         and Element_Logic_Equal (Get (Add'Result, New_Key), New_Item)
+         and Elements_Equal (Container, Add'Result)
          and Keys_Included_Except (Add'Result, Container, New_Key);
 
    function Empty_Map return Map with
@@ -279,7 +263,7 @@ is
      Post   =>
        Length (Container) = Length (Remove'Result) + 1
          and not Has_Key (Remove'Result, Key)
-         and Remove'Result <= Container
+         and Elements_Equal (Remove'Result, Container)
          and Keys_Included_Except (Container, Remove'Result, Key);
 
    function Set
@@ -294,38 +278,9 @@ is
      Pre    => Has_Key (Container, Key),
      Post   =>
        Length (Container) = Length (Set'Result)
-         and Get (Set'Result, Key) = New_Item
+         and Element_Logic_Equal (Get (Set'Result, Key), New_Item)
          and Same_Keys (Container, Set'Result)
          and Elements_Equal_Except (Container, Set'Result, Key);
-
-   ------------------------------
-   --  Handling of Equivalence --
-   ------------------------------
-
-   --  These functions are used to specify that Get returns the same value on
-   --  equivalent keys. They should not be used directly in user code.
-
-   function Has_Witness (Container : Map; Witness : Count_Type) return Boolean
-   with
-     Ghost,
-     Global => null;
-   --  Returns True if there is a key with witness Witness in Container
-
-   function Witness (Container : Map; Key : Key_Type) return Count_Type with
-   --  Returns the witness of Key in Container
-
-     Ghost,
-     Global => null,
-     Pre    => Has_Key (Container, Key),
-     Post   => Has_Witness (Container, Witness'Result);
-
-   function W_Get (Container : Map; Witness : Count_Type) return Element_Type
-   with
-   --  Returns the element associated with a witness in Container
-
-     Ghost,
-     Global => null,
-     Pre    => Has_Witness (Container, Witness);
 
    function Copy_Key (Key : Key_Type) return Key_Type is (Key);
    function Copy_Element (Item : Element_Type) return Element_Type is (Item);
@@ -374,7 +329,9 @@ is
       Cursor   : Map) return Boolean
    with
      Global => null,
-     Post   => (if Valid_Submap'Result then Cursor <= Get_Map (Iterator));
+     Post   =>
+         (if Valid_Submap'Result
+          then Elements_Equal (Cursor, Get_Map (Iterator)));
    --  Return True on all maps which can be reached by iterating over
    --  Container.
 
@@ -382,7 +339,8 @@ is
    with
      Global => null,
      Pre    => not Is_Empty (Cursor),
-     Post   => Element'Result = Choose (Cursor);
+     Post   => Element'Result = Choose (Cursor),
+     Annotate => (GNATprove, Inline_For_Proof);
    --  The next element to be considered for the iteration is the result of
    --  choose on Cursor.
 
@@ -409,6 +367,74 @@ is
        (Valid_Submap (Iterator, Cursor) and then not Is_Empty (Cursor));
    --  Return True on non-empty maps which can be reached by iterating over
    --  Container.
+
+   -------------------------------------------------------------------------
+   -- Ghost non-executable properties used only in internal specification --
+   -------------------------------------------------------------------------
+
+   --  Logical equality on elements cannot be safely executed on most element
+   --  types. Thus, this package should only be instantiated with ghost code
+   --  disabled. This is enforced by having a special imported procedure
+   --  Fail_When_Body_Off that will lead to link-time errors otherwise.
+
+   function Element_Logic_Equal (Left, Right : Element_Type) return Boolean
+   with
+     Ghost,
+     Global => null,
+     Annotate => (GNATprove, Logical_Equal);
+
+   function Elements_Equal (Left, Right : Map) return Boolean
+   --  Returns True if all the keys of Left are mapped to the same elements in
+   --  Left and Right.
+
+   with
+     Ghost,
+     Global => null,
+     Post   =>
+       Elements_Equal'Result =
+         (for all Key of Left =>
+            Has_Key (Right, Key)
+            and then Element_Logic_Equal
+               (Get (Left, Key), Get (Right, Key)));
+
+   function Elements_Equal_Except
+     (Left    : Map;
+      Right   : Map;
+      New_Key : Key_Type) return Boolean
+   --  Returns True if all the keys of Left are mapped to the same elements in
+   --  Left and Right except New_Key.
+
+   with
+     Ghost,
+     Global => null,
+     Post   =>
+       Elements_Equal_Except'Result =
+         (for all Key of Left =>
+           (if not Equivalent_Keys (Key, New_Key) then
+               Has_Key (Right, Key)
+                 and then Element_Logic_Equal
+                    (Get (Left, Key), Get (Right, Key))));
+
+   function Elements_Equal_Except
+     (Left  : Map;
+      Right : Map;
+      X     : Key_Type;
+      Y     : Key_Type) return Boolean
+   --  Returns True if all the keys of Left are mapped to the same elements in
+   --  Left and Right except X and Y.
+
+   with
+     Ghost,
+     Global => null,
+     Post   =>
+       Elements_Equal_Except'Result =
+         (for all Key of Left =>
+           (if not Equivalent_Keys (Key, X)
+              and not Equivalent_Keys (Key, Y)
+            then
+               Has_Key (Right, Key)
+                 and then Element_Logic_Equal
+                    (Get (Left, Key), Get (Right, Key))));
 
    --------------------------------------------------
    -- Iteration Primitives Used For Quantification --
@@ -439,6 +465,8 @@ is
 private
 
    pragma SPARK_Mode (Off);
+
+   use SPARK.Containers.Types;
 
    function "="
      (Left  : Key_Type;

@@ -27,6 +27,7 @@
 ------------------------------------------------------------------------------
 
 pragma Ada_2012;
+
 package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
    use Key_Containers;
    use Element_Containers;
@@ -94,6 +95,38 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
    function Choose (Container : Map) return Key_Type is
      (Get (Container.Keys, Length (Container.Keys)));
 
+   -------------------------
+   -- Element_Logic_Equal --
+   -------------------------
+
+   function Element_Logic_Equal (Left, Right : Element_Type) return Boolean is
+   begin
+      Check_Or_Fail;
+      return Left = Right;
+   end Element_Logic_Equal;
+
+   --------------------
+   -- Elements_Equal --
+   --------------------
+
+   function Elements_Equal (Left, Right : Map) return Boolean is
+   begin
+      for J in 1 .. Length (Left.Keys) loop
+         declare
+            K : constant Key_Type := Get (Left.Keys, J);
+         begin
+            if Find (Right.Keys, K) = 0
+              or else not Element_Logic_Equal
+                (Get (Right.Elements, Find (Right.Keys, K)),
+                 Get (Left.Elements, J))
+            then
+               return False;
+            end if;
+         end;
+      end loop;
+      return True;
+   end Elements_Equal;
+
    ---------------------------
    -- Elements_Equal_Except --
    ---------------------------
@@ -111,8 +144,9 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
             if not Equivalent_Keys (K, New_Key)
               and then
                 (Find (Right.Keys, K) = 0
-                  or else Get (Right.Elements, Find (Right.Keys, K)) /=
-                          Get (Left.Elements, J))
+                  or else not Element_Logic_Equal
+                    (Get (Right.Elements, Find (Right.Keys, K)),
+                     Get (Left.Elements, J)))
             then
                return False;
             end if;
@@ -136,8 +170,9 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
               and then not Equivalent_Keys (K, Y)
               and then
                 (Find (Right.Keys, K) = 0
-                  or else Get (Right.Elements, Find (Right.Keys, K)) /=
-                          Get (Left.Elements, J))
+                  or else not Element_Logic_Equal
+                    (Get (Right.Elements, Find (Right.Keys, K)),
+                     Get (Left.Elements, J)))
             then
                return False;
             end if;
@@ -152,6 +187,34 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
 
    function Empty_Map return Map is
       ((others =>  <>));
+
+   ---------------------
+   -- Equivalent_Maps --
+   ---------------------
+
+   function Equivalent_Maps (Left : Map; Right : Map) return Boolean is
+      I2 : Count_Type;
+
+   begin
+      if Length (Left.Keys) /= Length (Right.Keys) then
+         return False;
+      elsif Ptr_Eq (Left.Keys, Right.Keys)
+        and then Ptr_Eq (Left.Elements, Right.Elements)
+      then
+         return True;
+      end if;
+
+      for I1 in 1 .. Length (Left.Keys) loop
+         I2 := Find (Right.Keys, Get (Left.Keys, I1));
+         if I2 = 0
+           or else not Equivalent_Elements
+             (Get (Right.Elements, I2), Get (Left.Elements, I1))
+         then
+            return False;
+         end if;
+      end loop;
+      return True;
+   end Equivalent_Maps;
 
    ---------
    -- Get --
@@ -170,16 +233,6 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
    begin
       return Find_Rev (Container.Keys, Key) > 0;
    end Has_Key;
-
-   -----------------
-   -- Has_Witness --
-   -----------------
-
-   function Has_Witness
-     (Container : Map;
-      Witness   : Count_Type) return Boolean
-   is
-     (Witness in 1 .. Length (Container.Keys));
 
    --------------
    -- Is_Empty --
@@ -262,8 +315,8 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
    --------------------------
 
    procedure Lemma_Get_Equivalent
-     (Container : Map;
-      Key       : Key_Type)
+     (Container    : Map;
+      Key_1, Key_2 : Key_Type)
    is null;
 
    ------------------------------
@@ -317,22 +370,5 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
      (Keys     => Container.Keys,
       Elements =>
         Set (Container.Elements, Find (Container.Keys, Key), New_Item));
-
-   -----------
-   -- W_Get --
-   -----------
-
-   function W_Get
-     (Container : Map;
-      Witness   : Count_Type) return Element_Type
-   is
-     (Get (Container.Elements, Witness));
-
-   -------------
-   -- Witness --
-   -------------
-
-   function Witness (Container : Map; Key : Key_Type) return Count_Type is
-     (Find (Container.Keys, Key));
 
 end SPARK.Containers.Functional.Maps;
