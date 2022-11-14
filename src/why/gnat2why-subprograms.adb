@@ -4894,7 +4894,6 @@ package body Gnat2Why.Subprograms is
       begin
          --  We generate:
          --  forall binders. Guard /\ Pre -> Post
-         --  ??? TODO dependency annotation?
 
          Emit
            (Th,
@@ -4905,7 +4904,13 @@ package body Gnat2Why.Subprograms is
                  New_And_Pred
                    (Left  => Guard,
                     Right => Pre),
-               Def     => Post));
+               Def     => Post,
+               Dep   =>
+                 New_Axiom_Dep
+                   (Name => To_Why_Id
+                        (Retrieve_Automatic_Instantiation_Annotation (E),
+                         EW_Term),
+                    Kind => EW_Axdep_Func)));
       end;
 
       Close_Theory (Th, Kind => Definition_Theory);
@@ -5477,7 +5482,6 @@ package body Gnat2Why.Subprograms is
                         then Base_Retysp (Descendant) =
                             Base_Retysp (Etype (Descendant_E)));
 
-                     --  ??? TODO dependency annotations
                      Emit
                        (Th,
                         New_Guarded_Axiom
@@ -5502,7 +5506,9 @@ package body Gnat2Why.Subprograms is
                                  Expr   => +Call,
                                  To     => Anc_Ty),
                               Right  => Anc_Call,
-                              Domain => EW_Term)));
+                              Domain => EW_Term),
+                           Dep      => New_Axiom_Dep (Name => Anc_Id,
+                                                      Kind => EW_Axdep_Func)));
                   end;
 
                --  If E is a procedure, emit:
@@ -6836,7 +6842,6 @@ package body Gnat2Why.Subprograms is
                Expr          => Expr,
                Reconstructed => Def,
                Checks        => Dummy);
-            --  ??? TODO Dependency annotation
             Emit
               (Th,
                New_Guarded_Axiom
@@ -6852,7 +6857,10 @@ package body Gnat2Why.Subprograms is
                     (Symbol => Why_Eq,
                      Left   => Borrowed_At_End_Call,
                      Right  => +Def,
-                     Domain => EW_Pred)));
+                     Domain => EW_Pred),
+                  Dep      => New_Axiom_Dep
+                    (Name => Get_Borrowed_At_End (E),
+                     Kind => EW_Axdep_Func)));
          end;
       end if;
 
