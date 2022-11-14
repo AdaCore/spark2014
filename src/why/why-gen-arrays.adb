@@ -912,7 +912,9 @@ package body Why.Gen.Arrays is
             New_Guarded_Axiom
               (Name    => NID ("convert__def"),
                Binders => (1 => A_Binder),
-               Def     => T));
+               Def     => T,
+               Dep     => New_Axiom_Dep (Name => To_Local (Convert_Id),
+                                         Kind => EW_Axdep_Func)));
       end;
 
       Close_Theory (Th, Kind => Definition_Theory);
@@ -1280,6 +1282,9 @@ package body Why.Gen.Arrays is
               Left   => +Size_Ident,
               Right  => New_Integer_Constant (Value => Uint_0),
               Domain => EW_Pred);
+         Dep         : constant W_Axiom_Dep_Id :=
+           New_Axiom_Dep (Name => To_Local (To_String_Id),
+                          Kind => EW_Axdep_Func);
       begin
          Emit (Th,
                New_Guarded_Axiom
@@ -1296,7 +1301,8 @@ package body Why.Gen.Arrays is
                                        Dim  => 1),
                      Right  =>
                        New_Discrete_Constant (Value => Uint_1,
-                                              Typ   => EW_Int_Type))));
+                                              Typ   => EW_Int_Type)),
+                     Dep    => Dep));
          Emit (Th,
                New_Guarded_Axiom
                  (Name     => NID ("to_string__length"),
@@ -1311,7 +1317,8 @@ package body Why.Gen.Arrays is
                        Get_Array_Attr (Expr => Call_Expr,
                                        Attr => Attribute_Length,
                                        Dim  => 1),
-                     Right  => +Size_Ident)));
+                     Right  => +Size_Ident),
+                  Dep       => Dep));
       end;
    end Declare_Additional_Symbols_For_String;
 
@@ -1802,7 +1809,9 @@ package body Why.Gen.Arrays is
                         Left   => Rev_Call,
                         Right  => +True_Term,
                         Domain => EW_Pred),
-                     Def     => Def));
+                     Def     => Def,
+                     Dep     => New_Axiom_Dep (Name => Eq_Name,
+                                               Kind => EW_Axdep_Func)));
             end;
          end;
       end if;

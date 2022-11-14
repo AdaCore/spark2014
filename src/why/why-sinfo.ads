@@ -190,6 +190,15 @@ package Why.Sinfo is
    --  terms must be instantiated to be able to "trigger" the quantifier. A
    --  list of triggers represents an alternative: a single trigger is enough
    --  to be able to instantiate the axiom.
+
+   --  -----------------
+   --  -- W_Axiom_Dep --
+   --  -----------------
+   --  Name      W_Identifier_Id
+   --  Kind      EW_Axiom_Dep_Kind
+   --
+   --  Used by axioms. Specifies on which symbol the axiom depends (if any).
+   --  The kind is either predicate or function.
    --
    --  -------------------------
    --  -- W_Field_Association --
@@ -563,13 +572,19 @@ package Why.Sinfo is
    --  -------------
    --  Name       Name_Id
    --  Def        W_Pred_Id
+   --  Dep        Name_Id
    --  ------------
    --  -- W_Goal --
    --  ------------
    --  Name       Name_Id
    --  Def        W_Pred_Id
    --
-   --  axioms and goals have a name and a predicate.
+   --  axioms and goals have a name and a predicate. Axioms in addition can
+   --  define a "dependency" symbol, which can be used to remove the axiom when
+   --  not needed in the VC. The symbol should be the symbol which the axiom
+   --  defines. If the axiom doesn't simply define one symbol, this field
+   --  should not be used.
+   --
    --  ??? Goal node is not needed
    --
    --  -----------------
@@ -686,6 +701,7 @@ package Why.Sinfo is
 
       W_Triggers,
       W_Trigger,
+      W_Axiom_Dep,
 
       --------------------
       -- Prog structure --
@@ -838,5 +854,9 @@ package Why.Sinfo is
      (EW_Assert,
       EW_Check,
       EW_Assume);
+
+   type EW_Axiom_Dep_Kind is
+     (EW_Axdep_Func,
+      EW_Axdep_Pred);
 
 end Why.Sinfo;

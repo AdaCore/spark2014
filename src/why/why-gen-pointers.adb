@@ -220,7 +220,11 @@ package body Why.Gen.Pointers is
          Emit (Th,
                New_Axiom (Ada_Node => E,
                           Name     => NID (Axiom_Name),
-                          Def      => Condition));
+                          Def      => Condition,
+                          Dep      =>
+                            New_Axiom_Dep (
+                              Name => To_Local (E_Symb (E, WNE_Null_Pointer)),
+                              Kind => EW_Axdep_Func)));
 
          --  We generate the program access function
 

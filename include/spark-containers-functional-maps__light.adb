@@ -65,6 +65,20 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
    function Choose (Container : Map) return Key_Type is
      (raise Program_Error);
 
+   -------------------------
+   -- Element_Logic_Equal --
+   -------------------------
+
+   function Element_Logic_Equal (Left, Right : Element_Type) return Boolean is
+     (raise Program_Error);
+
+   --------------------
+   -- Elements_Equal --
+   --------------------
+
+   function Elements_Equal (Left, Right : Map) return Boolean is
+     (raise Program_Error);
+
    ---------------------------
    -- Elements_Equal_Except --
    ---------------------------
@@ -89,6 +103,13 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
    ---------------
 
    function Empty_Map return Map is
+     (raise Program_Error);
+
+   ---------------------
+   -- Equivalent_Maps --
+   ---------------------
+
+   function Equivalent_Maps (Left : Map; Right : Map) return Boolean is
      (raise Program_Error);
 
    ---------

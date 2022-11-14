@@ -256,6 +256,7 @@ package body Gnat2Why.Types is
                  (Name     => E_Symb (E, WNE_Moved_Relation),
                   Fun_Name => To_String (WNE_Moved_Relation),
                   Binders  => R_Binder,
+                  Dep_Kind => EW_Axdep_Pred,
                   Def      => Compute_Moved_Relation (Expr1    => +A_Ident,
                                                       Expr2    => +B_Ident,
                                                       Ty       => E,
@@ -275,6 +276,7 @@ package body Gnat2Why.Types is
                  (Name     => E_Symb (E, WNE_Is_Moved),
                   Fun_Name => To_String (WNE_Is_Moved),
                   Binders  => R_Binder,
+                  Dep_Kind => EW_Axdep_Pred,
                   Def      => Compute_Is_Moved_Property (Expr     => +A_Ident,
                                                          Ty       => E,
                                                          Use_Pred => False)));
@@ -596,6 +598,7 @@ package body Gnat2Why.Types is
                           (Fun_Name => Full_Name (E),
                            Name     => Name,
                            Binders  => Binders,
+                           Dep_Kind => EW_Axdep_Pred,
                            Def      => +Def));
 
                   --  Otherwise, define the symbol at declaration

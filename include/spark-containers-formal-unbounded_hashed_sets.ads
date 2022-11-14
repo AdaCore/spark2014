@@ -386,8 +386,9 @@ is
 
    function Is_Empty (Container : Set) return Boolean with
      Global => null,
-     Post   => Is_Empty'Result = (Length (Container) = 0);
-   --  Equivalent to Length (Container) = 0
+     Post   =>
+       Is_Empty'Result = M.Is_Empty (Model (Container))
+         and Is_Empty'Result = (Length (Container) = 0);
 
    procedure Clear (Container : in out Set) with
      Global => null,

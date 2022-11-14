@@ -3,8 +3,6 @@ p.adb:11:04: info: absence of resource or memory leak at end of scope proved (CV
 p.adb:13:04: info: initialization of "A" proved
 p.adb:13:04: medium: resource or memory leak might occur at end of scope
 p.adb:15:04: warning: assuming "Proc" always returns
-p.adb:15:04: warning: assuming "Proc" has no effect on global items
-p.adb:15:04: warning: no Global contract available for "Proc"
 p.adb:15:04: warning: no returning annotation available for "Proc"
 p.adb:17:06: info: absence of resource or memory leak proved (CVC5: 1 VC)
 p.adb:17:14: medium: resource or memory leak might occur

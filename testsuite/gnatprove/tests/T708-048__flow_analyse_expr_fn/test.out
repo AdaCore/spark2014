@@ -1,0 +1,3 @@
+tcp_type.ads:21:13: info: subprogram "Tcp_Syn_Queue_Item_Model" will terminate, terminating annotation has been proved
+tcp_type.ads:24:10: info: subprogram variant proved (Trivial)
+tcp_type.ads:24:42: info: pointer dereference check proved (CVC5: 1 VC)

@@ -5,12 +5,13 @@ import os
 contains_manual_proof = False
 os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
 
+
 def replay():
-    prove_all(level=1, sparklib=True)
+    prove_all(level=2, procs=0)
+
 
 if __name__ == "__main__":
-    prove_all(replay=True, sparklib=True)
+    prove_all(replay=True)
 
     call(["gprbuild", "-q", "-P", "test.gpr"])
-    call(["./test"])
-
+    call(["./obj/test"])

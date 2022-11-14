@@ -378,12 +378,12 @@ sequences.ads:232:30: info: predicate check proved (Trivial: 1 VC), in instantia
 sequences.ads:232:51: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:233:19: info: precondition proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:234:19: info: precondition proved (CVC5: 2 VC), in instantiation at use_list.adb:3
-sequences.ads:234:19: medium: postcondition might fail, cannot prove (Range_Equal (Left => Container, Right => Add'Result, Fst => 1, Lst => Position - 1)), in instantiation at use_list.adb:3
 sequences.ads:237:31: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:238:31: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:238:40: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:238:42: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:239:19: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:239:19: medium: postcondition might fail, cannot prove Range_Shifted (Left => Container, Right => Add'Result, Fst => Position, Lst => Last (Container), Offset => 1), in instantiation at use_list.adb:3
 sequences.ads:246:13: info: subprogram "Remove" will terminate, terminating annotation has been proved, in instantiation at use_list.adb:3
 sequences.ads:253:06: info: data dependencies proved, in instantiation at use_list.adb:3
 sequences.ads:254:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3

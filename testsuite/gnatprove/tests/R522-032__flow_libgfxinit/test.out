@@ -245,15 +245,11 @@ hw-gfx-gma-connectors.ads:35:07: info: initialization of "Success" proved
 hw-gfx-gma-display_probing.adb:56:07: info: initialization of "Raw_EDID" proved
 hw-gfx-gma-display_probing.adb:58:07: info: initialization of "Success" proved
 hw-gfx-gma-display_probing.adb:73:32: warning: assuming "Power_Up" always returns
-hw-gfx-gma-display_probing.adb:73:32: warning: assuming "Power_Up" has no effect on global items
-hw-gfx-gma-display_probing.adb:73:32: warning: no Global contract available for "Power_Up"
 hw-gfx-gma-display_probing.adb:73:32: warning: no returning annotation available for "Power_Up"
 hw-gfx-gma-display_probing.adb:113:07: info: initialization of "Success" proved
 hw-gfx-gma-display_probing.adb:144:16: info: initialization of "Have_Sibling_EDID" proved
 hw-gfx-gma-display_probing.adb:168:07: info: initialization of "Success" proved
 hw-gfx-gma-display_probing.adb:208:26: warning: assuming "Power_Set_To" always returns
-hw-gfx-gma-display_probing.adb:208:26: warning: assuming "Power_Set_To" has no effect on global items
-hw-gfx-gma-display_probing.adb:208:26: warning: no Global contract available for "Power_Set_To"
 hw-gfx-gma-display_probing.adb:208:26: warning: no returning annotation available for "Power_Set_To"
 hw-gfx-gma-display_probing.ads:24:07: info: initialization of "Configs" proved
 hw-gfx-gma-dp_aux_ch.ads:19:09: warning: assuming "U_Delay" always returns
@@ -735,15 +731,11 @@ hw-gfx-gma.adb:220:37: warning: assuming "MS_From_Now" always returns
 hw-gfx-gma.adb:220:37: warning: no returning annotation available for "MS_From_Now"
 hw-gfx-gma.adb:227:07: info: initialization of "Old_Configs" proved
 hw-gfx-gma.adb:235:29: warning: assuming "Power_Up" always returns
-hw-gfx-gma.adb:235:29: warning: assuming "Power_Up" has no effect on global items
-hw-gfx-gma.adb:235:29: warning: no Global contract available for "Power_Up"
 hw-gfx-gma.adb:235:29: warning: no returning annotation available for "Power_Up"
 hw-gfx-gma.adb:262:13: info: initialization of "Unplug_Detected" proved
 hw-gfx-gma.adb:281:13: info: initialization of "Success" proved
 hw-gfx-gma.adb:282:13: info: initialization of "Scaler_Available" proved
 hw-gfx-gma.adb:325:26: warning: assuming "Power_Down" always returns
-hw-gfx-gma.adb:325:26: warning: assuming "Power_Down" has no effect on global items
-hw-gfx-gma.adb:325:26: warning: no Global contract available for "Power_Down"
 hw-gfx-gma.adb:325:26: warning: no returning annotation available for "Power_Down"
 hw-gfx-gma.adb:382:16: high: "Dev.Address_State" constituent of "GMA.State" is not initialized
 hw-gfx-gma.adb:382:16: low: unused global "Dev.Address_State" constituent of "GMA.State"
@@ -768,17 +760,11 @@ hw-gfx-gma.adb:422:37: info: initialization of "Success" proved
 hw-gfx-gma.adb:425:10: info: initialization of "Vendor" proved
 hw-gfx-gma.adb:425:18: info: initialization of "Device" proved
 hw-gfx-gma.adb:491:26: warning: assuming "Pre_All_Off" always returns
-hw-gfx-gma.adb:491:26: warning: assuming "Pre_All_Off" has no effect on global items
-hw-gfx-gma.adb:491:26: warning: no Global contract available for "Pre_All_Off"
 hw-gfx-gma.adb:491:26: warning: no returning annotation available for "Pre_All_Off"
 hw-gfx-gma.adb:496:26: warning: assuming "Post_All_Off" always returns
-hw-gfx-gma.adb:496:26: warning: assuming "Post_All_Off" has no effect on global items
-hw-gfx-gma.adb:496:26: warning: no Global contract available for "Post_All_Off"
 hw-gfx-gma.adb:496:26: warning: no returning annotation available for "Post_All_Off"
 hw-gfx-gma.adb:509:07: warning: statement has no effect
 hw-gfx-gma.adb:544:23: warning: assuming "Power_Up" always returns
-hw-gfx-gma.adb:544:23: warning: assuming "Power_Up" has no effect on global items
-hw-gfx-gma.adb:544:23: warning: no Global contract available for "Power_Up"
 hw-gfx-gma.adb:544:23: warning: no returning annotation available for "Power_Up"
 hw-gfx-gma.adb:667:07: info: initialization of "GTT_Size" proved
 hw-gfx-gma.adb:668:07: info: initialization of "Stolen_Size" proved

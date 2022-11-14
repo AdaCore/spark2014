@@ -153,7 +153,7 @@ package body Flow_Generated_Globals.Phase_2 is
    Lemma_Call_Graph : Entity_Name_Graphs.Graph :=
      Entity_Name_Graphs.Create;
    --  Same as above but with a phantom link between functions and their lemmas
-   --  if they are instanciated automatically. This map is used by proof to
+   --  if they are instantiated automatically. This map is used by proof to
    --  avoid recursivity between the proofs of different entities when
    --  automatically instantiated lemmas are involved. As an example, if a
    --  function F has a lemma L_F which calls a function G and G has a

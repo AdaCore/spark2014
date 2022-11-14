@@ -1312,9 +1312,10 @@ package body Gnat2Why.Subprograms is
                else Empty);
             Dyn_Prop : constant W_Pred_Id :=
               (if Present (Ty_Node)  then
-                    Compute_Dynamic_Invariant (Expr   => +Expr,
-                                               Ty     => Ty_Node,
-                                               Params => Params)
+                    Compute_Dynamic_Invariant (Expr     => +Expr,
+                                               Ty       => Ty_Node,
+                                               Params   => Params,
+                                               Only_Var => False_Term)
                else
                   True_Pred);
          begin
@@ -4893,6 +4894,7 @@ package body Gnat2Why.Subprograms is
       begin
          --  We generate:
          --  forall binders. Guard /\ Pre -> Post
+         --  ??? TODO dependency annotation?
 
          Emit
            (Th,
@@ -5246,7 +5248,8 @@ package body Gnat2Why.Subprograms is
                Name     => +New_Result_Ident (Why_Type),
                Def      => Call,
                Context  => +Guarded_Post);
-
+            Dep           : constant W_Axiom_Dep_Id :=
+              New_Axiom_Dep (Name => Id, Kind => EW_Axdep_Func);
          begin
             if Is_True_Boolean (+Complete_Post) then
                return;
@@ -5279,7 +5282,8 @@ package body Gnat2Why.Subprograms is
                                   +New_And_Expr (Left   => +Guard,
                                                  Right  => +Pre,
                                                  Domain => EW_Pred),
-                              Then_Part => +Def)))));
+                              Then_Part => +Def))),
+                     Dep      => Dep));
 
             --  Otherwise, generate:
             --  forall binders [call]. Guard /\ Pre -> Def
@@ -5298,7 +5302,8 @@ package body Gnat2Why.Subprograms is
                        +New_And_Expr (Left   => +Guard,
                                       Right  => +Pre,
                                       Domain => EW_Pred),
-                     Def      => +Def));
+                     Def      => +Def,
+                     Dep      => Dep));
             end if;
          end Emit_Post_Axiom;
 
@@ -5472,6 +5477,7 @@ package body Gnat2Why.Subprograms is
                         then Base_Retysp (Descendant) =
                             Base_Retysp (Etype (Descendant_E)));
 
+                     --  ??? TODO dependency annotations
                      Emit
                        (Th,
                         New_Guarded_Axiom
@@ -6765,6 +6771,7 @@ package body Gnat2Why.Subprograms is
                Name     => Logic_Id,
                Binders  => Flat_Binders,
                Pre      => Func_Guard,
+               Dep_Kind => EW_Axdep_Func,
                Def      => Transform_Pred (Expr, Params)));
 
       else
@@ -6829,6 +6836,7 @@ package body Gnat2Why.Subprograms is
                Expr          => Expr,
                Reconstructed => Def,
                Checks        => Dummy);
+            --  ??? TODO Dependency annotation
             Emit
               (Th,
                New_Guarded_Axiom

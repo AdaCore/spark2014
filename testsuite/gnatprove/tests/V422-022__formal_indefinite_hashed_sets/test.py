@@ -6,8 +6,7 @@ contains_manual_proof = False
 os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
 
 if __name__ == "__main__":
-    prove_all()
+    prove_all(steps=15000)
 
     call(["gprbuild", "-q", "-P", "test.gpr"])
-    call(["./test"])
-
+    call(["./obj/test"])

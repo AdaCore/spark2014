@@ -1,6 +1,6 @@
-comment: "Do not use Z3 which causes diffs between platforms. And Alt-Ergo doesn't do anything here."
 prove_all:
   opt: ["--function-sandboxing=off", "--proof-warnings"]
-  prover: ["cvc5"]
+  prover: ["cvc5", "z3"]
   steps: 3000
 timeout: 1500
+large: True

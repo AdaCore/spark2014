@@ -27,7 +27,7 @@ infinite_sequences.adb:41:43: info: predicate check proved (CVC5: 1 VC; Trivial:
 infinite_sequences.adb:41:45: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.adb:45:19: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:45:26: info: predicate check proved (Trivial: 2 VC)
-infinite_sequences.adb:46:27: medium: precondition might fail
+infinite_sequences.adb:46:27: info: precondition proved (CVC5: 2 VC)
 infinite_sequences.adb:46:44: info: precondition proved (CVC5: 2 VC)
 infinite_sequences.adb:47:37: info: loop variant proved (CVC5: 1 VC)
 infinite_sequences.adb:47:52: info: predicate check proved (Trivial: 2 VC)
@@ -58,10 +58,9 @@ infinite_sequences.adb:55:28: info: precondition proved (CVC5: 2 VC)
 infinite_sequences.adb:55:42: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:55:47: info: precondition proved (CVC5: 2 VC)
 infinite_sequences.adb:55:56: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
+infinite_sequences.adb:57:19: info: loop invariant initialization proved (CVC5: 2 VC)
 infinite_sequences.adb:57:19: info: precondition proved (Trivial: 2 VC)
 infinite_sequences.adb:57:43: medium: in inlined expression function body at a-nbnbin.ads:66
-infinite_sequences.adb:57:43: medium: in inlined expression function body at a-nbnbin.ads:66
-infinite_sequences.adb:57:43: medium: loop invariant might fail in first iteration, cannot prove Low <= Arg
 infinite_sequences.adb:57:43: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Low <= Arg
 infinite_sequences.adb:57:53: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:58:21: info: predicate check proved (Trivial: 1 VC)
@@ -243,7 +242,7 @@ red_black_trees.adb:194:80: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:203:17: info: predicate check proved (CVC5: 1 VC)
 red_black_trees.adb:205:17: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:205:17: info: predicate check proved (CVC5: 1 VC)
-red_black_trees.adb:206:13: medium: subprogram variant might fail [possible fix: subprogram at red_black_trees.ads:37 should mention Fst and X in a precondition]
+red_black_trees.adb:206:13: info: subprogram variant proved (CVC5: 1 VC)
 red_black_trees.adb:206:21: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:206:35: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:206:43: info: subprogram variant proved (CVC5: 1 VC)
@@ -450,7 +449,7 @@ red_black_trees.adb:360:24: medium: pointer dereference check might fail
 red_black_trees.adb:360:29: medium: pointer dereference check might fail
 red_black_trees.adb:360:53: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:360:59: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:367:07: medium: precondition might fail, cannot prove Is_Concat (X1, X2, X3, R)
+red_black_trees.adb:367:07: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:368:18: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:368:32: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:368:48: info: pointer dereference check proved (CVC5: 1 VC)
@@ -550,7 +549,7 @@ red_black_trees.adb:413:58: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:414:24: medium: pointer dereference check might fail
 red_black_trees.adb:414:30: medium: pointer dereference check might fail
 red_black_trees.adb:414:54: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:421:07: medium: precondition might fail, cannot prove Is_Concat (X1, X2, X3, Y1)
+red_black_trees.adb:421:07: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:422:18: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:422:23: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:422:38: info: pointer dereference check proved (CVC5: 1 VC)
@@ -575,7 +574,7 @@ red_black_trees.adb:427:10: info: absence of resource or memory leak at end of s
 red_black_trees.adb:427:26: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:429:11: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:429:17: medium: resource or memory leak might occur
-red_black_trees.adb:429:24: medium: pointer dereference check might fail
+red_black_trees.adb:429:24: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:430:14: medium: pointer dereference check might fail
 red_black_trees.adb:430:21: medium: resource or memory leak might occur
 red_black_trees.adb:431:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
@@ -1005,7 +1004,7 @@ red_black_trees.adb:727:22: medium: assertion might fail [possible fix: precondi
 red_black_trees.adb:732:10: medium: precondition might fail, cannot prove T /= null
 red_black_trees.adb:737:10: medium: precondition might fail, cannot prove R1 = R2 [possible fix: precondition of subprogram at line 626 should mention V]
 red_black_trees.adb:738:10: medium: precondition might fail, cannot prove X1 = X2
-red_black_trees.adb:745:07: medium: precondition might fail, cannot prove Is_Sorted (Model (T, Pos))
+red_black_trees.adb:745:07: medium: precondition might fail, cannot prove Scarce_Red (T)
 red_black_trees.adb:745:25: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:750:11: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:754:10: medium: precondition might fail, cannot prove Is_Concat (X1, X2, X3, R1)
@@ -1112,7 +1111,7 @@ red_black_trees.ads:147:14: medium: postcondition might fail, cannot prove RBT_I
 red_black_trees.ads:148:20: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:148:52: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:148:59: info: predicate check proved (Trivial: 1 VC)
-spark-containers-functional-maps.ads:108:34: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
-spark-containers-functional-maps.ads:108:41: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
-spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
-spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:112:34: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:112:41: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44

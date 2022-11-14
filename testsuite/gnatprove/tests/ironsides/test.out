@@ -16,7 +16,7 @@ dns_table_pkg.adb:34:10: info: initialization of "Length" proved
 dns_table_pkg.adb:37:14: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:45:36: info: function contract not available for proof ("WireNameLength" might not return)
 dns_table_pkg.adb:45:62: info: index check proved (CVC5: 2 VC)
-dns_table_pkg.adb:45:70: medium: array index check might fail [reason for check: value must be a valid index into the array]
+dns_table_pkg.adb:45:70: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:57:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Val <= (I - 1)*Character'pos
 dns_table_pkg.adb:59:19: medium: loop invariant might fail in first iteration, cannot prove Character'Pos (DomainName (Q)) <= 255 [possible fix: subprogram at line 47 should mention DomainName in a precondition]
 dns_table_pkg.adb:61:24: medium: overflow check might fail, cannot prove lower bound for Val + Character'pos [reason for check: result of addition must fit in a 32-bits machine integer]
@@ -411,7 +411,7 @@ parser_utilities.adb:858:10: info: initialization of "C" proved
 parser_utilities.adb:859:10: info: initialization of "RetVal" proved
 parser_utilities.adb:881:11: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:883:13: info: loop invariant initialization proved (CVC5: 4 VC)
-parser_utilities.adb:885:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Tmp >= 0
+parser_utilities.adb:883:13: info: loop invariant preservation proved (CVC5: 4 VC)
 parser_utilities.adb:889:23: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:889:29: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:897:28: medium: overflow check might fail, cannot prove upper bound for Blob*Long_Long_Integer (MultValue (CurrentChar)) [reason for check: result of multiplication must fit in a 64-bits machine integer] [possible fix: loop invariant at line 882 should mention CurrentChar]
@@ -452,7 +452,7 @@ parser_utilities.adb:1034:42: medium: overflow check might fail, cannot prove lo
 parser_utilities.adb:1034:48: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:1034:58: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:1037:65: medium: range check might fail, cannot prove lower bound for RRSig_Rec.SignatureLength + ((EndIdx - BegIdx) + 1) [reason for check: result of addition must fit in the target type of the assignment]
-parser_utilities.adb:1043:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+parser_utilities.adb:1043:27: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:1044:10: info: precondition proved (CVC5: 1 VC)
 parser_utilities.adb:1062:07: info: initialization of "BegIdx" proved
 parser_utilities.adb:1063:07: info: initialization of "EndIdx" proved
@@ -501,7 +501,7 @@ parser_utilities.adb:1291:48: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:1293:44: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:1294:34: info: index check proved (CVC5: 2 VC)
 parser_utilities.adb:1299:21: info: range check proved (CVC5: 2 VC)
-parser_utilities.adb:1308:48: medium: overflow check might fail, cannot prove lower bound for NumDigitsInByte + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+parser_utilities.adb:1308:48: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.ads:42:09: info: flow dependencies proved
 parser_utilities.ads:48:09: info: flow dependencies proved
 parser_utilities.ads:53:09: info: flow dependencies proved
@@ -1242,9 +1242,9 @@ zone_file_parser.adb:414:32: medium: precondition might fail, cannot prove TimeS
 zone_file_parser.adb:424:27: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:425:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:432:29: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: subprogram at zone_file_parser.ads:47 should mention ZoneFileLine in a precondition]
-zone_file_parser.adb:443:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:443:27: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:444:26: info: precondition proved (CVC5: 1 VC)
-zone_file_parser.adb:452:48: medium: range check might fail, cannot prove upper bound for (EndIdx - BegIdx) + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:452:48: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:460:20: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:462:22: info: loop invariant initialization proved (CVC5: 3 VC)
 zone_file_parser.adb:462:22: info: loop invariant preservation proved (CVC5: 3 VC)
@@ -1341,7 +1341,7 @@ zone_file_parser.adb:748:16: medium: loop invariant might not be preserved by an
 zone_file_parser.adb:755:19: medium: loop invariant might fail in first iteration, cannot prove BlockLengthMap(J) >= Rr_Type.Nsec_Record_Type.blockLengthValue'first
 zone_file_parser.adb:760:29: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:766:46: info: precondition proved (CVC5: 1 VC)
-zone_file_parser.adb:769:59: medium: range check might fail, cannot prove lower bound for NumberOfRecordTypes + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:769:59: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:770:29: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:773:62: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:773:68: info: division check proved (CVC5: 1 VC)
@@ -1462,7 +1462,7 @@ zone_file_parser.adb:1293:44: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1302:35: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1304:37: info: loop invariant initialization proved (CVC5: 2 VC)
 zone_file_parser.adb:1304:37: info: loop invariant preservation proved (CVC5: 2 VC)
-zone_file_parser.adb:1326:54: medium: range check might fail, cannot prove upper bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment]
+zone_file_parser.adb:1326:54: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1327:53: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1333:72: medium: range check might fail, cannot prove upper bound for (EndIdx - BegIdx) + 1 [reason for check: result of addition must fit in the target type of the assignment]
 zone_file_parser.adb:1348:44: info: range check proved (CVC5: 2 VC)

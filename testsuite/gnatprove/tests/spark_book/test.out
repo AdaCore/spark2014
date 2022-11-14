@@ -90,7 +90,7 @@ bounded_queue_example.adb:15:43: info: unrolling loop
 bounded_queue_example.adb:16:07: medium: precondition might fail
 bounded_queue_example.adb:18:38: info: unrolling loop
 bounded_queue_example.adb:19:07: medium: precondition might fail
-bounded_queue_example.adb:24:42: low: range check might fail, cannot prove lower bound for "Size of cleared queue is " & Integer'image [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Size or turning it into an expression function]
+bounded_queue_example.adb:24:42: low: range check might fail, cannot prove upper bound for "Size of cleared queue is " & Integer'image [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Size or turning it into an expression function]
 bounded_queue_example_v1.adb:6:56: info: range check proved (CVC5: 2 VC)
 bounded_queue_example_v1.adb:7:04: info: initialization of "Value" proved
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Count" is not initialized

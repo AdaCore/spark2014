@@ -1,5 +1,13 @@
-with "sparklib";
-
+with "sparklib_internal";
 project Test is
-    for Main use ("test.adb");
+
+   for Main use ("test.adb");
+
+   for Object_Dir use "obj";
+
+   package Compiler is
+      for Default_Switches ("Ada") use
+         ("-gnat2022", "-gnata");
+   end Compiler;
+
 end Test;

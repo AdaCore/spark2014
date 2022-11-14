@@ -94,7 +94,7 @@ algorithm.adb:318:10: info: initialization of "riterR" proved
 algorithm.adb:318:18: info: initialization of "riterL" proved
 algorithm.adb:322:10: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:326:35: info: loop invariant initialization proved (CVC5: 4 VC)
-algorithm.adb:328:35: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove riterL = Next (This.gapVec, riterR)
+algorithm.adb:326:35: info: loop invariant preservation proved (CVC5: 3 VC; Z3: 1 VC)
 algorithm.adb:328:44: info: precondition proved (CVC5: 2 VC)
 algorithm.adb:332:25: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:332:64: info: precondition proved (CVC5: 1 VC)
@@ -109,16 +109,16 @@ algorithm.adb:337:58: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:342:16: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:347:13: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:353:25: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:353:64: medium: precondition might fail
+algorithm.adb:353:64: info: precondition proved (Z3: 1 VC)
 algorithm.adb:353:109: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:354:15: medium: precondition might fail
+algorithm.adb:354:15: info: precondition proved (Z3: 1 VC)
 algorithm.adb:354:64: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:356:16: warning: statement has no effect
 algorithm.adb:357:19: warning: this statement is never reached
 algorithm.adb:358:19: warning: this statement is never reached
 algorithm.adb:358:36: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:358:58: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:363:27: medium: precondition might fail
+algorithm.adb:363:27: info: precondition proved (Z3: 1 VC)
 algorithm.adb:383:15: info: range check proved (CVC5: 2 VC)
 algorithm.adb:383:71: medium: range check might fail, cannot prove lower bound for Length (This.gapVec) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Length (This.gapVec) in Gap_ID) to subprogram at algorithm.ads:91]
 algorithm.adb:397:22: info: assertion proved (CVC5: 1 VC)
@@ -356,7 +356,7 @@ algorithm.adb:861:64: info: float overflow check proved (Trivial)
 algorithm.adb:862:38: info: float overflow check proved (colibri: 1 VC)
 algorithm.adb:862:40: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:862:47: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:863:22: info: assertion proved (Z3: 1 VC)
+algorithm.adb:863:22: info: assertion proved (colibri: 1 VC)
 algorithm.adb:863:44: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
 algorithm.adb:864:22: medium: assertion might fail
 algorithm.adb:864:76: info: assertion proved (CVC5: 2 VC)
@@ -422,14 +422,16 @@ spark-containers-formal-doubly_linked_lists.ads:1460:14: info: precondition prov
 spark-containers-formal-doubly_linked_lists.ads:1466:23: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
 spark-containers-formal-doubly_linked_lists.ads:1515:14: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
 spark-containers-formal-doubly_linked_lists.ads:1522:23: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
-spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at algorithm.ads:40
-spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at algorithm.ads:40
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
-spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
-spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
-spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
-spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
-spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
-spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at algorithm.ads:40
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at algorithm.ads:40

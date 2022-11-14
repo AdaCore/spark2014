@@ -1,0 +1,7 @@
+call.adb:7:05: info: precondition proved (Trivial: 1 VC)
+child.ads:6:14: warning: subprogram "P" has no effect
+child.ads:6:36: medium: precondition might be stronger than class-wide precondition
+child.ads:7:14: warning: subprogram "Q" has no effect
+child.ads:7:36: medium: precondition is stronger than the default class-wide precondition of True
+parent.ads:5:14: warning: subprogram "P" has no effect
+parent.ads:6:14: warning: subprogram "Q" has no effect

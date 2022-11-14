@@ -146,8 +146,10 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Sanity check (this seems to be the most a convenient place for it):
       --
       --  Generic actual subprograms should not appear in direct calls, except
-      --  for default subprograms. They are either null procedures or functions
-      --  that wrap arbitrary expressions.
+      --  for default subprograms. If they are procedures, then they either are
+      --  null procedures or have aspects coming from contracts on generic
+      --  formal subprograms; if they are functions, then they wrap arbitrary
+      --  expressions.
 
       for Call of Calls loop
          pragma Assert
@@ -156,7 +158,9 @@ package body Flow_Generated_Globals.Phase_1 is
             then
               (case Ekind (Call) is
                   when E_Procedure =>
-                     Null_Present (Subprogram_Specification (Call)),
+                     Null_Present (Subprogram_Specification (Call))
+                       or else
+                     Has_Aspects (Subprogram_Spec (Call)),
                   when E_Function =>
                      True,
                   when others =>

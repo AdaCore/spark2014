@@ -815,7 +815,7 @@ package body Why.Gen.Binders is
                        Labels   => <>));
             end if;
 
-            if Count_Discriminants (Ty) > 0 then
+            if Has_Discriminants (Ty) then
                Result.Discrs :=
                  (Present => True,
                   Binder  =>
@@ -1004,7 +1004,8 @@ package body Why.Gen.Binders is
          Triggers => New_Triggers (Triggers =>
                           (1 => New_Trigger (Terms => (1 => +Left)))),
          Pre      => Pre,
-         Def      => Equality);
+         Def      => Equality,
+         Dep      => New_Axiom_Dep (Name => Name, Kind => EW_Axdep_Func));
    end New_Defining_Axiom;
 
    -----------------------------
@@ -1017,7 +1018,8 @@ package body Why.Gen.Binders is
       Name     : W_Identifier_Id;
       Binders  : Binder_Array;
       Pre      : W_Pred_Id := Why_Empty;
-      Def      : W_Pred_Id)
+      Def      : W_Pred_Id;
+      Dep_Kind : EW_Axiom_Dep_Kind)
       return W_Declaration_Id
    is
       Left     : constant W_Term_Id :=
@@ -1042,7 +1044,8 @@ package body Why.Gen.Binders is
          Triggers => New_Triggers (Triggers =>
                           (1 => New_Trigger (Terms => (1 => +Left)))),
          Pre      => Pre,
-         Def      => Equality);
+         Def      => Equality,
+         Dep      => New_Axiom_Dep (Name => Name, Kind => Dep_Kind));
    end New_Defining_Bool_Axiom;
 
    -----------------
@@ -1183,7 +1186,8 @@ package body Why.Gen.Binders is
       Binders  : Binder_Array;
       Triggers : W_Triggers_OId := Why_Empty;
       Pre      : W_Pred_OId := Why_Empty;
-      Def      : W_Pred_Id)
+      Def      : W_Pred_Id;
+      Dep      : W_Axiom_Dep_OId := Why_Empty)
       return W_Declaration_Id
    is
       Ax_Body : constant W_Pred_Id :=
@@ -1201,7 +1205,8 @@ package body Why.Gen.Binders is
            New_Universal_Quantif
              (Binders  => Binders,
               Triggers => Triggers,
-              Pred     => Ax_Body));
+              Pred     => Ax_Body),
+         Dep      => Dep);
    end New_Guarded_Axiom;
 
    ---------------------------

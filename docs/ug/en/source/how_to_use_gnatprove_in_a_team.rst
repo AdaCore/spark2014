@@ -537,9 +537,11 @@ of a program:
 
 * [SPARK_VALID]
   Attribute 'Valid is currently assumed to always return True, as no invalid
-  value can be constructed in SPARK (see :ref:`Data Validity`). This assumption
-  can be seen as a consequence of other assumptions, in particular
-  [SPARK_VALIDITY], [SPARK_EXTERNAL_VALID] and [ADA_EXTERNAL].
+  value can be constructed in SPARK (see :ref:`Data Validity`).  If assumptions
+  [SPARK_VALIDITY], [SPARK_EXTERNAL_VALID], and [ADA_EXTERNAL] are satisfied,
+  then this assumption will be satisfied as well. However, it is valuable to
+  explicitly state this assumption because it highlights an important
+  consequence of compliance with the other assumptions.
 
 .. index:: validity; limitation
 
@@ -642,11 +644,6 @@ of a program:
     there is a cursor object ``M_Cursor`` for the model type such that
     ``Has_Element (Model (Container), M_Cursor)`` evaluates to True and ``E`` is
     the result of ``Element (Model (Container), M_Cursor)``.
-
-* [SPARK_INLINE_FOR_PROOF]
-  When a function with a postcondition has an ``Inline_For_Proof``
-  annotation, the value given in its postcondition shall be logically
-  equal to the value returned by the function.
 
 * [SPARK_TOOL_LIMITATIONS]
   The list of :ref:`Tool Limitations that Impact Soundness` should be reviewed to
@@ -791,6 +788,37 @@ only part of a program:
   * the package itself (see :ref:`Package Contracts`); and
 
   * the API of the package.
+
+
+In addition, the following assumptions need to be addressed when calling
+GNATprove on only part of a SPARK program at a time (either on an individual
+unit or on a group of units), while providing only the specs of those units
+that are not analyzed (not their bodies), so that the complete SPARK program is
+analyzed by calling GNATprove multiple times with different sets of unit bodies
+being available:
+
+* [PARTIAL_GLOBAL]
+  Subprograms which are called across the boundary of those units analyzed
+  together should have a Global contract describing their effect on global
+  data, otherwise they will be assumed to have no effect on global data.
+  A warning is issued in that case.
+
+* [PARTIAL_TERMINATION]
+  Subprograms which are called across the boundary of those units analyzed
+  together should be annotated to specify that they will always return (with
+  annotation Always_Return), might not return (with annotation
+  Might_Not_Return) or never return (with aspect or pragma No_Return),
+  otherwise they will be assumed to always return.  A warning is issued in that
+  case.
+
+* [PARTIAL_RECURSIVE_SUBPROGRAMS]
+  Subprograms which are called across the boundary of those units analyzed
+  together should not be mutually recursive with a subprogram analyzed by
+  GNATprove. This is similar to [ADA_RECURSIVE_SUBPROGRAMS].
+
+* [PARTIAL_TASKING]
+  If tasks are used, one run of GNATprove should analyze all units that define
+  tasks, in order to detect all violations of SPARK rules regarding tasking.
 
 
 In addition, the following assumptions need to be addressed when compiling the

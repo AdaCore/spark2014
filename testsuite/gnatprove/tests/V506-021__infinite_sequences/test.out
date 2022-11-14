@@ -6,38 +6,40 @@ infinite_sequence.adb:22:22: info: assertion proved (CVC5: 1 VC)
 infinite_sequence.adb:22:22: info: precondition proved (CVC5: 1 VC)
 infinite_sequence.adb:22:36: info: range check proved (CVC5: 2 VC)
 infinite_sequence.adb:22:48: info: predicate check proved (Trivial: 2 VC)
-spark-containers-functional-infinite_sequences.ads:83:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:83:43: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:86:06: info: data dependencies proved, in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:131:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:131:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:148:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:148:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:163:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:163:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:181:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:181:21: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:181:37: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:181:42: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:200:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:200:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:200:39: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:200:46: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:219:08: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:219:15: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:221:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:221:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:222:15: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:222:24: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:222:31: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:222:37: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:222:46: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:222:53: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:250:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:250:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:275:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:275:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:275:47: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:299:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:299:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
-spark-containers-functional-infinite_sequences.ads:314:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:87:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:87:43: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:90:06: info: data dependencies proved, in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:152:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:152:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:168:12: info: precondition proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:169:39: info: precondition proved (CVC5: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:193:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:193:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:219:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:219:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:219:47: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:243:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:243:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:258:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:322:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:322:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:353:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:353:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:373:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:373:21: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:373:37: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:373:42: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:394:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:394:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:394:39: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:394:46: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:415:08: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:415:15: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:417:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:417:23: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:418:15: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:418:24: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:418:31: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:418:37: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:418:46: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9
+spark-containers-functional-infinite_sequences.ads:418:53: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:9

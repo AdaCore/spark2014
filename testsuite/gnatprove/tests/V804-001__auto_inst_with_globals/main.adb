@@ -42,7 +42,7 @@ procedure Main with SPARK_Mode is
       end loop;
    end Lemma_Ordered;
 
-   --  Check that Lemma_Ordered really is instanciated automatically
+   --  Check that Lemma_Ordered really is instantiated automatically
    procedure Test with
      Global => (Proof_In => A),
      Pre  => Is_Ordered,

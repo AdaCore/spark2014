@@ -192,19 +192,23 @@ package body Xtree_Why_AST is
       procedure Print_EW_Assert_Kind is new
         Print_Ada_Enum_To_Json (EW_Assert_Kind, "EW_Assert_Kind");
 
+      procedure Print_EW_Axiom_Dep_Kind is new
+        Print_Ada_Enum_To_Json (EW_Axiom_Dep_Kind, "EW_Axiom_Dep_Kind");
+
    begin
       PL (O, "--  Why.Sinfo");
 
       NL (O);
 
-      Print_EW_Domain      (O);
-      Print_EW_Type        (O);
-      Print_EW_Literal     (O);
-      Print_EW_Theory_Type (O);
-      Print_EW_Clone_Type  (O);
-      Print_EW_Subst_Type  (O);
-      Print_EW_Connector   (O);
-      Print_EW_Assert_Kind (O);
+      Print_EW_Domain         (O);
+      Print_EW_Type           (O);
+      Print_EW_Literal        (O);
+      Print_EW_Theory_Type    (O);
+      Print_EW_Clone_Type     (O);
+      Print_EW_Subst_Type     (O);
+      Print_EW_Connector      (O);
+      Print_EW_Assert_Kind    (O);
+      Print_EW_Axiom_Dep_Kind (O);
 
    end Print_Ada_Why_Sinfo_Types_To_Json;
 
@@ -491,6 +495,15 @@ package body Xtree_Why_AST is
       for X in EW_Assert_Kind'Range loop
          PL (O, "| " & OCaml_Upper_Identifier
                (Strip_Prefix (EW_Assert_Kind'Image (X))));
+      end loop;
+      Relative_Indent (O, -2);
+      NL (O);
+
+      PL (O, "type axiom_dep_kind =");
+      Relative_Indent (O, 2);
+      for X in EW_Axiom_Dep_Kind'Range loop
+         PL (O, "| " & OCaml_Upper_Identifier
+               (Strip_Prefix (EW_Axiom_Dep_Kind'Image (X))));
       end loop;
       Relative_Indent (O, -2);
    end Print_OCaml_Why_Sinfo_Types;
@@ -1065,18 +1078,22 @@ package body Xtree_Why_AST is
       procedure Print_EW_Assert_Kind is new
         Print_OCaml_Enum_From_Json (EW_Assert_Kind, "EW_Assert_Kind");
 
+      procedure Print_EW_Axiom_Dep_Kind is new
+        Print_OCaml_Enum_From_Json (EW_Axiom_Dep_Kind, "EW_Axiom_Dep_Kind");
+
    begin
       PL (O, "(* Why.Sinfo *)");
       NL (O);
 
-      Print_EW_Domain      (O);
-      Print_EW_Type        (O);
-      Print_EW_Literal     (O);
-      Print_EW_Theory_Type (O);
-      Print_EW_Clone_Type  (O);
-      Print_EW_Subst_Type  (O);
-      Print_EW_Connector   (O);
-      Print_EW_Assert_Kind (O);
+      Print_EW_Domain         (O);
+      Print_EW_Type           (O);
+      Print_EW_Literal        (O);
+      Print_EW_Theory_Type    (O);
+      Print_EW_Clone_Type     (O);
+      Print_EW_Subst_Type     (O);
+      Print_EW_Connector      (O);
+      Print_EW_Assert_Kind    (O);
+      Print_EW_Axiom_Dep_Kind (O);
 
    end Print_OCaml_Why_Sinfo_Types_From_Json;
 

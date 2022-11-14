@@ -1,10 +1,6 @@
 predicate_check.adb:19:10: warning: assuming "P" always returns
-predicate_check.adb:19:10: warning: assuming "P" has no effect on global items
-predicate_check.adb:19:10: warning: no Global contract available for "P"
 predicate_check.adb:19:10: warning: no returning annotation available for "P"
 predicate_check.adb:19:14: high: "X" is not initialized
 predicate_check.adb:20:10: warning: assuming "P" always returns
-predicate_check.adb:20:10: warning: assuming "P" has no effect on global items
-predicate_check.adb:20:10: warning: no Global contract available for "P"
 predicate_check.adb:20:10: warning: no returning annotation available for "P"
 predicate_check.adb:20:14: high: "Y.F" is not initialized

@@ -94,7 +94,7 @@ amortized_queue.adb:92:42: info: precondition proved (CVC5: 1 VC)
 amortized_queue.adb:93:41: info: discriminant check proved (CVC5: 1 VC)
 amortized_queue.adb:93:41: info: precondition proved (CVC5: 1 VC)
 amortized_queue.adb:94:09: info: precondition proved (CVC5: 1 VC)
-amortized_queue.adb:96:12: info: precondition proved (CVC5: 2 VC; Z3: 1 VC)
+amortized_queue.adb:96:12: info: precondition proved (CVC5: 3 VC)
 amortized_queue.adb:96:34: info: non-aliasing of formal parameters "Front" and "Rear" proved
 amortized_queue.adb:96:55: info: discriminant check proved (CVC5: 1 VC)
 amortized_queue.adb:96:55: info: precondition proved (CVC5: 1 VC)
@@ -105,7 +105,7 @@ amortized_queue.adb:103:42: info: precondition proved (CVC5: 1 VC)
 amortized_queue.adb:104:41: info: discriminant check proved (CVC5: 1 VC)
 amortized_queue.adb:104:41: info: precondition proved (CVC5: 1 VC)
 amortized_queue.adb:105:09: info: precondition proved (CVC5: 1 VC)
-amortized_queue.adb:107:12: info: precondition proved (CVC5: 2 VC; Z3: 1 VC)
+amortized_queue.adb:107:12: info: precondition proved (CVC5: 3 VC)
 amortized_queue.adb:107:34: info: non-aliasing of formal parameters "Front" and "Rear" proved
 amortized_queue.adb:107:55: info: discriminant check proved (CVC5: 1 VC)
 amortized_queue.adb:107:55: info: precondition proved (CVC5: 1 VC)
@@ -156,11 +156,11 @@ amortized_queue.ads:72:06: info: precondition proved (CVC5: 1 VC; Z3: 2 VC)
 amortized_queue.ads:72:06: medium: postcondition might fail, cannot prove Model (Q) = Model (Tail'Result) & Last_Element (Model (Q))
 amortized_queue.ads:72:18: info: precondition proved (CVC5: 3 VC)
 amortized_queue.ads:72:38: info: precondition proved (Z3: 1 VC)
-amortized_queue.ads:72:40: info: precondition proved (Z3: 1 VC)
+amortized_queue.ads:72:40: info: precondition proved (CVC5: 1 VC)
 amortized_queue.ads:72:54: info: precondition proved (CVC5: 3 VC)
 amortized_queue.ads:78:06: medium: postcondition might fail, cannot prove V & Model (Q) = Model (Enqueue'result)
-amortized_queue.ads:78:08: info: precondition proved (Z3: 1 VC)
-amortized_queue.ads:78:10: info: precondition proved (CVC5: 2 VC; Z3: 1 VC)
+amortized_queue.ads:78:08: info: precondition proved (CVC5: 1 VC)
+amortized_queue.ads:78:10: info: precondition proved (CVC5: 3 VC)
 amortized_queue.ads:78:22: info: precondition proved (CVC5: 3 VC)
 spark-containers-formal-vectors.ads:294:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at amortized_queue.ads:10
 spark-containers-formal-vectors.ads:295:08: info: dynamic accessibility check proved (Trivial), in instantiation at amortized_queue.ads:10
@@ -173,12 +173,14 @@ spark-containers-formal-vectors.ads:757:23: info: precondition proved (CVC5: 1 V
 spark-containers-formal-vectors.ads:760:38: info: range check proved (CVC5: 2 VC), in instantiation at amortized_queue.ads:10
 spark-containers-formal-vectors.ads:793:14: info: precondition proved (CVC5: 1 VC), in instantiation at amortized_queue.ads:10
 spark-containers-formal-vectors.ads:797:35: info: range check proved (CVC5: 2 VC), in instantiation at amortized_queue.ads:10
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
-spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
-spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
-spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
-spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
-spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
-spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:93, in instantiation at amortized_queue.ads:10

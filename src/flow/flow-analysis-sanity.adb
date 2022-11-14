@@ -1824,7 +1824,10 @@ package body Flow.Analysis.Sanity is
                                                 Depends_Node => FA.Depends_N);
 
       else
-         pragma Assert (Is_Pure (FA.Spec_Entity));
+         pragma Assert
+           (Is_Pure (FA.Spec_Entity)
+              or else
+            Is_Null_Procedure (FA.Spec_Entity));
       end if;
 
       --  Convert user-globals from Entity_Ids to Flow_Ids

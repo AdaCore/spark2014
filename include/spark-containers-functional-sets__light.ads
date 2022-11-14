@@ -326,7 +326,8 @@ is
    with
      Global => null,
      Pre    => not Is_Empty (Cursor),
-     Post   => Element'Result = Choose (Cursor);
+     Post   => Element'Result = Choose (Cursor),
+     Annotate => (GNATprove, Inline_For_Proof);
    --  The next element to be considered for the iteration is the result of
    --  choose on Cursor.
 

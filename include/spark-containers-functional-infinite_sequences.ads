@@ -35,6 +35,10 @@ with SPARK.Big_Integers; use SPARK.Big_Integers;
 generic
    type Element_Type (<>) is private;
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
+   with function Equivalent_Elements
+     (Left, Right : Element_Type) return Boolean is "=";
+   --  Function used to compare elements in Contains, Find, and
+   --  Equivalent_Sequences.
 
 package SPARK.Containers.Functional.Infinite_Sequences with
   SPARK_Mode,
@@ -119,6 +123,23 @@ is
            and then (for all N in Left => Get (Left, N) = Get (Right, N)));
    pragma Annotate (GNATprove, Inline_For_Proof, "<=");
 
+   -----------------------------------------------------
+   -- Properties handling elements modulo equivalence --
+   -----------------------------------------------------
+
+   function Equivalent_Sequences (Left, Right : Sequence) return Boolean
+   with
+   --  Equivalence over sequences
+
+     Global => null,
+     Post   =>
+       Equivalent_Sequences'Result =
+         (Length (Left) = Length (Right)
+           and then
+            (for all N in Left =>
+               Equivalent_Elements (Get (Left, N), Get (Right, N))));
+   pragma Annotate (GNATprove, Inline_For_Proof, Equivalent_Sequences);
+
    function Contains
      (Container : Sequence;
       Fst       : Big_Positive;
@@ -132,104 +153,26 @@ is
      Post   =>
        Contains'Result =
            (for some J in Container =>
-              Fst <= J and J <= Lst and Get (Container, J) = Item);
+              Fst <= J and J <= Lst and
+                Equivalent_Elements (Get (Container, J), Item));
    pragma Annotate (GNATprove, Inline_For_Proof, Contains);
 
-   function Constant_Range
+   function Find
      (Container : Sequence;
-      Fst       : Big_Positive;
-      Lst       : Big_Natural;
-      Item      : Element_Type) return Boolean
-   --  Returns True if every element of the range from Fst to Lst of Container
-   --  is equal to Item.
+      Item      : Element_Type) return Big_Natural
+   --  Search for Item in Container
 
-   with
-     Global => null,
-     Pre    => Lst <= Last (Container),
-     Post   =>
-       Constant_Range'Result =
-           (for all J in Container =>
-              (if Fst <= J and J <= Lst then Get (Container, J) = Item));
-   pragma Annotate (GNATprove, Inline_For_Proof, Constant_Range);
-
-   function Equal_Except
-     (Left     : Sequence;
-      Right    : Sequence;
-      Position : Big_Positive) return Boolean
-   --  Returns True is Left and Right are the same except at position Position
-
-   with
-     Global => null,
-     Pre    => Position <= Last (Left),
-     Post   =>
-       Equal_Except'Result =
-         (Length (Left) = Length (Right)
-           and then (for all J in Left =>
-                       (if J /= Position then
-                          Get (Left, J) = Get (Right, J))));
-   pragma Annotate (GNATprove, Inline_For_Proof, Equal_Except);
-
-   function Equal_Except
-     (Left  : Sequence;
-      Right : Sequence;
-      X     : Big_Positive;
-      Y     : Big_Positive) return Boolean
-   --  Returns True is Left and Right are the same except at positions X and Y
-
-   with
-     Global => null,
-     Pre    => X <= Last (Left) and Y <= Last (Left),
-     Post   =>
-       Equal_Except'Result =
-         (Length (Left) = Length (Right)
-           and then (for all J in Left =>
-                       (if J /= X and J /= Y then
-                          Get (Left, J) = Get (Right, J))));
-   pragma Annotate (GNATprove, Inline_For_Proof, Equal_Except);
-
-   function Range_Equal
-     (Left  : Sequence;
-      Right : Sequence;
-      Fst   : Big_Positive;
-      Lst   : Big_Natural) return Boolean
-   --  Returns True if the ranges from Fst to Lst contain the same elements in
-   --  Left and Right.
-
-   with
-     Global => null,
-     Pre    => Lst <= Last (Left) and Lst <= Last (Right),
-     Post   =>
-       Range_Equal'Result =
-         (for all J in Left =>
-            (if Fst <= J and J <= Lst then Get (Left, J) = Get (Right, J)));
-   pragma Annotate (GNATprove, Inline_For_Proof, Range_Equal);
-
-   function Range_Shifted
-     (Left   : Sequence;
-      Right  : Sequence;
-      Fst    : Big_Positive;
-      Lst    : Big_Natural;
-      Offset : Big_Integer) return Boolean
-   --  Returns True if the range from Fst to Lst in Left contains the same
-   --  elements as the range from Fst + Offset to Lst + Offset in Right.
-
-   with
-     Global => null,
-     Pre    =>
-       Lst <= Last (Left)
-         and then
-           (if Fst <= Lst then
-              Offset + Fst >= 1 and Offset + Lst <= Length (Right)),
-     Post   =>
-       Range_Shifted'Result =
-         ((for all J in Left =>
-             (if Fst <= J and J <= Lst then
-                Get (Left, J) = Get (Right, J + Offset)))
-          and
-            (for all J in Right =>
-               (if Fst + Offset <= J and J <= Lst + Offset then
-                  Get (Left, J - Offset) = Get (Right, J))));
-   pragma Annotate (GNATprove, Inline_For_Proof, Range_Shifted);
+     with
+       Global => null,
+       Contract_Cases =>
+         ((for all J in Container =>
+             not Equivalent_Elements (Get (Container, J), Item))
+          =>
+            Find'Result = 0,
+          others =>
+            Find'Result > 0 and
+            Find'Result <= Length (Container) and
+            Equivalent_Elements (Item, Get (Container, Find'Result)));
 
    ----------------------------
    -- Construction Functions --
@@ -249,7 +192,7 @@ is
      Global => null,
      Pre    => Position <= Last (Container),
      Post   =>
-       Get (Set'Result, Position) = New_Item
+       Element_Logic_Equal (Get (Set'Result, Position), New_Item)
          and then Equal_Except (Container, Set'Result, Position);
 
    function Add (Container : Sequence; New_Item : Element_Type) return Sequence
@@ -260,8 +203,9 @@ is
      Global => null,
      Post   =>
        Length (Add'Result) = Length (Container) + 1
-         and then Get (Add'Result, Last (Add'Result)) = New_Item
-         and then Container <= Add'Result;
+         and then Element_Logic_Equal
+           (Get (Add'Result, Last (Add'Result)), New_Item)
+         and then Equal_Prefix (Container, Add'Result);
 
    function Add
      (Container : Sequence;
@@ -275,7 +219,7 @@ is
      Pre    => Position <= Last (Container) + 1,
      Post   =>
        Length (Add'Result) = Length (Container) + 1
-         and then Get (Add'Result, Position) = New_Item
+         and then Element_Logic_Equal (Get (Add'Result, Position), New_Item)
          and then Range_Equal
                     (Left  => Container,
                      Right => Add'Result,
@@ -348,6 +292,141 @@ is
      Global => null,
      Pre    => Iter_Has_Element (Container, Position),
      Post   => Iter_Next'Result = Position + 1;
+
+   -------------------------------------------------------------------------
+   -- Ghost non-executable properties used only in internal specification --
+   -------------------------------------------------------------------------
+
+   --  Logical equality on elements cannot be safely executed on most element
+   --  types. Thus, this package should only be instantiated with ghost code
+   --  disabled. This is enforced by having a special imported procedure
+   --  Fail_When_Body_Off that will lead to link-time errors otherwise.
+
+   function Element_Logic_Equal (Left, Right : Element_Type) return Boolean
+   with
+     Ghost,
+     Global => null,
+     Annotate => (GNATprove, Logical_Equal);
+
+   function Constant_Range
+     (Container : Sequence;
+      Fst       : Big_Positive;
+      Lst       : Big_Natural;
+      Item      : Element_Type) return Boolean
+   --  Returns True if every element of the range from Fst to Lst of Container
+   --  is equal to Item.
+
+   with
+     Ghost,
+     Global => null,
+     Pre    => Lst <= Last (Container),
+     Post   =>
+       Constant_Range'Result =
+           (for all J in Container =>
+              (if Fst <= J and J <= Lst
+               then Element_Logic_Equal (Get (Container, J), Item)));
+   pragma Annotate (GNATprove, Inline_For_Proof, Constant_Range);
+
+   function Equal_Prefix (Left : Sequence; Right : Sequence) return Boolean
+   with
+   --  Left is a subsequence of Right
+
+     Ghost,
+     Global => null,
+     Post   =>
+       Equal_Prefix'Result =
+         (Length (Left) <= Length (Right)
+           and then
+            (for all N in Left =>
+               Element_Logic_Equal (Get (Left, N), Get (Right, N))));
+   pragma Annotate (GNATprove, Inline_For_Proof, Equal_Prefix);
+
+   function Equal_Except
+     (Left     : Sequence;
+      Right    : Sequence;
+      Position : Big_Positive) return Boolean
+   --  Returns True is Left and Right are the same except at position Position
+
+   with
+     Ghost,
+     Global => null,
+     Pre    => Position <= Last (Left),
+     Post   =>
+       Equal_Except'Result =
+         (Length (Left) = Length (Right)
+           and then
+            (for all J in Left =>
+               (if J /= Position
+                then Element_Logic_Equal (Get (Left, J), Get (Right, J)))));
+   pragma Annotate (GNATprove, Inline_For_Proof, Equal_Except);
+
+   function Equal_Except
+     (Left  : Sequence;
+      Right : Sequence;
+      X     : Big_Positive;
+      Y     : Big_Positive) return Boolean
+   --  Returns True is Left and Right are the same except at positions X and Y
+
+   with
+     Ghost,
+     Global => null,
+     Pre    => X <= Last (Left) and Y <= Last (Left),
+     Post   =>
+       Equal_Except'Result =
+         (Length (Left) = Length (Right)
+           and then
+            (for all J in Left =>
+               (if J /= X and J /= Y
+                then Element_Logic_Equal (Get (Left, J), Get (Right, J)))));
+   pragma Annotate (GNATprove, Inline_For_Proof, Equal_Except);
+
+   function Range_Equal
+     (Left  : Sequence;
+      Right : Sequence;
+      Fst   : Big_Positive;
+      Lst   : Big_Natural) return Boolean
+   --  Returns True if the ranges from Fst to Lst contain the same elements in
+   --  Left and Right.
+
+   with
+     Ghost,
+     Global => null,
+     Pre    => Lst <= Last (Left) and Lst <= Last (Right),
+     Post   =>
+       Range_Equal'Result =
+         (for all J in Left =>
+            (if Fst <= J and J <= Lst
+             then Element_Logic_Equal (Get (Left, J), Get (Right, J))));
+   pragma Annotate (GNATprove, Inline_For_Proof, Range_Equal);
+
+   function Range_Shifted
+     (Left   : Sequence;
+      Right  : Sequence;
+      Fst    : Big_Positive;
+      Lst    : Big_Natural;
+      Offset : Big_Integer) return Boolean
+   --  Returns True if the range from Fst to Lst in Left contains the same
+   --  elements as the range from Fst + Offset to Lst + Offset in Right.
+
+   with
+     Ghost,
+     Global => null,
+     Pre    =>
+       Lst <= Last (Left)
+         and then
+           (if Fst <= Lst then
+              Offset + Fst >= 1 and Offset + Lst <= Length (Right)),
+     Post   =>
+       Range_Shifted'Result =
+         ((for all J in Left =>
+             (if Fst <= J and J <= Lst then
+                Element_Logic_Equal (Get (Left, J), Get (Right, J + Offset))))
+          and
+            (for all J in Right =>
+               (if Fst + Offset <= J and J <= Lst + Offset then
+                  Element_Logic_Equal
+                    (Get (Left, J - Offset), Get (Right, J)))));
+   pragma Annotate (GNATprove, Inline_For_Proof, Range_Shifted);
 
 private
    pragma SPARK_Mode (Off);

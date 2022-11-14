@@ -95,6 +95,13 @@ is
    is
      (raise Program_Error);
 
+   -------------------------
+   -- Element_Logic_Equal --
+   -------------------------
+
+   function Element_Logic_Equal (Left, Right : Element_Type) return Boolean is
+     (raise Program_Error);
+
    --------------------
    -- Empty_Sequence --
    --------------------
@@ -118,6 +125,30 @@ is
       Right : Sequence;
       X     : Big_Positive;
       Y     : Big_Positive) return Boolean
+   is
+     (raise Program_Error);
+
+   ------------------
+   -- Equal_Prefix --
+   ------------------
+
+   function Equal_Prefix (Left, Right : Sequence) return Boolean is
+     (raise Program_Error);
+
+   --------------------------
+   -- Equivalent_Sequences --
+   --------------------------
+
+   function Equivalent_Sequences (Left, Right : Sequence) return Boolean is
+     (raise Program_Error);
+
+   ----------
+   -- Find --
+   ----------
+
+   function Find
+     (Container : Sequence;
+      Item      : Element_Type) return Big_Natural
    is
      (raise Program_Error);
 

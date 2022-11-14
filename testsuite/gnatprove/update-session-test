@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 
 import argparse
-import glob
 import os
 import os.path
-import shutil
 import subprocess
-import sys
+import tempfile
 
 descr = """This script will update the session information of a test, and then
 rerun the test. It will run the test twice, so it takes some time.  """
@@ -18,7 +16,10 @@ def parse_options():
     args = None
     parser = argparse.ArgumentParser(description=descr)
     parser.add_argument(
-        "testname", metavar="T", nargs="+", help="session of this test will be updated"
+        "testnames",
+        metavar="testnames",
+        nargs="+",
+        help="session of these tests will be updated",
     )
     parser.add_argument(
         "--rewrite", dest="rewrite", action="store_true", help="Use rewrite option "
@@ -27,49 +28,45 @@ def parse_options():
     return args
 
 
-test_name = sys.argv[1] if sys.argv[1] != "--rewrite" else sys.argv[2]
-test_dir = os.path.join("tests", test_name)
-if not os.path.exists(test_dir):
-    test_dir = os.path.join("internal", test_name)
+def replaytest(testname):
+    testdir = os.path.join("tests", testname)
+    if not os.path.exists(testdir):
+        testdir = os.path.join("internal", testname)
+    try:
+        print("switching to", testdir)
+        os.chdir(testdir)
+        subprocess.run(["../../lib/python/replay.py"])
+    finally:
+        os.chdir(curdir)
 
-sys.path.insert(0, os.path.join(curdir, test_dir))
-sys.path.append(os.path.join(curdir, "lib", "python"))
-import test  # noqa This import is required to be here because of change of python path above
+
+def run_all_tests_again(args):
+    print("running tests again")
+    fd, tmpfile = tempfile.mkstemp()
+    with os.fdopen(fd, "w") as f:
+        for name in args.testnames:
+            f.write(name + "\n")
+    try:
+        run_tests_cmd = [
+            "./run-tests",
+            "--disc",
+            "large",
+            "--diffs",
+            "--testlist",
+            tmpfile,
+        ]
+        if args.rewrite:
+            run_tests_cmd.append("--rewrite")
+        subprocess.run(run_tests_cmd)
+    finally:
+        os.remove(tmpfile)
 
 
 def main():
     args = parse_options()
-    print("switching to", test_dir)
-    os.chdir(test_dir)
-
-    if not hasattr(test, "contains_manual_proof"):
-        print(
-            """test should define variable 'contains_manual_proof'"""
-            """ in order to be replayed"""
-        )
-        exit(1)
-    if test.contains_manual_proof is False:
-        print("""deleting subdir "proof/sessions" """)
-        shutil.rmtree(os.path.join("proof", "sessions"), ignore_errors=True)
-
-    if not hasattr(test, "replay"):
-        print("""test should define function 'replay'""" """ in order to be replayed""")
-        exit(1)
-    print("running gnatprove to rebuild sessions")
-    test.replay()
-
-    for shape_file in glob.glob("proof/sessions/*/why3shapes*"):
-        print("deleting shapes file ", shape_file)
-        os.remove(shape_file)
-    shutil.rmtree("gnatprove")
-
-    os.chdir(curdir)
-    print("running test again")
-    run_tests_cmd = ["./run-tests", "--disc", "large", "--diffs", test_dir]
-    if args.rewrite:
-        run_tests_cmd.append("--rewrite")
-    out = subprocess.check_output(run_tests_cmd)
-    print(out)
+    for testname in args.testnames:
+        replaytest(testname)
+    run_all_tests_again(args)
 
 
 main()

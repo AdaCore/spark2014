@@ -358,8 +358,6 @@ package VC_Kinds is
    --  analysis.
    type Misc_Warning_Kind is
      (Warn_Address_To_Access,
-      Warn_Assumed_Global_Null,
-      Warn_Assumed_Always_Return,
       Warn_Attribute_Valid,
       Warn_Indirect_Writes_Through_Alias,
       Warn_Indirect_Writes_To_Alias,
@@ -377,6 +375,10 @@ package VC_Kinds is
       Warn_Unreferenced_Function,
       Warn_Unreferenced_Procedure,
       Warn_Variant_Not_Recursive,
+
+      --  Warnings guaranteed to be issued
+      Warn_Assumed_Global_Null,
+      Warn_Assumed_Always_Return,
 
       --  Warnings only issued when using switch --pedantic
       Warn_Image_Attribute_Length,
@@ -465,12 +467,16 @@ package VC_Kinds is
    subtype Default_Warning_Kind is Misc_Warning_Kind range
      Warn_Address_To_Access .. Warn_Variant_Not_Recursive;
 
+   subtype Guaranteed_Warning_Kind is Misc_Warning_Kind range
+     Warn_Assumed_Global_Null .. Warn_Assumed_Always_Return;
+
    subtype Pedantic_Warning_Kind is Misc_Warning_Kind range
      Warn_Image_Attribute_Length .. Warn_Representation_Attribute_Value;
 
    --  Each warning kind is either a default or a pedantic one
    pragma Assert (for all Kind in Misc_Warning_Kind =>
                     (if Kind in Default_Warning_Kind then 1 else 0)
+                  + (if Kind in Guaranteed_Warning_Kind then 1 else 0)
                   + (if Kind in Pedantic_Warning_Kind then 1 else 0)
                   = 1);
 
@@ -479,10 +485,6 @@ package VC_Kinds is
         when Warn_Address_To_Access =>
           "?call to & is assumed to return a valid access"
           & " designating a valid value",
-        when Warn_Assumed_Global_Null =>
-          "?no Global contract available for &",
-        when Warn_Assumed_Always_Return =>
-          "?no returning annotation available for &",
         when Warn_Attribute_Valid =>
           "?attribute Valid is assumed to return True",
         when Warn_Indirect_Writes_Through_Alias =>
@@ -498,7 +500,7 @@ package VC_Kinds is
         when Warn_Function_Is_Valid =>
           "?function Is_Valid is assumed to return True",
         when Warn_Lemma_Procedure_No_Return =>
-          "?lemma procedure cannot be instanciated automatically",
+          "?lemma procedure cannot be instantiated automatically",
         when Warn_Pragma_Annotate_No_Check =>
           "?no check message justified by this pragma",
         when Warn_Pragma_Annotate_Proved_Check =>
@@ -519,6 +521,12 @@ package VC_Kinds is
           "?analyzing unreferenced procedure &",
         when Warn_Variant_Not_Recursive =>
           "?no recursive call visible",
+
+        --  Warnings guaranteed to be issued
+        when Warn_Assumed_Global_Null =>
+          "?no Global contract available for &",
+        when Warn_Assumed_Always_Return =>
+          "?no returning annotation available for &",
 
         --  Warnings only issued when using switch --pedantic
         when Warn_Image_Attribute_Length =>

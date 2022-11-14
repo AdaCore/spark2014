@@ -291,7 +291,7 @@ very_longs.adb:503:33: info: index check proved (CVC5: 2 VC)
 very_longs.adb:503:57: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:503:61: info: index check proved (CVC5: 2 VC)
 very_longs.adb:508:29: medium: length check might fail [reason for check: source and destination arrays for the assignment must have the same length]
-very_longs.adb:508:32: medium: length check might fail [reason for check: array must be of the appropriate length]
+very_longs.adb:508:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:509:29: medium: length check might fail [reason for check: source and destination arrays for the assignment must have the same length]
 very_longs.adb:509:32: medium: length check might fail [reason for check: array must be of the appropriate length]
 very_longs.adb:512:12: info: precondition proved (CVC5: 1 VC)
@@ -340,7 +340,7 @@ very_longs.ads:61:16: info: postcondition proved (CVC5: 1 VC)
 very_longs.ads:61:57: info: overflow check proved (CVC5: 2 VC)
 very_longs.ads:64:70: info: initialization of "Quotient" proved
 very_longs.ads:64:96: info: initialization of "Remainder" proved
-very_longs.ads:70:45: medium: overflow check might fail, cannot prove lower bound for 2*Divisor.Octet_Length [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+very_longs.ads:70:45: medium: overflow check might fail, cannot prove upper bound for 2*Divisor.Octet_Length [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 very_longs.ads:76:08: info: flow dependencies proved
 very_longs.ads:87:10: info: range check proved (CVC5: 2 VC)
 very_longs.ads:91:67: info: index check proved (CVC5: 2 VC)

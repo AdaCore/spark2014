@@ -1,3 +1,4 @@
-comment: "removed colibri from provers due to time limit"
+comment: "removed colibri and alt-ergo from provers due to time limit"
 prove_all:
-    prover: ["cvc5", "altergo", "z3"]
+    prover: ["cvc5", "z3"]
+    counterexample: False

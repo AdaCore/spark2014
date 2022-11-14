@@ -280,7 +280,9 @@ is
 
    function Is_Empty (Container : Map) return Boolean with
      Global => null,
-     Post   => Is_Empty'Result = (Length (Container) = 0);
+     Post   =>
+       Is_Empty'Result = M.Is_Empty (Model (Container))
+         and (Is_Empty'Result = (Length (Container) = 0));
 
    procedure Clear (Container : in out Map) with
      Global => null,

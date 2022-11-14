@@ -1065,7 +1065,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                  and then not Has_Async_Writers (F)
                  and then
                    (not Is_Task_Type (Etype (E))
-                    or else Count_Discriminants (Etype (E)) > 0)
+                    or else Has_Discriminants (Etype (E)))
                then
                   Ada.Text_IO.Put_Line
                     ("error in computation of loop frame condition for "

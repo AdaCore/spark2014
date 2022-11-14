@@ -3,21 +3,21 @@ main.adb:8:14: info: add a contract to analyze it separately from calling contex
 main.adb:8:14: info: local subprogram "Test" only analyzed in the context of calls
 main.adb:11:41: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:19
 main.adb:11:41: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:20
-main.adb:11:41: low: range check might fail, cannot prove lower bound for "Pass : " & Actual'image, in call inlined at main.adb:22 [reason for check: input value must fit in parameter type]
+main.adb:11:41: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:21
 main.adb:11:41: low: range check might fail, cannot prove lower bound for "Pass : " & Actual'image, in call inlined at main.adb:23 [reason for check: input value must fit in parameter type]
-main.adb:11:41: low: range check might fail, cannot prove upper bound for "Pass : " & Actual'image, in call inlined at main.adb:21 [reason for check: input value must fit in parameter type]
+main.adb:11:41: low: range check might fail, cannot prove upper bound for "Pass : " & Actual'image, in call inlined at main.adb:22 [reason for check: input value must fit in parameter type]
 main.adb:13:41: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:19
 main.adb:13:41: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:20
-main.adb:13:41: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'image, in call inlined at main.adb:22
+main.adb:13:41: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:21
 main.adb:13:41: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'image, in call inlined at main.adb:23
-main.adb:13:41: low: range check might fail, cannot prove upper bound for "Fail : " & Actual'image, in call inlined at main.adb:21
+main.adb:13:41: low: range check might fail, cannot prove upper bound for "Fail : " & Actual'image, in call inlined at main.adb:22
 main.adb:13:56: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:19
 main.adb:13:56: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:20
-main.adb:13:56: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : ", in call inlined at main.adb:22
+main.adb:13:56: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:21
 main.adb:13:56: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : ", in call inlined at main.adb:23
-main.adb:13:56: low: range check might fail, cannot prove upper bound for "Fail : " & Actual'Image & ", Expected : ", in call inlined at main.adb:21
+main.adb:13:56: low: range check might fail, cannot prove upper bound for "Fail : " & Actual'Image & ", Expected : ", in call inlined at main.adb:22
 main.adb:13:74: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:19
-main.adb:13:74: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : " & Expected'image, in call inlined at main.adb:20 [reason for check: input value must fit in parameter type]
+main.adb:13:74: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:20
 main.adb:13:74: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : " & Expected'image, in call inlined at main.adb:21 [reason for check: input value must fit in parameter type]
 main.adb:13:74: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : " & Expected'image, in call inlined at main.adb:22 [reason for check: input value must fit in parameter type]
 main.adb:13:74: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : " & Expected'image, in call inlined at main.adb:23 [reason for check: input value must fit in parameter type]

@@ -832,7 +832,10 @@ package body SPARK_Util.Subprograms is
         or else
       Present (Find_Contract (E, Pragma_Depends))
         or else
-      Is_Pure (E));
+      Is_Pure (E)
+        or else
+      Is_Null_Procedure (E)
+     );
 
    ----------------------------
    -- Is_Allocating_Function --
@@ -1256,6 +1259,16 @@ package body SPARK_Util.Subprograms is
          end if;
       end if;
    end Is_Local_Subprogram_Always_Inlined;
+
+   -----------------------
+   -- Is_Null_Procedure --
+   -----------------------
+
+   function Is_Null_Procedure (E : Entity_Id) return Boolean is
+   begin
+      return Ekind (E) = E_Procedure
+        and then Null_Present (Subprogram_Specification (E));
+   end Is_Null_Procedure;
 
    ----------------------------
    -- Is_Protected_Operation --

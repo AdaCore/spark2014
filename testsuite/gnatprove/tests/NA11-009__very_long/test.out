@@ -143,7 +143,7 @@ very_longs.adb:359:07: info: initialization of "Shift_Distance" proved
 very_longs.adb:360:07: info: initialization of "U" proved
 very_longs.adb:360:51: medium: range check might fail, cannot prove upper bound for Dividend.Length + 1 [possible fix: add precondition (Dividend.Length <= Digit_Index_Type'Last - 1) to subprogram at very_longs.ads:65]
 very_longs.adb:361:07: info: initialization of "V" proved
-very_longs.adb:361:42: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+very_longs.adb:361:42: info: range check proved (CVC5: 2 VC)
 very_longs.adb:362:07: info: initialization of "Q_Hat" proved
 very_longs.adb:363:07: info: initialization of "Current_Borrow" proved
 very_longs.adb:373:30: info: unrolling loop

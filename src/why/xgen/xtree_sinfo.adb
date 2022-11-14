@@ -173,6 +173,16 @@ package body Xtree_Sinfo is
                  "Terms", "W_Expr", Id_Some);
       Set_Domain (W_Trigger, EW_Term);
 
+      -----------------
+      -- W_Axiom_Dep --
+      -----------------
+
+      New_Field (W_Axiom_Dep,
+                 "Name", "W_Identifier", Id_One);
+      New_Field (W_Axiom_Dep,
+                 "Kind", "EW_Axiom_Dep_Kind");
+      Set_Domain (W_Axiom_Dep, EW_Term);
+
       ---------------
       -- W_Handler --
       ---------------
@@ -590,6 +600,8 @@ package body Xtree_Sinfo is
                  "Name", "Symbol");
       New_Field (W_Axiom,
                  "Def", "W_Pred", Id_One);
+      New_Field (W_Axiom,
+                 "Dep", "W_Axiom_Dep", Id_Lone);
       Set_Domain (W_Axiom, EW_Term);
 
       ------------

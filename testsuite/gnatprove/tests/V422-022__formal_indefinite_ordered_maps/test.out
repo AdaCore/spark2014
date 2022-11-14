@@ -1,42 +1,44 @@
-spark-containers-formal-unbounded_ordered_maps.ads:380:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:382:08: info: dynamic accessibility check proved (Trivial), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:382:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:386:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:388:08: info: dynamic accessibility check proved (Trivial), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:407:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:445:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:817:39: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:826:17: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:861:42: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:869:21: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:896:42: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:904:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:974:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:989:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:1004:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:1019:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:1060:46: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-formal-unbounded_ordered_maps.ads:1075:40: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
-spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test.adb:4
-spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test.adb:4
-spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test.adb:4
-spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test.adb:4
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
-spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
-spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
-spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
-spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
-spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
-spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:382:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:384:08: info: dynamic accessibility check proved (Trivial), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:384:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:388:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:390:08: info: dynamic accessibility check proved (Trivial), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:409:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:447:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:819:39: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:828:17: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:863:42: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:871:21: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:898:42: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:906:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:976:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:991:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:1006:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:1021:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:1062:46: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-formal-unbounded_ordered_maps.ads:1077:40: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:4
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test.adb:4
+spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test.adb:4
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test.adb:4
+spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test.adb:4
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test.adb:4
 test.adb:8:04: info: initialization of "M" proved
 test.adb:15:19: info: assertion proved (CVC5: 1 VC)
 test.adb:16:19: info: assertion proved (CVC5: 1 VC)
 test.adb:17:19: info: assertion proved (CVC5: 1 VC)
 test.adb:18:04: info: precondition proved (CVC5: 2 VC)
-test.adb:19:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test.adb:20:04: medium: precondition might fail, cannot prove not Contains (Container, Key)
-test.adb:24:22: medium: assertion might fail
-test.adb:25:22: info: precondition proved (Z3: 1 VC)
+test.adb:19:04: info: precondition proved (CVC5: 2 VC)
+test.adb:20:04: info: precondition proved (CVC5: 2 VC)
+test.adb:24:22: info: assertion proved (CVC5: 1 VC)
+test.adb:25:22: info: precondition proved (CVC5: 1 VC)
 test.adb:25:22: medium: assertion might fail

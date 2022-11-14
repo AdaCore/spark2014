@@ -189,7 +189,7 @@ example_recursive.adb:311:66: info: overflow check proved (CVC5: 4 VC)
 example_recursive.adb:311:70: info: overflow check proved (CVC5: 4 VC)
 example_recursive.adb:311:70: info: range check proved (CVC5: 4 VC)
 example_recursive.adb:313:13: info: loop invariant initialization proved (CVC5: 1 VC)
-example_recursive.adb:313:13: info: loop invariant preservation proved (Z3: 1 VC)
+example_recursive.adb:313:13: info: loop invariant preservation proved (CVC5: 1 VC)
 example_recursive.adb:315:13: info: loop invariant initialization proved (CVC5: 1 VC)
 example_recursive.adb:315:13: medium: loop invariant might not be preserved by an arbitrary iteration
 example_recursive.adb:317:25: info: range check proved (CVC5: 2 VC)
@@ -219,13 +219,13 @@ example_recursive.adb:338:04: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:339:04: info: precondition proved (CVC5: 7 VC; Trivial: 1 VC; Z3: 1 VC)
 example_recursive.adb:340:04: info: precondition proved (CVC5: 7 VC; Trivial: 1 VC; Z3: 1 VC)
 example_recursive.adb:341:04: info: precondition proved (CVC5: 8 VC; Trivial: 1 VC)
-example_recursive.adb:342:04: medium: precondition might fail, cannot prove Get (M1, A) = Get (M2, A)
+example_recursive.adb:342:04: info: precondition proved (CVC5: 7 VC; Trivial: 1 VC; Z3: 1 VC)
 example_recursive.adb:344:07: info: no contextual analysis of "Rand" (body not seen yet)
 example_recursive.adb:344:07: warning: assuming "Rand" always returns
 example_recursive.adb:344:07: warning: assuming "Rand" has no effect on global items
 example_recursive.adb:344:07: warning: no Global contract available for "Rand"
 example_recursive.adb:344:07: warning: no returning annotation available for "Rand"
-example_recursive.adb:345:07: info: precondition proved (CVC5: 4 VC; Z3: 1 VC)
+example_recursive.adb:345:07: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:346:22: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:346:22: medium: assertion might fail
 example_recursive.adb:347:10: warning: assuming "Rand" always returns
@@ -233,7 +233,7 @@ example_recursive.adb:347:10: warning: assuming "Rand" has no effect on global i
 example_recursive.adb:347:10: warning: no Global contract available for "Rand"
 example_recursive.adb:347:10: warning: no returning annotation available for "Rand"
 example_recursive.adb:349:07: info: precondition proved (CVC5: 5 VC)
-example_recursive.adb:350:07: medium: precondition might fail, cannot prove Get (M1, A) = Get (M2, A)
+example_recursive.adb:350:07: info: precondition proved (CVC5: 7 VC; Trivial: 1 VC; Z3: 1 VC)
 example_recursive.adb:351:22: info: assertion proved (CVC5: 1 VC)
 example_recursive.adb:351:22: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:352:10: warning: assuming "Rand" always returns

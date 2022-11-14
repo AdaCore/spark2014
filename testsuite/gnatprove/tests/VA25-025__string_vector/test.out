@@ -1,21 +1,25 @@
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test.adb:30
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test.adb:7
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at test.adb:30
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at test.adb:7
-spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:30
-spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
-spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at test.adb:30
-spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at test.adb:7
-spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:30
-spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
-spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:30
-spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
-spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at test.adb:30
-spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at test.adb:7
-spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at test.adb:30
-spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at test.adb:7
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test.adb:30
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test.adb:30
+spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at test.adb:30
+spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:30
+spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at test.adb:30
+spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 2 VC), in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at test.adb:30
+spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test.adb:30
+spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:30
+spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at test.adb:30
+spark-containers-functional-vectors.ads:440:63: info: range check proved (CVC5: 2 VC), in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:30
+spark-containers-functional-vectors.ads:441:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:30
+spark-containers-functional-vectors.ads:441:76: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:7
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at test.adb:30
+spark-containers-functional-vectors.ads:442:30: info: range check proved (CVC5: 2 VC), in instantiation at test.adb:7
 test.adb:5:06: info: data dependencies proved
 test.adb:9:07: info: initialization of "S" proved
 test.adb:11:19: info: precondition proved (CVC5: 2 VC)
@@ -25,18 +29,18 @@ test.adb:14:19: info: precondition proved (CVC5: 2 VC)
 test.adb:15:19: info: precondition proved (CVC5: 2 VC)
 test.adb:16:19: info: precondition proved (CVC5: 2 VC)
 test.adb:17:19: info: precondition proved (CVC5: 2 VC)
-test.adb:18:22: medium: assertion might fail
+test.adb:18:22: info: assertion proved (Z3: 1 VC)
 test.adb:18:29: info: precondition proved (CVC5: 2 VC)
-test.adb:19:22: medium: assertion might fail
+test.adb:19:22: info: assertion proved (Z3: 1 VC)
 test.adb:19:29: info: precondition proved (CVC5: 2 VC)
-test.adb:20:22: medium: assertion might fail
+test.adb:20:22: info: assertion proved (Z3: 1 VC)
 test.adb:20:29: info: precondition proved (CVC5: 2 VC)
+test.adb:21:22: info: assertion proved (Z3: 1 VC)
 test.adb:21:22: info: precondition proved (CVC5: 2 VC)
 test.adb:21:22: info: precondition proved (Trivial: 1 VC)
-test.adb:21:40: medium: assertion might fail, cannot prove E'First = 1
+test.adb:22:22: info: assertion proved (Z3: 1 VC)
 test.adb:22:22: info: precondition proved (CVC5: 2 VC)
 test.adb:22:22: info: precondition proved (Trivial: 1 VC)
-test.adb:22:40: medium: assertion might fail, cannot prove E'Last = 4
 test.adb:26:06: info: data dependencies proved
 test.adb:32:07: info: initialization of "S" proved
 test.adb:34:19: info: precondition proved (CVC5: 2 VC)
@@ -46,15 +50,15 @@ test.adb:37:19: info: precondition proved (CVC5: 2 VC)
 test.adb:38:19: info: precondition proved (CVC5: 2 VC)
 test.adb:39:19: info: precondition proved (CVC5: 2 VC)
 test.adb:40:19: info: precondition proved (CVC5: 2 VC)
-test.adb:41:22: medium: assertion might fail
+test.adb:41:22: info: assertion proved (Z3: 1 VC)
 test.adb:41:29: info: precondition proved (CVC5: 2 VC)
-test.adb:42:22: medium: assertion might fail
+test.adb:42:22: info: assertion proved (Z3: 1 VC)
 test.adb:42:29: info: precondition proved (CVC5: 2 VC)
-test.adb:43:22: medium: assertion might fail
+test.adb:43:22: info: assertion proved (Z3: 1 VC)
 test.adb:43:29: info: precondition proved (CVC5: 2 VC)
+test.adb:44:22: info: assertion proved (Z3: 1 VC)
 test.adb:44:22: info: precondition proved (CVC5: 2 VC)
 test.adb:44:22: info: precondition proved (Trivial: 1 VC)
-test.adb:44:40: medium: assertion might fail, cannot prove E'First = 1
+test.adb:45:22: info: assertion proved (Z3: 1 VC)
 test.adb:45:22: info: precondition proved (CVC5: 2 VC)
 test.adb:45:22: info: precondition proved (Trivial: 1 VC)
-test.adb:45:40: medium: assertion might fail, cannot prove E'Last = 4

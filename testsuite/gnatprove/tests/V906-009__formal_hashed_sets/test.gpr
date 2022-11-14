@@ -1,17 +1,21 @@
-with "sparklib";
-
+with "sparklib_internal";
 project Test is
 
    for Main use ("test.adb");
 
+   for Object_Dir use "obj";
+
    package Builder is
-      for Switches ("ada") use ("-gnata");
       for Global_Configuration_Pragmas use "pragmas.adc";
    end Builder;
+
+   package Compiler is
+      for Default_Switches ("Ada") use
+         ("-gnat2022", "-gnata");
+   end Compiler;
 
    package Prove is
      for Proof_Dir use "proof";
    end Prove;
 
 end Test;
-
