@@ -312,10 +312,10 @@ integer32_parsing.adb:295:09: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:295:47: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 integer32_parsing.adb:295:47: info: range check proved (CVC5: 4 VC)
 integer32_parsing.adb:295:56: info: overflow check proved (CVC5: 2 VC)
-integer32_parsing.adb:297:09: medium: precondition might fail, cannot prove Valid_Int_32 (s1) (e.g. when res = "88888888880" and top = 9) [possible fix: loop at line 267 should mention res and top in a loop invariant]
+integer32_parsing.adb:297:09: medium: precondition might fail, cannot prove Valid_Int_32 (s1) (e.g. when res = "88888888880" and res0 = (others => '8') and top = 9) [possible fix: loop at line 267 should mention res and top in a loop invariant]
 integer32_parsing.adb:297:37: info: range check proved (CVC5: 4 VC)
 integer32_parsing.adb:297:46: info: overflow check proved (CVC5: 2 VC)
-integer32_parsing.adb:298:09: medium: precondition might fail, cannot prove Valid_Int (s1) (e.g. when res = "88888888880" and top = 9) [possible fix: loop at line 267 should mention res and top in a loop invariant]
+integer32_parsing.adb:298:09: medium: precondition might fail, cannot prove Valid_Int (s1) (e.g. when res = "88888888880" and res0(9) = '8' and res0(10) = '8' and res0(11) = '0' and res0(12) = '8' and res0(13) = '8' and top = 9) [possible fix: loop at line 267 should mention res and top in a loop invariant]
 integer32_parsing.adb:298:39: info: range check proved (CVC5: 4 VC)
 integer32_parsing.adb:298:48: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.ads:13:08: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
