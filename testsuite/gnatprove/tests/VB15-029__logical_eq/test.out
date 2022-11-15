@@ -1,0 +1,1 @@
+main.adb:12:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Eq or turning it into an expression function in its unit spec]
