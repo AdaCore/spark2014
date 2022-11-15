@@ -1,9 +1,9 @@
 exponentiate.adb:4:16: medium: postcondition might fail
-exponentiate.adb:17:30: info: loop invariant initialization proved (altergo: 1 VC)
+exponentiate.adb:17:30: info: loop invariant initialization proved (CVC5: 1 VC)
 exponentiate.adb:17:30: medium: loop invariant might not be preserved by an arbitrary iteration
 exponentiate.adb:17:71: medium: divide by zero might fail
 exponentiate.adb:17:71: medium: range check might fail, cannot prove upper bound for Unsigned_32(Exp) mod (Pow2 (Iter)) [reason for check: result of operation must be convertible to the target type of the conversion]
-exponentiate.adb:18:30: info: loop invariant initialization proved (altergo: 1 VC)
+exponentiate.adb:18:30: info: loop invariant initialization proved (CVC5: 1 VC)
 exponentiate.adb:18:30: medium: loop invariant might not be preserved by an arbitrary iteration
 exponentiate.adb:18:55: medium: range check might fail, cannot prove upper bound for Pow2 (Iter) [reason for check: value must be convertible to the target type of the conversion]
 exponentiate.adb:19:30: info: loop invariant initialization proved (CVC5: 1 VC)
