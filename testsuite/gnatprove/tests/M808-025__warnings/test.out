@@ -1,30 +1,37 @@
 Do not stop at compilation:
 ---------------------------
 p.adb:1:14: info: initialization of "Y" proved
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:04: warning: statement has no effect
 p.adb:15:09: warning: unused assignment
 p.adb:18:19: info: assertion proved (CVC5: 1 VC)
 
 Do not issue all compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:1:14: info: initialization of "Y" proved
+p.adb:14:04: warning: statement has no effect
+p.adb:15:09: warning: unused assignment
+p.adb:18:19: info: assertion proved (CVC5: 1 VC)
 gnatprove: error during flow analysis and proof
 
 Do not issue all compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:1:14: info: initialization of "Y" proved
+p.adb:14:04: warning: statement has no effect
+p.adb:15:09: warning: unused assignment
+p.adb:18:19: info: assertion proved (CVC5: 1 VC)
 gnatprove: error during flow analysis and proof
 
 Do not issue any compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:1:14: info: initialization of "Y" proved
+p.adb:14:04: warning: statement has no effect
+p.adb:15:09: warning: unused assignment
+p.adb:18:19: info: assertion proved (CVC5: 1 VC)
 gnatprove: error during flow analysis and proof
 
 Do not issue all compilation warnings, issue flow warnings and continue:
 ------------------------------------------------------------------------
 p.adb:1:14: info: initialization of "Y" proved
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:04: warning: statement has no effect
 p.adb:15:09: warning: unused assignment
 p.adb:18:19: info: assertion proved (CVC5: 1 VC)
@@ -32,7 +39,6 @@ p.adb:18:19: info: assertion proved (CVC5: 1 VC)
 Do not issue all compilation warnings, issue flow warnings and continue:
 ------------------------------------------------------------------------
 p.adb:1:14: info: initialization of "Y" proved
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:04: warning: statement has no effect
 p.adb:15:09: warning: unused assignment
 p.adb:18:19: info: assertion proved (CVC5: 1 VC)
@@ -40,7 +46,6 @@ p.adb:18:19: info: assertion proved (CVC5: 1 VC)
 Do not issue any compilation warnings, issue flow warnings and continue:
 ------------------------------------------------------------------------
 p.adb:1:14: info: initialization of "Y" proved
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:04: warning: statement has no effect
 p.adb:15:09: warning: unused assignment
 p.adb:18:19: info: assertion proved (CVC5: 1 VC)
@@ -63,7 +68,6 @@ p.adb:18:19: info: assertion proved (CVC5: 1 VC)
 Do not stop at compilation:
 ---------------------------
 p.adb:1:14: info: initialization of "Y" proved[#2]
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:04: warning: statement has no effect[#0]
 p.adb:15:09: warning: unused assignment[#1]
 p.adb:18:19: info: assertion proved (CVC5: 1 VC)[#3]
@@ -71,26 +75,34 @@ completed 1 out of 1 (100%)...
 
 Do not issue all compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:1:14: info: initialization of "Y" proved[#2]
+p.adb:14:04: warning: statement has no effect[#0]
+p.adb:15:09: warning: unused assignment[#1]
+p.adb:18:19: info: assertion proved (CVC5: 1 VC)[#3]
 completed 1 out of 1 (100%)...
 gnatprove: error during flow analysis and proof
 
 Do not issue all compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:1:14: info: initialization of "Y" proved[#2]
+p.adb:14:04: warning: statement has no effect[#0]
+p.adb:15:09: warning: unused assignment[#1]
+p.adb:18:19: info: assertion proved (CVC5: 1 VC)[#3]
 completed 1 out of 1 (100%)...
 gnatprove: error during flow analysis and proof
 
 Do not issue any compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
+p.adb:1:14: info: initialization of "Y" proved[#2]
+p.adb:14:04: warning: statement has no effect[#0]
+p.adb:15:09: warning: unused assignment[#1]
+p.adb:18:19: info: assertion proved (CVC5: 1 VC)[#3]
 completed 1 out of 1 (100%)...
 gnatprove: error during flow analysis and proof
 
 Do not issue all compilation warnings, issue flow warnings and continue:
 ------------------------------------------------------------------------
 p.adb:1:14: info: initialization of "Y" proved[#2]
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:04: warning: statement has no effect[#0]
 p.adb:15:09: warning: unused assignment[#1]
 p.adb:18:19: info: assertion proved (CVC5: 1 VC)[#3]
@@ -99,7 +111,6 @@ completed 1 out of 1 (100%)...
 Do not issue all compilation warnings, issue flow warnings and continue:
 ------------------------------------------------------------------------
 p.adb:1:14: info: initialization of "Y" proved[#2]
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:04: warning: statement has no effect[#0]
 p.adb:15:09: warning: unused assignment[#1]
 p.adb:18:19: info: assertion proved (CVC5: 1 VC)[#3]
@@ -108,7 +119,6 @@ completed 1 out of 1 (100%)...
 Do not issue any compilation warnings, issue flow warnings and continue:
 ------------------------------------------------------------------------
 p.adb:1:14: info: initialization of "Y" proved[#2]
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:04: warning: statement has no effect[#0]
 p.adb:15:09: warning: unused assignment[#1]
 p.adb:18:19: info: assertion proved (CVC5: 1 VC)[#3]
@@ -133,7 +143,6 @@ p.adb:18:19: info: assertion proved (CVC5: 1 VC)[#1]
 completed 1 out of 1 (100%)...
 
 p.adb:1:14: info: initialization of "Y" proved
-p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:04: warning: statement has no effect
 p.adb:15:09: warning: unused assignment
 p.adb:18:19: info: assertion proved (CVC5: 1 VC)
