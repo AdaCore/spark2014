@@ -484,10 +484,14 @@ of a program:
 * [SPARK_TASKING]
   If entry points for concurrent tasks (either OS tasks or units of
   computations scheduled by a runtime component) are not identified as tasks in
-  SPARK, then GNATprove assumes that concurrency does not have any adverse
-  effect compared to sequential execution. In particular, interleaving of the
-  tasks by the OS or scheduler should not lead to a different behavior
-  depending on the order in which tasks are executed.
+  SPARK, then concurrent accesses to objects need to be reviewed:
+
+  * All objects whose value may be modified concurrently should be `effectively
+    volatile` in SPARK (see SPARK RM 7.1.2), so that GNATprove takes into
+    account possible concurrent changes in the object's value.
+
+  * Concurrent accesses to objects should be reviewed to ensure there are no
+    unintended race conditions.
 
 * [SPARK_JUSTIFICATION]
   All justifications of check messages should be reviewed (see :ref:`Justifying
