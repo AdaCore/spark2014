@@ -21,4 +21,6 @@ is
    procedure Map_List_Incr (L : access List_Cell) with
      Pre  => For_All_List (L, Small_Enough'Access),
      Post => For_All_List (Copy (L)'Old, L, Is_Incr'Access);
+   pragma Annotate (GNATprove, Intentional, "memory leak might occur",
+                    "The code will be compiled with assertions disabled");
 end P;

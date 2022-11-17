@@ -9,16 +9,13 @@ p.adb:19:14: info: pointer dereference check proved
 p.adb:21:16: info: pointer dereference check proved
 p.adb:22:24: info: pointer dereference check proved
 p.adb:25:10: info: assertion proved
-p.ads:20:07: info: justified that "Updated_If_Less_Than_Threshold" is recursive, terminating annotation could be incorrect
+p.ads:15:13: info: subprogram "Updated_If_Less_Than_Threshold" will terminate, terminating annotation has been proved
 p.ads:22:20: info: pointer dereference check proved
 p.ads:22:47: info: pointer dereference check proved
 p.ads:23:22: info: pointer dereference check proved
 p.ads:23:33: info: pointer dereference check proved
+p.ads:24:19: info: subprogram variant proved
 p.ads:24:53: info: pointer dereference check proved
 p.ads:24:62: info: pointer dereference check proved
 p.ads:30:14: info: postcondition proved
-
-p.ads:30:46: medium: resource or memory leak might occur
-   30 |     Post => Updated_If_Less_Than_Threshold (Copy (L)'Old, L, Threshold);
-      |                                             ^~~~~~~
-  possible explanation: call to allocating function inside an assertion leaks some resource or memory
+p.ads:30:46: info: absence of resource or memory leak justified
