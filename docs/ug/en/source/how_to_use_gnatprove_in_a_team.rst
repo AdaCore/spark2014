@@ -490,8 +490,8 @@ of a program:
     volatile` in SPARK (see SPARK RM 7.1.2), so that GNATprove takes into
     account possible concurrent changes in the object's value.
 
-  * Concurrent accesses to objects should be reviewed to ensure there are no
-    unintended race conditions.
+  * Concurrent accesses to effectively volatile objects should be reviewed to
+    ensure there are no unintended race conditions.
 
 * [SPARK_JUSTIFICATION]
   All justifications of check messages should be reviewed (see :ref:`Justifying
