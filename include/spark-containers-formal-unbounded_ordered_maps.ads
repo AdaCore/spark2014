@@ -29,7 +29,7 @@
 --  Iteration over maps is done using the Iterable aspect, which is SPARK
 --  compatible. "For of" iteration ranges over keys instead of elements.
 
-with SPARK.Containers.Types; use SPARK.Containers.Types;
+with Ada.Containers; use Ada.Containers;
 with SPARK.Containers.Functional.Vectors;
 with SPARK.Containers.Functional.Maps;
 private with Ada.Containers.Red_Black_Trees;
@@ -312,9 +312,7 @@ is
 
    function Is_Empty (Container : Map) return Boolean with
      Global => null,
-     Post   =>
-       Is_Empty'Result = M.Is_Empty (Model (Container))
-         and (Is_Empty'Result = (Length (Container) = 0));
+     Post   => Is_Empty'Result = (Length (Container) = 0);
 
    procedure Clear (Container : in out Map) with
      Global => null,

@@ -28,7 +28,7 @@
 
 pragma SPARK_Mode;
 
-with SPARK.Big_Reals;
+with Ada.Numerics.Big_Numbers.Big_Reals;
 
 package SPARK.Conversions.Float_Conversions is new
-  SPARK.Big_Reals.Float_Conversions (Float);
+  Ada.Numerics.Big_Numbers.Big_Reals.Float_Conversions (Float);

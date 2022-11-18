@@ -33,7 +33,7 @@
 --  If a stable array sorting algorithm with better-than-quadratic worst
 --  case execution time is ever needed, then it could also reside here.
 
-with SPARK.Containers.Types; use SPARK.Containers.Types;
+with Ada.Containers; use Ada.Containers;
 
 private package SPARK.Containers.Stable_Sorting with SPARK_Mode => On is
    pragma Pure;

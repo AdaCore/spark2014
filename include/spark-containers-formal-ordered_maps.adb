@@ -29,8 +29,8 @@
 with Ada.Containers.Red_Black_Trees.Generic_Bounded_Operations;
 with Ada.Containers.Red_Black_Trees.Generic_Bounded_Keys;
 
-with SPARK.Big_Integers;
-use SPARK.Big_Integers;
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
 
 with System; use type System.Address;
 

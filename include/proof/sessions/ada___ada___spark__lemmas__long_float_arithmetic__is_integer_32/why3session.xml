@@ -15,7 +15,7 @@
   <proof prover="1"><result status="valid" steps="33834861"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="1"><result status="valid" steps="18416628"/></proof>
+  <proof prover="0" timelimit="1"><result status="valid" steps="26849"/></proof>
   </goal>
  </transf>
  </goal>

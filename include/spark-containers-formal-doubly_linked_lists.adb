@@ -30,8 +30,8 @@ with SPARK.Containers.Stable_Sorting; use SPARK.Containers.Stable_Sorting;
 
 with System; use type System.Address;
 
-with SPARK.Big_Integers;
-use SPARK.Big_Integers;
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
 
 package body SPARK.Containers.Formal.Doubly_Linked_Lists with
   SPARK_Mode => Off

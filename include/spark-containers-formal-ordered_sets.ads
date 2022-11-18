@@ -43,12 +43,12 @@
 --    container. The operators "<" and ">" that could not be modified that way
 --    have been removed.
 
-with SPARK.Containers.Types; use SPARK.Containers.Types;
+with Ada.Containers; use Ada.Containers;
 with SPARK.Containers.Functional.Maps;
 with SPARK.Containers.Functional.Sets;
 with SPARK.Containers.Functional.Vectors;
-with SPARK.Big_Integers;
-use SPARK.Big_Integers;
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
 private with Ada.Containers.Red_Black_Trees;
 
 generic
@@ -462,9 +462,7 @@ is
 
    function Is_Empty (Container : Set) return Boolean with
      Global => null,
-     Post   =>
-       Is_Empty'Result = M.Is_Empty (Model (Container))
-         and Is_Empty'Result = (Length (Container) = 0);
+     Post   => Is_Empty'Result = (Length (Container) = 0);
 
    procedure Clear (Container : in out Set) with
      Global => null,

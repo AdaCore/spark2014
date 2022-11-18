@@ -133,23 +133,13 @@ is
 
    begin
       for J in Count_Fst .. Count_Lst loop
-         if Equivalent_Elements (Get (Container.Content, J), Item) then
+         if Get (Container.Content, J) = Item then
             return True;
          end if;
       end loop;
 
       return False;
    end Contains;
-
-   -------------------------
-   -- Element_Logic_Equal --
-   -------------------------
-
-   function Element_Logic_Equal (Left, Right : Element_Type) return Boolean is
-   begin
-      Check_Or_Fail;
-      return Left = Right;
-   end Element_Logic_Equal;
 
    --------------------
    -- Empty_Sequence --
@@ -179,8 +169,7 @@ is
 
       for J in 1 .. Count_Lst loop
          if J /= Count_Pos
-              and then not Element_Logic_Equal
-               (Get (Left.Content, J), Get (Right.Content, J))
+              and then Get (Left.Content, J) /= Get (Right.Content, J)
          then
             return False;
          end if;
@@ -209,8 +198,7 @@ is
       for J in 1 .. Count_Lst loop
          if J /= Count_X
               and then J /= Count_Y
-              and then not Element_Logic_Equal
-                  (Get (Left.Content, J), Get (Right.Content, J))
+              and then Get (Left.Content, J) /= Get (Right.Content, J)
          then
             return False;
          end if;
@@ -218,51 +206,6 @@ is
 
       return True;
    end Equal_Except;
-
-   ------------------
-   -- Equal_Prefix --
-   ------------------
-
-   function Equal_Prefix (Left, Right : Sequence) return Boolean is
-     (Length (Left) <= Length (Right)
-      and then
-        (Ptr_Eq (Left.Content, Right.Content)
-         or else
-            (for all N in Left =>
-                  Element_Logic_Equal (Get (Left, N), Get (Right, N)))));
-
-   --------------------------
-   -- Equivalent_Sequences --
-   --------------------------
-
-   function Equivalent_Sequences (Left, Right : Sequence) return Boolean
-   is
-     (Length (Left) = Length (Right)
-      and then
-        (Ptr_Eq (Left.Content, Right.Content)
-         or else
-            (for all N in Left =>
-               Equivalent_Elements (Get (Left, N), Get (Right, N)))));
-
-   ----------
-   -- Find --
-   ----------
-
-   function Find
-     (Container : Sequence;
-      Item      : Element_Type) return Big_Natural
-   is
-      Count_Lst : constant Count_Type := To_Count (Last (Container));
-
-   begin
-      for J in 1 .. Count_Lst loop
-         if Equivalent_Elements (Get (Container.Content, J), Item) then
-            return Big (J);
-         end if;
-      end loop;
-
-      return 0;
-   end Find;
 
    ---------
    -- Get --

@@ -27,11 +27,11 @@
 ------------------------------------------------------------------------------
 
 pragma Ada_2012;
-
 private with SPARK.Containers.Functional.Base;
-private with SPARK.Containers.Types;
 
-with SPARK.Big_Integers; use SPARK.Big_Integers;
+with Ada.Containers; use Ada.Containers;
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
 
 generic
    type Element_Type (<>) is private;
@@ -84,8 +84,8 @@ is
      Global => null,
      Annotate => (GNATprove, Automatic_Instantiation),
      Pre  => Enable_Handling_Of_Equivalence
-       and then not Contains (Container, Item),
-     Post => (for all E of Container => not Equivalent_Elements (Item, E));
+       and then (for some E of Container => Equivalent_Elements (E, Item)),
+     Post => Contains (Container, Item);
 
    function Choose (Container : Set) return Element_Type with
    --  Return an arbitrary element in Container
@@ -319,8 +319,7 @@ is
    with
      Global => null,
      Pre    => not Is_Empty (Cursor),
-     Post   => Element'Result = Choose (Cursor),
-     Annotate => (GNATprove, Inline_For_Proof);
+     Post   => Element'Result = Choose (Cursor);
    --  The next element to be considered for the iteration is the result of
    --  choose on Cursor.
 
@@ -381,8 +380,6 @@ is
 private
 
    pragma SPARK_Mode (Off);
-
-   use SPARK.Containers.Types;
 
    subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
 

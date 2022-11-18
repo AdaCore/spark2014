@@ -32,7 +32,7 @@
 --  unit compatible with SPARK 2014. Note that the API of this unit may be
 --  subject to incompatible changes as SPARK 2014 evolves.
 
-with SPARK.Containers.Types; use SPARK.Containers.Types;
+with Ada.Containers; use Ada.Containers;
 with SPARK.Containers.Functional.Vectors;
 
 generic
