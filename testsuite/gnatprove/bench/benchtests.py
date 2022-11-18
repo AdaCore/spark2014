@@ -7,6 +7,7 @@ import os
 import os.path
 import subprocess
 import config
+from util import mkdir_allow_exists
 
 descr = """
    This script expects a directory structure as follows. The "benchdir"
@@ -17,16 +18,6 @@ descr = """
    results in JSON files of the form
      benchdir/testdir/<provername>.json
 """
-
-
-def mkdir_allow_exists(dirname):
-    try:
-        os.mkdir(dirname)
-    except FileExistsError:
-        pass
-    except Exception as err:
-        print(f"Unexpected {err=}, {type(err)=}")
-        raise
 
 
 def parse_arguments():
