@@ -499,7 +499,7 @@ of a program:
   * They should be `synchronized` in SPARK (see SPARK RM 9) to prevent race
     conditions which could lead to reading invalid values.
 
-  * They should have specified the correct :ref:`Properties of Volatile
+  * They should have specified all necessary :ref:`Properties of Volatile
     Variables` corresponding to their usage.
 
 * [SPARK_ALIASING_ADDRESS]
