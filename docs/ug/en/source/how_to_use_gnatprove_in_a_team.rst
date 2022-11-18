@@ -589,25 +589,6 @@ of a program:
   have been specified. For others, the correctness of calls to standard
   subprograms should be checked separately, by review or testing.
 
-* [SPARK_FORMAL_CONTAINERS]
-  Actual parameters in instances of the :ref:`Formal Containers Library` or
-  :ref:`Functional Containers Library` are subjected to some assumptions:
-
-  * No function parameter shall access global data, nor be a volatile function.
-
-  * The ``"="`` parameter of both functional and formal container libraries
-    shall be an equivalence relation - it shall be reflexive, symmetric, and
-    transitive. The same holds for the ``Equivalent_Keys`` or
-    ``Equivalent_Elements`` parameter of sets and maps.
-
-  * The ``"<"`` parameter of ordered sets and maps shall define a strict weak
-    ordering relationship - it shall be irreflexive, asymmetric, transitive,
-    and in addition, if x < y for any values x and y, then for all other
-    values z, either (x < z) or (z < y) or both.
-
-  * The ``Hash`` parameter of hashed sets and maps shall return the same value
-    for any two equivalent keys or elements.
-
 * [SPARK_FLOATING_POINT]
   When using floating-point numbers, GNATprove relies on the :ref:`Semantics of
   Floating Point Operations` as defined in IEEE-754. The compiler, OS, and
