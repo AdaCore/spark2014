@@ -519,11 +519,10 @@ of a program:
   Check Messages`), both when using :ref:`Direct Justification with Pragma
   Annotate` and when using :ref:`Indirect Justification with Pragma Assume`.
 
-* [SPARK_EXTERNAL] The modeling of :ref:`Interfaces to the Physical World`
-  needs to be reviewed for objects and abstract states whose value may be
-  modified concurrently.  Regarding objects, this only concerns objects whose
-  address is specified through an address clause or aspect. Regarding abstract
-  states, this only concerns abstract states whose refinement is not in SPARK.
+* [SPARK_EXTERNAL]
+  The modeling of :ref:`Interfaces to the Physical World` needs to be reviewed
+  for objects whose value may be modified concurrently, when the address of the
+  object is specified through an address clause or aspect.
 
   * They should be `effectively volatile` in SPARK (see SPARK RM 7.1.2), so
     that GNATprove takes into account possible concurrent changes in the
@@ -684,6 +683,12 @@ only part of a program:
   Objects accessed outside of SPARK, either directly for statically allocated
   objects, or through their address or a pointer for all objects, should comply
   with the assumptions described in [SPARK_EXTERNAL] and [SPARK_EXTERNAL_VALID].
+
+* [ADA_EXTERNAL_ABSTRACT_STATE]
+  The modeling of :ref:`Interfaces to the Physical World` needs to be reviewed
+  for abstract states whose value may be modified concurrently, when their
+  refinement is not in SPARK. These abstract states should comply with the
+  assumptions described in [SPARK_EXTERNAL].
 
 * [ADA_PRIVATE_TYPES]
   Private types whose full view is not analyzed, yet are used in
