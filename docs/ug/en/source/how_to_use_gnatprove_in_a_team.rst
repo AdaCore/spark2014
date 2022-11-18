@@ -528,15 +528,10 @@ of a program:
     volatile property if they can be affected by the modification of another
     object.
 
+  * The objects themselves have valid values for their type when read.
+
   GNATprove might issue warnings to alert the user about possible unsoundness
   in this case.
-
-* [SPARK_VALIDITY]
-  The use of instances of ``Unchecked_Conversion`` and address clauses or
-  aspects should not violate the data initialization and the non-aliasing
-  policies of SPARK. See section :ref:`Data Validity` for cases where GNATprove
-  issues a warning to alert the user about possible unsoundness if these
-  policies are violated.
 
 .. index:: Valid; limitation
 
