@@ -538,10 +538,10 @@ of a program:
 * [SPARK_VALID]
   Attribute 'Valid is currently assumed to always return True, as no invalid
   value can be constructed in SPARK (see :ref:`Data Validity`).  If assumptions
-  [SPARK_VALIDITY], [SPARK_EXTERNAL_VALID], and [ADA_EXTERNAL] are satisfied,
-  then this assumption will be satisfied as well. However, it is valuable to
-  explicitly state this assumption because it highlights an important
-  consequence of compliance with the other assumptions.
+  [SPARK_ALIASING_ADDRESS], [SPARK_EXTERNAL_VALID], and [ADA_EXTERNAL] are
+  satisfied, then this assumption will be satisfied as well. However, it is
+  valuable to explicitly state this assumption because it highlights an
+  important consequence of compliance with the other assumptions.
 
 .. index:: validity; limitation
 
