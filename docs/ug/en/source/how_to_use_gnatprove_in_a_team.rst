@@ -498,21 +498,21 @@ of a program:
   Check Messages`), both when using :ref:`Direct Justification with Pragma
   Annotate` and when using :ref:`Indirect Justification with Pragma Assume`.
 
-* [SPARK_EXTERNAL]
-  The modeling of :ref:`Interfaces to the Physical World` needs to be reviewed
-  for objects whose address is specified through an address clause or aspect:
+* [SPARK_EXTERNAL] The modeling of :ref:`Interfaces to the Physical World`
+  needs to be reviewed for objects and abstract states whose value may be
+  modified concurrently.  Regarding objects, this only concerns objects whose
+  address is specified through an address clause or aspect. Regarding abstract
+  states, this only concerns abstract states whose refinement is not in SPARK.
 
-  * All objects whose value may be modified concurrently should be `effectively
-    volatile` in SPARK (see SPARK RM 7.1.2), so that GNATprove takes into
-    account possible concurrent changes in the object's value.
+  * They should be `effectively volatile` in SPARK (see SPARK RM 7.1.2), so
+    that GNATprove takes into account possible concurrent changes in the
+    object's value.
 
-  * All objects whose value may be modified concurrently should be
-    `synchronized` in SPARK (see SPARK RM 9) to prevent race conditions which
-    could lead to reading invalid values.
+  * They should be `synchronized` in SPARK (see SPARK RM 9) to prevent race
+    conditions which could lead to reading invalid values.
 
-  * All synchronized objects which are :ref:`Volatile Variables` and all
-    :ref:`External State Abstraction` should have specified the correct
-    :ref:`Properties of Volatile Variables` corresponding to their usage.
+  * They should have specified the correct :ref:`Properties of Volatile
+    Variables` corresponding to their usage.
 
 * [SPARK_ALIASING_ADDRESS]
   Aliases between objects annotated with an address clause or aspect whose
