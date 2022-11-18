@@ -511,9 +511,10 @@ of a program:
     :ref:`Properties of Volatile Variables` corresponding to their usage.
 
 * [SPARK_ALIASING_ADDRESS]
-  Aliases between objects annotated with an address clause whose expression
-  is not a reference to the Address attribute on a part of a standalone object
-  or constant are ignored by GNATprove. Reviews are necessary to ensure that:
+  Aliases between objects annotated with an address clause or aspect whose
+  expression is not a reference to the Address attribute on a part of a
+  standalone object or constant are ignored by GNATprove. Reviews are necessary
+  to ensure that:
 
   * Other objects visible from SPARK code which might be affected by a
     modification of such a variable have the ``Asynchronous_Writers`` volatile
@@ -527,11 +528,11 @@ of a program:
   in this case.
 
 * [SPARK_VALIDITY]
-  The use of instances of ``Unchecked_Conversion`` and address clauses should
-  not violate the data initialization and the non-aliasing policies of
-  SPARK. See section :ref:`Data Validity` for cases where GNATprove issues a
-  warning to alert the user about possible unsoundness if these policies are
-  violated.
+  The use of instances of ``Unchecked_Conversion`` and address clauses or
+  aspects should not violate the data initialization and the non-aliasing
+  policies of SPARK. See section :ref:`Data Validity` for cases where GNATprove
+  issues a warning to alert the user about possible unsoundness if these
+  policies are violated.
 
 .. index:: Valid; limitation
 
