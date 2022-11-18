@@ -65,6 +65,14 @@ is
       function Get (M : Memory_Map; A : Address_Type) return Object renames
         Address_To_Object_Maps.Get;
 
+      function Object_Logic_Equal (Left, Right : Object) return Boolean with
+        Ghost,
+        Import,
+        Global => null,
+        Annotate => (GNATprove, Logical_Equal);
+      --  Logical equality on objects. It is marked as import as it cannot be
+      --  safely executed on most object types.
+
       --  Functions to make it easier to specify the frame of subprograms
       --  modifying a memory.
 
@@ -82,7 +90,7 @@ is
       is
         (for all A in Address_Type =>
            (if not Target (A) and Valid (M1, A) and Valid (M2, A)
-            then Get (M1, A) = Get (M2, A)))
+            then Object_Logic_Equal (Get (M1, A), Get (M2, A))))
       with Ghost;
 
       function Allocates
@@ -129,7 +137,7 @@ is
                              Only (Address (P)))
          and then Deallocates (Memory_Map'(+Memory)'Old, +Memory, None)
          and then Writes (Memory_Map'(+Memory)'Old, +Memory, None)
-         and then Deref (Memory, P) = O;
+         and then Object_Logic_Equal (Deref (Memory, P), O);
 
    --  Primitives for classical pointer functionalities. Deref will copy the
    --  designated value.
@@ -144,7 +152,7 @@ is
      Global => null,
      Pre    => Valid (+Memory, Address (P)),
      Post   =>
-       Get (+Memory, Address (P)) = O
+       Object_Logic_Equal (Get (+Memory, Address (P)), O)
          and then Allocates (Memory_Map'(+Memory)'Old, +Memory, None)
          and then Deallocates (Memory_Map'(+Memory)'Old, +Memory, None)
          and then Writes (Memory_Map'(+Memory)'Old,
@@ -194,7 +202,9 @@ is
    with
      Global => null,
      Pre    => Valid (+Memory, Address (P)),
-     Post   => Constant_Reference'Result.all = Get (+Memory, Address (P));
+     Post   =>
+       Object_Logic_Equal
+         (Constant_Reference'Result.all, Get (+Memory, Address (P)));
 
    function At_End (X : access constant Object) return access constant Object
    is
@@ -220,7 +230,9 @@ is
      Global => null,
      Pre    => Valid (+Memory.all, Address (P)),
      Post   =>
-       At_End (Reference'Result).all = Get (+At_End (Memory).all, Address (P))
+       Object_Logic_Equal
+         (At_End (Reference'Result).all,
+          Get (+At_End (Memory).all, Address (P)))
          and then Allocates (+Memory.all, +At_End (Memory).all, None)
          and then Deallocates (+Memory.all, +At_End (Memory).all, None)
          and then Writes (+Memory.all,

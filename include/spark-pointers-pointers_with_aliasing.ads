@@ -63,6 +63,17 @@ is
       function Valid (M : Memory_Type; A : Address_Type) return Boolean renames
         Has_Key;
 
+      function Object_Logic_Equal (Left, Right : Object) return Boolean with
+        Ghost,
+        Import,
+        Global => null,
+        Annotate => (GNATprove, Logical_Equal);
+      --  Logical equality on objects. It is marked as import as it cannot be
+      --  safely executed on most object types.
+
+      --  Functions to make it easier to specify the frame of subprograms
+      --  modifying a memory.
+
       type Addresses is array (Address_Type) of Boolean with Ghost;
 
       function None return Addresses is
@@ -77,7 +88,7 @@ is
       is
         (for all A in Address_Type =>
            (if not Target (A) and Valid (M1, A) and Valid (M2, A)
-            then Get (M1, A) = Get (M2, A)))
+            then Object_Logic_Equal (Get (M1, A), Get (M2, A))))
       with Ghost;
 
       function Allocates
@@ -126,7 +137,7 @@ is
          and then Allocates (Memory'Old, Memory, Only (Address (P)))
          and then Deallocates (Memory'Old, Memory, None)
          and then Writes (Memory'Old, Memory, None)
-         and then Deref (P) = O;
+         and then Object_Logic_Equal (Deref (P), O);
 
    --  Primitives for classical pointer functionalities. Deref will copy the
    --  designated value.
@@ -141,7 +152,7 @@ is
      Global => (In_Out => Memory),
      Pre    => Valid (Memory, Address (P)),
      Post   =>
-       Get (Memory, Address (P)) = O
+       Object_Logic_Equal (Get (Memory, Address (P)), O)
          and then Allocates (Memory'Old, Memory, None)
          and then Deallocates (Memory'Old, Memory, None)
          and then Writes (Memory'Old, Memory, Only (Address (P)));
@@ -167,7 +178,9 @@ is
    with
      Global => null,
      Pre    => Valid (Memory, Address (P)),
-     Post   => Constant_Reference'Result.all = Get (Memory, Address (P));
+     Post   =>
+       Object_Logic_Equal
+         (Constant_Reference'Result.all, Get (Memory, Address (P)));
 
    function At_End (X :    access constant Object)
                     return access constant Object
@@ -191,7 +204,9 @@ is
      Global => null,
      Pre    => Valid (Memory.all, Address (P)),
      Post   =>
-       At_End (Reference'Result).all = Get (At_End (Memory).all, Address (P))
+       Object_Logic_Equal
+         (At_End (Reference'Result).all,
+          Get (At_End (Memory).all, Address (P)))
          and then Allocates (Memory.all, At_End (Memory).all, None)
          and then Deallocates (Memory.all, At_End (Memory).all, None)
          and then Writes (Memory.all, At_End (Memory).all, Only (Address (P)));
