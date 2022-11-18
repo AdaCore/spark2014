@@ -481,18 +481,6 @@ Complete List of Assumptions
 The following assumptions need to be addressed when using SPARK on all or part
 of a program:
 
-* [SPARK_TASKING]
-  If entry points for concurrent tasks (either OS tasks or units of
-  computations scheduled by a runtime component) are not identified as tasks in
-  SPARK, then concurrent accesses to objects need to be reviewed:
-
-  * All objects whose value may be modified concurrently should be `effectively
-    volatile` in SPARK (see SPARK RM 7.1.2), so that GNATprove takes into
-    account possible concurrent changes in the object's value.
-
-  * Concurrent accesses to effectively volatile objects should be reviewed to
-    ensure there are no unintended race conditions.
-
 * [SPARK_JUSTIFICATION]
   All justifications of check messages should be reviewed (see :ref:`Justifying
   Check Messages`), both when using :ref:`Direct Justification with Pragma
@@ -647,6 +635,17 @@ of a program:
 
 In addition, the following assumptions need to be addressed when using SPARK on
 only part of a program:
+
+* [ADA_TASKING]
+  If entry points for concurrent tasks (either OS tasks or units of
+  computations scheduled by a runtime component) are not identified as tasks in
+  SPARK, then during each invocation of a SPARK subprogram from such a task
+  such that the SPARK subprogram is not being called directly or indirectly
+  from another SPARK subprogram in the same task, the Global contract and
+  by-reference parameters of the subprogram shall not conflict with either (a)
+  the Global contract and by-reference parameters of any other such subprogram
+  executing concurrently in another such task or (b) the Global contract of any
+  concurrent task identified as a task in SPARK.
 
 * [ADA_EXTERNAL]
   Objects accessed outside of SPARK, either directly for statically allocated
