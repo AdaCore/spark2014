@@ -125,7 +125,7 @@ is
       --  Logical equality cannot be safely executed on most element or key
       --  types. Thus, this package should only be instantiated with ghost code
       --  disabled. This is enforced by having a special imported procedure
-      --  Fail_When_Body_Off that will lead to link-time errors otherwise.
+      --  Check_Or_Fail that will lead to link-time errors otherwise.
 
       function Key_Logic_Equal (Left, Right : Key_Type) return Boolean with
         Global => null,

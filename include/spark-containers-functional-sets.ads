@@ -71,9 +71,12 @@ is
    --  Sets are empty when default initialized.
    --  "For in" quantification over sets should not be used.
    --  "For of" quantification over sets iterates over elements.
-   --  Note that, for proof, "for of" quantification is understood modulo
-   --  equivalence (the range of quantification comprises all the elements that
-   --  are equivalent to any element of the set).
+   --  For proof, "for of" quantification is understood modulo equivalence (the
+   --  range of quantification comprises all the elements that are equivalent
+   --  to any element of the set), so it is cannot be safely executed in
+   --  general. Thus, quantified expression should only be used in disabled
+   --  ghost code. This is enforced by having a special imported procedure
+   --  Check_Or_Fail that will lead to link-time errors otherwise.
 
    -----------------------
    --  Basic operations --
@@ -427,31 +430,7 @@ private
       Content : Containers.Container;
    end record;
 
-   --------------------------------------------------
-   -- Iteration Primitives Used For Quantification --
-   --------------------------------------------------
-
    type Private_Key is new Count_Type;
-
-   function Iter_Element
-     (Container : Set;
-      Key       : Private_Key) return Element_Type
-   is
-     (Containers.Get (Container.Content, Count_Type (Key)));
-
-   function Iter_First (Container : Set) return Private_Key is (1);
-
-   function Iter_Has_Element
-     (Container : Set;
-      Key       : Private_Key) return Boolean
-   is
-     (Count_Type (Key) in 1 .. Containers.Length (Container.Content));
-
-   function Iter_Next
-     (Container : Set;
-      Key       : Private_Key) return Private_Key
-   is
-     (if Key = Private_Key'Last then 0 else Key + 1);
 
    ----------------------------------
    -- Iteration on Functional Sets --

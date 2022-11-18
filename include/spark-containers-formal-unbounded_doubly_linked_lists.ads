@@ -85,7 +85,7 @@ is
       --  Logical equality cannot be safely executed on most element types.
       --  Thus, this package should only be instantiated with ghost code
       --  disabled. This is enforced by having a special imported procedure
-      --  Fail_When_Body_Off that will lead to link-time errors otherwise.
+      --  Check_Or_Fail that will lead to link-time errors otherwise.
 
       function Element_Logic_Equal (Left, Right : Element_Type) return Boolean
       with

@@ -96,9 +96,12 @@ is
    --  Maps are empty when default initialized.
    --  "For in" quantification over maps should not be used.
    --  "For of" quantification over maps iterates over keys.
-   --  Note that, for proof, "for of" quantification is understood modulo
-   --  equivalence (the range of quantification comprises all the keys that are
-   --  equivalent to any key of the map).
+   --  For proof, "for of" quantification is understood modulo equivalence (the
+   --  range of quantification comprises all the keys that are equivalent
+   --  to any key of the map), so it is cannot be safely executed in
+   --  general. Thus, quantified expression should only be used in disabled
+   --  ghost code. This is enforced by having a special imported procedure
+   --  Check_Or_Fail that will lead to link-time errors otherwise.
 
    -----------------------
    --  Basic operations --
@@ -398,7 +401,7 @@ is
    --  Logical equality on elements cannot be safely executed on most element
    --  types. Thus, this package should only be instantiated with ghost code
    --  disabled. This is enforced by having a special imported procedure
-   --  Fail_When_Body_Off that will lead to link-time errors otherwise.
+   --  Check_Or_Fail that will lead to link-time errors otherwise.
 
    function Element_Logic_Equal (Left, Right : Element_Type) return Boolean
    with
@@ -557,31 +560,7 @@ private
       Elements : Element_Containers.Container;
    end record;
 
-   --------------------------------------------------
-   -- Iteration Primitives Used For Quantification --
-   --------------------------------------------------
-
    type Private_Key is new Count_Type;
-
-   function Iter_First (Container : Map) return Private_Key is (1);
-
-   function Iter_Has_Element
-     (Container : Map;
-      Key       : Private_Key) return Boolean
-   is
-     (Count_Type (Key) in 1 .. Key_Containers.Length (Container.Keys));
-
-   function Iter_Element
-     (Container : Map;
-      Key       : Private_Key) return Key_Type
-   is
-     (Key_Containers.Get (Container.Keys, Count_Type (Key)));
-
-   function Iter_Next
-     (Container : Map;
-      Key       : Private_Key) return Private_Key
-   is
-     (if Key = Private_Key'Last then 0 else Key + 1);
 
    ----------------------------------
    -- Iteration on Functional Maps --

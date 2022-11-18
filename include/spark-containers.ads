@@ -28,6 +28,6 @@
 
 package SPARK.Containers with SPARK_Mode, Pure is
 
-   procedure Check_Or_Fail with Ghost, Import;
+   procedure Check_Or_Fail with Import;
 
 end SPARK.Containers;

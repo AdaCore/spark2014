@@ -250,15 +250,6 @@ available resources:
 
 .. note::
 
-    Functional sets and maps represent elements modulo equivalence. For proof,
-    the range of quantification over their content includes all elements that
-    are equivalent to elements included in the container. On the other hand, for
-    execution, the iteration is only done on elements which have actually been
-    included in the container. This difference may make interaction between test
-    and proof tricky when the equivalence relation is not the equality.
-
-.. note::
-
    Instances of container packages, both functional and formal, are subjected
    to particular constraints which are necessary for the contracts on the
    instance to be correct. For example, container primitives don't comply with

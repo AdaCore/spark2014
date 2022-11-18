@@ -243,6 +243,55 @@ package body SPARK.Containers.Functional.Maps with SPARK_Mode => Off is
       return Length (Container.Keys) = 0;
    end Is_Empty;
 
+   ------------------
+   -- Iter_Element --
+   ------------------
+
+   function Iter_Element
+     (Container : Map;
+      Key       : Private_Key) return Key_Type
+   is
+   begin
+      Check_Or_Fail;
+      return Key_Containers.Get (Container.Keys, Count_Type (Key));
+   end Iter_Element;
+
+   ----------------
+   -- Iter_First --
+   ----------------
+
+   function Iter_First (Container : Map) return Private_Key is
+   begin
+      Check_Or_Fail;
+      return 1;
+   end Iter_First;
+
+   ----------------------
+   -- Iter_Has_Element --
+   ----------------------
+
+   function Iter_Has_Element
+     (Container : Map;
+      Key       : Private_Key) return Boolean
+   is
+   begin
+      Check_Or_Fail;
+      return Count_Type (Key) in 1 .. Key_Containers.Length (Container.Keys);
+   end Iter_Has_Element;
+
+   ---------------
+   -- Iter_Next --
+   ---------------
+
+   function Iter_Next
+     (Container : Map;
+      Key       : Private_Key) return Private_Key
+   is
+   begin
+      Check_Or_Fail;
+      return (if Key = Private_Key'Last then 0 else Key + 1);
+   end Iter_Next;
+
    -------------------
    -- Keys_Included --
    -------------------
