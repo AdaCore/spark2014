@@ -1017,7 +1017,7 @@ package body SPARK_Util.Types is
          Current := Parent;
       end loop;
 
-      --  Check for invariants on components.
+      --  Check for invariants on components
 
       if Is_Array_Type (Rep_Ty) then
          return Invariant_Check_Needed (Component_Type (Rep_Ty));
@@ -1052,6 +1052,25 @@ package body SPARK_Util.Types is
                end if;
                Next_Component (Comp);
             end loop;
+         end;
+
+      --  We stop the search at access-to-incomplete types, as they might
+      --  not be marked yet. This is possible because there is a tool
+      --  limitation which disallows access to incomplete types if they need
+      --  an invariant check.
+
+      elsif Is_Access_Type (Rep_Ty)
+        and then not Is_Access_Subprogram_Type (Rep_Ty)
+      then
+         declare
+            Des_Ty : constant Entity_Id := Directly_Designated_Type
+              (Base_Retysp (Rep_Ty));
+            --  Use the base type as some subtypes of access to incomplete
+            --  types introduced by the frontend designate record subtypes
+            --  instead.
+         begin
+            return not Acts_As_Incomplete_Type (Des_Ty)
+              and then Invariant_Check_Needed (Des_Ty);
          end;
       end if;
       return False;

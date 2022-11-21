@@ -105,7 +105,10 @@ package body SPARK_Atree.Entities is
 
    function Designates_Incomplete_Type (E : Access_Kind_Id) return Boolean is
       Des_Ty : constant Type_Kind_Id :=
-        Einfo.Entities.Directly_Designated_Type (E);
+        Einfo.Entities.Directly_Designated_Type
+          (SPARK_Util.Types.Base_Retysp (E));
+      --  Use the base type as some subtypes of access to incomplete types
+      --  introduced by the frontend designate record subtypes instead.
    begin
       return SPARK_Util.Types.Acts_As_Incomplete_Type (Des_Ty);
    end Designates_Incomplete_Type;

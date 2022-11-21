@@ -5124,13 +5124,14 @@ package body Gnat2Why.Expr is
             begin
                --  If Rep_Ty_Ext is an Itype, it might depend on discriminants
                --  of an enclosing record type. In this case, we will not be
-               --  able to express the discriminant contraints of its
+               --  able to express the discriminant or bound contraints of its
                --  designated type in a separate predicate. We do this
                --  generation here and generate the separate predicate for the
                --  Etype.
 
                if Is_Itype (Rep_Ty_Ext)
-                 and then Count_Discriminants (Des_Ty) > 0
+                 and then
+                   (Has_Discriminants (Des_Ty) or else Has_Array_Type (Des_Ty))
                  and then Is_Constrained (Des_Ty)
                  and then not Is_Constrained
                    (Directly_Designated_Type (Etype (Rep_Ty_Ext)))
@@ -5154,6 +5155,7 @@ package body Gnat2Why.Expr is
                            Params => Params)));
                   Rep_Ty_Ext := Etype (Rep_Ty_Ext);
                   Des_Ty := Retysp (Directly_Designated_Type (Rep_Ty_Ext));
+                  Dyn_Inv_Pos := Loc_Incompl_Acc.Find (Rep_Ty_Ext);
                end if;
 
                pragma Assert
@@ -5972,7 +5974,7 @@ package body Gnat2Why.Expr is
          end loop;
       end;
 
-      --  Check for invariants on components.
+      --  Check for invariants on components
 
       if Include_Comp then
 
@@ -5986,7 +5988,7 @@ package body Gnat2Why.Expr is
               (Left  => Pred,
                Right => Invariant_For_Array (Expr, Rep_Ty));
 
-         --  For array record types, produce:
+         --  For record types, produce:
          --  invariant (r.d1) /\ ...
          --      /\ (check_for_f1 (r) -> invariant (r.f1)) /\ ...
 
@@ -5998,6 +6000,40 @@ package body Gnat2Why.Expr is
             Pred := New_And_Pred
               (Left  => Pred,
                Right => Invariant_For_Record (Expr, Rep_Ty));
+
+         --  For access types, produce:
+         --      not r.is_null -> invariant (r.pointer_value)
+         --
+         --  We do not consider access to incomplete types. Indeed, these
+         --  access types cannot contain types for which an invariant check
+         --  is needed (see tool limitations). Supporting access to incomplete
+         --  type here would require either disallowing or handling recursive
+         --  structures.
+
+         elsif Is_Access_Type (Rep_Ty)
+           and then not Is_Access_Subprogram_Type (Rep_Ty)
+           and then not Designates_Incomplete_Type (Rep_Ty)
+         then
+            declare
+               C_Expr   : constant W_Term_Id := New_Pointer_Value_Access
+                 (Ada_Node => Empty,
+                  E        => Rep_Ty,
+                  Name     => Expr);
+               Comp_Inv : constant W_Pred_Id := Invariant_For_Comp
+                 (C_Expr, Directly_Designated_Type (Rep_Ty), Empty);
+            begin
+               if Comp_Inv /= True_Pred then
+                  Pred := New_And_Pred
+                    (Left  => Pred,
+                     Right => New_Conditional
+                       (Condition =>
+                            New_Not (Right => Pred_Of_Boolean_Term
+                                     (New_Pointer_Is_Null_Access
+                                          (E    => Rep_Ty,
+                                           Name => +Expr))),
+                        Then_Part => Comp_Inv));
+               end if;
+            end;
          end if;
       end if;
 

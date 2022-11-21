@@ -4534,6 +4534,15 @@ package body SPARK_Definition is
 
                      if not Retysp_In_SPARK (Des_Ty) then
                         Mark_Violation (E, From => Des_Ty);
+
+                     --  Reject deferred access to types for which an invariant
+                     --  check is needed. This makes it possible to stop at
+                     --  (possibly unmarked) deferred incomplete types when
+                     --  looking for type invariants elsewhere in marking.
+
+                     elsif Invariant_Check_Needed (Des_Ty) then
+                        Mark_Unsupported (Lim_Type_Inv_Access_Type, E);
+
                      else
 
                         --  Attempt to insert the view in the incomplete views
@@ -4555,9 +4564,16 @@ package body SPARK_Definition is
                                   (Node_Maps.Element (Pos))) /=
                                 E_Subprogram_Type
                               and then
-                                Acts_As_Incomplete_Type
-                                (Directly_Designated_Type
-                                     (Node_Maps.Element (Pos))));
+                                (Acts_As_Incomplete_Type
+                                   (Directly_Designated_Type
+                                       (Node_Maps.Element (Pos)))
+                                 or else
+                                   (Ekind (Node_Maps.Element (Pos)) =
+                                        E_Access_Subtype
+                                    and then Acts_As_Incomplete_Type
+                                        (Directly_Designated_Type
+                                            (Base_Retysp
+                                                (Node_Maps.Element (Pos)))))));
                         end;
                      end if;
 
@@ -6792,6 +6808,16 @@ package body SPARK_Definition is
                  and then From_Limited_With (Des_Ty)
                then
                   Reject_Incomplete_Type_From_Limited_With (Des_Ty, E);
+
+               --  Use the base type as some subtypes of access to incomplete
+               --  types introduced by the frontend designate record subtypes
+               --  instead (see CA11019).
+
+               elsif Ekind (E) in E_Access_Subtype
+                 and then Acts_As_Incomplete_Type
+                   (Directly_Designated_Type (Base_Retysp (E)))
+               then
+                  Access_To_Incomplete_Types.Append (E);
 
                elsif not Retysp_In_SPARK (Des_Ty) then
                   Mark_Violation (E, From => Des_Ty);
