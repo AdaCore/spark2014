@@ -1,7 +1,7 @@
 diff.adb:13:28: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC)
 diff.adb:13:28: info: range check proved (CVC5: 2 VC)
 diff.adb:15:22: info: assertion proved (CVC5: 1 VC)
-diff.adb:22:28: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: add precondition (2**J in U63) to subprogram at line 19]
+diff.adb:22:28: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
 diff.adb:24:22: info: assertion proved (Z3: 1 VC)
 diff.adb:31:34: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC)
 diff.adb:31:34: info: range check proved (CVC5: 2 VC)
@@ -10,7 +10,7 @@ diff.adb:33:32: info: overflow check proved (CVC5: 2 VC)
 diff.adb:34:22: info: assertion proved (CVC5: 1 VC)
 diff.adb:34:23: info: overflow check proved (CVC5: 2 VC)
 diff.adb:35:22: info: assertion proved (CVC5: 1 VC)
-diff.adb:42:34: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: add precondition (2**J in U63) to subprogram at line 39]
+diff.adb:42:34: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
 diff.adb:44:22: info: assertion proved (CVC5: 1 VC)
 diff.adb:44:32: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 diff.adb:45:22: info: assertion proved (Z3: 1 VC)
@@ -23,7 +23,7 @@ diff.adb:60:34: info: range check proved (CVC5: 2 VC)
 diff.adb:62:22: info: assertion proved (CVC5: 1 VC)
 diff.adb:62:28: info: overflow check proved (CVC5: 2 VC)
 diff.adb:63:22: info: assertion proved (CVC5: 1 VC)
-diff.adb:70:34: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: add precondition (2**J in U63) to subprogram at line 67]
+diff.adb:70:34: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
 diff.adb:71:34: info: division check proved (CVC5: 1 VC)
 diff.adb:73:22: info: assertion proved (Z3: 1 VC)
 diff.adb:73:28: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]

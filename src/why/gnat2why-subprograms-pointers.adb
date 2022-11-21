@@ -806,9 +806,15 @@ package body Gnat2Why.Subprograms.Pointers is
             --  in unproved checks
 
             Emit (Th,
-                  New_Guarded_Axiom (Name     => NID (Def_Axiom),
-                                     Binders  => To_Binder_Array (Binders),
-                                     Def      => Call_Eq));
+                  New_Guarded_Axiom
+                    (Name     => NID (Def_Axiom),
+                     Binders  => To_Binder_Array (Binders),
+                     Def      => Call_Eq,
+                     Dep      =>
+                       New_Axiom_Dep
+                         (Name => Get_Logic_Function
+                              (Directly_Designated_Type (Etype (Expr))),
+                          Kind => EW_Axdep_Func)));
 
             Emit (Th,
                   New_Guarded_Axiom

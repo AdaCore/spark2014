@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
 import argparse
+import json
 import multiprocessing
+import os
 import os.path
 import subprocess
-
-timelimit = 10
+import config
 
 descr = """
    This script expects a directory structure as follows. The "benchdir"
@@ -18,6 +19,16 @@ descr = """
 """
 
 
+def mkdir_allow_exists(dirname):
+    try:
+        os.mkdir(dirname)
+    except FileExistsError:
+        pass
+    except Exception as err:
+        print(f"Unexpected {err=}, {type(err)=}")
+        raise
+
+
 def parse_arguments():
     args = None
     parser = argparse.ArgumentParser(description=descr)
@@ -28,6 +39,13 @@ def parse_arguments():
         default=None,
         required=True,
         help="directory which contains the testsuite",
+    )
+    parser.add_argument(
+        "--results-dir",
+        type=str,
+        default=None,
+        required=True,
+        help="directory in which to store the results",
     )
     parser.add_argument(
         "-j",
@@ -43,26 +61,12 @@ def parse_arguments():
     return args
 
 
-def compute_prover_name(proverdir):
-    _, p = os.path.split(proverdir)
-    if p.startswith("cvc4"):
-        return "cvc4"
-    if p.startswith("z3"):
-        return "z3"
-    if p.startswith("altergo"):
-        return "altergo"
-    if p.startswith("cvc5"):
-        return "cvc5"
-    raise ValueError
-
-
-def run_prover(proverdir, resultdir, testsuitedir, socket, parallel):
+def run_prover(prover, vcdir, resultdir, testsuitedir, socket, parallel):
     """
     Run the prover on all VCs in proverdir. Compute provername from
     proverdir. Store the result json file in resultdir. Use socket for
     communication with why3server and run up to [parallel] VCs.
     """
-    prover = compute_prover_name(proverdir)
     result_file = os.path.join(resultdir, prover + ".json")
     cmd = [
         "python",
@@ -71,14 +75,14 @@ def run_prover(proverdir, resultdir, testsuitedir, socket, parallel):
         "-j",
         str(parallel),
         "-t",
-        str(timelimit),
+        str(config.timelimit),
         "--socket=" + socket,
         "-o",
         result_file,
-        proverdir,
+        vcdir,
     ]
     p = subprocess.Popen(cmd)
-    return p
+    return (p, result_file)
 
 
 def run_test(args):
@@ -87,26 +91,48 @@ def run_test(args):
     socket: socket to use for communication with why3server
     parallel: use up to X processes
     testname: the name of the test
+    testsuitedir: the place of the testsuite, to find the scripts
+    resultsdir: the place to put result files
     """
-    dirs = os.listdir(args["benchdir"])
     processes = []
-    for d in dirs:
-        mydir = os.path.join(args["benchdir"], d)
-        if os.path.isdir(mydir):
+    resultsdir = os.path.join(args["resultsdir"], args["testname"])
+    mkdir_allow_exists(resultsdir)
+    for prover in config.all_provers:
+        vcdir = os.path.join(args["benchdir"], prover)
+        if os.path.isdir(vcdir):
             p = run_prover(
-                mydir,
-                args["benchdir"],
+                prover,
+                vcdir,
+                resultsdir,
                 args["testsuitedir"],
                 args["socket"],
                 args["parallel"],
             )
             processes.append(p)
+    resultfiles = [x[1] for x in processes]
+    processes = [x[0] for x in processes]
     for p in processes:
         p.wait()
+    return resultfiles
 
 
-def run_bench(benchdir, parallel, testsuitedir):
-    socket = os.path.join(benchdir, "benchsock.sock")
+def consolidate(fnlist, resultsfile):
+    result_list = []
+    for fn in fnlist:
+        with open(fn) as f:
+            data = json.load(f)
+        for entry in data["results"]:
+            entry["filename"] = os.path.basename(entry["filename"])
+            entry["prover"] = os.path.splitext(os.path.basename(fn))[0]
+            entry["testname"] = os.path.basename(os.path.dirname(fn))
+            result_list.append(entry)
+    result = {"results": result_list}
+    with open(resultsfile, "w") as f:
+        json.dump(result, f)
+
+
+def run_bench(benchdir, parallel, testsuitedir, resultsdir):
+    socket = os.path.join(resultsdir, "benchsock.sock")
     cmd = ["why3server", "-j", str(parallel), "--logging", "--socket", socket]
     p_why3server = subprocess.Popen(cmd)
     dirs = os.listdir(benchdir)
@@ -115,6 +141,7 @@ def run_bench(benchdir, parallel, testsuitedir):
             "testname": d,
             "benchdir": os.path.join(benchdir, d),
             "testsuitedir": testsuitedir,
+            "resultsdir": resultsdir,
             "socket": socket,
             "parallel": parallel,
         }
@@ -122,13 +149,18 @@ def run_bench(benchdir, parallel, testsuitedir):
         if os.path.isdir(os.path.join(benchdir, d))
     ]
     with multiprocessing.Pool(parallel) as p:
-        p.map(run_test, args)
+        result = p.map(run_test, args)
     p_why3server.kill()
+    os.remove(socket)
+    # flattening list
+    json_files = [item for sublist in result for item in sublist]
+    consolidate(json_files, os.path.join(resultsdir, "results.json"))
 
 
 def main():
     args = parse_arguments()
-    run_bench(args.benchdir, args.parallel, args.testsuite_dir)
+    mkdir_allow_exists(args.results_dir)
+    run_bench(args.benchdir, args.parallel, args.testsuite_dir, args.results_dir)
 
 
 if __name__ == "__main__":

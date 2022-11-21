@@ -36,9 +36,9 @@ is
       P : not null Property) return Boolean
    is
      (L = null or else (P (L.Value) and then For_All_List (L.Next, P)))
-   with Annotate => (GNATprove, Always_Return);
-   pragma Annotate (GNATprove, False_Positive, "is recursive",
-                    "The recursive call occurs on a strictly smaller list");
+   with
+     Annotate => (GNATprove, Always_Return),
+     Subprogram_Variant => (Structural => L);
    pragma Annotate (GNATprove, False_Positive, "call via access-to-subprogram",
                     "We only call For_All_List on terminating functions");
 
@@ -53,9 +53,9 @@ is
         (if L1 /= null
          then P (L1.Value, L2.Value)
          and then For_All_List (L1.Next, L2.Next, P)))
-   with Annotate => (GNATprove, Always_Return);
-   pragma Annotate (GNATprove, False_Positive, "is recursive",
-                    "The recursive call occurs on a strictly smaller lists");
+   with
+     Annotate => (GNATprove, Always_Return),
+     Subprogram_Variant => (Structural => L1);
    pragma Annotate (GNATprove, False_Positive, "call via access-to-subprogram",
                     "We only call For_All_List on terminating functions");
 

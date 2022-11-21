@@ -481,7 +481,7 @@ red_black_trees.adb:373:10: info: absence of resource or memory leak at end of s
 red_black_trees.adb:373:26: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:375:11: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:375:18: medium: resource or memory leak might occur
-red_black_trees.adb:375:25: medium: pointer dereference check might fail
+red_black_trees.adb:375:25: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:376:14: medium: pointer dereference check might fail
 red_black_trees.adb:376:20: medium: resource or memory leak might occur
 red_black_trees.adb:377:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
@@ -575,7 +575,7 @@ red_black_trees.adb:427:26: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:429:11: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:429:17: medium: resource or memory leak might occur
 red_black_trees.adb:429:24: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:430:14: medium: pointer dereference check might fail
+red_black_trees.adb:430:14: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:430:21: medium: resource or memory leak might occur
 red_black_trees.adb:431:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 red_black_trees.adb:437:07: medium: precondition might fail, cannot prove Is_Concat (X1, X2, X3, R)
@@ -702,7 +702,7 @@ red_black_trees.adb:527:22: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:527:27: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:527:33: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:530:56: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:532:16: medium: precondition might fail, cannot prove T.Right /= null
+red_black_trees.adb:532:16: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:532:30: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:536:16: medium: precondition might fail, cannot prove Is_Concat (X1, X2, X3, R1) [possible fix: precondition of subprogram at line 451 should mention Pos]
 red_black_trees.adb:536:51: info: pointer dereference check proved (CVC5: 1 VC)

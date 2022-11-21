@@ -120,11 +120,12 @@ is
            (for all task_id in os_task_id_param_t =>
                                Contains (Model.Idle, task_id)))
       is
+         use all type Os_Task_Id_Param_T;
 
          function "<" (Left, Right : os_task_id_param_t) return Boolean;
 
          package S1 is new SPARK.Containers.Formal.Ordered_Sets
-            (Element_Type => os_task_id_param_t);
+            (Element_Type => Os_Task_Id_Param_T);
          use S1;
 
          package S2 is new SPARK.Containers.Functional.Sets

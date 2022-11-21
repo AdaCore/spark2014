@@ -1,0 +1,4 @@
+def myplan():
+    anod_install("spark2014", query_range=20)
+    anod_install("spark-create-bench", query_range=20)
+    anod_test("sparkbench")

@@ -2475,12 +2475,21 @@ package body CE_RAC is
                   return Ctx.Env (Ctx.Env.First).Old_Attrs (P);
                end;
 
+            --  For each expression P'Loop_Entry, the value of the prefix P has
+            --  been stored in the scope for the corresponding loop. This might
+            --  not be the first scope of the environment, in case of local
+            --  declare blocks inside the loop.
+
             when Snames.Name_Loop_Entry =>
-               --  E'Loop_Entry
                declare
                   P : constant Node_Id := Prefix (N);
                begin
-                  return Ctx.Env (Ctx.Env.First).Loop_Entry_Attrs (P);
+                  for Scop of Ctx.Env loop
+                     if Scop.Loop_Entry_Attrs.Contains (P) then
+                        return Scop.Loop_Entry_Attrs (P);
+                     end if;
+                  end loop;
+                  raise Program_Error;
                end;
 
             when Snames.Name_Result =>
@@ -3128,18 +3137,22 @@ package body CE_RAC is
             when N_Op_Ne =>
                return Left /= Right;
             when others =>
-               declare
-                  L : constant Big_Integer := Value_Enum_Integer (Left);
-                  R : constant Big_Integer := Value_Enum_Integer (Right);
-               begin
-                  case N_Op_Compare (Nkind (N)) is
-                     when N_Op_Lt => return L < R;
-                     when N_Op_Le => return L <= R;
-                     when N_Op_Ge => return L >= R;
-                     when N_Op_Gt => return L > R;
-                     when others  => raise Program_Error;
-                  end case;
-               end;
+               if Is_Array_Type (Etype (Left_Opnd (N))) then
+                  RAC_Unsupported ("RAC_Op_Compare on arrays", N);
+               else
+                  declare
+                     L : constant Big_Integer := Value_Enum_Integer (Left);
+                     R : constant Big_Integer := Value_Enum_Integer (Right);
+                  begin
+                     case N_Op_Compare (Nkind (N)) is
+                        when N_Op_Lt => return L < R;
+                        when N_Op_Le => return L <= R;
+                        when N_Op_Ge => return L >= R;
+                        when N_Op_Gt => return L > R;
+                        when others  => raise Program_Error;
+                     end case;
+                  end;
+               end if;
          end case;
       end RAC_Op_Compare;
 

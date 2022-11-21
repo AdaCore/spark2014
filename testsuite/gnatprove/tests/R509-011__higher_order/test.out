@@ -92,90 +92,90 @@ spark-higher_order-fold.ads:484:48: info: index check proved (CVC5: 2 VC), in in
 spark-higher_order-fold.ads:487:28: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:98
 spark-higher_order-fold.ads:487:48: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:98
 spark-higher_order-fold.ads:530:17: info: subprogram "Prove_Ind_Col" will terminate, terminating annotation has been proved, in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:530:17: info: subprogram "Prove_Ind_Col" will terminate, terminating annotation has been proved, in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:530:17: info: subprogram "Prove_Ind_Col" will terminate, terminating annotation has been proved, in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:530:17: info: subprogram "Prove_Ind_Col" will terminate, terminating annotation has been proved, in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
-spark-higher_order-fold.ads:535:43: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:535:43: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:535:43: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:536:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:536:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:536:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:536:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
-spark-higher_order-fold.ads:536:17: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:536:17: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:536:17: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:536:30: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
-spark-higher_order-fold.ads:536:30: info: precondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:536:30: info: precondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:536:36: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:536:36: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:536:36: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:536:36: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:536:39: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:536:39: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:536:39: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:536:39: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:536:52: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:536:52: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:536:52: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:536:52: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:539:17: info: subprogram "Prove_Ind_Row" will terminate, terminating annotation has been proved, in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:539:17: info: subprogram "Prove_Ind_Row" will terminate, terminating annotation has been proved, in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:539:17: info: subprogram "Prove_Ind_Row" will terminate, terminating annotation has been proved, in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:539:17: info: subprogram "Prove_Ind_Row" will terminate, terminating annotation has been proved, in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
-spark-higher_order-fold.ads:543:43: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:543:43: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:543:43: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:543:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:543:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:543:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:543:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:544:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:544:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:544:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:544:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
-spark-higher_order-fold.ads:544:17: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:544:17: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:544:17: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:544:30: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
-spark-higher_order-fold.ads:544:30: info: precondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:544:30: info: precondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:544:36: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:544:36: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:544:36: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:544:36: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:544:40: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:544:40: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:544:40: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:544:40: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:544:58: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:544:58: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:544:58: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:544:58: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:544:64: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:544:64: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:544:64: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:544:64: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:547:17: info: subprogram "Prove_Last" will terminate, terminating annotation has been proved, in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:547:17: info: subprogram "Prove_Last" will terminate, terminating annotation has been proved, in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:547:17: info: subprogram "Prove_Last" will terminate, terminating annotation has been proved, in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:547:17: info: subprogram "Prove_Last" will terminate, terminating annotation has been proved, in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
-spark-higher_order-fold.ads:550:18: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:550:18: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:550:18: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:550:35: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:550:35: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:550:35: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:550:35: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:550:47: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:550:47: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:550:47: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:550:47: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:551:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:551:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:551:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:551:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:551:32: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
-spark-higher_order-fold.ads:551:32: info: precondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:551:32: info: precondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:551:39: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:551:39: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:551:39: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:551:39: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:551:51: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:551:51: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:551:51: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:551:51: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
-spark-higher_order-fold.ads:560:18: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:560:18: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:560:18: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:560:38: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:560:38: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:560:38: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:560:38: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:560:51: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:560:51: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:560:51: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:560:51: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
-spark-higher_order-fold.ads:624:17: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:624:17: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:624:17: info: precondition proved (CVC5: 4 VC), in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:624:37: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:624:37: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:624:37: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:624:37: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:624:50: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:624:50: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:624:50: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:624:50: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:650:16: info: subprogram overriding operator "+" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:651:11: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
@@ -223,42 +223,42 @@ spark-higher_order-fold.ads:760:16: info: subprogram "No_Overflows" will termina
 spark-higher_order-fold.ads:762:15: info: precondition proved (CVC5: 4 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:762:39: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:762:52: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:783:16: info: subprogram "In_Range" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:786:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:786:26: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:786:41: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:786:44: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:787:10: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:787:23: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:787:23: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:790:18: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:792:16: info: subprogram "Add_One" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:793:32: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:795:17: info: postcondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:795:56: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:798:16: info: subprogram "Result_In_Range" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:800:17: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:800:32: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:812:16: info: subprogram "Count" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:813:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:822:50: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:822:53: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:822:62: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:822:65: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:823:09: info: complete contract cases proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:823:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:824:24: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:824:27: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:824:45: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:824:48: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:827:24: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:827:27: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:827:51: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:827:54: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:830:28: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:830:31: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:830:51: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
-spark-higher_order-fold.ads:830:54: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:121
+spark-higher_order-fold.ads:783:16: info: subprogram "In_Range" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:786:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:786:26: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:786:41: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:786:44: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:787:10: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:787:23: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:787:23: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:790:18: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:792:16: info: subprogram "Add_One" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:793:32: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:795:17: info: postcondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:795:56: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:798:16: info: subprogram "Result_In_Range" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:800:17: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:800:32: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:812:16: info: subprogram "Count" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:813:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:822:50: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:822:53: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:822:62: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:822:65: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:823:09: info: complete contract cases proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:823:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:824:24: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:824:27: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:824:45: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:824:48: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:827:24: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:827:27: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:827:51: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:827:54: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:830:28: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:830:31: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:830:51: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:830:54: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
 spark-higher_order.adb:40:07: info: justified that "R" might not be initialized, in instantiation at test_higher_order.ads:15
 spark-higher_order.adb:40:14: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:15
 spark-higher_order.adb:42:22: info: precondition proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:15
@@ -320,7 +320,7 @@ test_higher_order.ads:81:10: info: predicate check proved (Trivial: 1 VC)
 test_higher_order.ads:94:19: info: assertion proved (CVC5: 1 VC)
 test_higher_order.ads:94:24: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
 test_higher_order.ads:104:19: info: assertion proved (CVC5: 1 VC)
-test_higher_order.ads:118:19: info: assertion proved (altergo: 1 VC)
-test_higher_order.ads:118:25: medium: in inlined expression function body at spark-higher_order-fold.ads:762, in instantiation at test_higher_order.ads:106
-test_higher_order.ads:118:25: medium: precondition might fail, cannot prove No_Overflows (A, Zero, A'First (1), A'first)
-test_higher_order.ads:128:19: info: assertion proved (altergo: 1 VC)
+test_higher_order.ads:118:19: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
+test_higher_order.ads:121:19: info: assertion proved (altergo: 1 VC)
+test_higher_order.ads:121:25: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
+test_higher_order.ads:131:19: info: assertion proved (altergo: 1 VC)

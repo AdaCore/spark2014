@@ -12899,7 +12899,8 @@ package body Gnat2Why.Expr is
                Else_Part   : constant W_Pred_Id :=
                  (if In_Delta_Aggregate
                   then Constrain_Value_At_Index (Update_Prefix, Indexes)
-                  elsif Has_Others and then Assocs_Len > 1
+                  elsif Has_Others
+                    and then (Assocs_Len > 1 or else Present (Expression))
                   then Transform_Complex_Association (Dim, Association)
                   else True_Pred);
 
@@ -12915,7 +12916,9 @@ package body Gnat2Why.Expr is
                --  the semantics of delta aggregates.
 
                if Present (Expression) then
-                  pragma Assert (No (Association));
+                  pragma Assert
+                    (No (Association)
+                     or else (Assocs_Len = 1 and then Has_Others));
 
                   declare
                      Then_Part   : constant W_Pred_Id :=
@@ -18453,17 +18456,13 @@ package body Gnat2Why.Expr is
                   declare
                      Left       : constant Node_Id := First_Actual (Expr);
                      Right      : constant Node_Id := Next_Actual (Left);
-                     Left_Type  : constant Entity_Id := Etype (Left);
-                     Right_Type : constant Entity_Id := Etype (Right);
-                     Subdomain  : constant EW_Domain :=
-                       (if Domain = EW_Pred then EW_Term else Domain);
-
                      BT         : constant W_Type_Id :=
-                       Base_Why_Type (Left_Type, Right_Type);
+                       Base_Why_Type (Etype (First_Formal (Subp)));
+
                      Left_Expr  : constant W_Expr_Id :=
-                       Transform_Expr (Left, BT, Subdomain, Params);
+                       Transform_Expr (Left, BT, EW_Term, Params);
                      Right_Expr : constant W_Expr_Id :=
-                       Transform_Expr (Right, BT, Subdomain, Params);
+                       Transform_Expr (Right, BT, EW_Term, Params);
                   begin
                      T := New_Comparison
                        (Symbol => Why_Eq,

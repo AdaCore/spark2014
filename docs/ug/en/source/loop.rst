@@ -33,13 +33,11 @@ borrow, see :ref:`Referring to a value at the end of a borrow` for more
 explanations.
 
 .. note::
-   We cannot currently prove the termination of ``For_All_List`` for two
-   reasons. First, as it is a recursive function, we would need to provide
-   a Subprogram_Variant to prove that the call chain is bounded. Currently,
-   structural variants are not supported and we have not defined a notion of
-   length on lists. The second is that we have no way for now to state on
+   Although the structural subprogram variant of ``For_All_List`` is proved,
+   this is not sufficient to prove the termination of ``For_All_List``,
+   as we have no way for now to state on
    the access-to-subprogram type Property that all elements of this type
-   must terminate. Therefore, we justify these checks, see section on
+   must terminate. Therefore, we justify this check, see section on
    :ref:`Justifying Check Messages`.
 
 .. index:: Loop_Invariant; rationale

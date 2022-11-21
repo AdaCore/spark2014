@@ -115,6 +115,9 @@ package Test_Higher_Order with SPARK_Mode is
       Array_Type  => Matrix,
       Value       => Id);
 
+   pragma Assert (Sum2_L.No_Overflows (A => (1 => (1, 2, 3, 4, 5, 6, 7),
+                                             2 => (1, 2, 3, 4, 5, 6, 7))));
+
    pragma Assert (Sum2_l.Sum (A => (1 => (1, 2, 3, 4, 5, 6, 7),
                                     2 => (1, 2, 3, 4, 5, 6, 7))) = 56);
 

@@ -441,6 +441,17 @@ is
    package body Formal_Model is
 
       -------------------------
+      -- Element_Logic_Equal --
+      -------------------------
+
+      function Element_Logic_Equal (Left, Right : Element_Type) return Boolean
+      is
+      begin
+         Check_Or_Fail;
+         return Left = Right;
+      end Element_Logic_Equal;
+
+      -------------------------
       -- M_Elements_In_Union --
       -------------------------
 
@@ -455,12 +466,33 @@ is
          for Index in Index_Type'First .. M.Last (Container) loop
             Elem := Element (Container, Index);
 
-            if not M.Contains (Left, Index_Type'First, M.Last (Left), Elem)
-              and then
-                not M.Contains (Right, Index_Type'First, M.Last (Right), Elem)
-            then
-               return False;
-            end if;
+            declare
+               Found : Boolean := False;
+            begin
+               for J in Index_Type'First .. M.Last (Left) loop
+                  if Element_Logic_Equal
+                    (Element (Container, Index), Element (Left, J))
+                  then
+                     Found := True;
+                     exit;
+                  end if;
+               end loop;
+
+               if not Found then
+                  for J in Index_Type'First .. M.Last (Right) loop
+                     if Element_Logic_Equal
+                       (Element (Container, Index), Element (Right, J))
+                     then
+                        Found := True;
+                        exit;
+                     end if;
+                  end loop;
+               end if;
+
+               if not Found then
+                  return False;
+               end if;
+            end;
          end loop;
 
          return True;
@@ -487,7 +519,9 @@ is
             begin
                while not Found and J < R_Lst loop
                   J := J + 1;
-                  if Element (Left, I) = Element (Right, J) then
+                  if Element_Logic_Equal
+                       (Element (Left, I), Element (Right, J))
+                  then
                      Found := True;
                   end if;
                end loop;
@@ -517,7 +551,8 @@ is
          end if;
 
          for I in Index_Type'First .. L loop
-            if Element (Left, I) /= Element (Right, L - I + 1)
+            if not Element_Logic_Equal
+              (Element (Left, I), Element (Right, L - I + 1))
             then
                return False;
             end if;
@@ -538,15 +573,18 @@ is
       is
       begin
          if M.Length (Left) /= M.Length (Right)
-           or else Element (Left, X) /= Element (Right, Y)
-           or else Element (Left, Y) /= Element (Right, X)
+           or else not Element_Logic_Equal
+             (Element (Left, X), Element (Right, Y))
+           or else not Element_Logic_Equal
+             (Element (Left, Y), Element (Right, X))
          then
             return False;
          end if;
 
          for I in Index_Type'First .. M.Last (Left) loop
             if I /= X and then I /= Y
-              and then Element (Left, I) /= Element (Right, I)
+              and then not Element_Logic_Equal
+                (Element (Left, I), Element (Right, I))
             then
                return False;
             end if;

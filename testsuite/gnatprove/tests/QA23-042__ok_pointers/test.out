@@ -27,7 +27,7 @@ spark04.adb:18:17: info: range check proved (CVC5: 2 VC)
 spark04.adb:18:32: info: range check proved (CVC5: 2 VC)
 spark04.adb:18:51: medium: pointer dereference check might fail [possible fix: subprogram at spark04.ads:21 should mention AX in a precondition]
 spark04.adb:19:17: info: range check proved (CVC5: 2 VC)
-spark04.adb:19:32: info: range check proved (CVC5: 2 VC)
+spark04.adb:19:32: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
 spark04.adb:19:51: medium: pointer dereference check might fail (e.g. when AY = null) [possible fix: subprogram at spark04.ads:21 should mention AY in a precondition]
 spark04.adb:21:10: medium: pointer dereference check might fail (e.g. when AY = null) [possible fix: subprogram at spark04.ads:21 should mention AY in a precondition]
 spark04.adb:22:10: medium: pointer dereference check might fail [possible fix: subprogram at spark04.ads:21 should mention AX in a precondition]

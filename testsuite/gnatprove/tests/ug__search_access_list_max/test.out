@@ -1,21 +1,22 @@
 p.adb:12:33: info: loop invariant initialization proved
 p.adb:12:33: info: loop invariant preservation proved
-p.adb:14:13: info: loop invariant preservation proved
 p.adb:14:13: info: loop invariant initialization proved
+p.adb:14:13: info: loop invariant preservation proved
 p.adb:14:27: info: pointer dereference check proved
 p.adb:15:44: info: range check proved
 p.adb:16:46: info: range check proved
 p.adb:19:45: info: pointer dereference check proved
 p.adb:21:39: info: pointer dereference check proved
-p.adb:23:19: info: loop invariant initialization proved
 p.adb:23:19: info: loop invariant preservation proved
+p.adb:23:19: info: loop invariant initialization proved
 p.adb:24:50: info: range check proved
 p.adb:25:52: info: range check proved
 p.adb:26:22: info: pointer dereference check proved
 p.adb:29:23: info: dynamic accessibility check proved
 p.adb:29:23: info: null exclusion check proved
-p.ads:8:17: info: justified that "All_Smaller_Than_Max" is recursive, terminating annotation could be incorrect
+p.ads:6:13: info: subprogram "All_Smaller_Than_Max" will terminate, terminating annotation has been proved
 p.ads:9:12: info: pointer dereference check proved
+p.ads:9:35: info: subprogram variant proved
 p.ads:9:58: info: pointer dereference check proved
 p.ads:17:14: info: postcondition proved
 p.ads:17:61: info: pointer dereference check proved
