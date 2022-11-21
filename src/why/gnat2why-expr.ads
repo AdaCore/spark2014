@@ -344,12 +344,17 @@ package Gnat2Why.Expr is
       Include_Comp : Boolean := True;
       Use_Pred     : Boolean := True)
       return W_Pred_Id
-   with Pre => On_Internal or On_External;
+   with Pre => (On_Internal or On_External)
+     and then (if On_External then not Include_Comp);
    --  @param Expr Why3 term expression on which to express the type invariant
    --  @param Ty type with the type invariant
    --  @param Params transformation parameters
    --  @param On_External True if invariants of types declared outside the
-   --         current compilation unit should be considered.
+   --         current compilation unit should be considered. In this case,
+   --         there might be type invariants inside access-to-incomplete types
+   --         that would be ignored in Compute_Type_Invariant, so Include_Comp
+   --         should be False (there is no tool restriction for external
+   --         types).
    --  @param On_Internal True if invariants of types declared in the current
    --         compilation unit should be considered.
    --  @param Include_Comp False if we do not care about the invariants of

@@ -454,6 +454,7 @@ package VC_Kinds is
       Lim_Suspension_On_Formal,
       Lim_Target_Name_In_Borrow,
       Lim_Target_Name_In_Move,
+      Lim_Type_Inv_Access_Type,
       Lim_Type_Inv_Nested_Package,
       Lim_Type_Inv_Private_Child,
       Lim_Type_Inv_Protected_Type,
@@ -644,6 +645,9 @@ package VC_Kinds is
            "primitive calls in default initial condition",
          when Lim_Constrained_Classwide =>
            "constrained class-wide subtype",
+         when Lim_Type_Inv_Access_Type =>
+           "access to incomplete or private type which needs an invariant"
+          & " check",
          when Lim_Type_Inv_Nested_Package =>
            "type invariant in a nested package",
          when Lim_Type_Inv_Private_Child =>

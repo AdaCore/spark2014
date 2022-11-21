@@ -1,0 +1,3 @@
+unsupported_pred.ads:3:09: error: access to incomplete or private type which needs an invariant check is not yet supported
+unsupported_pred.ads:7:09: error: access to incomplete or private type which needs an invariant check is not yet supported
+gnatprove: error during flow analysis and proof
