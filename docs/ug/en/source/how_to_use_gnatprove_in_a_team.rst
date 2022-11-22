@@ -96,6 +96,39 @@ added in a configuration file to suppress the corresponding warnings across all
 units in the project. Pragma ``Warnings Off`` can be specified for an entity to
 suppress all warnings related to this entity.
 
+Additionally, aspect ``Warnings Off`` on a static stand-alone constant object
+can be used to suppress warnings about unreachable code due to a "statically
+disabled" condition of an IF statement. This is useful when using configuration
+constants, which may trigger spurious warnings about unreachable code.
+
+A "statically disabled" condition which evaluates to Value is either:
+
+* a static stand-alone constant when it is of a boolean type, has aspect
+  ``Warnings Off`` and its initial value evaluates to Value
+
+* a *relational_operator* where one operand is static stand-alone constant with
+  aspect ``Warnings Off``, the other operand is a literal of the corresponding
+  type and the operator evaluates to Value
+
+* an ``and`` or ``and then`` operators when:
+
+  * Value is True and both operands are statically disabled conditions
+    that evaluate to True
+
+  * Value is False and at least one operand is a statically disabled condition
+    that evaluates to False
+
+* an ``or`` or ``or else`` operators when:
+
+  * Value is True and at least one operand is a statically disabled condition
+    that evaluates to True
+
+  * Value is False and both operands are statically disabled conditions
+    that evaluate to False
+
+* a *not* operator when the right operand is a statically disabled condition
+  that evaluates to the negation of Value
+
 Pragma ``Warnings`` can also take a first argument of ``GNATprove`` to specify
 that it applies only to |GNATprove|. For example, the previous example can be
 modified to use these refined pragma ``Warnings``:
@@ -481,18 +514,6 @@ Complete List of Assumptions
 The following assumptions need to be addressed when using SPARK on all or part
 of a program:
 
-* [SPARK_TASKING]
-  If entry points for concurrent tasks (either OS tasks or units of
-  computations scheduled by a runtime component) are not identified as tasks in
-  SPARK, then concurrent accesses to objects need to be reviewed:
-
-  * All objects whose value may be modified concurrently should be `effectively
-    volatile` in SPARK (see SPARK RM 7.1.2), so that GNATprove takes into
-    account possible concurrent changes in the object's value.
-
-  * Concurrent accesses to objects should be reviewed to ensure there are no
-    unintended race conditions.
-
 * [SPARK_JUSTIFICATION]
   All justifications of check messages should be reviewed (see :ref:`Justifying
   Check Messages`), both when using :ref:`Direct Justification with Pragma
@@ -500,24 +521,24 @@ of a program:
 
 * [SPARK_EXTERNAL]
   The modeling of :ref:`Interfaces to the Physical World` needs to be reviewed
-  for objects whose address is specified through an address clause or aspect:
+  for objects whose value may be modified concurrently, when the address of the
+  object is specified through an address clause or aspect.
 
-  * All objects whose value may be modified concurrently should be `effectively
-    volatile` in SPARK (see SPARK RM 7.1.2), so that GNATprove takes into
-    account possible concurrent changes in the object's value.
+  * They should be `effectively volatile` in SPARK (see SPARK RM 7.1.2), so
+    that GNATprove takes into account possible concurrent changes in the
+    object's value.
 
-  * All objects whose value may be modified concurrently should be
-    `synchronized` in SPARK (see SPARK RM 9) to prevent race conditions which
-    could lead to reading invalid values.
+  * They should be `synchronized` in SPARK (see SPARK RM 9) to prevent race
+    conditions which could lead to reading invalid values.
 
-  * All synchronized objects which are :ref:`Volatile Variables` and all
-    :ref:`External State Abstraction` should have specified the correct
-    :ref:`Properties of Volatile Variables` corresponding to their usage.
+  * They should have specified all necessary :ref:`Properties of Volatile
+    Variables` corresponding to their usage.
 
 * [SPARK_ALIASING_ADDRESS]
-  Aliases between objects annotated with an address clause whose expression
-  is not a reference to the Address attribute on a part of a standalone object
-  or constant are ignored by GNATprove. Reviews are necessary to ensure that:
+  Aliases between objects annotated with an address clause or aspect whose
+  expression is not a reference to the Address attribute on a part of a
+  standalone object or constant are ignored by GNATprove. Reviews are necessary
+  to ensure that:
 
   * Other objects visible from SPARK code which might be affected by a
     modification of such a variable have the ``Asynchronous_Writers`` volatile
@@ -527,25 +548,20 @@ of a program:
     volatile property if they can be affected by the modification of another
     object.
 
+  * The objects themselves have valid values for their type when read.
+
   GNATprove might issue warnings to alert the user about possible unsoundness
   in this case.
-
-* [SPARK_VALIDITY]
-  The use of instances of ``Unchecked_Conversion`` and address clauses should
-  not violate the data initialization and the non-aliasing policies of
-  SPARK. See section :ref:`Data Validity` for cases where GNATprove issues a
-  warning to alert the user about possible unsoundness if these policies are
-  violated.
 
 .. index:: Valid; limitation
 
 * [SPARK_VALID]
   Attribute 'Valid is currently assumed to always return True, as no invalid
   value can be constructed in SPARK (see :ref:`Data Validity`).  If assumptions
-  [SPARK_VALIDITY], [SPARK_EXTERNAL_VALID], and [ADA_EXTERNAL] are satisfied,
-  then this assumption will be satisfied as well. However, it is valuable to
-  explicitly state this assumption because it highlights an important
-  consequence of compliance with the other assumptions.
+  [SPARK_ALIASING_ADDRESS], [SPARK_EXTERNAL_VALID], and [ADA_EXTERNAL] are
+  satisfied, then this assumption will be satisfied as well. However, it is
+  valuable to explicitly state this assumption because it highlights an
+  important consequence of compliance with the other assumptions.
 
 .. index:: validity; limitation
 
@@ -587,25 +603,6 @@ of a program:
   See :ref:`SPARK Libraries` for a list of standard units where preconditions
   have been specified. For others, the correctness of calls to standard
   subprograms should be checked separately, by review or testing.
-
-* [SPARK_FORMAL_CONTAINERS]
-  Actual parameters in instances of the :ref:`Formal Containers Library` or
-  :ref:`Functional Containers Library` are subjected to some assumptions:
-
-  * No function parameter shall access global data, nor be a volatile function.
-
-  * The ``"="`` parameter of both functional and formal container libraries
-    shall be an equivalence relation - it shall be reflexive, symmetric, and
-    transitive. The same holds for the ``Equivalent_Keys`` or
-    ``Equivalent_Elements`` parameter of sets and maps.
-
-  * The ``"<"`` parameter of ordered sets and maps shall define a strict weak
-    ordering relationship - it shall be irreflexive, asymmetric, transitive,
-    and in addition, if x < y for any values x and y, then for all other
-    values z, either (x < z) or (z < y) or both.
-
-  * The ``Hash`` parameter of hashed sets and maps shall return the same value
-    for any two equivalent keys or elements.
 
 * [SPARK_FLOATING_POINT]
   When using floating-point numbers, GNATprove relies on the :ref:`Semantics of
@@ -671,10 +668,27 @@ of a program:
 In addition, the following assumptions need to be addressed when using SPARK on
 only part of a program:
 
+* [ADA_TASKING]
+  If entry points for concurrent tasks (either OS tasks or units of
+  computations scheduled by a runtime component) are not identified as tasks in
+  SPARK, then during each invocation of a SPARK subprogram from such a task
+  such that the SPARK subprogram is not being called directly or indirectly
+  from another SPARK subprogram in the same task, the Global contract and
+  by-reference parameters of the subprogram shall not conflict with either (a)
+  the Global contract and by-reference parameters of any other such subprogram
+  executing concurrently in another such task or (b) the Global contract of any
+  concurrent task identified as a task in SPARK.
+
 * [ADA_EXTERNAL]
   Objects accessed outside of SPARK, either directly for statically allocated
   objects, or through their address or a pointer for all objects, should comply
   with the assumptions described in [SPARK_EXTERNAL] and [SPARK_EXTERNAL_VALID].
+
+* [ADA_EXTERNAL_ABSTRACT_STATE]
+  The modeling of :ref:`Interfaces to the Physical World` needs to be reviewed
+  for abstract states whose value may be modified concurrently, when their
+  refinement is not in SPARK. These abstract states should comply with the
+  assumptions described in [SPARK_EXTERNAL].
 
 * [ADA_PRIVATE_TYPES]
   Private types whose full view is not analyzed, yet are used in

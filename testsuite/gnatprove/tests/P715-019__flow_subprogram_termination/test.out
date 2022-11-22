@@ -208,5 +208,31 @@ r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
 r.adb:58:04: warning: no Global contract available for "OS_Exit"
 r.adb:59:04: info: call to nonreturning procedure never executed (CVC5: 1 VC)
 r.adb:59:04: warning: unreachable code
-spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:12
-spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:52:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:52:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:54:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:54:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:56:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:56:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
+spark-containers-parameter_checks.ads:54:19: medium: call to "My_Equal_01" might be nonterminating, terminating annotation on "Eq_Reflexive" could be incorrect, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
+spark-containers-parameter_checks.ads:54:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
+spark-containers-parameter_checks.ads:58:19: medium: call to "My_Equal_01" might be nonterminating, terminating annotation on "Eq_Symmetric" could be incorrect, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
+spark-containers-parameter_checks.ads:59:19: medium: call to "My_Equal_01" might be nonterminating, terminating annotation on "Eq_Symmetric" could be incorrect, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
+spark-containers-parameter_checks.ads:59:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
+spark-containers-parameter_checks.ads:63:29: medium: call to "My_Equal_01" might be nonterminating, terminating annotation on "Eq_Transitive" could be incorrect, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
+spark-containers-parameter_checks.ads:64:19: medium: call to "My_Equal_01" might be nonterminating, terminating annotation on "Eq_Transitive" could be incorrect, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
+spark-containers-parameter_checks.ads:64:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]

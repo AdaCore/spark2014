@@ -38,6 +38,7 @@
 pragma Ada_2012;
 
 with SPARK.Big_Integers; use SPARK.Big_Integers;
+with SPARK.Containers.Parameter_Checks;
 
 generic
    type Element_Type (<>) is private;
@@ -46,6 +47,26 @@ generic
      (Left, Right : Element_Type) return Boolean is "=";
    --  Function used to compare elements in Contains, Find, and
    --  Equivalent_Sequences.
+
+   --  Ghost lemmas used to prove that "=" is an equivalence relation
+
+   with procedure Eq_Reflexive (X : Element_Type) is null
+     with Ghost;
+   with procedure Eq_Symmetric (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Eq_Transitive (X, Y, Z : Element_Type) is null
+     with Ghost;
+
+   --  Ghost lemmas used to prove that Equivalent_Elements is an equivalence
+   --  relation.
+
+   with procedure Equivalent_Elements_Reflexive (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Equivalent_Elements_Symmetric (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Equivalent_Elements_Transitive
+     (X, Y, Z : Element_Type) is null
+     with Ghost;
 
 package SPARK.Containers.Functional.Infinite_Sequences with
   SPARK_Mode,
@@ -186,6 +207,12 @@ is
    -- Construction Functions --
    ----------------------------
 
+   function Empty_Sequence return Sequence with
+   --  Return an empty Sequence
+
+     Global => null,
+     Post   => Length (Empty_Sequence'Result) = 0;
+
    --  For better efficiency of both proofs and execution, avoid using
    --  construction functions in annotations and rather use property functions.
 
@@ -263,6 +290,12 @@ is
                      Lst    => Last (Remove'Result),
                      Offset => 1);
 
+   --------------------------
+   -- Instantiation Checks --
+   --------------------------
+
+   --  Check that the actual parameters follow the appropriate assumptions.
+
    function Copy_Element (Item : Element_Type) return Element_Type is (Item);
    --  Elements of containers are copied by numerous primitives in this
    --  package. This function causes GNATprove to verify that such a copy is
@@ -270,11 +303,26 @@ is
    --  i.e. it does not contain pointers that could be used to alias mutable
    --  data).
 
-   function Empty_Sequence return Sequence with
-   --  Return an empty Sequence
+   package Eq_Checks is new
+     SPARK.Containers.Parameter_Checks.Equivalence_Checks
+       (T                   => Element_Type,
+        Eq                  => "=",
+        Param_Eq_Reflexive  => Eq_Reflexive,
+        Param_Eq_Symmetric  => Eq_Symmetric,
+        Param_Eq_Transitive => Eq_Transitive);
+   --  Check that the actual parameter for "=" is an equivalence relation
 
-     Global => null,
-     Post   => Length (Empty_Sequence'Result) = 0;
+   package Eq_Elements_Checks is new
+     SPARK.Containers.Parameter_Checks.Equivalence_Checks_Eq
+       (T                     => Element_Type,
+        Eq                    => Equivalent_Elements,
+        "="                   => "=",
+        Param_Equal_Reflexive => Eq_Checks.Eq_Reflexive,
+        Param_Eq_Reflexive    => Equivalent_Elements_Reflexive,
+        Param_Eq_Symmetric    => Equivalent_Elements_Symmetric,
+        Param_Eq_Transitive   => Equivalent_Elements_Transitive);
+   --  Check that the actual parameter for Equivalent_Elements is an
+   --  equivalence relation with respect to the equality "=".
 
    ---------------------------
    --  Iteration Primitives --

@@ -44,9 +44,11 @@
 --  Iteration over maps is done using the Iterable aspect, which is SPARK
 --  compatible. "For of" iteration ranges over keys instead of elements.
 
-with SPARK.Containers.Types; use SPARK.Containers.Types;
 with SPARK.Containers.Functional.Vectors;
 with SPARK.Containers.Functional.Maps;
+with SPARK.Containers.Parameter_Checks;
+with SPARK.Containers.Types; use SPARK.Containers.Types;
+
 private with Ada.Containers.Hash_Tables;
 
 generic
@@ -58,6 +60,31 @@ generic
      (Left  : Key_Type;
       Right : Key_Type) return Boolean is "=";
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
+
+   --  Ghost lemmas used to prove that "=" is an equivalence relation
+
+   with procedure Eq_Reflexive (X : Element_Type) is null
+     with Ghost;
+   with procedure Eq_Symmetric (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Eq_Transitive (X, Y, Z : Element_Type) is null
+     with Ghost;
+
+   --  Ghost lemmas used to prove that Equivalent_Keys is an equivalence
+   --  relation.
+
+   with procedure Equivalent_Keys_Reflexive (X : Key_Type) is null
+     with Ghost;
+   with procedure Equivalent_Keys_Symmetric (X, Y : Key_Type) is null
+     with Ghost;
+   with procedure Equivalent_Keys_Transitive (X, Y, Z : Key_Type) is null
+     with Ghost;
+
+   --  Ghost lemma used to prove that Hash returns the same value for all
+   --  equivalent keys.
+
+   with procedure Hash_Equivalent (X, Y : Key_Type) is null
+     with Ghost;
 
 package SPARK.Containers.Formal.Hashed_Maps with
   SPARK_Mode,
@@ -94,12 +121,11 @@ is
    pragma Unevaluated_Use_Of_Old (Allow);
 
    package Formal_Model with Ghost is
-      subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
 
       --  Logical equality cannot be safely executed on most element or key
       --  types. Thus, this package should only be instantiated with ghost code
       --  disabled. This is enforced by having a special imported procedure
-      --  Fail_When_Body_Off that will lead to link-time errors otherwise.
+      --  Check_Or_Fail that will lead to link-time errors otherwise.
 
       function Key_Logic_Equal (Left, Right : Key_Type) return Boolean with
         Global => null,
@@ -110,12 +136,70 @@ is
         Global => null,
         Annotate => (GNATprove, Logical_Equal);
 
+      --------------------------
+      -- Instantiation Checks --
+      --------------------------
+
+      package Eq_Checks is new
+        SPARK.Containers.Parameter_Checks.Equivalence_Checks
+          (T                   => Element_Type,
+           Eq                  => "=",
+           Param_Eq_Reflexive  => Eq_Reflexive,
+           Param_Eq_Symmetric  => Eq_Symmetric,
+           Param_Eq_Transitive => Eq_Transitive);
+      --  Check that the actual parameter for "=" is an equivalence relation
+
+      package Lift_Eq is new
+        SPARK.Containers.Parameter_Checks.Lift_Eq_Reflexive
+          (T                  => Element_Type,
+           "="                => Element_Logic_Equal,
+           Eq                 => "=",
+           Param_Eq_Reflexive => Eq_Checks.Eq_Reflexive);
+
+      package Eq_Keys_Checks is new
+        SPARK.Containers.Parameter_Checks.Equivalence_Checks
+          (T                   => Key_Type,
+           Eq                  => Equivalent_Keys,
+           Param_Eq_Reflexive  => Equivalent_Keys_Reflexive,
+           Param_Eq_Symmetric  => Equivalent_Keys_Symmetric,
+           Param_Eq_Transitive => Equivalent_Keys_Transitive);
+      --  Check that the actual parameter for Equivalent_Keys is an equivalence
+      --  relation.
+
+      package Lift_Equivalent_Keys is new
+        SPARK.Containers.Parameter_Checks.Lift_Eq_Reflexive
+          (T                  => Key_Type,
+           "="                => Key_Logic_Equal,
+           Eq                 => Equivalent_Keys,
+           Param_Eq_Reflexive => Eq_Keys_Checks.Eq_Reflexive);
+
+      package Hash_Checks is new
+        SPARK.Containers.Parameter_Checks.Hash_Equivalence_Checks
+          (T                     => Key_Type,
+           "="                   => Equivalent_Keys,
+           Hash                  => Hash,
+           Param_Hash_Equivalent => Hash_Equivalent);
+      --  Check that the actual parameter for Hash returns the same value for
+      --  all equivalent keys.
+
+      ------------------
+      -- Formal Model --
+      ------------------
+
+      subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
+
       package M is new SPARK.Containers.Functional.Maps
-        (Element_Type        => Element_Type,
-         Key_Type            => Key_Type,
-         Equivalent_Keys     => Equivalent_Keys,
-         "="                 => Element_Logic_Equal,
-         Equivalent_Elements => "=");
+        (Element_Type                   => Element_Type,
+         Key_Type                       => Key_Type,
+         Equivalent_Keys                => Equivalent_Keys,
+         "="                            => Element_Logic_Equal,
+         Equivalent_Elements            => "=",
+         Equivalent_Elements_Reflexive  => Lift_Eq.Eq_Reflexive,
+         Equivalent_Elements_Symmetric  => Eq_Checks.Eq_Symmetric,
+         Equivalent_Elements_Transitive => Eq_Checks.Eq_Transitive,
+         Equivalent_Keys_Reflexive      => Eq_Keys_Checks.Eq_Reflexive,
+         Equivalent_Keys_Symmetric      => Eq_Keys_Checks.Eq_Symmetric,
+         Equivalent_Keys_Transitive     => Eq_Keys_Checks.Eq_Transitive);
 
       function "="
         (Left  : M.Map;
@@ -126,10 +210,13 @@ is
          Right : M.Map) return Boolean renames M."<=";
 
       package K is new SPARK.Containers.Functional.Vectors
-        (Element_Type        => Key_Type,
-         Index_Type          => Positive_Count_Type,
-         "="                 => Key_Logic_Equal,
-         Equivalent_Elements => Equivalent_Keys);
+        (Element_Type                   => Key_Type,
+         Index_Type                     => Positive_Count_Type,
+         "="                            => Key_Logic_Equal,
+         Equivalent_Elements            => Equivalent_Keys,
+         Equivalent_Elements_Reflexive  => Lift_Equivalent_Keys.Eq_Reflexive,
+         Equivalent_Elements_Symmetric  => Eq_Keys_Checks.Eq_Symmetric,
+         Equivalent_Elements_Transitive => Eq_Keys_Checks.Eq_Transitive);
 
       function "="
         (Left  : K.Sequence;

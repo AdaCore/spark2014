@@ -28,7 +28,6 @@
 
 package SPARK.Containers with SPARK_Mode, Pure is
 
-   procedure Check_Or_Fail is null
-     with Ghost;
+   procedure Check_Or_Fail is null;
 
 end SPARK.Containers;

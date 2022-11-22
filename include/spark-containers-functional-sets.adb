@@ -138,6 +138,55 @@ package body SPARK.Containers.Functional.Sets with SPARK_Mode => Off is
      (Length (Container.Content) = 1
         and New_Item = Get (Container.Content, 1));
 
+   ------------------
+   -- Iter_Element --
+   ------------------
+
+   function Iter_Element
+     (Container : Set;
+      Key       : Private_Key) return Element_Type
+   is
+   begin
+      Check_Or_Fail;
+      return Containers.Get (Container.Content, Count_Type (Key));
+   end Iter_Element;
+
+   ----------------
+   -- Iter_First --
+   ----------------
+
+   function Iter_First (Container : Set) return Private_Key is
+   begin
+      Check_Or_Fail;
+      return 1;
+   end Iter_First;
+
+   ----------------------
+   -- Iter_Has_Element --
+   ----------------------
+
+   function Iter_Has_Element
+     (Container : Set;
+      Key       : Private_Key) return Boolean
+   is
+   begin
+      Check_Or_Fail;
+      return  Count_Type (Key) in 1 .. Containers.Length (Container.Content);
+   end Iter_Has_Element;
+
+   ---------------
+   -- Iter_Next --
+   ---------------
+
+   function Iter_Next
+     (Container : Set;
+      Key       : Private_Key) return Private_Key
+   is
+   begin
+      Check_Or_Fail;
+      return (if Key = Private_Key'Last then 0 else Key + 1);
+   end Iter_Next;
+
    -------------------------------
    -- Lemma_Contains_Equivalent --
    -------------------------------

@@ -1,0 +1,317 @@
+axioms.adb:6:07: info: precondition proved (Z3: 1 VC)
+axioms.adb:12:07: info: precondition proved (Z3: 1 VC)
+axioms.ads:34:14: info: postcondition proved (Z3: 1 VC)
+axioms.ads:58:14: info: postcondition proved (Z3: 1 VC)
+spark-containers-functional-infinite_sequences.ads:46:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:48:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:50:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:56:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:58:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:60:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:108:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:108:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:108:43: info: predicate check proved (Trivial: 1 VC; Z3: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:108:43: info: predicate check proved (Trivial: 1 VC; Z3: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:111:06: info: data dependencies proved, in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:111:06: info: data dependencies proved, in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:173:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:173:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:173:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:173:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:189:12: info: precondition proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:189:12: info: precondition proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:190:39: info: precondition proved (Z3: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:190:39: info: precondition proved (Z3: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:220:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:220:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:220:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:220:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:246:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:246:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:246:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:246:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:246:47: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:246:47: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:270:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:270:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:270:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:270:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:291:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:291:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:370:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:370:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:370:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:370:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:401:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:401:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:401:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:401:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:421:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:421:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:421:21: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:421:21: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:421:37: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:421:37: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:421:42: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:421:42: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:442:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:442:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:442:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:442:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:442:39: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:442:39: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:442:46: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:442:46: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:463:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:463:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:463:15: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:463:15: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:465:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:465:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:465:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:465:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:466:15: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:466:15: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:466:24: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:466:24: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:466:31: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:466:31: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:466:37: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:466:37: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:466:46: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:466:46: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:466:53: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:466:53: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
+spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:13
+spark-containers-functional-maps.ads:59:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:13
+spark-containers-functional-maps.ads:61:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:13
+spark-containers-functional-maps.ads:67:19: info: subprogram "Equivalent_Keys_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:13
+spark-containers-functional-maps.ads:69:19: info: subprogram "Equivalent_Keys_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:13
+spark-containers-functional-maps.ads:71:19: info: subprogram "Equivalent_Keys_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:13
+spark-containers-functional-maps.ads:77:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:13
+spark-containers-functional-maps.ads:79:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:13
+spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:13
+spark-containers-functional-maps.ads:471:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:13
+spark-containers-functional-maps.ads:471:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:34
+spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:13
+spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:34
+spark-containers-functional-sets.ads:52:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:18
+spark-containers-functional-sets.ads:54:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:18
+spark-containers-functional-sets.ads:56:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:18
+spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:18
+spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:48
+spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:52:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:60:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:62:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:64:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:206:39: info: precondition proved (Z3: 2 VC), in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:206:39: info: precondition proved (Z3: 2 VC), in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:267:52: info: overflow check proved (Z3: 1 VC), in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:267:52: info: overflow check proved (Z3: 1 VC), in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:485:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:485:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:490:63: info: range check proved (Z3: 2 VC), in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:490:63: info: range check proved (Z3: 2 VC), in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:491:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:491:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:491:76: info: overflow check proved (Z3: 2 VC), in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:491:76: info: overflow check proved (Z3: 2 VC), in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:492:30: info: range check proved (Z3: 2 VC), in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:492:30: info: range check proved (Z3: 2 VC), in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.adb:53:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.adb:53:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.adb:53:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.adb:53:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:48
+spark-containers-parameter_checks.adb:53:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.adb:62:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.adb:62:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.adb:62:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.adb:62:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:48
+spark-containers-parameter_checks.adb:62:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.adb:85:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.adb:85:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.adb:85:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.adb:94:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.adb:94:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.adb:94:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.adb:103:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.adb:103:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.adb:103:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:18
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:48
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:18
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:48
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:48
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:54:19: medium: postcondition might fail, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:10 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:54:19: medium: postcondition might fail, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:13 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:54:19: medium: postcondition might fail, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:13 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:54:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:18 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:54:19: medium: postcondition might fail, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:21 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:18
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:48
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:18
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:48
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:48
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:59:19: medium: postcondition might fail, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:10 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:59:19: medium: postcondition might fail, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:13 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:59:19: medium: postcondition might fail, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:13 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:59:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:18 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:59:19: medium: postcondition might fail, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:21 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:18
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:48
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:18
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:48
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:48
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:64:19: medium: postcondition might fail, in instantiation at spark-containers-functional-infinite_sequences.ads:298, in instantiation at test_functional.ads:10 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:64:19: medium: postcondition might fail, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at test_functional.ads:13 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:64:19: medium: postcondition might fail, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at test_functional.ads:13 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:64:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_functional.ads:18 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:64:19: medium: postcondition might fail, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_functional.ads:21 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:87:19: medium: postcondition might fail, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:10 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:87:19: medium: postcondition might fail, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:13 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:87:19: medium: postcondition might fail, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:21 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:99:19: medium: postcondition might fail, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:10 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:99:19: medium: postcondition might fail, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:13 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:99:19: medium: postcondition might fail, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:21 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:10
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:13
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:21
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:25
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:34
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:54
+spark-containers-parameter_checks.ads:104:19: medium: postcondition might fail, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:10 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:104:19: medium: postcondition might fail, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at test_functional.ads:13 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:104:19: medium: postcondition might fail, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:21 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]

@@ -1,0 +1,10 @@
+with "sparklib";
+project Test is
+
+   for Main use ("test_maps.adb");
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnat2022");
+   end Compiler;
+
+end Test;

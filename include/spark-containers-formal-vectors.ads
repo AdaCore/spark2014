@@ -34,11 +34,21 @@
 
 with SPARK.Containers.Types; use SPARK.Containers.Types;
 with SPARK.Containers.Functional.Vectors;
+with SPARK.Containers.Parameter_Checks;
 
 generic
    type Index_Type is range <>;
    type Element_Type is private;
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
+
+   --  Ghost lemmas used to prove that "=" is an equivalence relation
+
+   with procedure Eq_Reflexive (X : Element_Type) is null
+     with Ghost;
+   with procedure Eq_Symmetric (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Eq_Transitive (X, Y, Z : Element_Type) is null
+     with Ghost;
 
 package SPARK.Containers.Formal.Vectors with
   SPARK_Mode
@@ -93,18 +103,45 @@ is
       --  Logical equality cannot be safely executed on most element types.
       --  Thus, this package should only be instantiated with ghost code
       --  disabled. This is enforced by having a special imported procedure
-      --  Fail_When_Body_Off that will lead to link-time errors otherwise.
+      --  Check_Or_Fail that will lead to link-time errors otherwise.
 
       function Element_Logic_Equal (Left, Right : Element_Type) return Boolean
       with
         Global => null,
         Annotate => (GNATprove, Logical_Equal);
 
+      --------------------------
+      -- Instantiation Checks --
+      --------------------------
+
+      package Eq_Checks is new
+        SPARK.Containers.Parameter_Checks.Equivalence_Checks
+          (T                   => Element_Type,
+           Eq                  => "=",
+           Param_Eq_Reflexive  => Eq_Reflexive,
+           Param_Eq_Symmetric  => Eq_Symmetric,
+           Param_Eq_Transitive => Eq_Transitive);
+      --  Check that the actual parameter for "=" is an equivalence relation
+
+      package Lift_Eq is new
+        SPARK.Containers.Parameter_Checks.Lift_Eq_Reflexive
+          (T                  => Element_Type,
+           "="                => Element_Logic_Equal,
+           Eq                 => "=",
+           Param_Eq_Reflexive => Eq_Checks.Eq_Reflexive);
+
+      ------------------
+      -- Formal Model --
+      ------------------
+
       package M is new SPARK.Containers.Functional.Vectors
-        (Index_Type          => Index_Type,
-         Element_Type        => Element_Type,
-         "="                 => Element_Logic_Equal,
-         Equivalent_Elements => "=");
+        (Index_Type                     => Index_Type,
+         Element_Type                   => Element_Type,
+         "="                            => Element_Logic_Equal,
+         Equivalent_Elements            => "=",
+         Equivalent_Elements_Reflexive  => Lift_Eq.Eq_Reflexive,
+         Equivalent_Elements_Symmetric  => Eq_Checks.Eq_Symmetric,
+         Equivalent_Elements_Transitive => Eq_Checks.Eq_Transitive);
 
       function "="
         (Left  : M.Sequence;
@@ -869,9 +906,43 @@ is
 
    generic
       with function "<" (Left, Right : Element_Type) return Boolean is <>;
+
+      --  Ghost lemmas used to prove that "<" is a strict weak ordering
+      --  relationship.
+
+      with procedure Lt_Irreflexive (X, Y : Element_Type) is null
+        with Ghost;
+      with procedure Lt_Asymmetric (X, Y : Element_Type) is null
+        with Ghost;
+      with procedure Lt_Transitive (X, Y, Z : Element_Type) is null
+        with Ghost;
+      with procedure Lt_Order (X, Y, Z : Element_Type) is null
+        with Ghost;
    package Generic_Sorting with SPARK_Mode is
 
       package Formal_Model with Ghost is
+
+         --------------------------
+         -- Instantiation Checks --
+         --------------------------
+
+         package Lt_Checks is new
+           SPARK.Containers.Parameter_Checks.Strict_Weak_Order_Checks_Eq
+             (T                    => Element_Type,
+              "<"                  => "<",
+              "="                  => "=",
+              Param_Eq_Reflexive   => Eq_Checks.Eq_Reflexive,
+              Param_Eq_Symmetric   => Eq_Checks.Eq_Symmetric,
+              Param_Lt_Irreflexive => Lt_Irreflexive,
+              Param_Lt_Asymmetric  => Lt_Asymmetric,
+              Param_Lt_Transitive  => Lt_Transitive,
+              Param_Lt_Order       => Lt_Order);
+         --  Check that "<" is a strict weak ordering relationship with respect
+         --  to "=".
+
+         ------------------
+         -- Formal Model --
+         ------------------
 
          function M_Elements_Sorted (Container : M.Sequence) return Boolean
          with

@@ -161,14 +161,13 @@ package body Flow.Control_Flow_Graph.Utility is
    ---------------------------
 
    function Make_Basic_Attributes
-     (Var_Def       : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Var_Ex_Use    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Var_Im_Use    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Sub_Called    : Node_Sets.Set       := Node_Sets.Empty_Set;
-      Loops         : Node_Sets.Set       := Node_Sets.Empty_Set;
-      In_Nested_Pkg : Boolean;
-      E_Loc         : Node_Or_Entity_Id   := Empty;
-      Print_Hint    : Pretty_Print_Kind_T := Pretty_Print_Null)
+     (Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Var_Ex_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Var_Im_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Sub_Called : Node_Sets.Set       := Node_Sets.Empty_Set;
+      Vertex_Ctx : Vertex_Context      := No_Vertex_Context;
+      E_Loc      : Node_Or_Entity_Id   := Empty;
+      Print_Hint : Pretty_Print_Kind_T := Pretty_Print_Null)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -178,8 +177,9 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Used            := Var_Ex_Use or Var_Im_Use;
       A.Variables_Explicitly_Used := Var_Ex_Use;
       A.Subprograms_Called        := Sub_Called;
-      A.Loops                     := Loops;
-      A.In_Nested_Package         := In_Nested_Pkg;
+      A.Loops                     := Vertex_Ctx.Current_Loops;
+      A.In_Nested_Package         := Vertex_Ctx.In_Nested_Package;
+      A.Warnings_Off              := Vertex_Ctx.Warnings_Off;
       A.Error_Location            := E_Loc;
       A.Pretty_Print_Kind         := Print_Hint;
 
@@ -195,9 +195,9 @@ package body Flow.Control_Flow_Graph.Utility is
      (Var_Def         : Flow_Id_Sets.Set;
       Var_Use         : Flow_Id_Sets.Set;
       Object_Returned : Entity_Id;
-      Loops           : Node_Sets.Set     := Node_Sets.Empty_Set;
+      Vertex_Ctx      : Vertex_Context    := No_Vertex_Context;
       E_Loc           : Node_Or_Entity_Id := Empty)
-     return V_Attributes
+      return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
    begin
@@ -205,7 +205,8 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Defined         := Var_Def;
       A.Variables_Used            := Var_Use;
       A.Variables_Explicitly_Used := Var_Use;
-      A.Loops                     := Loops;
+      A.Loops                     := Vertex_Ctx.Current_Loops;
+      A.Warnings_Off              := Vertex_Ctx.Warnings_Off;
       A.Error_Location            := E_Loc;
       A.Aux_Node                  := Object_Returned;
 
@@ -225,7 +226,7 @@ package body Flow.Control_Flow_Graph.Utility is
       Is_Loop_Entry : Boolean           := False;
       Is_Fold_Check : Boolean           := False;
       Is_Type_Decl  : Boolean           := False;
-      In_Nested_Pkg : Boolean;
+      Vertex_Ctx    : Vertex_Context    := No_Vertex_Context;
       E_Loc         : Node_Or_Entity_Id := Empty;
       Execution     : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
@@ -242,7 +243,8 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Subprograms_Called := Sub_Called;
       A.Is_Assertion       := Is_Assertion;
       A.Is_Loop_Entry      := Is_Loop_Entry;
-      A.In_Nested_Package  := In_Nested_Pkg;
+      A.In_Nested_Package  := Vertex_Ctx.In_Nested_Package;
+      A.Warnings_Off       := Vertex_Ctx.Warnings_Off;
       A.Error_Location     := E_Loc;
       A.Execution          := Execution;
 
@@ -299,12 +301,11 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------
 
    function Make_Call_Attributes
-     (Callsite      : Node_Id;
-      Var_Use       : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Sub_Called    : Node_Sets.Set     := Node_Sets.Empty_Set;
-      Loops         : Node_Sets.Set     := Node_Sets.Empty_Set;
-      In_Nested_Pkg : Boolean;
-      E_Loc         : Node_Or_Entity_Id := Empty)
+     (Callsite   : Node_Id;
+      Var_Use    : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Sub_Called : Node_Sets.Set     := Node_Sets.Empty_Set;
+      Vertex_Ctx : Vertex_Context    := No_Vertex_Context;
+      E_Loc      : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -314,8 +315,9 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Used            := Var_Use;
       A.Subprograms_Called        := Sub_Called;
       A.Is_Program_Node           := True;
-      A.Loops                     := Loops;
-      A.In_Nested_Package         := In_Nested_Pkg;
+      A.Loops                     := Vertex_Ctx.Current_Loops;
+      A.In_Nested_Package         := Vertex_Ctx.In_Nested_Package;
+      A.Warnings_Off              := Vertex_Ctx.Warnings_Off;
       A.Is_Callsite               := True;
       A.Error_Location            := E_Loc;
 
@@ -352,9 +354,8 @@ package body Flow.Control_Flow_Graph.Utility is
       Formal                       : Entity_Id;
       In_Vertex                    : Boolean;
       Discriminants_Or_Bounds_Only : Boolean;
-      Sub_Called                   : Node_Sets.Set := Node_Sets.Empty_Set;
-      Loops                        : Node_Sets.Set;
-      In_Nested_Pkg                : Boolean;
+      Sub_Called                   : Node_Sets.Set  := Node_Sets.Empty_Set;
+      Vertex_Ctx                   : Vertex_Context := No_Vertex_Context;
       E_Loc                        : Node_Or_Entity_Id)
       return V_Attributes
    is
@@ -374,8 +375,9 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Call_Vertex                  := Direct_Mapping_Id (Call_Vertex);
       A.Parameter_Actual             := Direct_Mapping_Id (Actual);
       A.Parameter_Formal             := Direct_Mapping_Id (Formal);
-      A.Loops                        := Loops;
-      A.In_Nested_Package            := In_Nested_Pkg;
+      A.Loops                        := Vertex_Ctx.Current_Loops;
+      A.In_Nested_Package            := Vertex_Ctx.In_Nested_Package;
+      A.Warnings_Off                 := Vertex_Ctx.Warnings_Off;
       A.Error_Location               := E_Loc;
 
       if In_Vertex then
@@ -465,9 +467,8 @@ package body Flow.Control_Flow_Graph.Utility is
       Global                       : Flow_Id;
       Scope                        : Flow_Scope;
       Discriminants_Or_Bounds_Only : Boolean;
-      Loops                        : Node_Sets.Set;
-      In_Nested_Pkg                : Boolean;
-      Is_Assertion                 : Boolean := False;
+      Vertex_Ctx                   : Vertex_Context    := No_Vertex_Context;
+      Is_Assertion                 : Boolean           := False;
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
@@ -480,8 +481,9 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Is_Discr_Or_Bounds_Parameter := Discriminants_Or_Bounds_Only;
       A.Call_Vertex                  := Direct_Mapping_Id (Call_Vertex);
       A.Parameter_Formal             := Global;
-      A.Loops                        := Loops;
-      A.In_Nested_Package            := In_Nested_Pkg;
+      A.Loops                        := Vertex_Ctx.Current_Loops;
+      A.In_Nested_Package            := Vertex_Ctx.In_Nested_Package;
+      A.Warnings_Off                 := Vertex_Ctx.Warnings_Off;
       A.Error_Location               := E_Loc;
       A.Is_Assertion                 := Is_Assertion;
 
@@ -531,14 +533,13 @@ package body Flow.Control_Flow_Graph.Utility is
    ----------------------------------------
 
    function Make_Implicit_Parameter_Attributes
-     (FA            : Flow_Analysis_Graphs;
-      Call_Vertex   : Node_Id;
-      In_Vertex     : Boolean;
-      Scope         : Flow_Scope;
-      Sub_Called    : Node_Sets.Set := Node_Sets.Empty_Set;
-      Loops         : Node_Sets.Set;
-      In_Nested_Pkg : Boolean;
-      E_Loc         : Node_Or_Entity_Id)
+     (FA          : Flow_Analysis_Graphs;
+      Call_Vertex : Node_Id;
+      In_Vertex   : Boolean;
+      Scope       : Flow_Scope;
+      Sub_Called  : Node_Sets.Set  := Node_Sets.Empty_Set;
+      Vertex_Ctx  : Vertex_Context := No_Vertex_Context;
+      E_Loc       : Node_Or_Entity_Id)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -565,9 +566,10 @@ package body Flow.Control_Flow_Graph.Utility is
          A.Call_Vertex        := Direct_Mapping_Id (Call_Vertex);
          A.Parameter_Actual   :=
            Direct_Mapping_Id (Prefix (Name (Call_Vertex)));
-         A.Parameter_Formal :=
+         A.Parameter_Formal   :=
            Direct_Mapping_Id (Sinfo.Nodes.Scope (Subprogram));
-         A.Loops              := Loops;
+         A.Loops              := Vertex_Ctx.Current_Loops;
+         A.Warnings_Off       := Vertex_Ctx.Warnings_Off;
          A.Error_Location     := E_Loc;
 
          if In_Vertex then
@@ -634,8 +636,9 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Parameter_Formal      :=
               Change_Variant (Implicit,
                               (if In_Vertex then In_View else Out_View));
-            A.Loops                 := Loops;
-            A.In_Nested_Package     := In_Nested_Pkg;
+            A.Loops                 := Vertex_Ctx.Current_Loops;
+            A.In_Nested_Package     := Vertex_Ctx.In_Nested_Package;
+            A.Warnings_Off          := Vertex_Ctx.Warnings_Off;
             A.Error_Location        := E_Loc;
 
             if In_Vertex then
@@ -817,16 +820,16 @@ package body Flow.Control_Flow_Graph.Utility is
      (FA            : Flow_Analysis_Graphs;
       Scope         : Flow_Scope;
       F             : Flow_Id;
-      Loops         : Node_Sets.Set := Node_Sets.Empty_Set;
-      In_Nested_Pkg : Boolean)
+      Vertex_Ctx    : Vertex_Context := No_Vertex_Context)
       return V_Attributes
    is
       A  : V_Attributes     := Null_Attributes;
       DI : constant Node_Id := Get_Default_Initialization (F);
    begin
       A.Is_Default_Init   := True;
-      A.Loops             := Loops;
-      A.In_Nested_Package := In_Nested_Pkg;
+      A.Loops             := Vertex_Ctx.Current_Loops;
+      A.In_Nested_Package := Vertex_Ctx.In_Nested_Package;
+      A.Warnings_Off      := Vertex_Ctx.Warnings_Off;
       if Present (DI) then
          A.Error_Location := DI;
       else
@@ -859,11 +862,11 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------------------------
 
    function Make_Package_Initialization_Attributes
-     (The_State : Flow_Id;
-      Inputs    : Flow_Id_Sets.Set;
-      Scope     : Flow_Scope;
-      Loops     : Node_Sets.Set;
-      E_Loc     : Node_Or_Entity_Id)
+     (The_State  : Flow_Id;
+      Inputs     : Flow_Id_Sets.Set;
+      Scope      : Flow_Scope;
+      Vertex_Ctx : Vertex_Context := No_Vertex_Context;
+      E_Loc      : Node_Or_Entity_Id)
       return V_Attributes
    is
       A : V_Attributes;
@@ -891,8 +894,7 @@ package body Flow.Control_Flow_Graph.Utility is
               and then Is_Initialized_In_Specification (The_State, Scope)
             then Split_State
             else Flow_Id_Sets.Empty_Set),
-         Loops         => Loops,
-         In_Nested_Pkg => True,
+         Vertex_Ctx    => Vertex_Ctx,
          E_Loc         => E_Loc);
       A.Is_Package_Initialization := True;
       return A;

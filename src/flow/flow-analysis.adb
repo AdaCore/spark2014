@@ -2012,6 +2012,13 @@ package body Flow.Analysis is
 
               and then Instantiation_Location (Sloc (Atr.Error_Location))
                        = No_Location
+
+              --  Suppress the warning on nodes flagged with Warnings_Off
+              --  (right now, it happens when the unreachable code comes from
+              --  a statically known condition involving a constant with
+              --  Warnings => Off).
+
+              and then not Atr.Warnings_Off
             then
                Error_Msg_Flow (FA       => FA,
                                Msg      => "this statement is never reached",

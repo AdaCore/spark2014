@@ -32,6 +32,7 @@ private with SPARK.Containers.Functional.Base;
 private with SPARK.Containers.Types;
 
 with SPARK.Big_Integers; use SPARK.Big_Integers;
+with SPARK.Containers.Parameter_Checks;
 
 generic
    type Element_Type (<>) is private;
@@ -44,6 +45,17 @@ generic
    --  This constant should only be set to False when no particular handling
    --  of equivalence over elements is needed, that is, Equivalent_Elements
    --  defines an element uniquely.
+
+   --  Ghost lemmas used to prove that Equivalent_Elements is an equivalence
+   --  relation.
+
+   with procedure Equivalent_Elements_Reflexive (X : Element_Type) is null
+     with Ghost;
+   with procedure Equivalent_Elements_Symmetric (X, Y : Element_Type) is null
+     with Ghost;
+   with procedure Equivalent_Elements_Transitive
+        (X, Y, Z : Element_Type) is null
+     with Ghost;
 
 package SPARK.Containers.Functional.Sets with
   SPARK_Mode,
@@ -59,9 +71,12 @@ is
    --  Sets are empty when default initialized.
    --  "For in" quantification over sets should not be used.
    --  "For of" quantification over sets iterates over elements.
-   --  Note that, for proof, "for of" quantification is understood modulo
-   --  equivalence (the range of quantification comprises all the elements that
-   --  are equivalent to any element of the set).
+   --  For proof, "for of" quantification is understood modulo equivalence (the
+   --  range of quantification comprises all the elements that are equivalent
+   --  to any element of the set), so it is cannot be safely executed in
+   --  general. Thus, quantified expression should only be used in disabled
+   --  ghost code. This is enforced by having a special imported procedure
+   --  Check_Or_Fail that will lead to link-time errors otherwise.
 
    -----------------------
    --  Basic operations --
@@ -217,6 +232,12 @@ is
    --  For better efficiency of both proofs and execution, avoid using
    --  construction functions in annotations and rather use property functions.
 
+   function Empty_Set return Set with
+   --  Return a new empty set
+
+     Global => null,
+     Post   => Is_Empty (Empty_Set'Result);
+
    function Add (Container : Set; Item : Element_Type) return Set with
    --  Return a new set containing all the elements of Container plus E
 
@@ -227,12 +248,6 @@ is
          and Contains (Add'Result, Item)
          and Container <= Add'Result
          and Included_Except (Add'Result, Container, Item);
-
-   function Empty_Set return Set with
-   --  Return a new empty set
-
-     Global => null,
-     Post   => Is_Empty (Empty_Set'Result);
 
    function Remove (Container : Set; Item : Element_Type) return Set with
    --  Return a new set containing all the elements of Container except E
@@ -264,13 +279,6 @@ is
            and Left <= Union'Result
            and Right <= Union'Result
            and Included_In_Union (Union'Result, Left, Right);
-
-   function Copy_Element (Item : Element_Type) return Element_Type is (Item);
-   --  Elements of containers are copied by numerous primitives in this
-   --  package. This function causes GNATprove to verify that such a copy is
-   --  valid (in particular, it does not break the ownership policy of SPARK,
-   --  i.e. it does not contain pointers that could be used to alias mutable
-   --  data).
 
    ----------------------------------
    -- Iteration on Functional Sets --
@@ -348,6 +356,29 @@ is
    --  Return True on non-empty sets which can be reached by iterating over
    --  Container.
 
+   --------------------------
+   -- Instantiation Checks --
+   --------------------------
+
+   --  Check that the actual parameters follow the appropriate assumptions.
+
+   function Copy_Element (Item : Element_Type) return Element_Type is (Item);
+   --  Elements of containers are copied by numerous primitives in this
+   --  package. This function causes GNATprove to verify that such a copy is
+   --  valid (in particular, it does not break the ownership policy of SPARK,
+   --  i.e. it does not contain pointers that could be used to alias mutable
+   --  data).
+
+   package Eq_Elements_Checks is new
+     SPARK.Containers.Parameter_Checks.Equivalence_Checks
+       (T                   => Element_Type,
+        Eq                  => Equivalent_Elements,
+        Param_Eq_Reflexive  => Equivalent_Elements_Reflexive,
+        Param_Eq_Symmetric  => Equivalent_Elements_Symmetric,
+        Param_Eq_Transitive => Equivalent_Elements_Transitive);
+   --  Check that the actual parameter for Equivalent_Elements is an
+   --  equivalence relation.
+
    --------------------------------------------------
    -- Iteration Primitives Used For Quantification --
    --------------------------------------------------
@@ -399,31 +430,7 @@ private
       Content : Containers.Container;
    end record;
 
-   --------------------------------------------------
-   -- Iteration Primitives Used For Quantification --
-   --------------------------------------------------
-
    type Private_Key is new Count_Type;
-
-   function Iter_Element
-     (Container : Set;
-      Key       : Private_Key) return Element_Type
-   is
-     (Containers.Get (Container.Content, Count_Type (Key)));
-
-   function Iter_First (Container : Set) return Private_Key is (1);
-
-   function Iter_Has_Element
-     (Container : Set;
-      Key       : Private_Key) return Boolean
-   is
-     (Count_Type (Key) in 1 .. Containers.Length (Container.Content));
-
-   function Iter_Next
-     (Container : Set;
-      Key       : Private_Key) return Private_Key
-   is
-     (if Key = Private_Key'Last then 0 else Key + 1);
 
    ----------------------------------
    -- Iteration on Functional Sets --

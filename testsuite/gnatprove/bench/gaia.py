@@ -7,6 +7,7 @@ import json
 import os.path
 import shutil
 import subprocess
+from util import mkdir_allow_exists
 
 descr = """
 The main argument is a json file which contains all the prover results.
@@ -112,7 +113,8 @@ def main():
     args = parse_arguments()
     with open(args.resultfile, "r") as f:
         data = json.load(f)
-    outdir = os.path.dirname(args.resultfile)
+    outdir = os.path.join(os.path.dirname(args.resultfile), "new")
+    mkdir_allow_exists(outdir)
     results_file = os.path.join(outdir, "results")
     with open(results_file, "w") as f:
         produce_version_output(outdir, f)

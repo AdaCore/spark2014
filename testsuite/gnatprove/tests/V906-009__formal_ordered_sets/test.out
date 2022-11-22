@@ -1,99 +1,364 @@
-spark-containers-formal-ordered_sets.ads:565:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:565:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:945:39: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:945:39: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:954:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:954:17: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:989:42: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:989:42: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:997:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:997:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1024:42: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1024:42: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1032:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1032:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1049:24: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1049:24: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1050:26: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1050:26: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1098:49: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1098:49: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1268:24: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1268:24: info: overflow check proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1269:26: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1269:26: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1269:44: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1269:44: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1308:49: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1308:49: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1415:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1415:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1430:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1430:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1445:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1445:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1460:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1460:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1494:47: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1494:47: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1509:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:1509:40: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:1778:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set.ads:30
-spark-containers-formal-ordered_sets.ads:1799:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:30
-spark-containers-formal-ordered_sets.ads:1817:40: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:30
-spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:283, in instantiation at test_set.ads:19
-spark-containers-functional-maps.ads:285:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:283, in instantiation at test_set.ads:6
-spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:283, in instantiation at test_set.ads:19
-spark-containers-functional-maps.ads:286:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:283, in instantiation at test_set.ads:6
-spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:120, in instantiation at test_set.ads:19
-spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:120, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:100:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:101:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:182:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:183:39: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:238:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:238:52: info: overflow check proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:277:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:435:54: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:435:54: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:440:63: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:440:63: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:441:59: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:441:59: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:441:76: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:441:76: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:442:30: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:442:30: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:63:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:63:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:65:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:65:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:67:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:67:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:73:19: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:73:19: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:75:19: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:75:19: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:77:19: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:77:19: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:79:19: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:79:19: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:632:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:632:18: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1012:39: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1012:39: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1021:17: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1021:17: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1056:42: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1056:42: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1064:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1064:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1091:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1091:42: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1099:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1099:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1116:24: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1116:24: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1117:26: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1117:26: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1165:49: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1165:49: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1335:24: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1335:24: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1336:26: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1336:26: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1336:44: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1336:44: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1375:49: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1375:49: info: overflow check proved (altergo: 2 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1482:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1482:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1497:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1497:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1512:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1512:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1527:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1527:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1561:47: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1561:47: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1576:40: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:1576:40: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:1611:22: info: subprogram "Lt_Compatible" will terminate, terminating annotation has been proved, in instantiation at test_set.ads:30
+spark-containers-formal-ordered_sets.ads:1870:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set.ads:30
+spark-containers-formal-ordered_sets.ads:1891:46: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:30
+spark-containers-formal-ordered_sets.ads:1909:40: info: precondition proved (altergo: 1 VC), in instantiation at test_set.ads:30
+spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:59:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:59:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:61:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:61:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:67:19: info: subprogram "Equivalent_Keys_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:67:19: info: subprogram "Equivalent_Keys_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:69:19: info: subprogram "Equivalent_Keys_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:69:19: info: subprogram "Equivalent_Keys_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:71:19: info: subprogram "Equivalent_Keys_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:71:19: info: subprogram "Equivalent_Keys_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:77:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:77:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:79:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:79:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:471:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:471:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
+spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:52:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:52:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:206:39: info: precondition proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:206:39: info: precondition proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:267:52: info: overflow check proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:267:52: info: overflow check proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:485:54: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:485:54: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:490:63: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:490:63: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:491:59: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:491:59: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:491:76: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:491:76: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:492:30: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:492:30: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:53:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:53:10: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:62:10: info: precondition proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:62:10: info: precondition proved (altergo: 2 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:85:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:85:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:94:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:94:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:103:10: info: precondition proved (altergo: 2 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:103:10: info: precondition proved (altergo: 2 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:263:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:263:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:268:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:268:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:269:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:269:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:270:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:270:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:286:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:286:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:287:13: info: assertion proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:287:13: info: assertion proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:289:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:289:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.adb:290:13: info: assertion proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.adb:290:13: info: assertion proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:145, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:121:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:154, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:121:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:154, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:154, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:154, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:124:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:154, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:124:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:154, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:203:17: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:203:17: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:204:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:204:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:206:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:206:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:208:17: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:208:17: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:209:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:209:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:211:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:211:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:213:17: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:213:17: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:216:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:216:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:218:17: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:218:17: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:219:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:219:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:221:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:221:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:227:16: info: subprogram "Eq" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:227:16: info: subprogram "Eq" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:229:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:229:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:230:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:230:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:231:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:231:19: info: postcondition proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:233:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:233:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:234:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:234:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:236:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:236:19: info: postcondition proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:238:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:238:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:239:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:239:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:241:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:241:19: info: postcondition proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:243:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:243:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:244:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:244:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:246:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:246:19: info: postcondition proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:282:17: info: subprogram "Op_Compatible" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:1628, in instantiation at test_set.ads:30
+spark-containers-parameter_checks.ads:283:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:1628, in instantiation at test_set.ads:30
+spark-containers-parameter_checks.ads:284:19: info: postcondition proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:1628, in instantiation at test_set.ads:30
 test_set.adb:5:14: warning: subprogram "Test_Set_Pos" has no effect
 test_set.adb:7:07: info: initialization of "L" proved
 test_set.adb:7:10: info: initialization of "K" proved
-test_set.adb:7:19: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_set.adb:7:19: info: range check proved (altergo: 2 VC)
 test_set.adb:8:07: info: initialization of "C" proved
 test_set.adb:9:07: info: initialization of "B" proved
-test_set.adb:11:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:11:22: info: assertion proved (altergo: 1 VC)
 test_set.adb:13:12: info: precondition proved (altergo: 1 VC)
-test_set.adb:15:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:16:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:17:07: info: precondition proved (Z3: 1 VC)
+test_set.adb:15:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:16:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:17:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:18:22: info: assertion proved (altergo: 1 VC)
-test_set.adb:20:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:20:07: info: precondition proved (altergo: 1 VC)
 test_set.adb:21:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:24:07: info: precondition proved (altergo: 1 VC)
-test_set.adb:25:07: info: precondition proved (altergo: 1 VC)
+test_set.adb:24:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:25:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:26:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:28:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:28:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:29:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:30:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:32:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:32:36: info: precondition proved (CVC5: 1 VC)
+test_set.adb:30:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_set.adb:32:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:32:36: info: precondition proved (Z3: 1 VC)
 test_set.adb:33:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:33:36: info: precondition proved (Z3: 1 VC)
+test_set.adb:33:36: info: precondition proved (CVC5: 1 VC)
 test_set.adb:34:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:35:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:35:36: info: precondition proved (Z3: 1 VC)
@@ -101,63 +366,63 @@ test_set.adb:36:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:36:36: info: precondition proved (CVC5: 1 VC)
 test_set.adb:37:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:39:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:40:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:41:07: info: precondition proved (Z3: 2 VC)
+test_set.adb:40:07: info: precondition proved (Z3: 1 VC)
+test_set.adb:41:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:42:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:44:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:44:07: info: precondition proved (altergo: 1 VC)
 test_set.adb:46:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:47:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:48:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:49:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:48:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:49:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:55:10: medium: precondition might fail
 test_set.adb:60:28: info: assertion proved (Z3: 1 VC)
-test_set.adb:65:23: info: precondition proved (CVC5: 1 VC)
-test_set.adb:67:10: info: precondition proved (altergo: 1 VC)
+test_set.adb:65:23: info: precondition proved (altergo: 1 VC)
+test_set.adb:67:10: info: precondition proved (CVC5: 1 VC)
 test_set.adb:68:25: medium: assertion might fail
-test_set.adb:68:28: info: precondition proved (Z3: 1 VC)
-test_set.adb:68:39: info: precondition proved (altergo: 1 VC)
+test_set.adb:68:28: info: precondition proved (CVC5: 1 VC)
+test_set.adb:68:39: info: precondition proved (CVC5: 1 VC)
 test_set.adb:69:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:70:10: info: precondition proved (CVC5: 1 VC)
 test_set.adb:76:10: medium: precondition might fail
 test_set.adb:77:25: medium: assertion might fail
-test_set.adb:81:23: info: precondition proved (altergo: 1 VC)
-test_set.adb:83:10: info: precondition proved (Z3: 1 VC)
+test_set.adb:81:23: info: precondition proved (Z3: 1 VC)
+test_set.adb:83:10: info: precondition proved (CVC5: 1 VC)
 test_set.adb:84:25: medium: assertion might fail
-test_set.adb:84:28: info: precondition proved (CVC5: 1 VC)
-test_set.adb:84:40: info: precondition proved (Z3: 1 VC)
+test_set.adb:84:28: info: precondition proved (altergo: 1 VC)
+test_set.adb:84:40: info: precondition proved (CVC5: 1 VC)
 test_set.adb:85:10: info: precondition proved (Z3: 1 VC)
 test_set.adb:92:07: info: precondition proved (Z3: 1 VC)
-test_set.adb:93:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:93:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:96:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:98:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:99:07: medium: assertion might fail
 test_set.adb:102:14: warning: subprogram "Test_Set_Rec" has no effect
 test_set.adb:105:07: info: initialization of "L" proved
 test_set.adb:105:10: info: initialization of "K" proved
-test_set.adb:105:19: info: range check proved (CVC5: 2 VC)
+test_set.adb:105:19: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_set.adb:105:19: info: range check proved (altergo: 2 VC)
 test_set.adb:106:07: info: initialization of "C" proved
 test_set.adb:107:07: info: initialization of "B" proved
 test_set.adb:109:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:111:12: info: precondition proved (CVC5: 1 VC)
-test_set.adb:113:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:114:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:111:12: info: precondition proved (altergo: 1 VC)
+test_set.adb:113:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:114:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:115:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:116:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:117:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:117:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:119:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:120:07: info: precondition proved (altergo: 1 VC)
+test_set.adb:120:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:123:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:124:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:125:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:125:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:126:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:127:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:128:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:130:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:132:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:134:07: info: precondition proved (Z3: 1 VC)
+test_set.adb:134:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:135:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:138:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:138:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:140:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:142:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:143:07: info: precondition proved (Z3: 1 VC)
@@ -174,19 +439,19 @@ test_set.adb:158:19: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_set.adb:158:19: info: range check proved (altergo: 2 VC)
 test_set.adb:159:07: info: initialization of "C" proved
 test_set.adb:160:07: info: initialization of "B" proved
-test_set.adb:162:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:162:22: info: assertion proved (altergo: 1 VC)
 test_set.adb:164:12: info: precondition proved (altergo: 1 VC)
-test_set.adb:166:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:166:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:167:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
-test_set.adb:168:07: info: precondition proved (altergo: 1 VC)
+test_set.adb:168:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:169:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:170:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:172:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:173:07: info: precondition proved (altergo: 1 VC)
-test_set.adb:176:07: info: precondition proved (altergo: 1 VC)
-test_set.adb:177:07: info: precondition proved (altergo: 1 VC)
-test_set.adb:179:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:180:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:170:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:172:07: info: precondition proved (altergo: 1 VC)
+test_set.adb:173:07: info: precondition proved (Z3: 1 VC)
+test_set.adb:176:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:177:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:179:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:180:07: info: precondition proved (Z3: 1 VC)
 test_set.adb:181:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:182:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:184:07: info: precondition proved (Z3: 1 VC)
@@ -200,117 +465,119 @@ test_set.adb:200:07: info: precondition proved (Trivial: 1 VC)
 test_set.adb:201:07: info: precondition proved (Trivial: 1 VC)
 test_set.adb:206:04: info: initialization of "L" proved
 test_set.adb:206:07: info: initialization of "K" proved
+test_set.adb:206:16: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_set.adb:206:16: info: range check proved (altergo: 2 VC)
 test_set.adb:207:04: info: initialization of "C" proved
 test_set.adb:208:04: info: initialization of "Val" proved
 test_set.adb:213:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:215:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
-test_set.adb:216:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_set.adb:216:07: info: precondition proved (altergo: 2 VC)
 test_set.adb:218:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:219:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:221:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:223:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:225:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:227:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:223:07: info: precondition proved (CVC5: 2 VC)
+test_set.adb:225:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:227:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:229:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:233:12: info: discriminant check proved (altergo: 1 VC)
+test_set.adb:233:12: info: discriminant check proved (CVC5: 1 VC)
 test_set.adb:233:12: info: precondition proved (CVC5: 1 VC)
-test_set.adb:234:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:234:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:236:07: medium: precondition might fail
 test_set.adb:237:12: info: discriminant check proved (CVC5: 1 VC)
 test_set.adb:237:12: info: precondition proved (altergo: 1 VC)
 test_set.adb:238:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:239:22: medium: assertion might fail
 test_set.adb:243:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:244:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_set.adb:244:07: info: precondition proved (Z3: 2 VC)
 test_set.adb:246:07: info: precondition proved (altergo: 1 VC)
-test_set.adb:247:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:247:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:248:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:249:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:249:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:253:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:254:14: info: precondition proved (CVC5: 1 VC)
 test_set.adb:256:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:258:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:262:07: info: precondition proved (Z3: 2 VC)
+test_set.adb:258:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:262:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:263:14: info: precondition proved (altergo: 1 VC)
-test_set.adb:265:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:267:22: info: assertion proved (altergo: 1 VC)
-test_set.adb:273:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:274:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:275:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:277:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:278:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:279:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:281:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:282:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_set.adb:265:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:267:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:273:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:274:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:275:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:277:07: info: precondition proved (Z3: 2 VC)
+test_set.adb:278:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_set.adb:279:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_set.adb:281:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:282:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_set.adb:287:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:288:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:291:25: info: assertion proved (Z3: 1 VC)
-test_set.adb:297:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:297:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:298:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:300:12: info: discriminant check proved (Z3: 1 VC)
+test_set.adb:300:12: info: discriminant check proved (CVC5: 1 VC)
 test_set.adb:302:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:307:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
-test_set.adb:308:07: info: precondition proved (Z3: 2 VC)
-test_set.adb:309:07: info: precondition proved (Z3: 2 VC)
+test_set.adb:307:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_set.adb:308:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_set.adb:309:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:312:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:315:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:315:26: info: precondition proved (Z3: 1 VC)
+test_set.adb:315:26: info: precondition proved (CVC5: 1 VC)
 test_set.adb:320:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:320:22: info: precondition proved (Z3: 1 VC)
+test_set.adb:320:22: info: precondition proved (altergo: 1 VC)
 test_set.adb:322:12: info: precondition proved (CVC5: 1 VC)
 test_set.adb:323:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:323:22: info: precondition proved (Z3: 1 VC)
+test_set.adb:323:22: info: precondition proved (CVC5: 1 VC)
 test_set.adb:325:07: info: precondition proved (altergo: 1 VC)
 test_set.adb:326:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:326:22: info: precondition proved (CVC5: 1 VC)
-test_set.adb:330:12: info: precondition proved (altergo: 1 VC)
+test_set.adb:330:12: info: precondition proved (CVC5: 1 VC)
 test_set.adb:331:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:331:22: info: precondition proved (CVC5: 1 VC)
-test_set.adb:333:07: info: precondition proved (CVC5: 1 VC)
+test_set.adb:331:22: info: precondition proved (Z3: 1 VC)
+test_set.adb:333:07: info: precondition proved (altergo: 1 VC)
 test_set.adb:334:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:334:22: info: precondition proved (Z3: 1 VC)
 test_set.adb:338:12: info: discriminant check proved (CVC5: 1 VC)
-test_set.adb:339:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:339:22: info: precondition proved (Z3: 1 VC)
-test_set.adb:340:07: info: precondition proved (CVC5: 1 VC)
-test_set.adb:347:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:348:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
-test_set.adb:350:07: info: precondition proved (CVC5: 2 VC)
+test_set.adb:339:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:339:22: info: precondition proved (CVC5: 1 VC)
+test_set.adb:340:07: info: precondition proved (altergo: 1 VC)
+test_set.adb:347:07: info: precondition proved (CVC5: 2 VC)
+test_set.adb:348:07: info: precondition proved (Z3: 2 VC)
+test_set.adb:350:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:351:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:356:25: info: assertion proved (Z3: 1 VC)
+test_set.adb:356:25: info: assertion proved (altergo: 1 VC)
 test_set.adb:357:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:360:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:363:07: info: assertion proved (Z3: 1 VC)
 test_set.adb:370:07: info: initialization of "L" proved
 test_set.adb:370:10: info: initialization of "K" proved
-test_set.adb:370:19: info: range check proved (CVC5: 2 VC)
+test_set.adb:370:19: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:370:19: info: range check proved (altergo: 2 VC)
 test_set.adb:371:07: info: initialization of "C" proved
-test_set.adb:374:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
-test_set.adb:376:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:374:07: info: precondition proved (CVC5: 2 VC)
+test_set.adb:376:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:377:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:379:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:379:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_set.adb:380:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:381:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
-test_set.adb:386:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:389:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:389:26: info: precondition proved (CVC5: 1 VC)
-test_set.adb:393:12: info: discriminant check proved (CVC5: 1 VC)
-test_set.adb:394:07: info: precondition proved (Z3: 1 VC)
+test_set.adb:381:07: info: precondition proved (CVC5: 2 VC)
+test_set.adb:386:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:389:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:389:26: info: precondition proved (altergo: 1 VC)
+test_set.adb:393:12: info: discriminant check proved (altergo: 1 VC)
+test_set.adb:394:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:395:22: info: assertion proved (altergo: 1 VC)
-test_set.adb:396:22: info: assertion proved (CVC5: 1 VC)
-test_set.adb:400:22: info: assertion proved (CVC5: 1 VC)
+test_set.adb:396:22: info: assertion proved (altergo: 1 VC)
+test_set.adb:400:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:400:23: info: precondition proved (Z3: 1 VC)
 test_set.adb:404:12: info: discriminant check proved (altergo: 1 VC)
 test_set.adb:407:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:410:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:411:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:415:22: medium: assertion might fail
-test_set.adb:420:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:421:07: info: precondition proved (CVC5: 2 VC)
-test_set.adb:422:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_set.adb:420:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_set.adb:421:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_set.adb:422:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:424:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:426:08: info: precondition proved (altergo: 1 VC)
+test_set.adb:426:08: info: precondition proved (CVC5: 1 VC)
 test_set.adb:428:07: medium: assertion might fail
 test_set.ads:16:12: info: postcondition proved (altergo: 2 VC)
 test_set.ads:27:17: info: postcondition proved (altergo: 1 VC)

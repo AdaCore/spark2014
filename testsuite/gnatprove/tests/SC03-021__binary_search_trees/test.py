@@ -16,6 +16,7 @@ def replay():
     prove_all(
         procs=0,
         level=4,
+        vc_timeout=120,
         opt=["--function-sandboxing=off"],
         check_counterexamples=False,
         sparklib=True,

@@ -212,7 +212,7 @@ inifinte one are indexed by mathematical integers.
 Functional sets offer standard mathematical set functionalities such as
 inclusion, union, and intersection. They are neither ordered nor hashed:
 
-	
+
 .. code-block:: ada
 
     function Contains (S : Set; E : Element_Type) return Boolean;
@@ -250,19 +250,18 @@ available resources:
 
 .. note::
 
-    Functional sets and maps represent elements modulo equivalence. For proof,
-    the range of quantification over their content includes all elements that
-    are equivalent to elements included in the container. On the other hand, for
-    execution, the iteration is only done on elements which have actually been
-    included in the container. This difference may make interaction between test
-    and proof tricky when the equivalence relation is not the equality.
-
-.. note::
-
-   Functional containers do not comply with the ownership policy of SPARK if
-   element or key types are ownership types. Care should be taken to do the
-   required copies when storing these elements/keys inside the container or
-   retrieving them.
+   Instances of container packages, both functional and formal, are subjected
+   to particular constraints which are necessary for the contracts on the
+   instance to be correct. For example, container primitives don't comply with
+   the ownership policy of SPARK if element or key types are ownership types.
+   These constraints are verified specifically each time a container
+   package is instantiated. For some of these checks, it is
+   possible for the user to help the proof tool by providing some lemmas
+   at instantiation. It is the case in particular for the
+   constraints coming from the Ada reference manual on the container
+   packages (that "=" is an equivalence relation, or that "<" is a strict
+   weak order in particular). These lemmas appear in the library as additional
+   ghost generic formal parameters.
 
 .. index:: formal containers
 
@@ -330,7 +329,7 @@ dynamic allocation to expand their internal block of memory.
     The size of bounded containers is not set using a descriminent, it is implicitly
     set to it max value. All the required memory is not reserved at declaration. As
     all the formal containers are internally indexed by ``Count_Type``, their max size
-    is ``Count_Type'Last``. 
+    is ``Count_Type'Last``.
 
 Modified API of Formal Containers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
