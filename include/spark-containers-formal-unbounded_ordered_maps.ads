@@ -29,7 +29,7 @@
 --  Iteration over maps is done using the Iterable aspect, which is SPARK
 --  compatible. "For of" iteration ranges over keys instead of elements.
 
-with Ada.Containers; use Ada.Containers;
+with SPARK.Containers.Types; use SPARK.Containers.Types;
 with SPARK.Containers.Functional.Vectors;
 with SPARK.Containers.Functional.Maps;
 private with Ada.Containers.Red_Black_Trees;

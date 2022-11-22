@@ -32,8 +32,8 @@ pragma Elaborate_All
 with Ada.Containers.Red_Black_Trees.Generic_Bounded_Keys;
 pragma Elaborate_All (Ada.Containers.Red_Black_Trees.Generic_Bounded_Keys);
 
-with Ada.Numerics.Big_Numbers.Big_Integers;
-use Ada.Numerics.Big_Numbers.Big_Integers;
+with SPARK.Big_Integers;
+use SPARK.Big_Integers;
 
 with Ada.Unchecked_Deallocation;
 

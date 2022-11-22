@@ -26,7 +26,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers; use Ada.Containers;
+with SPARK.Containers.Types; use SPARK.Containers.Types;
 with SPARK.Containers.Functional.Vectors;
 with SPARK.Containers.Functional.Maps;
 

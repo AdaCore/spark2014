@@ -1,0 +1,84 @@
+with "sparklib_common";
+
+--  This project file is intended for use with reduced runtimes without
+--  Ada.Numerics.Big_Numbers or Ada.Finalization units.
+
+project SPARKlib_Light is
+
+   --  Environment variable SPARKLIB_OBJECT_DIR controls the object
+   --  directory used in compilation and/or verification.
+
+   for Object_Dir use External("SPARKLIB_OBJECT_DIR");
+
+   case SPARKlib_common.SPARKlib_Installed is
+      when "True" =>
+         for Source_Dirs use ("../../include/spark");
+      when others =>
+         for Source_Dirs use (".");
+   end case;
+
+   SPARK_Body_Mode := SPARKlib_common.SPARK_Body_Mode;
+
+   package Compiler renames SPARKlib_common.Compiler;
+
+   package Prove renames SPARKlib_common.Prove;
+
+   for Excluded_Source_Files use ("spark-containers-formal-hashed_maps.adb",
+                                  "spark-containers-formal-hashed_maps.ads",
+                                  "spark-containers-formal-hashed_sets.adb",
+                                  "spark-containers-formal-hashed_sets.ads",
+                                  "spark-containers-formal-holders.adb",
+                                  "spark-containers-formal-holders.ads",
+                                  "spark-containers-formal-ordered_maps.adb",
+                                  "spark-containers-formal-ordered_maps.ads",
+                                  "spark-containers-formal-ordered_sets.adb",
+                                  "spark-containers-formal-ordered_sets.ads",
+                                  "spark-containers-formal-unbounded_doubly_linked_lists.adb",
+                                  "spark-containers-formal-unbounded_doubly_linked_lists.ads",
+                                  "spark-containers-formal-unbounded_hashed_maps.adb",
+                                  "spark-containers-formal-unbounded_hashed_maps.ads",
+                                  "spark-containers-formal-unbounded_hashed_sets.adb",
+                                  "spark-containers-formal-unbounded_hashed_sets.ads",
+                                  "spark-containers-formal-unbounded_ordered_maps.adb",
+                                  "spark-containers-formal-unbounded_ordered_maps.ads",
+                                  "spark-containers-formal-unbounded_ordered_sets.adb",
+                                  "spark-containers-formal-unbounded_ordered_sets.ads",
+                                  "spark-containers-formal-unbounded_vectors.adb",
+                                  "spark-containers-formal-unbounded_vectors.ads",
+                                  "spark-containers-formal-vectors.adb",
+                                  "spark-containers-formal-vectors.ads",
+                                  "spark-containers-functional-base.adb",
+                                  "spark-containers-functional-base.ads",
+                                  "spark-containers-functional-infinite_sequences.adb",
+                                  "spark-containers-functional-maps.adb",
+                                  "spark-containers-functional-sets.adb",
+                                  "spark-containers-functional-vectors.adb");
+
+   package Naming is
+      for Spec ("SPARK.Big_Integers") use "spark-big_integers__light.ads";
+      for Body ("SPARK.Big_Integers") use "spark-big_integers__light.adb";
+      for Spec ("SPARK.Big_Intervals") use "spark-big_intervals__light.ads";
+      for Spec ("SPARK.Big_Reals") use "spark-big_reals__light.ads";
+      for Body ("SPARK.Big_Reals") use "spark-big_reals__light.adb";
+
+      for Spec ("SPARK.Containers.Types")
+         use "spark-containers-types__light.ads";
+      for Spec ("SPARK.Containers.Functional.Infinite_Sequences")
+         use "spark-containers-functional-infinite_sequences__light.ads";
+      for Body ("SPARK.Containers.Functional.Infinite_Sequences")
+         use "spark-containers-functional-infinite_sequences__light.adb";
+      for Spec ("SPARK.Containers.Functional.Maps")
+         use "spark-containers-functional-maps__light.ads";
+      for Body ("SPARK.Containers.Functional.Maps")
+         use "spark-containers-functional-maps__light.adb";
+      for Spec ("SPARK.Containers.Functional.Sets")
+         use "spark-containers-functional-sets__light.ads";
+      for Body ("SPARK.Containers.Functional.Sets")
+         use "spark-containers-functional-sets__light.adb";
+      for Spec ("SPARK.Containers.Functional.Vectors")
+         use "spark-containers-functional-vectors__light.ads";
+      for Body ("SPARK.Containers.Functional.Vectors")
+         use "spark-containers-functional-vectors__light.adb";
+   end Naming;
+
+end SPARKlib_Light;

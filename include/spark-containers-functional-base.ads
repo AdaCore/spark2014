@@ -30,7 +30,7 @@ pragma Ada_2012;
 
 --  To allow reference counting on the base container
 
-with Ada.Containers; use Ada.Containers;
+with SPARK.Containers.Types; use SPARK.Containers.Types;
 private with Ada.Finalization;
 
 private generic

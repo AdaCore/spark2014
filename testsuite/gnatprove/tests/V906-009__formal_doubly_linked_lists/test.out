@@ -41,12 +41,10 @@ spark-containers-formal-doubly_linked_lists.ads:1515:14: info: precondition prov
 spark-containers-formal-doubly_linked_lists.ads:1522:23: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
 spark-containers-formal-doubly_linked_lists.ads:1522:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
 spark-containers-formal-doubly_linked_lists.ads:1620:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:9
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test.adb:11
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test_list.ads:6
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test.adb:11
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test_list.ads:6
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test.adb:11
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test_list.ads:6
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test.adb:11
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test_list.ads:6
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test.adb:11
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:159, in instantiation at test_list.ads:6
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test.adb:11
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test_list.ads:6
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:74, in instantiation at test.adb:11
@@ -82,7 +80,7 @@ test.adb:33:22: medium: precondition might fail [possible fix: loop at line 32 s
 test.adb:34:07: medium: precondition might fail [possible fix: loop at line 32 should mention C in a loop invariant]
 test.adb:37:19: info: assertion proved (CVC5: 1 VC)
 test.adb:38:19: info: assertion proved (CVC5: 1 VC)
-test.adb:40:19: info: assertion proved (altergo: 1 VC)
+test.adb:40:19: info: assertion proved (Z3: 1 VC)
 test.adb:42:19: medium: assertion might fail
 test.adb:42:24: info: precondition proved (Trivial: 1 VC)
 test.adb:43:27: info: precondition proved (Trivial: 1 VC)
@@ -140,7 +138,7 @@ test.adb:133:04: info: precondition proved (CVC5: 2 VC)
 test.adb:139:09: info: precondition proved (CVC5: 1 VC)
 test.adb:141:04: info: precondition proved (CVC5: 2 VC; Z3: 1 VC)
 test.adb:147:09: info: precondition proved (CVC5: 1 VC)
-test.adb:153:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test.adb:153:04: medium: precondition might fail, cannot prove Has_Element (Container, J)
 test.adb:159:04: medium: precondition might fail
 test.adb:160:04: info: precondition proved (CVC5: 1 VC)
 test.adb:162:04: medium: precondition might fail, cannot prove Has_Element (Container, Before) or else Before = No_Element [possible fix: call at line 160 should mention Position (for argument C) in a postcondition]
@@ -204,7 +202,7 @@ test_list.adb:63:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:64:12: medium: precondition might fail [possible fix: call at line 51 should mention Position (for argument C) in a postcondition]
 test_list.adb:66:10: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function]
 test_list.adb:66:26: medium: precondition might fail
-test_list.adb:66:65: info: overflow check proved (CVC5: 2 VC)
+test_list.adb:66:65: medium: overflow check might fail, cannot prove upper bound for M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
 test_list.adb:67:07: medium: precondition might fail
 test_list.adb:68:12: medium: precondition might fail [possible fix: call at line 51 should mention Position (for argument C) in a postcondition]
 test_list.adb:70:10: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function]
@@ -228,8 +226,8 @@ test_list.adb:93:22: medium: assertion might fail
 test_list.adb:94:22: info: assertion proved (CVC5: 1 VC)
 test_list.adb:94:22: info: precondition proved (CVC5: 1 VC)
 test_list.adb:94:45: info: precondition proved (CVC5: 1 VC)
+test_list.adb:95:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:95:22: info: precondition proved (CVC5: 1 VC)
-test_list.adb:95:22: medium: assertion might fail
 test_list.adb:96:22: info: assertion proved (CVC5: 1 VC)
 test_list.adb:96:22: info: precondition proved (CVC5: 1 VC)
 test_list.adb:99:07: info: precondition proved (CVC5: 2 VC)
@@ -296,7 +294,7 @@ test_list.adb:229:38: info: precondition proved (CVC5: 1 VC)
 test_list.adb:237:22: info: assertion proved (CVC5: 1 VC)
 test_list.adb:238:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:240:07: info: precondition proved (CVC5: 1 VC)
-test_list.adb:242:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:242:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:244:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:245:22: info: assertion proved (CVC5: 1 VC)
 test_list.adb:250:12: info: discriminant check proved (CVC5: 1 VC)
@@ -355,13 +353,13 @@ test_list.adb:348:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:352:07: info: precondition proved (CVC5: 2 VC)
 test_list.adb:354:22: info: precondition proved (CVC5: 1 VC)
 test_list.adb:354:22: medium: assertion might fail
-test_list.adb:355:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:355:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:355:22: info: precondition proved (CVC5: 1 VC)
 test_list.adb:358:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:360:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:361:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:365:07: info: precondition proved (CVC5: 1 VC)
-test_list.adb:366:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:366:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.adb:368:22: info: precondition proved (CVC5: 1 VC)
 test_list.adb:368:22: medium: assertion might fail
 test_list.adb:369:22: info: precondition proved (CVC5: 1 VC)
@@ -386,12 +384,12 @@ test_list.adb:391:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:392:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:395:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:397:07: info: precondition proved (CVC5: 1 VC)
-test_list.adb:399:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:399:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.adb:401:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:401:48: info: precondition proved (CVC5: 2 VC)
 test_list.adb:402:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:402:48: info: precondition proved (CVC5: 2 VC)
-test_list.adb:403:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:403:22: medium: assertion might fail
 test_list.adb:403:48: info: precondition proved (CVC5: 2 VC)
 test_list.adb:404:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:404:48: info: precondition proved (CVC5: 2 VC)
@@ -405,9 +403,9 @@ test_list.adb:414:22: info: assertion proved (CVC5: 1 VC)
 test_list.adb:414:48: info: precondition proved (CVC5: 2 VC)
 test_list.adb:415:22: info: assertion proved (CVC5: 1 VC)
 test_list.adb:415:48: info: precondition proved (CVC5: 2 VC)
-test_list.adb:416:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:416:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:416:48: info: precondition proved (CVC5: 2 VC)
-test_list.adb:417:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:417:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:417:48: info: precondition proved (CVC5: 2 VC)
 test_list.ads:11:23: info: data dependencies proved
 test_list.ads:13:29: info: data dependencies proved

@@ -22,7 +22,6 @@ binary_trees.ads:14:09: info: default initial condition proved (CVC5: 1 VC)
 binary_trees.ads:14:61: info: invariant check proved (Z3: 1 VC)
 binary_trees.ads:28:09: info: invariant check proved on default value (Z3: 1 VC)
 binary_trees.ads:37:06: info: data dependencies proved
-spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at binary_trees.adb:20
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at tree_model.ads:22
@@ -58,7 +57,6 @@ binary_trees.ads:14:09: info: default initial condition proved (CVC5: 1 VC)
 binary_trees.ads:14:61: info: invariant check proved (Z3: 1 VC)
 binary_trees.ads:28:09: info: invariant check proved on default value (Z3: 1 VC)
 binary_trees.ads:37:06: info: data dependencies proved
-spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at binary_trees.adb:20
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at tree_model.ads:22

@@ -36,18 +36,14 @@ spark-containers-formal-unbounded_ordered_maps.ads:1060:46: info: precondition p
 spark-containers-formal-unbounded_ordered_maps.ads:1060:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
 spark-containers-formal-unbounded_ordered_maps.ads:1075:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
 spark-containers-formal-unbounded_ordered_maps.ads:1075:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test_map.ads:20
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test_map.ads:6
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_map.ads:20
-spark-containers-functional-maps.ads:90:18: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_map.ads:6
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test_map.ads:20
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test_map.ads:6
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_map.ads:20
-spark-containers-functional-maps.ads:330:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_map.ads:6
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test_map.ads:20
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test_map.ads:6
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_map.ads:20
-spark-containers-functional-maps.ads:331:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_map.ads:6
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test_map.ads:20
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test_map.ads:6
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_map.ads:20
+spark-containers-functional-maps.ads:301:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_map.ads:6
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test_map.ads:20
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:173, in instantiation at test_map.ads:6
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_map.ads:20
+spark-containers-functional-maps.ads:302:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_map.ads:6
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test_map.ads:20
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test_map.ads:6
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:100, in instantiation at test_map.ads:20
@@ -98,7 +94,7 @@ test_map.adb:39:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:40:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:41:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_map.adb:42:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:47:07: medium: precondition might fail [possible fix: call at line 46 should mention Container (for argument L) in a postcondition]
+test_map.adb:47:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:49:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:50:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:53:22: medium: assertion might fail
@@ -114,7 +110,7 @@ test_map.adb:69:12: info: precondition proved (CVC5: 1 VC)
 test_map.adb:71:07: info: precondition proved (CVC5: 2 VC)
 test_map.adb:72:07: info: precondition proved (CVC5: 2 VC)
 test_map.adb:73:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:74:22: medium: assertion might fail
+test_map.adb:74:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:75:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:76:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:76:22: info: precondition proved (CVC5: 1 VC)
@@ -140,8 +136,8 @@ test_map.adb:109:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:111:12: info: precondition proved (CVC5: 1 VC)
 test_map.adb:113:07: info: precondition proved (CVC5: 2 VC)
 test_map.adb:114:07: info: precondition proved (CVC5: 2 VC)
-test_map.adb:115:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:115:22: info: precondition proved (Z3: 1 VC)
+test_map.adb:115:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:115:22: info: precondition proved (CVC5: 1 VC)
 test_map.adb:116:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:117:22: medium: assertion might fail
 test_map.adb:118:22: info: assertion proved (Z3: 1 VC)
@@ -196,10 +192,10 @@ test_map.adb:209:25: info: precondition proved (Z3: 1 VC)
 test_map.adb:209:43: info: precondition proved (Z3: 1 VC)
 test_map.adb:210:25: info: assertion proved (Z3: 1 VC)
 test_map.adb:210:25: info: precondition proved (CVC5: 1 VC)
-test_map.adb:210:43: info: precondition proved (Z3: 1 VC)
+test_map.adb:210:43: info: precondition proved (CVC5: 1 VC)
 test_map.adb:216:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:216:44: info: precondition proved (Z3: 1 VC)
-test_map.adb:220:07: medium: precondition might fail, cannot prove not Contains (Container, Key)
+test_map.adb:220:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_map.adb:221:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:221:36: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_map.adb:222:22: info: assertion proved (Z3: 1 VC)
@@ -208,8 +204,8 @@ test_map.adb:226:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:226:22: info: precondition proved (Z3: 1 VC)
 test_map.adb:230:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:230:22: info: precondition proved (Z3: 1 VC)
+test_map.adb:234:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:234:22: info: precondition proved (Z3: 1 VC)
-test_map.adb:234:22: medium: assertion might fail
 test_map.adb:235:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:235:22: info: precondition proved (Z3: 1 VC)
 test_map.adb:236:22: info: assertion proved (Z3: 1 VC)
@@ -240,7 +236,7 @@ test_map.adb:262:33: info: precondition proved (CVC5: 2 VC)
 test_map.adb:268:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:268:22: info: precondition proved (CVC5: 1 VC)
 test_map.adb:269:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:270:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:270:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:270:22: info: precondition proved (CVC5: 1 VC)
 test_map.adb:273:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:273:22: info: precondition proved (CVC5: 1 VC)
