@@ -35,9 +35,9 @@ unit3.ads:13:20: info: postcondition is stronger than class-wide postcondition (
 unit3.ads:13:20: info: postcondition proved (CVC5: 3 VC)
 unit3.ads:24:20: info: class-wide precondition is weaker than overridden one (CVC5: 1 VC)
 unit3.ads:25:20: medium: class-wide postcondition might be weaker than overridden one
-unit3.ads:25:36: medium: overflow check might fail, cannot prove upper bound for X.C1'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-unit3.ads:25:65: medium: overflow check might fail, cannot prove upper bound for X.C2'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-unit3.ads:25:94: medium: overflow check might fail, cannot prove upper bound for X.C3'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+unit3.ads:25:36: medium: overflow check might fail, cannot prove upper bound for X.C1'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+unit3.ads:25:65: medium: overflow check might fail, cannot prove upper bound for X.C2'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+unit3.ads:25:94: medium: overflow check might fail, cannot prove upper bound for X.C3'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 unit3.ads:26:20: info: postcondition is stronger than class-wide postcondition (CVC5: 3 VC)
 unit3.ads:26:36: info: overflow check proved (CVC5: 2 VC)
 unit3.ads:26:65: info: overflow check proved (CVC5: 2 VC)

@@ -68,21 +68,21 @@ attempt_3.adb:60:53: info: range check proved (Trivial)
 attempt_3.adb:62:25: info: assertion proved (CVC5: 1 VC)
 attempt_3.adb:62:27: info: overflow check proved (CVC5: 2 VC)
 attempt_3.adb:62:32: info: overflow check proved (CVC5: 2 VC)
-attempt_3.adb:62:45: medium: overflow check might fail, cannot prove upper bound for (N+1) * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+attempt_3.adb:62:45: medium: overflow check might fail, cannot prove upper bound for (N+1) * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 attempt_3.adb:63:25: info: assertion proved (colibri: 1 VC)
 attempt_3.adb:63:35: info: overflow check proved (CVC5: 2 VC)
 attempt_3.adb:63:40: info: overflow check proved (CVC5: 2 VC)
 attempt_3.adb:63:40: info: range check proved (Trivial)
 attempt_3.adb:63:62: info: range check proved (Trivial)
-attempt_3.adb:63:62: medium: overflow check might fail, cannot prove upper bound for (N+1) * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+attempt_3.adb:63:62: medium: overflow check might fail, cannot prove upper bound for (N+1) * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 attempt_3.adb:64:25: info: assertion proved (colibri: 1 VC)
 attempt_3.adb:64:31: info: float overflow check proved (colibri: 1 VC)
-attempt_3.adb:64:49: medium: overflow check might fail, cannot prove upper bound for N * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+attempt_3.adb:64:49: medium: overflow check might fail, cannot prove upper bound for N * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 attempt_3.adb:64:54: info: overflow check proved (CVC5: 2 VC)
 attempt_3.adb:64:54: info: range check proved (Trivial)
 attempt_3.adb:65:25: info: assertion proved (colibri: 1 VC)
 attempt_3.adb:65:49: info: range check proved (Trivial)
-attempt_3.adb:65:49: medium: overflow check might fail, cannot prove upper bound for (N+1) * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+attempt_3.adb:65:49: medium: overflow check might fail, cannot prove upper bound for (N+1) * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 attempt_3.adb:66:25: info: assertion proved (altergo: 1 VC)
 attempt_3.adb:66:31: info: float overflow check proved (altergo: 1 VC)
 attempt_3.adb:69:22: info: assertion proved (CVC5: 1 VC)

@@ -12,7 +12,7 @@ diff.adb:34:23: info: overflow check proved (CVC5: 2 VC)
 diff.adb:35:22: info: assertion proved (CVC5: 1 VC)
 diff.adb:42:34: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
 diff.adb:44:22: info: assertion proved (CVC5: 1 VC)
-diff.adb:44:32: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+diff.adb:44:32: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 diff.adb:45:22: info: assertion proved (Z3: 1 VC)
 diff.adb:45:23: info: overflow check proved (Z3: 1 VC; colibri: 1 VC)
 diff.adb:46:22: info: assertion proved (colibri: 1 VC)
@@ -26,7 +26,7 @@ diff.adb:63:22: info: assertion proved (CVC5: 1 VC)
 diff.adb:70:34: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
 diff.adb:71:34: info: division check proved (CVC5: 1 VC)
 diff.adb:73:22: info: assertion proved (Z3: 1 VC)
-diff.adb:73:28: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+diff.adb:73:28: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 diff.adb:74:22: info: assertion proved (colibri: 1 VC)
 diff2.adb:11:28: info: overflow check proved (CVC5: 1 VC)
 diff2.adb:13:22: info: assertion proved (Z3: 1 VC)

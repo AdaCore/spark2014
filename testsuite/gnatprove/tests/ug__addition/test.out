@@ -5,4 +5,4 @@ addition.adb:4:16: high: overflow check might fail, cannot prove lower bound for
   e.g. when X = Integer'First
         and Y = -1
   reason for check: result of addition must fit in a 32-bits machine integer
-  possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers
+  possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers

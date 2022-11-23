@@ -23,7 +23,7 @@ trace_test.ads:19:28: warning: assuming "Element" always returns
 trace_test.ads:19:28: warning: no returning annotation available for "Element"
 trace_test.ads:19:59: warning: assuming "Previous" always returns
 trace_test.ads:19:59: warning: no returning annotation available for "Previous"
-trace_test.ads:19:81: medium: overflow check might fail, cannot prove upper bound for Integer_Traces.Element (Trace, Integer_Traces.Previous (Trace, C)) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+trace_test.ads:19:81: medium: overflow check might fail, cannot prove upper bound for Integer_Traces.Element (Trace, Integer_Traces.Previous (Trace, C)) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 trace_test_main.adb:6:03: info: data dependencies proved
 trace_test_main.adb:6:30: info: initialization of "Store.State" proved
 trace_test_main.adb:6:48: info: initialization of "Trace" proved

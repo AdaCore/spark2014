@@ -81,7 +81,7 @@ call_unknown_rel.adb:4:04: warning: assuming "Unknown" has no effect on global i
 call_unknown_rel.adb:4:04: warning: no Global contract available for "Unknown"
 call_unknown_rel.adb:4:04: warning: no returning annotation available for "Unknown"
 call_unknown_rel.adb:5:19: medium: assertion might fail (e.g. when X = 1 and Y = 0) [possible fix: call at line 4 should mention X (for argument X) in a postcondition]
-call_unknown_rel.adb:5:25: medium: overflow check might fail [CWE 190], cannot prove lower bound for 2 * Y (e.g. when Y = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+call_unknown_rel.adb:5:25: medium: overflow check might fail [CWE 190], cannot prove lower bound for 2 * Y (e.g. when Y = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 call_unknown_rel.adb:5:29: info: overflow check proved (CVC5: 2 VC)
 case_assign.adb:6:19: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at case_assign.ads:3]
 case_assign.adb:8:19: high: overflow check might fail [CWE 190], cannot prove lower bound for Y - 1 (e.g. when Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 1) to subprogram at case_assign.ads:3]

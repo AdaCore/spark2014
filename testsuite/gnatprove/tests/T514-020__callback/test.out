@@ -1,4 +1,4 @@
-test_callback.adb:8:18: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+test_callback.adb:8:18: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 test_callback.adb:11:19: info: pointer dereference check proved (CVC5: 1 VC)
 test_callback.adb:11:19: info: precondition proved (CVC5: 1 VC)
 test_callback.adb:11:25: high: cannot call potentially nonreturning subprogram "S" for type "S" in its own predicate (SPARK RM 3.2.4(4))
