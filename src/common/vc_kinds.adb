@@ -371,7 +371,7 @@ package body VC_Kinds is
               "be reached.";
          when VC_Inline_Check                     =>
             return "Check that an Annotate pragma with the Inline_For_Proof " &
-              "identifier is correct.";
+              "or Logical_Equal identifier is correct.";
          when VC_UC_Source                        =>
             return "Check that a source type in an unchecked conversion can " &
               "safely be used for such conversions. This means that the " &
@@ -1201,7 +1201,8 @@ package body VC_Kinds is
              when VC_Assert_Premise => "assertion premise",
              when VC_Assert_Step => "assertion step",
              when VC_Raise => "raised exception",
-             when VC_Inline_Check => "Inline_For_Proof annotation",
+             when VC_Inline_Check =>
+               "Inline_For_Proof or Logical_Equal annotation",
              when VC_UC_Source => "unchecked conversion source check",
              when VC_UC_Target => "unchecked conversion target check",
              when VC_UC_Same_Size => "unchecked conversion size check",

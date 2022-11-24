@@ -270,10 +270,12 @@ package SPARK_Definition.Annotate is
    --  Ada expression that should be used instead of E.
 
    function Find_Inline_Pragma (E : Entity_Id) return Node_Id with
-     Pre  => Present (Retrieve_Inline_Annotation (E)),
+     Pre  => Present (Retrieve_Inline_Annotation (E))
+       or else Has_Logical_Eq_Annotation (E),
      Post => Is_Pragma_Annotate_GNATprove (Find_Inline_Pragma'Result);
-   --  If a pragma Annotate Inline_For_Proof applies to E then returns this
-   --  pragma. This is used to get better location when checking these pragmas.
+   --  If a pragma Annotate Inline_For_Proof or Logical_Equal applies to E then
+   --  returns this pragma. This is used to get better location when checking
+   --  these pragmas.
 
    procedure Retrieve_Iterable_Annotation
      (Container_Type : Entity_Id;

@@ -111,9 +111,9 @@ package VC_Kinds is
       VC_Assert_Step,                --  Side condition for proof cut points
       VC_Assert_Premise,             --  Premise for proof with cut points
       VC_Raise,
-      VC_Inline_Check,               --  Check that the Inline_For_Proof
-                                     --  annotation provided for a function is
-                                     --  correct.
+      VC_Inline_Check,               --  Check that the Inline_For_Proof or
+                                     --  Logical_Equal annotation provided for
+                                     --  a function is correct.
 
       VC_UC_Source,                  --  Check that this type is suitable as a
                                     --  source for an Unchecked_Conversion

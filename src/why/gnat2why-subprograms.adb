@@ -2294,19 +2294,25 @@ package body Gnat2Why.Subprograms is
       W_Def : W_Term_Id;
 
    begin
+      --  We fill the map of parameters, so that in the definition, we use
+      --  local names of the parameters, instead of the global names.
+
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+      Push_Binders_To_Symbol_Table (Logic_Func_Binders);
+
       --  If the function is annotated Logical_Eq, return a call to Why_Eq
 
       if Has_Logical_Eq_Annotation (Function_Entity) then
-         pragma Assert (No (Value));
-
          declare
-            Args : constant W_Expr_Array :=
-              Get_Args_From_Binders (To_Binder_Array (Logic_Func_Binders),
-                                     Params.Ref_Allowed);
+            Left  : constant Entity_Id := First_Formal (Function_Entity);
+            Right : constant Entity_Id := Next_Formal (Left);
          begin
-            pragma Assert (Args'Length = 2);
             W_Def := New_Comparison
-              (Symbol => Why_Eq, Left => +Args (1), Right => +Args (2));
+              (Symbol => Why_Eq,
+               Left   => +Transform_Identifier
+                 (Params, Left, Left, EW_Term),
+               Right  => +Transform_Identifier
+                 (Params, Right, Right, EW_Term));
          end;
 
       elsif No (Value) then
@@ -2322,22 +2328,16 @@ package body Gnat2Why.Subprograms is
 
          W_Def := Why_Empty;
 
-      --  We fill the map of parameters, so that in the definition, we use
-      --  local names of the parameters, instead of the global names.
+      --  Translate the Value expression in Why.
 
       else
-         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-         Push_Binders_To_Symbol_Table (Logic_Func_Binders);
-
-         --  Translate the Value expression in Why.
-
          W_Def := Transform_Term
            (Expr          => Value,
             Expected_Type => W_Return_Type,
             Params        => Params);
-
-         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       end if;
+
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
       return W_Def;
    end Compute_Inlined_Expr;
@@ -3492,8 +3492,10 @@ package body Gnat2Why.Subprograms is
       --  the precondition needs to be proved in fact. In this latter case
       --  an assertion is returned instead of an assumption.
 
-      function Check_Inline_For_Proof return W_Prog_Id;
-      --  Checks that the expression used for inlining is equal to the result
+      function Check_Inline_Annotation return W_Prog_Id;
+      --  Checks that the expression used for inlining is equal to the result.
+      --  This is done for functions annotated with Inline_For_Proof and
+      --  Logical_Equal.
 
       function Check_Init_Of_Out_Params return W_Prog_Id;
       --  Checks initialization of out parameters at the end of the subprogram
@@ -3717,18 +3719,19 @@ package body Gnat2Why.Subprograms is
          return Checks;
       end Check_Init_Of_Out_Params;
 
-      ----------------------------
-      -- Check_Inline_For_Proof --
-      ----------------------------
+      -----------------------------
+      -- Check_Inline_Annotation --
+      -----------------------------
 
-      function Check_Inline_For_Proof return W_Prog_Id is
-         Value  : constant Node_Id := Retrieve_Inline_Annotation (E);
-         Params : constant Transformation_Params := Contract_Params;
+      function Check_Inline_Annotation return W_Prog_Id is
+         Need_Check : constant Boolean :=
+           (Present (Retrieve_Inline_Annotation (E)) and then
+              (not Is_Expression_Function_Or_Completion (E)
+               or else not Entity_Body_Compatible_With_SPARK (E)))
+           or else Has_Logical_Eq_Annotation (E);
+         Params     : constant Transformation_Params := Contract_Params;
       begin
-         if Present (Value) and then
-           (not Is_Expression_Function_Or_Completion (E)
-            or else not Entity_Body_Compatible_With_SPARK (E))
-         then
+         if Need_Check then
             return New_Assert
               (Pred        =>
                  New_VC_Pred
@@ -3749,7 +3752,7 @@ package body Gnat2Why.Subprograms is
          else
             return +Void;
          end if;
-      end Check_Inline_For_Proof;
+      end Check_Inline_Annotation;
 
       ---------------------------------
       -- Check_Invariants_Of_Outputs --
@@ -4437,14 +4440,14 @@ package body Gnat2Why.Subprograms is
 
          --  Check type invariants on subprogram's ouput, absence of runtime
          --  errors in Post and RTE + validity of contract cases, and
-         --  Inline_For_Proof annotation.
+         --  Inline_For_Proof/Logical_Equal annotation.
 
          Why_Body := Sequence
            ((1 => Why_Body,
              2 => Check_Init_Of_Out_Params,
              3 => Check_Invariants_Of_Outputs,
              4 => CC_And_RTE_Post,
-             5 => Check_Inline_For_Proof,
+             5 => Check_Inline_Annotation,
              6 => Result_Var));
 
       --  Body is not in SPARK

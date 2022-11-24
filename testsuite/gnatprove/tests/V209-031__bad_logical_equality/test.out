@@ -1,8 +1,5 @@
-bad_ext.ads:3:06: error: Entity parameter of a pragma Logical_Equal shall not have a body visible from SPARK
-bad_ext.ads:3:06: error: Entity parameter of a pragma Logical_Equal shall not have a body visible from SPARK
 bad_logical_equal.adb:4:47: error: third argument of pragma Annotate Logical_Equal must be an entity
 bad_logical_equal.adb:7:06: error: Entity parameter of a pragma Logical_Equal must be a function
-bad_logical_equal.adb:9:06: error: Entity parameter of a pragma Logical_Equal shall not have a body visible from SPARK
 bad_logical_equal.adb:11:13: error: both parameters of an equality function shall have the same subtype
 bad_logical_equal.adb:15:13: error: Entity parameter of a pragma Logical_Equal shall return a Boolean
 bad_logical_equal.adb:18:13: error: Entity parameter of a pragma Logical_Equal shall have exactly two parameters

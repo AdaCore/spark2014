@@ -338,6 +338,7 @@ def is_other_proof_tag(tag):
         "UNCHECKED_CONVERSION_SIZE",
         "ASSERT_PREMISE",
         "ASSERT_STEP",
+        "INLINE_ANNOTATION",
     )
 
 
@@ -509,6 +510,8 @@ def check_marks(strlist):
                 return "UNCHECKED_CONVERSION_SIZE"
             else:
                 return "UNCHECKED_CONVERSION"
+        elif "Inline_For_Proof or Logical_Equal annotation" in text:
+            return "INLINE_ANNOTATION"
 
         # no tag recognized
         return None
