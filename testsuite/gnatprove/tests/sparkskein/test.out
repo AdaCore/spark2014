@@ -10,7 +10,6 @@ skein.adb:184:32: info: type is suitable as source for unchecked conversion (Tri
 skein.adb:184:55: info: type is suitable for unchecked conversion (Trivial)
 skein.adb:191:11: info: data dependencies proved
 skein.adb:198:07: warning: statement has no effect
-skein.adb:201:10: warning: this statement is never reached
 skein.adb:205:14: info: add a contract to analyze it separately from calling contexts
 skein.adb:205:14: info: local subprogram "Put_64_LSB_First" only analyzed in the context of calls
 skein.adb:221:14: info: range check proved (CVC5: 2 VC), in call inlined at skein.adb:855
