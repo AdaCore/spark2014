@@ -2940,8 +2940,6 @@ search_trees.ads:336:07: info: precondition proved (CVC5: 1 VC)
 search_trees.ads:336:25: info: range check proved (CVC5: 2 VC)
 search_trees.ads:342:08: info: range check proved (CVC5: 2 VC)
 search_trees.ads:348:07: info: precondition proved (CVC5: 1 VC)
-spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at binary_trees.adb:10
-spark-containers-functional-sets.ads:87:18: info: precondition proved (Trivial: 1 VC), in instantiation at tree_model.ads:78
 spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at binary_trees.adb:10
 spark-containers-functional-sets.ads:268:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at tree_model.ads:78
 spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at tree_model.ads:22
