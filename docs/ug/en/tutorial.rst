@@ -231,7 +231,7 @@ compiling and running the test program:
 
 .. code-block:: bash
 
-   $ gnatmake test_search.adb
+   $ gprbuild test_search.adb
    $ test_search
    > OK: Found existing value at first index
    > OK: Did not find non-existing value
@@ -267,9 +267,9 @@ run-time checks, an error is reported when running the test program:
 
 .. code-block:: bash
 
-   $ gnatmake -gnata -f test_search.adb
+   $ gprbuild -gnata -f test_search.adb
    $ test_search
-   > raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : contract cases overlap for subprogram search
+   > raised ADA.ASSERTIONS.ASSERTION_ERROR : contract cases overlap for subprogram search
 
 .. note::
 
@@ -290,9 +290,9 @@ with the switch ``-gnateE``:
 
 .. code-block:: bash
 
-   $ gnatmake -gnata -gnateE -f test_search.adb
+   $ gprbuild -gnata -gnateE -f test_search.adb
    $ test_search
-   > raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : contract cases overlap for subprogram search
+   > raised ADA.ASSERTIONS.ASSERTION_ERROR : contract cases overlap for subprogram search
    >   case guard at linear_search.ads:33 evaluates to True
    >   case guard at linear_search.ads:35 evaluates to True
 
@@ -483,12 +483,12 @@ Here, testing does not show any problems:
    > OK: Found existing value at first index
    > OK: Did not find non-existing value
 
-The next easy thing to do is to increase the timeout of automatic provers. Its
-default of 1s is deliberately low, to facilitate interaction with |GNATprove|
+The next easy thing to do is to increase the proof level. Its
+default of 0 is deliberately low, to facilitate interaction with |GNATprove|
 during the development of annotations, but it is not sufficient to prove the
-more complex checks. Let's increase it to 10s (or equivalently set the ``Proof
-level`` to 2 in the proof panel corresponding to a basic user profile), and
-rerun |GNATprove|:
+more complex checks. Let's increase it to level 2
+(passing switch ``--level=2`` or equivalently setting the ``Proof
+level`` to 2 in the proof panel), and rerun |GNATprove|:
 
 .. image:: /static/search_10s_timeout.png
 
@@ -498,25 +498,17 @@ available on line 35:
 
 .. image:: /static/search_prove_line.png
 
-We select the ``Progressively split`` value for choice ``Proof strategy`` in
-the window raised in order to maximize proof precision (or equivalently set the
-``Proof level`` to 3 in the proof panel corresponding to a basic user profile),
+We further increase the ``Proof level`` to 3 to maximize proof precision,
 and click on :menuselection:`Execute`:
 
 .. image:: /static/search_prove_line_by_path.png
 
-This runs |GNATprove| only on the checks that originate from line 35, in a
-special mode which considers separately individual execution paths if
-needed. The check is still not proved, but GNAT Studio now displays an icon, either on
-the left of the message, or on line 35 in file ``linear_search.ads``, to show the path
-on which the contract case is not proved:
-
-.. image:: /static/search_path_info.png
-
+This runs |GNATprove| only on the checks that originate from line 35.
+The check is still not proved.
 This corresponds to a case where the implementation of ``Search`` does not find
 the searched value, but the guard of the second contract case holds, meaning
 that the value is present in the range 2 to 10. Looking more closely at the
-path highlighted, we can see that the loop exits when ``Pos = A'Last``, so the
+code, we can see that the loop exits when ``Pos = A'Last``, so the
 value 10 is never considered! We correct this bug by changing the loop test in
 ``linear_search.adb`` from a strict to a non-strict comparison operation:
 
@@ -524,9 +516,10 @@ value 10 is never considered! We correct this bug by changing the loop test in
    :language: ada
    :lines: 12
 
-On this modified code, we rerun |GNATprove| on line 35, checking the box
-``Report checks proved`` to get information even when a check is proved. The
-reassuring green color (and the accompanying info message) show that the check
+On this modified code, we rerun |GNATprove| on line 35, selecting
+value ``all checks with provers used`` for the value of ``Report``
+in the proof panel to get information even when a check is proved. The
+reassuring green or blue color (and the accompanying info message) show that the check
 was proved this time:
 
 .. image:: /static/search_case_proved.png
@@ -534,7 +527,9 @@ was proved this time:
 As usual after code changes, we rerun the test program, which shows no
 errors. Rerunning |GNATprove| on the complete file shows no more unproved
 checks. The ``Linear_Search`` unit has been fully proved. To see all the checks that
-were proved, we can rerun the tool with box ``Report checks proved`` checked,
+were proved, we can rerun the tool with
+value ``all checks with provers used`` for the value of ``Report``
+in the proof panel,
 which displays the results previously computed:
 
 .. image:: /static/search_all_proved.png
