@@ -672,6 +672,9 @@ only part of a program:
   Objects accessed outside of SPARK, either directly for statically allocated
   objects, or through their address or a pointer for all objects, should comply
   with the assumptions described in [SPARK_EXTERNAL] and [SPARK_EXTERNAL_VALID].
+  In addition, if these objects have parts of an access-to-variable type which
+  are treated as constant in SPARK then their designated object should never be
+  modified.
 
 * [ADA_PRIVATE_TYPES]
   Private types whose full view is not analyzed, yet are used in
