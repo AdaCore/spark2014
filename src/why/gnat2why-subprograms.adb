@@ -4403,6 +4403,16 @@ package body Gnat2Why.Subprograms is
 
       if Entity_Body_In_SPARK (E) then
 
+         --  If the subprogram is annotated with a variant but flow analysis
+         --  does not see that it is recursive, raise a warning.
+
+         if Present (Get_Pragma (E, Pragma_Subprogram_Variant))
+           and then not Is_Recursive (E)
+         then
+            Error_Msg_F (Warning_Message (Warn_Variant_Not_Recursive),
+                         Get_Pragma (E, Pragma_Subprogram_Variant));
+         end if;
+
          Get_Pre_Post_Pragmas
            (Get_Flat_Statement_And_Declaration_List
               (Declarations (Body_N)));
@@ -4575,16 +4585,6 @@ package body Gnat2Why.Subprograms is
       Close_Theory (Th,
                     Kind => VC_Generation_Theory,
                     Defined_Entity => E);
-
-      --  If the subprogram is annotated with a variant but flow analysis
-      --  does not see that it is recursive, raise a warning.
-
-      if Present (Get_Pragma (E, Pragma_Subprogram_Variant))
-        and then not Is_Recursive (E)
-      then
-         Error_Msg_F (Warning_Message (Warn_Variant_Not_Recursive),
-                      Get_Pragma (E, Pragma_Subprogram_Variant));
-      end if;
 
       --  This code emits static VCs (determined by static computations inside
       --  gnat2why), so we can put this code anywhere.
