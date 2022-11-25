@@ -165,11 +165,11 @@ exceptions to these rules:
     unspecified whether a new object is created, we assume (for purposes
     of the rules in this section) that no new object is created].
 
-  * the property No_Caching can be specified on a volatile object, to express
-    that such a variable can be analyzed as not volatile in SPARK, but that the
-    compiler should not cache its value between accesses to the object (e.g. as
-    a defense against fault injection). Such an object is not an effectively
-    volatile object.
+  * the property No_Caching can be specified on a volatile object or on its
+    volatile type, to express that such a variable can be analyzed as not
+    volatile in SPARK, but that the compiler should not cache its value between
+    accesses to the object (e.g. as a defense against fault injection). Such an
+    object is not an effectively volatile object.
 
 External state is an effectively volatile object or a state abstraction which
 represents one or more effectively volatile objects (or it could be a null state

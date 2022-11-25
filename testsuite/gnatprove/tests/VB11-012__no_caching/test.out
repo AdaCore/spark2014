@@ -1,0 +1,14 @@
+###########
+compilation
+###########
+bad.ads:5:40: error: property "No_Caching" must apply to a volatile type or object
+bad.ads:7:21: error: property "No_Caching" must apply to a volatile type or object
+bad.ads:11:25: error: incorrect placement of aspect "No_Caching"
+
+############
+verification
+############
+noc.adb:6:07: warning: assuming "Store" always returns
+noc.adb:6:07: warning: no returning annotation available for "Store"
+noc.ads:35:07: info: assertion proved (CVC5: 1 VC)
+noc.ads:44:07: info: assertion proved (CVC5: 1 VC)

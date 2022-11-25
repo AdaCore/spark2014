@@ -66,13 +66,13 @@ Aspect ``No_Caching``
 
 [SPARK]
 
-Aspect ``No_Caching`` can be specified for a volatile variable to indicate that
-this variable can be analyzed as non-volatile by |GNATprove|. This is typically
-used to hold the value of local variables guarding the access to some critical
-section of the code. To defend against fault injection attacks, a common
-practice is to duplicate the test guarding the critical section, and the
-variable is marked as volatile to prevent the compiler from optimizing out the
-duplicate tests. For example:
+Aspect ``No_Caching`` can be specified for a volatile type or a volatile
+variable to indicate that this type or variable can be analyzed as non-volatile
+by |GNATprove|. This is typically used to hold the value of local variables
+guarding the access to some critical section of the code. To defend against
+fault injection attacks, a common practice is to duplicate the test guarding
+the critical section, and the variable is marked as volatile to prevent the
+compiler from optimizing out the duplicate tests. For example:
 
 .. code-block:: ada
 
