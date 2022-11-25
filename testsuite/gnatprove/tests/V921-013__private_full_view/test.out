@@ -1,0 +1,2 @@
+test_dic.ads:22:09: error: type aspect on type derived from a private type is not yet supported
+gnatprove: error during flow analysis and proof
