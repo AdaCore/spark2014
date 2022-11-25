@@ -1,0 +1,4 @@
+main.adb:8:22: warning: assuming "Enclosing_Entity" always returns
+main.adb:8:22: warning: assuming "Enclosing_Entity" has no effect on global items
+main.adb:8:22: warning: no Global contract available for "Enclosing_Entity"
+main.adb:8:22: warning: no returning annotation available for "Enclosing_Entity"
