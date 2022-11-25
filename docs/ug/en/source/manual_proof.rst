@@ -268,11 +268,17 @@ A Concrete Example: a Sort Algorithm
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We show how to prove the correctness of a sorting procedure on arrays using
-ghost code. In particular, we want to show that the sorted array is a permutation
-of the input array.
-A common way to define permutations is to use the number of occurrences of
-elements in the array, defined inductively over the size of its array parameter
-(but it is not the only one, see :ref:`Ghost Variables`):
+ghost code. In particular, we want to show that the sorted array is a
+permutation of the input array.
+A common way to define permutations is to encode the number of occurrences of
+each element in the array as a multiset, constructed inductively over the size
+of its array parameter (but it is not the only one, see :ref:`Ghost Variables`).
+The :ref:`Functional Containers Library` of SPARK provides an implementation
+of multisets that we use here:
+
+.. literalinclude:: /examples/ug__long__perm/nat_multisets.ads
+   :language: ada
+   :linenos:
 
 .. literalinclude:: /examples/ug__long__perm/sort_types.ads
    :language: ada
@@ -282,14 +288,9 @@ elements in the array, defined inductively over the size of its array parameter
    :language: ada
    :linenos:
 
-Note that Occ was introduced as a wrapper around the recursive definition of
-Occ_Def. This is to work around a current limitation of the tool that only
-introduces axioms for postconditions of non-recursive functions (to avoid
-possibly introducing unsound axioms that would not be detected by the tool).
-
-The only property of the function Occ required to prove that swapping two
-elements of an array is in fact a permutation, is the way Occ is modified when
-updating a value of the array.
+The only property of the function ``Occurrences`` required to prove that
+swapping two elements of an array is in fact a permutation, is the way
+``Occurrences`` is modified when updating a value of the array.
 
 There is no native construction for axioms in SPARK. As a workaround, a
 ghost subprogram, named "lemma subprogram", can be introduced with the desired
@@ -297,16 +298,14 @@ property as a postcondition. An instance of the axiom will then be available
 whenever the subprogram is called. Notice that an explicit call to the lemma
 subprogram with the proper arguments is required whenever an instance of the
 axiom is needed, like in manual proofs in an interactive theorem prover. Here
-is how a lemma subprogram can be defined for the desired property of Occ:
+is how a lemma subprogram can be defined for the desired property of
+``Occurrences``:
 
 .. literalinclude:: /examples/ug__long__perm/perm-lemma_subprograms.ads
    :language: ada
 
 This "axiom" can then be used to prove an implementation of the selection
-sort algorithm. Lemma subprograms need to be explicitely called for every
-natural. To achieve that, a loop is introduced. The inductive proof necessary
-to demonstrate the universally quantified formula is then achieved thanks to
-the loop invariant, playing the role of an induction hypothesis:
+sort algorithm. The lemma subprogram needs to be explicitely called when needed:
 
 .. literalinclude:: /examples/ug__long__sort/sort.adb
    :language: ada
@@ -314,26 +313,24 @@ the loop invariant, playing the role of an induction hypothesis:
 .. literalinclude:: /examples/ug__long__sort/sort.ads
    :language: ada
 
-The procedure Selection_Sort can be verified using |GNATprove|, with the
-default prover CVC5, in less than 1s per verification condition.
+The procedure ``Selection_Sort`` can be verified using |GNATprove| at level 2.
 
 .. literalinclude:: /examples/ug__long__sort/test.out
    :language: none
 
 To complete the verification of our selection sort, the only remaining issue
-is the correctness of the axiom for Occ. It can be discharged using the
-definition of Occ. Since this definition is recursive, the proof requires
+is the correctness of the axiom for ``Occurrences``. It can be discharged using
+its definition. Since this definition is recursive, the proof requires
 induction, which is not normally in the reach of an automated prover. For
 |GNATprove| to verify it, it must be implemented using recursive calls on
 itself to assert the induction hypothesis. Note that the proof of the
 lemma is then conditioned to the termination of the lemma functions, which
-currently cannot be verified by |GNATprove|.
+can be verified by |GNATprove| using a :ref:`Subprogram Variant`.
 
 .. literalinclude:: /examples/ug__long__perm/perm-lemma_subprograms.adb
    :language: ada
 
-|GNATprove| proves automatically all checks on the final program, with a small
-timeout of 1s for the default automatic prover CVC5.
+|GNATprove| proves automatically all checks on the final program at level 2.
 
 .. literalinclude:: /examples/ug__long__perm/test.out
    :language: none

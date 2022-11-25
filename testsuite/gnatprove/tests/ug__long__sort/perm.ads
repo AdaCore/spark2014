@@ -1,25 +1,23 @@
-with Sort_Types; use Sort_Types;
+with SPARK.Big_Integers;   use SPARK.Big_Integers;
+with Nat_Multisets;        use Nat_Multisets;
+with Sort_Types;           use Sort_Types;
 
 package Perm with SPARK_Mode, Ghost is
-   subtype Nb_Occ is Integer range 0 .. 100;
+   use Nat_Multisets;
 
-   function Remove_Last (A : Nat_Array) return Nat_Array is
-     (A (A'First .. A'Last - 1))
-   with Pre  => A'Length > 0;
+   function Occurrences (Values : Nat_Array; Lst : Integer) return Multiset is
+     (if Lst < Values'First then Empty_Multiset
+      else Add (Occurrences (Values, Lst - 1), Values (Lst)))
+   with Subprogram_Variant => (Decreases => Lst),
+     Pre => Lst <= Values'Last;
 
-   function Occ_Def (A : Nat_Array; E : Natural) return Nb_Occ is
-     (if A'Length = 0 then 0
-      elsif A (A'Last) = E then Occ_Def (Remove_Last (A), E) + 1
-      else Occ_Def (Remove_Last (A), E))
-   with
-     Post => Occ_Def'Result <= A'Length;
-   pragma Annotate (GNATprove, Always_Return, Occ_Def);
+   function Occurrences (Values : Nat_Array) return Multiset is
+     (Occurrences (Values, Values'Last));
 
-   function Occ (A : Nat_Array; E : Natural) return Nb_Occ is (Occ_Def (A, E))
-   with
-     Post => Occ'Result <= A'Length;
+   function Occ (Values : Nat_Array; N : Natural) return Big_Natural is
+     (Nb_Occurence (Occurrences (Values), N));
 
-   function Is_Perm (A, B : Nat_Array) return Boolean is
-     (for all E in Natural => Occ (A, E) = Occ (B, E));
+   function Is_Perm (Left, Right : Nat_Array) return Boolean is
+     (Occurrences (Left) = Occurrences (Right));
 
 end Perm;

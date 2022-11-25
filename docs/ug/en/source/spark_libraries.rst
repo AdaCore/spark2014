@@ -186,12 +186,13 @@ As a consequence, these containers are highly inefficient. Thus, they should in
 general be used in ghost code and annotations so that they can be removed from
 the final executable.
 
-There are 4 functional containers, which are part of the |SPARK| library:
+There are 5 functional containers, which are part of the |SPARK| library:
 
+* ``SPARK.Containers.Functional.Infinite_Sequences``
 * ``SPARK.Containers.Functional.Maps``
+* ``SPARK.Containers.Functional.Multisets``
 * ``SPARK.Containers.Functional.Sets``
 * ``SPARK.Containers.Functional.Vectors``
-* ``SPARK.Containers.Functional.Infinite_Sequences``
 
 Sequences defined in ``Functional.Vectors`` are no more than ordered collections
 of elements. In an Ada like manner, the user can choose the range used to index
@@ -228,8 +229,15 @@ Functional maps offer a dictionary between any two types of elements:
     function Has_Key (M : Map; K : Key_Type) return Boolean;
     function Get (M : Map; K : Key_Type) return Element_Type;
 
-Each functional container type supports iteration as appropriate, so that its
-elements can easily be quantified over.
+Multisets are mathematical sets associated with a number of occurrences:
+
+.. code-block:: ada
+
+   function Nb_Occurence (S : Multiset; E : Element_Type) return Big_Natural;
+   function Cardinality (S : Multiset) return Big_Natural;
+
+Each functional container type supports quantification over its elements
+(or keys for functional maps).
 
 These containers can easily be used to model user defined data structures. They
 were used to this end to annotate and verify a package of allocators (see
