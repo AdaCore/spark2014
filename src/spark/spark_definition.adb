@@ -4885,6 +4885,18 @@ package body SPARK_Definition is
               ("volatile ghost object", N, SRM_Reference => "SPARK RM 6.9(7)");
          end if;
 
+         --  Do not allow type invariants on volatile data with asynchronous
+         --  readers and writers as it can be broken asynchronously outside
+         --  of the type enclosing unit.
+
+         if Has_Volatile (E)
+           and then (Has_Volatile_Property (E, Pragma_Async_Readers)
+                     or else Has_Volatile_Property (E, Pragma_Async_Writers))
+           and then Invariant_Check_Needed (Etype (E))
+         then
+            Mark_Unsupported (Lim_Type_Inv_Volatile, N);
+         end if;
+
          if Present (Expr) then
             Mark (Expr);
 
