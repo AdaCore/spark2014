@@ -423,6 +423,10 @@ package SPARK_Util is
    --  (it is directly or indirectly rooted at the first parameter of a
    --  borrowing traversal function).
 
+   function Is_For_Loop_Parameter (E : Entity_Id) return Boolean;
+   --  Returns True iff E is the loop parameter of a for loop with a loop
+   --  parameter specification.
+
    function Is_Global_Entity (E : Entity_Id) return Boolean;
    --  Returns True iff E represent an entity that can be a global
 

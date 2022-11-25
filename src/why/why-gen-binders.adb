@@ -913,7 +913,7 @@ package body Why.Gen.Binders is
       else
          declare
             Typ : constant W_Type_Id :=
-              (if Ekind (E) = E_Loop_Parameter
+              (if Is_For_Loop_Parameter (E)
                and then Is_Standard_Boolean_Type (Ty)
                then EW_Int_Type
 
