@@ -753,6 +753,9 @@ package body VC_Kinds is
            "a tagged type with a subcomponent annotated with a type invariant",
          when Lim_Type_Inv_Tagged_Type =>
            "a tagged type annotated with a type invariant",
+         when Lim_Type_Inv_Volatile =>
+           "a volatile object with asynchronous writers or readers and a type"
+          & " invariant",
          when Lim_Uninit_Alloc_In_Expr_Fun =>
            "an uninitialized allocator inside an expression function",
          when Lim_Unknown_Alignment =>

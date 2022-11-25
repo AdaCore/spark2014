@@ -459,6 +459,7 @@ package VC_Kinds is
       Lim_Type_Inv_Protected_Type,
       Lim_Type_Inv_Tagged_Comp,
       Lim_Type_Inv_Tagged_Type,
+      Lim_Type_Inv_Volatile,
       Lim_Uninit_Alloc_In_Expr_Fun,
       Lim_Unknown_Alignment,
       Lim_UU_Tagged_Comp
@@ -652,6 +653,9 @@ package VC_Kinds is
            "type invariant on protected types",
          when Lim_Type_Inv_Tagged_Type =>
            "type invariant on tagged types",
+         when Lim_Type_Inv_Volatile =>
+           "volatile object with asynchronous writers or readers and a type"
+          & " invariant",
          when Lim_Type_Inv_Tagged_Comp =>
            "type invariant on components of tagged types",
          when Lim_Max_Array_Dimension =>
