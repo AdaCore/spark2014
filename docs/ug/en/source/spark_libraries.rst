@@ -1,6 +1,45 @@
 SPARK Libraries
 ===============
 
+.. index:: SPARK Library
+
+SPARK Library
+-------------
+
+As part of the |SPARK| product, several libraries are available through the
+project file :file:`<spark-install>/lib/gnat/sparklib.gpr` (or through the
+extended project file :file:`<spark-install>/lib/gnat/sparklib_zfp.gpr` in
+an environment without units ``Ada.Numerics.Big_Numbers.Big_Integers`` and
+``Ada.Numerics.Big_Numbers.Big_Reals``, but note that unit
+``Ada.Numerics.Big_Numbers.Big_Integers_Ghost`` could be used as an alternative
+to the former in that context). Header files of the SPARK library are available
+through :menuselection:`Help --> SPARK --> SPARKlib` menu item in GNAT Studio. To
+use this library in a program, you need to add a corresponding dependency in
+your project file, for example:
+
+.. code-block:: gpr
+
+  with "sparklib";
+  project My_Project is
+     ...
+  end My_Project;
+
+.. index:: GPR_PROJECT_PATH; for SPARK library
+
+You may need to update the environment variable ``GPR_PROJECT_PATH`` for the
+lemma library project to be found by GNAT compiler, as described in
+:ref:`Installation of GNATprove`.
+
+You also need to set the environment variable ``SPARKLIB_OBJECT_DIR`` to
+the absolute path of the object directory where you want compilation and
+verification artefacts for the SPARK library to be created. This should be an
+absolute path (not a relative one) otherwise these artefacts will be created
+inside your |SPARK| install.
+
+Finally, if you instantiate in your code a generic from the SPARK library, you
+also need to pass ``-gnateDSPARK_BODY_MODE=Off`` as a compilation switch for
+these generic units.
+
 .. index:: Big_Numbers
 
 Big Numbers Library
@@ -119,45 +158,6 @@ computations on real numbers.
       --  The rounding errors introduced by the floating-point computations
       --  are not too big.
    end;
-
-.. index:: SPARK Library
-
-SPARK Library
--------------
-
-As part of the |SPARK| product, several libraries are available through the
-project file :file:`<spark-install>/lib/gnat/sparklib.gpr` (or through the
-extended project file :file:`<spark-install>/lib/gnat/sparklib_zfp.gpr` in
-an environment without units ``Ada.Numerics.Big_Numbers.Big_Integers`` and
-``Ada.Numerics.Big_Numbers.Big_Reals``, but note that unit
-``Ada.Numerics.Big_Numbers.Big_Integers_Ghost`` could be used as an alternative
-to the former in that context). Header files of the SPARK library are available
-through :menuselection:`Help --> SPARK --> SPARKlib` menu item in GNAT Studio. To
-use this library in a program, you need to add a corresponding dependency in
-your project file, for example:
-
-.. code-block:: gpr
-
-  with "sparklib";
-  project My_Project is
-     ...
-  end My_Project;
-
-.. index:: GPR_PROJECT_PATH; for SPARK library
-
-You may need to update the environment variable ``GPR_PROJECT_PATH`` for the
-lemma library project to be found by GNAT compiler, as described in
-:ref:`Installation of GNATprove`.
-
-You also need to set the environment variable ``SPARKLIB_OBJECT_DIR`` to
-the absolute path of the object directory where you want compilation and
-verification artefacts for the SPARK library to be created. This should be an
-absolute path (not a relative one) otherwise these artefacts will be created
-inside your |SPARK| install.
-
-Finally, if you instantiate in your code a generic from the SPARK library, you
-also need to pass ``-gnateDSPARK_BODY_MODE=Off`` as a compilation switch for
-these generic units.
 
 .. index:: functional containers
 
@@ -293,7 +293,7 @@ neither controlled containers nor bounded containers can be used in |SPARK|,
 because their API does not lend itself to adding suitable contracts (in
 particular preconditions) ensuring correct usage in client code.
 
-The formal containers are a variation of the bounded containers with API
+The formal containers are a variation of the standard containers with API
 changes that allow adding suitable contracts, so that |GNATprove| can prove
 that client code manipulates containers correctly. There are 12 formal
 containers, which are part of the |SPARK| library.
@@ -316,20 +316,22 @@ The 6 others are unbounded and indefinite but are controlled:
 * ``SPARK.Containers.Formal.Unbounded_Hashed_Maps``
 * ``SPARK.Containers.Formal.Unbounded_Ordered_Maps``
 
-Lists, sets and maps can only be used with definite objects (objects for which
-the compiler can compute the size in memory, hence not ``String`` nor
-``T'Class``). However, the unbounded containers can be used with indefinite objects.
+Bounded definite formal containers can only contain definite objects (objects
+for which the compiler can compute the size in memory, hence not ``String`` nor
+``T'Class``). They do not use dynamic allocation. In particular, they cannot
+grow beyond the bound defined at object creation.
 
-Lists, sets, maps, and definite vectors are always bounded and do not use dynamic
-allocation. The Unbounded containers are always unbounded and indefinite. They use
-dynamic allocation to expand their internal block of memory.
+Unbounded indefinite formal containers can contain indefinite objects. They use
+dynamic allocation both to allocate memory for their elements, and to expand
+their internal block of memory when it is full.
 
 .. note::
 
-    The size of bounded containers is not set using a descriminent, it is implicitly
-    set to it max value. All the required memory is not reserved at declaration. As
-    all the formal containers are internally indexed by ``Count_Type``, their max size
-    is ``Count_Type'Last``.
+    The capacity of unbounded containers is not set using a
+    discriminant. Instead, it is implicitly set to it maximum value. All the
+    required memory is not reserved at declaration. As all the formal
+    containers are internally indexed by ``Count_Type``, their maximum size is
+    ``Count_Type'Last``.
 
 Modified API of Formal Containers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -353,7 +355,7 @@ container has an element at a given position is declared as follows:
 
    function Has_Element (Container : T; Position : Cursor) return Boolean;
 
-This is different from the API of controlled containers and bounded containers,
+This is different from the API of standard containers,
 where it is sufficient to pass a cursor to these subprograms, as the cursor
 holds a reference to the underlying container:
 
@@ -452,10 +454,9 @@ already traversed (otherwise the loop would have exited):
 .. note::
 
    Just like functional containers, the formal containers do not comply with
-   the ownership policy of SPARK if
-   element or key types are ownership types. Care should be taken to do the
-   required copies when storing these elements/keys inside the container or
-   retrieving them.
+   the ownership policy of SPARK if element or key types are ownership types.
+   These constraints are verified specifically each time a container package is
+   instantiated.
 
 .. index:: quantified-expression; over container
 
