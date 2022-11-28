@@ -38,7 +38,7 @@ multiset.ads:53:16: info: postcondition proved (CVC5: 2 VC)
 multiset.ads:53:35: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:53:35: info: predicate check proved (Trivial: 1 VC)
 multiset.ads:53:71: info: predicate check proved (Trivial: 1 VC)
-multiset.ads:54:06: info: Inline_For_Proof annotation proved (CVC5: 1 VC)
+multiset.ads:54:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
 multiset.ads:56:13: info: subprogram "Choose" will terminate, terminating annotation has been proved
 multiset.ads:57:06: info: data dependencies proved
 multiset.ads:58:20: info: invariant check proved (CVC5: 1 VC)

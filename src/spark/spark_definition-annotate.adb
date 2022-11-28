@@ -37,9 +37,7 @@ with Flow_Utility;                 use Flow_Utility;
 with Gnat2Why_Args;
 with Namet;                        use Namet;
 with Nlists;                       use Nlists;
-with Opt;
 with Sem_Aux;                      use Sem_Aux;
-with Sem_Prag;                     use Sem_Prag;
 with Sinfo.Utils;                  use Sinfo.Utils;
 with Sinput;                       use Sinput;
 with Snames;                       use Snames;
@@ -239,7 +237,9 @@ package body SPARK_Definition.Annotate is
    --  Check validity of a pragma Annotate (GNATprove, Iterate_For_Proof, E)
    --  and insert it in the Iterable_Annotations map.
 
-   procedure Check_Logical_Equal_Annotation (Arg3_Exp : Node_Id);
+   procedure Check_Logical_Equal_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id);
    --  Check validity of a pragma Annotate (GNATprove, Logical_Equal, E)
    --  and insert it in the Logical_Eq_Annotations set.
 
@@ -1005,7 +1005,9 @@ package body SPARK_Definition.Annotate is
    -- Check_Logical_Equal_Annotation --
    ------------------------------
 
-   procedure Check_Logical_Equal_Annotation (Arg3_Exp : Node_Id) is
+   procedure Check_Logical_Equal_Annotation
+     (Arg3_Exp : Node_Id; Prag : Node_Id)
+   is
       E : Entity_Id;
 
    begin
@@ -1082,32 +1084,6 @@ package body SPARK_Definition.Annotate is
          end if;
       end;
 
-      --  The function shall not have a body or this body shall not be in SPARK
-
-      declare
-         N_Body     : constant Node_Id := Get_Body (E);
-         SPARK_Prag : constant Node_Id :=
-           (if Present (N_Body) then SPARK_Pragma (Defining_Entity (N_Body))
-            else SPARK_Pragma (E));
-         SPARK_Mode : constant Opt.SPARK_Mode_Type :=
-           (if No (SPARK_Prag) then Opt.None
-            else Get_SPARK_Mode_From_Annotation (SPARK_Prag));
-         use type Opt.SPARK_Mode_Type;
-
-      begin
-         if (Present (N_Body) and then SPARK_Mode = Opt.On)
-           or else
-             (Is_Expression_Function_Or_Completion (E)
-              and then SPARK_Mode /= Opt.Off)
-         then
-            Error_Msg_N
-              ("Entity parameter of a pragma Logical_Equal shall not have a"
-               & " body visible from SPARK",
-               Arg3_Exp);
-            return;
-         end if;
-      end;
-
       --  Inline_For_Proof and Logical_Equal are incompatible
 
       if Present (Retrieve_Inline_Annotation (E)) then
@@ -1119,6 +1095,7 @@ package body SPARK_Definition.Annotate is
       end if;
 
       Logical_Eq_Annotations.Include (E);
+      Inline_Pragmas.Include (E, Prag);
    end Check_Logical_Equal_Annotation;
 
    ---------------------------------------
@@ -2026,7 +2003,7 @@ package body SPARK_Definition.Annotate is
          Check_Inline_Annotation (Arg3_Exp, Prag);
 
       elsif Name = "logical_equal" then
-         Check_Logical_Equal_Annotation (Arg3_Exp);
+         Check_Logical_Equal_Annotation (Arg3_Exp, Prag);
 
       elsif Name = "might_not_return" then
          Check_Might_Not_Return_Annotation (Arg3_Exp, Prag);

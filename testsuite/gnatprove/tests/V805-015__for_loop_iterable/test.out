@@ -1,0 +1,6 @@
+foo.adb:14:69: info: overflow check proved (CVC5: 2 VC)
+foo.adb:18:22: warning: unused variable "IR"
+foo.adb:18:38: warning: unused variable "N"
+foo.adb:20:22: info: predicate check proved (CVC5: 1 VC)
+foo.adb:22:08: info: precondition proved (CVC5: 1 VC)
+foo.adb:22:08: info: precondition proved (Trivial: 1 VC)

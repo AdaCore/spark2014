@@ -123,6 +123,14 @@ package body SPARK_Util is
               else Standard.Types.Empty);
    end Partial_View;
 
+   ---------------------------
+   -- Is_For_Loop_Parameter --
+   ---------------------------
+
+   function Is_For_Loop_Parameter (E : Entity_Id) return Boolean is
+     (Ekind (E) = E_Loop_Parameter
+      and then Nkind (Parent (E)) = N_Loop_Parameter_Specification);
+
    ------------------
    -- Is_Full_View --
    ------------------

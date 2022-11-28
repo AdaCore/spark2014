@@ -174,7 +174,7 @@ binary_trees.adb:398:29: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:398:29: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:398:60: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:398:60: info: precondition proved (CVC5: 1 VC)
-binary_trees.adb:398:83: medium: overflow check might fail, cannot prove upper bound for Length (Model (F, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+binary_trees.adb:398:83: medium: overflow check might fail, cannot prove upper bound for Length (Model (F, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 binary_trees.adb:404:18: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:404:18: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:406:22: info: invariant check proved (CVC5: 2 VC)
@@ -188,7 +188,7 @@ binary_trees.adb:410:42: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:410:42: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:410:76: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:410:76: info: precondition proved (CVC5: 2 VC)
-binary_trees.adb:410:99: medium: overflow check might fail, cannot prove upper bound for Length (Model (F, Root) (I).A) + N [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+binary_trees.adb:410:99: medium: overflow check might fail, cannot prove upper bound for Length (Model (F, Root) (I).A) + N [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 binary_trees.adb:411:28: info: precondition proved (CVC5: 4 VC)
 binary_trees.adb:411:28: medium: loop invariant might fail in first iteration, cannot prove Get (Model (F, Root) (J).A, Length (Model (F, Root) (I).A) + 1) /= D [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
 binary_trees.adb:411:28: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Get (Model (F, Root) (J).A, Length (Model (F, Root) (I).A) + 1) /= D [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
@@ -196,7 +196,7 @@ binary_trees.adb:411:33: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:411:33: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:411:64: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:411:64: info: precondition proved (CVC5: 2 VC)
-binary_trees.adb:411:87: medium: overflow check might fail, cannot prove lower bound for Length (Model (F, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+binary_trees.adb:411:87: medium: overflow check might fail, cannot prove lower bound for Length (Model (F, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 binary_trees.adb:417:07: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:434:09: info: data dependencies proved
 binary_trees.adb:448:25: info: index check proved (CVC5: 2 VC)
@@ -852,7 +852,7 @@ binary_trees.ads:107:27: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:107:27: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:107:58: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:107:58: info: precondition proved (CVC5: 1 VC)
-binary_trees.ads:107:81: medium: overflow check might fail, cannot prove upper bound for Length (Model (F, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+binary_trees.ads:107:81: medium: overflow check might fail, cannot prove upper bound for Length (Model (F, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 binary_trees.ads:114:06: info: data dependencies proved
 binary_trees.ads:116:17: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:117:17: info: invariant check proved (CVC5: 1 VC)
@@ -1100,7 +1100,7 @@ red_black_trees.adb:88:26: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:89:26: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:91:26: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:92:26: info: precondition proved (CVC5: 4 VC)
-red_black_trees.adb:95:23: medium: overflow check might fail, cannot prove lower bound for (if T.Color (I) = Black then 1 else 0) + Res (Peek (T.Struct, I, Left)).Count [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+red_black_trees.adb:95:23: medium: overflow check might fail, cannot prove lower bound for (if T.Color (I) = Black then 1 else 0) + Res (Peek (T.Struct, I, Left)).Count [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 red_black_trees.adb:95:30: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:102:30: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:103:30: info: precondition proved (CVC5: 4 VC)
@@ -1131,7 +1131,7 @@ red_black_trees.adb:144:29: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:145:29: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:147:29: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:148:29: info: precondition proved (CVC5: 4 VC)
-red_black_trees.adb:151:26: medium: overflow check might fail, cannot prove lower bound for (if T.Color (J) = Black then 1 else 0) + Res (Peek (T.Struct, J, Left)).Count [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+red_black_trees.adb:151:26: medium: overflow check might fail, cannot prove lower bound for (if T.Color (J) = Black then 1 else 0) + Res (Peek (T.Struct, J, Left)).Count [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 red_black_trees.adb:151:33: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:157:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:159:33: info: precondition proved (CVC5: 4 VC)
@@ -1646,7 +1646,7 @@ search_trees.adb:282:22: info: precondition proved (CVC5: 4 VC)
 search_trees.adb:282:27: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:283:27: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:283:44: info: index check proved (CVC5: 4 VC)
-search_trees.adb:283:50: medium: overflow check might fail, cannot prove upper bound for Length (Model (F, Root) (K).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+search_trees.adb:283:50: medium: overflow check might fail, cannot prove upper bound for Length (Model (F, Root) (K).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 search_trees.adb:284:24: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:284:24: medium: loop invariant might fail in first iteration, cannot prove All_Less_Than (F, V, Values, Values (K))
 search_trees.adb:284:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove All_Less_Than (F, V, Values, Values (K))
@@ -1821,7 +1821,7 @@ search_trees.adb:497:93: info: overflow check proved (CVC5: 4 VC)
 search_trees.adb:498:36: medium: precondition might fail
 search_trees.adb:498:41: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:498:72: info: precondition proved (CVC5: 2 VC)
-search_trees.adb:498:95: medium: overflow check might fail, cannot prove lower bound for Length (Model (F, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+search_trees.adb:498:95: medium: overflow check might fail, cannot prove lower bound for Length (Model (F, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 search_trees.adb:500:42: medium: assertion might fail
 search_trees.adb:500:42: medium: precondition might fail, cannot prove Model (I).K
 search_trees.adb:500:58: info: precondition proved (CVC5: 2 VC)
@@ -1859,7 +1859,7 @@ search_trees.adb:556:56: medium: overflow check might fail, cannot prove upper b
 search_trees.adb:557:31: info: precondition proved (CVC5: 4 VC)
 search_trees.adb:557:31: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
 search_trees.adb:557:47: medium: precondition might fail
-search_trees.adb:557:71: medium: overflow check might fail, cannot prove upper bound for Length (Model (F1, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+search_trees.adb:557:71: medium: overflow check might fail, cannot prove upper bound for Length (Model (F1, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 search_trees.adb:558:31: medium: assertion might fail
 search_trees.adb:558:31: medium: precondition might fail
 search_trees.adb:559:31: info: precondition proved (CVC5: 2 VC)
@@ -1867,7 +1867,7 @@ search_trees.adb:559:31: medium: assertion might fail
 search_trees.adb:561:31: info: precondition proved (CVC5: 4 VC)
 search_trees.adb:561:31: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
 search_trees.adb:561:47: medium: precondition might fail
-search_trees.adb:561:71: medium: overflow check might fail, cannot prove upper bound for Length (Model (F1, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+search_trees.adb:561:71: medium: overflow check might fail, cannot prove upper bound for Length (Model (F1, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 search_trees.adb:562:31: medium: assertion might fail
 search_trees.adb:562:31: medium: precondition might fail
 search_trees.adb:563:31: info: precondition proved (CVC5: 2 VC)
@@ -1879,7 +1879,7 @@ search_trees.adb:568:69: info: index check proved (CVC5: 4 VC)
 search_trees.adb:570:22: info: precondition proved (CVC5: 4 VC)
 search_trees.adb:570:38: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:570:56: info: index check proved (CVC5: 4 VC)
-search_trees.adb:570:62: medium: overflow check might fail, cannot prove upper bound for Length (Model (F2, Root) (K).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+search_trees.adb:570:62: medium: overflow check might fail, cannot prove upper bound for Length (Model (F2, Root) (K).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 search_trees.adb:571:24: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:571:24: medium: loop invariant might fail in first iteration, cannot prove All_Less_Than (F2, V2, Values, Values (K))
 search_trees.adb:571:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove All_Less_Than (F2, V2, Values, Values (K))
@@ -1904,11 +1904,11 @@ search_trees.adb:611:50: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:612:25: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:612:30: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:612:62: info: precondition proved (CVC5: 1 VC)
-search_trees.adb:612:86: medium: overflow check might fail, cannot prove upper bound for Length (Model (F1, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+search_trees.adb:612:86: medium: overflow check might fail, cannot prove upper bound for Length (Model (F1, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 search_trees.adb:613:25: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:613:30: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:613:62: info: precondition proved (CVC5: 1 VC)
-search_trees.adb:613:86: medium: overflow check might fail, cannot prove upper bound for Length (Model (F2, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+search_trees.adb:613:86: medium: overflow check might fail, cannot prove upper bound for Length (Model (F2, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 search_trees.adb:617:17: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:618:25: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:619:25: info: precondition proved (CVC5: 1 VC)
@@ -1916,7 +1916,7 @@ search_trees.adb:619:50: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:620:23: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:620:28: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:621:36: info: precondition proved (CVC5: 1 VC)
-search_trees.adb:621:60: medium: overflow check might fail, cannot prove upper bound for Length (Model (F1, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+search_trees.adb:621:60: medium: overflow check might fail, cannot prove upper bound for Length (Model (F1, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 search_trees.adb:623:25: medium: assertion might fail, cannot prove Values (J) < Values (I)
 search_trees.adb:636:06: info: data dependencies proved
 search_trees.adb:639:42: info: range check proved (CVC5: 2 VC)
@@ -1953,7 +1953,7 @@ search_trees.adb:692:36: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:692:54: info: range check proved (CVC5: 2 VC)
 search_trees.adb:692:76: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:692:94: info: range check proved (CVC5: 2 VC)
-search_trees.adb:692:108: medium: overflow check might fail, cannot prove upper bound for Length (Model (T.Struct, T.Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+search_trees.adb:692:108: medium: overflow check might fail, cannot prove upper bound for Length (Model (T.Struct, T.Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 search_trees.adb:697:14: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:697:32: info: range check proved (CVC5: 2 VC)
 search_trees.adb:697:50: medium: postcondition might fail, cannot prove T.Values (I) /= V
@@ -2380,7 +2380,7 @@ search_trees.adb:1298:49: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1298:57: info: index check proved (CVC5: 4 VC)
 search_trees.adb:1298:77: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1298:95: info: range check proved (CVC5: 4 VC)
-search_trees.adb:1298:109: medium: overflow check might fail, cannot prove lower bound for Length (Model (T.Struct, T.Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+search_trees.adb:1298:109: medium: overflow check might fail, cannot prove lower bound for Length (Model (T.Struct, T.Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 search_trees.adb:1299:28: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove V < T.Values (I) [possible fix: subprogram at search_trees.ads:42 should mention T and V in a precondition]
 search_trees.adb:1303:27: info: index check proved (CVC5: 2 VC)
 search_trees.adb:1305:30: info: index check proved (CVC5: 2 VC)
@@ -2402,7 +2402,7 @@ search_trees.adb:1357:39: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:1357:65: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1357:87: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:1357:113: info: range check proved (CVC5: 2 VC)
-search_trees.adb:1357:127: medium: overflow check might fail, cannot prove upper bound for Length (Model (T_Old.Struct, T_Old.Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+search_trees.adb:1357:127: medium: overflow check might fail, cannot prove upper bound for Length (Model (T_Old.Struct, T_Old.Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 search_trees.adb:1364:43: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1370:26: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:1370:44: info: range check proved (CVC5: 2 VC)
@@ -2443,7 +2443,7 @@ search_trees.adb:1411:31: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1411:49: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1411:71: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1411:89: info: range check proved (CVC5: 4 VC)
-search_trees.adb:1411:103: medium: overflow check might fail, cannot prove upper bound for Length (Model (T.Struct, T.Root) (L).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+search_trees.adb:1411:103: medium: overflow check might fail, cannot prove upper bound for Length (Model (T.Struct, T.Root) (L).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 search_trees.adb:1416:24: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1416:42: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1417:23: medium: assertion might fail, cannot prove not (Model (T.Struct, T.Root) (I).A < Model (T.Struct, T.Root) (J).A)
@@ -2536,7 +2536,7 @@ search_trees.adb:1502:54: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1502:62: info: index check proved (CVC5: 4 VC)
 search_trees.adb:1502:82: medium: precondition might fail
 search_trees.adb:1502:100: info: range check proved (CVC5: 4 VC)
-search_trees.adb:1502:114: medium: overflow check might fail, cannot prove lower bound for Length (Model (T.Struct, T.Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+search_trees.adb:1502:114: medium: overflow check might fail, cannot prove lower bound for Length (Model (T.Struct, T.Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 search_trees.adb:1503:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove V < T.Values (I) [possible fix: precondition of subprogram at search_trees.ads:45 should mention V]
 search_trees.adb:1504:33: medium: loop invariant might fail in first iteration, cannot prove V > T.Values (I) [possible fix: precondition of subprogram at search_trees.ads:45 should mention V]
 search_trees.adb:1507:30: info: index check proved (CVC5: 2 VC)

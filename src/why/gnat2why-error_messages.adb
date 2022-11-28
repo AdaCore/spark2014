@@ -679,7 +679,8 @@ package body Gnat2Why.Error_Messages is
             end if;
             return "exception might be raised";
          when VC_Inline_Check              =>
-            return "Inline_For_Proof annotation might be incorrect";
+            return "Inline_For_Proof or Logical_Equal annotation might be"
+              & " incorrect";
          when VC_Subprogram_Variant        =>
             return "subprogram variant might fail";
          when VC_UC_Source               =>
@@ -1652,7 +1653,7 @@ package body Gnat2Why.Error_Messages is
             end if;
             return "raise statement or expression " & Verb & " unreachable";
          when VC_Inline_Check              =>
-            return "Inline_For_Proof annotation " & Verb;
+            return "Inline_For_Proof or Logical_Equal annotation " & Verb;
          when VC_Subprogram_Variant        =>
             return "subprogram variant " & Verb;
          when VC_UC_Source                 =>

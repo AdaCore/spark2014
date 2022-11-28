@@ -10,6 +10,6 @@ math.ads:7:31: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 math.ads:11:14: info: postcondition proved (CVC5: 1 VC)
 math.ads:12:06: info: complete contract cases proved (CVC5: 1 VC)
 math.ads:12:06: info: disjoint contract cases proved (CVC5: 1 VC)
-math.ads:12:27: medium: overflow check might fail, cannot prove upper bound for X + X (e.g. when X = 1073741824) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+math.ads:12:27: medium: overflow check might fail, cannot prove upper bound for X + X (e.g. when X = 1073741824) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 math.ads:12:35: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 math.ads:13:35: medium: contract case might fail (e.g. when Bad'Result = 0)

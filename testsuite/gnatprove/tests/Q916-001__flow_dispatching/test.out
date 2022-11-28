@@ -21,10 +21,10 @@ ints.adb:45:58: low: range check might fail, cannot prove lower bound for "Int i
 ints.adb:46:35: low: range check might fail, cannot prove lower bound for "Int is ( Min =" & Integer'Image(Arg.Min) & ", Max =" & Integer'Image(Arg.Max) & ", Value =" & Integer'Image(Arg.Value) & ", Precision =" & Integer'image) [possible fix: subprogram at ints.ads:28 should mention Arg in a precondition]
 ints.adb:46:66: low: range check might fail, cannot prove lower bound for "Int is ( Min =" & Integer'Image(Arg.Min) & ", Max =" & Integer'Image(Arg.Max) & ", Value =" & Integer'Image(Arg.Value) & ", Precision =" & Integer'Image(Arg.Precision) & " )" [reason for check: input value must fit in parameter type] [possible fix: subprogram at ints.ads:28 should mention Arg in a precondition]
 ints.adb:51:38: medium: overflow check might fail, cannot prove upper bound for Arg.Precision + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at ints.ads:30 should mention Arg in a precondition]
-ints.ads:11:40: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+ints.ads:11:40: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 ints.ads:12:20: info: postcondition proved (CVC5: 1 VC)
 ints.ads:12:20: info: postcondition proved (CVC5: 1 VC), in inherited contract at ints.ads:26
-ints.ads:16:34: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+ints.ads:16:34: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 ints.ads:17:14: info: postcondition proved (CVC5: 1 VC)
 test_ints.adb:12:04: info: precondition proved (CVC5: 1 VC)
 test_ints.adb:13:05: medium: precondition might fail

@@ -656,7 +656,13 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
 
 4. A package_declaration or generic_package_declaration that contains a
-   non-null Abstract_State aspect shall have a completion (i.e., a body).
+   non-null Abstract_State aspect mentioned in a Part_Of specification
+   shall have a completion (i.e., a body).
+
+   [This rule ensures that the abstract state can have a corresponding state
+   refinement in the body. In cases where the package does not have a
+   completion, the abstract state has no constituents. See :ref:`State
+   Refinement`.]
 
    [Ada RM 7.1's rule defining when a package "requires a completion"
    is unaffected by the presence of an Abstract_State aspect
@@ -1068,7 +1074,7 @@ State Refinement
 
 A ``state_name`` declared by an Abstract_State aspect in the specification of a
 package shall denote an abstraction representing all or part of its hidden
-state. The declaration must be completed in the package body by a Refined_State
+state. If the package has a body, the declaration must be completed in the package body by a Refined_State
 aspect. The Refined_State aspect defines a *refinement* for each ``state_name``.
 The refinement shall denote the variables and subordinate state abstractions
 represented by the ``state_name`` and these are known as its *constituents*.

@@ -1,3 +1,3 @@
 p.adb:5:30: info: loop invariant initialization proved (CVC5: 1 VC)
 p.adb:5:30: info: loop invariant preservation proved (CVC5: 1 VC)
-p.adb:5:41: medium: overflow check might fail, cannot prove lower bound for N ** J [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+p.adb:5:41: medium: overflow check might fail, cannot prove lower bound for N ** J [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]

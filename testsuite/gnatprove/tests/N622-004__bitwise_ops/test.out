@@ -175,7 +175,7 @@ aco-math-very_longs.adb:351:43: warning: assuming "Shift_Left" always returns
 aco-math-very_longs.adb:351:43: warning: no returning annotation available for "Shift_Left"
 aco-math-very_longs.adb:359:56: info: initialization of "Result" proved
 aco-math-very_longs.adb:361:11: info: flow dependencies proved
-aco-math-very_longs.adb:362:60: medium: overflow check might fail, cannot prove upper bound for Number.Octet_Length + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+aco-math-very_longs.adb:362:60: medium: overflow check might fail, cannot prove upper bound for Number.Octet_Length + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 aco-math-very_longs.adb:365:10: info: initialization of "New_Overflow" proved
 aco-math-very_longs.adb:366:10: info: initialization of "Overflow_Mask" proved
 aco-math-very_longs.adb:368:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
@@ -345,7 +345,7 @@ aco-math-very_longs.ads:24:16: info: postcondition proved (CVC5: 1 VC)
 aco-math-very_longs.ads:26:55: info: initialization of "Result" proved
 aco-math-very_longs.ads:26:79: info: initialization of "Valid" proved
 aco-math-very_longs.ads:29:21: info: range check proved (CVC5: 2 VC)
-aco-math-very_longs.ads:29:32: medium: overflow check might fail, cannot prove upper bound for 2*Result.Octet_Length [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+aco-math-very_longs.ads:29:32: medium: overflow check might fail, cannot prove upper bound for 2*Result.Octet_Length [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 aco-math-very_longs.ads:55:16: info: postcondition proved (CVC5: 1 VC)
 aco-math-very_longs.ads:61:16: info: postcondition proved (CVC5: 1 VC)
 aco-math-very_longs.ads:67:16: info: postcondition proved (CVC5: 1 VC)

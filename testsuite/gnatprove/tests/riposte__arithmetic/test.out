@@ -19,12 +19,12 @@ arithmetic.adb:45:14: info: range check proved (CVC5: 2 VC)
 arithmetic.adb:53:11: info: flow dependencies proved
 arithmetic.adb:56:07: info: initialization of "C" proved
 arithmetic.adb:59:22: high: assertion might fail (e.g. when C = 323 and Double_A = 17 and Double_B = 19)
-arithmetic.adb:59:31: high: overflow check might fail, cannot prove upper bound for Double_A * Double_B (e.g. when Double_A = 2 and Double_B = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+arithmetic.adb:59:31: high: overflow check might fail, cannot prove upper bound for Double_A * Double_B (e.g. when Double_A = 2 and Double_B = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 arithmetic.adb:65:11: info: flow dependencies proved
 arithmetic.adb:68:07: info: initialization of "C" proved
 arithmetic.adb:71:22: medium: assertion might fail
-arithmetic.adb:71:24: high: overflow check might fail, cannot prove upper bound for A * B (e.g. when A = 2 and B = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-arithmetic.adb:76:21: high: overflow check might fail, cannot prove lower bound for A + B (e.g. when A = Integer'First and B = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+arithmetic.adb:71:24: high: overflow check might fail, cannot prove upper bound for A * B (e.g. when A = 2 and B = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+arithmetic.adb:76:21: high: overflow check might fail, cannot prove lower bound for A + B (e.g. when A = Integer'First and B = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 arithmetic.adb:77:19: info: postcondition proved (CVC5: 1 VC)
 arithmetic.adb:77:35: info: overflow check proved (CVC5: 2 VC)
 arithmetic.adb:79:07: info: initialization of "R" proved
@@ -85,8 +85,8 @@ arithmetic.adb:226:38: info: division check proved (CVC5: 1 VC)
 arithmetic.adb:234:19: high: postcondition might fail (e.g. when Test_Rem_A = 0 and A = 127)
 arithmetic.adb:237:16: info: division check proved (CVC5: 1 VC)
 arithmetic.adb:244:19: info: postcondition proved (CVC5: 1 VC)
-arithmetic.adb:244:39: high: overflow check might fail, cannot prove bounds for - ((A / B) * B) (e.g. when A = -128 and B = -128) [reason for check: result of negation must fit in a 8-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
-arithmetic.adb:244:45: high: overflow check might fail, cannot prove bounds for A / B (e.g. when A = -128 and B = -1) [reason for check: result of division must fit in a 8-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+arithmetic.adb:244:39: high: overflow check might fail, cannot prove bounds for - ((A / B) * B) (e.g. when A = -128 and B = -128) [reason for check: result of negation must fit in a 8-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+arithmetic.adb:244:45: high: overflow check might fail, cannot prove bounds for A / B (e.g. when A = -128 and B = -1) [reason for check: result of division must fit in a 8-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 arithmetic.adb:244:45: info: division check proved (CVC5: 1 VC)
 arithmetic.adb:244:50: info: overflow check proved (CVC5: 2 VC)
 arithmetic.adb:244:55: info: overflow check proved (CVC5: 2 VC)

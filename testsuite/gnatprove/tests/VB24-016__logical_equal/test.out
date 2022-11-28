@@ -1,0 +1,5 @@
+test.adb:21:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 2 VC)
+test.adb:26:06: medium: Inline_For_Proof or Logical_Equal annotation might be incorrect
+test.adb:31:06: medium: Inline_For_Proof or Logical_Equal annotation might be incorrect
+test.adb:36:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 2 VC)
+test.adb:41:06: medium: Inline_For_Proof or Logical_Equal annotation might be incorrect

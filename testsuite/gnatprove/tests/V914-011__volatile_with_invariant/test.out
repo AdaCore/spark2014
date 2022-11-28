@@ -1,0 +1,3 @@
+ext.ads:10:04: error: volatile object with asynchronous writers or readers and a type invariant is not yet supported
+ext.ads:11:04: error: volatile object with asynchronous writers or readers and a type invariant is not yet supported
+gnatprove: error during flow analysis and proof

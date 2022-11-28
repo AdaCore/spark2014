@@ -76,7 +76,7 @@ bounded_queue.adb:48:53: info: overflow check proved (CVC5: 2 VC), in instantiat
 bounded_queue.adb:49:34: medium: range check might fail, cannot prove lower bound for Queue.Count - 1, in instantiation at bounded_queue_example.adb:7 [reason for check: result of subtraction must fit in the target type of the assignment]
 bounded_queue.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
 bounded_queue.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
-bounded_queue.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1, in instantiation at bounded_queue_example.adb:7 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+bounded_queue.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1, in instantiation at bounded_queue_example.adb:7 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 bounded_queue.ads:33:18: info: precondition proved (CVC5: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:36:23: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
@@ -123,7 +123,7 @@ bounded_queue_v1.adb:49:34: medium: range check might fail, cannot prove lower b
 bounded_queue_v1.ads:12:09: info: range check proved (CVC5: 2 VC)
 bounded_queue_v1.ads:31:18: medium: postcondition might fail, cannot prove Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
 bounded_queue_v1.ads:37:18: medium: postcondition might fail, cannot prove not Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
-bounded_queue_v1.ads:38:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+bounded_queue_v1.ads:38:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 bounded_queue_v1.ads:39:18: info: precondition proved (CVC5: 1 VC)
 bounded_queue_v1.ads:42:23: info: initialization of "Item" proved
 bounded_queue_v1.ads:45:18: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old) [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
@@ -140,7 +140,7 @@ bounded_queue_v2.adb:48:53: info: overflow check proved (CVC5: 2 VC)
 bounded_queue_v2.adb:49:34: medium: range check might fail, cannot prove lower bound for Queue.Count - 1 [reason for check: result of subtraction must fit in the target type of the assignment]
 bounded_queue_v2.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
 bounded_queue_v2.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
-bounded_queue_v2.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+bounded_queue_v2.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 bounded_queue_v2.ads:33:18: info: precondition proved (CVC5: 1 VC)
 bounded_queue_v2.ads:36:23: info: initialization of "Item" proved
 bounded_queue_v2.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old) [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
@@ -887,7 +887,7 @@ shapes5.ads:4:08: info: flow dependencies proved
 shapes5.ads:14:18: high: postcondition might fail (e.g. when Make_Circle'Result = (Center_X => 0, Center_Y => 0, Radius => 0) and Wild_Man = 0)
 shapes5.ads:25:11: info: data dependencies proved
 silly.adb:3:21: info: initialization of "Result" proved
-silly.adb:6:21: high: overflow check might fail, cannot prove upper bound for X + Y (e.g. when X = Positive'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+silly.adb:6:21: high: overflow check might fail, cannot prove upper bound for X + Y (e.g. when X = Positive'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 silly.adb:6:26: info: division check proved (CVC5: 1 VC)
 silly.adb:12:22: info: division check proved (CVC5: 1 VC)
 simple_math.adb:6:07: info: initialization of "Q" proved
@@ -1147,7 +1147,7 @@ utility.ads:12:16: info: postcondition proved (CVC5: 1 VC)
 various.adb:7:27: info: unrolling loop
 various.adb:12:07: info: raise statement or expression proved unreachable (CVC5: 1 VC)
 various.adb:20:21: info: assertion proved (CVC5: 2 VC)
-various.adb:20:23: high: overflow check might fail, cannot prove upper bound for X+Y (e.g. when X = Positive'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+various.adb:20:23: high: overflow check might fail, cannot prove upper bound for X+Y (e.g. when X = Positive'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 various.adb:20:26: info: division check proved (CVC5: 1 VC)
 various.adb:21:13: info: division check proved (CVC5: 1 VC)
 very_longs-divide.adb:15:12: info: range check proved (CVC5: 2 VC)

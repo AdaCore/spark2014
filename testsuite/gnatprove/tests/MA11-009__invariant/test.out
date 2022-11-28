@@ -8,9 +8,9 @@ kmp.adb:14:17: medium: loop invariant might not be preserved by an arbitrary ite
 kmp.adb:16:17: high: loop invariant might fail in first iteration (e.g. when I = 0 and J = 1 and P = (0 => -1, 1 => 0) and P'First = 0 and P'Last = 1)
 kmp.adb:16:17: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when I = 1 and J = 2 and P = (0 => 2, 1 => 2, 2 => 0) and P'First = 0 and P'Last = 2)
 kmp.adb:16:17: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
-kmp.adb:16:22: medium: overflow check might fail, cannot prove lower bound for I - J [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+kmp.adb:16:22: medium: overflow check might fail, cannot prove lower bound for I - J [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 kmp.adb:16:34: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
-kmp.adb:16:44: medium: overflow check might fail, cannot prove lower bound for J - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit Ada.Numerics.Big_Numerics.Big_Integers]
+kmp.adb:16:44: medium: overflow check might fail, cannot prove lower bound for J - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 kmp.adb:17:19: info: index check proved (CVC5: 2 VC)
 kmp.adb:17:27: info: index check proved (CVC5: 2 VC)
 kmp.adb:18:23: info: overflow check proved (CVC5: 2 VC)

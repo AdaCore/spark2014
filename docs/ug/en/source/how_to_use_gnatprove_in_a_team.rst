@@ -683,6 +683,9 @@ only part of a program:
   Objects accessed outside of SPARK, either directly for statically allocated
   objects, or through their address or a pointer for all objects, should comply
   with the assumptions described in [SPARK_EXTERNAL] and [SPARK_EXTERNAL_VALID].
+  In addition, if these objects have parts of an access-to-variable type which
+  are treated as constant in SPARK then their designated object should never be
+  modified.
 
 * [ADA_EXTERNAL_ABSTRACT_STATE]
   The modeling of :ref:`Interfaces to the Physical World` needs to be reviewed
@@ -777,6 +780,9 @@ only part of a program:
     which case its return value shall be a part of its traversed parameter, or
     unless the aliases introduced are compatible with assumption
     [SPARK_ALIASING_ADDRESS])
+
+  * the additional validity constraints for parameters at
+    the end of the subprogram as described in [ADA_EXTERNAL].
 
   Note that this also applies to subprograms which are called indirectly
   from SPARK code, either through a dispatching call or through a call to
