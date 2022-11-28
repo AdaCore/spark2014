@@ -4141,7 +4141,8 @@ package body Why.Gen.Records is
               (Domain => Domain,
                Field  => E_Symb (Ty, WNE_Rec_Split_Fields, Init_Wrapper),
                Value  => New_Record_Aggregate
-                 (Associations => All_Field_Assocs));
+                 (Ada_Node     => Ada_Node,
+                  Associations => All_Field_Assocs));
          end;
          Index := Index + 1;
          Assocs (Index) := Assoc;
