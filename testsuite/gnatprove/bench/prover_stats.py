@@ -153,6 +153,7 @@ class CVC4(Prover):
     name = "cvc4"
     limit_reg = re.compile("smt::SmtEngine::resourceUnitsUsed, (\d+.?\d*)")  # noqa
     time_reg = re.compile("driver::totalTime, *(\d*.\d*)")  # noqa
+    timeout_reg = re.compile("interrupted by timeout\.")  # noqa
 
     def __init__(self, executable_name="cvc4"):
         Prover.__init__(self)
@@ -172,7 +173,12 @@ class CVC4(Prover):
         try:
             status = Prover.regex_get(Prover.status_reg, output)
             if not status:
-                status = "error"
+                # special case for timeout
+                to_stat = Prover.regex_get(self.timeout_reg, output)
+                if to_stat:
+                    status = "timeout"
+                else:
+                    status = "error"
             steps = 0
             time = time
             try:
