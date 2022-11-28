@@ -17302,82 +17302,76 @@ package body Gnat2Why.Expr is
       else
          case Nkind (Expr) is
          when N_Aggregate =>
-            declare
-               Expr_Type : constant Entity_Id := Type_Of_Node (Expr);
-            begin
-               if Is_Record_Type (Expr_Type) then
-                  pragma Assert (Is_Empty_List (Expressions (Expr)));
+            if Is_Record_Type (Expr_Type) then
+               pragma Assert (Is_Empty_List (Expressions (Expr)));
 
-                  --  If the type is an empty record in Why (no tag, no field,
-                  --  no discriminant), we use the dummy node of the root type
-                  --  here.
+               --  If the type is an empty record in Why (no tag, no field, no
+               --  discriminant), we use the dummy node of the root type here.
 
-                  if Count_Why_Top_Level_Fields (Expr_Type) = 0 then
-                     return
-                       +E_Symb (Root_Retysp (Expr_Type), WNE_Dummy);
-                  else
-                     declare
-                        Init_Wrapper : constant Boolean :=
-                          Expr_Has_Relaxed_Init (Expr);
-                        Num_Discrs : constant Natural :=
-                          Count_Non_Inherited_Discriminants
-                            (Component_Associations (Expr));
-
-                        Discr_Ids  : W_Identifier_Array (1 .. Num_Discrs);
-                        Discr_Vals : W_Expr_Array (1 .. Num_Discrs);
-                        --  Arrays that will contain the bindings for
-                        --  discriminants
-
-                        Assocs : constant W_Field_Association_Array :=
-                          Transform_Record_Component_Associations
-                            (Domain,
-                             Expr_Type,
-                             Component_Associations (Expr),
-                             Local_Params,
-                             Init_Wrapper => Init_Wrapper,
-                             Discr_Ids    => Discr_Ids,
-                             Discr_Vals   => Discr_Vals);
-                     begin
-                        T :=
-                          New_Ada_Record_Aggregate
-                            (Ada_Node     => Expr,
-                             Domain       => Domain,
-                             Discr_Assocs => Assocs (1 .. Num_Discrs),
-                             Field_Assocs =>
-                               Assocs (Num_Discrs + 1 .. Assocs'Last),
-                             Ty           => Expr_Type,
-                             Init_Wrapper => Init_Wrapper);
-
-                        --  Add the bindings for the discriminants
-
-                        for I in 1 .. Num_Discrs loop
-                           T := New_Binding
-                             (Domain  => Domain,
-                              Name    => Discr_Ids (I),
-                              Def     => Discr_Vals (I),
-                              Context => T,
-                              Typ     => Get_Type (T));
-                        end loop;
-                     end;
-                  end if;
+               if Count_Why_Top_Level_Fields (Expr_Type) = 0 then
+                  return
+                    +E_Symb (Root_Retysp (Expr_Type), WNE_Dummy);
                else
-                  pragma Assert
-                    (Is_Array_Type (Expr_Type) or else
-                     Is_String_Type (Expr_Type));
+                  declare
+                     Init_Wrapper : constant Boolean :=
+                       Expr_Has_Relaxed_Init (Expr);
+                     Num_Discrs : constant Natural :=
+                       Count_Non_Inherited_Discriminants
+                         (Component_Associations (Expr));
 
-                  T := Transform_Aggregate
-                    (Params       => Local_Params,
-                     Domain       => Domain,
-                     Expr         => Expr,
-                     Relaxed_Init => Expr_Has_Relaxed_Init (Expr));
+                     Discr_Ids  : W_Identifier_Array (1 .. Num_Discrs);
+                     Discr_Vals : W_Expr_Array (1 .. Num_Discrs);
+                     --  Arrays that will contain the bindings for
+                     --  discriminants
+
+                     Assocs : constant W_Field_Association_Array :=
+                       Transform_Record_Component_Associations
+                         (Domain,
+                          Expr_Type,
+                          Component_Associations (Expr),
+                          Local_Params,
+                          Init_Wrapper => Init_Wrapper,
+                          Discr_Ids    => Discr_Ids,
+                          Discr_Vals   => Discr_Vals);
+                  begin
+                     T :=
+                       New_Ada_Record_Aggregate
+                         (Ada_Node     => Expr,
+                          Domain       => Domain,
+                          Discr_Assocs => Assocs (1 .. Num_Discrs),
+                          Field_Assocs =>
+                            Assocs (Num_Discrs + 1 .. Assocs'Last),
+                          Ty           => Expr_Type,
+                          Init_Wrapper => Init_Wrapper);
+
+                     --  Add the bindings for the discriminants
+
+                     for I in 1 .. Num_Discrs loop
+                        T := New_Binding
+                          (Domain  => Domain,
+                           Name    => Discr_Ids (I),
+                           Def     => Discr_Vals (I),
+                           Context => T,
+                           Typ     => Get_Type (T));
+                     end loop;
+                  end;
                end if;
-            end;
+            else
+               pragma Assert
+                 (Is_Array_Type (Expr_Type) or else
+                  Is_String_Type (Expr_Type));
+
+               T := Transform_Aggregate
+                 (Params       => Local_Params,
+                  Domain       => Domain,
+                  Expr         => Expr,
+                  Relaxed_Init => Expr_Has_Relaxed_Init (Expr));
+            end if;
 
          when N_Extension_Aggregate =>
             declare
                Init_Wrapper : constant Boolean :=
                  Expr_Has_Relaxed_Init (Expr);
-               Expr_Type : constant Entity_Id := Type_Of_Node (Expr);
 
                Dummy_Ids  : W_Identifier_Array (1 .. 0);
                Dummy_Vals : W_Expr_Array (1 .. 0);
@@ -17461,45 +17455,41 @@ package body Gnat2Why.Expr is
 
          when N_Real_Literal =>
 
-            declare
-               Rty : constant Entity_Id := Retysp (Etype (Expr));
-            begin
+            --  Literals of fixed-point type are directly translated into the
+            --  integer that represents them in the corresponding fixed-point
+            --  type.
 
-               --  Literals of fixed-point type are directly translated into
-               --  the integer that represents them in the corresponding
-               --  fixed-point type.
+            if Is_Fixed_Point_Type (Expr_Type) then
+               T := New_Fixed_Constant
+                 (Ada_Node => Expr,
+                  Value    => Corresponding_Integer_Value (Expr),
+                  Typ      => Base_Why_Type (Expr_Type));
 
-               if Is_Fixed_Point_Type (Rty) then
-                  T := New_Fixed_Constant
-                    (Ada_Node => Expr,
-                     Value    => Corresponding_Integer_Value (Expr),
-                     Typ      => Base_Why_Type (Rty));
+               --  It can happen that the literal is a universal real which is
+               --  converted into a fixed point type, we then simply return a
+               --  real constant.
 
-                  --  It can happen that the literal is a universal real which
-                  --  is converted into a fixed point type, we then simply
-                  --  return a real constant.
+            elsif Is_Universal_Numeric_Type (Expr_Type) then
+               T := New_Real_Constant (Ada_Node => Expr,
+                                       Value    => Realval (Expr));
 
-               elsif Is_Universal_Numeric_Type (Rty) then
-                  T := New_Real_Constant (Ada_Node => Expr,
-                                          Value    => Realval (Expr));
-
-               else
-                  T := New_Float_Constant
-                    (Ada_Node => Expr,
-                     Value    => Realval (Expr),
-                     Typ      =>
-                       (if Has_Single_Precision_Floating_Point_Type (Rty)
-                        then
-                           EW_Float_32_Type
-                        elsif Has_Double_Precision_Floating_Point_Type (Rty)
-                        then
-                           EW_Float_64_Type
-                        elsif Has_Extended_Precision_Floating_Point_Type (Rty)
-                        then
-                           EW_Float_80_Type
-                        else raise Program_Error));
-               end if;
-            end;
+            else
+               T := New_Float_Constant
+                 (Ada_Node => Expr,
+                  Value    => Realval (Expr),
+                  Typ      =>
+                    (if Has_Single_Precision_Floating_Point_Type (Expr_Type)
+                     then
+                        EW_Float_32_Type
+                     elsif Has_Double_Precision_Floating_Point_Type (Expr_Type)
+                     then
+                        EW_Float_64_Type
+                     elsif
+                       Has_Extended_Precision_Floating_Point_Type (Expr_Type)
+                     then
+                        EW_Float_80_Type
+                     else raise Program_Error));
+            end if;
 
          when N_Character_Literal =>
             T := New_Integer_Constant (Ada_Node => Expr,
@@ -18613,11 +18603,12 @@ package body Gnat2Why.Expr is
             declare
                Call     : W_Expr_Id;
                New_Expr : constant Node_Id := Expression (Expr);
-               Exp_Ty   : constant Node_Id := Retysp (Etype (Expr));
-               To_Const : constant Boolean := Is_Access_Constant (Exp_Ty);
-               To_Gen   : constant Boolean := Is_General_Access_Type (Exp_Ty);
+               To_Const : constant Boolean :=
+                 Is_Access_Constant (Expr_Type);
+               To_Gen   : constant Boolean :=
+                 Is_General_Access_Type (Expr_Type);
                Des_Ty   : constant Entity_Id :=
-                 Directly_Designated_Type (Exp_Ty);
+                 Directly_Designated_Type (Expr_Type);
 
             begin
                --  Insert static resource leak if needed
@@ -18795,10 +18786,10 @@ package body Gnat2Why.Expr is
                --  predicate, generate a corresponding check.
 
                if Domain = EW_Prog
-                 and then Has_Predicates (Exp_Ty)
+                 and then Has_Predicates (Expr_Type)
                then
                   Call := +Insert_Predicate_Check (Ada_Node => Expr,
-                                                   Check_Ty => Exp_Ty,
+                                                   Check_Ty => Expr_Type,
                                                    W_Expr   => +Call);
                end if;
 
