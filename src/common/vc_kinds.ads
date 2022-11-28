@@ -749,7 +749,10 @@ package VC_Kinds is
       Progress_Flow,
       Progress_Proof);
    pragma Ordered (Analysis_Progress);
-   --  Indicates the last phase that was completed during analysis
+   --  Indicates the last phase that was completed during analysis. Note
+   --  that borrow checking appears before flow analysis, even though borrow
+   --  checking is done afterwards. This is to reflect the user view, where
+   --  borrow checking is essentially an extension of marking.
 
    type Stop_Reason_Type is
      (Stop_Reason_None,

@@ -781,8 +781,14 @@ package body Gnat2Why.Driver is
             Errors : Boolean;
          begin
             Do_Ownership_Checking (Errors);
-            Progress := Progress_Borrow;
+
+            --  In case of an error in borrow checking, we downgrade the
+            --  progress to borrow. From a user point of view, borrow-checking
+            --  is more fundamental than flow analysis, even though the tool
+            --  does flow analysis first.
+
             if Errors then
+               Progress := Progress_Borrow;
                Stop_Reason := Stop_Reason_Error_Borrow;
                goto Leave_With_JSON;
             end if;
