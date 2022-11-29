@@ -238,7 +238,7 @@ the loop. The value is associated to a direction, which can be either
 
 Numeric variants can take a discrete value or, in the
 case of the direction ``Decreases``, a big natural (see
-``Ada.Numerics.Big_Integers``). At each iteration, a check is generated
+``SPARK.Big_Integers``). At each iteration, a check is generated
 to ensure that the value progresses (decreases or increases) with respect to its
 value at the beginning of the loop. Because a discrete value is always bounded
 by its type in Ada, and a big natural is never negative, it cannot decrease (or

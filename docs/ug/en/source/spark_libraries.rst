@@ -8,11 +8,9 @@ SPARK Library
 
 As part of the |SPARK| product, several libraries are available through the
 project file :file:`<spark-install>/lib/gnat/sparklib.gpr` (or through the
-extended project file :file:`<spark-install>/lib/gnat/sparklib_zfp.gpr` in
+project file :file:`<spark-install>/lib/gnat/sparklib_light.gpr` in
 an environment without units ``Ada.Numerics.Big_Numbers.Big_Integers`` and
-``Ada.Numerics.Big_Numbers.Big_Reals``, but note that unit
-``Ada.Numerics.Big_Numbers.Big_Integers_Ghost`` could be used as an alternative
-to the former in that context). Header files of the SPARK library are available
+``Ada.Numerics.Big_Numbers.Big_Reals``). Header files of the SPARK library are available
 through :menuselection:`Help --> SPARK --> SPARKlib` menu item in GNAT Studio. To
 use this library in a program, you need to add a corresponding dependency in
 your project file, for example:
@@ -71,33 +69,38 @@ of type ``Integer``.
 To alleviate this issue, it is possible to use the standard library for big
 numbers. It contains support for:
 
-* Unbounded integers in ``Ada.Numerics.Big_Numbers.Big_Integers``.
+* Unbounded integers in ``SPARK.Big_Integers``.
 
-* Unbounded rational numbers in ``Ada.Numerics.Big_Numbers.Big_Reals``.
+* Unbounded rational numbers in ``SPARK.Big_Reals``.
 
 Theses libraries define representations for big numbers and basic arithmetic
 operations over them, as well as conversions from bounded scalar types such as
 floating point numbers or integer types. Conversion from an integer to a big
 integer is provided by:
 
-* function ``To_Big_Integer`` in ``Ada.Numerics.Big_Numbers.Big_Integers`` for
+* function ``To_Big_Integer`` in ``SPARK.Big_Integers`` for
   type ``Integer``
 
 * function ``To_Big_Integer`` in generic package ``Signed_Conversions`` in
-  ``Ada.Numerics.Big_Numbers.Big_Integers`` for all other signed integer types
+  ``SPARK.Big_Integers`` for all other signed integer types
 
 * function ``To_Big_Integer`` in generic package ``Unsigned_Conversions`` in
-  ``Ada.Numerics.Big_Numbers.Big_Integers`` for modular integer types
+  ``SPARK.Big_Integers`` for modular integer types
 
 Similarly, the same packages define a function ``From_Big_Integer`` to convert
 from a big integer to an integer. A function ``To_Real`` in
-``Ada.Numerics.Big_Numbers.Big_Reals`` converts from type ``Integer`` to a big
+``SPARK.Big_Reals`` converts from type ``Integer`` to a big
 real and function ``To_Big_Real`` in the same package converts from a big
 integer to a big real.
 
 Though these operations do not have postconditions, they are interpreted by
 |GNATprove| as the equivalent operations on mathematical integers and real
-numbers. This allows to benefit from precise support on code using them.
+numbers. This allows to benefit from precise support on code using them. Note
+that the corresponding Ada libraries ``Ada.Numerics.Big_Numbers.Big_Integers``
+and ``Ada.Numerics.Big_Numbers.Big_Reals`` will be handled in the same way, but
+might be not available under specific runtimes. It is preferable to use the
+units from the SPARK library instead, or use
+``Ada.Numerics.Big_Numbers.Big_Integer_Ghost``.
 
 .. note::
 
