@@ -678,6 +678,9 @@ only part of a program:
   the Global contract and by-reference parameters of any other such subprogram
   executing concurrently in another such task or (b) the Global contract of any
   concurrent task identified as a task in SPARK.
+  Two global objects and/or by-reference parameters referring to the same
+  object are said to conflict if both (1) they are not both synchronized
+  and (2) at least one can be modified by the callee.
 
 * [ADA_EXTERNAL]
   Objects accessed outside of SPARK, either directly for statically allocated
