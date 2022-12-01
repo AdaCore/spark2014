@@ -11,9 +11,9 @@ test.adb:169:07: info: data dependencies proved
 test.adb:179:14: info: add a contract to analyze it separately from calling contexts
 test.adb:179:14: info: local subprogram "os_mbx_clear_mbx_entry" only analyzed in the context of calls
 test.adb:194:04: warning: analyzing unreferenced procedure "os_mbx_set_mbx_entry"
-test.adb:221:44: info: precondition proved (CVC5: 1 VC)
+test.adb:221:44: info: precondition proved (CVC5: 2 VC)
 test.adb:224:07: info: data dependencies proved
-test.adb:228:14: info: precondition proved (Z3: 1 VC)
+test.adb:228:14: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test.adb:286:07: info: data dependencies proved
 test.adb:288:15: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:288:131: info: range check proved (CVC5: 2 VC)
@@ -23,7 +23,7 @@ test.adb:297:07: info: analyzing call to "os_mbx_inc_mbx_head" in context
 test.adb:300:07: info: precondition proved (CVC5: 1 VC)
 test.adb:328:36: info: loop invariant initialization proved (CVC5: 2 VC)
 test.adb:328:36: info: loop invariant preservation proved (CVC5: 2 VC)
-test.adb:335:16: info: precondition proved (CVC5: 3 VC; Z3: 1 VC)
+test.adb:335:16: info: precondition proved (CVC5: 4 VC; Z3: 1 VC)
 test.adb:335:54: info: range check proved (CVC5: 2 VC)
 test.adb:338:60: info: range check proved (CVC5: 2 VC)
 test.adb:340:16: info: precondition proved (CVC5: 2 VC)

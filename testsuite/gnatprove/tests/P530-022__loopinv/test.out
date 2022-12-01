@@ -84,7 +84,7 @@ x86.adb:735:32: info: loop invariant initialization proved (CVC5: 1 VC)
 x86.adb:735:32: info: loop invariant preservation proved (CVC5: 1 VC)
 x86.adb:738:32: info: loop invariant initialization proved (CVC5: 1 VC)
 x86.adb:739:34: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove ReadMem64(RDI'Loop_Entry+(i*8)) = RAX [possible fix: precondition of subprogram at x86.ads:717 should mention RAX]
-x86.adb:747:25: medium: assertion might fail, cannot prove All_Equal_RAX (RDI_Start, RCX_Start-1)
+x86.adb:746:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
 x86.adb:755:07: info: initialization of "Val1" proved
 x86.adb:755:13: info: initialization of "Val2" proved
 x86.adb:759:31: info: loop variant proved (Z3: 1 VC)
@@ -268,7 +268,7 @@ x86.ads:633:06: info: postcondition proved (CVC5: 5 VC; Trivial: 1 VC)
 x86.ads:662:06: info: data dependencies proved
 x86.ads:665:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:670:06: info: data dependencies proved
-x86.ads:671:14: info: postcondition proved (Z3: 2 VC)
+x86.ads:671:14: info: postcondition proved (Trivial: 1 VC; Z3: 2 VC)
 x86.ads:679:14: info: postcondition proved (CVC5: 2 VC)
 x86.ads:683:14: info: postcondition proved (CVC5: 2 VC)
 x86.ads:690:14: info: postcondition proved (CVC5: 3 VC)
