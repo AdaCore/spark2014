@@ -738,9 +738,10 @@ different bounds, +0.0 and -0.0 are considered equal...
 
 It is possible to use a ``pragma Annotate (GNATprove, Logical_Equal)`` to ask
 |GNATprove| to interpret a function with an equality profile as the logical
-equality for the type. The function shall not have a body visisble in
-|SPARK|: it can be left as non-executable (using ``Import``) or given an
-(approximated) definition which can be used when executing contracts.
+equality for the type. If the function body is visible in
+|SPARK|, a check will be emitted to ensure that it indeed checks for logical
+equality as understood by the proof engine (which depends on the underlying
+model used by the tool, see below).
 It comes in handy for example to express that a (part of a) data-structure
 is left unchanged by a procedure, as is done in the example below:
 

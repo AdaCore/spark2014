@@ -23009,50 +23009,42 @@ package body Gnat2Why.Expr is
             Len          : constant Nat := String_Length (Str_Value);
             Low_Bound    : constant Int :=
               UI_To_Int (Expr_Value (String_Literal_Low_Bound (Ty)));
-            Value_String : String (1 .. Natural (Len));
             B_Ty         : constant W_Type_Id :=
               Nth_Index_Rep_Type_No_Bool (Ty, 1);
-            Def          : W_Pred_Id := True_Pred;
+            Expr_Ar      : W_Pred_Array (1 .. Natural (Len));
+            Def          : W_Pred_Id;
 
          begin
-            --  Fetch the value of the string literal
-
-            String_To_Name_Buffer (Str_Value);
-            Value_String := Name_Buffer (1 .. Natural (Len));
-
             --  For each index in the string, add an assumption specifying the
             --  value stored in Id at this index.
 
-            if Len > 0 then
+            for I in 1 .. Len loop
                declare
-                  Expr_Ar : W_Pred_Array (1 .. Positive (Len));
+                  Arr_Val : constant W_Term_Id :=
+                    New_Array_Access
+                      (Ar    => Call,
+                       Index =>
+                         (1 => New_Discrete_Constant
+                            (Value => UI_From_Int (I - 1 + Low_Bound),
+                             Typ   => B_Ty)));
+                  Char   : constant W_Term_Id :=
+                    New_Integer_Constant
+                      (Value => UI_From_CC (Get_String_Char (Str_Value, I)));
                begin
-                  for I in 1 .. Len loop
-                     declare
-                        Arr_Val : constant W_Term_Id :=
-                          New_Array_Access
-                            (Ar    => Call,
-                             Index =>
-                               (1 => New_Discrete_Constant
-                                  (Value => UI_From_Int (I - 1 + Low_Bound),
-                                   Typ   => B_Ty)));
-                        Char   : constant W_Term_Id :=
-                          New_Integer_Constant
-                            (Value => UI_From_CC
-                               (Get_Char_Code (Value_String (Positive (I)))));
-                     begin
-                        Expr_Ar (Positive (I)) :=
-                          New_Comparison
-                            (Symbol => Why_Eq,
-                             Left   => Insert_Simple_Conversion
-                               (Expr => Arr_Val,
-                                To   => EW_Int_Type),
-                             Right  => Char);
-                     end;
-                  end loop;
-
-                  Def := New_And_Pred (Expr_Ar);
+                  Expr_Ar (Positive (I)) :=
+                    New_Comparison
+                      (Symbol => Why_Eq,
+                       Left   => Insert_Simple_Conversion
+                         (Expr => Arr_Val,
+                          To   => EW_Int_Type),
+                       Right  => Char);
                end;
+            end loop;
+
+            if Len > 0 then
+               Def := New_And_Pred (Expr_Ar);
+            else
+               Def := True_Pred;
             end if;
 
             --  Emit an axiom containing all the assumptions

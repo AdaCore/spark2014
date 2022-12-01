@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Fixed;             use Ada.Strings.Fixed;
 with Common_Iterators;               use Common_Iterators;
 with Debug;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
@@ -37,7 +38,6 @@ with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
 with SPARK_Util.Types;               use SPARK_Util.Types;
 with Stand;                          use Stand;
-with String_Utils;                   use String_Utils;
 
 package body SPARK_Util.Subprograms is
 
@@ -1289,6 +1289,20 @@ package body SPARK_Util.Subprograms is
 
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean is
       Limit_Str : constant String := To_String (Gnat2Why_Args.Limit_Subp);
+
+      function Contains_Sloc (A, B : String) return Boolean;
+      --  Check whether A contains B, and B is either located at the end of A,
+      --  or is followed by ':'
+
+      function Contains_Sloc (A, B : String) return Boolean is
+         Ind : constant Natural := Index (A, B, A'First);
+      begin
+         return Ind in A'Range and then
+           (A'Last < Ind + B'Length
+            or else
+            A (Ind + B'Length) = ':');
+      end Contains_Sloc;
+
    begin
       if Limit_Str /= ""
         and then Ekind (E) in Subprogram_Kind
@@ -1297,9 +1311,9 @@ package body SPARK_Util.Subprograms is
                             | Entry_Kind
       then
          return
-           (Contains (SPARK_Util.Subprograms.Subp_Location (E), Limit_Str)
+           (Contains_Sloc (SPARK_Util.Subprograms.Subp_Location (E), Limit_Str)
             or else
-            Contains (
+            Contains_Sloc (
               SPARK_Util.Subprograms.Subp_Body_Location (E),
               Limit_Str));
       else
