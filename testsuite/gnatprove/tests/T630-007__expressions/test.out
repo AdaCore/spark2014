@@ -46,6 +46,7 @@ test_new.adb:7:31: medium: resource or memory leak might occur [possible explana
 test_or_mod.adb:7:19: info: assertion proved (CVC5: 1 VC)
 test_or_mod.adb:8:19: info: assertion proved (CVC5: 1 VC)
 test_string.adb:4:19: medium: assertion might fail
+test_string.adb:4:26: info: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove.
 test_string.adb:4:26: medium: precondition might fail
 test_tagged_records.adb:12:07: info: no contextual analysis of "Rand" (body not seen yet)
 test_tagged_records.adb:12:07: warning: assuming "Rand" always returns

@@ -14665,6 +14665,7 @@ package body Gnat2Why.Expr is
                                  Params);
                Func    : constant W_Identifier_Id :=
                  +New_Attribute_Expr (Etype (Var), Domain, Attr_Id);
+
             begin
                T :=
                  New_Call
@@ -14680,6 +14681,17 @@ package body Gnat2Why.Expr is
                   Check    => Domain = EW_Prog,
                   Reason   => VC_Precondition,
                   Typ      => Base_Why_Type (Var));
+
+               --  If --info is given, notify the user that 'Value is handled
+               --  in an imprecise way.
+
+               if Debug.Debug_Flag_Underscore_F then
+                  Error_Msg_N
+                    ("info: ?" & "references to the ""Value"" attribute are"
+                        & " handled in an imprecise way, so the precondition"
+                        & " might be impossible to prove.",
+                     Expr);
+               end if;
             end;
 
          when Attribute_Update =>
