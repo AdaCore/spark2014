@@ -20,7 +20,7 @@
   <proof prover="0" timelimit="1"><result status="timeout"/></proof>
   <proof prover="1" timelimit="1"><result status="timeout"/></proof>
   <proof prover="2" timelimit="1"><result status="timeout"/></proof>
-  <proof prover="4" timelimit="1"><result status="timeout" steps="286"/></proof>
+  <proof prover="4" timelimit="1"><result status="unknown" steps="286"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>

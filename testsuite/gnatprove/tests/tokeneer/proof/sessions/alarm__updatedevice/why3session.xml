@@ -35,7 +35,7 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="678"/></proof>
   <proof prover="2"><result status="unknown" steps="1757"/></proof>
-  <proof prover="4"><result status="unknown" steps="79"/></proof>
+  <proof prover="4"><result status="unknown" steps="77"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -50,7 +50,7 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="624"/></proof>
   <proof prover="2"><result status="unknown" steps="2179"/></proof>
-  <proof prover="4"><result status="unknown" steps="150"/></proof>
+  <proof prover="4"><result status="unknown" steps="131"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -77,7 +77,7 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="309"/></proof>
   <proof prover="2"><result status="unknown" steps="770"/></proof>
-  <proof prover="4"><result status="unknown" steps="75"/></proof>
+  <proof prover="4"><result status="unknown" steps="72"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -91,8 +91,8 @@
   <goal name="def&#39;vc.20" proved="true">
   <proof prover="0" timelimit="20"><result status="valid" steps="6"/></proof>
   <proof prover="1" timelimit="20"><result status="valid" steps="330"/></proof>
-  <proof prover="2" timelimit="20"><result status="valid" steps="861"/></proof>
-  <proof prover="4" timelimit="20"><result status="highfailure"/></proof>
+  <proof prover="2" timelimit="20"><result status="highfailure"/></proof>
+  <proof prover="4" timelimit="20"><result status="unknown" steps="71"/></proof>
   </goal>
   <goal name="def&#39;vc.21" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>

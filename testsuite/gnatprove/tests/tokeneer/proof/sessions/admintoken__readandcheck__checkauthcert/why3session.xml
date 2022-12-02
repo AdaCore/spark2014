@@ -77,7 +77,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
-  <proof prover="0" timelimit="20"><result status="highfailure"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="282"/></proof>
   <proof prover="1" timelimit="20"><result status="valid" steps="6738"/></proof>
   <proof prover="2" timelimit="20"><result status="valid" steps="4393"/></proof>
   <proof prover="4" timelimit="20"><result status="highfailure"/></proof>
