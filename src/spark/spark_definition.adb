@@ -4068,7 +4068,8 @@ package body SPARK_Definition is
                             & "a (possibly) nonreturning procedure", N);
                if Ekind (Caller) = E_Procedure then
                   Error_Msg_NE
-                    ("\consider annotating caller & with Might_Not_Return",
+                    ("\consider annotating caller & with pragma Annotate "
+                     & "('G'N'A'Tprove, Might_Not_Return)",
                      N, Caller);
                end if;
             end if;
