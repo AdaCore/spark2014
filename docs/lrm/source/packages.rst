@@ -2047,7 +2047,7 @@ language definition and what is not.]
 
    Static Semantics
 
-1. For a given type-invariant bearing type T, a *boundary* subprogram is a
+1. For a given type-invariant bearing type T, a *boundary subprogram* is a
    subprogram which is declared inside the immediate scope of type T, and
    visible outside the immediate scope of T.
 
