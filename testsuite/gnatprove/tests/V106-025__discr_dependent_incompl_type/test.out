@@ -6,7 +6,7 @@ main.adb:20:10: info: discriminant check proved (CVC5: 1 VC)
 main.adb:40:04: medium: resource or memory leak might occur at end of scope
 main.adb:40:12: info: range check proved (CVC5: 2 VC)
 main.adb:41:06: info: discriminant check proved (CVC5: 1 VC)
-main.adb:42:10: info: discriminant check proved (CVC5: 1 VC)
+main.adb:42:10: info: discriminant check proved (Z3: 1 VC)
 main.adb:43:23: info: range check proved (Z3: 1 VC)
 main.adb:43:31: info: range check proved (CVC5: 2 VC)
 main.adb:43:34: info: range check proved (CVC5: 2 VC)
