@@ -2087,7 +2087,8 @@ we are only talking about generating additional verification conditions;
 we are not talking about any changes in a program's behavior at run-time.]
 
 5. The type invariant expression for a type T shall not include a call
-   to a boundary function for type T. [This often means that a type
+   to a boundary function for type T, if that boundary function has an
+   input with a part of type T. [This often means that a type
    invariant expression cannot contain calls to functions declared in
    the visible part of the package in question.]
 
