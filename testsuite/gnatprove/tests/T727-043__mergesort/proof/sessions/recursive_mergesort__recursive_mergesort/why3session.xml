@@ -212,7 +212,7 @@
   <proof prover="0"><result status="valid" steps="1430"/></proof>
   <proof prover="1"><result status="valid" steps="26212"/></proof>
   <proof prover="2"><result status="valid" steps="63237"/></proof>
-  <proof prover="4"><result status="timeout" steps="2857"/></proof>
+  <proof prover="4"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.35" proved="true">
   <proof prover="0"><result status="valid" steps="175"/></proof>
@@ -260,7 +260,7 @@
   <proof prover="0"><result status="valid" steps="102"/></proof>
   <proof prover="1"><result status="valid" steps="12733"/></proof>
   <proof prover="2"><result status="valid" steps="51783"/></proof>
-  <proof prover="4"><result status="valid" steps="2141"/></proof>
+  <proof prover="4"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.43" proved="true">
   <proof prover="0"><result status="valid" steps="102"/></proof>
@@ -308,13 +308,13 @@
   <proof prover="0"><result status="valid" steps="585"/></proof>
   <proof prover="1"><result status="valid" steps="27671"/></proof>
   <proof prover="2"><result status="valid" steps="65049"/></proof>
-  <proof prover="4"><result status="timeout" steps="2937"/></proof>
+  <proof prover="4"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.51" proved="true">
   <proof prover="0"><result status="valid" steps="583"/></proof>
   <proof prover="1"><result status="valid" steps="27691"/></proof>
   <proof prover="2"><result status="valid" steps="65831"/></proof>
-  <proof prover="4"><result status="timeout" steps="2924"/></proof>
+  <proof prover="4"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.52" proved="true">
   <proof prover="0"><result status="valid" steps="588"/></proof>
@@ -749,7 +749,7 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="44153"/></proof>
   <proof prover="2"><result status="valid" steps="107121"/></proof>
-  <proof prover="4"><result status="timeout"/></proof>
+  <proof prover="4"><result status="timeout" steps="3610"/></proof>
   </goal>
  </transf>
  </goal>
