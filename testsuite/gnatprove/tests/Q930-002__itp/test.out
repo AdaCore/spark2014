@@ -94,7 +94,6 @@ bounded_dynamic_arrays.adb:193:39: info: length check proved (CVC5: 3 VC; Trivia
 bounded_dynamic_arrays.adb:195:14: info: predicate check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:205:11: info: predicate check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:205:21: info: index check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.adb:230:18: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:231:57: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:232:22: info: range check proved (CVC5: 8 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:232:50: info: range check proved (CVC5: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
@@ -177,7 +176,6 @@ bounded_dynamic_arrays.ads:212:48: info: length check proved (CVC5: 3 VC; Trivia
 bounded_dynamic_arrays.ads:228:11: info: range check proved (CVC5: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:235:21: info: index check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:257:25: info: index check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:264:15: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:267:60: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:268:18: info: range check proved (CVC5: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:268:46: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
