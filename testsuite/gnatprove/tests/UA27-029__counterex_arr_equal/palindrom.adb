@@ -9,7 +9,7 @@ is
     Stop : constant Integer := I + (Length - 1) / 2;
 begin
     while I <= Stop and Str(I) = Str(J) loop
-       I := I + 1;
+       I := I + 1; -- @COUNTEREXAMPLE
        J := J - 1;
        pragma Loop_Invariant (I in I'Loop_Entry .. Stop);
        pragma Loop_Invariant (J in Stop .. J'Loop_Entry);
