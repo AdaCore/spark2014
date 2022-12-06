@@ -1,0 +1,10 @@
+pack.ads:9:19: medium: assertion might fail [possible fix: add or complete related loop invariants or postconditions]
+pack.ads:9:20: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "T"
+pack.ads:10:19: medium: assertion might fail [possible fix: add or complete related loop invariants or postconditions]
+pack.ads:10:20: info: the value of "Object_Size" attribute is handled in an imprecise way as it is not specified for type "T"
+pack.ads:11:19: info: assertion proved (CVC5: 1 VC)
+pack.ads:11:20: info: the value of "Value_Size" attribute is handled in an imprecise way as it is not specified for type "T"
+pack.ads:12:19: high: "X.X" is not initialized
+pack.ads:12:19: high: "X.Y" is not initialized
+pack.ads:12:19: info: assertion proved (CVC5: 1 VC)
+pack.ads:12:20: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for object "X" and "Object_Size" is not specified for type "T"

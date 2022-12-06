@@ -3041,7 +3041,8 @@ package body Flow_Utility is
                                           | Attribute_Succ
                                           | Attribute_Truncation
                                           | Attribute_Val
-                                          | Attribute_Value);
+                                          | Attribute_Value
+                                          | Attribute_Value_Size);
          else
             Variables.Union (Recurse (Prefix (N)));
          end if;

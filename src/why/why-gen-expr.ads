@@ -644,6 +644,7 @@ package Why.Gen.Expr is
                                                  | Attribute_Modulus
                                                  | Attribute_Image
                                                  | Attribute_Value
+                                                 | Attribute_Value_Size
                                                  | Attribute_Size
                                                  | Attribute_Component_Size
                                                  | Attribute_Tag;

@@ -9,8 +9,10 @@ pedantic.adb:31:18: medium: range check might fail, cannot prove upper bound for
 pedantic.adb:31:18: warning: attribute "Last_Bit" has an implementation-defined value
 pedantic.adb:37:18: medium: range check might fail, cannot prove upper bound for V.F1'Position [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at pedantic.ads:27 should mention V in a precondition]
 pedantic.adb:37:18: warning: attribute "Position" has an implementation-defined value
+pedantic.adb:43:15: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "A"
 pedantic.adb:43:15: medium: range check might fail, cannot prove upper bound for A'Size [reason for check: returned value must fit in the result type of the function]
 pedantic.adb:43:15: warning: attribute "Size" has an implementation-defined value
+pedantic.adb:49:15: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for object "V" and "Object_Size" is not specified for type "R"
 pedantic.adb:49:15: medium: range check might fail, cannot prove upper bound for V'Size [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at pedantic.ads:31 should mention V in a precondition]
 pedantic.adb:49:15: warning: attribute "Size" has an implementation-defined value
 pedantic.ads:12:29: medium: range check might fail, cannot prove upper bound for R'Alignment [reason for check: default component value must fit in the type]

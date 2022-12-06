@@ -3,3 +3,5 @@ uc.adb:5:51: info: type is suitable as source for unchecked conversion (Trivial)
 uc.adb:5:54: info: type is suitable for unchecked conversion (Trivial)
 uc.adb:8:19: high: "X" is not initialized
 uc.adb:8:19: medium: assertion might fail
+uc.adb:8:20: info: the value of "SIZE" attribute is handled in an imprecise way as it is not specified for object "X" and "Object_Size" is not specified for type "T"
+uc.adb:8:35: info: the value of "SIZE" attribute is handled in an imprecise way as "Object_Size" is not specified for type "Target"

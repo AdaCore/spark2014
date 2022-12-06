@@ -1,3 +1,4 @@
+p.adb:6:30: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for object "PO" and "Object_Size" is not specified for type derived from "PO"
 p.adb:6:30: medium: in default value at p.adb:8
 p.adb:6:30: medium: range check might fail, cannot prove upper bound for PO'Size [reason for check: default component value must fit in the type]
 p.adb:8:10: info: initialization of "X" proved

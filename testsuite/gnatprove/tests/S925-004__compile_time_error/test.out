@@ -1,1 +1,5 @@
 repro.ads:9:19: info: assertion proved (CVC5: 1 VC), in instantiation at repro_main.adb:6
+repro_main.adb:6:04: info: in instantiation at repro.ads:7
+repro_main.adb:6:04: info: in instantiation at repro.ads:9
+repro_main.adb:6:04: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "Item_Array"
+repro_main.adb:6:04: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "Item_Array"

@@ -14605,13 +14605,73 @@ package body Gnat2Why.Expr is
                --  domain, generate checks for an object prefix with
                --  attribute Size.
 
-               Has_Type_Prefix : constant Boolean :=
+               Has_Type_Prefix             : constant Boolean :=
                  Nkind (Var) in N_Identifier | N_Expanded_Name
                    and then Is_Type (Entity (Var));
+               Var_Type                    : constant Entity_Id :=
+                 (if Has_Type_Prefix then Entity (Var) else Etype (Var));
+               Has_Complete_Object_Prefix  : constant Boolean :=
+                 Nkind (Var) in N_Identifier | N_Expanded_Name
+                   and then Ekind (Entity (Var)) in E_Variable | E_Constant;
+               Type_Could_Have_Object_Size : constant Boolean :=
+                 not Is_Standard_Type (Var_Type);
 
             --  Start of processing for Size_Attributes
 
             begin
+               --  If --info is given, notify the user that the attribute is
+               --  handled in an imprecise way.
+
+               if Debug.Debug_Flag_Underscore_F then
+
+                  --  The attribute can always be specified on the type
+
+                  if Has_Type_Prefix then
+                     Error_Msg_Name_1 := Aname;
+                     Error_Msg_NE
+                       ("info: ?" & "the value of % attribute is handled in an"
+                        & " imprecise way as it is not specified for type &",
+                        Expr, Entity (Var));
+
+                  --  If the object is not a complete object, only Object_Size
+                  --  could be set on its type, if not a standard one.
+
+                  elsif not Has_Complete_Object_Prefix
+                    and then Type_Could_Have_Object_Size
+                  then
+                     Error_Msg_Name_1 := Aname;
+                     Error_Msg_NE
+                       ("info: ?" & "the value of % attribute is handled in an"
+                        & " imprecise way as ""Object_Size"" is not specified"
+                        & " for type &",
+                        Expr, Var_Type);
+
+                  --  If this is a complete object, the attribute could be set
+                  --  on the object, or possibly Object_Size could be set on
+                  --  its type, if not a standard one.
+
+                  elsif Has_Complete_Object_Prefix then
+                     Error_Msg_Name_1 := Aname;
+                     Error_Msg_Node_2 := Var_Type;
+                     Error_Msg_NE
+                       ("info: ?" & "the value of % attribute is handled in an"
+                        & " imprecise way as it is not specified for object &"
+                        & (if Type_Could_Have_Object_Size then
+                             " and ""Object_Size"" is not specified for type &"
+                           else ""),
+                        Expr, Entity (Var));
+
+                  --  In the default case, just report the imprecision
+
+                  else
+                     Error_Msg_Name_1 := Aname;
+                     Error_Msg_NE
+                       ("info: ?" & "the value of % attribute is handled in an"
+                        & " imprecise way",
+                        Expr, Entity (Var));
+                  end if;
+               end if;
+
                if Has_Type_Prefix then
                   case Size_Attributes'(Attr_Id) is
                      when Attribute_Size

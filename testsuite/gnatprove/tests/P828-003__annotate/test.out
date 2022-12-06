@@ -1,4 +1,5 @@
 t.ads:11:04: medium: range check might fail
+t.ads:11:52: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "Stupid_Record"
 t.ads:11:52: medium: range check might fail, cannot prove upper bound for Stupid_Record'Size
 t.ads:11:58: info: division check proved (CVC5: 1 VC)
 t.ads:12:12: warning: no check message justified by this pragma
