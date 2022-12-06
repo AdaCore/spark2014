@@ -1286,7 +1286,7 @@ package body SPARK_Util is
               or else Aggr_Has_Relaxed_Init (Expr);
 
          when N_Slice =>
-            return Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval => False);
+            return Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval);
 
          when N_Op_Concat =>
             return Expr_Has_Relaxed_Init (Left_Opnd (Expr), No_Eval => False)
@@ -1322,8 +1322,10 @@ package body SPARK_Util is
                return False;
             end;
 
-         when N_Qualified_Expression
-            | N_Unchecked_Type_Conversion
+         when N_Qualified_Expression =>
+            return Expr_Has_Relaxed_Init (Expression (Expr), No_Eval => False);
+
+         when N_Unchecked_Type_Conversion
             | N_Type_Conversion
          =>
             return Expr_Has_Relaxed_Init (Expression (Expr), No_Eval);
@@ -1341,7 +1343,7 @@ package body SPARK_Util is
             | N_Explicit_Dereference
          =>
             return Has_Relaxed_Init (Etype (Expr))
-              or else Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval => False);
+              or else Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval);
 
          when N_Attribute_Reference =>
             case Get_Attribute_Id (Attribute_Name (Expr)) is
@@ -3777,7 +3779,7 @@ package body SPARK_Util is
                declare
                   Arr_Expr : constant Node_Id := Name (I_Spec);
                begin
-                  return Expr_Has_Relaxed_Init (Arr_Expr)
+                  return Expr_Has_Relaxed_Init (Arr_Expr, No_Eval => False)
                     or else Has_Relaxed_Init
                       (Component_Type (Etype (Arr_Expr)));
                end;

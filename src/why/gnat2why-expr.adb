@@ -7135,7 +7135,7 @@ package body Gnat2Why.Expr is
       --  second case.
 
       if (Over_Array
-          and then (Expr_Has_Relaxed_Init (Over_Expr)
+          and then (Expr_Has_Relaxed_Init (Over_Expr, No_Eval => False)
                     or else Has_Relaxed_Init (Quant_Type))
           and then not Has_Scalar_Type (Quant_Type))
         or else (Over_Content
@@ -13610,8 +13610,7 @@ package body Gnat2Why.Expr is
       Lvalue     : constant Node_Id := SPARK_Atree.Name (Stmt);
       Typ        : constant Entity_Id := Retysp (Etype (Lvalue));
       L_Type     : constant W_Type_Id :=
-        (if Expr_Has_Relaxed_Init (Lvalue)
-         and then not Is_Scalar_Type (Typ)
+        (if Expr_Has_Relaxed_Init (Lvalue, No_Eval => False)
          then EW_Init_Wrapper (Type_Of_Node (Typ))
          else Type_Of_Node (Typ));
       --  We go to the wrapper type if lvalue has relaxed initialization
@@ -15711,7 +15710,7 @@ package body Gnat2Why.Expr is
       return W_Expr_Id
    is
       Init_Wrapper        : constant Boolean :=
-        Expr_Has_Relaxed_Init (Ada_Node);
+        Expr_Has_Relaxed_Init (Ada_Node, No_Eval => False);
       Left_Expr           : W_Expr_Id := Left;
       Right_Expr          : W_Expr_Id := Right;
       Args_Len            : constant Positive :=
@@ -16890,7 +16889,8 @@ package body Gnat2Why.Expr is
             Expr          => Pref,
             Params        => Params,
             Expected_Type => EW_Abstract
-              (Pref_Typ, Relaxed_Init => Expr_Has_Relaxed_Init (Ada_Node)));
+              (Pref_Typ, Relaxed_Init =>
+                   Expr_Has_Relaxed_Init (Ada_Node, No_Eval => False)));
 
          --  Introduce a temporary for the prefix to avoid recomputing it
          --  several times if Pref_Typ has discriminants.
@@ -17024,7 +17024,8 @@ package body Gnat2Why.Expr is
             Domain        => Domain,
             Expr          => Aggr,
             Update_Prefix => Pref,
-            Relaxed_Init  => Expr_Has_Relaxed_Init (Ada_Node));
+            Relaxed_Init  =>
+              Expr_Has_Relaxed_Init (Ada_Node, No_Eval => False));
       end if;
 
       --  Detect possible resource leaks in the assignment of component
@@ -17371,7 +17372,7 @@ package body Gnat2Why.Expr is
                else
                   declare
                      Init_Wrapper : constant Boolean :=
-                       Expr_Has_Relaxed_Init (Expr);
+                       Expr_Has_Relaxed_Init (Expr, No_Eval => False);
                      Num_Discrs : constant Natural :=
                        Count_Non_Inherited_Discriminants
                          (Component_Associations (Expr));
@@ -17422,13 +17423,14 @@ package body Gnat2Why.Expr is
                  (Params       => Local_Params,
                   Domain       => Domain,
                   Expr         => Expr,
-                  Relaxed_Init => Expr_Has_Relaxed_Init (Expr));
+                  Relaxed_Init =>
+                    Expr_Has_Relaxed_Init (Expr, No_Eval => False));
             end if;
 
          when N_Extension_Aggregate =>
             declare
                Init_Wrapper : constant Boolean :=
-                 Expr_Has_Relaxed_Init (Expr);
+                 Expr_Has_Relaxed_Init (Expr, No_Eval => False);
 
                Dummy_Ids  : W_Identifier_Array (1 .. 0);
                Dummy_Vals : W_Expr_Array (1 .. 0);
@@ -18445,7 +18447,7 @@ package body Gnat2Why.Expr is
                Check_Type   : constant Entity_Id := Entity
                  (Subtype_Mark (Expr));
                Relaxed_Init : constant Boolean := Expr_Has_Relaxed_Init
-                 (Expression (Expr));
+                 (Expression (Expr), No_Eval => False);
                Typ          : constant W_Type_Id :=
                  (if Relaxed_Init
                   then EW_Abstract (Check_Type, Relaxed_Init => True)
@@ -21995,7 +21997,8 @@ package body Gnat2Why.Expr is
       Pref      : constant Node_Id := SPARK_Atree.Prefix (Expr);
       Target_Ty : constant W_Type_Id :=
         EW_Abstract
-          (Etype (Expr), Relaxed_Init => Expr_Has_Relaxed_Init (Expr));
+          (Etype (Expr),
+           Relaxed_Init => Expr_Has_Relaxed_Init (Expr, No_Eval => False));
       Rng       : constant Node_Id := Get_Range (Discrete_Range (Expr));
       Pref_Expr : constant W_Expr_Id := Transform_Expr (Pref, Domain, Params);
       Pref_Term : constant W_Term_Id := New_Temp_For_Expr (Pref_Expr);
