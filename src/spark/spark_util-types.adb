@@ -1314,7 +1314,9 @@ package body SPARK_Util.Types is
    function Might_Contain_Relaxed_Init (Typ : Type_Kind_Id) return Boolean is
       Rep_Ty : constant Type_Kind_Id := Base_Retysp (Typ);
    begin
-      if In_Relaxed_Init (Typ) then
+      if Has_Relaxed_Init (Typ) then
+         return False;
+      elsif In_Relaxed_Init (Typ) then
          return True;
       elsif Is_Concurrent_Type (Rep_Ty) then
          return False;
@@ -1362,9 +1364,8 @@ package body SPARK_Util.Types is
 
             while Present (Comp) loop
                if Component_Is_Visible_In_SPARK (Comp)
-                 and then (if Has_Scalar_Type (Etype (Comp))
-                           then Has_Relaxed_Init (Etype (Comp))
-                           else Might_Contain_Relaxed_Init (Etype (Comp)))
+                 and then not Has_Scalar_Type (Etype (Comp))
+                 and then Might_Contain_Relaxed_Init (Etype (Comp))
                then
                   return True;
                end if;

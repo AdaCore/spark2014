@@ -264,8 +264,7 @@ package body Why.Gen.Records is
          (Etype (Field),
           Relaxed_Init => Ekind (Field) = E_Component
           and then
-            (if Init_Wrapper
-             then Might_Contain_Relaxed_Init (Etype (Field))
+            (if Init_Wrapper then Has_Init_Wrapper (Etype (Field))
              else SPARK_Definition.Has_Relaxed_Init (Etype (Field)))));
    --  Compute the expected Why type of a record component. If the component is
    --  a type, it stands for the invisible fields of the type and is translated
@@ -2077,7 +2076,7 @@ package body Why.Gen.Records is
 
                      Field_Wrapper : constant W_Type_Id := W_Type_Of_Component
                        (Field, E, Init_Wrapper =>
-                          Might_Contain_Relaxed_Init (Etype (Field)));
+                          Has_Init_Wrapper (Etype (Field)));
                      --  Wrapper type for the field
 
                   begin
@@ -4666,7 +4665,7 @@ package body Why.Gen.Records is
         (if I.Fields.Present then I.Fields.Binder.Ada_Node
          else I.Discrs.Binder.Ada_Node);
       Relaxed_Init : constant Boolean :=
-        (if I.Fields.Present and Might_Contain_Relaxed_Init (I.Typ)
+        (if I.Fields.Present and Has_Init_Wrapper (I.Typ)
          then Get_Module (Get_Name (Get_Typ (I.Fields.Binder.B_Name)))
          = E_Init_Module (I.Typ)
          else False);

@@ -4272,7 +4272,7 @@ package body Gnat2Why.Expr is
                Comp_Ty      : constant Entity_Id :=
                  Retysp (Component_Type (Ty));
                Comp_Relaxed : constant Boolean :=
-                 Might_Contain_Relaxed_Init (Comp_Ty)
+                 Has_Init_Wrapper (Comp_Ty)
                  and then (Relaxed_Init or else Has_Relaxed_Init (Comp_Ty));
                Comp_Default : W_Term_Id;
 
@@ -4424,7 +4424,7 @@ package body Gnat2Why.Expr is
                            Comp_Ty      : constant Entity_Id :=
                              Retysp (Etype (Comp));
                            Comp_Relaxed : constant Boolean :=
-                             Might_Contain_Relaxed_Init (Comp_Ty)
+                             Has_Init_Wrapper (Comp_Ty)
                              and then
                                (Relaxed_Init
                                 or else Has_Relaxed_Init (Comp_Ty));
@@ -5567,7 +5567,7 @@ package body Gnat2Why.Expr is
             W_Expr : constant W_Term_Id :=
               Insert_Simple_Conversion
                 (Expr => Expr,
-                 To   => EW_Abstract (Ty, Might_Contain_Relaxed_Init (Ty)));
+                 To   => EW_Abstract (Ty, Has_Init_Wrapper (Ty)));
          begin
             return New_Call
               (Name   => E_Symb (Ty, WNE_Is_Moved),
@@ -5733,11 +5733,11 @@ package body Gnat2Why.Expr is
             W_Expr1 : constant W_Term_Id :=
               Insert_Simple_Conversion
                 (Expr => Expr1,
-                 To   => EW_Abstract (Ty, Might_Contain_Relaxed_Init (Ty)));
+                 To   => EW_Abstract (Ty, Has_Init_Wrapper (Ty)));
             W_Expr2 : constant W_Term_Id :=
               Insert_Simple_Conversion
                 (Expr => Expr2,
-                 To   => EW_Abstract (Ty, Might_Contain_Relaxed_Init (Ty)));
+                 To   => EW_Abstract (Ty, Has_Init_Wrapper (Ty)));
          begin
             return New_Call
               (Name   => E_Symb (Ty, WNE_Moved_Relation),
@@ -11209,7 +11209,7 @@ package body Gnat2Why.Expr is
                        then EW_Abstract (Typ,
                          Relaxed_Init =>
                            (if Relaxed_Init
-                            then Might_Contain_Relaxed_Init (Typ)
+                            then Has_Init_Wrapper (Typ)
                             else Has_Relaxed_Init (Typ)))
                        elsif Expr_Has_Relaxed_Init
                          (Value.Value, No_Eval => False)
@@ -12211,7 +12211,7 @@ package body Gnat2Why.Expr is
                Comp_Ty      : constant Entity_Id :=
                  Retysp (Component_Type (Expr_Typ));
                Comp_Relaxed : constant Boolean :=
-                (if Relaxed_Init then Might_Contain_Relaxed_Init (Comp_Ty)
+                (if Relaxed_Init then Has_Init_Wrapper (Comp_Ty)
                  else Has_Relaxed_Init (Comp_Ty));
 
             begin
@@ -21562,8 +21562,7 @@ package body Gnat2Why.Expr is
                declare
                   Comp_Ty      : constant Entity_Id := Etype (Component);
                   Comp_Relaxed : constant Boolean :=
-                    (if Init_Wrapper
-                     then Might_Contain_Relaxed_Init (Comp_Ty)
+                    (if Init_Wrapper then Has_Init_Wrapper (Comp_Ty)
                      else Has_Relaxed_Init (Comp_Ty))
                     and then Ekind (Component) = E_Component;
                   W_Comp_Ty    : constant W_Type_Id := EW_Abstract

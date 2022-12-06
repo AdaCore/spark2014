@@ -174,7 +174,7 @@ package Why.Gen.Arrays is
    --  underlying type).
 
    procedure Declare_Init_Wrapper_For_Array (Th : Theory_UC; E  : Entity_Id)
-     with Pre => Has_Array_Type (E) and then Might_Contain_Relaxed_Init (E);
+     with Pre => Has_Array_Type (E) and then Has_Init_Wrapper (E);
    --  Introduce necessary declarations for the wrapper type for E
 
    procedure Declare_Additional_Symbols_For_String (Th : Theory_UC);
@@ -520,12 +520,12 @@ package Why.Gen.Arrays is
    --  ??? Init_Wrapper is always False, is it expected?
 
    function Get_Array_Of_Wrapper_Name (E : Entity_Id) return W_Identifier_Id
-     with Pre => Might_Contain_Relaxed_Init (E);
+     with Pre => Has_Init_Wrapper (E);
    --  @param E array type entity
    --  @return the name of the conversion from the wrapper type for E.
 
    function Get_Array_To_Wrapper_Name (E : Entity_Id) return W_Identifier_Id
-     with Pre => Might_Contain_Relaxed_Init (E);
+     with Pre => Has_Init_Wrapper (E);
    --  @param E array type entity
    --  @return the name of the conversion to the wrapper type for E.
 

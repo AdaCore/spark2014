@@ -1265,7 +1265,8 @@ package body SPARK_Util is
       --  uninitialized scalar expression is a bounded error.
 
       if (Has_Scalar_Type (Etype (Expr)) and then not No_Eval)
-        or else not Might_Contain_Relaxed_Init (Etype (Expr))
+        or else (not Has_Relaxed_Init (Etype (Expr))
+                 and then not Might_Contain_Relaxed_Init (Etype (Expr)))
       then
          return False;
       end if;

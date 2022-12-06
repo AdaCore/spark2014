@@ -93,7 +93,7 @@ package body Gnat2Why.Types is
       Predeclare : Boolean := False)
    is
       Typ      : constant W_Type_Id :=
-        (if Might_Contain_Relaxed_Init (E)
+        (if Has_Init_Wrapper (E)
          then EW_Init_Wrapper (Type_Of_Node (E))
          else Type_Of_Node (E));
       A_Ident  : constant W_Identifier_Id :=
@@ -232,7 +232,7 @@ package body Gnat2Why.Types is
          E  : Type_Kind_Id)
       is
          Typ      : constant W_Type_Id :=
-           (if Might_Contain_Relaxed_Init (E)
+           (if Has_Init_Wrapper (E)
             then EW_Init_Wrapper (Type_Of_Node (E))
             else Type_Of_Node (E));
          A_Ident  : constant W_Identifier_Id :=
@@ -1530,7 +1530,7 @@ package body Gnat2Why.Types is
       --  If the type may be used for expressions with relaxed initialization,
       --  declare a type with init flags for it.
 
-      if Might_Contain_Relaxed_Init (E) then
+      if Has_Init_Wrapper (E) then
          Th :=
            Open_Theory
              (WF_Context, E_Init_Module (E),
