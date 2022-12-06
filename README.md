@@ -26,9 +26,13 @@ SPARK is commercially supported by AdaCore and Capgemini, you can visit the
 
 # 3. Community version
 
-There is a Community version of the tools, readily packaged, and suitable for
-research and hobbyist use. You can download it from
-[AdaCore's website](https://www.adacore.com/download).
+You can obtain SPARK via [Alire](https://alire.ada.dev/crates/gnatprove), or
+directly download it from this [github
+project](https://github.com/alire-project/GNAT-FSF-builds/releases).
+
+There is an older community version of the tools, packaged with GNAT and
+GNATStudio. You can download it from [AdaCore's
+website](https://www.adacore.com/download).
 
 # 4. Governance
 

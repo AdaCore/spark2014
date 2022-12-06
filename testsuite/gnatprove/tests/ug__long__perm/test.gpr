@@ -1,3 +1,5 @@
+with "sparklib";
+
 project Test is
 
    package Builder is
@@ -5,11 +7,11 @@ project Test is
    end Builder;
 
    package Compiler is
-      for Switches ("Ada") use ("-gnat2020");
+      for Switches ("Ada") use ("-gnat2020", "-gnateDSPARK_BODY_MODE=Off");
    end Compiler;
 
    package Prove is
-      for Proof_Switches ("Ada") use ("--report=all");
+      for Proof_Switches ("Ada") use ("--report=all", "-u", "perm.ads", "perm-lemma_subprograms.adb");
    end Prove;
 
 end Test;

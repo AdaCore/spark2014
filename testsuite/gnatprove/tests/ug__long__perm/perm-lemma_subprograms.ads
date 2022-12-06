@@ -1,4 +1,8 @@
-package Perm.Lemma_Subprograms with SPARK_Mode, Ghost is
+package Perm.Lemma_Subprograms with
+  SPARK_Mode,
+  Ghost,
+  Annotate => (GNATprove, Always_Return)
+is
 
    function Is_Set (A : Nat_Array; I : Index; V : Natural; R : Nat_Array)
                     return Boolean
@@ -8,13 +12,16 @@ package Perm.Lemma_Subprograms with SPARK_Mode, Ghost is
                    (if I /= J then R (J) = A (J)))) with
      Pre  => I in A'Range;
 
-   procedure Occ_Set (A : Nat_Array; I : Index; V, E : Natural; R : Nat_Array)
+   procedure Occ_Set (A : Nat_Array; I : Index; V : Natural; R : Nat_Array)
    with
-     Pre     => I in A'Range and then Is_Set (A, I, V, R),
-     Post    =>
-       (if V = A (I) then Occ (R, E) = Occ (A, E)
-        elsif V = E then Occ (R, E) = Occ (A, E) + 1
-        elsif A (I) = E then Occ (R, E) = Occ (A, E) - 1
-        else Occ (R, E) = Occ (A, E));
+     Global => null,
+     Pre    => I in A'Range and then Is_Set (A, I, V, R),
+     Post   =>
+       (if V = A (I) then Occurrences (R) = Occurrences (A)
+        else Occ (R, V) = Occ (A, V) + 1
+          and then Occ (R, A (I)) = Occ (A, A (I)) - 1
+          and then
+            (for all E of Union (Occurrences (R), Occurrences (A)) =>
+               (if E not in V | A (I) then Occ (R, E) = Occ (A, E))));
 
 end Perm.Lemma_Subprograms;

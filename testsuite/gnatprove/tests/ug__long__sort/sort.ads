@@ -1,5 +1,6 @@
-with Sort_Types; use Sort_Types;
-with Perm; use Perm;
+with SPARK.Big_Integers;   use SPARK.Big_Integers;
+with Sort_Types;           use Sort_Types;
+with Perm;                 use Perm;
 
 package Sort with SPARK_Mode is
 

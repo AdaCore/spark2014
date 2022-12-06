@@ -2109,26 +2109,6 @@ package body SPARK_Definition is
                Mark_Subprogram_Declaration (N);
             end if;
 
-            --  For expression functions that have a unique declaration, the
-            --  body inserted by the frontend may be far from the original
-            --  point of declaration, after the private declarations of the
-            --  package (to avoid premature freezing). In those cases, mark the
-            --  subprogram body at the same point as the subprogram
-            --  declaration, so that entities declared afterwards have access
-            --  to the axiom defining the expression function.
-
-            declare
-               E      : constant Subprogram_Kind_Id := Defining_Entity (N);
-               Body_N : constant Opt_N_Subprogram_Body_Id :=
-                 Subprogram_Body (E);
-            begin
-               if Is_Expression_Function_Or_Completion (E)
-                 and then not Comes_From_Source (Original_Node (Body_N))
-               then
-                  Mark_Entity (E);
-               end if;
-            end;
-
          when N_Subtype_Indication =>
             Mark_Subtype_Indication (N);
 
@@ -4068,7 +4048,8 @@ package body SPARK_Definition is
                             & "a (possibly) nonreturning procedure", N);
                if Ekind (Caller) = E_Procedure then
                   Error_Msg_NE
-                    ("\consider annotating caller & with Might_Not_Return",
+                    ("\consider annotating caller & with pragma Annotate "
+                     & "('G'N'A'Tprove, Might_Not_Return)",
                      N, Caller);
                end if;
             end if;

@@ -1,30 +1,32 @@
-sort.adb:16:16: info: postcondition proved
-sort.adb:17:18: info: index check proved
-sort.adb:17:35: info: index check proved
-sort.adb:18:18: info: index check proved
-sort.adb:18:35: info: index check proved
-sort.adb:20:48: info: index check proved
-sort.adb:20:65: info: index check proved
-sort.adb:22:07: info: initialization of "Temp" proved
-sort.adb:25:07: info: range check proved
-sort.adb:25:53: info: length check proved
-sort.adb:26:07: info: initialization of "Interm" proved
-sort.adb:26:07: info: range check proved
-sort.adb:31:09: info: precondition proved
-sort.adb:31:23: info: range check proved
-sort.adb:31:32: info: index check proved
-sort.adb:32:18: info: precondition proved
-sort.adb:32:34: info: range check proved
-sort.adb:32:43: info: index check proved
-sort.adb:33:17: info: postcondition proved
-sort.adb:37:13: info: precondition proved
-sort.adb:37:28: info: range check proved
-sort.adb:37:37: info: index check proved
-sort.adb:38:13: info: precondition proved
-sort.adb:38:30: info: range check proved
-sort.adb:38:39: info: index check proved
-sort.adb:40:16: info: loop invariant initialization proved
-sort.adb:40:16: info: loop invariant preservation proved
+sort.adb:18:16: info: postcondition proved
+sort.adb:19:18: info: index check proved
+sort.adb:19:35: info: index check proved
+sort.adb:20:18: info: index check proved
+sort.adb:20:35: info: index check proved
+sort.adb:22:48: info: index check proved
+sort.adb:22:65: info: index check proved
+sort.adb:24:07: info: initialization of "Temp" proved
+sort.adb:27:07: info: range check proved
+sort.adb:27:53: info: length check proved
+sort.adb:28:07: info: initialization of "Interm" proved
+sort.adb:28:07: info: range check proved
+sort.adb:33:09: info: precondition proved
+sort.adb:33:23: info: range check proved
+sort.adb:33:32: info: index check proved
+sort.adb:34:18: info: precondition proved
+sort.adb:34:34: info: range check proved
+sort.adb:34:43: info: index check proved
+sort.adb:35:17: info: postcondition proved
+sort.adb:38:10: info: precondition proved
+sort.adb:38:25: info: range check proved
+sort.adb:38:34: info: index check proved
+sort.adb:39:10: info: precondition proved
+sort.adb:39:27: info: range check proved
+sort.adb:39:36: info: index check proved
+sort.adb:41:13: info: precondition proved
+sort.adb:41:13: info: assertion proved
+sort.adb:42:17: info: predicate check proved
+sort.adb:42:35: info: predicate check proved
 sort.adb:46:29: info: index check proved
 sort.adb:47:15: info: index check proved
 sort.adb:47:29: info: index check proved
@@ -48,8 +50,8 @@ sort.adb:69:07: info: initialization of "Min" proved
 sort.adb:71:20: info: range check proved
 sort.adb:73:38: info: index check proved
 sort.adb:74:20: info: range check proved
-sort.adb:77:13: info: loop invariant initialization proved
 sort.adb:77:13: info: loop invariant preservation proved
+sort.adb:77:13: info: loop invariant initialization proved
 sort.adb:79:28: info: index check proved
 sort.adb:79:44: info: index check proved
 sort.adb:85:07: info: initialization of "Smallest" proved
@@ -65,8 +67,8 @@ sort.adb:103:28: info: index check proved
 sort.adb:103:42: info: index check proved
 sort.adb:104:33: info: loop invariant initialization proved
 sort.adb:104:33: info: loop invariant preservation proved
-sort.ads:9:16: info: postcondition proved
-sort.ads:11:51: info: overflow check proved
-sort.ads:12:22: info: index check proved
-sort.ads:12:38: info: overflow check proved
-sort.ads:12:38: info: index check proved
+sort.ads:10:16: info: postcondition proved
+sort.ads:12:51: info: overflow check proved
+sort.ads:13:22: info: index check proved
+sort.ads:13:38: info: overflow check proved
+sort.ads:13:38: info: index check proved

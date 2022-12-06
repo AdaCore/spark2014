@@ -1,1 +1,1 @@
-main.adb:9:19: info: assertion proved (CVC5: 2 VC)
+main.adb:9:42: medium: assertion might fail, cannot prove 2 ** K in U64'range

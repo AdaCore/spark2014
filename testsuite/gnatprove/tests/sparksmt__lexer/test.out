@@ -96,8 +96,8 @@ lexer.ads:28:09: info: use pragma Elaborate_Body in "Names" or pragma Elaborate 
 lexer.ads:62:09: info: data dependencies proved
 lexer.ads:68:09: info: data dependencies proved
 lexer.ads:73:09: info: data dependencies proved
-lexer.ads:76:17: info: postcondition proved (CVC5: 1 VC)
+lexer.ads:76:17: info: postcondition proved (CVC5: 2 VC)
 lexer.ads:79:26: info: initialization of "T" proved
 lexer.ads:80:09: info: data dependencies proved
-lexer.ads:83:19: info: postcondition proved (Z3: 1 VC)
+lexer.ads:83:19: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
 lexer.ads:88:09: info: data dependencies proved

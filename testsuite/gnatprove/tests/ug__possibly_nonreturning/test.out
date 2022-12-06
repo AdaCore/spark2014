@@ -2,5 +2,5 @@
 possibly_nonreturning.adb:14:07: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
    14 |      Conditional_Exit (True);
       |      ^~~~~~~~~~~~~~~~~~~~~~
-  consider annotating caller "Regular" with Might_Not_Return
+  consider annotating caller "Regular" with pragma Annotate (GNATprove, Might_Not_Return)
 gnatprove: error during generation of Global contracts

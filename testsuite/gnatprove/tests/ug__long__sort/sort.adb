@@ -1,4 +1,6 @@
+with Nat_Multisets;          use Nat_Multisets;
 with Perm.Lemma_Subprograms; use Perm.Lemma_Subprograms;
+
 package body Sort
    with SPARK_Mode
 is
@@ -33,13 +35,11 @@ is
         Post => Is_Perm (Init, Values)
       is
       begin
-         for E in Natural loop
-            Occ_Set (Init, X, Init (Y), E, Interm);
-            Occ_Set (Interm, Y, Init (X), E, Values);
-            pragma Loop_Invariant
-              (for all F in Natural'First .. E =>
-                 Occ (Values, F) = Occ (Init, F));
-         end loop;
+         Occ_Set (Init, X, Init (Y), Interm);
+         Occ_Set (Interm, Y, Init (X), Values);
+         pragma Assert
+           (for all F of Union (Occurrences (Init), Occurrences (Values)) =>
+                Occ (Values, F) = Occ (Init, F));
       end Prove_Perm;
 
    begin

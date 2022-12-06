@@ -206,11 +206,11 @@ package body Gnat2Why.Driver is
    --  After generating the Why file, run the proof tool. Wait for existing
    --  gnatwhy3 processes to finish if Max_Subprocesses is already reached.
 
-   Max_Why3_Filename_Length : constant := 104;
+   Max_Why3_Filename_Length : constant := 64;
    --  On windows, a path can be no longer than 250 or so chars. We allow a
-   --  maximum of 104 chars (100 chars + 4 four the file extension) for the
-   --  why3 file so that users still have 150 chars or so for their own project
-   --  structure.
+   --  maximum of 64 (60 chars + 4 four the file extension) for the
+   --  why3 file to maximize the number of chars users have for their own
+   --  project structure.
 
    function Compute_Why3_File_Name
      (E         : Entity_Id;

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+from e3.gaia.api import GAIA
 from e3.testsuite.report.index import ReportIndex
 from e3.testsuite.result import TestStatus
 import os.path
@@ -17,6 +18,11 @@ def parse_options():
         "--output-dir",
         dest="outputdir",
         help="Specify the output dir to read outputs from",
+    )
+    parser.add_argument(
+        "--from-gaia",
+        dest="gaia_id",
+        help="Specify the GAIA event id to read outputs from",
     )
     args = parser.parse_args()
     return args
@@ -35,17 +41,29 @@ def update_baseline(testname, out):
         f.write(out)
 
 
+def update_from_gaia(gaia_id):
+    g = GAIA()
+    content = g.request("GET", f"testsuite/{gaia_id}").json()
+    data = content["testsuite"]["results"]
+    for testname, info in data.items():
+        if info["status"] == "DIFF":
+            update_baseline(testname, info["actual_output"])
+
+
 def main():
     args = parse_options()
-    if not args.outputdir:
-        outputdir = "out"
+    if args.gaia_id:
+        update_from_gaia(args.gaia_id)
     else:
-        outputdir = args.outputdir
-    index = ReportIndex.read(os.path.join(outputdir, "new"))
-    for entry in index.entries.values():
-        if entry.status == TestStatus.FAIL:
-            result = entry.load()
-            update_baseline(result.env["test_name"], result.out)
+        if not args.outputdir:
+            outputdir = "out"
+        else:
+            outputdir = args.outputdir
+        index = ReportIndex.read(os.path.join(outputdir, "new"))
+        for entry in index.entries.values():
+            if entry.status == TestStatus.FAIL:
+                result = entry.load()
+                update_baseline(result.env["test_name"], result.out)
 
 
 main()
