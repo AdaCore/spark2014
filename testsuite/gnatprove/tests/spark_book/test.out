@@ -994,6 +994,7 @@ strings.adb:33:07: info: initialization of "Equals_Found" proved
 strings.adb:34:07: info: initialization of "Equals_Position" proved
 strings.adb:39:34: info: range check proved (CVC5: 2 VC)
 strings.adb:44:23: medium: range check might fail (e.g. when Equals_Position = 3 and Text = (1 => 'NUL') and Text'First = 1 and Text'Last = 1) [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
+strings.adb:45:32: info: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove.
 strings.adb:45:32: medium: precondition might fail [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.adb:45:40: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.adb:45:62: medium: overflow check might fail, cannot prove upper bound for Equals_Position + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]

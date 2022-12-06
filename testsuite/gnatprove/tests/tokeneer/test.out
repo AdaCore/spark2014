@@ -1069,7 +1069,9 @@ doorapi.adb:41:07: info: initialization of "IsOp" proved
 doorapi.adb:42:07: info: initialization of "IsClosed" proved
 doorapi.adb:43:07: info: initialization of "CommsIsOK" proved
 doorapi.adb:57:28: info: precondition justified
+doorapi.adb:57:28: info: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove.
 doorapi.adb:63:32: info: precondition justified
+doorapi.adb:63:32: info: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove.
 enclave.adb:56:11: info: data dependencies proved
 enclave.adb:58:07: info: initialization of "Result" proved
 enclave.adb:62:18: info: precondition proved (CVC5: 1 VC)
