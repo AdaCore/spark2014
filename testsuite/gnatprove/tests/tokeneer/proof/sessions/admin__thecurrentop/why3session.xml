@@ -31,14 +31,14 @@
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="0"><result status="valid" steps="30"/></proof>
   <proof prover="1"><result status="valid" steps="592"/></proof>
-  <proof prover="2"><result status="valid" steps="3164"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="0"><result status="valid" steps="30"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="595"/></proof>
-  <proof prover="2"><result status="valid" steps="1511"/></proof>
-  <proof prover="4"><result status="highfailure"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="4"><result status="valid" steps="91"/></proof>
   </goal>
  </transf>
  </goal>

@@ -65,7 +65,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="0" timelimit="20"><result status="highfailure"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="14"/></proof>
   <proof prover="1" timelimit="20"><result status="valid" steps="462"/></proof>
   <proof prover="2" timelimit="20"><result status="highfailure"/></proof>
   <proof prover="4" timelimit="20"><result status="highfailure"/></proof>
@@ -73,7 +73,7 @@
   <goal name="def&#39;vc.15" proved="true">
   <proof prover="0" timelimit="20"><result status="valid" steps="14"/></proof>
   <proof prover="1" timelimit="20"><result status="valid" steps="470"/></proof>
-  <proof prover="2" timelimit="20"><result status="valid"/></proof>
+  <proof prover="2" timelimit="20"><result status="valid" steps="636"/></proof>
   <proof prover="4" timelimit="20"><result status="highfailure"/></proof>
   </goal>
  </transf>

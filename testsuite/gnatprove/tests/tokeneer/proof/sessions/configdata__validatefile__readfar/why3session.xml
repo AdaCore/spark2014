@@ -38,13 +38,13 @@
   <proof prover="0" timelimit="20"><result status="valid" steps="40"/></proof>
   <proof prover="1" timelimit="20"><result status="valid" steps="315"/></proof>
   <proof prover="2" timelimit="20"><result status="valid" steps="294"/></proof>
-  <proof prover="4" timelimit="20"><result status="highfailure"/></proof>
+  <proof prover="4" timelimit="20"><result status="failure" steps="0"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <proof prover="0" timelimit="20"><result status="valid" steps="25"/></proof>
   <proof prover="1" timelimit="20"><result status="valid" steps="311"/></proof>
-  <proof prover="2" timelimit="20"><result status="valid" steps="202"/></proof>
-  <proof prover="4" timelimit="20"><result status="failure" steps="0"/></proof>
+  <proof prover="2" timelimit="20"><result status="highfailure"/></proof>
+  <proof prover="4" timelimit="20"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.7">
   <proof prover="0"><result status="unknown"/></proof>
