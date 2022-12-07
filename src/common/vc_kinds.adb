@@ -530,7 +530,10 @@ package body VC_Kinds is
           "initialization of object is assumed to have no effects on"
           & " other non-volatile objects",
         when Warn_Alias_Different_Volatility  =>
-            "aliased objects should have the same volatile properties",
+          "aliased objects should have the same volatile properties",
+        when Warn_Alias_Atomic_Vol  =>
+          "aliased objects should both be volatile or non-volatile, "
+          & "and both be atomic or non-atomic",
         when Warn_Function_Is_Valid =>
           "function Is_Valid is assumed to return True",
         when Warn_Lemma_Procedure_No_Return =>
@@ -1337,6 +1340,8 @@ package body VC_Kinds is
           "initialization of alias",
         when Warn_Alias_Different_Volatility =>
           "volatile properties of aliases",
+        when Warn_Alias_Atomic_Vol =>
+          "volatile and atomic status of aliases",
         when Warn_Function_Is_Valid =>
           "function Is_Valid always return True",
         when Warn_Lemma_Procedure_No_Return =>

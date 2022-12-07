@@ -362,7 +362,6 @@ package VC_Kinds is
       Warn_Indirect_Writes_Through_Alias,
       Warn_Indirect_Writes_To_Alias,
       Warn_Initialization_To_Alias,
-      Warn_Alias_Different_Volatility,
       Warn_Function_Is_Valid,
       Warn_Lemma_Procedure_No_Return,
       Warn_Pragma_Annotate_No_Check,
@@ -378,6 +377,8 @@ package VC_Kinds is
 
       --  Warnings guaranteed to be issued
       Warn_Assumed_Global_Null,
+      Warn_Alias_Different_Volatility,
+      Warn_Alias_Atomic_Vol,
       Warn_Assumed_Always_Return,
 
       --  Warnings only issued when using switch --pedantic
@@ -499,6 +500,8 @@ package VC_Kinds is
           & " other non-volatile objects",
         when Warn_Alias_Different_Volatility =>
           "?aliased objects have different volatile properties",
+        when Warn_Alias_Atomic_Vol =>
+          "?aliased objects must have the same volatility and atomic status",
         when Warn_Function_Is_Valid =>
           "?function Is_Valid is assumed to return True",
         when Warn_Lemma_Procedure_No_Return =>
