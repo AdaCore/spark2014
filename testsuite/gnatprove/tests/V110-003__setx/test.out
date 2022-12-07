@@ -1,0 +1,4 @@
+main.adb:2:04: info: initialization of "X" proved
+main.adb:4:19: info: postcondition proved (CVC5: 1 VC)
+main.adb:6:13: high: overflow check might fail, cannot prove upper bound for N+1 (e.g. when N = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (N <= Integer'Last - 1) to subprogram at line 3]
+main.adb:11:19: medium: assertion might fail (e.g. when X = 4) [possible fix: add or complete related loop invariants or postconditions]
