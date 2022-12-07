@@ -511,6 +511,12 @@ gnatprove may output:
 Complete List of Assumptions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+For the sake of these assumptions, we define a *statically known address
+specification* to be an address clause or aspect whose expression is a
+reference to the Address attribute on a part of a standalone object or
+constant. Otherwise, the address clause or aspect is a *statically unknown
+address specification*.
+
 The following assumptions need to be addressed when using SPARK on all or part
 of a program:
 
@@ -522,7 +528,7 @@ of a program:
 * [SPARK_EXTERNAL]
   The modeling of :ref:`Interfaces to the Physical World` needs to be reviewed
   for objects whose value may be modified concurrently, when the address of the
-  object is specified through an address clause or aspect.
+  object is specified through a statically unknown address specification.
 
   * They should be `effectively volatile` in SPARK (see SPARK RM 7.1.2), so
     that GNATprove takes into account possible concurrent changes in the
@@ -535,9 +541,8 @@ of a program:
     Variables` corresponding to their usage.
 
 * [SPARK_ALIASING_ADDRESS]
-  Aliases between objects annotated with an address clause or aspect whose
-  expression is not a reference to the Address attribute on a part of a
-  standalone object or constant are ignored by GNATprove. Reviews are necessary
+  Aliases between objects annotated with a statically unknown address
+  specification are ignored by GNATprove. Reviews are necessary
   to ensure that:
 
   * Other objects visible from SPARK code which might be affected by a
@@ -567,10 +572,9 @@ of a program:
 
 * [SPARK_EXTERNAL_VALID]
   Values read from objects whose address is specified are assumed to be valid
-  values. This assumption is limited to objects annotated with an address
-  clause or aspect whose expression is not a reference to the Address attribute
-  on a part of a standalone object or constant (because an explicit check is
-  emitted for these). Currently there is no model of invalidity or
+  values. This assumption is limited to objects annotated with a
+  statically unknown address specification (because an explicit check is
+  emitted otherwise). Currently there is no model of invalidity or
   undefinedness. The onus is on the user to ensure that all values read from an
   external source are valid. The use of an invalid value invalidates any proofs
   associated with the value.
