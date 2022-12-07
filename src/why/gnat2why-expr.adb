@@ -3787,6 +3787,7 @@ package body Gnat2Why.Expr is
          P : W_Pred_Id;
       begin
          if Has_Default_Aspect (Ty_Ext) then
+            pragma Assert (Is_Scalar_Type (C_Ty));
             P := New_Comparison
               (Symbol => Why_Eq,
                Left   => Insert_Simple_Conversion
@@ -3797,23 +3798,20 @@ package body Gnat2Why.Expr is
                   Expected_Type => Type_Of_Node (C_Ty),
                   Params        => Params));
 
+            --  Assume the value of the initialization flag for init wrappers
+
+            if Is_Init_Wrapper_Type (Get_Type (+C_Expr)) then
+               P := New_And_Pred
+                 (Left  => P,
+                  Right => Pred_Of_Boolean_Term
+                    (+New_Init_Attribute_Access (C_Ty, +C_Expr)));
+            end if;
          else
             P := Compute_Default_Init
                     (Expr     => C_Expr,
                      Ty       => C_Ty,
                      Params   => Params,
                      Use_Pred => Use_Pred);
-         end if;
-
-         --  If C_Ty has a wrapper for initialization, set the init flag
-
-         if Is_Init_Wrapper_Type (Get_Type (+C_Expr))
-           and then Has_Default_Aspect (Ty_Ext)
-         then
-            P := New_And_Pred
-              (Left   => P,
-               Right  => +Compute_Is_Initialized
-                 (C_Ty, +C_Expr, Params.Ref_Allowed, Domain => EW_Pred));
          end if;
 
          return P;
@@ -3913,10 +3911,10 @@ package body Gnat2Why.Expr is
             declare
                Exp_Ty : constant W_Type_Id :=
                  (if Is_Scalar_Type (F_Ty) then Type_Of_Node (F_Ty)
-                  else EW_Abstract (F_Ty, Has_Relaxed_Init (F_Ty)));
+                  else Get_Type (+F_Expr));
                --  For scalar types, if we have a value, it is initialized.
-               --  Otherwise we only expect a partially initialized type if the
-               --  type of the component is marked with Relaxed_Initialization.
+               --  Otherwise we only expect a partially initialized type if
+               --  F_Expr is an initialization wrapper.
 
             begin
                P := New_Comparison
@@ -3932,16 +3930,16 @@ package body Gnat2Why.Expr is
                         Params        => Params),
                      Ty     => F_Ty));
 
-               --  If F_Expr has a wrapper for initialization and not Exp_Ty,
-               --  set the init flag to True.
+               --  For scalars, assume the value of the initialization flag for
+               --  init wrappers.
 
-               if Is_Init_Wrapper_Type (Get_Type (+F_Expr))
-                 and then not Is_Init_Wrapper_Type (Exp_Ty)
+               if Is_Scalar_Type (F_Ty)
+                 and then Is_Init_Wrapper_Type (Get_Type (+F_Expr))
                then
                   P := New_And_Pred
-                    (Left   => P,
-                     Right  => +Compute_Is_Initialized
-                       (F_Ty, +F_Expr, Params.Ref_Allowed, Domain => EW_Pred));
+                    (Left  => P,
+                     Right => Pred_Of_Boolean_Term
+                       (+New_Init_Attribute_Access (F_Ty, +F_Expr)));
                end if;
             end;
 
@@ -4029,8 +4027,8 @@ package body Gnat2Why.Expr is
             if Is_Init_Wrapper_Type (Get_Type (+Tmp)) then
                Assumption := New_And_Pred
                  (Left  => Assumption,
-                  Right => +Compute_Is_Initialized
-                    (Ty_Ext, +Tmp, Params.Ref_Allowed, Domain => EW_Pred));
+                  Right => Pred_Of_Boolean_Term
+                    (+New_Init_Attribute_Access (Ty_Ext, +Tmp)));
             end if;
          end if;
       elsif Is_Array_Type (Ty_Ext)
@@ -4067,6 +4065,21 @@ package body Gnat2Why.Expr is
       elsif Is_Access_Type (Ty_Ext) then
          Assumption := Pred_Of_Boolean_Term
            (New_Pointer_Is_Null_Access (Ty_Ext, Expr));
+
+      elsif Is_Simple_Private_Type (Ty_Ext) then
+
+         --  If Tmp has a wrapper for initialization, set the init flag to True
+         --  if the type is fully initialized by default.
+
+         if Is_Init_Wrapper_Type (Get_Type (+Tmp))
+           and then
+             Default_Initialization (Ty_Ext) = Full_Default_Initialization
+         then
+            Assumption := New_And_Pred
+              (Left  => Assumption,
+               Right => Pred_Of_Boolean_Term
+                 (+New_Init_Attribute_Access (Ty_Ext, +Tmp)));
+         end if;
 
       elsif Is_Record_Type_In_Why (Ty_Ext) then
 
@@ -4820,15 +4833,10 @@ package body Gnat2Why.Expr is
                  New_Call (Name     => Le_Op,
                            Typ      => EW_Bool_Type,
                            Args     => (First, Last));
-               Init_Flag    : constant W_Pred_Id :=
+               Init_Flag    : constant W_Pred_Id := Pred_Of_Boolean_Term
                  (if Is_Init_Wrapper_Type (Get_Type (+Expr))
-                  then +Compute_Is_Initialized
-                    (E                       => Ty_Ext,
-                     Name                    => +Expr,
-                     Ref_Allowed             => Params.Ref_Allowed,
-                     Domain                  => EW_Pred,
-                     Exclude_Always_Relaxed  => True)
-                  else Pred_Of_Boolean_Term (W => Initialized));
+                  then +New_Init_Attribute_Access (Ty_Ext, +Expr)
+                  else Initialized);
             begin
                T := New_Conditional
                  (Condition   =>
@@ -5011,14 +5019,7 @@ package body Gnat2Why.Expr is
          Pred_Check_At_Default : constant Boolean :=
            Default_Initialization (Ty_Ext) /= No_Default_Initialization;
          Init_Flag             : constant W_Pred_Id :=
-           (if Is_Init_Wrapper_Type (Get_Type (+Expr))
-            then +Compute_Is_Initialized
-              (E                       => Ty_Ext,
-               Name                    => +Expr,
-               Ref_Allowed             => Params.Ref_Allowed,
-               Domain                  => EW_Pred,
-               Exclude_Always_Relaxed  => True)
-            else Pred_Of_Boolean_Term (Initialized));
+           Pred_Of_Boolean_Term (Initialized);
          Check_Pred            : constant W_Pred_Id :=
            New_Conditional
              (Condition => Pred_Of_Boolean_Term (Top_Predicate),
@@ -5036,6 +5037,7 @@ package body Gnat2Why.Expr is
 
       begin
          if Typ_Pred /= True_Pred then
+            pragma Assert (not Is_Init_Wrapper_Type (Get_Type (+Expr)));
             T := New_And_Pred (Left  => T,
                                Right => Check_Pred);
          end if;

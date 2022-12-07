@@ -8,8 +8,8 @@ relaxed.adb:29:22: info: assertion proved (CVC5: 1 VC)
 relaxed.adb:29:23: info: pointer dereference check proved (CVC5: 1 VC)
 relaxed.adb:36:36: info: data dependencies proved
 relaxed.adb:38:19: medium: in default value at relaxed.adb:43
-relaxed.adb:38:19: medium: initialization check might fail [possible fix: subprogram at line 36 should mention V'Initialized in a precondition]
-relaxed.adb:45:22: info: assertion proved (CVC5: 1 VC; Trivial: 4 VC)
+relaxed.adb:38:19: medium: initialization check might fail (e.g. when V.X'Initialized = False) [possible fix: subprogram at line 36 should mention V'Initialized in a precondition]
+relaxed.adb:45:22: medium: assertion might fail (e.g. when X.X.X'Initialized = False)
 relaxed.adb:48:36: info: data dependencies proved
 relaxed.adb:50:19: medium: in default value at relaxed.adb:53
 relaxed.adb:50:19: medium: initialization check might fail [possible fix: subprogram at line 48 should mention V'Initialized in a precondition]

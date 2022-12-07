@@ -85,7 +85,10 @@ package Why.Gen.Init is
    function New_Init_Attribute_Access
      (E    : Entity_Id;
       Name : W_Expr_Id) return W_Expr_Id;
-   --  Access the initialization flag of an expression of a wrapper type
+   --  Access the initialization flag of an expression of a wrapper type.
+   --  Name shall be of the init wrapper type of Boolean or E shall be a type
+   --  entity which has a wrapper (simple private type, type with a private
+   --  part or scalar type).
 
    function Get_Init_Id_From_Object
      (Obj         : Entity_Id;

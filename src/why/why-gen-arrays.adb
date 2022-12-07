@@ -840,16 +840,12 @@ package body Why.Gen.Arrays is
             if Relaxed_Init and then Is_Scalar_Type (From_Comp) then
                T_Comp := New_Comparison
                  (Symbol => Why_Eq,
-                  Left   => Compute_Is_Initialized
-                    (E           => From_Comp,
-                     Name        => A_Comp,
-                     Ref_Allowed => False,
-                     Domain      => EW_Term),
-                  Right  => Compute_Is_Initialized
-                    (E           => To_Comp,
-                     Name        => B_Comp,
-                     Ref_Allowed => False,
-                     Domain      => EW_Term),
+                  Left   => New_Init_Attribute_Access
+                    (E    => From_Comp,
+                     Name => A_Comp),
+                  Right  =>  New_Init_Attribute_Access
+                    (E    => To_Comp,
+                     Name => B_Comp),
                   Domain => EW_Pred);
             end if;
 
