@@ -48,6 +48,101 @@ package CE_Values is
       end case;
    end record;
 
+   function Is_Zero (R : Float_Value) return Boolean is
+     (case R.K is
+         when Float_32_K => R.Content_32 = 0.0,
+         when Float_64_K => R.Content_64 = 0.0,
+         when Extended_K => R.Ext_Content = 0.0);
+
+   function Is_First (R : Float_Value) return Boolean is
+     (case R.K is
+         when Float_32_K => R.Content_32 = Float'First,
+         when Float_64_K => R.Content_64 = Long_Float'First,
+         when Extended_K => R.Ext_Content = Long_Long_Float'First);
+
+   function Is_Last (R : Float_Value) return Boolean is
+     (case R.K is
+         when Float_32_K => R.Content_32 = Float'Last,
+         when Float_64_K => R.Content_64 = Long_Float'Last,
+         when Extended_K => R.Ext_Content = Long_Long_Float'Last);
+
+   function Is_Valid (R : Float_Value) return Boolean;
+   --  Return whether R is not NaN or -Inf or +Inf
+
+   function To_Big_Integer (R : Float_Value) return Big_Integer;
+
+   generic
+      with function Oper_Float_32 (R : Float) return Float;
+      with function Oper_Float_64 (R : Long_Float) return Long_Float;
+      with function Oper_Float_Ext (R : Long_Long_Float)
+                                    return Long_Long_Float;
+   function Generic_Unop (R : Float_Value) return Float_Value;
+
+   function Generic_Unop (R : Float_Value) return Float_Value is
+     (case R.K is
+         when Float_32_K =>
+           (Float_32_K, Oper_Float_32 (R.Content_32)),
+         when Float_64_K =>
+           (Float_64_K, Oper_Float_64 (R.Content_64)),
+         when Extended_K =>
+           (Extended_K, Oper_Float_Ext (R.Ext_Content)));
+
+   function "-" is new Generic_Unop ("-", "-", "-");
+   function "abs" is new Generic_Unop ("abs", "abs", "abs");
+   function Succ is
+     new Generic_Unop (Float'Succ, Long_Float'Succ, Long_Long_Float'Succ);
+   function Pred is
+     new Generic_Unop (Float'Pred, Long_Float'Pred, Long_Long_Float'Pred);
+
+   generic
+      with function Oper_Float_32 (L, R : Float) return Float;
+      with function Oper_Float_64 (L, R : Long_Float) return Long_Float;
+      with function Oper_Float_Ext (L, R : Long_Long_Float)
+                                    return Long_Long_Float;
+   function Generic_Binop (L, R : Float_Value) return Float_Value
+   with
+     Pre => L.K = R.K;
+
+   function Generic_Binop (L, R : Float_Value) return Float_Value is
+     (case L.K is
+         when Float_32_K =>
+           (Float_32_K, Oper_Float_32 (L.Content_32, R.Content_32)),
+         when Float_64_K =>
+           (Float_64_K, Oper_Float_64 (L.Content_64, R.Content_64)),
+         when Extended_K =>
+           (Extended_K, Oper_Float_Ext (L.Ext_Content, R.Ext_Content)));
+
+   function "+" is new Generic_Binop ("+", "+", "+");
+   function "-" is new Generic_Binop ("-", "-", "-");
+   function "*" is new Generic_Binop ("*", "*", "*");
+   function "/" is new Generic_Binop ("/", "/", "/");
+   function Min is
+     new Generic_Binop (Float'Min, Long_Float'Min, Long_Long_Float'Min);
+   function Max is
+     new Generic_Binop (Float'Max, Long_Float'Max, Long_Long_Float'Max);
+
+   generic
+      with function Compare_Float_32 (L, R : Float) return Boolean;
+      with function Compare_Float_64 (L, R : Long_Float) return Boolean;
+      with function Compare_Float_Ext (L, R : Long_Long_Float) return Boolean;
+   function Generic_Compare (L, R : Float_Value) return Boolean
+   with
+     Pre => L.K = R.K;
+
+   function Generic_Compare (L, R : Float_Value) return Boolean is
+     (case L.K is
+         when Float_32_K => Compare_Float_32 (L.Content_32, R.Content_32),
+         when Float_64_K => Compare_Float_64 (L.Content_64, R.Content_64),
+         when Extended_K => Compare_Float_Ext (L.Ext_Content, R.Ext_Content));
+
+   function "<" is new Generic_Compare ("<", "<", "<");
+   function "<=" is new Generic_Compare ("<=", "<=", "<=");
+   function ">" is new Generic_Compare (">", ">", ">");
+   function ">=" is new Generic_Compare (">=", ">=", ">=");
+
+   package Conv_Float32 is new Float_Conversions (Float);
+   package Conv_Float64 is new Float_Conversions (Long_Float);
+
    function "=" (V1, V2 : Float_Value) return Boolean;
    --  Equality of floating point values
 
@@ -208,6 +303,9 @@ package CE_Values is
    with
        Pre => V.K = Array_K;
    --  Return the length of the array if its first and last indices exist
+
+   function To_String (V : Float_Value) return String;
+   --  Convert a float value to a string
 
    function To_String (V : Value_Type) return String;
    --  Debug printing for counterexample values
