@@ -1,0 +1,8 @@
+test_simple.adb:8:37: info: initialization of "Error" proved
+test_simple.adb:8:58: medium: initialization check might fail (e.g. when I = 0)
+test_simple.adb:8:58: medium: predicate check might fail (e.g. when I = 0)
+test_simple.adb:10:14: info: postcondition proved (CVC5: 3 VC; Trivial: 5 VC)
+test_simple.adb:19:19: info: predicate check proved (CVC5: 1 VC)
+test_simple.adb:27:36: info: initialization of "Error" proved
+test_simple.adb:29:14: info: postcondition proved (CVC5: 3 VC; Trivial: 7 VC)
+test_simple.adb:38:21: info: predicate check proved (CVC5: 1 VC)

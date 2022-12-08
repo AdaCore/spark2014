@@ -1247,7 +1247,7 @@ package body Gnat2Why.Expr.Loops is
                      declare
                         Cursor_Inv : constant W_Pred_Id :=
                           New_And_Pred
-                            (Left   => Compute_Dynamic_Invariant
+                            (Left   => Compute_Dynamic_Inv_And_Initialization
                                (Expr   => +Iter_Deref,
                                 Ty     => Etype
                                   (Get_Iterable_Type_Primitive

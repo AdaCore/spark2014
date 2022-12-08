@@ -1261,10 +1261,12 @@ package body SPARK_Util is
    --  Start of processing Expr_Has_Relaxed_Init
 
    begin
-      --  Scalar expressions are necessarily initialized as evaluating an
-      --  uninitialized scalar expression is a bounded error.
+      --  Scalar expressions are necessarily initialized as evaluating such an
+      --  expression requires initialization.
+      --  The same holds true for types with predicates if the predicate
+      --  requires initialization.
 
-      if (Has_Scalar_Type (Etype (Expr)) and then not No_Eval)
+      if (Copy_Requires_Init (Etype (Expr)) and then not No_Eval)
         or else (not Has_Relaxed_Init (Etype (Expr))
                  and then not Might_Contain_Relaxed_Init (Etype (Expr)))
       then
@@ -1521,9 +1523,11 @@ package body SPARK_Util is
 
    function Fun_Has_Relaxed_Init (Subp : E_Function_Id) return Boolean is
    begin
-      --  It is illegal to return an uninitialized scalar object
+      --  It is illegal to return an uninitialized object of a scalar type. The
+      --  same holds true for type with predicates if the predicate check
+      --  requires initialization.
 
-      if Is_Scalar_Type (Retysp (Etype (Subp))) then
+      if Copy_Requires_Init (Retysp (Etype (Subp))) then
          return False;
       else
          return Has_Relaxed_Initialization (Subp)
@@ -3752,15 +3756,15 @@ package body SPARK_Util is
       if Ekind (Obj) in E_Discriminant then
          return False;
 
-      --  Parameters of loops may not be initialized if they are not scalar
-      --  objects.
+      --  Parameters of loops which cannot be copied when not initialized are
+      --  always initialized.
 
       elsif Ekind (Obj) = E_Loop_Parameter
         or else
          (Ekind (Obj) = E_Variable
           and then Is_Quantified_Loop_Param (Obj))
       then
-         if Has_Scalar_Type (Etype (Obj)) then
+         if Copy_Requires_Init (Etype (Obj)) then
             return False;
          end if;
 
@@ -3816,15 +3820,18 @@ package body SPARK_Util is
             end if;
          end;
 
-      --  Uninitialized scalar types cannot be copied. A scalar object can
-      --  only be uninitialized if it is either an out parameter or a
-      --  variable without an explicit initial value.
+      --  An object which cannot be copied when not initialized can
+      --  only be uninitialized if it is either an out parameter or a variable
+      --  without an explicit initial value and no default initialization.
 
       elsif (Ekind (Obj) in E_In_Parameter | E_In_Out_Parameter | E_Constant
              or else
                (Ekind (Obj) = E_Variable
-                and then Present (Expression (Enclosing_Declaration (Obj)))))
-        and then Has_Scalar_Type (Etype (Obj))
+                and then
+                  (Present (Expression (Enclosing_Declaration (Obj)))
+                   or else Default_Initialization  (Etype (Obj)) /=
+                     No_Default_Initialization)))
+        and then Copy_Requires_Init (Etype (Obj))
       then
          return False;
 

@@ -26,6 +26,7 @@
 with Common_Containers;           use Common_Containers;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
+with Gnat2Why.Expr;               use Gnat2Why.Expr;
 with SPARK_Atree;                 use SPARK_Atree;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Util;                  use SPARK_Util;
@@ -39,7 +40,6 @@ with Why.Gen.Expr;                use Why.Gen.Expr;
 with Why.Gen.Names;               use Why.Gen.Names;
 with Why.Gen.Progs;               use Why.Gen.Progs;
 with Why.Gen.Records;             use Why.Gen.Records;
-with Why.Gen.Terms;               use Why.Gen.Terms;
 with Why.Images;                  use Why.Images;
 with Why.Inter;                   use Why.Inter;
 with Why.Types;                   use Why.Types;
@@ -53,9 +53,11 @@ package body Why.Gen.Init is
    function Compute_Is_Initialized
      (E                      : Entity_Id;
       Name                   : W_Expr_Id;
-      Ref_Allowed            : Boolean;
+      Params                 : Transformation_Params;
       Domain                 : EW_Domain;
-      Exclude_Always_Relaxed : Boolean := False)
+      Exclude_Always_Relaxed : Boolean := False;
+      No_Predicate_Check     : Boolean := False;
+      Top_Predicate          : W_Term_Id := True_Term)
       return W_Expr_Id
    is
 
@@ -71,7 +73,7 @@ package body Why.Gen.Init is
           else +Compute_Is_Initialized
             (E                      => C_Ty,
              Name                   => +C_Expr,
-             Ref_Allowed            => Ref_Allowed,
+             Params                 => Params,
              Domain                 => EW_Pred,
              Exclude_Always_Relaxed => Exclude_Always_Relaxed));
 
@@ -100,7 +102,7 @@ package body Why.Gen.Init is
             return +Compute_Is_Initialized
               (E                      => C_Ty,
                Name                   => +C_Expr,
-               Ref_Allowed            => Ref_Allowed,
+               Params                 => Params,
                Domain                 => EW_Pred,
                Exclude_Always_Relaxed => Exclude_Always_Relaxed);
          end if;
@@ -113,7 +115,8 @@ package body Why.Gen.Init is
         (Is_Initialized_For_Comp, Is_Initialized_For_Comp,
          Ignore_Private_State => False);
 
-      P   : W_Expr_Id;
+      P   : W_Pred_Id;
+      R   : W_Expr_Id;
       Tmp : constant W_Expr_Id := New_Temp_For_Expr (+Name);
 
    begin
@@ -124,40 +127,87 @@ package body Why.Gen.Init is
 
       if not Get_Relaxed_Init (Get_Type (+Name))
         and then (Has_Scalar_Type (E)
+                  or else Is_Simple_Private_Type (E)
                   or else Exclude_Always_Relaxed
                   or else not Contains_Relaxed_Init_Parts (E))
       then
          return Bool_True (Domain);
       else
 
-         --  Initialization of top level type
+         --  Initialization of types with a top level initialization flag
 
          if Get_Type (+Name) = M_Boolean_Init_Wrapper.Wrapper_Ty
            or else Has_Scalar_Type (E)
+           or else Is_Simple_Private_Type (E)
          then
-            P := +New_Init_Attribute_Access (E, +Name);
-            if Domain = EW_Pred then
-               P := +Pred_Of_Boolean_Term (+P);
-            end if;
-            return P;
+            R := New_Init_Attribute_Access (E, +Name);
 
-         --  Initialization of components
+            if Domain = EW_Pred then
+               R := +Pred_Of_Boolean_Term (+R);
+            end if;
+
+            return R;
+
+         --  Initialization of composite types
 
          elsif Has_Array_Type (E) then
-            P := +Is_Initialized_For_Array (+Tmp, Retysp (E));
+            P := Is_Initialized_For_Array (+Tmp, Retysp (E));
          elsif Is_Record_Type_In_Why (Retysp (E)) then
-            P := +Is_Initialized_For_Record (+Tmp, Retysp (E));
+            P := Is_Initialized_For_Record (+Tmp, Retysp (E));
          else
             raise Program_Error;
          end if;
 
-         P := Boolean_Expr_Of_Pred
+         --  If Expr has an init wrapper type, add the predicate if any.
+         --  Only assume the predicate of the type itself when the top
+         --  predicate should be included. Otherwise, assume the predicate of
+         --  the first ancestor only.
+
+         if not No_Predicate_Check
+           and then Is_Init_Wrapper_Type (Get_Type (+Tmp))
+         then
+            declare
+               Typ_Pred              : constant W_Pred_Id :=
+                 Compute_Dynamic_Predicate
+                   (Insert_Simple_Conversion
+                      (Expr => +Tmp, To => EW_Abstract (Retysp (E))),
+                    Retysp (E), Params);
+               --  Don't use the wrapper type to avoid duplicating the
+               --  initialization checks already performed.
+               Anc_Ty                : constant Entity_Id :=
+                 Retysp (Etype (Retysp (E)));
+               Anc_Typ_Pred          : constant W_Pred_Id :=
+                 (if Anc_Ty = Retysp (E) then True_Pred
+                  else Compute_Dynamic_Predicate
+                    (Insert_Simple_Conversion
+                         (Expr => +Tmp, To => EW_Abstract (Retysp (E))),
+                     Anc_Ty, Params));
+               Check_Pred            : constant W_Pred_Id :=
+                 New_Conditional
+                   (Condition => Pred_Of_Boolean_Term (Top_Predicate),
+                    Then_Part => Typ_Pred,
+                    Else_Part => Anc_Typ_Pred,
+                    Typ       => EW_Bool_Type);
+
+            begin
+               if not Is_True_Boolean (+Typ_Pred) then
+                  P := New_And_Pred (Left  => P,
+                                     Right => Check_Pred);
+               end if;
+            end;
+         end if;
+
+         R := Boolean_Expr_Of_Pred
            (W      => +P,
             Domain => Domain);
 
-         return +Binding_For_Temp (Domain  => Domain,
+         if not Is_True_Boolean (+P) then
+            R := Binding_For_Temp (Domain  => Domain,
                                    Tmp     => Tmp,
-                                   Context => +P);
+                                   Context => R);
+         end if;
+
+         return R;
       end if;
    end Compute_Is_Initialized;
 
@@ -343,7 +393,8 @@ package body Why.Gen.Init is
       E                      : Entity_Id;
       Name                   : W_Expr_Id;
       Domain                 : EW_Domain;
-      Exclude_Always_Relaxed : Boolean := False)
+      Exclude_Always_Relaxed : Boolean := False;
+      No_Predicate_Check     : Boolean := False)
       return W_Expr_Id
    is
       Tmp : constant W_Expr_Id := New_Temp_For_Expr (Name);
@@ -367,8 +418,9 @@ package body Why.Gen.Init is
                  (Ada_Node => Ada_Node,
                   Pred     => +Compute_Is_Initialized
                     (E, +Tmp,
-                     Ref_Allowed            => True,
+                     Params                 => Body_Params,
                      Exclude_Always_Relaxed => Exclude_Always_Relaxed,
+                     No_Predicate_Check     => No_Predicate_Check,
                      Domain                 => EW_Pred),
                   Reason   => VC_Initialization_Check,
                   Kind     => EW_Assert),

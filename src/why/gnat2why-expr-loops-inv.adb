@@ -1118,7 +1118,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                         --  account its initialization if it corresponds to a
                         --  variable taken as input in the current subprogram.
 
-                        2 => Compute_Dynamic_Invariant
+                        2 => Compute_Dynamic_Inv_And_Initialization
                           (Expr        => Expr,
                            Ty          => Etype (N),
                            Params      => Body_Params,
@@ -1136,13 +1136,14 @@ package body Gnat2Why.Expr.Loops.Inv is
                         3 => (if Is_Local_Borrower (N)
                                 and then Status.Kind = Entire_Object
                               then New_And_Pred
-                                (Left   => Compute_Dynamic_Invariant
-                                   (Expr        => New_Deref
-                                        (Right => Brower_Id,
-                                         Typ   => Get_Typ (Brower_Id)),
-                                    Ty          => Etype (N),
-                                    Params      => Body_Params,
-                                    Initialized => True_Term),
+                                (Left   =>
+                                   Compute_Dynamic_Inv_And_Initialization
+                                     (Expr        => New_Deref
+                                          (Right => Brower_Id,
+                                           Typ   => Get_Typ (Brower_Id)),
+                                      Ty          => Etype (N),
+                                      Params      => Body_Params,
+                                      Initialized => True_Term),
                                  Right  => New_Comparison
                                    (Symbol => Why_Eq,
                                     Left   => New_Pointer_Is_Null_Access

@@ -8968,13 +8968,6 @@ package body SPARK_Definition is
       Inserted : Boolean;
 
    begin
-      --  Predicates might apply to subtypes. We do this check even if the base
-      --  type was already analyzed.
-
-      if Has_Predicates (Ty) then
-         Mark_Unsupported (Lim_Relaxed_Init_Predicate, N);
-      end if;
-
       --  Store Rep_Ty in the Relaxed_Init map or update its mapping if
       --  necessary.
 

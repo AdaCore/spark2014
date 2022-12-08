@@ -1,0 +1,86 @@
+test_relaxed_globals.adb:1:11: warning: subprogram "Test_Relaxed_Globals" has no effect
+test_relaxed_globals.adb:14:15: medium: predicate check might fail (e.g. when C = 1)
+test_relaxed_globals.adb:18:33: medium: initialization check might fail (e.g. when G1'Initialized = False) [possible fix: subprogram at line 18 should mention G1 in a precondition]
+test_relaxed_globals.adb:19:06: info: data dependencies proved
+test_relaxed_globals.adb:20:14: info: postcondition proved (CVC5: 1 VC)
+test_relaxed_globals.adb:24:38: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:25:06: info: data dependencies proved
+test_relaxed_globals.adb:27:14: info: postcondition proved (CVC5: 1 VC)
+test_relaxed_globals.adb:32:06: info: data dependencies proved
+test_relaxed_globals.adb:33:14: info: postcondition proved (CVC5: 1 VC)
+test_relaxed_globals.adb:38:06: info: data dependencies proved
+test_relaxed_globals.adb:42:16: info: predicate check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:49:06: info: data dependencies proved
+test_relaxed_globals.adb:50:14: medium: postcondition might fail (e.g. when C = 100 and G1 = 0)
+test_relaxed_globals.adb:50:23: medium: initialization check might fail (e.g. when G1'Initialized = False)
+test_relaxed_globals.adb:54:16: info: predicate check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:61:06: info: data dependencies proved
+test_relaxed_globals.adb:62:14: info: postcondition proved (CVC5: 1 VC)
+test_relaxed_globals.adb:66:16: info: predicate check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:79:60: info: predicate check proved (CVC5: 3 VC)
+test_relaxed_globals.adb:79:62: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:79:67: info: predicate check proved (CVC5: 3 VC)
+test_relaxed_globals.adb:79:69: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:82:15: info: predicate check proved (CVC5: 3 VC)
+test_relaxed_globals.adb:86:33: medium: in inlined predicate at test_relaxed_globals.adb:79
+test_relaxed_globals.adb:86:33: medium: predicate check might fail, cannot prove s2.F'Initialized (e.g. when G2 = (F => ?, G => 0) and G2.F'Initialized = False and G2.G'Initialized = True) [possible fix: subprogram at line 86 should mention G2 in a precondition]
+test_relaxed_globals.adb:87:06: info: data dependencies proved
+test_relaxed_globals.adb:88:14: info: postcondition proved (CVC5: 1 VC)
+test_relaxed_globals.adb:88:26: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:88:43: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:92:38: info: predicate check proved (CVC5: 3 VC)
+test_relaxed_globals.adb:93:06: info: data dependencies proved
+test_relaxed_globals.adb:95:14: info: postcondition proved (CVC5: 1 VC)
+test_relaxed_globals.adb:95:31: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:95:53: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:100:33: medium: in inlined predicate at test_relaxed_globals.adb:79
+test_relaxed_globals.adb:100:33: medium: predicate check might fail, cannot prove s2.F'Initialized (e.g. when H2 = (F => ?, G => 0) and H2.F'Initialized = False and H2.G'Initialized = True) [possible fix: subprogram at line 100 should mention H2 in a precondition]
+test_relaxed_globals.adb:101:06: info: data dependencies proved
+test_relaxed_globals.adb:102:14: info: postcondition proved (CVC5: 1 VC)
+test_relaxed_globals.adb:102:26: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:102:43: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:107:06: info: data dependencies proved
+test_relaxed_globals.adb:111:16: info: predicate check proved (CVC5: 3 VC)
+test_relaxed_globals.adb:118:06: info: data dependencies proved
+test_relaxed_globals.adb:119:14: info: predicate check proved (CVC5: 3 VC)
+test_relaxed_globals.adb:119:14: medium: postcondition might fail (e.g. when G2 = (F => 0, G => 0) and G2.F'Initialized = True and G2.G'Initialized = True)
+test_relaxed_globals.adb:119:16: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:119:21: medium: in inlined predicate at test_relaxed_globals.adb:79
+test_relaxed_globals.adb:119:21: medium: predicate check might fail, cannot prove s2.F'Initialized (e.g. when G2 = (F => ?, G => 0) and G2.F'Initialized = False and G2.G'Initialized = True)
+test_relaxed_globals.adb:119:23: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:123:16: info: predicate check proved (CVC5: 3 VC)
+test_relaxed_globals.adb:131:06: info: data dependencies proved
+test_relaxed_globals.adb:132:14: info: predicate check proved (CVC5: 3 VC)
+test_relaxed_globals.adb:132:14: medium: postcondition might fail (e.g. when H2 = (F => 0, G => 0) and H2.F'Initialized = True and H2.G'Initialized = True)
+test_relaxed_globals.adb:132:16: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:132:21: medium: in inlined predicate at test_relaxed_globals.adb:79
+test_relaxed_globals.adb:132:21: medium: predicate check might fail, cannot prove s2.F'Initialized (e.g. when H2 = (F => ?, G => 0) and H2.F'Initialized = False and H2.G'Initialized = True)
+test_relaxed_globals.adb:132:23: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:136:16: info: predicate check proved (CVC5: 3 VC)
+test_relaxed_globals.adb:149:15: info: predicate check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:153:33: info: initialization check proved (CVC5: 3 VC; Trivial: 4 VC)
+test_relaxed_globals.adb:153:33: medium: initialization check might fail (e.g. when G3 = (F => ?, G => 0) and G3.F'Initialized = False and G3.G'Initialized = True) [possible fix: subprogram at line 153 should mention G3'Initialized in a precondition]
+test_relaxed_globals.adb:153:33: medium: predicate check might fail (e.g. when G3 = (F => 0, G => 0) and G3.F'Initialized = True and G3.G'Initialized = True) [possible fix: subprogram at line 153 should mention G3 in a precondition]
+test_relaxed_globals.adb:154:06: info: data dependencies proved
+test_relaxed_globals.adb:155:14: info: postcondition proved (CVC5: 1 VC)
+test_relaxed_globals.adb:159:38: info: initialization check proved (CVC5: 2 VC; Trivial: 3 VC)
+test_relaxed_globals.adb:159:38: info: initialization check proved (CVC5: 3 VC; Trivial: 4 VC)
+test_relaxed_globals.adb:159:38: info: predicate check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:160:06: info: data dependencies proved
+test_relaxed_globals.adb:162:14: info: postcondition proved (CVC5: 1 VC)
+test_relaxed_globals.adb:167:06: info: data dependencies proved
+test_relaxed_globals.adb:168:14: info: postcondition proved (CVC5: 1 VC)
+test_relaxed_globals.adb:173:06: info: data dependencies proved
+test_relaxed_globals.adb:177:16: info: predicate check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:184:06: info: data dependencies proved
+test_relaxed_globals.adb:185:14: info: initialization check proved (CVC5: 2 VC; Trivial: 3 VC)
+test_relaxed_globals.adb:185:14: info: predicate check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:185:14: medium: postcondition might fail (e.g. when G3 = (F => 0, G => 0) and G3.F'Initialized = True and G3.G'Initialized = True)
+test_relaxed_globals.adb:185:16: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:185:21: medium: initialization check might fail (e.g. when G3 = (F => ?, G => 0) and G3.F'Initialized = False and G3.G'Initialized = True)
+test_relaxed_globals.adb:185:21: medium: predicate check might fail (e.g. when G3 = (F => 0, G => 0) and G3.F'Initialized = True and G3.G'Initialized = True)
+test_relaxed_globals.adb:185:23: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:189:16: info: predicate check proved (CVC5: 1 VC)
+test_relaxed_globals.adb:196:06: info: data dependencies proved
+test_relaxed_globals.adb:197:14: info: postcondition proved (CVC5: 1 VC)
+test_relaxed_globals.adb:201:16: info: predicate check proved (CVC5: 1 VC)

@@ -987,7 +987,7 @@ package body Gnat2Why.Subprograms is
                                       Typ   => Get_Typ (Self_Name))
                         else +Self_Name);
                      Dyn_Prop  : constant W_Pred_Id :=
-                       Compute_Dynamic_Invariant
+                       Compute_Dynamic_Inv_And_Initialization
                          (Expr             => +Self_Expr,
                           Ty               => Ada_Type,
                           Params           => Params,
@@ -1009,7 +1009,7 @@ package body Gnat2Why.Subprograms is
                Ada_Type : constant Node_Id :=
                  Get_Ada_Type_From_Item (Func_Why_Binders (I));
                Dyn_Prop : constant W_Pred_Id :=
-                 Compute_Dynamic_Invariant
+                 Compute_Dynamic_Inv_And_Initialization
                    (Expr             =>
                       +Transform_Identifier
                       (Params => Params,
@@ -1311,13 +1311,13 @@ package body Gnat2Why.Subprograms is
                     else Etype (Ada_Node))
                else Empty);
             Dyn_Prop : constant W_Pred_Id :=
-              (if Present (Ty_Node)  then
-                    Compute_Dynamic_Invariant (Expr     => +Expr,
-                                               Ty       => Ty_Node,
-                                               Params   => Params,
-                                               Only_Var => False_Term)
-               else
-                  True_Pred);
+              (if Present (Ty_Node)
+               then Compute_Dynamic_Inv_And_Initialization
+                 (Expr     => +Expr,
+                  Ty       => Ty_Node,
+                  Params   => Params,
+                  Only_Var => False_Term)
+               else True_Pred);
          begin
             if No (Ada_Node) then
                declare
@@ -3701,21 +3701,49 @@ package body Gnat2Why.Subprograms is
                B : constant Item_Type :=
                  Ada_Ent_To_Why.Element (Symbol_Table, Param);
             begin
-               if B.Init.Present then
-                  pragma Assert (Ekind (Param) = E_Out_Parameter);
-                  Append
-                    (Checks,
-                     New_Located_Assert
-                       (Ada_Node => Param,
-                        Pred     => Pred_Of_Boolean_Term
-                          (New_Deref (Right => B.Init.Id,
-                                      Typ   => EW_Bool_Type)),
-                        Reason   => VC_Initialization_Check,
-                        Kind     => EW_Assert));
+               if Ekind (Param) = E_Out_Parameter
+                 and then Obj_Has_Relaxed_Init (Param)
+               then
+                  if B.Init.Present then
+                     Append
+                       (Checks,
+                        New_Located_Assert
+                          (Ada_Node => Param,
+                           Pred     => Pred_Of_Boolean_Term
+                             (New_Deref (Right => B.Init.Id,
+                                         Typ   => Get_Typ (B.Init.Id))),
+                           Reason   => VC_Initialization_Check,
+                           Kind     => EW_Assert));
+
+                  elsif Has_Scalar_Full_View (Etype (Param)) then
+                     Append
+                       (Checks,
+                        New_Located_Assert
+                          (Ada_Node => Param,
+                           Pred     => +Compute_Is_Initialized
+                             (E                      => Etype (Param),
+                              Name                   => +Reconstruct_Item
+                                (B, Body_Params.Ref_Allowed),
+                              Params                 => Body_Params,
+                              Domain                 => EW_Pred,
+                              Exclude_Always_Relaxed => True),
+                           Reason   => VC_Initialization_Check,
+                           Kind     => EW_Assert));
+
+                  elsif Has_Predicates (Etype (Param)) then
+                     Append
+                       (Checks,
+                        New_Predicate_Check
+                          (Ada_Node => Param,
+                           W_Expr   => +Reconstruct_Item
+                             (B, Body_Params.Ref_Allowed),
+                           Ty       => Etype (Param)));
+                  end if;
                end if;
             end;
             Next_Formal (Param);
          end loop;
+
          return Checks;
       end Check_Init_Of_Out_Params;
 
@@ -3809,13 +3837,14 @@ package body Gnat2Why.Subprograms is
                declare
                   Include_Type_Inv : constant W_Term_Id :=
                     Include_Non_Local_Type_Inv_For_Subp (E);
-                  Dyn_Prop         : W_Pred_Id := Compute_Dynamic_Invariant
-                    (Expr             => New_Deref
-                       (Right => Result_Name,
-                        Typ   => Get_Typ (Result_Name)),
-                     Ty               => Etype (E),
-                     Params           => Params,
-                     Include_Type_Inv => Include_Type_Inv);
+                  Dyn_Prop         : W_Pred_Id :=
+                    Compute_Dynamic_Inv_And_Initialization
+                      (Expr             => New_Deref
+                         (Right => Result_Name,
+                          Typ   => Get_Typ (Result_Name)),
+                       Ty               => Etype (E),
+                       Params           => Params,
+                       Include_Type_Inv => Include_Type_Inv);
 
                begin
                   --  For borrowing traversal functions, add the dynamic
@@ -3833,14 +3862,14 @@ package body Gnat2Why.Subprograms is
                           New_And_Pred
                             (Conjuncts =>
                                (1 => Dyn_Prop,
-                                2 => Compute_Dynamic_Invariant
+                                2 => Compute_Dynamic_Inv_And_Initialization
                                   (Expr             => New_Deref
                                        (Right => Brower_At_End,
                                         Typ   => Get_Typ (Brower_At_End)),
                                    Ty               => Etype (E),
                                    Params           => Params,
                                    Include_Type_Inv => Include_Type_Inv),
-                                3 => Compute_Dynamic_Invariant
+                                3 => Compute_Dynamic_Inv_And_Initialization
                                   (Expr             => +Borrowed_At_End,
                                    Ty               => Etype
                                      (First_Formal (E)),
@@ -5189,7 +5218,7 @@ package body Gnat2Why.Subprograms is
 
          Dynamic_Prop_Result : constant W_Pred_Id :=
            +New_And_Then_Expr
-           (Left   => +Compute_Dynamic_Invariant
+           (Left   => +Compute_Dynamic_Inv_And_Initialization
               (Expr             => +New_Result_Ident (Why_Type),
                Ty               => Etype (E),
                Only_Var         => False_Term,
@@ -5993,7 +6022,7 @@ package body Gnat2Why.Subprograms is
                & Compute_Args (E, Func_Why_Binders);
             Dynamic_Prop_Result : constant W_Pred_Id :=
               +New_And_Then_Expr
-              (Left   => +Compute_Dynamic_Invariant
+              (Left   => +Compute_Dynamic_Inv_And_Initialization
                  (Expr             => +New_Result_Ident (Why_Type),
                   Ty               => Etype (E),
                   Only_Var         => False_Term,
@@ -7121,7 +7150,7 @@ package body Gnat2Why.Subprograms is
                    (1 => New_Trigger (Terms => (1 => +Borrowed_Call)))),
             Pred      => New_Conditional
               (Condition => New_And_Pred
-                   (Left   => Compute_Dynamic_Invariant
+                   (Left   => Compute_Dynamic_Inv_And_Initialization
                         (Expr   => +Brower_At_End,
                          Ty     => Brower_Ty,
                          Params => Params),

@@ -1546,7 +1546,6 @@ package body Why.Gen.Expr is
            Relaxed_Init => Is_Init_Wrapper_Type (From)
               and Is_Init_Wrapper_Type (To)
               and not Need_Pred_Check);
-      pragma Assert (not Has_Relaxed_Init (R) or else not Need_Pred_Check);
       --  If To has predicate, the check must be done on initialized values
 
    begin

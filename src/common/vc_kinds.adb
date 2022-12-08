@@ -728,9 +728,6 @@ package body VC_Kinds is
          when Lim_Relaxed_Init_Part_Of_Variable =>
            "a variable annotated both with Relaxed_Initialization and as "
           & "Part_Of a concurrent object",
-         when Lim_Relaxed_Init_Predicate =>
-           "a type annotated with a subtype predicate used as a subcomponent"
-          & " of a type or an object annotated with Relaxed_Initialization",
          when Lim_Relaxed_Init_Protected_Component =>
            "a protected component annotated with Relaxed_Initialization",
          when Lim_Relaxed_Init_Tagged_Type =>

@@ -257,7 +257,9 @@ package Gnat2Why.Expr is
       return W_Pred_Id;
    --  @param Expr Why3 expression on which to express the dynamic invariant
    --  @param Ty type of expression [Expr]
-   --  @param Initialized true term iff Expr is known to be initialized
+   --  @param Initialized true term iff Expr is known to be initialized. If
+   --     Expr has an initialization wrapper type, then Initialized is not
+   --     used.
    --  @param Only_Var true term iff the dynamic invariant should only consider
    --     the variable parts of [Expr].
    --  @param Top_Predicate true term iff the dynamic invariant should consider
@@ -294,6 +296,21 @@ package Gnat2Why.Expr is
    --    they are also in the local scope.
    --  @param Expand_Incompl true if dynamic predicates for values of
    --    incomplete types should be expanded.
+
+   function Compute_Dynamic_Inv_And_Initialization
+     (Expr             : W_Term_Id;
+      Ty               : Type_Kind_Id;
+      Params           : Transformation_Params;
+      Initialized      : W_Term_Id := True_Term;
+      Only_Var         : W_Term_Id := True_Term;
+      Top_Predicate    : W_Term_Id := True_Term;
+      Include_Type_Inv : W_Term_Id := True_Term)
+      return W_Pred_Id;
+   --  Same as Compute_Dynamic_Invariant but also add the initialization if
+   --  Expr is an initialization wrapper type and Initialized is true.
+   --  @param Initialized true term iff Expr is known to be initialized. If
+   --     Expr has an initialization wrapper type, then should only be True if
+   --     Expr is at least partially Initialized.
 
    function Compute_Is_Moved_Property
      (Expr     : W_Term_Id;
@@ -497,10 +514,11 @@ package Gnat2Why.Expr is
           (Choices, Choice_Type, +Matched_Expr, EW_Pred, Params));
 
    function Transform_Expr
-     (Expr          : N_Subexpr_Id;
-      Expected_Type : W_Type_Id;
-      Domain        : EW_Domain;
-      Params        : Transformation_Params)
+     (Expr           : N_Subexpr_Id;
+      Expected_Type  : W_Type_Id;
+      Domain         : EW_Domain;
+      Params         : Transformation_Params;
+      No_Pred_Checks : Boolean := False)
       return W_Expr_Id;
    --  Compute an expression in Why having the expected type for the given Ada
    --  expression node. The formal "Domain" decides if we return a predicate,
@@ -508,20 +526,24 @@ package Gnat2Why.Expr is
    --  for example in the context of a program (whether the domain is EW_Prog
    --  for program text or EW_Pred/EW_Term for contract). If Ref_Allowed is
    --  False, then references are not allowed, for example in the context of an
-   --  axiom or a logic function definition.
+   --  axiom or a logic function definition. If No_Pred_Checks is False,
+   --  predicate checks will be emitted on expressions annotated with
+   --  Relaxed_Initialization.
 
    function Transform_Prog
-     (Expr          : N_Subexpr_Id;
-      Expected_Type : W_Type_Id;
-      Params        : Transformation_Params;
-      Checks        : Boolean := True)
+     (Expr           : N_Subexpr_Id;
+      Expected_Type  : W_Type_Id;
+      Params         : Transformation_Params;
+      Checks         : Boolean := True;
+      No_Pred_Checks : Boolean := False)
       return W_Prog_Id
    is
      (+Transform_Expr
         (Expr,
          Expected_Type,
          (if Checks then EW_Prog else EW_Pterm),
-         Params));
+         Params,
+         No_Pred_Checks));
 
    function Transform_Term
      (Expr          : N_Subexpr_Id;
@@ -540,22 +562,25 @@ package Gnat2Why.Expr is
      (+Transform_Expr (Expr, Expected_Type, EW_Pred, Params));
 
    function Transform_Expr
-     (Expr   : N_Subexpr_Id;
-      Domain : EW_Domain;
-      Params : Transformation_Params)
+     (Expr           : N_Subexpr_Id;
+      Domain         : EW_Domain;
+      Params         : Transformation_Params;
+      No_Pred_Checks : Boolean := False)
       return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 
    function Transform_Prog
-     (Expr   : N_Subexpr_Id;
-      Params : Transformation_Params;
-      Checks : Boolean := True)
+     (Expr           : N_Subexpr_Id;
+      Params         : Transformation_Params;
+      Checks         : Boolean := True;
+      No_Pred_Checks : Boolean := False)
       return W_Prog_Id
    is
      (+Transform_Expr
         (Expr,
          (if Checks then EW_Prog else EW_Pterm),
-         Params));
+         Params,
+         No_Pred_Checks));
 
    function Transform_Term
      (Expr   : N_Subexpr_Id;

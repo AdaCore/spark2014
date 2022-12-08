@@ -311,6 +311,12 @@ package SPARK_Util.Types is
    --  access type or a private type annotated with ownership which needs
    --  reclamation (and these subcomponents are not in a constant part of Typ).
 
+   function Copy_Requires_Init (Typ : Type_Kind_Id) return Boolean;
+   --  Uninitialized scalar objects cannot be copied. As a result, once
+   --  initialized, they can never be uninitialized again. The same holds
+   --  true for types with predicates if the predicate check requires
+   --  initialization.
+
    function Contains_Relaxed_Init_Parts
      (Typ        : Type_Kind_Id;
       Ignore_Top : Boolean := False)
@@ -334,6 +340,14 @@ package SPARK_Util.Types is
    --  Returns True if Typ has subcomponents whose type may be used for
    --  expressions with relaxed initialization but is not itself annotated with
    --  relaxed initialization.
+
+   function Has_Scalar_Full_View (Typ : Type_Kind_Id) return Boolean;
+   --  Returns True if initialization checks are required when reading/writing
+   --  values of type T even if they are annotated with Relaxed_Initialization.
+   --  This is true for scalar types, as it is a bounded error to copy
+   --  uninitialized scalar values, and private types whose full view is not in
+   --  SPARK if they are ultimately scalars. It is also True for private types
+   --  with predicates not in SPARK.
 
    function Num_Literals (Ty : Enumeration_Kind_Id) return Positive;
    --  Returns the number of literals for an enumeration type
@@ -365,6 +379,17 @@ package SPARK_Util.Types is
      with Pre => not Is_Concurrent_Type (Retysp (Ty));
    --  Return True if the predefined equality of Ty uses the predefined
    --  equality on access types.
+
+   function Predicate_Requires_Initialization
+     (Ty : Type_Kind_Id) return Boolean
+   with Pre => Has_Predicates (Ty);
+   --  Return True if Ty has a predicate which requires an initialization
+   --  check. For now, we consider that all predicates require initialization
+   --  checks unless they are defined on a type annotated with
+   --  Relaxed_Initialization. We could decide to extend it to not check
+   --  initialization when the predicate does not reference the current type
+   --  instance or if it only references its bounds or discriminants (see
+   --  Check_DIC_At_Declaration to mutualize the checks).
 
    function Acts_As_Incomplete_Type (Ty : Type_Kind_Id) return Boolean;
    --  Return True if Ty is is handled as an incomplete type to decide whether

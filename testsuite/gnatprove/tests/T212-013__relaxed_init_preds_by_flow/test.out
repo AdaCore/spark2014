@@ -1,31 +1,72 @@
-test_pred_on_array.adb:3:09: error: subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
-test_pred_on_array.adb:4:29: error: subtype of "Integer" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
-test_pred_on_array.adb:4:29: error: violation of aspect SPARK_Mode at line 1
-test_pred_on_array.adb:4:34: error: subtype of "Integer" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
-test_pred_on_array.adb:4:34: error: violation of aspect SPARK_Mode at line 1
-test_pred_on_array.adb:4:49: error: "E_Arr" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
-test_pred_on_array.adb:4:49: error: violation of aspect SPARK_Mode at line 1
-test_pred_on_array.adb:8:57: error: "E_Arr" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
-test_pred_on_array.adb:8:57: error: violation of aspect SPARK_Mode at line 1
-test_pred_on_array.adb:11:04: warning: analyzing unreferenced procedure "P1"
-test_pred_on_array.adb:17:04: warning: analyzing unreferenced procedure "P2"
-test_pred_on_array.adb:20:07: error: subtype of "E_Arr" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
-test_pred_on_array.adb:20:07: error: violation of aspect SPARK_Mode at line 1
-test_pred_on_array.adb:24:09: error: subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
-test_pred_on_array.adb:27:17: error: "E_Rec" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
-test_pred_on_array.adb:27:17: error: violation of aspect SPARK_Mode at line 1
-test_pred_on_array.adb:27:34: error: "E_Rec" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
-test_pred_on_array.adb:27:34: error: violation of aspect SPARK_Mode at line 1
-test_pred_on_array.adb:27:51: error: "E_Rec" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
-test_pred_on_array.adb:27:51: error: violation of aspect SPARK_Mode at line 1
-test_pred_on_array.adb:31:22: error: "E_Rec" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
-test_pred_on_array.adb:31:22: error: violation of aspect SPARK_Mode at line 1
-test_pred_on_array.adb:31:41: error: "E_Rec" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
-test_pred_on_array.adb:31:41: error: violation of aspect SPARK_Mode at line 1
-test_pred_on_array.adb:31:60: error: "E_Rec" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
-test_pred_on_array.adb:31:60: error: violation of aspect SPARK_Mode at line 1
-test_pred_on_array.adb:34:04: warning: analyzing unreferenced procedure "P3"
-test_pred_on_array.adb:40:04: warning: analyzing unreferenced procedure "P4"
-test_pred_on_array.adb:43:07: error: "E_Rec" is not allowed in SPARK (due to subtype predicate on a type used as a subcomponent of a type or an object annotated with relaxed initialization)
-test_pred_on_array.adb:43:07: error: violation of aspect SPARK_Mode at line 1
-gnatprove: error during flow analysis and proof
+test_pred_on_array.adb:4:34: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:4:56: info: index check proved (CVC5: 2 VC)
+test_pred_on_array.adb:6:36: info: data dependencies proved
+test_pred_on_array.adb:8:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+test_pred_on_array.adb:8:25: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:8:41: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:8:60: info: index check proved (CVC5: 2 VC)
+test_pred_on_array.adb:11:18: warning: unused variable "A"
+test_pred_on_array.adb:11:37: info: data dependencies proved
+test_pred_on_array.adb:12:07: info: range check proved (CVC5: 2 VC)
+test_pred_on_array.adb:14:13: medium: predicate check might fail (e.g. when X'First = 1 and X'Last = 1)
+test_pred_on_array.adb:17:18: medium: predicate check might fail
+test_pred_on_array.adb:17:18: warning: unused variable "X"
+test_pred_on_array.adb:17:38: info: data dependencies proved
+test_pred_on_array.adb:22:17: warning: unused variable "A"
+test_pred_on_array.adb:22:49: info: data dependencies proved
+test_pred_on_array.adb:23:07: info: range check proved (CVC5: 2 VC)
+test_pred_on_array.adb:25:14: medium: predicate check might fail (e.g. when X'First = 1 and X'Last = 1)
+test_pred_on_array.adb:28:18: warning: unused variable "A"
+test_pred_on_array.adb:28:37: info: data dependencies proved
+test_pred_on_array.adb:29:07: info: range check proved (CVC5: 2 VC)
+test_pred_on_array.adb:31:07: info: predicate check proved (Z3: 1 VC)
+test_pred_on_array.adb:31:10: info: index check proved (CVC5: 2 VC)
+test_pred_on_array.adb:32:13: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:35:17: warning: unused variable "A"
+test_pred_on_array.adb:35:49: info: data dependencies proved
+test_pred_on_array.adb:36:07: info: range check proved (CVC5: 2 VC)
+test_pred_on_array.adb:38:07: info: predicate check proved (Z3: 1 VC)
+test_pred_on_array.adb:38:10: info: index check proved (CVC5: 2 VC)
+test_pred_on_array.adb:39:14: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:42:18: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:43:06: info: data dependencies proved
+test_pred_on_array.adb:44:18: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:44:18: medium: predicate check might fail [possible fix: precondition of subprogram at line 42 should mention X'Length or X'First or X'Last]
+test_pred_on_array.adb:47:07: info: predicate check proved (Z3: 1 VC)
+test_pred_on_array.adb:47:10: info: index check proved (CVC5: 2 VC)
+test_pred_on_array.adb:55:36: info: data dependencies proved
+test_pred_on_array.adb:57:22: info: assertion proved (CVC5: 1 VC)
+test_pred_on_array.adb:60:22: info: data dependencies proved
+test_pred_on_array.adb:63:13: medium: predicate check might fail (e.g. when X.X'Initialized = False and X.Y'Initialized = False and X.Z'Initialized = False)
+test_pred_on_array.adb:66:18: medium: predicate check might fail
+test_pred_on_array.adb:66:18: warning: unused variable "X"
+test_pred_on_array.adb:66:38: info: data dependencies proved
+test_pred_on_array.adb:71:34: info: data dependencies proved
+test_pred_on_array.adb:74:14: medium: predicate check might fail (e.g. when X.X'Initialized = False and X.Y'Initialized = False and X.Z'Initialized = False)
+test_pred_on_array.adb:77:22: info: data dependencies proved
+test_pred_on_array.adb:80:08: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:81:13: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:84:18: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:84:38: info: data dependencies proved
+test_pred_on_array.adb:86:08: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:89:34: info: data dependencies proved
+test_pred_on_array.adb:92:08: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:93:14: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:100:37: info: data dependencies proved
+test_pred_on_array.adb:102:22: info: assertion proved (Trivial: 1 VC)
+test_pred_on_array.adb:105:22: info: data dependencies proved
+test_pred_on_array.adb:108:13: medium: initialization check might fail (e.g. when X'Initialized = False)
+test_pred_on_array.adb:111:18: medium: initialization check might fail [possible fix: add or complete related loop invariants or postconditions]
+test_pred_on_array.adb:111:18: warning: unused variable "X"
+test_pred_on_array.adb:111:39: info: data dependencies proved
+test_pred_on_array.adb:116:35: info: data dependencies proved
+test_pred_on_array.adb:119:14: medium: initialization check might fail (e.g. when X'Initialized = False)
+test_pred_on_array.adb:122:22: info: data dependencies proved
+test_pred_on_array.adb:125:12: info: predicate check proved (Trivial: 1 VC)
+test_pred_on_array.adb:126:13: info: initialization check proved (CVC5: 1 VC)
+test_pred_on_array.adb:129:18: info: initialization check proved (CVC5: 1 VC)
+test_pred_on_array.adb:129:39: info: data dependencies proved
+test_pred_on_array.adb:131:12: info: predicate check proved (Trivial: 1 VC)
+test_pred_on_array.adb:134:35: info: data dependencies proved
+test_pred_on_array.adb:137:12: info: predicate check proved (Trivial: 1 VC)
+test_pred_on_array.adb:138:14: info: initialization check proved (CVC5: 1 VC)

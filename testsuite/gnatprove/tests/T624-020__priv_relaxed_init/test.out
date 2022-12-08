@@ -12,7 +12,7 @@ init_wrapper_simple.adb:34:07: warning: assuming "Init" always returns
 init_wrapper_simple.adb:34:07: warning: assuming "Init" has no effect on global items
 init_wrapper_simple.adb:34:07: warning: no Global contract available for "Init"
 init_wrapper_simple.adb:34:07: warning: no returning annotation available for "Init"
-init_wrapper_simple.adb:35:22: info: assertion proved (CVC5: 2 VC; Trivial: 7 VC)
+init_wrapper_simple.adb:35:22: info: assertion proved (CVC5: 2 VC; Trivial: 5 VC)
 init_wrapper_simple.adb:36:07: warning: assuming "Init" always returns
 init_wrapper_simple.adb:36:07: warning: assuming "Init" has no effect on global items
 init_wrapper_simple.adb:36:07: warning: no Global contract available for "Init"

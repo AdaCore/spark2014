@@ -274,6 +274,17 @@ package body SPARK_Util.Types is
    function Retysp_Kind (T : Type_Kind_Id) return Type_Kind is
      (Ekind (Retysp (T)));
 
+   --------------------------
+   -- Has_Scalar_Full_View --
+   --------------------------
+
+   function Has_Scalar_Full_View (Typ : Type_Kind_Id) return Boolean is
+      Full_View : constant Type_Kind_Id := Unchecked_Full_Type (Typ);
+   begin
+      return Is_Scalar_Type (Full_View)
+        or else (Full_View_Not_In_SPARK (Typ) and then Has_Predicates (Typ));
+   end Has_Scalar_Full_View;
+
    ------------------------------------
    -- Has_Unconstrained_UU_Component --
    ------------------------------------
@@ -773,6 +784,15 @@ package body SPARK_Util.Types is
       end if;
    end Contains_Only_Relaxed_Init;
 
+   ------------------------
+   -- Copy_Requires_Init --
+   ------------------------
+
+   function Copy_Requires_Init (Typ : Type_Kind_Id) return Boolean is
+     (Has_Scalar_Full_View (Typ)
+      or else (Has_Predicates (Typ)
+        and then Predicate_Requires_Initialization (Typ)));
+
    ---------------------------------------
    -- Count_Non_Inherited_Discriminants --
    ---------------------------------------
@@ -1243,10 +1263,19 @@ package body SPARK_Util.Types is
                null;
             else
                if Entity_In_SPARK (Pred_Fun) then
-                  Process_Pred_Expression
-                    (Type_Instance   => First_Formal (Pred_Fun),
-                     Pred_Expression => Get_Expr_From_Return_Only_Func
-                       (Pred_Fun));
+                  declare
+                     Expr : constant Node_Id := Get_Expr_From_Return_Only_Func
+                       (Pred_Fun);
+                  begin
+                     --  Ignore predicates which are inherited from parents,
+                     --  they will be traversed too.
+
+                     if not Is_Predicate_Function_Call (Expr) then
+                        Process_Pred_Expression
+                          (Type_Instance   => First_Formal (Pred_Fun),
+                           Pred_Expression => Expr);
+                     end if;
+                  end;
                end if;
 
                --  Go directly to the first type on which the predicate applies
@@ -1562,6 +1591,48 @@ package body SPARK_Util.Types is
          return False;
       end if;
    end Predefined_Eq_Uses_Pointer_Eq;
+
+   ---------------------------------------
+   -- Predicate_Requires_Initialization --
+   ---------------------------------------
+
+   function Predicate_Requires_Initialization
+     (Ty : Type_Kind_Id) return Boolean
+   is
+      Found : exception;
+
+      procedure Requires_Initialization
+        (Type_Instance   : Formal_Kind_Id;
+         Pred_Expression : Node_Id);
+      --  Raise Found if the predicate requires an initialization check. For
+      --  now, we consider that all predicates require initialization checks
+      --  unless they are defined on a type annotated with
+      --  Relaxed_Initialization.
+
+      -----------------------------
+      -- Requires_Initialization --
+      -----------------------------
+
+      procedure Requires_Initialization
+        (Type_Instance   : Formal_Kind_Id;
+         Pred_Expression : Node_Id)
+      is
+         pragma Unreferenced (Pred_Expression);
+      begin
+         if not Has_Relaxed_Init (Etype (Type_Instance)) then
+            raise Found;
+         end if;
+      end Requires_Initialization;
+
+      procedure One_Predicate_Requires_Initialization is new
+        Iterate_Applicable_Predicates (Requires_Initialization);
+   begin
+      One_Predicate_Requires_Initialization (Ty);
+      return False;
+   exception
+      when Found =>
+         return True;
+   end Predicate_Requires_Initialization;
 
    ---------------------------------------
    -- Private_Declarations_Of_Task_Type --

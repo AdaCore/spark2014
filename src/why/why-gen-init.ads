@@ -29,6 +29,7 @@ with Types;                    use Types;
 with Why.Atree.Accessors;      use Why.Atree.Accessors;
 with Why.Atree.Modules;        use Why.Atree.Modules;
 with Why.Conversions;          use Why.Conversions;
+with Why.Gen.Terms;            use Why.Gen.Terms;
 with Why.Ids;                  use Why.Ids;
 with Why.Sinfo;                use Why.Sinfo;
 
@@ -64,9 +65,11 @@ package Why.Gen.Init is
    function Compute_Is_Initialized
      (E                      : Entity_Id;
       Name                   : W_Expr_Id;
-      Ref_Allowed            : Boolean;
+      Params                 : Transformation_Params;
       Domain                 : EW_Domain;
-      Exclude_Always_Relaxed : Boolean := False)
+      Exclude_Always_Relaxed : Boolean := False;
+      No_Predicate_Check     : Boolean := False;
+      Top_Predicate          : W_Term_Id := True_Term)
       return W_Expr_Id;
    --  Whether Name is initialized. This does not only include the top level
    --  initialization flag of E but also the flags of nested components for
@@ -81,6 +84,13 @@ package Why.Gen.Init is
    --  these parts which do not have a type with relaxed initialization. This
    --  happens for example when storing the expression in an object of its
    --  type, or when giving it as a parameter to a function call.
+   --  For init wrappers of composite types, Is_Initialized will include a
+   --  predicate check if any. If No_Predicate_Check is True, then the
+   --  predicate of the type itself will not be included. Predicates of
+   --  subcomponents are still considered.
+   --  Top_Predicate is used to only assume the inherited predicates on
+   --  the parameter of the predicate function of a type annotated with
+   --  Relaxed_Initialization.
 
    function New_Init_Attribute_Access
      (E    : Entity_Id;
@@ -101,7 +111,8 @@ package Why.Gen.Init is
       E                      : Entity_Id;
       Name                   : W_Expr_Id;
       Domain                 : EW_Domain;
-      Exclude_Always_Relaxed : Boolean := False)
+      Exclude_Always_Relaxed : Boolean := False;
+      No_Predicate_Check     : Boolean := False)
       return W_Expr_Id;
    --  If Domain = EW_Prog, insert a check that Name is initialized
 
