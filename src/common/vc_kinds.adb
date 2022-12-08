@@ -716,6 +716,9 @@ package body VC_Kinds is
          when Lim_Relaxed_Init_Access_Type =>
            "an access type used as a subcomponent of a type or"
           & " an object annotated with Relaxed_Initialization",
+         when Lim_Relaxed_Init_Aliasing =>
+            "an object annotated with Relaxed_Initialization"
+          & " is part of an overlay",
          when Lim_Relaxed_Init_Concurrent_Type =>
            "a concurrent type used as a subcomponent of a type or"
           & " an object annotated with Relaxed_Initialization",

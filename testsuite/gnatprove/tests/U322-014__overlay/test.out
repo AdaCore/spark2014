@@ -5,10 +5,5 @@ init.adb:4:32: info: types of aliased objects have the same size (Trivial)
 init.adb:9:14: info: division check proved (CVC5: 1 VC)
 init.adb:13:04: info: precondition proved (Trivial: 1 VC)
 init.adb:13:07: high: "X" is not initialized
-init_relax.adb:4:04: info: alignment of overlaid objects is compatible (Trivial)
-init_relax.adb:4:04: info: object is suitable for aliasing via address clause (Trivial)
-init_relax.adb:4:32: info: object is suitable for aliasing via address clause (Trivial)
-init_relax.adb:4:32: info: types of aliased objects have the same size (Trivial)
-init_relax.adb:4:32: medium: initialization check might fail
-init_relax.adb:9:14: info: division check proved (CVC5: 1 VC)
-init_relax.adb:13:04: info: precondition proved (Trivial: 1 VC)
+init_relax.adb:4:04: error: relaxed initialization on overlaid objects is not yet supported
+gnatprove: error during flow analysis and proof

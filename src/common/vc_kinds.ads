@@ -445,6 +445,7 @@ package VC_Kinds is
       Lim_Protected_Operation_Of_Formal,
       Lim_Refined_Post_On_Entry,
       Lim_Relaxed_Init_Access_Type,
+      Lim_Relaxed_Init_Aliasing,
       Lim_Relaxed_Init_Concurrent_Type,
       Lim_Relaxed_Init_Invariant,
       Lim_Relaxed_Init_Part_Of_Variable,
@@ -694,6 +695,8 @@ package VC_Kinds is
          when Lim_Relaxed_Init_Access_Type =>
            "access type used as a subcomponent of a type or"
           & " an object annotated with relaxed initialization",
+         when Lim_Relaxed_Init_Aliasing =>
+           "relaxed initialization on overlaid objects",
          when Lim_Relaxed_Init_Concurrent_Type =>
            "concurrent type used as a subcomponent of a type or"
           & " an object annotated with relaxed initialization",
