@@ -3469,7 +3469,6 @@ package body Gnat2Why.Subprograms is
    ---------------------------------
 
    procedure Generate_VCs_For_Subprogram (E : Callable_Kind_Id) is
-      Body_N : constant Node_Id := Get_Body (E);
 
       function Assume_For_Input return W_Prog_Id;
       --  Generate assumptions for dynamic types used in the program. An
@@ -3640,11 +3639,12 @@ package body Gnat2Why.Subprograms is
               and then Entity_Body_In_SPARK (E)
             then
                declare
-                  Params : constant Transformation_Params :=
+                  Params  : constant Transformation_Params :=
                     (Phase       => Generate_Contract_For_Body,
                      Gen_Marker  => GM_None,
                      Ref_Allowed => True,
                      Old_Policy  => Use_Map);
+                  Body_N  : constant Node_Id := Get_Body (E);
                   Barrier : constant Node_Id := Entry_Body_Barrier (Body_N);
                begin
                   Pre :=
@@ -4152,11 +4152,12 @@ package body Gnat2Why.Subprograms is
 
          if Is_Entry (E) then
             declare
-               Params : constant Transformation_Params :=
+               Params  : constant Transformation_Params :=
                  (Phase       => Generate_Contract_For_Body,
                   Gen_Marker  => GM_None,
                   Ref_Allowed => True,
                   Old_Policy  => Use_Map);
+               Body_N  : constant Node_Id := Get_Body (E);
                Barrier : constant Node_Id := Entry_Body_Barrier (Body_N);
             begin
                Pre :=
@@ -4216,11 +4217,6 @@ package body Gnat2Why.Subprograms is
 
       Result_Var : W_Prog_Id;
 
-      Raise_Stmt : constant W_Prog_Id :=
-        New_Raise
-          (Ada_Node => Body_N,
-           Name     => M_Main.Return_Exc);
-
       Precondition_Is_Statically_False  : Boolean := False;
       Postcondition_Is_Statically_False : Boolean := False;
 
@@ -4263,7 +4259,7 @@ package body Gnat2Why.Subprograms is
 
          Result_Var :=
            New_Deref
-             (Ada_Node => Body_N,
+             (Ada_Node => E,
               Right    => Result_Name,
               Typ      => Type_Of_Node (E));
       else
@@ -4401,64 +4397,106 @@ package body Gnat2Why.Subprograms is
          end if;
       end if;
 
-      if Entity_Body_In_SPARK (E) then
+      --  If the subprogram is annotated with a variant but flow analysis
+      --  does not see that it is recursive, raise a warning.
 
-         --  If the subprogram is annotated with a variant but flow analysis
-         --  does not see that it is recursive, raise a warning.
+      if Entity_Body_In_SPARK (E)
+        and then Present (Get_Pragma (E, Pragma_Subprogram_Variant))
+        and then not Is_Recursive (E)
+      then
+         Error_Msg_F (Warning_Message (Warn_Variant_Not_Recursive),
+                      Get_Pragma (E, Pragma_Subprogram_Variant));
+      end if;
 
-         if Present (Get_Pragma (E, Pragma_Subprogram_Variant))
-           and then not Is_Recursive (E)
-         then
-            Error_Msg_F (Warning_Message (Warn_Variant_Not_Recursive),
-                         Get_Pragma (E, Pragma_Subprogram_Variant));
-         end if;
+      --  For expression functions, the body is not marked. Retrieve the
+      --  expression directly.
 
-         Get_Pre_Post_Pragmas
-           (Get_Flat_Statement_And_Declaration_List
-              (Declarations (Body_N)));
+      if Is_Expression_Function_Or_Completion (E)
+        and then Entity_Body_In_SPARK (E)
+      then
+         declare
+            Expr       : constant Node_Id :=
+              Expression (Get_Expression_Function (E));
 
-         Get_Borrows_From_Decls (Declarations (Body_N), Borrowers);
+         begin
+            Why_Body :=
+              Sequence
+                ((1 => Check_Ceiling_Protocol (Body_Params, E),
+                  2 => Transform_Simple_Return_Expression
+                    (Expr, E, Type_Of_Node (E))));
 
-         Why_Body :=
-           Sequence
-             ((1 => Check_Ceiling_Protocol (Body_Params, E),
-               2 => Transform_Declarations (Declarations (Body_N)),
-               3 => Transform_Statements_And_Declarations
-                 (Statements
-                   (Handled_Statement_Sequence (Body_N))),
-               4 => Raise_Stmt));
+            Why_Body := Checking_Of_Refined_Post (Why_Body);
 
-         --  Enclose the subprogram body in a try-block, so that return
-         --  statements can be translated as raising exceptions.
+            --  Check type invariants on subprogram's ouput, absence of runtime
+            --  errors in Post and RTE + validity of contract cases, and
+            --  Inline_For_Proof/Logical_Equal annotation.
 
-         Why_Body := Try_Block (Why_Body);
+            Why_Body := Sequence
+              ((1 => Why_Body,
+                2 => Check_Invariants_Of_Outputs,
+                3 => CC_And_RTE_Post,
+                4 => Check_Inline_Annotation,
+                5 => Result_Var));
+         end;
 
-         --  Check pragmas Precondition and Postcondition in the body of the
-         --  subprogram as plain assertions.
+      --  Regular subprogram with body in SPARK
 
-         Why_Body := Sequence
-           ((1 => Transform_All_Pragmas
-                    (Pre_Prags, "checking of pragma precondition"),
-             2 => Why_Body,
-             3 => Havoc_Borrowed_Expressions (Borrowers),
-             4 => Check_No_Memory_Leaks_At_End_Of_Scope
-                    (Declarations (Body_N)),
-             5 => Transform_All_Pragmas
-                    (Post_Prags, "checking of pragma postcondition")));
+      elsif Entity_Body_In_SPARK (E) then
+         declare
+            Body_N     : constant Node_Id := Get_Body (E);
+            Raise_Stmt : constant W_Prog_Id :=
+              New_Raise
+                (Ada_Node => Body_N,
+                 Name     => M_Main.Return_Exc);
 
-         Why_Body := Checking_Of_Refined_Post (Why_Body);
+         begin
+            Get_Pre_Post_Pragmas
+              (Get_Flat_Statement_And_Declaration_List
+                 (Declarations (Body_N)));
 
-         --  Check type invariants on subprogram's ouput, absence of runtime
-         --  errors in Post and RTE + validity of contract cases, and
-         --  Inline_For_Proof/Logical_Equal annotation.
+            Get_Borrows_From_Decls (Declarations (Body_N), Borrowers);
 
-         Why_Body := Sequence
-           ((1 => Why_Body,
-             2 => Check_Init_Of_Out_Params,
-             3 => Check_Invariants_Of_Outputs,
-             4 => CC_And_RTE_Post,
-             5 => Check_Inline_Annotation,
-             6 => Result_Var));
+            Why_Body :=
+              Sequence
+                ((1 => Check_Ceiling_Protocol (Body_Params, E),
+                  2 => Transform_Declarations (Declarations (Body_N)),
+                  3 => Transform_Statements_And_Declarations
+                    (Statements
+                       (Handled_Statement_Sequence (Body_N))),
+                  4 => Raise_Stmt));
+
+            --  Enclose the subprogram body in a try-block, so that return
+            --  statements can be translated as raising exceptions.
+
+            Why_Body := Try_Block (Why_Body);
+
+            --  Check pragmas Precondition and Postcondition in the body of the
+            --  subprogram as plain assertions.
+
+            Why_Body := Sequence
+              ((1 => Transform_All_Pragmas
+                (Pre_Prags, "checking of pragma precondition"),
+                2 => Why_Body,
+                3 => Havoc_Borrowed_Expressions (Borrowers),
+                4 => Check_No_Memory_Leaks_At_End_Of_Scope
+                  (Declarations (Body_N)),
+                5 => Transform_All_Pragmas
+                  (Post_Prags, "checking of pragma postcondition")));
+
+            Why_Body := Checking_Of_Refined_Post (Why_Body);
+
+            --  Check type invariants on subprogram's ouput, absence of runtime
+            --  errors in Post and RTE + validity of contract cases, and
+            --  Inline_For_Proof/Logical_Equal annotation.
+
+            Why_Body := Sequence
+              ((1 => Why_Body,
+                2 => Check_Init_Of_Out_Params,
+                3 => Check_Invariants_Of_Outputs,
+                4 => CC_And_RTE_Post,
+                5 => Check_Inline_Annotation,
+                6 => Result_Var));
+         end;
 
       --  Body is not in SPARK
 
