@@ -4920,22 +4920,17 @@ package body SPARK_Util is
          --------------------------
 
          function Is_In_Statement_List (N : Node_Id) return Boolean is
-            P : Node_Id;
          begin
-            if not Is_List_Member (N) then
-               return False;
-            else
-               P := Parent (N);
-               return Nkind (P) in N_Case_Statement_Alternative
-                                 | N_Elsif_Part
-                                 | N_If_Statement
-                                 | N_Handled_Sequence_Of_Statements
-                                 | N_Block_Statement
-                                 | N_Subprogram_Body
-                                 | N_Entry_Body
-                                 | N_Loop_Statement
-                                 | N_Extended_Return_Statement;
-            end if;
+            return Is_List_Member (N)
+              and then Nkind (Parent (N)) in N_Case_Statement_Alternative
+                                           | N_Elsif_Part
+                                           | N_If_Statement
+                                           | N_Handled_Sequence_Of_Statements
+                                           | N_Block_Statement
+                                           | N_Subprogram_Body
+                                           | N_Entry_Body
+                                           | N_Loop_Statement
+                                           | N_Extended_Return_Statement;
          end Is_In_Statement_List;
 
          function First_Parent_In_Statement_List is new
