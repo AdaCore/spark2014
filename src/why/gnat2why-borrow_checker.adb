@@ -769,6 +769,11 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_Pragma (Prag : Node_Id);
 
+   procedure Check_Simple_Return_Expression
+     (Expr : N_Subexpr_Id;
+      Subp : Entity_Id);
+   --  Check a simple return statement with an expression Expr
+
    procedure Check_Statement (Stmt : Node_Id);
 
    function Get_Expl (N : Expr_Or_Ent) return Node_Id;
@@ -1506,8 +1511,6 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_Callable_Body (Id : Entity_Id) is
       Save_In_Elab    : constant Boolean := Inside_Elaboration;
-      Body_N          : constant Node_Id := Get_Body (Id);
-
       Saved_Env       : Perm_Env;
       Saved_Borrowers : Variable_Mapping;
       Saved_Observers : Variable_Mapping;
@@ -1539,15 +1542,32 @@ package body Gnat2Why.Borrow_Checker is
          Setup_Protected_Components (Id);
       end if;
 
-      --  Analyze the body of the subprogram
+      --  Analyze the body of the subprogram. For expression function,
+      --  do not use the body which might not have been marked. Instead,
+      --  get the expression and simulate a single return statement.
 
-      Check_List (Declarations (Body_N));
+      if Is_Expression_Function_Or_Completion (Id) then
+         declare
+            Expr : constant Node_Id := Expression
+              (Get_Expression_Function (Id));
 
-      if Ekind (Id) in Subprogram_Kind | Entry_Kind | Task_Kind then
-         Check_Node (Handled_Statement_Sequence (Body_N));
+         begin
+            Check_Simple_Return_Expression (Expr, Id);
+            Return_Globals (Id);
+         end;
+      else
+         declare
+            Body_N : constant Node_Id := Get_Body (Id);
+         begin
+            Check_List (Declarations (Body_N));
+
+            if Ekind (Id) in Subprogram_Kind | Entry_Kind | Task_Kind then
+               Check_Node (Handled_Statement_Sequence (Body_N));
+            end if;
+
+            Check_End_Of_Scope (Declarations (Body_N));
+         end;
       end if;
-
-      Check_End_Of_Scope (Declarations (Body_N));
 
       --  Check the read-write permissions of borrowed parameters/globals
 
@@ -3708,6 +3728,68 @@ package body Gnat2Why.Borrow_Checker is
       end case;
    end Check_Pragma;
 
+   ------------------------------------
+   -- Check_Simple_Return_Expression --
+   ------------------------------------
+
+   procedure  Check_Simple_Return_Expression
+     (Expr : N_Subexpr_Id;
+      Subp : Entity_Id)
+   is
+      Return_Typ : constant Entity_Id := Etype (Expr);
+
+   begin
+      --  SPARK RM 3.10(6): A return statement that applies to a traversal
+      --  function that has an anonymous access-to-constant (respectively,
+      --  access-to-variable) result type, shall return either the literal null
+      --  or an access object denoted by a direct or indirect observer
+      --  (respectively, borrower) of the traversed parameter.
+      --
+      --  ??? We could possibly allow case and if expressions returning paths
+      --  rooted at the right variable. TBD when we know how to support them in
+      --  proof.
+      --  ??? Should we move that to marking? Do we need this check for flow
+      --  analysis?
+
+      if Is_Anonymous_Access_Object_Type (Return_Typ) then
+         if Nkind (Expr) /= N_Null then
+            declare
+               Param : constant Entity_Id :=
+                 First_Formal (Subp);
+               Root  : Entity_Id := Get_Root_Object (Expr);
+
+            begin
+               while Root /= Param loop
+                  if Get (Current_Observers, Root) /= Empty then
+                     Root := Get_Root_Object
+                       (Get (Current_Observers, Root));
+                  elsif Get (Current_Borrowers, Root) /= Empty
+                  then
+                     Root := Get_Root_Object
+                       (Get (Current_Borrowers, Root));
+                  else
+                     Error_Msg_NE
+                       ("return value of a traversal function "
+                        & "should be rooted at &", Expr, Param);
+                     Permission_Error := True;
+                     exit;
+                  end if;
+               end loop;
+            end;
+         end if;
+
+      --  Otherwise, if the return type is deep, we have a move
+
+      elsif Is_Deep (Return_Typ) then
+         pragma Assert (Is_Path_Expression (Expr));
+
+         Check_Expression (Expr, Move);
+
+      else
+         Check_Expression (Expr, Read);
+      end if;
+   end Check_Simple_Return_Expression;
+
    ---------------------
    -- Check_Statement --
    ---------------------
@@ -3868,63 +3950,7 @@ package body Gnat2Why.Borrow_Checker is
                end if;
 
                if Present (Expr) then
-                  declare
-                     Return_Typ : constant Entity_Id :=
-                       Etype (Expr);
-
-                  begin
-                     --  SPARK RM 3.10(6): A return statement that applies
-                     --  to a traversal function that has an anonymous
-                     --  access-to-constant (respectively, access-to-variable)
-                     --  result type, shall return either the literal null
-                     --  or an access object denoted by a direct or indirect
-                     --  observer (respectively, borrower) of the traversed
-                     --  parameter.
-                     --
-                     --  ??? We could possibly allow case and if expressions
-                     --  returning paths rooted at the right variable. TBD when
-                     --  we know how to support them in proof.
-                     --  ??? Should we move that to marking? Do we need this
-                     --  check for flow analysis?
-
-                     if Is_Anonymous_Access_Object_Type (Return_Typ) then
-                        if Nkind (Expr) /= N_Null then
-                           declare
-                              Param : constant Entity_Id :=
-                                First_Formal (Subp);
-                              Root : Entity_Id := Get_Root_Object (Expr);
-
-                           begin
-                              while Root /= Param loop
-                                 if Get (Current_Observers, Root) /= Empty then
-                                    Root := Get_Root_Object
-                                      (Get (Current_Observers, Root));
-                                 elsif Get (Current_Borrowers, Root) /= Empty
-                                 then
-                                    Root := Get_Root_Object
-                                      (Get (Current_Borrowers, Root));
-                                 else
-                                    Error_Msg_NE
-                                      ("return value of a traversal function "
-                                       & "should be rooted at &", Expr, Param);
-                                    Permission_Error := True;
-                                    exit;
-                                 end if;
-                              end loop;
-                           end;
-                        end if;
-
-                     --  Otherwise, if the return type is deep, we have a move
-
-                     elsif Is_Deep (Return_Typ) then
-                        pragma Assert (Is_Path_Expression (Expr));
-
-                        Check_Expression (Expr, Move);
-
-                     else
-                        Check_Expression (Expr, Read);
-                     end if;
-                  end;
+                  Check_Simple_Return_Expression (Expr, Subp);
                end if;
 
                Check_End_Of_Scopes
