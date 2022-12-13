@@ -24,14 +24,17 @@
 ------------------------------------------------------------------------------
 
 with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Directories;
 with Ada.Exceptions;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
-with GNAT.Expect; use GNAT.Expect;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Cache_Client;
+with Filecache_Client;
+with GNAT.Expect;      use GNAT.Expect;
+with GNAT.OS_Lib;      use GNAT.OS_Lib;
 with GNAT.SHA1;
-with GNAT.Sockets; use GNAT.Sockets;
-with GNATCOLL.JSON; use GNATCOLL.JSON;
+with GNAT.Sockets;     use GNAT.Sockets;
+with GNATCOLL.JSON;    use GNATCOLL.JSON;
 with GNATCOLL.Mmap;
 with Memcache_Client;
 
@@ -68,7 +71,7 @@ is
    --  @return the key to be used for this invocation of the wrapper in the
    --    memcached table
 
-   function Init_Client return Memcache_Client.Cache_Connection;
+   function Init_Client return Cache_Client.Cache'Class;
    --  @return a connection to the memcached server specified by the first
    --    command line argument
 
@@ -138,7 +141,7 @@ is
    -- Init_Client --
    -----------------
 
-   function Init_Client return Memcache_Client.Cache_Connection is
+   function Init_Client return Cache_Client.Cache'Class is
       Info  : String renames Argument (2);
       Colon : constant Natural :=
         Ada.Strings.Fixed.Index (Info, ":");
@@ -153,19 +156,29 @@ is
               "is hostname:portnumber, but no colon was found");
       end if;
       declare
-         Hostname : String renames Info (Info'First .. Colon - 1);
-         Port     : constant Port_Type :=
-           Port_Type'Value (Info (Colon + 1 .. Info'Last));
-
+         First  : String renames Info (Info'First .. Colon - 1);
+         Second : String renames Info (Colon + 1 .. Info'Last);
       begin
-         if Port = No_Port then
-            Report_Error (Wrong_Port_Msg);
+         if First'Length = 4 and then First = "file" then
+            if not Ada.Directories.Exists (Second) then
+               Report_Error ("file caching: no such directory: " & Second);
+            end if;
+            return Filecache_Client.Init (Second);
          else
-            return Memcache_Client.Init (Hostname, Port);
+            declare
+               Port     : constant Port_Type :=
+                 Port_Type'Value (Info (Colon + 1 .. Info'Last));
+            begin
+               if Port = No_Port then
+                  Report_Error (Wrong_Port_Msg);
+               else
+                  return Memcache_Client.Init (First, Port);
+               end if;
+            exception
+               when Constraint_Error => Report_Error (Wrong_Port_Msg);
+            end;
          end if;
       end;
-   exception
-      when Constraint_Error => Report_Error (Wrong_Port_Msg);
    end Init_Client;
 
    ------------------
@@ -216,10 +229,10 @@ begin
    --  in the scope of the exception handler below.
 
    declare
-      Cache : Memcache_Client.Cache_Connection := Init_Client;
+      Cache : Cache_Client.Cache'Class := Init_Client;
 
       Key : constant String := Compute_Key;
-      Msg : constant String := Memcache_Client.Get (Cache, Key);
+      Msg : constant String := Cache.Get (Key);
       Status : aliased Integer := 0;
    begin
       if Msg'Length /= 0 then
@@ -248,13 +261,13 @@ begin
                --  them.
 
                if Status = 0 or else Cmd /= "gnatwhy3" then
-                  Memcache_Client.Set (Cache, Key, Msg);
+                  Cache.Set (Key, Msg);
                end if;
                Ada.Text_IO.Put_Line (Msg);
             end;
          end;
       end if;
-      Memcache_Client.Close (Cache);
+      Cache.Close;
       GNAT.OS_Lib.OS_Exit (Status);
    end;
 exception

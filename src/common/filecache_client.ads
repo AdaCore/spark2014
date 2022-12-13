@@ -2,11 +2,11 @@
 --                                                                          --
 --                            GNATPROVE COMPONENTS                          --
 --                                                                          --
---                       M E M C A C H E _ C L I E N T                      --
+--                      F I L E C A C H E _ C L I E N T                     --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2017-2022, AdaCore                     --
+--                        Copyright (C) 2022, AdaCore                       --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -24,45 +24,29 @@
 ------------------------------------------------------------------------------
 
 with Cache_Client; use Cache_Client;
-with GNAT.Sockets; use GNAT.Sockets;
+with GNAT.OS_Lib;  use GNAT.OS_Lib;
 
-package Memcache_Client is
+package Filecache_Client is
 
-   --  Package that handles a connection and communication with a memcached
-   --  server. Currently, only simple get and set operations are supported.
+   --  Package that implements a simple key/value cache using the file
+   --  system. See the Cache_Client package for comments on the Set/Get/Close
+   --  subprograms.
 
-   type Cache_Connection is new Cache with private;
+   type Filecache is new Cache with private;
 
-   function Init (Hostname : String;
-                  Port     : Port_Type) return Cache_Connection;
-   --  @param Hostname hostname or IP address of a memcached server
-   --  @param Port     port to connect to
-   --  @return a connection object that can be used with the below get/set
-   --    functions
+   function Init (Dir : String) return Filecache;
+   --  Create the file cache in directory Dir.
 
-   overriding procedure Set (Conn  : Cache_Connection;
-                  Key   : String;
-                  Value : String);
-   --  @param Conn a connection object to a memcached server
-   --  @param Key the key for the data to be stored
-   --  @param Value the value to be cached
+   overriding procedure Set (Conn : Filecache; Key : String; Value : String);
 
-   overriding function Get (Conn : Cache_Connection;
-                            Key  : String) return String;
-   --  @param Conn a connection object to a memcached server
-   --  @param Key the key for the data to be retrieved
-   --  @return the value stored in the server for Key or empty if no value is
-   --    stored
+   overriding function Get (Conn : Filecache; Key : String) return String;
 
-   overriding procedure Close (Conn : in out Cache_Connection);
-   --  @param Conn the connection to be closed
+   overriding procedure Close (Conn : in out Filecache);
 
 private
 
-   type Cache_Connection is new Cache with
-      record
-         Sock   : Socket_Type;
-         Stream : Stream_Access;
-      end record;
+   type Filecache is new Cache with record
+      Dir : String_Access;
+   end record;
 
-end Memcache_Client;
+end Filecache_Client;

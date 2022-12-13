@@ -451,13 +451,26 @@ from the Command Line` for more details on this command line option.
 Sharing Proof Results Via a Memcached Server
 --------------------------------------------
 
-|GNATprove| can cache and share results between distinct runs of the tool,
-even across several computers, via a Memcached server. To use this feature, you
-need to setup a memcached server (see https://memcached.org/) on your network
-or on your local machine. Then, if you add the option
-``--memcached-server=hostname:portnumber`` to your invocation of gnatprove (or
-use the ``Switches`` Attribute of the ``Prove`` Package of your project file),
-then caching will be used, and speedups should be observed in many cases.
+|GNATprove| can cache and share results between distinct runs of the tool. This
+feature can be enabled using the ``--memcached-server`` switch. This switch
+accepts two arguments separated by a colon, and there are two different forms:
+
+  * The switch is of the form ``--memcached-server=file:<directory>,``, that
+    is, the part before the colon is the string ``file``, and the part after it
+    is a directory that exists.
+  * The switch is of the form ``--memcached-server=<hostname>:<portnumber>``,
+    with the hostname being different from "file".
+
+If the switch is of the first form, |GNATprove| uses the specified directory to
+store results between runs of the tool. Note that this directory will tend to
+grow over time and should be deleted and recreated from time to time.
+
+If the switch is of the second form, |GNATprove| will attempt to connect to a
+Memcached server (see https://memcached.org/) located at the specified hostname
+and port, to cache intermediate results between runs.
+
+In both cases, significant speedups can be observed after the cache is filled
+with an initial |GNATprove| run.
 
 .. index:: assumptions
            --assumptions

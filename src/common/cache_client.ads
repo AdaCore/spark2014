@@ -2,11 +2,11 @@
 --                                                                          --
 --                            GNATPROVE COMPONENTS                          --
 --                                                                          --
---                       M E M C A C H E _ C L I E N T                      --
+--                          C A C H E _ C L I E N T                         --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2017-2022, AdaCore                     --
+--                         Copyright (C) 2022, AdaCore                      --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,46 +23,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Cache_Client; use Cache_Client;
-with GNAT.Sockets; use GNAT.Sockets;
+package Cache_Client is
 
-package Memcache_Client is
+   type Cache is abstract tagged null record;
+   --  Abstract type to represent a key/value cache.
 
-   --  Package that handles a connection and communication with a memcached
-   --  server. Currently, only simple get and set operations are supported.
+   procedure Set (Conn : Cache; Key : String; Value : String) is abstract;
+   --  Procedure to set the value of "Key" to "Value".
 
-   type Cache_Connection is new Cache with private;
+   function Get (Conn : Cache; Key : String) return String is abstract;
+   --  Function to retrieve the value of "Key". If the key wasn't set
+   --  previously, this function is intended to return the empty string.
 
-   function Init (Hostname : String;
-                  Port     : Port_Type) return Cache_Connection;
-   --  @param Hostname hostname or IP address of a memcached server
-   --  @param Port     port to connect to
-   --  @return a connection object that can be used with the below get/set
-   --    functions
+   procedure Close (Conn : in out Cache) is abstract;
+   --  Procedure to release any resources associated with the cache
 
-   overriding procedure Set (Conn  : Cache_Connection;
-                  Key   : String;
-                  Value : String);
-   --  @param Conn a connection object to a memcached server
-   --  @param Key the key for the data to be stored
-   --  @param Value the value to be cached
-
-   overriding function Get (Conn : Cache_Connection;
-                            Key  : String) return String;
-   --  @param Conn a connection object to a memcached server
-   --  @param Key the key for the data to be retrieved
-   --  @return the value stored in the server for Key or empty if no value is
-   --    stored
-
-   overriding procedure Close (Conn : in out Cache_Connection);
-   --  @param Conn the connection to be closed
-
-private
-
-   type Cache_Connection is new Cache with
-      record
-         Sock   : Socket_Type;
-         Stream : Stream_Access;
-      end record;
-
-end Memcache_Client;
+end Cache_Client;
