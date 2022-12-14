@@ -524,10 +524,10 @@ gnatprove may output:
 Complete List of Assumptions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For the sake of these assumptions, we define a *statically known address
+For the sake of these assumptions, we define a *precisely supported address
 specification* to be an address clause or aspect whose expression is a
 reference to the Address attribute on a part of a standalone object or
-constant. Otherwise, the address clause or aspect is a *statically unknown
+constant. Otherwise, the address clause or aspect is an *imprecisely supported
 address specification*.
 
 The following assumptions need to be addressed when using SPARK on all or part
@@ -541,7 +541,7 @@ of a program:
 * [SPARK_EXTERNAL]
   The modeling of :ref:`Interfaces to the Physical World` needs to be reviewed
   for objects whose value may be modified concurrently, when the address of the
-  object is specified through a statically unknown address specification.
+  object is specified through an imprecisely supported address specification.
 
   * They should be `effectively volatile` in SPARK (see SPARK RM 7.1.2), so
     that GNATprove takes into account possible concurrent changes in the
@@ -553,8 +553,13 @@ of a program:
   * They should have specified all necessary :ref:`Properties of Volatile
     Variables` corresponding to their usage.
 
+  When the address of the object is specified through a precisely supported
+  address specification, a warning is guaranteed to be issued in problematic
+  cases (if there is a mismatch in volatile status, atomic status or volatile
+  properties between overlaid and overlaying objects).
+
 * [SPARK_ALIASING_ADDRESS]
-  Aliases between objects annotated with a statically unknown address
+  Aliases between objects annotated with an imprecisely supported address
   specification are ignored by GNATprove. Reviews are necessary
   to ensure that:
 
@@ -585,8 +590,8 @@ of a program:
 
 * [SPARK_EXTERNAL_VALID]
   Values read from objects whose address is specified are assumed to be valid
-  values. This assumption is limited to objects annotated with a
-  statically unknown address specification (because an explicit check is
+  values. This assumption is limited to objects annotated with an
+  imprecisely supported address specification (because an explicit check is
   emitted otherwise). Currently there is no model of invalidity or
   undefinedness. The onus is on the user to ensure that all values read from an
   external source are valid. The use of an invalid value invalidates any proofs
@@ -845,15 +850,15 @@ being available:
   Subprograms which are called across the boundary of those units analyzed
   together should have a Global contract describing their effect on global
   data, otherwise they will be assumed to have no effect on global data.
-  A warning is issued in that case.
+  A warning is guaranteed to be issued in that case.
 
 * [PARTIAL_TERMINATION]
   Subprograms which are called across the boundary of those units analyzed
   together should be annotated to specify that they will always return (with
   annotation Always_Return), might not return (with annotation
   Might_Not_Return) or never return (with aspect or pragma No_Return),
-  otherwise they will be assumed to always return.  A warning is issued in that
-  case.
+  otherwise they will be assumed to always return.  A warning is guaranteed to
+  be issued in that case.
 
 * [PARTIAL_RECURSIVE_SUBPROGRAMS]
   Subprograms which are called across the boundary of those units analyzed
