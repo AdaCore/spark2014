@@ -78,11 +78,11 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
          In_Out_Relaxed (Default);  --@INIT_BY_PROOF:FAIL
          In_Out_Relaxed (Default);  --@INIT_BY_PROOF:PASS
 
-      --  No checks when reading a value initialized at declaration
+      --  Checks pass when reading a value initialized at declaration
 
       elsif R = 1 then
-         In_Out_Relaxed (Init);  --@INIT_BY_PROOF:NONE
-         In_Out_Relaxed (Init);  --@INIT_BY_PROOF:NONE
+         In_Out_Relaxed (Init);  --@INIT_BY_PROOF:PASS
+         In_Out_Relaxed (Init);  --@INIT_BY_PROOF:PASS
 
          --  Uninitialized value cannot be copied
 
@@ -157,10 +157,10 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
       Default : Priv_Scalar with Relaxed_Initialization;
 
    begin
-      --  No check when reading a default value
+      --  Check pass when reading a default value
 
       if R = 0 then
-         In_Out_Relaxed (Default);  --@INIT_BY_PROOF:NONE
+         In_Out_Relaxed (Default);  --@INIT_BY_PROOF:PASS
       end if;
    end Test_Private_Scalar_Init;
 
@@ -245,11 +245,11 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
          In_Out_Relaxed (Default);  --@INIT_BY_PROOF:FAIL
          In_Out_Relaxed (Default);  --@INIT_BY_PROOF:PASS
 
-      --  No checks when reading a value initialized at declaration
+      --  Checks pass when reading a value initialized at declaration
 
       elsif R = 1 then
-         In_Out_Relaxed (Init);  --@INIT_BY_PROOF:NONE
-         In_Out_Relaxed (Init);  --@INIT_BY_PROOF:NONE
+         In_Out_Relaxed (Init);  --@INIT_BY_PROOF:PASS
+         In_Out_Relaxed (Init);  --@INIT_BY_PROOF:PASS
 
          --  Uninitialized value cannot be copied
 
@@ -323,10 +323,10 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
       Default : Priv_Scalar with Relaxed_Initialization;
 
    begin
-      --  No check when reading a default value
+      --  Checks pass when reading a default value
 
       if R = 0 then
-         In_Out_Relaxed (Default);  --@INIT_BY_PROOF:NONE
+         In_Out_Relaxed (Default);  --@INIT_BY_PROOF:PASS
       end if;
    end Test_Private_Scalar_Init_Ownership;
 
@@ -411,11 +411,11 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
          In_Out_Relaxed (Default);  --@INIT_BY_PROOF:FAIL
          In_Out_Relaxed (Default);  --@INIT_BY_PROOF:PASS
 
-      --  No checks when reading a value initialized at declaration
+      --  Checks pass when reading a value initialized at declaration
 
       elsif R = 1 then
-         In_Out_Relaxed (Init);  --@INIT_BY_PROOF:NONE
-         In_Out_Relaxed (Init);  --@INIT_BY_PROOF:NONE
+         In_Out_Relaxed (Init);  --@INIT_BY_PROOF:PASS
+         In_Out_Relaxed (Init);  --@INIT_BY_PROOF:PASS
 
          --  Uninitialized value cannot be copied
 
@@ -488,10 +488,10 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
       Default : Priv_With_Pred with Relaxed_Initialization;
 
    begin
-      --  No check when reading a default value
+      --  Checks pass when reading a default value
 
       if R = 0 then
-         In_Out_Relaxed (Default);  --@INIT_BY_PROOF:NONE
+         In_Out_Relaxed (Default);  --@INIT_BY_PROOF:PASS
       end if;
    end Test_Private_Predicate_Init;
 

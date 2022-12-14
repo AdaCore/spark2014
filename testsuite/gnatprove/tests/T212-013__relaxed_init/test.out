@@ -86,6 +86,7 @@ test_init_by_proof_mem.adb:32:10: warning: no returning annotation available for
 test_init_by_proof_mem.adb:33:22: info: assertion proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:34:22: info: assertion proved (Trivial)
 test_init_by_proof_mem.adb:35:22: info: assertion proved (CVC5: 2 VC)
+test_init_by_proof_mem.adb:35:22: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:36:10: warning: assuming "Branch" always returns
 test_init_by_proof_mem.adb:36:10: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_mem.adb:36:10: warning: no Global contract available for "Branch"

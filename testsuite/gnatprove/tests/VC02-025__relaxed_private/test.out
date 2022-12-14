@@ -9,8 +9,11 @@ relaxed_private.adb:42:29: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:78:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:78:26: medium: initialization check might fail
 relaxed_private.adb:79:26: info: initialization check proved (CVC5: 1 VC)
+relaxed_private.adb:84:26: info: initialization check proved (CVC5: 1 VC)
+relaxed_private.adb:85:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:89:18: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:89:18: medium: initialization check might fail
+relaxed_private.adb:94:21: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:95:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:96:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:102:26: info: initialization check proved (CVC5: 1 VC)
@@ -20,6 +23,7 @@ relaxed_private.adb:127:22: info: initialization check proved (CVC5: 2 VC; Trivi
 relaxed_private.adb:133:22: medium: initialization check might fail [possible fix: call at line 132 should mention X'Initialized (for argument Comp) in a postcondition]
 relaxed_private.adb:139:14: warning: subprogram "Test_Private_Scalar_Init" has no effect
 relaxed_private.adb:140:07: info: no contextual analysis of "Test_Private_Scalar_Init" (nested package declaration)
+relaxed_private.adb:163:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:169:14: warning: subprogram "Test_Private_Scalar_Ownership" has no effect
 relaxed_private.adb:170:07: info: no contextual analysis of "Test_Private_Scalar_Ownership" (nested package declaration)
 relaxed_private.adb:194:23: medium: initialization check might fail
@@ -30,8 +34,11 @@ relaxed_private.adb:209:29: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:245:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:245:26: medium: initialization check might fail
 relaxed_private.adb:246:26: info: initialization check proved (CVC5: 1 VC)
+relaxed_private.adb:251:26: info: initialization check proved (CVC5: 1 VC)
+relaxed_private.adb:252:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:256:18: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:256:18: medium: initialization check might fail
+relaxed_private.adb:261:21: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:262:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:263:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:269:26: info: initialization check proved (CVC5: 1 VC)
@@ -41,6 +48,7 @@ relaxed_private.adb:294:22: info: initialization check proved (CVC5: 2 VC; Trivi
 relaxed_private.adb:300:22: medium: initialization check might fail [possible fix: call at line 299 should mention X'Initialized (for argument Comp) in a postcondition]
 relaxed_private.adb:304:14: warning: subprogram "Test_Private_Scalar_Init_Ownership" has no effect
 relaxed_private.adb:305:07: info: no contextual analysis of "Test_Private_Scalar_Init_Ownership" (nested package declaration)
+relaxed_private.adb:329:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:335:14: warning: subprogram "Test_Private_Predicate" has no effect
 relaxed_private.adb:336:07: info: no contextual analysis of "Test_Private_Predicate" (nested package declaration)
 relaxed_private.adb:360:23: medium: initialization check might fail
@@ -51,8 +59,11 @@ relaxed_private.adb:375:29: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:411:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:411:26: medium: initialization check might fail
 relaxed_private.adb:412:26: info: initialization check proved (CVC5: 1 VC)
+relaxed_private.adb:417:26: info: initialization check proved (CVC5: 1 VC)
+relaxed_private.adb:418:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:422:18: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:422:18: medium: initialization check might fail
+relaxed_private.adb:427:21: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:428:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:429:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:435:26: info: initialization check proved (CVC5: 1 VC)
@@ -62,6 +73,7 @@ relaxed_private.adb:460:22: info: initialization check proved (CVC5: 2 VC; Trivi
 relaxed_private.adb:466:22: medium: initialization check might fail [possible fix: call at line 465 should mention X'Initialized (for argument Comp) in a postcondition]
 relaxed_private.adb:470:14: warning: subprogram "Test_Private_Predicate_Init" has no effect
 relaxed_private.adb:471:07: info: no contextual analysis of "Test_Private_Predicate_Init" (nested package declaration)
+relaxed_private.adb:494:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:500:14: warning: subprogram "Test_Private_Record" has no effect
 relaxed_private.adb:501:07: info: no contextual analysis of "Test_Private_Record" (nested package declaration)
 relaxed_private.adb:526:09: info: data dependencies proved

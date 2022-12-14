@@ -1,0 +1,13 @@
+main.adb:9:06: info: data dependencies proved
+main.adb:17:43: info: initialization of "Y" proved
+main.adb:18:06: info: data dependencies proved
+main.adb:19:06: info: flow dependencies proved
+main.adb:22:09: warning: unused assignment
+main.adb:24:12: medium: initialization check might fail (e.g. when H'Initialized = False) [possible fix: call at line 23 should mention H'Initialized in a postcondition]
+main.adb:29:06: info: data dependencies proved
+main.adb:30:14: medium: postcondition might fail (e.g. when H'Initialized = False)
+main.adb:38:43: info: initialization of "Y" proved
+main.adb:39:06: info: data dependencies proved
+main.adb:40:06: info: flow dependencies proved
+main.adb:43:09: warning: unused assignment
+main.adb:45:12: info: initialization check proved (CVC5: 1 VC)

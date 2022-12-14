@@ -26,9 +26,10 @@ is
      Pre  => G1'Initialized,
      Post => Integer (Get_G_Init'Result) > C;
 
-   --  H1 is a scalar, it cannot be uninitialized
+   --  H1 is a scalar, it cannot be uninitialized, but we do not maintain
+   --  it to avoid incorrect depends.
 
-   function Get_H return T1 is (H1) with -- @INIT_BY_PROOF:NONE
+   function Get_H return T1 is (H1) with -- @INIT_BY_PROOF:FAIL
      Global => (Input => H1, Proof_In => C),
      Post => Integer (Get_H'Result) > C;
 
@@ -55,11 +56,12 @@ is
       end if;
    end Set_G1_Init;
 
-   --  H1 is a scalar, it cannot be uninitialized
+   --  H1 is a scalar, it cannot be uninitialized, but we do not maintain
+   --  it to avoid incorrect depends.
 
    procedure Set_H1_Init with
      Global => (In_Out => H1, Input => C),
-     Post => Integer (H1) > C --@INIT_BY_PROOF:NONE
+     Post => Integer (H1) > C --@INIT_BY_PROOF:FAIL
    is
    begin
       if C < 100 then
@@ -124,12 +126,12 @@ is
       end if;
    end Set_G2_Init;
 
-   --  H2 is has a predicate, it cannot be broken.
-   --  ??? We do not maintain that currently.
+   --  H2 is has a predicate, it cannot be broken but we do not maintain
+   --  it to avoid incorrect depends.
 
    procedure Set_H2_Init with
      Global => (In_Out => H2, Input => C),
-     Post => H2.F < H2.G
+     Post => H2.F < H2.G --@PREDICATE_CHECK:FAIL
    is
    begin
       if C < 100 then
@@ -190,11 +192,12 @@ is
       end if;
    end Set_G3_Init;
 
-   --  H3 is has a predicate, it cannot be broken
+   --  H3 is has a predicate, it cannot be broken but we do not maintain
+   --  it to avoid incorrect depends.
 
    procedure Set_H3_Init with
      Global => (In_Out => H3, Input => C),
-     Post => H3.F < H3.G
+     Post => H3.F < H3.G --@PREDICATE_CHECK:FAIL
    is
    begin
       if C < 100 then

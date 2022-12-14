@@ -3821,16 +3821,9 @@ package body SPARK_Util is
          end;
 
       --  An object which cannot be copied when not initialized can
-      --  only be uninitialized if it is either an out parameter or a variable
-      --  without an explicit initial value and no default initialization.
+      --  only be uninitialized if it is either an out parameter or a variable.
 
-      elsif (Ekind (Obj) in E_In_Parameter | E_In_Out_Parameter | E_Constant
-             or else
-               (Ekind (Obj) = E_Variable
-                and then
-                  (Present (Expression (Enclosing_Declaration (Obj)))
-                   or else Default_Initialization  (Etype (Obj)) /=
-                     No_Default_Initialization)))
+      elsif Ekind (Obj) in E_In_Parameter | E_In_Out_Parameter | E_Constant
         and then Copy_Requires_Init (Etype (Obj))
       then
          return False;

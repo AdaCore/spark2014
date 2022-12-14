@@ -1123,11 +1123,20 @@ package body Gnat2Why.Expr is
             Res      : W_Prog_Id := +Void;
 
          begin
-            pragma Assert (not Binder.Init.Present);
-
             Insert_Move_Of_Deep_Parts (Rhs     => Expression (N),
                                        Lhs_Typ => Etype (Lvalue),
                                        Expr    => Why_Expr);
+
+            if Binder.Init.Present then
+               Append
+                 (Res,
+                  New_Assignment
+                    (Ada_Node => N,
+                     Name     => Binder.Init.Id,
+                     Labels   => Symbol_Sets.Empty_Set,
+                     Value    => True_Prog,
+                     Typ      => EW_Bool_Type));
+            end if;
 
             case Binder.Kind is
             when DRecord =>

@@ -268,10 +268,16 @@ test_scalar_preds.adb:394:07: info: predicate check proved on default value (CVC
 test_scalar_preds.adb:395:07: medium: predicate check might fail on default value
 test_scalar_preds.adb:399:16: medium: initialization check might fail
 test_scalar_preds.adb:401:16: medium: initialization check might fail
+test_scalar_preds.adb:403:16: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:405:16: info: initialization check proved (CVC5: 1 VC)
 test_scalar_preds.adb:408:24: info: predicate check proved (CVC5: 1 VC)
 test_scalar_preds.adb:409:24: info: predicate check proved (CVC5: 1 VC)
 test_scalar_preds.adb:410:24: info: predicate check proved (CVC5: 1 VC)
 test_scalar_preds.adb:411:24: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:413:19: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:414:19: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:415:19: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:416:19: info: initialization check proved (CVC5: 1 VC)
 test_scalar_preds.adb:420:16: info: initialization check proved (CVC5: 1 VC)
 test_scalar_preds.adb:423:16: info: initialization check proved (CVC5: 1 VC)
 test_scalar_preds.adb:428:06: info: data dependencies proved
