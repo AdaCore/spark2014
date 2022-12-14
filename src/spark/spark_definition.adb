@@ -31,6 +31,7 @@ with Aspects;                         use Aspects;
 with Assumption_Types;                use Assumption_Types;
 with Checked_Types;                   use Checked_Types;
 with Common_Iterators;                use Common_Iterators;
+with Debug;
 with Einfo.Utils;                     use Einfo.Utils;
 with Elists;                          use Elists;
 with Errout;                          use Errout;
@@ -7041,21 +7042,63 @@ package body SPARK_Definition is
 
          --  If no violations were found and the type is annotated with
          --  relaxed initialization, populate the Relaxed_Init map.
-         --  For consistency between flow analysis and proof, we consider types
-         --  entirely made of components with relaxed initialization to be
-         --  annotated with relaxed initialization.
 
-         if not Violation_Detected
-           and then
-             ((Is_First_Subtype (First_Subtype (E))
-               and then Has_Relaxed_Initialization (First_Subtype (E)))
-              or else (Is_Composite_Type (E)
-                       and then Contains_Only_Relaxed_Init (E)))
-         then
-            Mark_Type_With_Relaxed_Init
-              (N   => E,
-               Ty  => E,
-               Own => True);
+         if not Violation_Detected then
+            if Is_First_Subtype (First_Subtype (E))
+              and then Has_Relaxed_Initialization (First_Subtype (E))
+            then
+               Mark_Type_With_Relaxed_Init
+                 (N   => E,
+                  Ty  => E,
+                  Own => True);
+
+            --  For consistency between flow analysis and proof, we consider
+            --  types entirely made of components with relaxed initialization
+            --  to be annotated with relaxed initialization.
+
+            elsif Is_Composite_Type (E) and then Contains_Only_Relaxed_Init (E)
+            then
+
+               --  It can happen that a subtype with a discriminant constraint
+               --  is entirely made of components with relaxed initialization
+               --  even though its base type is not. Reject this case.
+               --  We could also detect the case where a type with
+               --  discriminants can have such subtypes by going over the
+               --  variant parts and treat them as if they were annotated with
+               --  relaxed initialization, but it seems too heavy.
+
+               if not Contains_Only_Relaxed_Init (Base_Retysp (E)) then
+                  Mark_Unsupported
+                    (Lim_Relaxed_Init_Variant_Part, E, Base_Type (E),
+                     Cont_Msg =>
+                       "consider annotating & with Relaxed_Initialization");
+
+               --  Emit an info message with --info when a type is considered
+               --  to be annotated with Relaxed_Initialization and it has a
+               --  predicate. If it has no predicates, whether it is considered
+               --  to be annotated with Relaxed_Initialization does not matter.
+
+               else
+                  if Emit_Warning_Info_Messages
+                    and then Debug.Debug_Flag_Underscore_F
+                    and then Has_Predicates (E)
+                    and then Comes_From_Source (E)
+                  then
+                     Error_Msg_NE
+                       ("info: ?" & "& is handled as if it was annotated with "
+                        & "Relaxed_Initialization as all its components are "
+                        & "annotated that way", E, E);
+                     Error_Msg_NE
+                       ("\consider annotating & with Relaxed_Initialization",
+                        E, Base_Type (E));
+                  end if;
+
+                  Mark_Type_With_Relaxed_Init
+                    (N   => E,
+                     Ty  => E,
+                     Own => True);
+               end if;
+            end if;
          end if;
       end Mark_Type_Entity;
 

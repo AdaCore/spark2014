@@ -331,8 +331,8 @@ package SPARK_Util.Types is
      Post => (if Contains_Only_Relaxed_Init'Result
               then Contains_Relaxed_Init_Parts (Typ));
    --  Returns True if Typ has at least a subcomponent whose type is annotated
-   --  with relaxed initialization, all its scalar subcomponents have this
-   --  annotation and it contains no predicates.
+   --  with relaxed initialization and all its scalar subcomponents have this
+   --  annotation.
    --  These types are considered to have relaxed initialization even if they
    --  don't have the aspect.
 

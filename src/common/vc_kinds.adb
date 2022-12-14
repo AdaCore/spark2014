@@ -733,6 +733,10 @@ package body VC_Kinds is
          when Lim_Relaxed_Init_Tagged_Type =>
            "a tagged type used as a subcomponent of a type or"
           & " an object annotated with Relaxed_Initialization",
+         when Lim_Relaxed_Init_Variant_Part =>
+            "a subtype with a discriminant constraint containing only"
+          & " subcomponents whose type is annotated with"
+          & " Relaxed_Initialization",
          when Lim_Subprogram_Before_Inv =>
            "a subprogram declaration occurring in a loop before the loop "
           & "invariant",
