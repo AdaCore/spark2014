@@ -62,6 +62,10 @@ is
    --  arguments which can be ignored are skipped, for others, instead of
    --  the argument some other content is hashed.
 
+   procedure Hash_Binary (C : in out GNAT.SHA1.Context; Execname : String);
+   --  If the binary Fn is on the PATH and there is a file Fn.hash next to it,
+   --  we read that file and add it to the context.
+
    procedure Hash_File (C : in out GNAT.SHA1.Context; Fn : String);
    --  @param C the hash context to be updated
    --  @param Fn the file to be hashed
@@ -79,6 +83,46 @@ is
      with No_Return;
    --  @param Msg error message to be reported
    --  Quit the program and transmit a message in gnatwhy3 style
+
+   -----------------
+   -- Hash_Binary --
+   -----------------
+
+   procedure Hash_Binary (C : in out GNAT.SHA1.Context; Execname : String)
+   is
+
+      function Compute_Hash_Filename (Exec : String) return String;
+      --  Compute the hashfile name from the executable name by locating the
+      --  file in the PATH, then adding ".hash", or replacing the suffix with
+      --  ".hash", if any.
+
+      ---------------------------
+      -- Compute_Hash_Filename --
+      ---------------------------
+
+      function Compute_Hash_Filename (Exec : String) return String is
+         Fn : String_Access := GNAT.OS_Lib.Locate_Exec_On_Path (Exec);
+      begin
+         if Fn = null then
+            return "";
+         end if;
+         declare
+            Ext : constant String := Ada.Directories.Extension (Fn.all);
+         begin
+            return Result : constant String :=
+              (if Ext = "" then Fn.all & ".hash"
+               else Fn (Fn'First .. Fn'Last - Ext'Length) & ".hash") do
+               Free (Fn);
+            end return;
+         end;
+      end Compute_Hash_Filename;
+
+      Hash_Fn : constant String := Compute_Hash_Filename (Execname);
+   begin
+      if Hash_Fn /= "" and then Ada.Directories.Exists (Hash_Fn) then
+         Hash_File (C, Hash_Fn);
+      end if;
+   end Hash_Binary;
 
    ----------------------
    -- Hash_Commandline --
@@ -220,6 +264,12 @@ is
       --  Hash the rest of the command line
 
       Hash_Commandline (C);
+
+      --  Read the binary hash if present
+
+      if Argument_Count >= 3 then
+         Hash_Binary (C, Argument (3));
+      end if;
       return GNAT.SHA1.Digest (C);
    end Compute_Key;
 

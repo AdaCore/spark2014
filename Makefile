@@ -89,6 +89,7 @@ why3:
 install-all:
 	$(MAKE) install
 	$(MAKE) -C why3 install_spark2014_dev
+	sha256sum install/libexec/spark/bin/gnatwhy3 | cut -d' ' -f1 > install/libexec/spark/bin/gnatwhy3.hash
 	# Create the fake prover scripts to help extract benchmarks.
 	$(CP) benchmark_script/fake_* install/libexec/spark/bin
 
