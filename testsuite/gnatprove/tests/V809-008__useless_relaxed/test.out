@@ -1,0 +1,5 @@
+main.adb:6:04: warning: "C" cannot be partially initialized
+main.adb:6:04: warning: Relaxed_Initialization annotation is useless
+main.adb:14:04: warning: "D" cannot be partially initialized
+main.adb:14:04: warning: Relaxed_Initialization annotation is useless
+main.adb:14:22: info: predicate check proved (CVC5: 1 VC)

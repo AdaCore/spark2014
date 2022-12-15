@@ -1,7 +1,11 @@
 relaxed_private.adb:1:11: warning: subprogram "Relaxed_Private" has no effect
 relaxed_private.adb:5:14: warning: subprogram "Test_Private_Scalar" has no effect
 relaxed_private.adb:6:07: info: no contextual analysis of "Test_Private_Scalar" (nested package declaration)
+relaxed_private.adb:9:36: warning: "X" cannot be partially initialized
+relaxed_private.adb:9:36: warning: Relaxed_Initialization annotation is useless
 relaxed_private.adb:27:23: medium: initialization check might fail
+relaxed_private.adb:27:50: warning: "Init" cannot be partially initialized
+relaxed_private.adb:27:50: warning: Relaxed_Initialization annotation is useless
 relaxed_private.adb:29:09: info: data dependencies proved
 relaxed_private.adb:39:29: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:39:29: medium: initialization check might fail
@@ -23,10 +27,16 @@ relaxed_private.adb:127:22: info: initialization check proved (CVC5: 2 VC; Trivi
 relaxed_private.adb:133:22: medium: initialization check might fail [possible fix: call at line 132 should mention X'Initialized (for argument Comp) in a postcondition]
 relaxed_private.adb:139:14: warning: subprogram "Test_Private_Scalar_Init" has no effect
 relaxed_private.adb:140:07: info: no contextual analysis of "Test_Private_Scalar_Init" (nested package declaration)
+relaxed_private.adb:144:36: warning: "X" cannot be partially initialized
+relaxed_private.adb:144:36: warning: Relaxed_Initialization annotation is useless
 relaxed_private.adb:163:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:169:14: warning: subprogram "Test_Private_Scalar_Ownership" has no effect
 relaxed_private.adb:170:07: info: no contextual analysis of "Test_Private_Scalar_Ownership" (nested package declaration)
+relaxed_private.adb:177:36: warning: "X" cannot be partially initialized
+relaxed_private.adb:177:36: warning: Relaxed_Initialization annotation is useless
 relaxed_private.adb:194:23: medium: initialization check might fail
+relaxed_private.adb:194:50: warning: "Init" cannot be partially initialized
+relaxed_private.adb:194:50: warning: Relaxed_Initialization annotation is useless
 relaxed_private.adb:196:09: info: data dependencies proved
 relaxed_private.adb:206:29: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:206:29: medium: initialization check might fail
@@ -48,10 +58,16 @@ relaxed_private.adb:294:22: info: initialization check proved (CVC5: 2 VC; Trivi
 relaxed_private.adb:300:22: medium: initialization check might fail [possible fix: call at line 299 should mention X'Initialized (for argument Comp) in a postcondition]
 relaxed_private.adb:304:14: warning: subprogram "Test_Private_Scalar_Init_Ownership" has no effect
 relaxed_private.adb:305:07: info: no contextual analysis of "Test_Private_Scalar_Init_Ownership" (nested package declaration)
+relaxed_private.adb:310:36: warning: "X" cannot be partially initialized
+relaxed_private.adb:310:36: warning: Relaxed_Initialization annotation is useless
 relaxed_private.adb:329:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:335:14: warning: subprogram "Test_Private_Predicate" has no effect
 relaxed_private.adb:336:07: info: no contextual analysis of "Test_Private_Predicate" (nested package declaration)
+relaxed_private.adb:339:36: warning: "X" cannot be partially initialized
+relaxed_private.adb:339:36: warning: Relaxed_Initialization annotation is useless
 relaxed_private.adb:360:23: medium: initialization check might fail
+relaxed_private.adb:360:53: warning: "Init" cannot be partially initialized
+relaxed_private.adb:360:53: warning: Relaxed_Initialization annotation is useless
 relaxed_private.adb:362:09: info: data dependencies proved
 relaxed_private.adb:372:29: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:372:29: medium: initialization check might fail
@@ -73,6 +89,8 @@ relaxed_private.adb:460:22: info: initialization check proved (CVC5: 2 VC; Trivi
 relaxed_private.adb:466:22: medium: initialization check might fail [possible fix: call at line 465 should mention X'Initialized (for argument Comp) in a postcondition]
 relaxed_private.adb:470:14: warning: subprogram "Test_Private_Predicate_Init" has no effect
 relaxed_private.adb:471:07: info: no contextual analysis of "Test_Private_Predicate_Init" (nested package declaration)
+relaxed_private.adb:475:36: warning: "X" cannot be partially initialized
+relaxed_private.adb:475:36: warning: Relaxed_Initialization annotation is useless
 relaxed_private.adb:494:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:500:14: warning: subprogram "Test_Private_Record" has no effect
 relaxed_private.adb:501:07: info: no contextual analysis of "Test_Private_Record" (nested package declaration)

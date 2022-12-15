@@ -9,6 +9,8 @@ test_dic.adb:46:07: medium: type "T2" is not fully initialized
 test_dic.adb:55:07: medium: type "T3" is not fully initialized
 test_dic.adb:63:07: medium: type "T4" is not fully initialized
 test_predicates.adb:23:04: warning: analyzing unreferenced procedure "P"
+test_predicates.adb:23:17: warning: "X" cannot be partially initialized
+test_predicates.adb:23:17: warning: Relaxed_Initialization annotation is useless
 test_predicates.adb:27:22: info: assertion proved (CVC5: 1 VC)
 test_predicates.adb:28:12: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:32:04: warning: analyzing unreferenced procedure "Q"
@@ -16,6 +18,8 @@ test_predicates.adb:32:17: medium: initialization check might fail
 test_predicates.adb:32:17: medium: predicate check might fail
 test_predicates.adb:37:12: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:42:04: warning: analyzing unreferenced function "Default"
+test_predicates.adb:42:13: warning: Relaxed_Initialization annotation is useless
+test_predicates.adb:42:13: warning: the result of "Default" cannot be partially initialized
 test_predicates.adb:47:14: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
 test_predicates.adb:47:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:47:14: medium: initialization check might fail
@@ -61,6 +65,8 @@ test_predicates.adb:108:14: info: local subprogram "Q" only analyzed in the cont
 test_predicates.adb:113:16: info: predicate check proved (CVC5: 1 VC), in call inlined at test_predicates.adb:173
 test_predicates.adb:113:36: info: predicate check proved (CVC5: 1 VC), in call inlined at test_predicates.adb:173
 test_predicates.adb:118:04: warning: analyzing unreferenced function "Default"
+test_predicates.adb:128:13: warning: Relaxed_Initialization annotation is useless
+test_predicates.adb:128:13: warning: the result of "Get" cannot be partially initialized
 test_predicates.adb:134:18: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
 test_predicates.adb:134:18: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:134:18: medium: initialization check might fail
@@ -302,6 +308,8 @@ test_two_preds.adb:16:12: info: predicate check proved (CVC5: 1 VC)
 test_two_preds.adb:16:13: medium: initialization check might fail (e.g. when X = (F => ?, G => 0) and X.F'Initialized = False and X.G'Initialized = True) [possible fix: subprogram at line 12 should mention X in a precondition]
 test_two_preds.adb:22:04: warning: analyzing unreferenced procedure "P"
 test_two_preds.adb:22:14: warning: subprogram "P" has no effect
+test_two_preds.adb:22:17: warning: "X" cannot be partially initialized
+test_two_preds.adb:22:17: warning: Relaxed_Initialization annotation is useless
 test_two_preds.adb:33:04: warning: analyzing unreferenced procedure "P"
 test_two_preds.adb:33:14: warning: subprogram "P" has no effect
 test_two_preds.adb:45:04: warning: analyzing unreferenced procedure "P"

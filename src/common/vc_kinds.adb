@@ -556,6 +556,12 @@ package body VC_Kinds is
           "analyzing unreferenced function",
         when Warn_Unreferenced_Procedure =>
           "analyzing unreferenced procedure",
+        when Warn_Useless_Relaxed_Init_Fun =>
+          "function result annotated with Relaxed_Initialization cannot be"
+          & " partially initialized",
+        when Warn_Useless_Relaxed_Init_Obj =>
+          "object annotated with Relaxed_Initialization cannot be"
+          & " partially initialized",
         when Warn_Variant_Not_Recursive =>
           "no recursive call visible on subprogram with Subprogram_Variant",
 
@@ -1368,6 +1374,10 @@ package body VC_Kinds is
           "unreferenced function",
         when Warn_Unreferenced_Procedure =>
           "unreferenced procedure",
+        when Warn_Useless_Relaxed_Init_Fun =>
+          "useless Relaxed_Initialization aspect on function result",
+        when Warn_Useless_Relaxed_Init_Obj =>
+          "useless Relaxed_Initialization aspect on object",
         when Warn_Variant_Not_Recursive =>
           "variant not recursive",
 

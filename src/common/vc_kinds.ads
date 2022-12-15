@@ -373,6 +373,8 @@ package VC_Kinds is
       Warn_Precondition_Statically_False,
       Warn_Unreferenced_Function,
       Warn_Unreferenced_Procedure,
+      Warn_Useless_Relaxed_Init_Fun,
+      Warn_Useless_Relaxed_Init_Obj,
       Warn_Variant_Not_Recursive,
 
       --  Warnings guaranteed to be issued
@@ -525,6 +527,10 @@ package VC_Kinds is
           "?analyzing unreferenced function &",
         when Warn_Unreferenced_Procedure =>
           "?analyzing unreferenced procedure &",
+        when Warn_Useless_Relaxed_Init_Fun =>
+          "?the result of & cannot be partially initialized",
+        when Warn_Useless_Relaxed_Init_Obj =>
+          "?& cannot be partially initialized",
         when Warn_Variant_Not_Recursive =>
           "?no recursive call visible",
 

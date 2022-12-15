@@ -4929,13 +4929,26 @@ package body SPARK_Definition is
          --  relaxed initialization, populate the Relaxed_Init map.
 
          if not Violation_Detected
-           and then Ekind (E) = E_Variable
+           and then Ekind (E) in E_Variable | E_Constant
            and then Has_Relaxed_Initialization (E)
          then
-            Mark_Type_With_Relaxed_Init
-              (N   => E,
-               Ty  => T,
-               Own => False);
+
+            --  Emit a warning when the annotation of an object with
+            --  Relaxed_Initialization has no effects.
+
+            if not Obj_Has_Relaxed_Init (E) then
+               if Emit_Warning_Info_Messages then
+                  Error_Msg_NE
+                    (Warning_Message (Warn_Useless_Relaxed_Init_Obj), E, E);
+                  Error_Msg_N
+                    ("\Relaxed_Initialization annotation is useless", E);
+               end if;
+            else
+               Mark_Type_With_Relaxed_Init
+                 (N   => E,
+                  Ty  => T,
+                  Own => False);
+            end if;
          end if;
 
          --  Also mark the Address clause if any
@@ -4968,10 +4981,23 @@ package body SPARK_Definition is
            and then Is_Formal (E)
            and then Has_Relaxed_Initialization (E)
          then
-            Mark_Type_With_Relaxed_Init
-              (N   => E,
-               Ty  => T,
-               Own => False);
+
+            --  Emit a warning when the annotation of an object with
+            --  Relaxed_Initialization has no effects.
+
+            if not Obj_Has_Relaxed_Init (E) then
+               if Emit_Warning_Info_Messages then
+                  Error_Msg_NE
+                    (Warning_Message (Warn_Useless_Relaxed_Init_Obj), E, E);
+                  Error_Msg_N
+                    ("\Relaxed_Initialization annotation is useless", E);
+               end if;
+            else
+               Mark_Type_With_Relaxed_Init
+                 (N   => E,
+                  Ty  => T,
+                  Own => False);
+            end if;
          end if;
       end Mark_Parameter_Entity;
 
@@ -5670,10 +5696,23 @@ package body SPARK_Definition is
            and then Ekind (E) = E_Function
            and then Has_Relaxed_Initialization (E)
          then
-            Mark_Type_With_Relaxed_Init
-              (N   => E,
-               Ty  => Etype (E),
-               Own => False);
+
+            --  Emit a warning when the annotation of a function with
+            --  Relaxed_Initialization has no effects.
+
+            if not Fun_Has_Relaxed_Init (E) then
+               if Emit_Warning_Info_Messages then
+                  Error_Msg_NE
+                    (Warning_Message (Warn_Useless_Relaxed_Init_Fun), E, E);
+                  Error_Msg_N
+                    ("\Relaxed_Initialization annotation is useless", E);
+               end if;
+            else
+               Mark_Type_With_Relaxed_Init
+                 (N   => E,
+                  Ty  => Etype (E),
+                  Own => False);
+            end if;
          end if;
       end Mark_Subprogram_Entity;
 
