@@ -1,3 +1,4 @@
+large: True
 # test was no_fail, see V502-005
 prove_all:
   steps: 160000

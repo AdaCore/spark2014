@@ -1,3 +1,4 @@
+large: True
 prove_all:
   steps: 2000
   opt: ["--function-sandboxing=off"]

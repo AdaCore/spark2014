@@ -1,3 +1,4 @@
+large: True
 prove_all:
   steps: 30000
   prover: ["z3"]

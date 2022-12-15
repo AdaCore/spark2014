@@ -1,2 +1,3 @@
+large: True
 prove_all:
   sparklib: True

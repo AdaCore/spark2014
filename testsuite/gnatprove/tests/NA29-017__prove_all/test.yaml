@@ -1,3 +1,4 @@
+large: True
 prove_all:
   opt: ["--proof=progressive:all"]
   steps: 1000

@@ -1,3 +1,4 @@
+large: True
 comment: "no counterexamples for SPARK discovery tests"
 prove_all:
   prover: ["altergo"]
