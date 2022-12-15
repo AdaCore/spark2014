@@ -2667,7 +2667,7 @@ Wrapper Types
 """""""""""""
 
 If expressions of a given type might have relaxed initialization (see
-``Might_Contain_Relaxed_Init``), we introduce a special Why3 `wrapper` type for
+``Has_Init_Wrapper``), we introduce a special Why3 `wrapper` type for
 them (see ``Declare_Init_Wrapper``). For scalar types, the wrapper type is
 a record with two components, the value of the scalar, and a boolean flag
 encoding whether it is initialized or not. This type is declared in a separate
@@ -2768,7 +2768,7 @@ not the expression (the object) has relaxed initialization, see
 Initialization Checks
 """""""""""""""""""""
 
-Since we do not support predicates on types with relaxed initialization yet,
+For subtypes which do not have applicable predicates,
 the fact that an expression is initialized can be translated as the conjunction
 of the initialization flag of all the scalars parts of the expression
 (see ``Compute_Is_Initialized``). For example, the failed initialization check
@@ -2815,6 +2815,214 @@ operand of an operator. One to convert the operand to its standard type, and one
 to ensure that components whose type is annotated with
 ``Relaxed_Initialization`` are also initialized. Thise checks are not
 duplicates, one or the other might fail while the other passes.
+
+Types With Predicates
+"""""""""""""""""""""
+
+In general, SPARK ensures that the predicate holds on all objects and
+expressions of a type with a predicate (predicate checks are inserted on all
+updates, see ``One_Level_Update``). This makes it possible to assume the
+predicates in the dynamic invariant of the type, provided the object is known
+to be initialized (see ``Compute_Dynamic_Invariant``). This is no longer the
+case with Relaxed_Initialization, as part of a supposedly initialized object
+can still not be initialized (and global variables and parameters of mode IN
+might not be initialized at all in some cases). Therefore, the predicate
+should be subjected to the initialization status of the particular object
+or component. For scalar types, it is easy, as each object or component has its
+own initialization flag. It is therefore enough to condition the predicate to
+the validity of the flag in its dynamic invariant. As an example, consider
+the subtype ''S'' defined below:
+
+.. code-block:: ada
+
+   type My_Int is new Integer with
+     Relaxed_Initialization;
+   function B return My_Int is (1);
+
+   subtype S is My_Int with
+     Predicate => S <= B;
+
+   type H is record
+      C : S;
+   end record;
+
+The predicate on objects and components of type ``S`` in their dynamic invariant
+will be conditioned to their initialization flag, as can be seen in the dynamic
+invariant of ``H`` defined above:
+
+.. code-block:: whyml
+
+  predicate dynamic_invariant
+   (expr: h) (is_init: bool) (skip_constant: bool)
+   (do_toplevel: bool) (do_typ_inv: bool)
+  =
+    (if expr.__split_fields.rec__c.__attr__init then
+        let temp = expr.__split_fields.rec__c in
+          of_wrapper temp <= b ()
+     else true)
+
+When predicates are specified on composite types, it is more complicated, as
+initialization wrappers for composite types do not have their own initialization
+flag. We could have added a top level initialization flag for composite
+types but we decided against it. It would make the translation more complicated
+as it would require introducing new wrappers of wrapper types. Instead, the
+predicate of composite types with relaxed initialization is simply not assumed
+in the dynamic invariant. Instead, it is part of the 'Initialized attribute
+(see ``Compute_Is_Initialized``). As an example, consider the following record
+type:
+
+.. code-block:: ada
+
+   type R is record
+      F, G : Integer;
+   end record with
+     Predicate => F < G;
+
+If ``X`` is an object of type ``R``, the attribute ``X'Initialized`` is
+translated in the following way:
+
+.. code-block:: whyml
+
+  x.__split_fields.rec__f.__attr__init /\
+  x.__split_fields.rec__g.__attr__init /\
+  let temp = of_wrapper x in
+     to_rep (temp.rec__f) < to_rep (temp.rec__g)
+
+Usually, the tool assumes that Why3 objects follow the constraints of their
+Ada type everywhere using the dynamic invariant. For objects where we know it
+holds, such as initialized variables, constants, subprogram parameters,
+and result of functions, we need to assume that the predicate of the type itself
+(not its subcomponent) holds separately since it is no longer included in the
+dynamic invariant. This is done by the function
+``Compute_Dynamic_Inv_And_Initialization``. In addition, if the type annotated
+with the invariant is not itself annotated with ``Relaxed_Initialization``,
+the initialization of the object (excluding the subcomponents annotated with
+``Relaxed_Initialization``) is included in the predicate (see
+``Compute_Dynamic_Predicate`` and ``New_Predicate_Check``). As an example,
+consider the following type ``H1``:
+
+.. code-block:: ada
+
+   type H1 is record
+      C : R;
+      I : Integer;
+      B : Boolean;
+   end record with
+     Relaxed_Initialization,
+     Predicate => B'Initialized
+     and then
+       (if B then C'Initialized and then I'Initialized and then C.G < I);
+
+   procedure P1 (X : H1) with
+     Global => null
+   is
+   begin
+      if X.B then
+         pragma Assert (X.C.F < X.I);
+      end if;
+   end P1;
+
+   procedure Q1 (X : out H1) with
+     Global => null,
+     Relaxed_Initialization => X
+   is
+   begin
+      null;
+   end Q1;
+
+At the beginning of ``P1``, we can assume that the predicate of ``H1`` holds,
+as Ada mandates a predicate check on input parameters. Since ``H1`` is
+annotated with ``Relaxed_Initialization``, its predicate does not enforce the
+initialization of ``X`` completely, but it is enough to prove the assertion
+inside ``P1``. Similarly, the predicate check at the end of ``Q1`` does not
+include an initialization check as can be seen below:
+
+.. code-block:: whyml
+
+    assert
+        { x.__split_fields.rec__b.__attr__init
+          /\
+           (if x.__split_fields.rec__b then
+
+	      (* X.C'Initialized *)
+              (let temp___c  = x.__split_fields.rec__c in
+	          temp___c.__split_fields.rec__f.__attr__init
+	       /\ temp___c.__split_fields.rec__g.__attr__init
+	       /\  let temp__c_init = of_wrapper temp___c in
+                       to_rep temp__c_init.__split_fields.rec__f
+                            < to_rep temp__c_init.__split_fields.rec__g)
+
+	      (* X.I'Initialized *)
+              /\ x.__split_fields.rec__i.__attr__init
+
+	      (* X.C.G < X.I *)
+	      /\ to_rep
+	            (of_wrapper x.__split_fields.rec__c.__split_fields.rec__g)
+		       < to_rep (of_wrapper x.__split_fields.rec__i)) }
+
+For the type ``H2`` below, it is different. As it is not annotated with
+``Relaxed_Initialization``, its predicate enforces the complete initialization
+of ``X``.
+
+.. code-block:: ada
+
+   type H2 is record
+      C : R;
+      I : Integer;
+   end record with
+     Predicate => C.G < I;
+
+   procedure P2 (X : H2) with
+     Global => null,
+     Relaxed_Initialization => X
+   is
+   begin
+      pragma Assert (X.C.F < X.I);
+   end P2;
+
+   procedure Q2 (X : out H2) with
+     Global => null,
+     Relaxed_Initialization => X
+   is
+   begin
+      null;
+   end Q2;
+
+At the end of ``Q2``, both the initialization and the predicate of ``X`` are
+verified:
+
+.. code-block:: whyml
+
+   (* Initialization check *)
+   assert
+       { (let temp___c  = x.__split_fields.rec__c in
+	     temp___c.__split_fields.rec__f.__attr__init
+	  /\ temp___c.__split_fields.rec__g.__attr__init
+	  /\  let temp__c_init = of_wrapper temp___c in
+                 to_rep temp__c_init.__split_fields.rec__f
+                      < to_rep temp__c_init.__split_fields.rec__g)
+           /\ x.__split_fields.rec__i.__attr__init }
+   (* Predicate check *)
+   assert
+       { to_rep (of_wrapper x.__split_fields.rec__c.__split_fields.rec__g)
+	  < to_rep (of_wrapper x.__split_fields.rec__i)) }
+
+
+For parameters of mode IN or IN OUT like the parameter ``X`` of ``P2``, it is
+not possible to de-initialize the object, so we simply do not use the wrapper
+type for them.
+
+Note that, like for normal objects, the predicate of objects annotated with
+``Relaxed_Initialization`` is enforced at every update. In addition, we have
+chosen to also check it at every read (namely on identifiers and component
+accesses, see ``Transform_Identifier`` and ``One_Level_Access``). Unlike
+normal objects, checks on updates are not sufficient as the predicate still
+might not hold if the object is not initialized. Still, we could have chosen
+to only verify it where mandated by Ada (parameter passing, default
+initialization, type conversion etc). We chose to check all reads as it was
+simpler to be sure that no language mandated checks were missed. Also note
+that, if we had the boolean flag for composite objects with predicates, it would
+avoid redoing the predicate checks entirely, as we could just check the flag.
 
 Split Form For Wrappers
 """""""""""""""""""""""
