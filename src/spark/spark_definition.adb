@@ -3941,8 +3941,9 @@ package body SPARK_Definition is
       if Ekind (E) = E_Function
         and then Is_Volatile_Call (N)
         and then
-          not Is_OK_Volatile_Context
-                (Context => Parent (N), Obj_Ref => N, Check_Actuals => True)
+          (not Is_OK_Volatile_Context
+             (Context => Parent (N), Obj_Ref => N, Check_Actuals => True)
+           or else In_Loop_Entry_Or_Old_Attribute (N))
       then
          Mark_Violation ("call to a volatile function in interfering context",
                          N);
@@ -7594,9 +7595,11 @@ package body SPARK_Definition is
 
                elsif Is_Effectively_Volatile_For_Reading (E)
                  and then
-                   not Is_OK_Volatile_Context (Context       => Parent (N),
-                                               Obj_Ref       => N,
-                                               Check_Actuals => True)
+                   (not Is_OK_Volatile_Context (Context       => Parent (N),
+                                                Obj_Ref       => N,
+                                                Check_Actuals => True)
+
+                    or else In_Loop_Entry_Or_Old_Attribute (N))
                then
                   Mark_Violation
                     ("volatile object in interfering context", N,

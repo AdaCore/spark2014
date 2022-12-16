@@ -2012,6 +2012,22 @@ package body SPARK_Util is
       end case;
    end Has_Volatile_Property;
 
+   ------------------------------------
+   -- In_Loop_Entry_Or_Old_Attribute --
+   ------------------------------------
+
+   function In_Loop_Entry_Or_Old_Attribute (N : Node_Id) return Boolean is
+
+      function Is_Attribute_Loop_Entry_Or_Old (N : Node_Id) return Boolean is
+        (Is_Attribute_Loop_Entry (N) or else Is_Attribute_Old (N));
+
+      function Find_Loop_Entry_Or_Old_Attribute is new
+        First_Parent_With_Property (Is_Attribute_Loop_Entry_Or_Old);
+
+   begin
+      return Present (Find_Loop_Entry_Or_Old_Attribute (N));
+   end In_Loop_Entry_Or_Old_Attribute;
+
    ---------------------------
    -- In_SPARK_Library_Unit --
    ---------------------------

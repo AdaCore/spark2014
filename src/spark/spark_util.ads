@@ -591,6 +591,10 @@ package SPARK_Util is
    --      Empty otherwise. This is used to get a stable name for aggregates
    --      used as definition of objects.
 
+   function In_Loop_Entry_Or_Old_Attribute (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True if the node is a Loop_Entry or Old attribute
+
    function Is_In_Statically_Dead_Branch (N : Node_Id) return Boolean;
    --  @param N any node
    --  @return True if the node is in a branch that is statically dead. Only
