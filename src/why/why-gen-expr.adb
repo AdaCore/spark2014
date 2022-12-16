@@ -4970,16 +4970,6 @@ package body Why.Gen.Expr is
                 Args => (1 => +W, 2 => +Bool_True (EW_Term)),
                 Typ  => EW_Bool_Type));
 
-   ------------
-   -- To_Int --
-   ------------
-
-   function To_Int (D : EW_Domain; E : W_Expr_Id) return W_Expr_Id is
-   begin
-      return
-        Insert_Scalar_Conversion (Domain => D, Expr => E, To => EW_Int_Type);
-   end To_Int;
-
    --------------------------
    -- Transform_Compare_Op --
    --------------------------

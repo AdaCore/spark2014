@@ -1767,22 +1767,6 @@ package body SPARK_Util is
       end loop;
    end Get_Observed_Or_Borrowed_Info;
 
-   ---------------------------------
-   -- Get_Observed_Or_Borrowed_Ty --
-   ---------------------------------
-
-   function Get_Observed_Or_Borrowed_Ty
-     (Expr : N_Subexpr_Id;
-      Ty   : Type_Kind_Id)
-      return Type_Kind_Id
-   is
-      B_Expr : Node_Id;
-      B_Ty   : Entity_Id := Ty;
-   begin
-      Get_Observed_Or_Borrowed_Info (Expr, B_Expr, B_Ty);
-      return B_Ty;
-   end Get_Observed_Or_Borrowed_Ty;
-
    -------------------------
    -- Get_Operator_Symbol --
    -------------------------

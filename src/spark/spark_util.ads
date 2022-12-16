@@ -724,14 +724,6 @@ package SPARK_Util is
    --      Note that B_Ty is not the type of B_Expr but a compatible anonymous
    --      access type.
 
-   function Get_Observed_Or_Borrowed_Ty
-     (Expr : N_Subexpr_Id;
-      Ty   : Type_Kind_Id)
-      return Type_Kind_Id
-   with Pre => Is_Path_Expression (Expr);
-   --  Return the type of the first borrower/observer in Expr, as computed by
-   --  Get_Observed_Or_Borrowed_Info.
-
    function Get_Root_Object
      (Expr              : N_Subexpr_Id;
       Through_Traversal : Boolean := True)
