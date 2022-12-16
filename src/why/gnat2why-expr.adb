@@ -20131,33 +20131,14 @@ package body Gnat2Why.Expr is
          T := +Insert_Ref_Context (Expr, +T, Context, Store);
       end if;
 
-      --  If Subp has a controlling result, its result might not have
-      --  the correct tag if Subp was inherited. Update the tag
-      --  explicitly.
+      --  If Subp has a controlling result, its result will have the correct
+      --  tag even if it was inherited, as the frontend introduces an
+      --  expression function wrapper with a conversion.
 
-      if Ekind (Subp) = E_Function
-        and then Has_Controlling_Result (Subp)
-        and then Base_Retysp (Etype (Subp)) /= Base_Retysp (Etype (Expr))
-      then
-         pragma Assert
-           (Is_Derived_Type_With_Null_Ext (Base_Type (Etype (Expr))));
-         T := New_Tag_Update
-           (Ada_Node  => Expr,
-            Domain    => Domain,
-            Name      => T,
-            Ty        => Etype (Expr));
-
-         --  If we are in the program domain, we might need to
-         --  introduce a predicate check or a discriminant check.
-
-         if Domain = EW_Prog then
-            T := Insert_Checked_Conversion
-              (Ada_Node => Expr,
-               Domain   => EW_Prog,
-               Expr     => T,
-               To       => Type_Of_Node (Etype (Expr)));
-         end if;
-      end if;
+      pragma Assert
+        (if Ekind (Subp) = E_Function
+         and then Has_Controlling_Result (Subp)
+         then Base_Retysp (Etype (Subp)) = Base_Retysp (Etype (Expr)));
       return T;
    end Transform_Function_Call;
 
