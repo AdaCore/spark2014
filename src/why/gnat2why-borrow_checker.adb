@@ -4600,6 +4600,8 @@ package body Gnat2Why.Borrow_Checker is
    -- Hp --
    --------
 
+   pragma Annotate
+     (Xcov, Exempt_On, "Only used in the debugger to look into a hash table");
    procedure Hp (P : Perm_Env) is
       Elem : Perm_Tree_Maps.Key_Option;
 
@@ -4610,6 +4612,7 @@ package body Gnat2Why.Borrow_Checker is
          Elem := Get_Next_Key (P);
       end loop;
    end Hp;
+   pragma Annotate (Xcov, Exempt_Off);
 
    -------------------------
    -- Is_Prefix_Or_Almost --
