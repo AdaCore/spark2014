@@ -44,6 +44,7 @@ with Errout;                          use Errout;
 with Flow;                            use Flow;
 with Flow.Analysis.Assumptions;       use Flow.Analysis.Assumptions;
 with Flow_Error_Messages;             use Flow_Error_Messages;
+with Flow_Generated_Globals.Phase_1;
 with Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Types;                      use Flow_Types;
@@ -620,6 +621,14 @@ package body Gnat2Why.Driver is
                  ("\?only instantiations of the generic will be analyzed",
                   GNAT_Root);
             end if;
+         end if;
+
+         --  Generate dummy GG section in the ALI file, because GPRbuild
+         --  machinery uses it to detect corrupted dependencies.
+
+         if Gnat2Why_Args.Global_Gen_Mode then
+            Flow_Generated_Globals.Phase_1.GG_Write_Initialize (GNAT_Root);
+            Flow_Generated_Globals.Phase_1.GG_Write_Finalize;
          end if;
 
          goto Leave;
