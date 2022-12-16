@@ -311,6 +311,13 @@ package body Gnat2Why.Subprograms is
      (Number_Formals (E)
        + (if Need_Self_Binder (E) then 1 else 0));
 
+   function Preservation_Of_Access_Parameters
+     (E      : Entity_Id;
+      Params : Transformation_Params) return W_Pred_Id;
+   --  Access parameters are mutable, but the bounds or discriminants of their
+   --  designated value cannot be modified. Generate an assumption saying they
+   --  are preserved.
+
    function Procedure_Logic_Binders (E : Entity_Id) return Binder_Array;
    --  Return binders that should be used for specific_post of a procedure E
 
@@ -6251,13 +6258,14 @@ package body Gnat2Why.Subprograms is
 
          declare
             Dynamic_Prop_Effects : constant W_Pred_Id :=
-              +New_And_Then_Expr
-              (Left   => +Compute_Dynamic_Property_For_Effects (E, Params),
-               Right  =>
-                 +Compute_Type_Invariants_For_Subprogram (E, False, Params),
-               Domain => EW_Pred);
+              New_And_Pred
+                ((1 => Compute_Dynamic_Property_For_Effects (E, Params),
+                  2 => Compute_Type_Invariants_For_Subprogram
+                    (E, False, Params),
+                  3 => Preservation_Of_Access_Parameters (E, Params)));
             --  Dynamic invariant and type invariant for outputs of the
-            --  procedure.
+            --  procedure, as well as preservation of discriminants and
+            --  bounds of access parameters.
 
          begin
             Post := +New_And_Expr (Left   => +Post,
@@ -6634,6 +6642,74 @@ package body Gnat2Why.Subprograms is
 
    function Need_Self_Binder (E : Callable_Kind_Id) return Boolean is
      (Is_Subprogram_Or_Entry (E) and then Within_Protected_Type (E));
+
+   ---------------------------------------
+   -- Preservation_Of_Access_Parameters --
+   ---------------------------------------
+
+   function Preservation_Of_Access_Parameters
+     (E      : Entity_Id;
+      Params : Transformation_Params) return W_Pred_Id
+   is
+      Func_Why_Binders : constant Item_Array :=
+        Compute_Binders (E, EW_Prog);
+      Result           : W_Pred_Id := True_Pred;
+
+   begin
+      pragma Assert (Params.Old_Policy = As_Old);
+
+      for I in Func_Why_Binders'Range loop
+         if Item_Is_Mutable (Func_Why_Binders (I)) then
+            declare
+               E : constant Entity_Id :=
+                 Get_Ada_Node_From_Item (Func_Why_Binders (I));
+
+            begin
+
+               if Ekind (E) = E_In_Parameter
+                 and then Is_Access_Type (Retysp (Etype (E)))
+               then
+
+                  declare
+                     Expr            : constant W_Term_Id :=
+                       +Transform_Identifier
+                       (Params => Params,
+                        Expr   => E,
+                        Ent    => E,
+                        Domain => EW_Term);
+                     Old_Expr        : constant W_Term_Id :=
+                       +New_Old (+Expr, EW_Term);
+                     Ty              : constant Type_Kind_Id :=
+                       Retysp (Etype (E));
+                     Des_Ty          : constant Type_Kind_Id :=
+                       Retysp (Directly_Designated_Type (Ty));
+                     Preserved_Parts : constant W_Pred_Id :=
+                       New_Equality_Of_Preserved_Parts
+                         (Ty    => Des_Ty,
+                          Expr1 => New_Pointer_Value_Access
+                            (E => Ty, Name => Old_Expr),
+                          Expr2 => New_Pointer_Value_Access
+                            (E => Ty, Name => Expr));
+
+                  begin
+                     if not Is_True_Boolean (+Preserved_Parts) then
+                        Result := New_And_Pred
+                          (Left  => Result,
+                           Right => New_Conditional
+                             (Condition => New_Not
+                                  (Right => Pred_Of_Boolean_Term
+                                       (New_Pointer_Is_Null_Access
+                                          (Ty, Expr))),
+                              Then_Part => Preserved_Parts));
+                     end if;
+                  end;
+               end if;
+            end;
+         end if;
+      end loop;
+
+      return Result;
+   end Preservation_Of_Access_Parameters;
 
    -----------------------------
    -- Procedure_Logic_Binders --

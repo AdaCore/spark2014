@@ -445,6 +445,17 @@ package Gnat2Why.Expr is
    --         array in split form.
    --  @result Why3 program that performs the check and returns [W_Expr]
 
+   function New_Equality_Of_Preserved_Parts
+     (Ty           : Type_Kind_Id;
+      Expr1, Expr2 : W_Term_Id)
+      return W_Pred_Id;
+   --  Return a predicate stating that the (immutable) discriminants,
+   --  array bounds, and is_null field of unconstrained types are equal in
+   --  Expr1 and Expr2. If Ty is an anonymous access type, also assume the
+   --  bounds and discriminants of the designated type.
+   --  This is used to assume that these parts are preserved by the borrow
+   --  both in the borrower and in the borrowed expression.
+
    function New_Predicate_Check
      (Ada_Node         : Node_Id;
       Ty               : Type_Kind_Id;
