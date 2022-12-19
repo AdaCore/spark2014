@@ -540,8 +540,7 @@ of a program:
 
 * [SPARK_EXTERNAL]
   The modeling of :ref:`Interfaces to the Physical World` needs to be reviewed
-  for objects whose value may be modified concurrently, when the address of the
-  object is specified through an imprecisely supported address specification.
+  for objects whose value may be modified concurrently.
 
   * They should be `effectively volatile` in SPARK (see SPARK RM 7.1.2), so
     that GNATprove takes into account possible concurrent changes in the
@@ -553,10 +552,7 @@ of a program:
   * They should have specified all necessary :ref:`Properties of Volatile
     Variables` corresponding to their usage.
 
-  When the address of the object is specified through a precisely supported
-  address specification, a warning is guaranteed to be issued in problematic
-  cases (if there is a mismatch in volatile status, atomic status or volatile
-  properties between overlaid and overlaying objects).
+  A warning is guaranteed to be issued in problematic cases.
 
 * [SPARK_ALIASING_ADDRESS]
   Aliases between objects annotated with an imprecisely supported address
@@ -573,8 +569,7 @@ of a program:
 
   * The objects themselves have valid values for their type when read.
 
-  GNATprove might issue warnings to alert the user about possible unsoundness
-  in this case.
+  A warning is guaranteed to be issued in problematic cases.
 
 .. index:: Valid; limitation
 
@@ -590,12 +585,12 @@ of a program:
 
 * [SPARK_EXTERNAL_VALID]
   Values read from objects whose address is specified are assumed to be valid
-  values. This assumption is limited to objects annotated with an
-  imprecisely supported address specification (because an explicit check is
-  emitted otherwise). Currently there is no model of invalidity or
-  undefinedness. The onus is on the user to ensure that all values read from an
-  external source are valid. The use of an invalid value invalidates any proofs
-  associated with the value.
+  values. This assumption is limited to objects annotated with an imprecisely
+  supported address specification (because an explicit check is emitted
+  otherwise). Currently there is no model of invalidity or undefinedness. The
+  onus is on the user to ensure that all values read from an external source
+  are valid. The use of an invalid value invalidates any proofs associated with
+  the value. A warning is guaranteed to be issued in that case.
 
 * [SPARK_STORAGE_ERROR]
   As explained in section :ref:`Dealing with Storage_Error`, GNATprove does not

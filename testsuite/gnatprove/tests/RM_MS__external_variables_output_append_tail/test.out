@@ -1,3 +1,5 @@
+output_port_14.adb:10:11: warning: assuming correct volatile properties for "Output_Port"
+output_port_14.adb:10:11: warning: assuming no concurrent accesses to non-atomic object "Output_Port"
 output_port_14.adb:10:11: warning: make sure that all overlapping objects have Async_Writers set to True
 output_port_14.adb:10:11: warning: writing to "Output_Port" is assumed to have no effects on other non-volatile objects
 output_port_14.adb:14:51: info: initialization of "Output_Shadow" proved

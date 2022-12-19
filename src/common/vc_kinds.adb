@@ -514,26 +514,14 @@ package body VC_Kinds is
         when Warn_Address_To_Access =>
           "call to conversion function is assumed to return a valid access"
           & " designating a valid value",
-        when Warn_Assumed_Global_Null =>
-          "no Global contract available for subprogram, null is assumed",
-        when Warn_Assumed_Always_Return =>
-          "no returning annotation available for subprogram, "
-          & "subprogram is assumed to always return",
         when Warn_Attribute_Valid =>
           "attribute Valid is assumed to return True",
-        when Warn_Indirect_Writes_Through_Alias =>
-          "indirect writes to object through a potential alias are ignored",
         when Warn_Indirect_Writes_To_Alias =>
           "writing to object is assumed to have no effects on"
           & " other non-volatile objects",
         when Warn_Initialization_To_Alias =>
           "initialization of object is assumed to have no effects on"
           & " other non-volatile objects",
-        when Warn_Alias_Different_Volatility  =>
-          "aliased objects should have the same volatile properties",
-        when Warn_Alias_Atomic_Vol  =>
-          "aliased objects should both be volatile or non-volatile, "
-          & "and both be atomic or non-atomic",
         when Warn_Function_Is_Valid =>
           "function Is_Valid is assumed to return True",
         when Warn_Lemma_Procedure_No_Return =>
@@ -564,6 +552,29 @@ package body VC_Kinds is
           & " partially initialized",
         when Warn_Variant_Not_Recursive =>
           "no recursive call visible on subprogram with Subprogram_Variant",
+
+        --  Warnings guaranteed to be issued
+        when Warn_Address_Atomic =>
+          "non-atomic object with an imprecisely supported address "
+          & "specification should not be accessed concurrently",
+        when Warn_Address_Valid =>
+          "reads of an object with an imprecisely supported address "
+          & "specification should be valid",
+        when Warn_Alias_Atomic_Vol  =>
+          "aliased objects should both be volatile or non-volatile, "
+          & "and both be atomic or non-atomic",
+        when Warn_Alias_Different_Volatility  =>
+          "aliased objects should have the same volatile properties",
+        when Warn_Assumed_Always_Return =>
+          "no returning annotation available for subprogram, "
+          & "subprogram is assumed to always return",
+        when Warn_Assumed_Global_Null =>
+          "no Global contract available for subprogram, null is assumed",
+        when Warn_Assumed_Volatile_Properties =>
+          "volatile properties of an object with an imprecisely supported "
+          & "address specification should be correct",
+        when Warn_Indirect_Writes_Through_Alias =>
+          "indirect writes to object through a potential alias are ignored",
 
         --  Warnings only issued when using switch --pedantic
         when Warn_Image_Attribute_Length =>
@@ -1338,22 +1349,12 @@ package body VC_Kinds is
      (case Kind is
         when Warn_Address_To_Access =>
           "address to access conversion",
-        when Warn_Assumed_Global_Null =>
-          "assumed Global null",
-        when Warn_Assumed_Always_Return =>
-          "assumed Always_Return",
         when Warn_Attribute_Valid =>
           "attribute Valid always True",
-        when Warn_Indirect_Writes_Through_Alias =>
-          "indirect writes through alias",
         when Warn_Indirect_Writes_To_Alias =>
           "indirect writes to alias",
         when Warn_Initialization_To_Alias =>
           "initialization of alias",
-        when Warn_Alias_Different_Volatility =>
-          "volatile properties of aliases",
-        when Warn_Alias_Atomic_Vol =>
-          "volatile and atomic status of aliases",
         when Warn_Function_Is_Valid =>
           "function Is_Valid always return True",
         when Warn_Lemma_Procedure_No_Return =>
@@ -1382,6 +1383,24 @@ package body VC_Kinds is
           "useless Relaxed_Initialization aspect on object",
         when Warn_Variant_Not_Recursive =>
           "variant not recursive",
+
+        --  Warnings guaranteed to be issued
+        when Warn_Address_Atomic =>
+          "imprecise Address without Atomic",
+        when Warn_Address_Valid =>
+          "imprecise Addresse and validity",
+        when Warn_Alias_Atomic_Vol =>
+          "volatile and atomic status of aliases",
+        when Warn_Alias_Different_Volatility =>
+          "volatile properties of aliases",
+        when Warn_Assumed_Always_Return =>
+          "assumed Always_Return",
+        when Warn_Assumed_Global_Null =>
+          "assumed Global null",
+        when Warn_Assumed_Volatile_Properties =>
+          "imprecise Address and volatile properties",
+        when Warn_Indirect_Writes_Through_Alias =>
+          "indirect writes through alias",
 
         --  Warnings only issued when using switch --pedantic
         when Warn_Image_Attribute_Length =>

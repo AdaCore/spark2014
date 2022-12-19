@@ -23,8 +23,13 @@ Generated contracts for A
    Initializes =>
       A.Ext_State
       A.State
+a.adb:12:11: warning: assuming correct volatile properties for "Sensor"
+a.adb:12:11: warning: assuming no concurrent accesses to non-atomic object "Sensor"
+a.adb:17:11: warning: assuming correct volatile properties for "Actuator"
 a.adb:17:11: warning: writing to "Actuator" is assumed to have no effects on other non-volatile objects
 a.adb:17:11: warning: make sure that all overlapping objects have Async_Writers set to True
+a.adb:17:11: warning: assuming no concurrent accesses to non-atomic object "Actuator"
+a.adb:17:45: warning: assuming valid reads from object "Actuator"
 Generated contracts for B.Priv.P_Read_State
    Global =>
       Input =>

@@ -1,3 +1,5 @@
+iommu.adb:15:08: warning: assuming correct volatile properties for "IOMMUs"
+iommu.adb:15:08: warning: assuming no concurrent accesses to non-atomic object "IOMMUs"
 iommu.adb:15:08: warning: make sure that all overlapping objects have Async_Writers set to True
 iommu.adb:15:08: warning: writing to "IOMMUs" is assumed to have no effects on other non-volatile objects
 iommu.adb:23:07: info: initialization of "Value" proved

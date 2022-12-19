@@ -1,5 +1,8 @@
+hw-dbc-transfer_rings.adb:38:07: warning: assuming correct volatile properties for "Rings"
+hw-dbc-transfer_rings.adb:38:07: warning: assuming no concurrent accesses to non-atomic object "Rings"
 hw-dbc-transfer_rings.adb:38:07: warning: make sure that all overlapping objects have Async_Writers set to True
 hw-dbc-transfer_rings.adb:38:07: warning: writing to "Rings" is assumed to have no effects on other non-volatile objects
+hw-dbc-transfer_rings.adb:38:24: warning: assuming valid reads from object "Rings"
 hw-dbc-transfer_rings.adb:98:11: warning: assuming "Init_Cycle_Ring" always returns
 hw-dbc-transfer_rings.adb:98:11: warning: assuming "Init_Cycle_Ring" has no effect on global items
 hw-dbc-transfer_rings.adb:98:11: warning: no Global contract available for "Init_Cycle_Ring"

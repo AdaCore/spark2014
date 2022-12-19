@@ -1,3 +1,5 @@
+input_port_14.adb:10:11: warning: assuming correct volatile properties for "Input_Port"
+input_port_14.adb:10:11: warning: assuming no concurrent accesses to non-atomic object "Input_Port"
 input_port_14.adb:16:07: info: initialization of "First_Read" proved
 input_port_14.adb:17:07: info: initialization of "Second_Read" proved
 input_port_14.adb:20:22: warning: attribute Valid is assumed to return True

@@ -8,11 +8,13 @@ is
 
    V : Integer
      with Volatile,
-          Address => System.Storage_Elements.To_Address (16#DEAD_BEEF#);
+          Address  => System.Storage_Elements.To_Address (16#DEAD_BEEF#),
+          Warnings => Off;
 
    W : Pair
      with Volatile,
-          Address => System.Storage_Elements.To_Address (16#00C0_FFEE#);
+          Address  => System.Storage_Elements.To_Address (16#00C0_FFEE#),
+          Warnings => Off;
 
    procedure Do_Stuff
      with Global => (In_Out => (V, W));

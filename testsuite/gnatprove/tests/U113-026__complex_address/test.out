@@ -1,4 +1,5 @@
 arrays.ads:17:04: warning: aliased objects must have the same volatility and atomic status
+arrays.ads:25:04: warning: assuming no concurrent accesses to non-atomic object "Arr_3"
 arrays.ads:25:04: warning: make sure that all overlapping objects have Async_Writers set to True
 arrays.ads:25:04: warning: writing to "Arr_3" is assumed to have no effects on other non-volatile objects
 arrays.ads:25:26: warning: Program_Error will be raised at run time

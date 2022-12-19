@@ -1,3 +1,8 @@
+u2.adb:16:11: warning: assuming correct volatile properties for "Raw_Port1"
+u2.adb:16:11: warning: assuming no concurrent accesses to non-atomic object "Raw_Port1"
+u2.adb:16:45: warning: assuming valid reads from object "Raw_Port1"
+u2.adb:22:11: warning: assuming correct volatile properties for "Raw_Port2"
+u2.adb:22:11: warning: assuming no concurrent accesses to non-atomic object "Raw_Port2"
 u2.adb:24:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_8 and type Boolean differ]
 u2.adb:24:51: info: type is suitable as source for unchecked conversion (Trivial)
 u2.adb:24:74: info: type is suitable for unchecked conversion (Trivial)

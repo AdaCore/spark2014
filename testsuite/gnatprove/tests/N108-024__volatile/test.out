@@ -1,1 +1,4 @@
 foo.adb:4:04: warning: analyzing unreferenced procedure "P3"
+foo.ads:13:11: warning: assuming correct volatile properties for "Vol2"
+foo.ads:13:11: warning: assuming no concurrent accesses to non-atomic object "Vol2"
+foo.ads:13:45: warning: assuming valid reads from object "Vol2"

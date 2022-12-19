@@ -466,12 +466,21 @@ dates.ads:35:06: info: flow dependencies proved
 dates.ads:62:76: info: initialization of "Valid" proved
 dates.ads:64:06: info: flow dependencies proved
 dates.ads:78:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+density_altitude-humidity_unit.adb:9:11: warning: assuming correct volatile properties for "Humid_Sensor"
+density_altitude-humidity_unit.adb:9:11: warning: assuming no concurrent accesses to non-atomic object "Humid_Sensor"
+density_altitude-humidity_unit.adb:9:53: warning: assuming valid reads from object "Humid_Sensor"
 density_altitude-humidity_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-humidity_unit.ads:10:11: info: data dependencies proved
 density_altitude-humidity_unit.ads:11:11: info: flow dependencies proved
+density_altitude-pressure_unit.adb:9:11: warning: assuming correct volatile properties for "Press_Sensor"
+density_altitude-pressure_unit.adb:9:11: warning: assuming no concurrent accesses to non-atomic object "Press_Sensor"
+density_altitude-pressure_unit.adb:9:53: warning: assuming valid reads from object "Press_Sensor"
 density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-pressure_unit.ads:10:11: info: data dependencies proved
 density_altitude-pressure_unit.ads:11:11: info: flow dependencies proved
+density_altitude-temperature_unit.adb:9:11: warning: assuming correct volatile properties for "Temp_Sensor"
+density_altitude-temperature_unit.adb:9:11: warning: assuming no concurrent accesses to non-atomic object "Temp_Sensor"
+density_altitude-temperature_unit.adb:9:53: warning: assuming valid reads from object "Temp_Sensor"
 density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-temperature_unit.ads:10:11: info: data dependencies proved
 density_altitude-temperature_unit.ads:11:11: info: flow dependencies proved
@@ -525,6 +534,8 @@ example.adb:16:27: info: overflow check proved (CVC5: 2 VC), in call inlined at 
 example.adb:23:04: info: initialization of "Value" proved
 example.adb:24:04: info: initialization of "Modified" proved
 example.adb:29:04: info: analyzing call to "Bounded_Increment" in context
+external_test.adb:11:08: warning: assuming correct volatile properties for "Value"
+external_test.adb:11:08: warning: assuming no concurrent accesses to non-atomic object "Value"
 external_test.adb:11:08: warning: make sure that all overlapping objects have Async_Writers set to True
 external_test.adb:11:08: warning: writing to "Value" is assumed to have no effects on other non-volatile objects
 external_test.adb:16:12: warning: unused assignment
@@ -651,6 +662,8 @@ interval_tree_wrapper.ads:20:20: info: implicit function contract not available 
 interval_tree_wrapper.ads:20:57: info: implicit function contract not available for proof ("Size" might not return)
 interval_tree_wrapper.ads:20:71: info: implicit function contract not available for proof ("Size" might not return)
 interval_tree_wrapper.ads:30:18: info: implicit function contract not available for proof ("Size" might not return)
+led_display.adb:14:10: warning: assuming correct volatile properties for "Value"
+led_display.adb:14:10: warning: assuming no concurrent accesses to non-atomic object "Value"
 led_display.adb:14:10: warning: make sure that all overlapping objects have Async_Writers set to True
 led_display.adb:14:10: warning: writing to "Value" is assumed to have no effects on other non-volatile objects
 led_display.adb:24:41: info: initialization of "Value" constituent of "LED_State" proved
@@ -677,6 +690,8 @@ no_overflow.adb:7:14: info: range check proved (CVC5: 2 VC)
 no_overflow.adb:7:19: info: overflow check proved (CVC5: 2 VC)
 no_overflow.adb:7:24: info: division check proved (CVC5: 1 VC)
 no_overflow.ads:5:19: info: initialization of "C" proved
+numeric_display.ads:13:08: warning: assuming correct volatile properties for "Value"
+numeric_display.ads:13:08: warning: assuming no concurrent accesses to non-atomic object "Value"
 numeric_display.ads:13:08: warning: make sure that all overlapping objects have Async_Writers set to True
 numeric_display.ads:13:08: warning: writing to "Value" is assumed to have no effects on other non-volatile objects
 operator_overload.adb:10:13: info: add a contract to analyze it separately from calling contexts

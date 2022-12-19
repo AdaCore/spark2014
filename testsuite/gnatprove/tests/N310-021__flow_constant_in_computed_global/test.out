@@ -1,5 +1,11 @@
+actuator.adb:10:11: warning: assuming correct volatile properties for "Output_Ext"
+actuator.adb:10:11: warning: assuming no concurrent accesses to non-atomic object "Output_Ext"
 actuator.adb:10:11: warning: make sure that all overlapping objects have Async_Writers set to True
 actuator.adb:10:11: warning: writing to "Output_Ext" is assumed to have no effects on other non-volatile objects
+actuator.adb:10:45: warning: assuming valid reads from object "Output_Ext"
+advancebutton-raw.adb:10:11: warning: assuming correct volatile properties for "Input_Ext"
+advancebutton-raw.adb:10:11: warning: assuming no concurrent accesses to non-atomic object "Input_Ext"
+advancebutton-raw.adb:10:45: warning: assuming valid reads from object "Input_Ext"
 advancebutton-raw.ads:5:20: info: initialization of "Pressed" proved
 advancebutton.adb:26:07: info: initialization of "PressedBefore" proved
 advancebutton.adb:27:07: info: initialization of "PressedNow" proved
@@ -11,9 +17,15 @@ advancebutton.adb:69:07: info: initialization of "Pressed" proved
 advancebutton.ads:29:27: info: initialization of "Result" proved
 advancebutton.ads:33:26: info: initialization of "Result" proved
 advancebutton.ads:37:26: info: initialization of "Result" proved
+clock.adb:9:11: warning: assuming correct volatile properties for "Tick_Ext"
+clock.adb:9:11: warning: assuming no concurrent accesses to non-atomic object "Tick_Ext"
+clock.adb:9:45: warning: assuming valid reads from object "Tick_Ext"
 clock.ads:6:19: info: initialization of "Time" proved
+display.adb:9:11: warning: assuming correct volatile properties for "Output_Ext"
+display.adb:9:11: warning: assuming no concurrent accesses to non-atomic object "Output_Ext"
 display.adb:9:11: warning: make sure that all overlapping objects have Async_Writers set to True
 display.adb:9:11: warning: writing to "Output_Ext" is assumed to have no effects on other non-volatile objects
+display.adb:9:45: warning: assuming valid reads from object "Output_Ext"
 heatingsystem_dfa.adb:22:04: info: initialization of "OnOffTime" proved
 heatingsystem_dfa.adb:23:04: info: initialization of "ClockOffset" proved
 heatingsystem_dfa.adb:24:04: info: initialization of "HeatingIsOn" proved
@@ -106,8 +118,20 @@ heatingsystem_dfa.adb:162:13: info: analyzing call to "TurnOff" in context
 heatingsystem_dfa.adb:169:07: info: analyzing call to "AddOffset" in context
 heatingsystem_dfa.adb:185:07: info: analyzing call to "OperateIfNeeded" in context
 heatingsystem_dfa.adb:200:07: info: analyzing call to "CheckProgramSwitch" in context
+indicator.adb:10:11: warning: assuming correct volatile properties for "Output_Ext"
+indicator.adb:10:11: warning: assuming no concurrent accesses to non-atomic object "Output_Ext"
 indicator.adb:10:11: warning: make sure that all overlapping objects have Async_Writers set to True
 indicator.adb:10:11: warning: writing to "Output_Ext" is assumed to have no effects on other non-volatile objects
+indicator.adb:10:45: warning: assuming valid reads from object "Output_Ext"
+modeswitch.adb:8:11: warning: assuming correct volatile properties for "Input_Ext"
+modeswitch.adb:8:11: warning: assuming no concurrent accesses to non-atomic object "Input_Ext"
+modeswitch.adb:8:45: warning: assuming valid reads from object "Input_Ext"
 modeswitch.ads:5:20: info: initialization of "Value" proved
+programswitch.adb:8:11: warning: assuming correct volatile properties for "Input_Ext"
+programswitch.adb:8:11: warning: assuming no concurrent accesses to non-atomic object "Input_Ext"
+programswitch.adb:8:45: warning: assuming valid reads from object "Input_Ext"
 programswitch.ads:5:20: info: initialization of "Value" proved
+thermostat.adb:20:11: warning: assuming correct volatile properties for "Input_Ext"
+thermostat.adb:20:11: warning: assuming no concurrent accesses to non-atomic object "Input_Ext"
+thermostat.adb:20:45: warning: assuming valid reads from object "Input_Ext"
 thermostat.ads:15:25: info: initialization of "Result" proved

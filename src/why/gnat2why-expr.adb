@@ -16841,8 +16841,7 @@ package body Gnat2Why.Expr is
                        | N_Subprogram_Declaration
       then
          declare
-            Expr            : constant Node_Id :=
-              Get_Address_Expr (Decl);
+            Expr            : constant Node_Id := Get_Address_Expr (Decl);
             Is_Object_Decl  : constant Boolean :=
               Nkind (Decl) = N_Object_Declaration;
             Aliased_Object  : constant Entity_Id := Supported_Alias (Expr);
@@ -16859,29 +16858,40 @@ package body Gnat2Why.Expr is
                   R := +Sequence (New_Ignore (Prog => +Why_Expr), R);
                end;
 
-               --  We emit a static check that the type of the object is OK for
-               --  address clauses, and we havoc any potential aliases.
+               --  In the case of a precisely supported address specificatiom,
+               --  we emit a static check that the type of the object is OK
+               --  for address clauses, and we havoc any potential aliases.
+               --  Otherwise, we emit a warning when the value read might not
+               --  be valid. This addresses assumption SPARK_EXTERNAL_VALID.
 
                if Is_Object_Decl then
                   declare
+                     E : constant Entity_Id := Defining_Identifier (Decl);
+
                      Valid       : Boolean;
                      Explanation : Unbounded_String;
                   begin
 
-                     if not Is_Imported (Defining_Identifier (Decl)) then
-                        Append
-                          (R,
-                           Havoc_Overlay_Aliases
-                             (Overlay_Alias (Defining_Identifier (Decl))));
+                     if not Is_Imported (E) then
+                        Append (R, Havoc_Overlay_Aliases (Overlay_Alias (E)));
                      end if;
 
-                     --  This check is needed only for overlays between two
+                     Suitable_For_UC_Target
+                       (Retysp (Etype (E)), True, Valid, Explanation);
+
+                     --  A warning is emitted on imprecisely supported address
+                     --  specifications.
+
+                     if not Supported_Alias then
+                        if not Valid then
+                           Error_Msg_NE
+                             (Warning_Message (Warn_Address_Valid), Expr, E);
+                        end if;
+
+                     --  The check is needed only for overlays between two
                      --  SPARK objects.
 
-                     if Supported_Alias then
-                        Suitable_For_UC_Target
-                          (Retysp (Etype (Defining_Identifier (Decl))),
-                           True, Valid, Explanation);
+                     else
                         Emit_Static_Proof_Result
                           (Decl, VC_UC_Target, Valid, Current_Subp,
                            Explanation => To_String (Explanation));
@@ -16901,9 +16911,7 @@ package body Gnat2Why.Expr is
                            Emit_Static_Proof_Result
                              (Decl,
                               VC_UC_Volatile,
-                              Has_Async_Writers
-                                (Direct_Mapping_Id
-                                     (Defining_Identifier (Decl)))
+                              Has_Async_Writers (Direct_Mapping_Id (E))
                               and Has_Async_Writers
                                 (Direct_Mapping_Id (Aliased_Object)),
                               Current_Subp);
@@ -16924,7 +16932,7 @@ package body Gnat2Why.Expr is
                               Explanation => To_String (Explanation));
 
                            Have_Same_Known_Esize
-                             (Retysp (Etype (Defining_Identifier (Decl))),
+                             (Retysp (Etype (E)),
                               Retysp (Etype (Prefix (Expr))),
                               Valid, Explanation);
                            Emit_Static_Proof_Result
@@ -16933,7 +16941,7 @@ package body Gnat2Why.Expr is
 
                            if Nkind (Prefix (Expr)) in N_Has_Entity then
                               Objects_Have_Compatible_Alignments
-                                (Defining_Identifier (Decl),
+                                (E,
                                  Entity (Prefix (Expr)),
                                  Valid, Explanation);
                            else

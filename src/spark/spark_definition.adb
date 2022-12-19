@@ -2760,21 +2760,34 @@ package body SPARK_Definition is
 
             --  If we cannot determine which object the address of E
             --  references, check whether E is annotated with some Volatile
-            --  properties. If it is not the case, issue a warning that we
-            --  cannot account for indirect writes.
+            --  properties. If it is not the case, issue a warning that
+            --  we cannot account for indirect writes. Otherwise, issue a
+            --  warning that we assume the stated volatile properties, if
+            --  not all properties are set. This partly addresses assumptions
+            --  SPARK_EXTERNAL and SPARK_ALIASING_ADDRESS.
 
             if Is_Object (E)
               and then not Supported_Alias
-              and then not Has_Volatile (E)
-              and then
-                (Ekind (E) /= E_Variable or else not No_Caching_Enabled (E))
             then
-               Error_Msg_NE
-                 (Warning_Message (Warn_Indirect_Writes_Through_Alias),
-                  Address, E);
-               Error_Msg_NE
-                 ("\consider annotating & with Async_Writers",
-                  Address, E);
+               if not Has_Volatile (E) then
+                  if not No_Caching_Enabled (E) then
+                     Error_Msg_NE
+                       (Warning_Message (Warn_Indirect_Writes_Through_Alias),
+                        Address, E);
+                     Error_Msg_NE
+                       ("\consider annotating & with Async_Writers",
+                        Address, E);
+                  end if;
+
+               elsif not Has_Volatile_Property (E, Pragma_Async_Readers)
+                 or else not Has_Volatile_Property (E, Pragma_Async_Writers)
+                 or else not Has_Volatile_Property (E, Pragma_Effective_Reads)
+                 or else not Has_Volatile_Property (E, Pragma_Effective_Writes)
+               then
+                  Error_Msg_NE
+                    (Warning_Message (Warn_Assumed_Volatile_Properties),
+                     Address, E);
+               end if;
             end if;
 
             --  If E is variable in SPARK, check here that we can account
@@ -2796,8 +2809,7 @@ package body SPARK_Definition is
 
                   if (if Has_Volatile (E)
                       then Has_Volatile_Property (E, Pragma_Async_Readers)
-                      else Ekind (E) /= E_Variable
-                        or else not No_Caching_Enabled (E))
+                      else not No_Caching_Enabled (E))
                   then
                      Error_Msg_NE
                        (Warning_Message (Warn_Indirect_Writes_To_Alias),
@@ -2964,13 +2976,27 @@ package body SPARK_Definition is
                end;
             end if;
 
-            if Is_Object (E) and then Supported_Alias then
-               if Has_Volatile (E) /= Has_Volatile (Aliased_Object) or else
-                 Is_Atomic (E) /= Is_Atomic (Aliased_Object)
-               then
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Alias_Atomic_Vol),
-                     Address, E);
+            --  Objects whose address is taken should have consistent
+            --  volatility and atomicity specifications, in the case of a
+            --  precisely supported address specification. Otherwise we assume
+            --  no concurrent accesses in case the object is not atomic. This
+            --  partly addresses assumptions SPARK_EXTERNAL.
+
+            if Is_Object (E) then
+               if Supported_Alias then
+                  if Has_Volatile (E) /= Has_Volatile (Aliased_Object) or else
+                    Is_Atomic (E) /= Is_Atomic (Aliased_Object)
+                  then
+                     Error_Msg_NE
+                       (Warning_Message (Warn_Alias_Atomic_Vol),
+                        Address, E);
+                  end if;
+               else
+                  if not Is_Atomic (E) then
+                     Error_Msg_NE
+                       (Warning_Message (Warn_Address_Atomic),
+                        Address, E);
+                  end if;
                end if;
             end if;
 

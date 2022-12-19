@@ -1,3 +1,4 @@
+aip-arp.adb:325:10: warning: assuming no concurrent accesses to non-atomic object "Result"
 aip-arp.adb:325:10: warning: consider annotating "Result" with Async_Writers
 aip-arp.adb:325:10: warning: indirect writes to "Result" through a potential alias are ignored
 aip-arp.adb:325:10: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -11,6 +12,7 @@ aip-tcp.adb:1863:24: warning: "Err" is set by "TCP_Event" but not used after the
 aip-tcp.adb:1895:32: warning: "Err" is set by "TCP_Send_Control" but not used after the call
 aip-tcp.adb:2153:22: warning: "Err" is set by "TCP_Send_Rst" but not used after the call
 aip-tcp.adb:2250:24: warning: "Err" is set by "TCP_Event" but not used after the call
+aip-tcp.adb:2740:10: warning: assuming no concurrent accesses to non-atomic object "Result"
 aip-tcp.adb:2740:10: warning: consider annotating "Result" with Async_Writers
 aip-tcp.adb:2740:10: warning: indirect writes to "Result" through a potential alias are ignored
 aip-tcp.adb:2740:10: warning: make sure that all overlapping objects have Async_Writers set to True

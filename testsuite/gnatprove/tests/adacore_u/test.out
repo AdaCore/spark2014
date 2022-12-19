@@ -509,20 +509,31 @@ diff_pair.ads:13:14: medium: postcondition might fail (e.g. when Max'Result = 0)
 diff_pair.ads:17:14: info: postcondition proved (CVC5: 1 VC)
 external_abstract_state.adb:9:04: high: "AR" constituent of "AR_State" is not written in "External_Abstract_State" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "AR" constituent of "AR_State" at declaration or in the package body statements]
 external_abstract_state.adb:11:04: high: "EW" constituent of "AR_State" is not written in "External_Abstract_State" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "EW" constituent of "AR_State" at declaration or in the package body statements]
+trivial.ads:10:31: warning: assuming no concurrent accesses to non-atomic object "X"
 trivial.ads:10:31: warning: make sure that all overlapping objects have Async_Writers set to True
 trivial.ads:10:31: warning: writing to "X" is assumed to have no effects on other non-volatile objects
 trivial.ads:12:19: info: initialization of "Val" proved
 trivial.ads:13:06: info: data dependencies proved
 trivial.ads:14:06: info: flow dependencies proved
 trivial_async_properties.adb:7:22: medium: assertion might fail
+trivial_async_properties.ads:10:31: warning: assuming correct volatile properties for "X"
+trivial_async_properties.ads:10:31: warning: assuming no concurrent accesses to non-atomic object "X"
 trivial_async_properties.ads:10:31: warning: make sure that all overlapping objects have Async_Writers set to True
 trivial_async_properties.ads:10:31: warning: writing to "X" is assumed to have no effects on other non-volatile objects
+trivial_async_properties.ads:11:31: warning: assuming correct volatile properties for "Y"
+trivial_async_properties.ads:11:31: warning: assuming no concurrent accesses to non-atomic object "Y"
 trivial_async_properties.ads:13:14: info: initialization of "X" proved
 trivial_async_properties.ads:14:06: info: flow dependencies proved
+trivial_effective_properties.ads:10:31: warning: assuming correct volatile properties for "X"
+trivial_effective_properties.ads:10:31: warning: assuming no concurrent accesses to non-atomic object "X"
 trivial_effective_properties.ads:10:31: warning: make sure that all overlapping objects have Async_Writers set to True
 trivial_effective_properties.ads:10:31: warning: writing to "X" is assumed to have no effects on other non-volatile objects
+trivial_effective_properties.ads:12:31: warning: assuming correct volatile properties for "Y"
+trivial_effective_properties.ads:12:31: warning: assuming no concurrent accesses to non-atomic object "Y"
 trivial_effective_properties.ads:15:14: info: initialization of "X" proved
 trivial_effective_properties.ads:16:06: info: flow dependencies proved
+trivial_no_output.ads:10:31: warning: assuming correct volatile properties for "X"
+trivial_no_output.ads:10:31: warning: assuming no concurrent accesses to non-atomic object "X"
 trivial_no_output.ads:10:31: warning: make sure that all overlapping objects have Async_Writers set to True
 trivial_no_output.ads:10:31: warning: writing to "X" is assumed to have no effects on other non-volatile objects
 trivial_no_output.ads:13:19: info: initialization of "Val" proved
