@@ -19,7 +19,7 @@ SPARK Analysis results        Total       Flow   Provers   Justified   Unproved
 -------------------------------------------------------------------------------
 Data Dependencies                 .          .         .           .          .
 Flow Dependencies                 2          2         .           .          .
-Initialization                    4          .         .           2          2
+Initialization                    3          .         .           2          1
 Non-Aliasing                      .          .         .           .          .
 Run-time Checks                   .          .         .           .          .
 Assertions                        .          .         .           .          .
@@ -28,14 +28,14 @@ LSP Verification                  .          .         .           .          .
 Termination                       .          .         .           .          .
 Concurrency                       .          .         .           .          .
 -------------------------------------------------------------------------------
-Total                             6    2 (33%)         .     2 (33%)    2 (33%)
+Total                             5    2 (40%)         .     2 (40%)    1 (20%)
 
 
 max steps used for successful proof: 0
 
 Analyzed 2 units
 in unit pkg, 2 subprograms and packages out of 2 analyzed
-  Pkg at pkg.ads:1 flow analyzed (0 errors, 1 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+  Pkg at pkg.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
    Justified check messages:
     pkg.adb:8:4: justified that "Descriptors" constituent of "State" is not initialized in "Pkg" (marked as: intentional, reason: "Suppressing main message should suppress cont line, too")
   Pkg.Foo at pkg.ads:7 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)

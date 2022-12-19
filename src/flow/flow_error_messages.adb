@@ -237,10 +237,8 @@ package body Flow_Error_Messages is
    No_Message_Id : constant Message_Id := -1;
 
    Last_Suppressed : Boolean := False;
-   Last_Suppr_Str  : String_Id := No_String;
    --  Used by Error_Msg_Flow to suppress continuation messages of suppressed
-   --  messages. We need to know if a message was suppressed the last time, and
-   --  the suppression reason, if any.
+   --  messages. We need to know if a message was suppressed the last time.
 
    ---------------------
    -- Compute_Message --
@@ -437,6 +435,14 @@ package body Flow_Error_Messages is
    --  Start of processing for Error_Msg_Flow
 
    begin
+      --  In the case of a continuation message, do nothing if the last
+      --  non-continuation message has been suppressed.
+
+      if Continuation and Last_Suppressed then
+         Suppressed := True;
+         return;
+      end if;
+
       --  If the message we are about to emit has already been emitted in the
       --  past then do nothing.
 
@@ -466,6 +472,7 @@ package body Flow_Error_Messages is
                   if Suppressed then
                      Suppression := Suppressed_Warning;
                   end if;
+
                when Info_Kind =>
                   Suppressed := Report_Mode = GPR_Fail;
 
@@ -501,17 +508,6 @@ package body Flow_Error_Messages is
                   Suppressed       := False;
                   Found_Flow_Error := True;
             end case;
-         end if;
-
-         --  In the case of a continuation message, also take into account the
-         --  result of the last non-continuation message. Do not simply take
-         --  over the result, but merge it with the results of the continuation
-         --  message, so that one can also suppress only the continuation
-         --  message.
-
-         if Continuation then
-            Suppressed := Suppressed or Last_Suppressed;
-            Suppr := (if Suppr = No_String then Last_Suppr_Str else Suppr);
          end if;
 
          --  Print the message except when it's suppressed. If command line
@@ -613,12 +609,10 @@ package body Flow_Error_Messages is
          Suppressed := True;
       end if;
 
-      --  In case of a non-continuation message, store the suppressed/justified
-      --  info.
+      --  In case of a non-continuation message, store the suppressed info
 
       if not Continuation then
          Last_Suppressed := Suppressed;
-         Last_Suppr_Str := Suppr;
       end if;
    end Error_Msg_Flow;
 
