@@ -3190,7 +3190,13 @@ package body SPARK_Util is
          then Get_Root_Object (Prefix_Expr, Through_Traversal => False)
          else Empty);
    begin
-      if Present (Aliased_Object) and then Is_Object (Aliased_Object) then
+      if Present (Aliased_Object)
+        and then
+          Ekind (Aliased_Object) in E_Constant
+                                  | E_Loop_Parameter
+                                  | E_Variable
+                                  | Formal_Kind
+      then
          return Aliased_Object;
       else
          return Empty;
