@@ -2528,6 +2528,9 @@ package body SPARK_Definition is
                Mark_Unsupported (Lim_Target_Name_In_Move, N);
             end if;
 
+         when N_Interpolated_String_Literal =>
+            Mark_Unsupported (Lim_Interpolated_String_Literal, N);
+
          --  Mark should not be called on other kinds
 
          when N_Abortable_Part

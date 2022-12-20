@@ -657,6 +657,8 @@ package body VC_Kinds is
          when Lim_Img_On_Non_Scalar =>
            "a reference to the ""Image"" or ""Img"" attribute on a type or "
           & "an object of a type which is not a scalar type",
+         when Lim_Interpolated_String_Literal =>
+           "interpolated string literals",
          when Lim_Iterated_Element_Association => "container aggregates",
          when Lim_Iterator_In_Component_Assoc =>
            "an iterated component associations with an iterator specification"

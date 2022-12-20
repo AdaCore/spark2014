@@ -423,6 +423,7 @@ package VC_Kinds is
       Lim_Ext_Aggregate_With_Type_Ancestor,
       Lim_Goto_Cross_Inv,
       Lim_Img_On_Non_Scalar,
+      Lim_Interpolated_String_Literal,
       Lim_Iterated_Element_Association,
       Lim_Iterator_In_Component_Assoc,
       Lim_Limited_Type_From_Limited_With,
@@ -629,6 +630,8 @@ package VC_Kinds is
            "non-static attribute """ & Standard_Ada_Case (Name) & """",
          when Lim_Img_On_Non_Scalar =>
            "attribute """ & Standard_Ada_Case (Name) & """ on non-scalar type",
+         when Lim_Interpolated_String_Literal =>
+           "interpolated string literal",
          when Lim_Unknown_Alignment =>
            "unknown value of object alignment",
          when Lim_Op_Fixed_Float =>
