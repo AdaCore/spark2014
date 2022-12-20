@@ -1218,12 +1218,23 @@ package body SPARK_Util.Subprograms is
 
       function Has_Renaming_As_Body (E : Entity_Id) return Boolean is
          B : constant Node_Id := Subprogram_Body (E);
+         Decl : Node_Id;
       begin
-         return Present (B)
+         if Present (B)
            and then Is_List_Member (B)
-           and then Present (Prev (B))
-           and then Nkind (Prev (B)) = N_Subprogram_Renaming_Declaration
-           and then Corresponding_Spec (Prev (B)) = E;
+         then
+            Decl := Prev (B);
+            while Present (Decl) loop
+               if Nkind (Decl) = N_Subprogram_Renaming_Declaration
+                 and then Corresponding_Spec (Decl) = E
+               then
+                  return True;
+               end if;
+               Prev (Decl);
+            end loop;
+         end if;
+
+         return False;
       end Has_Renaming_As_Body;
 
    --  Start of processing for Is_Local_Subprogram_Always_Inlined
