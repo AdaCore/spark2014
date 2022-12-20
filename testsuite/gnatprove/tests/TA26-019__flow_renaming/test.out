@@ -1,0 +1,31 @@
+c413005.adb:17:13: error: anonymous access type for result for non-traversal functions is not allowed in SPARK
+c413005.adb:17:13: error: violation of pragma SPARK_Mode at test.adc:1
+c413005.adb:25:04: warning: assuming "Class_Wide_Get" always returns
+c413005.adb:25:04: warning: assuming "Class_Wide_Get" has no effect on global items
+c413005.adb:25:04: warning: assuming "Class_Wide_Set" always returns
+c413005.adb:25:04: warning: assuming "Class_Wide_Set" has no effect on global items
+c413005.adb:25:04: warning: in instantiation at line 5
+c413005.adb:25:04: warning: in instantiation at line 5
+c413005.adb:25:04: warning: in instantiation at line 6
+c413005.adb:25:04: warning: in instantiation at line 6
+c413005.adb:25:04: warning: no Global contract available for "Class_Wide_Get"
+c413005.adb:25:04: warning: no Global contract available for "Class_Wide_Set"
+c413005.adb:25:04: warning: no returning annotation available for "Class_Wide_Get"
+c413005.adb:25:04: warning: no returning annotation available for "Class_Wide_Set"
+c413005.adb:26:04: warning: assuming "Get" always returns
+c413005.adb:26:04: warning: assuming "Get" has no effect on global items
+c413005.adb:26:04: warning: assuming "Set" always returns
+c413005.adb:26:04: warning: assuming "Set" has no effect on global items
+c413005.adb:26:04: warning: in instantiation at line 5
+c413005.adb:26:04: warning: in instantiation at line 5
+c413005.adb:26:04: warning: in instantiation at line 6
+c413005.adb:26:04: warning: in instantiation at line 6
+c413005.adb:26:04: warning: no Global contract available for "Get"
+c413005.adb:26:04: warning: no Global contract available for "Set"
+c413005.adb:26:04: warning: no returning annotation available for "Get"
+c413005.adb:26:04: warning: no returning annotation available for "Set"
+c413005.adb:27:35: error: "Func" is not allowed in SPARK (due to anonymous access type for result for non-traversal functions)
+c413005.adb:27:35: error: violation of pragma SPARK_Mode at test.adc:1
+c413005.adb:27:56: error: "Func" is not allowed in SPARK (due to anonymous access type for result for non-traversal functions)
+c413005.adb:27:56: error: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during flow analysis and proof
