@@ -2,12 +2,14 @@ main bin/ dir
 gnatprove
 libexec/spark/bin/ dir
 alt-ergo
+alt-ergo.hash
 gcc
 gnat2why
 gnat_server
 gnatbind
 gnatls
 gnatwhy3
+gnatwhy3.hash
 gprbuild
 gprclean
 gprconfig
