@@ -36,6 +36,7 @@ with Einfo.Utils;                     use Einfo.Utils;
 with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
+with Flow_Dependency_Maps;            use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                    use Flow_Utility;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
@@ -360,6 +361,12 @@ package body SPARK_Definition is
 
    procedure Mark (N : Node_Id);
    --  Generic procedure for marking code
+
+   procedure Mark_Constant_Globals (Globals : Node_Sets.Set);
+   --  Mark constant objects in the Initializes or Global/Depends contract (or
+   --  their refined variant). We want to detect constants not in SPARK, even
+   --  if they only appear in the flow contracts, to handle them as having no
+   --  variable input.
 
    function Most_Underlying_Type_In_SPARK (Id : Type_Kind_Id) return Boolean;
    --  Mark the Retysp of Id and check that it is not completely private
@@ -4770,6 +4777,19 @@ package body SPARK_Definition is
       Violation_Detected := Save_Violation_Detected;
    end Mark_Concurrent_Type_Declaration;
 
+   ---------------------------
+   -- Mark_Constant_Globals --
+   ---------------------------
+
+   procedure Mark_Constant_Globals (Globals : Node_Sets.Set) is
+   begin
+      for Global of Globals loop
+         if Ekind (Global) = E_Constant then
+            Mark_Entity (Global);
+         end if;
+      end loop;
+   end Mark_Constant_Globals;
+
    -----------------
    -- Mark_Entity --
    -----------------
@@ -5297,27 +5317,6 @@ package body SPARK_Definition is
             Formal      : Opt_Formal_Kind_Id := First_Formal (Id);
             Contract    : Node_Id;
             Raw_Globals : Raw_Global_Nodes;
-
-            procedure Mark_Constant_Globals (Globals : Node_Sets.Set);
-            --  Mark constant objects in the Global/Depends contract (or their
-            --  refined variant). We want to detect constants not in SPARK,
-            --  even if they only appear in the flow contracts, to handle
-            --  them as having no variable input.
-
-            ---------------------------
-            -- Mark_Constant_Globals --
-            ---------------------------
-
-            procedure Mark_Constant_Globals (Globals : Node_Sets.Set) is
-            begin
-               for Global of Globals loop
-                  if Ekind (Global) = E_Constant then
-                     Mark_Entity (Global);
-                  end if;
-               end loop;
-            end Mark_Constant_Globals;
-
-         --  Start of processing for Mark_Subprogram_Specification
 
          begin
             case Ekind (Id) is
@@ -7962,13 +7961,24 @@ package body SPARK_Definition is
          if Present (Init_Cond) then
             declare
                Expr : constant Node_Id :=
-                 Expression (First (Pragma_Argument_Associations
-                             (Init_Cond)));
+                 Expression (First (Pragma_Argument_Associations (Init_Cond)));
             begin
                Mark (Expr);
             end;
          end if;
       end;
+
+      --  Decide whether constants appearing in explicit Initializes are in
+      --  SPARK, because this affects whether they are considered to have
+      --  variable input.
+
+      if Present (Get_Pragma (Id, Pragma_Initializes)) then
+         for Input_List of
+           Parse_Initializes (Id, Scop => (Ent => Id, Part => Visible_Part))
+         loop
+            Mark_Constant_Globals (To_Node_Set (Input_List));
+         end loop;
+      end if;
 
       Mark_Stmt_Or_Decl_List (Vis_Decls);
 

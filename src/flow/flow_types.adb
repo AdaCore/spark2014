@@ -1059,7 +1059,9 @@ package body Flow_Types is
    begin
       for E of S loop
          pragma Assert
-           (Is_Global_Entity (E) or else Ekind (E) = E_Constant
+           (Ekind (E) = E_Constant  --  Avoid calling Has_Variable_Input
+              or else               --  by Is_Global_Entity during marking.
+            Is_Global_Entity (E)
               or else
             Is_Subprogram_Or_Entry (E) or else Ekind (E) = E_Package);
          --  Here we only process globals (including constants without
