@@ -689,7 +689,7 @@ package Flow_Utility is
    --  Returns True iff F represents a ghost entity
 
    function Is_Constant_After_Elaboration (F : Flow_Id) return Boolean
-   with Pre => Is_Variable (F);
+   with Pre => Present (F);
    --  Returns True iff F represents a constant after elaboration
 
    function Is_Variable (F : Flow_Id) return Boolean
