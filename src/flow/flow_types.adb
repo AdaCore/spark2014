@@ -531,30 +531,6 @@ package body Flow_Types is
             when Magic_String   => GG_Is_Abstract_State (F.Name),
             when others         => False));
 
-   -----------------
-   -- Is_Constant --
-   -----------------
-
-   function Is_Constant (F : Flow_Id) return Boolean is
-   begin
-      case F.Kind is
-         when Direct_Mapping | Record_Field =>
-            return Is_Constant_Object (F.Node);
-
-         --  Constants (without variable input) are filtered in phase 1 and
-         --  never appear in the contracts written to the ALI file.
-
-         when Magic_String =>
-            return False;
-
-         when Synthetic_Null_Export =>
-            return False;
-
-         when Null_Value =>
-            raise Program_Error;
-      end case;
-   end Is_Constant;
-
    --------------------
    -- Is_Constituent --
    --------------------
