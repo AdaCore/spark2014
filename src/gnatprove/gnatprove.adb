@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2022, AdaCore                     --
---              Copyright (C) 2014-2022, Capgemini Engineering              --
+--                     Copyright (C) 2010-2023, AdaCore                     --
+--              Copyright (C) 2014-2023, Capgemini Engineering              --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
