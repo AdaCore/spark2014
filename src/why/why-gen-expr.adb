@@ -3478,7 +3478,9 @@ package body Why.Gen.Expr is
                return +E_Symb (Ty, WNE_Attr_Modulus);
             when Attribute_Constrained    =>
                return +E_Symb (Ty, WNE_Attr_Constrained);
-            when Attribute_Size           =>
+            when Attribute_Size
+               | Attribute_Value_Size
+            =>
                return +E_Symb (Ty, WNE_Attr_Value_Size);
             when Attribute_Component_Size =>
                return +E_Symb (Ty, WNE_Attr_Component_Size);

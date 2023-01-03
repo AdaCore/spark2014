@@ -2,9 +2,15 @@
 
 import argparse
 from e3.gaia.api import GAIA
+from e3.testsuite.optfileparser import OptFileParse
 from e3.testsuite.report.index import ReportIndex
 from e3.testsuite.result import TestStatus
 import os.path
+import re
+import shutil
+import subprocess
+import tarfile
+import tempfile
 
 descr = """This script updates the outputs from a previous run of the
 testsuite."""
@@ -41,13 +47,87 @@ def update_baseline(testname, out):
         f.write(out)
 
 
+def output_too_long(output_file):
+    fd = open(output_file, "r")
+    tmp = fd.read().splitlines()
+    fd.close()
+    return len(tmp) > 1 and re.search("output too long", tmp[1]) is not None
+
+
+def update_result(discs, result_dir, result_file):
+    # Result is "D" in mailservers/nightly runs for a diff
+    if get_result(result_dir, result_file) == "D":
+        # Output is in .out in mailservers/nightly runs
+        test_name = result_file[0 : -len(".result")]
+        out_file = os.path.join(result_dir, result_file.replace(".result", ".out"))
+        # If not a test in the public testsuite, it must be from internal one
+        test_dir = (
+            os.path.join("tests", test_name)
+            if os.path.exists(os.path.join("tests", test_name))
+            else os.path.join("internal", test_name)
+        )
+        test_opt = os.path.join(test_dir, "test.opt")
+        if os.path.exists(test_opt):
+            opt = OptFileParse(discs, test_opt)
+            out = opt.get_value("OUT", "test.out")
+            test_out = os.path.join(test_dir, out)
+        else:
+            test_out = os.path.join(test_dir, "test.out")
+
+        if not os.path.exists(test_dir):
+            print("IGNORE OUTPUT %s" % result_file)
+
+        elif os.path.exists(out_file) and os.stat(out_file).st_size != 0:
+            if not os.path.exists(test_out):
+                shutil.copyfile(out_file, test_out)
+                print("Add output %s" % test_out)
+            else:
+                # If output is truncated due to mailserver limitations, apply the
+                # diff file instead
+                if output_too_long(out_file):
+                    diff_file = out_file.replace(".out", ".diff")
+                    subprocess.run(["patch", "-p", "0", test_out, diff_file])
+                else:
+                    shutil.copyfile(out_file, test_out)
+                print("Update output %s" % test_out)
+        else:
+            if os.path.exists(test_out):
+                print("Remove output %s" % test_out)
+
+
+def get_result(result_dir, result_file):
+    fd = open(os.path.join(result_dir, result_file), "r")
+    tmp = fd.read().strip()
+    fd.close()
+    return tmp.split(":")[0]
+
+
 def update_from_gaia(gaia_id):
     g = GAIA()
-    content = g.request("GET", f"testsuite/{gaia_id}").json()
-    data = content["testsuite"]["results"]
-    for testname, info in data.items():
-        if info["status"] == "DIFF":
-            update_baseline(testname, info["actual_output"])
+    r = g.request("GET", f"testsuite/test_results_archive/{gaia_id}")
+    with tempfile.NamedTemporaryFile("wb", suffix=".tgz", delete=False) as f:
+        for chunk in r:
+            f.write(chunk)
+        f.close()
+        archivename = f.name
+    targetdir = os.path.splitext(archivename)[0]
+    tar = tarfile.open(archivename, "r:gz")
+    tar.extractall(targetdir)
+    discs = ""
+    resultdirs = []
+    entries = os.listdir(targetdir)
+    for e in entries:
+        sub = os.path.join(targetdir, e)
+        if os.path.isdir(sub):
+            resultdirs.append(sub)
+    for result_dir in resultdirs:
+        with open(os.path.join(result_dir, "discs"), "r") as f:
+            discs = f.read().split(" ")
+        for result_file in [
+            fn for fn in os.listdir(result_dir) if fn.endswith(".result")
+        ]:
+            update_result(discs, result_dir, result_file)
+    shutil.rmtree(targetdir)
 
 
 def main():

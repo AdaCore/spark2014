@@ -428,13 +428,11 @@ package body Gnat2Why.Expr is
    --  from Var if any.
 
    procedure Insert_Move_Of_Deep_Parts
-     (Stmt    :        Node_Id;
-      Lhs_Typ :        Entity_Id;
-      Expr    : in out W_Prog_Id)
-   with Pre => Nkind (Stmt) in N_Assignment_Statement
-                             | N_Object_Declaration
-                             | N_Simple_Return_Statement;
-   --  @param Stmt assignment or object declaration or return statement
+     (Rhs     : N_Subexpr_Id;
+      Lhs_Typ : Entity_Id;
+      Expr    : in out W_Prog_Id);
+   --  @param Rhs the expression of an assignment or object declaration or
+   --         return statement
    --  @param Lhs_Typ expected type for the lhs of the assignment
    --  @param Expr program that contains the translation of the rhs on input,
    --         and inserts moves on output.
@@ -1124,7 +1122,7 @@ package body Gnat2Why.Expr is
          begin
             pragma Assert (not Binder.Init.Present);
 
-            Insert_Move_Of_Deep_Parts (Stmt    => N,
+            Insert_Move_Of_Deep_Parts (Rhs     => Expression (N),
                                        Lhs_Typ => Etype (Lvalue),
                                        Expr    => Why_Expr);
 
@@ -4274,7 +4272,7 @@ package body Gnat2Why.Expr is
                Comp_Ty      : constant Entity_Id :=
                  Retysp (Component_Type (Ty));
                Comp_Relaxed : constant Boolean :=
-                 Might_Contain_Relaxed_Init (Comp_Ty)
+                 Has_Init_Wrapper (Comp_Ty)
                  and then (Relaxed_Init or else Has_Relaxed_Init (Comp_Ty));
                Comp_Default : W_Term_Id;
 
@@ -4426,7 +4424,7 @@ package body Gnat2Why.Expr is
                            Comp_Ty      : constant Entity_Id :=
                              Retysp (Etype (Comp));
                            Comp_Relaxed : constant Boolean :=
-                             Might_Contain_Relaxed_Init (Comp_Ty)
+                             Has_Init_Wrapper (Comp_Ty)
                              and then
                                (Relaxed_Init
                                 or else Has_Relaxed_Init (Comp_Ty));
@@ -5569,7 +5567,7 @@ package body Gnat2Why.Expr is
             W_Expr : constant W_Term_Id :=
               Insert_Simple_Conversion
                 (Expr => Expr,
-                 To   => EW_Abstract (Ty, Might_Contain_Relaxed_Init (Ty)));
+                 To   => EW_Abstract (Ty, Has_Init_Wrapper (Ty)));
          begin
             return New_Call
               (Name   => E_Symb (Ty, WNE_Is_Moved),
@@ -5735,11 +5733,11 @@ package body Gnat2Why.Expr is
             W_Expr1 : constant W_Term_Id :=
               Insert_Simple_Conversion
                 (Expr => Expr1,
-                 To   => EW_Abstract (Ty, Might_Contain_Relaxed_Init (Ty)));
+                 To   => EW_Abstract (Ty, Has_Init_Wrapper (Ty)));
             W_Expr2 : constant W_Term_Id :=
               Insert_Simple_Conversion
                 (Expr => Expr2,
-                 To   => EW_Abstract (Ty, Might_Contain_Relaxed_Init (Ty)));
+                 To   => EW_Abstract (Ty, Has_Init_Wrapper (Ty)));
          begin
             return New_Call
               (Name   => E_Symb (Ty, WNE_Moved_Relation),
@@ -8229,7 +8227,7 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    procedure Insert_Move_Of_Deep_Parts
-     (Stmt    : Node_Id;
+     (Rhs     : N_Subexpr_Id;
       Lhs_Typ : Entity_Id;
       Expr    : in out W_Prog_Id)
    is
@@ -8413,7 +8411,6 @@ package body Gnat2Why.Expr is
 
       --  Local variables
 
-      Rhs           : constant Node_Id := Expression (Stmt);
       Toplevel_Move : constant Boolean := Can_Be_Moved (Rhs);
       Nested_Moved  : Node_Sets.Set;
       Do_Move       : Boolean;
@@ -11212,7 +11209,7 @@ package body Gnat2Why.Expr is
                        then EW_Abstract (Typ,
                          Relaxed_Init =>
                            (if Relaxed_Init
-                            then Might_Contain_Relaxed_Init (Typ)
+                            then Has_Init_Wrapper (Typ)
                             else Has_Relaxed_Init (Typ)))
                        elsif Expr_Has_Relaxed_Init
                          (Value.Value, No_Eval => False)
@@ -12214,7 +12211,7 @@ package body Gnat2Why.Expr is
                Comp_Ty      : constant Entity_Id :=
                  Retysp (Component_Type (Expr_Typ));
                Comp_Relaxed : constant Boolean :=
-                (if Relaxed_Init then Might_Contain_Relaxed_Init (Comp_Ty)
+                (if Relaxed_Init then Has_Init_Wrapper (Comp_Ty)
                  else Has_Relaxed_Init (Comp_Ty));
 
             begin
@@ -13805,7 +13802,7 @@ package body Gnat2Why.Expr is
          declare
             Tmp : W_Expr_Id;
          begin
-            Insert_Move_Of_Deep_Parts (Stmt    => Stmt,
+            Insert_Move_Of_Deep_Parts (Rhs     => Expression (Stmt),
                                        Lhs_Typ => Typ,
                                        Expr    => T);
 
@@ -14605,13 +14602,73 @@ package body Gnat2Why.Expr is
                --  domain, generate checks for an object prefix with
                --  attribute Size.
 
-               Has_Type_Prefix : constant Boolean :=
+               Has_Type_Prefix             : constant Boolean :=
                  Nkind (Var) in N_Identifier | N_Expanded_Name
                    and then Is_Type (Entity (Var));
+               Var_Type                    : constant Entity_Id :=
+                 (if Has_Type_Prefix then Entity (Var) else Etype (Var));
+               Has_Complete_Object_Prefix  : constant Boolean :=
+                 Nkind (Var) in N_Identifier | N_Expanded_Name
+                   and then Ekind (Entity (Var)) in E_Variable | E_Constant;
+               Type_Could_Have_Object_Size : constant Boolean :=
+                 not Is_Standard_Type (Var_Type);
 
             --  Start of processing for Size_Attributes
 
             begin
+               --  If --info is given, notify the user that the attribute is
+               --  handled in an imprecise way.
+
+               if Debug.Debug_Flag_Underscore_F then
+
+                  --  The attribute can always be specified on the type
+
+                  if Has_Type_Prefix then
+                     Error_Msg_Name_1 := Aname;
+                     Error_Msg_NE
+                       ("info: ?" & "the value of % attribute is handled in an"
+                        & " imprecise way as it is not specified for type &",
+                        Expr, Entity (Var));
+
+                  --  If the object is not a complete object, only Object_Size
+                  --  could be set on its type, if not a standard one.
+
+                  elsif not Has_Complete_Object_Prefix
+                    and then Type_Could_Have_Object_Size
+                  then
+                     Error_Msg_Name_1 := Aname;
+                     Error_Msg_NE
+                       ("info: ?" & "the value of % attribute is handled in an"
+                        & " imprecise way as ""Object_Size"" is not specified"
+                        & " for type &",
+                        Expr, Var_Type);
+
+                  --  If this is a complete object, the attribute could be set
+                  --  on the object, or possibly Object_Size could be set on
+                  --  its type, if not a standard one.
+
+                  elsif Has_Complete_Object_Prefix then
+                     Error_Msg_Name_1 := Aname;
+                     Error_Msg_Node_2 := Var_Type;
+                     Error_Msg_NE
+                       ("info: ?" & "the value of % attribute is handled in an"
+                        & " imprecise way as it is not specified for object &"
+                        & (if Type_Could_Have_Object_Size then
+                             " and ""Object_Size"" is not specified for type &"
+                           else ""),
+                        Expr, Entity (Var));
+
+                  --  In the default case, just report the imprecision
+
+                  else
+                     Error_Msg_Name_1 := Aname;
+                     Error_Msg_NE
+                       ("info: ?" & "the value of % attribute is handled in an"
+                        & " imprecise way",
+                        Expr, Entity (Var));
+                  end if;
+               end if;
+
                if Has_Type_Prefix then
                   case Size_Attributes'(Attr_Id) is
                      when Attribute_Size
@@ -21505,8 +21562,7 @@ package body Gnat2Why.Expr is
                declare
                   Comp_Ty      : constant Entity_Id := Etype (Component);
                   Comp_Relaxed : constant Boolean :=
-                    (if Init_Wrapper
-                     then Might_Contain_Relaxed_Init (Comp_Ty)
+                    (if Init_Wrapper then Has_Init_Wrapper (Comp_Ty)
                      else Has_Relaxed_Init (Comp_Ty))
                     and then Ekind (Component) = E_Component;
                   W_Comp_Ty    : constant W_Type_Id := EW_Abstract
@@ -21846,6 +21902,86 @@ package body Gnat2Why.Expr is
       return T;
    end Transform_Shift_Or_Rotate_Call;
 
+   ----------------------------------------
+   -- Transform_Simple_Return_Expression --
+   ----------------------------------------
+
+   function Transform_Simple_Return_Expression
+     (Expr        : N_Subexpr_Id;
+      Subp        : Entity_Id;
+      Return_Type : W_Type_Id) return  W_Prog_Id
+   is
+      Result_Stmt : W_Prog_Id;
+   begin
+      Result_Stmt :=
+        Transform_Prog (Expr,
+                        Return_Type,
+                        Body_Params);
+
+      Insert_Move_Of_Deep_Parts (Rhs     => Expr,
+                                 Lhs_Typ => Etype (Subp),
+                                 Expr    => Result_Stmt);
+
+      Result_Stmt :=
+        New_Assignment
+          (Ada_Node => Expr,
+           Name     => Result_Name,
+           Labels   => Symbol_Sets.Empty_Set,
+           Value    => Result_Stmt,
+           Typ      => Type_Of_Node (Subp));
+
+      --  On return of traversal functions, perform dynamic accessibility
+      --  checks. We approximate them in a static way.
+
+      if Is_Traversal_Function (Subp)
+        and then Nkind (Expr) /= N_Null
+      then
+         Emit_Dynamic_Accessibility_Check
+           (Returned_Expr => Expr,
+            Subp          => Subp);
+      end if;
+
+      --  Update the value at end of the result
+
+      if Is_Borrowing_Traversal_Function (Subp) then
+
+         --  If the result is null, then the borrowed object cannot be modified
+
+         if Nkind (Expr) = N_Null then
+            declare
+               Borrowed : constant Entity_Id := First_Formal (Subp);
+            begin
+               Append
+                 (Result_Stmt,
+                  New_Assume_Statement
+                    (Pred => New_Comparison
+                         (Symbol => Why_Eq,
+                          Left   => +To_Local
+                            (Get_Borrowed_At_End (Subp)),
+                          Right  => +Transform_Identifier
+                            (Params   => Body_Params,
+                             Expr     => Borrowed,
+                             Ent      => Borrowed,
+                             Domain   => EW_Term))));
+            end;
+
+         --  Otherwise, compute the value at end from the assignment. This
+         --  assumes the dynamic invariant of the value of the borrowed object
+         --  at the end of the borrow, so it should be done after all checks at
+         --  performed for the assignment so that we do not create an
+         --  inconsistency.
+
+         else
+            Append
+              (Result_Stmt,
+               New_Update_For_Borrow_At_End
+                 (Brower => Subp,
+                  Path   => Expr));
+         end if;
+      end if;
+      return Result_Stmt;
+   end Transform_Simple_Return_Expression;
+
    ---------------------
    -- Transform_Slice --
    ---------------------
@@ -22158,76 +22294,8 @@ package body Gnat2Why.Expr is
                      Return_Type : constant W_Type_Id :=
                        Type_Of_Node (Subp);
                   begin
-                     Result_Stmt :=
-                       Transform_Prog (Expression (Stmt_Or_Decl),
-                                       Return_Type,
-                                       Body_Params);
-
-                     Insert_Move_Of_Deep_Parts (Stmt    => Stmt_Or_Decl,
-                                                Lhs_Typ => Etype (Subp),
-                                                Expr    => Result_Stmt);
-
-                     Result_Stmt :=
-                       New_Assignment
-                         (Ada_Node => Stmt_Or_Decl,
-                          Name     => Result_Name,
-                          Labels   => Symbol_Sets.Empty_Set,
-                          Value    => Result_Stmt,
-                          Typ      => Type_Of_Node (Subp));
-
-                     --  On return of traversal functions, perform dynamic
-                     --  accessibility checks. We approximate them in a static
-                     --  way.
-
-                     if Is_Traversal_Function (Subp)
-                       and then Nkind (Expression (Stmt_Or_Decl)) /= N_Null
-                     then
-                        Emit_Dynamic_Accessibility_Check
-                          (Returned_Expr => Expression (Stmt_Or_Decl),
-                           Subp          => Subp);
-                     end if;
-
-                     --  Update the value at end of the result
-
-                     if Is_Borrowing_Traversal_Function (Subp) then
-                        --  If the result is null, then the borrowed object
-                        --  cannot be modified.
-
-                        if Nkind (Expression (Stmt_Or_Decl)) = N_Null then
-                           declare
-                              Borrowed : constant Entity_Id :=
-                                First_Formal (Subp);
-                           begin
-                              Append
-                                (Result_Stmt,
-                                 New_Assume_Statement
-                                   (Pred => New_Comparison
-                                        (Symbol => Why_Eq,
-                                         Left   => +To_Local
-                                           (Get_Borrowed_At_End (Subp)),
-                                         Right  => +Transform_Identifier
-                                           (Params   => Body_Params,
-                                            Expr     => Borrowed,
-                                            Ent      => Borrowed,
-                                            Domain   => EW_Term))));
-                           end;
-
-                        --  Otherwise, compute the value at end from the
-                        --  assignment. This assumes the dynamic invariant of
-                        --  the value of the borrowed object at the end of the
-                        --  borrow, so it should be done after all checks at
-                        --  performed for the assignment so that we do not
-                        --  create an inconsistency.
-
-                        else
-                           Append
-                             (Result_Stmt,
-                              New_Update_For_Borrow_At_End
-                                (Brower => Subp,
-                                 Path   => Expression (Stmt_Or_Decl)));
-                        end if;
-                     end if;
-
+                     Result_Stmt := Transform_Simple_Return_Expression
+                       (Expression (Stmt_Or_Decl), Subp, Return_Type);
                      return Sequence (Result_Stmt, Raise_Stmt);
                   end;
                else

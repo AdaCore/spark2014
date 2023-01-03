@@ -1,0 +1,6 @@
+q.ads:11:14: error: "Y" is a Proof_In of overriding subprogram, but not of overridden subprogram "A" at p.ads:6 (SPARK RM 6.1.6)
+q.ads:11:30: info: data dependencies proved
+q.ads:12:14: error: "Y" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "B" at p.ads:7 (SPARK RM 6.1.6)
+q.ads:12:14: medium: "Y" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
+q.ads:12:30: info: flow dependencies proved
+gnatprove: error during flow analysis and proof

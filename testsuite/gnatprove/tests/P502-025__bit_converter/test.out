@@ -6,3 +6,4 @@ bit_converter.adb:29:44: info: cannot unroll loop (too many loop iterations)
 bit_converter.adb:31:39: info: index check proved (CVC5: 2 VC)
 bit_converter.ads:13:10: info: data dependencies proved
 bit_converter.ads:16:10: info: data dependencies proved
+bit_converter.ads:17:30: info: the value of "Size" attribute is handled in an imprecise way as "Object_Size" is not specified for type "Bit_Array"

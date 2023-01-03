@@ -75,11 +75,6 @@ package Gnat2Why_Opts.Reading is
 
    Flow_Advanced_Debug : Boolean;
 
-   --  This will disable the simplification of trivial counterexamples in order
-   --  to allow analysis of missing counterexamples.
-
-   Debug_Trivial : Boolean;
-
    --  The SPARK RM does not make global contracts optional, rather this is a
    --  liberty we have taken in this implementation of SPARK. This flag is
    --  controlled by the --no-global-generation switch and will make sure the

@@ -54,7 +54,7 @@ package Why.Gen.Records is
       E  : Entity_Id) with
      Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
                          Incomplete_Or_Private_Kind
-     and then Might_Contain_Relaxed_Init (E);
+     and then Has_Init_Wrapper (E);
 
    procedure Complete_Tagged_Record_Type
      (Th : Theory_UC;

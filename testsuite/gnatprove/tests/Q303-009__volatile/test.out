@@ -1,5 +1,6 @@
 vol.adb:6:03: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: a doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
 vol.adb:6:03: high: object is unsuitable for aliasing via address clause [possible explanation: anonymous type doesn't have an Object_Size representation clause or aspect]
+vol.adb:9:03: warning: aliased objects must have the same volatility and atomic status
 vol.adb:9:21: high: object is unsuitable for aliasing via address clause [possible explanation: floating-point types have invalid bit patterns for SPARK]
 vol.adb:9:21: high: types of aliased objects do not have the same size [possible explanation: anonymous type doesn't have an Object_Size representation clause or aspect]
 vol.adb:15:07: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (idx in 1 .. 10) to subprogram at vol.ads:4]

@@ -4,5 +4,5 @@ string_problem.adb:10:20: info: precondition justified
 string_problem.adb:10:20: info: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove.
 string_problem.adb:13:20: info: precondition justified
 string_problem.adb:13:20: info: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove.
-string_problem.adb:16:22: medium: assertion might fail
+string_problem.adb:16:22: info: assertion proved (CVC5: 1 VC)
 string_problem.ads:4:14: warning: subprogram "String_Equal" has no effect

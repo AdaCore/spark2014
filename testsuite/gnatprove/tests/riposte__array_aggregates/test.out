@@ -39,13 +39,13 @@ array_aggregates.adb:168:11: info: flow dependencies proved
 array_aggregates.adb:173:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:176:32: info: initialization of "X" proved
 array_aggregates.adb:177:11: info: flow dependencies proved
-array_aggregates.adb:186:22: high: assertion might fail (e.g. when X(2).A = 5 and X(3).A = 10 and X(3).B = True and X(3).C = Elem_1)
+array_aggregates.adb:186:22: high: assertion might fail (e.g. when X(2).A = 5 and X(2).B = False and X(2).C = Elem_0 and X(3).A = 10 and X(3).B = True)
 array_aggregates.adb:189:32: info: initialization of "X" proved
 array_aggregates.adb:190:11: info: flow dependencies proved
 array_aggregates.adb:199:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:202:32: info: initialization of "X" proved
 array_aggregates.adb:203:11: info: flow dependencies proved
-array_aggregates.adb:212:22: high: assertion might fail (e.g. when X(2)(1) = 1 and X(2)(2) = 2 and X(3)(1) = 12 and X(3)(2) = 12 and X(3)(3) = 12)
+array_aggregates.adb:212:22: high: assertion might fail (e.g. when X(2)(1) = 1 and X(2)(2) = 2 and X(2)(4) = 0 and X(2)(5) = 0 and X(3)(1) = 12)
 array_aggregates.adb:215:32: info: initialization of "X" proved
 array_aggregates.adb:216:11: info: flow dependencies proved
 array_aggregates.adb:225:22: info: assertion proved (CVC5: 1 VC)

@@ -165,11 +165,11 @@ exceptions to these rules:
     unspecified whether a new object is created, we assume (for purposes
     of the rules in this section) that no new object is created].
 
-  * the property No_Caching can be specified on a volatile object, to express
-    that such a variable can be analyzed as not volatile in SPARK, but that the
-    compiler should not cache its value between accesses to the object (e.g. as
-    a defense against fault injection). Such an object is not an effectively
-    volatile object.
+  * the property No_Caching can be specified on a volatile object or on its
+    volatile type, to express that such a variable can be analyzed as not
+    volatile in SPARK, but that the compiler should not cache its value between
+    accesses to the object (e.g. as a defense against fault injection). Such an
+    object is not an effectively volatile object.
 
 External state is an effectively volatile object or a state abstraction which
 represents one or more effectively volatile objects (or it could be a null state
@@ -2087,7 +2087,8 @@ we are only talking about generating additional verification conditions;
 we are not talking about any changes in a program's behavior at run-time.]
 
 5. The type invariant expression for a type T shall not include a call
-   to a boundary function for type T. [This often means that a type
+   to a boundary function for type T, if that boundary function has an
+   input with a part of type T. [This often means that a type
    invariant expression cannot contain calls to functions declared in
    the visible part of the package in question.]
 

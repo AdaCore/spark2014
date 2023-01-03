@@ -166,7 +166,6 @@ package body Gnat2Why_Opts.Writing is
             Set_Field (Obj, Proof_Generate_Guards_Name, False);
          end if;
 
-         Set_Field (Obj, Debug_Trivial_Name,    CL_Switches.Debug_Trivial);
          Set_Field (Obj, Ide_Mode_Name,         Configuration.IDE_Mode);
          Set_Field (Obj, CWE_Name,              CL_Switches.CWE);
          Set_Field (Obj, Parallel_Why3_Name,    Use_Semaphores);

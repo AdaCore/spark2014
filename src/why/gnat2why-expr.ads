@@ -636,6 +636,13 @@ package Gnat2Why.Expr is
    --     postconditions.
    --  @return The translated pragma into Why3.
 
+   function Transform_Simple_Return_Expression
+     (Expr        : N_Subexpr_Id;
+      Subp        : Entity_Id;
+      Return_Type : W_Type_Id)
+      return  W_Prog_Id;
+   --  Transform a simple return statement returning the expression Expr
+
    function Transform_Statements_And_Declarations
      (Stmts_And_Decls : List_Id)
       return W_Prog_Id;

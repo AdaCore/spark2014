@@ -29,6 +29,7 @@ with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
 with SPARK_Atree;                 use SPARK_Atree;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Util;                  use SPARK_Util;
+with SPARK_Util.Types;            use SPARK_Util.Types;
 with VC_Kinds;                    use VC_Kinds;
 with Why.Atree.Builders;          use Why.Atree.Builders;
 with Why.Gen.Arrays;              use Why.Gen.Arrays;

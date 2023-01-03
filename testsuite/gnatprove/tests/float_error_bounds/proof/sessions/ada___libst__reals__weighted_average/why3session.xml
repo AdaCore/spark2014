@@ -41,7 +41,7 @@
   <proof prover="0"><result status="valid" steps="336"/></proof>
   <proof prover="1"><result status="valid" steps="1791"/></proof>
   <proof prover="2"><result status="valid" steps="1410"/></proof>
-  <proof prover="4"><result status="valid" steps="159"/></proof>
+  <proof prover="4"><result status="failure" steps="0"/></proof>
   </goal>
  </transf>
  </goal>

@@ -1,5 +1,9 @@
+get_size.adb:9:35: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "T"
 get_size.adb:9:35: medium: range check might fail, cannot prove upper bound for T'Size [reason for check: returned value must fit in the result type of the function]
+get_size.adb:11:20: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "T"
 get_size.adb:11:20: medium: range check might fail, cannot prove upper bound for T'Size [reason for check: default component value must fit in the type]
 get_size.adb:13:19: info: assertion proved (CVC5: 1 VC)
 get_size.adb:14:19: medium: assertion might fail
+get_size.adb:14:20: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "A"
 get_size.adb:14:31: info: overflow check proved (CVC5: 2 VC)
+get_size.adb:14:34: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "T"

@@ -19,7 +19,9 @@ size_attr.adb:117:19: info: assertion proved (Trivial)
 size_attr.adb:118:19: info: assertion proved (Trivial)
 size_attr.adb:119:19: info: assertion proved (Trivial)
 size_attr.adb:123:19: info: assertion proved (Trivial: 1 VC)
+size_attr.adb:123:20: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for object "B"
 size_attr.adb:124:19: info: assertion proved (Trivial: 1 VC)
+size_attr.adb:124:20: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for object "I"
 size_attr.adb:125:19: info: assertion proved (Trivial)
 size_attr.adb:127:19: info: assertion proved (Trivial)
 size_attr.adb:128:19: info: assertion proved (Trivial)

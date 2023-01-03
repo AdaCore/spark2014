@@ -2960,6 +2960,26 @@ package body SPARK_Definition is
                end;
             end if;
 
+            if Is_Object (E) and then Supported_Alias then
+               if Has_Volatile (E) /= Has_Volatile (Aliased_Object) or else
+                 Is_Atomic (E) /= Is_Atomic (Aliased_Object)
+               then
+                  Error_Msg_NE
+                    (Warning_Message (Warn_Alias_Atomic_Vol),
+                     Address, E);
+               end if;
+            end if;
+
+            if Is_Object (E) then
+               if Has_Relaxed_Initialization (E) or else
+                 (Supported_Alias
+                  and then Ekind (Aliased_Object) /= E_Loop_Parameter
+                  and then Has_Relaxed_Initialization (Aliased_Object))
+               then
+                  Mark_Unsupported (Lim_Relaxed_Init_Aliasing, E);
+               end if;
+            end if;
+
             if Is_Object (E)
               and then not E_Is_Constant
               and then Supported_Alias

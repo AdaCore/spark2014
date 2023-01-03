@@ -362,7 +362,6 @@ package VC_Kinds is
       Warn_Indirect_Writes_Through_Alias,
       Warn_Indirect_Writes_To_Alias,
       Warn_Initialization_To_Alias,
-      Warn_Alias_Different_Volatility,
       Warn_Function_Is_Valid,
       Warn_Lemma_Procedure_No_Return,
       Warn_Pragma_Annotate_No_Check,
@@ -378,6 +377,8 @@ package VC_Kinds is
 
       --  Warnings guaranteed to be issued
       Warn_Assumed_Global_Null,
+      Warn_Alias_Different_Volatility,
+      Warn_Alias_Atomic_Vol,
       Warn_Assumed_Always_Return,
 
       --  Warnings only issued when using switch --pedantic
@@ -444,6 +445,7 @@ package VC_Kinds is
       Lim_Protected_Operation_Of_Formal,
       Lim_Refined_Post_On_Entry,
       Lim_Relaxed_Init_Access_Type,
+      Lim_Relaxed_Init_Aliasing,
       Lim_Relaxed_Init_Concurrent_Type,
       Lim_Relaxed_Init_Invariant,
       Lim_Relaxed_Init_Part_Of_Variable,
@@ -499,6 +501,8 @@ package VC_Kinds is
           & " other non-volatile objects",
         when Warn_Alias_Different_Volatility =>
           "?aliased objects have different volatile properties",
+        when Warn_Alias_Atomic_Vol =>
+          "?aliased objects must have the same volatility and atomic status",
         when Warn_Function_Is_Valid =>
           "?function Is_Valid is assumed to return True",
         when Warn_Lemma_Procedure_No_Return =>
@@ -691,6 +695,8 @@ package VC_Kinds is
          when Lim_Relaxed_Init_Access_Type =>
            "access type used as a subcomponent of a type or"
           & " an object annotated with relaxed initialization",
+         when Lim_Relaxed_Init_Aliasing =>
+           "relaxed initialization on overlaid objects",
          when Lim_Relaxed_Init_Concurrent_Type =>
            "concurrent type used as a subcomponent of a type or"
           & " an object annotated with relaxed initialization",
@@ -921,17 +927,14 @@ package VC_Kinds is
         "="          => "=");
 
    type CNT_Unbounded_String is record
-      Nul   : Boolean := True;
       Str   : Unbounded_String;
       Count : Natural := 0;
       Elems : S_String_List.List;
    end record
-     with Predicate => Nul = Elems.Is_Empty
-       and then Count >= Natural (Elems.Length);
-   --  Mostly a string for a counterexample value, and boolean Nul to denote
-   --  that the string is actually for a "nul" value. A third component Count
-   --  gives the number of individual subcomponents being printed in Str, and a
-   --  fourth component Elems gives the value of individual non-others non-nul
+     with Predicate => Count >= Natural (Elems.Length);
+   --  Mostly a string for a counterexample value. Component Count
+   --  gives the number of individual subcomponents being printed in Str, and
+   --  component Elems gives the value of individual non-others non-nul
    --  subcomponents, to be used if the Count is too large for printing Str.
 
    type Cntexample_Kind is (Raw, Pretty_Printed);

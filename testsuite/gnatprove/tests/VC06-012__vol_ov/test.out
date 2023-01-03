@@ -1,0 +1,24 @@
+test.ads:6:04: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: Y doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
+test.ads:6:04: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:6:26: warning: aliased objects must have the same volatility and atomic status
+test.ads:6:37: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:6:37: info: types of aliased objects have the same size (Trivial)
+test.ads:9:04: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: V doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
+test.ads:9:04: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:9:26: warning: aliased objects must have the same volatility and atomic status
+test.ads:9:37: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:9:37: info: types of aliased objects have the same size (Trivial)
+test.ads:12:04: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: B doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
+test.ads:12:04: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:12:26: warning: aliased objects must have the same volatility and atomic status
+test.ads:12:37: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:12:37: info: types of aliased objects have the same size (Trivial)
+test.ads:15:04: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: D doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
+test.ads:15:04: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:15:26: warning: aliased objects must have the same volatility and atomic status
+test.ads:15:37: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:15:37: info: types of aliased objects have the same size (Trivial)
+test.ads:18:04: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: F doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
+test.ads:18:04: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:18:37: info: object is suitable for aliasing via address clause (Trivial)
+test.ads:18:37: info: types of aliased objects have the same size (Trivial)

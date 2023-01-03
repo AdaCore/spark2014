@@ -122,7 +122,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.29" proved="true">
-  <proof prover="0" timelimit="20"><result status="failure" steps="0"/></proof>
+  <proof prover="0" timelimit="20"><result status="highfailure"/></proof>
   <proof prover="1" timelimit="20"><result status="valid" steps="10210"/></proof>
   <proof prover="2" timelimit="20"><result status="failure" steps="0"/></proof>
   <proof prover="4" timelimit="20"><result status="failure" steps="0"/></proof>

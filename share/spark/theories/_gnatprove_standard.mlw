@@ -1764,7 +1764,7 @@ module Boolean
 
   val attr__ATTRIBUTE_VALUE_ (x : __image) : bool
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
-    ensures { true }
+    ensures { result = attr__ATTRIBUTE_VALUE x }
 
   val range_check_ (n : int) : int
     requires { in_range n }

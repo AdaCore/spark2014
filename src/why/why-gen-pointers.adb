@@ -1075,7 +1075,7 @@ package body Why.Gen.Pointers is
    ---------------------
 
    function Move_Param_Item (Typ : Entity_Id) return Item_Type is
-      Init_Wrapper : constant Boolean := Might_Contain_Relaxed_Init (Typ);
+      Init_Wrapper : constant Boolean := Has_Init_Wrapper (Typ);
       --  Use the init wrapper type for types which have one
 
    begin

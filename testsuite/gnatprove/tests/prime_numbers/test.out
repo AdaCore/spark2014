@@ -1,6 +1,6 @@
 prime_and_coprime_numbers.adb:12:07: info: initialization of "Set.Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:19:46: info: range check proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:36:38: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:36:38: info: contract case proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:37:38: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:39:10: info: initialization of "A" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:40:10: info: initialization of "B" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -76,7 +76,7 @@ prime_and_coprime_numbers.adb:229:19: info: loop invariant initialization proved
 prime_and_coprime_numbers.adb:229:19: info: loop invariant preservation proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:229:62: info: index check proved (altergo: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:231:19: info: loop invariant initialization proved (CVC5: 2 VC; Trivial: 1 VC; altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:231:19: info: loop invariant preservation proved (CVC5: 2 VC; Trivial: 1 VC; altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:231:19: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC; altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:232:35: info: index check proved (altergo: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:233:62: info: division check proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:235:41: info: overflow check proved (altergo: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -125,22 +125,22 @@ prime_and_coprime_numbers.ads:102:74: info: overflow check proved (altergo: 2 VC
 prime_and_coprime_numbers.ads:102:87: info: overflow check proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:103:27: info: index check proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:110:06: info: data dependencies proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:117:16: info: postcondition proved (CVC5: 1 VC; altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:117:16: info: postcondition proved (altergo: 3 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:119:06: info: complete contract cases proved (altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:119:06: info: disjoint contract cases proved (altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:123:26: info: contract case proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:128:44: info: contract case proved (Trivial: 1 VC; altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:131:37: info: range check proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:131:37: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:136:46: info: contract case proved (Trivial: 1 VC; altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:138:62: info: overflow check proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:139:37: info: range check proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:144:50: info: contract case proved (Trivial: 1 VC; altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:145:71: info: overflow check proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:145:84: info: overflow check proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:145:84: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:145:115: info: overflow check proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:146:28: info: range check proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:148:79: info: overflow check proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:148:92: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:146:28: info: range check proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:148:79: info: overflow check proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:148:92: info: overflow check proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:149:28: info: range check proved (altergo: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 test_prime_and_coprime_numbers.adb:9:04: info: initialization of "Coprimes" proved
 test_prime_and_coprime_numbers.adb:12:15: info: precondition proved (CVC5: 1 VC; altergo: 6 VC)

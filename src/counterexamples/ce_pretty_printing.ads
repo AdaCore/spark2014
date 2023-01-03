@@ -30,15 +30,13 @@ with VC_Kinds;              use VC_Kinds;
 package CE_Pretty_Printing is
 
    Dont_Display : constant CNT_Unbounded_String :=
-     (Nul   => True,
-      Str   => To_Unbounded_String ("@not_display"),
+     (Str   => To_Unbounded_String ("@not_display"),
       Count => 0,
       Elems => S_String_List.Empty);
    --  Value in a counterexample that should not be displayed
 
    function Make_CNT_Unbounded_String
-     (Nul : Boolean;
-      Str : Unbounded_String;
+     (Str : Unbounded_String;
       Cnt : Natural := 1;
       Els : S_String_List.List := S_String_List.Empty)
       return CNT_Unbounded_String

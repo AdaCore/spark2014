@@ -368,7 +368,7 @@ package body Why.Gen.Binders is
 
             declare
                Relaxed_Init : constant Boolean :=
-                 (if B.Fields.Present and Might_Contain_Relaxed_Init (B.Typ)
+                 (if B.Fields.Present and Has_Init_Wrapper (B.Typ)
                   then Get_Module (Get_Name (Get_Typ (B.Fields.Binder.B_Name)))
                      = E_Init_Module (B.Typ)
                   else False);

@@ -1,0 +1,2 @@
+counterex.adb:7:14: warning: subprogram "Check" has no effect
+counterex.adb:9:22: high: assertion might fail (e.g. when Tab(1).A = 0 and Tab(1).B = -1 and Tab(2).A = -1 and Tab(2).B = -1) [possible fix: precondition of subprogram at line 7 should mention Tab]

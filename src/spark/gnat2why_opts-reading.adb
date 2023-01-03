@@ -119,7 +119,6 @@ package body Gnat2Why_Opts.Reading is
          Pedantic              := Get_Opt (V, Pedantic_Name);
          Flow_Show_GG          := Get_Opt (V, Flow_Show_GG_Name);
          Proof_Generate_Guards := Get_Opt (V, Proof_Generate_Guards_Name);
-         Debug_Trivial         := Get_Opt (V, Debug_Trivial_Name);
          Ide_Mode              := Get_Opt (V, Ide_Mode_Name);
          CWE                   := Get_Opt (V, CWE_Name);
          Parallel_Why3         := Get_Opt (V, Parallel_Why3_Name);

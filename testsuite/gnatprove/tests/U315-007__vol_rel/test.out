@@ -1,0 +1,3 @@
+test.ads:5:04: error: relaxed initialization on overlaid objects is not yet supported
+test.ads:8:04: error: relaxed initialization on overlaid objects is not yet supported
+gnatprove: error during flow analysis and proof

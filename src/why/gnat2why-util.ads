@@ -32,6 +32,7 @@ with Namet;                       use Namet;
 with Snames;                      use Snames;
 with SPARK_Atree;                 use SPARK_Atree;
 with SPARK_Atree.Entities;        use SPARK_Atree.Entities;
+with SPARK_Definition;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Types;            use SPARK_Util.Types;
 with Types;                       use Types;
@@ -528,6 +529,10 @@ package Gnat2Why.Util is
    function Is_Range_Type_In_Why (T : Type_Kind_Id) return Boolean;
    --  Returns True if T is a scalar type that should be translated into Why
    --  as a range type. This is currently done for static signed integer types.
+
+   function Has_Init_Wrapper (Typ : Type_Kind_Id) return Boolean is
+     (SPARK_Definition.Has_Relaxed_Init (Typ)
+      or else Might_Contain_Relaxed_Init (Typ));
 
    function Use_Guard_For_Function (E : Function_Kind_Id) return Boolean;
    --  Decide wether we need a guard for the axiom specifying the contract of

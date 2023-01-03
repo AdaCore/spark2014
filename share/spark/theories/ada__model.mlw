@@ -51,7 +51,7 @@ module Discrete_Base
 
   val attr__ATTRIBUTE_VALUE_ (x : __image) : rep_type
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
-    ensures { true }
+    ensures { result = attr__ATTRIBUTE_VALUE x }
 
   val function user_eq (x : t) (y : t) : bool
 
@@ -710,7 +710,7 @@ module Fixed_Point_Base
 
   val attr__ATTRIBUTE_VALUE_ (x : __image) : __fixed
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
-    ensures { true }
+    ensures { result = attr__ATTRIBUTE_VALUE x }
 
   val function user_eq (x : t) (y : t) : bool
 end
@@ -958,7 +958,7 @@ module Floating_Point_Base
 
   val attr__ATTRIBUTE_VALUE_ (x : __image) : rep_type
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
-    ensures { true }
+    ensures { result = attr__ATTRIBUTE_VALUE x }
 
   val constant dummy : t
 end

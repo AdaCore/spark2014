@@ -2898,7 +2898,7 @@ package body Why.Atree.Modules is
          --  conversion goes through the base array type, so conversion
          --  functions are rather stored with other array conversion theories.
 
-         if Might_Contain_Relaxed_Init (E)
+         if Has_Init_Wrapper (E)
            and then (Is_Scalar_Type (E) or else Is_Record_Type_In_Why (E))
          then
             declare
@@ -3376,7 +3376,7 @@ package body Why.Atree.Modules is
                      --  initialization, introduce names for the components of
                      --  this wrapper and for conversion functions.
 
-                     if Might_Contain_Relaxed_Init (E) then
+                     if Has_Init_Wrapper (E) then
                         Insert_Symbol
                           (E, WNE_Init_Value,
                            New_Identifier

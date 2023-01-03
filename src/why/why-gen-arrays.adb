@@ -1096,7 +1096,7 @@ package body Why.Gen.Arrays is
 
       --  Also create a theory for the wrapper type if we need one
 
-      if Might_Contain_Relaxed_Init (E) then
+      if Has_Init_Wrapper (E) then
          Create_Rep_Array_Theory_If_Needed
            (E            => E,
             Init_Wrapper => True);

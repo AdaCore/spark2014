@@ -1,1 +1,3 @@
 res_size.ads:6:20: info: postcondition proved (Trivial: 1 VC)
+res_size.ads:6:28: info: the value of "Size" attribute is handled in an imprecise way as "Object_Size" is not specified for type "Arr"
+res_size.ads:6:37: info: the value of "Size" attribute is handled in an imprecise way as "Object_Size" is not specified for type "Arr"

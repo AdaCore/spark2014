@@ -314,10 +314,7 @@ package SPARK_Util.Types is
    function Contains_Relaxed_Init_Parts
      (Typ        : Type_Kind_Id;
       Ignore_Top : Boolean := False)
-      return Boolean
-   with
-     Post => (if Contains_Relaxed_Init_Parts'Result
-              then Might_Contain_Relaxed_Init (Typ));
+      return Boolean;
    --  Returns True if Typ has subcomponents whose type is annotated with
    --  relaxed initialization.
    --  If Ignore_Top is True, ignore a potential Relaxed_Initialization
@@ -335,7 +332,8 @@ package SPARK_Util.Types is
 
    function Might_Contain_Relaxed_Init (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if Typ has subcomponents whose type may be used for
-   --  expressions with relaxed initialization.
+   --  expressions with relaxed initialization but is not itself annotated with
+   --  relaxed initialization.
 
    function Num_Literals (Ty : Enumeration_Kind_Id) return Positive;
    --  Returns the number of literals for an enumeration type
