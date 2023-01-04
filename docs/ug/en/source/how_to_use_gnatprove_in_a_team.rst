@@ -448,14 +448,14 @@ from the Command Line` for more details on this command line option.
 
 .. index:: --memcached-server; speeding up
 
-Sharing Proof Results Via a Memcached Server
---------------------------------------------
+Sharing Proof Results Via a Cache
+---------------------------------
 
 |GNATprove| can cache and share results between distinct runs of the tool. This
 feature can be enabled using the ``--memcached-server`` switch. This switch
 accepts two arguments separated by a colon, and there are two different forms:
 
-  * The switch is of the form ``--memcached-server=file:<directory>,``, that
+  * The switch is of the form ``--memcached-server=file:<directory>``, that
     is, the part before the colon is the string ``file``, and the part after it
     is a directory that exists.
   * The switch is of the form ``--memcached-server=<hostname>:<portnumber>``,

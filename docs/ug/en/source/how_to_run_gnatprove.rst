@@ -974,7 +974,7 @@ These settings will speed up |GNATprove|:
   option.
 
 * Use ``--memcached-server`` switch for :ref:`Sharing Proof Results Via a
-  Memcached Server`.
+  Cache`.
 
 |GNATprove| and Network File Systems or Shared Folders
 ------------------------------------------------------
