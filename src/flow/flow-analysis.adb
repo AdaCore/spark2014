@@ -5925,7 +5925,9 @@ package body Flow.Analysis is
                            Tag      => Subprogram_Termination,
                            Vertex   => V);
 
-                     elsif Is_Dispatching_Operation (E) then
+                     elsif Is_Dispatching_Operation (E)
+                       and then Present (Find_Dispatching_Type (E))
+                     then
 
                         Proved := False;
                         Error_Msg_Flow
