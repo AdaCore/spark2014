@@ -90,6 +90,17 @@ is
      Global => null,
      Post => Is_Empty (Empty_Map'Result);
 
+   --  Keys and elements of abstract maps are (implicitely) copied in this
+   --  package. These functions causes GNATprove to verify that such a copy
+   --  is valid (in particular, it does not break the ownership policy of
+   --  SPARK, i.e. it does not contain pointers that could be used to alias
+   --  mutable data).
+
+   function Copy_Key (K : Key_Type) return Key_Type is
+     (K);
+   function Copy_Object (O : Object_Type) return Object_Type is
+     (O);
+
 private
    pragma SPARK_Mode (Off);
 
