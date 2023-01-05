@@ -2046,7 +2046,12 @@ package body SPARK_Definition.Annotate is
                raise Program_Error;
             end if;
 
-            if Nkind (Arg3_Exp) = N_String_Literal then
+            --  We check for operator symbols as well as string literals,
+            --  as things such as "*" are parsed as the operator symbol
+            --  "multiply".
+
+            if Nkind (Arg3_Exp) in N_String_Literal | N_Operator_Symbol
+            then
                Pattern := Strval (Arg3_Exp);
             else
                Error_Msg_N
