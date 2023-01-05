@@ -1,0 +1,2 @@
+foo.adb:10:09: error: pragma "Loop_Invariant" must appear next to pragma at line 8
+gnatprove: error during generation of Global contracts
