@@ -7968,9 +7968,15 @@ package body SPARK_Definition is
          end if;
       end;
 
+      Mark_Stmt_Or_Decl_List (Vis_Decls);
+
       --  Decide whether constants appearing in explicit Initializes are in
       --  SPARK, because this affects whether they are considered to have
-      --  variable input.
+      --  variable input. We need to do this after marking declarations of
+      --  generic actual parameters of mode IN, as otherwise we would memoize
+      --  them as having no variable inputs due to their not in SPARK status.
+      --  This memoization is a side-effect of erasing constants without
+      --  variable inputs while parsing the contract.
 
       if Present (Get_Pragma (Id, Pragma_Initializes)) then
          for Input_List of
@@ -7979,8 +7985,6 @@ package body SPARK_Definition is
             Mark_Constant_Globals (To_Node_Set (Input_List));
          end loop;
       end if;
-
-      Mark_Stmt_Or_Decl_List (Vis_Decls);
 
       Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
 
