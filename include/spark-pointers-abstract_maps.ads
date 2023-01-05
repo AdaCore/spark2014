@@ -45,6 +45,11 @@ is
                                    Next        => Iter_Next,
                                    Has_Element => Has_Key);
 
+   function "=" (Left, Right : Map) return Boolean with
+     Import,
+     Global => null,
+     Annotate => (GNATprove, Logical_Equal);
+
    function Empty_Map return Map with
      Global => null,
      Post   => Is_Empty (Empty_Map'Result);
@@ -78,6 +83,9 @@ is
 
    function "+" (M : Ownership_Map) return Map with
      Global => null;
+
+   function "=" (Left, Right : Ownership_Map) return Boolean is
+     (+Left = +Right);
 
    pragma Warnings (Off, "unused variable ""K""");
    function Is_Empty (M : Ownership_Map) return Boolean is

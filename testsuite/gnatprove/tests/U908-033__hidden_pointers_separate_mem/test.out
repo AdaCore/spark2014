@@ -1,128 +1,261 @@
-example_recursive.adb:21:07: info: precondition proved (Trivial: 1 VC)
-example_recursive.adb:21:25: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:34:41: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:34:41: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:35:32: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:35:32: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:36:19: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:36:19: info: subprogram variant proved (CVC5: 1 VC)
-example_recursive.adb:36:51: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:36:51: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:36:69: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:38:06: info: data dependencies proved
-example_recursive.adb:44:16: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:50:31: info: precondition proved (CVC5: 8 VC)
-example_recursive.adb:50:31: info: subprogram variant proved (CVC5: 1 VC)
-example_recursive.adb:50:62: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:50:62: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:50:81: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:52:06: info: data dependencies proved
-example_recursive.adb:54:39: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:62:06: info: data dependencies proved
-example_recursive.adb:63:67: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:65:16: info: precondition proved (Trivial: 1 VC)
-example_recursive.adb:66:22: info: precondition proved (CVC5: 8 VC)
-example_recursive.adb:67:48: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:67:63: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:68:14: info: postcondition proved (CVC5: 7 VC)
-example_recursive.adb:68:14: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:76:10: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
-example_recursive.adb:76:10: info: subprogram variant proved (CVC5: 1 VC)
-example_recursive.adb:76:53: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:76:53: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:76:72: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:77:25: info: assertion proved (CVC5: 7 VC)
-example_recursive.adb:77:25: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:86:06: info: data dependencies proved
-example_recursive.adb:87:67: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:89:16: info: precondition proved (Trivial: 1 VC)
-example_recursive.adb:90:22: info: precondition proved (CVC5: 8 VC)
-example_recursive.adb:91:48: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:91:63: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:92:14: info: postcondition proved (CVC5: 2 VC)
-example_recursive.adb:92:45: info: precondition proved (CVC5: 8 VC)
-example_recursive.adb:92:75: info: precondition proved (CVC5: 8 VC)
-example_recursive.adb:98:10: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
-example_recursive.adb:98:10: info: subprogram variant proved (CVC5: 1 VC)
-example_recursive.adb:98:53: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:98:53: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:98:72: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:100:07: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
-example_recursive.adb:103:13: info: implicit function contract might not be available on recursive calls
-example_recursive.adb:104:29: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:104:29: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:105:12: info: precondition proved (CVC5: 10 VC)
-example_recursive.adb:105:12: info: subprogram variant proved (CVC5: 1 VC)
-example_recursive.adb:105:37: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:105:37: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:105:55: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:105:62: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:107:06: info: data dependencies proved
-example_recursive.adb:109:15: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:113:07: info: precondition proved (CVC5: 10 VC)
-example_recursive.adb:115:06: info: data dependencies proved
-example_recursive.adb:120:14: info: postcondition proved (CVC5: 3 VC; Z3: 1 VC)
-example_recursive.adb:122:15: info: precondition proved (CVC5: 3 VC)
-example_recursive.adb:125:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-example_recursive.adb:126:07: info: initialization of "F" proved
-example_recursive.adb:137:49: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:137:60: info: null exclusion check proved (CVC5: 1 VC)
-example_recursive.adb:139:13: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:139:27: info: pointer dereference check proved (CVC5: 1 VC)
-example_recursive.adb:143:22: info: assertion proved (CVC5: 1 VC)
-example_recursive.adb:144:22: info: assertion proved (CVC5: 1 VC)
-example_recursive.adb:144:30: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:144:30: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:151:14: medium: in inlined expression function body at example_recursive.adb:44
-example_recursive.adb:151:14: medium: postcondition might fail, cannot prove Valid_List (Address (L.F), Address (L.F), L.L, +L.M)
-example_recursive.adb:151:52: info: overflow check proved (CVC5: 2 VC)
-example_recursive.adb:154:35: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:154:35: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:155:07: info: initialization of "New_P" proved
-example_recursive.adb:159:22: info: assertion proved (CVC5: 1 VC)
-example_recursive.adb:166:46: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:166:57: info: null exclusion check proved (CVC5: 1 VC)
-example_recursive.adb:168:10: medium: tag check might fail
-example_recursive.adb:168:24: info: pointer dereference check proved (CVC5: 1 VC)
-example_recursive.adb:171:22: medium: assertion might fail, cannot prove Get (M, A) in L_Cell
-example_recursive.adb:171:22: medium: in inlined expression function body at example_recursive.adb:21
-example_recursive.adb:172:22: info: assertion proved (CVC5: 1 VC)
-example_recursive.adb:172:30: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:172:30: medium: precondition might fail
-example_recursive.adb:173:22: info: assertion proved (CVC5: 1 VC)
-example_recursive.adb:173:30: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:173:30: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:176:10: medium: in inlined expression function body at example_recursive.adb:33
-example_recursive.adb:176:10: medium: precondition might fail, cannot prove A /= 0
-example_recursive.adb:176:70: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:179:18: info: overflow check proved (CVC5: 2 VC)
-example_recursive.adb:182:04: medium: resource or memory leak might occur at end of scope
-example_recursive.adb:183:04: medium: resource or memory leak might occur at end of scope
-example_recursive.adb:186:04: info: precondition proved (CVC5: 3 VC)
-example_recursive.adb:187:04: info: precondition proved (CVC5: 3 VC)
-example_recursive.adb:188:04: info: precondition proved (CVC5: 3 VC)
-example_recursive.adb:189:04: info: precondition proved (CVC5: 3 VC)
-example_recursive.adb:190:19: info: assertion proved (CVC5: 1 VC)
-example_recursive.adb:191:19: info: assertion proved (CVC5: 1 VC)
-spark-pointers-abstract_maps.ads:71:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:52, in instantiation at example_recursive.adb:10
-spark-pointers-abstract_maps.ads:72:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:52, in instantiation at example_recursive.adb:10
-spark-pointers-abstract_maps.ads:74:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:52, in instantiation at example_recursive.adb:10
-spark-pointers-abstract_maps.ads:83:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:52, in instantiation at example_recursive.adb:10
-spark-pointers-abstract_maps.ads:84:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:52, in instantiation at example_recursive.adb:10
-spark-pointers-abstract_maps.ads:86:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:52, in instantiation at example_recursive.adb:10
-spark-pointers-abstract_maps.ads:99:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:52, in instantiation at example_recursive.adb:10
-spark-pointers-abstract_maps.ads:101:13: info: subprogram "Copy_Object" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:52, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing_separate_memory.ads:44:13: info: subprogram "Check_No_Deep_Objects" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing_separate_memory.ads:81:16: info: subprogram "None" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing_separate_memory.ads:84:16: info: subprogram "Only" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing_separate_memory.ads:88:16: info: subprogram "Writes" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing_separate_memory.ads:93:38: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing_separate_memory.ads:93:51: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing_separate_memory.ads:96:16: info: subprogram "Allocates" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing_separate_memory.ads:105:16: info: subprogram "Deallocates" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing_separate_memory.ads:193:39: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing_separate_memory.ads:209:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing_separate_memory.ads:211:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing_separate_memory.ads:216:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing_separate_memory.ads:220:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing_separate_memory.ads:231:31: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
+example_recursive.adb:22:07: info: precondition proved (Trivial: 1 VC)
+example_recursive.adb:22:25: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:35:41: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:35:41: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:36:32: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:36:32: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:37:19: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:37:19: info: subprogram variant proved (CVC5: 1 VC)
+example_recursive.adb:37:51: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:37:51: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:37:69: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:39:06: info: data dependencies proved
+example_recursive.adb:45:16: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:49:13: info: function contract might not be available on recursive calls
+example_recursive.adb:51:31: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:51:31: info: subprogram variant proved (CVC5: 1 VC)
+example_recursive.adb:51:62: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:51:62: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:51:81: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:53:06: info: data dependencies proved
+example_recursive.adb:55:40: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:56:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+example_recursive.adb:61:17: info: precondition proved (Trivial: 1 VC)
+example_recursive.adb:62:22: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:71:06: info: data dependencies proved
+example_recursive.adb:72:67: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:74:16: info: precondition proved (Trivial: 1 VC)
+example_recursive.adb:75:22: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:76:48: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:76:63: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:77:14: info: postcondition proved (CVC5: 7 VC)
+example_recursive.adb:77:14: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:85:10: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
+example_recursive.adb:85:10: info: subprogram variant proved (CVC5: 1 VC)
+example_recursive.adb:85:53: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:85:53: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:85:72: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:86:25: info: assertion proved (CVC5: 7 VC)
+example_recursive.adb:86:25: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:95:06: info: data dependencies proved
+example_recursive.adb:96:67: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:98:16: info: precondition proved (Trivial: 1 VC)
+example_recursive.adb:99:22: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:100:48: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:100:63: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:101:14: info: postcondition proved (CVC5: 2 VC)
+example_recursive.adb:101:45: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:101:75: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:107:10: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
+example_recursive.adb:107:10: info: subprogram variant proved (CVC5: 1 VC)
+example_recursive.adb:107:53: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:107:53: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:107:72: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:109:07: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
+example_recursive.adb:120:06: info: data dependencies proved
+example_recursive.adb:122:36: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:123:17: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:125:41: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:125:61: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:126:21: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:128:34: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:128:34: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:129:14: info: postcondition proved (CVC5: 7 VC)
+example_recursive.adb:129:14: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:129:37: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:129:42: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:135:10: info: precondition proved (CVC5: 22 VC)
+example_recursive.adb:135:10: info: subprogram variant proved (CVC5: 1 VC)
+example_recursive.adb:135:51: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:135:51: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:135:71: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:148:06: info: data dependencies proved
+example_recursive.adb:150:36: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:151:17: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:153:41: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:153:61: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:154:21: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:156:34: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:156:34: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:157:15: info: precondition proved (Trivial: 1 VC)
+example_recursive.adb:157:33: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:157:33: medium: postcondition might fail, cannot prove Reachable (F2, A1, L1 + L2 + 1, B, M) = (Reachable (F1, A1, L1, B, M) or B = F1 or (L2 > 0 and then Reachable (F2, A2, L2, B, M)))
+example_recursive.adb:157:55: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:157:60: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:158:18: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:159:38: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:159:57: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:165:10: info: precondition proved (CVC5: 22 VC)
+example_recursive.adb:165:10: info: subprogram variant proved (CVC5: 1 VC)
+example_recursive.adb:165:51: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:165:51: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:165:71: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:166:10: info: precondition proved (CVC5: 22 VC)
+example_recursive.adb:166:51: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:166:51: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:166:71: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:170:13: info: implicit function contract might not be available on recursive calls
+example_recursive.adb:171:29: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:171:29: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:172:12: info: precondition proved (CVC5: 10 VC)
+example_recursive.adb:172:12: info: subprogram variant proved (CVC5: 1 VC)
+example_recursive.adb:172:37: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:172:37: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:172:55: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:172:62: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:174:06: info: data dependencies proved
+example_recursive.adb:176:15: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:180:07: info: precondition proved (CVC5: 10 VC)
+example_recursive.adb:182:06: info: data dependencies proved
+example_recursive.adb:188:14: medium: in inlined expression function body at example_recursive.adb:60
+example_recursive.adb:188:14: medium: postcondition might fail, cannot prove Valid_List (L)
+example_recursive.adb:190:15: info: precondition proved (CVC5: 3 VC)
+example_recursive.adb:193:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+example_recursive.adb:194:07: info: initialization of "F" proved
+example_recursive.adb:205:49: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:205:60: info: null exclusion check proved (CVC5: 1 VC)
+example_recursive.adb:207:13: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:207:27: info: pointer dereference check proved (CVC5: 1 VC)
+example_recursive.adb:211:22: info: assertion proved (CVC5: 1 VC)
+example_recursive.adb:212:22: info: assertion proved (CVC5: 1 VC)
+example_recursive.adb:212:30: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:212:30: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:220:14: medium: in inlined expression function body at example_recursive.adb:60
+example_recursive.adb:220:14: medium: postcondition might fail, cannot prove Valid_List (L)
+example_recursive.adb:220:60: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:223:35: info: precondition proved (Z3: 1 VC)
+example_recursive.adb:223:35: info: tag check proved (Z3: 1 VC)
+example_recursive.adb:224:07: info: initialization of "New_P" proved
+example_recursive.adb:228:22: medium: assertion might fail, cannot prove Get (M, A) in L_Cell
+example_recursive.adb:228:22: medium: in inlined expression function body at example_recursive.adb:22
+example_recursive.adb:235:46: medium: precondition might fail
+example_recursive.adb:235:57: info: null exclusion check proved (CVC5: 1 VC)
+example_recursive.adb:237:10: medium: tag check might fail
+example_recursive.adb:237:24: info: pointer dereference check proved (CVC5: 1 VC)
+example_recursive.adb:240:22: medium: assertion might fail, cannot prove Get (M, A) in L_Cell
+example_recursive.adb:240:22: medium: in inlined expression function body at example_recursive.adb:22
+example_recursive.adb:241:22: info: assertion proved (CVC5: 1 VC)
+example_recursive.adb:241:30: info: precondition proved (Z3: 1 VC)
+example_recursive.adb:241:30: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:242:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
+example_recursive.adb:242:30: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:242:30: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:245:10: medium: precondition might fail, cannot prove Valid (M2, A2)
+example_recursive.adb:245:70: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:246:10: medium: in inlined expression function body at example_recursive.adb:34
+example_recursive.adb:246:10: medium: precondition might fail, cannot prove Valid (M, A)
+example_recursive.adb:246:70: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:249:18: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:256:14: medium: in inlined expression function body at example_recursive.adb:62
+example_recursive.adb:256:14: medium: postcondition might fail, cannot prove Reachable (Address (L.F), Address (L.F), L.L, A, +L.M)
+example_recursive.adb:257:31: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:263:33: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:265:07: info: initialization of "F1_Next" proved
+example_recursive.adb:266:07: info: initialization of "F2_Next" proved
+example_recursive.adb:269:07: info: initialization of "M_Old" proved
+example_recursive.adb:271:07: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:272:22: info: assertion proved (Z3: 1 VC)
+example_recursive.adb:274:07: info: precondition proved (CVC5: 5 VC; Trivial: 1 VC; Z3: 7 VC)
+example_recursive.adb:275:07: medium: in inlined expression function body at example_recursive.adb:36
+example_recursive.adb:275:07: medium: precondition might fail, cannot prove Address (L_Cell (Get (M, A)).N) /= F
+example_recursive.adb:276:07: medium: in inlined expression function body at example_recursive.adb:36
+example_recursive.adb:276:07: medium: precondition might fail, cannot prove Address (L_Cell (Get (M, A)).N) /= F
+example_recursive.adb:277:07: medium: in inlined expression function body at example_recursive.adb:36
+example_recursive.adb:277:07: medium: precondition might fail, cannot prove Address (L_Cell (Get (M, A)).N) /= F
+example_recursive.adb:282:10: info: assertion proved (CVC5: 1 VC)
+example_recursive.adb:282:10: info: precondition proved (Trivial: 1 VC)
+example_recursive.adb:283:16: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:284:17: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:289:10: info: assertion proved (CVC5: 1 VC)
+example_recursive.adb:289:10: info: precondition proved (Trivial: 1 VC)
+example_recursive.adb:290:12: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:291:13: info: precondition proved (CVC5: 8 VC)
+example_recursive.adb:294:26: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:294:26: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:295:26: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:295:26: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:303:45: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:303:56: info: null exclusion check proved (CVC5: 1 VC)
+example_recursive.adb:305:10: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:305:25: info: pointer dereference check proved (CVC5: 1 VC)
+example_recursive.adb:307:22: medium: assertion might fail, cannot prove Get (M, A) in L_Cell
+example_recursive.adb:307:22: medium: in inlined expression function body at example_recursive.adb:22
+example_recursive.adb:308:22: info: assertion proved (CVC5: 1 VC)
+example_recursive.adb:308:30: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:308:30: medium: precondition might fail
+example_recursive.adb:313:10: medium: in inlined expression function body at example_recursive.adb:34
+example_recursive.adb:313:10: medium: precondition might fail, cannot prove A /= 0
+example_recursive.adb:313:73: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:314:10: medium: in inlined expression function body at example_recursive.adb:34
+example_recursive.adb:314:10: medium: precondition might fail, cannot prove Valid (M, A)
+example_recursive.adb:314:73: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:317:10: medium: in inlined expression function body at example_recursive.adb:34
+example_recursive.adb:317:10: medium: precondition might fail, cannot prove A /= 0
+example_recursive.adb:317:73: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:318:10: medium: in inlined expression function body at example_recursive.adb:34
+example_recursive.adb:318:10: medium: precondition might fail, cannot prove Valid (M, A)
+example_recursive.adb:318:73: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:324:10: medium: precondition might fail, cannot prove Valid (M, F2)
+example_recursive.adb:324:70: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:325:10: info: precondition proved (CVC5: 20 VC; Z3: 2 VC)
+example_recursive.adb:325:70: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:331:10: info: precondition proved (Trivial: 1 VC)
+example_recursive.adb:332:12: medium: assertion might fail, cannot prove Reachable (Address (L1.F), Address (F2_Next), L1.L + L2.L - 1, A, +L1.M) or A = Address (L1.F)
+example_recursive.adb:332:12: medium: in inlined expression function body at example_recursive.adb:34
+example_recursive.adb:332:12: medium: precondition might fail, cannot prove A /= 0
+example_recursive.adb:332:63: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:343:45: medium: precondition might fail
+example_recursive.adb:343:56: info: null exclusion check proved (CVC5: 1 VC)
+example_recursive.adb:345:10: medium: tag check might fail
+example_recursive.adb:345:25: info: pointer dereference check proved (CVC5: 1 VC)
+example_recursive.adb:347:22: medium: assertion might fail, cannot prove Get (M, A) in L_Cell
+example_recursive.adb:347:22: medium: in inlined expression function body at example_recursive.adb:22
+example_recursive.adb:348:22: info: assertion proved (Z3: 1 VC)
+example_recursive.adb:348:30: info: tag check proved (Z3: 1 VC)
+example_recursive.adb:348:30: medium: precondition might fail
+example_recursive.adb:350:07: medium: in inlined expression function body at example_recursive.adb:34
+example_recursive.adb:350:07: medium: precondition might fail, cannot prove F /= 0
+example_recursive.adb:350:70: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
+example_recursive.adb:351:07: medium: in inlined expression function body at example_recursive.adb:34
+example_recursive.adb:351:07: medium: precondition might fail, cannot prove F /= 0
+example_recursive.adb:351:70: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:353:22: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:353:22: medium: assertion might fail, cannot prove F /= 0
+example_recursive.adb:353:22: medium: in inlined expression function body at example_recursive.adb:34
+example_recursive.adb:353:71: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:355:20: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:358:04: medium: resource or memory leak might occur at end of scope
+example_recursive.adb:359:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+example_recursive.adb:363:04: info: precondition proved (CVC5: 3 VC)
+example_recursive.adb:364:04: info: precondition proved (CVC5: 3 VC)
+example_recursive.adb:365:04: info: precondition proved (CVC5: 3 VC)
+example_recursive.adb:366:04: info: precondition proved (CVC5: 3 VC)
+example_recursive.adb:367:19: info: assertion proved (CVC5: 1 VC)
+example_recursive.adb:368:19: info: assertion proved (CVC5: 1 VC)
+example_recursive.adb:369:04: info: precondition proved (CVC5: 5 VC)
+example_recursive.adb:370:19: info: assertion proved (CVC5: 1 VC)
+spark-pointers-abstract_maps.ads:76:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:53, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_maps.ads:77:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:53, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_maps.ads:79:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:53, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_maps.ads:87:13: info: subprogram overriding operator "=" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:53, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_maps.ads:91:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:53, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_maps.ads:92:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:53, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_maps.ads:94:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:53, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_maps.ads:107:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:53, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_maps.ads:109:13: info: subprogram "Copy_Object" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:53, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:66:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:67:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:69:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:115:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:45:13: info: subprogram "Check_No_Deep_Objects" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:90:16: info: subprogram "Writes" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:95:38: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:95:51: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:98:16: info: subprogram "Allocates" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:108:16: info: subprogram "Deallocates" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:186:17: info: precondition proved (Trivial: 1 VC), in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:211:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:213:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:218:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:222:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:233:31: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_recursive.adb:11

@@ -1,5 +1,6 @@
-with Interfaces; use Interfaces;
-with Ada.Numerics.Big_Numbers.Big_Integers; use Ada.Numerics.Big_Numbers.Big_Integers;
+with Interfaces;              use Interfaces;
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use  Ada.Numerics.Big_Numbers.Big_Integers;
 with SPARK.Pointers.Pointers_With_Aliasing_Separate_Memory;
 
 procedure Example_Recursive with SPARK_Mode is
@@ -51,8 +52,16 @@ procedure Example_Recursive with SPARK_Mode is
    with Subprogram_Variant => (Decreases => L),
      Global => null,
      Ghost,
-     Pre => Valid_Memory (M) and then Valid_List (F, A1, L, M);
+     Pre  => Valid_Memory (M) and then Valid_List (F, A1, L, M),
+     Post => (if Reachable'Result then Valid (M, A2));
    --  A is reachable in a cyclic list
+
+   function Valid_List_No_Leak (L : List) return Boolean is
+     (Valid_List (L)
+      and then (for all A in +L.M =>
+                     Reachable (Address (L.F), Address (L.F), L.L, A, +L.M)))
+   with Ghost;
+   --  All cells of L.M are reachable from L.F
 
    --  Lemma:
    --    Valid lists are preserved if the reachable elements are not modified
@@ -100,6 +109,64 @@ procedure Example_Recursive with SPARK_Mode is
       Prove_Valid_Preserved (F, A, L, M1, M2);
    end Prove_Reach_Preserved;
 
+   --  Lemma:
+   --    Concatenating two valid list segments creates a valid list segment
+   procedure Prove_Valid_Concat
+     (F1, A1 : Address_Type; L1 : Positive;
+      F2, A2 : Address_Type; L2 : Natural; M : Memory_Map)
+   with
+     Subprogram_Variant => (Decreases => L1),
+     Ghost,
+     Global => null,
+     Pre => Valid_Memory (M)
+       and then L1 < Positive'Last - L2
+       and then Valid_List (F1, A1, L1, M)
+       and then (if L2 = 0 then F2 = A2 and then Valid (M, F2)
+                 else F2 /= A2 and then Valid_List (F2, A2, L2, M))
+       and then not Reachable (F1, A1, L1, F2, M)
+       and then F1 /= F2
+       and then Address (L_Cell (Get (M, F1)).N) = A2,
+     Post => Valid_List (F2, A1, L1 + L2 + 1, M)
+   is
+   begin
+      if L1 = 1 then
+         return;
+      else
+         Prove_Valid_Concat (F1, Address (L_Cell (Get (M, A1)).N), L1 - 1, F2, A2, L2, M);
+      end if;
+   end Prove_Valid_Concat;
+
+   --  Lemma:
+   --    The elements reachable in the concatenation of two valid list segments
+   --    are the elements reachable in each segments plus the middle one.
+   procedure Prove_Reach_Concat
+     (F1, A1 : Address_Type; L1 : Positive;
+      F2, A2 : Address_Type; L2 : Natural; M : Memory_Map)
+   with
+     Subprogram_Variant => (Decreases => L1),
+     Ghost,
+     Global => null,
+     Pre => Valid_Memory (M)
+       and then L1 < Positive'Last - L2
+       and then Valid_List (F1, A1, L1, M)
+       and then (if L2 = 0 then F2 = A2 and then Valid (M, F2)
+                 else F2 /= A2 and then Valid_List (F2, A2, L2, M))
+       and then not Reachable (F1, A1, L1, F2, M)
+       and then F1 /= F2
+       and then Address (L_Cell (Get (M, F1)).N) = A2,
+     Post => (for all B in M => Reachable (F2, A1, L1 + L2 + 1, B, M) =
+                (Reachable (F1, A1, L1, B, M) or B = F1
+                 or (L2 > 0 and then Reachable (F2, A2, L2, B, M))))
+   is
+   begin
+      if L1 = 1 then
+         return;
+      else
+         Prove_Reach_Concat (F1, Address (L_Cell (Get (M, A1)).N), L1 - 1, F2, A2, L2, M);
+         Prove_Valid_Concat (F1, Address (L_Cell (Get (M, A1)).N), L1 - 1, F2, A2, L2, M);
+      end if;
+   end Prove_Reach_Concat;
+
    function Get (F, A : Address_Type; P, L : Positive; M : Memory_Map) return Natural is
      (if P = 1 then L_Cell (Get (M, A)).V
       else Get (F, Address (L_Cell (Get (M, A)).N), P - 1, L - 1, M))
@@ -116,8 +183,9 @@ procedure Example_Recursive with SPARK_Mode is
      Pre => Valid_List (L) and then P <= L.L,
      Ghost;
 
+   --  Create a cyclic list containing a single cell
    function Create (V : Natural) return List with
-     Post => Valid_List (Create'Result)
+     Post => Valid_List_No_Leak (Create'Result)
      and then Create'Result.L = 1
      and then Get (Create'Result, 1) = V;
 
@@ -146,9 +214,10 @@ procedure Example_Recursive with SPARK_Mode is
       return (M => M, F => F, L => 1);
    end Create;
 
+   --  Insert a value in a cyclic list
    procedure Add (L : in out List; V : Natural) with
-     Pre  => Valid_List (L) and then L.L < Natural'Last,
-     Post => Valid_List (L) and then L.L = L.L'Old + 1;
+     Pre  => Valid_List_No_Leak (L) and then L.L < Natural'Last,
+     Post => Valid_List_No_Leak (L) and then L.L = L.L'Old + 1;
 
    procedure Add (L : in out List; V : Natural) is
       F_Next : Pointer := L_Cell (Deref (L.M, L.F)).N;
@@ -174,14 +243,122 @@ procedure Example_Recursive with SPARK_Mode is
 
       if L.L > 1 then
          Prove_Valid_Preserved (Address (L.F), Address (F_Next), L.L - 1, M_Old, +L.M);
+         Prove_Reach_Preserved (Address (L.F), Address (F_Next), L.L - 1, M_Old, +L.M);
       end if;
 
       L.L := L.L + 1;
    end Add;
 
+   --  Merge 2 cyclic lists
+   procedure Merge (L1, L2 : in out List) with
+     Pre  => Valid_List_No_Leak (L1) and then Valid_List_No_Leak (L2)
+     and then L1.L <= Natural'Last - L2.L,
+     Post => Valid_List_No_Leak (L1) and then Is_Empty (L2.M)
+     and then L1.L = L1.L'Old + L2.L'Old;
+
+   procedure Merge (L1, L2 : in out List) is
+      package Map_Elements is new Address_Sets.Set_Comprehension
+        (Memory_Map, Valid);
+      function All_Valid (M : Memory_Map) return Footprint is
+        (Footprint (Map_Elements.Elements (M)));
+
+      F1_Next : Pointer;
+      F2_Next : Pointer;
+      M1_Old  : constant Memory_Map := +L1.M with Ghost;
+      M2_Old  : constant Memory_Map := +L2.M with Ghost;
+      M_Old   : Memory_Map with Ghost;
+   begin
+      Move_Memory (L2.M, L1.M, All_Valid (+L2.M));
+      pragma Assert (Valid_Memory (+L1.M));
+
+      Prove_Valid_Preserved (Address (L2.F), Address (L2.F), L2.L, M2_Old, +L1.M);
+      Prove_Reach_Preserved (Address (L2.F), Address (L2.F), L2.L, M2_Old, +L1.M);
+      Prove_Valid_Preserved (Address (L1.F), Address (L1.F), L1.L, M1_Old, +L1.M);
+      Prove_Reach_Preserved (Address (L1.F), Address (L1.F), L1.L, M1_Old, +L1.M);
+
+      --  L1.F and L2.F designate disjoint list segments
+
+      pragma Assert
+        (for all A in +L1.M =>
+           not Reachable (Address (L2.F), Address (L2.F), L2.L, A, +L1.M)
+         or not Reachable (Address (L1.F), Address (L1.F), L1.L, A, +L1.M));
+
+      --  L1.F and L2.F cover the whole memory L1.M
+
+      pragma Assert
+        (for all A in +L1.M =>
+           Reachable (Address (L2.F), Address (L2.F), L2.L, A, +L1.M)
+         or Reachable (Address (L1.F), Address (L1.F), L1.L, A, +L1.M));
+
+      M_Old := +L1.M;
+      F1_Next := L_Cell (Deref (L1.M, L1.F)).N;
+      F2_Next := L_Cell (Deref (L1.M, L2.F)).N;
+
+      --  Link L2.F to F1_Next.
+      --  Use Reference to convert L2.F into an ownership pointer so
+      --  its designated value can be updated in place.
+
+      declare
+         M1_Access : access Memory_Type := L1.M'Access;
+         F2_Ptr    : access Object'Class := Reference (M1_Access, L2.F);
+      begin
+         L_Cell (F2_Ptr.all).N := F1_Next;
+      end;
+      pragma Assert (Valid_Memory (+L1.M));
+      pragma Assert (L_Cell (Get (+L1.M, Address (L2.F))).N = F1_Next);
+
+      --  The list segments starting at F1_Next and F2_Next are preserved
+
+      if L2.L > 1 then
+         Prove_Valid_Preserved (Address (L2.F), Address (F2_Next), L2.L - 1, M_Old, +L1.M);
+         Prove_Reach_Preserved (Address (L2.F), Address (F2_Next), L2.L - 1, M_Old, +L1.M);
+      end if;
+      if L1.L > 1 then
+         Prove_Valid_Preserved (Address (L1.F), Address (F1_Next), L1.L - 1, M_Old, +L1.M);
+         Prove_Reach_Preserved (Address (L1.F), Address (F1_Next), L1.L - 1, M_Old, +L1.M);
+      end if;
+
+      --  They are concatenated to each other
+
+      if L2.L > 1 then
+         Prove_Valid_Concat (Address (L2.F), Address (F2_Next), L2.L - 1, Address (L1.F), Address (F1_Next), L1.L - 1, +L1.M);
+         Prove_Reach_Concat (Address (L2.F), Address (F2_Next), L2.L - 1, Address (L1.F), Address (F1_Next), L1.L - 1, +L1.M);
+      end if;
+
+      --  The list segment starting at F2_Next covers the whole memory L1.M but L1.F
+
+      pragma Assert
+        (for all A in +L1.M =>
+           Reachable (Address (L1.F), Address (F2_Next), L1.L + L2.L - 1, A, +L1.M)
+         or A = Address (L1.F));
+
+      M_Old := +L1.M;
+
+      --  Link L1.F to F2_Next.
+      --  Use Reference to convert L1.F into an ownership pointer so
+      --  its designated value can be updated in place.
+
+      declare
+         M1_Access : access Memory_Type := L1.M'Access;
+         F1_Ptr    : access Object'Class := Reference (M1_Access, L1.F);
+      begin
+         L_Cell (F1_Ptr.all).N := F2_Next;
+      end;
+      pragma Assert (Valid_Memory (+L1.M));
+      pragma Assert (L_Cell (Get (+L1.M, Address (L1.F))).N = F2_Next);
+
+      Prove_Valid_Preserved (Address (L1.F), Address (F2_Next), L1.L + L2.L - 1, M_Old, +L1.M);
+      Prove_Reach_Preserved (Address (L1.F), Address (F2_Next), L1.L + L2.L - 1, M_Old, +L1.M);
+
+      pragma Assert (Valid_List (Address (L1.F), Address (L1.F), L1.L + L2.L, +L1.M));
+
+      L1.L := L1.L + L2.L;
+   end Merge;
+
    X : List := Create (1); --@RESOURCE_LEAK:FAIL
-   Y : List := Create (1); --@RESOURCE_LEAK:FAIL
-   --  No attempt is made to deallocate X and Y, we have a memory leak
+   Y : List := Create (1);
+   --  No attempt is made to deallocate X, we have a memory leak. The cells of
+   --  Y are moved to X, so they are not reported as leaked here.
 begin
    Add (X, 2);
    Add (X, 3);
@@ -189,4 +366,6 @@ begin
    Add (Y, 3);
    pragma Assert (X.L = 3);
    pragma Assert (Y.L = 3);
+   Merge (X, Y);
+   pragma Assert (X.L = 6);
 end Example_Recursive;
