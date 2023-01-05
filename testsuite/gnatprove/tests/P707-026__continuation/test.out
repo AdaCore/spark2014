@@ -1,4 +1,5 @@
 pkg.adb:8:04: info: justified that "Descriptors" constituent of "State" is not initialized in "Pkg"
+pkg.adb:10:07: warning: assuming no concurrent accesses to non-atomic object "Descriptors"
 pkg.adb:10:07: warning: consider annotating "Descriptors" with Async_Writers
 pkg.adb:10:07: warning: indirect writes to "Descriptors" through a potential alias are ignored
 pkg.adb:10:07: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -6,6 +7,7 @@ pkg.adb:10:07: warning: writing to "Descriptors" is assumed to have no effects o
 pkg.ads:5:04: info: flow dependencies proved
 pkg2.adb:8:04: high: "Descriptors" constituent of "State" is not initialized in "Pkg2" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Descriptors" constituent of "State" at declaration or in the package body statements]
 pkg2.adb:8:04: info: justified that initialization of "Pkg2.State" is specified at pkg2.ads:5
+pkg2.adb:10:07: warning: assuming no concurrent accesses to non-atomic object "Descriptors"
 pkg2.adb:10:07: warning: consider annotating "Descriptors" with Async_Writers
 pkg2.adb:10:07: warning: indirect writes to "Descriptors" through a potential alias are ignored
 pkg2.adb:10:07: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -19,7 +21,7 @@ SPARK Analysis results        Total       Flow   Provers   Justified   Unproved
 -------------------------------------------------------------------------------
 Data Dependencies                 .          .         .           .          .
 Flow Dependencies                 2          2         .           .          .
-Initialization                    4          .         .           2          2
+Initialization                    3          .         .           2          1
 Non-Aliasing                      .          .         .           .          .
 Run-time Checks                   .          .         .           .          .
 Assertions                        .          .         .           .          .
@@ -28,14 +30,14 @@ LSP Verification                  .          .         .           .          .
 Termination                       .          .         .           .          .
 Concurrency                       .          .         .           .          .
 -------------------------------------------------------------------------------
-Total                             6    2 (33%)         .     2 (33%)    2 (33%)
+Total                             5    2 (40%)         .     2 (40%)    1 (20%)
 
 
 max steps used for successful proof: 0
 
 Analyzed 2 units
 in unit pkg, 2 subprograms and packages out of 2 analyzed
-  Pkg at pkg.ads:1 flow analyzed (0 errors, 1 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+  Pkg at pkg.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
    Justified check messages:
     pkg.adb:8:4: justified that "Descriptors" constituent of "State" is not initialized in "Pkg" (marked as: intentional, reason: "Suppressing main message should suppress cont line, too")
   Pkg.Foo at pkg.ads:7 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)

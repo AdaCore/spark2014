@@ -169,16 +169,25 @@ thereof, is said to be *constant after elaboration*.
 be modified after execution of the main subprogram begins
 (see section :ref:`Tasks and Synchronization`).]
 
+.. index:: immutable stand-alone constant
+
+A stand-alone constant is said to be *immutable* if it is not of an
+access-to-variable type. [Note that this is not exactly the same definition as
+for immutable parameters (see section :ref:`Anti-Aliasing`).]
+
+Otherwise, the stand-alone constant is said to be *mutable*.
+
 .. index:: constant with variable inputs
 
-A stand-alone constant is a *constant with variable inputs* if its
+A stand-alone immutable constant is a *constant with variable inputs* if its
 initialization expression depends on:
 
   * A variable or parameter; or
 
   * Another *constant with variable inputs*
 
-Otherwise, a stand-alone constant is a *constant without variable inputs*.
+Otherwise, a stand-alone immutable constant is a *constant without variable
+inputs*.
 
 .. container:: heading
 

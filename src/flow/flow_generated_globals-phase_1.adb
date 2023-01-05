@@ -147,8 +147,9 @@ package body Flow_Generated_Globals.Phase_1 is
       --
       --  Generic actual subprograms should not appear in direct calls, except
       --  for default subprograms. If they are procedures, then they either are
-      --  null procedures or have aspects coming from contracts on generic
-      --  formal subprograms; if they are functions, then they wrap arbitrary
+      --  null procedures, have aspects coming from contracts on generic formal
+      --  subprograms or are wrappers for subprogram renamings that involve
+      --  access-to-subprogram; if they are functions, then they wrap arbitrary
       --  expressions.
 
       for Call of Calls loop
@@ -160,7 +161,10 @@ package body Flow_Generated_Globals.Phase_1 is
                   when E_Procedure =>
                      Null_Present (Subprogram_Specification (Call))
                        or else
-                     Has_Aspects (Subprogram_Spec (Call)),
+                     Has_Aspects (Subprogram_Spec (Call))
+                       or else
+                     Nkind (Original_Node (Subprogram_Spec (Call))) =
+                       N_Subprogram_Renaming_Declaration,
                   when E_Function =>
                      True,
                   when others =>

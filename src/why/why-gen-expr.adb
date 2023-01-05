@@ -1036,10 +1036,9 @@ package body Why.Gen.Expr is
          return Expr;
       end if;
 
-      --  Check for initialization if needed. We also need an initialization
-      --  check if we should check predicates.
+      --  Check for initialization if needed
 
-      if Init_Check or else Pred_Check then
+      if Init_Check then
          Arr_Init := Insert_Initialization_Check
            (Ada_Node               => Ada_Node,
             E                      => From_Ent,
@@ -1344,31 +1343,14 @@ package body Why.Gen.Expr is
 
                   Args (1) := Split_T;
 
-                  --  To apply the predicate check, we need to have initialized
-                  --  values. Don't produce an initialization check, it was
-                  --  done earlier.
-
-                  if On_Wrapper then
-                     pragma Assert (not Has_Relaxed_Init (To_Ent));
-                     Args (1) := New_Call
-                       (Ada_Node => Ada_Node,
-                        Domain   => Domain,
-                        Name     => Get_Array_Of_Wrapper_Name (To_Ent),
-                        Args     => (1 => Args (1)),
-                        Typ      =>
-                          (if Is_Static_Array_Type (To_Ent)
-                           then EW_Abstract (To_Ent)
-                           else EW_Split (To_Ent)));
-                  end if;
-
                   declare
                      Rec_Tmp : constant W_Expr_Id :=
                        (if not Is_Static_Array_Type (To_Ent)
                         then New_Call
                           (Domain => Domain,
-                           Name   => E_Symb (To_Ent, WNE_Of_Array),
+                           Name   => E_Symb (To_Ent, WNE_Of_Array, On_Wrapper),
                            Args   => Args,
-                           Typ    => EW_Abstract (To_Ent))
+                           Typ    => EW_Abstract (To_Ent, On_Wrapper))
                         else Args (1));
                      --  If it is in split form, the array should be
                      --  reconstructed.
@@ -1564,7 +1546,6 @@ package body Why.Gen.Expr is
            Relaxed_Init => Is_Init_Wrapper_Type (From)
               and Is_Init_Wrapper_Type (To)
               and not Need_Pred_Check);
-      pragma Assert (not Has_Relaxed_Init (R) or else not Need_Pred_Check);
       --  If To has predicate, the check must be done on initialized values
 
    begin
@@ -2439,11 +2420,10 @@ package body Why.Gen.Expr is
          begin
             if Domain = EW_Prog and then not No_Init then
                Result := Insert_Initialization_Check
-                 (Ada_Node               => Ada_Node,
-                  E                      => From_Node,
-                  Name                   => Result,
-                  Domain                 => Domain,
-                  Exclude_Always_Relaxed => True);
+                 (Ada_Node => Ada_Node,
+                  E        => From_Node,
+                  Name     => Result,
+                  Domain   => Domain);
             end if;
 
             if Get_Type_Kind (From) = EW_Split then
@@ -4989,16 +4969,6 @@ package body Why.Gen.Expr is
      (New_Call (Name => Why_Eq,
                 Args => (1 => +W, 2 => +Bool_True (EW_Term)),
                 Typ  => EW_Bool_Type));
-
-   ------------
-   -- To_Int --
-   ------------
-
-   function To_Int (D : EW_Domain; E : W_Expr_Id) return W_Expr_Id is
-   begin
-      return
-        Insert_Scalar_Conversion (Domain => D, Expr => E, To => EW_Int_Type);
-   end To_Int;
 
    --------------------------
    -- Transform_Compare_Op --

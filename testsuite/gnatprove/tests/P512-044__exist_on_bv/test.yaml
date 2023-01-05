@@ -1,3 +1,4 @@
+large: True
 prove_all:
   prover: ["cvc5", "altergo"]
   steps: 4000

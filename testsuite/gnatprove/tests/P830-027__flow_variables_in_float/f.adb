@@ -4,5 +4,5 @@ function F (X : Float; Y : Integer) return Boolean is
    subtype Int_Type   is Integer range 0 .. Y;
 
 begin
-   return 1.0 in Float_Type and 1 in Int_Type;
+   return Float'(1.0) in Float_Type and 1 in Int_Type;
 end;

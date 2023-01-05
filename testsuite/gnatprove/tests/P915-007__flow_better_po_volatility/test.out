@@ -2,6 +2,8 @@
 test_01.adb:9:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 test_01.adb:9:09: info: initialization of "Updater" constituent of "State" proved
 test_01.adb:9:09: info: nontermination of task proved (CVC5: 1 VC)
+test_01.adb:22:06: warning: assuming correct volatile properties for "Sensor"
+test_01.adb:22:06: warning: assuming no concurrent accesses to non-atomic object "Sensor"
 test_01.adb:22:06: warning: make sure that all overlapping objects have Async_Writers set to True
 test_01.adb:22:06: warning: writing to "Sensor" is assumed to have no effects on other non-volatile objects
 test_01.ads:5:04: info: flow dependencies proved
@@ -10,26 +12,42 @@ test_01.ads:10:09: info: data dependencies proved
 test_02.adb:9:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 test_02.adb:9:09: info: initialization of "Updater" constituent of "State" proved
 test_02.adb:9:09: info: nontermination of task proved (CVC5: 1 VC)
+test_02.adb:22:06: warning: assuming correct volatile properties for "Sensor"
+test_02.adb:22:06: warning: assuming no concurrent accesses to non-atomic object "Sensor"
 test_02.adb:22:06: warning: make sure that all overlapping objects have Async_Writers set to True
 test_02.adb:22:06: warning: writing to "Sensor" is assumed to have no effects on other non-volatile objects
 test_02.ads:5:04: info: flow dependencies proved
 test_02.ads:10:09: info: data dependencies proved
 === test_03.adb ===
+test_03.adb:23:14: warning: assuming correct volatile properties for "V_AR"
+test_03.adb:23:14: warning: assuming no concurrent accesses to non-atomic object "V_AR"
 test_03.adb:23:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_03.adb:23:14: warning: writing to "V_AR" is assumed to have no effects on other non-volatile objects
+test_03.adb:28:14: warning: assuming correct volatile properties for "V_AW"
+test_03.adb:28:14: warning: assuming no concurrent accesses to non-atomic object "V_AW"
+test_03.adb:33:14: warning: assuming correct volatile properties for "V_ER"
+test_03.adb:33:14: warning: assuming no concurrent accesses to non-atomic object "V_ER"
+test_03.adb:38:14: warning: assuming correct volatile properties for "V_EW"
+test_03.adb:38:14: warning: assuming no concurrent accesses to non-atomic object "V_EW"
 test_03.adb:38:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_03.adb:38:14: warning: writing to "V_EW" is assumed to have no effects on other non-volatile objects
+test_03.adb:43:14: warning: assuming no concurrent accesses to non-atomic object "V_V"
 test_03.adb:43:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_03.adb:43:14: warning: writing to "V_V" is assumed to have no effects on other non-volatile objects
 === test_04.adb ===
 test_04.adb:3:14: warning: file name does not match unit name, should be "test_03.adb"
+test_04.adb:23:14: warning: assuming no concurrent accesses to non-atomic object "V_AR"
 test_04.adb:23:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_04.adb:23:14: warning: writing to "V_AR" is assumed to have no effects on other non-volatile objects
+test_04.adb:28:14: warning: assuming no concurrent accesses to non-atomic object "V_AW"
 test_04.adb:28:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_04.adb:28:14: warning: writing to "V_AW" is assumed to have no effects on other non-volatile objects
+test_04.adb:33:14: warning: assuming no concurrent accesses to non-atomic object "V_ER"
 test_04.adb:33:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_04.adb:33:14: warning: writing to "V_ER" is assumed to have no effects on other non-volatile objects
+test_04.adb:38:14: warning: assuming no concurrent accesses to non-atomic object "V_EW"
 test_04.adb:38:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_04.adb:38:14: warning: writing to "V_EW" is assumed to have no effects on other non-volatile objects
+test_04.adb:43:14: warning: assuming no concurrent accesses to non-atomic object "V_V"
 test_04.adb:43:14: warning: make sure that all overlapping objects have Async_Writers set to True
 test_04.adb:43:14: warning: writing to "V_V" is assumed to have no effects on other non-volatile objects

@@ -1,3 +1,4 @@
+large: True
 comment: "small steps to avoid timeout on Darwin"
 prove_all:
   steps: 1

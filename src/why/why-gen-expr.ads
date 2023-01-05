@@ -398,9 +398,6 @@ package Why.Gen.Expr is
    --  Function to generate a call expressing that Expr is of the dynamic type
    --  Ty.
 
-   function To_Int (D : EW_Domain; E : W_Expr_Id) return W_Expr_Id;
-   --  Convert argument to int if not already done
-
    function Do_Range_Check
      (Ada_Node   : Node_Id;
       Ty         : Entity_Id;

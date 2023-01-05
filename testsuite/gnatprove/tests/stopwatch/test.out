@@ -1,4 +1,6 @@
 display.adb:10:34: info: range check proved (CVC5: 2 VC)
+display.adb:23:06: warning: assuming correct volatile properties for "Port"
+display.adb:23:06: warning: assuming no concurrent accesses to non-atomic object "Port"
 display.adb:23:06: warning: make sure that all overlapping objects have Async_Writers set to True
 display.adb:23:06: warning: writing to "Port" is assumed to have no effects on other non-volatile objects
 display.adb:37:32: info: overflow check proved (CVC5: 2 VC)

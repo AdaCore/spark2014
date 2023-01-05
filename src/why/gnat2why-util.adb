@@ -1072,6 +1072,8 @@ package body Gnat2Why.Util is
            and then Ekind (Obj) /= E_Out_Parameter
          then
             return True;
+         elsif Obj_Has_Relaxed_Init (Obj) then
+            return False;
          else
             declare
                use Flow_Types;
@@ -1094,7 +1096,7 @@ package body Gnat2Why.Util is
       --  Part_Of objects, which are always initialized.
 
       when E_Package | E_Task_Type =>
-         return True;
+         return not Obj_Has_Relaxed_Init (Obj);
 
       when others =>
          raise Program_Error;
@@ -1648,6 +1650,7 @@ package body Gnat2Why.Util is
            --  We need an invariant for type invariants
 
            or else Has_Potentially_Inherited_Type_Invariants (Ty_Ext)
+
          then
             return True;
          end if;

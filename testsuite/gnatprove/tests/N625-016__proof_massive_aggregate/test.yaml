@@ -1,3 +1,4 @@
+large: True
 comment: "CVC4 consumes >5GB of memory for this test"
 memlimit: 100
 prove_all:

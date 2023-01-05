@@ -17,7 +17,8 @@ package body Int_Arith is
    begin
       for I in 1 .. S loop
          A(I) := 1;
-         pragma Loop_Invariant (for all J in 1 .. I => A(J) = 1);
+         pragma Loop_Invariant
+           (for all J in 1 .. I => A(J)'Initialized and then A(J) = 1);
       end loop;
       if S > 0 then
          Lemma_Sum_Ones (A, S);

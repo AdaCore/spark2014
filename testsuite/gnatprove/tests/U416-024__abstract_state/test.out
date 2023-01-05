@@ -3,5 +3,7 @@ foo.ads:16:07: info: data dependencies proved
 foo.ads:20:07: info: data dependencies proved
 foo.ads:21:07: info: flow dependencies proved
 foo.ads:25:04: info: initialization of "Instance" constituent of "State" proved
+foo.ads:32:07: warning: assuming correct volatile properties for "Instance"
+foo.ads:32:07: warning: assuming no concurrent accesses to non-atomic object "Instance"
 foo.ads:32:07: warning: make sure that all overlapping objects have Async_Writers set to True
 foo.ads:32:07: warning: writing to "Instance" is assumed to have no effects on other non-volatile objects

@@ -12,8 +12,12 @@ anti_aliasing.adb:48:16: info: non-aliasing of formal parameters "X" and "Y" pro
 anti_aliasing.adb:51:20: high: formal parameter "I" and global "Local_1" are aliased (SPARK RM 6.4.2)
 externals.adb:27:04: high: "Out_Reg" constituent of "Complex_Device" is not written in "Externals" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Out_Reg" constituent of "Complex_Device" at declaration or in the package body statements]
 externals.adb:27:04: high: initialization of "Externals.Complex_Device" is specified at externals.ads:8
+externals.adb:31:11: warning: assuming correct volatile properties for "Out_Reg"
+externals.adb:31:11: warning: assuming no concurrent accesses to non-atomic object "Out_Reg"
 externals.adb:31:11: warning: make sure that all overlapping objects have Async_Writers set to True
 externals.adb:31:11: warning: writing to "Out_Reg" is assumed to have no effects on other non-volatile objects
+externals.adb:36:11: warning: assuming correct volatile properties for "In_Reg"
+externals.adb:36:11: warning: assuming no concurrent accesses to non-atomic object "In_Reg"
 externals.adb:43:07: info: initialization of "Temp" proved
 externals.adb:44:07: info: initialization of "Press" proved
 externals.adb:49:31: medium: overflow check might fail, cannot prove lower bound for Press + Temp * K (e.g. when Press = -341 and Temp = -1740262) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 48 should mention Press (for argument Press) in a postcondition]
@@ -52,12 +56,23 @@ global_and_generics.ads:7:09: info: data dependencies proved, in instantiation a
 global_and_generics.ads:8:09: info: flow dependencies proved, in instantiation at global_and_generics.adb:10
 global_and_generics.ads:12:06: info: data dependencies proved
 global_and_generics.ads:13:06: info: flow dependencies proved
+hal.adb:17:11: warning: assuming correct volatile properties for "Read_FIFO"
+hal.adb:17:11: warning: assuming no concurrent accesses to non-atomic object "Read_FIFO"
+hal.adb:25:11: warning: assuming correct volatile properties for "Write_FIFO"
+hal.adb:25:11: warning: assuming no concurrent accesses to non-atomic object "Write_FIFO"
 hal.adb:25:11: warning: make sure that all overlapping objects have Async_Writers set to True
 hal.adb:25:11: warning: writing to "Write_FIFO" is assumed to have no effects on other non-volatile objects
+hal.adb:33:11: warning: assuming correct volatile properties for "Status"
+hal.adb:33:11: warning: assuming no concurrent accesses to non-atomic object "Status"
+hal.adb:41:11: warning: assuming correct volatile properties for "Control"
+hal.adb:41:11: warning: assuming no concurrent accesses to non-atomic object "Control"
 hal.adb:41:11: warning: make sure that all overlapping objects have Async_Writers set to True
 hal.adb:41:11: warning: writing to "Control" is assumed to have no effects on other non-volatile objects
+hal.adb:50:11: warning: assuming correct volatile properties for "Wdog_Shared_Memory"
+hal.adb:50:11: warning: assuming no concurrent accesses to non-atomic object "Wdog_Shared_Memory"
 hal.adb:50:11: warning: make sure that all overlapping objects have Async_Writers set to True
 hal.adb:50:11: warning: writing to "Wdog_Shared_Memory" is assumed to have no effects on other non-volatile objects
+hal.adb:50:45: warning: assuming valid reads from object "Wdog_Shared_Memory"
 hal.adb:70:07: info: initialization of "Current_Status" proved
 hal.adb:71:07: info: initialization of "Next_Byte" proved
 hal.adb:94:41: info: initialization of "Write_FIFO" constituent of "Serial_Out" proved
@@ -91,6 +106,8 @@ initialization_and_elaboration.ads:6:08: info: flow dependencies proved
 initialization_and_elaboration.ads:8:08: medium: initial condition might fail
 initialization_and_elaboration.ads:13:11: info: data dependencies proved
 initialization_and_elaboration.ads:16:11: info: data dependencies proved
+input_port.ads:9:11: warning: assuming correct volatile properties for "Sensor"
+input_port.ads:9:11: warning: assuming no concurrent accesses to non-atomic object "Sensor"
 inter_unit_elaboration_examples.adb:8:14: high: overflow check might fail, cannot prove lower bound for 2 * I (e.g. when I = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at inter_unit_elaboration_examples.ads:10 should mention I in a precondition]
 intra_unit_elaboration_order_examples.adb:3:50: high: overflow check might fail, cannot prove upper bound for I + 1 (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (I <= Integer'Last - 1) to subprogram at intra_unit_elaboration_order_examples.ads:26]
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved (CVC5: 2 VC)
@@ -112,12 +129,26 @@ main_hal.adb:16:20: medium: missing dependency "HAL.Wdog_State => HAL.Serial_In"
 main_hal.adb:19:04: info: initialization of "Wdog_Timed_Out" proved
 main_hal.adb:20:04: info: initialization of "A_Byte" proved
 main_hal.adb:35:07: medium: "Found" might not be initialized
+multiple_ports.ads:20:11: warning: assuming correct volatile properties for "V_In_1"
+multiple_ports.ads:20:11: warning: assuming no concurrent accesses to non-atomic object "V_In_1"
+multiple_ports.ads:20:45: warning: assuming valid reads from object "V_In_1"
+multiple_ports.ads:30:11: warning: assuming correct volatile properties for "V_In_2"
+multiple_ports.ads:30:11: warning: assuming no concurrent accesses to non-atomic object "V_In_2"
+multiple_ports.ads:30:45: warning: assuming valid reads from object "V_In_2"
+multiple_ports.ads:38:11: warning: assuming correct volatile properties for "V_Out_1"
+multiple_ports.ads:38:11: warning: assuming no concurrent accesses to non-atomic object "V_Out_1"
 multiple_ports.ads:38:11: warning: make sure that all overlapping objects have Async_Writers set to True
 multiple_ports.ads:38:11: warning: writing to "V_Out_1" is assumed to have no effects on other non-volatile objects
+multiple_ports.ads:38:45: warning: assuming valid reads from object "V_Out_1"
+multiple_ports.ads:45:11: warning: assuming correct volatile properties for "V_Out_2"
+multiple_ports.ads:45:11: warning: assuming no concurrent accesses to non-atomic object "V_Out_2"
 multiple_ports.ads:45:11: warning: make sure that all overlapping objects have Async_Writers set to True
 multiple_ports.ads:45:11: warning: writing to "V_Out_2" is assumed to have no effects on other non-volatile objects
+multiple_ports.ads:45:45: warning: assuming valid reads from object "V_Out_2"
+multiple_ports.ads:56:11: warning: assuming no concurrent accesses to non-atomic object "V_In_Out"
 multiple_ports.ads:56:11: warning: make sure that all overlapping objects have Async_Writers set to True
 multiple_ports.ads:56:11: warning: writing to "V_In_Out" is assumed to have no effects on other non-volatile objects
+multiple_ports.ads:56:45: warning: assuming valid reads from object "V_In_Out"
 outer-public_child.ads:6:17: info: initialization of "Hidden_State" constituent of "A2" proved
 outer-public_child.ads:7:14: info: data dependencies proved
 outer-public_child.ads:7:41: info: initialization of "Outer.A2" proved
@@ -134,6 +165,8 @@ outer.ads:26:17: info: flow dependencies proved
 outer.ads:31:17: info: data dependencies proved
 outer.ads:31:39: info: initialization of "Hidden_State" constituent of "A2" proved
 outer.ads:32:17: info: flow dependencies proved
+output_port.ads:9:11: warning: assuming correct volatile properties for "Sensor"
+output_port.ads:9:11: warning: assuming no concurrent accesses to non-atomic object "Sensor"
 output_port.ads:9:11: warning: make sure that all overlapping objects have Async_Writers set to True
 output_port.ads:9:11: warning: writing to "Sensor" is assumed to have no effects on other non-volatile objects
 p.ads:2:08: info: flow dependencies proved

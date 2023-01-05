@@ -1,4 +1,6 @@
+problem_types.ads:9:07: warning: assuming no concurrent accesses to non-atomic object "Problem_Var"
 problem_types.ads:9:07: warning: consider annotating "Problem_Var" with Async_Writers
 problem_types.ads:9:07: warning: indirect writes to "Problem_Var" through a potential alias are ignored
 problem_types.ads:9:07: warning: make sure that all overlapping objects have Async_Writers set to True
 problem_types.ads:9:07: warning: writing to "Problem_Var" is assumed to have no effects on other non-volatile objects
+problem_types.ads:9:24: warning: assuming valid reads from object "Problem_Var"

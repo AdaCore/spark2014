@@ -1261,10 +1261,12 @@ package body SPARK_Util is
    --  Start of processing Expr_Has_Relaxed_Init
 
    begin
-      --  Scalar expressions are necessarily initialized as evaluating an
-      --  uninitialized scalar expression is a bounded error.
+      --  Scalar expressions are necessarily initialized as evaluating such an
+      --  expression requires initialization.
+      --  The same holds true for types with predicates if the predicate
+      --  requires initialization.
 
-      if (Has_Scalar_Type (Etype (Expr)) and then not No_Eval)
+      if (Copy_Requires_Init (Etype (Expr)) and then not No_Eval)
         or else (not Has_Relaxed_Init (Etype (Expr))
                  and then not Might_Contain_Relaxed_Init (Etype (Expr)))
       then
@@ -1286,7 +1288,7 @@ package body SPARK_Util is
               or else Aggr_Has_Relaxed_Init (Expr);
 
          when N_Slice =>
-            return Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval => False);
+            return Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval);
 
          when N_Op_Concat =>
             return Expr_Has_Relaxed_Init (Left_Opnd (Expr), No_Eval => False)
@@ -1322,8 +1324,10 @@ package body SPARK_Util is
                return False;
             end;
 
-         when N_Qualified_Expression
-            | N_Unchecked_Type_Conversion
+         when N_Qualified_Expression =>
+            return Expr_Has_Relaxed_Init (Expression (Expr), No_Eval => False);
+
+         when N_Unchecked_Type_Conversion
             | N_Type_Conversion
          =>
             return Expr_Has_Relaxed_Init (Expression (Expr), No_Eval);
@@ -1341,7 +1345,7 @@ package body SPARK_Util is
             | N_Explicit_Dereference
          =>
             return Has_Relaxed_Init (Etype (Expr))
-              or else Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval => False);
+              or else Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval);
 
          when N_Attribute_Reference =>
             case Get_Attribute_Id (Attribute_Name (Expr)) is
@@ -1519,9 +1523,11 @@ package body SPARK_Util is
 
    function Fun_Has_Relaxed_Init (Subp : E_Function_Id) return Boolean is
    begin
-      --  It is illegal to return an uninitialized scalar object
+      --  It is illegal to return an uninitialized object of a scalar type. The
+      --  same holds true for type with predicates if the predicate check
+      --  requires initialization.
 
-      if Is_Scalar_Type (Retysp (Etype (Subp))) then
+      if Copy_Requires_Init (Retysp (Etype (Subp))) then
          return False;
       else
          return Has_Relaxed_Initialization (Subp)
@@ -1760,22 +1766,6 @@ package body SPARK_Util is
          end;
       end loop;
    end Get_Observed_Or_Borrowed_Info;
-
-   ---------------------------------
-   -- Get_Observed_Or_Borrowed_Ty --
-   ---------------------------------
-
-   function Get_Observed_Or_Borrowed_Ty
-     (Expr : N_Subexpr_Id;
-      Ty   : Type_Kind_Id)
-      return Type_Kind_Id
-   is
-      B_Expr : Node_Id;
-      B_Ty   : Entity_Id := Ty;
-   begin
-      Get_Observed_Or_Borrowed_Info (Expr, B_Expr, B_Ty);
-      return B_Ty;
-   end Get_Observed_Or_Borrowed_Ty;
 
    -------------------------
    -- Get_Operator_Symbol --
@@ -2021,6 +2011,22 @@ package body SPARK_Util is
             raise Program_Error;
       end case;
    end Has_Volatile_Property;
+
+   ------------------------------------
+   -- In_Loop_Entry_Or_Old_Attribute --
+   ------------------------------------
+
+   function In_Loop_Entry_Or_Old_Attribute (N : Node_Id) return Boolean is
+
+      function Is_Attribute_Loop_Entry_Or_Old (N : Node_Id) return Boolean is
+        (Is_Attribute_Loop_Entry (N) or else Is_Attribute_Old (N));
+
+      function Find_Loop_Entry_Or_Old_Attribute is new
+        First_Parent_With_Property (Is_Attribute_Loop_Entry_Or_Old);
+
+   begin
+      return Present (Find_Loop_Entry_Or_Old_Attribute (N));
+   end In_Loop_Entry_Or_Old_Attribute;
 
    ---------------------------
    -- In_SPARK_Library_Unit --
@@ -3750,15 +3756,15 @@ package body SPARK_Util is
       if Ekind (Obj) in E_Discriminant then
          return False;
 
-      --  Parameters of loops may not be initialized if they are not scalar
-      --  objects.
+      --  Parameters of loops which cannot be copied when not initialized are
+      --  always initialized.
 
       elsif Ekind (Obj) = E_Loop_Parameter
         or else
          (Ekind (Obj) = E_Variable
           and then Is_Quantified_Loop_Param (Obj))
       then
-         if Has_Scalar_Type (Etype (Obj)) then
+         if Copy_Requires_Init (Etype (Obj)) then
             return False;
          end if;
 
@@ -3777,7 +3783,7 @@ package body SPARK_Util is
                declare
                   Arr_Expr : constant Node_Id := Name (I_Spec);
                begin
-                  return Expr_Has_Relaxed_Init (Arr_Expr)
+                  return Expr_Has_Relaxed_Init (Arr_Expr, No_Eval => False)
                     or else Has_Relaxed_Init
                       (Component_Type (Etype (Arr_Expr)));
                end;
@@ -3814,15 +3820,11 @@ package body SPARK_Util is
             end if;
          end;
 
-      --  Uninitialized scalar types cannot be copied. A scalar object can
-      --  only be uninitialized if it is either an out parameter or a
-      --  variable without an explicit initial value.
+      --  An object which cannot be copied when not initialized can
+      --  only be uninitialized if it is either an out parameter or a variable.
 
-      elsif (Ekind (Obj) in E_In_Parameter | E_In_Out_Parameter | E_Constant
-             or else
-               (Ekind (Obj) = E_Variable
-                and then Present (Expression (Enclosing_Declaration (Obj)))))
-        and then Has_Scalar_Type (Etype (Obj))
+      elsif Ekind (Obj) in E_In_Parameter | E_In_Out_Parameter | E_Constant
+        and then Copy_Requires_Init (Etype (Obj))
       then
          return False;
 

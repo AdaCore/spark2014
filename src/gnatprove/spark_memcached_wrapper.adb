@@ -24,14 +24,17 @@
 ------------------------------------------------------------------------------
 
 with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Directories;
 with Ada.Exceptions;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
-with GNAT.Expect; use GNAT.Expect;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Cache_Client;
+with Filecache_Client;
+with GNAT.Expect;      use GNAT.Expect;
+with GNAT.OS_Lib;      use GNAT.OS_Lib;
 with GNAT.SHA1;
-with GNAT.Sockets; use GNAT.Sockets;
-with GNATCOLL.JSON; use GNATCOLL.JSON;
+with GNAT.Sockets;     use GNAT.Sockets;
+with GNATCOLL.JSON;    use GNATCOLL.JSON;
 with GNATCOLL.Mmap;
 with Memcache_Client;
 
@@ -59,6 +62,10 @@ is
    --  arguments which can be ignored are skipped, for others, instead of
    --  the argument some other content is hashed.
 
+   procedure Hash_Binary (C : in out GNAT.SHA1.Context; Execname : String);
+   --  If the binary Fn is on the PATH and there is a file Fn.hash next to it,
+   --  we read that file and add it to the context.
+
    procedure Hash_File (C : in out GNAT.SHA1.Context; Fn : String);
    --  @param C the hash context to be updated
    --  @param Fn the file to be hashed
@@ -68,7 +75,7 @@ is
    --  @return the key to be used for this invocation of the wrapper in the
    --    memcached table
 
-   function Init_Client return Memcache_Client.Cache_Connection;
+   function Init_Client return Cache_Client.Cache'Class;
    --  @return a connection to the memcached server specified by the first
    --    command line argument
 
@@ -76,6 +83,46 @@ is
      with No_Return;
    --  @param Msg error message to be reported
    --  Quit the program and transmit a message in gnatwhy3 style
+
+   -----------------
+   -- Hash_Binary --
+   -----------------
+
+   procedure Hash_Binary (C : in out GNAT.SHA1.Context; Execname : String)
+   is
+
+      function Compute_Hash_Filename (Exec : String) return String;
+      --  Compute the hashfile name from the executable name by locating the
+      --  file in the PATH, then adding ".hash", or replacing the suffix with
+      --  ".hash", if any.
+
+      ---------------------------
+      -- Compute_Hash_Filename --
+      ---------------------------
+
+      function Compute_Hash_Filename (Exec : String) return String is
+         Fn : String_Access := GNAT.OS_Lib.Locate_Exec_On_Path (Exec);
+      begin
+         if Fn = null then
+            return "";
+         end if;
+         declare
+            Ext : constant String := Ada.Directories.Extension (Fn.all);
+         begin
+            return Result : constant String :=
+              (if Ext = "" then Fn.all & ".hash"
+               else Fn (Fn'First .. Fn'Last - Ext'Length) & ".hash") do
+               Free (Fn);
+            end return;
+         end;
+      end Compute_Hash_Filename;
+
+      Hash_Fn : constant String := Compute_Hash_Filename (Execname);
+   begin
+      if Hash_Fn /= "" and then Ada.Directories.Exists (Hash_Fn) then
+         Hash_File (C, Hash_Fn);
+      end if;
+   end Hash_Binary;
 
    ----------------------
    -- Hash_Commandline --
@@ -138,7 +185,7 @@ is
    -- Init_Client --
    -----------------
 
-   function Init_Client return Memcache_Client.Cache_Connection is
+   function Init_Client return Cache_Client.Cache'Class is
       Info  : String renames Argument (2);
       Colon : constant Natural :=
         Ada.Strings.Fixed.Index (Info, ":");
@@ -153,19 +200,29 @@ is
               "is hostname:portnumber, but no colon was found");
       end if;
       declare
-         Hostname : String renames Info (Info'First .. Colon - 1);
-         Port     : constant Port_Type :=
-           Port_Type'Value (Info (Colon + 1 .. Info'Last));
-
+         First  : String renames Info (Info'First .. Colon - 1);
+         Second : String renames Info (Colon + 1 .. Info'Last);
       begin
-         if Port = No_Port then
-            Report_Error (Wrong_Port_Msg);
+         if First'Length = 4 and then First = "file" then
+            if not Ada.Directories.Exists (Second) then
+               Report_Error ("file caching: no such directory: " & Second);
+            end if;
+            return Filecache_Client.Init (Second);
          else
-            return Memcache_Client.Init (Hostname, Port);
+            declare
+               Port     : constant Port_Type :=
+                 Port_Type'Value (Info (Colon + 1 .. Info'Last));
+            begin
+               if Port = No_Port then
+                  Report_Error (Wrong_Port_Msg);
+               else
+                  return Memcache_Client.Init (First, Port);
+               end if;
+            exception
+               when Constraint_Error => Report_Error (Wrong_Port_Msg);
+            end;
          end if;
       end;
-   exception
-      when Constraint_Error => Report_Error (Wrong_Port_Msg);
    end Init_Client;
 
    ------------------
@@ -207,6 +264,12 @@ is
       --  Hash the rest of the command line
 
       Hash_Commandline (C);
+
+      --  Read the binary hash if present
+
+      if Argument_Count >= 3 then
+         Hash_Binary (C, Argument (3));
+      end if;
       return GNAT.SHA1.Digest (C);
    end Compute_Key;
 
@@ -216,10 +279,10 @@ begin
    --  in the scope of the exception handler below.
 
    declare
-      Cache : Memcache_Client.Cache_Connection := Init_Client;
+      Cache : Cache_Client.Cache'Class := Init_Client;
 
       Key : constant String := Compute_Key;
-      Msg : constant String := Memcache_Client.Get (Cache, Key);
+      Msg : constant String := Cache.Get (Key);
       Status : aliased Integer := 0;
    begin
       if Msg'Length /= 0 then
@@ -248,13 +311,13 @@ begin
                --  them.
 
                if Status = 0 or else Cmd /= "gnatwhy3" then
-                  Memcache_Client.Set (Cache, Key, Msg);
+                  Cache.Set (Key, Msg);
                end if;
                Ada.Text_IO.Put_Line (Msg);
             end;
          end;
       end if;
-      Memcache_Client.Close (Cache);
+      Cache.Close;
       GNAT.OS_Lib.OS_Exit (Status);
    end;
 exception

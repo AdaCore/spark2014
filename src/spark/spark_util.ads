@@ -591,6 +591,10 @@ package SPARK_Util is
    --      Empty otherwise. This is used to get a stable name for aggregates
    --      used as definition of objects.
 
+   function In_Loop_Entry_Or_Old_Attribute (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True if the node is a Loop_Entry or Old attribute
+
    function Is_In_Statically_Dead_Branch (N : Node_Id) return Boolean;
    --  @param N any node
    --  @return True if the node is in a branch that is statically dead. Only
@@ -723,14 +727,6 @@ package SPARK_Util is
    --      formal of the function, otherwise it is B_Ty.
    --      Note that B_Ty is not the type of B_Expr but a compatible anonymous
    --      access type.
-
-   function Get_Observed_Or_Borrowed_Ty
-     (Expr : N_Subexpr_Id;
-      Ty   : Type_Kind_Id)
-      return Type_Kind_Id
-   with Pre => Is_Path_Expression (Expr);
-   --  Return the type of the first borrower/observer in Expr, as computed by
-   --  Get_Observed_Or_Borrowed_Info.
 
    function Get_Root_Object
      (Expr              : N_Subexpr_Id;

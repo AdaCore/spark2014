@@ -31,6 +31,7 @@ with Aspects;                         use Aspects;
 with Assumption_Types;                use Assumption_Types;
 with Checked_Types;                   use Checked_Types;
 with Common_Iterators;                use Common_Iterators;
+with Debug;
 with Einfo.Utils;                     use Einfo.Utils;
 with Elists;                          use Elists;
 with Errout;                          use Errout;
@@ -2527,6 +2528,9 @@ package body SPARK_Definition is
                Mark_Unsupported (Lim_Target_Name_In_Move, N);
             end if;
 
+         when N_Interpolated_String_Literal =>
+            Mark_Unsupported (Lim_Interpolated_String_Literal, N);
+
          --  Mark should not be called on other kinds
 
          when N_Abortable_Part
@@ -2756,21 +2760,34 @@ package body SPARK_Definition is
 
             --  If we cannot determine which object the address of E
             --  references, check whether E is annotated with some Volatile
-            --  properties. If it is not the case, issue a warning that we
-            --  cannot account for indirect writes.
+            --  properties. If it is not the case, issue a warning that
+            --  we cannot account for indirect writes. Otherwise, issue a
+            --  warning that we assume the stated volatile properties, if
+            --  not all properties are set. This partly addresses assumptions
+            --  SPARK_EXTERNAL and SPARK_ALIASING_ADDRESS.
 
             if Is_Object (E)
               and then not Supported_Alias
-              and then not Has_Volatile (E)
-              and then
-                (Ekind (E) /= E_Variable or else not No_Caching_Enabled (E))
             then
-               Error_Msg_NE
-                 (Warning_Message (Warn_Indirect_Writes_Through_Alias),
-                  Address, E);
-               Error_Msg_NE
-                 ("\consider annotating & with Async_Writers",
-                  Address, E);
+               if not Has_Volatile (E) then
+                  if not No_Caching_Enabled (E) then
+                     Error_Msg_NE
+                       (Warning_Message (Warn_Indirect_Writes_Through_Alias),
+                        Address, E);
+                     Error_Msg_NE
+                       ("\consider annotating & with Async_Writers",
+                        Address, E);
+                  end if;
+
+               elsif not Has_Volatile_Property (E, Pragma_Async_Readers)
+                 or else not Has_Volatile_Property (E, Pragma_Async_Writers)
+                 or else not Has_Volatile_Property (E, Pragma_Effective_Reads)
+                 or else not Has_Volatile_Property (E, Pragma_Effective_Writes)
+               then
+                  Error_Msg_NE
+                    (Warning_Message (Warn_Assumed_Volatile_Properties),
+                     Address, E);
+               end if;
             end if;
 
             --  If E is variable in SPARK, check here that we can account
@@ -2792,8 +2809,7 @@ package body SPARK_Definition is
 
                   if (if Has_Volatile (E)
                       then Has_Volatile_Property (E, Pragma_Async_Readers)
-                      else Ekind (E) /= E_Variable
-                        or else not No_Caching_Enabled (E))
+                      else not No_Caching_Enabled (E))
                   then
                      Error_Msg_NE
                        (Warning_Message (Warn_Indirect_Writes_To_Alias),
@@ -2960,13 +2976,27 @@ package body SPARK_Definition is
                end;
             end if;
 
-            if Is_Object (E) and then Supported_Alias then
-               if Has_Volatile (E) /= Has_Volatile (Aliased_Object) or else
-                 Is_Atomic (E) /= Is_Atomic (Aliased_Object)
-               then
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Alias_Atomic_Vol),
-                     Address, E);
+            --  Objects whose address is taken should have consistent
+            --  volatility and atomicity specifications, in the case of a
+            --  precisely supported address specification. Otherwise we assume
+            --  no concurrent accesses in case the object is not atomic. This
+            --  partly addresses assumptions SPARK_EXTERNAL.
+
+            if Is_Object (E) then
+               if Supported_Alias then
+                  if Has_Volatile (E) /= Has_Volatile (Aliased_Object) or else
+                    Is_Atomic (E) /= Is_Atomic (Aliased_Object)
+                  then
+                     Error_Msg_NE
+                       (Warning_Message (Warn_Alias_Atomic_Vol),
+                        Address, E);
+                  end if;
+               else
+                  if not Is_Atomic (E) then
+                     Error_Msg_NE
+                       (Warning_Message (Warn_Address_Atomic),
+                        Address, E);
+                  end if;
                end if;
             end if;
 
@@ -3940,8 +3970,9 @@ package body SPARK_Definition is
       if Ekind (E) = E_Function
         and then Is_Volatile_Call (N)
         and then
-          not Is_OK_Volatile_Context
-                (Context => Parent (N), Obj_Ref => N, Check_Actuals => True)
+          (not Is_OK_Volatile_Context
+             (Context => Parent (N), Obj_Ref => N, Check_Actuals => True)
+           or else In_Loop_Entry_Or_Old_Attribute (N))
       then
          Mark_Violation ("call to a volatile function in interfering context",
                          N);
@@ -4928,13 +4959,26 @@ package body SPARK_Definition is
          --  relaxed initialization, populate the Relaxed_Init map.
 
          if not Violation_Detected
-           and then Ekind (E) = E_Variable
+           and then Ekind (E) in E_Variable | E_Constant
            and then Has_Relaxed_Initialization (E)
          then
-            Mark_Type_With_Relaxed_Init
-              (N   => E,
-               Ty  => T,
-               Own => False);
+
+            --  Emit a warning when the annotation of an object with
+            --  Relaxed_Initialization has no effects.
+
+            if not Obj_Has_Relaxed_Init (E) then
+               if Emit_Warning_Info_Messages then
+                  Error_Msg_NE
+                    (Warning_Message (Warn_Useless_Relaxed_Init_Obj), E, E);
+                  Error_Msg_N
+                    ("\Relaxed_Initialization annotation is useless", E);
+               end if;
+            else
+               Mark_Type_With_Relaxed_Init
+                 (N   => E,
+                  Ty  => T,
+                  Own => False);
+            end if;
          end if;
 
          --  Also mark the Address clause if any
@@ -4967,10 +5011,23 @@ package body SPARK_Definition is
            and then Is_Formal (E)
            and then Has_Relaxed_Initialization (E)
          then
-            Mark_Type_With_Relaxed_Init
-              (N   => E,
-               Ty  => T,
-               Own => False);
+
+            --  Emit a warning when the annotation of an object with
+            --  Relaxed_Initialization has no effects.
+
+            if not Obj_Has_Relaxed_Init (E) then
+               if Emit_Warning_Info_Messages then
+                  Error_Msg_NE
+                    (Warning_Message (Warn_Useless_Relaxed_Init_Obj), E, E);
+                  Error_Msg_N
+                    ("\Relaxed_Initialization annotation is useless", E);
+               end if;
+            else
+               Mark_Type_With_Relaxed_Init
+                 (N   => E,
+                  Ty  => T,
+                  Own => False);
+            end if;
          end if;
       end Mark_Parameter_Entity;
 
@@ -5669,10 +5726,23 @@ package body SPARK_Definition is
            and then Ekind (E) = E_Function
            and then Has_Relaxed_Initialization (E)
          then
-            Mark_Type_With_Relaxed_Init
-              (N   => E,
-               Ty  => Etype (E),
-               Own => False);
+
+            --  Emit a warning when the annotation of a function with
+            --  Relaxed_Initialization has no effects.
+
+            if not Fun_Has_Relaxed_Init (E) then
+               if Emit_Warning_Info_Messages then
+                  Error_Msg_NE
+                    (Warning_Message (Warn_Useless_Relaxed_Init_Fun), E, E);
+                  Error_Msg_N
+                    ("\Relaxed_Initialization annotation is useless", E);
+               end if;
+            else
+               Mark_Type_With_Relaxed_Init
+                 (N   => E,
+                  Ty  => Etype (E),
+                  Own => False);
+            end if;
          end if;
       end Mark_Subprogram_Entity;
 
@@ -7041,21 +7111,63 @@ package body SPARK_Definition is
 
          --  If no violations were found and the type is annotated with
          --  relaxed initialization, populate the Relaxed_Init map.
-         --  For consistency between flow analysis and proof, we consider types
-         --  entirely made of components with relaxed initialization to be
-         --  annotated with relaxed initialization.
 
-         if not Violation_Detected
-           and then
-             ((Is_First_Subtype (First_Subtype (E))
-               and then Has_Relaxed_Initialization (First_Subtype (E)))
-              or else (Is_Composite_Type (E)
-                       and then Contains_Only_Relaxed_Init (E)))
-         then
-            Mark_Type_With_Relaxed_Init
-              (N   => E,
-               Ty  => E,
-               Own => True);
+         if not Violation_Detected then
+            if Is_First_Subtype (First_Subtype (E))
+              and then Has_Relaxed_Initialization (First_Subtype (E))
+            then
+               Mark_Type_With_Relaxed_Init
+                 (N   => E,
+                  Ty  => E,
+                  Own => True);
+
+            --  For consistency between flow analysis and proof, we consider
+            --  types entirely made of components with relaxed initialization
+            --  to be annotated with relaxed initialization.
+
+            elsif Is_Composite_Type (E) and then Contains_Only_Relaxed_Init (E)
+            then
+
+               --  It can happen that a subtype with a discriminant constraint
+               --  is entirely made of components with relaxed initialization
+               --  even though its base type is not. Reject this case.
+               --  We could also detect the case where a type with
+               --  discriminants can have such subtypes by going over the
+               --  variant parts and treat them as if they were annotated with
+               --  relaxed initialization, but it seems too heavy.
+
+               if not Contains_Only_Relaxed_Init (Base_Retysp (E)) then
+                  Mark_Unsupported
+                    (Lim_Relaxed_Init_Variant_Part, E, Base_Type (E),
+                     Cont_Msg =>
+                       "consider annotating & with Relaxed_Initialization");
+
+               --  Emit an info message with --info when a type is considered
+               --  to be annotated with Relaxed_Initialization and it has a
+               --  predicate. If it has no predicates, whether it is considered
+               --  to be annotated with Relaxed_Initialization does not matter.
+
+               else
+                  if Emit_Warning_Info_Messages
+                    and then Debug.Debug_Flag_Underscore_F
+                    and then Has_Predicates (E)
+                    and then Comes_From_Source (E)
+                  then
+                     Error_Msg_NE
+                       ("info: ?" & "& is handled as if it was annotated with "
+                        & "Relaxed_Initialization as all its components are "
+                        & "annotated that way", E, E);
+                     Error_Msg_NE
+                       ("\consider annotating & with Relaxed_Initialization",
+                        E, Base_Type (E));
+                  end if;
+
+                  Mark_Type_With_Relaxed_Init
+                    (N   => E,
+                     Ty  => E,
+                     Own => True);
+               end if;
+            end if;
          end if;
       end Mark_Type_Entity;
 
@@ -7512,9 +7624,11 @@ package body SPARK_Definition is
 
                elsif Is_Effectively_Volatile_For_Reading (E)
                  and then
-                   not Is_OK_Volatile_Context (Context       => Parent (N),
-                                               Obj_Ref       => N,
-                                               Check_Actuals => True)
+                   (not Is_OK_Volatile_Context (Context       => Parent (N),
+                                                Obj_Ref       => N,
+                                                Check_Actuals => True)
+
+                    or else In_Loop_Entry_Or_Old_Attribute (N))
                then
                   Mark_Violation
                     ("volatile object in interfering context", N,
@@ -8968,13 +9082,6 @@ package body SPARK_Definition is
       Inserted : Boolean;
 
    begin
-      --  Predicates might apply to subtypes. We do this check even if the base
-      --  type was already analyzed.
-
-      if Has_Predicates (Ty) then
-         Mark_Unsupported (Lim_Relaxed_Init_Predicate, N);
-      end if;
-
       --  Store Rep_Ty in the Relaxed_Init map or update its mapping if
       --  necessary.
 

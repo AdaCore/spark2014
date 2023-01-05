@@ -514,26 +514,14 @@ package body VC_Kinds is
         when Warn_Address_To_Access =>
           "call to conversion function is assumed to return a valid access"
           & " designating a valid value",
-        when Warn_Assumed_Global_Null =>
-          "no Global contract available for subprogram, null is assumed",
-        when Warn_Assumed_Always_Return =>
-          "no returning annotation available for subprogram, "
-          & "subprogram is assumed to always return",
         when Warn_Attribute_Valid =>
           "attribute Valid is assumed to return True",
-        when Warn_Indirect_Writes_Through_Alias =>
-          "indirect writes to object through a potential alias are ignored",
         when Warn_Indirect_Writes_To_Alias =>
           "writing to object is assumed to have no effects on"
           & " other non-volatile objects",
         when Warn_Initialization_To_Alias =>
           "initialization of object is assumed to have no effects on"
           & " other non-volatile objects",
-        when Warn_Alias_Different_Volatility  =>
-          "aliased objects should have the same volatile properties",
-        when Warn_Alias_Atomic_Vol  =>
-          "aliased objects should both be volatile or non-volatile, "
-          & "and both be atomic or non-atomic",
         when Warn_Function_Is_Valid =>
           "function Is_Valid is assumed to return True",
         when Warn_Lemma_Procedure_No_Return =>
@@ -556,8 +544,37 @@ package body VC_Kinds is
           "analyzing unreferenced function",
         when Warn_Unreferenced_Procedure =>
           "analyzing unreferenced procedure",
+        when Warn_Useless_Relaxed_Init_Fun =>
+          "function result annotated with Relaxed_Initialization cannot be"
+          & " partially initialized",
+        when Warn_Useless_Relaxed_Init_Obj =>
+          "object annotated with Relaxed_Initialization cannot be"
+          & " partially initialized",
         when Warn_Variant_Not_Recursive =>
           "no recursive call visible on subprogram with Subprogram_Variant",
+
+        --  Warnings guaranteed to be issued
+        when Warn_Address_Atomic =>
+          "non-atomic object with an imprecisely supported address "
+          & "specification should not be accessed concurrently",
+        when Warn_Address_Valid =>
+          "reads of an object with an imprecisely supported address "
+          & "specification should be valid",
+        when Warn_Alias_Atomic_Vol  =>
+          "aliased objects should both be volatile or non-volatile, "
+          & "and both be atomic or non-atomic",
+        when Warn_Alias_Different_Volatility  =>
+          "aliased objects should have the same volatile properties",
+        when Warn_Assumed_Always_Return =>
+          "no returning annotation available for subprogram, "
+          & "subprogram is assumed to always return",
+        when Warn_Assumed_Global_Null =>
+          "no Global contract available for subprogram, null is assumed",
+        when Warn_Assumed_Volatile_Properties =>
+          "volatile properties of an object with an imprecisely supported "
+          & "address specification should be correct",
+        when Warn_Indirect_Writes_Through_Alias =>
+          "indirect writes to object through a potential alias are ignored",
 
         --  Warnings only issued when using switch --pedantic
         when Warn_Image_Attribute_Length =>
@@ -651,6 +668,8 @@ package body VC_Kinds is
          when Lim_Img_On_Non_Scalar =>
            "a reference to the ""Image"" or ""Img"" attribute on a type or "
           & "an object of a type which is not a scalar type",
+         when Lim_Interpolated_String_Literal =>
+           "interpolated string literals",
          when Lim_Iterated_Element_Association => "container aggregates",
          when Lim_Iterator_In_Component_Assoc =>
            "an iterated component associations with an iterator specification"
@@ -728,14 +747,15 @@ package body VC_Kinds is
          when Lim_Relaxed_Init_Part_Of_Variable =>
            "a variable annotated both with Relaxed_Initialization and as "
           & "Part_Of a concurrent object",
-         when Lim_Relaxed_Init_Predicate =>
-           "a type annotated with a subtype predicate used as a subcomponent"
-          & " of a type or an object annotated with Relaxed_Initialization",
          when Lim_Relaxed_Init_Protected_Component =>
            "a protected component annotated with Relaxed_Initialization",
          when Lim_Relaxed_Init_Tagged_Type =>
            "a tagged type used as a subcomponent of a type or"
           & " an object annotated with Relaxed_Initialization",
+         when Lim_Relaxed_Init_Variant_Part =>
+            "a subtype with a discriminant constraint containing only"
+          & " subcomponents whose type is annotated with"
+          & " Relaxed_Initialization",
          when Lim_Subprogram_Before_Inv =>
            "a subprogram declaration occurring in a loop before the loop "
           & "invariant",
@@ -1329,22 +1349,12 @@ package body VC_Kinds is
      (case Kind is
         when Warn_Address_To_Access =>
           "address to access conversion",
-        when Warn_Assumed_Global_Null =>
-          "assumed Global null",
-        when Warn_Assumed_Always_Return =>
-          "assumed Always_Return",
         when Warn_Attribute_Valid =>
           "attribute Valid always True",
-        when Warn_Indirect_Writes_Through_Alias =>
-          "indirect writes through alias",
         when Warn_Indirect_Writes_To_Alias =>
           "indirect writes to alias",
         when Warn_Initialization_To_Alias =>
           "initialization of alias",
-        when Warn_Alias_Different_Volatility =>
-          "volatile properties of aliases",
-        when Warn_Alias_Atomic_Vol =>
-          "volatile and atomic status of aliases",
         when Warn_Function_Is_Valid =>
           "function Is_Valid always return True",
         when Warn_Lemma_Procedure_No_Return =>
@@ -1367,8 +1377,30 @@ package body VC_Kinds is
           "unreferenced function",
         when Warn_Unreferenced_Procedure =>
           "unreferenced procedure",
+        when Warn_Useless_Relaxed_Init_Fun =>
+          "useless Relaxed_Initialization aspect on function result",
+        when Warn_Useless_Relaxed_Init_Obj =>
+          "useless Relaxed_Initialization aspect on object",
         when Warn_Variant_Not_Recursive =>
           "variant not recursive",
+
+        --  Warnings guaranteed to be issued
+        when Warn_Address_Atomic =>
+          "imprecise Address without Atomic",
+        when Warn_Address_Valid =>
+          "imprecise Addresse and validity",
+        when Warn_Alias_Atomic_Vol =>
+          "volatile and atomic status of aliases",
+        when Warn_Alias_Different_Volatility =>
+          "volatile properties of aliases",
+        when Warn_Assumed_Always_Return =>
+          "assumed Always_Return",
+        when Warn_Assumed_Global_Null =>
+          "assumed Global null",
+        when Warn_Assumed_Volatile_Properties =>
+          "imprecise Address and volatile properties",
+        when Warn_Indirect_Writes_Through_Alias =>
+          "indirect writes through alias",
 
         --  Warnings only issued when using switch --pedantic
         when Warn_Image_Attribute_Length =>

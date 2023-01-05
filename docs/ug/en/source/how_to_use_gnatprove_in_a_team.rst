@@ -451,13 +451,26 @@ from the Command Line` for more details on this command line option.
 Sharing Proof Results Via a Memcached Server
 --------------------------------------------
 
-|GNATprove| can cache and share results between distinct runs of the tool,
-even across several computers, via a Memcached server. To use this feature, you
-need to setup a memcached server (see https://memcached.org/) on your network
-or on your local machine. Then, if you add the option
-``--memcached-server=hostname:portnumber`` to your invocation of gnatprove (or
-use the ``Switches`` Attribute of the ``Prove`` Package of your project file),
-then caching will be used, and speedups should be observed in many cases.
+|GNATprove| can cache and share results between distinct runs of the tool. This
+feature can be enabled using the ``--memcached-server`` switch. This switch
+accepts two arguments separated by a colon, and there are two different forms:
+
+  * The switch is of the form ``--memcached-server=file:<directory>,``, that
+    is, the part before the colon is the string ``file``, and the part after it
+    is a directory that exists.
+  * The switch is of the form ``--memcached-server=<hostname>:<portnumber>``,
+    with the hostname being different from "file".
+
+If the switch is of the first form, |GNATprove| uses the specified directory to
+store results between runs of the tool. Note that this directory will tend to
+grow over time and should be deleted and recreated from time to time.
+
+If the switch is of the second form, |GNATprove| will attempt to connect to a
+Memcached server (see https://memcached.org/) located at the specified hostname
+and port, to cache intermediate results between runs.
+
+In both cases, significant speedups can be observed after the cache is filled
+with an initial |GNATprove| run.
 
 .. index:: assumptions
            --assumptions
@@ -511,10 +524,10 @@ gnatprove may output:
 Complete List of Assumptions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For the sake of these assumptions, we define a *statically known address
+For the sake of these assumptions, we define a *precisely supported address
 specification* to be an address clause or aspect whose expression is a
 reference to the Address attribute on a part of a standalone object or
-constant. Otherwise, the address clause or aspect is a *statically unknown
+constant. Otherwise, the address clause or aspect is an *imprecisely supported
 address specification*.
 
 The following assumptions need to be addressed when using SPARK on all or part
@@ -527,8 +540,7 @@ of a program:
 
 * [SPARK_EXTERNAL]
   The modeling of :ref:`Interfaces to the Physical World` needs to be reviewed
-  for objects whose value may be modified concurrently, when the address of the
-  object is specified through a statically unknown address specification.
+  for objects whose value may be modified concurrently.
 
   * They should be `effectively volatile` in SPARK (see SPARK RM 7.1.2), so
     that GNATprove takes into account possible concurrent changes in the
@@ -540,8 +552,10 @@ of a program:
   * They should have specified all necessary :ref:`Properties of Volatile
     Variables` corresponding to their usage.
 
+  A warning is guaranteed to be issued in problematic cases.
+
 * [SPARK_ALIASING_ADDRESS]
-  Aliases between objects annotated with a statically unknown address
+  Aliases between objects annotated with an imprecisely supported address
   specification are ignored by GNATprove. Reviews are necessary
   to ensure that:
 
@@ -555,8 +569,7 @@ of a program:
 
   * The objects themselves have valid values for their type when read.
 
-  GNATprove might issue warnings to alert the user about possible unsoundness
-  in this case.
+  A warning is guaranteed to be issued in problematic cases.
 
 .. index:: Valid; limitation
 
@@ -572,12 +585,12 @@ of a program:
 
 * [SPARK_EXTERNAL_VALID]
   Values read from objects whose address is specified are assumed to be valid
-  values. This assumption is limited to objects annotated with a
-  statically unknown address specification (because an explicit check is
-  emitted otherwise). Currently there is no model of invalidity or
-  undefinedness. The onus is on the user to ensure that all values read from an
-  external source are valid. The use of an invalid value invalidates any proofs
-  associated with the value.
+  values. This assumption is limited to objects annotated with an imprecisely
+  supported address specification (because an explicit check is emitted
+  otherwise). Currently there is no model of invalidity or undefinedness. The
+  onus is on the user to ensure that all values read from an external source
+  are valid. The use of an invalid value invalidates any proofs associated with
+  the value. A warning is guaranteed to be issued in that case.
 
 * [SPARK_STORAGE_ERROR]
   As explained in section :ref:`Dealing with Storage_Error`, GNATprove does not
@@ -832,15 +845,15 @@ being available:
   Subprograms which are called across the boundary of those units analyzed
   together should have a Global contract describing their effect on global
   data, otherwise they will be assumed to have no effect on global data.
-  A warning is issued in that case.
+  A warning is guaranteed to be issued in that case.
 
 * [PARTIAL_TERMINATION]
   Subprograms which are called across the boundary of those units analyzed
   together should be annotated to specify that they will always return (with
   annotation Always_Return), might not return (with annotation
   Might_Not_Return) or never return (with aspect or pragma No_Return),
-  otherwise they will be assumed to always return.  A warning is issued in that
-  case.
+  otherwise they will be assumed to always return.  A warning is guaranteed to
+  be issued in that case.
 
 * [PARTIAL_RECURSIVE_SUBPROGRAMS]
   Subprograms which are called across the boundary of those units analyzed

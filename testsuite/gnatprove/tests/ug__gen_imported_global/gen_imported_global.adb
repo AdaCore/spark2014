@@ -4,6 +4,8 @@ package body Gen_Imported_Global with
   SPARK_Mode,
   Refined_State => (State => V)
 is
+   pragma Warnings (GNATprove, Off, "assuming correct volatile properties");
+   pragma Warnings (GNATprove, Off, "assuming no concurrent accesses");
    V : Integer with
      Size => 32,
      Volatile,
@@ -12,6 +14,8 @@ is
      Effective_Reads => False,
      Effective_Writes => False,
      Address => System.Storage_Elements.To_Address (16#8000_0000#);
+   pragma Warnings (GNATprove, On, "assuming correct volatile properties");
+   pragma Warnings (GNATprove, On, "assuming no concurrent accesses");
 
    procedure Set_Global_Twice is
    begin

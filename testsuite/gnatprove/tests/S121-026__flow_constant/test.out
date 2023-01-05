@@ -1,5 +1,6 @@
 soc.ads:3:18: info: flow dependencies proved
 soc.ads:8:04: info: initialization of "Periph" proved
+soc.ads:8:33: warning: assuming no concurrent accesses to non-atomic object "Periph"
 soc.ads:8:33: warning: consider annotating "Periph" with Async_Writers
 soc.ads:8:33: warning: indirect writes to "Periph" through a potential alias are ignored
 soc.ads:8:33: warning: make sure that all overlapping objects have Async_Writers set to True

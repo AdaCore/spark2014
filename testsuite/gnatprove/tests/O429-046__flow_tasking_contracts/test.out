@@ -1,10 +1,18 @@
+alarm.adb:20:06: warning: assuming correct volatile properties for "The_Light"
 alarm.adb:20:06: warning: make sure that all overlapping objects have Async_Writers set to True
 alarm.adb:20:06: warning: writing to "The_Light" is assumed to have no effects on other non-volatile objects
+alarm.adb:20:40: warning: assuming valid reads from object "The_Light"
 alarm.adb:23:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 alarm.adb:23:09: info: nontermination of task proved (CVC5: 1 VC)
 alarm.ads:8:10: info: data dependencies proved
 alarm.ads:11:10: info: data dependencies proved
 main.adb:5:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
+sensor.adb:10:06: warning: assuming correct volatile properties for "Sensor_1"
+sensor.adb:10:06: warning: assuming no concurrent accesses to non-atomic object "Sensor_1"
+sensor.adb:10:40: warning: assuming valid reads from object "Sensor_1"
+sensor.adb:15:06: warning: assuming correct volatile properties for "Sensor_2"
+sensor.adb:15:06: warning: assuming no concurrent accesses to non-atomic object "Sensor_2"
+sensor.adb:15:40: warning: assuming valid reads from object "Sensor_2"
 sensor.ads:5:20: info: initialization of "T" proved
 sensor.ads:6:09: info: data dependencies proved
 sensor.ads:7:09: info: flow dependencies proved

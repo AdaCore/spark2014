@@ -1,2 +1,4 @@
+lb2.ads:22:07: warning: assuming correct volatile properties for "I"
+lb2.ads:22:07: warning: assuming no concurrent accesses to non-atomic object "I"
 lb2.ads:22:07: warning: make sure that all overlapping objects have Async_Writers set to True
 lb2.ads:22:07: warning: writing to "I" is assumed to have no effects on other non-volatile objects

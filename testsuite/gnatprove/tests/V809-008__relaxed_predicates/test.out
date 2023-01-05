@@ -1,0 +1,338 @@
+test_dic.adb:9:12: info: default initial condition proved (CVC5: 1 VC)
+test_dic.adb:17:12: info: default initial condition proved (CVC5: 1 VC)
+test_dic.adb:17:12: info: predicate check proved on default value (CVC5: 1 VC)
+test_dic.adb:24:12: medium: default initial condition might fail
+test_dic.adb:32:12: info: default initial condition proved (CVC5: 1 VC)
+test_dic.adb:32:12: medium: predicate check might fail on default value
+test_dic.adb:38:07: medium: type "T1" is not fully initialized
+test_dic.adb:46:07: medium: type "T2" is not fully initialized
+test_dic.adb:55:07: medium: type "T3" is not fully initialized
+test_dic.adb:63:07: medium: type "T4" is not fully initialized
+test_predicates.adb:23:04: warning: analyzing unreferenced procedure "P"
+test_predicates.adb:23:17: warning: "X" cannot be partially initialized
+test_predicates.adb:23:17: warning: Relaxed_Initialization annotation is useless
+test_predicates.adb:27:22: info: assertion proved (CVC5: 1 VC)
+test_predicates.adb:28:12: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:32:04: warning: analyzing unreferenced procedure "Q"
+test_predicates.adb:32:17: medium: initialization check might fail
+test_predicates.adb:32:17: medium: predicate check might fail
+test_predicates.adb:37:12: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:42:04: warning: analyzing unreferenced function "Default"
+test_predicates.adb:42:13: warning: Relaxed_Initialization annotation is useless
+test_predicates.adb:42:13: warning: the result of "Default" cannot be partially initialized
+test_predicates.adb:47:14: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:47:14: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:47:14: medium: initialization check might fail
+test_predicates.adb:47:14: medium: predicate check might fail (e.g. when X = (F => (C => 0), G => (C => 0)) and X.F.C'Initialized = True and X.G.C'Initialized = True)
+test_predicates.adb:55:04: warning: analyzing unreferenced procedure "P"
+test_predicates.adb:57:22: info: assertion proved (CVC5: 1 VC)
+test_predicates.adb:58:12: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:62:04: warning: analyzing unreferenced procedure "Q"
+test_predicates.adb:62:17: medium: initialization check might fail
+test_predicates.adb:62:17: medium: predicate check might fail
+test_predicates.adb:65:15: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:70:04: warning: analyzing unreferenced function "Default"
+test_predicates.adb:73:14: info: initialization check proved (CVC5: 4 VC; Trivial: 7 VC)
+test_predicates.adb:73:14: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:73:14: medium: initialization check might fail
+test_predicates.adb:73:14: medium: predicate check might fail (e.g. when X = (F => (C => 0), G => (C => 0)) and X.F.C'Initialized = True and X.G.C'Initialized = True)
+test_predicates.adb:86:14: info: postcondition proved (CVC5: 6 VC; Trivial: 19 VC)
+test_predicates.adb:89:22: info: assertion proved (CVC5: 1 VC)
+test_predicates.adb:89:23: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
+test_predicates.adb:89:23: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:89:27: info: initialization check proved (CVC5: 1 VC)
+test_predicates.adb:89:33: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
+test_predicates.adb:89:33: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:89:37: info: initialization check proved (CVC5: 1 VC)
+test_predicates.adb:91:25: medium: assertion might fail (e.g. when X = (H => (F => (C => 0), G => (C => 1)), I => (F => (C => 0), G => (C => 0))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
+test_predicates.adb:91:26: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
+test_predicates.adb:91:26: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:91:30: info: initialization check proved (CVC5: 1 VC)
+test_predicates.adb:91:36: medium: initialization check might fail
+test_predicates.adb:91:36: medium: predicate check might fail (e.g. when X = (H => (F => (C => 0), G => (C => 1)), I => (F => (C => 0), G => (C => 0))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
+test_predicates.adb:91:40: info: initialization check proved (CVC5: 1 VC)
+test_predicates.adb:93:14: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:103:22: medium: assertion might fail (e.g. when X = (H => (F => (C => 0), G => (C => 0)), I => (F => (C => 0), G => (C => 0))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
+test_predicates.adb:103:23: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
+test_predicates.adb:103:23: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:103:27: info: initialization check proved (CVC5: 1 VC)
+test_predicates.adb:103:33: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
+test_predicates.adb:103:33: medium: predicate check might fail (e.g. when X = (H => (F => (C => 0), G => (C => 0)), I => (F => (C => 0), G => (C => 0))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
+test_predicates.adb:103:37: info: initialization check proved (CVC5: 1 VC)
+test_predicates.adb:104:14: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:108:14: info: add a contract to analyze it separately from calling contexts
+test_predicates.adb:108:14: info: local subprogram "Q" only analyzed in the context of calls
+test_predicates.adb:113:16: info: predicate check proved (CVC5: 1 VC), in call inlined at test_predicates.adb:173
+test_predicates.adb:113:36: info: predicate check proved (CVC5: 1 VC), in call inlined at test_predicates.adb:173
+test_predicates.adb:118:04: warning: analyzing unreferenced function "Default"
+test_predicates.adb:128:13: warning: Relaxed_Initialization annotation is useless
+test_predicates.adb:128:13: warning: the result of "Get" cannot be partially initialized
+test_predicates.adb:134:18: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:134:18: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:134:18: medium: initialization check might fail
+test_predicates.adb:134:18: medium: predicate check might fail (e.g. when X = (H => (F => (C => -1), G => (C => -1)), I => (F => (C => -1), G => (C => 0))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
+test_predicates.adb:136:18: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
+test_predicates.adb:136:18: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:136:18: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:140:19: warning: unused variable "X"
+test_predicates.adb:142:22: warning: unused variable "X"
+test_predicates.adb:152:14: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:153:14: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:154:18: info: initialization check proved (CVC5: 6 VC; Trivial: 19 VC)
+test_predicates.adb:158:10: medium: initialization check might fail
+test_predicates.adb:158:10: medium: predicate check might fail
+test_predicates.adb:162:14: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:163:18: medium: initialization check might fail
+test_predicates.adb:167:14: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:170:14: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:171:07: medium: precondition might fail
+test_predicates.adb:173:07: info: analyzing call to "Q" in context
+test_predicates.adb:177:14: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:178:10: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
+test_predicates.adb:178:10: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:180:14: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:181:10: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
+test_predicates.adb:181:10: medium: predicate check might fail
+test_predicates.adb:185:24: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:185:54: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:186:18: info: initialization check proved (CVC5: 6 VC; Trivial: 19 VC)
+test_predicates.adb:188:34: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:189:18: medium: initialization check might fail
+test_predicates.adb:191:39: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:191:60: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
+test_predicates.adb:191:60: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:191:60: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:192:18: medium: initialization check might fail
+test_predicates.adb:194:39: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:194:60: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:194:60: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:194:60: medium: initialization check might fail
+test_predicates.adb:194:60: medium: predicate check might fail (e.g. when X = (H => (F => (C => 0), G => (C => 0)), I => (F => (C => 0), G => (C => 0))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
+test_predicates.adb:196:34: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:197:39: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:197:60: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
+test_predicates.adb:197:60: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:197:60: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:198:18: info: initialization check proved (CVC5: 6 VC; Trivial: 19 VC)
+test_predicates.adb:206:17: medium: predicate check might fail (e.g. when H = (C => 0) and H.C'Initialized = True)
+test_predicates.adb:206:23: medium: initialization check might fail (e.g. when H.C'Initialized = False)
+test_predicates.adb:212:14: medium: predicate check might fail
+test_predicates.adb:212:16: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:212:16: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:212:16: medium: initialization check might fail
+test_predicates.adb:212:16: medium: predicate check might fail (e.g. when X = (H => (F => (C => 0), G => (C => 0)), I => (F => (C => 0), G => (C => 0))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
+test_predicates.adb:214:14: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:215:14: medium: predicate check might fail
+test_predicates.adb:215:16: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
+test_predicates.adb:215:16: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:215:16: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:217:14: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:221:17: medium: predicate check might fail (e.g. when H = (C => 0) and H.C'Initialized = True)
+test_predicates.adb:221:19: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
+test_predicates.adb:221:19: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:221:19: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:221:38: medium: initialization check might fail (e.g. when H.C'Initialized = False)
+test_predicates_2.adb:1:11: warning: subprogram "Test_Predicates_2" has no effect
+test_predicates_2.adb:46:11: info: initialization check proved (CVC5: 2 VC; Trivial: 5 VC)
+test_predicates_2.adb:46:11: info: predicate check proved (CVC5: 1 VC)
+test_predicates_2.adb:51:10: medium: initialization check might fail
+test_predicates_2.adb:51:10: medium: predicate check might fail (e.g. when X = (H => (F => 0, G => 0)) and X.H.F'Initialized = True and X.H.G'Initialized = True)
+test_predicates_2.adb:55:12: info: predicate check proved (CVC5: 1 VC)
+test_predicates_2.adb:56:10: info: initialization check proved (CVC5: 2 VC; Trivial: 5 VC)
+test_predicates_2.adb:56:10: info: predicate check proved (CVC5: 1 VC)
+test_predicates_2.adb:56:11: info: initialization check proved (CVC5: 2 VC; Trivial: 5 VC)
+test_predicates_2.adb:56:11: info: predicate check proved (CVC5: 1 VC)
+test_predicates_2.adb:60:12: info: predicate check proved (CVC5: 1 VC)
+test_predicates_2.adb:61:10: info: initialization check proved (CVC5: 2 VC; Trivial: 5 VC)
+test_predicates_2.adb:61:10: info: predicate check proved (CVC5: 1 VC)
+test_predicates_2.adb:61:11: medium: initialization check might fail
+test_predicates_2.adb:61:11: medium: predicate check might fail
+test_scalar_preds.adb:25:06: info: data dependencies proved
+test_scalar_preds.adb:28:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:34:21: medium: initialization check might fail
+test_scalar_preds.adb:35:06: info: data dependencies proved
+test_scalar_preds.adb:39:15: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:48:06: info: data dependencies proved
+test_scalar_preds.adb:51:22: medium: assertion might fail [possible fix: subprogram at line 46 should mention X in a precondition]
+test_scalar_preds.adb:51:35: medium: initialization check might fail [possible fix: subprogram at line 46 should mention X'Initialized in a precondition]
+test_scalar_preds.adb:59:06: info: data dependencies proved
+test_scalar_preds.adb:63:17: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:71:06: info: data dependencies proved
+test_scalar_preds.adb:74:22: medium: assertion might fail [possible fix: subprogram at line 70 should mention X in a precondition]
+test_scalar_preds.adb:74:35: medium: initialization check might fail [possible fix: subprogram at line 70 should mention X in a precondition]
+test_scalar_preds.adb:78:06: info: data dependencies proved
+test_scalar_preds.adb:82:17: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:89:06: info: data dependencies proved
+test_scalar_preds.adb:93:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:93:35: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:97:06: info: data dependencies proved
+test_scalar_preds.adb:98:14: medium: postcondition might fail (e.g. when X.C'Initialized = False)
+test_scalar_preds.adb:102:17: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:107:23: info: in default initialization of component "C" at test_scalar_preds.adb:112
+test_scalar_preds.adb:107:23: info: in default value at test_scalar_preds.adb:391
+test_scalar_preds.adb:107:23: info: in default value at test_scalar_preds.adb:431
+test_scalar_preds.adb:107:23: info: range check proved (CVC5: 2 VC)
+test_scalar_preds.adb:107:23: info: range check proved (CVC5: 2 VC)
+test_scalar_preds.adb:112:07: info: in default value at test_scalar_preds.adb:431
+test_scalar_preds.adb:112:07: info: predicate check proved on default value (CVC5: 1 VC)
+test_scalar_preds.adb:116:17: medium: in default value at test_scalar_preds.adb:432
+test_scalar_preds.adb:116:17: medium: predicate check might fail
+test_scalar_preds.adb:123:06: info: data dependencies proved
+test_scalar_preds.adb:126:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:132:21: medium: initialization check might fail
+test_scalar_preds.adb:133:06: info: data dependencies proved
+test_scalar_preds.adb:137:15: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:146:06: info: data dependencies proved
+test_scalar_preds.adb:149:22: medium: assertion might fail [possible fix: subprogram at line 144 should mention X in a precondition]
+test_scalar_preds.adb:149:35: medium: initialization check might fail [possible fix: subprogram at line 144 should mention X'Initialized in a precondition]
+test_scalar_preds.adb:156:06: info: data dependencies proved
+test_scalar_preds.adb:159:22: medium: assertion might fail [possible fix: subprogram at line 155 should mention X in a precondition]
+test_scalar_preds.adb:159:35: medium: initialization check might fail [possible fix: subprogram at line 155 should mention X in a precondition]
+test_scalar_preds.adb:165:06: info: data dependencies proved
+test_scalar_preds.adb:169:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:169:35: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:173:23: info: in default initialization of component "C" at test_scalar_preds.adb:178
+test_scalar_preds.adb:173:23: info: in default value at test_scalar_preds.adb:392
+test_scalar_preds.adb:173:23: info: in default value at test_scalar_preds.adb:433
+test_scalar_preds.adb:173:23: info: range check proved (CVC5: 2 VC)
+test_scalar_preds.adb:173:23: info: range check proved (CVC5: 2 VC)
+test_scalar_preds.adb:178:07: medium: in default value at test_scalar_preds.adb:433
+test_scalar_preds.adb:178:07: medium: predicate check might fail on default value
+test_scalar_preds.adb:182:17: info: in default value at test_scalar_preds.adb:434
+test_scalar_preds.adb:182:17: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:189:06: info: data dependencies proved
+test_scalar_preds.adb:192:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:198:21: medium: initialization check might fail
+test_scalar_preds.adb:199:06: info: data dependencies proved
+test_scalar_preds.adb:203:15: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:212:06: info: data dependencies proved
+test_scalar_preds.adb:215:22: medium: assertion might fail [possible fix: subprogram at line 210 should mention X in a precondition]
+test_scalar_preds.adb:215:35: medium: initialization check might fail [possible fix: subprogram at line 210 should mention X'Initialized in a precondition]
+test_scalar_preds.adb:221:06: info: data dependencies proved
+test_scalar_preds.adb:225:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:225:35: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:232:06: info: data dependencies proved
+test_scalar_preds.adb:235:22: medium: assertion might fail [possible fix: subprogram at line 231 should mention X in a precondition]
+test_scalar_preds.adb:235:35: medium: initialization check might fail [possible fix: subprogram at line 231 should mention X in a precondition]
+test_scalar_preds.adb:246:06: info: data dependencies proved
+test_scalar_preds.adb:249:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:252:21: info: initialization of "X" proved
+test_scalar_preds.adb:253:06: info: data dependencies proved
+test_scalar_preds.adb:256:12: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:264:06: info: data dependencies proved
+test_scalar_preds.adb:267:22: medium: assertion might fail [possible fix: subprogram at line 262 should mention X in a precondition]
+test_scalar_preds.adb:267:35: medium: initialization check might fail [possible fix: subprogram at line 262 should mention X'Initialized in a precondition]
+test_scalar_preds.adb:275:06: info: data dependencies proved
+test_scalar_preds.adb:279:17: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:284:06: info: data dependencies proved
+test_scalar_preds.adb:287:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:290:21: medium: "X.C" might not be initialized in "Write" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.C" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+test_scalar_preds.adb:291:06: info: data dependencies proved
+test_scalar_preds.adb:295:17: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:300:23: info: in default initialization of component "C" at test_scalar_preds.adb:304
+test_scalar_preds.adb:300:23: info: in default value at test_scalar_preds.adb:394
+test_scalar_preds.adb:300:23: info: in default value at test_scalar_preds.adb:436
+test_scalar_preds.adb:300:23: info: range check proved (CVC5: 2 VC)
+test_scalar_preds.adb:300:23: info: range check proved (CVC5: 2 VC)
+test_scalar_preds.adb:304:07: info: in default value at test_scalar_preds.adb:436
+test_scalar_preds.adb:304:07: info: predicate check proved on default value (CVC5: 1 VC)
+test_scalar_preds.adb:308:17: medium: in default value at test_scalar_preds.adb:437
+test_scalar_preds.adb:308:17: medium: predicate check might fail
+test_scalar_preds.adb:312:06: info: data dependencies proved
+test_scalar_preds.adb:315:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:318:21: info: initialization of "X" proved
+test_scalar_preds.adb:319:06: info: data dependencies proved
+test_scalar_preds.adb:322:12: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:330:06: info: data dependencies proved
+test_scalar_preds.adb:333:22: medium: assertion might fail [possible fix: subprogram at line 328 should mention X in a precondition]
+test_scalar_preds.adb:333:35: medium: initialization check might fail [possible fix: subprogram at line 328 should mention X'Initialized in a precondition]
+test_scalar_preds.adb:337:06: info: data dependencies proved
+test_scalar_preds.adb:340:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:344:23: info: in default initialization of component "C" at test_scalar_preds.adb:348
+test_scalar_preds.adb:344:23: info: in default value at test_scalar_preds.adb:395
+test_scalar_preds.adb:344:23: info: in default value at test_scalar_preds.adb:438
+test_scalar_preds.adb:344:23: info: range check proved (CVC5: 2 VC)
+test_scalar_preds.adb:344:23: info: range check proved (CVC5: 2 VC)
+test_scalar_preds.adb:348:07: medium: in default value at test_scalar_preds.adb:438
+test_scalar_preds.adb:348:07: medium: predicate check might fail on default value
+test_scalar_preds.adb:352:17: info: in default value at test_scalar_preds.adb:439
+test_scalar_preds.adb:352:17: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:356:06: info: data dependencies proved
+test_scalar_preds.adb:359:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:362:21: info: initialization of "X" proved
+test_scalar_preds.adb:363:06: info: data dependencies proved
+test_scalar_preds.adb:366:12: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:374:06: info: data dependencies proved
+test_scalar_preds.adb:377:22: medium: assertion might fail [possible fix: subprogram at line 372 should mention X in a precondition]
+test_scalar_preds.adb:377:35: medium: initialization check might fail [possible fix: subprogram at line 372 should mention X'Initialized in a precondition]
+test_scalar_preds.adb:381:06: info: data dependencies proved
+test_scalar_preds.adb:384:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:388:06: info: data dependencies proved
+test_scalar_preds.adb:391:07: info: predicate check proved on default value (CVC5: 1 VC)
+test_scalar_preds.adb:392:07: medium: predicate check might fail on default value
+test_scalar_preds.adb:394:07: info: predicate check proved on default value (CVC5: 1 VC)
+test_scalar_preds.adb:395:07: medium: predicate check might fail on default value
+test_scalar_preds.adb:399:16: medium: initialization check might fail
+test_scalar_preds.adb:401:16: medium: initialization check might fail
+test_scalar_preds.adb:403:16: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:405:16: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:408:24: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:409:24: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:410:24: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:411:24: info: predicate check proved (CVC5: 1 VC)
+test_scalar_preds.adb:413:19: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:414:19: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:415:19: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:416:19: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:420:16: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:423:16: info: initialization check proved (CVC5: 1 VC)
+test_scalar_preds.adb:428:06: info: data dependencies proved
+test_scalar_preds.adb:445:10: medium: precondition might fail
+test_scalar_preds.adb:449:10: info: precondition proved (CVC5: 1 VC)
+test_scalar_preds.adb:453:10: info: precondition proved (CVC5: 1 VC)
+test_scalar_preds.adb:456:16: medium: initialization check might fail
+test_scalar_preds.adb:459:16: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
+test_scalar_preds.adb:462:16: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
+test_scalar_preds.adb:464:18: medium: predicate check might fail
+test_scalar_preds.adb:465:10: info: precondition proved (CVC5: 1 VC)
+test_scalar_preds.adb:467:18: medium: predicate check might fail
+test_scalar_preds.adb:468:16: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
+test_scalar_preds.adb:471:10: medium: precondition might fail [possible fix: call at line 470 should mention X (for argument X1) in a postcondition]
+test_scalar_preds.adb:474:10: medium: precondition might fail [possible fix: call at line 473 should mention X (for argument X1) in a postcondition]
+test_scalar_preds.adb:477:10: info: precondition proved (CVC5: 1 VC)
+test_scalar_preds.adb:480:16: medium: initialization check might fail [possible fix: call at line 479 should mention X'Initialized (for argument X4) in a postcondition]
+test_scalar_preds.adb:483:16: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
+test_two_preds.adb:12:04: warning: analyzing unreferenced procedure "P"
+test_two_preds.adb:12:14: warning: subprogram "P" has no effect
+test_two_preds.adb:16:12: info: predicate check proved (CVC5: 1 VC)
+test_two_preds.adb:16:13: medium: initialization check might fail (e.g. when X = (F => ?, G => 0) and X.F'Initialized = False and X.G'Initialized = True) [possible fix: subprogram at line 12 should mention X in a precondition]
+test_two_preds.adb:22:04: warning: analyzing unreferenced procedure "P"
+test_two_preds.adb:22:14: warning: subprogram "P" has no effect
+test_two_preds.adb:22:17: warning: "X" cannot be partially initialized
+test_two_preds.adb:22:17: warning: Relaxed_Initialization annotation is useless
+test_two_preds.adb:33:04: warning: analyzing unreferenced procedure "P"
+test_two_preds.adb:33:14: warning: subprogram "P" has no effect
+test_two_preds.adb:45:04: warning: analyzing unreferenced procedure "P"
+test_two_preds.adb:45:14: warning: subprogram "P" has no effect
+test_two_preds.adb:51:13: info: for inherited predicate at test_two_preds.adb:10
+test_two_preds.adb:51:13: info: predicate check proved (CVC5: 1 VC)
+test_two_preds.adb:51:13: medium: initialization check might fail (e.g. when X = (B => True, H => (F => ?, G => 0)) and X.B'Initialized = True and X.H.F'Initialized = False and X.H.G'Initialized = True) [possible fix: subprogram at line 45 should mention X'Initialized in a precondition]
+test_two_preds.adb:51:13: medium: predicate check might fail (e.g. when X = (B => True, H => (F => 0, G => 0)) and X.B'Initialized = True and X.H.F'Initialized = True and X.H.G'Initialized = True) [possible fix: subprogram at line 45 should mention X in a precondition]
+test_two_preds.adb:51:15: info: initialization check proved (CVC5: 1 VC)
+test_two_preds.adb:54:14: warning: subprogram "Q" has no effect
+test_two_preds.adb:61:13: info: for inherited predicate at test_two_preds.adb:10
+test_two_preds.adb:61:13: info: initialization check proved (CVC5: 2 VC; Trivial: 3 VC)
+test_two_preds.adb:61:13: info: predicate check proved (CVC5: 1 VC)
+test_two_preds.adb:61:15: info: initialization check proved (CVC5: 1 VC)
+test_two_preds.adb:64:14: warning: subprogram "S" has no effect
+test_two_preds.adb:71:13: info: for inherited predicate at test_two_preds.adb:10
+test_two_preds.adb:71:13: info: initialization check proved (CVC5: 2 VC; Trivial: 3 VC)
+test_two_preds.adb:71:13: info: predicate check proved (CVC5: 1 VC)
+test_two_preds.adb:71:13: medium: predicate check might fail (e.g. when X = (B => True, H => (F => 0, G => 0)) and X.B'Initialized = True and X.H.F'Initialized = True and X.H.G'Initialized = True)
+test_two_preds.adb:71:15: info: initialization check proved (CVC5: 1 VC)
+test_two_preds.adb:74:14: warning: subprogram "T" has no effect
+test_two_preds.adb:81:13: info: for inherited predicate at test_two_preds.adb:10
+test_two_preds.adb:81:13: info: predicate check proved (CVC5: 1 VC)
+test_two_preds.adb:81:13: medium: initialization check might fail (e.g. when X = (B => True, H => (F => 0, G => ?)) and X.B'Initialized = True and X.H.F'Initialized = True and X.H.G'Initialized = False)
+test_two_preds.adb:81:13: medium: predicate check might fail (e.g. when X = (B => True, H => (F => 0, G => 0)) and X.B'Initialized = True and X.H.F'Initialized = True and X.H.G'Initialized = True)
+test_two_preds.adb:81:15: info: initialization check proved (CVC5: 1 VC)

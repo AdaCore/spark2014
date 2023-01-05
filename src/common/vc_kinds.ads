@@ -359,7 +359,6 @@ package VC_Kinds is
    type Misc_Warning_Kind is
      (Warn_Address_To_Access,
       Warn_Attribute_Valid,
-      Warn_Indirect_Writes_Through_Alias,
       Warn_Indirect_Writes_To_Alias,
       Warn_Initialization_To_Alias,
       Warn_Function_Is_Valid,
@@ -373,13 +372,19 @@ package VC_Kinds is
       Warn_Precondition_Statically_False,
       Warn_Unreferenced_Function,
       Warn_Unreferenced_Procedure,
+      Warn_Useless_Relaxed_Init_Fun,
+      Warn_Useless_Relaxed_Init_Obj,
       Warn_Variant_Not_Recursive,
 
       --  Warnings guaranteed to be issued
-      Warn_Assumed_Global_Null,
-      Warn_Alias_Different_Volatility,
+      Warn_Address_Atomic,
+      Warn_Address_Valid,
       Warn_Alias_Atomic_Vol,
+      Warn_Alias_Different_Volatility,
       Warn_Assumed_Always_Return,
+      Warn_Assumed_Global_Null,
+      Warn_Assumed_Volatile_Properties,
+      Warn_Indirect_Writes_Through_Alias,
 
       --  Warnings only issued when using switch --pedantic
       Warn_Image_Attribute_Length,
@@ -421,6 +426,7 @@ package VC_Kinds is
       Lim_Ext_Aggregate_With_Type_Ancestor,
       Lim_Goto_Cross_Inv,
       Lim_Img_On_Non_Scalar,
+      Lim_Interpolated_String_Literal,
       Lim_Iterated_Element_Association,
       Lim_Iterator_In_Component_Assoc,
       Lim_Limited_Type_From_Limited_With,
@@ -449,9 +455,9 @@ package VC_Kinds is
       Lim_Relaxed_Init_Concurrent_Type,
       Lim_Relaxed_Init_Invariant,
       Lim_Relaxed_Init_Part_Of_Variable,
-      Lim_Relaxed_Init_Predicate,
       Lim_Relaxed_Init_Protected_Component,
       Lim_Relaxed_Init_Tagged_Type,
+      Lim_Relaxed_Init_Variant_Part,
       Lim_Subprogram_Before_Inv,
       Lim_Suspension_On_Formal,
       Lim_Target_Name_In_Borrow,
@@ -472,7 +478,7 @@ package VC_Kinds is
      Warn_Address_To_Access .. Warn_Variant_Not_Recursive;
 
    subtype Guaranteed_Warning_Kind is Misc_Warning_Kind range
-     Warn_Assumed_Global_Null .. Warn_Assumed_Always_Return;
+     Warn_Address_Atomic .. Warn_Indirect_Writes_Through_Alias;
 
    subtype Pedantic_Warning_Kind is Misc_Warning_Kind range
      Warn_Image_Attribute_Length .. Warn_Representation_Attribute_Value;
@@ -491,18 +497,12 @@ package VC_Kinds is
           & " designating a valid value",
         when Warn_Attribute_Valid =>
           "?attribute Valid is assumed to return True",
-        when Warn_Indirect_Writes_Through_Alias =>
-          "?indirect writes to & through a potential alias are ignored",
         when Warn_Indirect_Writes_To_Alias =>
           "?writing to & is assumed to have no effects on"
           & " other non-volatile objects",
         when Warn_Initialization_To_Alias =>
           "?initialization of & is assumed to have no effects on"
           & " other non-volatile objects",
-        when Warn_Alias_Different_Volatility =>
-          "?aliased objects have different volatile properties",
-        when Warn_Alias_Atomic_Vol =>
-          "?aliased objects must have the same volatility and atomic status",
         when Warn_Function_Is_Valid =>
           "?function Is_Valid is assumed to return True",
         when Warn_Lemma_Procedure_No_Return =>
@@ -525,14 +525,30 @@ package VC_Kinds is
           "?analyzing unreferenced function &",
         when Warn_Unreferenced_Procedure =>
           "?analyzing unreferenced procedure &",
+        when Warn_Useless_Relaxed_Init_Fun =>
+          "?the result of & cannot be partially initialized",
+        when Warn_Useless_Relaxed_Init_Obj =>
+          "?& cannot be partially initialized",
         when Warn_Variant_Not_Recursive =>
           "?no recursive call visible",
 
         --  Warnings guaranteed to be issued
-        when Warn_Assumed_Global_Null =>
-          "?no Global contract available for &",
+        when Warn_Address_Atomic =>
+          "?assuming no concurrent accesses to non-atomic object &",
+        when Warn_Address_Valid =>
+          "?assuming valid reads from object &",
+        when Warn_Alias_Atomic_Vol =>
+          "?aliased objects must have the same volatility and atomic status",
+        when Warn_Alias_Different_Volatility =>
+          "?aliased objects have different volatile properties",
         when Warn_Assumed_Always_Return =>
           "?no returning annotation available for &",
+        when Warn_Assumed_Global_Null =>
+          "?no Global contract available for &",
+        when Warn_Assumed_Volatile_Properties =>
+          "?assuming correct volatile properties for &",
+        when Warn_Indirect_Writes_Through_Alias =>
+          "?indirect writes to & through a potential alias are ignored",
 
         --  Warnings only issued when using switch --pedantic
         when Warn_Image_Attribute_Length =>
@@ -623,6 +639,8 @@ package VC_Kinds is
            "non-static attribute """ & Standard_Ada_Case (Name) & """",
          when Lim_Img_On_Non_Scalar =>
            "attribute """ & Standard_Ada_Case (Name) & """ on non-scalar type",
+         when Lim_Interpolated_String_Literal =>
+           "interpolated string literal",
          when Lim_Unknown_Alignment =>
            "unknown value of object alignment",
          when Lim_Op_Fixed_Float =>
@@ -700,9 +718,10 @@ package VC_Kinds is
          when Lim_Relaxed_Init_Concurrent_Type =>
            "concurrent type used as a subcomponent of a type or"
           & " an object annotated with relaxed initialization",
-         when Lim_Relaxed_Init_Predicate =>
-           "subtype predicate on a type used as a subcomponent of a type or"
-          & " an object annotated with relaxed initialization",
+         when Lim_Relaxed_Init_Variant_Part =>
+            "subtype with a discriminant constraint containing only"
+          & " subcomponents whose type is annotated with"
+          & " Relaxed_Initialization",
          when Lim_Limited_Type_From_Limited_With =>
            "limited view of type & coming from limited with",
          when Lim_Refined_Post_On_Entry =>

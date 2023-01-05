@@ -1,2 +1,3 @@
+large: True
 prove_all:
   prover: ["z3", "cvc5", "altergo", "colibri"]

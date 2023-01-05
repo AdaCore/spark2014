@@ -1,3 +1,6 @@
+water_high.adb:14:11: warning: assuming correct volatile properties for "High_Sensor_Port"
+water_high.adb:14:11: warning: assuming no concurrent accesses to non-atomic object "High_Sensor_Port"
+water_high.adb:14:45: warning: assuming valid reads from object "High_Sensor_Port"
 water_high.adb:19:07: info: initialization of "Raw_Value" proved
 water_high.adb:29:22: info: assertion proved (Trivial)
 water_high.ads:5:25: info: initialization of "Active" proved
