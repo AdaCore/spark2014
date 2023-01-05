@@ -204,11 +204,12 @@ loop invariant preservation by reasoning on the virtual loop that starts and
 ends at the loop invariant.
 
 It is possible to use multiple loop invariants, which should be grouped
-together without intervening statements or declarations. The resulting complete
-loop invariant is the conjunction of individual ones. The benefits of writing
-multiple loop invariants instead of a conjunction can be improved readability
-and better provability (because |GNATprove| checks each pragma
-``Loop_Invariant`` separately).
+together without intervening statements, declarations or pragmas, at the
+exception of pragma ``Loop_Variant`` and pragma ``Annotate`` (to justify check
+messages). The resulting complete loop invariant is the conjunction of
+individual ones. The benefits of writing multiple loop invariants instead of a
+conjunction can be improved readability and better provability (because
+|GNATprove| checks each pragma ``Loop_Invariant`` separately).
 
 Finally, :ref:`Attribute Loop_Entry` and :ref:`Delta Aggregates` can be very
 useful to express complex loop invariants.

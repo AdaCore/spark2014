@@ -1,2 +1,5 @@
-foo.adb:10:09: error: pragma "Loop_Invariant" must appear next to pragma at line 8
-gnatprove: error during generation of Global contracts
+foo.adb:7:35: info: range check proved (CVC5: 4 VC)
+foo.adb:8:32: info: loop invariant initialization justified
+foo.adb:8:32: info: loop invariant preservation proved (CVC5: 1 VC)
+foo.adb:10:32: info: loop invariant initialization proved (CVC5: 1 VC)
+foo.adb:10:32: info: loop invariant preservation proved (CVC5: 1 VC)

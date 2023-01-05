@@ -309,6 +309,12 @@ package body Gnat2Why.Expr.Loops is
                   Final_Stmts.Append (N);
                   Cur_State := Past_Selected_Block;
 
+               --  Ignore pragmas Annotate in the list of loop pragmas,
+               --  typically used to justify unproved loop pragmas.
+
+               elsif Is_Pragma (N, Pragma_Annotate) then
+                  null;
+
                --  Statements between (in)variants may have been introduced by
                --  the compiler for removing side-effects. Include these in the
                --  initial statements. Note that this may result in a failure
