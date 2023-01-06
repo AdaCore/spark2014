@@ -1,0 +1,6 @@
+func.adb:12:16: info: no contextual analysis of "Orig" (inside expression function)
+proc.adb:4:14: info: add a contract to analyze it separately from calling contexts
+proc.adb:4:14: info: local subprogram "Orig" only analyzed in the context of calls
+proc.adb:4:14: warning: subprogram "Orig" has no effect
+proc.adb:10:17: warning: subprogram "Proxy" has no effect
+proc.adb:12:17: info: analyzing call to "Orig" in context

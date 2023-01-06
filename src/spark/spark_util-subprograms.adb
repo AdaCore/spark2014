@@ -1209,36 +1209,6 @@ package body SPARK_Util.Subprograms is
      (E : Entity_Id)
       return Boolean
    is
-      function Has_Renaming_As_Body (E : Entity_Id) return Boolean;
-      --  Returns true iff subprogram E is completed by renaming-as-body
-
-      --------------------------
-      -- Has_Renaming_As_Body --
-      --------------------------
-
-      function Has_Renaming_As_Body (E : Entity_Id) return Boolean is
-         B : constant Node_Id := Subprogram_Body (E);
-         Decl : Node_Id;
-      begin
-         if Present (B)
-           and then Is_List_Member (B)
-         then
-            Decl := Prev (B);
-            while Present (Decl) loop
-               if Nkind (Decl) = N_Subprogram_Renaming_Declaration
-                 and then Corresponding_Spec (Decl) = E
-               then
-                  return True;
-               end if;
-               Prev (Decl);
-            end loop;
-         end if;
-
-         return False;
-      end Has_Renaming_As_Body;
-
-   --  Start of processing for Is_Local_Subprogram_Always_Inlined
-
    begin
       --  Frontend inlining in GNATprove mode is disabled by switch -gnatdm
 
@@ -1249,7 +1219,8 @@ package body SPARK_Util.Subprograms is
       --  Is_Inlined_Always set to True. We check in addition that the address
       --  of the subprogram is not taken, as calls through callbacks cannot
       --  be analyzed in context. However, subprograms with renaming-as-body
-      --  satisfy these conditions and are not always inlined.
+      --  satisfy these conditions and are not always inlined; their body to
+      --  inline points to entity of the renamed subprogram.
 
       --  Also, subprograms of protected objects are never inlined
 
@@ -1263,7 +1234,7 @@ package body SPARK_Util.Subprograms is
             begin
                return Present (Spec)
                  and then Present (Body_To_Inline (Spec))
-                 and then not Has_Renaming_As_Body (E);
+                 and then Nkind (Body_To_Inline (Spec)) not in N_Entity;
             end;
          else
             return False;

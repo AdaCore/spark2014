@@ -1,6 +1,5 @@
 x.adb:5:13: error: anonymous access type for result for non-traversal functions is not allowed in SPARK
 x.adb:5:13: error: violation of aspect SPARK_Mode at line 3
-x.adb:10:14: warning: analyzing unreferenced procedure "Func_Set"
 x.adb:10:52: error: "Func" is not allowed in SPARK (due to anonymous access type for result for non-traversal functions)
 x.adb:10:52: error: violation of aspect SPARK_Mode at line 3
 y.adb:5:13: error: anonymous access type for result for non-traversal functions is not allowed in SPARK
