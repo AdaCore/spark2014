@@ -50,7 +50,6 @@ with Opt;                             use Opt;
 with Rtsfind;                         use Rtsfind;
 with Sem_Aux;                         use Sem_Aux;
 with Sem_Disp;
-with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
 with Sinfo.Utils;                     use Sinfo.Utils;
 with Sinput;                          use Sinput;
@@ -6436,12 +6435,8 @@ package body SPARK_Definition is
                Low  : constant Node_Id := Type_Low_Bound (E);
                High : constant Node_Id := Type_High_Bound (E);
             begin
-               if not Compile_Time_Known_Value (Low) then
-                  Mark (Low);
-               end if;
-               if not Compile_Time_Known_Value (High) then
-                  Mark (High);
-               end if;
+               Mark (Low);
+               Mark (High);
             end;
 
             --  Inherit the annotation No_Wrap_Around when set on a parent
