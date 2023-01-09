@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---              Copyright (C) 2015-2022, Capgemini Engineering              --
---                     Copyright (C) 2015-2022, AdaCore                     --
+--              Copyright (C) 2015-2023, Capgemini Engineering              --
+--                     Copyright (C) 2015-2023, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
