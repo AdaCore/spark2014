@@ -328,10 +328,11 @@ or
    is
 
 We say that a package or a subprogram is library-level if it is either
-top-level (i.e. it is the outermost program unit declared in a given
-compilation unit) or declared immediately within another library-level package
-(which excludes the content of subprogram bodies). For example, all the
-packages in the following code snippet are library-level packages:
+top-level (i.e. it is a library unit; its declaration is the outermost program
+unit declared in a given compilation unit) or declared immediately within
+another library-level package (which excludes, for example, declarations inside
+subprogram bodies). For example, all the packages in the following code snippet
+are library-level packages:
 
 .. code-block:: ada
 
