@@ -77,6 +77,7 @@ is
      (for all K in M => False)
    with
      Global => null;
+   pragma Warnings (On, "unused variable ""K""");
 
    type Ownership_Map is private with
      Annotate => (GNATprove, Ownership, "Needs_Reclamation");
@@ -93,6 +94,7 @@ is
    with
      Global   => null,
      Annotate => (GNATprove, Ownership, "Is_Reclaimed");
+   pragma Warnings (On, "unused variable ""K""");
 
    function Empty_Map return Ownership_Map with
      Global => null,
