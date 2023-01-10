@@ -1,4 +1,4 @@
-p.adb:9:36: high: loop invariant might fail in first iteration (e.g. when F = (1 => 1, others => 2) and Saved = (1 => 2, others => 1))
+p.adb:9:36: high: loop invariant might fail in first iteration
 p.adb:9:36: info: loop invariant preservation proved (CVC5: 1 VC)
 partition_refinement.adb:8:07: info: initialization of "P_Elem" proved
 partition_refinement.adb:8:15: info: initialization of "P_Prime" proved

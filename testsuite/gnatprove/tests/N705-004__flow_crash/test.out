@@ -192,7 +192,7 @@ very_longs.adb:375:38: warning: no returning annotation available for "Shift_Lef
 very_longs.adb:375:68: info: index check proved (CVC5: 2 VC)
 very_longs.adb:376:32: info: index check proved (CVC5: 2 VC)
 very_longs.adb:376:57: info: index check proved (CVC5: 2 VC)
-very_longs.adb:379:47: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 373 should mention Result in a loop invariant]
+very_longs.adb:379:47: info: index check proved (CVC5: 2 VC)
 very_longs.adb:385:11: info: flow dependencies proved
 very_longs.adb:388:10: info: initialization of "New_Overflow" proved
 very_longs.adb:389:10: info: initialization of "Overflow_Mask" proved

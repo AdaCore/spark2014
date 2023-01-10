@@ -23,13 +23,13 @@ p.adb:86:36: info: loop invariant preservation proved (Z3: 2 VC)
 p.adb:87:36: info: loop invariant initialization proved (CVC5: 1 VC)
 p.adb:87:36: info: loop invariant preservation proved (Z3: 1 VC)
 p.adb:87:56: info: range check proved (CVC5: 4 VC)
-p.adb:88:36: info: loop invariant initialization proved (Z3: 1 VC)
+p.adb:88:36: info: loop invariant initialization proved (CVC5: 1 VC)
 p.adb:88:36: medium: loop invariant might not be preserved by an arbitrary iteration
 p.adb:88:38: info: division check proved (CVC5: 2 VC)
-p.adb:89:36: info: loop invariant initialization proved (Z3: 1 VC)
+p.adb:89:36: info: loop invariant initialization proved (CVC5: 1 VC)
 p.adb:89:36: medium: loop invariant might not be preserved by an arbitrary iteration
 p.adb:89:58: info: range check proved (CVC5: 2 VC; Z3: 2 VC)
-p.adb:90:36: info: loop invariant initialization proved (Z3: 1 VC)
+p.adb:90:36: info: loop invariant initialization proved (CVC5: 1 VC)
 p.adb:90:36: medium: loop invariant might not be preserved by an arbitrary iteration
 p.adb:90:39: info: division check proved (CVC5: 2 VC)
 p.adb:90:55: info: division check proved (CVC5: 2 VC)

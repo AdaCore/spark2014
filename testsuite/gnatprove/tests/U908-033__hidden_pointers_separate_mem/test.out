@@ -107,8 +107,8 @@ example_recursive.adb:174:06: info: data dependencies proved
 example_recursive.adb:176:15: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:180:07: info: precondition proved (CVC5: 10 VC)
 example_recursive.adb:182:06: info: data dependencies proved
-example_recursive.adb:188:14: medium: in inlined expression function body at example_recursive.adb:60
-example_recursive.adb:188:14: medium: postcondition might fail, cannot prove Valid_List (L)
+example_recursive.adb:188:14: medium: in inlined expression function body at example_recursive.adb:62
+example_recursive.adb:188:14: medium: postcondition might fail, cannot prove Reachable (Address (L.F), Address (L.F), L.L, A, +L.M)
 example_recursive.adb:190:15: info: precondition proved (CVC5: 3 VC)
 example_recursive.adb:193:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 example_recursive.adb:194:07: info: initialization of "F" proved
@@ -116,19 +116,18 @@ example_recursive.adb:205:49: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:205:60: info: null exclusion check proved (CVC5: 1 VC)
 example_recursive.adb:207:13: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:207:27: info: pointer dereference check proved (CVC5: 1 VC)
-example_recursive.adb:211:22: info: assertion proved (CVC5: 1 VC)
+example_recursive.adb:211:22: info: assertion proved (Z3: 1 VC)
 example_recursive.adb:212:22: info: assertion proved (CVC5: 1 VC)
 example_recursive.adb:212:30: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:212:30: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:220:14: medium: in inlined expression function body at example_recursive.adb:60
 example_recursive.adb:220:14: medium: postcondition might fail, cannot prove Valid_List (L)
 example_recursive.adb:220:60: info: overflow check proved (CVC5: 2 VC)
-example_recursive.adb:223:35: info: precondition proved (Z3: 1 VC)
-example_recursive.adb:223:35: info: tag check proved (Z3: 1 VC)
+example_recursive.adb:223:35: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:223:35: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:224:07: info: initialization of "New_P" proved
-example_recursive.adb:228:22: medium: assertion might fail, cannot prove Get (M, A) in L_Cell
-example_recursive.adb:228:22: medium: in inlined expression function body at example_recursive.adb:22
-example_recursive.adb:235:46: medium: precondition might fail
+example_recursive.adb:228:22: info: assertion proved (CVC5: 1 VC)
+example_recursive.adb:235:46: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:235:57: info: null exclusion check proved (CVC5: 1 VC)
 example_recursive.adb:237:10: medium: tag check might fail
 example_recursive.adb:237:24: info: pointer dereference check proved (CVC5: 1 VC)
@@ -154,14 +153,11 @@ example_recursive.adb:265:07: info: initialization of "F1_Next" proved
 example_recursive.adb:266:07: info: initialization of "F2_Next" proved
 example_recursive.adb:269:07: info: initialization of "M_Old" proved
 example_recursive.adb:271:07: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:272:22: info: assertion proved (Z3: 1 VC)
-example_recursive.adb:274:07: info: precondition proved (CVC5: 5 VC; Trivial: 1 VC; Z3: 7 VC)
-example_recursive.adb:275:07: medium: in inlined expression function body at example_recursive.adb:36
-example_recursive.adb:275:07: medium: precondition might fail, cannot prove Address (L_Cell (Get (M, A)).N) /= F
-example_recursive.adb:276:07: medium: in inlined expression function body at example_recursive.adb:36
-example_recursive.adb:276:07: medium: precondition might fail, cannot prove Address (L_Cell (Get (M, A)).N) /= F
-example_recursive.adb:277:07: medium: in inlined expression function body at example_recursive.adb:36
-example_recursive.adb:277:07: medium: precondition might fail, cannot prove Address (L_Cell (Get (M, A)).N) /= F
+example_recursive.adb:272:22: info: assertion proved (CVC5: 1 VC)
+example_recursive.adb:274:07: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
+example_recursive.adb:275:07: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
+example_recursive.adb:276:07: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
+example_recursive.adb:277:07: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
 example_recursive.adb:282:10: info: assertion proved (CVC5: 1 VC)
 example_recursive.adb:282:10: info: precondition proved (Trivial: 1 VC)
 example_recursive.adb:283:16: info: precondition proved (CVC5: 8 VC)

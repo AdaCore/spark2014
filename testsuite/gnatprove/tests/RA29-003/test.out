@@ -4,7 +4,7 @@ repr.adb:7:09: warning: initialization of "Z" has no effect
 repr.adb:7:24: info: range check proved (altergo: 1 VC)
 repr.adb:7:32: info: division check proved (CVC5: 1 VC)
 repr.adb:8:09: info: range check proved (CVC5: 2 VC)
-repr.adb:8:53: info: length check proved (Trivial: 1 VC; altergo: 3 VC)
+repr.adb:8:53: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 repr.ads:10:16: warning: "A" is not modified, could be IN
 repr.ads:10:16: warning: unused variable "A"
 repr.ads:11:19: warning: unused initial value of "B"

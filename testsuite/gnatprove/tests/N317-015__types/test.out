@@ -18,9 +18,9 @@ ident.adb:46:22: medium: assertion might fail (e.g. when Res = 0 and X = 10)
 ident.adb:47:14: info: analyzing call to "Id_Body" in context
 ident.adb:48:22: info: assertion proved (CVC5: 1 VC)
 ident.adb:50:20: info: range check proved (CVC5: 2 VC)
-ident.adb:51:22: medium: assertion might fail [possible fix: call at line 50 should mention Y (for argument Y) in a postcondition]
+ident.adb:51:22: medium: assertion might fail (e.g. when Y = 0) [possible fix: call at line 50 should mention Y (for argument Y) in a postcondition]
 ident.adb:52:21: info: range check proved (CVC5: 2 VC)
-ident.adb:53:22: medium: assertion might fail [possible fix: call at line 52 should mention Y (for argument Y) in a postcondition]
+ident.adb:53:22: medium: assertion might fail (e.g. when Y = 0) [possible fix: call at line 52 should mention Y (for argument Y) in a postcondition]
 ident.adb:54:07: info: analyzing call to "Incr_Body" in context
 ident.adb:54:18: info: range check proved (CVC5: 2 VC)
 ident.adb:55:22: info: assertion proved (CVC5: 1 VC)

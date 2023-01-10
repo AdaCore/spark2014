@@ -27,7 +27,7 @@ hermes-der-decode.adb:92:10: info: initialization of "Tag_Value" proved
 hermes-der-decode.adb:95:30: info: range check proved (CVC5: 2 VC)
 hermes-der-decode.adb:119:07: info: initialization of "Length_Of_Length" proved
 hermes-der-decode.adb:124:11: info: data dependencies proved
-hermes-der-decode.adb:126:29: high: overflow check might fail, cannot prove upper bound for Starting + (Octet_Count - 1) (e.g. when Octet_Count = Length_Of_Length_Type'Last and Starting = 2147483522) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+hermes-der-decode.adb:126:29: medium: overflow check might fail, cannot prove upper bound for Starting + (Octet_Count - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 hermes-der-decode.adb:127:51: info: index check proved (CVC5: 2 VC)
 hermes-der-decode.adb:131:14: info: range check proved (CVC5: 2 VC)
 hermes-der-decode.adb:133:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -39,7 +39,7 @@ hermes-der-decode.adb:135:99: info: overflow check proved (CVC5: 3 VC; colibri: 
 hermes-der-decode.adb:135:103: info: overflow check proved (CVC5: 3 VC; colibri: 1 VC)
 hermes-der-decode.adb:135:108: info: range check proved (CVC5: 4 VC)
 hermes-der-decode.adb:137:31: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC)
-hermes-der-decode.adb:137:38: info: overflow check proved (CVC5: 2 VC)
+hermes-der-decode.adb:137:38: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC)
 hermes-der-decode.adb:137:65: info: index check proved (CVC5: 2 VC)
 hermes-der-decode.adb:137:65: info: overflow check proved (CVC5: 2 VC)
 hermes-der-decode.adb:144:18: info: index check proved (CVC5: 2 VC)
@@ -102,17 +102,17 @@ hermes-der-decode.adb:314:65: info: initialization of "Status" proved
 hermes-der-decode.adb:315:11: info: flow dependencies proved
 hermes-der-decode.adb:322:32: high: overflow check might fail, cannot prove upper bound for Length_Stop + Length (e.g. when Length = 4 and Length_Stop = Natural'Last-3) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Length_Stop <= Integer'Last - Length) to subprogram at line 310]
 hermes-der-decode.adb:326:34: high: array index check might fail (e.g. when Length_Stop = 1 and Message = (others => 0) and Message'First = 0 and Message'Last = 1) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Length_Stop <= Natural'Last - 1) to subprogram at line 310]
-hermes-der-decode.adb:326:34: high: overflow check might fail, cannot prove upper bound for Length_Stop + 1 (e.g. when Length_Stop = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Length_Stop <= Integer'Last - 1) to subprogram at line 310]
+hermes-der-decode.adb:326:34: medium: overflow check might fail, cannot prove upper bound for Length_Stop + 1 (e.g. when Length_Stop = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Length_Stop <= Integer'Last - 1) to subprogram at line 310]
 hermes-der-decode.adb:327:17: info: range check proved (CVC5: 2 VC)
 hermes-der-decode.adb:327:48: info: cannot unroll loop (too many loop iterations)
 hermes-der-decode.adb:328:29: medium: overflow check might fail, cannot prove lower bound for 256*Result (e.g. when Result = -8388609) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 327 should mention Result in a loop invariant]
-hermes-der-decode.adb:328:37: info: overflow check proved (CVC5: 2 VC)
+hermes-der-decode.adb:328:37: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
 hermes-der-decode.adb:328:67: high: array index check might fail (e.g. when I = 2 and Length_Stop = 1 and Message = (others => 0) and Message'First = 0 and Message'Last = 2) [reason for check: result of addition must be a valid index into the array]
 hermes-der-decode.adb:328:67: info: overflow check proved (CVC5: 2 VC)
 hermes-der-decode.adb:333:17: info: range check proved (CVC5: 2 VC)
 hermes-der-decode.adb:333:48: info: cannot unroll loop (too many loop iterations)
 hermes-der-decode.adb:334:29: medium: overflow check might fail, cannot prove lower bound for 256*Result (e.g. when Result = -8388609) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 333 should mention Result in a loop invariant]
-hermes-der-decode.adb:334:37: info: overflow check proved (CVC5: 2 VC)
+hermes-der-decode.adb:334:37: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
 hermes-der-decode.adb:334:67: high: array index check might fail (e.g. when I = 2 and Length_Stop = 1 and Message = (others => 128) and Message'First = 0 and Message'Last = 2) [reason for check: result of addition must be a valid index into the array]
 hermes-der-decode.adb:334:67: info: overflow check proved (CVC5: 2 VC)
 hermes-der-decode.adb:341:34: info: overflow check proved (CVC5: 2 VC)
@@ -263,7 +263,7 @@ hermes-oid.adb:143:58: medium: range check might fail, cannot prove lower bound 
 hermes-oid.adb:150:41: info: overflow check proved (CVC5: 2 VC)
 hermes-oid.adb:150:41: info: range check proved (CVC5: 2 VC)
 hermes-oid.adb:153:38: info: loop invariant initialization proved (CVC5: 4 VC)
-hermes-oid.adb:153:38: info: loop invariant preservation proved (Z3: 4 VC)
+hermes-oid.adb:153:38: info: loop invariant preservation proved (CVC5: 4 VC)
 hermes-oid.adb:155:46: info: index check proved (CVC5: 2 VC)
 hermes-oid.adb:156:23: info: index check proved (CVC5: 2 VC)
 hermes-oid.adb:156:46: info: index check proved (CVC5: 2 VC)

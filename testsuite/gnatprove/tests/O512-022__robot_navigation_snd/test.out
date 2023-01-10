@@ -255,7 +255,7 @@ algorithm.adb:638:70: info: float overflow check proved (Trivial)
 algorithm.adb:638:114: info: division check proved (CVC5: 1 VC)
 algorithm.adb:638:114: info: float overflow check proved (Trivial)
 algorithm.adb:647:51: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:649:22: info: assertion proved (Z3: 1 VC)
+algorithm.adb:649:22: info: assertion proved (CVC5: 1 VC)
 algorithm.adb:650:22: medium: assertion might fail [possible fix: loop at line 605 should mention This in a loop invariant]
 algorithm.adb:652:07: warning: statement has no effect
 algorithm.adb:653:10: warning: this statement is never reached

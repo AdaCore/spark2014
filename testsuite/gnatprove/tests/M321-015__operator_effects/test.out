@@ -4,7 +4,7 @@ opers.adb:46:35: high: range check might fail, cannot prove lower bound for A (e
 opers.adb:47:35: info: range check proved (CVC5: 2 VC)
 opers.adb:48:22: medium: assertion might fail [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
 opers.adb:49:22: medium: assertion might fail [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
-opers.adb:50:22: high: assertion might fail (e.g. when A = 10) [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
+opers.adb:50:22: medium: assertion might fail [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
 opers.adb:50:44: info: range check proved (CVC5: 2 VC)
 opers.adb:51:22: medium: assertion might fail [possible fix: subprogram at opers.ads:24 should mention A in a precondition]
 opers.adb:51:44: info: range check proved (CVC5: 2 VC)

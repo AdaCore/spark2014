@@ -31,5 +31,5 @@ test_stack.ads:34:07: info: range check proved (CVC5: 2 VC)
 test_stack.ads:37:50: info: index check proved (CVC5: 2 VC)
 test_stack.ads:41:08: info: initialization check proved (CVC5: 1 VC)
 test_stack.ads:41:18: info: index check proved (CVC5: 2 VC)
-test_stack.ads:43:08: medium: initialization check might fail (e.g. when I = 1 and S = (Max => 1, Top => 0, Content => ?) and S.Content (1)'Initialized = False)
+test_stack.ads:43:08: medium: initialization check might fail
 test_stack.ads:43:18: info: index check proved (CVC5: 2 VC)

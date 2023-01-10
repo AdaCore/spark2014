@@ -322,7 +322,7 @@ class UGTestDriver(DiffTestDriver):
 
         # tests prefixed by ug__long__ require more steps to prove
         if self.test_env["test_name"].startswith("ug__long__"):
-            cmd += ["--steps=7000"]
+            cmd += ["--steps=15000"]
         else:
             cmd += ["--steps=200"]
 

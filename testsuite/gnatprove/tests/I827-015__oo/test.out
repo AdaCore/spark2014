@@ -25,7 +25,7 @@ instr-child.adb:16:32: medium: overflow check might fail, cannot prove upper bou
 instr-child.adb:16:39: info: division check proved (CVC5: 1 VC)
 instr-child.ads:7:14: warning: subprogram "Display_Value" has no effect
 instr.adb:6:24: info: cannot unroll loop (too many loop iterations)
-instr.adb:7:18: medium: array index check might fail (e.g. when J = 15) [reason for check: value must be a valid index into the array] [possible fix: add or complete related loop invariants or postconditions]
+instr.adb:7:18: medium: array index check might fail [reason for check: value must be a valid index into the array]
 instr.adb:14:07: warning: assuming "New_Line" always returns
 instr.adb:14:07: warning: assuming "New_Line" has no effect on global items
 instr.adb:14:07: warning: no Global contract available for "New_Line"
@@ -54,7 +54,7 @@ instr.adb:40:07: warning: assuming "Put" always returns
 instr.adb:40:07: warning: assuming "Put" has no effect on global items
 instr.adb:40:07: warning: no Global contract available for "Put"
 instr.adb:40:07: warning: no returning annotation available for "Put"
-instr.adb:54:39: high: overflow check might fail, cannot prove lower bound for X.Size * X.Value (e.g. when Lg = 0 and X = (Name => (others => 'NUL'), Value => 3, Size => -715827883, Fill => 'NUL', Empty => 'NUL')) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X.Size * X.Value in Integer) to subprogram at instr.ads:54]
+instr.adb:54:39: medium: overflow check might fail, cannot prove lower bound for X.Size * X.Value [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X.Size * X.Value in Integer) to subprogram at instr.ads:54]
 instr.adb:54:49: info: division check proved (CVC5: 1 VC)
 instr.adb:55:07: info: range check proved (CVC5: 2 VC)
 instr.adb:55:41: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)

@@ -34,7 +34,7 @@ sorting.adb:49:18: info: range check proved (CVC5: 2 VC)
 sorting.adb:50:41: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:50:46: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:51:19: info: index check proved (CVC5: 2 VC)
-sorting.adb:51:35: medium: overflow check might fail, cannot prove bounds for A_First + J [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+sorting.adb:51:35: medium: overflow check might fail, cannot prove upper bound for A_First + J [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 sorting.adb:51:39: info: index check proved (CVC5: 2 VC)
 sorting.adb:51:39: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:52:45: medium: overflow check might fail, cannot prove upper bound for B_First + (I + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
@@ -153,7 +153,7 @@ sorting.adb:155:81: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:158:24: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:159:14: info: overflow check proved (CVC5: 2 VC)
 sorting.ads:22:11: info: flow dependencies proved
-sorting.ads:23:54: high: overflow check might fail, cannot prove upper bound for A_First + Length (e.g. when A_First = Natural'Last and Length = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+sorting.ads:23:54: medium: overflow check might fail, cannot prove upper bound for A_First + Length [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 sorting.ads:23:73: high: overflow check might fail, cannot prove upper bound for A'Last + 1 (e.g. when A'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 sorting.ads:23:92: high: range check might fail, cannot prove upper bound for B'Length (e.g. when B'First = 0 and B'Last = Integer'Last)
 sorting.ads:24:23: medium: postcondition might fail, cannot prove Sorted (A, A_First, Length) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function in its unit spec]

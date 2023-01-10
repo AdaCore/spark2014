@@ -6,9 +6,9 @@ test_init_by_proof.adb:30:22: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:30:25: info: overflow check proved (CVC5: 2 VC)
 test_init_by_proof.adb:35:14: warning: subprogram "Test_Discr_2" has no effect
 test_init_by_proof.adb:38:23: info: discriminant check proved (CVC5: 1 VC)
-test_init_by_proof.adb:38:23: medium: initialization check might fail (e.g. when X = (D => 0, Y => 0, X => ?) and X.Y'Initialized = True and X.X'Initialized = False)
+test_init_by_proof.adb:38:23: medium: initialization check might fail (e.g. when X = (D => 0, others => ?) and X.Y'Initialized = False and X.X'Initialized = False)
 test_init_by_proof.adb:38:26: info: overflow check proved (CVC5: 2 VC)
-test_init_by_proof.adb:39:22: medium: initialization check might fail (e.g. when X = (D => 0, Y => ?, X => 0) and X.Y'Initialized = False and X.X'Initialized = True)
+test_init_by_proof.adb:39:22: medium: initialization check might fail (e.g. when X = (D => 0, others => ?) and X.Y'Initialized = False and X.X'Initialized = False)
 test_init_by_proof.adb:39:25: info: overflow check proved (CVC5: 2 VC)
 test_init_by_proof.adb:44:14: warning: subprogram "Test_Init_Attr" has no effect
 test_init_by_proof.adb:48:22: info: assertion proved (CVC5: 9 VC; Trivial: 16 VC)
@@ -21,16 +21,16 @@ test_init_by_proof.adb:61:24: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:62:25: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:66:04: warning: analyzing unreferenced procedure "P2"
 test_init_by_proof.adb:66:14: warning: subprogram "P2" has no effect
-test_init_by_proof.adb:68:25: medium: initialization check might fail (e.g. when X2 = (X => ?, Y => 0, Z => True) and X2.X'Initialized = False and X2.Y'Initialized = True and X2.Z'Initialized = True) [possible fix: add or complete related loop invariants or postconditions]
-test_init_by_proof.adb:69:24: medium: initialization check might fail (e.g. when X2 = (X => 0, Y => ?, Z => True) and X2.X'Initialized = True and X2.Y'Initialized = False and X2.Z'Initialized = True) [possible fix: add or complete related loop invariants or postconditions]
-test_init_by_proof.adb:70:25: medium: initialization check might fail (e.g. when X2 = (X => 0, Y => 0, Z => ?) and X2.X'Initialized = True and X2.Y'Initialized = True and X2.Z'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
+test_init_by_proof.adb:68:25: medium: initialization check might fail (e.g. when X2.X'Initialized = False and X2.Y'Initialized = False and X2.Z'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
+test_init_by_proof.adb:69:24: medium: initialization check might fail (e.g. when X2.X'Initialized = False and X2.Y'Initialized = False and X2.Z'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
+test_init_by_proof.adb:70:25: medium: initialization check might fail (e.g. when X2.X'Initialized = False and X2.Y'Initialized = False and X2.Z'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
 test_init_by_proof.adb:74:04: warning: analyzing unreferenced procedure "P3"
 test_init_by_proof.adb:74:14: warning: subprogram "P3" has no effect
 test_init_by_proof.adb:77:24: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:81:04: warning: analyzing unreferenced procedure "P4"
 test_init_by_proof.adb:81:14: warning: subprogram "P4" has no effect
 test_init_by_proof.adb:83:23: high: "X2.X" is not initialized
-test_init_by_proof.adb:84:24: medium: initialization check might fail (e.g. when X2 = (X => 0, Y => ?, Z => True) and X2.Y'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
+test_init_by_proof.adb:84:24: medium: initialization check might fail (e.g. when X2 = (X => 0, Y => ?, Z => False) and X2.Y'Initialized = False) [possible fix: add or complete related loop invariants or postconditions]
 test_init_by_proof.adb:88:04: warning: analyzing unreferenced procedure "P5"
 test_init_by_proof.adb:88:14: warning: subprogram "P5" has no effect
 test_init_by_proof.adb:94:15: info: initialization check proved (CVC5: 1 VC)
@@ -49,7 +49,7 @@ test_init_by_proof.adb:121:13: high: "X2.X" is not initialized
 test_init_by_proof.adb:122:15: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:124:04: warning: analyzing unreferenced procedure "P9"
 test_init_by_proof.adb:124:14: warning: subprogram "P9" has no effect
-test_init_by_proof.adb:126:19: medium: initialization check might fail (e.g. when X = (X => ?, Y => 0, Z => True) and X.X'Initialized = False and X.Y'Initialized = True and X.Z'Initialized = True)
+test_init_by_proof.adb:126:19: medium: initialization check might fail (e.g. when X.X'Initialized = False and X.Y'Initialized = False and X.Z'Initialized = False)
 test_init_by_proof.adb:130:04: warning: analyzing unreferenced procedure "P10"
 test_init_by_proof.adb:130:14: warning: subprogram "P10" has no effect
 test_init_by_proof.adb:136:13: info: initialization check proved (CVC5: 2 VC; Trivial: 3 VC)
@@ -65,7 +65,7 @@ test_init_by_proof_conv.adb:10:27: info: range check proved (CVC5: 1 VC)
 test_init_by_proof_conv.adb:12:27: info: range check proved (CVC5: 1 VC)
 test_init_by_proof_conv.adb:18:35: info: discriminant check proved (CVC5: 1 VC)
 test_init_by_proof_conv.adb:19:24: info: discriminant check proved (CVC5: 1 VC)
-test_init_by_proof_conv.adb:19:26: medium: initialization check might fail (e.g. when X = (D => True, G => ?) and X.G.F'Initialized = False)
+test_init_by_proof_conv.adb:19:26: medium: initialization check might fail (e.g. when X = (D => False, G => ?) and X.G.F'Initialized = False)
 test_init_by_proof_mem.adb:14:28: info: range check proved (CVC5: 2 VC)
 test_init_by_proof_mem.adb:21:16: info: range check proved (CVC5: 2 VC)
 test_init_by_proof_mem.adb:22:16: info: range check proved (CVC5: 2 VC)

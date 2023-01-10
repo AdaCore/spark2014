@@ -1,4 +1,4 @@
-search.adb:9:13: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when I = 3 and Pos = 2 and T = (others => 0) and V = 0)
+search.adb:9:13: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when Pos = 0 and T = (others => 0) and V = 0)
 search.adb:9:13: info: loop invariant initialization proved (CVC5: 1 VC)
 search.adb:10:25: info: range check proved (CVC5: 4 VC)
 search.adb:10:66: info: index check proved (CVC5: 4 VC)

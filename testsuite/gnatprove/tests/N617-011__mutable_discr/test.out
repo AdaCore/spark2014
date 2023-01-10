@@ -1,5 +1,5 @@
 discr.adb:7:09: info: discriminant check proved (CVC5: 1 VC)
-discr.adb:8:09: high: discriminant check might fail (e.g. when D = (C => 1))
+discr.adb:8:09: high: discriminant check might fail
 discr.adb:14:26: info: range check proved (CVC5: 2 VC)
 discr.adb:17:22: info: assertion proved (CVC5: 1 VC)
 discr.adb:18:22: info: assertion proved (CVC5: 1 VC)

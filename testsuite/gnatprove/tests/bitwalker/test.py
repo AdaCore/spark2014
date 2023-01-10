@@ -4,8 +4,7 @@ contains_manual_proof = False
 
 
 def replay():
-    prove_all(opt=["--function-sandboxing=off"], level=1, procs=10, steps=0)
-    prove_all(opt=["--function-sandboxing=off"], level=3, procs=10, steps=0)
+    prove_all(opt=["--function-sandboxing=off"], level=4, procs=0)
 
 
 if __name__ == "__main__":

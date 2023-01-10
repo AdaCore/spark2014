@@ -10,8 +10,8 @@ base32.adb:48:25: info: range check proved (CVC5: 2 VC)
 base32.adb:50:24: info: cannot unroll loop (too many loop iterations)
 base32.adb:51:10: info: predicate check proved (CVC5: 1 VC)
 base32.adb:51:13: medium: array index check might fail [reason for check: value must be a valid index into the array]
-base32.adb:51:45: info: index check proved (CVC5: 2 VC)
 base32.adb:51:45: info: overflow check proved (CVC5: 2 VC)
+base32.adb:51:45: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 base32.adb:53:14: info: precondition proved (CVC5: 1 VC)
 base32.adb:53:22: info: predicate check proved (CVC5: 1 VC)
 base32.adb:53:22: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 50 should mention B in a loop invariant]

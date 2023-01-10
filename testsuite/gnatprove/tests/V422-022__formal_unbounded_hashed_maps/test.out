@@ -330,8 +330,8 @@ spark-containers-parameter_checks.ads:261:17: info: subprogram "Hash_Equivalent"
 spark-containers-parameter_checks.ads:261:17: info: subprogram "Hash_Equivalent" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:163, in instantiation at test_map.ads:8
 spark-containers-parameter_checks.ads:262:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:163, in instantiation at test_map.ads:25
 spark-containers-parameter_checks.ads:262:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:163, in instantiation at test_map.ads:8
+spark-containers-parameter_checks.ads:264:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:163, in instantiation at test_map.ads:25
 spark-containers-parameter_checks.ads:264:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:163, in instantiation at test_map.ads:8
-spark-containers-parameter_checks.ads:264:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:163, in instantiation at test_map.ads:25
 test_map.adb:4:14: warning: subprogram "Test_Map_Pos" has no effect
 test_map.adb:6:07: info: initialization of "L" proved
 test_map.adb:6:10: info: initialization of "K" proved

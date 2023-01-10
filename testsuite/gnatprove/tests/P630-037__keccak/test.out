@@ -172,7 +172,7 @@ keccak-padding.ads:52:34: medium: range check might fail, cannot prove upper bou
 keccak-padding.ads:54:34: info: range check proved (CVC5: 2 VC)
 keccak-padding.ads:54:60: info: overflow check proved (CVC5: 2 VC)
 keccak-padding.ads:54:65: info: division check proved (CVC5: 1 VC)
-keccak-padding.ads:91:19: high: range check might fail, cannot prove upper bound for Block'Length (e.g. when Block'First = 0 and Block'Last = Integer'Last)
+keccak-padding.ads:91:19: medium: range check might fail, cannot prove upper bound for Block'Length
 keccak-padding.ads:93:28: info: range check proved (CVC5: 2 VC)
 keccak-padding.ads:93:54: info: overflow check proved (CVC5: 2 VC)
 keccak-padding.ads:93:59: info: division check proved (CVC5: 1 VC)

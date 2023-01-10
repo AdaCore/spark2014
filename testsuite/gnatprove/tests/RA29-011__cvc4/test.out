@@ -34,9 +34,9 @@ See the file COPYING (distributed with the source code, and with
 all binaries) for the full cvc5 copyright, licensing, and (lack of)
 warranty information.
 
-version       : 1.0.0
+version       : 1.0.3
 
-library       : 1.0.0
+library       : 1.0.3
 
 debug code    : no
 statistics    : yes

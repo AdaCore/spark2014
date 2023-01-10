@@ -10,14 +10,14 @@ test_pred_on_array.adb:8:60: info: index check proved (CVC5: 2 VC)
 test_pred_on_array.adb:11:18: warning: unused variable "A"
 test_pred_on_array.adb:11:37: info: data dependencies proved
 test_pred_on_array.adb:12:07: info: range check proved (CVC5: 2 VC)
-test_pred_on_array.adb:14:13: medium: predicate check might fail (e.g. when X'First = 1 and X'Last = 1)
+test_pred_on_array.adb:14:13: medium: predicate check might fail
 test_pred_on_array.adb:17:18: medium: predicate check might fail
 test_pred_on_array.adb:17:18: warning: unused variable "X"
 test_pred_on_array.adb:17:38: info: data dependencies proved
 test_pred_on_array.adb:22:17: warning: unused variable "A"
 test_pred_on_array.adb:22:49: info: data dependencies proved
 test_pred_on_array.adb:23:07: info: range check proved (CVC5: 2 VC)
-test_pred_on_array.adb:25:14: medium: predicate check might fail (e.g. when X'First = 1 and X'Last = 1)
+test_pred_on_array.adb:25:14: medium: predicate check might fail
 test_pred_on_array.adb:28:18: warning: unused variable "A"
 test_pred_on_array.adb:28:37: info: data dependencies proved
 test_pred_on_array.adb:29:07: info: range check proved (CVC5: 2 VC)

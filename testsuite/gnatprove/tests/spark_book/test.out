@@ -218,7 +218,7 @@ circle_demo.adb:14:14: info: precondition proved (CVC5: 1 VC)
 console_io.ads:15:03: info: flow dependencies proved
 contains.adb:7:04: info: initialization of "Result_Index" proved
 contains.adb:9:37: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
-contains.adb:11:57: high: range check might fail, cannot prove lower bound for S'First (e.g. when S'Last = -1) [reason for check: input value must fit in parameter type]
+contains.adb:11:57: medium: range check might fail, cannot prove lower bound for S'First [reason for check: input value must fit in parameter type]
 contains2.adb:9:04: info: initialization of "Result_Index" proved
 contains2.adb:11:37: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
 contains2.adb:13:57: info: range check proved (CVC5: 2 VC)
@@ -642,7 +642,7 @@ hierarchical_state_demo_nested.ads:9:09: info: flow dependencies proved
 indexed_datebook_v2.ads:6:05: info: flow dependencies proved
 initializer_demo.adb:6:07: warning: initialization of "Sum" has no effect
 initializer_demo.adb:9:28: info: unrolling loop
-initializer_demo.adb:10:21: high: overflow check might fail, cannot prove lower bound for Sum + A (Index) (e.g. when A = (2 => Integer'First, others => -1) and Index = 2 and Sum = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:8 should mention A in a precondition]
+initializer_demo.adb:10:21: medium: overflow check might fail, cannot prove lower bound for Sum + A (Index) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:8 should mention A in a precondition]
 initializer_demo.adb:17:07: info: initialization of "Sum" proved
 initializer_demo.adb:22:28: info: unrolling loop
 initializer_demo.adb:23:21: high: overflow check might fail, cannot prove upper bound for Sum + Accumulator (A (Index)) (e.g. when A = (others => Integer'Last) and Index = 1 and Sum = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:14 should mention A in a precondition]
@@ -973,10 +973,10 @@ sqrt.adb:6:21: info: float overflow check proved (Trivial)
 sqrt.adb:6:31: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 sqrt.adb:6:35: medium: divide by zero might fail
 sqrt.adb:6:35: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
-stacks-more.adb:4:32: medium: array index check might fail (e.g. when Stack = (Max_Size => 1, Top => 0, Items => (others => 1))) [reason for check: value must be a valid index into the array] [possible fix: add precondition (Stack.Top in 1 .. Max_Size) to subprogram at stacks-more.ads:2]
-stacks.adb:14:30: medium: overflow check might fail, cannot prove upper bound for Stack.Top + 1 (e.g. when Stack = (Max_Size => ?, Top => Natural'Last, Items => (others => 1))) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition]
-stacks.adb:15:25: medium: array index check might fail (e.g. when Stack = (Max_Size => ?, Top => 2, Items => (others => 0))) [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition]
-stacks.adb:21:33: medium: array index check might fail (e.g. when Stack = (Max_Size => ?, Top => 0, Items => (others => 1))) [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:10 should mention Stack in a precondition]
+stacks-more.adb:4:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Stack.Top in 1 .. Max_Size) to subprogram at stacks-more.ads:2]
+stacks.adb:14:30: medium: overflow check might fail, cannot prove upper bound for Stack.Top + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition]
+stacks.adb:15:25: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition]
+stacks.adb:21:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:10 should mention Stack in a precondition]
 stacks.adb:22:30: info: range check proved (CVC5: 2 VC)
 stacks.ads:6:21: medium: "Stack.Items" is not set in "Clear" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Stack.Items" on all paths, make "Stack" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 stacks.ads:10:19: info: initialization of "Item" proved

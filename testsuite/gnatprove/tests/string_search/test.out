@@ -15,7 +15,7 @@ string_search.adb:14:51: info: index check proved (CVC5: 8 VC)
 string_search.adb:14:68: info: index check proved (CVC5: 8 VC)
 string_search.adb:14:68: info: overflow check proved (CVC5: 8 VC)
 string_search.adb:22:13: info: loop invariant initialization proved (CVC5: 1 VC)
-string_search.adb:22:36: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove not Match_At (Needle, Haystack, K) [possible fix: precondition of subprogram at string_search.ads:23 should mention Haystack and Needle]
+string_search.adb:22:13: info: loop invariant preservation proved (CVC5: 1 VC)
 string_search.adb:30:29: info: range check proved (CVC5: 2 VC)
 string_search.adb:30:37: info: overflow check proved (CVC5: 2 VC)
 string_search.adb:30:45: info: range check proved (CVC5: 2 VC)

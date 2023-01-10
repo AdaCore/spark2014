@@ -16,9 +16,9 @@ bits_manipulation-functions.adb:15:64: info: range check proved (CVC5: 2 VC), in
 bits_manipulation-functions.adb:16:65: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:16:65: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:17:65: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:27:20: info: postcondition proved (CVC5: 1 VC; Z3: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:27:20: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:27:20: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:27:20: info: postcondition proved (CVC5: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:27:20: info: postcondition proved (CVC5: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:28:82: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:28:82: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:28:82: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -47,7 +47,7 @@ bits_manipulation-functions.adb:35:07: info: initialization of "Result" proved, 
 bits_manipulation-functions.adb:38:22: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:38:22: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:38:22: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:38:22: info: assertion proved (Z3: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:38:22: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:44:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:44:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:44:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -107,7 +107,7 @@ bits_manipulation-functions.adb:74:26: info: precondition proved (CVC5: 1 VC), i
 bits_manipulation-functions.adb:82:14: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:82:14: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:82:14: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:82:14: info: postcondition proved (Z3: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:82:14: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:87:07: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:87:07: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:87:07: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -237,8 +237,8 @@ bits_manipulation-functions.adb:218:63: info: range check proved (CVC5: 4 VC), i
 bits_manipulation-functions.adb:218:63: info: range check proved (CVC5: 4 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:218:63: info: range check proved (CVC5: 4 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:220:28: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:220:28: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:220:28: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:220:28: info: assertion proved (Z3: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:220:28: info: assertion proved (Z3: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:220:28: info: assertion proved (Z3: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:222:20: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:222:20: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43

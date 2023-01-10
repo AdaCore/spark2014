@@ -96,38 +96,38 @@ linted-update.adb:26:13: info: add a contract to analyze it separately from call
 linted-update.adb:26:13: info: local subprogram "To_Int" only analyzed in the context of calls
 linted-update.adb:27:13: info: add a contract to analyze it separately from calling contexts
 linted-update.adb:27:13: info: local subprogram "From_Bytes" only analyzed in the context of calls
-linted-update.adb:34:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:100
-linted-update.adb:34:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:101
-linted-update.adb:34:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:94
-linted-update.adb:34:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:95
-linted-update.adb:34:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:96
-linted-update.adb:34:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:97
-linted-update.adb:34:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:98
-linted-update.adb:34:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:99
-linted-update.adb:37:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:100
-linted-update.adb:37:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:101
-linted-update.adb:37:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:94
-linted-update.adb:37:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:95
-linted-update.adb:37:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:96
-linted-update.adb:37:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:97
-linted-update.adb:37:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:98
-linted-update.adb:37:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:99
-linted-update.adb:40:73: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:100
-linted-update.adb:40:73: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:101
-linted-update.adb:40:73: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:94
-linted-update.adb:40:73: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:95
-linted-update.adb:40:73: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:96
-linted-update.adb:40:73: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:97
-linted-update.adb:40:73: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:98
-linted-update.adb:40:73: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:99
-linted-update.adb:42:51: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:100
-linted-update.adb:42:51: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:101
-linted-update.adb:42:51: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:94
-linted-update.adb:42:51: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:95
-linted-update.adb:42:51: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:96
-linted-update.adb:42:51: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:97
-linted-update.adb:42:51: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:98
-linted-update.adb:42:51: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at linted-update.adb:99
+linted-update.adb:34:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:100
+linted-update.adb:34:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:101
+linted-update.adb:34:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:94
+linted-update.adb:34:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:95
+linted-update.adb:34:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:96
+linted-update.adb:34:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:97
+linted-update.adb:34:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:98
+linted-update.adb:34:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:99
+linted-update.adb:37:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:100
+linted-update.adb:37:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:101
+linted-update.adb:37:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:94
+linted-update.adb:37:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:95
+linted-update.adb:37:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:96
+linted-update.adb:37:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:97
+linted-update.adb:37:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:98
+linted-update.adb:37:74: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:99
+linted-update.adb:40:73: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:100
+linted-update.adb:40:73: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:101
+linted-update.adb:40:73: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:94
+linted-update.adb:40:73: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:95
+linted-update.adb:40:73: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:96
+linted-update.adb:40:73: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:97
+linted-update.adb:40:73: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:98
+linted-update.adb:40:73: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:99
+linted-update.adb:42:51: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:100
+linted-update.adb:42:51: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:101
+linted-update.adb:42:51: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:94
+linted-update.adb:42:51: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:95
+linted-update.adb:42:51: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:96
+linted-update.adb:42:51: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:97
+linted-update.adb:42:51: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:98
+linted-update.adb:42:51: info: range check proved (CVC5: 2 VC), in call inlined at linted-update.adb:99
 linted-update.adb:48:36: info: range check proved (CVC5: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
 linted-update.adb:48:36: info: range check proved (CVC5: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
 linted-update.adb:48:36: info: range check proved (CVC5: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82

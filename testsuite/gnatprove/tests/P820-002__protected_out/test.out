@@ -25,9 +25,9 @@ polyorb_hi-messages.adb:81:42: info: index check proved (CVC5: 2 VC)
 polyorb_hi-messages.adb:81:44: info: precondition proved (CVC5: 1 VC)
 polyorb_hi-messages.adb:81:62: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 polyorb_hi-messages.adb:81:65: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-polyorb_hi-messages.adb:92:51: high: array index check might fail (e.g. when M'First = 5 and M'Last = 0) [reason for check: value must be a valid index into the array]
+polyorb_hi-messages.adb:92:51: high: array index check might fail (e.g. when M = (others => 0) and M'First = -2 and M'Last = 2) [reason for check: value must be a valid index into the array]
 polyorb_hi-messages.adb:105:32: info: range check proved (CVC5: 2 VC)
-polyorb_hi-messages.adb:105:42: high: range check might fail, cannot prove upper bound for Item'Length (e.g. when Item'First = 0 and Item'Last = 9223372036854775807)
+polyorb_hi-messages.adb:105:42: medium: range check might fail, cannot prove upper bound for Item'Length
 polyorb_hi-messages.adb:105:51: info: precondition proved (CVC5: 1 VC)
 polyorb_hi-messages.adb:107:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 polyorb_hi-messages.adb:113:29: info: range check proved (CVC5: 2 VC)
@@ -59,7 +59,7 @@ polyorb_hi-messages.ads:77:07: info: initialization of "Item" proved
 polyorb_hi-messages.ads:78:07: info: initialization of "Last" proved
 polyorb_hi-messages.ads:91:26: info: initialization of "M" proved
 polyorb_hi-messages.ads:98:40: info: precondition proved (CVC5: 1 VC)
-polyorb_hi-messages.ads:99:17: medium: postcondition might fail
+polyorb_hi-messages.ads:99:17: high: postcondition might fail (e.g. when M = (Content => (others => 0), First => 8, Last => ?) and Payload'Result = (others => 0) and Payload'Result'First = 1 and Payload'Result'Last = 19)
 polyorb_hi-messages.ads:99:32: info: range check proved (CVC5: 2 VC)
 polyorb_hi-messages.ads:99:42: info: precondition proved (CVC5: 1 VC)
 polyorb_hi-messages.ads:103:44: info: precondition proved (CVC5: 1 VC)
@@ -76,7 +76,7 @@ polyorb_hi-output.adb:183:36: info: index check proved (CVC5: 2 VC)
 polyorb_hi-output.adb:183:41: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 polyorb_hi-output.adb:184:15: info: range check proved (CVC5: 2 VC)
 polyorb_hi-output.adb:184:42: info: division check proved (CVC5: 1 VC)
-polyorb_hi-output.adb:185:15: info: length check proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 2 VC)
+polyorb_hi-output.adb:185:15: info: length check proved (CVC5: 2 VC; Trivial: 1 VC; Z3: 1 VC)
 polyorb_hi-output.adb:185:15: info: range check proved (CVC5: 2 VC)
 polyorb_hi-output.adb:185:42: info: division check proved (CVC5: 1 VC)
 polyorb_hi-output.adb:186:28: info: range check proved (CVC5: 2 VC)

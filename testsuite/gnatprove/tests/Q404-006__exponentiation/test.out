@@ -11,7 +11,7 @@ exponentiate.adb:19:30: medium: loop invariant might not be preserved by an arbi
 exponentiate.adb:19:59: medium: divide by zero might fail
 exponentiate.adb:20:18: info: division check proved (CVC5: 1 VC)
 exponentiate.adb:23:26: info: division check proved (CVC5: 1 VC)
-exponentiate.adb:25:23: info: range check proved (CVC5: 2 VC)
+exponentiate.adb:25:23: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_exponentiate.adb:7:24: info: cannot unroll loop (too many loop iterations)
 test_exponentiate.adb:8:22: info: function contract not available for proof ("Exponentiate" might not return)
 test_exponentiate.adb:8:22: medium: assertion might fail

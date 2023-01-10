@@ -1,4 +1,4 @@
-tetris_flow.adb:41:33: high: array index check might fail (e.g. when Cur_Piece = (S => O, D => North, X => 1, Y => PY_Coord'First+1)) [reason for check: value must be a valid index into the array] [possible fix: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
+tetris_flow.adb:41:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
 tetris_flow.adb:41:47: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
 tetris_flow.adb:42:36: info: index check proved (CVC5: 2 VC)
 tetris_flow.adb:42:51: info: index check proved (CVC5: 2 VC)
@@ -78,7 +78,7 @@ tetris_functional.ads:215:16: info: postcondition proved (CVC5: 3 VC; Trivial: 1
 tetris_functional.ads:220:37: info: initialization of "Num_Deleted" proved
 tetris_functional.ads:221:06: info: data dependencies proved
 tetris_functional.ads:224:16: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; altergo: 1 VC)
-tetris_initial.adb:41:33: high: array index check might fail (e.g. when Cur_Piece = (S => O, D => North, X => 1, Y => PY_Coord'First+1)) [reason for check: value must be a valid index into the array] [possible fix: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
+tetris_initial.adb:41:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
 tetris_initial.adb:41:47: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
 tetris_initial.adb:42:36: info: index check proved (CVC5: 2 VC)
 tetris_initial.adb:42:51: info: index check proved (CVC5: 2 VC)

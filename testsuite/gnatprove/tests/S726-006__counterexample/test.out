@@ -5,7 +5,7 @@ finnuc.adb:67:07: info: initialization of "Logic_index" proved
 finnuc.adb:78:07: info: initialization of "Logic_index_1" proved
 finnuc.adb:109:58: info: index check proved (CVC5: 2 VC)
 finnuc.adb:110:58: info: index check proved (CVC5: 2 VC)
-finnuc.adb:140:64: info: index check proved (Z3: 2 VC)
+finnuc.adb:140:64: info: index check proved (CVC5: 2 VC)
 finnuc.adb:141:64: info: index check proved (CVC5: 2 VC)
 finnuc.ads:49:07: info: initialization of "A" proved
 finnuc.ads:50:07: info: initialization of "B" proved

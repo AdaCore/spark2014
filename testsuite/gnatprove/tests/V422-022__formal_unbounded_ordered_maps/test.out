@@ -578,7 +578,7 @@ test_map.adb:307:28: info: assertion proved (CVC5: 1 VC)
 test_map.adb:307:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_map.adb:309:17: info: pointer dereference check proved (CVC5: 1 VC)
 test_map.adb:312:25: info: assertion proved (CVC5: 1 VC)
-test_map.adb:312:25: info: precondition proved (Z3: 1 VC)
+test_map.adb:312:25: info: precondition proved (CVC5: 1 VC)
 test_map.adb:312:36: info: pointer dereference check proved (CVC5: 1 VC)
 test_map.adb:316:07: medium: assertion might fail
 test_map.ads:17:12: info: postcondition proved (CVC5: 2 VC)

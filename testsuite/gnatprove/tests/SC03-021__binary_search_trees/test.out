@@ -2,11 +2,11 @@ binary_search.adb:19:07: info: dynamic accessibility check proved (Trivial)
 binary_search.adb:23:13: info: function contract might not be available on recursive calls
 binary_search.adb:24:08: medium: "M_Contains" is recursive, terminating annotation could be incorrect
 binary_search.adb:25:18: info: pointer dereference check proved (altergo: 1 VC)
-binary_search.adb:25:45: info: pointer dereference check proved (altergo: 1 VC)
+binary_search.adb:25:45: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search.adb:25:76: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:27:14: info: postcondition proved (Trivial: 1 VC)
 binary_search.adb:29:13: info: function contract might not be available on recursive calls
-binary_search.adb:32:14: info: postcondition proved (Trivial: 1 VC; altergo: 4 VC)
+binary_search.adb:32:14: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC; Z3: 1 VC)
 binary_search.adb:34:06: medium: overriding operator "<" is recursive, terminating annotation could be incorrect
 binary_search.adb:35:32: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:35:47: info: pointer dereference check proved (altergo: 1 VC)
@@ -20,7 +20,7 @@ binary_search.adb:45:22: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:45:37: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:45:52: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:49:13: info: function contract might not be available on recursive calls
-binary_search.adb:52:14: info: postcondition proved (Trivial: 1 VC; altergo: 4 VC)
+binary_search.adb:52:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; Z3: 1 VC; altergo: 1 VC)
 binary_search.adb:54:06: medium: overriding operator "<" is recursive, terminating annotation could be incorrect
 binary_search.adb:55:28: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:55:43: info: pointer dereference check proved (altergo: 1 VC)
@@ -36,22 +36,22 @@ binary_search.adb:65:48: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:70:07: medium: "Sorted" is recursive, terminating annotation could be incorrect
 binary_search.adb:71:13: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:71:22: info: pointer dereference check proved (altergo: 1 VC)
-binary_search.adb:71:38: info: pointer dereference check proved (altergo: 1 VC)
+binary_search.adb:71:38: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search.adb:71:47: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:72:27: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:72:52: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:78:14: info: postcondition proved (altergo: 2 VC)
 binary_search.adb:83:33: info: loop invariant initialization proved (Trivial: 1 VC; altergo: 4 VC)
-binary_search.adb:83:33: info: loop invariant preservation proved (Trivial: 1 VC; altergo: 4 VC)
+binary_search.adb:83:33: info: loop invariant preservation proved (CVC5: 3 VC; Trivial: 1 VC; altergo: 1 VC)
 binary_search.adb:84:33: info: loop invariant initialization proved (altergo: 2 VC)
-binary_search.adb:84:33: info: loop invariant preservation proved (altergo: 2 VC)
+binary_search.adb:84:33: info: loop invariant preservation proved (CVC5: 1 VC; altergo: 1 VC)
 binary_search.adb:85:14: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:87:21: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:88:19: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:90:19: info: pointer dereference check proved (altergo: 1 VC)
-binary_search.adb:104:26: info: discriminant check proved (altergo: 1 VC)
+binary_search.adb:104:26: info: discriminant check proved (CVC5: 1 VC)
 binary_search.adb:108:30: info: discriminant check proved (CVC5: 1 VC)
-binary_search.adb:112:26: info: discriminant check proved (CVC5: 1 VC)
+binary_search.adb:112:26: info: discriminant check proved (altergo: 1 VC)
 binary_search.adb:116:30: info: discriminant check proved (CVC5: 1 VC)
 binary_search.adb:122:13: info: implicit function contract might not be available on recursive calls
 binary_search.adb:123:07: medium: "Size" is recursive, terminating annotation could be incorrect
@@ -61,9 +61,9 @@ binary_search.adb:124:51: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:125:19: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:125:26: info: overflow check proved (altergo: 2 VC)
 binary_search.adb:125:35: info: pointer dereference check proved (altergo: 1 VC)
-binary_search.adb:125:43: info: overflow check proved (altergo: 2 VC)
+binary_search.adb:125:43: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
 binary_search.adb:130:13: info: function contract might not be available on recursive calls
-binary_search.adb:134:14: info: postcondition proved (Z3: 1 VC; altergo: 2 VC)
+binary_search.adb:134:14: info: postcondition proved (Z3: 2 VC; altergo: 1 VC)
 binary_search.adb:134:14: info: predicate check proved (Trivial: 1 VC)
 binary_search.adb:138:14: info: initialization of "S" proved
 binary_search.adb:143:12: medium: "All_V" is recursive, terminating annotation could be incorrect
@@ -74,8 +74,7 @@ binary_search.adb:143:46: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:144:31: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:145:18: info: precondition proved (altergo: 1 VC)
 binary_search.adb:145:27: info: pointer dereference check proved (altergo: 1 VC)
-binary_search.adb:152:14: medium: in inlined expression function body at binary_search.adb:71
-binary_search.adb:152:14: medium: postcondition might fail, cannot prove T.Left < T.Data
+binary_search.adb:152:14: info: postcondition proved (CVC5: 5 VC; Trivial: 1 VC; Z3: 2 VC)
 binary_search.adb:154:53: info: precondition proved (altergo: 1 VC)
 binary_search.adb:159:25: info: assertion proved (Trivial: 1 VC; altergo: 4 VC)
 binary_search.adb:160:12: info: absence of resource or memory leak proved (altergo: 1 VC)
@@ -84,7 +83,7 @@ binary_search.adb:169:10: info: initialization of "Seen" proved
 binary_search.adb:172:36: info: loop invariant initialization proved (altergo: 1 VC)
 binary_search.adb:172:36: info: loop invariant preservation proved (altergo: 1 VC)
 binary_search.adb:173:36: info: loop invariant initialization proved (Trivial: 1 VC; altergo: 4 VC)
-binary_search.adb:173:36: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC; altergo: 3 VC)
+binary_search.adb:173:36: info: loop invariant preservation proved (CVC5: 2 VC; Trivial: 1 VC; altergo: 2 VC)
 binary_search.adb:174:36: info: loop invariant initialization proved (Trivial: 2 VC; altergo: 2 VC)
 binary_search.adb:174:36: info: loop invariant preservation proved (Trivial: 2 VC; altergo: 2 VC)
 binary_search.adb:175:36: info: loop invariant initialization proved (altergo: 2 VC)
@@ -112,7 +111,7 @@ binary_search.adb:193:16: info: precondition proved (Trivial: 2 VC)
 binary_search.adb:195:16: info: loop invariant initialization proved (Trivial: 1 VC; altergo: 1 VC)
 binary_search.adb:195:16: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_search.adb:199:16: info: loop invariant initialization proved (Trivial: 2 VC; altergo: 4 VC)
-binary_search.adb:199:16: info: loop invariant preservation proved (CVC5: 3 VC; Trivial: 2 VC; altergo: 1 VC)
+binary_search.adb:199:16: info: loop invariant preservation proved (CVC5: 4 VC; Trivial: 2 VC)
 binary_search.adb:203:17: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:205:24: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:206:20: info: pointer dereference check proved (altergo: 1 VC)
@@ -144,7 +143,7 @@ spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in 
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
 spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
 spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119

@@ -407,7 +407,7 @@ is
    is
    begin
       X := X;
-      pragma Assert (X.The_Pair.A = 0);  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (X.The_Pair.A = 0);  --  @ASSERT:FAIL @ COUNTEREXAMPLE
    end Test_C;
 
    procedure Test_D (X: in out Optional_Pair)
@@ -480,7 +480,7 @@ is
    procedure Tilde_Test_B (R: in out Optional_Pair;
                            X: in     Unsigned_Byte)
      with Depends => (R =>+ X),
-          Post    => R = R'Old'Update (The_Pair =>  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+          Post    => R = R'Old'Update (The_Pair =>  --  @POSTCONDITION:FAIL @ COUNTEREXAMPLE
                                          R'Old.The_Pair'Update
                                            (A => X,
                                             B => X))

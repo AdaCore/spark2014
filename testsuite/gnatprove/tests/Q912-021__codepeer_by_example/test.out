@@ -7,14 +7,14 @@ assign_all_arr.adb:5:22: high: overflow check might fail [CWE 190], cannot prove
 assign_all_arr_incr.adb:4:21: info: unrolling loop
 assign_all_arr_incr.adb:5:22: high: overflow check might fail [CWE 190], cannot prove upper bound for X (J) + J (e.g. when J = 1 and X = (others => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X in a precondition]
 assign_all_arr_incr_unk.adb:4:21: info: cannot unroll loop (too many loop iterations)
-assign_all_arr_incr_unk.adb:5:22: high: overflow check might fail [CWE 190], cannot prove lower bound for X (J) + J (e.g. when J = -1 and X = (others => Integer'First)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 4 should mention X in a loop invariant]
+assign_all_arr_incr_unk.adb:5:22: medium: overflow check might fail [CWE 190], cannot prove lower bound for X (J) + J [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 4 should mention X in a loop invariant]
 assign_arr.adb:4:18: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at assign_arr.ads:3]
 assign_arr.adb:5:18: high: overflow check might fail [CWE 190], cannot prove lower bound for Y - 1 (e.g. when Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 1) to subprogram at assign_arr.ads:3]
 assign_arr.ads:3:22: medium: "X" might not be initialized in "Assign" [CWE 457] [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-assign_arr_unk.adb:4:10: high: array index check might fail [CWE 119] (e.g. when X'First = 2) [reason for check: value must be a valid index into the array]
+assign_arr_unk.adb:4:10: high: array index check might fail [CWE 119] (e.g. when X'First = 0) [reason for check: value must be a valid index into the array]
 assign_arr_unk.adb:4:18: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at assign_arr_unk.ads:3]
-assign_arr_unk.adb:5:10: high: array index check might fail [CWE 119] (e.g. when X'Last = 1) [reason for check: value must be a valid index into the array]
-assign_arr_unk.adb:5:18: high: overflow check might fail [CWE 190], cannot prove lower bound for Y - 1 (e.g. when Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 1) to subprogram at assign_arr_unk.ads:3]
+assign_arr_unk.adb:5:10: medium: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array]
+assign_arr_unk.adb:5:18: medium: overflow check might fail [CWE 190], cannot prove lower bound for Y - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 1) to subprogram at assign_arr_unk.ads:3]
 assign_arr_unk.ads:3:22: medium: "X" might not be initialized in "Assign" [CWE 457] [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 assign_pos.adb:1:23: info: initialization of "X" proved
 assign_pos.adb:3:11: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 1]
@@ -118,7 +118,7 @@ induction.adb:4:21: info: unrolling loop
 induction.adb:5:14: info: overflow check proved (CVC5: 20 VC)
 map.adb:2:44: info: initialization of "Z" proved
 map.adb:4:21: info: unrolling loop
-map.adb:5:22: high: overflow check might fail [CWE 190], cannot prove lower bound for X (J) + Y (e.g. when J = 1 and X = (others => Integer'First) and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X and Y in a precondition]
+map.adb:5:22: medium: overflow check might fail [CWE 190], cannot prove lower bound for X (J) + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X and Y in a precondition]
 multi_cond_assign.adb:1:30: info: initialization of "X" proved
 multi_cond_assign.adb:4:14: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 1]
 multi_cond_assign.adb:7:17: high: overflow check might fail [CWE 190], cannot prove lower bound for Y - 1 (e.g. when Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 1) to subprogram at line 1]
@@ -135,7 +135,7 @@ search_while.adb:6:13: medium: array index check might fail [CWE 119] (e.g. when
 search_while.adb:9:14: info: overflow check proved (CVC5: 2 VC)
 self_assign.adb:3:11: high: overflow check might fail [CWE 190], cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
 sum_all_arr.adb:5:21: info: unrolling loop
-sum_all_arr.adb:6:18: high: overflow check might fail [CWE 190], cannot prove lower bound for Sum + X (J) (e.g. when J = 2 and Sum = -1 and X = (2 => Integer'First, others => -1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X in a precondition]
+sum_all_arr.adb:6:18: medium: overflow check might fail [CWE 190], cannot prove lower bound for Sum + X (J) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X in a precondition]
 top_down.adb:2:21: info: initialization of "Y" proved
 top_down.adb:4:04: info: no contextual analysis of "Ident" (multiple returns)
 top_down.adb:6:13: high: array index check might fail [CWE 119] (e.g. when X = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (X in 1 .. 10) to subprogram at line 4]

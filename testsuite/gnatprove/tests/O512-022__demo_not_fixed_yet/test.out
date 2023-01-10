@@ -20,7 +20,7 @@ generic_stack.adb:16:10: medium: exception might be raised, in instantiation at 
 generic_stack.adb:18:22: info: overflow check proved (CVC5: 2 VC), in instantiation at use_stacks.adb:47
 generic_stack.adb:19:20: info: index check proved (CVC5: 2 VC), in instantiation at use_stacks.adb:47
 generic_stack.adb:25:10: medium: exception might be raised, in instantiation at use_stacks.adb:47
-generic_stack.adb:27:25: high: array index check might fail, in instantiation at use_stacks.adb:47 (e.g. when Index = 101) [reason for check: value must be a valid index into the array] [possible fix: subprogram at generic_stack.ads:8 should mention Index in a precondition]
+generic_stack.adb:27:25: medium: array index check might fail, in instantiation at use_stacks.adb:47 [reason for check: value must be a valid index into the array] [possible fix: subprogram at generic_stack.ads:8 should mention Index in a precondition]
 generic_stack.adb:28:22: info: range check proved (CVC5: 2 VC), in instantiation at use_stacks.adb:47
 generic_stack.ads:8:19: info: initialization of "E" proved, in instantiation at use_stacks.adb:47
 main.adb:9:04: info: initialization of "A" proved

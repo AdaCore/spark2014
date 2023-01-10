@@ -1,7 +1,7 @@
 arrays_of_records.adb:20:11: info: flow dependencies proved
-arrays_of_records.adb:23:22: high: assertion might fail (e.g. when A(17).Flag = True and A(17).First_Value = 0 and A(17).Second_Value = 0) [possible fix: subprogram at line 19 should mention A in a precondition]
+arrays_of_records.adb:23:22: high: assertion might fail (e.g. when A = (others => (Flag => False, First_Value => 0, Second_Value => 0))) [possible fix: subprogram at line 19 should mention A in a precondition]
 arrays_of_records.adb:27:11: info: flow dependencies proved
-arrays_of_records.adb:30:22: high: assertion might fail (e.g. when A(0).Flag = True and A(0).First_Value = 0 and A(0).Second_Value = 0 and I = 0) [possible fix: subprogram at line 26 should mention A and I in a precondition]
+arrays_of_records.adb:30:22: high: assertion might fail (e.g. when A = (others => (Flag => False, First_Value => 0, Second_Value => 0)) and I = 0) [possible fix: subprogram at line 26 should mention A and I in a precondition]
 arrays_of_records.adb:34:11: info: flow dependencies proved
 arrays_of_records.adb:35:22: high: postcondition might fail (e.g. when A = (others => (Flag => False, First_Value => 42, Second_Value => 42)))
 arrays_of_records.adb:43:11: info: flow dependencies proved
@@ -33,29 +33,29 @@ arrays_of_records.adb:166:11: info: flow dependencies proved
 arrays_of_records.adb:168:22: high: postcondition might fail (e.g. when A(0).Flag = True and A(0).First_Value = 42 and A(0).Second_Value = 42 and A(1).Flag = True and A(1).First_Value = 23 and I = 1)
 arrays_of_records.adb:175:22: info: assertion proved (CVC5: 1 VC)
 arrays_of_records.adb:181:11: info: flow dependencies proved
-arrays_of_records.adb:182:22: high: postcondition might fail (e.g. when A(5).Flag = True and A(5).First_Value = 0 and A(5).Second_Value = 0 and A(17).Flag = True and A(17).First_Value = 0 and A'Old(5).Flag = True and A'Old(5).First_Value = 0 and A'Old(5).Second_Value = 0 and A'Old(17).Flag = True and A'Old(17).First_Value = 0)
+arrays_of_records.adb:182:22: high: postcondition might fail (e.g. when A = (others => (Flag => False, First_Value => 0, Second_Value => 0)) and A'Old = (others => (Flag => False, First_Value => 0, Second_Value => 0)))
 arrays_of_records.adb:184:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:192:11: info: flow dependencies proved
 arrays_of_records.adb:193:22: medium: postcondition might fail
 arrays_of_records.adb:195:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:204:11: info: flow dependencies proved
-arrays_of_records.adb:206:22: high: postcondition might fail (e.g. when A(0).Flag = True and A(0).First_Value = 0 and A(0).Second_Value = 0 and A(1).Flag = True and A(1).First_Value = 0 and A'Old(0).Flag = True and A'Old(0).First_Value = 0 and A'Old(0).Second_Value = 0 and A'Old(1).Flag = True and A'Old(1).First_Value = 0)
+arrays_of_records.adb:206:22: medium: postcondition might fail
 arrays_of_records.adb:208:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:219:11: info: flow dependencies proved
 arrays_of_records.adb:220:22: high: postcondition might fail (e.g. when A(5).Flag = True and A(5).First_Value = 0 and A(5).Second_Value = 0 and A(17).Flag = True and A(17).First_Value = 0 and A'Old(5).Flag = True and A'Old(5).First_Value = 0 and A'Old(5).Second_Value = 0 and A'Old(17).Flag = True and A'Old(17).First_Value = 0)
 arrays_of_records.adb:222:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:234:11: info: flow dependencies proved
-arrays_of_records.adb:236:22: high: postcondition might fail (e.g. when A(1).Flag = True and A(1).First_Value = 0 and A(1).Second_Value = 0 and A'Old(1).Flag = True and A'Old(1).First_Value = 0 and A'Old(1).Second_Value = 0)
+arrays_of_records.adb:236:22: medium: postcondition might fail
 arrays_of_records.adb:238:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:251:11: info: flow dependencies proved
-arrays_of_records.adb:252:22: high: postcondition might fail, cannot prove A /= A'old (e.g. when A(17).Flag = True and A(17).First_Value = 0 and A(17).Second_Value = 0 and A'Old(17).Flag = True and A'Old(17).First_Value = 0 and A'Old(17).Second_Value = 0)
+arrays_of_records.adb:252:22: high: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => (Flag => False, First_Value => 0, Second_Value => 0)) and A'Old = (others => (Flag => False, First_Value => 0, Second_Value => 0)))
 arrays_of_records.adb:254:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:263:11: info: flow dependencies proved
-arrays_of_records.adb:264:22: high: postcondition might fail, cannot prove A /= A'old (e.g. when A(0).Flag = True and A(0).First_Value = 0 and A(0).Second_Value = 0 and A'Old(0).Flag = True and A'Old(0).First_Value = 0 and A'Old(0).Second_Value = 0)
+arrays_of_records.adb:264:22: high: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => (Flag => False, First_Value => 0, Second_Value => 0)) and A'Old = (others => (Flag => False, First_Value => 0, Second_Value => 0)))
 arrays_of_records.adb:266:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:275:11: info: flow dependencies proved
-arrays_of_records.adb:276:22: high: postcondition might fail (e.g. when A(5).Flag = True and A(5).First_Value = 0 and A(5).Second_Value = 0 and A(17).Flag = True and A(17).First_Value = 0 and A'Old(5).Flag = True and A'Old(5).First_Value = 0 and A'Old(5).Second_Value = 0 and A'Old(17).Flag = True and A'Old(17).First_Value = 0)
+arrays_of_records.adb:276:22: high: postcondition might fail (e.g. when A = (others => (Flag => False, First_Value => 0, Second_Value => 0)) and A'Old = (others => (Flag => False, First_Value => 0, Second_Value => 0)))
 arrays_of_records.adb:278:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:288:11: info: flow dependencies proved
-arrays_of_records.adb:289:22: high: postcondition might fail (e.g. when A(0).Flag = True and A(0).First_Value = 0 and A(0).Second_Value = 0 and A'Old(0).Flag = True and A'Old(0).First_Value = 0 and A'Old(0).Second_Value = 0)
+arrays_of_records.adb:289:22: high: postcondition might fail (e.g. when A = (others => (Flag => False, First_Value => 0, Second_Value => 0)) and A'Old = (others => (Flag => False, First_Value => 0, Second_Value => 0)))
 arrays_of_records.adb:291:07: info: initialization of "Tmp" proved

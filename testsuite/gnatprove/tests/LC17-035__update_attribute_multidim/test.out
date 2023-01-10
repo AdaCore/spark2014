@@ -6,13 +6,13 @@ update_checks.adb:17:23: info: index check proved (CVC5: 2 VC)
 update_checks.adb:17:26: info: index check proved (CVC5: 2 VC)
 update_checks.adb:17:29: info: index check proved (CVC5: 2 VC)
 update_checks.adb:22:04: warning: analyzing unreferenced procedure "Test2"
-update_checks.adb:29:25: medium: array index check might fail (e.g. when X = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (X >= -32768 + 1) to subprogram at line 22]
-update_checks.adb:29:25: medium: range check might fail, cannot prove lower bound for X - 1 (e.g. when X = 1) [possible fix: add precondition (X >= IT1'First + 1) to subprogram at line 22]
-update_checks.adb:29:32: medium: array index check might fail (e.g. when Y = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (Y >= -32768 + 1) to subprogram at line 22]
-update_checks.adb:29:32: medium: range check might fail, cannot prove lower bound for Y - 1 (e.g. when Y = 1) [possible fix: add precondition (Y >= IT2'First + 1) to subprogram at line 22]
-update_checks.adb:29:39: medium: array index check might fail (e.g. when Z = 10) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Z <= 32767 - 1) to subprogram at line 22]
-update_checks.adb:29:39: medium: range check might fail, cannot prove upper bound for Z + 1 (e.g. when Z = 10) [possible fix: add precondition (Z <= IT3'Last - 1) to subprogram at line 22]
-update_checks.adb:29:55: medium: range check might fail, cannot prove upper bound for New_Val + 1 (e.g. when New_Val = ET1'Last) [reason for check: result of addition must fit in component type] [possible fix: add precondition (New_Val <= ET1'Last - 1) to subprogram at line 22]
+update_checks.adb:29:25: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (X >= -32768 + 1) to subprogram at line 22]
+update_checks.adb:29:25: medium: range check might fail, cannot prove lower bound for X - 1 [possible fix: add precondition (X >= IT1'First + 1) to subprogram at line 22]
+update_checks.adb:29:32: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (Y >= -32768 + 1) to subprogram at line 22]
+update_checks.adb:29:32: medium: range check might fail, cannot prove lower bound for Y - 1 [possible fix: add precondition (Y >= IT2'First + 1) to subprogram at line 22]
+update_checks.adb:29:39: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Z <= 32767 - 1) to subprogram at line 22]
+update_checks.adb:29:39: medium: range check might fail, cannot prove upper bound for Z + 1 [possible fix: add precondition (Z <= IT3'Last - 1) to subprogram at line 22]
+update_checks.adb:29:55: medium: range check might fail, cannot prove upper bound for New_Val + 1 (e.g. when New_Val = 0) [reason for check: result of addition must fit in component type] [possible fix: add precondition (New_Val <= ET1'Last - 1) to subprogram at line 22]
 update_checks.adb:34:04: warning: analyzing unreferenced procedure "Test3"
 update_checks.adb:43:28: info: index check proved (CVC5: 2 VC)
 update_checks.adb:43:28: info: range check proved (CVC5: 2 VC)
@@ -29,19 +29,19 @@ update_checks.adb:56:38: info: index check proved (CVC5: 2 VC)
 update_checks.adb:56:42: info: index check proved (CVC5: 2 VC)
 update_checks.adb:56:46: info: index check proved (CVC5: 2 VC)
 update_checks.adb:61:04: warning: analyzing unreferenced procedure "Test5"
-update_checks.adb:68:26: medium: array index check might fail (e.g. when X1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (X1 >= -32768 + 1) to subprogram at line 61]
-update_checks.adb:68:26: medium: range check might fail, cannot prove lower bound for X1 - 1 (e.g. when X1 = 1) [possible fix: add precondition (X1 >= IT1'First + 1) to subprogram at line 61]
-update_checks.adb:68:34: medium: array index check might fail (e.g. when Y1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (Y1 >= -32768 + 1) to subprogram at line 61]
-update_checks.adb:68:34: medium: range check might fail, cannot prove lower bound for Y1 - 1 (e.g. when Y1 = 1) [possible fix: add precondition (Y1 >= IT2'First + 1) to subprogram at line 61]
-update_checks.adb:68:42: medium: array index check might fail (e.g. when Z1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (Z1 >= -32768 + 1) to subprogram at line 61]
-update_checks.adb:68:42: medium: range check might fail, cannot prove lower bound for Z1 - 1 (e.g. when Z1 = 1) [possible fix: add precondition (Z1 >= IT3'First + 1) to subprogram at line 61]
-update_checks.adb:69:28: medium: array index check might fail (e.g. when X2 = 3) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (X2 <= 32767 - 1) to subprogram at line 61]
-update_checks.adb:69:28: medium: range check might fail, cannot prove upper bound for X2 + 1 (e.g. when X2 = 3) [possible fix: add precondition (X2 <= IT1'Last - 1) to subprogram at line 61]
-update_checks.adb:69:36: medium: array index check might fail (e.g. when Y2 = 5) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Y2 <= 32767 - 1) to subprogram at line 61]
-update_checks.adb:69:36: medium: range check might fail, cannot prove upper bound for Y2 + 1 (e.g. when Y2 = 5) [possible fix: add precondition (Y2 <= IT2'Last - 1) to subprogram at line 61]
-update_checks.adb:69:44: medium: array index check might fail (e.g. when Z2 = 10) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Z2 <= 32767 - 1) to subprogram at line 61]
-update_checks.adb:69:44: medium: range check might fail, cannot prove upper bound for Z2 + 1 (e.g. when Z2 = 10) [possible fix: add precondition (Z2 <= IT3'Last - 1) to subprogram at line 61]
-update_checks.adb:69:60: medium: range check might fail, cannot prove upper bound for New_Val + 1 (e.g. when New_Val = ET1'Last) [reason for check: result of addition must fit in component type] [possible fix: add precondition (New_Val <= ET1'Last - 1) to subprogram at line 61]
+update_checks.adb:68:26: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (X1 >= -32768 + 1) to subprogram at line 61]
+update_checks.adb:68:26: medium: range check might fail, cannot prove lower bound for X1 - 1 [possible fix: add precondition (X1 >= IT1'First + 1) to subprogram at line 61]
+update_checks.adb:68:34: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (Y1 >= -32768 + 1) to subprogram at line 61]
+update_checks.adb:68:34: medium: range check might fail, cannot prove lower bound for Y1 - 1 [possible fix: add precondition (Y1 >= IT2'First + 1) to subprogram at line 61]
+update_checks.adb:68:42: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (Z1 >= -32768 + 1) to subprogram at line 61]
+update_checks.adb:68:42: medium: range check might fail, cannot prove lower bound for Z1 - 1 [possible fix: add precondition (Z1 >= IT3'First + 1) to subprogram at line 61]
+update_checks.adb:69:28: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (X2 <= 32767 - 1) to subprogram at line 61]
+update_checks.adb:69:28: medium: range check might fail, cannot prove upper bound for X2 + 1 [possible fix: add precondition (X2 <= IT1'Last - 1) to subprogram at line 61]
+update_checks.adb:69:36: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Y2 <= 32767 - 1) to subprogram at line 61]
+update_checks.adb:69:36: medium: range check might fail, cannot prove upper bound for Y2 + 1 [possible fix: add precondition (Y2 <= IT2'Last - 1) to subprogram at line 61]
+update_checks.adb:69:44: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Z2 <= 32767 - 1) to subprogram at line 61]
+update_checks.adb:69:44: medium: range check might fail, cannot prove upper bound for Z2 + 1 [possible fix: add precondition (Z2 <= IT3'Last - 1) to subprogram at line 61]
+update_checks.adb:69:60: medium: range check might fail, cannot prove upper bound for New_Val + 1 (e.g. when New_Val = 0) [reason for check: result of addition must fit in component type] [possible fix: add precondition (New_Val <= ET1'Last - 1) to subprogram at line 61]
 update_checks.adb:74:04: warning: analyzing unreferenced procedure "Test6"
 update_checks.adb:84:29: info: index check proved (CVC5: 2 VC)
 update_checks.adb:84:29: info: range check proved (CVC5: 2 VC)
@@ -57,25 +57,25 @@ update_checks.adb:85:47: info: index check proved (CVC5: 2 VC)
 update_checks.adb:85:47: info: range check proved (CVC5: 2 VC)
 update_checks.adb:85:63: info: range check proved (CVC5: 2 VC)
 update_checks.adb:91:04: warning: analyzing unreferenced procedure "Test7"
-update_checks.adb:99:26: medium: array index check might fail (e.g. when X1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (X1 >= -32768 + 1) to subprogram at line 91]
-update_checks.adb:99:26: medium: range check might fail, cannot prove lower bound for X1 - 1 (e.g. when X1 = 1) [possible fix: add precondition (X1 >= IT1'First + 1) to subprogram at line 91]
-update_checks.adb:99:34: medium: array index check might fail (e.g. when Y1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (Y1 >= -32768 + 1) to subprogram at line 91]
-update_checks.adb:99:34: medium: range check might fail, cannot prove lower bound for Y1 - 1 (e.g. when Y1 = 1) [possible fix: add precondition (Y1 >= IT2'First + 1) to subprogram at line 91]
-update_checks.adb:99:42: medium: array index check might fail (e.g. when Z1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (Z1 >= -32768 + 1) to subprogram at line 91]
-update_checks.adb:99:42: medium: range check might fail, cannot prove lower bound for Z1 - 1 (e.g. when Z1 = 1) [possible fix: add precondition (Z1 >= IT3'First + 1) to subprogram at line 91]
-update_checks.adb:100:28: medium: array index check might fail (e.g. when X2 = 3) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (X2 <= 32767 - 1) to subprogram at line 91]
-update_checks.adb:100:28: medium: range check might fail, cannot prove upper bound for X2 + 1 (e.g. when X2 = 3) [possible fix: add precondition (X2 <= IT1'Last - 1) to subprogram at line 91]
-update_checks.adb:100:36: medium: array index check might fail (e.g. when Y2 = 5) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Y2 <= 32767 - 1) to subprogram at line 91]
-update_checks.adb:100:36: medium: range check might fail, cannot prove upper bound for Y2 + 1 (e.g. when Y2 = 5) [possible fix: add precondition (Y2 <= IT2'Last - 1) to subprogram at line 91]
-update_checks.adb:100:44: medium: array index check might fail (e.g. when Z2 = 10) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Z2 <= 32767 - 1) to subprogram at line 91]
-update_checks.adb:100:44: medium: range check might fail, cannot prove upper bound for Z2 + 1 (e.g. when Z2 = 10) [possible fix: add precondition (Z2 <= IT3'Last - 1) to subprogram at line 91]
-update_checks.adb:100:62: medium: range check might fail, cannot prove upper bound for New_Val_1 + 1 (e.g. when New_Val_1 = ET1'Last) [reason for check: result of addition must fit in component type] [possible fix: add precondition (New_Val_1 <= ET1'Last - 1) to subprogram at line 91]
-update_checks.adb:101:26: medium: array index check might fail (e.g. when X3 = 3) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (X3 <= 32767 - 1) to subprogram at line 91]
-update_checks.adb:101:26: medium: range check might fail, cannot prove upper bound for X3 + 1 (e.g. when X3 = 3) [possible fix: add precondition (X3 <= IT1'Last - 1) to subprogram at line 91]
-update_checks.adb:101:34: medium: array index check might fail (e.g. when Y3 = 5) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Y3 <= 32767 - 1) to subprogram at line 91]
-update_checks.adb:101:34: medium: range check might fail, cannot prove upper bound for Y3 + 1 (e.g. when Y3 = 5) [possible fix: add precondition (Y3 <= IT2'Last - 1) to subprogram at line 91]
-update_checks.adb:101:42: medium: array index check might fail (e.g. when Z3 = 10) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Z3 <= 32767 - 1) to subprogram at line 91]
-update_checks.adb:101:42: medium: range check might fail, cannot prove upper bound for Z3 + 1 (e.g. when Z3 = 10) [possible fix: add precondition (Z3 <= IT3'Last - 1) to subprogram at line 91]
+update_checks.adb:99:26: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (X1 >= -32768 + 1) to subprogram at line 91]
+update_checks.adb:99:26: medium: range check might fail, cannot prove lower bound for X1 - 1 [possible fix: add precondition (X1 >= IT1'First + 1) to subprogram at line 91]
+update_checks.adb:99:34: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (Y1 >= -32768 + 1) to subprogram at line 91]
+update_checks.adb:99:34: medium: range check might fail, cannot prove lower bound for Y1 - 1 [possible fix: add precondition (Y1 >= IT2'First + 1) to subprogram at line 91]
+update_checks.adb:99:42: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (Z1 >= -32768 + 1) to subprogram at line 91]
+update_checks.adb:99:42: medium: range check might fail, cannot prove lower bound for Z1 - 1 [possible fix: add precondition (Z1 >= IT3'First + 1) to subprogram at line 91]
+update_checks.adb:100:28: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (X2 <= 32767 - 1) to subprogram at line 91]
+update_checks.adb:100:28: medium: range check might fail, cannot prove upper bound for X2 + 1 [possible fix: add precondition (X2 <= IT1'Last - 1) to subprogram at line 91]
+update_checks.adb:100:36: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Y2 <= 32767 - 1) to subprogram at line 91]
+update_checks.adb:100:36: medium: range check might fail, cannot prove upper bound for Y2 + 1 [possible fix: add precondition (Y2 <= IT2'Last - 1) to subprogram at line 91]
+update_checks.adb:100:44: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Z2 <= 32767 - 1) to subprogram at line 91]
+update_checks.adb:100:44: medium: range check might fail, cannot prove upper bound for Z2 + 1 [possible fix: add precondition (Z2 <= IT3'Last - 1) to subprogram at line 91]
+update_checks.adb:100:62: medium: range check might fail, cannot prove upper bound for New_Val_1 + 1 (e.g. when New_Val_1 = 0) [reason for check: result of addition must fit in component type] [possible fix: add precondition (New_Val_1 <= ET1'Last - 1) to subprogram at line 91]
+update_checks.adb:101:26: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (X3 <= 32767 - 1) to subprogram at line 91]
+update_checks.adb:101:26: medium: range check might fail, cannot prove upper bound for X3 + 1 [possible fix: add precondition (X3 <= IT1'Last - 1) to subprogram at line 91]
+update_checks.adb:101:34: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Y3 <= 32767 - 1) to subprogram at line 91]
+update_checks.adb:101:34: medium: range check might fail, cannot prove upper bound for Y3 + 1 [possible fix: add precondition (Y3 <= IT2'Last - 1) to subprogram at line 91]
+update_checks.adb:101:42: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Z3 <= 32767 - 1) to subprogram at line 91]
+update_checks.adb:101:42: medium: range check might fail, cannot prove upper bound for Z3 + 1 [possible fix: add precondition (Z3 <= IT3'Last - 1) to subprogram at line 91]
 update_checks.adb:101:62: medium: range check might fail, cannot prove lower bound for New_Val_2 - 1 (e.g. when New_Val_2 = 0) [reason for check: result of subtraction must fit in component type] [possible fix: add precondition (New_Val_2 >= ET1'First + 1) to subprogram at line 91]
 update_checks.adb:106:04: warning: analyzing unreferenced procedure "Test8"
 update_checks.adb:118:29: info: index check proved (CVC5: 2 VC)

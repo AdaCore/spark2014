@@ -1994,7 +1994,7 @@ search_trees.adb:738:17: info: local subprogram "Prove_Extract_X" only analyzed 
 search_trees.adb:747:16: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:953
 search_trees.adb:747:55: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:953
 search_trees.adb:750:16: medium: precondition might fail, in call inlined at search_trees.adb:953
-search_trees.adb:750:42: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:953
+search_trees.adb:750:42: medium: range check might fail, cannot prove upper bound for T.Root, in call inlined at search_trees.adb:953 [reason for check: input value must fit in parameter type]
 search_trees.adb:751:25: medium: precondition might fail, in call inlined at search_trees.adb:953
 search_trees.adb:753:30: medium: assertion might fail, cannot prove Model (F_Old, Root (T)) (I).K = (Model (T.Struct, Root (T)) (I).K or Model (T.Struct, X) (I).K), in call inlined at search_trees.adb:953
 search_trees.adb:753:30: medium: precondition might fail, in call inlined at search_trees.adb:953
@@ -2554,8 +2554,8 @@ search_trees.adb:1502:62: info: index check proved (CVC5: 4 VC)
 search_trees.adb:1502:82: medium: precondition might fail
 search_trees.adb:1502:100: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1502:114: medium: overflow check might fail, cannot prove lower bound for Length (Model (T.Struct, T.Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+search_trees.adb:1503:33: medium: loop invariant might fail in first iteration, cannot prove V < T.Values (I) [possible fix: precondition of subprogram at search_trees.ads:45 should mention V]
 search_trees.adb:1503:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove V < T.Values (I) [possible fix: precondition of subprogram at search_trees.ads:45 should mention V]
-search_trees.adb:1504:33: medium: loop invariant might fail in first iteration, cannot prove V > T.Values (I) [possible fix: precondition of subprogram at search_trees.ads:45 should mention V]
 search_trees.adb:1507:30: info: index check proved (CVC5: 2 VC)
 search_trees.adb:1509:31: medium: assertion might fail [possible fix: precondition of subprogram at search_trees.ads:45 should mention V]
 search_trees.adb:1510:33: info: invariant check proved (CVC5: 1 VC)
@@ -2571,7 +2571,7 @@ search_trees.adb:1528:29: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1528:36: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1529:20: info: index check proved (CVC5: 2 VC)
 search_trees.adb:1530:10: info: invariant check proved (CVC5: 1 VC)
-search_trees.adb:1530:10: medium: precondition might fail, cannot prove V < T_Old.Values (I) [possible fix: loop invariant at line 1493 should mention D and Previous]
+search_trees.adb:1530:10: medium: precondition might fail, cannot prove D = Left [possible fix: loop invariant at line 1493 should mention D and Previous]
 search_trees.adb:1530:34: info: range check proved (CVC5: 2 VC)
 search_trees.ads:17:09: info: default initial condition proved (CVC5: 1 VC)
 search_trees.ads:18:06: info: invariant check proved (CVC5: 1 VC)

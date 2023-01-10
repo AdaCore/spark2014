@@ -6,5 +6,5 @@ main.adb:8:14: info: add a contract to analyze it separately from calling contex
 main.adb:8:14: info: local subprogram "bar" only analyzed in the context of calls
 main.adb:8:19: info: initialization of "d" proved
 main.adb:17:04: info: analyzing call to "bar" in context
-main.adb:18:14: medium: precondition might fail
+main.adb:18:14: medium: precondition might fail (e.g. when arr = (others => 0))
 main.adb:18:29: info: range check proved (CVC5: 4 VC)

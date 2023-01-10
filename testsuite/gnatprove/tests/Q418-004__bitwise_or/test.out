@@ -1,5 +1,5 @@
 bitset.adb:11:07: info: initialization of "Mask" proved
 bitset.adb:37:07: info: initialization of "Mask" proved
-bitset.ads:15:15: info: postcondition proved (Z3: 2 VC)
+bitset.ads:15:15: info: postcondition proved (CVC5: 2 VC)
 bitset.ads:23:15: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 bitset.ads:31:15: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)

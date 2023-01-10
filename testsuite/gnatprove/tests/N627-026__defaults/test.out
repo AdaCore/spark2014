@@ -14,7 +14,7 @@ with_default.adb:27:69: medium: range check might fail, cannot prove lower bound
 with_default.adb:28:15: info: range check proved (CVC5: 2 VC)
 with_default.adb:37:15: info: range check proved (CVC5: 2 VC)
 with_default.adb:39:41: high: in default value at with_default.adb:40
-with_default.adb:39:41: high: range check might fail, cannot prove lower bound for 0 (e.g. when C = 1) [reason for check: default component value must fit in the component type]
+with_default.adb:39:41: high: range check might fail, cannot prove bounds for 0 [reason for check: default component value must fit in the component type]
 with_default.adb:46:69: info: in default initialization of array component at with_default.adb:46
 with_default.adb:46:69: info: in default initialization of array component at with_default.adb:47
 with_default.adb:46:69: info: in default value at with_default.adb:60
@@ -39,7 +39,7 @@ with_default.adb:75:69: info: in default value at with_default.adb:83
 with_default.adb:75:69: info: range check proved (CVC5: 2 VC)
 with_default.adb:76:15: info: range check proved (CVC5: 2 VC)
 with_default.adb:80:36: high: in default value at with_default.adb:83
-with_default.adb:80:36: high: range check might fail, cannot prove lower bound for 0 (e.g. when C = 1) [reason for check: default component value must fit in the type]
+with_default.adb:80:36: high: range check might fail, cannot prove bounds for 0 [reason for check: default component value must fit in the type]
 with_default.adb:89:69: medium: in default initialization of component "F2" at with_default.adb:98
 with_default.adb:89:69: medium: in default value at with_default.adb:102
 with_default.adb:89:69: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]

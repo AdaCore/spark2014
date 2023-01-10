@@ -3,19 +3,19 @@ loopentry.adb:10:23: info: range check proved (CVC5: 16 VC; altergo: 4 VC)
 loopentry.adb:11:43: info: unrolling loop
 loopentry.adb:12:26: info: range check proved (CVC5: 16 VC; altergo: 4 VC)
 loopentry.adb:13:28: info: assertion proved (CVC5: 10 VC)
-loopentry.adb:17:28: high: assertion might fail (e.g. when A = (1 => 3, others => 2) and J = 1)
+loopentry.adb:17:28: medium: assertion might fail
 loopentry.adb:30:32: info: unrolling loop
 loopentry.adb:31:23: info: range check proved (CVC5: 16 VC; altergo: 4 VC)
 loopentry.adb:32:43: info: unrolling loop
 loopentry.adb:33:26: info: range check proved (CVC5: 16 VC; altergo: 4 VC)
 loopentry.adb:34:28: info: assertion proved (CVC5: 10 VC)
-loopentry.adb:35:28: high: assertion might fail (e.g. when A = (1 => 3, others => 2) and J = 1)
+loopentry.adb:35:28: medium: assertion might fail
 loopentry.adb:48:32: info: unrolling loop
 loopentry.adb:49:23: info: range check proved (CVC5: 16 VC; altergo: 4 VC)
 loopentry.adb:50:43: info: unrolling loop
 loopentry.adb:51:26: info: range check proved (CVC5: 16 VC; altergo: 4 VC)
 loopentry.adb:52:28: info: assertion proved (CVC5: 8 VC; altergo: 2 VC)
-loopentry.adb:53:28: high: assertion might fail (e.g. when A = (1 => 3, others => 2) and J = 1)
+loopentry.adb:53:28: medium: assertion might fail
 loopentry.adb:65:29: info: unrolling loop
 loopentry.adb:66:23: info: range check proved (CVC5: 14 VC; altergo: 6 VC)
 loopentry.adb:67:41: info: unrolling loop
@@ -25,7 +25,7 @@ loopentry.adb:69:46: warning: statement has no effect
 loopentry.adb:70:29: info: range check proved (CVC5: 12 VC; altergo: 8 VC)
 loopentry.adb:71:31: info: assertion proved (CVC5: 6 VC; altergo: 4 VC)
 loopentry.adb:72:31: info: assertion proved (CVC5: 10 VC)
-loopentry.adb:73:31: high: assertion might fail (e.g. when A = (1 => 4, others => 2) and J = 1)
+loopentry.adb:73:31: medium: assertion might fail
 loopentry.adb:86:33: info: unrolling loop
 loopentry.adb:86:33: warning: statement has no effect
 loopentry.adb:87:17: info: range check proved (CVC5: 2 VC)

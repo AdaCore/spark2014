@@ -4,14 +4,14 @@ lp.adb:20:40: info: index check proved (CVC5: 2 VC)
 lp.adb:21:22: info: index check proved (CVC5: 2 VC)
 lp.adb:35:45: medium: assertion might fail, cannot prove 2 ** K in U64'range
 lp.adb:35:47: medium: overflow check might fail, cannot prove upper bound for 2 ** K [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-lp.adb:36:11: medium: array index check might fail [reason for check: value must be a valid index into the array]
+lp.adb:36:11: info: index check proved (CVC5: 4 VC)
 lp.adb:37:33: info: loop invariant initialization proved (CVC5: 2 VC)
 lp.adb:37:56: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove 2 ** K in U64'range
 lp.adb:37:58: medium: overflow check might fail, cannot prove lower bound for 2 ** K [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 lp.adb:38:33: info: loop invariant initialization proved (CVC5: 2 VC)
 lp.adb:38:33: medium: loop invariant might not be preserved by an arbitrary iteration
 lp.adb:38:35: medium: overflow check might fail, cannot prove lower bound for 2 ** P [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-lp.adb:38:38: medium: array index check might fail [reason for check: value must be a valid index into the array]
+lp.adb:38:38: info: index check proved (CVC5: 4 VC)
 lp.adb:39:37: info: overflow check proved (CVC5: 2 VC)
 lp.adb:39:37: info: range check proved (CVC5: 1 VC)
 lp.adb:39:40: info: index check proved (CVC5: 2 VC)
@@ -19,7 +19,7 @@ lp.adb:40:22: info: index check proved (CVC5: 2 VC)
 lp.adb:54:22: info: assertion proved (CVC5: 2 VC)
 lp.adb:54:51: medium: overflow check might fail, cannot prove upper bound for 2 ** K [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 lp.adb:54:51: medium: range check might fail [reason for check: result of exponentiation must be convertible to the target type of the conversion]
-lp.adb:55:11: medium: array index check might fail [reason for check: value must be a valid index into the array]
+lp.adb:55:11: info: index check proved (CVC5: 4 VC)
 lp.adb:56:33: info: loop invariant initialization proved (CVC5: 2 VC)
 lp.adb:56:33: info: loop invariant preservation proved (CVC5: 2 VC)
 lp.adb:56:62: medium: overflow check might fail, cannot prove upper bound for 2 ** K [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
@@ -28,7 +28,7 @@ lp.adb:57:33: info: loop invariant initialization proved (CVC5: 2 VC)
 lp.adb:57:33: info: loop invariant preservation proved (CVC5: 2 VC)
 lp.adb:57:39: medium: overflow check might fail, cannot prove upper bound for 2 ** P [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 lp.adb:57:39: medium: range check might fail [reason for check: result of exponentiation must be convertible to the target type of the conversion]
-lp.adb:57:42: medium: array index check might fail [reason for check: value must be a valid index into the array]
+lp.adb:57:42: info: index check proved (CVC5: 4 VC)
 lp.adb:58:37: medium: overflow check might fail, cannot prove upper bound for 2 ** P [reason for check: result of exponentiation must fit in a 128-bits machine integer]
 lp.adb:58:37: medium: range check might fail [reason for check: result of exponentiation must be convertible to the target type of the conversion]
 lp.adb:58:40: info: index check proved (CVC5: 2 VC)

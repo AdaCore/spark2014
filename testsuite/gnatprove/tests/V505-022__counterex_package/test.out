@@ -1,4 +1,4 @@
-lib.adb:9:19: medium: assertion might fail (e.g. when A = (others => (F => 42))) [possible fix: add or complete related loop invariants or postconditions]
+lib.adb:9:19: medium: assertion might fail
 main.adb:36:10: info: initialization of "A" proved
 main.adb:38:23: info: cannot unroll loop (local non-scalar declaration at line 40)
 main.adb:59:19: high: assertion might fail, cannot prove My_Package.Nested.Get_Sixteenth (A) = 1 (e.g. when A = (others => (F => 0)))

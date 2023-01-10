@@ -6,7 +6,6 @@ os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
 
 
 def replay():
-    prove_all(procs=0, level=2, sparklib=True)
     prove_all(procs=0, level=4, sparklib=True)
 
 
