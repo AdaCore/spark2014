@@ -8,8 +8,8 @@
 <prover id="3" name="colibri" version="2137" timelimit="5" steplimit="0" memlimit="1000"/>
 <file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="obj"/>
-<path name="gnatprove"/><path name="ada___ada___spark__lemmas__float_arithmetic__is_float.gnat-json"/>
-<theory name="Ada___ada___spark__lemmas__float_arithmetic__is_float__subprogram_def" proved="true">
+<path name="gnatprove"/><path name="c3139777773dfae02020-as__float_arithmetic__is_float__2.gnat-json"/>
+<theory name="Ada___ada___spark__lemmas__float_arithmetic__is_float__2__subprogram_def" proved="true">
  <goal name="def&#39;vc" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
@@ -20,12 +20,12 @@
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="0" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="1630115"/></proof>
+  <proof prover="1"><result status="unknown" steps="861160"/></proof>
   <proof prover="2"><result status="outofmemory"/></proof>
-  <proof prover="3"><result status="valid" steps="166"/></proof>
+  <proof prover="3"><result status="valid" steps="167"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="3"><result status="valid" steps="180"/></proof>
+  <proof prover="3"><result status="valid" steps="181"/></proof>
   </goal>
  </transf>
  </goal>
