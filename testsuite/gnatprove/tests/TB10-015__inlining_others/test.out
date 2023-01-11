@@ -1,4 +1,5 @@
-repro.adb:13:04: error: "others" choice not allowed here
-repro.adb:13:04: error: error in inlined body at line 9
-repro.adb:13:04: error: qualify the aggregate with a constrained subtype to provide bounds for it
-gnatprove: error during generation of Global contracts
+repro.adb:7:14: info: add a contract to analyze it separately from calling contexts
+repro.adb:7:14: info: local subprogram "Check" only analyzed in the context of calls
+repro.adb:7:14: warning: subprogram "Check" has no effect
+repro.adb:9:22: info: assertion proved (CVC5: 1 VC), in call inlined at repro.adb:13
+repro.adb:13:04: info: analyzing call to "Check" in context
