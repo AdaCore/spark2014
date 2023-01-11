@@ -1617,8 +1617,7 @@ package body Gnat2Why.Expr is
                   elsif Initialized then True_Term else False_Term),
                Params        => Body_Params,
                Only_Var      => False_Term,
-               Top_Predicate =>
-                 (if Top_Predicate then True_Term else False_Term)));
+               Top_Predicate => Top_Predicate));
       begin
          Append (Context, Dyn_Inv);
       end;
@@ -1757,15 +1756,13 @@ package body Gnat2Why.Expr is
         (if Initialized then True_Term else False_Term);
       O_Var    : constant W_Term_Id :=
         (if Only_Var then True_Term else False_Term);
-      Top_Pred : constant W_Term_Id :=
-        (if Top_Predicate then True_Term else False_Term);
       T        : constant W_Pred_Id :=
         Compute_Dynamic_Inv_And_Initialization
           (Expr          => Expr,
            Ty            => Ty,
            Initialized   => Init,
            Only_Var      => O_Var,
-           Top_Predicate => Top_Pred,
+           Top_Predicate => Top_Predicate,
            Params        => Body_Params);
    begin
       if T /= True_Pred then
@@ -4578,7 +4575,7 @@ package body Gnat2Why.Expr is
       Params           : Transformation_Params;
       Initialized      : W_Term_Id := True_Term;
       Only_Var         : W_Term_Id := True_Term;
-      Top_Predicate    : W_Term_Id := True_Term;
+      Top_Predicate    : Boolean := True;
       Include_Type_Inv : W_Term_Id := True_Term)
       return W_Pred_Id
    is
@@ -4588,7 +4585,7 @@ package body Gnat2Why.Expr is
          Initialized      => Initialized,
          Params           => Params,
          Only_Var         => Only_Var,
-         Top_Predicate    => Top_Predicate,
+         Top_Predicate    => (if Top_Predicate then True_Term else False_Term),
          Include_Type_Inv => Include_Type_Inv);
 
    begin
@@ -4601,11 +4598,17 @@ package body Gnat2Why.Expr is
             Init_Pred : W_Pred_Id := True_Pred;
          begin
             if Has_Scalar_Full_View (Ty) then
+
+               --  Inputs of scalar types do not use the init wrapper
+               pragma Assert (Top_Predicate);
+
                Init_Pred := +Compute_Is_Initialized
                  (Ty, +Expr, Params, EW_Pred);
             elsif Has_Predicates (Ty) then
                Init_Pred := Compute_Dynamic_Predicate
-                 (Expr => Expr, Ty  => Ty);
+                 (Expr => Expr, Ty => Ty,
+                  Top_Predicate =>
+                    (if Top_Predicate then True_Term else False_Term));
             end if;
 
             if not Is_True_Boolean (+Init_Pred) then
@@ -5081,12 +5084,7 @@ package body Gnat2Why.Expr is
             Init_Wrapper          : constant Boolean :=
               Is_Init_Wrapper_Type (Get_Type (+Expr));
             Typ_Pred              : constant W_Pred_Id :=
-              Compute_Dynamic_Predicate (Expr, Ty_Ext, Params);
-            Anc_Ty                : constant Entity_Id :=
-              Retysp (Etype (Ty_Ext));
-            Anc_Typ_Pred          : constant W_Pred_Id :=
-              (if Anc_Ty = Ty_Ext then True_Pred
-               else Compute_Dynamic_Predicate (Expr, Anc_Ty, Params));
+              Compute_Dynamic_Predicate (Expr, Ty_Ext, Params, Top_Predicate);
             Pred_Check_At_Default : constant Boolean :=
               Default_Initialization (Ty_Ext) /= No_Default_Initialization;
             Init_Flag             : constant W_Pred_Id :=
@@ -5095,21 +5093,11 @@ package body Gnat2Why.Expr is
                  then +New_Init_Attribute_Access (Ty_Ext, +Expr)
                  else Initialized);
             Check_Pred            : constant W_Pred_Id :=
-              New_Conditional
-                (Condition => Pred_Of_Boolean_Term (Top_Predicate),
-                 Then_Part =>
-                   (if Pred_Check_At_Default and then not Init_Wrapper
-                    then Typ_Pred
-                    else New_Conditional (Condition => Init_Flag,
-                                          Then_Part => Typ_Pred,
-                                          Typ       => EW_Bool_Type)),
-                 Else_Part =>
-                   (if Pred_Check_At_Default and then not Init_Wrapper
-                    then Anc_Typ_Pred
-                    else New_Conditional (Condition => Init_Flag,
-                                          Then_Part => Anc_Typ_Pred,
-                                          Typ       => EW_Bool_Type)),
-                 Typ       => EW_Bool_Type);
+              (if Pred_Check_At_Default and then not Init_Wrapper
+               then Typ_Pred
+               else New_Conditional (Condition => Init_Flag,
+                                     Then_Part => Typ_Pred,
+                                     Typ       => EW_Bool_Type));
 
          begin
             if not Is_True_Boolean (+Typ_Pred) then
@@ -5335,9 +5323,10 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Compute_Dynamic_Predicate
-     (Expr   : W_Term_Id;
-      Ty     : Type_Kind_Id;
-      Params : Transformation_Params := Body_Params)
+     (Expr          : W_Term_Id;
+      Ty            : Type_Kind_Id;
+      Params        : Transformation_Params := Body_Params;
+      Top_Predicate : W_Term_Id := True_Term)
       return W_Pred_Id
    is
       Res : W_Pred_Id := True_Pred;
@@ -5355,6 +5344,7 @@ package body Gnat2Why.Expr is
         (Type_Instance   : Formal_Kind_Id;
          Pred_Expression : Node_Id)
       is
+         Dyn_Pred  : W_Pred_Id;
          My_Params : Transformation_Params := Params;
       begin
          --  We set the Gen_Marker param to GM_Toplevel to instruct
@@ -5366,17 +5356,31 @@ package body Gnat2Why.Expr is
          --  which is not desired here).
 
          My_Params.Gen_Marker := GM_Toplevel;
+         Dyn_Pred := Dynamic_Predicate_Expression
+           (Expr       => Expr,
+            Pred_Param => Type_Instance,
+            Pred_Expr  => Pred_Expression,
+            Params     => My_Params);
+
+         --  Ignore the top-level predicate if needed
+
+         if Is_False_Boolean (+Top_Predicate)
+           and then Retysp (Etype (Type_Instance)) = Retysp (Ty)
+         then
+            return;
+         elsif not Is_True_Boolean (+Top_Predicate)
+           and then Retysp (Etype (Type_Instance)) = Retysp (Ty)
+         then
+            Dyn_Pred := New_Conditional
+              (Condition => Pred_Of_Boolean_Term (Top_Predicate),
+               Then_Part => Dyn_Pred);
+         end if;
+
          Res :=
            New_Label
              (Labels => Symbol_Sets.To_Set (NID (GP_Inlined_Marker)),
               Def    =>
-                New_And_Pred
-                  (Left  => Dynamic_Predicate_Expression
-                     (Expr       => Expr,
-                      Pred_Param => Type_Instance,
-                      Pred_Expr  => Pred_Expression,
-                      Params     => My_Params),
-                   Right => Res));
+                New_And_Pred (Left  => Dyn_Pred, Right => Res));
       end Add_One_Dynamic_Predicate;
 
       procedure Add_All_Dynamic_Predicates is new
@@ -8586,16 +8590,20 @@ package body Gnat2Why.Expr is
    ----------------------------
 
    function Insert_Predicate_Check
-     (Ada_Node : Node_Id;
-      Check_Ty : Type_Kind_Id;
-      W_Expr   : W_Prog_Id)
+     (Ada_Node      : Node_Id;
+      Check_Ty      : Type_Kind_Id;
+      W_Expr        : W_Prog_Id;
+      Top_Predicate : W_Term_Id := True_Term)
       return W_Prog_Id
    is
       W_Tmp : constant W_Identifier_Id :=
         New_Temp_Identifier (Typ => Get_Type (+W_Expr));
 
       W_Seq : constant W_Prog_Id :=
-        Sequence (New_Predicate_Check (Ada_Node, Check_Ty, +W_Tmp), +W_Tmp);
+        Sequence
+          (New_Predicate_Check
+             (Ada_Node, Check_Ty, +W_Tmp, Top_Predicate => Top_Predicate),
+           +W_Tmp);
    begin
       return New_Binding (Ada_Node => Ada_Node,
                           Name     => +W_Tmp,
@@ -9338,7 +9346,8 @@ package body Gnat2Why.Expr is
      (Ada_Node         : Node_Id;
       Ty               : Type_Kind_Id;
       W_Expr           : W_Expr_Id;
-      On_Default_Value : Boolean := False)
+      On_Default_Value : Boolean := False;
+      Top_Predicate    : W_Term_Id := True_Term)
       return W_Prog_Id
    is
       --  Here we recompute the predicate instead of calling
@@ -9406,6 +9415,20 @@ package body Gnat2Why.Expr is
             Pred_Param => Type_Instance,
             Pred_Expr  => Pred_Expression,
             Params     => My_Params);
+
+         --  Ignore the top-level predicate if needed
+
+         if Is_False_Boolean (+Top_Predicate)
+           and then Retysp (Etype (Type_Instance)) = Retysp (Ty)
+         then
+            return;
+         elsif not Is_True_Boolean (+Top_Predicate)
+           and then Retysp (Etype (Type_Instance)) = Retysp (Ty)
+         then
+            Check := New_Conditional
+              (Condition => Pred_Of_Boolean_Term (Top_Predicate),
+               Then_Part => Check);
+         end if;
 
          --  If the predicate was inherited, add a continuation
 
@@ -20230,15 +20253,33 @@ package body Gnat2Why.Expr is
                         end;
 
                      elsif Is_Init_Wrapper_Type (Get_Type (T)) then
+
+                        --  Skip the top level predicate for parameters of
+                        --  predicate functions.
+
                         declare
-                           Typ : constant Entity_Id :=
+                           Top_Predicate : constant Boolean :=
+                             Ekind (Ent) /= E_In_Parameter
+                             or else not Is_Predicate_Function
+                               (Enclosing_Unit (Ent));
+                           Typ           : constant Entity_Id :=
                              Get_Ada_Type_From_Item (E);
                         begin
                            if Has_Scalar_Full_View (Typ) then
+
+                              --  Inputs of scalar types do not use the init
+                              --  wrapper.
+
+                              pragma Assert (Top_Predicate);
+
                               T := Insert_Initialization_Check
                                 (Expr, Typ, T, Domain);
                            else
-                              T := +Insert_Predicate_Check (Expr, Typ, +T);
+                              T := +Insert_Predicate_Check
+                                (Expr, Typ, +T,
+                                 Top_Predicate =>
+                                   (if Top_Predicate then True_Term
+                                    else False_Term));
                            end if;
                         end;
                      end if;

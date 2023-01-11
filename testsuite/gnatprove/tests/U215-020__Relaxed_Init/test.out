@@ -23,8 +23,6 @@ int_arith.adb:24:10: info: precondition proved (CVC5: 4 VC)
 int_arith.adb:24:26: info: predicate check proved (CVC5: 2 VC)
 int_arith.adb:24:26: info: range check proved (CVC5: 1 VC)
 int_arith.adb:24:29: info: range check proved (CVC5: 2 VC)
-int_arith.ads:11:19: info: predicate check proved (CVC5: 2 VC)
-int_arith.ads:11:38: info: predicate check proved (CVC5: 2 VC)
 int_arith.ads:13:13: info: function contract might not be available on recursive calls
 int_arith.ads:14:32: info: initialization check proved (CVC5: 1 VC)
 int_arith.ads:14:32: info: predicate check proved (CVC5: 2 VC)

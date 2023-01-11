@@ -29,7 +29,6 @@ with Types;                    use Types;
 with Why.Atree.Accessors;      use Why.Atree.Accessors;
 with Why.Atree.Modules;        use Why.Atree.Modules;
 with Why.Conversions;          use Why.Conversions;
-with Why.Gen.Terms;            use Why.Gen.Terms;
 with Why.Ids;                  use Why.Ids;
 with Why.Sinfo;                use Why.Sinfo;
 
@@ -68,8 +67,7 @@ package Why.Gen.Init is
       Params                 : Transformation_Params;
       Domain                 : EW_Domain;
       Exclude_Always_Relaxed : Boolean := False;
-      No_Predicate_Check     : Boolean := False;
-      Top_Predicate          : W_Term_Id := True_Term)
+      No_Predicate_Check     : Boolean := False)
       return W_Expr_Id;
    --  Whether Name is initialized. This does not only include the top level
    --  initialization flag of E but also the flags of nested components for
@@ -88,9 +86,6 @@ package Why.Gen.Init is
    --  predicate check if any. If No_Predicate_Check is True, then the
    --  predicate of the type itself will not be included. Predicates of
    --  subcomponents are still considered.
-   --  Top_Predicate is used to only assume the inherited predicates on
-   --  the parameter of the predicate function of a type annotated with
-   --  Relaxed_Initialization.
 
    function New_Init_Attribute_Access
      (E    : Entity_Id;

@@ -40,6 +40,7 @@ with Why.Gen.Expr;                use Why.Gen.Expr;
 with Why.Gen.Names;               use Why.Gen.Names;
 with Why.Gen.Progs;               use Why.Gen.Progs;
 with Why.Gen.Records;             use Why.Gen.Records;
+with Why.Gen.Terms;               use Why.Gen.Terms;
 with Why.Images;                  use Why.Images;
 with Why.Inter;                   use Why.Inter;
 with Why.Types;                   use Why.Types;
@@ -56,8 +57,7 @@ package body Why.Gen.Init is
       Params                 : Transformation_Params;
       Domain                 : EW_Domain;
       Exclude_Always_Relaxed : Boolean := False;
-      No_Predicate_Check     : Boolean := False;
-      Top_Predicate          : W_Term_Id := True_Term)
+      No_Predicate_Check     : Boolean := False)
       return W_Expr_Id
    is
 
@@ -158,41 +158,24 @@ package body Why.Gen.Init is
             raise Program_Error;
          end if;
 
-         --  If Expr has an init wrapper type, add the predicate if any.
-         --  Only assume the predicate of the type itself when the top
-         --  predicate should be included. Otherwise, assume the predicate of
-         --  the first ancestor only.
+         --  If Expr has an init wrapper type, add the predicate if any
 
          if not No_Predicate_Check
            and then Is_Init_Wrapper_Type (Get_Type (+Tmp))
          then
             declare
-               Typ_Pred              : constant W_Pred_Id :=
+               Typ_Pred     : constant W_Pred_Id :=
                  Compute_Dynamic_Predicate
                    (Insert_Simple_Conversion
                       (Expr => +Tmp, To => EW_Abstract (Retysp (E))),
                     Retysp (E), Params);
                --  Don't use the wrapper type to avoid duplicating the
                --  initialization checks already performed.
-               Anc_Ty                : constant Entity_Id :=
-                 Retysp (Etype (Retysp (E)));
-               Anc_Typ_Pred          : constant W_Pred_Id :=
-                 (if Anc_Ty = Retysp (E) then True_Pred
-                  else Compute_Dynamic_Predicate
-                    (Insert_Simple_Conversion
-                         (Expr => +Tmp, To => EW_Abstract (Retysp (E))),
-                     Anc_Ty, Params));
-               Check_Pred            : constant W_Pred_Id :=
-                 New_Conditional
-                   (Condition => Pred_Of_Boolean_Term (Top_Predicate),
-                    Then_Part => Typ_Pred,
-                    Else_Part => Anc_Typ_Pred,
-                    Typ       => EW_Bool_Type);
 
             begin
                if not Is_True_Boolean (+Typ_Pred) then
                   P := New_And_Pred (Left  => P,
-                                     Right => Check_Pred);
+                                     Right => Typ_Pred);
                end if;
             end;
          end if;

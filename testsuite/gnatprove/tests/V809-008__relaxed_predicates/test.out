@@ -20,7 +20,7 @@ test_predicates.adb:37:12: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:42:04: warning: analyzing unreferenced function "Default"
 test_predicates.adb:42:13: warning: Relaxed_Initialization annotation is useless
 test_predicates.adb:42:13: warning: the result of "Default" cannot be partially initialized
-test_predicates.adb:47:14: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:47:14: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:47:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:47:14: medium: initialization check might fail
 test_predicates.adb:47:14: medium: predicate check might fail (e.g. when X.F.C'Initialized = False and X.G.C'Initialized = False)
@@ -32,11 +32,11 @@ test_predicates.adb:62:17: medium: initialization check might fail
 test_predicates.adb:62:17: medium: predicate check might fail
 test_predicates.adb:65:15: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:70:04: warning: analyzing unreferenced function "Default"
-test_predicates.adb:73:14: info: initialization check proved (CVC5: 4 VC; Trivial: 7 VC)
+test_predicates.adb:73:14: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:73:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:73:14: medium: initialization check might fail
 test_predicates.adb:73:14: medium: predicate check might fail (e.g. when X.F.C'Initialized = False and X.G.C'Initialized = False)
-test_predicates.adb:86:14: info: postcondition proved (CVC5: 6 VC; Trivial: 19 VC)
+test_predicates.adb:86:14: info: postcondition proved (CVC5: 6 VC; Trivial: 17 VC)
 test_predicates.adb:89:22: info: assertion proved (CVC5: 1 VC)
 test_predicates.adb:89:23: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
 test_predicates.adb:89:23: info: predicate check proved (CVC5: 1 VC)
@@ -67,18 +67,18 @@ test_predicates.adb:113:36: info: predicate check proved (CVC5: 1 VC), in call i
 test_predicates.adb:118:04: warning: analyzing unreferenced function "Default"
 test_predicates.adb:128:13: warning: Relaxed_Initialization annotation is useless
 test_predicates.adb:128:13: warning: the result of "Get" cannot be partially initialized
-test_predicates.adb:134:18: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:134:18: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:134:18: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:134:18: medium: initialization check might fail
 test_predicates.adb:134:18: medium: predicate check might fail
 test_predicates.adb:136:18: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
-test_predicates.adb:136:18: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:136:18: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:136:18: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:140:19: warning: unused variable "X"
 test_predicates.adb:142:22: warning: unused variable "X"
 test_predicates.adb:152:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:153:14: info: predicate check proved (CVC5: 1 VC)
-test_predicates.adb:154:18: info: initialization check proved (CVC5: 6 VC; Trivial: 19 VC)
+test_predicates.adb:154:18: info: initialization check proved (CVC5: 6 VC; Trivial: 17 VC)
 test_predicates.adb:158:10: medium: initialization check might fail
 test_predicates.adb:158:10: medium: predicate check might fail
 test_predicates.adb:162:14: info: predicate check proved (CVC5: 1 VC)
@@ -95,41 +95,41 @@ test_predicates.adb:181:10: info: initialization check proved (CVC5: 2 VC; Trivi
 test_predicates.adb:181:10: medium: predicate check might fail
 test_predicates.adb:185:24: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:185:54: info: predicate check proved (CVC5: 1 VC)
-test_predicates.adb:186:18: info: initialization check proved (CVC5: 6 VC; Trivial: 19 VC)
+test_predicates.adb:186:18: info: initialization check proved (CVC5: 6 VC; Trivial: 17 VC)
 test_predicates.adb:188:34: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:189:18: medium: initialization check might fail
 test_predicates.adb:191:39: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:191:60: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
-test_predicates.adb:191:60: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:191:60: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:191:60: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:192:18: medium: initialization check might fail
 test_predicates.adb:194:39: info: predicate check proved (CVC5: 1 VC)
-test_predicates.adb:194:60: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:194:60: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:194:60: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:194:60: medium: initialization check might fail
 test_predicates.adb:194:60: medium: predicate check might fail
 test_predicates.adb:196:34: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:197:39: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:197:60: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
-test_predicates.adb:197:60: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:197:60: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:197:60: info: predicate check proved (CVC5: 1 VC)
-test_predicates.adb:198:18: info: initialization check proved (CVC5: 6 VC; Trivial: 19 VC)
+test_predicates.adb:198:18: info: initialization check proved (CVC5: 6 VC; Trivial: 17 VC)
 test_predicates.adb:206:17: medium: predicate check might fail
 test_predicates.adb:206:23: medium: initialization check might fail (e.g. when H.C'Initialized = False)
 test_predicates.adb:212:14: medium: predicate check might fail
-test_predicates.adb:212:16: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:212:16: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:212:16: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:212:16: medium: initialization check might fail
 test_predicates.adb:212:16: medium: predicate check might fail
 test_predicates.adb:214:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:215:14: medium: predicate check might fail
 test_predicates.adb:215:16: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
-test_predicates.adb:215:16: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:215:16: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:215:16: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:217:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:221:17: medium: predicate check might fail
 test_predicates.adb:221:19: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
-test_predicates.adb:221:19: info: initialization check proved (CVC5: 3 VC; Trivial: 8 VC)
+test_predicates.adb:221:19: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:221:19: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:221:38: medium: initialization check might fail
 test_predicates_2.adb:1:11: warning: subprogram "Test_Predicates_2" has no effect

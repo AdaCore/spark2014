@@ -1,0 +1,11 @@
+test.adb:6:27: medium: overflow check might fail, cannot prove upper bound for Integer (My_Int) + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+test.adb:19:24: medium: overflow check might fail, cannot prove upper bound for To_Int (S) + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+test.adb:34:09: info: initialization check proved (CVC5: 1 VC)
+test.adb:35:13: info: initialization check proved (CVC5: 1 VC)
+test.adb:35:15: medium: overflow check might fail, cannot prove upper bound for F + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+test.adb:42:10: medium: initialization check might fail
+test_2.adb:8:35: info: overflow check proved (CVC5: 2 VC)
+test_2.adb:15:15: info: initialization check proved (CVC5: 1 VC)
+test_2.adb:18:19: info: predicate check proved (CVC5: 2 VC)
+test_2.adb:18:24: info: initialization check proved (CVC5: 1 VC)
+test_2.adb:18:27: info: overflow check proved (CVC5: 2 VC)
