@@ -13,34 +13,20 @@ def run(cmd):
 
 
 def run_manual(check_to_prove, option=""):
-    cmd = "gnatprove -P sparklib.gpr -U --prover=coq"
+    cmd = "gnatprove -j0 -P sparklib.gpr -U --prover=coq"
     if ":" not in check_to_prove:
         run(cmd + " " + option + check_to_prove)
     else:
         run(cmd + " " + option + "--limit-line=" + check_to_prove)
 
 
-def run_automatic(prover, level=4):
+def run_automatic(prover, level=4, timeout=None):
     cmd = (
         "gnatprove -P sparklib.gpr --counterexamples=off -j0"
-        + " --prover="
-        + prover
-        + " --level="
-        + str(level)
+        + f" --prover={prover} --level={level}"
     )
-    run(cmd)
-
-
-def run_automatic_timeout(prover, level=4, timeout=100):
-    cmd = (
-        "gnatprove -P sparklib.gpr --counterexamples=off -j0"
-        + " --prover="
-        + prover
-        + " --level="
-        + str(level)
-        + " --timeout="
-        + str(timeout)
-    )
+    if timeout is not None:
+        cmd += f" --timeout={timeout}"
     run(cmd)
 
 
@@ -180,25 +166,7 @@ def kill_and_regenerate(check):
     print("Prove remaining checks with automatic provers")
     print("---------------------------------------------")
     print("")
-    print("---------------")
-    print("Start with CVC5")
-    print("---------------")
-    run_automatic("cvc5", level=2)
-    print("")
-    print("------------")
-    print("Then with Z3")
-    print("------------")
-    run_automatic_timeout("z3", level=2, timeout=100)
-    print("")
-    print("-----------------")
-    print("Then Alt-Ergo")
-    print("-----------------")
-    run_automatic_timeout("altergo", level=2)
-    print("")
-    print("----------------")
-    print("End with Colibri")
-    print("----------------")
-    run_automatic("colibri", level=2)
+    run_automatic("cvc5,z3,alt-ergo,colibri", level=2, timeout=100)
     print("")
     print("---------------------------")
     print("Summarize all proved checks")
