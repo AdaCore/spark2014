@@ -22,7 +22,8 @@ root-child.ads:10:23: info: in default value of private type at root-child.ads:2
 root-child.ads:10:23: info: range check proved (CVC5: 2 VC)
 root-child.ads:13:40: info: overflow check proved (CVC5: 2 VC)
 root-child.ads:16:40: info: overflow check proved (CVC5: 2 VC)
-root.ads:1:09: info: invariant check proved (CVC5: 1 VC)
+root.adb:6:04: info: at the end of the elaboration of package at root.ads:1
+root.adb:6:04: info: invariant check proved (CVC5: 1 VC)
 root.ads:3:13: info: invariant check proved (CVC5: 1 VC)
 root.ads:4:13: medium: invariant check might fail (e.g. when Bad'Result = -1) [possible fix: add or complete related loop invariants or postconditions]
 root.ads:6:14: info: invariant check proved (CVC5: 1 VC)

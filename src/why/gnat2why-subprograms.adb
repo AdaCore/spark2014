@@ -105,6 +105,15 @@ package body Gnat2Why.Subprograms is
    --    entity, i.e. that external calls to protected operations are made with
    --    a priority lower or equal to the priority of the object in question.
 
+   function Check_Type_Invariants_For_Package
+     (E      : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   with
+     Pre => Ekind (E) = E_Package;
+   --  @param E Entity of a package
+   --  @param Params the transformation parameters
+   --  @result program peforming an invariant check after E's elaboration
+
    procedure Clear_Exceptions;
    --  Initialization procedure to call before start of subprogram/package
    --  handling.
@@ -229,16 +238,6 @@ package body Gnat2Why.Subprograms is
    function Compute_Raw_Binders (E : Entity_Id) return Item_Array;
    --  Return Why binders for the parameters of subprogram E. The array is
    --  empty if E has no parameters.
-
-   function Compute_Type_Invariants_For_Package
-     (E      : Entity_Id;
-      Params : Transformation_Params) return W_Pred_Id
-   with
-     Pre => Ekind (E) = E_Package;
-   --  @param E Entity of a package.
-   --  @param Params the transformation parameters
-   --  @result a predicate including the type invariants that should be checked
-   --          after E's elaboration.
 
    function Compute_Type_Invariants_For_Subprogram
      (E         : Entity_Id;
@@ -637,6 +636,125 @@ package body Gnat2Why.Subprograms is
          return S;
       end;
    end Check_Ceiling_Protocol;
+
+   ----------------------------------------
+   --  Check_Type_Invariants_For_Package --
+   ----------------------------------------
+
+   function Check_Type_Invariants_For_Package
+     (E      : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   is
+      Checks : W_Statement_Sequence_Id := Void_Sequence;
+
+   begin
+      --  We use the Initializes aspect to get the variables initialized during
+      --  elaboration.
+      --  We don't do it for wrapper packages as they do not have local
+      --  variables / constants.
+
+      if not Is_Wrapper_Package (E) then
+         declare
+            Init_Map   : constant Dependency_Maps.Map :=
+              Parse_Initializes (E, Get_Flow_Scope (E));
+            Check_Info : Check_Info_Type := New_Check_Info;
+
+         begin
+            --  The checks will be localized at the global declaration. Add a
+            --  continuation to make it clear that the checks are done after
+            --  the package's elaboration.
+
+            Check_Info.Continuation.Append
+              (Continuation_Type'
+                 (E,
+                  To_Unbounded_String
+                    ("at the end of the elaboration of package")));
+
+            for Cu in Init_Map.Iterate loop
+               declare
+                  K  : Flow_Id renames Dependency_Maps.Key (Cu);
+                  FS : constant Flow_Id_Sets.Set :=
+                    Expand_Abstract_State (K);
+
+                  --  From the expansion of the LHS of an Initializes contract
+                  --  we only get constants, variables and abstract states
+                  --  (when the expansion stops at a SPARK_Mode => Off); these
+                  --  are known by an Entity_Id but are wrapped in a
+                  --  Direct_Mapping or Magic_String kinds of Flow_Id,
+                  --  depending whether they are in SPARK.
+
+               begin
+                  for F of FS loop
+                     case F.Kind is
+                        when Direct_Mapping =>
+                           declare
+                              Obj : Entity_Id := Get_Direct_Mapping_Id (F);
+
+                              pragma Assert (Ekind (Obj) in E_Abstract_State
+                                                          | E_Constant
+                                                          | E_Variable);
+
+                           begin
+                              --  Only partial views of constants are stored in
+                              --  the symbol map.
+
+                              if Ekind (Obj) = E_Constant
+                                and then Is_Full_View (Obj)
+                              then
+                                 Obj := Partial_View (Obj);
+                              end if;
+
+                              --  Only consider objects that are in SPARK.
+                              --  Other objects (and abstract states) are
+                              --  translated to a private type in Why.
+
+                              if Is_Object (Obj)
+                                and then not Is_Part_Of_Concurrent_Object (Obj)
+                              then
+                                 declare
+                                    Binder  : constant Item_Type :=
+                                      Ada_Ent_To_Why.Element
+                                        (Symbol_Table, Obj);
+                                    Expr    : constant W_Term_Id :=
+                                      Reconstruct_Item
+                                        (Binder,
+                                         Ref_Allowed => Params.Ref_Allowed);
+                                    Dyn_Inv : constant W_Pred_Id :=
+                                      Compute_Type_Invariant
+                                        (Expr        => Expr,
+                                         Ty          => Etype (Obj),
+                                         Params      => Params,
+                                         On_Internal => True);
+                                 begin
+                                    if not Is_True_Boolean (+Dyn_Inv) then
+                                       Append
+                                         (Checks,
+                                          Right  => New_Assert
+                                            (Pred        => New_VC_Pred
+                                                 (Obj,
+                                                  Dyn_Inv,
+                                                  VC_Invariant_Check,
+                                                  Check_Info),
+                                             Assert_Kind => EW_Assert));
+                                    end if;
+                                 end;
+                              end if;
+                           end;
+
+                        when Magic_String =>
+                           pragma Assert (Is_Opaque_For_Proof (F));
+
+                        when others =>
+                           raise Program_Error;
+                     end case;
+                  end loop;
+               end;
+            end loop;
+         end;
+      end if;
+
+      return +Checks;
+   end Check_Type_Invariants_For_Package;
 
    ----------------------
    -- Clear_Exceptions --
@@ -1476,103 +1594,6 @@ package body Gnat2Why.Subprograms is
       return (if Domain = EW_Prog then Raw_Binders
               else Add_Logic_Binders (E, Raw_Binders));
    end Compute_Subprogram_Parameters;
-
-   ------------------------------------------
-   --  Compute_Type_Invariants_For_Package --
-   ------------------------------------------
-
-   function Compute_Type_Invariants_For_Package
-     (E      : Entity_Id;
-      Params : Transformation_Params) return W_Pred_Id
-   is
-      Inv_Pred : W_Pred_Id := True_Pred;
-
-   begin
-      --  We use the Initializes aspect to get the variables initialized during
-      --  elaboration.
-      --  We don't do it for wrapper packages as they do not have local
-      --  variables / constants.
-
-      if not Is_Wrapper_Package (E) then
-         declare
-            Init_Map : constant Dependency_Maps.Map :=
-              Parse_Initializes (E, Get_Flow_Scope (E));
-
-         begin
-            for Cu in Init_Map.Iterate loop
-               declare
-                  K  : Flow_Id renames Dependency_Maps.Key (Cu);
-                  FS : constant Flow_Id_Sets.Set :=
-                    Expand_Abstract_State (K);
-
-                  --  From the expansion of the LHS of an Initializes contract
-                  --  we only get constants, variables and abstract states
-                  --  (when the expansion stops at a SPARK_Mode => Off); these
-                  --  are known by an Entity_Id but are wrapped in a
-                  --  Direct_Mapping or Magic_String kinds of Flow_Id,
-                  --  depending whether they are in SPARK.
-
-               begin
-                  for F of FS loop
-                     case F.Kind is
-                        when Direct_Mapping =>
-                           declare
-                              E : Entity_Id := Get_Direct_Mapping_Id (F);
-
-                              pragma Assert (Ekind (E) in E_Abstract_State
-                                                        | E_Constant
-                                                        | E_Variable);
-
-                           begin
-                              --  Only partial views of constants are stored in
-                              --  the symbol map.
-
-                              if Ekind (E) = E_Constant
-                                and then Is_Full_View (E)
-                              then
-                                 E := Partial_View (E);
-                              end if;
-
-                              --  Only consider objects that are in SPARK.
-                              --  Other objects (and abstract states) are
-                              --  translated to a private type in Why.
-
-                              if Is_Object (E)
-                                and then not Is_Part_Of_Concurrent_Object (E)
-                              then
-                                 declare
-                                    Binder : constant Item_Type :=
-                                      Ada_Ent_To_Why.Element (Symbol_Table, E);
-                                    Expr   : constant W_Term_Id :=
-                                      Reconstruct_Item
-                                        (Binder,
-                                         Ref_Allowed => Params.Ref_Allowed);
-                                 begin
-                                    Inv_Pred := New_And_Pred
-                                      (Left   => Inv_Pred,
-                                       Right  => Compute_Type_Invariant
-                                         (Expr        => Expr,
-                                          Ty          => Etype (E),
-                                          Params      => Params,
-                                          On_Internal => True));
-                                 end;
-                              end if;
-                           end;
-
-                        when Magic_String =>
-                           pragma Assert (Is_Opaque_For_Proof (F));
-
-                        when others =>
-                           raise Program_Error;
-                     end case;
-                  end loop;
-               end;
-            end loop;
-         end;
-      end if;
-
-      return Inv_Pred;
-   end Compute_Type_Invariants_For_Package;
 
    --------------------------------------------
    -- Compute_Type_Invariants_For_Subprogram --
@@ -3092,16 +3113,10 @@ package body Gnat2Why.Subprograms is
 
       declare
          Params : constant Transformation_Params := Contract_Params;
-         Check  : constant W_Pred_Id :=
-           Compute_Type_Invariants_For_Package (E, Params);
       begin
-         if not Is_True_Boolean (+Check) then
-            Append
-              (Why_Body,
-               New_Assert
-                 (Pred        => New_VC_Pred (E, Check, VC_Invariant_Check),
-                  Assert_Kind => EW_Assert));
-         end if;
+         Append
+           (Why_Body,
+            Check_Type_Invariants_For_Package (E, Params));
       end;
 
       --  Translate public and private declarations of the package

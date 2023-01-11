@@ -7,6 +7,8 @@ invariants.adb:11:19: info: index check proved
 invariants.adb:16:07: info: precondition proved
 invariants.adb:24:07: info: precondition proved
 invariants.adb:24:07: info: invariant check proved
+invariants.adb:27:04: info: invariant check proved
+  at the end of the elaboration of package at invariants.ads:1
 
 invariants.adb:33:14: medium: invariant check might fail
    33 |   procedure Push_Internal (E : Element) with
@@ -17,7 +19,6 @@ invariants.adb:43:07: info: precondition proved
 invariants.adb:43:07: info: invariant check proved
 invariants.adb:51:07: info: precondition proved
 invariants.adb:51:07: info: invariant check proved
-invariants.ads:1:09: info: invariant check proved
 invariants.ads:13:14: info: invariant check proved
 invariants.ads:14:13: info: invariant check proved
 invariants.ads:16:14: info: invariant check proved
