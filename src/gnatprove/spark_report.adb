@@ -755,6 +755,7 @@ procedure SPARK_Report is
 
       Entries : constant JSON_Array := Get (Get (Dict, "spark"));
    begin
+      Add_Analysis_Progress (Unit, Analysis, Stop_Reason);
       for Index in 1 .. Length (Entries) loop
          declare
             Result       : constant JSON_Value := Get (Entries, Index);
@@ -765,8 +766,6 @@ procedure SPARK_Report is
               (Unit         => Unit,
                Subp         => From_JSON (Result),
                SPARK_Status => SPARK_Status);
-
-            Add_Analysis_Progress (Unit, Analysis, Stop_Reason);
 
             --  If at least one subprogram or package is fully in SPARK, then
             --  record that SPARK_Mode is likely set at least somewhere.
@@ -992,6 +991,8 @@ procedure SPARK_Report is
       begin
          case Reason is
             when Stop_Reason_None         => return "";
+            when Stop_Reason_Generic_Unit =>
+               return "generic unit is not analyzed";
             when Stop_Reason_Check_Mode   =>
                return "only SPARK_Mode checking was requested";
             when Stop_Reason_Flow_Mode =>

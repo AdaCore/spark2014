@@ -781,6 +781,7 @@ package VC_Kinds is
 
    type Stop_Reason_Type is
      (Stop_Reason_None,
+      Stop_Reason_Generic_Unit,    --  The unit is a generic unit
       Stop_Reason_Check_Mode,      --  Only check mode was requested
       Stop_Reason_Flow_Mode,       --  Only flow analysis was requested
       Stop_Reason_Error_Marking,   --  Error during marking

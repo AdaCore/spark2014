@@ -631,7 +631,8 @@ package body Gnat2Why.Driver is
             Flow_Generated_Globals.Phase_1.GG_Write_Finalize;
          end if;
 
-         goto Leave;
+         Stop_Reason := Stop_Reason_Generic_Unit;
+         goto Leave_With_JSON;
       end if;
 
       --  Allow the generation of new nodes and lists, which might happen when
