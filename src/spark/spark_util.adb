@@ -4921,43 +4921,114 @@ package body SPARK_Util is
       end if;
 
       declare
-         function Is_In_Statement_List (N : Node_Id) return Boolean;
-         --  Return True if N occurs in a list of statements
+         function Is_In_Statement_List_Or_Post (N : Node_Id) return Boolean;
+         --  Return True if N occurs in a list of statements or in a pragma
+         --  postcondition.
 
          --------------------------
          -- Is_In_Statement_List --
          --------------------------
 
-         function Is_In_Statement_List (N : Node_Id) return Boolean is
+         function Is_In_Statement_List_Or_Post (N : Node_Id) return Boolean is
          begin
-            return Is_List_Member (N)
-              and then Nkind (Parent (N)) in N_Case_Statement_Alternative
-                                           | N_Elsif_Part
-                                           | N_If_Statement
-                                           | N_Handled_Sequence_Of_Statements
-                                           | N_Block_Statement
-                                           | N_Subprogram_Body
-                                           | N_Entry_Body
-                                           | N_Loop_Statement
-                                           | N_Extended_Return_Statement;
-         end Is_In_Statement_List;
+            return
+              (Nkind (N) = N_Pragma
+               and then
+                 Get_Pragma_Id (Pragma_Name (N)) in Pragma_Postcondition
+                                                  | Pragma_Post_Class
+                                                  | Pragma_Contract_Cases
+                                                  | Pragma_Refined_Post)
+              or else
+                (Is_List_Member (N)
+                 and then Nkind (Parent (N))
+                    in N_Case_Statement_Alternative
+                     | N_Elsif_Part
+                     | N_If_Statement
+                     | N_Handled_Sequence_Of_Statements
+                     | N_Block_Statement
+                     | N_Subprogram_Body
+                     | N_Entry_Body
+                     | N_Loop_Statement
+                     | N_Extended_Return_Statement);
+         end Is_In_Statement_List_Or_Post;
 
-         function First_Parent_In_Statement_List is new
-           First_Parent_With_Property (Is_In_Statement_List);
+         function First_Parent_In_Statement_List_Or_Post is new
+           First_Parent_With_Property (Is_In_Statement_List_Or_Post);
 
          Variable  : constant Entity_Id := Get_Root_Object (Call_Actual);
          Statement : constant Node_Id :=
            (if Nkind (Call) = N_Function_Call
-            then First_Parent_In_Statement_List (Call)
+            then First_Parent_In_Statement_List_Or_Post (Call)
             else Call);
+
       begin
-         Result :=
-           (Decreases
-            or else Is_Reborrowed_On_All_Path_To_Stmt (Variable, Statement))
-           and then
-             (Is_Constant_In_SPARK (Param)
+         --  Result is set to True if the variant at call site is a strict
+         --  subcomponent of the caller's variant and the caller's variant
+         --  is not modified in a deep way along the way.
+
+         --  If we are in a post condition, we must consider the whole body of
+         --  the caller.
+
+         if Nkind (Statement) = N_Pragma
+           and then Get_Pragma_Id (Pragma_Name (Statement)) in
+                Pragma_Postcondition
+              | Pragma_Post_Class
+              | Pragma_Contract_Cases
+              | Pragma_Refined_Post
+         then
+            pragma Assert (Variable = Param);
+
+            --  Expr is necessarily rooted at Param itself. We do not
+            --  consider the case of reborrowed parameters as they are unlikely
+            --  (as is done in Is_Reborrowed_On_All_Path_To_Stmt).
+
+            if not Decreases then
+               Explanation := To_Unbounded_String
+                 ("structural variant of """ & Source_Name (Subp)
+                  & """ might not be a strict subcomponent of """
+                  & Source_Name (Param) & '"');
+               Result := False;
+
+            elsif Is_Constant_In_SPARK (Param)
               or else not Is_Deep (Etype (Param))
-              or else No_Deep_Updates_Up_To_Stmt (Variable, Statement));
+            then
+               Result := True;
+
+            --  We check that the parameter is not updated in a deep way by
+            --  the subprogram.
+
+            else
+               declare
+                  Caller : constant Entity_Id := Scope (Param);
+                  pragma Assert
+                    (not Is_Expression_Function_Or_Completion (Caller)
+                     and then Entity_Body_In_SPARK (Caller));
+
+                  Body_N : constant Node_Id := Get_Body (Caller);
+                  Stmts  : constant List_Id :=
+                    Statements (Handled_Statement_Sequence (Body_N));
+                  Decls  : constant List_Id := Declarations (Body_N);
+               begin
+                  Result := No_Deep_Updates
+                      (Stmts       => Stmts,
+                       Variable    => Variable,
+                       Explanation => Explanation,
+                       Decls       => Decls);
+               end;
+            end if;
+
+         --  Otherwise, we only consider the paths leading to the statement
+         --  enclosing the call.
+
+         else
+            Result :=
+              (Decreases
+               or else Is_Reborrowed_On_All_Path_To_Stmt (Variable, Statement))
+              and then
+                (Is_Constant_In_SPARK (Param)
+                 or else not Is_Deep (Etype (Param))
+                 or else No_Deep_Updates_Up_To_Stmt (Variable, Statement));
+         end if;
       end;
    end Structurally_Decreases_In_Call;
 
