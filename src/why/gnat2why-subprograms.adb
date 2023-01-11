@@ -3049,7 +3049,8 @@ package body Gnat2Why.Subprograms is
             --  initial condition.
 
             Params.Phase := Generate_VCs_For_Contract;
-            Why_Body := Transform_Prog (Expr, EW_Bool_Type, Params);
+            Why_Body :=
+              New_Ignore (Prog => Transform_Prog (Expr, EW_Bool_Type, Params));
          end;
 
       --  No initial condition, so no postcondition for the generated
