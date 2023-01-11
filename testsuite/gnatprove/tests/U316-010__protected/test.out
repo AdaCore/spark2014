@@ -1,11 +1,15 @@
+p.adb:4:27: warning: assuming no concurrent accesses to non-atomic object "A"
 p.adb:4:27: warning: consider annotating "A" with Async_Writers
 p.adb:4:27: warning: indirect writes to "A" through a potential alias are ignored
 p.adb:4:27: warning: make sure that all overlapping objects have Async_Writers set to True
 p.adb:4:27: warning: writing to "A" is assumed to have no effects on other non-volatile objects
+p.adb:4:39: warning: assuming valid reads from object "A"
 p.adb:6:12: warning: unused assignment
 p.adb:6:19: high: "A" is not initialized
+p.adb:9:27: warning: assuming no concurrent accesses to non-atomic object "A"
 p.adb:9:27: warning: consider annotating "A" with Async_Writers
 p.adb:9:27: warning: indirect writes to "A" through a potential alias are ignored
 p.adb:9:27: warning: make sure that all overlapping objects have Async_Writers set to True
 p.adb:9:27: warning: writing to "A" is assumed to have no effects on other non-volatile objects
+p.adb:9:39: warning: assuming valid reads from object "A"
 p.adb:11:19: high: "A" is not initialized
