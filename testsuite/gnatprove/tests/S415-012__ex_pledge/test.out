@@ -55,7 +55,7 @@ in_out_pledge.adb:78:14: info: pointer dereference check proved (Z3: 1 VC)
 in_out_pledge.adb:81:22: info: assertion proved (Z3: 1 VC)
 in_out_pledge.adb:82:22: info: assertion proved (CVC5: 1 VC)
 in_out_pledge.adb:82:27: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:83:22: medium: assertion might fail
+in_out_pledge.adb:83:22: info: assertion proved (Z3: 1 VC)
 in_out_pledge.adb:83:27: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:83:32: info: pointer dereference check proved (Z3: 1 VC)
 in_out_pledge.adb:84:22: info: precondition proved (CVC5: 1 VC)

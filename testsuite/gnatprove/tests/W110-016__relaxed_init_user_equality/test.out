@@ -1,5 +1,5 @@
-equals.adb:19:53: medium: initialization check might fail [possible fix: subprogram at line 19 should mention X in a precondition]
-equals.adb:19:57: medium: initialization check might fail [possible fix: subprogram at line 19 should mention Y in a precondition]
+equals.adb:19:53: medium: initialization check might fail (e.g. when X = (C => (I => False, F => ?)) and X.C.F'Initialized = False and Y = (C => (I => False, F => ?)) and Y.C.F'Initialized = False) [possible fix: subprogram at line 19 should mention X in a precondition]
+equals.adb:19:57: medium: initialization check might fail (e.g. when X = (C => (I => False, F => ?)) and X.C.F'Initialized = False and Y = (C => (I => False, F => ?)) and Y.C.F'Initialized = False) [possible fix: subprogram at line 19 should mention Y in a precondition]
 equals.adb:20:53: medium: initialization check might fail [possible fix: subprogram at line 20 should mention X in a precondition]
 equals.adb:20:57: medium: initialization check might fail [possible fix: subprogram at line 20 should mention Y in a precondition]
 equals.adb:33:43: info: initialization check proved (CVC5: 1 VC)
