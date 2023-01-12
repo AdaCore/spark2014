@@ -98,6 +98,7 @@ with Why.Gen.Binders;                 use Why.Gen.Binders;
 with Why.Gen.Expr;                    use Why.Gen.Expr;
 with Why.Gen.Names;
 with Why.Inter;                       use Why.Inter;
+with Why.Images;                      use Why.Images;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
@@ -202,8 +203,8 @@ package body Gnat2Why.Driver is
      with Post => Output_File_Map.Is_Empty;
    --  Wait until all child gnatwhy3 processes finish and collect their results
 
-   procedure Run_Gnatwhy3 (Filename : String)
-   with Pre => Output_File_Map.Length <= Max_Subprocesses;
+   procedure Run_Gnatwhy3 (E : Entity_Id; Filename : String)
+   with Pre => Output_File_Map.Length <= Max_Subprocesses and then Present (E);
    --  After generating the Why file, run the proof tool. Wait for existing
    --  gnatwhy3 processes to finish if Max_Subprocesses is already reached.
 
@@ -482,7 +483,7 @@ package body Gnat2Why.Driver is
               Compute_Why3_File_Name (E, ".gnat-json");
          begin
             Print_GNAT_Json_File (File_Name);
-            Run_Gnatwhy3 (File_Name);
+            Run_Gnatwhy3 (E, File_Name);
          end;
       end if;
 
@@ -1036,7 +1037,7 @@ package body Gnat2Why.Driver is
    -- Run_Gnatwhy3 --
    ------------------
 
-   procedure Run_Gnatwhy3 (Filename : String) is
+   procedure Run_Gnatwhy3 (E : Entity_Id; Filename : String) is
       use Ada.Directories;
       use Ada.Containers;
       Fn        : constant String := Compose (Current_Directory, Filename);
@@ -1055,6 +1056,8 @@ package body Gnat2Why.Driver is
          Collect_One_Result;
       end if;
 
+      Why3_Args.Append ("--entity");
+      Why3_Args.Append (Img (E));
       --  Modifying the command line and printing it for debug purposes. We
       --  need to append the file first, then print the debug output, because
       --  this corresponds to the actual command line run, and finally remove

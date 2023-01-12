@@ -57,7 +57,6 @@ package body Gnat2Why.Error_Messages is
 
    type VC_Info is record
       Node       : Node_Id;
-      Entity     : Entity_Id;
       Kind       : VC_Kind;
       Check_Info : Check_Info_Type;
    end record;
@@ -776,6 +775,8 @@ package body Gnat2Why.Error_Messages is
 
       use GNATCOLL.JSON;
 
+      Subp : Entity_Id;
+
       type Bound_Info_Type is (No_Bound, Low_Bound, High_Bound);
 
       type Inline_Info (Inline : Boolean := False) is record
@@ -946,7 +947,7 @@ package body Gnat2Why.Error_Messages is
          begin
             Small_Step_Res :=
               Small_Step_Rac
-                (VC.Entity, Cntexmp, VC.Node, Fuel, Use_Fuzzing);
+                (Subp, Cntexmp, VC.Node, Fuel, Use_Fuzzing);
 
             if Small_Step_Res.Res_Kind = CE_RAC.Res_Failure then
                begin
@@ -1133,8 +1134,8 @@ package body Gnat2Why.Error_Messages is
 
             if VC.Kind not in VC_Warning_Kind
               and then Rec.Giant_Step_Res.Res_Kind not in Res_Failure
-              and then Ekind (VC.Entity) in E_Function | E_Procedure
-              and then To_Initialize_Present (VC.Entity)
+              and then Ekind (Subp) in E_Function | E_Procedure
+              and then To_Initialize_Present (Subp)
             then
                --  Begin fuzzing
 
@@ -1282,7 +1283,7 @@ package body Gnat2Why.Error_Messages is
                Id            => Rec.Id,
                Kind          => Rec.Kind,
                Proved        => Rec.Result,
-               E             => VC.Entity,
+               E             => Subp,
                SD_Id         => SD_Id,
                How_Proved    => PC_Prover,
                Cntexmp       => Rec.Cntexmp,
@@ -1464,6 +1465,7 @@ package body Gnat2Why.Error_Messages is
                Handle_Error (Msg, Internal);
             end;
          end if;
+         Subp := Entity_Id (Integer'(Get (File, "entity")));
          if Has_Field (File, "session_dir") then
             SD_Id := Register_Session_Dir (Get (Get (File, "session_dir")));
          end if;
@@ -1534,7 +1536,7 @@ package body Gnat2Why.Error_Messages is
    is
       Registered_Id : VC_Id;
    begin
-      VC_Table.Append (VC_Info'(N, E, Reason, Check_Info));
+      VC_Table.Append (VC_Info'(N, Reason, Check_Info));
       Registered_Id := VC_Table.Last_Index;
 
       --  Do not consider warnings in the set of checks associated to an
