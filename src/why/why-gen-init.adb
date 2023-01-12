@@ -56,7 +56,7 @@ package body Why.Gen.Init is
       Name                   : W_Expr_Id;
       Params                 : Transformation_Params;
       Domain                 : EW_Domain;
-      Exclude_Always_Relaxed : Boolean := False;
+      Excluded_Subcomponents : Exclude_Init_Check_Flag := None;
       No_Predicate_Check     : Boolean := False)
       return W_Expr_Id
    is
@@ -68,14 +68,18 @@ package body Why.Gen.Init is
       function Is_Initialized_For_Comp
         (C_Expr : W_Term_Id; C_Ty : Entity_Id)
          return W_Pred_Id
-      is (if Exclude_Always_Relaxed and then Has_Relaxed_Init (C_Ty)
+      is (if Is_Subcomponent_Excluded (C_Ty)
           then True_Pred
           else +Compute_Is_Initialized
             (E                      => C_Ty,
              Name                   => +C_Expr,
              Params                 => Params,
              Domain                 => EW_Pred,
-             Exclude_Always_Relaxed => Exclude_Always_Relaxed));
+             Excluded_Subcomponents => Excluded_Subcomponents));
+
+      function Is_Subcomponent_Excluded (C_Ty : Entity_Id) return Boolean;
+      --  Test whether initialization condition
+      --  for a subcomponent of type C_Ty should be excluded
 
       -----------------------------
       -- Is_Initialized_For_Comp --
@@ -96,7 +100,8 @@ package body Why.Gen.Init is
             else
                return True_Pred;
             end if;
-         elsif Exclude_Always_Relaxed and then Has_Relaxed_Init (C_Ty) then
+         elsif Is_Subcomponent_Excluded (C_Ty)
+         then
             return True_Pred;
          else
             return +Compute_Is_Initialized
@@ -104,7 +109,7 @@ package body Why.Gen.Init is
                Name                   => +C_Expr,
                Params                 => Params,
                Domain                 => EW_Pred,
-               Exclude_Always_Relaxed => Exclude_Always_Relaxed);
+               Excluded_Subcomponents => Excluded_Subcomponents);
          end if;
       end Is_Initialized_For_Comp;
 
@@ -114,6 +119,17 @@ package body Why.Gen.Init is
       function Is_Initialized_For_Record is new Build_Predicate_For_Record
         (Is_Initialized_For_Comp, Is_Initialized_For_Comp,
          Ignore_Private_State => False);
+
+      ------------------------------
+      -- Is_Subcomponent_Excluded --
+      ------------------------------
+
+      function Is_Subcomponent_Excluded (C_Ty : Entity_Id) return Boolean
+      is (case Excluded_Subcomponents is
+             when None => False,
+             when With_User_Eq => not Use_Predefined_Equality_For_Type (C_Ty),
+             when Relaxed => Has_Relaxed_Init (C_Ty)
+         );
 
       P   : W_Pred_Id;
       R   : W_Expr_Id;
@@ -128,7 +144,7 @@ package body Why.Gen.Init is
       if not Get_Relaxed_Init (Get_Type (+Name))
         and then (Has_Scalar_Type (E)
                   or else Is_Simple_Private_Type (E)
-                  or else Exclude_Always_Relaxed
+                  or else Excluded_Subcomponents = Relaxed
                   or else not Contains_Relaxed_Init_Parts (E))
       then
          return Bool_True (Domain);
@@ -376,7 +392,7 @@ package body Why.Gen.Init is
       E                      : Entity_Id;
       Name                   : W_Expr_Id;
       Domain                 : EW_Domain;
-      Exclude_Always_Relaxed : Boolean := False;
+      Excluded_Subcomponents : Exclude_Init_Check_Flag := None;
       No_Predicate_Check     : Boolean := False)
       return W_Expr_Id
    is
@@ -386,13 +402,13 @@ package body Why.Gen.Init is
       --  We need initialization checking if either Name is an expression with
       --  relaxed initialization or if it contains subcomponents with
       --  relaxed initialization and checks should be introduced for
-      --  these subcomponents (Exclude_Always_Relaxed is False).
+      --  these subcomponents (Excluded_Subcomponents is not Relaxed).
 
       if Domain = EW_Prog
         and then
           (Is_Init_Wrapper_Type (Get_Type (Name))
            or else
-             (not Exclude_Always_Relaxed
+             (Excluded_Subcomponents /= Relaxed
               and then Contains_Relaxed_Init_Parts (E, Ignore_Top => True)))
       then
          T := +Sequence
@@ -402,7 +418,7 @@ package body Why.Gen.Init is
                   Pred     => +Compute_Is_Initialized
                     (E, +Tmp,
                      Params                 => Body_Params,
-                     Exclude_Always_Relaxed => Exclude_Always_Relaxed,
+                     Excluded_Subcomponents => Excluded_Subcomponents,
                      No_Predicate_Check     => No_Predicate_Check,
                      Domain                 => EW_Pred),
                   Reason   => VC_Initialization_Check,

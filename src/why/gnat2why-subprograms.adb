@@ -3734,7 +3734,7 @@ package body Gnat2Why.Subprograms is
                                 (B, Body_Params.Ref_Allowed),
                               Params                 => Body_Params,
                               Domain                 => EW_Pred,
-                              Exclude_Always_Relaxed => True),
+                              Excluded_Subcomponents => Relaxed),
                            Reason   => VC_Initialization_Check,
                            Kind     => EW_Assert));
 

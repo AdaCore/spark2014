@@ -1,0 +1,10 @@
+equals.adb:20:53: medium: initialization check might fail [possible fix: subprogram at line 20 should mention X in a precondition]
+equals.adb:20:57: medium: initialization check might fail [possible fix: subprogram at line 20 should mention Y in a precondition]
+equals.adb:21:53: medium: initialization check might fail [possible fix: subprogram at line 21 should mention X in a precondition]
+equals.adb:21:57: medium: initialization check might fail [possible fix: subprogram at line 21 should mention Y in a precondition]
+equals.adb:34:43: info: initialization check proved (CVC5: 1 VC)
+equals.adb:34:49: info: initialization check proved (CVC5: 1 VC)
+equals.adb:43:53: info: initialization check proved (Trivial: 1 VC)
+equals.adb:43:57: info: initialization check proved (Trivial: 1 VC)
+equals.adb:44:53: info: initialization check proved (Trivial: 1 VC)
+equals.adb:44:57: info: initialization check proved (Trivial: 1 VC)

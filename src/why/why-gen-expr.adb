@@ -1044,7 +1044,7 @@ package body Why.Gen.Expr is
             E                      => From_Ent,
             Name                   => Arr_Init,
             Domain                 => Domain,
-            Exclude_Always_Relaxed => True);
+            Excluded_Subcomponents => Relaxed);
       end if;
 
       Arr_Expr := New_Temp_For_Expr (Arr_Init);
@@ -1569,7 +1569,7 @@ package body Why.Gen.Expr is
                E                      => L,
                Name                   => Result,
                Domain                 => Domain,
-               Exclude_Always_Relaxed => True);
+               Excluded_Subcomponents => Relaxed);
          end if;
          Result := New_Call
            (Ada_Node => Ada_Node,
