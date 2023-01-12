@@ -64,6 +64,11 @@ package body Why.Gen.Init is
       function Is_Initialized_For_Comp
         (C_Expr : W_Term_Id; C_Ty : Entity_Id; E : Entity_Id)
          return W_Pred_Id;
+      --  Call Compute_Is_Initialized recursively
+
+      function Is_Subcomponent_Excluded (C_Ty : Entity_Id) return Boolean;
+      --  Test whether initialization condition for a subcomponent of type C_Ty
+      --  should be excluded.
 
       function Is_Initialized_For_Comp
         (C_Expr : W_Term_Id; C_Ty : Entity_Id)
@@ -76,10 +81,6 @@ package body Why.Gen.Init is
              Params                 => Params,
              Domain                 => EW_Pred,
              Excluded_Subcomponents => Excluded_Subcomponents));
-
-      function Is_Subcomponent_Excluded (C_Ty : Entity_Id) return Boolean;
-      --  Test whether initialization condition
-      --  for a subcomponent of type C_Ty should be excluded
 
       -----------------------------
       -- Is_Initialized_For_Comp --
@@ -113,13 +114,6 @@ package body Why.Gen.Init is
          end if;
       end Is_Initialized_For_Comp;
 
-      function Is_Initialized_For_Array is new Build_Predicate_For_Array
-        (Is_Initialized_For_Comp);
-
-      function Is_Initialized_For_Record is new Build_Predicate_For_Record
-        (Is_Initialized_For_Comp, Is_Initialized_For_Comp,
-         Ignore_Private_State => False);
-
       ------------------------------
       -- Is_Subcomponent_Excluded --
       ------------------------------
@@ -131,9 +125,18 @@ package body Why.Gen.Init is
              when Relaxed => Has_Relaxed_Init (C_Ty)
          );
 
+      function Is_Initialized_For_Array is new Build_Predicate_For_Array
+        (Is_Initialized_For_Comp);
+
+      function Is_Initialized_For_Record is new Build_Predicate_For_Record
+        (Is_Initialized_For_Comp, Is_Initialized_For_Comp,
+         Ignore_Private_State => False);
+
       P   : W_Pred_Id;
       R   : W_Expr_Id;
       Tmp : constant W_Expr_Id := New_Temp_For_Expr (+Name);
+
+   --  Start of processing for Compute_Is_Initialized
 
    begin
       --  An object is necessarily initialized if it does not have a wrapper
