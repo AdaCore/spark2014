@@ -794,7 +794,7 @@ only part of a program:
   * :ref:`Subprogram Termination` (only explicit except for functions which
     should always return in SPARK)
 
-  * the aliases constraints of |SPARK| (implicit - the subprogram shall not
+  * the aliasing constraints of |SPARK| (implicit - the subprogram shall not
     introduce any visible aliases between its parameters, accessed global
     objects, and return value if any, unless it is a traversal function, in
     which case its return value shall be a part of its traversed parameter, or
@@ -807,6 +807,23 @@ only part of a program:
   Note that this also applies to subprograms which are called indirectly
   from SPARK code, either through a dispatching call or through a call to
   an access-to-subprogram, and to (predefined) operators like ``"="``.
+
+* [ADA_CALLS]
+  Calls to SPARK subprograms from subprograms that are not analyzed need to
+  comply with the implicit or explicit preconditions used by GNATprove to
+  analyze the called SPARK subprograms. This concerns the same subprograms as
+  considered in [ADA_SUBPROGRAMS].
+
+  The (explicit or implicit) precondition to check is made up of:
+
+  * :ref:`Type Contracts` of both parameters and global objects taken as input
+    of the callee
+
+  * :ref:`Preconditions` (explicit)
+
+  * the aliasing constraints of |SPARK| (implicit - the context shall not
+    alias the callee's parameters and accessed global objects in ways that
+    are not allowed in SPARK)
 
 * [ADA_RECURSIVE_SUBPROGRAMS]
   When the body of a subprogram is not analyzed by GNATprove, it shall not be
