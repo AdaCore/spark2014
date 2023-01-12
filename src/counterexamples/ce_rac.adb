@@ -3321,6 +3321,8 @@ package body CE_RAC is
 
                   if Big_Integer_To_Value_Maps.Has_Element (C) then
                      Res := A.Array_Values (C).all;
+                  elsif A.Array_Others = null then
+                     RAC_Incomplete ("missing value for OTHERS in array");
                   else
                      Res := Copy (A.Array_Others.all);
                   end if;
