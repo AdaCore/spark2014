@@ -1507,14 +1507,18 @@ package body CE_RAC is
       exception
          when Exn_RAC_Exit =>
             Ctx.Env (Ctx.Env.First).Bindings.Exclude (Id);
-            null;
+
+         --  Do not remove the loop parameter from the context in case of RAC
+         --  failure, as the value will be needed for counterexample display,
+         --  in case this RAC was triggered by fuzzing.
+         when Exn_RAC_Failure =>
+            raise;
 
          --  The call to Iteration will raise local exception Break to return
          --  early from the iteration.
          when others =>
             Ctx.Env (Ctx.Env.First).Bindings.Exclude (Id);
             raise;
-
       end;
    end Iterate_Loop_Param_Spec;
 
