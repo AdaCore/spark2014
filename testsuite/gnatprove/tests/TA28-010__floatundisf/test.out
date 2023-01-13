@@ -23,10 +23,10 @@ convert.adb:43:53: info: float overflow check proved (Trivial)
 convert.adb:44:32: info: float overflow check proved (Trivial)
 convert.adb:44:44: info: range check proved (Trivial)
 convert.adb:45:47: info: range check proved (Z3: 2 VC)
-convert.adb:48:35: info: float overflow check proved (colibri: 1 VC)
-convert.adb:48:45: info: float overflow check proved (colibri: 1 VC)
+convert.adb:48:35: info: float overflow check proved (Z3: 1 VC)
+convert.adb:48:45: info: float overflow check proved (Z3: 1 VC)
 convert.adb:49:18: info: float overflow check proved (colibri: 1 VC)
-convert.adb:49:42: info: float overflow check proved (colibri: 1 VC)
+convert.adb:49:42: info: float overflow check proved (Z3: 1 VC)
 convert.adb:50:18: info: float overflow check proved (colibri: 1 VC)
 convert.ads:42:65: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 convert.ads:45:45: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]

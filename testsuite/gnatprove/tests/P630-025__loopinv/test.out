@@ -24,7 +24,7 @@ decadriver.adb:131:43: info: in value of subprogram parameter after the call at 
 decadriver.adb:131:43: info: predicate check proved (Z3: 2 VC)
 decadriver.adb:131:43: info: range check proved (CVC5: 4 VC)
 decadriver.adb:133:38: medium: in inlined predicate at decadriver.ads:67
-decadriver.adb:133:38: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size = 0
+decadriver.adb:133:38: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size = 0 (e.g. when Frame_Length = 32895)
 decadriver.adb:133:50: info: range check proved (CVC5: 2 VC)
 decadriver.adb:134:38: info: predicate check proved (CVC5: 2 VC)
 decadriver.adb:135:38: info: predicate check proved (CVC5: 2 VC)

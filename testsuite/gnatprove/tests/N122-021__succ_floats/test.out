@@ -10,7 +10,7 @@ succ_floats.adb:8:19: info: assertion proved (Z3: 1 VC)
 succ_floats.adb:8:31: info: float overflow check proved (CVC5: 1 VC)
 succ_floats.adb:11:19: info: assertion proved (CVC5: 1 VC)
 succ_floats.adb:11:31: info: float overflow check proved (CVC5: 1 VC)
-succ_floats.adb:12:19: medium: assertion might fail
+succ_floats.adb:12:19: info: assertion proved (Z3: 1 VC)
 succ_floats.adb:12:31: info: float overflow check proved (CVC5: 1 VC)
 succ_floats.adb:13:19: info: assertion proved (CVC5: 1 VC)
 succ_floats.adb:13:31: info: float overflow check proved (CVC5: 1 VC)

@@ -325,7 +325,7 @@ test_set.adb:56:28: info: precondition proved (CVC5: 1 VC)
 test_set.adb:56:39: info: precondition proved (CVC5: 1 VC)
 test_set.adb:57:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:58:10: info: precondition proved (CVC5: 1 VC)
-test_set.adb:64:25: info: assertion proved (Z3: 1 VC)
+test_set.adb:64:25: medium: assertion might fail
 test_set.adb:68:23: info: precondition proved (CVC5: 1 VC)
 test_set.adb:71:25: medium: assertion might fail
 test_set.adb:71:28: info: precondition proved (CVC5: 1 VC)

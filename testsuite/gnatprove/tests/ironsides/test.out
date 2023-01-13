@@ -411,7 +411,7 @@ parser_utilities.adb:858:10: info: initialization of "C" proved
 parser_utilities.adb:859:10: info: initialization of "RetVal" proved
 parser_utilities.adb:881:11: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:883:13: info: loop invariant initialization proved (CVC5: 4 VC)
-parser_utilities.adb:885:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Tmp >= 0
+parser_utilities.adb:883:13: info: loop invariant preservation proved (CVC5: 4 VC)
 parser_utilities.adb:889:23: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:889:29: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:897:28: medium: overflow check might fail, cannot prove upper bound for Blob*Long_Long_Integer (MultValue (CurrentChar)) [reason for check: result of multiplication must fit in a 64-bits machine integer] [possible fix: loop invariant at line 882 should mention CurrentChar]
@@ -536,7 +536,7 @@ parser_utilities.ads:122:09: info: flow dependencies proved
 parser_utilities.ads:132:07: info: initialization of "AllDone" proved
 parser_utilities.ads:134:09: info: flow dependencies proved
 parser_utilities.ads:142:09: info: flow dependencies proved
-process_dns_request.ads:130:50: medium: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength in Packet_Bytes_Range) to subprogram at line 121]
+process_dns_request.ads:130:50: high: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength (e.g. when DNSKey_Record.TTLInSeconds = 0 and DNSKey_Record.Class = Internet and DNSKey_Record.Flags = 0 and DNSKey_Record.Protocol = 0 and DNSKey_Record.Algorithm = 0) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength in Packet_Bytes_Range) to subprogram at line 121]
 process_dns_request.ads:223:50: info: range check proved (CVC5: 2 VC)
 process_first_line_of_record.adb:64:07: info: initialization of "CurrentIPV4" proved
 process_first_line_of_record.adb:65:07: info: initialization of "CurrentIPV6" proved

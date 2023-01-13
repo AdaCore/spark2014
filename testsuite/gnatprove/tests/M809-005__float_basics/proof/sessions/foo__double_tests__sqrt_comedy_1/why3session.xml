@@ -14,16 +14,16 @@
  <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
-  <proof prover="0"><result status="steplimitexceeded"/></proof>
-  <proof prover="1"><result status="unknown" steps="170338"/></proof>
-  <proof prover="2"><result status="unknown" steps="2603425"/></proof>
-  <proof prover="4"><result status="unknown" steps="213"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="2896"/></proof>
+  <proof prover="1"><result status="unknown" steps="169923"/></proof>
+  <proof prover="2"><result status="unknown" steps="2603623"/></proof>
+  <proof prover="4"><result status="unknown" steps="210"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
-  <proof prover="0"><result status="steplimitexceeded"/></proof>
-  <proof prover="1"><result status="unknown" steps="306488"/></proof>
-  <proof prover="2"><result status="unknown" steps="2706988"/></proof>
-  <proof prover="4"><result status="unknown" steps="222"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="1495"/></proof>
+  <proof prover="1"><result status="unknown" steps="306054"/></proof>
+  <proof prover="2"><result status="unknown" steps="2707186"/></proof>
+  <proof prover="4"><result status="unknown" steps="219"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -32,10 +32,10 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.4">
-  <proof prover="0"><result status="steplimitexceeded"/></proof>
-  <proof prover="1"><result status="unknown" steps="307900"/></proof>
-  <proof prover="2"><result status="unknown" steps="2242518"/></proof>
-  <proof prover="4"><result status="unknown" steps="243"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="3387"/></proof>
+  <proof prover="1"><result status="unknown" steps="307391"/></proof>
+  <proof prover="2"><result status="unknown" steps="2242716"/></proof>
+  <proof prover="4"><result status="unknown" steps="240"/></proof>
   </goal>
  </transf>
  </goal>
