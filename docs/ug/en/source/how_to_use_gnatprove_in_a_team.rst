@@ -775,6 +775,9 @@ only part of a program:
   * subprograms whose body is marked ``SPARK_Mode => Off``, either explicitly
     or implicitly (inherited from the enclosing scope).
 
+  Note that we consider here both non-generic subprograms and instantiations
+  of generic subprograms, never generic subprogram themselves.
+
   The (explicit or implicit) subprogram contract to check is made up of:
 
   * :ref:`Type Contracts` of both parameters and global objects taken as input
