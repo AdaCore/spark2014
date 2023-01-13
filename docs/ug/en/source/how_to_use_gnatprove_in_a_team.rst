@@ -776,7 +776,7 @@ only part of a program:
     or implicitly (inherited from the enclosing scope).
 
   Note that we consider here both non-generic subprograms and instantiations
-  of generic subprograms, never generic subprogram themselves.
+  of generic subprograms, never generic subprograms themselves.
 
   The (explicit or implicit) subprogram contract to check is made up of:
 
