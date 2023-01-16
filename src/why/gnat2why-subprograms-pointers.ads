@@ -109,4 +109,18 @@ package Gnat2Why.Subprograms.Pointers is
    --  If Domain is EW_Prog, also perform LSP checks and possibly checks for
    --  specific type constraints of Etype (Expr).
 
+   procedure Create_Theory_For_HO_Specialization_If_Needed (Call : Node_Id);
+   --  Create a theory for a call to a function annotated with higher order
+   --  specialization if no theory has been declared for the same
+   --  specialization.
+
+   function Get_Specialized_Function_Theory_Name
+     (Call : Node_Id) return Symbol;
+   --  Get the theory name for a function call with higher order specialization
+
+   function Get_Globals_From_Specialized_Parameters
+     (Params : Node_Maps.Map) return Flow_Types.Flow_Id_Sets.Set;
+   --  Get the set of globals read from actual entities in the map of
+   --  specialized parameters Params.
+
 end Gnat2Why.Subprograms.Pointers;

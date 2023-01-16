@@ -205,6 +205,20 @@ package SPARK_Definition.Annotate is
    --  transformed into an axiom which will be included whenever the function
    --  is called.
 
+   --  A pragma Annotate for specialized handling of static access-to-function
+   --  parameters has the following form:
+   --    pragma Annotate (GNATprove, Higher_Order_Specialization, Entity => E);
+
+   --  where
+   --    GNATprove                   is a fixed identifier
+   --    Higher_Order_Specialization is a fixed identifier
+   --    E                           is a function with parameters of an
+   --                                anonymous access-to-function type.
+
+   --  The function E shall not be volatile, dispatching, nor a borrowing
+   --  traversal function. Its parameters shall only occur in contracts in
+   --  dereferences (the actual pointer value shall not be used).
+
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;
       Preceding     : Node_Id;
@@ -359,5 +373,11 @@ package SPARK_Definition.Annotate is
    with Pre => Has_Automatic_Instantiation_Annotation (E);
    --  If a pragma Annotate Automatic_Instantiation applies to E then return
    --  the function to which E is associated.
+
+   function Has_Higher_Order_Specialization_Annotation
+     (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) = E_Function;
+   --  Return True if a pragma Annotate Higher_Order_Specialization applies to
+   --  the function E.
 
 end SPARK_Definition.Annotate;

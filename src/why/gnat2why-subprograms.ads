@@ -25,6 +25,8 @@
 
 with Checked_Types;        use Checked_Types;
 with Common_Containers;    use Common_Containers;
+with Flow_Types;           use Flow_Types;
+with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
 with Gnat2Why.Util;        use Gnat2Why.Util;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
@@ -101,10 +103,14 @@ package Gnat2Why.Subprograms is
 
    function Get_Logic_Args
      (E           : Entity_Id;
-      Ref_Allowed : Boolean)
+      Ref_Allowed : Boolean;
+      More_Reads  : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
       return W_Expr_Array;
    --  Get the expressions to use in a function call for an additional logic
    --  binders.
+   --  More_Reads is a set of globals that should be considered as read by
+   --  the subprogram in addition to its actual inputs. It is used to handle
+   --  calls with higher order specialization.
 
    procedure Generate_Subprogram_Completion (E : Callable_Kind_Id) with
      Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
@@ -118,10 +124,14 @@ package Gnat2Why.Subprograms is
    --  = E". Also generate a program function for E.
 
    function Compute_Subprogram_Parameters
-     (E      : Callable_Kind_Id;
-      Domain : EW_Domain)
+     (E          : Callable_Kind_Id;
+      Domain     : EW_Domain;
+      More_Reads : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
       return Item_Array;
    --  Return Why binders for the parameters of subprogram E.
+   --  More_Reads is a set of globals that should be considered as read by
+   --  the subprogram in addition to its actual inputs. It is used to handle
+   --  calls with higher order specialization.
    --  If Domain is EW_Term also generates binders for E's read effects.
 
    procedure Update_Symbol_Table_For_Inherited_Contracts
@@ -140,16 +150,24 @@ package Gnat2Why.Subprograms is
 private
 
    procedure Declare_Logic_Functions
-     (Th           : Theory_UC;
-      Dispatch_Th  : Theory_UC := Empty_Theory;
-      E            : Callable_Kind_Id;
-      Spec_Binders : Binder_Array := Binder_Array'(1 .. 0 => <>));
+     (Th                    : Theory_UC;
+      Dispatch_Th           : Theory_UC := Empty_Theory;
+      E                     : Callable_Kind_Id;
+      Spec_Binders          : Binder_Array := Binder_Array'(1 .. 0 => <>);
+      Specialization_Module : Symbol := No_Symbol;
+      More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set);
    --  @param Th theory in which the logic functions should be declared
    --  @param Dispatch_Th if E is a dispatching operation, specific theory for
    --    its dispatch functions.
    --  @param E entry or subprogram or subprogram type entity
    --  @param Spec_Binders special binders to be used in addition to normal
    --    binders for the subprogram.
+   --  @param Specialization_Module name of the specialization module in
+   --    which the symbols are generated. It is empty if we are not generating
+   --    code for a function annotated with higher order specialization.
+   --  @param More_Reads is a set of globals that should be considered as read
+   --  by the subprogram in addition to its actual inputs. It is used to handle
+   --  calls with higher order specialization.
    --  Declare a logic function and a guard predicate for E. If needed,
    --  generate a namespace for the dispatching/refined variants.
 
@@ -159,7 +177,9 @@ private
       E                      : Callable_Kind_Id;
       Prog_Id                : W_Identifier_Id;
       Spec_Binders           : Binder_Array := Binder_Array'(1 .. 0 => <>);
-      Is_Access_Subp_Wrapper : Boolean := False);
+      Is_Access_Subp_Wrapper : Boolean := False;
+      Specialization_Module  : Symbol := No_Symbol;
+      More_Reads             : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set);
    --  @param Th theory in which the program functions should be declared
    --  @param Dispatch_Th if E is a dispatching operation, specific theory for
    --    its dispatch functions.
@@ -169,6 +189,12 @@ private
    --    binders for the subprogram.
    --  @param Is_Access_Subp_Wrapper true if we are generating a function for
    --    an access-to-subprogram type through its wrapper.
+   --  @param Specialization_Module name of the specialization module in
+   --    which the symbols are generated. It is empty if we are not generating
+   --    code for a function annotated with higher order specialization.
+   --  @param More_Reads is a set of globals that should be considered as read
+   --  by the subprogram in addition to its actual inputs. It is used to handle
+   --  calls with higher order specialization.
    --  Generate a why program function for E. Also generate a program function
    --  that performs invariant checks for global / parameters of E. It should
    --  be called before calling E's program function.
@@ -179,7 +205,9 @@ private
       E                      : Callable_Kind_Id;
       Spec_Binders           : Binder_Array := (1 .. 0 => <>);
       Spec_Guard             : W_Pred_Id := True_Pred;
-      Is_Access_Subp_Wrapper : Boolean := False)
+      Is_Access_Subp_Wrapper : Boolean := False;
+      Specialization_Module  : Symbol := No_Symbol;
+      More_Reads             : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
    with Pre => Is_Access_Subp_Wrapper
      or else Ekind (E) = E_Subprogram_Type
      or else (Is_True_Boolean (+Spec_Guard) and Spec_Binders'Length = 0);
@@ -197,6 +225,12 @@ private
    --    the axiom states that the post always holds.
    --  @param Is_Access_Subp_Wrapper true if we are generating axioms for
    --    an access-to-subprogram type through its wrapper.
+   --  @param Specialization_Module name of the specialization module in
+   --    which the symbols are generated. It is empty if we are not generating
+   --    code for a function annotated with higher order specialization.
+   --  @param More_Reads is a set of globals that should be considered as read
+   --  by the subprogram in addition to its actual inputs. It is used to handle
+   --  calls with higher order specialization.
    --  If E is a function, generate an axiom stating that postcondition of E
    --  is equivalent to Spec_Guard.
 
@@ -224,11 +258,13 @@ private
    --     dynamic objects that are referenced in E.
 
    function Compute_Binders_For_Effects
-     (E : Callable_Kind_Id)
+     (E          : Callable_Kind_Id;
+      More_Reads : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
       return Item_Array;
    --  @param E an enity for a subprogram
-   --  @param Compute True if binders should be created when not in the
-   --    symbol table.
+   --  @param More_Reads Set of globals that should be considered as read by
+   --     the subprogram in addition to its actual inputs. It is used to handle
+   --     calls with higher order specialization.
    --  @result an array containing an Item per global variable read / written
    --          by E.
 

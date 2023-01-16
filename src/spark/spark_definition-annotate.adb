@@ -104,6 +104,11 @@ package body SPARK_Definition.Annotate is
    --  Maps lemma procedures annotated with Automatic_Instantiation to their
    --  associated function.
 
+   Higher_Order_Spec_Annotations : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  Stores function entities with a pragma Annotate
+   --  (GNATprove, Higher_Order_Specialization, E).
+
    Inline_Annotations : Common_Containers.Node_Maps.Map :=
      Common_Containers.Node_Maps.Empty_Map;
    --  Maps all the function entities E with a pragma Annotate
@@ -226,6 +231,13 @@ package body SPARK_Definition.Annotate is
      Pre => Present (Arg3_Exp);
    --  Check validity of a pragma Annotate (GNATprove, At_End_Borrow, E) and
    --  insert it in the At_End_Borrow_Annotations map.
+
+   procedure Check_Higher_Order_Specialization_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id);
+   --  Check validity of a pragma Annotate
+   --  (GNATprove, Higher_Order_Specialization, E) and insert it in the
+   --  Higher_Order_Spec_Annotations map.
 
    procedure Check_Inline_Annotation (Arg3_Exp : Node_Id; Prag : Node_Id);
    --  Check validity of a pragma Annotate (GNATprove, Inline_For_Proof, E)
@@ -626,6 +638,165 @@ package body SPARK_Definition.Annotate is
          end loop;
       end;
    end Check_Automatic_Instantiation_Annotation;
+
+   --------------------------------------------------
+   -- Check_Higher_Order_Specialization_Annotation --
+   --------------------------------------------------
+
+   procedure Check_Higher_Order_Specialization_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id)
+   is
+      From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
+      Aspect_Or_Pragma : constant String :=
+        (if From_Aspect then "aspect" else "pragma");
+      E                : Entity_Id;
+   begin
+      --  The third argument must be an entity
+
+      if Nkind (Arg3_Exp) not in N_Has_Entity then
+         Error_Msg_N
+           ("third argument of pragma Annotate Higher_Order_Specialization "
+            & "must be an entity",
+            Arg3_Exp);
+         return;
+      end if;
+
+      E := Entity (Arg3_Exp);
+
+      --  This entity must be a function
+
+      if Ekind (E) /= E_Function then
+         Error_Msg_N
+           (Aspect_Or_Pragma & " Higher_Order_Specialization must be applied"
+            & " to a function",
+            Arg3_Exp);
+         return;
+
+      --  For now reject volatile functions, dispatching operations, and
+      --  borrowing traversal functions.
+
+      elsif Is_Volatile_Function (E) then
+         Error_Msg_N
+           ("function annotated with Higher_Order_Specialization shall not be"
+            & " a volatile function",
+            Arg3_Exp);
+         return;
+      elsif Einfo.Entities.Is_Dispatching_Operation (E)
+        and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
+      then
+         Error_Msg_N
+           ("function annotated with Higher_Order_Specialization shall not be"
+            & " a dispatching operation",
+            Arg3_Exp);
+         return;
+      elsif Is_Borrowing_Traversal_Function (E) then
+         Error_Msg_N
+           ("function annotated with Higher_Order_Specialization shall not be"
+            & " a borrowing traversal function",
+            Arg3_Exp);
+         return;
+      end if;
+
+      --  Check that E has at least a parameter of an anonymous
+      --  access-to-function type. Store such parameters in a set.
+
+      declare
+         F         : Opt_Formal_Kind_Id := First_Formal (E);
+         Formals   : Entity_Sets.Set;
+         Violation : Node_Id := Empty;
+
+         function Is_Unsupported_Use_Of_Formal
+           (N : Node_Id) return Traverse_Result;
+         --  Return Abandon on references to objects of Formals if they are not
+         --  directly under a dereference. In this case, store the offending
+         --  node in Violation for error reporting.
+
+         ----------------------------------
+         -- Is_Unsupported_Use_Of_Formal --
+         ----------------------------------
+
+         function Is_Unsupported_Use_Of_Formal
+           (N : Node_Id) return Traverse_Result
+         is
+         begin
+            if Nkind (N) = N_Explicit_Dereference
+              and then Nkind (Prefix (N)) in
+                N_Expanded_Name | N_Identifier
+            then
+               return Skip;
+            elsif Nkind (N) in N_Expanded_Name | N_Identifier
+              and then Formals.Contains (Unique_Entity (Entity (N)))
+            then
+               Violation := N;
+               return Abandon;
+            else
+               return OK;
+            end if;
+         end Is_Unsupported_Use_Of_Formal;
+
+         procedure Find_Unsupported_Use_Of_Formal is new
+           Traverse_More_Proc (Is_Unsupported_Use_Of_Formal);
+      begin
+         while Present (F) loop
+            if Is_Anonymous_Access_Type (Etype (F))
+              and then Is_Access_Subprogram_Type (Etype (F))
+              and then Is_Function_Type (Directly_Designated_Type (Etype (F)))
+            then
+               Formals.Include (Unique_Entity (F));
+            end if;
+            Next_Formal (F);
+         end loop;
+
+         if Formals.Is_Empty then
+            Error_Msg_N
+              ("function annotated with Higher_Order_Specialization shall have"
+               & " at least a parameter of an anonymous access-to-function "
+               & "type",
+               Arg3_Exp);
+            return;
+         end if;
+
+         --  Go over the contracts of E to make sure that the value of its
+         --  anonymous access-to-function parameters is not referenced.
+         --  We don't check refined postconditions and expression function
+         --  bodies which are never specialized.
+
+         declare
+            Pre  : constant Node_Lists.List := Find_Contracts
+              (E, Pragma_Precondition, False, False);
+            Post : constant Node_Lists.List := Find_Contracts
+              (E, Pragma_Postcondition, False, False);
+            CC   : constant Node_Id := Get_Pragma (E, Pragma_Contract_Cases);
+         begin
+            for N of Pre loop
+               Find_Unsupported_Use_Of_Formal (N);
+               if Present (Violation) then
+                  goto Violation_Found;
+               end if;
+            end loop;
+            for N of Post loop
+               Find_Unsupported_Use_Of_Formal (N);
+               if Present (Violation) then
+                  goto Violation_Found;
+               end if;
+            end loop;
+            Find_Unsupported_Use_Of_Formal (CC);
+         end;
+
+         <<Violation_Found>>
+         if Present (Violation) then
+            Error_Msg_N
+              ("function annotated with Higher_Order_Specialization"
+               & " shall only reference its access-to-function"
+               & " parameters in dereferences",
+               Violation);
+            return;
+         end if;
+      end;
+
+      Higher_Order_Spec_Annotations.Include (E);
+   end Check_Higher_Order_Specialization_Annotation;
 
    -----------------------------
    -- Check_Inline_Annotation --
@@ -1526,6 +1697,15 @@ package body SPARK_Definition.Annotate is
      (E : Entity_Id) return Boolean
    is (Automatic_Instantiation_Annotations.Contains (E));
 
+   ------------------------------------------------
+   -- Has_Higher_Order_Specialization_Annotation --
+   ------------------------------------------------
+
+   function Has_Higher_Order_Specialization_Annotation
+     (E : Entity_Id) return Boolean
+   is
+     (Higher_Order_Spec_Annotations.Contains (E));
+
    -------------------------------
    -- Has_Logical_Eq_Annotation --
    -------------------------------
@@ -1940,6 +2120,7 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "at_end_borrow"
         or else Name = "automatic_instantiation"
+        or else Name = "higher_order_specialization"
         or else Name = "init_by_proof"
         or else Name = "inline_for_proof"
         or else Name = "logical_equal"
@@ -2001,6 +2182,9 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "inline_for_proof" then
          Check_Inline_Annotation (Arg3_Exp, Prag);
+
+      elsif Name = "higher_order_specialization" then
+         Check_Higher_Order_Specialization_Annotation (Arg3_Exp, Prag);
 
       elsif Name = "logical_equal" then
          Check_Logical_Equal_Annotation (Arg3_Exp, Prag);
