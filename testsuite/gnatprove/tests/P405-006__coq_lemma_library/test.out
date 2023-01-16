@@ -167,7 +167,7 @@ spark-lemmas-floating_point_arithmetic.ads:147:16: info: postcondition proved (c
 spark-lemmas-floating_point_arithmetic.ads:147:21: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:147:21: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:147:21: info: float overflow check proved (CVC5: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:147:21: info: float overflow check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:147:21: info: float overflow check proved (altergo: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:147:36: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:147:36: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:147:36: info: float overflow check proved (CVC5: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
@@ -181,7 +181,7 @@ spark-lemmas-floating_point_arithmetic.ads:160:16: info: postcondition proved (c
 spark-lemmas-floating_point_arithmetic.ads:160:21: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:160:21: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:160:21: info: float overflow check proved (CVC5: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:160:21: info: float overflow check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:160:21: info: float overflow check proved (altergo: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:160:36: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:160:36: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:160:36: info: float overflow check proved (CVC5: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
@@ -195,7 +195,7 @@ spark-lemmas-floating_point_arithmetic.ads:175:16: info: postcondition proved (c
 spark-lemmas-floating_point_arithmetic.ads:175:21: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:175:21: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:175:21: info: float overflow check proved (CVC5: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:175:21: info: float overflow check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:175:21: info: float overflow check proved (Z3: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:175:36: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:175:36: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:175:36: info: float overflow check proved (CVC5: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
@@ -211,7 +211,7 @@ spark-lemmas-floating_point_arithmetic.ads:236:13: info: subprogram "Is_Integer_
 spark-lemmas-floating_point_arithmetic.ads:240:21: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:240:21: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:240:33: info: range check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:240:33: info: range check proved (Z3: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:240:33: info: range check proved (CVC5: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:245:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:245:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:247:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
@@ -248,8 +248,8 @@ spark-lemmas-floating_point_arithmetic.ads:292:44: info: predicate check proved 
 spark-lemmas-floating_point_arithmetic.ads:292:44: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:293:14: info: postcondition proved (altergo: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:293:14: info: postcondition proved (altergo: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:293:19: info: float overflow check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:293:19: info: float overflow check proved (altergo: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:293:19: info: float overflow check proved (altergo: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:293:37: info: overflow check proved (altergo: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:293:37: info: overflow check proved (altergo: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:293:37: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
@@ -268,8 +268,8 @@ spark-lemmas-floating_point_arithmetic.ads:303:44: info: predicate check proved 
 spark-lemmas-floating_point_arithmetic.ads:303:44: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:304:14: info: postcondition proved (altergo: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:304:14: info: postcondition proved (altergo: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:304:19: info: float overflow check proved (CVC5: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:304:19: info: float overflow check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:304:19: info: float overflow check proved (altergo: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:304:37: info: overflow check proved (altergo: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:304:37: info: overflow check proved (altergo: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:304:37: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39

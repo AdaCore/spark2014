@@ -3,9 +3,9 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="CVC5" version="0.0.7-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
-<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
-<prover id="2" name="altergo" version="1.30-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
-<prover id="3" name="colibri" version="2137" timelimit="5" steplimit="0" memlimit="1000"/>
+<prover id="1" name="altergo" version="1.30-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
+<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
+<prover id="3" name="colibri" version="2137" timelimit="100" steplimit="0" memlimit="1000"/>
 <file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="obj"/>
 <path name="gnatprove"/><path name="074951e582b42a4e86a3-__long_float_arithmetic__is_float.gnat-json"/>
@@ -19,13 +19,16 @@
   <proof prover="0"><result status="valid" steps="723"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="6990057"/></proof>
-  <proof prover="2"><result status="outofmemory"/></proof>
+  <proof prover="0" timelimit="100"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="highfailure"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="3"><result status="valid" steps="168"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="3"><result status="valid" steps="183"/></proof>
+  <proof prover="0" timelimit="100"><result status="valid" steps="44881"/></proof>
+  <proof prover="1"><result status="highfailure"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="3"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>

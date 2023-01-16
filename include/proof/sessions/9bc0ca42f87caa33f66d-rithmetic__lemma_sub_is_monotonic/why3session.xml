@@ -4,8 +4,9 @@
 <why3session shape_version="6">
 <prover id="0" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000"/>
 <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
-<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
-<prover id="3" name="altergo" version="1.30-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
+<prover id="2" name="altergo" version="1.30-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
+<prover id="3" name="Z3" version="4.5.1-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
+<prover id="4" name="colibri" version="2137" timelimit="100" steplimit="0" memlimit="1000"/>
 <file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="obj"/>
 <path name="gnatprove"/><path name="9bc0ca42f87caa33f66d-rithmetic__lemma_sub_is_monotonic.gnat-json"/>
@@ -25,9 +26,10 @@
   <proof prover="0"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="1" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="valid" steps="1637"/></proof>
+  <proof prover="1" timelimit="100"><result status="highfailure"/></proof>
+  <proof prover="2"><result status="valid" steps="1637"/></proof>
+  <proof prover="3"><result status="highfailure"/></proof>
+  <proof prover="4"><result status="failure" steps="0"/></proof>
   </goal>
  </transf>
  </goal>
