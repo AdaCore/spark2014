@@ -33,7 +33,7 @@ private
    end Ring_Buffer;
 
    type Mailbox is record
-      Address    : String (1 .. 15);
+      Address : String (1 .. 15);
    end record;
 
 end Communication;
