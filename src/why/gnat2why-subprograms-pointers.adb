@@ -42,7 +42,6 @@ with Why.Gen.Names;                  use Why.Gen.Names;
 with Why.Gen.Progs;                  use Why.Gen.Progs;
 with Why.Images;                     use Why.Images;
 with Why.Inter;                      use Why.Inter;
-with Why.Types;                      use Why.Types;
 
 package body Gnat2Why.Subprograms.Pointers is
 
@@ -229,9 +228,10 @@ package body Gnat2Why.Subprograms.Pointers is
 
    function Checks_For_Subp_Conversion
      (Ada_Node : Entity_Id;
-      Expr     : W_Expr_Id;
+      Expr     : W_Expr_Id := Why_Empty;
       From, To : Entity_Id;
-      Params   : Transformation_Params) return W_Prog_Id
+      Params   : Transformation_Params)
+      return W_Prog_Id
    is
       From_Access            : constant Boolean := not Is_Subprogram (From);
       From_Profile           : constant Entity_Id :=
@@ -335,9 +335,13 @@ package body Gnat2Why.Subprograms.Pointers is
       --  Bind the identifier for the result of the call. We could leave it
       --  undefined, as we assume the postcondition of the source subprogram
       --  during checking of LSP. We map it to a call to the actual converted
-      --  function:
+      --  function. We use a direct call if From_Access is False:
       --
-      --  let result = __call <Expr>.__rec_value in ...
+      --    let result = <from_ent> ... in ...
+      --
+      --  and an indirect call to the value of Expr otherwise:
+      --
+      --    let result = __call <Expr>.__rec_value ... in ...
       --
       --  This allows to use previous knowledge about the behavior of Expr to
       --  prove the postcondition of functions (eg. if Expr was created as
@@ -345,11 +349,12 @@ package body Gnat2Why.Subprograms.Pointers is
 
       if Is_Function_Type (To_Profile) then
          declare
-            Subp_Value  : constant W_Expr_Id :=
-              New_Subprogram_Value_Access
-                (Ada_Node => Ada_Node,
-                 Expr     => Expr,
-                 Domain   => EW_Pterm);
+            Subp_Value  : constant W_Expr_Array :=
+              (if not From_Access then (1 .. 0 => <>)
+               else (1 => New_Subprogram_Value_Access
+                     (Ada_Node => Ada_Node,
+                      Expr     => Expr,
+                      Domain   => EW_Pterm)));
             --  We compute the access in the Pterm domain as we don't want to
             --  generate a dereference check here. This code will be protected
             --  by a conditional making sure that Expr is not null here.
@@ -358,26 +363,38 @@ package body Gnat2Why.Subprograms.Pointers is
               (if Formals'Length = 0 then (1 => +Void)
                else Get_Args_From_Binders
                  (To_Binder_Array (Formals), Ref_Allowed => False));
+            Call_Id     : constant W_Identifier_Id :=
+              (if From_Access then Get_Logic_Function (To_Profile)
+               else To_Why_Id (From_Ent, Domain => EW_Pterm));
+            Need_Guard  : constant Boolean :=
+              (if From_Access then Use_Guard_For_Function (To_Profile)
+               else Use_Guard_For_Function (From_Ent));
+            Guard_Id    : constant W_Identifier_Id :=
+              (if From_Access then Get_Logic_Function_Guard (To_Profile)
+               else Guard_Predicate_Name (From_Ent));
 
          begin
+            if Need_Guard then
+               Checks := Sequence
+                 (Ada_Node => Ada_Node,
+                  Left     => New_Assume_Statement
+                    (Ada_Node => Ada_Node,
+                     Pred     => New_Call
+                       (Name => Guard_Id,
+                        Args => (1 => +Result_Name) & Subp_Value & Formal_Args,
+                        Typ  => Get_Typ (Result_Name))),
+                  Right    => Checks);
+            end if;
+
             Checks := New_Binding
               (Ada_Node => Ada_Node,
                Name     => Result_Name,
                Def      => +W_Expr_Id'(New_Call
                  (Domain  => EW_Pterm,
-                  Name    => Get_Logic_Function (To_Profile),
+                  Name    => Call_Id,
                   Args    => Subp_Value & Formal_Args,
                   Typ     => Get_Typ (Result_Name))),
-               Context  => Sequence
-                 (Ada_Node => Ada_Node,
-                  Left     => New_Assume_Statement
-                    (Ada_Node => Ada_Node,
-                     Pred     => New_Call
-                       (Name => Get_Logic_Function_Guard (To_Profile),
-                        Args => (1 => +Result_Name, 2 => Subp_Value)
-                          & Formal_Args,
-                        Typ  => Get_Typ (Result_Name))),
-                  Right    => Checks),
+               Context  => Checks,
                Typ      => EW_Unit_Type);
 
             --  Restore the result name
@@ -426,18 +443,22 @@ package body Gnat2Why.Subprograms.Pointers is
          end if;
       end loop;
 
+      Checks := New_Ignore
+        (Ada_Node => Ada_Node,
+         Prog     => Checks);
+
       --  Only do the check if Expr is not null
 
-      Checks := New_Conditional
-        (Condition => New_Not
-           (Right  => New_Record_Access
-              (Name  => +Expr,
-               Field => M_Subprogram_Access.Rec_Is_Null,
-               Typ   => EW_Bool_Type)),
-         Then_Part => New_Ignore
-           (Ada_Node => Ada_Node,
-            Prog     => Checks),
-         Typ       => EW_Unit_Type);
+      if From_Access then
+         Checks := New_Conditional
+           (Condition => New_Not
+              (Right  => New_Record_Access
+                   (Name  => +Expr,
+                    Field => M_Subprogram_Access.Rec_Is_Null,
+                    Typ   => EW_Bool_Type)),
+            Then_Part => Checks,
+            Typ       => EW_Unit_Type);
+      end if;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
@@ -954,25 +975,14 @@ package body Gnat2Why.Subprograms.Pointers is
       --  mechanism.
 
       if Domain = EW_Prog then
-         declare
-            Tmp : constant W_Expr_Id := New_Temp_For_Expr (T);
-         begin
-
-            T := +Sequence
+         T := +Sequence
+           (Ada_Node => Expr,
+            Left     => Checks_For_Subp_Conversion
               (Ada_Node => Expr,
-               Left     => Checks_For_Subp_Conversion
-                 (Ada_Node => Expr,
-                  Expr     => +Tmp,
-                  From     => Subp,
-                  To       => Etype (Expr),
-                  Params   => Params),
-               Right    => +Tmp);
-
-            T := Binding_For_Temp (Ada_Node => Expr,
-                                   Domain   => EW_Prog,
-                                   Tmp      => Tmp,
-                                   Context  => T);
-         end;
+               From     => Subp,
+               To       => Etype (Expr),
+               Params   => Params),
+            Right    => +T);
 
          T := Insert_Subp_Pointer_Conversion
            (Ada_Node   => Expr,

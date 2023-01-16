@@ -25,6 +25,7 @@
 
 with Namet;                           use Namet;
 with Snames;                          use Snames;
+with Why.Types;                       use Why.Types;
 
 package Gnat2Why.Subprograms.Pointers is
 
@@ -77,21 +78,22 @@ package Gnat2Why.Subprograms.Pointers is
 
    function Checks_For_Subp_Conversion
      (Ada_Node : Entity_Id;
-      Expr     : W_Expr_Id;
+      Expr     : W_Expr_Id := Why_Empty;
       From, To : Entity_Id;
       Params   : Transformation_Params)
       return W_Prog_Id
    with
      Pre => Is_Access_Subprogram_Type (To)
        and then (Is_Subprogram (From)
-                  or else Is_Access_Subprogram_Type (From));
+                  or else Is_Access_Subprogram_Type (From))
+       and then (Is_Subprogram (From) or else Expr /= Why_Empty);
    --  Perform LSP checks to ensure that contracts of To are compatible with
    --  contracts of From. Expr is the Why expression for the subprogram
    --  access. It is used to have a precise knowledge of the converted
    --  subprogram for functions.
    --  These checks are meant to be inlined at the point of conversion, as
    --  opposed to generated in a separate module like LSP checks for
-   --  tagged type. This is to
+   --  tagged type.
 
    function Transform_Access_Attribute_Of_Subprogram
      (Expr   : N_Attribute_Reference_Id;
