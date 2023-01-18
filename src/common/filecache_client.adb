@@ -46,7 +46,7 @@ package body Filecache_Client is
       Fn       : constant String := Compose (Conn.Dir.all, Key);
       FD       : File_Descriptor;
       Name     : String_Access;
-      Written  : Integer := 0;
+      Written  : Integer;
       Unused   : Boolean;
    begin
       --  We first write to a temporary file, then rename the file to the
