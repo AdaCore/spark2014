@@ -1,5 +1,0 @@
-[gerrit]
-host = git.adacore.com
-project = spark2014
-defaultbranch = master
-defaultremote = origin
