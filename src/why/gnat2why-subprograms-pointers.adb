@@ -247,13 +247,12 @@ package body Gnat2Why.Subprograms.Pointers is
         (if Present (Access_Subprogram_Wrapper (To_Profile))
          then Access_Subprogram_Wrapper (To_Profile)
          else To_Profile);
-      Formals                : constant Item_Array :=
-        Compute_Subprogram_Parameters (From_Ent, EW_Term);
-      To_Formals             : constant Item_Array (Formals'Range) :=
-        Compute_Subprogram_Parameters (To_Ent, EW_Term);
-      Effects                : Item_Array :=
-        (if Is_Function_Type (To_Profile) then (1 .. 0 => <>)
-         else Compute_Binders_For_Effects (From_Ent));
+      From_Formals           : constant Item_Array :=
+        Compute_Subprogram_Parameters (From_Ent, EW_Prog);
+      To_Formals             : constant Item_Array (From_Formals'Range) :=
+        Compute_Subprogram_Parameters (To_Ent, EW_Prog);
+      To_Effects             : Item_Array :=
+        Compute_Binders_For_Effects (To_Ent);
       Checks                 : W_Prog_Id;
 
       --  As this check can occur anywhere during the translation, we need to
@@ -269,28 +268,27 @@ package body Gnat2Why.Subprograms.Pointers is
 
       --  To check LSP, we will need to emulate effect of a call to Expr. For
       --  that, we need to "sandbox" the check:
-      --    * We introduce local names for formals parameters of the target
+      --    * We introduce local names for formals parameters of the source
       --      subprogram type and bind them in the local environement.
-      --    * We introduce local names for variable parts of global objects
-      --      accessed by the subprogram and bind them too.
       --    * As the contracts of the source and the target of the conversion
       --      refer to different formal entities, we also need to bind the
-      --      names of the formals parameters of the source subprogram type to
-      --      the local names used for those of the target.
-      --  We assume that From and To have the same set of globals.
-      --  ??? For now, we cannot annotate access-to-subprogram types with
-      --  Global contracts, so a part of the sandboxing is not exercised.
-
-      pragma Assert (Same_Globals (From_Profile, To_Profile));
+      --      names of the formals parameters of the target subprogram type to
+      --      the local names used for those of the source.
+      --    * We introduce local names for variable parts of global objects
+      --      accessed by the target and bind them too.
+      --    * Because of LSP, variables accessed by the source shall be a
+      --      subset of those accessed by the target.
+      --  ??? The sandboxing of global effect cannot be used yet as function
+      --  pointers cannot be annotated with Global contracts currently.
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-      Localize_Binders (Effects);
-      Push_Binders_To_Symbol_Table (Formals);
-      Push_Binders_To_Symbol_Table (Effects);
+      Localize_Binders (To_Effects);
+      Push_Binders_To_Symbol_Table (From_Formals);
+      Push_Binders_To_Symbol_Table (To_Effects);
 
       --  Go over formals of From and map those of To to the same binders
 
-      for I in Formals'Range loop
+      for I in From_Formals'Range loop
          declare
             B    : Item_Type renames To_Formals (I);
             Node : constant Node_Id := Get_Ada_Node_From_Item (B);
@@ -298,25 +296,12 @@ package body Gnat2Why.Subprograms.Pointers is
             if Present (Node) then
                Ada_Ent_To_Why.Insert (Symbol_Table,
                                       Node,
-                                      Formals (I));
-
-            --  Some globals such as abstract states and entities not visible
-            --  by SPARK are represented by magic strings instead of entities.
-            --  We also insert them in the symbol table.
-
-            else
-               pragma Assert (B.Kind = Regular);
-               pragma Assert (B.Main.B_Ent /= Null_Entity_Name);
-
-               Ada_Ent_To_Why.Insert
-                 (Symbol_Table,
-                  B.Main.B_Ent,
-                  Formals (I));
+                                      From_Formals (I));
             end if;
          end;
       end loop;
 
-      --  For function, we need an identifier for the result of the call
+      --  For functions, we need an identifier for the result of the call
 
       if Is_Function_Type (To_Profile) then
          Result_Is_Mutable := False;
@@ -349,7 +334,7 @@ package body Gnat2Why.Subprograms.Pointers is
 
       if Is_Function_Type (To_Profile) then
          declare
-            Subp_Value  : constant W_Expr_Array :=
+            Subp_Value   : constant W_Expr_Array :=
               (if not From_Access then (1 .. 0 => <>)
                else (1 => New_Subprogram_Value_Access
                      (Ada_Node => Ada_Node,
@@ -359,17 +344,21 @@ package body Gnat2Why.Subprograms.Pointers is
             --  generate a dereference check here. This code will be protected
             --  by a conditional making sure that Expr is not null here.
 
-            Formal_Args : constant W_Expr_Array :=
-              (if Formals'Length = 0 then (1 => +Void)
+            From_Effects : constant Item_Array :=
+              Compute_Binders_For_Effects (From_Ent);
+            Formal_Args  : constant W_Expr_Array :=
+              (if From_Formals'Length = 0 and From_Effects'Length = 0
+               then (1 => +Void)
                else Get_Args_From_Binders
-                 (To_Binder_Array (Formals), Ref_Allowed => False));
-            Call_Id     : constant W_Identifier_Id :=
+                 (To_Binder_Array (From_Formals & From_Effects),
+                  Ref_Allowed => False));
+            Call_Id      : constant W_Identifier_Id :=
               (if From_Access then Get_Logic_Function (To_Profile)
                else To_Why_Id (From_Ent, Domain => EW_Pterm));
-            Need_Guard  : constant Boolean :=
+            Need_Guard   : constant Boolean :=
               (if From_Access then Use_Guard_For_Function (To_Profile)
                else Use_Guard_For_Function (From_Ent));
-            Guard_Id    : constant W_Identifier_Id :=
+            Guard_Id     : constant W_Identifier_Id :=
               (if From_Access then Get_Logic_Function_Guard (To_Profile)
                else Guard_Predicate_Name (From_Ent));
 
@@ -406,7 +395,7 @@ package body Gnat2Why.Subprograms.Pointers is
 
       --  Map both constant and mutable parts of Formals
 
-      for Binder of To_Binder_Array (Formals) loop
+      for Binder of To_Binder_Array (From_Formals) loop
          if Binder.Mutable then
             Checks := New_Binding_Ref
               (Ada_Node => Ada_Node,
@@ -428,9 +417,9 @@ package body Gnat2Why.Subprograms.Pointers is
          end if;
       end loop;
 
-      --  Map mutable parts of Effects only
+      --  Map mutable parts of To_Effects only
 
-      for Binder of To_Binder_Array (Effects) loop
+      for Binder of To_Binder_Array (To_Effects) loop
          if Binder.Mutable then
             Checks := New_Binding_Ref
               (Ada_Node => Ada_Node,
