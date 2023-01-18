@@ -42,11 +42,12 @@ package body Filecache_Client is
    ---------
 
    procedure Set (Conn : Filecache; Key : String; Value : String) is
-      Fn : constant String := Compose (Conn.Dir.all, Key);
-      FD : File_Descriptor;
-      Name  : String_Access;
-      Written : Integer := 0;
-      Unused : Boolean;
+      Prev_Dir : constant String := Current_Directory;
+      Fn       : constant String := Compose (Conn.Dir.all, Key);
+      FD       : File_Descriptor;
+      Name     : String_Access;
+      Written  : Integer := 0;
+      Unused   : Boolean;
    begin
       --  We first write to a temporary file, then rename the file to the
       --  target filename. This should protect against:
@@ -58,17 +59,25 @@ package body Filecache_Client is
       --      the rename (renames last), as both should contain the same
       --      content.
 
+      --  Renaming doesn't work across devices, so it's safer to create the
+      --  temp file in the same directory. This is achieved by first switching
+      --  directories.
+
+      Set_Directory (Conn.Dir.all);
+
       Create_Temp_File (FD, Name);
       Written := Write (FD, Value (Value'First)'Address, Value'Length);
       Close (FD);
       if Written /= Value'Length then
          --  some error happened
          Delete_File (Name.all, Unused);
-         Free (Name);
-         return;
+         goto Cleanup;
       end if;
       Rename_File (Name.all, Fn, Unused);
+
+      << Cleanup >>
       Free (Name);
+      Set_Directory (Prev_Dir);
    end Set;
 
    ---------
