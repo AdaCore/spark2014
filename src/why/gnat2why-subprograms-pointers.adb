@@ -284,7 +284,8 @@ package body Gnat2Why.Subprograms.Pointers is
       --  pointers cannot be annotated with Global contracts currently.
 
       pragma Assert
-        (if Is_Specialized_Actual (Ada_Node) then To_Effects'Length = 0);
+        (if Is_Specialized_Actual (Ada_Node, Specialized_Call_Params)
+         then To_Effects'Length = 0);
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
       Localize_Binders (To_Effects);
@@ -593,7 +594,8 @@ package body Gnat2Why.Subprograms.Pointers is
       --  Store the specialized parameters in the global
       --  Specialized_Call_Params map.
 
-      Specialized_Call_Params := Get_Specialized_Parameters (Call);
+      Specialized_Call_Params := Get_Specialized_Parameters
+        (Call, Specialized_Call_Params);
       More_Globals := Get_Globals_From_Specialized_Parameters
         (Specialized_Call_Params);
 
@@ -1045,7 +1047,17 @@ package body Gnat2Why.Subprograms.Pointers is
                begin
                   Name := Name & "__" & Capitalize_First (Full_Name (Callee));
                end;
+            elsif Nkind (Actual) in N_Identifier | N_Expanded_Name
+              and then Specialized_Call_Params.Contains (Entity (Actual))
+            then
+               declare
+                  Callee : constant Entity_Id :=
+                    Specialized_Call_Params.Element (Entity (Actual));
+               begin
+                  Name := Name & "__" & Capitalize_First (Full_Name (Callee));
+               end;
             else
+               pragma Assert (not Is_Specialized_Actual (Actual));
                Name := Name & "__none";
             end if;
          end if;

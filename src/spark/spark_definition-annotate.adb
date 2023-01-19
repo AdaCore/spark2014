@@ -698,9 +698,6 @@ package body SPARK_Definition.Annotate is
          return;
       end if;
 
-      --  Check that E has at least a parameter of an anonymous
-      --  access-to-function type. Store such parameters in a set.
-
       declare
          F         : Opt_Formal_Kind_Id := First_Formal (E);
          Formals   : Entity_Sets.Set;
@@ -709,8 +706,9 @@ package body SPARK_Definition.Annotate is
          function Is_Unsupported_Use_Of_Formal
            (N : Node_Id) return Traverse_Result;
          --  Return Abandon on references to objects of Formals if they are not
-         --  directly under a dereference. In this case, store the offending
-         --  node in Violation for error reporting.
+         --  directly under a dereference or as actual parameters to call to
+         --  functions annotated with Higher_Order_Specialization. In this
+         --  case, store the offending node in Violation for error reporting.
 
          ----------------------------------
          -- Is_Unsupported_Use_Of_Formal --
@@ -720,6 +718,8 @@ package body SPARK_Definition.Annotate is
            (N : Node_Id) return Traverse_Result
          is
          begin
+            --  Uses are allowed under dereferences
+
             if Nkind (N) = N_Explicit_Dereference
               and then Nkind (Prefix (N)) in
                 N_Expanded_Name | N_Identifier
@@ -728,8 +728,41 @@ package body SPARK_Definition.Annotate is
             elsif Nkind (N) in N_Expanded_Name | N_Identifier
               and then Formals.Contains (Unique_Entity (Entity (N)))
             then
-               Violation := N;
-               return Abandon;
+
+               --  Check whether N is a call actual
+
+               declare
+                  Formal : Entity_Id;
+                  Call   : Node_Id;
+                  Callee : Entity_Id;
+               begin
+                  Find_Actual (N, Formal, Call);
+
+                  --  If so, check that Call is a call to a function annotated
+                  --  with Higher_Order_Specialization and Formal is an
+                  --  anonymous access-to-function type.
+
+                  if No (Call) or else Nkind (Call) /= N_Function_Call then
+
+                     --  Here we probably can only have comparison to null
+
+                     Violation := N;
+                     return Abandon;
+                  else
+                     Callee := Get_Called_Entity (Call);
+
+                     if Ekind (Callee) /= E_Function
+                       or else not
+                         Has_Higher_Order_Specialization_Annotation (Callee)
+                       or else not Is_Anonymous_Access_Type (Etype (Formal))
+                     then
+                        Violation := N;
+                        return Abandon;
+                     else
+                        return OK;
+                     end if;
+                  end if;
+               end;
             else
                return OK;
             end if;
@@ -738,6 +771,9 @@ package body SPARK_Definition.Annotate is
          procedure Find_Unsupported_Use_Of_Formal is new
            Traverse_More_Proc (Is_Unsupported_Use_Of_Formal);
       begin
+         --  Check that E has at least a parameter of an anonymous
+         --  access-to-function type. Store such parameters in a set.
+
          while Present (F) loop
             if Is_Anonymous_Access_Type (Etype (F))
               and then Is_Access_Subprogram_Type (Etype (F))
@@ -789,7 +825,9 @@ package body SPARK_Definition.Annotate is
             Error_Msg_N
               ("function annotated with Higher_Order_Specialization"
                & " shall only reference its access-to-function"
-               & " parameters in dereferences",
+               & " parameters in dereferences and as actual parameters in"
+               & " calls to functions annotated with"
+               & " Higher_Order_Specialization",
                Violation);
             return;
          end if;

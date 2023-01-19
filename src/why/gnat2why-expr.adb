@@ -2915,7 +2915,7 @@ package body Gnat2Why.Expr is
         Get_Called_Entity_For_Proof (Call);
       More_Reads          : constant Flow_Types.Flow_Id_Sets.Set :=
         Get_Globals_From_Specialized_Parameters
-          (Get_Specialized_Parameters (Call));
+          (Get_Specialized_Parameters (Call, Specialized_Call_Params));
       Binders             : constant Item_Array :=
         Compute_Subprogram_Parameters (Subp, Domain, More_Reads);
       Patterns            : Item_Array := Binders;
@@ -3036,13 +3036,18 @@ package body Gnat2Why.Expr is
                --  instead. We still emit LSP checks if we are in the program
                --  domain.
 
-               elsif Is_Specialized_Actual (Actual) then
+               elsif Is_Specialized_Actual (Actual, Specialized_Call_Params)
+               then
                    (if Domain = EW_Prog
                     then +Sequence
                       (Ada_Node => Actual,
                        Left     => Checks_For_Subp_Conversion
                          (Ada_Node => Actual,
-                          From     => Entity (Prefix (Actual)),
+                          From     =>
+                            (if Nkind (Actual) = N_Attribute_Reference
+                             then Entity (Prefix (Actual))
+                             else Specialized_Call_Params.Element
+                               (Entity (Actual))),
                           To       => Etype (Formal),
                           Params   => Params),
                        Right    => +Void)
@@ -20035,7 +20040,7 @@ package body Gnat2Why.Expr is
       --  For functions with higher order specialization, generate a
       --  specialized version if needed and call it instead.
 
-      if Is_Specialized_Call (Expr) then
+      if Is_Specialized_Call (Expr, Specialized_Call_Params) then
          Create_Theory_For_HO_Specialization_If_Needed (Expr);
          Specialization_Module := Get_Specialized_Function_Theory_Name (Expr);
 

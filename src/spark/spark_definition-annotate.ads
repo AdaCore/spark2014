@@ -217,7 +217,9 @@ package SPARK_Definition.Annotate is
 
    --  The function E shall not be volatile, dispatching, nor a borrowing
    --  traversal function. Its parameters shall only occur in contracts in
-   --  dereferences (the actual pointer value shall not be used).
+   --  dereferences and as actuals in calls to functions annotated with
+   --  Higher_Order_Specialization (the actual pointer value shall not be
+   --  used).
 
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;
