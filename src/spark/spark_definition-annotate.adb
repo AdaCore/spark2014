@@ -703,6 +703,14 @@ package body SPARK_Definition.Annotate is
          Formals   : Entity_Sets.Set;
          Violation : Node_Id := Empty;
 
+         function Is_Use_Of_Formal (N : Node_Id) return Traverse_Result is
+           (if Nkind (N) in N_Expanded_Name | N_Identifier
+              and then Formals.Contains (Unique_Entity (Entity (N)))
+            then Abandon else OK);
+
+         function Contains_Use_Of_Formal is new
+           Traverse_More_Func (Is_Use_Of_Formal);
+
          function Is_Unsupported_Use_Of_Formal
            (N : Node_Id) return Traverse_Result;
          --  Return Abandon on references to objects of Formals if they are not
@@ -763,6 +771,18 @@ package body SPARK_Definition.Annotate is
                      end if;
                   end if;
                end;
+
+            --  Inside iterated component associations, we cannot support any
+            --  references to the formals. This is because expressions in
+            --  iterated associations are translated directly inside the
+            --  aggregate module, so the aggregate module itself would have to
+            --  be specialized.
+
+            elsif Nkind (N) = N_Iterated_Component_Association
+              and then Contains_Use_Of_Formal (N) = Abandon
+            then
+               Violation := N;
+               return Abandon;
             else
                return OK;
             end if;
@@ -822,13 +842,21 @@ package body SPARK_Definition.Annotate is
 
          <<Violation_Found>>
          if Present (Violation) then
-            Error_Msg_N
-              ("function annotated with Higher_Order_Specialization"
-               & " shall only reference its access-to-function"
-               & " parameters in dereferences and as actual parameters in"
-               & " calls to functions annotated with"
-               & " Higher_Order_Specialization",
-               Violation);
+            if Nkind (Violation) = N_Iterated_Component_Association then
+               Error_Msg_N
+                 ("function annotated with Higher_Order_Specialization"
+                  & " shall not reference its access-to-function"
+                  & " parameters inside an iterated component association",
+                  Violation);
+            else
+               Error_Msg_N
+                 ("function annotated with Higher_Order_Specialization"
+                  & " shall only reference its access-to-function"
+                  & " parameters in dereferences and as actual parameters in"
+                  & " calls to functions annotated with"
+                  & " Higher_Order_Specialization",
+                  Violation);
+            end if;
             return;
          end if;
       end;
