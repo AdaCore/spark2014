@@ -173,18 +173,22 @@ package Why.Gen.Names is
    function Logic_Function_Name
      (E                      : Function_Kind_Id;
       Selector_Name          : Selection_Kind := Why.Inter.Standard;
-      Is_Access_Subp_Wrapper : Boolean := False)
+      Is_Access_Subp_Wrapper : Boolean := False;
+      Specialization_Module  : Symbol := No_Symbol)
       return W_Identifier_Id;
    --  Compute the name to be used to call a function or a function profile in
-   --  the logic domain.
+   --  the logic domain. If Specialization_Module is supplied, then the name is
+   --  taken from the M_HO_Specializations map.
 
    function Guard_Predicate_Name
      (E                      : Function_Kind_Id;
       Selector_Name          : Selection_Kind := Why.Inter.Standard;
-      Is_Access_Subp_Wrapper : Boolean := False)
+      Is_Access_Subp_Wrapper : Boolean := False;
+      Specialization_Module  : Symbol := No_Symbol)
       return W_Identifier_Id;
    --  Compute the name to be used for the guard of a function or a function
-   --  profile.
+   --  profile. If Specialization_Module is supplied, then the name is taken
+   --  from the M_HO_Specializations map.
 
    Def_Axiom : constant String := "def_axiom";
    --  suffix for a definition axiom

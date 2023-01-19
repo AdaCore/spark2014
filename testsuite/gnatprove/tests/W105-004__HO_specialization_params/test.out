@@ -1,0 +1,5 @@
+specialized_params.adb:43:34: error: access to subprogram with global effects is not allowed in SPARK
+specialized_params.adb:43:34: error: violation of aspect SPARK_Mode at line 3
+specialized_params.adb:45:35: error: access to subprogram with global effects is not allowed in SPARK
+specialized_params.adb:45:35: error: violation of aspect SPARK_Mode at line 3
+gnatprove: error during flow analysis and proof

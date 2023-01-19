@@ -929,7 +929,7 @@ package body Why.Gen.Hardcoded is
      (Call   : Node_Id;
       Domain : EW_Domain) return W_Expr_Id
    is
-      Subp      : constant Entity_Id := Get_Called_Entity (Call);
+      Subp      : constant Entity_Id := Get_Called_Entity_For_Proof (Call);
       Root_Type : constant W_Type_Id :=
         Type_Of_Node (Root_Retysp (Etype (Call)));
       Actual    : Node_Id := First_Actual (Call);

@@ -3376,9 +3376,11 @@ package body SPARK_Definition is
                           (Lim_Access_To_Relaxed_Init_Subp, N);
 
                      --  Subprogram with non-null Global contract (either
-                     --  explicit or generated).
+                     --  explicit or generated). Global accesses are allowed
+                     --  for specialized actuals of functions annotated with
+                     --  higher order specialization.
 
-                     else
+                     elsif not Is_Specialized_Actual (N) then
                         declare
                            Globals : Global_Flow_Ids;
                         begin

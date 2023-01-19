@@ -40,6 +40,7 @@ with Osint;
 with Output;
 with Pprint;                      use Pprint;
 with SPARK_Definition;            use SPARK_Definition;
+with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util.Hardcoded;        use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
@@ -1941,6 +1942,47 @@ package body SPARK_Util is
       end case;
    end Get_Root_Object;
 
+   --------------------------------
+   -- Get_Specialized_Parameters --
+   --------------------------------
+
+   function Get_Specialized_Parameters (Call : Node_Id) return Node_Maps.Map is
+      Subp   : constant Entity_Id :=
+        (if Nkind (Call) in N_Op then Entity (Call)
+         else Sem_Aux.Get_Called_Entity (Call));
+      Params : Node_Maps.Map;
+
+      procedure Store_Specialized_Param (Formal : Entity_Id; Actual : Node_Id);
+      --  Store in Params an association between the formal parameters
+      --  specialized in Call and the prefix of their actuals.
+
+      -----------------------------
+      -- Store_Specialized_Param --
+      -----------------------------
+
+      procedure Store_Specialized_Param (Formal : Entity_Id; Actual : Node_Id)
+      is
+      begin
+         if Is_Specializable_Formal (Formal)
+           and then Is_Access_Attribute_Of_Function (Actual)
+         then
+            Params.Insert (Formal, Entity (Prefix (Actual)));
+         end if;
+      end Store_Specialized_Param;
+
+      procedure Collect_Params is new Iterate_Call_Parameters
+        (Store_Specialized_Param);
+
+   begin
+      if Ekind (Subp) = E_Function
+        and then Has_Higher_Order_Specialization_Annotation (Subp)
+      then
+         Collect_Params (Call);
+      end if;
+
+      return Params;
+   end Get_Specialized_Parameters;
+
    ------------------
    -- Has_Volatile --
    ------------------
@@ -2054,6 +2096,16 @@ package body SPARK_Util is
        and then Is_Access_Subprogram_Type (Etype (E))
        and then Scope (E) = Access_Subprogram_Wrapper
        (Directly_Designated_Type (Etype (E))));
+
+   -------------------------------------
+   -- Is_Access_Attribute_Of_Function --
+   -------------------------------------
+
+   function Is_Access_Attribute_Of_Function (Expr : Node_Id) return Boolean
+   is (Nkind (Expr) = N_Attribute_Reference
+       and then Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Access
+       and then Nkind (Prefix (Expr)) in N_Identifier | N_Expanded_Name
+       and then Ekind (Entity (Prefix (Expr))) = E_Function);
 
    ---------------
    -- Is_Action --
@@ -3102,6 +3154,72 @@ package body SPARK_Util is
           (Nkind (Choice) in N_Identifier | N_Expanded_Name
            and then Is_Type (Entity (Choice)));
    end Is_Singleton_Choice;
+
+   -----------------------------
+   -- Is_Specializable_Formal --
+   -----------------------------
+
+   function Is_Specializable_Formal (Formal : Formal_Kind_Id) return Boolean is
+     (Ekind (Formal) = E_In_Parameter
+      and then Is_Anonymous_Access_Type (Etype (Formal))
+      and then Is_Access_Subprogram_Type (Etype (Formal))
+      and then Is_Function_Type
+        (Directly_Designated_Type (Etype (Formal))));
+
+   ---------------------------
+   -- Is_Specialized_Actual --
+   ---------------------------
+
+   function Is_Specialized_Actual (Expr : Node_Id) return Boolean is
+   begin
+      --  Expr shall be an access attribute to a function
+
+      if not Is_Access_Attribute_Of_Function (Expr) then
+         return False;
+      end if;
+
+      --  Its parent shall be a function call annotated with higher order
+      --  specialization.
+
+      declare
+         Call : constant Node_Id := Parent (Expr);
+         Subp : constant Entity_Id :=
+           (if Nkind (Call) = N_Function_Call then Get_Called_Entity (Call)
+            else Empty);
+      begin
+         if No (Subp)
+           or else Ekind (Subp) /= E_Function
+           or else not Has_Higher_Order_Specialization_Annotation (Subp)
+         then
+            return False;
+         end if;
+
+         --  Expr shall be the actual parameter associated to an anonymous
+         --  access-to-function formal parameter.
+
+         declare
+            Formal : constant Entity_Id := Get_Formal_From_Actual (Expr);
+         begin
+            return Present (Formal)
+              and then Ekind (Formal) = E_In_Parameter
+              and then Is_Anonymous_Access_Type (Etype (Formal));
+         end;
+      end;
+   end Is_Specialized_Actual;
+
+   -------------------------
+   -- Is_Specialized_Call --
+   -------------------------
+
+   function Is_Specialized_Call (Call : Node_Id) return Boolean is
+      Subp : constant Entity_Id :=
+        (if Nkind (Call) in N_Op then Entity (Call)
+         else Sem_Aux.Get_Called_Entity (Call));
+   begin
+      return Ekind (Subp) = E_Function
+        and then Has_Higher_Order_Specialization_Annotation (Subp)
+        and then not Get_Specialized_Parameters (Call).Is_Empty;
+   end Is_Specialized_Call;
 
    -----------------------
    -- Is_Strict_Subpath --

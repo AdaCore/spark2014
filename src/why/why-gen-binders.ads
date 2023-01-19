@@ -298,7 +298,7 @@ package Why.Gen.Binders is
    --  Same as new_defining_axiom, but for functions returning booleans.
    --  (for those, predicates are generated instead of logics).
 
-   function Unit_Param return Binder_Type;
+   function Unit_Param (Prefix : String := "") return Binder_Type;
    --  return a dummy binder for a single argument of type unit
 
    function Concurrent_Self_Ident (Ty : Entity_Id) return W_Identifier_Id

@@ -245,14 +245,16 @@ package Why.Gen.Expr is
    --  Return a label that contains the pretty printing for the given node
 
    function New_Function_Call
-     (Ada_Node : Node_Id := Empty;
-      Subp     : Node_Id;
-      Selector : Selection_Kind := Why.Inter.Standard;
-      Name     : W_Identifier_Id;
-      Args     : W_Expr_Array;
-      Check    : Boolean;
-      Domain   : EW_Domain;
-      Typ      : W_Type_Id) return W_Expr_Id
+     (Ada_Node              : Node_Id := Empty;
+      Subp                  : Node_Id;
+      Selector              : Selection_Kind := Why.Inter.Standard;
+      Name                  : W_Identifier_Id;
+      Args                  : W_Expr_Array;
+      Check                 : Boolean;
+      Domain                : EW_Domain;
+      Typ                   : W_Type_Id;
+      Specialization_Module : Symbol := No_Symbol)
+      return W_Expr_Id
    with Pre => (if Check then Domain = EW_Prog);
    --  If Check is True, build a call to Name(Args) with VC and location
    --  labels. Otherwise, build a call in the appropriate domain. In the

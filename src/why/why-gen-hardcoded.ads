@@ -69,8 +69,8 @@ package Why.Gen.Hardcoded is
       Domain : EW_Domain) return W_Expr_Id
    with
      Pre => Nkind (Call) = N_Function_Call
-       and then Is_Hardcoded_Entity (Get_Called_Entity (Call))
-       and then Is_Literal_Function (Get_Called_Entity (Call));
+       and then Is_Hardcoded_Entity (Get_Called_Entity_For_Proof (Call))
+       and then Is_Literal_Function (Get_Called_Entity_For_Proof (Call));
    --  Transform a literal of an hardcoded type in a precise way
    --  whenever possible. If no precise translation was achieved, return
    --  Why_Empty;

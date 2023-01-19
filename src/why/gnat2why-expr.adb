@@ -204,8 +204,9 @@ package body Gnat2Why.Expr is
    procedure Check_UU_Restrictions (Expr : Node_Id) with
      Pre => Nkind (Expr) in
          N_Op_Eq | N_Op_Ne | N_Function_Call | N_Membership_Test
-       and then (if Nkind (Expr) = N_Function_Call
-                 then Is_Tagged_Predefined_Eq (Get_Called_Entity (Expr)));
+       and then
+         (if Nkind (Expr) = N_Function_Call
+          then Is_Tagged_Predefined_Eq (Get_Called_Entity_For_Proof (Expr)));
    --  Check special restrictions for unchecked union types on membership tests
    --  and builtin equality. Emit statically failed proof results for these
    --  checks.
@@ -971,8 +972,9 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params) return W_Expr_Id
    with
      Pre => Nkind (Expr) in N_Op_Eq | N_Op_Ne | N_Function_Call
-       and then (if Nkind (Expr) = N_Function_Call
-                 then Is_Tagged_Predefined_Eq (Get_Called_Entity (Expr)));
+       and then
+         (if Nkind (Expr) = N_Function_Call
+          then Is_Tagged_Predefined_Eq (Get_Called_Entity_For_Proof (Expr)));
 
    function Transform_Shift_Or_Rotate_Call
      (Expr   : N_Function_Call_Id;
@@ -2539,7 +2541,8 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params) return W_Prog_Id
    is
       Call_Variant : constant Node_Id :=
-        Get_Pragma (Get_Called_Entity (Call), Pragma_Subprogram_Variant);
+        Get_Pragma
+          (Get_Called_Entity_For_Proof (Call), Pragma_Subprogram_Variant);
       Result       : Boolean;
       Explanation  : Unbounded_String;
    begin
@@ -2589,7 +2592,8 @@ package body Gnat2Why.Expr is
             return New_VC_Call
               (Ada_Node => Call,
                Name     => E_Symb
-                 (Get_Called_Entity (Call), WNE_Check_Subprogram_Variants),
+                 (Get_Called_Entity_For_Proof (Call),
+                  WNE_Check_Subprogram_Variants),
                Progs    => Enclosing_Variants & Args,
                Reason   => VC_Subprogram_Variant,
                Typ      => EW_Unit_Type);
@@ -2839,7 +2843,7 @@ package body Gnat2Why.Expr is
          if Nkind (Path) = N_Function_Call then
             declare
                Subp         : constant Entity_Id :=
-                 Get_Called_Entity (Path);
+                 Get_Called_Entity_For_Proof (Path);
                Borrowed_End : constant W_Identifier_Id :=
                  Get_Borrowed_At_End (Subp);
                Context      : Ref_Context;
@@ -2907,9 +2911,13 @@ package body Gnat2Why.Expr is
       Params   : Transformation_Params;
       Use_Tmps : Boolean := False) return W_Expr_Array
    is
-      Subp                : constant Entity_Id := Get_Called_Entity (Call);
+      Subp                : constant Entity_Id :=
+        Get_Called_Entity_For_Proof (Call);
+      More_Reads          : constant Flow_Types.Flow_Id_Sets.Set :=
+        Get_Globals_From_Specialized_Parameters
+          (Get_Specialized_Parameters (Call));
       Binders             : constant Item_Array :=
-        Compute_Subprogram_Parameters (Subp, Domain);
+        Compute_Subprogram_Parameters (Subp, Domain, More_Reads);
       Patterns            : Item_Array := Binders;
       Aliasing            : constant Boolean :=
         Nkind (Call) in N_Procedure_Call_Statement | N_Entry_Call_Statement
@@ -3022,6 +3030,23 @@ package body Gnat2Why.Expr is
                      No_Pred_Checks => True),
                   To       => Formal_T,
                   No_Init  => True)
+
+               --  No value is provided for specialized actuals, as the
+               --  parameter is hardcoded in the translation. Unit is provided
+               --  instead. We still emit LSP checks if we are in the program
+               --  domain.
+
+               elsif Is_Specialized_Actual (Actual) then
+                   (if Domain = EW_Prog
+                    then +Sequence
+                      (Ada_Node => Actual,
+                       Left     => Checks_For_Subp_Conversion
+                         (Ada_Node => Actual,
+                          From     => Entity (Prefix (Actual)),
+                          To       => Etype (Formal),
+                          Params   => Params),
+                       Right    => +Void)
+                    else W_Expr_Id'(+Void))
 
                --  Otherwise, directly use the expected type for the conversion
 
@@ -3237,7 +3262,7 @@ package body Gnat2Why.Expr is
 
          if Arg_Cnt <= Why_Args'Last then
             Why_Args (Arg_Cnt .. Why_Args'Last) :=
-              Get_Logic_Args (Subp, Params.Ref_Allowed);
+              Get_Logic_Args (Subp, Params.Ref_Allowed, More_Reads);
          end if;
 
          return Why_Args;
@@ -6433,7 +6458,9 @@ package body Gnat2Why.Expr is
                --  might have been deferred to the call site. We need to check
                --  that it is OK to call Actual'Access in this context.
 
-               if Is_Aliased (First_Formal (Get_Called_Entity (Path))) then
+               if Is_Aliased
+                 (First_Formal (Get_Called_Entity_For_Proof (Path)))
+               then
                   Access_Seen := True;
                end if;
 
@@ -8623,7 +8650,8 @@ package body Gnat2Why.Expr is
       Store    : in out W_Statement_Sequence_Id) return W_Prog_Id
    is
       Ref_Context : W_Prog_Id;
-      Subp        : constant Entity_Id := Get_Called_Entity (Ada_Call);
+      Subp        : constant Entity_Id :=
+        Get_Called_Entity_For_Proof (Ada_Call);
 
    begin
       --  In the case of a procedure or entry call, there is no value to return
@@ -17475,22 +17503,25 @@ package body Gnat2Why.Expr is
 
         and then
           not (Nkind (Expr) = N_Function_Call
-             and then Ekind (Get_Called_Entity (Expr)) = E_Function
-             and then Is_Predicate_Function (Get_Called_Entity (Expr)))
+             and then Ekind (Get_Called_Entity_For_Proof (Expr)) = E_Function
+             and then Is_Predicate_Function
+                 (Get_Called_Entity_For_Proof (Expr)))
 
         --  Calls to hardcoded operators
 
         and then
           not (Nkind (Expr) = N_Function_Call
-             and then Ekind (Get_Called_Entity (Expr)) = E_Function
-             and then Is_Hardcoded_Comparison (Get_Called_Entity (Expr)))
+             and then Ekind (Get_Called_Entity_For_Proof (Expr)) = E_Function
+             and then Is_Hardcoded_Comparison
+                 (Get_Called_Entity_For_Proof (Expr)))
 
         --  Calls to logical equality
 
         and then
           not (Nkind (Expr) = N_Function_Call
-             and then Ekind (Get_Called_Entity (Expr)) = E_Function
-             and then Has_Logical_Eq_Annotation (Get_Called_Entity (Expr)))
+             and then Ekind (Get_Called_Entity_For_Proof (Expr)) = E_Function
+             and then Has_Logical_Eq_Annotation
+                 (Get_Called_Entity_For_Proof (Expr)))
       then
          T := +Pred_Of_Boolean_Term
                  (Transform_Term (Expr, EW_Bool_Type, Local_Params));
@@ -18680,7 +18711,7 @@ package body Gnat2Why.Expr is
 
          when N_Function_Call =>
             declare
-               Subp : constant Entity_Id := Get_Called_Entity (Expr);
+               Subp : constant Entity_Id := Get_Called_Entity_For_Proof (Expr);
                Oper : constant N_Op_Shift_Option :=
                  Is_Simple_Shift_Or_Rotate (Subp);
             begin
@@ -19466,7 +19497,8 @@ package body Gnat2Why.Expr is
 
             when N_Function_Call =>
                declare
-                  Subp        : constant Entity_Id := Get_Called_Entity (Expr);
+                  Subp        : constant Entity_Id :=
+                    Get_Called_Entity_For_Proof (Expr);
                   Name_String : constant String :=
                     Get_Name_String (Chars (Subp));
                   Fst_Param   : constant Node_Id := First_Actual (Expr);
@@ -19605,7 +19637,8 @@ package body Gnat2Why.Expr is
 
             when N_Function_Call =>
                declare
-                  Subp        : constant Entity_Id := Get_Called_Entity (Expr);
+                  Subp        : constant Entity_Id :=
+                    Get_Called_Entity_For_Proof (Expr);
                   Name_String : constant String :=
                     Get_Name_String (Chars (Subp));
                   Fst_Param   : constant Node_Id := First_Actual (Expr);
@@ -19806,7 +19839,8 @@ package body Gnat2Why.Expr is
 
             when N_Function_Call =>
                declare
-                  Subp        : constant Entity_Id := Get_Called_Entity (Expr);
+                  Subp        : constant Entity_Id :=
+                    Get_Called_Entity_For_Proof (Expr);
                   Name_String : constant String :=
                     Get_Name_String (Chars (Subp));
                   Fst_Param   : constant Node_Id := First_Actual (Expr);
@@ -19905,7 +19939,7 @@ package body Gnat2Why.Expr is
       Context  : Ref_Context;
       Store    : W_Statement_Sequence_Id := Void_Sequence;
       T        : W_Expr_Id;
-      Subp     : constant Entity_Id := Get_Called_Entity (Expr);
+      Subp     : constant Entity_Id := Get_Called_Entity_For_Proof (Expr);
 
       Selector : constant Selection_Kind :=
          --  When the call is dispatching, use the Dispatch variant of
@@ -19963,7 +19997,10 @@ package body Gnat2Why.Expr is
         Tag_Arg &
         Compute_Call_Args (Expr, Subdomain, Context, Store, Params, Use_Tmps);
 
-      Why_Name : W_Identifier_Id;
+      Why_Name              : W_Identifier_Id;
+      Specialization_Module : Symbol := No_Symbol;
+      --  Name of the specialization module if Expr is a specialized call to
+      --  a function with higher order specialization.
 
    begin
       --  Hardcoded function calls are transformed in a specific function
@@ -19995,25 +20032,45 @@ package body Gnat2Why.Expr is
          return T;
       end if;
 
-      Why_Name :=
-        W_Identifier_Id
-          (Transform_Identifier (Params   => Params,
-                                 Expr     => Expr,
-                                 Ent      => Subp,
-                                 Domain   => Domain,
-                                 Selector => Selector));
+      --  For functions with higher order specialization, generate a
+      --  specialized version if needed and call it instead.
+
+      if Is_Specialized_Call (Expr) then
+         Create_Theory_For_HO_Specialization_If_Needed (Expr);
+         Specialization_Module := Get_Specialized_Function_Theory_Name (Expr);
+
+         declare
+            HO_Specialization : constant M_HO_Specialization_Type :=
+              M_HO_Specializations.Element (Specialization_Module);
+         begin
+            if Domain = EW_Prog then
+               Why_Name := HO_Specialization.Prog_Id;
+            else
+               Why_Name := HO_Specialization.Fun_Id;
+            end if;
+         end;
+      else
+         Why_Name :=
+           W_Identifier_Id
+             (Transform_Identifier (Params   => Params,
+                                    Expr     => Expr,
+                                    Ent      => Subp,
+                                    Domain   => Domain,
+                                    Selector => Selector));
+      end if;
 
       T := New_Function_Call
-        (Ada_Node => Expr,
-         Domain   => Domain,
-         Subp     => Subp,
-         Selector => Selector,
-         Name     => Why_Name,
-         Args     => Args,
-         Check    =>
+        (Ada_Node              => Expr,
+         Domain                => Domain,
+         Subp                  => Subp,
+         Selector              => Selector,
+         Name                  => Why_Name,
+         Args                  => Args,
+         Check                 =>
            Domain = EW_Prog
            and then Why_Subp_Has_Precondition (Subp, Selector),
-         Typ      => Get_Typ (Why_Name));
+         Typ                   => Get_Typ (Why_Name),
+         Specialization_Module => Specialization_Module);
 
       --  There are no tag checks on dispatching equality. Instead, the
       --  operator returns False. Take care of this special case by
@@ -22600,7 +22657,7 @@ package body Gnat2Why.Expr is
                Store    : W_Statement_Sequence_Id := Void_Sequence;
                Call     : W_Prog_Id;
                Subp     : constant Entity_Id :=
-                 Get_Called_Entity (Stmt_Or_Decl);
+                 Get_Called_Entity_For_Proof (Stmt_Or_Decl);
 
                Args     : constant W_Expr_Array :=
                  Compute_Call_Args

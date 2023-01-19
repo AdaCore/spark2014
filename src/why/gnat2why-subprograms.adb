@@ -32,10 +32,8 @@ with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals;         use Flow_Generated_Globals;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
-with Flow_Types;                     use Flow_Types;
 with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
-with GNATCOLL.Symbols;               use GNATCOLL.Symbols;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
@@ -77,11 +75,16 @@ package body Gnat2Why.Subprograms is
    -- Local Subprograms --
    -----------------------
 
-   function Add_Logic_Binders (E           : Entity_Id;
-                               Raw_Binders : Item_Array) return Item_Array;
+   function Add_Logic_Binders
+     (E           : Entity_Id;
+      Raw_Binders : Item_Array;
+      More_Reads  : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
+      return Item_Array;
    --  Return Why binders for the parameters and read effects of function E.
    --  The array is a singleton of unit type if E has no parameters and no
-   --  effects.
+   --  effects. More_Reads is a set of globals that should be considered as
+   --  read by the subprogram in addition to its actual inputs. It is used to
+   --  handle calls with higher order specialization.
 
    function Assume_Initial_Condition_Of_Withed_Units
      (Main   : Entity_Id;
@@ -119,13 +122,18 @@ package body Gnat2Why.Subprograms is
    --  handling.
 
    function Compute_Args
-     (E       : Entity_Id;
-      Binders : Binder_Array) return W_Expr_Array;
+     (E          : Entity_Id;
+      Binders    : Binder_Array;
+      More_Reads : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
+      return W_Expr_Array;
    --  Given a function entity, and an array of program binders,
    --  compute a call of the logical Why function corresponding to E.
    --  In general, the resulting expression array has *more* arguments than the
    --  Ada entity, because of effects. Note that these effect variables are not
-   --  bound here, they refer to the global variables
+   --  bound here, they refer to the global variables.
+   --  More_Reads is a set of globals that should be considered as read by
+   --  the subprogram in addition to its actual inputs. It is used to handle
+   --  calls with higher order specialization.
 
    function Compute_Attach_Handler_Check
      (Ty     : Entity_Id;
@@ -136,9 +144,15 @@ package body Gnat2Why.Subprograms is
    --    Attach_Handler pragmas of the procedures of the type is reserved
    --    see also Ada RM C.3.1(10/3)
 
-   function Compute_Binders (E : Entity_Id; Domain : EW_Domain)
-                             return Item_Array;
+   function Compute_Binders
+     (E          : Entity_Id;
+      Domain     : EW_Domain;
+      More_Reads : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
+      return Item_Array;
    --  Return Why binders for the parameters of subprogram E.
+   --  More_Reads is a set of globals that should be considered as read by
+   --  the subprogram in addition to its actual inputs. It is used to handle
+   --  calls with higher order specialization.
    --  If Domain is EW_Term also generates binders for E's read effects.
    --  The array is a singleton of unit type if the array is empty.
 
@@ -187,9 +201,15 @@ package body Gnat2Why.Subprograms is
 
    function Compute_Effects
      (E             : Entity_Id;
-      Global_Params : Boolean := False) return W_Effects_Id;
+      Global_Params : Boolean := False;
+      More_Reads    : Flow_Types.Flow_Id_Sets.Set :=
+        Flow_Types.Flow_Id_Sets.Empty_Set)
+      return W_Effects_Id;
    --  Compute the effects of the generated Why function. If Global_Params is
    --  True, then the global version of the parameters is used.
+   --  More_Reads is a set of globals that should be considered as read by
+   --  the subprogram in addition to its actual inputs. It is used to handle
+   --  calls with higher order specialization.
 
    function Compute_Guard_Formula
      (Binders : Item_Array;
@@ -833,10 +853,13 @@ package body Gnat2Why.Subprograms is
    ------------------
 
    function Compute_Args
-     (E       : Entity_Id;
-      Binders : Binder_Array) return W_Expr_Array
+     (E          : Entity_Id;
+      Binders    : Binder_Array;
+      More_Reads : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
+      return W_Expr_Array
    is
-      Logic_Args  : constant W_Expr_Array := Get_Logic_Args (E, True);
+      Logic_Args  : constant W_Expr_Array :=
+        Get_Logic_Args (E, True, More_Reads);
       Params      : constant W_Expr_Array :=
         (if Number_Of_Func_Args (E) = 0 then (1 .. 0 => <>)
          else Get_Args_From_Binders (Binders, True));
@@ -958,12 +981,13 @@ package body Gnat2Why.Subprograms is
    ---------------------
 
    function Compute_Binders
-     (E : Entity_Id;
-      Domain : EW_Domain)
+     (E          : Entity_Id;
+      Domain     : EW_Domain;
+      More_Reads : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
       return Item_Array
    is
       Binders : constant Item_Array :=
-        Compute_Subprogram_Parameters (E, Domain);
+        Compute_Subprogram_Parameters (E, Domain, More_Reads);
    begin
       --  If E has no parameters, return a singleton of unit type.
 
@@ -1212,7 +1236,10 @@ package body Gnat2Why.Subprograms is
 
    function Compute_Effects
      (E             : Entity_Id;
-      Global_Params : Boolean := False) return W_Effects_Id
+      Global_Params : Boolean := False;
+      More_Reads    : Flow_Types.Flow_Id_Sets.Set :=
+        Flow_Types.Flow_Id_Sets.Empty_Set)
+      return W_Effects_Id
    is
       Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids : Flow_Types.Flow_Id_Sets.Set;
@@ -1233,6 +1260,8 @@ package body Gnat2Why.Subprograms is
                                       Reads           => Read_Ids,
                                       Writes          => Write_Ids,
                                       Erase_Constants => True);
+
+      Read_Ids.Union (More_Reads);
 
       for Write_Id of Write_Ids loop
          case Write_Id.Kind is
@@ -1585,14 +1614,15 @@ package body Gnat2Why.Subprograms is
    ------------------------------------
 
    function Compute_Subprogram_Parameters
-     (E      : Callable_Kind_Id;
-      Domain : EW_Domain)
+     (E          : Callable_Kind_Id;
+      Domain     : EW_Domain;
+      More_Reads : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
       return Item_Array
    is
       Raw_Binders : constant Item_Array := Compute_Raw_Binders (E);
    begin
       return (if Domain = EW_Prog then Raw_Binders
-              else Add_Logic_Binders (E, Raw_Binders));
+              else Add_Logic_Binders (E, Raw_Binders, More_Reads));
    end Compute_Subprogram_Parameters;
 
    --------------------------------------------
@@ -1789,11 +1819,12 @@ package body Gnat2Why.Subprograms is
 
    function Add_Logic_Binders
      (E           : Entity_Id;
-      Raw_Binders : Item_Array)
+      Raw_Binders : Item_Array;
+      More_Reads  : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
       return Item_Array
    is
       Effect_Binders : Item_Array :=
-        Compute_Binders_For_Effects (E);
+        Compute_Binders_For_Effects (E, More_Reads);
    begin
       Localize_Binders (Effect_Binders);
       return Raw_Binders & Effect_Binders;
@@ -1804,11 +1835,12 @@ package body Gnat2Why.Subprograms is
    ---------------------------------
 
    function Compute_Binders_For_Effects
-     (E : Callable_Kind_Id)
+     (E          : Callable_Kind_Id;
+      More_Reads : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
       return Item_Array
    is
-      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+      Read_Ids  : Flow_Id_Sets.Set;
+      Write_Ids : Flow_Id_Sets.Set;
 
    begin
       --  Collect global variables potentially read and written
@@ -1817,6 +1849,8 @@ package body Gnat2Why.Subprograms is
                                       Reads           => Read_Ids,
                                       Writes          => Write_Ids,
                                       Erase_Constants => True);
+
+      Read_Ids.Union (More_Reads);
 
       --  Do not include binder for self reference as it is already included
       --  in binders for parameters.
@@ -1853,10 +1887,21 @@ package body Gnat2Why.Subprograms is
       end if;
 
       while Present (Formal) loop
-         Result (Count) := Mk_Item_Of_Entity
-           (E           => Formal,
-            Local       => True,
-            In_Fun_Decl => True);
+
+         --  Specialized parameters are hardcoded. No actual value is provided,
+         --  we use a parameter of type unit instead.
+
+         if Specialized_Call_Params.Contains (Formal) then
+            Result (Count) :=
+              (Regular, Local => True,
+               Init           => <>,
+               Main           => Unit_Param (Short_Name (Formal)));
+         else
+            Result (Count) := Mk_Item_Of_Entity
+              (E           => Formal,
+               Local       => True,
+               In_Fun_Decl => True);
+         end if;
          Next_Formal (Formal);
          Count := Count + 1;
       end loop;
@@ -2386,10 +2431,12 @@ package body Gnat2Why.Subprograms is
    -----------------------------
 
    procedure Declare_Logic_Functions
-     (Th           : Theory_UC;
-      Dispatch_Th  : Theory_UC := Empty_Theory;
-      E            : Callable_Kind_Id;
-      Spec_Binders : Binder_Array := Binder_Array'(1 .. 0 => <>))
+     (Th                    : Theory_UC;
+      Dispatch_Th           : Theory_UC := Empty_Theory;
+      E                     : Callable_Kind_Id;
+      Spec_Binders          : Binder_Array := Binder_Array'(1 .. 0 => <>);
+      Specialization_Module : Symbol := No_Symbol;
+      More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
    is
       --  Local subprograms
 
@@ -2431,13 +2478,18 @@ package body Gnat2Why.Subprograms is
       --  Local variables
 
       Why_Type           : constant W_Type_Id := Type_Of_Node (E);
-      Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
+      Logic_Func_Binders : constant Item_Array := Compute_Binders
+        (E, EW_Term, More_Reads);
       Logic_Why_Binders  : constant Binder_Array :=
         Spec_Binders & To_Binder_Array (Logic_Func_Binders);
       Logic_Id           : constant W_Identifier_Id :=
-        To_Local (Logic_Function_Name (E));
+        To_Local
+          (Logic_Function_Name
+             (E, Specialization_Module => Specialization_Module));
       Pred_Id            : constant W_Identifier_Id :=
-        To_Local (Guard_Predicate_Name (E));
+        To_Local
+          (Guard_Predicate_Name
+             (E, Specialization_Module => Specialization_Module));
       Params             : constant Transformation_Params :=
         (Phase       => Generate_Logic,
          Gen_Marker  => GM_None,
@@ -2559,8 +2611,12 @@ package body Gnat2Why.Subprograms is
                Return_Type => EW_Bool_Type));
       end if;
 
+      --  For higher order specializations, we do not take into account
+      --  refined postcondition if any.
+
       if Entity_Body_In_SPARK (E)
         and then Has_Contracts (E, Pragma_Refined_Post)
+        and then Specialization_Module = No_Symbol
       then
          Emit
            (Th,
@@ -5025,9 +5081,12 @@ package body Gnat2Why.Subprograms is
       E                      : Callable_Kind_Id;
       Spec_Binders           : Binder_Array := (1 .. 0 => <>);
       Spec_Guard             : W_Pred_Id := True_Pred;
-      Is_Access_Subp_Wrapper : Boolean := False)
+      Is_Access_Subp_Wrapper : Boolean := False;
+      Specialization_Module  : Symbol := No_Symbol;
+      More_Reads             : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
    is
-      Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
+      Logic_Func_Binders : constant Item_Array := Compute_Binders
+        (E, EW_Term, More_Reads);
       Params             : Transformation_Params;
       Pre                : W_Pred_Id;
       Post               : W_Pred_Id;
@@ -5093,7 +5152,8 @@ package body Gnat2Why.Subprograms is
             Logic_Why_Binders   : constant Binder_Array :=
              Spec_Binders & To_Binder_Array (Logic_Func_Binders);
             Logic_Id            : constant W_Identifier_Id :=
-              To_Why_Id (E, Domain => EW_Term, Local => False);
+              Logic_Function_Name
+                (E, Specialization_Module => Specialization_Module);
             Dynamic_Prop_Result : constant W_Pred_Id :=
               +New_Dynamic_Property
               (Domain => EW_Pred,
@@ -5221,8 +5281,12 @@ package body Gnat2Why.Subprograms is
          end if;
       end if;
 
+      --  For higher order specializations, we do not take into account
+      --  refined postcondition if any.
+
       if Entity_Body_In_SPARK (E)
         and then Has_Contracts (E, Pragma_Refined_Post)
+        and then Specialization_Module = No_Symbol
       then
          Refined_Post := +Compute_Spec (Params,
                                         E, Pragma_Refined_Post, EW_Pred);
@@ -5275,7 +5339,8 @@ package body Gnat2Why.Subprograms is
               Logic_Function_Name
                 (E,
                  Selector_Name          => Selector,
-                 Is_Access_Subp_Wrapper => Is_Access_Subp_Wrapper);
+                 Is_Access_Subp_Wrapper => Is_Access_Subp_Wrapper,
+                 Specialization_Module  => Specialization_Module);
             Result_Id     : constant W_Identifier_Id :=
               New_Result_Ident (Why_Type);
             Tag_B         : constant Binder_Array :=
@@ -5333,7 +5398,8 @@ package body Gnat2Why.Subprograms is
                        Name    => Guard_Predicate_Name
                          (E,
                           Selector_Name          => Selector,
-                          Is_Access_Subp_Wrapper => Is_Access_Subp_Wrapper),
+                          Is_Access_Subp_Wrapper => Is_Access_Subp_Wrapper,
+                          Specialization_Module  => Specialization_Module),
                        Binders => Pred_Binders),
                   Then_Part   => Complete_Post));
             Call            : constant W_Expr_Id := New_Call
@@ -5430,8 +5496,12 @@ package body Gnat2Why.Subprograms is
                              Dispatch_Post);
          end if;
 
+         --  For higher order specializations, we do not take into account
+         --  refined postcondition if any.
+
          if Entity_Body_In_SPARK (E)
            and then Has_Contracts (E, Pragma_Refined_Post)
+           and then Specialization_Module = No_Symbol
          then
             pragma Assert (Present (Refined_Post));
             Emit_Post_Axiom (My_Th,
@@ -5932,9 +6002,12 @@ package body Gnat2Why.Subprograms is
       E                      : Callable_Kind_Id;
       Prog_Id                : W_Identifier_Id;
       Spec_Binders           : Binder_Array := Binder_Array'(1 .. 0 => <>);
-      Is_Access_Subp_Wrapper : Boolean := False)
+      Is_Access_Subp_Wrapper : Boolean := False;
+      Specialization_Module  : Symbol := No_Symbol;
+      More_Reads             : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
    is
-      Func_Binders     : constant Item_Array := Compute_Binders (E, EW_Prog);
+      Func_Binders     : constant Item_Array :=
+        Compute_Binders (E, EW_Prog, More_Reads);
       Func_Why_Binders : constant Binder_Array :=
         To_Binder_Array (Func_Binders);
       Params           : Transformation_Params;
@@ -5972,7 +6045,7 @@ package body Gnat2Why.Subprograms is
          end;
       end loop;
 
-      Effects := Compute_Effects (E);
+      Effects := Compute_Effects (E, More_Reads => More_Reads);
 
       Pre := Get_Static_Call_Contract (Params, E, Pragma_Precondition);
 
@@ -6026,9 +6099,13 @@ package body Gnat2Why.Subprograms is
             end if;
          end if;
 
+         --  For higher order specializations, we do not take into account
+         --  refined postcondition if any.
+
          if Ekind (E) /= E_Subprogram_Type
            and then Entity_Body_In_SPARK (E)
            and then Has_Contracts (E, Pragma_Refined_Post)
+           and then Specialization_Module = No_Symbol
          then
             Refined_Post :=
               Get_Static_Call_Contract (Params, E, Pragma_Refined_Post);
@@ -6042,7 +6119,7 @@ package body Gnat2Why.Subprograms is
          declare
             Logic_Func_Args     : constant W_Expr_Array :=
               Get_Args_From_Binders (Spec_Binders, Ref_Allowed => True)
-               & Compute_Args (E, Func_Why_Binders);
+               & Compute_Args (E, Func_Why_Binders, More_Reads);
             Dynamic_Prop_Result : constant W_Pred_Id :=
               +New_And_Then_Expr
               (Left   => +Compute_Dynamic_Inv_And_Initialization
@@ -6082,9 +6159,13 @@ package body Gnat2Why.Subprograms is
                Effects   : W_Effects_Id) return W_Declaration_Id
             is
                Logic_Id   : constant W_Identifier_Id :=
-                 Logic_Function_Name (E, Selector, Is_Access_Subp_Wrapper);
+                 Logic_Function_Name
+                   (E, Selector, Is_Access_Subp_Wrapper,
+                    Specialization_Module);
                Pred_Id    : constant W_Identifier_Id :=
-                 Guard_Predicate_Name (E, Selector, Is_Access_Subp_Wrapper);
+                 Guard_Predicate_Name
+                   (E, Selector, Is_Access_Subp_Wrapper,
+                    Specialization_Module);
                Need_Tag   : constant Boolean := Selector = Dispatch;
 
                --  Each function has in its postcondition that its result is
@@ -6204,6 +6285,7 @@ package body Gnat2Why.Subprograms is
                begin
                   if Entity_Body_In_SPARK (E)
                     and then Has_Contracts (E, Pragma_Refined_Post)
+                    and then Specialization_Module = No_Symbol
                   then
                      Refined_Post :=
                        +New_And_Expr (+Eq_Expr, +Refined_Post, EW_Pred);
@@ -6251,8 +6333,12 @@ package body Gnat2Why.Subprograms is
                              Effects   => Effects));
             end if;
 
+            --  For higher order specializations, we do not take into account
+            --  refined postcondition if any.
+
             if Entity_Body_In_SPARK (E)
               and then Has_Contracts (E, Pragma_Refined_Post)
+              and then Specialization_Module = No_Symbol
             then
                Emit
                  (Th,
@@ -6606,10 +6692,12 @@ package body Gnat2Why.Subprograms is
 
    function Get_Logic_Args
      (E           : Entity_Id;
-      Ref_Allowed : Boolean) return W_Expr_Array
+      Ref_Allowed : Boolean;
+      More_Reads  : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
+      return W_Expr_Array
    is
       Effect_Binders : constant Item_Array :=
-        Compute_Binders_For_Effects (E);
+        Compute_Binders_For_Effects (E, More_Reads => More_Reads);
       Logic_Binders  : constant Binder_Array :=
         To_Binder_Array (Effect_Binders);
 
