@@ -1946,7 +1946,11 @@ package body SPARK_Util is
    -- Get_Specialized_Parameters --
    --------------------------------
 
-   function Get_Specialized_Parameters (Call : Node_Id) return Node_Maps.Map is
+   function Get_Specialized_Parameters
+     (Call                 : Node_Id;
+      Specialized_Entities : Node_Maps.Map := Node_Maps.Empty_Map)
+      return Node_Maps.Map
+   is
       Subp   : constant Entity_Id :=
         (if Nkind (Call) in N_Op then Entity (Call)
          else Sem_Aux.Get_Called_Entity (Call));
@@ -1963,10 +1967,15 @@ package body SPARK_Util is
       procedure Store_Specialized_Param (Formal : Entity_Id; Actual : Node_Id)
       is
       begin
-         if Is_Specializable_Formal (Formal)
-           and then Is_Access_Attribute_Of_Function (Actual)
-         then
-            Params.Insert (Formal, Entity (Prefix (Actual)));
+         if Is_Specializable_Formal (Formal) then
+            if Is_Access_Attribute_Of_Function (Actual) then
+               Params.Insert (Formal, Entity (Prefix (Actual)));
+            elsif Nkind (Actual) in N_Identifier | N_Expanded_Name
+              and then Specialized_Entities.Contains (Entity (Actual))
+            then
+               Params.Insert
+                 (Formal, Specialized_Entities.Element (Entity (Actual)));
+            end if;
          end if;
       end Store_Specialized_Param;
 
@@ -3170,9 +3179,19 @@ package body SPARK_Util is
    -- Is_Specialized_Actual --
    ---------------------------
 
-   function Is_Specialized_Actual (Expr : Node_Id) return Boolean is
+   function Is_Specialized_Actual
+     (Expr                 : Node_Id;
+      Specialized_Entities : Node_Maps.Map := Node_Maps.Empty_Map)
+      return Boolean
+   is
    begin
-      --  Expr shall be an access attribute to a function
+      --  If Expr is an identifier, it shall be in the Specialized_Entities map
+
+      if Nkind (Expr) in N_Identifier | N_Expanded_Name then
+         return Specialized_Entities.Contains (Entity (Expr));
+      end if;
+
+      --  Otherwise, Expr shall be an access attribute to a function
 
       if not Is_Access_Attribute_Of_Function (Expr) then
          return False;
@@ -3211,14 +3230,19 @@ package body SPARK_Util is
    -- Is_Specialized_Call --
    -------------------------
 
-   function Is_Specialized_Call (Call : Node_Id) return Boolean is
+   function Is_Specialized_Call
+     (Call                 : Node_Id;
+      Specialized_Entities : Node_Maps.Map := Node_Maps.Empty_Map)
+      return Boolean
+   is
       Subp : constant Entity_Id :=
         (if Nkind (Call) in N_Op then Entity (Call)
          else Sem_Aux.Get_Called_Entity (Call));
    begin
       return Ekind (Subp) = E_Function
         and then Has_Higher_Order_Specialization_Annotation (Subp)
-        and then not Get_Specialized_Parameters (Call).Is_Empty;
+        and then not
+          Get_Specialized_Parameters (Call, Specialized_Entities).Is_Empty;
    end Is_Specialized_Call;
 
    -----------------------

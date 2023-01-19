@@ -1,0 +1,2 @@
+specialized_param_in_iterated.adb:14:39: error: function annotated with Higher_Order_Specialization shall not reference its access-to-function parameters inside an iterated component association
+gnatprove: error during generation of Global contracts

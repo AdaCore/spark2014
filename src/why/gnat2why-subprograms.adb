@@ -1460,10 +1460,13 @@ package body Gnat2Why.Subprograms is
             Expr     : constant W_Term_Id :=
               Reconstruct_Item (B, Params.Ref_Allowed);
             Ty_Node  : constant Entity_Id :=
-              (if Present (Ada_Node) then
+              (if Present (Ada_Node)
+               and then not Specialized_Call_Params.Contains (Ada_Node)
+               then
                    (if Is_Type (Ada_Node) then Ada_Node
                     else Etype (Ada_Node))
                else Empty);
+            --  Do not generate guards for specialized formals
             Dyn_Prop : constant W_Pred_Id :=
               (if Present (Ty_Node)
                then Compute_Dynamic_Inv_And_Initialization
@@ -1889,13 +1892,16 @@ package body Gnat2Why.Subprograms is
       while Present (Formal) loop
 
          --  Specialized parameters are hardcoded. No actual value is provided,
-         --  we use a parameter of type unit instead.
+         --  we use a parameter of type unit instead. We still provide an
+         --  Ada_Node for it so it will be stored in the Symbol_Table. This
+         --  works as a sanity checking. If the formal is referenced, which
+         --  should never happen, the generated Why3 code will be ill-typed.
 
          if Specialized_Call_Params.Contains (Formal) then
             Result (Count) :=
               (Regular, Local => True,
                Init           => <>,
-               Main           => Unit_Param (Short_Name (Formal)));
+               Main           => Unit_Param (Short_Name (Formal), Formal));
          else
             Result (Count) := Mk_Item_Of_Entity
               (E           => Formal,

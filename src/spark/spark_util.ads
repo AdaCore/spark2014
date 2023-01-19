@@ -738,8 +738,14 @@ package SPARK_Util is
    --  NULL, or a function call. Through_Traversal is True if it should follow
    --  through calls to traversal functions.
 
-   function Get_Specialized_Parameters (Call : Node_Id) return Node_Maps.Map;
-   --  Compute a map which associates specialized formals in a function call
+   function Get_Specialized_Parameters
+     (Call                 : Node_Id;
+      Specialized_Entities : Node_Maps.Map := Node_Maps.Empty_Map)
+      return Node_Maps.Map;
+   --  @param Call any node
+   --  @param Specialized_Entities map of formal parameter which are
+   --     specialized in the current context.
+   --  @return a map which associates specialized formals in a function call
    --  with higher order specialization to the actual entity.
 
    function Is_Access_Attribute_Of_Function (Expr : Node_Id) return Boolean;
@@ -823,13 +829,24 @@ package SPARK_Util is
    --  Return True if Formal can be specialized, ie. it is an IN parameter of
    --  an anonymous access-to-function type.
 
-   function Is_Specialized_Actual (Expr : Node_Id) return Boolean;
+   function Is_Specialized_Actual
+     (Expr                 : Node_Id;
+      Specialized_Entities : Node_Maps.Map := Node_Maps.Empty_Map)
+      return Boolean;
    --  @param Expr any node
+   --  @param Specialized_Entities map of formal parameter which are
+   --     specialized in the current context.
    --  @return True iff Expr is a parameter of a call to a function annotated
    --     with higher order specialization and it needs special handling.
 
-   function Is_Specialized_Call (Call : Node_Id) return Boolean;
-   --  Return True if Call is a call to a function with higher order
+   function Is_Specialized_Call
+     (Call                 : Node_Id;
+      Specialized_Entities : Node_Maps.Map := Node_Maps.Empty_Map)
+      return Boolean;
+   --  @param Call any node
+   --  @param Specialized_Entities map of formal parameter which are
+   --     specialized in the current context.
+   --  @return True if Call is a call to a function with higher order
    --  specialization which has at least a specialized parameter.
    --  ??? We could also consider the call to be specialized only if at
    --  least one of its specialized parameters has global inputs.

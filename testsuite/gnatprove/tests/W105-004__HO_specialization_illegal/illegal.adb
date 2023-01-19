@@ -86,6 +86,16 @@ is
 
    function Use_In_CC2 (F : not null access function return Integer) return Integer is (F.all);
 
+   --  Comparison to null is not supported yet
+
+   function Eq_In_Pre (F : access function return Integer) return Integer with
+     Annotate => (GNATprove, Higher_Order_Specialization),
+     Pre => F /= null;
+
+   function Eq_In_Pre (F : access function return Integer) return Integer is
+   begin
+      return F.all;
+   end Eq_In_Pre;
 begin
    null;
 end Illegal;
