@@ -3995,6 +3995,7 @@ package body SPARK_Definition is
          return;
       end if;
 
+      Mark_Entity (E);
       Mark_Actuals (N);
 
       --  Call is in SPARK only if the subprogram called is in SPARK

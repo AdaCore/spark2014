@@ -45,7 +45,17 @@ perm-lemma_subprograms.adb:44:33: info: overflow check proved
 perm-lemma_subprograms.adb:46:10: info: precondition proved
 perm-lemma_subprograms.adb:46:10: info: subprogram variant proved
 perm-lemma_subprograms.adb:46:37: info: overflow check proved
-perm-lemma_subprograms.adb:53:07: info: precondition proved
+perm-lemma_subprograms.adb:48:13: info: assertion proved
+perm-lemma_subprograms.adb:48:24: info: index check proved
+perm-lemma_subprograms.adb:49:18: info: precondition proved
+perm-lemma_subprograms.adb:49:38: info: precondition proved
+perm-lemma_subprograms.adb:49:58: info: precondition proved
+perm-lemma_subprograms.adb:50:42: info: index check proved
+perm-lemma_subprograms.adb:51:28: info: predicate check proved
+perm-lemma_subprograms.adb:51:42: info: precondition proved
+perm-lemma_subprograms.adb:52:25: info: predicate check proved
+perm-lemma_subprograms.adb:52:39: info: precondition proved
+perm-lemma_subprograms.adb:59:07: info: precondition proved
 perm-lemma_subprograms.ads:7:13: info: subprogram "Is_Set" will terminate, terminating annotation has been proved
 perm-lemma_subprograms.ads:10:20: info: index check proved
 perm-lemma_subprograms.ads:12:39: info: index check proved
