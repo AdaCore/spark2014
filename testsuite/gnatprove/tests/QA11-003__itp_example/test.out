@@ -11,6 +11,6 @@ test.adb:56:17: medium: postcondition might fail
 test.adb:60:14: info: float overflow check proved (CVC5: 1 VC)
 test.adb:69:17: medium: postcondition might fail
 test.adb:81:16: medium: postcondition might fail
-test.adb:81:19: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
+test.adb:81:19: info: overflow check proved (CVC5: 2 VC)
 test.adb:81:24: info: overflow check proved (CVC5: 2 VC)
 test.adb:81:29: info: division check proved (CVC5: 1 VC)

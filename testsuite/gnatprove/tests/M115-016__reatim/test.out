@@ -5,9 +5,9 @@ pck.adb:19:27: info: range check proved (CVC5: 2 VC)
 pck.adb:21:07: info: initialization of "Result_Hi" proved
 pck.adb:24:07: info: initialization of "Result_Lo" proved
 pck.adb:27:07: info: initialization of "Remainder" proved
-pck.adb:33:20: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-pck.adb:34:20: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-pck.adb:35:20: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC)
+pck.adb:33:20: info: overflow check proved (CVC5: 2 VC)
+pck.adb:34:20: info: overflow check proved (CVC5: 2 VC)
+pck.adb:35:20: info: overflow check proved (CVC5: 2 VC)
 pck.adb:35:27: info: division check proved (CVC5: 1 VC)
 pck.adb:36:20: info: division check proved (CVC5: 1 VC)
 pck.adb:40:25: info: division check proved (CVC5: 1 VC)
@@ -15,11 +15,11 @@ pck.adb:42:22: medium: assertion might fail
 pck.adb:51:25: info: overflow check proved (CVC5: 2 VC)
 pck.adb:51:25: info: range check proved (CVC5: 2 VC)
 pck.adb:51:37: info: overflow check proved (CVC5: 2 VC)
-pck.adb:53:30: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
+pck.adb:53:30: info: overflow check proved (CVC5: 2 VC)
 pck.adb:58:15: info: overflow check proved (CVC5: 2 VC)
 pck.adb:58:27: info: overflow check proved (CVC5: 2 VC)
-pck.adb:58:37: info: overflow check proved (CVC5: 2 VC)
+pck.adb:58:37: medium: overflow check might fail, cannot prove upper bound for V_Lo + Remainder * 2 ** 32 + Uint_64 (D) / 2 [reason for check: result of addition must fit in a 64-bits machine integer]
 pck.adb:58:51: info: division check proved (CVC5: 1 VC)
 pck.adb:58:56: info: division check proved (CVC5: 1 VC)
 pck.adb:61:11: medium: assertion might fail
-pck.adb:70:24: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
+pck.adb:70:24: info: overflow check proved (CVC5: 2 VC)

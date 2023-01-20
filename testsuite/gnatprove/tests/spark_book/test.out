@@ -1044,9 +1044,9 @@ students.adb:51:27: info: range check proved (CVC5: 2 VC)
 students.adb:55:30: info: overflow check proved (CVC5: 2 VC)
 students.adb:55:30: info: range check proved (CVC5: 2 VC)
 students.adb:59:24: info: overflow check proved (CVC5: 2 VC)
-students.adb:59:32: medium: overflow check might fail, cannot prove upper bound for (Tuition + Fees) - Grants [reason for check: result of fixed-point subtraction must fit in the underlying 32-bits machine integer]
+students.adb:59:32: info: overflow check proved (CVC5: 2 VC)
 students.adb:59:42: medium: overflow check might fail, cannot prove lower bound for ((Tuition + Fees) - Grants) + Insurance [reason for check: result of fixed-point addition must fit in the underlying 32-bits machine integer]
-students.adb:59:42: medium: range check might fail, cannot prove lower bound for ((Tuition + Fees) - Grants) + Insurance [reason for check: returned value must fit in the result type of the function]
+students.adb:59:42: medium: range check might fail, cannot prove upper bound for ((Tuition + Fees) - Grants) + Insurance [reason for check: returned value must fit in the result type of the function]
 students2.adb:23:07: info: initialization of "Tuition" proved
 students2.adb:24:07: info: initialization of "Fees" proved
 students2.adb:32:29: info: overflow check proved (CVC5: 2 VC)

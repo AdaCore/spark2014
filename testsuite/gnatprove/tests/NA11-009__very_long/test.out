@@ -222,7 +222,7 @@ very_longs.adb:512:26: info: index check proved (CVC5: 2 VC)
 very_longs.adb:512:26: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:514:45: info: index check proved (CVC5: 2 VC)
 very_longs.adb:514:45: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:514:78: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+very_longs.adb:514:78: info: range check proved (CVC5: 2 VC)
 very_longs.adb:520:11: info: data dependencies proved
 very_longs.adb:521:11: info: flow dependencies proved
 very_longs.adb:524:10: info: initialization of "Carry" proved
@@ -247,7 +247,7 @@ very_longs.adb:544:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:545:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:545:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:548:12: medium: range check might fail, cannot prove upper bound for Number_Of_Digits(Divisor) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Number_Of_Digits(Divisor) in Divisor_Digits_Count_Type) to subprogram at very_longs.ads:65]
-very_longs.adb:549:28: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+very_longs.adb:549:28: info: range check proved (CVC5: 2 VC)
 very_longs.adb:552:25: info: precondition proved (CVC5: 1 VC)
 very_longs.adb:552:64: info: index check proved (CVC5: 2 VC)
 very_longs.adb:553:07: info: precondition proved (CVC5: 1 VC)
@@ -261,8 +261,8 @@ very_longs.adb:563:13: info: range check proved (CVC5: 2 VC)
 very_longs.adb:566:13: info: range check proved (CVC5: 2 VC)
 very_longs.adb:572:11: info: range check proved (CVC5: 2 VC)
 very_longs.adb:572:58: info: cannot unroll loop (dynamic loop bounds)
-very_longs.adb:573:32: info: index check proved (Z3: 2 VC)
-very_longs.adb:573:64: info: index check proved (Z3: 2 VC)
+very_longs.adb:573:32: info: index check proved (CVC5: 2 VC)
+very_longs.adb:573:64: info: index check proved (CVC5: 2 VC)
 very_longs.ads:14:20: info: postcondition proved (CVC5: 1 VC)
 very_longs.ads:17:36: info: initialization of "Result" proved
 very_longs.ads:18:36: info: initialization of "Valid" proved
