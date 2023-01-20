@@ -175,10 +175,10 @@ package body Gnat2Why.Expr is
    --  ignored. Generated checks and assumptions are prepended to Prog.
 
    function Check_Subprogram_Variants
-     (Call   : Node_Id;
-      Args   : W_Expr_Array;
-      Params : Transformation_Params)
-      return W_Prog_Id
+     (Call                  : Node_Id;
+      Args                  : W_Expr_Array;
+      Params                : Transformation_Params;
+      Specialization_Module : Symbol := No_Symbol) return W_Prog_Id
    with Pre => Nkind (Call) in N_Subprogram_Call
                              | N_Entry_Call_Statement
                              | N_Op
@@ -187,6 +187,9 @@ package body Gnat2Why.Expr is
    --  call Call. This check might be statically False if we do not support
    --  precise variant checks on Call (see Is_Valid_Recursive_Call). Args
    --  is the Why3 translation of the actual parameters of Call.
+   --  Specialization_Module is the name of the specialization module if Call
+   --  is a specialized call. It is used to get the specialized variant
+   --  check procedure.
 
    function Check_Type_With_Invariants
      (Params : Transformation_Params;
@@ -2536,13 +2539,14 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Check_Subprogram_Variants
-     (Call   : Node_Id;
-      Args   : W_Expr_Array;
-      Params : Transformation_Params) return W_Prog_Id
+     (Call                  : Node_Id;
+      Args                  : W_Expr_Array;
+      Params                : Transformation_Params;
+      Specialization_Module : Symbol := No_Symbol) return W_Prog_Id
    is
+      Callee       : constant Entity_Id := Get_Called_Entity_For_Proof (Call);
       Call_Variant : constant Node_Id :=
-        Get_Pragma
-          (Get_Called_Entity_For_Proof (Call), Pragma_Subprogram_Variant);
+        Get_Pragma (Callee, Pragma_Subprogram_Variant);
       Result       : Boolean;
       Explanation  : Unbounded_String;
    begin
@@ -2588,12 +2592,16 @@ package body Gnat2Why.Expr is
             --  Otherwise, we are in a package nested directly in a subprogram.
             --  In this case, we can use the expression of the variants, as
             --  it cannot have changed since the beginning of the subprogram.
+
+            Variant_Check      : constant W_Identifier_Id :=
+              (if Specialization_Module = No_Symbol
+               then E_Symb (Callee, WNE_Check_Subprogram_Variants)
+               else M_HO_Specializations (Callee)
+                 (Specialization_Module).Variant_Id);
          begin
             return New_VC_Call
               (Ada_Node => Call,
-               Name     => E_Symb
-                 (Get_Called_Entity_For_Proof (Call),
-                  WNE_Check_Subprogram_Variants),
+               Name     => Variant_Check,
                Progs    => Enclosing_Variants & Args,
                Reason   => VC_Subprogram_Variant,
                Typ      => EW_Unit_Type);
@@ -20167,10 +20175,13 @@ package body Gnat2Why.Expr is
          --  Insert variant check
 
          if Call_Needs_Variant_Check (Expr, Current_Subp) then
-            Prepend (Check_Subprogram_Variants (Call   => Expr,
-                                                Args   => Args,
-                                                Params => Params),
-                     T);
+            Prepend
+              (Check_Subprogram_Variants
+                 (Call                  => Expr,
+                  Args                  => Args,
+                  Params                => Params,
+                  Specialization_Module => Specialization_Module),
+               T);
          end if;
 
       --  If -gnatd_f is used, and if for some reason we have not generated a

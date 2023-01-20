@@ -612,6 +612,7 @@ package Why.Atree.Modules is
       Prog_Id       : W_Identifier_Id;
       Fun_Id        : W_Identifier_Id;
       Guard_Id      : W_Identifier_Id;
+      Variant_Id    : W_Identifier_Id;
    end record;
 
    package Name_Id_HO_Specializations_Map is new Ada.Containers.Hashed_Maps

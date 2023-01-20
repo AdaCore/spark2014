@@ -6638,6 +6638,11 @@ package body Gnat2Why.Subprograms is
 
       if Present (Get_Pragma (E, Pragma_Subprogram_Variant)) then
          declare
+            Variant_Check  : constant W_Identifier_Id :=
+              (if Specialization_Module = No_Symbol
+               then E_Symb (E, WNE_Check_Subprogram_Variants)
+               else M_HO_Specializations (E)
+                 (Specialization_Module).Variant_Id);
             Variants_Ids   : constant W_Expr_Array := Get_Variants_Ids (E);
             Variants_Exprs : constant W_Expr_Array (Variants_Ids'Range) :=
               Get_Variants_Exprs (E, Domain => EW_Term, Params => Params);
@@ -6700,8 +6705,7 @@ package body Gnat2Why.Subprograms is
               (Th,
                New_Function_Decl
                  (Domain      => EW_Prog,
-                  Name        =>
-                    To_Local (E_Symb (E, WNE_Check_Subprogram_Variants)),
+                  Name        => To_Local (Variant_Check),
                   Binders     => Binders,
                   Location    => No_Location,
                   Labels      => Symbol_Sets.Empty_Set,

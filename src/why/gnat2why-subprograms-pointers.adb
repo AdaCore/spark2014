@@ -567,6 +567,15 @@ package body Gnat2Why.Subprograms.Pointers is
           (Domain => EW_Pred,
            Symb   => NID (Fun_Name & "__" & Function_Guard),
            Module => Module);
+      Variant_Id                   : constant W_Identifier_Id :=
+        (if Is_Recursive (Caller)
+           and then (Present (Get_Pragma (Caller, Pragma_Subprogram_Variant)))
+         then  New_Identifier
+          (Domain => EW_Prog,
+           Symb   => NID (Fun_Name & "__check_subprogram_variants"),
+           Typ    => EW_Unit_Type,
+           Module => Ax_Module)
+         else Why_Empty);
       More_Globals                 : Flow_Types.Flow_Id_Sets.Set;
       Th                           : Theory_UC;
       Position                     : Node_Id_HO_Specializations_Map.Cursor;
@@ -589,7 +598,8 @@ package body Gnat2Why.Subprograms.Pointers is
                                    Rec_Ax_Module => Rec_Ax_Module,
                                    Guard_Id      => Guard_Id,
                                    Prog_Id       => Prog_Id,
-                                   Fun_Id        => Fun_Id));
+                                   Fun_Id        => Fun_Id,
+                                   Variant_Id    => Variant_Id));
 
       --  Generate the logic function declarations
 

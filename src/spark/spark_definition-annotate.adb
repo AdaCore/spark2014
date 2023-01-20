@@ -835,11 +835,14 @@ package body SPARK_Definition.Annotate is
          --  bodies which are never specialized.
 
          declare
-            Pre  : constant Node_Lists.List := Find_Contracts
+            Pre      : constant Node_Lists.List := Find_Contracts
               (E, Pragma_Precondition, False, False);
-            Post : constant Node_Lists.List := Find_Contracts
+            Post     : constant Node_Lists.List := Find_Contracts
               (E, Pragma_Postcondition, False, False);
-            CC   : constant Node_Id := Get_Pragma (E, Pragma_Contract_Cases);
+            CC       : constant Node_Id :=
+              Get_Pragma (E, Pragma_Contract_Cases);
+            Variants : constant Node_Id :=
+              Get_Pragma (E, Pragma_Subprogram_Variant);
          begin
             for N of Pre loop
                Find_Unsupported_Use_Of_Formal (N);
@@ -854,6 +857,7 @@ package body SPARK_Definition.Annotate is
                end if;
             end loop;
             Find_Unsupported_Use_Of_Formal (CC);
+            Find_Unsupported_Use_Of_Formal (Variants);
          end;
 
          <<Violation_Found>>
