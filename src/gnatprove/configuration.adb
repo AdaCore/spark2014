@@ -834,6 +834,9 @@ package body Configuration is
            (Config, CL_Switches.Why3_Debug'Access,
             Long_Switch => "--why3-debug=");
          Define_Switch
+           (Config, CL_Switches.Why3_Logging'Access,
+            Long_Switch => "--why3-logging");
+         Define_Switch
            (Config, CL_Switches.Why3_Server'Access,
             Long_Switch => "--why3-server=");
          Define_Switch
@@ -2731,6 +2734,10 @@ package body Configuration is
 
       if CL_Switches.Debug_Prover_Errors then
          Args.Append ("--debug-prover-errors");
+      end if;
+
+      if CL_Switches.Why3_Logging then
+         Args.Append ("--logging");
       end if;
 
       Args.Append ("--ce-timeout");
