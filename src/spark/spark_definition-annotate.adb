@@ -104,6 +104,12 @@ package body SPARK_Definition.Annotate is
    --  Maps lemma procedures annotated with Automatic_Instantiation to their
    --  associated function.
 
+   Delayed_HO_Specialization_Checks : Common_Containers.Node_Maps.Map :=
+     Common_Containers.Node_Maps.Empty_Map;
+   --  Maps calls to functions which were not marked yet but should be
+   --  annotated with Higher_Order_Specialization to the node on which the
+   --  checks shall be emited.
+
    Higher_Order_Spec_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
    --  Stores function entities with a pragma Annotate
@@ -734,6 +740,7 @@ package body SPARK_Definition.Annotate is
             then
                return Skip;
             elsif Nkind (N) in N_Expanded_Name | N_Identifier
+              and then Present (Entity (N))
               and then Formals.Contains (Unique_Entity (Entity (N)))
             then
 
@@ -760,12 +767,21 @@ package body SPARK_Definition.Annotate is
                      Callee := Get_Called_Entity (Call);
 
                      if Ekind (Callee) /= E_Function
-                       or else not
-                         Has_Higher_Order_Specialization_Annotation (Callee)
                        or else not Is_Anonymous_Access_Type (Etype (Formal))
                      then
                         Violation := N;
                         return Abandon;
+
+                     --  Callee might not have been marked yet. Store Call in
+                     --  Delayed_HO_Specialization_Checks, it will be checked
+                     --  later. We use Include and not Insert as a call might
+                     --  have several specialized parameters.
+
+                     elsif not
+                       Has_Higher_Order_Specialization_Annotation (Callee)
+                     then
+                        Delayed_HO_Specialization_Checks.Include (Call, N);
+                        return OK;
                      else
                         return OK;
                      end if;
@@ -1668,6 +1684,36 @@ package body SPARK_Definition.Annotate is
          end if;
       end;
    end Check_Ownership_Annotation;
+
+   ------------------------------------------
+   -- Do_Delayed_Checks_On_Pragma_Annotate --
+   ------------------------------------------
+
+   procedure Do_Delayed_Checks_On_Pragma_Annotate is
+   begin
+      --  Go over the delayed checks for calls in contracts of functions
+      --  with higher order specialization and do them.
+
+      for Position in Delayed_HO_Specialization_Checks.Iterate loop
+         declare
+            Call : Node_Id renames Node_Maps.Key (Position);
+            N    : Node_Id renames Node_Maps.Element (Position);
+            Subp : constant Entity_Id := Get_Called_Entity (Call);
+         begin
+            pragma Assert (Entity_Marked (Subp));
+            if not Has_Higher_Order_Specialization_Annotation (Subp) then
+               Error_Msg_N
+                 ("function annotated with Higher_Order_Specialization"
+                  & " shall only reference its access-to-function"
+                  & " parameters in dereferences and as actual parameters in"
+                  & " calls to functions annotated with"
+                  & " Higher_Order_Specialization",
+                  N);
+            end if;
+         end;
+      end loop;
+      Delayed_HO_Specialization_Checks.Clear;
+   end Do_Delayed_Checks_On_Pragma_Annotate;
 
    ------------------------
    -- Find_Inline_Pragma --
