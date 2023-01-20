@@ -20046,7 +20046,7 @@ package body Gnat2Why.Expr is
 
          declare
             HO_Specialization : constant M_HO_Specialization_Type :=
-              M_HO_Specializations.Element (Specialization_Module);
+              M_HO_Specializations (Subp) (Specialization_Module);
          begin
             if Domain = EW_Prog then
                Why_Name := HO_Specialization.Prog_Id;

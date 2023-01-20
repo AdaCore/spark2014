@@ -5230,17 +5230,28 @@ package body Gnat2Why.Subprograms is
             end if;
          end;
 
-         My_Th :=
-           Open_Theory
-             (WF_Context, E_Rec_Axiom_Module (E),
-              Comment =>
-                "Module for declaring an axiom for the post condition"
-              & " of the recursive function"
-              & """" & Get_Name_String (Chars (E)) & """"
-              & (if Sloc (E) > 0 then
-                   " defined at " & Build_Location_String (Sloc (E))
-                else "")
-              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+         declare
+            Axiom_Module : constant W_Module_Id :=
+              (if Specialization_Module /= No_Symbol
+               then M_HO_Specializations (E)
+               (Specialization_Module).Rec_Ax_Module
+               else E_Rec_Axiom_Module (E));
+            Has_Spec     : constant String :=
+              (if Specialization_Module = No_Symbol then ""
+               else "specialization of the ");
+         begin
+            My_Th :=
+              Open_Theory
+                (WF_Context, Axiom_Module,
+                 Comment =>
+                   "Module for declaring an axiom for the post condition"
+                 & " of the " & Has_Spec & "recursive function"
+                 & """" & Get_Name_String (Chars (E)) & """"
+                 & (if Sloc (E) > 0 then
+                      " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+         end;
       end if;
 
       --  If the function has a postcondition and is not mutually recursive
@@ -5519,9 +5530,19 @@ package body Gnat2Why.Subprograms is
       end;
 
       if Ekind (E) = E_Function and then Is_Recursive (E) then
-         Close_Theory (My_Th,
-                       Kind           => Axiom_Theory,
-                       Defined_Entity => E);
+         if Specialization_Module = No_Symbol then
+            Close_Theory (My_Th,
+                          Kind           => Axiom_Theory,
+                          Defined_Entity => E);
+         else
+            Close_Theory (My_Th, Kind => Definition_Theory);
+            Record_Extra_Dependency
+              (Defining_Module =>
+                 M_HO_Specializations (E) (Specialization_Module).Module,
+               Axiom_Module    =>
+                 M_HO_Specializations (E)
+                   (Specialization_Module).Rec_Ax_Module);
+         end if;
       end if;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
