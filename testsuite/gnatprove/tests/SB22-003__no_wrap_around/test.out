@@ -62,7 +62,7 @@ nwa.adb:151:14: high: range check might fail, cannot prove upper bound for X * Y
 nwa.adb:151:14: info: overflow check proved (Z3: 1 VC)
 nwa.adb:152:14: high: divide by zero might fail (e.g. when Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at nwa.ads:46]
 nwa.adb:153:14: high: range check might fail, cannot prove upper bound for X + Y (e.g. when X = NvU32b'Last and Y = 1) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: add precondition (X <= NvU32b'Last - Y) to subprogram at nwa.ads:46]
-nwa.adb:153:14: info: overflow check proved (Z3: 1 VC)
+nwa.adb:153:14: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:154:14: high: range check might fail, cannot prove upper bound for X - Y (e.g. when X = 0 and Y = 256) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: add precondition (X >= NvU32b'First + Y) to subprogram at nwa.ads:46]
 nwa.adb:154:14: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (X >= 0 + Y) to subprogram at nwa.ads:46]
 nwa.adb:155:12: high: range check might fail, cannot prove upper bound for - X (e.g. when X = 512) [reason for check: result of negation must fit in the target type of the assignment] [possible fix: add precondition (- X in NvU32b) to subprogram at nwa.ads:46]

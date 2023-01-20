@@ -2,7 +2,7 @@ binary_search.adb:13:07: info: initialization of "Left" proved
 binary_search.adb:14:07: info: initialization of "Right" proved
 binary_search.adb:15:07: info: initialization of "Med" proved
 binary_search.adb:25:24: info: unrolling loop
-binary_search.adb:32:22: info: range check proved (CVC5: 17 VC; Z3: 3 VC)
+binary_search.adb:32:22: info: range check proved (CVC5: 20 VC)
 binary_search.adb:32:39: info: division check proved (CVC5: 10 VC)
 binary_search.adb:35:25: info: range check proved (CVC5: 20 VC)
 binary_search.adb:37:26: info: range check proved (CVC5: 20 VC)

@@ -305,7 +305,7 @@ aco-math-very_longs.adb:515:12: info: discriminant check proved (CVC5: 1 VC)
 aco-math-very_longs.adb:533:17: info: range check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:537:11: info: range check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:537:58: info: cannot unroll loop (dynamic loop bounds)
-aco-math-very_longs.adb:538:32: info: index check proved (Z3: 2 VC)
+aco-math-very_longs.adb:538:32: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:538:64: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:549:07: info: initialization of "Result" proved
 aco-math-very_longs.adb:549:27: info: range check proved (CVC5: 2 VC)

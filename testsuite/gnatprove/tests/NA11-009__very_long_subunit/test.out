@@ -107,7 +107,7 @@ very_longs-divide.adb:180:23: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:180:23: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:181:46: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:181:46: info: overflow check proved (CVC5: 2 VC)
-very_longs-divide.adb:181:79: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+very_longs-divide.adb:181:79: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:187:08: info: data dependencies proved
 very_longs-divide.adb:188:08: info: flow dependencies proved
 very_longs-divide.adb:191:07: info: initialization of "Carry" proved
@@ -134,7 +134,7 @@ very_longs-divide.adb:211:29: info: length check proved (CVC5: 3 VC; Trivial: 1 
 very_longs-divide.adb:212:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs-divide.adb:212:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs-divide.adb:215:09: medium: range check might fail, cannot prove upper bound for Number_Of_Digits(Divisor) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Number_Of_Digits(Divisor) in Divisor_Digits_Count_Type) to subprogram at very_longs.ads:65]
-very_longs-divide.adb:216:25: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+very_longs-divide.adb:216:25: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:219:22: info: precondition proved (CVC5: 1 VC)
 very_longs-divide.adb:219:61: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:220:04: info: precondition proved (CVC5: 1 VC)
@@ -148,8 +148,8 @@ very_longs-divide.adb:230:10: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:233:10: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:239:08: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:239:55: info: cannot unroll loop (dynamic loop bounds)
-very_longs-divide.adb:240:29: info: index check proved (Z3: 2 VC)
-very_longs-divide.adb:240:61: info: index check proved (Z3: 2 VC)
+very_longs-divide.adb:240:29: info: index check proved (CVC5: 2 VC)
+very_longs-divide.adb:240:61: info: index check proved (CVC5: 2 VC)
 very_longs.adb:33:54: info: initialization of "Digit" proved
 very_longs.adb:33:73: info: initialization of "Valid" proved
 very_longs.adb:34:11: info: flow dependencies proved

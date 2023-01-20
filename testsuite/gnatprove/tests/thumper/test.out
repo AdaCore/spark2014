@@ -32,14 +32,14 @@ hermes-der-decode.adb:127:51: info: index check proved (CVC5: 2 VC)
 hermes-der-decode.adb:131:14: info: range check proved (CVC5: 2 VC)
 hermes-der-decode.adb:133:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 hermes-der-decode.adb:133:16: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
-hermes-der-decode.adb:133:53: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
+hermes-der-decode.adb:133:53: info: overflow check proved (CVC5: 4 VC)
 hermes-der-decode.adb:135:16: info: loop invariant initialization proved (CVC5: 2 VC; Trivial: 3 VC)
 hermes-der-decode.adb:135:16: info: loop invariant preservation proved (CVC5: 2 VC; Trivial: 3 VC)
 hermes-der-decode.adb:135:99: info: overflow check proved (CVC5: 3 VC; colibri: 1 VC)
 hermes-der-decode.adb:135:103: info: overflow check proved (CVC5: 3 VC; colibri: 1 VC)
 hermes-der-decode.adb:135:108: info: range check proved (CVC5: 4 VC)
 hermes-der-decode.adb:137:31: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC)
-hermes-der-decode.adb:137:38: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC)
+hermes-der-decode.adb:137:38: info: overflow check proved (CVC5: 2 VC)
 hermes-der-decode.adb:137:65: info: index check proved (CVC5: 2 VC)
 hermes-der-decode.adb:137:65: info: overflow check proved (CVC5: 2 VC)
 hermes-der-decode.adb:144:18: info: index check proved (CVC5: 2 VC)
@@ -106,13 +106,13 @@ hermes-der-decode.adb:326:34: medium: overflow check might fail, cannot prove up
 hermes-der-decode.adb:327:17: info: range check proved (CVC5: 2 VC)
 hermes-der-decode.adb:327:48: info: cannot unroll loop (too many loop iterations)
 hermes-der-decode.adb:328:29: medium: overflow check might fail, cannot prove lower bound for 256*Result (e.g. when Result = -8388609) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 327 should mention Result in a loop invariant]
-hermes-der-decode.adb:328:37: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
+hermes-der-decode.adb:328:37: info: overflow check proved (CVC5: 2 VC)
 hermes-der-decode.adb:328:67: high: array index check might fail (e.g. when I = 2 and Length_Stop = 1 and Message = (others => 0) and Message'First = 0 and Message'Last = 2) [reason for check: result of addition must be a valid index into the array]
 hermes-der-decode.adb:328:67: info: overflow check proved (CVC5: 2 VC)
 hermes-der-decode.adb:333:17: info: range check proved (CVC5: 2 VC)
 hermes-der-decode.adb:333:48: info: cannot unroll loop (too many loop iterations)
 hermes-der-decode.adb:334:29: medium: overflow check might fail, cannot prove lower bound for 256*Result (e.g. when Result = -8388609) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 333 should mention Result in a loop invariant]
-hermes-der-decode.adb:334:37: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
+hermes-der-decode.adb:334:37: info: overflow check proved (CVC5: 2 VC)
 hermes-der-decode.adb:334:67: high: array index check might fail (e.g. when I = 2 and Length_Stop = 1 and Message = (others => 128) and Message'First = 0 and Message'Last = 2) [reason for check: result of addition must be a valid index into the array]
 hermes-der-decode.adb:334:67: info: overflow check proved (CVC5: 2 VC)
 hermes-der-decode.adb:341:34: info: overflow check proved (CVC5: 2 VC)
@@ -255,7 +255,7 @@ hermes-oid.adb:121:38: info: loop invariant preservation proved (CVC5: 2 VC)
 hermes-oid.adb:126:48: info: overflow check proved (CVC5: 2 VC)
 hermes-oid.adb:127:26: info: index check proved (CVC5: 2 VC)
 hermes-oid.adb:127:67: info: division check proved (CVC5: 1 VC)
-hermes-oid.adb:127:67: info: range check proved (Z3: 1 VC)
+hermes-oid.adb:127:67: info: range check proved (CVC5: 1 VC)
 hermes-oid.adb:128:58: info: division check proved (CVC5: 1 VC)
 hermes-oid.adb:143:44: info: overflow check proved (CVC5: 2 VC)
 hermes-oid.adb:143:58: medium: overflow check might fail, cannot prove upper bound for Result_Index - Start_Index + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
@@ -433,6 +433,6 @@ timestamp_messages-server.adb:32:42: medium: range check might fail, cannot prov
 timestamp_messages-server.adb:33:42: medium: range check might fail, cannot prove upper bound for Put_Integer_Value(Stamp.Version) & Put_OID_Value(Stamp.Policy) & Message_Imprint_Value [possible fix: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
 timestamp_messages-server.adb:34:42: medium: range check might fail, cannot prove upper bound for Put_Integer_Value(Stamp.Version) & Put_OID_Value(Stamp.Policy) & Message_Imprint_Value & Put_Integer_Value(Integer(Stamp.Serial_Number)) [reason for check: default component value must fit in the type] [possible fix: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
 timestamp_messages-server.adb:35:40: medium: range check might fail, cannot prove upper bound for Stamp.Serial_Number [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Stamp.Serial_Number in Integer) to subprogram at timestamp_messages-server.ads:19]
-timestamp_messages-server.adb:42:46: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+timestamp_messages-server.adb:42:46: info: range check proved (CVC5: 2 VC)
 timestamp_messages-server.adb:42:73: medium: range check might fail, cannot prove upper bound for TST_Info'Length [reason for check: input value must fit in parameter type]
 timestamp_messages-server.adb:42:82: medium: range check might fail, cannot prove upper bound for Make_Leading_Identifier (Tag_Class => Class_Universal, Structured_Flag => Constructed, Tag => Tag_Sequence) & Put_Length_Value(TST_Info'Length) & TST_Info [reason for check: returned value must fit in the result type of the function] [possible fix: you should consider adding a postcondition to function Make_Leading_Identifier or turning it into an expression function in its unit spec]

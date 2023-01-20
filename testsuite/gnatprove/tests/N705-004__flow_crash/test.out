@@ -37,7 +37,7 @@ very_longs.adb:112:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:114:45: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:115:29: info: index check proved (CVC5: 2 VC)
 very_longs.adb:115:50: info: division check proved (CVC5: 1 VC)
-very_longs.adb:115:50: medium: range check might fail [reason for check: result of operation must be convertible to the target type of the conversion] [possible fix: loop at line 114 should mention Temp in a loop invariant]
+very_longs.adb:115:50: info: range check proved (CVC5: 1 VC)
 very_longs.adb:116:23: info: division check proved (CVC5: 1 VC)
 very_longs.adb:124:07: info: initialization of "Index" proved
 very_longs.adb:125:07: info: initialization of "String_Index" proved
@@ -162,13 +162,13 @@ very_longs.adb:330:47: medium: overflow check might fail, cannot prove upper bou
 very_longs.adb:330:100: info: index check proved (CVC5: 2 VC)
 very_longs.adb:335:35: info: index check proved (CVC5: 4 VC)
 very_longs.adb:339:35: info: loop invariant initialization proved (CVC5: 1 VC)
-very_longs.adb:339:35: medium: loop invariant might not be preserved by an arbitrary iteration
+very_longs.adb:339:35: info: loop invariant preservation proved (CVC5: 1 VC)
 very_longs.adb:339:54: medium: array index check might fail [reason for check: value must be a valid index into the array]
 very_longs.adb:339:92: medium: overflow check might fail, cannot prove upper bound for I + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 very_longs.adb:339:145: info: index check proved (CVC5: 4 VC)
 very_longs.adb:340:35: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+very_longs.adb:340:35: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 very_longs.adb:340:85: info: overflow check proved (CVC5: 4 VC)
-very_longs.adb:340:97: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Number.Long_Digits(J) = 0
 very_longs.adb:340:116: info: index check proved (CVC5: 4 VC)
 very_longs.adb:353:30: info: unrolling loop
 very_longs.adb:354:27: warning: assuming "Shift_Left" always returns
@@ -261,7 +261,7 @@ very_longs.adb:469:29: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:469:45: info: index check proved (CVC5: 2 VC)
 very_longs.adb:470:52: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:470:68: info: index check proved (CVC5: 2 VC)
-very_longs.adb:470:111: medium: range check might fail [reason for check: result of operation must be convertible to the target type of the conversion] [possible fix: loop at line 459 should mention Current_Borrow and Temporary_Digit and U in a loop invariant]
+very_longs.adb:470:111: info: range check proved (CVC5: 2 VC)
 very_longs.adb:475:42: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:475:46: info: index check proved (CVC5: 2 VC)
 very_longs.adb:480:26: info: overflow check proved (CVC5: 2 VC)
@@ -292,14 +292,14 @@ very_longs.adb:503:57: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:503:61: info: index check proved (CVC5: 2 VC)
 very_longs.adb:508:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:508:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:509:29: medium: length check might fail [reason for check: source and destination arrays for the assignment must have the same length]
-very_longs.adb:509:32: medium: length check might fail [reason for check: array must be of the appropriate length]
+very_longs.adb:509:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:509:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:512:12: info: precondition proved (CVC5: 1 VC)
 very_longs.adb:512:29: medium: overflow check might fail, cannot prove upper bound for Get_MSD(Divisor) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Get_MSD(Divisor) <= 2147483647 - 1) to subprogram at very_longs.ads:64]
 very_longs.adb:512:29: medium: range check might fail, cannot prove upper bound for Get_MSD(Divisor) + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: add precondition (Get_MSD(Divisor) <= Divisor_Digits_Count_Type'Last - 1) to subprogram at very_longs.ads:64]
 very_longs.adb:513:15: medium: range check might fail, cannot prove lower bound for 48 - N [reason for check: result of subtraction must fit in the target type of the assignment]
 very_longs.adb:516:25: info: precondition proved (CVC5: 1 VC)
-very_longs.adb:516:66: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
+very_longs.adb:516:66: info: index check proved (CVC5: 2 VC)
 very_longs.adb:517:07: medium: precondition might fail
 very_longs.adb:518:12: info: discriminant check proved (CVC5: 1 VC)
 very_longs.adb:536:17: medium: range check might fail, cannot prove lower bound for J - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 524 should mention J in a loop invariant]

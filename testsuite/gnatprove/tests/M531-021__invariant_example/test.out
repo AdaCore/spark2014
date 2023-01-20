@@ -2,7 +2,7 @@ p2.adb:8:07: info: initialization of "Lower" proved
 p2.adb:9:07: info: initialization of "Upper" proved
 p2.adb:10:07: info: initialization of "Halfway" proved
 p2.adb:19:13: info: loop invariant initialization proved (CVC5: 2 VC)
-p2.adb:19:13: info: loop invariant preservation proved (altergo: 2 VC)
+p2.adb:19:13: info: loop invariant preservation proved (CVC5: 1 VC; altergo: 1 VC)
 p2.adb:25:37: info: division check proved (CVC5: 1 VC)
 p2.ads:4:19: info: assertion proved (Trivial)
 p2.ads:11:19: info: postcondition proved (CVC5: 2 VC)

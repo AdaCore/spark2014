@@ -353,7 +353,7 @@ algorithm.adb:861:49: medium: float overflow check might fail [reason for check:
 algorithm.adb:861:56: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:861:64: info: division check proved (CVC5: 1 VC)
 algorithm.adb:861:64: info: float overflow check proved (Trivial)
-algorithm.adb:862:38: info: float overflow check proved (Z3: 1 VC)
+algorithm.adb:862:38: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:862:40: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:862:47: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:863:22: info: assertion proved (colibri: 1 VC)

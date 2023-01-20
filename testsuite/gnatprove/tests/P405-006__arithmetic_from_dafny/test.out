@@ -2,7 +2,7 @@ div_lemmas.adb:16:37: info: initialization of "Res" proved
 div_lemmas.adb:18:14: info: postcondition proved (CVC5: 1 VC)
 div_lemmas.adb:21:16: info: division check proved (CVC5: 1 VC)
 div_lemmas.adb:24:40: info: initialization of "Res" proved
-div_lemmas.adb:26:14: info: postcondition proved (altergo: 1 VC)
+div_lemmas.adb:26:14: info: postcondition proved (CVC5: 1 VC)
 div_lemmas.adb:29:16: info: division check proved (CVC5: 1 VC)
 div_lemmas.adb:29:16: info: overflow check proved (CVC5: 2 VC)
 div_lemmas.adb:32:52: info: initialization of "Res" proved
@@ -27,12 +27,12 @@ mod_lemmas.adb:23:61: info: initialization of "Res" proved
 mod_lemmas.adb:26:14: high: postcondition might fail (e.g. when Res = 9 and X = 2)
 mod_lemmas.adb:29:16: info: overflow check proved (CVC5: 2 VC)
 mod_lemmas.adb:29:21: info: division check proved (CVC5: 1 VC)
-mod_lemmas.adb:29:21: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
+mod_lemmas.adb:29:21: info: overflow check proved (CVC5: 2 VC)
 mod_lemmas.adb:29:26: info: overflow check proved (CVC5: 2 VC)
 mod_lemmas.adb:29:31: info: division check proved (CVC5: 1 VC)
 mod_lemmas.adb:32:42: info: initialization of "Res1" proved
 mod_lemmas.adb:32:48: info: initialization of "Res2" proved
-mod_lemmas.adb:33:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
+mod_lemmas.adb:33:14: info: postcondition proved (CVC5: 2 VC)
 mod_lemmas.adb:36:17: info: division check proved (CVC5: 1 VC)
 mod_lemmas.adb:37:20: info: division check proved (CVC5: 1 VC)
 mod_lemmas.adb:40:52: info: initialization of "Res" proved

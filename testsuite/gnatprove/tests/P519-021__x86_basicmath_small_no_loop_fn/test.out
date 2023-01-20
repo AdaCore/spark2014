@@ -775,11 +775,11 @@ basicmath_small.ads:116:21: warning: assuming "InRange64" always returns
 basicmath_small.ads:116:21: warning: assuming "InRange64" has no effect on global items
 basicmath_small.ads:116:21: warning: no Global contract available for "InRange64"
 basicmath_small.ads:116:21: warning: no returning annotation available for "InRange64"
-basicmath_small.ads:120:17: medium: postcondition might fail, cannot prove X86.Memory(X86.RSP'Old) = X86.Memory'Old(X86.RSP'old)
 basicmath_small.ads:129:32: warning: assuming "InRange64" always returns
 basicmath_small.ads:129:32: warning: assuming "InRange64" has no effect on global items
 basicmath_small.ads:129:32: warning: no Global contract available for "InRange64"
 basicmath_small.ads:129:32: warning: no returning annotation available for "InRange64"
+basicmath_small.ads:130:23: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
 x86.ads:79:40: warning: assuming "InRange64" always returns
 x86.ads:79:40: warning: assuming "InRange64" has no effect on global items
 x86.ads:79:40: warning: no Global contract available for "InRange64"

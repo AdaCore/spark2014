@@ -1,7 +1,6 @@
 types.ads:6:12: info: division check proved (CVC5: 1 VC)
 types.ads:6:12: info: overflow check proved (CVC5: 1 VC)
 types.ads:6:12: info: range check proved (CVC5: 1 VC)
-types.ads:6:12: medium: range check might fail [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition (X / Y in M) to subprogram at line 5]
 types.ads:10:12: info: division check proved (CVC5: 1 VC)
 types.ads:10:12: info: overflow check proved (CVC5: 1 VC)
 types.ads:10:12: info: range check proved (CVC5: 1 VC)
@@ -9,8 +8,8 @@ types.ads:10:12: medium: range check might fail [reason for check: result of div
 types.ads:16:13: info: division check proved (CVC5: 1 VC)
 types.ads:16:13: info: overflow check proved (CVC5: 1 VC)
 types.ads:16:13: info: range check proved (CVC5: 2 VC)
-types.ads:16:13: medium: range check might fail, cannot prove lower bound for X / Y [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition (X / Y in M2) to subprogram at line 15]
+types.ads:16:13: medium: range check might fail, cannot prove upper bound for X / Y (e.g. when X = 101/128 and Y = 1/128) [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition (X / Y in M2) to subprogram at line 15]
 types.ads:22:13: info: division check proved (CVC5: 1 VC)
 types.ads:22:13: info: overflow check proved (CVC5: 2 VC)
 types.ads:22:13: info: range check proved (CVC5: 2 VC)
-types.ads:22:13: medium: range check might fail, cannot prove lower bound for X / Y [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition (X / Y in M3) to subprogram at line 21]
+types.ads:22:13: medium: range check might fail, cannot prove upper bound for X / Y (e.g. when X = 100/128 and Y = 1/128) [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition (X / Y in M3) to subprogram at line 21]
