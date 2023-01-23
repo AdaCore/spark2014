@@ -14,7 +14,7 @@ names.adb:85:22: info: assertion proved (CVC5: 1 VC)
 names.adb:86:22: info: assertion proved (CVC5: 1 VC)
 names.adb:88:07: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:9 should mention Entry_Table]
 names.adb:89:55: info: overflow check proved (CVC5: 2 VC)
-names.adb:89:55: medium: range check might fail, cannot prove lower bound for Last_Index (Char_Table) - (S'Length - 1) (e.g. when S = (1 => 'NUL') and S'First = 1 and S'Last = 1) [reason for check: result of subtraction must fit in component type] [possible fix: loop at line 80 should mention Char_Table in a loop invariant]
+names.adb:89:55: medium: range check might fail, cannot prove lower bound for Last_Index (Char_Table) - (S'Length - 1) (e.g. when S = (others => 'NUL') and S'First = 1 and S'Last = Integer'Last) [reason for check: result of subtraction must fit in component type] [possible fix: loop at line 80 should mention Char_Table in a loop invariant]
 names.adb:89:59: info: range check proved (CVC5: 2 VC)
 names.adb:90:32: info: range check proved (CVC5: 2 VC)
 names.adb:95:10: medium: precondition might fail

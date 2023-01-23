@@ -66,12 +66,12 @@ signed.adb:44:09: warning: assuming "Shift_Right_Arithmetic" always returns
 signed.adb:44:09: warning: assuming "Shift_Right_Arithmetic" has no effect on global items
 signed.adb:44:09: warning: no Global contract available for "Shift_Right_Arithmetic"
 signed.adb:44:09: warning: no returning annotation available for "Shift_Right_Arithmetic"
-signed.adb:45:19: info: assertion proved (Z3: 1 VC)
+signed.adb:45:19: info: assertion proved (colibri: 1 VC)
 signed.adb:47:09: warning: assuming "Shift_Right_Arithmetic" always returns
 signed.adb:47:09: warning: assuming "Shift_Right_Arithmetic" has no effect on global items
 signed.adb:47:09: warning: no Global contract available for "Shift_Right_Arithmetic"
 signed.adb:47:09: warning: no returning annotation available for "Shift_Right_Arithmetic"
-signed.adb:48:19: info: assertion proved (Z3: 1 VC)
+signed.adb:48:19: info: assertion proved (colibri: 1 VC)
 signed.adb:52:09: info: no contextual analysis of "Rotate_Left" (body not seen yet)
 signed.adb:52:09: warning: assuming "Rotate_Left" always returns
 signed.adb:52:09: warning: assuming "Rotate_Left" has no effect on global items
