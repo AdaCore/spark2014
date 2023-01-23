@@ -17,7 +17,6 @@ gp_realized = [
     "Int_Power",
     "Int_Minmax",
     "Int_Abs",
-    "Int_Division",
     "Array__1",
     "Array__1__Concat",
 ]

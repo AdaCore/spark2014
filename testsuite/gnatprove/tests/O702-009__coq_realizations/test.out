@@ -10,8 +10,6 @@ Generate realization for Int_Minmax
 
 Generate realization for Int_Abs
 
-Generate realization for Int_Division
-
 Generate realization for Array__1
 
 Generate realization for Array__1__Concat
@@ -31,7 +29,6 @@ Run Coqc on realization file: Integer
 Run Coqc on realization file: Int_Power
 Run Coqc on realization file: Int_Minmax
 Run Coqc on realization file: Int_Abs
-Run Coqc on realization file: Int_Division
 Run Coqc on realization file: Array__1
 Run Coqc on realization file: Array__1__Concat
 Run Coqc on realization file: Rep_Proj_Base
