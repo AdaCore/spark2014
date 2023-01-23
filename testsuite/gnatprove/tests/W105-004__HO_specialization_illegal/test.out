@@ -1,13 +1,16 @@
 illegal.adb:6:61: error: third argument of pragma Annotate Higher_Order_Specialization must be an entity
-illegal.adb:10:06: error: aspect Higher_Order_Specialization must be applied to a function
-illegal.adb:19:06: error: function annotated with Higher_Order_Specialization shall not be a volatile function
-illegal.adb:29:09: error: function annotated with Higher_Order_Specialization shall not be a dispatching operation
-illegal.adb:38:06: error: function annotated with Higher_Order_Specialization shall not be a borrowing traversal function
-illegal.adb:46:06: error: function annotated with Higher_Order_Specialization shall have at least a parameter of an anonymous access-to-function type
-illegal.adb:56:35: error: function annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
-illegal.adb:63:36: error: function annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
-illegal.adb:71:31: error: function annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
-illegal.adb:83:33: error: function annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
-illegal.adb:92:64: error: function annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
-illegal.adb:101:13: error: function annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
+illegal.adb:10:06: error: aspect Higher_Order_Specialization must be applied to a function or a lemma procedure
+illegal.adb:14:14: error: procedure annotated with the aspect Higher_Order_Specialization shall be ghost
+illegal.adb:21:30: error: procedure annotated with the aspectHigher_Order_Specialization shall not have "out" parameters
+illegal.adb:34:14: error: procedure annotated with the aspect Higher_Order_Specialization shall not have global outputs
+illegal.adb:46:06: error: function annotated with Higher_Order_Specialization shall not be a volatile function
+illegal.adb:56:09: error: subprogram annotated with Higher_Order_Specialization shall not be a dispatching operation
+illegal.adb:65:06: error: function annotated with Higher_Order_Specialization shall not be a borrowing traversal function
+illegal.adb:73:06: error: subprogram annotated with Higher_Order_Specialization shall have at least a parameter of an anonymous access-to-function type
+illegal.adb:83:35: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
+illegal.adb:90:36: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
+illegal.adb:98:31: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
+illegal.adb:110:33: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
+illegal.adb:119:64: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
+illegal.adb:128:13: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
 gnatprove: error during generation of Global contracts

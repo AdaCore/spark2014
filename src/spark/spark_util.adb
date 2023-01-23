@@ -1983,7 +1983,7 @@ package body SPARK_Util is
         (Store_Specialized_Param);
 
    begin
-      if Ekind (Subp) = E_Function
+      if Ekind (Subp) in E_Function | E_Procedure
         and then Has_Higher_Order_Specialization_Annotation (Subp)
       then
          Collect_Params (Call);
@@ -3203,11 +3203,12 @@ package body SPARK_Util is
       declare
          Call : constant Node_Id := Parent (Expr);
          Subp : constant Entity_Id :=
-           (if Nkind (Call) = N_Function_Call then Get_Called_Entity (Call)
+           (if Nkind (Call) in N_Function_Call | N_Procedure_Call_Statement
+            then Get_Called_Entity (Call)
             else Empty);
       begin
          if No (Subp)
-           or else Ekind (Subp) /= E_Function
+           or else Ekind (Subp) not in E_Function | E_Procedure
            or else not Has_Higher_Order_Specialization_Annotation (Subp)
          then
             return False;
@@ -3239,7 +3240,7 @@ package body SPARK_Util is
         (if Nkind (Call) in N_Op then Entity (Call)
          else Sem_Aux.Get_Called_Entity (Call));
    begin
-      return Ekind (Subp) = E_Function
+      return Ekind (Subp) in E_Function | E_Procedure
         and then Has_Higher_Order_Specialization_Annotation (Subp)
         and then not
           Get_Specialized_Parameters (Call, Specialized_Entities).Is_Empty;

@@ -20050,7 +20050,7 @@ package body Gnat2Why.Expr is
 
       if Is_Specialized_Call (Expr, Specialized_Call_Params) then
          Create_Theory_For_HO_Specialization_If_Needed (Expr);
-         Specialization_Module := Get_Specialized_Function_Theory_Name (Expr);
+         Specialization_Module := Get_Specialization_Theory_Name (Expr);
 
          declare
             HO_Specialization : constant M_HO_Specialization_Type :=
@@ -22721,14 +22721,33 @@ package body Gnat2Why.Expr is
 
                   else Why.Inter.Standard);
 
-               Why_Name : constant W_Identifier_Id :=
-                 W_Identifier_Id
-                   (Transform_Identifier (Params   => Body_Params,
-                                          Expr     => Stmt_Or_Decl,
-                                          Ent      => Subp,
-                                          Domain   => EW_Prog,
-                                          Selector => Selector));
+               Why_Name :  W_Identifier_Id;
+
             begin
+               --  For procedures with higher order specialization, generate a
+               --  specialized version if needed and call it instead.
+
+               if Is_Specialized_Call (Stmt_Or_Decl, Specialized_Call_Params)
+               then
+                  Create_Theory_For_HO_Specialization_If_Needed (Stmt_Or_Decl);
+
+                  declare
+                     HO_Specialization : constant M_HO_Specialization_Type :=
+                       M_HO_Specializations (Subp)
+                         (Get_Specialization_Theory_Name (Stmt_Or_Decl));
+                  begin
+                     Why_Name := HO_Specialization.Prog_Id;
+                  end;
+               else
+                  Why_Name :=
+                    W_Identifier_Id
+                      (Transform_Identifier (Params   => Body_Params,
+                                             Expr     => Stmt_Or_Decl,
+                                             Ent      => Subp,
+                                             Domain   => EW_Prog,
+                                             Selector => Selector));
+               end if;
+
                if Why_Subp_Has_Precondition (Subp, Selector) then
                   Call :=
                     New_VC_Call

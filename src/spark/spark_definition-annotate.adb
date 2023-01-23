@@ -672,17 +672,17 @@ package body SPARK_Definition.Annotate is
 
       --  This entity must be a function
 
-      if Ekind (E) /= E_Function then
+      if Ekind (E) not in E_Procedure | E_Function then
          Error_Msg_N
            (Aspect_Or_Pragma & " Higher_Order_Specialization must be applied"
-            & " to a function",
+            & " to a function or a lemma procedure",
             Arg3_Exp);
          return;
 
       --  For now reject volatile functions, dispatching operations, and
       --  borrowing traversal functions.
 
-      elsif Is_Volatile_Function (E) then
+      elsif Ekind (E) = E_Function and then Is_Volatile_Function (E) then
          Error_Msg_N
            ("function annotated with Higher_Order_Specialization shall not be"
             & " a volatile function",
@@ -692,8 +692,8 @@ package body SPARK_Definition.Annotate is
         and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
       then
          Error_Msg_N
-           ("function annotated with Higher_Order_Specialization shall not be"
-            & " a dispatching operation",
+           ("subprogram annotated with Higher_Order_Specialization shall not"
+            & " be a dispatching operation",
             Arg3_Exp);
          return;
       elsif Is_Borrowing_Traversal_Function (E) then
@@ -702,6 +702,77 @@ package body SPARK_Definition.Annotate is
             & " a borrowing traversal function",
             Arg3_Exp);
          return;
+
+      --  For procedures, check that we have a lemma
+
+      elsif Ekind (E) = E_Procedure then
+
+         --  It should be ghost
+
+         if not Is_Ghost_Entity (E) then
+            Error_Msg_N
+              ("procedure annotated with the " & Aspect_Or_Pragma
+               & " Higher_Order_Specialization shall be ghost",
+               E);
+            return;
+         end if;
+
+         --  It shall not have mutable parameters
+
+         declare
+            Formal : Entity_Id := First_Formal (E);
+         begin
+            while Present (Formal) loop
+               if Ekind (Formal) /= E_In_Parameter
+                 or else (Is_Access_Object_Type (Etype (Formal))
+                          and then not Is_Access_Constant (Etype (Formal)))
+               then
+                  declare
+                     Param_String : constant String :=
+                       (case Ekind (Formal) is
+                           when E_In_Out_Parameter =>
+                             """in out"" parameters",
+                           when E_Out_Parameter    =>
+                             """out"" parameters",
+                           when E_In_Parameter     =>
+                             "parameters of an access-to-variable type",
+                           when others             =>
+                              raise Program_Error);
+                  begin
+                     Error_Msg_N
+                       ("procedure annotated with the " & Aspect_Or_Pragma
+                        & "Higher_Order_Specialization shall not have "
+                        & Param_String,
+                        Formal);
+                     return;
+                  end;
+               end if;
+               Next_Formal (Formal);
+            end loop;
+         end;
+
+         --  It shall not update any global data
+
+         declare
+            Globals : Global_Flow_Ids;
+         begin
+            Get_Globals
+              (Subprogram          => E,
+               Scope               => (Ent => E, Part => Visible_Part),
+               Classwide           => False,
+               Globals             => Globals,
+               Use_Deduced_Globals =>
+                  not Gnat2Why_Args.Global_Gen_Mode,
+               Ignore_Depends      => False);
+
+            if not Globals.Outputs.Is_Empty then
+               Error_Msg_N
+                 ("procedure annotated with the " & Aspect_Or_Pragma
+                  & " Higher_Order_Specialization shall not have global"
+                  & " outputs", E);
+               return;
+            end if;
+         end;
       end if;
 
       declare
@@ -757,7 +828,10 @@ package body SPARK_Definition.Annotate is
                   --  with Higher_Order_Specialization and Formal is an
                   --  anonymous access-to-function type.
 
-                  if No (Call) or else Nkind (Call) /= N_Function_Call then
+                  if No (Call)
+                    or else Nkind (Call) not in N_Function_Call
+                                              | N_Procedure_Call_Statement
+                  then
 
                      --  Here we probably can only have comparison to null
 
@@ -766,7 +840,7 @@ package body SPARK_Definition.Annotate is
                   else
                      Callee := Get_Called_Entity (Call);
 
-                     if Ekind (Callee) /= E_Function
+                     if Ekind (Callee) not in E_Function | E_Procedure
                        or else not Is_Anonymous_Access_Type (Etype (Formal))
                      then
                         Violation := N;
@@ -822,9 +896,9 @@ package body SPARK_Definition.Annotate is
 
          if Formals.Is_Empty then
             Error_Msg_N
-              ("function annotated with Higher_Order_Specialization shall have"
-               & " at least a parameter of an anonymous access-to-function "
-               & "type",
+              ("subprogram annotated with Higher_Order_Specialization shall"
+               & " have at least a parameter of an anonymous"
+               & " access-to-function type",
                Arg3_Exp);
             return;
          end if;
@@ -864,13 +938,13 @@ package body SPARK_Definition.Annotate is
          if Present (Violation) then
             if Nkind (Violation) = N_Iterated_Component_Association then
                Error_Msg_N
-                 ("function annotated with Higher_Order_Specialization"
+                 ("subprogram annotated with Higher_Order_Specialization"
                   & " shall not reference its access-to-function"
                   & " parameters inside an iterated component association",
                   Violation);
             else
                Error_Msg_N
-                 ("function annotated with Higher_Order_Specialization"
+                 ("subprogram annotated with Higher_Order_Specialization"
                   & " shall only reference its access-to-function"
                   & " parameters in dereferences and as actual parameters in"
                   & " calls to functions annotated with"
@@ -1695,7 +1769,7 @@ package body SPARK_Definition.Annotate is
 
    procedure Do_Delayed_Checks_On_Pragma_Annotate is
    begin
-      --  Go over the delayed checks for calls in contracts of functions
+      --  Go over the delayed checks for calls in contracts of subprograms
       --  with higher order specialization and do them.
 
       for Position in Delayed_HO_Specialization_Checks.Iterate loop
@@ -1707,7 +1781,7 @@ package body SPARK_Definition.Annotate is
             pragma Assert (Entity_Marked (Subp));
             if not Has_Higher_Order_Specialization_Annotation (Subp) then
                Error_Msg_N
-                 ("function annotated with Higher_Order_Specialization"
+                 ("subprogram annotated with Higher_Order_Specialization"
                   & " shall only reference its access-to-function"
                   & " parameters in dereferences and as actual parameters in"
                   & " calls to functions annotated with"

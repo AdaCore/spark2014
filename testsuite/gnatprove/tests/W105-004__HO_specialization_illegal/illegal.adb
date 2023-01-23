@@ -5,14 +5,41 @@ is
    --  Higher_Order_Specialization with no entities
    pragma Annotate (GNATprove, Higher_Order_Specialization, "toto");
 
-   --  Higher_Order_Specialization applied to procedure
-   procedure P (I : out Integer; F : not null access function return Integer) with
+   --  Higher_Order_Specialization applied to a type
+   type T is new Integer with
      Annotate => (GNATprove, Higher_Order_Specialization);
 
-   procedure P (I : out Integer; F : not null access function return Integer) is
+   --  Higher_Order_Specialization applied to non ghost procedure
+
+   procedure Non_Ghost_Proc (F : not null access function return Integer) with
+     Annotate => (GNATprove, Higher_Order_Specialization);
+
+   procedure Non_Ghost_Proc (F : not null access function return Integer) is null;
+
+   --  Higher_Order_Specialization applied to procedure with out params
+
+   procedure Proc_Out_Param (I : out Integer; F : not null access function return Integer) with
+     Ghost,
+     Annotate => (GNATprove, Higher_Order_Specialization);
+
+   procedure Proc_Out_Param (I : out Integer; F : not null access function return Integer) is
    begin
       I := F.all;
-   end P;
+   end Proc_Out_Param;
+
+   --  Higher_Order_Specialization applied to procedure with a global out
+
+   Global_V : Integer;
+
+   procedure Proc_Out_Global (F : not null access function return Integer) with
+     Ghost,
+     Global => (Output => Global_V),
+     Annotate => (GNATprove, Higher_Order_Specialization);
+
+   procedure Proc_Out_Global (F : not null access function return Integer) is
+   begin
+      Global_V := F.all;
+   end Proc_Out_Global;
 
    --  Higher_Order_Specialization applied to a volatile function
    function Volatile_Fun (F : not null access function return Integer) return Integer with

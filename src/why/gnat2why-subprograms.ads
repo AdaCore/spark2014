@@ -164,7 +164,7 @@ private
    --    binders for the subprogram.
    --  @param Specialization_Module name of the specialization module in
    --    which the symbols are generated. It is empty if we are not generating
-   --    code for a function annotated with higher order specialization.
+   --    code for a subprogram annotated with higher order specialization.
    --  @param More_Reads is a set of globals that should be considered as read
    --  by the subprogram in addition to its actual inputs. It is used to handle
    --  calls with higher order specialization.
@@ -191,7 +191,7 @@ private
    --    an access-to-subprogram type through its wrapper.
    --  @param Specialization_Module name of the specialization module in
    --    which the symbols are generated. It is empty if we are not generating
-   --    code for a function annotated with higher order specialization.
+   --    code for a subprogram annotated with higher order specialization.
    --  @param More_Reads is a set of globals that should be considered as read
    --  by the subprogram in addition to its actual inputs. It is used to handle
    --  calls with higher order specialization.

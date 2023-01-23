@@ -629,8 +629,8 @@ package Why.Atree.Modules is
       "="             => Name_Id_HO_Specializations_Map."=");
 
    M_HO_Specializations : Node_Id_HO_Specializations_Map.Map;
-   --  M_HO_Specializations maps function entity to a map containing all their
-   --  specializations.
+   --  M_HO_Specializations maps subprogram entities to a map containing all
+   --  their specializations.
 
    M_BV_Conv_128_256 : M_BV_Conv_Type;
    M_BV_Conv_64_128  : M_BV_Conv_Type;

@@ -212,11 +212,13 @@ package SPARK_Definition.Annotate is
    --  where
    --    GNATprove                   is a fixed identifier
    --    Higher_Order_Specialization is a fixed identifier
-   --    E                           is a function with parameters of an
-   --                                anonymous access-to-function type.
+   --    E                           is a function or lemma procedure with
+   --                                parameters of an anonymous
+   --                                access-to-function type.
 
-   --  The function E shall not be volatile, dispatching, nor a borrowing
-   --  traversal function. Its parameters shall only occur in contracts in
+   --  The subprogram E shall not be volatile, dispatching, nor a borrowing
+   --  traversal function. If it is a procedure, it shall be a lemma function -
+   --  ghost and no outputs. Its parameters shall only occur in contracts in
    --  dereferences and as actuals in calls to functions annotated with
    --  Higher_Order_Specialization (the actual pointer value shall not be
    --  used).
@@ -383,7 +385,7 @@ package SPARK_Definition.Annotate is
 
    function Has_Higher_Order_Specialization_Annotation
      (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) = E_Function;
+   with Pre => Ekind (E) in E_Function | E_Procedure;
    --  Return True if a pragma Annotate Higher_Order_Specialization applies to
    --  the function E.
 
