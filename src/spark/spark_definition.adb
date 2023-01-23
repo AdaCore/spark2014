@@ -4617,6 +4617,11 @@ package body SPARK_Definition is
             exit;
          end if;
       end loop;
+
+      --  Everything has been marked, we can perform the left-over checks on
+      --  pragmas Annotate GNATprove if any.
+
+      Do_Delayed_Checks_On_Pragma_Annotate;
    end Mark_Compilation_Unit;
 
    --------------------------------

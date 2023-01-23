@@ -3871,6 +3871,21 @@ package body Why.Atree.Modules is
          for C in Rec_Axiom_Modules.Iterate loop
             if Mutually_Recursive (E, Ada_To_Why.Key (C)) then
                S.Insert (Ada_To_Why.Element (C));
+
+               --  If the subprogram has specialization, also include their
+               --  axioms.
+
+               declare
+                  use Node_Id_HO_Specializations_Map;
+                  Position : constant Node_Id_HO_Specializations_Map.Cursor :=
+                    M_HO_Specializations.Find (Ada_To_Why.Key (C));
+               begin
+                  if Position /= No_Element then
+                     for Th of Element (Position) loop
+                        S.Insert (+Th.Rec_Ax_Module);
+                     end loop;
+                  end if;
+               end;
             end if;
          end loop;
       end if;

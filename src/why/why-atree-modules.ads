@@ -606,11 +606,13 @@ package Why.Atree.Modules is
    M_Subprogram_Profiles : Name_Id_Profile_Map.Map;
 
    type M_HO_Specialization_Type is record
-      Module    : W_Module_Id;
-      Ax_Module : W_Module_Id;
-      Prog_Id   : W_Identifier_Id;
-      Fun_Id    : W_Identifier_Id;
-      Guard_Id  : W_Identifier_Id;
+      Module        : W_Module_Id;
+      Ax_Module     : W_Module_Id;
+      Rec_Ax_Module : W_Module_Id;
+      Prog_Id       : W_Identifier_Id;
+      Fun_Id        : W_Identifier_Id;
+      Guard_Id      : W_Identifier_Id;
+      Variant_Id    : W_Identifier_Id;
    end record;
 
    package Name_Id_HO_Specializations_Map is new Ada.Containers.Hashed_Maps
@@ -619,7 +621,16 @@ package Why.Atree.Modules is
       Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
-   M_HO_Specializations : Name_Id_HO_Specializations_Map.Map;
+   package Node_Id_HO_Specializations_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Name_Id_HO_Specializations_Map.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Name_Id_HO_Specializations_Map."=");
+
+   M_HO_Specializations : Node_Id_HO_Specializations_Map.Map;
+   --  M_HO_Specializations maps function entity to a map containing all their
+   --  specializations.
 
    M_BV_Conv_128_256 : M_BV_Conv_Type;
    M_BV_Conv_64_128  : M_BV_Conv_Type;

@@ -1,0 +1,2 @@
+test_rec.adb:48:17: error: function annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
+gnatprove: error during generation of Global contracts

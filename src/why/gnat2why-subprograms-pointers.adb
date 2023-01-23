@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;               use GNAT.Source_Info;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
@@ -540,6 +541,12 @@ package body Gnat2Why.Subprograms.Pointers is
          Name => Img (Theory_Name) & To_String (WNE_Axiom_Suffix));
       Caller                       : constant Entity_Id :=
         Get_Called_Entity_For_Proof (Call);
+      Rec_Ax_Module                : constant W_Module_Id :=
+        (if Is_Recursive (Caller)
+         then New_Module
+           (File => No_Symbol,
+            Name => Img (Theory_Name) & "__rec_axioms")
+         else Why_Empty);
       Fun_Name                     : constant String := Short_Name (Caller);
       Fun_Typ                      : constant W_Type_Id :=
         Type_Of_Node (Caller);
@@ -560,23 +567,39 @@ package body Gnat2Why.Subprograms.Pointers is
           (Domain => EW_Pred,
            Symb   => NID (Fun_Name & "__" & Function_Guard),
            Module => Module);
+      Variant_Id                   : constant W_Identifier_Id :=
+        (if Is_Recursive (Caller)
+           and then (Present (Get_Pragma (Caller, Pragma_Subprogram_Variant)))
+         then  New_Identifier
+          (Domain => EW_Prog,
+           Symb   => NID (Fun_Name & "__check_subprogram_variants"),
+           Typ    => EW_Unit_Type,
+           Module => Ax_Module)
+         else Why_Empty);
       More_Globals                 : Flow_Types.Flow_Id_Sets.Set;
       Th                           : Theory_UC;
+      Position                     : Node_Id_HO_Specializations_Map.Cursor;
+      Inserted                     : Boolean;
 
    begin
-      if M_HO_Specializations.Contains (Key => Theory_Name) then
+      M_HO_Specializations.Insert
+        (Caller, Name_Id_HO_Specializations_Map.Empty_Map, Position, Inserted);
+
+      if M_HO_Specializations (Position).Contains (Key => Theory_Name) then
          return;
       end if;
 
       --  Populate the M_HO_Specializations map
 
-      M_HO_Specializations.Insert
+      M_HO_Specializations (Position).Insert
         (Theory_Name,
-         M_HO_Specialization_Type'(Module    => Module,
-                                   Ax_Module => Ax_Module,
-                                   Guard_Id  => Guard_Id,
-                                   Prog_Id   => Prog_Id,
-                                   Fun_Id    => Fun_Id));
+         M_HO_Specialization_Type'(Module        => Module,
+                                   Ax_Module     => Ax_Module,
+                                   Rec_Ax_Module => Rec_Ax_Module,
+                                   Guard_Id      => Guard_Id,
+                                   Prog_Id       => Prog_Id,
+                                   Fun_Id        => Fun_Id,
+                                   Variant_Id    => Variant_Id));
 
       --  Generate the logic function declarations
 

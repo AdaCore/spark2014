@@ -554,7 +554,7 @@ package body Why.Gen.Names is
       return W_Identifier_Id
    is
      (if Specialization_Module /= No_Symbol
-      then M_HO_Specializations.Element (Specialization_Module).Guard_Id
+      then M_HO_Specializations (E) (Specialization_Module).Guard_Id
       elsif Ekind (E) = E_Function and then not Is_Access_Subp_Wrapper
       then E_Symb (E, (case Selector_Name is
                           when Why.Inter.Standard => WNE_Func_Guard,
@@ -653,7 +653,7 @@ package body Why.Gen.Names is
       return W_Identifier_Id
    is
      (if Specialization_Module /= No_Symbol
-      then M_HO_Specializations.Element (Specialization_Module).Fun_Id
+      then M_HO_Specializations (E) (Specialization_Module).Fun_Id
       elsif Ekind (E) = E_Function and then not Is_Access_Subp_Wrapper
       then To_Why_Id
         (E, Domain => EW_Term, Local => False, Selector => Selector_Name)

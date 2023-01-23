@@ -86,6 +86,14 @@ is
 
    function Use_In_CC2 (F : not null access function return Integer) return Integer is (F.all);
 
+   --  Non specializable use of formal in variants
+   function Use_In_Variants (F : not null access function return Integer; C : Natural) return Integer with
+     Annotate => (GNATprove, Higher_Order_Specialization),
+     Subprogram_Variant => (Decreases => Non_Specialized_Read (F), Decreases => C);
+
+   function Use_In_Variants (F : not null access function return Integer; C : Natural) return Integer is
+     (if C = 0 then 0 else Use_In_Variants (F, C - 1));
+
    --  Comparison to null is not supported yet
 
    function Eq_In_Pre (F : access function return Integer) return Integer with

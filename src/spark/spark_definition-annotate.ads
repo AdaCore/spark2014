@@ -232,6 +232,11 @@ package SPARK_Definition.Annotate is
    --  be considered to also apply to all "Next" declarations following
    --  "Preceding" which are not from source.
 
+   procedure Do_Delayed_Checks_On_Pragma_Annotate;
+   --  Some checks for Annotate pragmas or aspects might have been delayed
+   --  because necessary entities were not marked yet. Finish the checking and
+   --  possibly raise some remaining errors.
+
    type Annotate_Kind is (Intentional, False_Positive);
 
    type Annotated_Range is record
