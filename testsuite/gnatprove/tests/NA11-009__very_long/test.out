@@ -210,14 +210,14 @@ very_longs.adb:488:14: info: range check proved (CVC5: 2 VC)
 very_longs.adb:488:61: info: cannot unroll loop (dynamic loop bounds)
 very_longs.adb:489:59: info: index check proved (CVC5: 2 VC)
 very_longs.adb:493:46: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:493:62: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 476 should mention J in a precondition]
+very_longs.adb:493:62: medium: array index check might fail (e.g. when Divisor_Index = 1 and J = 3 and U = (Length => ?, Long_Digits => (others => Octet'Last-2)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 476 should mention J in a precondition]
 very_longs.adb:500:29: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:500:45: info: index check proved (CVC5: 2 VC)
 very_longs.adb:502:48: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:502:64: info: index check proved (CVC5: 2 VC)
 very_longs.adb:502:107: info: range check proved (CVC5: 2 VC)
 very_longs.adb:507:42: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:507:42: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 476 should mention J and N in a precondition]
+very_longs.adb:507:42: medium: array index check might fail (e.g. when J = 1 and N = 2 and U = (Length => ?, Long_Digits => (others => 193)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 476 should mention J and N in a precondition]
 very_longs.adb:512:26: info: index check proved (CVC5: 2 VC)
 very_longs.adb:512:26: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:514:45: info: index check proved (CVC5: 2 VC)
@@ -228,7 +228,7 @@ very_longs.adb:521:11: info: flow dependencies proved
 very_longs.adb:524:10: info: initialization of "Carry" proved
 very_longs.adb:525:10: info: initialization of "Sum" proved
 very_longs.adb:527:31: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in 1 .. Length) to subprogram at line 518]
-very_longs.adb:527:43: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 518 should mention Q_Hat in a precondition]
+very_longs.adb:527:43: medium: range check might fail (e.g. when Q_Hat = 256) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 518 should mention Q_Hat in a precondition]
 very_longs.adb:531:34: info: index check proved (CVC5: 2 VC)
 very_longs.adb:531:61: info: index check proved (CVC5: 2 VC)
 very_longs.adb:533:17: info: range check proved (CVC5: 2 VC)

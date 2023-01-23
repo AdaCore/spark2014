@@ -6,7 +6,7 @@ mul_div_2.adb:17:07: info: initialization of "Result_Hi" proved
 mul_div_2.adb:17:18: info: initialization of "Result_Lo" proved
 mul_div_2.adb:20:07: info: initialization of "Remainder" proved
 mul_div_2.adb:25:22: info: overflow check proved (altergo: 2 VC)
-mul_div_2.adb:25:32: medium: overflow check might fail, cannot prove lower bound for V_Lo * LLI (M) + (if V >= 0 then 1 else -1) * LLI (D / 2) [reason for check: result of addition must fit in a 64-bits machine integer]
+mul_div_2.adb:25:32: medium: overflow check might fail, cannot prove upper bound for V_Lo * LLI (M) + (if V >= 0 then 1 else -1) * LLI (D / 2) [reason for check: result of addition must fit in a 64-bits machine integer]
 mul_div_2.adb:25:61: info: overflow check proved (CVC5: 2 VC)
 mul_div_2.adb:25:70: info: division check proved (CVC5: 1 VC)
 mul_div_2.adb:26:22: medium: overflow check might fail, cannot prove lower bound for V_Hi * LLI (M) [reason for check: result of multiplication must fit in a 64-bits machine integer]

@@ -1045,8 +1045,8 @@ students.adb:55:30: info: overflow check proved (CVC5: 2 VC)
 students.adb:55:30: info: range check proved (CVC5: 2 VC)
 students.adb:59:24: info: overflow check proved (CVC5: 2 VC)
 students.adb:59:32: info: overflow check proved (CVC5: 2 VC)
-students.adb:59:42: medium: overflow check might fail, cannot prove lower bound for ((Tuition + Fees) - Grants) + Insurance [reason for check: result of fixed-point addition must fit in the underlying 32-bits machine integer]
-students.adb:59:42: medium: range check might fail, cannot prove upper bound for ((Tuition + Fees) - Grants) + Insurance [reason for check: returned value must fit in the result type of the function]
+students.adb:59:42: info: overflow check proved (CVC5: 2 VC)
+students.adb:59:42: info: range check proved (CVC5: 2 VC)
 students2.adb:23:07: info: initialization of "Tuition" proved
 students2.adb:24:07: info: initialization of "Fees" proved
 students2.adb:32:29: info: overflow check proved (CVC5: 2 VC)
@@ -1241,14 +1241,14 @@ very_longs-divide.adb:157:11: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:157:58: info: cannot unroll loop (dynamic loop bounds)
 very_longs-divide.adb:158:56: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:162:43: info: overflow check proved (CVC5: 2 VC)
-very_longs-divide.adb:162:59: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 145 should mention J in a precondition]
+very_longs-divide.adb:162:59: medium: array index check might fail (e.g. when Divisor_Index = 1 and J = 3 and U = (Length => ?, Long_Digits => (others => Octet'Last-2)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 145 should mention J in a precondition]
 very_longs-divide.adb:169:26: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:169:42: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:170:49: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:170:65: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:170:108: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:175:39: info: overflow check proved (CVC5: 2 VC)
-very_longs-divide.adb:175:39: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 145 should mention J and N in a precondition]
+very_longs-divide.adb:175:39: medium: array index check might fail (e.g. when J = 1 and N = 2 and U = (Length => ?, Long_Digits => (others => 193)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 145 should mention J and N in a precondition]
 very_longs-divide.adb:180:23: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:180:23: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:181:46: info: index check proved (CVC5: 2 VC)
@@ -1259,7 +1259,7 @@ very_longs-divide.adb:188:08: info: flow dependencies proved
 very_longs-divide.adb:191:07: info: initialization of "Carry" proved
 very_longs-divide.adb:192:07: info: initialization of "Sum" proved
 very_longs-divide.adb:194:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in 1 .. Length) to subprogram at line 185]
-very_longs-divide.adb:194:40: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 185 should mention Q_Hat in a precondition]
+very_longs-divide.adb:194:40: medium: range check might fail (e.g. when Q_Hat = 256) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 185 should mention Q_Hat in a precondition]
 very_longs-divide.adb:198:31: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:198:58: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:200:14: info: range check proved (CVC5: 2 VC)
