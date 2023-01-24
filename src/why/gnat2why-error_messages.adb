@@ -45,6 +45,7 @@ with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
 with Gnat2Why.Util;             use Gnat2Why.Util;
 with Gnat2Why_Args;             use Gnat2Why_Args;
 with Gnat2Why_Opts;             use Gnat2Why_Opts;
+with GNATCOLL.Utils;
 with Osint;                     use Osint;
 with Output;                    use Output;
 with Sinput;                    use Sinput;
@@ -108,10 +109,15 @@ package body Gnat2Why.Error_Messages is
    is
      (Not_Proved_Message (Node, Kind) &
         " at " & File_Name (Sloc (Node)) & ":" &
-        Physical_Line_Number'Image
-        (Get_Physical_Line_Number (Sloc (Node))) & ":" &
-        Types.Column_Number'Image (Get_Column_Number (Sloc (Node))) &
-        " (" & Kind'Image & " at " & Node'Image & ")");
+        GNATCOLL.Utils.Image
+          (Positive (Get_Physical_Line_Number (Sloc (Node))), Min_Width => 0) &
+        ":" &
+        GNATCOLL.Utils.Image
+          (Natural (Get_Column_Number (Sloc (Node))), Min_Width => 0) &
+        " (" & Kind'Image & " at " &
+        GNATCOLL.Utils.Image
+          (Natural (Node), Min_Width => 0) &
+        ")");
    --  Pretty print a VC and info for debugging
 
    function Decide_Cntexmp_Verdict
