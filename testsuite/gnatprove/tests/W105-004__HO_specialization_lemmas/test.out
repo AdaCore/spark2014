@@ -1,0 +1,8 @@
+ho_lemmas.adb:14:09: info: pointer dereference check proved (CVC5: 1 VC)
+ho_lemmas.adb:22:14: info: implicit function contract not available for proof ("Call" might not return)
+ho_lemmas.adb:22:14: info: postcondition proved (CVC5: 1 VC)
+ho_lemmas.adb:22:20: info: null exclusion check proved (CVC5: 1 VC)
+ho_lemmas.adb:22:27: info: pointer dereference check proved (CVC5: 1 VC)
+ho_lemmas.adb:29:04: info: initialization of "I" proved
+ho_lemmas.adb:38:22: medium: assertion might fail (e.g. when I = -1)
+ho_lemmas.adb:46:22: info: assertion proved (CVC5: 1 VC)

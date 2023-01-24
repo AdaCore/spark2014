@@ -532,7 +532,7 @@ package body Gnat2Why.Subprograms.Pointers is
       Result_Name_Save             : constant W_Identifier_Id := Result_Name;
       Result_Is_Mutable_Save       : constant Boolean := Result_Is_Mutable;
       Theory_Name                  : constant Symbol :=
-        Get_Specialized_Function_Theory_Name (Call);
+        Get_Specialization_Theory_Name (Call);
       Module                       : constant W_Module_Id := New_Module
         (File => No_Symbol,
          Name => Img (Theory_Name));
@@ -549,13 +549,16 @@ package body Gnat2Why.Subprograms.Pointers is
          else Why_Empty);
       Fun_Name                     : constant String := Short_Name (Caller);
       Fun_Typ                      : constant W_Type_Id :=
-        Type_Of_Node (Caller);
+        (if Ekind (Caller) = E_Function then Type_Of_Node (Caller)
+         else EW_Unit_Type);
       Fun_Id                       : constant W_Identifier_Id :=
-        New_Identifier
-          (Domain => EW_Term,
-           Symb   => NID (Fun_Name),
-           Typ    => Fun_Typ,
-           Module => Module);
+        (if Ekind (Caller) = E_Function
+         then New_Identifier
+           (Domain => EW_Term,
+            Symb   => NID (Fun_Name),
+            Typ    => Fun_Typ,
+            Module => Module)
+         else Why_Empty);
       Prog_Id                      : constant W_Identifier_Id :=
         New_Identifier
           (Domain => EW_Prog,
@@ -563,14 +566,16 @@ package body Gnat2Why.Subprograms.Pointers is
            Typ    => Fun_Typ,
            Module => Ax_Module);
       Guard_Id                     : constant W_Identifier_Id :=
-        New_Identifier
-          (Domain => EW_Pred,
-           Symb   => NID (Fun_Name & "__" & Function_Guard),
-           Module => Module);
+        (if Ekind (Caller) = E_Function
+         then New_Identifier
+           (Domain => EW_Pred,
+            Symb   => NID (Fun_Name & "__" & Function_Guard),
+            Module => Module)
+         else Why_Empty);
       Variant_Id                   : constant W_Identifier_Id :=
         (if Is_Recursive (Caller)
            and then (Present (Get_Pragma (Caller, Pragma_Subprogram_Variant)))
-         then  New_Identifier
+         then New_Identifier
           (Domain => EW_Prog,
            Symb   => NID (Fun_Name & "__check_subprogram_variants"),
            Typ    => EW_Unit_Type,
@@ -601,19 +606,6 @@ package body Gnat2Why.Subprograms.Pointers is
                                    Fun_Id        => Fun_Id,
                                    Variant_Id    => Variant_Id));
 
-      --  Generate the logic function declarations
-
-      Th :=
-        Open_Theory
-          (WF_Context, Module,
-           Comment =>
-             "Module for declaring a specialized logic function symbol for"
-           & " the call to a function with higher order specialization at "
-           & (if Sloc (Call) > 0 then
-                Build_Location_String (Sloc (Call))
-             else "<no location>")
-           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
       --  Store the specialized parameters in the global
       --  Specialized_Call_Params map.
 
@@ -622,11 +614,26 @@ package body Gnat2Why.Subprograms.Pointers is
       More_Globals := Get_Globals_From_Specialized_Parameters
         (Specialized_Call_Params);
 
-      Declare_Logic_Functions
-        (Th                    => Th,
-         E                     => Caller,
-         Specialization_Module => Theory_Name,
-         More_Reads            => More_Globals);
+      --  Generate the logic function declarations
+
+      Th :=
+        Open_Theory
+          (WF_Context, Module,
+           Comment =>
+             "Module for declaring a specialized logic function symbol for"
+           & " the call to a subprogram with higher order specialization at "
+           & (if Sloc (Call) > 0 then
+                Build_Location_String (Sloc (Call))
+             else "<no location>")
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      if Ekind (Caller) = E_Function then
+         Declare_Logic_Functions
+           (Th                    => Th,
+            E                     => Caller,
+            Specialization_Module => Theory_Name,
+            More_Reads            => More_Globals);
+      end if;
 
       Close_Theory (Th,
                     Kind => Definition_Theory);
@@ -639,8 +646,8 @@ package body Gnat2Why.Subprograms.Pointers is
           (WF_Context, Ax_Module,
            Comment =>
              "Module for generating a specialized program function symbol and"
-           & " possibly an axiom for the call to a function with higher order"
-           & " specialization at "
+           & " possibly an axiom for the call to a subprogram with higher"
+           & " order specialization at "
            & (if Sloc (Call) > 0 then
                 Build_Location_String (Sloc (Call))
              else "<no location>")
@@ -656,11 +663,13 @@ package body Gnat2Why.Subprograms.Pointers is
          Specialization_Module => Theory_Name,
          More_Reads            => More_Globals);
 
-      Generate_Axiom_For_Post
-        (Th                    => Th,
-         E                     => Caller,
-         Specialization_Module => Theory_Name,
-         More_Reads            => More_Globals);
+      if Ekind (Caller) = E_Function then
+         Generate_Axiom_For_Post
+           (Th                    => Th,
+            E                     => Caller,
+            Specialization_Module => Theory_Name,
+            More_Reads            => More_Globals);
+      end if;
 
       Close_Theory (Th,
                     Kind => Definition_Theory);
@@ -1041,13 +1050,11 @@ package body Gnat2Why.Subprograms.Pointers is
       return Read_Ids;
    end Get_Globals_From_Specialized_Parameters;
 
-   ------------------------------------------
-   -- Get_Specialized_Function_Theory_Name --
-   ------------------------------------------
+   ------------------------------------
+   -- Get_Specialization_Theory_Name --
+   ------------------------------------
 
-   function Get_Specialized_Function_Theory_Name
-     (Call : Node_Id) return Symbol
-   is
+   function Get_Specialization_Theory_Name (Call : Node_Id) return Symbol is
       Name   : Unbounded_String :=
         To_Unbounded_String ("Higher_order_spec");
       Caller : constant Entity_Id := Get_Called_Entity_For_Proof (Call);
@@ -1098,7 +1105,7 @@ package body Gnat2Why.Subprograms.Pointers is
       Append_Params (Call);
 
       return NID (To_String (Name));
-   end Get_Specialized_Function_Theory_Name;
+   end Get_Specialization_Theory_Name;
 
    -----------------------------------------
    -- New_Dynamic_Property_For_Subprogram --

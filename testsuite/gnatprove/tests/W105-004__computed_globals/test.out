@@ -1,0 +1,2 @@
+illegal_glob.adb:7:14: error: procedure annotated with the aspect Higher_Order_Specialization shall not have global outputs
+gnatprove: error during flow analysis and proof

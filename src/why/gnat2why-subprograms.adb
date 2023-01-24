@@ -6286,11 +6286,13 @@ package body Gnat2Why.Subprograms is
 
          begin
             --  If E is an expression function, add its body to its
-            --  postcondition.
+            --  postcondition. For higher order specializations, the expression
+            --  function body is not taken into account.
 
             if Is_Expression_Function_Or_Completion (E)
               and then Entity_Body_Compatible_With_SPARK (E)
               and then not Has_Pragma_Volatile_Function (E)
+              and then Specialization_Module = No_Symbol
             then
                declare
                   Domain    : constant EW_Domain :=
@@ -6570,8 +6572,12 @@ package body Gnat2Why.Subprograms is
                              Post        => False_Pred))));
             end if;
 
+            --  For higher order specializations, we do not take into account
+            --  refined postcondition if any.
+
             if Entity_Body_In_SPARK (E)
               and then Has_Contracts (E, Pragma_Refined_Post)
+              and then Specialization_Module = No_Symbol
             then
                Emit
                  (Th,
