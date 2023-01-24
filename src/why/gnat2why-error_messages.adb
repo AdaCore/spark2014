@@ -33,6 +33,7 @@ with Ada.Containers.Hashed_Sets;
 with Ada.Float_Text_IO;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Text_IO;
+with Ada.Unchecked_Deallocation;
 with Call;                      use Call;
 with CE_RAC;                    use CE_RAC;
 with Common_Containers;         use Common_Containers;
@@ -912,6 +913,10 @@ package body Gnat2Why.Error_Messages is
          --  Call the small step RAC to check the counterexample and create
          --  the appropriate verdict.
 
+         procedure Free is new
+           Ada.Unchecked_Deallocation (Fuel_Type, Fuel_Access);
+         --  Release memory used by the fuel
+
          function To_Initialize_Present (E : Entity_Id) return Boolean;
          --  Determine if the subprogram has global variables that can be
          --  initialized or if the function has IN parameters.
@@ -1092,7 +1097,7 @@ package body Gnat2Why.Error_Messages is
          Cntexmp            : constant Cntexample_File_Maps.Map :=
            From_JSON (Rec.Cntexmp);
          Check_Info         : Check_Info_Type := VC.Check_Info;
-         Fuel               : constant Fuel_Access := new Fuel_Type'(250_000);
+         Fuel               : Fuel_Access := new Fuel_Type'(250_000);
          Cntexmp_Present    : constant Boolean := not Cntexmp.Is_Empty;
          Fuzzing_Used       : Boolean := False;
          Print_Fuzzing      : Boolean := False;
@@ -1292,6 +1297,8 @@ package body Gnat2Why.Error_Messages is
                Fuzzing_Used  => Fuzzing_Used,
                Print_Fuzzing => Print_Fuzzing);
          end;
+
+         Free (Fuel);
       end Handle_Result;
 
       --------------------
