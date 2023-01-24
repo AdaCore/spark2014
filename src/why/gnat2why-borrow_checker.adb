@@ -3732,11 +3732,11 @@ package body Gnat2Why.Borrow_Checker is
    -- Check_Simple_Return_Expression --
    ------------------------------------
 
-   procedure  Check_Simple_Return_Expression
+   procedure Check_Simple_Return_Expression
      (Expr : N_Subexpr_Id;
       Subp : Entity_Id)
    is
-      Return_Typ : constant Entity_Id := Etype (Expr);
+      Return_Typ : constant Entity_Id := Etype (Subp);
 
    begin
       --  SPARK RM 3.10(6): A return statement that applies to a traversal

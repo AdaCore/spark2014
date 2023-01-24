@@ -3729,7 +3729,7 @@ package body Gnat2Why.Subprograms is
                      Gen_Marker  => GM_None,
                      Ref_Allowed => True,
                      Old_Policy  => Use_Map);
-                  Body_N  : constant Node_Id := Get_Body (E);
+                  Body_N  : constant Node_Id := Entry_Body (E);
                   Barrier : constant Node_Id := Entry_Body_Barrier (Body_N);
                begin
                   Pre :=
