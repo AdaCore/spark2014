@@ -527,12 +527,15 @@ Complete List of Assumptions
 For the sake of these assumptions, we define a *precisely supported address
 specification* to be an address clause or aspect whose expression is a
 reference to the Address attribute on a part of a standalone object or
-constant. Otherwise, the address clause or aspect is an *imprecisely supported
-address specification*.
+constant. We define an *imprecisely supported address specification* to be an
+address clause or aspect that is not a precisely supported address
+specification.
 
-For the sake of these assumptions, by *object* we denote the object and all its
-*reachable parts*, that is, all sub-objects reachable from the initial object
-through pointer dereference.
+For the sake of these assumptions, we define an *object with an imprecisely
+supported address* to be either a stand-alone object with an address clause or
+aspect that is an imprecisely supported address specification or an object that
+is a *reachable part* of an object with an imprecisely supported address (a
+component of a composite value or the designated object of an access value).
 
 The following assumptions need to be addressed when using SPARK on all or part
 of a program:
@@ -559,7 +562,7 @@ of a program:
   A warning is guaranteed to be issued in problematic cases.
 
 * [SPARK_ALIASING_ADDRESS]
-  Aliases between objects annotated with an imprecisely supported address
+  Aliases between objects with an imprecisely supported address
   specification are ignored by GNATprove. Reviews are necessary
   to ensure that:
 
@@ -589,7 +592,7 @@ of a program:
 
 * [SPARK_EXTERNAL_VALID]
   Values read from objects whose address is specified are assumed to be valid
-  values. This assumption is limited to objects annotated with an imprecisely
+  values. This assumption is limited to objects with an imprecisely
   supported address specification (because an explicit check is emitted
   otherwise). Currently there is no model of invalidity or undefinedness. The
   onus is on the user to ensure that all values read from an external source
