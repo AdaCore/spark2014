@@ -24,7 +24,7 @@
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="0"><result status="valid" steps="251"/></proof>
-  <proof prover="1"><result status="valid" steps="10103"/></proof>
+  <proof prover="1"><result status="valid" steps="7059"/></proof>
   <proof prover="2"><result status="valid" steps="24684"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
@@ -36,13 +36,13 @@
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <proof prover="0"><result status="valid" steps="783"/></proof>
-  <proof prover="1"><result status="valid" steps="10239"/></proof>
+  <proof prover="1"><result status="valid" steps="7195"/></proof>
   <proof prover="2"><result status="valid" steps="24979"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <proof prover="0"><result status="valid" steps="1091"/></proof>
-  <proof prover="1"><result status="valid" steps="22475"/></proof>
+  <proof prover="1"><result status="valid" steps="15750"/></proof>
   <proof prover="2"><result status="valid" steps="27136"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
@@ -57,13 +57,13 @@
   </goal>
   <goal name="def&#39;vc.10" proved="true">
   <proof prover="0"><result status="valid" steps="1026"/></proof>
-  <proof prover="1"><result status="valid" steps="10590"/></proof>
+  <proof prover="1"><result status="valid" steps="7546"/></proof>
   <proof prover="2"><result status="valid" steps="25935"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="10583"/></proof>
+  <proof prover="0"><result status="valid" steps="1026"/></proof>
+  <proof prover="1"><result status="valid" steps="7539"/></proof>
   <proof prover="2"><result status="valid" steps="25918"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>

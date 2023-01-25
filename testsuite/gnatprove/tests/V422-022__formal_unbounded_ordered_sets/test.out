@@ -358,7 +358,7 @@ test_set.adb:33:36: info: precondition proved (CVC5: 1 VC)
 test_set.adb:34:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:35:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:35:36: info: precondition proved (CVC5: 1 VC)
-test_set.adb:36:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function]
+test_set.adb:36:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:36:36: info: precondition proved (CVC5: 1 VC)
 test_set.adb:37:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:39:22: info: assertion proved (Z3: 1 VC)
@@ -379,7 +379,7 @@ test_set.adb:65:23: info: precondition proved (CVC5: 1 VC)
 test_set.adb:68:25: medium: assertion might fail
 test_set.adb:68:28: info: precondition proved (CVC5: 1 VC)
 test_set.adb:68:39: info: precondition proved (CVC5: 1 VC)
-test_set.adb:69:25: medium: assertion might fail
+test_set.adb:69:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:70:10: info: precondition proved (Z3: 1 VC)
 test_set.adb:77:25: medium: assertion might fail
 test_set.adb:81:23: info: precondition proved (CVC5: 1 VC)
@@ -390,7 +390,7 @@ test_set.adb:85:10: info: precondition proved (Z3: 1 VC)
 test_set.adb:92:07: medium: precondition might fail [possible fix: call at line 89 should mention Container (for argument L) in a postcondition]
 test_set.adb:93:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:96:22: medium: assertion might fail
-test_set.adb:98:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Length or turning it into an expression function]
+test_set.adb:98:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:102:14: warning: subprogram "Test_Set_Rec" has no effect
 test_set.adb:105:07: info: initialization of "L" proved
 test_set.adb:105:10: info: initialization of "K" proved
@@ -487,7 +487,7 @@ test_set.adb:279:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:280:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:282:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:283:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:286:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:286:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Length or turning it into an expression function]
 test_set.adb:287:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:290:22: medium: assertion might fail
 test_set.adb:295:22: info: assertion proved (Z3: 1 VC)
@@ -495,9 +495,9 @@ test_set.adb:296:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:300:22: medium: assertion might fail
 test_set.adb:305:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:306:07: medium: precondition might fail, cannot prove not Contains (Container, New_Item)
-test_set.adb:307:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_set.adb:307:07: medium: precondition might fail, cannot prove not Contains (Container, New_Item)
 test_set.adb:310:22: medium: assertion might fail
-test_set.adb:313:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:313:22: medium: assertion might fail
 test_set.adb:313:26: info: precondition proved (CVC5: 1 VC)
 test_set.adb:318:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:318:22: info: precondition proved (CVC5: 1 VC)
@@ -517,7 +517,7 @@ test_set.adb:337:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:337:22: info: precondition proved (CVC5: 1 VC)
 test_set.adb:338:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:345:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:346:07: medium: precondition might fail, cannot prove not Contains (Container, New_Item)
+test_set.adb:346:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:348:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:349:07: medium: precondition might fail, cannot prove not Contains (Container, New_Item)
 test_set.adb:352:22: info: assertion proved (Z3: 1 VC)

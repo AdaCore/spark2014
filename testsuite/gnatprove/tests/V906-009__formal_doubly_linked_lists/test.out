@@ -12,45 +12,45 @@ spark-containers-formal-doubly_linked_lists.ads:454:13: info: subprogram "At_End
 spark-containers-formal-doubly_linked_lists.ads:454:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_list.ads:6
 spark-containers-formal-doubly_linked_lists.ads:456:08: info: dynamic accessibility check proved (Trivial), in instantiation at test.adb:11
 spark-containers-formal-doubly_linked_lists.ads:456:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:477:39: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test.adb:11
-spark-containers-formal-doubly_linked_lists.ads:477:39: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:586:49: info: overflow check proved (altergo: 2 VC), in instantiation at test.adb:11
-spark-containers-formal-doubly_linked_lists.ads:586:49: info: overflow check proved (altergo: 2 VC), in instantiation at test_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:721:49: info: overflow check proved (altergo: 2 VC), in instantiation at test.adb:11
-spark-containers-formal-doubly_linked_lists.ads:721:49: info: overflow check proved (altergo: 2 VC), in instantiation at test_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:811:57: info: overflow check proved (altergo: 2 VC), in instantiation at test.adb:11
-spark-containers-formal-doubly_linked_lists.ads:811:57: info: overflow check proved (altergo: 2 VC), in instantiation at test_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:878:57: info: overflow check proved (altergo: 2 VC), in instantiation at test.adb:11
-spark-containers-formal-doubly_linked_lists.ads:878:57: info: overflow check proved (altergo: 2 VC), in instantiation at test_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:965:28: info: overflow check proved (altergo: 2 VC), in instantiation at test.adb:11
-spark-containers-formal-doubly_linked_lists.ads:965:28: info: overflow check proved (altergo: 2 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:477:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:477:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:586:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:586:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:721:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:721:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:811:57: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:811:57: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:878:57: info: overflow check proved (CVC5: 2 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:878:57: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:965:28: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:965:28: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_list.ads:6
 spark-containers-formal-doubly_linked_lists.ads:965:39: info: precondition proved (altergo: 1 VC), in instantiation at test.adb:11
 spark-containers-formal-doubly_linked_lists.ads:965:39: info: precondition proved (altergo: 1 VC), in instantiation at test_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1141:43: info: overflow check proved (altergo: 2 VC), in instantiation at test.adb:11
-spark-containers-formal-doubly_linked_lists.ads:1141:43: info: overflow check proved (altergo: 2 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1141:43: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1141:43: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_list.ads:6
 spark-containers-formal-doubly_linked_lists.ads:1323:06: info: disjoint contract cases proved (altergo: 1 VC), in instantiation at test.adb:11
 spark-containers-formal-doubly_linked_lists.ads:1323:06: info: disjoint contract cases proved (altergo: 1 VC), in instantiation at test_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1464:20: info: precondition proved (altergo: 1 VC), in instantiation at test.adb:11
-spark-containers-formal-doubly_linked_lists.ads:1464:20: info: precondition proved (altergo: 1 VC), in instantiation at test_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1479:20: info: precondition proved (altergo: 1 VC), in instantiation at test.adb:11
-spark-containers-formal-doubly_linked_lists.ads:1479:20: info: precondition proved (altergo: 1 VC), in instantiation at test_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1494:20: info: precondition proved (altergo: 1 VC), in instantiation at test.adb:11
-spark-containers-formal-doubly_linked_lists.ads:1494:20: info: precondition proved (altergo: 1 VC), in instantiation at test_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1509:20: info: precondition proved (altergo: 1 VC), in instantiation at test.adb:11
-spark-containers-formal-doubly_linked_lists.ads:1509:20: info: precondition proved (altergo: 1 VC), in instantiation at test_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1531:14: info: precondition proved (altergo: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1464:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1464:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1479:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1479:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1494:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1494:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1509:20: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
+spark-containers-formal-doubly_linked_lists.ads:1509:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1531:14: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
 spark-containers-formal-doubly_linked_lists.ads:1531:14: info: precondition proved (altergo: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1537:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
 spark-containers-formal-doubly_linked_lists.ads:1537:23: info: precondition proved (altergo: 1 VC), in instantiation at test.adb:11
-spark-containers-formal-doubly_linked_lists.ads:1537:23: info: precondition proved (altergo: 1 VC), in instantiation at test_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1586:14: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:11
 spark-containers-formal-doubly_linked_lists.ads:1586:14: info: precondition proved (CVC5: 1 VC), in instantiation at test_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1586:14: info: precondition proved (altergo: 1 VC), in instantiation at test.adb:11
 spark-containers-formal-doubly_linked_lists.ads:1593:23: info: precondition proved (altergo: 1 VC), in instantiation at test.adb:11
 spark-containers-formal-doubly_linked_lists.ads:1593:23: info: precondition proved (altergo: 1 VC), in instantiation at test_list.ads:6
 spark-containers-formal-doubly_linked_lists.ads:1655:22: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at test_list.ads:9
 spark-containers-formal-doubly_linked_lists.ads:1657:22: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at test_list.ads:9
 spark-containers-formal-doubly_linked_lists.ads:1659:22: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_list.ads:9
 spark-containers-formal-doubly_linked_lists.ads:1661:22: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at test_list.ads:9
-spark-containers-formal-doubly_linked_lists.ads:1726:54: info: overflow check proved (altergo: 2 VC), in instantiation at test_list.ads:9
+spark-containers-formal-doubly_linked_lists.ads:1726:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test_list.ads:9
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
 spark-containers-functional-maps.ads:59:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
@@ -85,40 +85,40 @@ spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, 
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
 spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
-spark-containers-functional-vectors.ads:206:39: info: precondition proved (altergo: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
-spark-containers-functional-vectors.ads:206:39: info: precondition proved (altergo: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
-spark-containers-functional-vectors.ads:267:52: info: overflow check proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
-spark-containers-functional-vectors.ads:267:52: info: overflow check proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
+spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
+spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
+spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
+spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
-spark-containers-functional-vectors.ads:490:63: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
+spark-containers-functional-vectors.ads:490:63: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-functional-vectors.ads:490:63: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
 spark-containers-functional-vectors.ads:491:59: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-functional-vectors.ads:491:59: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
 spark-containers-functional-vectors.ads:491:76: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-functional-vectors.ads:491:76: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
+spark-containers-functional-vectors.ads:492:30: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
 spark-containers-functional-vectors.ads:492:30: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
-spark-containers-functional-vectors.ads:492:30: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.adb:85:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-parameter_checks.adb:85:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.adb:94:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
+spark-containers-parameter_checks.adb:94:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-parameter_checks.adb:94:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.adb:103:10: info: precondition proved (altergo: 2 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
-spark-containers-parameter_checks.adb:103:10: info: precondition proved (altergo: 2 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.adb:263:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
+spark-containers-parameter_checks.adb:103:10: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
+spark-containers-parameter_checks.adb:103:10: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.adb:263:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.adb:268:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
-spark-containers-parameter_checks.adb:269:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
+spark-containers-parameter_checks.adb:269:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.adb:270:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
-spark-containers-parameter_checks.adb:286:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
-spark-containers-parameter_checks.adb:287:13: info: assertion proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
+spark-containers-parameter_checks.adb:286:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
+spark-containers-parameter_checks.adb:287:13: info: assertion proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.adb:289:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
-spark-containers-parameter_checks.adb:290:13: info: assertion proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
+spark-containers-parameter_checks.adb:290:13: info: assertion proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
@@ -135,14 +135,14 @@ spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in 
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
@@ -159,14 +159,14 @@ spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in 
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test.adb:11
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test.adb:11
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
@@ -183,14 +183,14 @@ spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in 
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test.adb:11
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test.adb:11
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:479, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:488, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
@@ -199,10 +199,10 @@ spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in 
 spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
@@ -223,10 +223,10 @@ spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in 
 spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:99:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
@@ -235,41 +235,41 @@ spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test.adb:11
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:498, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:104:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:121:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:106, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:121:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:106, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:106, in instantiation at test.adb:11
 spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:106, in instantiation at test_list.ads:6
-spark-containers-parameter_checks.ads:124:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:106, in instantiation at test.adb:11
-spark-containers-parameter_checks.ads:124:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:106, in instantiation at test_list.ads:6
+spark-containers-parameter_checks.ads:124:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:106, in instantiation at test.adb:11
+spark-containers-parameter_checks.ads:124:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:106, in instantiation at test_list.ads:6
 spark-containers-parameter_checks.ads:203:17: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:204:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
-spark-containers-parameter_checks.ads:206:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
+spark-containers-parameter_checks.ads:206:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:208:17: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:209:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
-spark-containers-parameter_checks.ads:211:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
+spark-containers-parameter_checks.ads:211:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:213:17: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
-spark-containers-parameter_checks.ads:216:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
+spark-containers-parameter_checks.ads:216:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:218:17: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:219:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
-spark-containers-parameter_checks.ads:221:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
+spark-containers-parameter_checks.ads:221:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:227:16: info: subprogram "Eq" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:229:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:230:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
-spark-containers-parameter_checks.ads:231:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
+spark-containers-parameter_checks.ads:231:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:233:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:234:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
-spark-containers-parameter_checks.ads:236:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
+spark-containers-parameter_checks.ads:236:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:238:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:239:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
-spark-containers-parameter_checks.ads:241:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
+spark-containers-parameter_checks.ads:241:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:243:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 spark-containers-parameter_checks.ads:244:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
-spark-containers-parameter_checks.ads:246:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
+spark-containers-parameter_checks.ads:246:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1672, in instantiation at test_list.ads:9
 test.adb:13:04: info: initialization of "L" proved
 test.adb:13:07: info: initialization of "K" proved
 test.adb:13:10: info: initialization of "M" proved
@@ -280,8 +280,8 @@ test.adb:14:07: info: initialization of "D" proved
 test.adb:15:04: info: initialization of "N" proved
 test.adb:22:19: info: assertion proved (altergo: 1 VC)
 test.adb:26:20: info: unrolling loop
-test.adb:27:07: info: precondition proved (CVC5: 1 VC; altergo: 4 VC)
-test.adb:28:07: info: precondition proved (CVC5: 1 VC; altergo: 4 VC)
+test.adb:27:07: info: precondition proved (CVC5: 2 VC; altergo: 3 VC)
+test.adb:28:07: info: precondition proved (CVC5: 4 VC; altergo: 1 VC)
 test.adb:32:29: info: cannot unroll loop (too many loop iterations)
 test.adb:33:22: medium: assertion might fail [possible fix: loop at line 32 should mention C in a loop invariant]
 test.adb:33:22: medium: precondition might fail [possible fix: loop at line 32 should mention C in a loop invariant]
@@ -295,8 +295,8 @@ test.adb:43:27: info: precondition proved (Trivial: 1 VC)
 test.adb:44:30: info: precondition proved (altergo: 1 VC)
 test.adb:44:48: info: precondition proved (altergo: 1 VC)
 test.adb:49:09: info: precondition proved (altergo: 1 VC)
-test.adb:54:04: info: precondition proved (CVC5: 1 VC)
-test.adb:56:09: info: precondition proved (CVC5: 1 VC)
+test.adb:54:04: info: precondition proved (altergo: 1 VC)
+test.adb:56:09: info: precondition proved (altergo: 1 VC)
 test.adb:57:04: info: precondition proved (Z3: 1 VC)
 test.adb:59:19: info: assertion proved (altergo: 1 VC)
 test.adb:62:19: info: assertion proved (CVC5: 1 VC)
@@ -309,12 +309,12 @@ test.adb:68:07: medium: precondition might fail
 test.adb:71:09: info: precondition proved (CVC5: 1 VC)
 test.adb:76:04: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test.adb:77:04: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
-test.adb:79:19: info: assertion proved (Z3: 1 VC)
+test.adb:79:19: medium: assertion might fail
 test.adb:81:19: info: precondition proved (Trivial: 1 VC)
 test.adb:81:19: medium: assertion might fail
 test.adb:82:23: info: precondition proved (Trivial: 1 VC)
 test.adb:83:25: info: precondition proved (CVC5: 1 VC)
-test.adb:83:43: info: precondition proved (CVC5: 1 VC)
+test.adb:83:43: info: precondition proved (Z3: 1 VC)
 test.adb:85:09: info: discriminant check proved (altergo: 1 VC)
 test.adb:85:09: info: precondition proved (altergo: 1 VC)
 test.adb:89:19: info: assertion proved (CVC5: 1 VC)
@@ -328,24 +328,24 @@ test.adb:97:07: medium: precondition might fail
 test.adb:103:19: info: assertion proved (altergo: 1 VC)
 test.adb:104:19: info: assertion proved (CVC5: 1 VC)
 test.adb:106:04: info: precondition proved (CVC5: 1 VC)
-test.adb:108:19: info: assertion proved (Z3: 1 VC)
+test.adb:108:19: info: assertion proved (CVC5: 1 VC)
 test.adb:109:19: info: precondition proved (Trivial: 1 VC)
 test.adb:109:19: medium: assertion might fail
 test.adb:110:23: info: precondition proved (Trivial: 1 VC)
 test.adb:111:25: info: precondition proved (altergo: 1 VC)
 test.adb:111:43: info: precondition proved (CVC5: 1 VC)
-test.adb:119:04: info: precondition proved (CVC5: 1 VC)
+test.adb:119:04: info: precondition proved (Z3: 1 VC)
 test.adb:120:04: info: precondition proved (altergo: 1 VC)
 test.adb:121:04: info: precondition proved (altergo: 1 VC)
 test.adb:124:04: info: precondition proved (CVC5: 1 VC)
 test.adb:125:04: info: precondition proved (altergo: 1 VC)
 test.adb:126:04: info: precondition proved (CVC5: 1 VC)
 test.adb:127:04: info: precondition proved (CVC5: 1 VC)
-test.adb:128:04: info: precondition proved (Z3: 1 VC)
+test.adb:128:04: info: precondition proved (CVC5: 1 VC)
 test.adb:133:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test.adb:139:09: info: precondition proved (CVC5: 1 VC)
+test.adb:139:09: info: precondition proved (altergo: 1 VC)
 test.adb:141:04: info: precondition proved (Z3: 2 VC; altergo: 1 VC)
-test.adb:147:09: info: precondition proved (CVC5: 1 VC)
+test.adb:147:09: info: precondition proved (Z3: 1 VC)
 test.adb:153:04: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test.adb:159:04: info: precondition proved (CVC5: 1 VC)
 test.adb:160:04: info: precondition proved (altergo: 1 VC)
@@ -362,7 +362,7 @@ test.adb:182:19: medium: assertion might fail
 test.adb:183:19: info: precondition proved (CVC5: 1 VC)
 test.adb:183:19: medium: assertion might fail
 test.adb:186:04: info: precondition proved (altergo: 1 VC)
-test.adb:187:09: info: precondition proved (CVC5: 1 VC)
+test.adb:187:09: info: precondition proved (Z3: 1 VC)
 test.adb:189:19: medium: assertion might fail
 test.adb:191:09: info: precondition proved (CVC5: 1 VC)
 test.adb:193:19: medium: assertion might fail
@@ -380,7 +380,7 @@ test_list.adb:19:12: info: precondition proved (altergo: 1 VC)
 test_list.adb:20:12: info: precondition proved (altergo: 1 VC)
 test_list.adb:22:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:23:07: info: precondition proved (altergo: 1 VC)
-test_list.adb:24:07: info: precondition proved (altergo: 1 VC)
+test_list.adb:24:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:25:22: info: assertion proved (altergo: 1 VC)
 test_list.adb:27:22: info: assertion proved (altergo: 1 VC)
 test_list.adb:30:07: info: precondition proved (altergo: 1 VC)
@@ -388,20 +388,20 @@ test_list.adb:31:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:32:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:33:22: info: assertion proved (altergo: 1 VC)
 test_list.adb:35:22: info: assertion proved (altergo: 1 VC)
-test_list.adb:38:30: info: assertion proved (altergo: 2 VC)
+test_list.adb:38:30: info: assertion proved (CVC5: 1 VC; altergo: 1 VC)
 test_list.adb:39:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_list.adb:40:07: info: precondition proved (altergo: 2 VC)
 test_list.adb:42:22: info: assertion proved (altergo: 1 VC)
 test_list.adb:44:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:46:07: info: precondition proved (altergo: 1 VC)
-test_list.adb:48:22: info: assertion proved (CVC5: 1 VC; altergo: 1 VC)
+test_list.adb:48:22: info: assertion proved (altergo: 2 VC)
 test_list.adb:49:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:50:22: info: assertion proved (altergo: 2 VC)
-test_list.adb:51:07: info: precondition proved (altergo: 1 VC)
+test_list.adb:51:07: info: precondition proved (Z3: 1 VC)
 test_list.adb:52:12: info: precondition proved (altergo: 1 VC)
 test_list.adb:54:22: info: assertion proved (altergo: 1 VC)
-test_list.adb:55:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
-test_list.adb:56:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_list.adb:55:07: info: precondition proved (CVC5: 2 VC)
+test_list.adb:56:07: info: precondition proved (CVC5: 2 VC)
 test_list.adb:58:12: info: discriminant check proved (altergo: 1 VC)
 test_list.adb:58:12: info: precondition proved (altergo: 1 VC)
 test_list.adb:60:12: info: precondition proved (altergo: 1 VC)
@@ -419,26 +419,26 @@ test_list.adb:70:26: medium: precondition might fail
 test_list.adb:70:65: medium: overflow check might fail, cannot prove upper bound for M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 test_list.adb:71:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:76:30: info: assertion proved (CVC5: 2 VC; altergo: 1 VC)
-test_list.adb:77:07: info: precondition proved (altergo: 2 VC)
+test_list.adb:77:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_list.adb:78:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_list.adb:80:12: info: precondition proved (altergo: 1 VC)
 test_list.adb:82:22: info: assertion proved (altergo: 1 VC)
-test_list.adb:83:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_list.adb:83:07: info: precondition proved (altergo: 2 VC)
 test_list.adb:84:07: info: precondition proved (altergo: 2 VC)
 test_list.adb:85:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_list.adb:87:22: info: assertion proved (altergo: 1 VC)
 test_list.adb:90:07: info: precondition proved (altergo: 1 VC)
-test_list.adb:91:07: info: precondition proved (altergo: 1 VC)
+test_list.adb:91:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:91:27: info: precondition proved (altergo: 1 VC)
 test_list.adb:93:22: info: assertion proved (CVC5: 1 VC)
 test_list.adb:93:22: info: precondition proved (altergo: 1 VC)
 test_list.adb:94:22: info: assertion proved (altergo: 1 VC)
 test_list.adb:94:22: info: precondition proved (altergo: 1 VC)
 test_list.adb:94:45: info: precondition proved (altergo: 1 VC)
-test_list.adb:95:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:95:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:95:22: info: precondition proved (altergo: 1 VC)
 test_list.adb:96:22: info: assertion proved (altergo: 1 VC)
-test_list.adb:96:22: info: precondition proved (CVC5: 1 VC)
+test_list.adb:96:22: info: precondition proved (altergo: 1 VC)
 test_list.adb:99:07: info: precondition proved (CVC5: 2 VC)
 test_list.adb:100:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_list.adb:102:22: info: assertion proved (CVC5: 1 VC)
@@ -451,9 +451,9 @@ test_list.adb:117:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_list.adb:119:22: info: assertion proved (CVC5: 1 VC)
 test_list.adb:121:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:122:07: info: precondition proved (CVC5: 1 VC)
-test_list.adb:124:07: info: precondition proved (CVC5: 2 VC; altergo: 1 VC)
-test_list.adb:125:07: info: precondition proved (CVC5: 3 VC)
-test_list.adb:127:30: info: assertion proved (CVC5: 1 VC)
+test_list.adb:124:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC; altergo: 1 VC)
+test_list.adb:125:07: info: precondition proved (CVC5: 2 VC; Z3: 1 VC)
+test_list.adb:127:30: info: assertion proved (Z3: 1 VC)
 test_list.adb:130:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:135:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:137:22: info: assertion proved (altergo: 1 VC)
@@ -462,10 +462,11 @@ test_list.adb:143:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:144:22: info: assertion proved (altergo: 1 VC)
 test_list.adb:149:07: info: initialization of "L" proved
 test_list.adb:149:10: info: initialization of "K" proved
+test_list.adb:149:20: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_list.adb:149:20: info: range check proved (altergo: 2 VC)
 test_list.adb:150:07: info: initialization of "C" proved
 test_list.adb:150:10: info: initialization of "D" proved
-test_list.adb:157:07: info: precondition proved (altergo: 1 VC)
+test_list.adb:157:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:158:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:159:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:160:07: info: precondition proved (altergo: 1 VC)
@@ -483,7 +484,7 @@ test_list.adb:188:10: info: precondition proved (altergo: 1 VC)
 test_list.adb:190:10: info: precondition proved (altergo: 1 VC)
 test_list.adb:192:25: info: assertion proved (altergo: 1 VC)
 test_list.adb:198:10: info: initialization of "S" proved
-test_list.adb:198:20: info: range check proved (altergo: 2 VC)
+test_list.adb:198:20: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_list.adb:200:10: info: precondition proved (altergo: 1 VC)
 test_list.adb:201:10: info: precondition proved (altergo: 1 VC)
 test_list.adb:203:10: info: precondition proved (altergo: 1 VC)
@@ -492,7 +493,7 @@ test_list.adb:206:25: info: assertion proved (altergo: 1 VC)
 test_list.adb:212:22: info: assertion proved (altergo: 1 VC)
 test_list.adb:213:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:214:22: info: assertion proved (altergo: 1 VC)
-test_list.adb:215:07: info: precondition proved (altergo: 1 VC)
+test_list.adb:215:07: info: precondition proved (Z3: 1 VC)
 test_list.adb:216:22: info: assertion proved (altergo: 1 VC)
 test_list.adb:216:38: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_list.adb:222:07: info: precondition proved (altergo: 1 VC)
@@ -535,10 +536,10 @@ test_list.adb:302:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:304:22: info: assertion proved (altergo: 1 VC)
 test_list.adb:304:22: info: precondition proved (altergo: 1 VC)
 test_list.adb:310:07: info: precondition proved (altergo: 1 VC)
-test_list.adb:312:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:312:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:314:07: medium: precondition might fail
 test_list.adb:315:07: medium: precondition might fail
-test_list.adb:316:07: info: precondition proved (altergo: 1 VC)
+test_list.adb:316:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:318:22: info: assertion proved (altergo: 1 VC)
 test_list.adb:318:48: info: precondition proved (altergo: 1 VC)
 test_list.adb:319:07: info: precondition proved (altergo: 1 VC)
@@ -553,7 +554,7 @@ test_list.adb:337:22: info: assertion proved (altergo: 1 VC)
 test_list.adb:337:46: info: precondition proved (altergo: 2 VC)
 test_list.adb:339:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_list.adb:341:22: info: assertion proved (CVC5: 1 VC)
-test_list.adb:341:46: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_list.adb:341:46: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_list.adb:342:22: info: assertion proved (altergo: 1 VC)
 test_list.adb:342:22: info: precondition proved (altergo: 1 VC)
 test_list.adb:345:07: info: precondition proved (altergo: 1 VC)
@@ -565,7 +566,7 @@ test_list.adb:354:22: info: precondition proved (altergo: 1 VC)
 test_list.adb:355:22: info: assertion proved (altergo: 1 VC)
 test_list.adb:355:22: info: precondition proved (altergo: 1 VC)
 test_list.adb:358:07: info: precondition proved (altergo: 1 VC)
-test_list.adb:360:07: info: precondition proved (altergo: 1 VC)
+test_list.adb:360:07: info: precondition proved (Z3: 1 VC)
 test_list.adb:361:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:365:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:366:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
@@ -580,7 +581,7 @@ test_list.adb:375:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:379:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:381:07: info: precondition proved (altergo: 2 VC)
 test_list.adb:383:22: info: assertion proved (Z3: 1 VC)
-test_list.adb:383:48: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_list.adb:383:48: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_list.adb:384:22: medium: assertion might fail
 test_list.adb:384:48: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_list.adb:385:22: medium: assertion might fail
@@ -590,7 +591,7 @@ test_list.adb:386:48: info: precondition proved (altergo: 2 VC)
 test_list.adb:389:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:390:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:391:07: info: precondition proved (altergo: 1 VC)
-test_list.adb:392:07: info: precondition proved (altergo: 1 VC)
+test_list.adb:392:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:395:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:397:07: info: precondition proved (altergo: 1 VC)
 test_list.adb:399:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
@@ -599,22 +600,22 @@ test_list.adb:401:48: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_list.adb:402:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:402:48: info: precondition proved (altergo: 2 VC)
 test_list.adb:403:22: info: assertion proved (Z3: 1 VC)
-test_list.adb:403:48: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_list.adb:403:48: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_list.adb:404:22: info: assertion proved (CVC5: 1 VC)
-test_list.adb:404:48: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
-test_list.adb:408:22: info: assertion proved (CVC5: 1 VC)
+test_list.adb:404:48: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_list.adb:408:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:408:22: info: precondition proved (Z3: 1 VC)
 test_list.adb:409:22: info: assertion proved (CVC5: 1 VC)
 test_list.adb:409:22: info: precondition proved (CVC5: 1 VC)
 test_list.adb:411:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.adb:412:07: info: precondition proved (Z3: 2 VC)
 test_list.adb:414:22: info: assertion proved (CVC5: 1 VC)
-test_list.adb:414:48: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_list.adb:414:48: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_list.adb:415:22: info: assertion proved (CVC5: 1 VC)
 test_list.adb:415:48: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_list.adb:416:22: info: assertion proved (CVC5: 1 VC)
-test_list.adb:416:48: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_list.adb:416:48: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_list.adb:417:22: info: assertion proved (CVC5: 1 VC)
-test_list.adb:417:48: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_list.adb:417:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.ads:11:23: info: data dependencies proved
 test_list.ads:13:29: info: data dependencies proved
