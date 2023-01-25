@@ -55,6 +55,14 @@ package body Gnat2Why.Borrow_Checker is
    --  Return True if E is declared as Read_Only (ie. a constant which is not
    --  of access-to-variable type, or a variable of access-to-constant type).
 
+   function Unique_Entity_In_SPARK (E : Entity_Id) return Entity_Id is
+     (if E in E_Constant_Id
+        and then Present (Full_View (E))
+        and then Entity_In_SPARK (Full_View (E))
+      then Full_View (E)
+      else E);
+   --  Only go to the full view of constants if it is in SPARK
+
    ---------------------------------------------------
    -- Handling of Permissions Associated with Paths --
    ---------------------------------------------------
@@ -4186,7 +4194,7 @@ package body Gnat2Why.Borrow_Checker is
       if N.Is_Ent then
          declare
             C : constant Perm_Tree_Access :=
-              Get (Current_Perm_Env, Unique_Entity (N.Ent));
+              Get (Current_Perm_Env, Unique_Entity_In_SPARK (N.Ent));
          begin
             pragma Assert (C /= null);
             return Explanation (C);
@@ -4229,7 +4237,7 @@ package body Gnat2Why.Borrow_Checker is
       if N.Is_Ent then
          declare
             C : constant Perm_Tree_Access :=
-              Get (Current_Perm_Env, Unique_Entity (N.Ent));
+              Get (Current_Perm_Env, Unique_Entity_In_SPARK (N.Ent));
          begin
             pragma Assert (C /= null);
             return Permission (C);
@@ -4286,7 +4294,7 @@ package body Gnat2Why.Borrow_Checker is
 
       function Get_Perm_Or_Tree_Ent (E : Entity_Id) return Perm_Or_Tree is
          C : constant Perm_Tree_Access :=
-           Get (Current_Perm_Env, Unique_Entity (E));
+           Get (Current_Perm_Env, Unique_Entity_In_SPARK (E));
       begin
          --  The root object should have been declared and entered into the
          --  current permission environment.
@@ -5334,7 +5342,7 @@ package body Gnat2Why.Borrow_Checker is
 
       --  Identify the root type for the path
 
-      Root := Unique_Entity (Root);
+      Root := Unique_Entity_In_SPARK (Root);
 
       --  Check path was not borrowed
 
@@ -5989,7 +5997,7 @@ package body Gnat2Why.Borrow_Checker is
         (N    : Entity_Id;
          Perm : Perm_Kind_Option) return Perm_Tree_Access
       is
-         E : constant Entity_Id := Unique_Entity (N);
+         E : constant Entity_Id := Unique_Entity_In_SPARK (N);
          C : constant Perm_Tree_Access := Get (Current_Perm_Env, E);
          pragma Assert (C /= null);
 
