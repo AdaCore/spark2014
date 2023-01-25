@@ -121,6 +121,19 @@ package body SPARK_Definition.Annotate is
    --  (possibly empty) set of  lemmas that should be automatically
    --  instantiated when the function is specialized.
 
+   package Node_To_Node_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Node_Maps.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Node_Maps."=");
+   --  Maps of nodes to maps of nodes to nodes
+
+   Higher_Order_Lemma_Specializations : Node_To_Node_Maps.Map :=
+     Node_To_Node_Maps.Empty_Map;
+   --  Maps lemma procedures to the mapping that should be used to construct
+   --  their specialization from their associated function specialization.
+
    Inline_Annotations : Common_Containers.Node_Maps.Map :=
      Common_Containers.Node_Maps.Empty_Map;
    --  Maps all the function entities E with a pragma Annotate
@@ -234,7 +247,8 @@ package body SPARK_Definition.Annotate is
    --  Check that lemmas associated to a function with higher order
    --  specialization can be specialized with the function. If it is not the
    --  case, emit a warning. Store compatible lemmas in the
-   --  Higher_Order_Spec_Annotation map.
+   --  Higher_Order_Spec_Annotation map and their parameter associations in
+   --  Higher_Order_Lemma_Specializations.
 
    procedure Check_Automatic_Instantiation_Annotation
      (Arg3_Exp : Node_Id;
@@ -667,12 +681,14 @@ package body SPARK_Definition.Annotate is
                Lemma, Fun);
             return;
          end if;
+
+         --  Insert Lemma in the set of lemmas to be considered for
+         --  specializations of Fun and store its associated parameter mapping
+         --  in Higher_Order_Lemma_Specializations.
+
+         Higher_Order_Spec_Annotations (Fun).Insert (Lemma);
+         Higher_Order_Lemma_Specializations.Insert (Lemma, Spec_Params);
       end;
-
-      --  Insert Lemma in the set of lemmas to be considered for
-      --  specializations of Fun.
-
-      Higher_Order_Spec_Annotations (Fun).Include (Lemma);
    end Check_Automatic_Inst_And_HO_Specialization_Compatibility;
 
    ----------------------------------------------
@@ -2083,6 +2099,13 @@ package body SPARK_Definition.Annotate is
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
 
+   ------------------------------
+   -- Get_Lemmas_To_Specialize --
+   ------------------------------
+
+   function Get_Lemmas_To_Specialize (E : Entity_Id) return Node_Sets.Set is
+      (Higher_Order_Spec_Annotations.Element (E));
+
    ------------------------------------
    -- Get_Reclamation_Check_Function --
    ------------------------------------
@@ -2463,6 +2486,15 @@ package body SPARK_Definition.Annotate is
          Info := Iterable_Annotations (C);
       end if;
    end Retrieve_Iterable_Annotation;
+
+   ---------------------------------------
+   -- Retrieve_Parameter_Specialization --
+   ---------------------------------------
+
+   function Retrieve_Parameter_Specialization
+     (E : Entity_Id) return Node_Maps.Map
+   is
+     (Higher_Order_Lemma_Specializations (E));
 
    -------------------------------------
    -- Check_Pragma_Annotate_GNATprove --

@@ -45,7 +45,6 @@ with Rtsfind;                        use Rtsfind;
 with Sinput;                         use Sinput;
 with Snames;                         use Snames;
 with SPARK_Definition;               use SPARK_Definition;
-with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
 with SPARK_Util;                     use SPARK_Util;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with SPARK_Util.Types;               use SPARK_Util.Types;
@@ -280,11 +279,6 @@ package body Gnat2Why.Subprograms is
    --  Declare exceptions needed for translation of the current unit. Those
    --  are introduced when translating loop exit statements and goto
    --  statements.
-
-   procedure Generate_Axiom_For_Lemma (E : E_Procedure_Id) with
-     Pre => Has_Automatic_Instantiation_Annotation (E);
-   --  @param E a lemma procedure
-   --  Emit an axiom for the postcondition of E.
 
    procedure Generate_Dispatch_Compatibility_Axioms
      (Th : Theory_UC;
@@ -4935,8 +4929,14 @@ package body Gnat2Why.Subprograms is
    -- Generate_Axiom_For_Lemma --
    ------------------------------
 
-   procedure Generate_Axiom_For_Lemma (E : E_Procedure_Id) is
-      Binders  : Item_Array := Compute_Binders (E, EW_Term);
+   procedure Generate_Axiom_For_Lemma
+     (E                     : E_Procedure_Id;
+      Specialization_Module : Symbol := No_Symbol;
+      More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
+   is
+      Fun      : constant Entity_Id :=
+        Retrieve_Automatic_Instantiation_Annotation (E);
+      Binders  : Item_Array := Compute_Binders (E, EW_Term, More_Reads);
       Params   : Transformation_Params;
       Pre      : W_Pred_Id;
       Post     : W_Pred_Id;
@@ -5006,7 +5006,9 @@ package body Gnat2Why.Subprograms is
 
       Th :=
         Open_Theory
-          (WF_Context, E_Lemma_Axiom_Module (E),
+          (WF_Context,
+           (if Specialization_Module = No_Symbol then E_Lemma_Axiom_Module (E)
+            else M_Lemma_HO_Specializations (E) (Specialization_Module)),
            Comment =>
              "Module for declaring an axiom for the post condition"
            & " of the lemma procedure "
@@ -5017,11 +5019,14 @@ package body Gnat2Why.Subprograms is
            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  Do not generate an axiom for the postcondition of potentially
-      --  non-returning lemmas.
+      --  non-returning lemmas. Do not emit the warning for specializations to
+      --  avoid duplicates.
 
       if Is_Potentially_Nonreturning (E) then
-         Error_Msg_N (Warning_Message (Warn_Lemma_Procedure_No_Return), E);
-         Error_Msg_NE ("\\procedure & might not return", E, E);
+         if Specialization_Module = No_Symbol then
+            Error_Msg_N (Warning_Message (Warn_Lemma_Procedure_No_Return), E);
+            Error_Msg_NE ("\\procedure & might not return", E, E);
+         end if;
          return;
       end if;
 
@@ -5062,16 +5067,19 @@ package body Gnat2Why.Subprograms is
                Def     => Post,
                Dep   =>
                  New_Axiom_Dep
-                   (Name => To_Why_Id
-                        (Retrieve_Automatic_Instantiation_Annotation (E),
-                         EW_Term),
+                   (Name =>
+                        (if Specialization_Module = No_Symbol
+                         then To_Why_Id (Fun, EW_Term)
+                         else M_HO_Specializations (Fun)
+                           (Specialization_Module).Fun_Id),
                     Kind => EW_Axdep_Func)));
       end;
 
       Close_Theory (Th, Kind => Definition_Theory);
       Record_Extra_Dependency
-        (Defining_Module => E_Module
-           (Retrieve_Automatic_Instantiation_Annotation (E)),
+        (Defining_Module =>
+           (if Specialization_Module = No_Symbol then E_Module (Fun)
+            else M_HO_Specializations (Fun) (Specialization_Module).Module),
          Axiom_Module    => Th.Module);
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);

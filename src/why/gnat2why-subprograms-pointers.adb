@@ -573,8 +573,7 @@ package body Gnat2Why.Subprograms.Pointers is
             Module => Module)
          else Why_Empty);
       Variant_Id                   : constant W_Identifier_Id :=
-        (if Is_Recursive (Caller)
-           and then (Present (Get_Pragma (Caller, Pragma_Subprogram_Variant)))
+        (if Present (Get_Pragma (Caller, Pragma_Subprogram_Variant))
          then New_Identifier
           (Domain => EW_Prog,
            Symb   => NID (Fun_Name & "__check_subprogram_variants"),
@@ -677,6 +676,64 @@ package body Gnat2Why.Subprograms.Pointers is
       Record_Extra_Dependency
         (Defining_Module => Module,
          Axiom_Module    => Ax_Module);
+
+      --  Generate axioms for lemmas associated to Caller if any
+
+      if Ekind (Caller) = E_Function then
+         declare
+            Fun_Specialized_Call_Params : constant Node_Maps.Map :=
+              Specialized_Call_Params;
+
+         begin
+            for Lemma of Get_Lemmas_To_Specialize (Caller) loop
+
+               --  Populate the M_Lemma_HO_Specializations map
+
+               declare
+                  Position : Node_Id_Modules_Map.Cursor;
+                  Inserted : Boolean;
+               begin
+                  M_Lemma_HO_Specializations.Insert
+                    (Lemma, Name_Id_Module_Map.Empty_Map, Position, Inserted);
+                  M_Lemma_HO_Specializations (Position).Insert
+                    (Theory_Name, +New_Module
+                       (File => No_Symbol,
+                        Name => Img (Theory_Name) & "__" & Short_Name (Lemma)
+                        & "___post_axiom"));
+               end;
+
+               --  Store the associations for the specialized parameters of
+               --  Lemma in Specialized_Call_Params. For this, we use the
+               --  map from the formal parameters of Caller to the parameters
+               --  of Lemma provided by Retrieve_Parameter_Specialization.
+
+               Specialized_Call_Params.Clear;
+
+               declare
+                  Formal_Mapping : constant Node_Maps.Map :=
+                    Retrieve_Parameter_Specialization (Lemma);
+               begin
+                  for Position in Fun_Specialized_Call_Params.Iterate loop
+                     declare
+                        use Node_Maps;
+                        Fun_Formal : Entity_Id renames Key (Position);
+                        Actual     : Node_Id renames Element (Position);
+                     begin
+                        Specialized_Call_Params.Insert
+                          (Formal_Mapping (Fun_Formal), Actual);
+                     end;
+                  end loop;
+               end;
+
+               --  Generate the axiom
+
+               Generate_Axiom_For_Lemma
+                 (E                     => Lemma,
+                  Specialization_Module => Theory_Name,
+                  More_Reads            => More_Globals);
+            end loop;
+         end;
+      end if;
 
       --  Restore the state
 

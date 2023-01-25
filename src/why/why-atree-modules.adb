@@ -3872,8 +3872,8 @@ package body Why.Atree.Modules is
             if Mutually_Recursive (E, Ada_To_Why.Key (C)) then
                S.Insert (Ada_To_Why.Element (C));
 
-               --  If the subprogram has specialization, also include their
-               --  axioms.
+               --  If the subprogram has specializations, also include its
+               --  specialized axioms.
 
                declare
                   use Node_Id_HO_Specializations_Map;
@@ -3897,6 +3897,22 @@ package body Why.Atree.Modules is
       for C in Lemma_Axiom_Modules.Iterate loop
          if Lemma_Mutually_Recursive (Ada_To_Why.Key (C), E) then
             S.Insert (Ada_To_Why.Element (C));
+
+            --  If the lemma is associated to a function which has
+            --  specializations, also include its specialized axioms if any.
+
+            declare
+               Lemma    : constant Entity_Id := Ada_To_Why.Key (C);
+               use Node_Id_Modules_Map;
+               Position : constant Node_Id_Modules_Map.Cursor :=
+                 M_Lemma_HO_Specializations.Find (Lemma);
+            begin
+               if Position /= No_Element then
+                  for M of Element (Position) loop
+                     S.Insert (+M);
+                  end loop;
+               end if;
+            end;
          end if;
       end loop;
 
