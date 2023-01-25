@@ -389,4 +389,20 @@ package SPARK_Definition.Annotate is
    --  Return True if a pragma Annotate Higher_Order_Specialization applies to
    --  the function E.
 
+   function Get_Lemmas_To_Specialize (E : Entity_Id) return Node_Sets.Set
+   with Pre => Ekind (E) = E_Function
+     and then Has_Higher_Order_Specialization_Annotation (E);
+   --  Return a set of lemmas that should be specialized along with the
+   --  function E.
+
+   function Retrieve_Parameter_Specialization
+     (E : Entity_Id) return Node_Maps.Map
+   with Pre => Ekind (E) = E_Procedure
+     and then Has_Automatic_Instantiation_Annotation (E)
+     and then Has_Higher_Order_Specialization_Annotation
+       (Retrieve_Automatic_Instantiation_Annotation (E));
+   --  Return a mapping from the formal parameters of the function associated
+   --  to a lemma procedure E to the formals of E. It should be used to
+   --  construct a specialization of E from a specialization of the function.
+
 end SPARK_Definition.Annotate;

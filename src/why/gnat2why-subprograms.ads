@@ -23,20 +23,21 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Checked_Types;        use Checked_Types;
-with Common_Containers;    use Common_Containers;
-with Flow_Types;           use Flow_Types;
-with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
-with Gnat2Why.Util;        use Gnat2Why.Util;
-with SPARK_Atree;          use SPARK_Atree;
-with SPARK_Atree.Entities; use SPARK_Atree.Entities;
-with Types;                use Types;
-with Why.Conversions;      use Why.Conversions;
-with Why.Gen.Binders;      use Why.Gen.Binders;
-with Why.Gen.Expr;         use Why.Gen.Expr;
-with Why.Gen.Terms;        use Why.Gen.Terms;
-with Why.Ids;              use Why.Ids;
-with Why.Sinfo;            use Why.Sinfo;
+with Checked_Types;             use Checked_Types;
+with Common_Containers;         use Common_Containers;
+with Flow_Types;                use Flow_Types;
+with GNATCOLL.Symbols;          use GNATCOLL.Symbols;
+with Gnat2Why.Util;             use Gnat2Why.Util;
+with SPARK_Atree;               use SPARK_Atree;
+with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+with Types;                     use Types;
+with Why.Conversions;           use Why.Conversions;
+with Why.Gen.Binders;           use Why.Gen.Binders;
+with Why.Gen.Expr;              use Why.Gen.Expr;
+with Why.Gen.Terms;             use Why.Gen.Terms;
+with Why.Ids;                   use Why.Ids;
+with Why.Sinfo;                 use Why.Sinfo;
 
 package Gnat2Why.Subprograms is
 
@@ -170,6 +171,20 @@ private
    --  calls with higher order specialization.
    --  Declare a logic function and a guard predicate for E. If needed,
    --  generate a namespace for the dispatching/refined variants.
+
+   procedure Generate_Axiom_For_Lemma
+     (E                     : E_Procedure_Id;
+      Specialization_Module : Symbol := No_Symbol;
+      More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
+   with Pre => Has_Automatic_Instantiation_Annotation (E);
+   --  @param E a lemma procedure
+   --  @param Specialization_Module name of the specialization module in
+   --    which the symbols are generated. It is empty if we are not generating
+   --    code for a subprogram annotated with higher order specialization.
+   --  @param More_Reads is a set of globals that should be considered as read
+   --  by the subprogram in addition to its actual inputs. It is used to handle
+   --  calls with higher order specialization.
+   --  Emit an axiom for the postcondition of E.
 
    procedure Generate_Subprogram_Program_Fun
      (Th                     : Theory_UC;

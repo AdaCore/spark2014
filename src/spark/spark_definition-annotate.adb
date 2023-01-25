@@ -104,16 +104,35 @@ package body SPARK_Definition.Annotate is
    --  Maps lemma procedures annotated with Automatic_Instantiation to their
    --  associated function.
 
+   Delayed_Checks_For_Lemmas : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  Set of lemmas with automatic instantiation that need to be checked
+
    Delayed_HO_Specialization_Checks : Common_Containers.Node_Maps.Map :=
      Common_Containers.Node_Maps.Empty_Map;
    --  Maps calls to functions which were not marked yet but should be
    --  annotated with Higher_Order_Specialization to the node on which the
    --  checks shall be emited.
 
-   Higher_Order_Spec_Annotations : Common_Containers.Node_Sets.Set :=
-     Common_Containers.Node_Sets.Empty_Set;
+   Higher_Order_Spec_Annotations : Common_Containers.Node_Graphs.Map :=
+     Common_Containers.Node_Graphs.Empty_Map;
    --  Stores function entities with a pragma Annotate
-   --  (GNATprove, Higher_Order_Specialization, E).
+   --  (GNATprove, Higher_Order_Specialization, E). They are mapped to a
+   --  (possibly empty) set of  lemmas that should be automatically
+   --  instantiated when the function is specialized.
+
+   package Node_To_Node_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Node_Maps.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Node_Maps."=");
+   --  Maps of nodes to maps of nodes to nodes
+
+   Higher_Order_Lemma_Specializations : Node_To_Node_Maps.Map :=
+     Node_To_Node_Maps.Empty_Map;
+   --  Maps lemma procedures to the mapping that should be used to construct
+   --  their specialization from their associated function specialization.
 
    Inline_Annotations : Common_Containers.Node_Maps.Map :=
      Common_Containers.Node_Maps.Empty_Map;
@@ -218,6 +237,18 @@ package body SPARK_Definition.Annotate is
    --  the pragma in Result. Result.Present is False if some syntax error
    --  has been detected, or if the pragma Annotate is not used for
    --  justification purposes.
+
+   procedure Check_Automatic_Inst_And_HO_Specialization_Compatibility
+     (Lemma : Subprogram_Kind_Id;
+      Fun   : Function_Kind_Id)
+   with Pre => Has_Automatic_Instantiation_Annotation (Lemma)
+     and then Retrieve_Automatic_Instantiation_Annotation (Lemma) = Fun
+     and then Has_Higher_Order_Specialization_Annotation (Fun);
+   --  Check that lemmas associated to a function with higher order
+   --  specialization can be specialized with the function. If it is not the
+   --  case, emit a warning. Store compatible lemmas in the
+   --  Higher_Order_Spec_Annotation map and their parameter associations in
+   --  Higher_Order_Lemma_Specializations.
 
    procedure Check_Automatic_Instantiation_Annotation
      (Arg3_Exp : Node_Id;
@@ -443,6 +474,223 @@ package body SPARK_Definition.Annotate is
       At_End_Borrow_Annotations.Include (Get_Renamed_Entity (E));
    end Check_At_End_Borrow_Annotation;
 
+   --------------------------------------------------------------
+   -- Check_Automatic_Inst_And_HO_Specialization_Compatibility --
+   --------------------------------------------------------------
+
+   procedure Check_Automatic_Inst_And_HO_Specialization_Compatibility
+     (Lemma : Subprogram_Kind_Id;
+      Fun   : Function_Kind_Id)
+   is
+   begin
+      --  Lemma shall to be annotated with higher order specialization
+
+      if not Has_Higher_Order_Specialization_Annotation (Lemma) then
+         Error_Msg_N
+           ("?automatically instantiated lemma is not annotated with"
+            & " Higher_Order_Specialization",
+            Lemma);
+         Error_Msg_NE
+           ("\it will not be automatically instantiated on specializations"
+            & " of &",
+            Lemma, Fun);
+         return;
+      end if;
+
+      --  Go over the contracts of Lemma to make sure that:
+      --   * they contain at least one specializable call to Fun,
+      --   * they do not contain partially specializable calls to Fun, and
+      --   * all specializable calls to Fun in the contracts of Lemma have
+      --     the same specialization.
+
+      declare
+         Lemma_Params  : Node_Maps.Map;
+         --  Map used to simulate a specialized call to Lemma. It will map
+         --  its specializable formals to themselves.
+
+         Nb_Fun_Params : Integer := 0;
+         --  Number of the specializable parameters of Fun
+
+         Spec_Params   : Node_Maps.Map;
+         Violation     : Boolean := False;
+
+         function Check_Calls_To_Fun (N : Node_Id) return Traverse_Result;
+         --  Return Abandon if N is a non conforming call to Fun. A warning
+         --  will have been emitted in this case and Violation will be set to
+         --  True. Otherwise, if N is a call to Fun, the Spec_Params map will
+         --  be filled with the mapping for the parameters of Fun and OK is
+         --  returned.
+
+         function Check_Calls_To_Fun (N : Node_Id) return Traverse_Result is
+            Call_Params : Node_Maps.Map;
+         begin
+            if Nkind (N) = N_Function_Call
+              and then Get_Called_Entity (N) = Fun
+            then
+               Call_Params := Get_Specialized_Parameters (N, Lemma_Params);
+
+               declare
+                  use type Node_Maps.Map;
+                  Statically_Specialized_Call : constant Boolean :=
+                    (for all E of Call_Params =>
+                        not Lemma_Params.Contains (E));
+                  --  No specialized parameter of N depends of the parameters
+                  --  of Lemma.
+                  Totally_Specialized_Call   : constant Boolean :=
+                    not Statically_Specialized_Call
+                    and then Integer (Call_Params.Length) = Nb_Fun_Params
+                    and then
+                      (for all E of Call_Params => Lemma_Params.Contains (E));
+                  --  All specializable parameters of Fun are associated to
+                  --  parameters of Lemma.
+
+               begin
+                  --  If N does not take as parameters any of Lemma's
+                  --  specializable parameters, then it is irrelevant for the
+                  --  specialization of Lemma.
+
+                  if Statically_Specialized_Call then
+                     return OK;
+
+                  --  If N takes both parameters of Lemma and other parameters,
+                  --  it will be hard to generate the specialized lemma
+                  --  instance. We reject it here.
+
+                  elsif not Totally_Specialized_Call then
+                     Error_Msg_NE
+                       ("?automatically instantiated lemma contains calls to "
+                        & "& which cannot be arbitrarily specialized",
+                        Lemma, Fun);
+                     Error_Msg_NE
+                       ("\it will not be automatically instantiated on"
+                        & " specializations of &",
+                        Lemma, Fun);
+                     Violation := True;
+                     return Abandon;
+
+                  --  N is the first relevant call to Fun found so far. Store
+                  --  the association into Spec_Params.
+
+                  elsif Spec_Params.Is_Empty then
+                     Spec_Params := Call_Params;
+                     return OK;
+
+                  --  N is consistant with the calls seen so far, continue the
+                  --  search.
+
+                  elsif Spec_Params = Call_Params then
+                     return OK;
+
+                  --  N is not consistant with the calls seen so far. The
+                  --  specialization is ambiguous. We reject it here.
+
+                  else
+                     Error_Msg_NE
+                       ("?automatically instantiated lemma contains several "
+                        & "calls to & with different specializations",
+                        Lemma, Fun);
+                     Error_Msg_NE
+                       ("\it will not be automatically instantiated on"
+                        & " specializations of &",
+                        Lemma, Fun);
+
+                     Violation := True;
+                     return Abandon;
+                  end if;
+               end;
+            else
+               return OK;
+            end if;
+         end Check_Calls_To_Fun;
+
+         procedure Check_Contract_Of_Lemma is new
+           Traverse_More_Proc (Check_Calls_To_Fun);
+
+      begin
+         --  Fill the Lemma_Params map and compute Nb_Fun_Params
+
+         declare
+            Lemma_Formal : Entity_Id := First_Formal (Lemma);
+         begin
+            loop
+               if Is_Specializable_Formal (Lemma_Formal) then
+                  Lemma_Params.Insert (Lemma_Formal, Lemma_Formal);
+               end if;
+               Next_Formal (Lemma_Formal);
+               exit when No (Lemma_Formal);
+            end loop;
+         end;
+
+         declare
+            Fun_Formal : Entity_Id := First_Formal (Fun);
+         begin
+            loop
+               if Is_Specializable_Formal (Fun_Formal) then
+                  Nb_Fun_Params := Nb_Fun_Params + 1;
+               end if;
+               Next_Formal (Fun_Formal);
+               exit when No (Fun_Formal);
+            end loop;
+         end;
+
+         --  Go over the contracts of Lemma and check its calls to Fun. No
+         --  need to check the variants here, there is no variant check on
+         --  automatic instantiation.
+
+         declare
+            Pre      : constant Node_Lists.List := Find_Contracts
+              (Lemma, Pragma_Precondition, False, False);
+            Post     : constant Node_Lists.List := Find_Contracts
+              (Lemma, Pragma_Postcondition, False, False);
+            CC       : constant Node_Id :=
+              Get_Pragma (Lemma, Pragma_Contract_Cases);
+         begin
+            for N of Pre loop
+               Check_Contract_Of_Lemma (N);
+               if Violation then
+                  goto Violation_Found;
+               end if;
+            end loop;
+            for N of Post loop
+               Check_Contract_Of_Lemma (N);
+               if Violation then
+                  goto Violation_Found;
+               end if;
+            end loop;
+            Check_Contract_Of_Lemma (CC);
+         end;
+
+         <<Violation_Found>>
+
+         --  If Violation is True, a warning has been emitted already. Exit
+         --  the function.
+
+         if Violation then
+            return;
+
+         --  Check that the lemma contains at least a call to Fun
+
+         elsif Spec_Params.Is_Empty then
+            Error_Msg_NE
+              ("?automatically instantiated lemma does not contain any "
+               & "specializable calls to &",
+               Lemma, Fun);
+            Error_Msg_NE
+              ("\it will not be automatically instantiated on"
+               & " specializations of &",
+               Lemma, Fun);
+            return;
+         end if;
+
+         --  Insert Lemma in the set of lemmas to be considered for
+         --  specializations of Fun and store its associated parameter mapping
+         --  in Higher_Order_Lemma_Specializations.
+
+         Higher_Order_Spec_Annotations (Fun).Insert (Lemma);
+         Higher_Order_Lemma_Specializations.Insert (Lemma, Spec_Params);
+      end;
+   end Check_Automatic_Inst_And_HO_Specialization_Compatibility;
+
    ----------------------------------------------
    -- Check_Automatic_Instantiation_Annotation --
    ----------------------------------------------
@@ -608,6 +856,14 @@ package body SPARK_Definition.Annotate is
 
                   elsif Ekind (Prec) = E_Function then
                      Automatic_Instantiation_Annotations.Insert (E, Prec);
+
+                     --  If Prec has higher order specialization, then checks
+                     --  need to be done to ensure that E can be specialized.
+                     --  This checks is delayed as we do not know in which
+                     --  order the higher order specialization and
+                     --  automatic instantiation annotations will be analyzed.
+
+                     Delayed_Checks_For_Lemmas.Insert (E);
                      exit;
 
                   --  Ignore ghost procedures annotated with automatic
@@ -955,7 +1211,7 @@ package body SPARK_Definition.Annotate is
          end if;
       end;
 
-      Higher_Order_Spec_Annotations.Include (E);
+      Higher_Order_Spec_Annotations.Include (E, Node_Sets.Empty_Set);
    end Check_Higher_Order_Specialization_Annotation;
 
    -----------------------------
@@ -1791,6 +2047,24 @@ package body SPARK_Definition.Annotate is
          end;
       end loop;
       Delayed_HO_Specialization_Checks.Clear;
+
+      --  Go over the set of lemmas with automatic instantiation. For those
+      --  associated to functions with higher order specializations, check that
+      --  the lemma can be specialized and fill the mapping in
+      --  Higher_Order_Spec_Annotations.
+
+      for Lemma of Delayed_Checks_For_Lemmas loop
+         declare
+            Fun : Entity_Id renames
+              Automatic_Instantiation_Annotations.Element (Lemma);
+         begin
+            if Has_Higher_Order_Specialization_Annotation (Fun) then
+               Check_Automatic_Inst_And_HO_Specialization_Compatibility
+                 (Lemma, Fun);
+            end if;
+         end;
+      end loop;
+      Delayed_Checks_For_Lemmas.Clear;
    end Do_Delayed_Checks_On_Pragma_Annotate;
 
    ------------------------
@@ -1824,6 +2098,13 @@ package body SPARK_Definition.Annotate is
          end if;
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
+
+   ------------------------------
+   -- Get_Lemmas_To_Specialize --
+   ------------------------------
+
+   function Get_Lemmas_To_Specialize (E : Entity_Id) return Node_Sets.Set is
+      (Higher_Order_Spec_Annotations.Element (E));
 
    ------------------------------------
    -- Get_Reclamation_Check_Function --
@@ -2205,6 +2486,15 @@ package body SPARK_Definition.Annotate is
          Info := Iterable_Annotations (C);
       end if;
    end Retrieve_Iterable_Annotation;
+
+   ---------------------------------------
+   -- Retrieve_Parameter_Specialization --
+   ---------------------------------------
+
+   function Retrieve_Parameter_Specialization
+     (E : Entity_Id) return Node_Maps.Map
+   is
+     (Higher_Order_Lemma_Specializations (E));
 
    -------------------------------------
    -- Check_Pragma_Annotate_GNATprove --

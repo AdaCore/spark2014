@@ -632,6 +632,23 @@ package Why.Atree.Modules is
    --  M_HO_Specializations maps subprogram entities to a map containing all
    --  their specializations.
 
+   package Name_Id_Module_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Symbol,
+      Element_Type    => W_Module_Id,
+      Hash            => GNATCOLL.Symbols.Hash,
+      Equivalent_Keys => "=");
+
+   package Node_Id_Modules_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Name_Id_Module_Map.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Name_Id_Module_Map."=");
+
+   M_Lemma_HO_Specializations : Node_Id_Modules_Map.Map;
+   --  M_Lemma_HO_Specializations maps lemma procedure entities to a map
+   --  containing all the axiom modules generated for their specializations.
+
    M_BV_Conv_128_256 : M_BV_Conv_Type;
    M_BV_Conv_64_128  : M_BV_Conv_Type;
    M_BV_Conv_32_128  : M_BV_Conv_Type;
