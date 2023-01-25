@@ -29,7 +29,7 @@
   <proof prover="1" timelimit="100"><result status="highfailure"/></proof>
   <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="3"><result status="highfailure"/></proof>
-  <proof prover="4"><result status="valid" steps="332"/></proof>
+  <proof prover="4"><result status="valid" steps="334"/></proof>
   </goal>
  </transf>
  </goal>

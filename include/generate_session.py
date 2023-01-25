@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
+import difflib
+import glob
 import os
 import shutil
-import difflib
 import sys
 
 
@@ -124,16 +125,16 @@ def kill_and_regenerate(check):
     print("--------------------------")
     print("Cleanup previous artifacts")
     print("--------------------------")
-    if os.path.isdir("./proof/sessions"):
-        print("The folder proof/sessions still exists.")
-        print("Please, move it to be able to regenerate session.")
-        exit(1)
-    if os.path.isdir("./temp"):
-        print("The folder temp will be used. Please move it.")
-        exit(1)
-    else:
-        os.makedirs("./temp")
+    for d in ["./proof/sessions", "./temp"]:
+        if os.path.isdir(d):
+            print(f"deleting {d}")
+            shutil.rmtree(d)
+    os.makedirs("./temp")
     os.system("make clean")
+    for envvar in ["SPARKLIB_OBJECT_DIR", "SPARKLIB_INSTALLED", "SPARKLIB_BODY_MODE"]:
+        if envvar not in os.environ:
+            print(f"{envvar} not set; make sure to run 'source setup.sh'")
+            exit(1)
     print("")
     print("----------------------------")
     print("Generate the Coq proof files")
@@ -172,6 +173,9 @@ def kill_and_regenerate(check):
     print("Summarize all proved checks")
     print("---------------------------")
     run_options(opt="--output-msg-only --report=provers")
+    for shape_file in glob.glob("proof/sessions/*/why3shapes*"):
+        print("deleting shapes file ", shape_file)
+        os.remove(shape_file)
 
 
 def choose_mode():
