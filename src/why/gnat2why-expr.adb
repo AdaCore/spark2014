@@ -20374,7 +20374,9 @@ package body Gnat2Why.Expr is
                   --  program domain. We can be sure that the relevant Ada code
                   --  will pass this point at least once in program domain.
 
-                  if Has_Async_Writers (Direct_Mapping_Id (Ent))
+                  if Is_Object (Ent)
+                    and then Has_Volatile (Ent)
+                    and then Has_Volatile_Property (Ent, Pragma_Async_Writers)
                     and then Domain in EW_Prog | EW_Pterm
                     and then Params.Ref_Allowed
                   then

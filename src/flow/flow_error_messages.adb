@@ -2233,7 +2233,7 @@ package body Flow_Error_Messages is
                      --  actual expression.
 
                      if Present (Var) then
-                        Id := Direct_Mapping_Id (Var);
+                        Id := Path_To_Flow_Id (Actual);
 
                         --  Store the mapping formal->actual for possibly
                         --  replacing the formal by the actual when the

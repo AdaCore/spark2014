@@ -3432,7 +3432,8 @@ package body Flow_Utility is
 
                else
                   Comp_Id       := 1;
-                  Current_Field := Direct_Mapping_Id (Root_Entity);
+                  Current_Field :=
+                    Direct_Mapping_Id (Unique_Entity (Root_Entity));
                end if;
             end;
          end if;

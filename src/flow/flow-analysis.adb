@@ -4113,7 +4113,7 @@ package body Flow.Analysis is
                      SRM_Ref  => SRM_Ref,
                      N        => E,
                      Severity => Error_Kind,
-                     F1       => Direct_Mapping_Id (E),
+                     F1       => Direct_Mapping_Id (Unique_Entity (E)),
                      F2       => Direct_Mapping_Id (Owner));
                end;
             else
