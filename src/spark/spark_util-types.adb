@@ -104,6 +104,14 @@ package body SPARK_Util.Types is
    --  Continue on an access subcomponent, the designated type is also searched
    --  for access subcomponents with the given property.
 
+   function Ancestor_Declares_Iterable_Aspect
+     (E      : Type_Kind_Id;
+      Aspect : Node_Id)
+      return Boolean;
+   --  Shared code for Has_Iterable_Aspect_In_Spark/
+   --  Declares_Iterable_Aspect: whether specific Aspect of E is
+   --  declared by an anscestor. This ignores SPARK_Mode boundary.
+
    ---------------------------------------------
    -- Queries related to representative types --
    ---------------------------------------------
@@ -965,6 +973,66 @@ package body SPARK_Util.Types is
      (Has_Own_Invariants (E)
       and then Is_Base_Type (E)
       and then (if Is_Partial_View (E) then Entity_In_SPARK (Full_View (E))));
+
+   ---------------------------------------
+   -- Ancestor_Declares_Iterable_Aspect --
+   ---------------------------------------
+
+   function Ancestor_Declares_Iterable_Aspect
+     (E      : Type_Kind_Id;
+      Aspect : Node_Id)
+      return Boolean
+   is
+      Cursor : Type_Kind_Id := E;
+   begin
+      while Is_Partial_View (Cursor) loop
+         Cursor := Full_View (Cursor);
+      end loop;
+      if Is_First_Subtype (Cursor) then
+         Cursor := Base_Type (Cursor);
+      end if;
+      return not Is_Nouveau_Type (Cursor)
+        and then Underlying_Type (Etype (Cursor)) /= Cursor
+        and then Find_Aspect (Etype (Cursor), Aspect_Iterable) = Aspect;
+   end Ancestor_Declares_Iterable_Aspect;
+
+   ----------------------------------
+   -- Has_Iterable_Aspect_In_SPARK --
+   ----------------------------------
+
+   function Has_Iterable_Aspect_In_SPARK (E : Type_Kind_Id) return Boolean is
+      Top_Aspect : constant Node_Id := Find_Aspect (E, Aspect_Iterable);
+      Cursor     : Type_Kind_Id := Retysp (E);
+   begin
+      if No (Top_Aspect) then
+         return False;
+      end if;
+      while not Is_Nouveau_Type (Cursor)
+        and then Underlying_Type (Etype (Cursor)) /= Cursor
+      loop
+         Cursor := Retysp (Etype (Cursor));
+         if Find_Aspect (Cursor, Aspect_Iterable) /= Top_Aspect then
+            return True;
+         end if;
+      end loop;
+      --  If an out-of-SPARK ancestor declares the Iterable Aspect,
+      --  the aspect should not be visible in SPARK
+      --  (happens in some corner cases).
+      return not Ancestor_Declares_Iterable_Aspect (Cursor, Top_Aspect);
+   end Has_Iterable_Aspect_In_SPARK;
+
+   ------------------------------
+   -- Declares_Iterable_Aspect --
+   ------------------------------
+
+   function Declares_Iterable_Aspect (E : Type_Kind_Id) return Boolean
+   is
+      Top_Aspect : constant Node_Id := Find_Aspect (E, Aspect_Iterable);
+   begin
+      return Present (Top_Aspect)
+        and then not Is_Itype (E)
+        and then not Ancestor_Declares_Iterable_Aspect (E, Top_Aspect);
+   end Declares_Iterable_Aspect;
 
    ------------------------
    -- Has_Private_Fields --

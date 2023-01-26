@@ -1,0 +1,12 @@
+illegal_early_fail.adb:52:07: error: pragma Iterable_For_Proof must immediately follow the declaration of the Element
+illegal_early_fail.adb:77:19: error: adding this Model function would produce a circular definition for container model
+illegal_early_fail.adb:124:19: error: adding this Model function would produce a circular definition for container model
+illegal_early_fail.adb:171:16: error: parameter and return type of Model function must allow for of iteration with the same element type
+illegal_early_fail.adb:199:16: error: Model function shall not access global data
+illegal_early_fail.adb:226:16: error: Contains function shall not access global data
+illegal_early_fail.adb:313:19: error: Model function must not have a controlling result
+illegal_early_fail.adb:337:22: error: Contains function must be primitive for container type
+illegal_early_fail.adb:371:22: error: Model function must be primitive for container type
+illegal_early_fail.adb:401:19: error: Model function must not be volatile
+illegal_early_fail.adb:426:19: error: Contains function must not be volatile
+gnatprove: error during generation of Global contracts
