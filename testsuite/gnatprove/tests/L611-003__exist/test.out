@@ -1,6 +1,6 @@
 stack.adb:4:30: info: precondition proved (altergo: 1 VC)
 stack.adb:6:12: info: index check proved (CVC5: 2 VC)
-stack.adb:7:12: info: precondition proved (Z3: 1 VC)
+stack.adb:7:12: medium: precondition might fail
 stack.adb:13:33: info: loop invariant initialization proved (CVC5: 1 VC)
 stack.adb:13:33: info: loop invariant preservation proved (CVC5: 1 VC)
 stack.adb:14:30: info: index check proved (CVC5: 4 VC)

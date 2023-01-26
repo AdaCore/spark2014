@@ -8,7 +8,7 @@ p.adb:21:10: info: precondition proved (Z3: 2 VC)
 p.ads:14:14: info: postcondition proved (Z3: 2 VC)
 p.ads:14:34: info: precondition proved (Z3: 1 VC)
 p.ads:18:14: info: postcondition proved (Z3: 3 VC)
-p.ads:24:45: medium: postcondition might fail, cannot prove Positions (L) = Positions (L'old)
+p.ads:23:14: info: postcondition proved (Trivial: 1 VC; Z3: 3 VC)
 spark-containers-formal-ordered_maps.ads:65:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at p.ads:8
 spark-containers-formal-ordered_maps.ads:67:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at p.ads:8
 spark-containers-formal-ordered_maps.ads:69:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at p.ads:8
