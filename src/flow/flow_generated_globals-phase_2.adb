@@ -4177,9 +4177,18 @@ package body Flow_Generated_Globals.Phase_2 is
                      end loop;
                   end if;
 
+                  --  Proof expects objects that are not in SPARK to be
+                  --  represented as Magic_Strings. Deferred constants which
+                  --  only have partial view in SPARK will be represented by
+                  --  this partial view.
+
                   Aliases.Insert
                     (if Entity_In_SPARK (E)
                      then Change_Variant (F, Normal_Use)
+                     elsif Present (Partial_View (E))
+                       and then Entity_In_SPARK (Partial_View (E))
+                     then Change_Variant (Direct_Mapping_Id (Partial_View (E)),
+                                          Normal_Use)
                      else Magic_String_Id (To_Entity_Name (E)));
 
                   return Aliases;

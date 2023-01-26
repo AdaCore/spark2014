@@ -6630,7 +6630,7 @@ package body Flow_Utility is
                Direct_Mapping_Id (Ultimate_Overlaid_Entity (Root_Entity))
 
             else
-               Direct_Mapping_Id (Root_Entity));
+               Direct_Mapping_Id (Unique_Entity (Root_Entity)));
       end;
 
       for N of Seq loop

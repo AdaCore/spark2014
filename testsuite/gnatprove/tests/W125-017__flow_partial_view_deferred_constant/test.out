@@ -1,0 +1,21 @@
+my_data_protected_by_lock.ads:9:06: info: initialization of "Int_Data.Lock_State" proved, in instantiation at use_data.ads:6
+my_data_protected_by_lock.ads:15:03: info: flow dependencies proved, in instantiation at use_data.ads:6
+my_data_protected_by_lock.ads:46:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at use_data.ads:6
+my_data_protected_by_lock.ads:47:07: info: dynamic accessibility check proved (Trivial), in instantiation at use_data.ads:6
+my_data_protected_by_lock.ads:51:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at use_data.ads:6
+my_data_protected_by_lock.ads:52:07: info: dynamic accessibility check proved (Trivial), in instantiation at use_data.ads:6
+use_data.adb:4:07: info: initialization of "Acquired" proved
+use_data.adb:7:33: info: loop invariant initialization proved (CVC5: 1 VC)
+use_data.adb:7:33: info: loop invariant preservation proved (CVC5: 1 VC)
+use_data.adb:8:10: info: precondition proved (CVC5: 1 VC)
+use_data.adb:12:41: info: precondition proved (CVC5: 1 VC)
+use_data.adb:12:56: info: in reconstructed value at the end of the borrow at use_data.adb:12
+use_data.adb:12:56: info: null exclusion check proved (CVC5: 1 VC)
+use_data.adb:14:21: info: pointer dereference check proved (CVC5: 1 VC)
+use_data.adb:16:07: info: precondition proved (CVC5: 1 VC)
+use_data.adb:20:38: medium: precondition might fail
+use_data.adb:20:53: info: in reconstructed value at the end of the borrow at use_data.adb:20
+use_data.adb:20:53: info: null exclusion check proved (CVC5: 1 VC)
+use_data.adb:22:18: info: pointer dereference check proved (CVC5: 1 VC)
+use_data.ads:11:14: info: postcondition proved (CVC5: 1 VC)
+use_data.ads:16:14: info: postcondition proved (CVC5: 1 VC)
