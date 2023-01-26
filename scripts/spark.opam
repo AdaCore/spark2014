@@ -1,0 +1,33 @@
+opam-version: "2.0"
+name: "spark"
+version: "1.0"
+synopsis: "SPARK OCaml dependencies"
+maintainer: "the Adacore team"
+authors: "Adacore"
+build: [
+  [ "true" ]
+]
+install: [
+  [ "true" ]
+]
+depends: [
+  "camlzip"
+  "coq" { = "8.11.2" }
+  "dune"
+  "coq-flocq" { = "3.4.0" }
+  "fmt"
+  "gen"
+  "menhir"
+  "merlin"
+  "ocamlgraph"
+  "ocplib-simplex"
+  "parsexp"
+  "ppx_deriving"
+  "ppx_sexp_conv"
+  "psmt2-frontend"
+  "seq"
+  "spelll"
+  "uutf"
+  "yojson"
+  "zarith"
+]
