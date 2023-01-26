@@ -7,8 +7,8 @@ main.adb:22:47: info: overflow check proved (CVC5: 2 VC)
 main.adb:23:36: info: precondition proved (CVC5: 4 VC)
 main.adb:24:14: info: postcondition proved (CVC5: 1 VC)
 main.adb:24:14: info: precondition proved (CVC5: 1 VC)
-main.adb:32:12: medium: length check might fail [reason for check: array must be of the appropriate length]
-main.adb:32:12: medium: precondition might fail, cannot prove Left <= Natural'Last / Right'length
+main.adb:32:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+main.adb:32:12: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:35:22: medium: assertion might fail
 main.adb:36:22: medium: assertion might fail
 main.adb:36:45: medium: precondition might fail, cannot prove Pattern'Length > 0

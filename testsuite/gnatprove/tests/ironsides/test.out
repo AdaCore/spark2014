@@ -17,9 +17,9 @@ dns_table_pkg.adb:37:14: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:45:36: info: function contract not available for proof ("WireNameLength" might not return)
 dns_table_pkg.adb:45:62: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:45:70: info: index check proved (CVC5: 2 VC)
-dns_table_pkg.adb:57:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Val <= (I - 1)*Character'pos
-dns_table_pkg.adb:59:19: medium: loop invariant might fail in first iteration, cannot prove Character'Pos (DomainName (Q)) <= 255 [possible fix: subprogram at line 47 should mention DomainName in a precondition]
-dns_table_pkg.adb:61:24: medium: overflow check might fail, cannot prove lower bound for Val + Character'pos [reason for check: result of addition must fit in a 32-bits machine integer]
+dns_table_pkg.adb:57:16: info: loop invariant initialization proved (CVC5: 3 VC)
+dns_table_pkg.adb:57:16: info: loop invariant preservation proved (CVC5: 3 VC)
+dns_table_pkg.adb:61:24: info: overflow check proved (CVC5: 2 VC)
 dns_table_pkg.adb:63:22: info: division check proved (CVC5: 1 VC)
 dns_table_pkg.adb:72:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:73:10: info: initialization of "Lower_DomainName" proved
