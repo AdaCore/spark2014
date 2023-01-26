@@ -5,7 +5,7 @@ procedure Main with SPARK_Mode is
 
    procedure Test (A, B : Amount)
    with
-     Post => Amount'(Raw => A.Raw - B.Raw) = Amount'(Raw => A.Raw - B.Raw),
+     Post => Amount'(Raw => A.Raw - B.Raw) = Amount'(Raw => A.Raw - B.Raw), --@RANGE_CHECK:FAIL
      Global => null;
 
    ----------
