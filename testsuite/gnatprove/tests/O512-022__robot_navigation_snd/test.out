@@ -173,7 +173,7 @@ algorithm.adb:475:114: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:479:35: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:479:77: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:479:96: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:480:36: medium: precondition might fail [possible fix: loop invariant at line 400 should mention Best_Valley_IDS]
+algorithm.adb:480:36: medium: precondition might fail
 algorithm.adb:480:73: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:480:92: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:482:22: warning: statement has no effect
@@ -188,9 +188,9 @@ algorithm.adb:511:13: warning: this statement is never reached
 algorithm.adb:512:13: warning: this statement is never reached
 algorithm.adb:512:30: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:512:67: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:516:20: medium: precondition might fail [possible fix: loop invariant at line 400 should mention Best_Valley_IDS]
+algorithm.adb:516:20: medium: precondition might fail
 algorithm.adb:516:57: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:517:20: medium: precondition might fail [possible fix: loop invariant at line 400 should mention Best_Valley_IDS]
+algorithm.adb:517:20: medium: precondition might fail
 algorithm.adb:517:57: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:532:07: info: initialization of "deltaMag" proved
 algorithm.adb:533:07: info: initialization of "deltaAngle" proved

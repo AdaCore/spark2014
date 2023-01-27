@@ -1,8 +1,8 @@
 aida-containers-formal_vectors.adb:66:31: medium: precondition might fail, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:73:24: medium: precondition might fail, in instantiation at hnco-test2.ads:8
-aida-containers-formal_vectors.adb:81:24: medium: precondition might fail, in instantiation at hnco-test2.ads:8 [possible fix: subprogram at aida-containers-formal_vectors.ads:76 should mention Container and New_Item in a precondition]
-aida-containers-formal_vectors.adb:88:24: medium: precondition might fail, in instantiation at hnco-test2.ads:8 [possible fix: subprogram at aida-containers-formal_vectors.ads:82 should mention Container in a precondition]
-aida-containers-formal_vectors.adb:94:24: medium: precondition might fail, in instantiation at hnco-test2.ads:8 [possible fix: subprogram at aida-containers-formal_vectors.ads:88 should mention Container in a precondition]
+aida-containers-formal_vectors.adb:81:24: medium: precondition might fail, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.adb:88:24: medium: precondition might fail, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.adb:94:24: medium: precondition might fail, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:105:24: medium: precondition might fail, cannot prove I in First_Index (Container) .. Last_Index (Container), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:116:31: medium: precondition might fail, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:126:31: medium: precondition might fail, in instantiation at hnco-test2.ads:8
