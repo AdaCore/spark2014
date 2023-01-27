@@ -2309,7 +2309,7 @@ module BV8
   val constant _two_power_size : int
     ensures{ result = two_power_size }
 
-  function t_int (x : t) : int = t'int x
+  function t_int [@rewrite:t_int] (x : t) : int = t'int x
 
   val t_int (x : t) : int
     ensures { result = t'int x }
@@ -2350,7 +2350,7 @@ module BV16
   val constant _two_power_size : int
     ensures{ result = two_power_size }
 
-  function t_int (x : t) : int = t'int x
+  function t_int [@rewrite:t_int] (x : t) : int = t'int x
 
   val t_int (x : t) : int
     ensures { result = t'int x }
@@ -2391,7 +2391,7 @@ module BV32
   val constant _two_power_size : int
     ensures{ result = two_power_size }
 
-  function t_int (x : t) : int = t'int x
+  function t_int [@rewrite:t_int] (x : t) : int = t'int x
 
   val t_int (x : t) : int
     ensures { result = t'int x }
@@ -2432,7 +2432,7 @@ module BV64
   val constant _two_power_size : int
     ensures{ result = two_power_size }
 
-  function t_int (x : t) : int = t'int x
+  function t_int [@rewrite:t_int] (x : t) : int = t'int x
 
   val t_int (x : t) : int
     ensures { result = t'int x }
@@ -2473,7 +2473,7 @@ module BV128
   val constant _two_power_size : int
     ensures{ result = two_power_size }
 
-  function t_int (x : t) : int = t'int x
+  function t_int [@rewrite:t_int] (x : t) : int = t'int x
 
   val t_int (x : t) : int
     ensures { result = t'int x }
