@@ -1379,7 +1379,7 @@ red_black_trees.adb:523:22: medium: assertion might fail, cannot prove not Conta
 red_black_trees.adb:523:22: medium: in inlined expression function body at tree_model.ads:84
 red_black_trees.adb:530:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: call at line 515 should mention T (for argument T) in a postcondition]
 red_black_trees.adb:531:18: medium: assertion might fail, cannot prove T.Color (I) = Black [possible fix: call at line 515 should mention T (for argument T) in a postcondition]
-red_black_trees.adb:535:18: medium: precondition might fail
+red_black_trees.adb:535:18: medium: precondition might fail [possible fix: call at line 515 should mention T (for argument T) in a postcondition]
 red_black_trees.adb:535:71: medium: range check might fail, cannot prove lower bound for X [reason for check: input value must fit in parameter type] [possible fix: call at line 515 should mention I (for argument X) in a postcondition]
 red_black_trees.adb:536:33: info: loop invariant initialization proved (CVC5: 1 VC)
 red_black_trees.adb:536:33: info: loop invariant preservation proved (CVC5: 1 VC)
