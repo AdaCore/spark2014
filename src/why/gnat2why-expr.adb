@@ -2395,6 +2395,310 @@ package body Gnat2Why.Expr is
                             Context => Sequence (Inv_RTE, Inv_Check)));
    end Check_Type_With_Invariants;
 
+   ------------------------------
+   -- Check_Type_With_Iterable --
+   ------------------------------
+
+   function Check_Type_With_Iterable
+     (Params : Transformation_Params;
+      Ty     : Type_Kind_Id)
+      return W_Prog_Id
+   is
+      Check_Info  : Check_Info_Type := New_Check_Info;
+      Checks      : W_Prog_Id := +Void;
+      Cont_Ty_Spk : constant Entity_Id := Retysp (Ty);
+      Has_Tag_Arg : Boolean := False;
+      Tag_Arg     : W_Expr_Id := Why_Empty;
+
+      procedure Add_Check
+        (Fn   : Entity_Id;
+         Args : W_Expr_Array;
+         Typ  : W_Type_Id);
+      --  Add pre-condition check for Fn (Args) : Typ
+      --  at the beginning of Checks.
+
+      procedure Add_Unknown_Binding
+        (Ty_Spk : Entity_Id;
+         Ty_Why : W_Type_Id;
+         V_Name : W_Identifier_Id);
+      --  Add new extra unknown value of given type to beginning of checks,
+      --  using temporary name.
+
+      procedure Exclude_Recursive (Fn : Entity_Id);
+      --  Emit error if primitive is recursive.
+
+      function Fetch_Name
+        (Fn            : Entity_Id;
+         Container_Arg : W_Expr_Id;
+         Domain        : EW_Domain := EW_Prog)
+         return W_Identifier_Id;
+      --  Fetch the name of the Why entity representing Fn,
+      --  using the dispatching version if available.
+      --  Remember whether found in Has_Tag_Arg, and
+      --  if found, stores a correct Tag argument in Tag_Arg.
+
+      function O_Tag_Arg return W_Expr_Array is
+        (if Has_Tag_Arg then (1 => Tag_Arg) else []);
+      --  Get tag argument in argument list if necessary.
+
+      function Prim (Nam : Name_Id) return Entity_Id is
+        (Get_Iterable_Type_Primitive (Cont_Ty_Spk, Nam));
+      --  Short-hand to fetch iterable primitives of container.
+
+      function To_Why_Ty (Ty_Spk : Entity_Id) return W_Type_Id is
+        (if Has_Relaxed_Init (Ty_Spk)
+         then EW_Init_Wrapper (Type_Of_Node (Ty_Spk))
+         else Type_Of_Node (Ty_Spk));
+      --  Convert retysp to relevant why type.
+
+      ---------------
+      -- Add_Check --
+      ---------------
+
+      procedure Add_Check
+        (Fn   : Entity_Id;
+         Args : W_Expr_Array;
+         Typ  : W_Type_Id)
+      is
+         Name    : constant W_Identifier_Id := Fetch_Name (Fn, Args (1));
+
+         --  In some corner-cases, the first argument type
+         --  might be a non-trivial ancestor of the container type.
+
+         Arg_Ty  : constant W_Type_Id :=
+           To_Why_Ty (Retysp (Etype (First_Formal (Fn))));
+         Args_Cv : constant W_Expr_Array :=
+           (Args with delta 1 =>
+              Insert_Simple_Conversion (Domain => EW_Pterm,
+                                        Expr   => Args (1),
+                                        To     => Arg_Ty));
+      begin
+         Checks := Sequence
+           (New_Ignore
+              (Prog => New_VC_Call
+                   (Ada_Node   => Fn,
+                    Name       => Name,
+                    Progs      => O_Tag_Arg & Args_Cv,
+                    Reason     => VC_Precondition,
+                    Typ        => Typ,
+                    Check_Info => Check_Info)),
+            Checks);
+      end Add_Check;
+
+      -----------------
+      -- Add_Unknown --
+      -----------------
+
+      procedure Add_Unknown_Binding
+        (Ty_Spk : Entity_Id;
+         Ty_Why : W_Type_Id;
+         V_Name : W_Identifier_Id)
+      is
+         Res_Id : constant W_Identifier_Id :=
+           New_Result_Ident (Ty_Why);
+         Post   : constant W_Pred_Id :=
+           Compute_Dynamic_Invariant (+Res_Id, Ty_Spk, Params);
+      begin
+         Checks := New_Typed_Binding
+           (Name    => V_Name,
+            Def     => New_Any_Expr
+              (Ada_Node    => Ty,
+               Post        => Post,
+               Labels      => Symbol_Sets.Empty_Set,
+               Return_Type => Ty_Why),
+            Context => Checks);
+      end Add_Unknown_Binding;
+
+      -----------------------
+      -- Exclude_Recursive --
+      -----------------------
+
+      procedure Exclude_Recursive (Fn : Entity_Id) is
+      begin
+         if Proof_Module_Cyclic (Fn) then
+            Error_Msg_N
+              ("iteration primitive shall not be recursive,"
+               & " (including implicitly so)", Fn);
+         end if;
+      end Exclude_Recursive;
+
+      ----------------
+      -- Fetch_Name --
+      ----------------
+
+      function Fetch_Name
+        (Fn            : Entity_Id;
+         Container_Arg : W_Expr_Id;
+         Domain        : EW_Domain := EW_Prog)
+         return W_Identifier_Id
+      is
+         Selector : Selection_Kind;
+      begin
+         if Is_Dispatching_Operation (Fn) then
+            Selector := Dispatch;
+            Has_Tag_Arg := True;
+
+            --  Due to restrictions, all iterable primitives
+            --  are necessarily primitives of container.
+            --  Furthermore, due to absence of controlling results,
+            --  cursor and elements cannot be defined as tagged types
+            --  in the same declarative scope as the primitives of the
+            --  container (they occur as results of Next/Element).
+            --  So if dispatching, dispatch occurs on container argument
+            --  alone.
+
+            Tag_Arg := New_Tag_Access
+              (Domain => Term_Domain (Domain),
+               Name   => Container_Arg,
+               Ty     => Get_Ada_Node (+Get_Type (Container_Arg)));
+         else
+            Selector := Why.Inter.Standard;
+            Has_Tag_Arg := False;
+         end if;
+
+         return To_Why_Id
+           (E      => Fn,
+            Domain => Domain,
+            Selector => Selector);
+      end Fetch_Name;
+
+   --  Start of processing for Check_Type_With_Iterable
+
+   begin
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+      --  Retrieve all relevant operations for quantifier
+      --  processing (last/previous are never relevant).
+      declare
+         Fn_Has_Elt  : constant Entity_Id := Prim (Name_Has_Element);
+         Fn_First    : constant Entity_Id := Prim (Name_First);
+         Fn_Next     : constant Entity_Id := Prim (Name_Next);
+         Fn_Element  : constant Entity_Id := Prim (Name_Element);
+
+         --  Retrieve types for container/cursor.
+         --  Element type is retrieved only if necessary.
+
+         Curs_Ty_Spk : constant Entity_Id := Retysp (Etype (Fn_First));
+         Cont_Ty_Why : constant W_Type_Id := To_Why_Ty (Cont_Ty_Spk);
+         Curs_Ty_Why : constant W_Type_Id := To_Why_Ty (Curs_Ty_Spk);
+
+         --  Identifiers for container/cursor
+
+         Cont_Id     : constant W_Identifier_Id :=
+           New_Temp_Identifier (Cont_Ty_Spk, Cont_Ty_Why);
+         Curs_Id     : constant W_Identifier_Id :=
+           New_Temp_Identifier (Curs_Ty_Spk, Curs_Ty_Why);
+
+         --  Needs an extra check when an
+         --  iterable_for_proof annotation is present
+         Annot         : Iterable_Annotation;
+         Annot_Present : Boolean;
+
+         --  Package arguments for Iterable primitives
+         Args_One      : constant W_Expr_Array :=
+           (1 => +Cont_Id);
+         Args_Both     : constant W_Expr_Array :=
+           (1 => +Cont_Id, 2 => +Curs_Id);
+
+      begin
+         Check_Info.Continuation.Append
+              (Continuation_Type'
+                 (Ty,
+                  To_Unbounded_String
+                    ("during checks for quantification")));
+         Retrieve_Iterable_Annotation (Cont_Ty_Spk, Annot_Present, Annot);
+
+         --  Emit errors for non-recursivity.
+
+         declare
+            type Entity_Array is array (Positive range <>) of Entity_Id;
+            Primitives : constant Entity_Array :=
+              [Fn_First, Fn_Next, Fn_Has_Elt]
+              & (if Present (Fn_Element) then [Fn_Element] else [])
+              & (if Annot_Present then [Annot.Entity] else []);
+         begin
+            for C of Primitives loop
+               Exclude_Recursive (C);
+            end loop;
+         end;
+
+         --  Code is in reverse order from generated check sequence
+         --    (because of typed bindings).
+         --  Shape of why statement:
+         --
+         --    let Cont = any in
+         --    ignore (First-Check (Cont));
+         --    (* vv  if Annotation "Model" present  vv *)
+         --    ignore (Model-Check (Cont));
+         --    (* vv  if Annotation "Contains" present  vv *)
+         --    ignore {
+         --      let Elt = any in
+         --      ignore (Contains-Check (Cont, Elt))
+         --    }
+         --    let Curs = any in
+         --    ignore (Has_Element-Check (Cont, Curs));
+         --    assume (Has_Element-Pred (Cons, Curs));
+         --    ignore (Next-Check (Cont, Curs));
+         --    (* vv  if "Element" specified  vv *)
+         --    ignore (Element-Check (Cont, Curs))
+
+         if Present (Fn_Element) then
+            Add_Check (Fn_Element,
+                       Args_Both,
+                       To_Why_Ty (Retysp (Etype (Fn_Element))));
+         end if;
+         Add_Check (Fn_Next, Args_Both, Curs_Ty_Why);
+         declare
+            Name : constant W_Identifier_Id :=
+              Fetch_Name (Fn_Has_Elt, +Cont_Id, EW_Pred);
+         begin
+            Checks := Sequence
+              (New_Assume_Statement
+                 (Pred => New_Call
+                      (Name     => Name,
+                       Args     => O_Tag_Arg & Args_Both)),
+               Checks);
+         end;
+         Add_Check (Fn_Has_Elt, Args_Both, EW_Bool_Type);
+         Add_Unknown_Binding (Curs_Ty_Spk, Curs_Ty_Why, Curs_Id);
+         if Annot_Present then
+            case Annot.Kind is
+               when Contains =>
+                  declare
+                     Checks_Branch : constant W_Prog_Id := Checks;
+                     Elt_Ty_Spk    : constant Entity_Id :=
+                       Retysp (Etype (Fn_Element));
+                     Elt_Ty_Why    : constant W_Type_Id :=
+                       To_Why_Ty (Elt_Ty_Spk);
+                     Elt_Id        : constant W_Identifier_Id :=
+                       New_Temp_Identifier (Elt_Ty_Spk, Elt_Ty_Why);
+                  begin
+                     Checks := +Void;
+                     Add_Check (Annot.Entity,
+                                (1 => +Cont_Id, 2 => +Elt_Id),
+                                EW_Bool_Type);
+                     Add_Unknown_Binding (Elt_Ty_Spk, Elt_Ty_Why, Elt_Id);
+                     Checks := Sequence (New_Ignore (Prog => Checks),
+                                         Checks_Branch);
+                  end;
+               when Model =>
+                  declare
+                     Model_Ty_Spk : constant Entity_Id :=
+                       Retysp (Etype (Annot.Entity));
+                     Model_Ty_Why : constant W_Type_Id :=
+                       To_Why_Ty (Model_Ty_Spk);
+                  begin
+                     Add_Check (Annot.Entity, Args_One, Model_Ty_Why);
+                  end;
+            end case;
+         end if;
+         Add_Check (Fn_First, Args_One, Curs_Ty_Why);
+         Add_Unknown_Binding (Cont_Ty_Spk, Cont_Ty_Why, Cont_Id);
+      end;
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+      return Checks;
+   end Check_Type_With_Iterable;
+
    ------------------------
    -- Check_Scalar_Range --
    ------------------------
@@ -6978,6 +7282,8 @@ package body Gnat2Why.Expr is
               Domain   => Domain,
               Expr     => +W_Index_Var,
               To       => Type_Of_Node (Curs_Type));
+         Subdomain  : constant EW_Domain :=
+           (if Domain = EW_Prog then EW_Pterm else Domain);
       begin
          return New_Function_Call
            (Ada_Node => Ada_Node,
@@ -6986,12 +7292,13 @@ package body Gnat2Why.Expr is
                 (Transform_Identifier (Params       => Params,
                                        Expr         => Element_E,
                                        Ent          => Element_E,
-                                       Domain       => Domain)),
+                                       Domain       => Subdomain)),
             Subp     => Element_E,
             Args     => (1 => Cont_Expr,
                          2 => Curs_Expr),
-            Domain   => Domain,
-            Check    => Domain = EW_Prog,
+            Domain   => Subdomain,
+            Check    => False,
+            --  Checks already done at level of Iterable aspect
             Typ      => Element_T);
       end Make_Binding_For_Iterable;
 
@@ -7039,8 +7346,7 @@ package body Gnat2Why.Expr is
          --  Call the function with the appropriate arguments
 
          declare
-            Subdomain   : constant EW_Domain :=
-              (if Domain = EW_Pred then EW_Term else Domain);
+            Subdomain   : constant EW_Domain := Term_Domain (Domain);
             Cont_Type   : constant Entity_Id :=
               Etype (First_Formal (Has_Element));
             Cont_Expr   : constant W_Expr_Id :=
@@ -7071,7 +7377,8 @@ package body Gnat2Why.Expr is
                Args     => (1 => Cont_Expr,
                             2 => Curs_Expr),
                Domain   => Subdomain,
-               Check    => Subdomain = EW_Prog,
+               Check    => False,
+               --  Checks have been done at Iterable annotation
                Typ      => Type_Of_Node (Etype (Has_Element)));
 
             return T;
@@ -7090,12 +7397,24 @@ package body Gnat2Why.Expr is
          Index_Type   :    out Entity_Id;
          Need_Tmp_Var :    out Boolean)
       is
-         Subdomain     : constant EW_Domain :=
-           (if Domain = EW_Pred then EW_Term else Domain);
+         Subdomain     : constant EW_Domain := Term_Domain (Domain);
          Found         : Boolean;
          Iterable_Info : Iterable_Annotation;
 
       begin
+
+         --  In case container type has visible invariants,
+         --  iteration primitives implicitly assume it during Iterable checks.
+         --  So for the early checks at Iterable to be valid, we need to
+         --  insert a check for the container invariants.
+
+         if Has_Visible_Type_Invariants (Over_Type)
+           and then Domain = EW_Prog
+         then
+            W_Over_E :=
+              +Insert_Invariant_Check (Ada_Node, Over_Type, +W_Over_E);
+         end if;
+
          --  for ... in quantification:
          --  Iteration is done on cursors, no need for a temporary variable.
 
@@ -7141,7 +7460,8 @@ package body Gnat2Why.Expr is
                      Subp     => Model,
                      Args     => (1 => Cont_Expr),
                      Domain   => Subdomain,
-                     Check    => Subdomain = EW_Prog,
+                     Check    => False,
+                     --  Checks have been done at Iterable annotation.
                      Typ      => Type_Of_Node (Over_Type));
                end;
 

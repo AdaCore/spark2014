@@ -27,6 +27,7 @@ with Atree;            use Atree;
 with Nlists;           use Nlists;
 with Opt;              use type Opt.Ada_Version_Type;
 with Sinfo.Utils;      use Sinfo.Utils;
+with Sem_Aux;
 with Sem_Ch7;          use Sem_Ch7;
 with Sem_Util;
 with Sem_Prag;
@@ -224,8 +225,17 @@ package body SPARK_Atree.Entities is
    function Get_Iterable_Type_Primitive
      (Typ : Type_Kind_Id;
       Nam : Name_Id)
-      return E_Function_Id
-   is (Sem_Util.Get_Iterable_Type_Primitive (Typ, Nam));
+      return Opt_E_Function_Id
+   is
+      Direct : constant Opt_E_Function_Id :=
+        Sem_Util.Get_Iterable_Type_Primitive (Typ, Nam);
+   begin
+      if Present (Direct) then
+         return Sem_Aux.Ultimate_Alias (Direct);
+      else
+         return Direct;
+      end if;
+   end Get_Iterable_Type_Primitive;
 
    ------------------
    -- Get_Rep_Item --

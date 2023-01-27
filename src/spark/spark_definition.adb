@@ -768,21 +768,16 @@ package body SPARK_Definition is
            and then
              (Needs_Default_Checks_At_Decl (E)
               or else (Is_Access_Subprogram_Type (E)
-                       and then No (Parent_Retysp (E))))
+                       and then No (Parent_Retysp (E)))
+              or else Declares_Iterable_Aspect (E))
          then
-
-            --  If the entity is a record or private type with fields hidden
-            --  from SPARK, then the default initialization was not verified.
 
             declare
                V            : constant Subp_Type :=
                  Entity_To_Subp_Assumption (E);
                SPARK_Status : constant SPARK_Mode_Status :=
-                 (if
-                    (Has_Record_Type (E)
-                     or else Has_Incomplete_Or_Private_Type (E))
-                    and then Has_Private_Fields (E)
-                  then Not_In_SPARK
+                 (if Full_View_Not_In_SPARK (E)
+                  then Spec_Only_In_SPARK
                   else All_In_SPARK);
             begin
                Set_Field (SPARK_Status_JSON, To_Key (V),
