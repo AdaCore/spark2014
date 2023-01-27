@@ -4210,6 +4210,103 @@ Refined View
 Dispatching View
 Error Signaling View
 
+Higher Order Specializations
+""""""""""""""""""""""""""""
+
+Functions and lemma procedures with parameters of an anonymous
+access-to-function type can be annotated with ``Higher_Order_Specialization``.
+They can be called on references to the ``Access`` attribute of functions which
+might have a precondition or a non-null global contract. This usage cannot be
+handled using the normal translation of access-to-subprogram types, as the
+generated ``__call`` function would not have the appropriate parameters.
+Instead, alternative `specialized` versions of the functions annotated with
+``Higher_Order_Specialization`` are generated these calls.
+A specialized version of a subprogram is identified by the
+name of the subprogram plus a sequence of specializations for its parameters
+(see ``Get_Specialization_Theory_Name``).  For each such specialized version
+of a subprogram, we generate specific function declarations in Why3.
+These generation is done using the same mechanism as the normal translation of
+a subprogram, but the specialized parameters are handled specifically and their
+global inputs are considered additional reads of the specialization (see
+``Create_Theory_For_HO_Specialization_If_Needed``). As an example, consider
+the Ada function ``My_Call`` defined below. It simply calls its function
+parameter and returns the result:
+
+.. code-block:: ada
+
+   function My_Call
+     (F : not null access function return Integer) return Integer
+   with
+     Annotate => (GNATprove, Higher_Order_Specialization),
+     Annotate => (GNATprove, Always_Return),
+     Post => My_Call'Result = F.all;
+
+The normal translation of ``My_Call`` uses the ``__call`` function of
+``Profile__Return__Standard__integer`` which takes a function pointer
+and returns an integer standing for the result of the call to the pointer
+dereference:
+
+.. code-block:: whyml
+
+  val function my_call (param__f: Subprogram_Pointer_Rep.__rep) : int
+
+  val my_call (param__f: Subprogram_Pointer_Rep.__rep) : int
+    ensures { result = my_call param__f /\
+              result =
+	         Profile__Return__Standard__integer.__call
+                    param__f.__pointer_value () }
+
+  axiom my_call__post_axiom:
+    forall param__f : Subprogram_Pointer_Rep.__rep [my_call param__f].
+       not param__f.__is_null_pointer ->
+          let result = my_call param__f in
+            result =
+	       Profile__Return__Standard__integer.__call
+	          param__f.__pointer_value ()
+
+Let us now consider the function ``Read_V`` which accesses the value of the
+global variable ``V``. A call to this function cannot be represented as a
+call to the ``__call`` function of ``Profile__Return__Standard__integer``, as
+it should take ``V`` as an additional read effect (or an additional input
+parameter for the logic function).
+
+.. code-block:: ada
+
+   V : Integer := 0;
+   function Read_V return Integer is (V);
+
+   I : Integer := My_Call (Read_V'Access);
+
+Instead, we generate alternative declarations for ``My_Call`` in specialization
+modules called ``Higher_order_spec__Main__call__Main__read_v`` and
+``Higher_order_spec__Main__call__Main__read_v___axiom``. They call ``Read_V``
+directly and have ``V`` as an additional input parameter:
+
+.. code-block:: whyml
+
+  val function my_call (f__void_param: unit) (v: int) : int
+
+  val my_call (f__void_param: unit) : int
+    reads   { Main.v }
+    ensures { result = my_call f__void_param Main.v.int__content /\
+              result = read_v Main.v.int__content }
+
+  axiom call__post_axiom:
+    forall f__void_param : unit.
+    forall v : int [my_call f__void_param v].
+       let result = call f__void_param v in
+         result = read_v v
+
+This specialized translation of contracts is implemented using a global map
+``Specialized_Call_Params`` which maps formal parameters of specialized calls
+to their actuals. This mapping is used to query the called entity when
+translating subprogram calls (see ``Get_Called_Entity_For_Proof``). Note that
+the specialized parameters are replaced by dummy parameters of type unit and
+not simply erased. When translating specialized calls, these parameters might
+contain checks in the program domain. This occurs when the ``Access`` attribute
+is used on a type with a precondition, as checks are needed to ensure that the
+precondition holds at the point of call (see ``Compute_Call_Args``).
+
 Modules for Checks
 ==================
 
