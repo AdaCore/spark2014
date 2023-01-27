@@ -197,7 +197,7 @@ deceleration_curve.adb:89:29: medium: float overflow check might fail [reason fo
 deceleration_curve.adb:90:13: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:90:46: info: division check proved (CVC5: 1 VC)
 deceleration_curve.adb:90:46: info: float overflow check proved (Trivial)
-deceleration_curve.adb:105:09: medium: precondition might fail [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
+deceleration_curve.adb:105:09: medium: precondition might fail
 deceleration_curve.adb:105:60: info: cannot unroll loop (too many loop iterations)
 deceleration_curve.adb:106:10: warning: assuming "Put" always returns
 deceleration_curve.adb:106:10: warning: assuming "Put" has no effect on global items
@@ -212,7 +212,7 @@ deceleration_curve.adb:108:10: warning: assuming "Put" has no effect on global i
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:108:10: warning: no returning annotation available for "Put"
 deceleration_curve.adb:109:12: medium: in inlined expression function body at units.ads:42
-deceleration_curve.adb:109:12: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
+deceleration_curve.adb:109:12: medium: precondition might fail, cannot prove Speed >= 0.0
 deceleration_curve.adb:110:10: warning: assuming "New_Line" always returns
 deceleration_curve.adb:110:10: warning: assuming "New_Line" has no effect on global items
 deceleration_curve.adb:110:10: warning: no Global contract available for "New_Line"
