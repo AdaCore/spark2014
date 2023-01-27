@@ -88,23 +88,25 @@ is
    --  Elements implements simple set comprehension. It constructs the set of
    --  all elements on which Choose returns True.
 
-   generic
-      type State_Type (<>) is private;
-      with function Choose (S : State_Type; E : Element_Type) return Boolean;
-   package Set_Comprehension is
-      function Elements (S : State_Type) return Set with
-        Global => null,
-        Pre    => not Choose (S, No_Element),
-        Post   => (for all E in Elements'Result => Choose (S, E));
+   function Elements
+     (Choose : not null access function (E : Element_Type) return Boolean)
+      return Set
+   with
+     Global => null,
+     Pre    => not Choose (No_Element),
+     Post   => (for all E in Elements'Result => Choose (E)),
+     Annotate => (GNATprove, Higher_Order_Specialization);
 
-      procedure All_Elements_Chosen (S : State_Type; E : Element_Type)
-      with
-        Ghost,
-        Global   => null,
-        Pre      => not Choose (S, No_Element) and Choose (S, E),
-        Post     => Contains (Elements (S), E),
-        Annotate => (GNATprove, Automatic_Instantiation);
-   end Set_Comprehension;
+   procedure All_Elements_Chosen
+     (Choose : not null access function (E : Element_Type) return Boolean;
+      E      : Element_Type)
+   with
+     Ghost,
+     Global   => null,
+     Pre      => not Choose (No_Element) and Choose (E),
+     Post     => Contains (Elements (Choose), E),
+     Annotate => (GNATprove, Automatic_Instantiation),
+     Annotate => (GNATprove, Higher_Order_Specialization);
 
    --  Elements of abstract sets are (implicitely) copied in this
    --  package. Tihs function causes GNATprove to verify that such a copy

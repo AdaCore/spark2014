@@ -257,10 +257,8 @@ procedure Example_Recursive with SPARK_Mode is
      and then L1.L = L1.L'Old + L2.L'Old;
 
    procedure Merge (L1, L2 : in out List) is
-      package Map_Elements is new Address_Sets.Set_Comprehension
-        (Memory_Map, Valid);
-      function All_Valid (M : Memory_Map) return Footprint is
-        (Footprint (Map_Elements.Elements (M)));
+      function Valid_In_L2 (A : Address_Type) return Boolean is
+        (Valid (+L2.M, A));
 
       F1_Next : Pointer;
       F2_Next : Pointer;
@@ -268,7 +266,7 @@ procedure Example_Recursive with SPARK_Mode is
       M2_Old  : constant Memory_Map := +L2.M with Ghost;
       M_Old   : Memory_Map with Ghost;
    begin
-      Move_Memory (L2.M, L1.M, All_Valid (+L2.M));
+      Move_Memory (L2.M, L1.M, Elements (Valid_In_L2'Access));
       pragma Assert (Valid_Memory (+L1.M));
 
       Prove_Valid_Preserved (Address (L2.F), Address (L2.F), L2.L, M2_Old, +L1.M);
