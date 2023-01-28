@@ -21,8 +21,6 @@ main.adb:158:12: info: predicate check proved on default value (CVC5: 1 VC)
 main.adb:168:07: info: initialization of "X" proved
 main.adb:168:07: info: predicate check proved on default value (CVC5: 1 VC)
 main.adb:168:07: medium: default initial condition might fail
-main.adb:168:07: warning: Program_Error will be raised at run time
-main.adb:168:07: warning: cannot call "T1" before body seen
 main.adb:168:20: info: range check proved (CVC5: 2 VC)
 main.adb:179:12: info: predicate check proved on default value (CVC5: 1 VC)
 main.adb:190:07: info: initialization of "X" proved
