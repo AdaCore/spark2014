@@ -7372,7 +7372,9 @@ package body SPARK_Definition is
                   if Is_Pragma_Annotate_GNATprove (Cur) then
                      Mark_Pragma_Annotate (Cur, Decl_Node,
                                            Consider_Next => True);
-                  elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
+                  elsif Decl_Starts_Pragma_Annotate_Range (Cur)
+                    and then Nkind (Cur) not in N_Pragma | N_Null_Statement
+                  then
                      exit;
                   end if;
                   Next (Cur);
