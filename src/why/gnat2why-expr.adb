@@ -282,7 +282,8 @@ package body Gnat2Why.Expr is
    function Compute_Tag_Check
      (Call   : Node_Id;
       Params : Transformation_Params)
-      return W_Prog_Id;
+      return W_Prog_Id
+   with Pre => Nkind (Call) in N_Subprogram_Call;
    --  ???
 
    function DIC_Expression
@@ -5922,10 +5923,7 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params)
       return W_Prog_Id
    is
-      Controlling_Arg : constant Node_Id :=
-        (if Nkind (Call) = N_Entry_Call_Statement
-         then Empty
-         else Controlling_Argument (Call));
+      Controlling_Arg : constant Node_Id := Controlling_Argument (Call);
       Control_Tag     : W_Expr_Id := Why_Empty;
       Check           : W_Pred_Id := True_Pred;
       Needs_Check     : Boolean := False;
@@ -22802,7 +22800,10 @@ package body Gnat2Why.Expr is
 
                --  Insert tag check if needed
 
-               Prepend (Compute_Tag_Check (Stmt_Or_Decl, Body_Params), Call);
+               if Nkind (Stmt_Or_Decl) /= N_Entry_Call_Statement then
+                  Prepend
+                    (Compute_Tag_Check (Stmt_Or_Decl, Body_Params), Call);
+               end if;
 
                --  Insert variant check if needed
 
