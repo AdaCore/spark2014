@@ -1031,6 +1031,20 @@ package body SPARK_Definition.Annotate is
          end;
       end if;
 
+      --  The body of expression functions is ignored for higher order
+      --  specialization. If E should be inline, require a postcondition.
+
+      if Present (Retrieve_Inline_Annotation (E))
+        and then
+          Find_Contracts (E, Pragma_Postcondition, False, False).Is_Empty
+      then
+         Error_Msg_N
+           ("function annotated with both Higher_Order_Specialization and"
+            & " Inline_For_Proof shall have a postcondition",
+            E);
+         return;
+      end if;
+
       declare
          F         : Opt_Formal_Kind_Id := First_Formal (E);
          Formals   : Entity_Sets.Set;
@@ -1310,6 +1324,18 @@ package body SPARK_Definition.Annotate is
          Error_Msg_N
            ("Entity parameter of a pragma Inline_For_Proof shall not have a"
             & " Logical_Equal annotation", Arg3_Exp);
+         return;
+      end if;
+
+      --  The body of expression functions is ignored for higher order
+      --  specialization. Require a postcondition.
+
+      if Has_Higher_Order_Specialization_Annotation (E) and then Nodes.Is_Empty
+      then
+         Error_Msg_N
+           ("function annotated with both Higher_Order_Specialization and"
+            & " Inline_For_Proof shall have a postcondition",
+            E);
          return;
       end if;
 
@@ -2265,9 +2291,14 @@ package body SPARK_Definition.Annotate is
       elsif not SPARK_Definition.Entity_Body_Compatible_With_SPARK (E) then
          return;
 
-      --  ...and not a traversal function.
+      --  ...it is not a traversal function
 
       elsif Is_Traversal_Function (E) then
+         return;
+
+      --  ...and it cannot be specialized
+
+      elsif Has_Higher_Order_Specialization_Annotation (E) then
          return;
 
       else
