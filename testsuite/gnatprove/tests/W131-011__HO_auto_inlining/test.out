@@ -1,0 +1,2 @@
+test_bad_infer.adb:9:13: info: subprogram "Bad" will terminate, terminating annotation has been proved
+test_bad_infer.adb:20:19: medium: assertion might fail (e.g. when I = 0)
