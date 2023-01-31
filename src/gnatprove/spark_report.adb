@@ -727,15 +727,42 @@ procedure SPARK_Report is
    -----------------------
 
    procedure Handle_SPARK_File (Fn : String) is
+
       function Get_SPARK_Status (Status : String) return SPARK_Mode_Status
       is (if Status = "all" then All_In_SPARK
           elsif Status = "spec" then Spec_Only_In_SPARK
           else Not_In_SPARK);
       --  Returns the SPARK Mode given the "spark" entry string
 
-      Dict        : constant JSON_Value := Read_File_Into_JSON (Fn);
       Basename    : constant String := Ada.Directories.Base_Name (Fn);
       Unit        : constant Unit_Type := Mk_Unit (Basename);
+
+      procedure Handle_SPARK_Status (Name : UTF8_String; Value : JSON_Value);
+      --  Handle one entry of the "spark" status map
+
+      -------------------------
+      -- Handle_SPARK_Status --
+      -------------------------
+
+      procedure Handle_SPARK_Status (Name : UTF8_String; Value : JSON_Value) is
+         SPARK_Status : constant SPARK_Mode_Status :=
+           Get_SPARK_Status (Get (Value));
+      begin
+         Add_SPARK_Status
+           (Unit         => Unit,
+            Subp         => From_Key (Name),
+            SPARK_Status => SPARK_Status);
+
+            --  If at least one subprogram or package is fully in SPARK, then
+            --  record that SPARK_Mode is likely set at least somewhere.
+
+            if SPARK_Status = All_In_SPARK then
+               SPARK_Mode_OK := True;
+            end if;
+
+      end Handle_SPARK_Status;
+
+      Dict        : constant JSON_Value := Read_File_Into_JSON (Fn);
       Has_Flow    : constant Boolean := Has_Field (Dict, "flow");
       Has_Assumes : constant Boolean := Has_Field (Dict, "pragma_assume");
       Has_Proof   : constant Boolean := Has_Field (Dict, "proof");
@@ -753,31 +780,12 @@ procedure SPARK_Report is
       Stop_Reason : constant Stop_Reason_Type :=
         Stop_Reason_Type'Value (String'(Get (Dict, "stop_reason")));
 
-      Entries : constant JSON_Array := Get (Get (Dict, "spark"));
+      SPARK_Status_Dict : constant JSON_Value := Get (Dict, "spark");
    begin
+      Parse_Entity_Table (Get (Dict, "entities"));
       Add_Analysis_Progress (Unit, Analysis, Stop_Reason);
-      for Index in 1 .. Length (Entries) loop
-         declare
-            Result       : constant JSON_Value := Get (Entries, Index);
-            SPARK_Status : constant SPARK_Mode_Status :=
-              Get_SPARK_Status (Get (Result, "spark"));
-         begin
-            Add_SPARK_Status
-              (Unit         => Unit,
-               Subp         => From_JSON (Result),
-               SPARK_Status => SPARK_Status);
-
-            --  If at least one subprogram or package is fully in SPARK, then
-            --  record that SPARK_Mode is likely set at least somewhere.
-
-            if SPARK_Status = All_In_SPARK then
-               SPARK_Mode_OK := True;
-            end if;
-
-            Max_Progress := Analysis_Progress'Max (Max_Progress, Analysis);
-
-         end;
-      end loop;
+      Map_JSON_Object (SPARK_Status_Dict, Handle_SPARK_Status'Access);
+      Max_Progress := Analysis_Progress'Max (Max_Progress, Analysis);
       if Has_Flow then
          Handle_Flow_Items (Get (Get (Dict, "flow")), Unit);
       end if;

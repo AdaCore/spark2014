@@ -31,6 +31,7 @@ with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
 with Ada.Text_IO;                     use Ada.Text_IO;
 with ALI.Util;                        use ALI.Util;
 with ALI;                             use ALI;
+with Assumption_Types;                use Assumption_Types;
 with Atree;                           use Atree;
 with Binderr;
 with Call;
@@ -334,7 +335,7 @@ package body Gnat2Why.Driver is
            Extension => VC_Kinds.SPARK_Suffix);
       Full : constant JSON_Value := Create_Object;
    begin
-      Set_Field (Full, "spark", Create (Get_SPARK_JSON));
+      Set_Field (Full, "spark", Get_SPARK_JSON);
       Set_Field
         (Full, "progress", Create (Analysis_Progress'Image (Progress)));
       Set_Field
@@ -350,6 +351,7 @@ package body Gnat2Why.Driver is
       Set_Field (Full, "assumptions", Get_Assume_JSON);
 
       Set_Field (Full, "timings", Timing_History (Timing));
+      Set_Field (Full, "entities", Entity_Table);
 
       Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, File_Name);
       Ada.Text_IO.Put (FD, GNATCOLL.JSON.Write (Full, Compact => False));

@@ -158,7 +158,7 @@ package SPARK_Definition is
    --  declared in a private part with SPARK_Mode => Off. Also returns True
    --  if E is a subtype or derived type of such an entity.
 
-   function Get_SPARK_JSON return JSON_Array;
+   function Get_SPARK_JSON return JSON_Value;
    --  Should be called after marking is finished. Returns the result of
    --  marking as a JSON record.
 

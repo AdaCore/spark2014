@@ -716,8 +716,8 @@ package body SPARK_Definition is
    -- Get_SPARK_JSON --
    --------------------
 
-   function Get_SPARK_JSON return JSON_Array is
-      SPARK_Status_JSON : JSON_Array := Empty_Array;
+   function Get_SPARK_JSON return JSON_Value is
+      SPARK_Status_JSON : constant JSON_Value := Create_Object;
 
    begin
       --  ??? Iterating over all entities is not efficient, but we do it only
@@ -741,8 +741,8 @@ package body SPARK_Definition is
            and then Analysis_Requested (E, With_Inlined => True)
          then
             declare
-               V : constant JSON_Value :=
-                 To_JSON (Entity_To_Subp_Assumption (E));
+               V            : constant Subp_Type :=
+                 Entity_To_Subp_Assumption (E);
 
                SPARK_Status : constant String :=
                  (if Entity_Body_In_SPARK (E)
@@ -754,8 +754,7 @@ package body SPARK_Definition is
                      else "spec")
                   else "no");
             begin
-               Set_Field (V, "spark", SPARK_Status);
-               Append (SPARK_Status_JSON, V);
+               Set_Field (SPARK_Status_JSON, To_Key (V), SPARK_Status);
             end;
 
          elsif Is_Type (E)
@@ -769,8 +768,8 @@ package body SPARK_Definition is
             pragma Assert (Entity_In_SPARK (E));
 
             declare
-               V            : constant JSON_Value :=
-                 To_JSON (Entity_To_Subp_Assumption (E));
+               V            : constant Subp_Type :=
+                 Entity_To_Subp_Assumption (E);
                SPARK_Status : constant String :=
                  (if
                     (Has_Record_Type (E)
@@ -779,8 +778,7 @@ package body SPARK_Definition is
                   then "no"
                   else "all");
             begin
-               Set_Field (V, "spark", SPARK_Status);
-               Append (SPARK_Status_JSON, V);
+               Set_Field (SPARK_Status_JSON, To_Key (V), SPARK_Status);
             end;
          end if;
       end loop;
