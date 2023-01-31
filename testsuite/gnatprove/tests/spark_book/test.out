@@ -90,7 +90,7 @@ bounded_queue_example.adb:15:43: info: unrolling loop
 bounded_queue_example.adb:16:07: medium: precondition might fail
 bounded_queue_example.adb:18:38: info: unrolling loop
 bounded_queue_example.adb:19:07: medium: precondition might fail
-bounded_queue_example.adb:24:42: low: range check might fail, cannot prove upper bound for "Size of cleared queue is " & Integer'image [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Size or turning it into an expression function]
+bounded_queue_example.adb:24:42: low: range check might fail, cannot prove upper bound for "Size of cleared queue is " & Integer'Image (Size (My_Queue)) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Size or turning it into an expression function]
 bounded_queue_example_v1.adb:6:56: info: range check proved (CVC5: 2 VC)
 bounded_queue_example_v1.adb:7:04: info: initialization of "Value" proved
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Count" is not initialized
@@ -101,7 +101,7 @@ bounded_queue_example_v1.adb:11:40: info: cannot unroll loop (too many loop iter
 bounded_queue_example_v1.adb:12:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v1.adb:14:38: info: unrolling loop
 bounded_queue_example_v1.adb:15:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
-bounded_queue_example_v1.adb:20:42: low: range check might fail, cannot prove upper bound for "Size of cleared queue is " & Integer'image [reason for check: input value must fit in parameter type]
+bounded_queue_example_v1.adb:20:42: low: range check might fail, cannot prove upper bound for "Size of cleared queue is " & Integer'Image (Value) [reason for check: input value must fit in parameter type]
 bounded_queue_example_v2.adb:6:04: info: initialization of "My_Queue" proved
 bounded_queue_example_v2.adb:6:56: info: range check proved (CVC5: 2 VC)
 bounded_queue_example_v2.adb:7:04: info: initialization of "Value" proved
@@ -109,7 +109,7 @@ bounded_queue_example_v2.adb:11:40: info: cannot unroll loop (too many loop iter
 bounded_queue_example_v2.adb:12:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v2.adb:14:38: info: unrolling loop
 bounded_queue_example_v2.adb:15:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
-bounded_queue_example_v2.adb:20:42: low: range check might fail, cannot prove upper bound for "Size of cleared queue is " & Integer'image [reason for check: input value must fit in parameter type]
+bounded_queue_example_v2.adb:20:42: low: range check might fail, cannot prove upper bound for "Size of cleared queue is " & Integer'Image (Value) [reason for check: input value must fit in parameter type]
 bounded_queue_v1.adb:20:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Front in 1 .. Max_Size) to subprogram at bounded_queue_v1.ads:21]
 bounded_queue_v1.adb:25:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Rear in 1 .. Max_Size) to subprogram at bounded_queue_v1.ads:25]
 bounded_queue_v1.adb:38:32: info: division check proved (CVC5: 1 VC)

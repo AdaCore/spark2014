@@ -102,7 +102,7 @@ sorting.adb:119:08: info: initialization of "L" proved
 sorting.adb:119:11: info: initialization of "K" proved
 sorting.adb:125:10: info: loop invariant preservation proved (CVC5: 3 VC; Trivial: 1 VC)
 sorting.adb:126:19: medium: overflow check might fail, cannot prove upper bound for J * L [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-sorting.adb:127:14: medium: loop invariant might fail in first iteration, cannot prove Sorted (A, A_First + J * L, Natural'min) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function in its unit spec]
+sorting.adb:127:14: medium: loop invariant might fail in first iteration, cannot prove Sorted (A, A_First + J * L, Natural'Min (L, Length - J * L)) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function in its unit spec]
 sorting.adb:127:33: info: overflow check proved (CVC5: 4 VC)
 sorting.adb:127:37: info: overflow check proved (CVC5: 4 VC)
 sorting.adb:127:49: info: range check proved (CVC5: 4 VC)
@@ -141,7 +141,7 @@ sorting.adb:149:17: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:149:22: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:154:19: medium: overflow check might fail, cannot prove upper bound for J * L [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 sorting.adb:154:23: medium: overflow check might fail, cannot prove upper bound for J * L * 2 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-sorting.adb:155:14: medium: assertion might fail, cannot prove Sorted (A, A_First + J * L * 2, Natural'min) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function in its unit spec]
+sorting.adb:155:14: medium: assertion might fail, cannot prove Sorted (A, A_First + J * L * 2, Natural'Min (L * 2, Length - J * L * 2)) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function in its unit spec]
 sorting.adb:155:33: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:155:37: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:155:41: info: overflow check proved (CVC5: 2 VC)

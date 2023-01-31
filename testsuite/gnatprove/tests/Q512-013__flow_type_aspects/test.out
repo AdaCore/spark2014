@@ -7,7 +7,7 @@ types.ads:13:62: high: cannot call potentially nonreturning subprogram "R" for t
 types.ads:18:04: info: at the end of the elaboration of package at types.ads:2
 types.ads:18:04: info: invariant check proved (CVC5: 1 VC)
 types.ads:19:16: medium: in inlined predicate at types.ads:13
-types.ads:19:16: medium: predicate check might fail, cannot prove not Boolean (t2)
+types.ads:19:16: medium: predicate check might fail, cannot prove not Boolean (T2)
 types.ads:20:04: info: default initial condition proved (CVC5: 2 VC)
 types.ads:22:14: info: subprogram "Proc1" will terminate, terminating annotation has been proved
 types.ads:23:14: info: subprogram "Proc2" will terminate, terminating annotation has been proved

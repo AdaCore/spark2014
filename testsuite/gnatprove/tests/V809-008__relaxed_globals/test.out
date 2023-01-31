@@ -23,7 +23,7 @@ test_relaxed_globals.adb:81:62: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:81:69: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:84:15: info: predicate check proved (CVC5: 3 VC)
 test_relaxed_globals.adb:88:33: medium: in inlined predicate at test_relaxed_globals.adb:81
-test_relaxed_globals.adb:88:33: medium: predicate check might fail, cannot prove s2.F'Initialized (e.g. when G2.F'Initialized = False and G2.G'Initialized = False) [possible fix: subprogram at line 88 should mention G2 in a precondition]
+test_relaxed_globals.adb:88:33: medium: predicate check might fail, cannot prove S2.F'Initialized (e.g. when G2.F'Initialized = False and G2.G'Initialized = False) [possible fix: subprogram at line 88 should mention G2 in a precondition]
 test_relaxed_globals.adb:89:06: info: data dependencies proved
 test_relaxed_globals.adb:90:14: info: postcondition proved (CVC5: 1 VC)
 test_relaxed_globals.adb:90:26: info: initialization check proved (CVC5: 1 VC)
@@ -34,7 +34,7 @@ test_relaxed_globals.adb:97:14: info: postcondition proved (CVC5: 1 VC)
 test_relaxed_globals.adb:97:31: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:97:53: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:102:33: medium: in inlined predicate at test_relaxed_globals.adb:81
-test_relaxed_globals.adb:102:33: medium: predicate check might fail, cannot prove s2.F'Initialized (e.g. when H2.F'Initialized = False and H2.G'Initialized = False) [possible fix: subprogram at line 102 should mention H2 in a precondition]
+test_relaxed_globals.adb:102:33: medium: predicate check might fail, cannot prove S2.F'Initialized (e.g. when H2.F'Initialized = False and H2.G'Initialized = False) [possible fix: subprogram at line 102 should mention H2 in a precondition]
 test_relaxed_globals.adb:103:06: info: data dependencies proved
 test_relaxed_globals.adb:104:14: info: postcondition proved (CVC5: 1 VC)
 test_relaxed_globals.adb:104:26: info: initialization check proved (CVC5: 1 VC)
@@ -46,7 +46,7 @@ test_relaxed_globals.adb:121:14: info: predicate check proved (CVC5: 3 VC)
 test_relaxed_globals.adb:121:14: medium: postcondition might fail (e.g. when G2 = (F => 0, G => 0) and G2.F'Initialized = True and G2.G'Initialized = True)
 test_relaxed_globals.adb:121:16: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:121:21: medium: in inlined predicate at test_relaxed_globals.adb:81
-test_relaxed_globals.adb:121:21: medium: predicate check might fail, cannot prove s2.F'Initialized (e.g. when G2 = (F => ?, G => -1) and G2.F'Initialized = False and G2.G'Initialized = True)
+test_relaxed_globals.adb:121:21: medium: predicate check might fail, cannot prove S2.F'Initialized (e.g. when G2 = (F => ?, G => -1) and G2.F'Initialized = False and G2.G'Initialized = True)
 test_relaxed_globals.adb:121:23: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:125:16: info: predicate check proved (CVC5: 3 VC)
 test_relaxed_globals.adb:133:06: info: data dependencies proved
@@ -54,7 +54,7 @@ test_relaxed_globals.adb:134:14: info: predicate check proved (CVC5: 3 VC)
 test_relaxed_globals.adb:134:14: medium: postcondition might fail (e.g. when H2 = (F => 0, G => 0) and H2.F'Initialized = True and H2.G'Initialized = True)
 test_relaxed_globals.adb:134:16: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:134:21: medium: in inlined predicate at test_relaxed_globals.adb:81
-test_relaxed_globals.adb:134:21: medium: predicate check might fail, cannot prove s2.F'Initialized (e.g. when H2 = (F => ?, G => -1) and H2.F'Initialized = False and H2.G'Initialized = True)
+test_relaxed_globals.adb:134:21: medium: predicate check might fail, cannot prove S2.F'Initialized (e.g. when H2 = (F => ?, G => -1) and H2.F'Initialized = False and H2.G'Initialized = True)
 test_relaxed_globals.adb:134:23: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:138:16: info: predicate check proved (CVC5: 3 VC)
 test_relaxed_globals.adb:151:15: info: predicate check proved (CVC5: 1 VC)

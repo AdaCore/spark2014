@@ -4695,7 +4695,7 @@ package body SPARK_Util is
          elsif Present (Entity (Expr)) then
             return Source_Name (Entity (Expr));
          else
-            return Get_Name_String (Chars (Expr));
+            return Source_Name (Expr);
          end if;
       end Ident_Image;
 

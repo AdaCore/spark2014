@@ -38,7 +38,7 @@ decadriver.adb:158:35: info: predicate check proved (CVC5: 2 VC)
 decadriver.adb:189:23: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Set_Tx_Data"
 decadriver.adb:189:23: info: precondition proved (CVC5: 4 VC)
 decadriver.adb:197:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Set_Tx_Frame_Length"
-decadriver.adb:197:23: high: precondition might fail, cannot prove Length < DW1000.Constants.tx_buffer_length (e.g. when Length = 1024)
+decadriver.adb:197:23: high: precondition might fail, cannot prove Length < DW1000.Constants.TX_BUFFER_Length (e.g. when Length = 1024)
 decadriver.adb:206:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Start_Tx"
 decadriver.adb:232:10: info: initialization of "Word" proved
 decadriver.adb:234:10: info: initialization of "PMSC_CTRL1_Reg" proved

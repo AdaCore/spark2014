@@ -157,7 +157,7 @@ dynamic_preds_rte.adb:28:16: info: predicate check proved (CVC5: 1 VC)
 dynamic_preds_rte.adb:33:12: info: predicate check proved (CVC5: 1 VC)
 dynamic_preds_rte.adb:33:13: info: predicate check proved (CVC5: 1 VC)
 dynamic_preds_rte.adb:33:16: info: predicate check proved (CVC5: 1 VC)
-dynamic_preds_rte.ads:4:57: medium: overflow check might fail, cannot prove upper bound for 2 * small [reason for check: result of multiplication must fit in a 32-bits machine integer]
+dynamic_preds_rte.ads:4:57: medium: overflow check might fail, cannot prove upper bound for 2 * Small [reason for check: result of multiplication must fit in a 32-bits machine integer]
 dynamic_preds_rte.ads:5:71: medium: overflow check might fail, cannot prove upper bound for Very_Small ** 2 [reason for check: result of exponentiation must fit in a 32-bits machine integer]
 dynamic_preds_rte.ads:16:29: medium: divide by zero might fail
 dynamic_preds_rte.ads:19:31: medium: divide by zero might fail
