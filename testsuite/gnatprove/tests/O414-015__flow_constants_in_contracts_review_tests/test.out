@@ -109,4 +109,4 @@ info_flow_tests.adb:249:12: medium: constant without variable input "C3" cannot 
 info_flow_tests.adb:257:28: medium: constant without variable input "C5" cannot appear in Initializes
 info_flow_tests.adb:257:34: medium: constant without variable input "C1" cannot appear in Initializes
 info_flow_tests.adb:265:14: medium: overflow check might fail, cannot prove upper bound for A + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 234 should mention A in a precondition]
-info_flow_tests.adb:266:17: medium: overflow check might fail, cannot prove upper bound for Q.C5 + Q.c6 [reason for check: result of addition must fit in a 32-bits machine integer]
+info_flow_tests.adb:266:17: medium: overflow check might fail, cannot prove upper bound for Q.C5 + Q.C6 [reason for check: result of addition must fit in a 32-bits machine integer]

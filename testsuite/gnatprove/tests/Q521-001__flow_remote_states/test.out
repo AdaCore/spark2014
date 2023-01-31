@@ -46,7 +46,7 @@ pumpunit.ads:81:18: info: postcondition proved (CVC5: 1 VC)
 pumpunit.ads:84:07: info: data dependencies proved
 pumpunit.ads:85:07: info: flow dependencies proved
 pumpunit.ads:86:59: info: overflow check proved (CVC5: 2 VC)
-pumpunit.ads:87:35: medium: postcondition might fail, cannot prove get_total = get_total'Old + (get_outstanding)
+pumpunit.ads:87:35: medium: postcondition might fail, cannot prove get_total = get_total'Old + get_outstanding
 pumpunit.ads:87:61: info: overflow check proved (CVC5: 2 VC)
 pumpunit.ads:92:07: info: data dependencies proved
 pumpunit.ads:93:07: info: flow dependencies proved

@@ -1,5 +1,5 @@
-camera_motion.adb:8:54: medium: overflow check might fail, cannot prove upper bound for -Filter_Type'last [reason for check: result of negation must fit in a 32-bits machine integer]
-camera_motion.adb:9:54: medium: overflow check might fail, cannot prove upper bound for -Filter_Type'last [reason for check: result of negation must fit in a 32-bits machine integer]
+camera_motion.adb:8:54: medium: overflow check might fail, cannot prove upper bound for -Filter_Type'Last (1) [reason for check: result of negation must fit in a 32-bits machine integer]
+camera_motion.adb:9:54: medium: overflow check might fail, cannot prove upper bound for -Filter_Type'Last (2) [reason for check: result of negation must fit in a 32-bits machine integer]
 camera_motion.adb:20:13: info: add a contract to analyze it separately from calling contexts
 camera_motion.adb:20:13: info: local subprogram "Sqrt" only analyzed in the context of calls
 camera_motion.adb:22:07: info: initialization of "s_new" proved
@@ -145,9 +145,9 @@ camera_motion.adb:252:46: medium: overflow check might fail, cannot prove lower 
 camera_motion.adb:252:63: medium: overflow check might fail, cannot prove lower bound for Integer (Col) * Diff [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 247 should mention Diff in a loop invariant]
 camera_motion.adb:253:46: medium: overflow check might fail, cannot prove lower bound for Weighted_Sum_Y + (Integer (Row) * Diff) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 247 should mention Diff and Weighted_Sum_Y in a loop invariant]
 camera_motion.adb:253:63: medium: overflow check might fail, cannot prove lower bound for Integer (Row) * Diff [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 247 should mention Diff in a loop invariant]
-camera_motion.adb:258:59: medium: overflow check might fail, cannot prove lower bound for Integer (Ref_Image'Last (2)) - Integer (Ref_Image'first) [reason for check: result of subtraction must fit in a 32-bits machine integer]
+camera_motion.adb:258:59: medium: overflow check might fail, cannot prove lower bound for Integer (Ref_Image'Last (2)) - Integer (Ref_Image'First (2)) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 camera_motion.adb:258:92: info: division check proved (CVC5: 1 VC)
-camera_motion.adb:259:59: medium: overflow check might fail, cannot prove lower bound for Integer (Ref_Image'Last (1)) - Integer (Ref_Image'first) [reason for check: result of subtraction must fit in a 32-bits machine integer]
+camera_motion.adb:259:59: medium: overflow check might fail, cannot prove lower bound for Integer (Ref_Image'Last (1)) - Integer (Ref_Image'First (1)) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 camera_motion.adb:259:92: info: division check proved (CVC5: 1 VC)
 camera_motion.adb:261:44: info: division check proved (CVC5: 1 VC)
 camera_motion.adb:261:44: medium: overflow check might fail, cannot prove lower bound for Weighted_Sum_X / Sum_Weights [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: loop at line 246 should mention Sum_Weights and Weighted_Sum_X in a loop invariant]

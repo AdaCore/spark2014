@@ -4,7 +4,7 @@ ints.adb:20:34: info: range check proved (CVC5: 2 VC)
 ints.adb:20:59: info: range check proved (CVC5: 2 VC)
 ints.adb:21:29: info: range check proved (CVC5: 2 VC)
 ints.adb:21:54: info: range check proved (CVC5: 2 VC)
-ints.adb:22:31: low: range check might fail, cannot prove lower bound for "Int is ( Min =" & Integer'Image(Arg.Min) & ", Max =" & Integer'Image(Arg.Max) & ", Value =" & Integer'image) [possible fix: subprogram at ints.ads:13 should mention Arg in a precondition]
+ints.adb:22:31: low: range check might fail, cannot prove lower bound for "Int is ( Min =" & Integer'Image(Arg.Min) & ", Max =" & Integer'Image(Arg.Max) & ", Value =" & Integer'Image(Arg.Value)) [possible fix: subprogram at ints.ads:13 should mention Arg in a precondition]
 ints.adb:22:58: low: range check might fail, cannot prove lower bound for "Int is ( Min =" & Integer'Image(Arg.Min) & ", Max =" & Integer'Image(Arg.Max) & ", Value =" & Integer'Image(Arg.Value) & " )" [reason for check: input value must fit in parameter type] [possible fix: subprogram at ints.ads:13 should mention Arg in a precondition]
 ints.adb:27:10: info: precondition proved (CVC5: 1 VC)
 ints.adb:31:08: medium: overflow check might fail, cannot prove upper bound for abs (Arg1.Value - Arg2.Value) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs (Arg1.Value - Arg2.Value) in Integer) to subprogram at ints.ads:25]
@@ -16,9 +16,9 @@ ints.adb:43:34: info: range check proved (CVC5: 2 VC)
 ints.adb:43:59: info: range check proved (CVC5: 2 VC)
 ints.adb:44:29: info: range check proved (CVC5: 2 VC)
 ints.adb:44:54: info: range check proved (CVC5: 2 VC)
-ints.adb:45:31: low: range check might fail, cannot prove lower bound for "Int is ( Min =" & Integer'Image(Arg.Min) & ", Max =" & Integer'Image(Arg.Max) & ", Value =" & Integer'image) [possible fix: subprogram at ints.ads:28 should mention Arg in a precondition]
+ints.adb:45:31: low: range check might fail, cannot prove lower bound for "Int is ( Min =" & Integer'Image(Arg.Min) & ", Max =" & Integer'Image(Arg.Max) & ", Value =" & Integer'Image(Arg.Value)) [possible fix: subprogram at ints.ads:28 should mention Arg in a precondition]
 ints.adb:45:58: low: range check might fail, cannot prove lower bound for "Int is ( Min =" & Integer'Image(Arg.Min) & ", Max =" & Integer'Image(Arg.Max) & ", Value =" & Integer'Image(Arg.Value) & ", Precision =") [possible fix: subprogram at ints.ads:28 should mention Arg in a precondition]
-ints.adb:46:35: low: range check might fail, cannot prove lower bound for "Int is ( Min =" & Integer'Image(Arg.Min) & ", Max =" & Integer'Image(Arg.Max) & ", Value =" & Integer'Image(Arg.Value) & ", Precision =" & Integer'image) [possible fix: subprogram at ints.ads:28 should mention Arg in a precondition]
+ints.adb:46:35: low: range check might fail, cannot prove lower bound for "Int is ( Min =" & Integer'Image(Arg.Min) & ", Max =" & Integer'Image(Arg.Max) & ", Value =" & Integer'Image(Arg.Value) & ", Precision =" & Integer'Image(Arg.Precision)) [possible fix: subprogram at ints.ads:28 should mention Arg in a precondition]
 ints.adb:46:66: low: range check might fail, cannot prove lower bound for "Int is ( Min =" & Integer'Image(Arg.Min) & ", Max =" & Integer'Image(Arg.Max) & ", Value =" & Integer'Image(Arg.Value) & ", Precision =" & Integer'Image(Arg.Precision) & " )" [reason for check: input value must fit in parameter type] [possible fix: subprogram at ints.ads:28 should mention Arg in a precondition]
 ints.adb:51:38: medium: overflow check might fail, cannot prove upper bound for Arg.Precision + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at ints.ads:30 should mention Arg in a precondition]
 ints.ads:11:40: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]

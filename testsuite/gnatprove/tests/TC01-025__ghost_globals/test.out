@@ -1,6 +1,6 @@
 caller_package-ghost.ads:6:03: info: initial condition proved (CVC5: 4 VC)
 caller_package.adb:12:22: medium: in inlined expression function body at caller_package-ghost.ads:23
-caller_package.adb:12:22: medium: refined postcondition might fail, cannot prove (test_func_post_success_state)
+caller_package.adb:12:22: medium: refined postcondition might fail, cannot prove test_func_post_success_state
 caller_package.adb:15:07: info: precondition proved (CVC5: 1 VC)
 caller_package.adb:16:07: medium: precondition might fail
 caller_package.ads:6:03: info: flow dependencies proved

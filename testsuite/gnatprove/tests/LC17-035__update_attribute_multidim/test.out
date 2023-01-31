@@ -198,7 +198,7 @@ update_logic_fn.ads:129:28: info: index check proved (CVC5: 2 VC)
 update_logic_fn.ads:129:32: info: index check proved (CVC5: 2 VC)
 update_logic_fn.ads:129:36: info: index check proved (CVC5: 2 VC)
 update_logic_fn.ads:133:24: info: initialization of "A" proved
-update_logic_fn.ads:140:06: medium: postcondition might fail, cannot prove A = A_3D_Arr'update
+update_logic_fn.ads:140:06: medium: postcondition might fail, cannot prove (A = A_3D_Arr'Update ((1, 2, Blue) | (X1, Y1, Z1) => V1, (X2, Y2, Z2) => V2))
 update_logic_fn.ads:140:28: info: index check proved (CVC5: 2 VC)
 update_logic_fn.ads:140:31: info: index check proved (CVC5: 2 VC)
 update_logic_fn.ads:140:34: info: index check proved (CVC5: 2 VC)

@@ -7,16 +7,16 @@ main.adb:69:12: medium: predicate check might fail on default value
 main.adb:89:12: medium: default initial condition might fail
 main.adb:94:12: info: default initial condition proved (CVC5: 1 VC)
 main.adb:94:12: medium: in inlined predicate at main.adb:108
-main.adb:94:12: medium: predicate check might fail on default value, cannot prove Q (f)
+main.adb:94:12: medium: predicate check might fail on default value, cannot prove Q (F)
 main.adb:119:12: medium: default initial condition might fail
 main.adb:124:12: info: default initial condition proved (CVC5: 1 VC)
 main.adb:124:12: medium: in inlined predicate at main.adb:143
-main.adb:124:12: medium: predicate check might fail on default value, cannot prove Q (f)
+main.adb:124:12: medium: predicate check might fail on default value, cannot prove Q (F)
 main.adb:129:12: info: default initial condition proved (CVC5: 1 VC)
 main.adb:129:12: info: for inherited predicate at main.adb:143
 main.adb:129:12: info: predicate check proved on default value (CVC5: 2 VC)
 main.adb:129:12: medium: in inlined predicate at main.adb:148
-main.adb:129:12: medium: predicate check might fail on default value, cannot prove R (f)
+main.adb:129:12: medium: predicate check might fail on default value, cannot prove R (F)
 main.adb:158:12: info: predicate check proved on default value (CVC5: 1 VC)
 main.adb:168:07: info: initialization of "X" proved
 main.adb:168:07: info: predicate check proved on default value (CVC5: 1 VC)
@@ -34,7 +34,7 @@ main.adb:210:07: medium: default initial condition might fail
 main.adb:210:20: info: range check proved (CVC5: 2 VC)
 main.adb:221:12: info: default initial condition proved (CVC5: 1 VC)
 main.adb:221:12: medium: in inlined predicate at main.adb:233
-main.adb:221:12: medium: predicate check might fail on default value, cannot prove Q (f)
+main.adb:221:12: medium: predicate check might fail on default value, cannot prove Q (F)
 main.adb:237:07: info: initialization of "X" proved
 main.adb:237:07: info: predicate check proved on default value (CVC5: 2 VC)
 main.adb:237:07: medium: default initial condition might fail

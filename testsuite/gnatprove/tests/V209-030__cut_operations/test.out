@@ -290,7 +290,7 @@ main.adb:201:10: warning: assuming "Rand" always returns
 main.adb:201:10: warning: assuming "Rand" has no effect on global items
 main.adb:201:10: warning: no Global contract available for "Rand"
 main.adb:201:10: warning: no returning annotation available for "Rand"
-main.adb:202:29: medium: assertion premise might fail, cannot prove (A1) [possible fix: you should consider adding a postcondition to function A1 or turning it into an expression function in its unit spec]
+main.adb:202:29: medium: assertion premise might fail, cannot prove A1 [possible fix: you should consider adding a postcondition to function A1 or turning it into an expression function in its unit spec]
 main.adb:202:29: warning: assuming "A1" always returns
 main.adb:202:29: warning: assuming "A1" has no effect on global items
 main.adb:202:29: warning: no Global contract available for "A1"
@@ -302,7 +302,7 @@ main.adb:203:29: warning: assuming "B1" has no effect on global items
 main.adb:203:29: warning: no Global contract available for "B1"
 main.adb:203:29: warning: no returning annotation available for "B1"
 main.adb:204:33: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
-main.adb:204:33: medium: precondition might fail, cannot prove (A1)
+main.adb:204:33: medium: precondition might fail, cannot prove A1
 main.adb:204:33: warning: assuming "B2" always returns
 main.adb:204:33: warning: assuming "B2" has no effect on global items
 main.adb:204:33: warning: no Global contract available for "B2"
@@ -333,7 +333,7 @@ main.adb:209:38: warning: assuming "B2" has no effect on global items
 main.adb:209:38: warning: no Global contract available for "B2"
 main.adb:209:38: warning: no returning annotation available for "B2"
 main.adb:210:38: info: precondition proved (CVC5: 1 VC)
-main.adb:210:38: medium: assertion premise might fail, cannot prove (A2) [possible fix: you should consider adding a postcondition to function A2 or turning it into an expression function in its unit spec]
+main.adb:210:38: medium: assertion premise might fail, cannot prove A2 [possible fix: you should consider adding a postcondition to function A2 or turning it into an expression function in its unit spec]
 main.adb:210:38: warning: assuming "A2" always returns
 main.adb:210:38: warning: assuming "A2" has no effect on global items
 main.adb:210:38: warning: no Global contract available for "A2"
@@ -344,13 +344,13 @@ main.adb:212:29: warning: assuming "B1" always returns
 main.adb:212:29: warning: assuming "B1" has no effect on global items
 main.adb:212:29: warning: no Global contract available for "B1"
 main.adb:212:29: warning: no returning annotation available for "B1"
-main.adb:213:29: medium: assertion premise might fail, cannot prove (A1) [possible fix: you should consider adding a postcondition to function A1 or turning it into an expression function in its unit spec]
+main.adb:213:29: medium: assertion premise might fail, cannot prove A1 [possible fix: you should consider adding a postcondition to function A1 or turning it into an expression function in its unit spec]
 main.adb:213:29: warning: assuming "A1" always returns
 main.adb:213:29: warning: assuming "A1" has no effect on global items
 main.adb:213:29: warning: no Global contract available for "A1"
 main.adb:213:29: warning: no returning annotation available for "A1"
 main.adb:214:38: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
-main.adb:214:38: medium: precondition might fail, cannot prove (A1)
+main.adb:214:38: medium: precondition might fail, cannot prove A1
 main.adb:214:38: warning: assuming "B2" always returns
 main.adb:214:38: warning: assuming "B2" has no effect on global items
 main.adb:214:38: warning: no Global contract available for "B2"

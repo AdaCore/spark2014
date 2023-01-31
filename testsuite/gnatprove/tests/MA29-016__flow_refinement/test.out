@@ -4,11 +4,11 @@ fruit-priv_child.adb:21:42: info: overflow check proved (CVC5: 2 VC)
 fruit-priv_child.adb:22:45: info: overflow check proved (CVC5: 2 VC)
 fruit-priv_child.adb:29:07: info: initialization of "Money" proved
 fruit-priv_child.adb:30:07: info: initialization of "Fruit_Salads" proved
-fruit-priv_child.adb:34:31: medium: overflow check might fail, cannot prove upper bound for Fruit_Salads * (Price_Of_Fruit_Salad) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: call at line 33 should mention Fruit_Salads_Made (for argument Fruit_Salads) and Extra_Cost and Apples and Oranges and Price_Of_Apple and Price_Of_Orange in a postcondition]
-fruit-priv_child.adb:36:24: medium: overflow check might fail, cannot prove upper bound for Money + Apples * (Get_Price_Of_Apple) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 33 should mention Apples and Price_Of_Apple in a postcondition]
-fruit-priv_child.adb:36:33: medium: overflow check might fail, cannot prove upper bound for Apples * (Get_Price_Of_Apple) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: call at line 33 should mention Apples and Price_Of_Apple in a postcondition]
-fruit-priv_child.adb:37:24: medium: overflow check might fail, cannot prove upper bound for Money + Oranges * (Get_Price_Of_Orange) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 33 should mention Oranges and Price_Of_Orange in a postcondition]
-fruit-priv_child.adb:37:34: medium: overflow check might fail, cannot prove upper bound for Oranges * (Get_Price_Of_Orange) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: call at line 33 should mention Oranges and Price_Of_Orange in a postcondition]
+fruit-priv_child.adb:34:31: medium: overflow check might fail, cannot prove upper bound for Fruit_Salads * Price_Of_Fruit_Salad [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: call at line 33 should mention Fruit_Salads_Made (for argument Fruit_Salads) and Extra_Cost and Apples and Oranges and Price_Of_Apple and Price_Of_Orange in a postcondition]
+fruit-priv_child.adb:36:24: medium: overflow check might fail, cannot prove upper bound for Money + Apples * Get_Price_Of_Apple [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 33 should mention Apples and Price_Of_Apple in a postcondition]
+fruit-priv_child.adb:36:33: medium: overflow check might fail, cannot prove upper bound for Apples * Get_Price_Of_Apple [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: call at line 33 should mention Apples and Price_Of_Apple in a postcondition]
+fruit-priv_child.adb:37:24: medium: overflow check might fail, cannot prove upper bound for Money + Oranges * Get_Price_Of_Orange [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 33 should mention Oranges and Price_Of_Orange in a postcondition]
+fruit-priv_child.adb:37:34: medium: overflow check might fail, cannot prove upper bound for Oranges * Get_Price_Of_Orange [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: call at line 33 should mention Oranges and Price_Of_Orange in a postcondition]
 fruit-priv_child.ads:5:08: info: flow dependencies proved
 fruit-priv_child.ads:8:11: info: data dependencies proved
 fruit-priv_child.ads:12:11: info: data dependencies proved
@@ -46,7 +46,7 @@ fruit.ads:12:11: info: data dependencies proved
 fruit.ads:13:11: info: flow dependencies proved
 fruit.ads:17:11: info: data dependencies proved
 fruit.ads:18:11: info: flow dependencies proved
-fruit.ads:22:24: medium: overflow check might fail, cannot prove upper bound for Number_Of_Apples + (Number_Of_Oranges) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 21 should mention Apples and Oranges in a precondition]
+fruit.ads:22:24: medium: overflow check might fail, cannot prove upper bound for Number_Of_Apples + Number_Of_Oranges [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 21 should mention Apples and Oranges in a precondition]
 fruit.ads:23:11: info: data dependencies proved
 fruit.ads:26:11: info: data dependencies proved
 fruit.ads:27:11: info: flow dependencies proved
@@ -60,8 +60,8 @@ levels.adb:16:12: info: data dependencies proved
 levels.adb:18:26: info: initialization of "A" proved
 levels.adb:19:12: info: data dependencies proved
 levels.adb:20:20: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_1_Inner and function Read_Partial_0 or turning them into expression functions]
-levels.adb:20:39: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + (Read_Partial_1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-levels.adb:20:56: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + Read_Partial_1 + (Read_Partial_1_Inner) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+levels.adb:20:39: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + Read_Partial_1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+levels.adb:20:56: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + Read_Partial_1 + Read_Partial_1_Inner [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 levels.adb:22:28: info: initialization of "X" proved
 levels.adb:23:12: info: data dependencies proved
 levels.adb:24:12: info: flow dependencies proved
@@ -73,7 +73,7 @@ levels.adb:45:27: medium: refined postcondition might fail [possible fix: you sh
 levels.adb:45:42: medium: overflow check might fail, cannot prove upper bound for Read_Partial_0 + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_0 or turning it into an expression function]
 levels.adb:52:23: info: initialization of "A" proved
 levels.adb:53:09: info: data dependencies proved
-levels.adb:66:15: medium: overflow check might fail, cannot prove lower bound for X0 + Nested_1(Nested_1.read_partial_1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at levels.ads:25 should mention X2 and Y2 and X1 and Y1 and X0 in a precondition]
+levels.adb:66:15: medium: overflow check might fail, cannot prove lower bound for X0 + Nested_1.Read_Partial_1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at levels.ads:25 should mention X2 and Y2 and X1 and Y1 and X0 in a precondition]
 levels.adb:67:14: medium: overflow check might fail, cannot prove lower bound for Y + X0 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at levels.ads:25 should mention Y and X0 in a precondition]
 levels.adb:70:23: info: initialization of "A" proved
 levels.adb:71:09: info: data dependencies proved
@@ -83,15 +83,15 @@ levels.adb:87:09: info: flow dependencies proved
 levels.adb:88:09: medium: initial condition might fail
 levels.adb:92:15: info: data dependencies proved
 levels.adb:127:25: medium: refined postcondition might fail [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_2 and function Read_Partial_0 or turning them into expression functions]
-levels.adb:127:44: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + (Read_Partial_1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_0 or turning them into expression functions]
-levels.adb:127:61: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + Read_Partial_1 + Nested_2(Nested_2.read_partial_2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_2 and function Read_Partial_0 or turning them into expression functions]
+levels.adb:127:44: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + Read_Partial_1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_0 or turning them into expression functions]
+levels.adb:127:61: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + Read_Partial_1 + Nested_2.Read_Partial_2 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_2 and function Read_Partial_0 or turning them into expression functions]
 levels.adb:130:18: medium: overflow check might fail, cannot prove lower bound for X0 + X1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 18 should mention X1 and X0 in a precondition]
-levels.adb:130:23: medium: overflow check might fail, cannot prove lower bound for X0 + X1 + Nested_2(Nested_2.read_partial_2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 18 should mention X2 and Y2 and X1 and X0 in a precondition]
+levels.adb:130:23: medium: overflow check might fail, cannot prove lower bound for X0 + X1 + Nested_2.Read_Partial_2 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 18 should mention X2 and Y2 and X1 and X0 in a precondition]
 levels.adb:140:17: medium: overflow check might fail, cannot prove lower bound for X + Tmp [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 139 should mention Y (for argument Tmp) and X (for argument X) in a postcondition]
 levels.adb:147:25: info: refined post proved (CVC5: 1 VC)
-levels.adb:147:44: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + Nested_1(Nested_1.read_partial_1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_0 or turning them into expression functions]
+levels.adb:147:44: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + Nested_1.Read_Partial_1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_0 or turning them into expression functions]
 levels.adb:147:70: info: overflow check proved (CVC5: 2 VC)
-levels.adb:157:17: medium: overflow check might fail, cannot prove lower bound for X0 + Nested_1(Nested_1.read_partial_1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at levels.ads:8 should mention X2 and Y2 and X1 and Y1 and X0 in a precondition]
+levels.adb:157:17: medium: overflow check might fail, cannot prove lower bound for X0 + Nested_1.Read_Partial_1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at levels.ads:8 should mention X2 and Y2 and X1 and Y1 and X0 in a precondition]
 levels.ads:2:26: warning: no procedure exists that can initialize abstract state "Levels.Abs_0"
 levels.ads:6:11: info: data dependencies proved
 levels.ads:9:11: info: data dependencies proved
@@ -106,13 +106,13 @@ levels.ads:23:09: info: data dependencies proved
 levels.ads:25:25: info: initialization of "X" proved
 levels.ads:27:11: info: data dependencies proved
 levels.ads:28:11: info: flow dependencies proved
-par-priv.adb:8:18: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at par-priv.ads:9 should mention X and Y in a precondition]
+par-priv.adb:8:18: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at par-priv.ads:9 should mention X and Y in a precondition]
 par-priv.adb:13:04: warning: analyzing unreferenced procedure "Test"
-par-priv.ads:11:40: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 11 should mention X and Y in a precondition]
+par-priv.ads:11:40: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 11 should mention X and Y in a precondition]
 par-priv2.ads:4:27: warning: no procedure exists that can initialize abstract state "Priv2.More_Private_State" constituent of "Par.State"
-par-pub.adb:9:18: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at par-pub.ads:8 should mention X and Y in a precondition]
+par-pub.adb:9:18: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at par-pub.ads:8 should mention X and Y in a precondition]
 par-pub.adb:14:04: warning: analyzing unreferenced procedure "Test"
-par-pub.ads:15:40: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 15 should mention X and Y in a precondition]
+par-pub.ads:15:40: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 15 should mention X and Y in a precondition]
 par.adb:20:16: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at par.ads:15 should mention X and Y in a precondition]
 par.adb:20:20: medium: overflow check might fail, cannot prove lower bound for X + Y + Z [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at par.ads:15 should mention X and Y and Z in a precondition]
 par.adb:26:14: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at par.ads:7 should mention X and Y in a precondition]
