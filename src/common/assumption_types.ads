@@ -37,6 +37,8 @@ package Assumption_Types is
       Line : Integer;
    end record;
 
+   Null_Subp : constant Subp_Type;
+
    function Base_Sloc_File (Subp : Base_Sloc) return String;
 
    package Sloc_Lists is new Ada.Containers.Doubly_Linked_Lists
@@ -91,6 +93,8 @@ package Assumption_Types is
    function "<" (Left, Right : Subp_Type) return Boolean;
    function "<" (Left, Right : Unit_Type) return Boolean;
 
+   function Is_Null (S : Subp_Type) return Boolean;
+
 private
 
    type Unit_Type is new Symbol;
@@ -101,5 +105,7 @@ private
    end record;
 
    type Subp_Type is access constant Subp_Type_Rec;
+   Null_Subp : constant Subp_Type := null;
 
+   function Is_Null (S : Subp_Type) return Boolean is (S = null);
 end Assumption_Types;

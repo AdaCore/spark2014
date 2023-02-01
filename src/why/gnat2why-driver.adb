@@ -449,6 +449,9 @@ package body Gnat2Why.Driver is
                   end if;
                end;
             end if;
+            Timing_Phase_Completed (Timing,
+                                    Entity_To_Subp_Assumption (E),
+                                    "gnat2why.vc_generation");
 
          when E_Package =>
             Generate_VCs_For_Package_Elaboration (E);
@@ -674,7 +677,7 @@ package body Gnat2Why.Driver is
          Mark_Standard_Package;
          Mark_Current_Unit;
 
-         Timing_Phase_Completed (Timing, "marking");
+         Timing_Phase_Completed (Timing, Null_Subp, "marking");
 
          --  Finalize has to be called before we call Compilation_Errors
          Finalize (Last_Call => False);
@@ -695,7 +698,7 @@ package body Gnat2Why.Driver is
          Build_Flow_Tree;
 
          Generate_Globals (GNAT_Root);
-         Timing_Phase_Completed (Timing, "globals (partial)");
+         Timing_Phase_Completed (Timing, Null_Subp, "globals (partial)");
 
       else
          --  Issue warning if analyzing specific units with -u switch, but the
@@ -737,7 +740,7 @@ package body Gnat2Why.Driver is
          --
          --  This functionality should be moved out of Compute_Global_Effects
          Prescan_ALI_Files;
-         Timing_Phase_Completed (Timing, "globals (basic)");
+         Timing_Phase_Completed (Timing, Null_Subp, "globals (basic)");
 
          --  Build hierarchical representation of scopes in the current
          --  compilation unit.
@@ -747,13 +750,13 @@ package body Gnat2Why.Driver is
          --  Read the generated globals from the ALI files
 
          GG_Resolve;
-         Timing_Phase_Completed (Timing, "globals (advanced)");
+         Timing_Phase_Completed (Timing, Null_Subp, "globals (advanced)");
 
          --  Mark the current compilation unit as "in SPARK / not in SPARK"
          Mark_Standard_Package;
          Mark_Current_Unit;
 
-         Timing_Phase_Completed (Timing, "marking");
+         Timing_Phase_Completed (Timing, Null_Subp, "marking");
          Progress := Progress_Marking;
 
          --  Finalize has to be called before we call Compilation_Errors
@@ -769,7 +772,7 @@ package body Gnat2Why.Driver is
          end if;
 
          GG_Complete (GNAT_Root);
-         Timing_Phase_Completed (Timing, "properties (advanced)");
+         Timing_Phase_Completed (Timing, Null_Subp, "properties (advanced)");
 
          --  Do some flow analysis
 
@@ -785,7 +788,7 @@ package body Gnat2Why.Driver is
          end;
 
          Generate_Assumptions;
-         Timing_Phase_Completed (Timing, "flow analysis");
+         Timing_Phase_Completed (Timing, Null_Subp, "flow analysis");
 
          --  Check SPARK rules for pointer aliasing. This is only activated on
          --  SPARK code.
@@ -864,10 +867,11 @@ package body Gnat2Why.Driver is
             Why.Gen.Names.Initialize;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;
-            Timing_Phase_Completed (Timing, "init_why_sections");
+            Timing_Phase_Completed (Timing, Null_Subp, "init_why_sections");
 
             Translate_Standard_Package;
-            Timing_Phase_Completed (Timing, "translation of standard");
+            Timing_Phase_Completed (Timing, Null_Subp,
+                                    "translation of standard");
 
             Translate_CUnit;
 

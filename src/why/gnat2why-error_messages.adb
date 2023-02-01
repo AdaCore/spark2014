@@ -23,35 +23,35 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Latin_1;    use Ada.Characters.Latin_1;
-with Ada.Exceptions;            use Ada.Exceptions;
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Exceptions;         use Ada.Exceptions;
 with Ada.Strings;
-with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
+with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
 with Ada.Containers.Vectors;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Float_Text_IO;
-with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
-with Call;                      use Call;
-with CE_RAC;                    use CE_RAC;
-with Common_Containers;         use Common_Containers;
-with Comperr;                   use Comperr;
-with Debug;                     use Debug;
-with Flow_Refinement;           use Flow_Refinement;
-with Flow_Types;                use Flow_Types;
-with Flow_Utility;              use Flow_Utility;
-with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
-with Gnat2Why.Util;             use Gnat2Why.Util;
-with Gnat2Why_Args;             use Gnat2Why_Args;
-with Gnat2Why_Opts;             use Gnat2Why_Opts;
+with Call;                   use Call;
+with CE_RAC;                 use CE_RAC;
+with Common_Containers;      use Common_Containers;
+with Comperr;                use Comperr;
+with Debug;                  use Debug;
+with Flow_Refinement;        use Flow_Refinement;
+with Flow_Types;             use Flow_Types;
+with Flow_Utility;           use Flow_Utility;
+with Gnat2Why.Assumptions;   use Gnat2Why.Assumptions;
+with Gnat2Why.Util;          use Gnat2Why.Util;
+with Gnat2Why_Args;          use Gnat2Why_Args;
+with Gnat2Why_Opts;          use Gnat2Why_Opts;
 with GNATCOLL.Utils;
-with Osint;                     use Osint;
-with Output;                    use Output;
-with Sinput;                    use Sinput;
-with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
-with Uintp;                     use Uintp;
+with Osint;                  use Osint;
+with Output;                 use Output;
+with Sinput;                 use Sinput;
+with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
+with Uintp;                  use Uintp;
 
 package body Gnat2Why.Error_Messages is
 
@@ -1316,7 +1316,8 @@ package body Gnat2Why.Error_Messages is
          procedure Timing_Entry (Name : UTF8_String; Value : JSON_Value) is
             Time : constant Float := Get (Value);
          begin
-            Register_Timing (Timing, Name, Duration (Time));
+            Register_Timing (Timing, Entity_To_Subp_Assumption (Subp),
+                             Name, Duration (Time));
          end Timing_Entry;
 
       --  Start of processing for Handle_Timings
