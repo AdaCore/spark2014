@@ -1219,12 +1219,8 @@ package body SPARK_Util is
            (if Nkind (Aggr) = N_Delta_Aggregate then No_List
             else Expressions (Aggr));
          Assocs : constant List_Id := Component_Associations (Aggr);
-         Expr   : Node_Id :=
-           (if Present (Exprs) then Nlists.First (Exprs)
-            else Empty);
-         Assoc  : Node_Id :=
-           (if Present (Assocs) then Nlists.First (Assocs)
-            else Empty);
+         Expr   : Node_Id := Nlists.First (Exprs);
+         Assoc  : Node_Id := Nlists.First (Assocs);
       begin
          while Present (Expr) loop
             pragma Assert (Is_Array_Type (Etype (Aggr)));
