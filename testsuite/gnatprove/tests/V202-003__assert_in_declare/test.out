@@ -1,19 +1,6 @@
-assert_in_declare.ads:8:25: info: assertion proved (Trivial)
-assert_in_declare.ads:13:39: warning: assuming "Rand" always returns
-assert_in_declare.ads:13:39: warning: assuming "Rand" has no effect on global items
-assert_in_declare.ads:13:39: warning: no Global contract available for "Rand"
-assert_in_declare.ads:13:39: warning: no returning annotation available for "Rand"
-assert_in_declare.ads:14:25: medium: assertion might fail
-assert_in_declare.ads:15:25: info: assertion proved (CVC5: 1 VC)
-assert_in_declare.ads:20:39: warning: assuming "Rand" always returns
-assert_in_declare.ads:20:39: warning: assuming "Rand" has no effect on global items
-assert_in_declare.ads:20:39: warning: no Global contract available for "Rand"
-assert_in_declare.ads:20:39: warning: no returning annotation available for "Rand"
-assert_in_declare.ads:21:25: info: assertion justified
-assume_in_declare.ads:7:39: warning: assuming "Rand" always returns
-assume_in_declare.ads:7:39: warning: assuming "Rand" has no effect on global items
-assume_in_declare.ads:7:39: warning: no Global contract available for "Rand"
-assume_in_declare.ads:7:39: warning: no returning annotation available for "Rand"
-assume_in_declare.ads:8:10: error: pragma Assume in declare expression is not allowed in SPARK
-assume_in_declare.ads:8:10: error: violation of aspect SPARK_Mode at line 1
-gnatprove: error during flow analysis and proof
+assert_in_declare.ads:8:10: error: object renaming or constant declaration expected
+assert_in_declare.ads:14:10: error: object renaming or constant declaration expected
+assert_in_declare.ads:15:10: error: object renaming or constant declaration expected
+assert_in_declare.ads:21:10: error: object renaming or constant declaration expected
+assume_in_declare.ads:8:10: error: object renaming or constant declaration expected
+gnatprove: error during generation of Global contracts
