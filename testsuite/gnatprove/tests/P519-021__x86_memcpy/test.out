@@ -470,7 +470,7 @@ memcpy.adb:535:13: warning: no returning annotation available for "Write_EAX"
 memcpy.adb:535:13: warning: statement has no effect
 memcpy.adb:543:18: warning: unused assignment
 memcpy.adb:546:18: warning: unused assignment
-memcpy.adb:574:10: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.rsp) [possible fix: subprogram at memcpy.ads:168 should mention RDX in a precondition]
+memcpy.adb:574:10: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.RSP) [possible fix: subprogram at memcpy.ads:168 should mention RDX in a precondition]
 memcpy.adb:574:10: warning: "RAX" is set by "memcpy2" but not used after the call
 memcpy.adb:574:10: warning: "RSI" is set by "memcpy2" but not used after the call
 memcpy.adb:574:10: warning: "RSP" is set by "memcpy2" but not used after the call
