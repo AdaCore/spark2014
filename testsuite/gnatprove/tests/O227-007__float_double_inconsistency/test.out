@@ -1,6 +1,6 @@
 wibble.adb:14:34: info: range check proved (Trivial)
 wibble.adb:14:37: info: float overflow check proved (Trivial)
-wibble.adb:15:17: info: postcondition proved (colibri: 1 VC)
+wibble.adb:15:17: info: postcondition proved (CVC5: 1 VC)
 wibble.adb:15:37: info: range check proved (Trivial)
 wibble.adb:15:42: info: float overflow check proved (Trivial)
 wibble.adb:18:22: info: float overflow check proved (CVC5: 1 VC)
