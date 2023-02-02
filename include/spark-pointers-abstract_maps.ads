@@ -90,7 +90,7 @@ is
 
    pragma Warnings (Off, "unused variable ""K""");
    function Is_Empty (M : Ownership_Map) return Boolean is
-     (for all K in +M => False)
+     (for all K in "+" (M) => False)
    with
      Global   => null,
      Annotate => (GNATprove, Ownership, "Is_Reclaimed");
