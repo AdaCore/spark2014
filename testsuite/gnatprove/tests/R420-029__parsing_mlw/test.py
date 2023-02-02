@@ -8,5 +8,6 @@ installdir = spark_install_path()
 bindir = os.path.join(installdir, "libexec", "spark", "bin")
 Env().add_path(bindir)
 
-process = Run(["gnatwhy3", "--debug", "incorrect.mlw"])
+# pass a dummy number as the entity
+process = Run(["gnatwhy3", "--debug", "incorrect.mlw", "--entity=1234"])
 print(process.out)

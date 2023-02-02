@@ -21,28 +21,30 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Regpat;                use GNAT.Regpat;
+with GNAT.Regpat;                      use GNAT.Regpat;
 with Ada.Strings.Fixed;
-with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
-with Ada.Text_IO;                use Ada.Text_IO;
+with Ada.Strings.Unbounded;            use Ada.Strings.Unbounded;
+with Ada.Text_IO;                      use Ada.Text_IO;
 
-with ALI;                        use ALI;
-with Namet;                      use Namet;
-with Osint;                      use Osint;
-with Output;                     use Output;
-with Sem_Util;                   use Sem_Util;
+with Assumption_Types;                 use Assumption_Types;
 
-with Call;                       use Call;
-with Debug.Timing;               use Debug.Timing;
+with ALI;                              use ALI;
+with Namet;                            use Namet;
+with Osint;                            use Osint;
+with Output;                           use Output;
+with Sem_Util;                         use Sem_Util;
+
+with Call;                             use Call;
+with Debug.Timing;                     use Debug.Timing;
 with Gnat2Why_Args;
-with SPARK2014VSN;               use SPARK2014VSN;
-with SPARK_Definition.Annotate;  use SPARK_Definition.Annotate;
-with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
-with SPARK_Xrefs;                use SPARK_Xrefs;
+with SPARK2014VSN;                     use SPARK2014VSN;
+with SPARK_Definition.Annotate;        use SPARK_Definition.Annotate;
+with SPARK_Frame_Conditions;           use SPARK_Frame_Conditions;
+with SPARK_Xrefs;                      use SPARK_Xrefs;
 
-with Common_Iterators;           use Common_Iterators;
-with Flow_Refinement;            use Flow_Refinement;
-with Flow_Utility;               use Flow_Utility;
+with Common_Iterators;                 use Common_Iterators;
+with Flow_Refinement;                  use Flow_Refinement;
+with Flow_Utility;                     use Flow_Utility;
 with Graphs;
 with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
 
@@ -1689,7 +1691,7 @@ package body Flow_Generated_Globals.Phase_2 is
       procedure Note_Time (Message : String) is
       begin
          if Debug_GG_Read_Timing then
-            Timing_Phase_Completed (Timing, Message);
+            Timing_Phase_Completed (Timing, Null_Subp, Message);
          end if;
       end Note_Time;
       pragma Annotate (Xcov, Exempt_Off);

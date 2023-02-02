@@ -91,6 +91,8 @@ package Why.Images is
    function Img (Node : Why_Node_Set) return String;
    --  Return an image of a Node Id (with no leading space)
 
+   function Img (Node : Node_Id) return String;
+
    function Img (Ty : EW_Type) return String;
 
 end Why.Images;
