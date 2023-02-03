@@ -559,7 +559,7 @@ of a program:
   * They should have specified all necessary :ref:`Properties of Volatile
     Variables` corresponding to their usage.
 
-  A warning is guaranteed to be issued in problematic cases.
+  A warning is guaranteed to be issued in cases where review is required.
 
 * [SPARK_ALIASING_ADDRESS]
   Aliases between objects with an imprecisely supported address
@@ -576,7 +576,7 @@ of a program:
 
   * The objects themselves have valid values for their type when read.
 
-  A warning is guaranteed to be issued in problematic cases.
+  A warning is guaranteed to be issued in cases where review is required.
 
 .. index:: Valid; limitation
 
@@ -593,11 +593,12 @@ of a program:
 * [SPARK_EXTERNAL_VALID]
   Values read from objects whose address is specified are assumed to be valid
   values. This assumption is limited to objects with an imprecisely
-  supported address specification (because an explicit check is emitted
+  supported address (because an explicit check is emitted
   otherwise). Currently there is no model of invalidity or undefinedness. The
   onus is on the user to ensure that all values read from an external source
   are valid. The use of an invalid value invalidates any proofs associated with
-  the value. A warning is guaranteed to be issued in that case.
+  the value. A warning is guaranteed to be issued in cases where review
+  is required.
 
 * [SPARK_STORAGE_ERROR]
   As explained in section :ref:`Dealing with Storage_Error`, GNATprove does not
@@ -867,7 +868,7 @@ being available:
   Subprograms which are called across the boundary of those units analyzed
   together should have a Global contract describing their effect on global
   data, otherwise they will be assumed to have no effect on global data.
-  A warning is guaranteed to be issued in that case.
+  A warning is guaranteed to be issued in cases where review is required.
 
 * [PARTIAL_TERMINATION]
   Subprograms which are called across the boundary of those units analyzed
@@ -875,7 +876,7 @@ being available:
   annotation Always_Return), might not return (with annotation
   Might_Not_Return) or never return (with aspect or pragma No_Return),
   otherwise they will be assumed to always return.  A warning is guaranteed to
-  be issued in that case.
+  be issued in cases where review is required.
 
 * [PARTIAL_RECURSIVE_SUBPROGRAMS]
   Subprograms which are called across the boundary of those units analyzed
