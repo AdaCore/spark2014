@@ -1,10 +1,3 @@
-spark-big_integers__light.ads:54:32: warning: function Is_Valid is assumed to return True
-spark-big_integers__light.ads:84:17: warning: function Is_Valid is assumed to return True
-spark-big_integers__light.ads:90:17: warning: function Is_Valid is assumed to return True
-spark-big_integers__light.ads:94:13: info: subprogram "In_Range" will terminate, terminating annotation has been proved
-spark-big_integers__light.ads:96:08: info: predicate check proved (Trivial: 1 VC)
-spark-big_integers__light.ads:96:30: info: predicate check proved (Trivial: 1 VC)
-spark-big_integers__light.ads:98:06: info: data dependencies proved
 spark-big_intervals__light.ads:48:07: info: predicate check proved (Trivial: 1 VC)
 spark-big_intervals__light.ads:48:11: info: predicate check proved (Trivial: 1 VC)
 spark-big_intervals__light.ads:51:17: info: predicate check proved (Trivial: 1 VC)
