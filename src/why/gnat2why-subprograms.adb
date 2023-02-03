@@ -2467,7 +2467,7 @@ package body Gnat2Why.Subprograms is
 
          --  that are suitable for UC.
 
-         Suitable_For_UC (Source_Type, Valid_Source, Ignored);
+         Suitable_For_UC (Source_Type, False, Valid_Source, Ignored);
          Suitable_For_UC_Target (Target_Type, False, Valid_Target, Ignored);
          Have_Same_Known_RM_Size
            (Source_Type, Target_Type, Valid_Size, Ignored);
@@ -4747,7 +4747,7 @@ package body Gnat2Why.Subprograms is
                Valid       : Boolean;
                Explanation : Unbounded_String;
             begin
-               Suitable_For_UC (Src_Ty, Valid, Explanation);
+               Suitable_For_UC (Src_Ty, False, Valid, Explanation);
                Emit_Static_Proof_Result
                  (Source, VC_UC_Source, Valid, E,
                   Explanation => To_String (Explanation));

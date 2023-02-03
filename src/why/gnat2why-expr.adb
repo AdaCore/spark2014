@@ -16993,10 +16993,22 @@ package body Gnat2Why.Expr is
                         declare
                            Valid       : Boolean;
                            Explanation : Unbounded_String;
+
                         begin
-                           Suitable_For_UC_Target
-                             (Retysp (Etype (Prefix (Expr))),
-                              True, Valid, Explanation);
+                           --  If Aliased_Object is constant, it is OK if if
+                           --  its type permits invalid values as the alias
+                           --  cannot be used to modify it.
+
+                           if Is_Constant_In_SPARK (Aliased_Object) then
+                              Suitable_For_UC
+                                (Retysp (Etype (Prefix (Expr))),
+                                 True, Valid, Explanation);
+                           else
+                              Suitable_For_UC_Target
+                                (Retysp (Etype (Prefix (Expr))),
+                                 True, Valid, Explanation);
+                           end if;
+
                            Emit_Static_Proof_Result
                              (Expr, VC_UC_Target, Valid, Current_Subp,
                               Explanation => To_String (Explanation));
