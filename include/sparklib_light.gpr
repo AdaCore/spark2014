@@ -57,7 +57,6 @@ project SPARKlib_Light is
 
    package Naming is
       for Spec ("SPARK.Big_Integers") use "spark-big_integers__light.ads";
-      for Body ("SPARK.Big_Integers") use "spark-big_integers__light.adb";
       for Spec ("SPARK.Big_Intervals") use "spark-big_intervals__light.ads";
       for Spec ("SPARK.Big_Reals") use "spark-big_reals__light.ads";
       for Body ("SPARK.Big_Reals") use "spark-big_reals__light.adb";
