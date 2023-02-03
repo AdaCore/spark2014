@@ -105,10 +105,13 @@ package Functional_Sets with SPARK_Mode is
      Post   => Is_Union (S1, S2, Union'Result);
 
    --  For quantification purpose
-   function First_Element (S : Set) return Element_Type;
+   function First_Element (S : Set) return Element_Type with
+     Global => null;
    pragma Annotate (GNATprove, Always_Return, First_Element);
    function Next_Element (S : Set; E : Element_Type) return Element_Type with
-     Pre => Mem (S, E);
+     Pre => Mem (S, E),
+     Global => null;
+
    pragma Annotate (GNATprove, Always_Return, Next_Element);
 private
    pragma SPARK_Mode (Off);

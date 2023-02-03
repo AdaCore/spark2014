@@ -46,6 +46,10 @@ bad_inv_placement.adb:6:10: error: nested packages before loop-invariant is not 
 bad_inv_placement.adb:9:10: error: nested subprogram before loop-invariant is not yet supported
 bad_iterators.adb:30:27: error: iterator specification is not allowed in SPARK (SPARK RM 5.5.2)
 bad_iterators.adb:30:27: error: violation of aspect SPARK_Mode at line 3
+bad_iterators.adb:30:32: warning: assuming "Iterate" always returns
+bad_iterators.adb:30:32: warning: assuming "Iterate" has no effect on global items
+bad_iterators.adb:30:32: warning: no Global contract available for "Iterate"
+bad_iterators.adb:30:32: warning: no returning annotation available for "Iterate"
 bad_iterators.adb:31:33: error: loop on an iterator specification with an iterator filter is not yet supported
 bad_membership.adb:13:31: error: equality on access types is not allowed in SPARK
 bad_membership.adb:13:31: error: violation of aspect SPARK_Mode at line 1

@@ -6,9 +6,9 @@ bad_annotate.adb:13:19: error: parameter of Model function must allow for of ite
 bad_annotate.adb:15:13: error: Contains function must have exactly two parameters
 bad_annotate.adb:17:13: error: Contains function must return Booleans
 bad_annotate.adb:19:17: error: first parameter of Contains function must allow for of iteration
-bad_annotate.adb:47:13: error: return type of Model function must allow for of iteration
-bad_annotate.adb:49:24: error: second parameter of Contains must have the type of elements
-bad_annotate.adb:58:13: error: two Iterable_For_Proof annotations for container type "T"
+bad_annotate.adb:40:13: error: return type of Model function must allow for of iteration
+bad_annotate.adb:41:24: error: second parameter of Contains must have the type of elements
+bad_annotate.adb:43:13: error: two Iterable_For_Proof annotations for container type "T"
 bad_annotate.adb:72:26: error: Annotation No_Wrap_Around must apply to a type declaration
 bad_annotate.adb:73:36: error: Entity parameter of annotation No_Wrap_Around must be a modular type
 bad_annotate.adb:74:40: error: Entity parameter of a pragma Always_Return must be a subprogram or a package

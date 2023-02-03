@@ -31,7 +31,6 @@ perm-lemma_subprograms.adb:28:11: info: predicate check proved
 perm-lemma_subprograms.adb:28:25: info: precondition proved
 perm-lemma_subprograms.adb:28:48: info: index check proved
 perm-lemma_subprograms.adb:28:54: info: predicate check proved
-perm-lemma_subprograms.adb:30:12: info: precondition proved
 perm-lemma_subprograms.adb:30:32: info: precondition proved
 perm-lemma_subprograms.adb:30:52: info: precondition proved
 perm-lemma_subprograms.adb:31:34: info: index check proved
@@ -47,7 +46,6 @@ perm-lemma_subprograms.adb:46:10: info: subprogram variant proved
 perm-lemma_subprograms.adb:46:37: info: overflow check proved
 perm-lemma_subprograms.adb:48:13: info: assertion proved
 perm-lemma_subprograms.adb:48:24: info: index check proved
-perm-lemma_subprograms.adb:49:18: info: precondition proved
 perm-lemma_subprograms.adb:49:38: info: precondition proved
 perm-lemma_subprograms.adb:49:58: info: precondition proved
 perm-lemma_subprograms.adb:50:42: info: index check proved
@@ -73,7 +71,6 @@ perm-lemma_subprograms.ads:22:31: info: index check proved
 perm-lemma_subprograms.ads:22:37: info: predicate check proved
 perm-lemma_subprograms.ads:22:48: info: index check proved
 perm-lemma_subprograms.ads:22:54: info: predicate check proved
-perm-lemma_subprograms.ads:24:14: info: precondition proved
 perm-lemma_subprograms.ads:25:36: info: index check proved
 perm-lemma_subprograms.ads:25:44: info: predicate check proved
 perm-lemma_subprograms.ads:25:57: info: predicate check proved

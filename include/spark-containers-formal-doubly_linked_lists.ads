@@ -325,7 +325,6 @@ is
         Ghost,
         Global => null,
         Post   => M.Length (Model'Result) = Length (Container);
-      pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model);
 
       function Positions (Container : List) return P.Map with
       --  The Positions map is used to model cursors. It only contains valid
@@ -406,6 +405,13 @@ is
               else
                  Copy'Result.Capacity = Capacity);
 
+   function Iter_Model (Container : List) return M.Sequence is
+      (Model (Container))
+   with
+     Ghost,
+     Global   => null,
+     Annotate => (GNATprove, Inline_For_Proof);
+
    function Element
      (Container : List;
       Position : Cursor) return Element_Type
@@ -416,6 +422,7 @@ is
        Element'Result =
          Element (Model (Container), P.Get (Positions (Container), Position));
    pragma Annotate (GNATprove, Inline_For_Proof, Element);
+   pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Iter_Model);
 
    procedure Replace_Element
      (Container : in out List;

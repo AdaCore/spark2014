@@ -23,51 +23,56 @@ container.adb:30:16: medium: loop might be nonterminating, terminating annotatio
 container.adb:33:20: medium: range check might fail, cannot prove upper bound for X + 1, in call inlined at container.adb:45 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 32 should mention Int in a loop invariant]
 container.adb:34:34: info: loop variant proved (CVC5: 1 VC), in call inlined at container.adb:45
 container.adb:45:07: info: analyzing call to "Test3" in context
-container.adb:54:17: info: range check proved (CVC5: 2 VC)
-container.adb:59:17: warning: unreachable code (CVC5: 1 VC)
-container.adb:60:07: warning: unreachable code (CVC5: 1 VC)
-container.adb:60:30: info: loop invariant initialization proved (CVC5: 1 VC)
-container.adb:60:30: info: loop invariant preservation proved (CVC5: 1 VC)
-container.adb:61:28: info: loop variant proved (CVC5: 1 VC)
-container.adb:63:14: info: range check proved (CVC5: 2 VC)
-container.adb:64:14: info: range check proved (CVC5: 2 VC)
-container.adb:68:04: warning: unreachable code (CVC5: 1 VC)
-container.adb:69:07: warning: unreachable code (CVC5: 1 VC)
-container.adb:69:14: info: range check proved (CVC5: 2 VC)
-container.adb:74:04: warning: unreachable code (CVC5: 1 VC)
-container.adb:75:07: warning: unreachable code (CVC5: 1 VC)
-container.adb:75:14: info: range check proved (CVC5: 4 VC)
-container.adb:76:28: info: loop variant proved (CVC5: 1 VC)
-container.adb:81:08: info: precondition proved (CVC5: 1 VC)
-container.adb:81:08: info: precondition proved (Trivial: 1 VC)
-container.adb:81:26: warning: unreachable code (CVC5: 1 VC)
-container.adb:82:07: warning: unreachable code (CVC5: 1 VC)
-container.adb:86:08: info: precondition proved (CVC5: 1 VC)
-container.adb:86:08: info: precondition proved (Trivial: 1 VC)
-container.adb:88:07: warning: unreachable code (CVC5: 1 VC)
-container.adb:89:10: warning: unreachable code (CVC5: 1 VC)
-container.adb:89:17: info: range check proved (CVC5: 4 VC)
-container.adb:90:31: info: loop variant proved (CVC5: 1 VC)
-container.adb:93:07: warning: unreachable code (CVC5: 1 VC)
-container.adb:97:08: info: precondition proved (CVC5: 1 VC)
-container.adb:97:08: info: precondition proved (Trivial: 1 VC)
-container.adb:98:07: warning: unreachable code (CVC5: 1 VC)
-container.adb:99:14: info: range check proved (CVC5: 4 VC)
-container.adb:100:30: info: loop invariant initialization proved (CVC5: 1 VC)
-container.adb:100:30: info: loop invariant preservation proved (CVC5: 1 VC)
-container.adb:101:28: info: loop variant proved (CVC5: 1 VC)
-container.adb:104:10: warning: unreachable code (CVC5: 1 VC)
-container.adb:104:17: info: range check proved (CVC5: 4 VC)
-container.adb:105:31: info: loop variant proved (CVC5: 1 VC)
-container.adb:106:31: info: loop variant proved (CVC5: 1 VC)
+container.adb:48:04: warning: analyzing unreferenced procedure "Test5"
+container.adb:51:11: info: precondition proved (CVC5: 1 VC)
+container.adb:51:11: info: precondition proved (Trivial: 1 VC)
+container.adb:51:16: medium: loop might be nonterminating, terminating annotation on "Test5" could be incorrect
+container.adb:56:11: info: precondition proved (CVC5: 1 VC)
+container.adb:56:11: info: precondition proved (Trivial: 1 VC)
+container.adb:56:16: medium: loop might be nonterminating, terminating annotation on "Test5" could be incorrect
+container.adb:60:23: info: range check proved (CVC5: 4 VC)
+container.adb:61:39: info: loop invariant initialization proved (CVC5: 1 VC)
+container.adb:61:39: info: loop invariant preservation proved (CVC5: 1 VC)
+container.adb:62:37: info: loop variant proved (CVC5: 1 VC)
+container.adb:70:11: info: precondition proved (CVC5: 1 VC)
+container.adb:70:11: info: precondition proved (Trivial: 1 VC)
+container.adb:72:10: warning: statement has no effect
+container.adb:73:17: info: range check proved (CVC5: 4 VC)
+container.adb:74:33: info: loop invariant initialization proved (CVC5: 1 VC)
+container.adb:74:33: info: loop invariant preservation proved (CVC5: 1 VC)
+container.adb:75:31: info: loop variant proved (CVC5: 1 VC)
+container.adb:78:20: medium: range check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 77 should mention X in a loop invariant]
+container.adb:79:34: info: loop variant proved (CVC5: 1 VC)
+container.adb:80:34: info: loop variant proved (CVC5: 1 VC)
+container.adb:91:17: info: range check proved (CVC5: 2 VC)
+container.adb:96:17: warning: unreachable code (CVC5: 1 VC)
+container.adb:97:07: warning: unreachable code (CVC5: 1 VC)
+container.adb:97:30: info: loop invariant initialization proved (CVC5: 1 VC)
+container.adb:97:30: info: loop invariant preservation proved (CVC5: 1 VC)
+container.adb:98:28: info: loop variant proved (CVC5: 1 VC)
+container.adb:100:14: info: range check proved (CVC5: 2 VC)
+container.adb:101:14: info: range check proved (CVC5: 2 VC)
+container.adb:105:04: warning: unreachable code (CVC5: 1 VC)
+container.adb:106:07: warning: unreachable code (CVC5: 1 VC)
+container.adb:106:14: info: range check proved (CVC5: 2 VC)
+container.adb:111:04: warning: unreachable code (CVC5: 1 VC)
+container.adb:112:07: warning: unreachable code (CVC5: 1 VC)
+container.adb:112:14: info: range check proved (CVC5: 4 VC)
+container.adb:113:28: info: loop variant proved (CVC5: 1 VC)
+container.ads:16:13: info: during checks for quantification at container.ads:38
+container.ads:16:13: info: precondition proved (Trivial: 1 VC)
 container.ads:16:13: info: subprogram "First" will terminate, terminating annotation has been proved
 container.ads:16:20: warning: unused variable "C"
+container.ads:18:13: info: during checks for quantification at container.ads:38
+container.ads:18:13: info: precondition proved (Trivial: 1 VC)
 container.ads:18:13: info: subprogram "Has_Element" will terminate, terminating annotation has been proved
 container.ads:18:26: warning: unused variable "C"
+container.ads:20:13: info: during checks for quantification at container.ads:38
+container.ads:20:13: info: precondition proved (CVC5: 1 VC)
 container.ads:20:13: info: subprogram "Next" will terminate, terminating annotation has been proved
-container.ads:23:13: info: implicit function contract might not be available on calls from enclosing unit
+container.ads:23:13: info: during checks for quantification at container.ads:38
+container.ads:23:13: info: precondition proved (CVC5: 1 VC)
 container.ads:23:13: info: subprogram "Element" will terminate, terminating annotation has been proved
-container.ads:33:04: info: initialization of "B" proved
 file_io.ads:50:33: info: implicit function contract not available for proof ("Size" might not return)
 file_io.ads:55:17: info: function contract not available for proof ("Index" might not return)
 file_io.ads:61:17: info: implicit function contract not available for proof ("Size" might not return)
@@ -215,8 +220,44 @@ spark-containers-functional-sets.ads:54:19: info: subprogram "Equivalent_Element
 spark-containers-functional-sets.ads:54:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
 spark-containers-functional-sets.ads:56:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:12
 spark-containers-functional-sets.ads:56:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:89:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:89:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:89:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:89:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:326:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:326:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:326:13: info: precondition proved (CVC5: 1 VC), in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:326:13: info: precondition proved (CVC5: 1 VC), in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:335:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:335:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:335:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:335:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:341:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:341:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:341:13: info: precondition proved (CVC5: 2 VC), in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:341:13: info: precondition proved (CVC5: 2 VC), in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:26
 spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:12
 spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:391:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:391:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:391:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:391:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:397:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:397:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:397:13: info: precondition proved (CVC5: 1 VC), in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:397:13: info: precondition proved (CVC5: 1 VC), in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:404:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:404:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:404:13: info: precondition proved (CVC5: 1 VC), in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:404:13: info: precondition proved (CVC5: 1 VC), in instantiation at formal_cont.ads:26
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26

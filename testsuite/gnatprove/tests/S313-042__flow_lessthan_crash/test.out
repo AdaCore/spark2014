@@ -44,10 +44,12 @@ spark-containers-formal-ordered_sets.ads:79:19: info: subprogram "Lt_Order" will
 spark-containers-formal-ordered_sets.ads:104:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
 spark-containers-formal-ordered_sets.ads:223:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
 spark-containers-formal-ordered_sets.ads:236:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
-spark-containers-formal-ordered_sets.ads:1559:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
-spark-containers-formal-ordered_sets.ads:1559:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:127
-spark-containers-formal-ordered_sets.ads:1574:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
-spark-containers-formal-ordered_sets.ads:1574:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:127
+spark-containers-formal-ordered_sets.ads:597:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at moth.ads:127
+spark-containers-formal-ordered_sets.ads:601:06: info: data dependencies proved, in instantiation at moth.ads:127
+spark-containers-formal-ordered_sets.ads:1566:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
+spark-containers-formal-ordered_sets.ads:1566:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:127
+spark-containers-formal-ordered_sets.ads:1581:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
+spark-containers-formal-ordered_sets.ads:1581:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:127
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at moth.ads:127
 spark-containers-functional-maps.ads:59:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at moth.ads:127
 spark-containers-functional-maps.ads:61:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at moth.ads:127

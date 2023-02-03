@@ -16,10 +16,46 @@ spark-containers-functional-maps.ads:79:19: info: subprogram "Equivalent_Element
 spark-containers-functional-maps.ads:79:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test.adb:7
 spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at test.adb:32
 spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at test.adb:7
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test.adb:32
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test.adb:7
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:32
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:7
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at test.adb:32
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at test.adb:7
+spark-containers-functional-maps.ads:365:13: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:32
+spark-containers-functional-maps.ads:365:13: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at test.adb:32
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at test.adb:7
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:32
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:7
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at test.adb:32
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at test.adb:7
+spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 2 VC), in instantiation at test.adb:32
+spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 2 VC), in instantiation at test.adb:7
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at test.adb:32
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at test.adb:7
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:32
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:7
 spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at test.adb:32
 spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at test.adb:7
 spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test.adb:32
 spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test.adb:7
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test.adb:32
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test.adb:7
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:32
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:7
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test.adb:32
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test.adb:7
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:32
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at test.adb:7
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test.adb:32
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test.adb:7
+spark-containers-functional-maps.ads:526:13: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:32
+spark-containers-functional-maps.ads:526:13: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test.adb:32
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test.adb:7
+spark-containers-functional-maps.ads:531:13: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:32
+spark-containers-functional-maps.ads:531:13: info: precondition proved (CVC5: 1 VC), in instantiation at test.adb:7
 spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test.adb:32
 spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test.adb:7
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:480, in instantiation at test.adb:32
@@ -88,10 +124,8 @@ test.adb:11:19: info: precondition proved (CVC5: 1 VC)
 test.adb:12:19: info: precondition proved (CVC5: 1 VC)
 test.adb:13:19: info: precondition proved (CVC5: 1 VC)
 test.adb:14:22: info: assertion proved (CVC5: 1 VC)
-test.adb:14:22: info: precondition proved (Trivial: 1 VC)
 test.adb:14:47: info: precondition proved (CVC5: 1 VC)
 test.adb:15:22: info: assertion proved (CVC5: 1 VC)
-test.adb:15:22: info: precondition proved (Trivial: 1 VC)
 test.adb:15:47: info: precondition proved (CVC5: 1 VC)
 test.adb:16:19: info: precondition proved (CVC5: 1 VC)
 test.adb:17:19: medium: precondition might fail
@@ -104,10 +138,8 @@ test.adb:21:29: info: precondition proved (Z3: 1 VC)
 test.adb:22:22: info: assertion proved (Z3: 1 VC)
 test.adb:22:29: info: precondition proved (Z3: 1 VC)
 test.adb:23:22: info: assertion proved (Z3: 1 VC)
-test.adb:23:22: info: precondition proved (Trivial: 1 VC)
 test.adb:23:47: info: precondition proved (CVC5: 1 VC)
 test.adb:24:22: info: assertion proved (Z3: 1 VC)
-test.adb:24:22: info: precondition proved (Trivial: 1 VC)
 test.adb:24:47: info: precondition proved (CVC5: 1 VC)
 test.adb:28:06: info: data dependencies proved
 test.adb:34:07: info: initialization of "S" proved
@@ -115,10 +147,8 @@ test.adb:36:19: info: precondition proved (CVC5: 1 VC)
 test.adb:37:19: info: precondition proved (CVC5: 1 VC)
 test.adb:38:19: info: precondition proved (CVC5: 1 VC)
 test.adb:39:22: info: assertion proved (CVC5: 1 VC)
-test.adb:39:22: info: precondition proved (Trivial: 1 VC)
 test.adb:39:47: info: precondition proved (CVC5: 1 VC)
 test.adb:40:22: info: assertion proved (CVC5: 1 VC)
-test.adb:40:22: info: precondition proved (Trivial: 1 VC)
 test.adb:40:47: info: precondition proved (CVC5: 1 VC)
 test.adb:41:19: info: precondition proved (CVC5: 1 VC)
 test.adb:42:19: medium: precondition might fail
@@ -131,8 +161,6 @@ test.adb:46:29: info: precondition proved (Z3: 1 VC)
 test.adb:47:22: info: assertion proved (Z3: 1 VC)
 test.adb:47:29: info: precondition proved (Z3: 1 VC)
 test.adb:48:22: info: assertion proved (Z3: 1 VC)
-test.adb:48:22: info: precondition proved (Trivial: 1 VC)
 test.adb:48:47: info: precondition proved (CVC5: 1 VC)
 test.adb:49:22: info: assertion proved (Z3: 1 VC)
-test.adb:49:22: info: precondition proved (Trivial: 1 VC)
 test.adb:49:47: info: precondition proved (CVC5: 1 VC)

@@ -1,8 +1,10 @@
 spark-containers-formal-doubly_linked_lists.ads:40:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:35
 spark-containers-formal-doubly_linked_lists.ads:42:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:35
 spark-containers-formal-doubly_linked_lists.ads:44:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:35
-spark-containers-formal-doubly_linked_lists.ads:449:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:35
-spark-containers-formal-doubly_linked_lists.ads:454:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:35
+spark-containers-formal-doubly_linked_lists.ads:408:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:35
+spark-containers-formal-doubly_linked_lists.ads:412:06: info: data dependencies proved, in instantiation at test_deep_element_type.adb:35
+spark-containers-formal-doubly_linked_lists.ads:456:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:35
+spark-containers-formal-doubly_linked_lists.ads:461:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:35
 spark-containers-formal-hashed_maps.ads:66:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:42
 spark-containers-formal-hashed_maps.ads:66:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:45
 spark-containers-formal-hashed_maps.ads:68:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:42
@@ -17,10 +19,14 @@ spark-containers-formal-hashed_maps.ads:80:19: info: subprogram "Equivalent_Keys
 spark-containers-formal-hashed_maps.ads:80:19: info: subprogram "Equivalent_Keys_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:45
 spark-containers-formal-hashed_maps.ads:86:19: info: subprogram "Hash_Equivalent" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:42
 spark-containers-formal-hashed_maps.ads:86:19: info: subprogram "Hash_Equivalent" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:45
-spark-containers-formal-hashed_maps.ads:507:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:42
-spark-containers-formal-hashed_maps.ads:507:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:45
-spark-containers-formal-hashed_maps.ads:513:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:42
-spark-containers-formal-hashed_maps.ads:513:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:45
+spark-containers-formal-hashed_maps.ads:461:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:42
+spark-containers-formal-hashed_maps.ads:461:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:45
+spark-containers-formal-hashed_maps.ads:465:06: info: data dependencies proved, in instantiation at test_deep_element_type.adb:42
+spark-containers-formal-hashed_maps.ads:465:06: info: data dependencies proved, in instantiation at test_deep_element_type.adb:45
+spark-containers-formal-hashed_maps.ads:514:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:42
+spark-containers-formal-hashed_maps.ads:514:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:45
+spark-containers-formal-hashed_maps.ads:520:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:42
+spark-containers-formal-hashed_maps.ads:520:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:45
 spark-containers-formal-hashed_sets.ads:67:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:39
 spark-containers-formal-hashed_sets.ads:69:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:39
 spark-containers-formal-hashed_sets.ads:71:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:39
@@ -28,6 +34,8 @@ spark-containers-formal-hashed_sets.ads:77:19: info: subprogram "Equivalent_Elem
 spark-containers-formal-hashed_sets.ads:79:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:39
 spark-containers-formal-hashed_sets.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:39
 spark-containers-formal-hashed_sets.ads:88:19: info: subprogram "Hash_Equivalent" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:39
+spark-containers-formal-hashed_sets.ads:593:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:39
+spark-containers-formal-hashed_sets.ads:597:06: info: data dependencies proved, in instantiation at test_deep_element_type.adb:39
 spark-containers-formal-ordered_maps.ads:65:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:43
 spark-containers-formal-ordered_maps.ads:65:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:46
 spark-containers-formal-ordered_maps.ads:67:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:43
@@ -42,10 +50,14 @@ spark-containers-formal-ordered_maps.ads:79:19: info: subprogram "Lt_Transitive"
 spark-containers-formal-ordered_maps.ads:79:19: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:46
 spark-containers-formal-ordered_maps.ads:81:19: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:43
 spark-containers-formal-ordered_maps.ads:81:19: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:46
-spark-containers-formal-ordered_maps.ads:498:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:43
-spark-containers-formal-ordered_maps.ads:498:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:46
-spark-containers-formal-ordered_maps.ads:504:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:43
-spark-containers-formal-ordered_maps.ads:504:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:46
+spark-containers-formal-ordered_maps.ads:452:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:43
+spark-containers-formal-ordered_maps.ads:452:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:46
+spark-containers-formal-ordered_maps.ads:456:06: info: data dependencies proved, in instantiation at test_deep_element_type.adb:43
+spark-containers-formal-ordered_maps.ads:456:06: info: data dependencies proved, in instantiation at test_deep_element_type.adb:46
+spark-containers-formal-ordered_maps.ads:506:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:43
+spark-containers-formal-ordered_maps.ads:506:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:46
+spark-containers-formal-ordered_maps.ads:512:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:43
+spark-containers-formal-ordered_maps.ads:512:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:46
 spark-containers-formal-ordered_sets.ads:63:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:40
 spark-containers-formal-ordered_sets.ads:65:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:40
 spark-containers-formal-ordered_sets.ads:67:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:40
@@ -53,16 +65,22 @@ spark-containers-formal-ordered_sets.ads:73:19: info: subprogram "Lt_Irreflexive
 spark-containers-formal-ordered_sets.ads:75:19: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:40
 spark-containers-formal-ordered_sets.ads:77:19: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:40
 spark-containers-formal-ordered_sets.ads:79:19: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:40
+spark-containers-formal-ordered_sets.ads:597:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:40
+spark-containers-formal-ordered_sets.ads:601:06: info: data dependencies proved, in instantiation at test_deep_element_type.adb:40
 spark-containers-formal-unbounded_vectors.ads:42:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:38
 spark-containers-formal-unbounded_vectors.ads:44:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:38
 spark-containers-formal-unbounded_vectors.ads:46:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:38
-spark-containers-formal-unbounded_vectors.ads:318:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:38
-spark-containers-formal-unbounded_vectors.ads:323:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:38
+spark-containers-formal-unbounded_vectors.ads:287:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:38
+spark-containers-formal-unbounded_vectors.ads:291:06: info: data dependencies proved, in instantiation at test_deep_element_type.adb:38
+spark-containers-formal-unbounded_vectors.ads:325:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:38
+spark-containers-formal-unbounded_vectors.ads:330:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:38
 spark-containers-formal-vectors.ads:46:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:37
 spark-containers-formal-vectors.ads:48:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:37
 spark-containers-formal-vectors.ads:50:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:37
-spark-containers-formal-vectors.ads:348:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:37
-spark-containers-formal-vectors.ads:353:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:37
+spark-containers-formal-vectors.ads:317:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:37
+spark-containers-formal-vectors.ads:321:06: info: data dependencies proved, in instantiation at test_deep_element_type.adb:37
+spark-containers-formal-vectors.ads:355:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:37
+spark-containers-formal-vectors.ads:360:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_deep_element_type.adb:37
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at test_deep_element_type.adb:35
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:191, in instantiation at test_deep_element_type.adb:42
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_maps.ads:191, in instantiation at test_deep_element_type.adb:45
