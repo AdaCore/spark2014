@@ -2631,6 +2631,7 @@ package body Flow.Analysis is
                   E : constant Entity_Id := Get_Direct_Mapping_Id (F);
                begin
                   case Ekind (E) is
+
                      --  Abstract state will be annotated directly
 
                      when E_Abstract_State =>
@@ -2639,7 +2640,8 @@ package body Flow.Analysis is
                      --  Other objects can be either annotated directly, or
                      --  else the aspect can apply to their type, or else
                      --  the type can be composite with types of all of its
-                     --  (sub)components annotated.
+                     --  (sub)components annotated. This is detected and
+                     --  stored in marking.
 
                      when E_Function
                         | E_Variable
@@ -2648,12 +2650,9 @@ package body Flow.Analysis is
                         return
                           Entity_In_SPARK (E)
                             and then
-                          (Has_Relaxed_Initialization (E)
-                             or else
-                           Has_Relaxed_Init (Get_Type (E, FA.B_Scope))
-                             or else
-                           Contains_Only_Relaxed_Init
-                             (Get_Type (E, FA.B_Scope)));
+                          (if Ekind (E) = E_Function
+                           then Fun_Has_Relaxed_Init (E)
+                           else Obj_Has_Relaxed_Init (E));
 
                      when others =>
                         return False;
@@ -2661,14 +2660,6 @@ package body Flow.Analysis is
                end;
 
             when Record_Field =>
-               --  If the Flow_Id represents the 'Hidden part of a record then
-               --  we do not consider it as initialized by proof.
-
-               if Is_Extension (F)
-                 or else Is_Record_Tag (F)
-               then
-                  return False;
-               end if;
 
                declare
                   E : constant Entity_Id := Get_Direct_Mapping_Id (F);
@@ -2677,23 +2668,25 @@ package body Flow.Analysis is
                   --  object (here "X"), or else on the type of the object, or
                   --  else on the type of its components (here "Y" and "Z"). or
                   --  else, the type can be composite with types of all of its
-                  --  (sub)components annotated.
+                  --  (sub)components annotated. Here, we need to explore the
+                  --  record fields because the components are not objects, and
+                  --  only their type can be annotated with
+                  --  Relaxed_Initialization.
 
                   if Ekind (E) in E_Function
                                 | E_Variable
                                 | Formal_Kind
-                    and then Entity_In_SPARK (E)
                   then
                      return
-                       Has_Relaxed_Initialization (E)
-                         or else
-                       Has_Relaxed_Init (Get_Type (E, FA.B_Scope))
-                         or else
+                       Entity_In_SPARK (E)
+                         and then
+                       ((if Ekind (E) = E_Function
+                         then Fun_Has_Relaxed_Init (E)
+                         else Obj_Has_Relaxed_Init (E))
+                           or else
                        (for some Comp of F.Component =>
-                          (Has_Relaxed_Init (Get_Type (Comp, FA.B_Scope))
-                             or else
-                           Contains_Only_Relaxed_Init
-                             (Get_Type (Comp, FA.B_Scope))));
+                          (Has_Relaxed_Init (Get_Type (Comp, FA.B_Scope)))));
+
                   else
                      return False;
                   end if;
