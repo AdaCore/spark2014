@@ -1,5 +1,5 @@
-ar.adb:9:24: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (I >= IT1'First + 1) to subprogram at ar.ads:16]
-ar.adb:9:24: medium: range check might fail, cannot prove lower bound for I - 1 [reason for check: result of subtraction must fit in component type] [possible fix: add precondition (I >= IT1'First + 1) to subprogram at ar.ads:16]
+ar.adb:9:24: medium: array index check might fail (e.g. when I = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: add precondition (I >= IT1'First + 1) to subprogram at ar.ads:16]
+ar.adb:9:24: medium: range check might fail, cannot prove lower bound for I - 1 (e.g. when E = 1) [reason for check: result of subtraction must fit in component type] [possible fix: add precondition (I >= IT1'First + 1) to subprogram at ar.ads:16]
 ar.adb:9:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (I .. J + 2 in IT1) to subprogram at ar.ads:16]
 ar.adb:9:46: medium: range check might fail, cannot prove lower bound for E - 1 (e.g. when E = 0) [reason for check: result of subtraction must fit in component type] [possible fix: add precondition (E >= ET1'First + 1) to subprogram at ar.ads:16]
 ar.adb:9:53: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (J <= IT1'Last - 1) to subprogram at ar.ads:16]

@@ -144,7 +144,7 @@ norm-reals-errors.adb:200:47: warning: assuming "Sqrt" has no effect on global i
 norm-reals-errors.adb:200:47: warning: no Global contract available for "Sqrt"
 norm-reals-errors.adb:200:47: warning: no returning annotation available for "Sqrt"
 norm-reals-errors.adb:200:64: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:201:17: info: postcondition proved (altergo: 1 VC)
+norm-reals-errors.adb:201:17: info: postcondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:201:42: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:201:52: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:207:07: medium: precondition might fail, cannot prove abs (X - Y) <= E * Y + F

@@ -29,7 +29,7 @@ test_constrained.adb:18:14: warning: subprogram "Test_2" has no effect
 test_constrained.adb:19:07: medium: resource or memory leak might occur at end of scope
 test_constrained.adb:21:09: info: pointer dereference check proved (CVC5: 1 VC)
 test_constrained.adb:21:09: info: range check proved (CVC5: 1 VC)
-test_constrained.adb:21:16: medium: discriminant check might fail
+test_constrained.adb:21:16: medium: discriminant check might fail (e.g. when Y.all = (B => True, X => 0))
 test_constrained.adb:24:04: warning: analyzing unreferenced procedure "Test_3"
 test_constrained.adb:24:14: warning: subprogram "Test_3" has no effect
 test_constrained.adb:25:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
@@ -40,13 +40,13 @@ test_constrained.adb:30:14: warning: subprogram "Test_4" has no effect
 test_constrained.adb:31:07: medium: resource or memory leak might occur at end of scope
 test_constrained.adb:33:09: info: pointer dereference check proved (CVC5: 1 VC)
 test_constrained.adb:33:09: info: range check proved (CVC5: 1 VC)
-test_constrained.adb:33:16: medium: discriminant check might fail
+test_constrained.adb:33:16: medium: discriminant check might fail (e.g. when Y.all = (B => False, X => 0))
 test_constrained.adb:36:04: warning: analyzing unreferenced procedure "Test_5"
 test_constrained.adb:36:14: warning: subprogram "Test_5" has no effect
 test_constrained.adb:37:07: medium: resource or memory leak might occur at end of scope
 test_constrained.adb:39:09: info: pointer dereference check proved (CVC5: 1 VC)
 test_constrained.adb:39:09: info: range check proved (CVC5: 1 VC)
-test_constrained.adb:39:16: medium: discriminant check might fail
+test_constrained.adb:39:16: medium: discriminant check might fail (e.g. when Y.all = (B => False, X => 0))
 test_constrained.adb:42:04: warning: analyzing unreferenced procedure "Test_6"
 test_constrained.adb:42:14: warning: subprogram "Test_6" has no effect
 test_constrained.adb:43:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
@@ -61,7 +61,7 @@ test_constrained.adb:53:10: info: discriminant check proved (CVC5: 1 VC; Trivial
 test_tag.adb:13:04: warning: analyzing unreferenced procedure "Test_Uninit_1"
 test_tag.adb:13:14: warning: subprogram "Test_Uninit_1" has no effect
 test_tag.adb:14:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-test_tag.adb:16:22: medium: assertion might fail (e.g. when X.all = (F => 0))
+test_tag.adb:16:22: medium: assertion might fail
 test_tag.adb:16:24: info: pointer dereference check proved (CVC5: 1 VC)
 test_tag.adb:19:04: warning: analyzing unreferenced procedure "Test_Uninit_2"
 test_tag.adb:19:14: warning: subprogram "Test_Uninit_2" has no effect
@@ -71,7 +71,7 @@ test_tag.adb:22:24: info: pointer dereference check proved (CVC5: 1 VC)
 test_tag.adb:25:04: warning: analyzing unreferenced procedure "Test_Uninit_3"
 test_tag.adb:25:14: warning: subprogram "Test_Uninit_3" has no effect
 test_tag.adb:26:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-test_tag.adb:28:22: medium: assertion might fail (e.g. when Z.all = (F => 0))
+test_tag.adb:28:22: medium: assertion might fail
 test_tag.adb:28:24: info: pointer dereference check proved (CVC5: 1 VC)
 test_tag.adb:31:04: warning: analyzing unreferenced procedure "Test_Uninit_4"
 test_tag.adb:31:14: warning: subprogram "Test_Uninit_4" has no effect

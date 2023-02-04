@@ -6,7 +6,7 @@ formals.adb:36:14: info: add a contract to analyze it separately from calling co
 formals.adb:36:14: info: local subprogram "P3" only analyzed in the context of calls
 formals.adb:38:16: info: predicate check proved (CVC5: 1 VC), in call inlined at formals.adb:116
 formals.adb:38:22: info: division check proved (CVC5: 1 VC), in call inlined at formals.adb:116
-formals.adb:38:24: medium: predicate check might fail, in call inlined at formals.adb:116 [possible fix: call at line 115 should mention A (for argument X) in a postcondition]
+formals.adb:38:24: medium: predicate check might fail, in call inlined at formals.adb:116 (e.g. when X = (3 => 0, others => 0)) [possible fix: call at line 115 should mention A (for argument X) in a postcondition]
 formals.adb:41:14: info: add a contract to analyze it separately from calling contexts
 formals.adb:41:14: info: local subprogram "P3" only analyzed in the context of calls
 formals.adb:43:16: info: predicate check proved (CVC5: 1 VC), in call inlined at formals.adb:122
@@ -15,7 +15,7 @@ formals.adb:43:24: medium: predicate check might fail, in call inlined at formal
 formals.adb:46:14: info: add a contract to analyze it separately from calling contexts
 formals.adb:46:14: info: local subprogram "P4" only analyzed in the context of calls
 formals.adb:49:10: info: predicate check proved (CVC5: 1 VC), in call inlined at formals.adb:114
-formals.adb:49:10: medium: predicate check might fail, in call inlined at formals.adb:114 [possible fix: call at line 113 should mention A (for argument Y) in a postcondition]
+formals.adb:49:10: medium: predicate check might fail, in call inlined at formals.adb:114 (e.g. when Y = (1 => 0, 3 => 1, others => 0)) [possible fix: call at line 113 should mention A (for argument Y) in a postcondition]
 formals.adb:53:14: info: add a contract to analyze it separately from calling contexts
 formals.adb:53:14: info: local subprogram "P5" only analyzed in the context of calls
 formals.adb:56:10: info: predicate check proved (CVC5: 1 VC), in call inlined at formals.adb:120
@@ -41,33 +41,33 @@ formals.adb:94:19: medium: predicate check might fail (e.g. when Z = 0) [possibl
 formals.adb:95:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:96:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:96:16: medium: in value of subprogram parameter after the call at formals.adb:96
-formals.adb:96:16: medium: predicate check might fail [possible fix: call at line 95 should mention A (for argument W) in a postcondition]
+formals.adb:96:16: medium: predicate check might fail (e.g. when W = -1) [possible fix: call at line 95 should mention A (for argument W) in a postcondition]
 formals.adb:97:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:98:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:98:21: medium: predicate check might fail (e.g. when Z = 0) [possible fix: call at line 97 should mention A (for argument Z) in a postcondition]
 formals.adb:99:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:100:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:100:16: medium: in value of subprogram parameter after the call at formals.adb:100
-formals.adb:100:16: medium: predicate check might fail [possible fix: call at line 99 should mention A (for argument V) in a postcondition]
+formals.adb:100:16: medium: predicate check might fail (e.g. when V = -1) [possible fix: call at line 99 should mention A (for argument V) in a postcondition]
 formals.adb:101:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:102:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:102:08: medium: predicate check might fail [possible fix: call at line 102 should mention A (for argument W) in a postcondition]
+formals.adb:102:08: medium: predicate check might fail (e.g. when W = -1) [possible fix: call at line 102 should mention A (for argument W) in a postcondition]
 formals.adb:103:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:103:07: info: predicate check proved (CVC5: 1 VC)
 formals.adb:104:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:105:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:106:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:106:07: medium: predicate check might fail [possible fix: call at line 105 should mention A (for argument X) in a postcondition]
+formals.adb:106:07: medium: predicate check might fail (e.g. when X = (3 => 0, others => 0)) [possible fix: call at line 105 should mention A (for argument X) in a postcondition]
 formals.adb:107:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:108:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:108:19: medium: predicate check might fail [possible fix: call at line 107 should mention A (for argument X) in a postcondition]
+formals.adb:108:19: medium: predicate check might fail (e.g. when X = (3 => 0, others => 0)) [possible fix: call at line 107 should mention A (for argument X) in a postcondition]
 formals.adb:109:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:110:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:110:08: medium: predicate check might fail [possible fix: call at line 109 should mention A (for argument Y) in a postcondition]
+formals.adb:110:08: medium: predicate check might fail (e.g. when Y = (3 => 0, others => 0)) [possible fix: call at line 109 should mention A (for argument Y) in a postcondition]
 formals.adb:111:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:112:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:112:18: medium: in value of subprogram parameter after the call at formals.adb:112
-formals.adb:112:18: medium: predicate check might fail [possible fix: call at line 111 should mention A (for argument Y) in a postcondition]
+formals.adb:112:18: medium: predicate check might fail (e.g. when Y = (3 => 1, others => 0)) [possible fix: call at line 111 should mention A (for argument Y) in a postcondition]
 formals.adb:113:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:114:04: info: analyzing call to "P4" in context
 formals.adb:115:04: info: precondition proved (Trivial: 1 VC)
@@ -75,7 +75,7 @@ formals.adb:116:04: info: analyzing call to "P3" in context
 formals.adb:117:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:118:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:118:18: medium: in value of subprogram parameter after the call at formals.adb:118
-formals.adb:118:18: medium: predicate check might fail [possible fix: call at line 117 should mention A (for argument U) in a postcondition]
+formals.adb:118:18: medium: predicate check might fail (e.g. when U = (3 => 1, others => 0)) [possible fix: call at line 117 should mention A (for argument U) in a postcondition]
 formals.adb:119:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:120:04: info: analyzing call to "P5" in context
 formals.adb:121:04: info: precondition proved (Trivial: 1 VC)
@@ -232,7 +232,7 @@ formals_rec_split_pred.adb:44:14: info: predicate check proved (CVC5: 1 VC), in 
 formals_rec_split_pred.adb:44:15: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
 formals_rec_split_pred.adb:44:18: info: division check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
 formals_rec_split_pred.adb:44:20: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
-formals_rec_split_pred.adb:44:20: medium: predicate check might fail, in call inlined at formals_rec_split_pred.adb:85 [possible fix: call at line 84 should mention A (for argument X) in a postcondition]
+formals_rec_split_pred.adb:44:20: medium: predicate check might fail, in call inlined at formals_rec_split_pred.adb:85 (e.g. when X = (D => True, F => -1, G => -1, H => 0)) [possible fix: call at line 84 should mention A (for argument X) in a postcondition]
 formals_rec_split_pred.adb:44:21: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
 formals_rec_split_pred.adb:47:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split_pred.adb:47:14: info: local subprogram "P3" only analyzed in the context of calls
@@ -242,18 +242,18 @@ formals_rec_split_pred.adb:49:14: info: predicate check proved (CVC5: 1 VC), in 
 formals_rec_split_pred.adb:49:15: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
 formals_rec_split_pred.adb:49:18: info: division check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
 formals_rec_split_pred.adb:49:20: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
-formals_rec_split_pred.adb:49:20: medium: predicate check might fail, in call inlined at formals_rec_split_pred.adb:89 [possible fix: call at line 88 should mention A (for argument X) in a postcondition]
+formals_rec_split_pred.adb:49:20: medium: predicate check might fail, in call inlined at formals_rec_split_pred.adb:89 (e.g. when X = (D => True, F => -1, G => -1, H => 0)) [possible fix: call at line 88 should mention A (for argument X) in a postcondition]
 formals_rec_split_pred.adb:49:21: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
 formals_rec_split_pred.adb:52:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split_pred.adb:52:14: info: local subprogram "P4" only analyzed in the context of calls
 formals_rec_split_pred.adb:54:11: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:83
 formals_rec_split_pred.adb:55:11: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:83
-formals_rec_split_pred.adb:55:11: medium: predicate check might fail, in call inlined at formals_rec_split_pred.adb:83 [possible fix: call at line 82 should mention A (for argument Y) in a postcondition]
+formals_rec_split_pred.adb:55:11: medium: predicate check might fail, in call inlined at formals_rec_split_pred.adb:83 (e.g. when Y = (D => True, F => 0, G => 1, H => 1)) [possible fix: call at line 82 should mention A (for argument Y) in a postcondition]
 formals_rec_split_pred.adb:59:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split_pred.adb:59:14: info: local subprogram "P5" only analyzed in the context of calls
 formals_rec_split_pred.adb:61:11: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:87
 formals_rec_split_pred.adb:62:11: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:87
-formals_rec_split_pred.adb:62:11: medium: predicate check might fail, in call inlined at formals_rec_split_pred.adb:87 [possible fix: call at line 86 should mention A (for argument U) in a postcondition]
+formals_rec_split_pred.adb:62:11: medium: predicate check might fail, in call inlined at formals_rec_split_pred.adb:87 (e.g. when U = (D => True, F => 0, G => -1, H => 1)) [possible fix: call at line 86 should mention A (for argument U) in a postcondition]
 formals_rec_split_pred.adb:67:22: info: discriminant check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:67:22: info: predicate check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:68:22: info: discriminant check proved (CVC5: 1 VC)
@@ -265,22 +265,22 @@ formals_rec_split_pred.adb:71:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:72:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:73:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:73:07: info: discriminant check proved (CVC5: 1 VC)
-formals_rec_split_pred.adb:73:07: medium: predicate check might fail [possible fix: call at line 72 should mention A (for argument X) in a postcondition]
+formals_rec_split_pred.adb:73:07: medium: predicate check might fail (e.g. when X = (D => True, F => 1, G => 1, H => 0)) [possible fix: call at line 72 should mention A (for argument X) in a postcondition]
 formals_rec_split_pred.adb:74:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:75:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:75:19: info: discriminant check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:75:19: medium: predicate check might fail [possible fix: call at line 74 should mention A (for argument X) in a postcondition]
 formals_rec_split_pred.adb:76:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:77:04: info: precondition proved (Trivial: 1 VC)
-formals_rec_split_pred.adb:77:08: medium: predicate check might fail (e.g. when Y = (D => ?, F => 1, G => 1, H => 0)) [possible fix: call at line 76 should mention A (for argument Y) in a postcondition]
+formals_rec_split_pred.adb:77:08: medium: predicate check might fail [possible fix: call at line 76 should mention A (for argument Y) in a postcondition]
 formals_rec_split_pred.adb:78:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:79:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:79:13: medium: in value of subprogram parameter after the call at formals_rec_split_pred.adb:79
-formals_rec_split_pred.adb:79:13: medium: predicate check might fail [possible fix: call at line 78 should mention A (for argument Y) in a postcondition]
+formals_rec_split_pred.adb:79:13: medium: predicate check might fail (e.g. when Y = (D => True, F => 1, G => 1, H => 1)) [possible fix: call at line 78 should mention A (for argument Y) in a postcondition]
 formals_rec_split_pred.adb:80:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:81:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:81:13: medium: in value of subprogram parameter after the call at formals_rec_split_pred.adb:81
-formals_rec_split_pred.adb:81:13: medium: predicate check might fail [possible fix: call at line 80 should mention A (for argument U) in a postcondition]
+formals_rec_split_pred.adb:81:13: medium: predicate check might fail (e.g. when U = (D => True, F => 1, G => 1, H => 1)) [possible fix: call at line 80 should mention A (for argument U) in a postcondition]
 formals_rec_split_pred.adb:82:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:83:04: info: analyzing call to "P4" in context
 formals_rec_split_pred.adb:84:04: info: precondition proved (Trivial: 1 VC)

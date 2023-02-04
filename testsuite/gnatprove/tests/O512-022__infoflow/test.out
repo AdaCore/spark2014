@@ -165,7 +165,7 @@ infoflow.ads:86:34: info: index check proved (CVC5: 2 VC)
 infoflow.ads:86:45: info: division check proved (CVC5: 1 VC)
 infoflow.ads:86:59: info: index check proved (CVC5: 2 VC)
 infoflow.ads:86:70: info: division check proved (CVC5: 1 VC)
-infoflow.ads:87:24: medium: contract case might fail
+infoflow.ads:87:24: medium: contract case might fail (e.g. when H_V1 = (others => -1) and H_V2 = (1 => 0, others => 0) and I = 1)
 infoflow.ads:87:33: info: index check proved (CVC5: 2 VC)
 infoflow.ads:87:44: info: index check proved (CVC5: 2 VC)
 infoflow.ads:90:06: info: disjoint contract cases proved (CVC5: 1 VC)

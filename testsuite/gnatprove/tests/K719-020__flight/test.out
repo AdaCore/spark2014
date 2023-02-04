@@ -3,7 +3,7 @@ flight_manager.adb:9:17: info: local subprogram "Adjust_Speed" only analyzed in 
 flight_manager.adb:16:19: medium: "Result.X_Speed" might not be initialized, in call inlined at flight_manager.adb:42
 flight_manager.adb:16:19: medium: "Result.Y_Speed" might not be initialized, in call inlined at flight_manager.adb:43
 flight_manager.adb:16:21: medium: overflow check might fail, cannot prove lower bound for F * Distance_To_Target, in call inlined at flight_manager.adb:42 (e.g. when Result = (X_Speed => 100, Y_Speed => -100)) [reason for check: result of multiplication must fit in a 32-bits machine integer]
-flight_manager.adb:16:21: medium: overflow check might fail, cannot prove lower bound for F * Distance_To_Target, in call inlined at flight_manager.adb:43 (e.g. when Result = (X_Speed => -100, Y_Speed => 100)) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+flight_manager.adb:16:21: medium: overflow check might fail, cannot prove lower bound for F * Distance_To_Target, in call inlined at flight_manager.adb:43 [reason for check: result of multiplication must fit in a 32-bits machine integer]
 flight_manager.adb:16:43: info: division check proved (CVC5: 1 VC), in call inlined at flight_manager.adb:42
 flight_manager.adb:16:43: info: division check proved (CVC5: 1 VC), in call inlined at flight_manager.adb:43
 flight_manager.adb:20:07: info: no contextual analysis of "My_Abs" (multiple returns)

@@ -900,7 +900,7 @@ package body VC_Kinds is
       for Var_Index in Positive range 1 .. Length (Ar) loop
          declare
             Elt : constant JSON_Value := Get (Ar, Var_Index);
-            Loc : constant String := Get (Elt, "loc");
+            Loc : constant String := Get (Elt, "line");
             Is_VC_Line : constant Boolean := Get (Elt, "is_vc_line");
          begin
             if Is_VC_Line then
@@ -925,7 +925,7 @@ package body VC_Kinds is
          return Cnt_Integer;
       end if;
 
-      if E = "Decimal" then
+      if E = "Real" then
          return Cnt_Decimal;
       end if;
 
@@ -937,15 +937,11 @@ package body VC_Kinds is
          return Cnt_Boolean;
       end if;
 
-      if E = "Bv" then
+      if E = "BitVector" then
          return Cnt_Bitvector;
       end if;
 
-      if E = "Unparsed" then
-         return Cnt_Unparsed;
-      end if;
-
-      if E = "Array" then
+      if E = "FunctionLiteral" then
          return Cnt_Array;
       end if;
 
@@ -962,7 +958,8 @@ package body VC_Kinds is
 
    function From_JSON (V : JSON_Value) return Cntexample_Elt is
       Cnt_Value : constant Cntexmp_Value_Ptr :=
-        new Cntexmp_Value'(Get_Typed_Cntexmp_Value (Get (V, "value")));
+        new Cntexmp_Value'(Get_Typed_Cntexmp_Value (
+                           Get (Get (V, "value"), "value_concrete_term")));
    begin
       return
         Cntexample_Elt'(K           => Raw,
@@ -1028,7 +1025,7 @@ package body VC_Kinds is
          when Cnt_Float     =>
             declare
                Val        : constant JSON_Value := Get (V, "val");
-               Float_Type : constant String := Get (Val, "cons");
+               Float_Type : constant String := Get (Val, "float_type");
             begin
                if Float_Type = "Plus_infinity" then
                   return (T => Cnt_Float,
@@ -1062,9 +1059,9 @@ package body VC_Kinds is
                                               F_Sign        =>
                                                 Get (Val, "sign"),
                                               F_Exponent    =>
-                                                Get (Val, "exponent"),
+                                                Get (Val, "exp"),
                                               F_Significand =>
-                                                Get (Val, "significand")));
+                                                Get (Val, "mant")));
                else
                   return (T => Cnt_Invalid,
                           S => Null_Unbounded_String);
@@ -1077,27 +1074,21 @@ package body VC_Kinds is
 
          when Cnt_Bitvector =>
             return (T => Cnt_Bitvector,
-                    B => Get (V, "val"));
-
-         when Cnt_Unparsed  =>
-            return (T => Cnt_Unparsed,
-                    U => Get (V, "val"));
+                    B => Get (Get (V, "val"), "bv_int"));
 
          when Cnt_Record    =>
             declare
-               Record_Val : constant JSON_Value := Get (V, "val");
+               Record_Val : constant JSON_Array := Get (V, "val");
                Field_Value_List : Cntexmp_Value_Array.Map;
-               JS_Array_Field   : constant JSON_Array :=
-                                    Get (Record_Val, "Field");
 
             begin
 
-               for Index in 1 .. Length (JS_Array_Field) loop
+               for Index in 1 .. Length (Record_Val) loop
                   declare
                      Json_Element : constant JSON_Value :=
-                         Get (Get (JS_Array_Field, Index), "value");
+                         Get (Get (Record_Val, Index), "value");
                      Field_Name   : constant String :=
-                         Get (Get (JS_Array_Field, Index), "field");
+                         Get (Get (Record_Val, Index), "field");
                      Elem_Ptr     : constant Cntexmp_Value_Ptr :=
                        new Cntexmp_Value'(
                          Get_Typed_Cntexmp_Value (Json_Element));
@@ -1112,51 +1103,63 @@ package body VC_Kinds is
          when Cnt_Projection =>
             --  All projections that gets to here should be removed. They are
             --  mostly to_reps.
-            return Get_Typed_Cntexmp_Value (Get (V, "value"));
+            return
+              Get_Typed_Cntexmp_Value (Get (Get (V, "val"), "proj_value"));
 
          when Cnt_Array     =>
             declare
-               JS_Array     : constant JSON_Array := Get (V, "val");
-               Indice_Array : Cntexmp_Value_Array.Map;
-               Other_Ptr    : Cntexmp_Value_Ptr;
+               Array_Val       : constant JSON_Value := Get (V, "val");
+               JS_Array_Elts   : constant JSON_Array :=
+                 Get (Array_Val, "funliteral_elts");
+               JS_Array_others : constant JSON_Value :=
+                 Get (Array_Val, "funliteral_others");
+               Indice_Array    : Cntexmp_Value_Array.Map;
+               Other_Ptr       : Cntexmp_Value_Ptr;
 
             begin
-               for Index in 1 .. Length (JS_Array) loop
+               for Index in 1 .. Length (JS_Array_Elts) loop
                   declare
                      Json_Element : constant JSON_Value :=
-                       Get (JS_Array, Index);
+                       Get (JS_Array_Elts, Index);
 
                   begin
-                     if Has_Field (Json_Element, "others") then
-                        declare
-                           V : constant JSON_Value :=
-                             Get (Json_Element, "others");
-                        begin
-                           pragma Assert (Other_Ptr = null);
-                           Other_Ptr := new Cntexmp_Value'(
-                                              Get_Typed_Cntexmp_Value (V));
-                        end;
-                     else
-                        declare
-                           --  Indices are sent by Why3 as JSON model_value.
-                           --  This is only accepted here if the model_value
-                           --  is actually a simple value: integer, boolean...
-                           --  And, on SPARK input, non simple value cannot
-                           --  be produced.
-                           Indice   : constant String :=
-                              Get (Get (Json_Element, "indice"), "val");
-                           Elem_Ptr : constant Cntexmp_Value_Ptr :=
-                                        new Cntexmp_Value'(
-                                          Get_Typed_Cntexmp_Value
-                                            (Get (Json_Element, "value")));
-                        begin
+                     declare
+                        --  Indices are sent by Why3 as JSON model_value.
+                        --  This is only accepted here if the model_value
+                        --  is actually a simple value: integer, boolean...
+                        --  And, on SPARK input, non simple value cannot
+                        --  be produced.
+                        Indice_Type : constant Cntexmp_Type :=
+                          From_JSON (Get (Json_Element, "indice"));
+                        Elem_Ptr    : constant Cntexmp_Value_Ptr :=
+                          new Cntexmp_Value'(Get_Typed_Cntexmp_Value
+                                               (Get (Json_Element, "value")));
+                     begin
+                        case Indice_Type is
+                        when Cnt_Integer | Cnt_Decimal | Cnt_Boolean =>
                            Cntexmp_Value_Array.Insert
-                             (Indice_Array, Indice, Elem_Ptr);
-                        end;
-                     end if;
+                             (Indice_Array,
+                              Get (Get (Json_Element, "indice"), "val"),
+                              Elem_Ptr);
+
+                        when Cnt_Bitvector =>
+                           Cntexmp_Value_Array.Insert
+                             (Indice_Array,
+                              Get
+                                (Get (Get (Json_Element, "indice"), "val"),
+                                 "bv_int"),
+                              Elem_Ptr);
+
+                        when others =>
+                           return (T => Cnt_Invalid,
+                                   S => Null_Unbounded_String);
+                        end case;
+                     end;
 
                   end;
                end loop;
+               Other_Ptr :=
+                 new Cntexmp_Value'(Get_Typed_Cntexmp_Value (JS_Array_others));
                if Other_Ptr = null then
                   Other_Ptr :=
                     new Cntexmp_Value'(T => Cnt_Invalid,
@@ -1580,7 +1583,6 @@ package body VC_Kinds is
             when Cnt_Float      => Create_Float (V.F),
             when Cnt_Boolean    => Create (V.Bo),
             when Cnt_Bitvector  => Create (V.B),
-            when Cnt_Unparsed   => Create (V.U),
             when Cnt_Record     => Create_Record (V.Fi),
             when Cnt_Projection => Create (V.Er),
             when Cnt_Array      =>

@@ -40,7 +40,7 @@ fib.adb:66:35: info: cannot unroll loop (too many loop iterations)
 fib.adb:67:17: medium: overflow check might fail, cannot prove upper bound for i * p (e.g. when i = 2 and p = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 66 should mention p in a loop invariant]
 fib.adb:75:11: info: range check proved (CVC5: 2 VC)
 fib.adb:76:33: medium: loop invariant might fail in first iteration (e.g. when i = 2 and p1 = 1) [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
-fib.adb:76:33: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
+fib.adb:76:33: medium: loop invariant might not be preserved by an arbitrary iteration (e.g. when i = 3 and p1 = 2) [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
 fib.adb:76:38: info: precondition proved (CVC5: 2 VC)
 fib.adb:77:18: medium: overflow check might fail, cannot prove upper bound for i * p1 (e.g. when i = 2 and p1 = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add or complete related loop invariants or postconditions]
 fib.adb:80:11: info: range check proved (CVC5: 2 VC)

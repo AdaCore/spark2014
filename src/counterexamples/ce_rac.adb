@@ -3459,12 +3459,17 @@ package body CE_RAC is
                   RAC_Failure (E, VC_Index_Check);
                end if;
 
-               if not Big_Integer_To_Value_Maps.Has_Element (C) then
-                  A.Array_Values.Insert
-                    (I,
-                     new Value_Type'(Copy (A.Array_Others.all)),
-                     C,
-                     B);
+               if not Big_Integer_To_Value_Maps.Has_Element (C)
+               then
+                  if A.Array_Others = null then
+                     RAC_Incomplete ("missing value for OTHERS in array");
+                  else
+                     A.Array_Values.Insert
+                       (I,
+                        new Value_Type'(Copy (A.Array_Others.all)),
+                        C,
+                        B);
+                  end if;
                end if;
 
                return A.Array_Values (C);
@@ -3645,10 +3650,15 @@ package body CE_RAC is
          if RHS.Array_Others /= A.Array_Others
            and then To_Update.Length > 0
          then
-            for C in To_Update.Iterate loop
-               A.Array_Values.Include
-                 (To_Update (C), new Value_Type'(Copy (RHS.Array_Others.all)));
-            end loop;
+            if RHS.Array_Others = null then
+               RAC_Incomplete ("missing value for OTHERS in array");
+            else
+               for C in To_Update.Iterate loop
+                  A.Array_Values.Include
+                    (To_Update (C),
+                     new Value_Type'(Copy (RHS.Array_Others.all)));
+               end loop;
+            end if;
          end if;
       end Assignment_To_Slice;
 
@@ -3740,9 +3750,13 @@ package body CE_RAC is
                         pragma Assert (Present (E));
 
                         if not LHS.Record_Fields.Contains (E) then
-                           pragma Assert (Has_Discriminants (LHS.AST_Ty));
-                           RAC_Failure
-                             (Prefix (Name (N)), VC_Discriminant_Check);
+                           if Is_Class_Wide_Type (LHS.AST_Ty) then
+                              RAC_Incomplete ("classwide type");
+                           else
+                              pragma Assert (Has_Discriminants (LHS.AST_Ty));
+                              RAC_Failure
+                                (Prefix (Name (N)), VC_Discriminant_Check);
+                           end if;
                         end if;
                         LHS.Record_Fields.Include (E, RHS);
                      end;

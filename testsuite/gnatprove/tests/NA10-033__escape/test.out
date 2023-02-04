@@ -6,7 +6,7 @@ escape.adb:10:22: warning: unused assignment
 escape.adb:10:34: medium: overflow check might fail, cannot prove upper bound for Count_Bs + 1 (e.g. when Count_Bs = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 8 should mention Count_Bs in a loop invariant]
 escape.adb:14:40: info: range check proved (CVC5: 2 VC)
 escape.adb:14:48: info: range check proved (CVC5: 2 VC)
-escape.adb:14:48: medium: overflow check might fail, cannot prove upper bound for S'Length + Count_Bs (e.g. when Count_Bs = 1 and Len = 0 and S = (others => '/') and S'First = 1 and S'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 8 should mention Count_Bs in a loop invariant]
+escape.adb:14:48: medium: overflow check might fail, cannot prove upper bound for S'Length + Count_Bs [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 8 should mention Count_Bs in a loop invariant]
 escape.adb:15:10: info: range check proved (CVC5: 2 VC)
 escape.adb:18:27: info: cannot unroll loop (too many loop iterations)
 escape.adb:19:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 18 should mention TI in a loop invariant]

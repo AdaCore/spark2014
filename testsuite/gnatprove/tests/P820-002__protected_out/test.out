@@ -43,7 +43,7 @@ polyorb_hi-messages.adb:120:57: info: overflow check proved (CVC5: 2 VC)
 polyorb_hi-messages.adb:122:23: info: overflow check proved (CVC5: 2 VC)
 polyorb_hi-messages.adb:123:39: info: overflow check proved (CVC5: 2 VC)
 polyorb_hi-messages.adb:123:39: info: range check proved (CVC5: 2 VC)
-polyorb_hi-messages.adb:155:14: high: range check might fail, cannot prove upper bound for Item'Length (e.g. when Item = (0 => 0, others => 0) and Item'First = 0 and Item'Last = 9223372036854775807)
+polyorb_hi-messages.adb:155:14: high: range check might fail, cannot prove upper bound for Item'Length (e.g. when Item'First = 0 and Item'Last = 9223372036854775807)
 polyorb_hi-messages.adb:156:16: info: range check proved (CVC5: 4 VC)
 polyorb_hi-messages.adb:156:38: info: index check proved (CVC5: 2 VC)
 polyorb_hi-messages.adb:156:57: info: index check proved (CVC5: 2 VC)
@@ -59,7 +59,7 @@ polyorb_hi-messages.ads:77:07: info: initialization of "Item" proved
 polyorb_hi-messages.ads:78:07: info: initialization of "Last" proved
 polyorb_hi-messages.ads:91:26: info: initialization of "M" proved
 polyorb_hi-messages.ads:98:40: info: precondition proved (CVC5: 1 VC)
-polyorb_hi-messages.ads:99:17: high: postcondition might fail (e.g. when M = (Content => (others => 0), First => 0, Last => 1) and Payload'Result = (others => 0) and Payload'Result'First = 1 and Payload'Result'Last = 19)
+polyorb_hi-messages.ads:99:17: high: postcondition might fail (e.g. when M = (Content => (others => 0), First => 0, Last => 1) and Payload'Result'First = 1 and Payload'Result'Last = 19)
 polyorb_hi-messages.ads:99:32: info: range check proved (CVC5: 2 VC)
 polyorb_hi-messages.ads:99:42: info: precondition proved (CVC5: 1 VC)
 polyorb_hi-messages.ads:103:44: info: precondition proved (CVC5: 1 VC)

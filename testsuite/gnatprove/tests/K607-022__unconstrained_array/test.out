@@ -45,7 +45,7 @@ simple_unc_arrays.adb:66:73: info: index check proved (CVC5: 4 VC)
 simple_unc_arrays.adb:68:24: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:69:25: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:83:28: info: cannot unroll loop (too many loop iterations)
-simple_unc_arrays.adb:84:20: medium: overflow check might fail, cannot prove lower bound for Sum + A.V (I) (e.g. when A = (Last => 1, V => (others => Value'First)) and I = 1 and Sum = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 83 should mention Sum in a loop invariant]
+simple_unc_arrays.adb:84:20: medium: overflow check might fail, cannot prove lower bound for Sum + A.V (I) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 83 should mention Sum in a loop invariant]
 simple_unc_arrays.adb:84:27: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:87:18: info: division check proved (CVC5: 1 VC)
 simple_unc_arrays.adb:98:33: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -62,13 +62,13 @@ simple_unc_arrays.adb:139:10: info: initialization of "Pivot_Index" proved
 simple_unc_arrays.adb:139:23: info: initialization of "Right" proved
 simple_unc_arrays.adb:139:30: info: initialization of "Left" proved
 simple_unc_arrays.adb:140:10: info: initialization of "Pivot_Value" proved
-simple_unc_arrays.adb:143:35: medium: overflow check might fail, cannot prove upper bound for First + Last (e.g. when First = 1073741824 and Last = 1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (First <= Integer'Last - Last) to subprogram at line 135]
-simple_unc_arrays.adb:143:42: medium: overflow check might fail, cannot prove upper bound for First + Last + 1 (e.g. when First = 1073741823 and Last = 1073741824) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (First + Last <= Integer'Last - 1) to subprogram at line 135]
+simple_unc_arrays.adb:143:35: medium: overflow check might fail, cannot prove upper bound for First + Last [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (First <= Integer'Last - Last) to subprogram at line 135]
+simple_unc_arrays.adb:143:42: medium: overflow check might fail, cannot prove upper bound for First + Last + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (First + Last <= Integer'Last - 1) to subprogram at line 135]
 simple_unc_arrays.adb:143:47: info: division check proved (CVC5: 1 VC)
-simple_unc_arrays.adb:144:33: medium: array index check might fail (e.g. when A.V'First = 1 and A.V'Last = 0 and Pivot_Index = 1) [reason for check: value must be a valid index into the array]
-simple_unc_arrays.adb:153:48: medium: array index check might fail (e.g. when A = (Last => ?, V => (1 => 0)) and A.V'First = 1 and A.V'Last = 1 and Left = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 147 should mention Left in a loop invariant]
+simple_unc_arrays.adb:144:33: medium: array index check might fail [reason for check: value must be a valid index into the array]
+simple_unc_arrays.adb:153:48: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 147 should mention Left in a loop invariant]
 simple_unc_arrays.adb:154:32: info: overflow check proved (CVC5: 2 VC)
-simple_unc_arrays.adb:157:50: medium: array index check might fail (e.g. when A = (Last => ?, V => (1 => -1, 2 => 0, 3 => -1)) and A.V'First = 1 and A.V'Last = 3 and Right = 4) [reason for check: value must be a valid index into the array] [possible fix: loop at line 147 should mention Right in a loop invariant]
+simple_unc_arrays.adb:157:50: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 147 should mention Right in a loop invariant]
 simple_unc_arrays.adb:158:34: info: range check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:163:16: info: precondition proved (CVC5: 4 VC)
 simple_unc_arrays.adb:163:33: info: range check proved (CVC5: 2 VC)
@@ -123,7 +123,7 @@ simple_unc_arrays.ads:112:61: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:116:17: info: postcondition proved (CVC5: 2 VC)
 simple_unc_arrays.ads:121:24: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:121:36: info: index check proved (CVC5: 2 VC)
-simple_unc_arrays.ads:121:43: high: postcondition might fail, cannot prove A (J) = A'Old (I) (e.g. when A = (1 => 1, others => 1) and A'Old = (1 => 1, 2 => 0, others => 1) and I = 2 and J = 1)
+simple_unc_arrays.ads:121:43: medium: postcondition might fail, cannot prove A (J) = A'Old (I)
 simple_unc_arrays.ads:121:46: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:121:58: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:123:55: info: index check proved (CVC5: 2 VC)

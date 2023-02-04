@@ -13,7 +13,7 @@ arrays.ads:6:06: medium: contract cases might not be disjoint
 arrays.ads:6:38: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 arrays.ads:7:52: info: index check proved (CVC5: 2 VC)
 arrays.ads:7:60: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
-arrays.ads:20:14: medium: postcondition might fail (e.g. when Count_Even'Result = 2 and X = (1 => 2) and X'First = 1 and X'Last = 1)
+arrays.ads:20:14: medium: postcondition might fail
 arrays.ads:20:36: info: range check proved (CVC5: 2 VC)
 arrays.ads:21:06: medium: contract cases might not be complete
 arrays.ads:21:38: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)

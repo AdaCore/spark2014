@@ -24,7 +24,7 @@ records.adb:89:07: info: initialization of "R" proved
 records.adb:94:15: info: precondition proved (CVC5: 4 VC)
 records.adb:103:19: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 records.adb:111:19: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
-records.adb:119:19: high: postcondition might fail (e.g. when A = (Exists => False, The_Pair => (A => 0, B => 0)))
+records.adb:119:19: high: postcondition might fail (e.g. when A = (Exists => False, The_Pair => (A => 0, B => 0)) and Is_Valid_C'Result = True)
 records.adb:129:25: info: initialization of "Dst" proved
 records.adb:130:11: info: flow dependencies proved
 records.adb:132:22: info: postcondition proved (CVC5: 2 VC)
@@ -117,7 +117,7 @@ records.adb:530:11: info: flow dependencies proved
 records.adb:534:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F_Of_Pair or turning it into an expression function in its unit spec]
 counterexample expected for check at records.adb:119
   trace at records.adb:118 --> A = (Exists => False, The_Pair => (A => 0, B => 0))
-  trace at records.adb:119 --> A = (Exists => False, The_Pair => (A => 0, B => 0))
+  trace at records.adb:119 --> A = (Exists => False, The_Pair => (A => 0, B => 0)) and Is_Valid_C'Result = True
   trace at records.adb:123 --> Is_Valid_C'Result = True
 counterexample expected for check at records.adb:142
   trace at records.adb:138 --> Src = (Exists => True, The_Pair => (A => 0, B => 0))
@@ -128,7 +128,7 @@ counterexample expected for check at records.adb:380
   trace at records.adb:379 --> X = (A => 0, B => 0)
   trace at records.adb:380 --> Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0)
   trace at records.adb:386 --> R = (Exists => True, The_Pair => (A => 0, B => 0))
-  trace at records.adb:389 --> R = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0)
+  trace at records.adb:389 --> R = (Exists => True, The_Pair => (A => 0, B => 0))
   trace at records.adb:390 --> Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0))
 counterexample expected for check at records.adb:436
   trace at records.adb:433 --> X = (Exists => True, The_Pair => (A => 0, B => 0))

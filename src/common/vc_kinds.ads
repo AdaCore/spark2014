@@ -871,7 +871,6 @@ package VC_Kinds is
       Cnt_Float,
       Cnt_Boolean,
       Cnt_Bitvector,
-      Cnt_Unparsed,
       Cnt_Array,
       Cnt_Record,
       Cnt_Projection,
@@ -924,7 +923,6 @@ package VC_Kinds is
          when Cnt_Float      => F  : Float_Value_Ptr;
          when Cnt_Boolean    => Bo : Boolean;
          when Cnt_Bitvector  => B  : Unbounded_String;
-         when Cnt_Unparsed   => U  : Unbounded_String;
          when Cnt_Record     =>
             Fi : Cntexmp_Value_Array.Map;
          when Cnt_Projection => Er : Unbounded_String;

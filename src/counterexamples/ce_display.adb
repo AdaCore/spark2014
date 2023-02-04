@@ -203,13 +203,13 @@ package body CE_Display is
                         if Pretty_Value /= Dont_Display then
                            Pretty_Value.Str :=
                              Reconstruct_Index_Value (Pretty_Value.Str, Var);
-                        end if;
 
-                        Pretty_Line_Cntexmp_Arr.Append
-                          (Cntexample_Elt'(K       => Pretty_Printed,
-                                           Kind    => CEE_Variable,
-                                           Name    => Name,
-                                           Val_Str => Pretty_Value));
+                           Pretty_Line_Cntexmp_Arr.Append
+                             (Cntexample_Elt'(K       => Pretty_Printed,
+                                              Kind    => CEE_Variable,
+                                              Name    => Name,
+                                              Val_Str => Pretty_Value));
+                        end if;
                      end;
 
                   --  General case, add the counterexample value and its
@@ -490,13 +490,20 @@ package body CE_Display is
       for E of Ada_Variables loop
          declare
             V        : constant Value_Type := CE_RAC.Find_Binding (E).all;
-            Elt_Name : constant String     := Source_Name (E);
-            Elt_Val  : constant String     := To_String (Print_Value (V).Str);
+            V_String : constant CNT_Unbounded_String := Print_Value (V);
          begin
-            Before_Next_Element (Env_Line_Str);
-            Append (Env_Line_Str, Elt_Name);
-            Append (Env_Line_Str, " = ");
-            Append (Env_Line_Str, Elt_Val);
+            if V_String /= Dont_Display then
+               declare
+                  Elt_Name : constant String     := Source_Name (E);
+                  Elt_Val  : constant String     :=
+                    To_String (Print_Value (V).Str);
+               begin
+                  Before_Next_Element (Env_Line_Str);
+                  Append (Env_Line_Str, Elt_Name);
+                  Append (Env_Line_Str, " = ");
+                  Append (Env_Line_Str, Elt_Val);
+               end;
+            end if;
          end;
       end loop;
 
