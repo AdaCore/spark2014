@@ -80,7 +80,7 @@ coverage-nightly: coverage gnatprove-nightly install install-coverage install-ex
 setup:
 	cd why3 && ./configure --prefix=$(INSTALLDIR)/libexec/spark \
 		--enable-relocation --disable-js-of-ocaml \
-		--disable-hypothesis-selection --disable-re
+		--disable-hypothesis-selection --disable-re --disable-coq-libs
 
 why3:
 	$(MAKE) -C why3 -j $(nproc)
