@@ -1,0 +1,181 @@
+check_ho_pre.adb:22:32: info: data dependencies proved
+check_ho_pre.adb:24:22: medium: assertion might fail [possible fix: subprogram at line 22 should mention M in a precondition]
+check_ho_pre.adb:32:32: info: data dependencies proved
+check_ho_pre.adb:34:22: info: assertion proved (CVC5: 1 VC)
+check_ho_pre.adb:42:32: info: data dependencies proved
+check_ho_pre.adb:44:22: medium: assertion might fail [possible fix: subprogram at line 42 should mention M in a precondition]
+check_ho_pre.adb:48:24: info: range check proved (CVC5: 2 VC)
+check_ho_pre.adb:52:32: info: data dependencies proved
+check_ho_pre.adb:54:22: info: assertion proved (CVC5: 1 VC)
+spark-containers-functional-sets-higher_order.ads:83:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:83:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:84:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:84:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:84:36: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:84:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:84:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:84:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:85:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:85:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:85:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:85:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:85:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:85:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:85:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:85:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:128:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:128:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:129:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:129:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:129:36: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:129:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:129:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:129:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:130:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:130:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:130:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:130:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:130:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:130:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:130:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:130:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:147:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:147:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:148:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:148:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:149:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:149:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:149:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:149:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:174:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:174:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:175:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:175:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:178:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:178:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:178:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:178:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:199:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:199:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:200:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:200:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:201:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:201:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:201:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:201:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:216:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:216:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:229:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:229:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:243:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:243:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:257:19: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:257:19: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:257:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:257:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:269:19: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:269:19: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:269:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:269:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:283:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:283:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:301:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:301:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:313:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:313:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:327:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:327:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets.ads:52:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:52:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:54:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:54:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:56:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:56:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at use_set_ho.adb:9
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at use_set_ho.adb:9
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at use_set_ho.adb:9
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at use_set_ho.adb:9
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at use_set_ho.adb:9
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at use_set_ho.adb:9
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at use_set_ho.adb:9
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at use_set_ho.adb:9
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at use_set_ho.adb:9
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at use_set_ho.adb:9
+use_set_ho.adb:18:12: info: division check proved (CVC5: 1 VC)
+use_set_ho.adb:21:10: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:23:19: info: postcondition proved (CVC5: 1 VC)
+use_set_ho.adb:23:19: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:23:19: info: predicate check proved (Trivial: 1 VC)
+use_set_ho.adb:24:13: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:24:13: info: predicate check proved (Trivial: 1 VC)
+use_set_ho.adb:24:41: info: predicate check proved (Trivial: 1 VC)
+use_set_ho.adb:27:10: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:29:19: info: postcondition proved (CVC5: 1 VC)
+use_set_ho.adb:29:19: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:29:19: info: predicate check proved (Trivial: 1 VC)
+use_set_ho.adb:30:13: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:30:13: info: predicate check proved (Trivial: 1 VC)
+use_set_ho.adb:35:12: info: division check proved (CVC5: 1 VC)
+use_set_ho.adb:38:10: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:40:19: info: postcondition proved (CVC5: 1 VC)
+use_set_ho.adb:40:19: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:41:13: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:41:18: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:44:10: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:46:19: info: postcondition proved (CVC5: 1 VC)
+use_set_ho.adb:46:19: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:47:13: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:55:10: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:57:19: info: postcondition proved (CVC5: 1 VC)
+use_set_ho.adb:57:19: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:57:19: info: predicate check proved (Trivial: 1 VC)
+use_set_ho.adb:58:13: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:58:13: info: predicate check proved (Trivial: 1 VC)
+use_set_ho.adb:61:10: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:63:19: info: postcondition proved (CVC5: 1 VC)
+use_set_ho.adb:63:19: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:63:19: info: predicate check proved (Trivial: 1 VC)
+use_set_ho.adb:64:13: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:64:13: info: predicate check proved (Trivial: 1 VC)
+use_set_ho.adb:64:37: info: predicate check proved (Trivial: 1 VC)
+use_set_ho.adb:69:56: info: overflow check proved (CVC5: 2 VC)
+use_set_ho.adb:72:10: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:74:19: info: postcondition proved (CVC5: 1 VC)
+use_set_ho.adb:74:19: info: precondition proved (CVC5: 2 VC)
+use_set_ho.adb:74:68: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:74:73: info: precondition proved (CVC5: 2 VC)
+use_set_ho.adb:79:12: info: division check proved (CVC5: 1 VC)
+use_set_ho.adb:82:10: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:84:19: info: postcondition proved (CVC5: 2 VC)
+use_set_ho.adb:84:19: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
+use_set_ho.adb:84:46: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
+use_set_ho.adb:85:30: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
+use_set_ho.adb:90:23: info: predicate check proved (Trivial: 1 VC)
+use_set_ho.adb:90:65: info: range check proved (CVC5: 2 VC)
+use_set_ho.adb:90:77: info: predicate check proved (Trivial: 2 VC)
+use_set_ho.adb:94:17: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:94:17: medium: postcondition might fail
+use_set_ho.adb:94:34: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+use_set_ho.adb:94:66: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:94:71: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:94:88: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+use_set_ho.adb:100:23: info: predicate check proved (Trivial: 1 VC)
+use_set_ho.adb:100:65: info: range check proved (CVC5: 2 VC)
+use_set_ho.adb:100:77: info: predicate check proved (Trivial: 2 VC)
+use_set_ho.adb:100:79: info: division check proved (CVC5: 2 VC)
+use_set_ho.adb:100:83: info: predicate check proved (Trivial: 2 VC)
+use_set_ho.adb:104:17: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
+use_set_ho.adb:104:25: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+use_set_ho.adb:104:70: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+use_set_ho.adb:105:36: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+use_set_ho.adb:105:69: info: division check proved (CVC5: 1 VC)
