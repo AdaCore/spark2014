@@ -689,6 +689,10 @@ of a program:
   * does not lock protected objects with calls to protected subprograms,
   * does not call Ada.Task_Identification.Current_Task.
 
+* [SPARK_ACYCLIC_ELABORATION]
+  Cycles in the elaboration order between entities should not contain cycles.
+  This can be checked by compiling the program with all assertions and
+  contracts enabled.
 
 In addition, the following assumptions need to be addressed when using SPARK on
 only part of a program:
