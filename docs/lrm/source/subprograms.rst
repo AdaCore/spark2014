@@ -2026,7 +2026,7 @@ introducing the possibility of improperly reading an uninitialized scalar)
 referencing partially initialized Inputs and Outputs.
 
 The Relaxed_Initialization aspect may be specified for a type, for
-a standalone object, for a state abstraction, or (at least in effect - see
+a standalone object, or (at least in effect - see
 below for details) for a parameter or function result of a subprogram or entry.
 The prefix of an Initialized attribute reference shall denote an object.
 
@@ -2060,7 +2060,7 @@ The prefix of an Initialized attribute reference shall denote an object.
      one operative constituent (see Ada RM 4.4) which is not the expression
      itself and whose associated object has relaxed initialization.
 
-   A state abstraction or a type has relaxed initialization if its
+   A type has relaxed initialization if its
    Relaxed_Initialization aspect is True. An expression has relaxed
    initialization if its evaluation yields an object that has relaxed
    initialization.
@@ -2151,25 +2151,22 @@ The prefix of an Initialized attribute reference shall denote an object.
      (or, in the case of a function or generic function, the result) is not
      mentioned in any profile_spec_item.
 
-6. A constituent of a state abstraction shall have relaxed initialization
-   if and only if the state abstraction has relaxed initialization.
-
-7. No part of a tagged type, or of a tagged object, shall have relaxed
+6. No part of a tagged type, or of a tagged object, shall have relaxed
    initialization.
 
-8. No part of an effectively volatile type, or of an effectively volatile
+7. No part of an effectively volatile type, or of an effectively volatile
    object, shall have relaxed initialization.
 
-9. No part of an Unchecked_Union type shall have relaxed initialization.
+8. No part of an Unchecked_Union type shall have relaxed initialization.
    No part of the type of the prefix of an Initialized attribute reference
    shall be of an Unchecked_Union type.
 
-10. A Relaxed_Initialization aspect specification which applies to a
-    declaration occuring in the visible part of a package [(e.g., the
-    declaration of a private type or of a deferred constant)] shall not
-    occur in the private part of that package.
+9. A Relaxed_Initialization aspect specification which applies to a
+   declaration occuring in the visible part of a package [(e.g., the
+   declaration of a private type or of a deferred constant)] shall not
+   occur in the private part of that package.
 
-11. A formal parameter of a dispatching operation shall not have relaxed
+10. A formal parameter of a dispatching operation shall not have relaxed
     initialization; the result of a dispatching function shall not have
     relaxed initialization.
 
@@ -2177,7 +2174,7 @@ The prefix of an Initialized attribute reference shall denote an object.
 
    Verification Rules
 
-12. At the point of a read of a scalar object X that has relaxed initialization,
+11. At the point of a read of a scalar object X that has relaxed initialization,
     a verification condition is introduced to ensure that X is initialized.
     This includes the case where X is a subcomponent of a composite object
     that is passed as an argument in a call to a predefined relational
@@ -2215,7 +2212,7 @@ The prefix of an Initialized attribute reference shall denote an object.
     whole-object-granularity rules that govern that case will ensure that X is
     initialized whenever it is read.]
 
-13. For any object X, evaluation of X'Initialized includes the evaluation
+12. For any object X, evaluation of X'Initialized includes the evaluation
     of Y'Initialized for every scalar reachable part
     (see :ref:`Access Types`) Y of X (excluding
     "hidden" components of tagged objects - see :ref:`Type Invariants`).
