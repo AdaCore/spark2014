@@ -1,0 +1,15 @@
+main.adb:6:38: warning: no procedure exists that can initialize abstract state "N1.S"
+main.adb:12:37: medium: initialization check might fail (e.g. when X'Initialized = False) [possible fix: subprogram at line 7 should mention X'Initialized in a precondition]
+main.adb:13:59: info: initialization check proved (CVC5: 1 VC)
+main.adb:20:38: info: initialization of "N2.S" proved
+main.adb:20:41: info: flow dependencies proved
+main.adb:26:37: medium: initialization check might fail (e.g. when X'Initialized = False) [possible fix: subprogram at line 21 should mention X'Initialized in a precondition]
+main.adb:27:59: info: initialization check proved (CVC5: 1 VC)
+main.adb:34:38: info: initialization of "N3.S" proved
+main.adb:34:41: info: flow dependencies proved
+main.adb:38:07: high: "Y" constituent of "S" is not initialized in "N3" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Y" constituent of "S" at declaration]
+main.adb:38:07: high: initialization of "N3.S" is specified at line 34
+main.adb:45:31: high: "N1.S" is not initialized
+main.adb:45:31: info: implicit function contract not available for proof ("H" might not return)
+main.adb:46:31: info: implicit function contract not available for proof ("H" might not return)
+main.adb:47:31: info: implicit function contract not available for proof ("H" might not return)
