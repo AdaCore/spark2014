@@ -17,297 +17,424 @@ spark-big_reals__light.ads:116:34: info: predicate check proved (Trivial: 1 VC)
 spark-big_reals__light.ads:118:06: info: data dependencies proved
 spark-big_reals__light.ads:167:13: info: subprogram "From_Universal_Image" will terminate, terminating annotation has been proved
 spark-big_reals__light.ads:171:06: info: data dependencies proved
-spark-containers-formal-doubly_linked_lists.ads:40:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:42:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:44:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:449:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:450:08: info: dynamic accessibility check proved (Trivial), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:454:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:456:08: info: dynamic accessibility check proved (Trivial), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:477:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:586:49: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:721:49: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:811:57: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:878:57: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:965:28: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:965:39: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:1141:43: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:1323:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:1464:20: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:1479:20: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:1494:20: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:1509:20: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:1531:14: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:1537:23: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:1586:14: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:23
-spark-containers-formal-doubly_linked_lists.ads:1593:23: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:23
-spark-containers-functional-infinite_sequences__light.ads:53:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:55:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:57:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:63:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:65:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:67:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:116:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:116:43: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:119:06: info: data dependencies proved, in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:181:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:181:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:197:12: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:198:39: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:228:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:228:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:254:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:254:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:254:47: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:278:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:278:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:299:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:371:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:371:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:400:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:400:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:419:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:419:21: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:419:37: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:419:42: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:439:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:439:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:439:39: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:439:46: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:459:08: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:459:15: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:461:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:461:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:462:15: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:462:24: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:462:31: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:462:37: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:462:46: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-infinite_sequences__light.ads:462:53: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:14
-spark-containers-functional-maps__light.ads:63:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:16
-spark-containers-functional-maps__light.ads:63:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-functional-maps__light.ads:65:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:16
-spark-containers-functional-maps__light.ads:65:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-functional-maps__light.ads:67:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:16
-spark-containers-functional-maps__light.ads:67:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-functional-maps__light.ads:73:19: info: subprogram "Equivalent_Keys_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:16
-spark-containers-functional-maps__light.ads:73:19: info: subprogram "Equivalent_Keys_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-functional-maps__light.ads:75:19: info: subprogram "Equivalent_Keys_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:16
-spark-containers-functional-maps__light.ads:75:19: info: subprogram "Equivalent_Keys_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-functional-maps__light.ads:77:19: info: subprogram "Equivalent_Keys_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:16
-spark-containers-functional-maps__light.ads:77:19: info: subprogram "Equivalent_Keys_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-functional-maps__light.ads:83:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:16
-spark-containers-functional-maps__light.ads:83:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-functional-maps__light.ads:85:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:16
-spark-containers-functional-maps__light.ads:85:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-functional-maps__light.ads:87:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:16
-spark-containers-functional-maps__light.ads:87:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-functional-maps__light.ads:467:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at main.adb:16
-spark-containers-functional-maps__light.ads:467:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-functional-maps__light.ads:468:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:16
-spark-containers-functional-maps__light.ads:468:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-functional-multisets__light.ads:51:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:17
-spark-containers-functional-multisets__light.ads:53:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:17
-spark-containers-functional-multisets__light.ads:55:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:17
-spark-containers-functional-multisets__light.ads:253:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:17
-spark-containers-functional-multisets__light.ads:253:25: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:17
-spark-containers-functional-multisets__light.ads:447:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:17
-spark-containers-functional-sets__light.ads:58:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:18
-spark-containers-functional-sets__light.ads:60:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:18
-spark-containers-functional-sets__light.ads:62:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:18
-spark-containers-functional-sets__light.ads:369:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:18
-spark-containers-functional-vectors__light.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-functional-vectors__light.ads:59:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:59:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-functional-vectors__light.ads:61:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:61:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-functional-vectors__light.ads:67:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:69:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:71:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:131:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:131:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-functional-vectors__light.ads:132:06: info: data dependencies proved, in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:132:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-functional-vectors__light.ads:213:12: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:213:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-functional-vectors__light.ads:214:39: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:214:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-functional-vectors__light.ads:275:52: info: overflow check proved (CVC5: 1 VC), in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:275:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-functional-vectors__light.ads:320:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:320:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-functional-vectors__light.ads:481:54: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:481:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-functional-vectors__light.ads:486:63: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:486:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-functional-vectors__light.ads:487:59: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:487:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-functional-vectors__light.ads:487:76: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:487:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-functional-vectors__light.ads:488:30: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:19
-spark-containers-functional-vectors__light.ads:488:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:14
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:16
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:19
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.adb:85:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.adb:94:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.adb:103:10: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:17
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:18
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:17
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:18
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:17
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:18
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:17
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:18
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:17
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:18
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:17
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:18
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:17
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:18
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:17
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:18
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:17
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:18
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:14
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:16
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:19
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:121:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:106, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:106, in instantiation at main.adb:23
-spark-containers-parameter_checks.ads:124:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:106, in instantiation at main.adb:23
+spark-containers-formal-doubly_linked_lists.ads:40:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:42:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:44:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:449:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:450:08: info: dynamic accessibility check proved (Trivial), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:454:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:456:08: info: dynamic accessibility check proved (Trivial), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:477:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:586:49: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:721:49: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:811:57: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:878:57: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:965:28: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:965:39: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:1141:43: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:1323:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:1464:20: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:1479:20: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:1494:20: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:1509:20: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:1531:14: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:1537:23: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:1586:14: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:31
+spark-containers-formal-doubly_linked_lists.ads:1593:23: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:31
+spark-containers-functional-infinite_sequences-higher_order.ads:95:18: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:95:26: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:109:18: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:109:26: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:109:47: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:109:55: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:110:17: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:110:38: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:124:18: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:124:26: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:139:18: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:139:26: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:140:18: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:140:53: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:140:59: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:153:18: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:153:26: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:154:18: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:154:57: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:154:63: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:181:18: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:181:26: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:196:18: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:196:26: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:196:47: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:196:55: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:197:18: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:198:41: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:198:54: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:215:18: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:215:26: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:219:09: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:219:15: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:240:18: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:240:26: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:241:18: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:241:53: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:241:59: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:267:18: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:267:26: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:281:18: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:281:26: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:281:47: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:281:55: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:282:17: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:282:38: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:296:18: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences-higher_order.ads:296:26: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:20
+spark-containers-functional-infinite_sequences__light.ads:53:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:55:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:57:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:63:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:65:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:67:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:116:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:116:43: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:119:06: info: data dependencies proved, in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:181:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:181:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:197:12: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:198:39: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:228:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:228:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:254:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:254:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:254:47: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:278:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:278:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:299:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:371:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:371:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:400:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:400:28: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:419:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:419:21: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:419:37: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:419:42: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:439:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:439:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:439:39: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:439:46: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:459:08: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:459:15: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:461:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:461:23: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:462:15: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:462:24: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:462:31: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:462:37: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:462:46: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-infinite_sequences__light.ads:462:53: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:18
+spark-containers-functional-maps-higher_order.ads:86:09: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:87:12: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:87:36: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:87:41: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:88:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:88:44: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:88:49: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:88:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:116:09: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:117:12: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:118:31: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:118:51: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:163:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:177:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:193:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:208:19: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:208:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:208:46: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:221:19: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:221:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:221:50: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:236:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:256:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:269:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps-higher_order.ads:285:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at main.adb:22
+spark-containers-functional-maps__light.ads:63:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:21
+spark-containers-functional-maps__light.ads:63:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-functional-maps__light.ads:65:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:21
+spark-containers-functional-maps__light.ads:65:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-functional-maps__light.ads:67:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:21
+spark-containers-functional-maps__light.ads:67:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-functional-maps__light.ads:73:19: info: subprogram "Equivalent_Keys_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:21
+spark-containers-functional-maps__light.ads:73:19: info: subprogram "Equivalent_Keys_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-functional-maps__light.ads:75:19: info: subprogram "Equivalent_Keys_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:21
+spark-containers-functional-maps__light.ads:75:19: info: subprogram "Equivalent_Keys_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-functional-maps__light.ads:77:19: info: subprogram "Equivalent_Keys_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:21
+spark-containers-functional-maps__light.ads:77:19: info: subprogram "Equivalent_Keys_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-functional-maps__light.ads:83:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:21
+spark-containers-functional-maps__light.ads:83:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-functional-maps__light.ads:85:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:21
+spark-containers-functional-maps__light.ads:85:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-functional-maps__light.ads:87:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:21
+spark-containers-functional-maps__light.ads:87:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-functional-maps__light.ads:467:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at main.adb:21
+spark-containers-functional-maps__light.ads:467:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-functional-maps__light.ads:468:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:21
+spark-containers-functional-maps__light.ads:468:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-functional-multisets__light.ads:51:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:23
+spark-containers-functional-multisets__light.ads:53:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:23
+spark-containers-functional-multisets__light.ads:55:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:23
+spark-containers-functional-multisets__light.ads:253:16: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:23
+spark-containers-functional-multisets__light.ads:253:25: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:23
+spark-containers-functional-multisets__light.ads:447:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:23
+spark-containers-functional-sets-higher_order.ads:84:09: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:85:12: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:85:36: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:85:41: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:86:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:86:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:86:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:86:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:129:09: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:130:12: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:130:36: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:130:41: info: predicate check proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:131:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:131:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:131:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:131:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:148:09: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:149:12: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:150:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:150:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:175:09: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:176:12: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:179:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:179:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:200:09: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:201:12: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:202:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:202:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:217:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:230:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:244:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:258:19: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:258:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:270:19: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:270:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:284:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:302:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:314:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets-higher_order.ads:328:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at main.adb:25
+spark-containers-functional-sets__light.ads:58:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:24
+spark-containers-functional-sets__light.ads:60:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:24
+spark-containers-functional-sets__light.ads:62:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:24
+spark-containers-functional-sets__light.ads:369:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:24
+spark-containers-functional-vectors-higher_order.ads:51:24: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors-higher_order.ads:51:40: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors-higher_order.ads:53:24: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors-higher_order.ads:117:17: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors-higher_order.ads:147:59: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors-higher_order.ads:147:65: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors-higher_order.ads:163:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors-higher_order.ads:163:62: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors-higher_order.ads:207:41: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors-higher_order.ads:207:54: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors-higher_order.ads:230:09: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors-higher_order.ads:230:15: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors-higher_order.ads:253:59: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors-higher_order.ads:253:65: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors-higher_order.ads:294:17: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:27
+spark-containers-functional-vectors__light.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-functional-vectors__light.ads:59:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:59:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-functional-vectors__light.ads:61:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:61:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-functional-vectors__light.ads:67:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:69:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:71:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:131:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:131:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-functional-vectors__light.ads:132:06: info: data dependencies proved, in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:132:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-functional-vectors__light.ads:213:12: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:213:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-functional-vectors__light.ads:214:39: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:214:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-functional-vectors__light.ads:275:52: info: overflow check proved (CVC5: 1 VC), in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:275:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-functional-vectors__light.ads:320:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:320:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-functional-vectors__light.ads:481:54: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:481:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-functional-vectors__light.ads:486:63: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:486:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-functional-vectors__light.ads:487:59: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:487:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-functional-vectors__light.ads:487:76: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:487:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-functional-vectors__light.ads:488:30: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:26
+spark-containers-functional-vectors__light.ads:488:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:18
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:21
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:26
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.adb:85:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.adb:94:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.adb:103:10: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:23
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:24
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:23
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:24
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:23
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:24
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:23
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:24
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:23
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:24
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:23
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:24
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:23
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:24
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:23
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:24
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:97, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:306, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:475, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:484, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-multisets__light.ads:454, in instantiation at main.adb:23
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets__light.ads:376, in instantiation at main.adb:24
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:327, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences__light.ads:315, in instantiation at main.adb:18
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at main.adb:21
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps__light.ads:494, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at main.adb:26
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors__light.ads:336, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:121:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:106, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:106, in instantiation at main.adb:31
+spark-containers-parameter_checks.ads:124:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:106, in instantiation at main.adb:31
 spark-lemmas-arithmetic.ads:116:51: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-integer_arithmetic.ads:37
 spark-lemmas-arithmetic.ads:116:51: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_integer_arithmetic.ads:37
 spark-lemmas-arithmetic.ads:127:56: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-integer_arithmetic.ads:37

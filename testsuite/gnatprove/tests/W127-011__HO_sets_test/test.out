@@ -7,84 +7,84 @@ check_ho_pre.adb:44:22: medium: assertion might fail [possible fix: subprogram a
 check_ho_pre.adb:48:24: info: range check proved (CVC5: 2 VC)
 check_ho_pre.adb:52:32: info: data dependencies proved
 check_ho_pre.adb:54:22: info: assertion proved (CVC5: 1 VC)
-spark-containers-functional-sets-higher_order.ads:83:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:83:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:84:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:84:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:84:36: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:84:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:84:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:84:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:85:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:85:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:85:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:85:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:85:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:85:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:85:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:85:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:128:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:128:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:129:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:129:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:129:36: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:129:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:129:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:129:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:130:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:130:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:130:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:130:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:130:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:130:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:130:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:130:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:147:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:147:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:148:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:148:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:149:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:149:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:149:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:149:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:174:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:174:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:175:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:175:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:178:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:178:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:178:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:178:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:199:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:199:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:200:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:200:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:201:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:201:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:201:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:201:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:216:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:216:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:229:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:229:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:243:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:243:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:257:19: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:257:19: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:257:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:257:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:269:19: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:269:19: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:269:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:269:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:283:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:283:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:301:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:301:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:313:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:313:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:327:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:327:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:84:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:84:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:85:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:85:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:85:36: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:85:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:85:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:85:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:86:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:86:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:86:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:86:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:86:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:86:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:86:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:86:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:129:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:129:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:130:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:130:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:130:36: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:130:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:130:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:130:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:131:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:131:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:131:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:131:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:131:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:131:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:131:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:131:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:148:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:148:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:149:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:149:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:150:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:150:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:150:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:150:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:175:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:175:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:176:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:176:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:179:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:179:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:179:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:179:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:200:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:200:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:201:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:201:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:202:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:202:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:202:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:202:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:217:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:217:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:230:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:230:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:244:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:244:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:258:19: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:258:19: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:258:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:258:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:270:19: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:270:19: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:270:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:270:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:284:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:284:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:302:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:302:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:314:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:314:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:328:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:328:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets.ads:52:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-sets.ads:52:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at use_set_ho.adb:9
 spark-containers-functional-sets.ads:54:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at check_ho_pre.adb:10
