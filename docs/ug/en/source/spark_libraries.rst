@@ -274,6 +274,41 @@ available resources:
    weak order in particular). These lemmas appear in the library as additional
    ghost generic formal parameters.
 
+The functional sets, maps, sequences, and vectors have child packages providing
+higher order functions:
+
+* ``SPARK.Containers.Functional.Infinite_Sequences.Higher_Order``
+* ``SPARK.Containers.Functional.Maps.Higher_Order``
+* ``SPARK.Containers.Functional.Sets.Higher_Order``
+* ``SPARK.Containers.Functional.Vectors.Higher_Order``
+
+These functions take as parameters access-to-functions that compute some
+information about an element of the container and apply it to all elements in
+a generic way. As an example, here is the function ``Count`` for functional
+sets. It counts the number of elements in the set with a given property. The
+property is provided by its input access-to-function parameter ``Test``:
+
+.. code-block:: ada
+
+   function Count
+     (S    : Set;
+      Test : not null access function (E : Element_Type) return Boolean)
+      return Big_Natural
+   --  Count the number of elements on which the input Test function returns
+   --  True. Count can only be used with Test functions which return the same
+   --  value on equivalent elements.
+
+   with
+     Global   => null,
+     Annotate => (GNATprove, Higher_Order_Specialization),
+     Pre      => Eq_Compatible (S, Test),
+     Post     => Count'Result <= Length (S);
+
+All the higher order functions are annotated with
+``Higher_Order_Specialization`` (see
+:ref:`Using Annotations to Request Specialized Handling For Higher Order Functions`)
+so they can be used even with functions which read global data as parameters.
+
 .. index:: formal containers
 
 Formal Containers Library
