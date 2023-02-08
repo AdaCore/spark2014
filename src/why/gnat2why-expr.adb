@@ -3676,6 +3676,14 @@ package body Gnat2Why.Expr is
                   Append (Checks, +Checks_Seq);
                end;
             end if;
+         elsif Is_Access_Type (Ty_Ext) and then Can_Never_Be_Null (Ty_Ext) then
+            Append
+              (Checks,
+               New_Located_Assert
+                 (Ada_Node => Ada_Node,
+                  Pred     => False_Pred,
+                  Reason   => VC_Null_Exclusion,
+                  Kind     => EW_Assert));
          end if;
 
          --  If Ty has a DIC and this DIC should be checked at use (it does
