@@ -17,7 +17,6 @@ is
    protected type Bad is
       entry Bad_E;
       procedure Bad_P;
-      function Bad_F return Natural;
    private
    end Bad;
 

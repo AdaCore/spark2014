@@ -1,0 +1,7 @@
+ext.ads:7:13: error: function "Read_And_Write_X" with output global "X" is not allowed in SPARK
+ext.ads:7:13: error: violation of aspect SPARK_Mode at line 1
+ext.ads:10:13: error: function "Read_Y" with output global "Y" is not allowed in SPARK
+ext.ads:10:13: error: violation of aspect SPARK_Mode at line 1
+ext.ads:13:13: error: nonvolatile function "Read_Z" with volatile input global "Z" is not allowed in SPARK
+ext.ads:13:13: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

@@ -38,6 +38,7 @@ with Output;
 with Sem_Util;                       use Sem_Util;
 with Sinfo.Utils;                    use Sinfo.Utils;
 with Snames;                         use Snames;
+with SPARK_Xrefs;                    use SPARK_Xrefs;
 
 package body Flow_Types is
 
@@ -772,7 +773,12 @@ package body Flow_Types is
       Capitalize : Boolean := True;
       --  Control variables for skipping a second consecutive underscore and
       --  capitalizing the first letter of a compound string.
+
    begin
+      if Original = Name_Of_Heap_Variable then
+         return "memory accessed through objects of access type";
+      end if;
+
       for J in Original'Range loop
          if Skip then
             Skip := False;

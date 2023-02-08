@@ -18,4 +18,6 @@ sub.adb:19:10: error: "B" is not allowed in SPARK (due to uninitialized object o
 sub.adb:19:10: error: violation of pragma SPARK_Mode at line 1
 sub.adb:20:13: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 sub.adb:20:13: error: violation of pragma SPARK_Mode at line 1
+sub.ads:3:13: error: function "F" with output global "memory accessed through objects of access type" is not allowed in SPARK
+sub.ads:3:13: error: violation of pragma SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

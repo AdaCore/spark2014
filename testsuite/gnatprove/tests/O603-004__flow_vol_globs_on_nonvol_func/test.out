@@ -1,8 +1,8 @@
 other.ads:2:24: info: initialization of "X" proved
-p.adb:6:07: info: initialization of "Tmp" proved
-p.adb:8:12: error: volatile variable "other.hidden" cannot act as global item of nonvolatile function "Fun"
-p.adb:13:07: info: initialization of "Tmp" proved
-p.adb:15:13: error: volatile variable "Other2.State" cannot act as global item of nonvolatile function "Fun2"
 p.adb:15:13: warning: assuming "Vol_Proc" always returns
 p.adb:15:13: warning: no returning annotation available for "Vol_Proc"
+p.ads:2:13: error: nonvolatile function "Fun" with volatile input global "Other.Hidden" is not allowed in SPARK
+p.ads:2:13: error: violation of pragma SPARK_Mode at test.adc:1
+p.ads:4:13: error: nonvolatile function "Fun2" with volatile input global "State" is not allowed in SPARK
+p.ads:4:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
