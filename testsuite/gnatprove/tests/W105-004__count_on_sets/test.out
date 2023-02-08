@@ -44,7 +44,7 @@ ho_sets.ads:27:27: info: null exclusion check proved (CVC5: 1 VC)
 ho_sets.ads:27:35: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:27:49: info: null exclusion check proved (CVC5: 1 VC)
 ho_sets.ads:37:42: info: predicate check proved (Trivial: 1 VC)
-ho_sets.ads:37:61: info: range check proved (CVC5: 1 VC)
+ho_sets.ads:37:61: medium: range check might fail [reason for check: expression of type Big_Integer must be non-negative]
 ho_sets.ads:37:63: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:39:14: info: postcondition proved (CVC5: 1 VC)
 ho_sets.ads:39:14: info: predicate check proved (Trivial: 1 VC)

@@ -149,8 +149,8 @@ frame_condition.adb:205:36: info: loop invariant preservation proved (CVC5: 2 VC
 frame_condition.adb:205:36: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:207:17: info: loop invariant initialization proved (CVC5: 2 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:207:17: info: loop invariant initialization proved (CVC5: 2 VC), in call inlined at frame_condition.adb:234
+frame_condition.adb:207:17: info: loop invariant preservation proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:207:17: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at frame_condition.adb:233
-frame_condition.adb:207:17: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:207:47: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:207:47: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:208:51: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:233
@@ -189,14 +189,14 @@ frame_condition.ads:14:27: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:14:42: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:15:27: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:15:42: info: index check proved (CVC5: 2 VC)
-frame_condition.ads:18:14: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC)
+frame_condition.ads:18:14: info: postcondition proved (CVC5: 1 VC; Z3: 2 VC)
 frame_condition.ads:19:20: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:19:38: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:21:27: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:21:42: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:22:27: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:22:42: info: index check proved (CVC5: 2 VC)
-frame_condition.ads:25:14: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC)
+frame_condition.ads:25:14: info: postcondition proved (CVC5: 1 VC; Z3: 2 VC)
 frame_condition.ads:26:20: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:26:38: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:28:27: info: index check proved (CVC5: 2 VC)

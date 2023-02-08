@@ -545,7 +545,25 @@ package body Why.Inter is
                   & " elaboration of the enclosing unit",
                   Defined_Entity, Defined_Entity);
             else
-               Add_With_Clause (Th, W_Module_Id (M), EW_Clone_Default);
+
+               --  Special case for local constants. The closure contains the
+               --  axiom module for local constants, but we don't need these
+               --  axioms in the subprogram/package that directly contains the
+               --  constant, so we filter this here.
+
+               declare
+                  Node : constant Node_Id := Get_Ada_Node (M);
+               begin
+                  if Present (Node)
+                    and then Nkind (Node) in N_Entity
+                    and then Ekind (Node) = E_Constant
+                    and then Enclosing_Unit (Node) = Defined_Entity
+                  then
+                     null;
+                  else
+                     Add_With_Clause (Th, W_Module_Id (M), EW_Clone_Default);
+                  end if;
+               end;
             end if;
          end loop;
       end Add_Axiom_Imports;

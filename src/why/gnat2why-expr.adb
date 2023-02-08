@@ -1430,15 +1430,6 @@ package body Gnat2Why.Expr is
                               else Why_Expr),
                            Typ      => Why_Ty));
 
-                  elsif Is_Static_Expression (Rexpr) then
-
-                     --  We generate an ignore statement, to obtain all the
-                     --  checks
-                     --  ??? Is this necessary? after all, we would get a
-                     --  compiler warning anyway
-
-                     return New_Ignore (Prog => Why_Expr);
-
                   else
                      declare
                         Tmp_Var : constant W_Identifier_Id :=
