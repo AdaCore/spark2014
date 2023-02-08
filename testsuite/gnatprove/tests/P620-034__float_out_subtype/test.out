@@ -13,9 +13,9 @@ get_out_subtype_int.adb:5:07: info: initialization of "Roll_Rate_Desired" proved
 get_out_subtype_int.adb:6:07: info: initialization of "Pitch_Rate_Desired" proved
 get_out_subtype_int.adb:7:07: info: initialization of "Yaw_Rate_Desired" proved
 get_out_subtype_int.adb:8:09: info: data dependencies proved
-get_out_subtype_int.adb:27:33: medium: range check might fail, cannot prove lower bound for Roll_Rate_Desired [reason for check: output value must fit in argument type] [possible fix: call at line 27 should mention Roll_Rate_Desired (for argument Roll_Rate_Desired) in a postcondition]
+get_out_subtype_int.adb:27:33: medium: range check might fail, cannot prove lower bound for Roll_Rate_Desired (e.g. when Pitch_Rate_Desired = 0) [reason for check: output value must fit in argument type] [possible fix: call at line 27 should mention Roll_Rate_Desired (for argument Roll_Rate_Desired) in a postcondition]
 get_out_subtype_int.adb:27:52: info: range check proved (CVC5: 2 VC)
 get_out_subtype_int.adb:27:60: info: range check proved (CVC5: 2 VC)
 get_out_subtype_int.adb:27:60: medium: in value of subprogram parameter after the call at get_out_subtype_int.adb:27
-get_out_subtype_int.adb:27:60: medium: range check might fail, cannot prove lower bound for Pitch_Rate_Desired [reason for check: value must be convertible to the target type of the conversion]
+get_out_subtype_int.adb:27:60: medium: range check might fail, cannot prove lower bound for Pitch_Rate_Desired (e.g. when Pitch_Rate_Desired = 0) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add or complete related loop invariants or postconditions]
 get_out_subtype_int.adb:28:33: medium: range check might fail, cannot prove lower bound for T_Rate(Yaw_Rate_Desired) [reason for check: output value must fit in argument type] [possible fix: call at line 27 should mention Yaw_Rate_Desired (for argument Yaw_Rate_Desired) in a postcondition]

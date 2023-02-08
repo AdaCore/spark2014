@@ -28,7 +28,7 @@ pragmarc-b_strings.adb:79:19: info: length check proved (CVC5: 3 VC; Trivial: 1 
 pragmarc-b_strings.adb:79:22: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:79:22: info: range check proved (CVC5: 4 VC)
 pragmarc-b_strings.adb:79:38: info: overflow check proved (CVC5: 2 VC)
-pragmarc-b_strings.adb:79:47: medium: overflow check might fail, cannot prove upper bound for From'Last - To.Len + 1 (e.g. when From = (Positive'Last => 'NUL') and From'First = Integer'Last and From'Last = Integer'Last and To = (Max_Length => ?, Len => 0, Value => (others => 'NUL'))) [reason for check: result of addition must fit in a 32-bits machine integer]
+pragmarc-b_strings.adb:79:47: medium: overflow check might fail, cannot prove upper bound for From'Last - To.Len + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 pragmarc-b_strings.adb:86:16: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:86:19: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:86:19: info: range check proved (CVC5: 4 VC)

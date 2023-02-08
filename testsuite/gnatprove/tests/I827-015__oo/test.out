@@ -25,7 +25,7 @@ instr-child.adb:16:32: medium: overflow check might fail, cannot prove upper bou
 instr-child.adb:16:39: info: division check proved (CVC5: 1 VC)
 instr-child.ads:7:14: warning: subprogram "Display_Value" has no effect
 instr.adb:6:24: info: cannot unroll loop (too many loop iterations)
-instr.adb:7:18: medium: array index check might fail [reason for check: value must be a valid index into the array]
+instr.adb:7:18: medium: array index check might fail (e.g. when J = 0) [reason for check: value must be a valid index into the array]
 instr.adb:14:07: warning: assuming "New_Line" always returns
 instr.adb:14:07: warning: assuming "New_Line" has no effect on global items
 instr.adb:14:07: warning: no Global contract available for "New_Line"
@@ -116,9 +116,9 @@ instr.adb:75:07: warning: no Global contract available for "Put"
 instr.adb:75:07: warning: no returning annotation available for "Put"
 instr.adb:75:59: info: division check proved (CVC5: 1 VC)
 instr.adb:79:07: info: initialization of "nInc" proved
-instr.adb:82:31: high: overflow check might fail, cannot prove upper bound for X.Seconds + Inc (e.g. when Inc = 2147483588 and X = (Name => (others => 'NUL'), Seconds => Sixty'Last, Minutes => Sixty'Last, Hours => 0)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at instr.ads:75 should mention Inc and X in a precondition]
+instr.adb:82:31: medium: overflow check might fail, cannot prove upper bound for X.Seconds + Inc [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at instr.ads:75 should mention Inc and X in a precondition]
 instr.adb:82:38: info: division check proved (CVC5: 1 VC)
-instr.adb:83:26: high: overflow check might fail, cannot prove upper bound for X.Seconds + Inc (e.g. when Inc = 2147483589 and X = (Name => (others => 'NUL'), Seconds => Sixty'Last-1, Minutes => Sixty'Last-1, Hours => 0)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at instr.ads:75 should mention Inc and X in a precondition]
+instr.adb:83:26: medium: overflow check might fail, cannot prove upper bound for X.Seconds + Inc [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at instr.ads:75 should mention Inc and X in a precondition]
 instr.adb:83:33: info: division check proved (CVC5: 1 VC)
 instr.adb:84:31: info: overflow check proved (CVC5: 2 VC)
 instr.adb:84:39: info: division check proved (CVC5: 1 VC)

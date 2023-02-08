@@ -25,7 +25,7 @@ main.adb:39:43: info: in reconstructed value at the end of the borrow at main.ad
 main.adb:39:43: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:39:43: info: predicate check proved (CVC5: 1 VC)
 main.adb:39:43: medium: in reconstructed value at the end of the borrow at main.adb:39
-main.adb:39:43: medium: predicate check might fail [possible fix: subprogram at line 33 should mention X in a precondition]
+main.adb:39:43: medium: predicate check might fail (e.g. when B.all = -1 and X.all = (F => new R2'((F => new R1'((F => new Integer'(-1), G => null)), G => null)), G => null)) [possible fix: subprogram at line 33 should mention X in a precondition]
 main.adb:41:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:45:39: info: in reconstructed value at the end of the borrow at main.adb:45
 main.adb:45:39: info: in reconstructed value at the end of the borrow at main.adb:45
@@ -40,7 +40,7 @@ main.adb:45:43: info: in reconstructed value at the end of the borrow at main.ad
 main.adb:45:43: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:45:43: info: predicate check proved (CVC5: 1 VC)
 main.adb:45:43: medium: in reconstructed value at the end of the borrow at main.adb:45
-main.adb:45:43: medium: predicate check might fail [possible fix: subprogram at line 33 should mention X in a precondition]
+main.adb:45:43: medium: predicate check might fail (e.g. when B.all = -1 and X.all = (F => new R2'((F => new R1'((F => new Integer'(-1), G => null)), G => null)), G => null)) [possible fix: subprogram at line 33 should mention X in a precondition]
 main.adb:47:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:51:39: info: in reconstructed value at the end of the borrow at main.adb:51
 main.adb:51:39: info: in reconstructed value at the end of the borrow at main.adb:51
@@ -49,7 +49,7 @@ main.adb:51:39: info: predicate check proved (CVC5: 1 VC)
 main.adb:51:41: info: in reconstructed value at the end of the borrow at main.adb:51
 main.adb:51:41: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:51:41: medium: in reconstructed value at the end of the borrow at main.adb:51
-main.adb:51:41: medium: predicate check might fail [possible fix: subprogram at line 33 should mention X in a precondition]
+main.adb:51:41: medium: predicate check might fail (e.g. when B.all = -1 and X.all = (F => new R2'((F => new R1'((F => new Integer'(-1), G => null)), G => null)), G => null)) [possible fix: subprogram at line 33 should mention X in a precondition]
 main.adb:51:43: info: in reconstructed value at the end of the borrow at main.adb:51
 main.adb:51:43: info: in reconstructed value at the end of the borrow at main.adb:51
 main.adb:51:43: info: pointer dereference check proved (CVC5: 1 VC)
@@ -58,7 +58,7 @@ main.adb:53:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:57:39: info: in reconstructed value at the end of the borrow at main.adb:57
 main.adb:57:39: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:57:39: medium: in reconstructed value at the end of the borrow at main.adb:57
-main.adb:57:39: medium: predicate check might fail [possible fix: subprogram at line 33 should mention X in a precondition]
+main.adb:57:39: medium: predicate check might fail (e.g. when B.all = -1 and X.all = (F => new R2'((F => new R1'((F => new Integer'(-1), G => null)), G => null)), G => null)) [possible fix: subprogram at line 33 should mention X in a precondition]
 main.adb:57:41: info: in reconstructed value at the end of the borrow at main.adb:57
 main.adb:57:41: info: in reconstructed value at the end of the borrow at main.adb:57
 main.adb:57:41: info: pointer dereference check proved (CVC5: 1 VC)
@@ -279,7 +279,7 @@ main.adb:399:41: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:399:43: info: in reconstructed value at the end of the borrow at main.adb:399
 main.adb:399:43: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:399:43: medium: in reconstructed value at the end of the borrow at main.adb:399
-main.adb:399:43: medium: predicate check might fail [possible fix: subprogram at line 393 should mention X in a precondition]
+main.adb:399:43: medium: predicate check might fail (e.g. when B.all = 0 and X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => null)) [possible fix: subprogram at line 393 should mention X in a precondition]
 main.adb:401:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:405:39: info: in reconstructed value at the end of the borrow at main.adb:405
 main.adb:405:39: info: pointer dereference check proved (CVC5: 1 VC)
@@ -349,7 +349,7 @@ main.adb:475:39: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:475:41: info: in reconstructed value at the end of the borrow at main.adb:475
 main.adb:475:41: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:475:41: medium: in reconstructed value at the end of the borrow at main.adb:475
-main.adb:475:41: medium: predicate check might fail [possible fix: subprogram at line 469 should mention X in a precondition]
+main.adb:475:41: medium: predicate check might fail (e.g. when B.all = 0 and X.all = (F => new R2_P2'((F => new R1'((F => new Integer'(0), G => null)), G => null)), G => null)) [possible fix: subprogram at line 469 should mention X in a precondition]
 main.adb:475:43: info: in reconstructed value at the end of the borrow at main.adb:475
 main.adb:475:43: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:477:18: info: pointer dereference check proved (CVC5: 1 VC)
@@ -406,7 +406,7 @@ main.adb:528:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:532:39: info: in reconstructed value at the end of the borrow at main.adb:532
 main.adb:532:39: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:532:39: medium: in reconstructed value at the end of the borrow at main.adb:532
-main.adb:532:39: medium: predicate check might fail [possible fix: subprogram at line 526 should mention X in a precondition]
+main.adb:532:39: medium: predicate check might fail (e.g. when B.all = 0 and X.all = (F => new R2'((F => new R1'((F => new Integer'(0), G => null)), G => null)), G => null)) [possible fix: subprogram at line 526 should mention X in a precondition]
 main.adb:532:41: info: in reconstructed value at the end of the borrow at main.adb:532
 main.adb:532:41: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:532:43: info: in reconstructed value at the end of the borrow at main.adb:532

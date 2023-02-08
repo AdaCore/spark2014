@@ -17,8 +17,8 @@ concat.adb:11:31: info: range check proved (CVC5: 4 VC), in call inlined at conc
 concat.adb:13:22: info: assertion proved (CVC5: 1 VC), in call inlined at concat.adb:35
 concat.adb:14:22: info: assertion proved (CVC5: 1 VC), in call inlined at concat.adb:35
 concat.adb:17:14: warning: subprogram "Three" has no effect
-concat.adb:20:14: high: overflow check might fail, cannot prove upper bound for A'Last + (B'Last - B'first) (e.g. when A = (others => Integer'Last) and A'First = 0 and A'Last = Integer'Last and B = (0 => 0, 1 => Integer'Last) and B'First = 0 and B'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-concat.adb:20:24: high: overflow check might fail, cannot prove upper bound for B'Last - B'first (e.g. when B = (0 => 0, others => 0) and B'First = -1 and B'Last = Integer'Last) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+concat.adb:20:14: high: overflow check might fail, cannot prove upper bound for A'Last + (B'Last - B'first) (e.g. when A'First = 0 and A'Last = Integer'Last and B'First = 0 and B'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+concat.adb:20:24: high: overflow check might fail, cannot prove upper bound for B'Last - B'first (e.g. when B'First = -1 and B'Last = Integer'Last) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 concat.adb:23:19: info: range check proved (CVC5: 2 VC)
 concat.adb:25:22: info: assertion proved (CVC5: 1 VC)
 concat.adb:26:22: info: assertion proved (CVC5: 1 VC)

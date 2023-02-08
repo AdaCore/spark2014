@@ -19,7 +19,7 @@ test_goto.adb:12:16: warning: assuming "B" has no effect on global items
 test_goto.adb:12:16: warning: no Global contract available for "B"
 test_goto.adb:12:16: warning: no returning annotation available for "B"
 test_goto.adb:16:35: info: cannot unroll loop (too many loop iterations)
-test_goto.adb:17:29: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 16 should mention X in a loop invariant]
+test_goto.adb:17:29: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 16 should mention X in a loop invariant]
 test_goto.adb:18:25: warning: assuming "B" always returns
 test_goto.adb:18:25: warning: assuming "B" has no effect on global items
 test_goto.adb:18:25: warning: no Global contract available for "B"

@@ -1,8 +1,8 @@
 arrays.adb:52:18: info: postcondition proved (CVC5: 2 VC)
 arrays.adb:61:11: info: flow dependencies proved
-arrays.adb:63:22: high: postcondition might fail (e.g. when C = 'NUL' and S = ('a' => True, others => False))
+arrays.adb:63:22: high: postcondition might fail (e.g. when C = 'NUL' and Contains_B'Result = True and S = ('a' => True, others => False))
 arrays.adb:72:19: info: postcondition proved (CVC5: 2 VC)
-arrays.adb:81:19: high: postcondition might fail (e.g. when C = 'NUL' and M = (others => 'NUL'))
+arrays.adb:81:19: high: postcondition might fail (e.g. when C = 'NUL' and Is_Id_2'Result = False and M = (others => 'NUL'))
 arrays.adb:89:11: info: flow dependencies proved
 arrays.adb:95:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:100:11: info: flow dependencies proved
@@ -63,12 +63,12 @@ arrays.adb:255:22: medium: assertion might fail [possible fix: you should consid
 counterexample expected for check at arrays.adb:63
   trace at arrays.adb:58 --> S = ('a' => True, others => False)
   trace at arrays.adb:59 --> C = 'NUL'
-  trace at arrays.adb:63 --> C = 'NUL' and S = ('a' => True, others => False)
+  trace at arrays.adb:63 --> C = 'NUL' and Contains_B'Result = True and S = ('a' => True, others => False)
   trace at arrays.adb:66 --> Contains_B'Result = True
 counterexample expected for check at arrays.adb:81
   trace at arrays.adb:78 --> M = (others => 'NUL')
   trace at arrays.adb:79 --> C = 'NUL'
-  trace at arrays.adb:81 --> C = 'NUL' and M = (others => 'NUL')
+  trace at arrays.adb:81 --> C = 'NUL' and Is_Id_2'Result = False and M = (others => 'NUL')
   trace at arrays.adb:84 --> C = 'NUL' and Is_Id_2'Result = False
 counterexample expected for check at arrays.adb:113
   trace at arrays.adb:108 --> M = (others => 'A')

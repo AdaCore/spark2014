@@ -11,7 +11,7 @@ achiever.ads:31:27: warning: unused variable "Before"
 achiever.ads:32:27: warning: unused variable "After"
 achiever.ads:35:06: info: complete contract cases proved (CVC5: 1 VC)
 achiever.ads:35:06: info: disjoint contract cases proved (CVC5: 1 VC)
-achiever.ads:36:49: medium: contract case might fail
+achiever.ads:36:49: medium: contract case might fail (e.g. when State_Item = (Sc_State => (Prime => True, Shadow => True)))
 achiever.ads:44:45: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 achiever.ads:47:08: info: postcondition proved (CVC5: 1 VC)
 fault_manager.ads:3:14: warning: subprogram "Log_Direct_Failure" has no effect

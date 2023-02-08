@@ -48,7 +48,7 @@ test_predicates.adb:91:25: medium: assertion might fail (e.g. when X = (H => (F 
 test_predicates.adb:91:26: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
 test_predicates.adb:91:26: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:91:30: info: initialization check proved (CVC5: 1 VC)
-test_predicates.adb:91:36: medium: initialization check might fail
+test_predicates.adb:91:36: medium: initialization check might fail (e.g. when X = (H => (F => (C => 0), G => (C => 1)), I => (F => ?, G => (C => 1))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = False and X.I.G.C'Initialized = True)
 test_predicates.adb:91:36: medium: predicate check might fail (e.g. when X = (H => (F => (C => 0), G => (C => 1)), I => (F => (C => 2), G => (C => -1))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
 test_predicates.adb:91:40: info: initialization check proved (CVC5: 1 VC)
 test_predicates.adb:93:14: info: predicate check proved (CVC5: 1 VC)

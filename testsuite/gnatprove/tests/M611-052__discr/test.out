@@ -89,13 +89,13 @@ spark-containers-parameter_checks.ads:121:17: info: subprogram "Eq_Reflexive" wi
 spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:126, in instantiation at list.ads:8
 spark-containers-parameter_checks.ads:124:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-vectors.ads:126, in instantiation at list.ads:8
 stack.adb:4:47: info: range check proved (CVC5: 1 VC)
-stack.adb:4:47: medium: range check might fail (e.g. when S = (N => 0, Top => 1, Content => (others => 1))) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:10 should mention S in a precondition]
+stack.adb:4:47: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:10 should mention S in a precondition]
 stack.adb:5:55: info: range check proved (CVC5: 1 VC)
-stack.adb:5:55: medium: range check might fail (e.g. when S = (N => 0, Top => 2, Content => (others => 1))) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:11 should mention S in a precondition]
+stack.adb:5:55: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:11 should mention S in a precondition]
 stack.adb:20:22: info: range check proved (CVC5: 2 VC)
 stack.adb:21:19: info: index check proved (CVC5: 2 VC)
 stack.adb:32:22: info: range check proved (CVC5: 2 VC)
 stack.ads:23:14: info: precondition proved (CVC5: 1 VC)
-stack.ads:23:14: medium: postcondition might fail, cannot prove Top (S) = X (e.g. when S = (N => 1, Top => 1, Content => (others => 0)) and X = 0)
+stack.ads:23:14: medium: postcondition might fail, cannot prove Top (S) = X
 stack.ads:27:14: info: postcondition proved (CVC5: 1 VC)
 stack.ads:37:07: info: range check proved (CVC5: 2 VC)

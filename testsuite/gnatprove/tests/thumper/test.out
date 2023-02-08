@@ -101,20 +101,20 @@ hermes-der-decode.adb:314:58: info: initialization of "Value" proved
 hermes-der-decode.adb:314:65: info: initialization of "Status" proved
 hermes-der-decode.adb:315:11: info: flow dependencies proved
 hermes-der-decode.adb:322:32: high: overflow check might fail, cannot prove upper bound for Length_Stop + Length (e.g. when Length = 4 and Length_Stop = Natural'Last-3) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Length_Stop <= Integer'Last - Length) to subprogram at line 310]
-hermes-der-decode.adb:326:34: high: array index check might fail (e.g. when Length_Stop = 1 and Message = (others => 0) and Message'First = 0 and Message'Last = 1) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Length_Stop <= Natural'Last - 1) to subprogram at line 310]
+hermes-der-decode.adb:326:34: high: array index check might fail (e.g. when Length_Stop = 1 and Message'First = 0 and Message'Last = 1) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Length_Stop <= Natural'Last - 1) to subprogram at line 310]
 hermes-der-decode.adb:326:34: high: overflow check might fail, cannot prove upper bound for Length_Stop + 1 (e.g. when Length_Stop = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Length_Stop <= Integer'Last - 1) to subprogram at line 310]
 hermes-der-decode.adb:327:17: info: range check proved (CVC5: 2 VC)
 hermes-der-decode.adb:327:48: info: cannot unroll loop (too many loop iterations)
 hermes-der-decode.adb:328:29: medium: overflow check might fail, cannot prove lower bound for 256*Result (e.g. when Result = -8388609) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 327 should mention Result in a loop invariant]
 hermes-der-decode.adb:328:37: info: overflow check proved (CVC5: 2 VC)
-hermes-der-decode.adb:328:67: high: array index check might fail (e.g. when I = 2 and Length_Stop = 1 and Message = (others => 0) and Message'First = 0 and Message'Last = 2) [reason for check: result of addition must be a valid index into the array]
 hermes-der-decode.adb:328:67: info: overflow check proved (CVC5: 2 VC)
+hermes-der-decode.adb:328:67: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 hermes-der-decode.adb:333:17: info: range check proved (CVC5: 2 VC)
 hermes-der-decode.adb:333:48: info: cannot unroll loop (too many loop iterations)
 hermes-der-decode.adb:334:29: medium: overflow check might fail, cannot prove lower bound for 256*Result (e.g. when Result = -8388609) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 333 should mention Result in a loop invariant]
 hermes-der-decode.adb:334:37: info: overflow check proved (CVC5: 2 VC)
-hermes-der-decode.adb:334:67: high: array index check might fail (e.g. when I = 2 and Length_Stop = 1 and Message = (others => 128) and Message'First = 0 and Message'Last = 2) [reason for check: result of addition must be a valid index into the array]
 hermes-der-decode.adb:334:67: info: overflow check proved (CVC5: 2 VC)
+hermes-der-decode.adb:334:67: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 hermes-der-decode.adb:341:34: info: overflow check proved (CVC5: 2 VC)
 hermes-der-decode.adb:352:11: info: data dependencies proved
 hermes-der-decode.adb:352:52: info: initialization of "Stop" proved
@@ -157,12 +157,12 @@ hermes-der-decode.ads:71:07: info: initialization of "Stop" proved
 hermes-der-decode.ads:72:07: info: initialization of "Value" proved
 hermes-der-decode.ads:73:07: info: initialization of "Status" proved
 hermes-der-decode.ads:75:08: info: flow dependencies proved
-hermes-der-decode.ads:77:16: medium: postcondition might fail (e.g. when Start = 1 and Stop = 0) [possible fix: add or complete related loop invariants or postconditions]
+hermes-der-decode.ads:77:16: medium: postcondition might fail (e.g. when Start = 1 and Stop = 0)
 hermes-der-decode.ads:98:07: info: initialization of "Stop" proved
 hermes-der-decode.ads:99:07: info: initialization of "Value" proved
 hermes-der-decode.ads:100:07: info: initialization of "Status" proved
 hermes-der-decode.ads:102:08: info: flow dependencies proved
-hermes-der-decode.ads:104:16: medium: postcondition might fail (e.g. when Start = 1 and Stop = 0) [possible fix: add or complete related loop invariants or postconditions]
+hermes-der-decode.ads:104:16: medium: postcondition might fail (e.g. when Start = 1 and Stop = 0)
 hermes-der-encode.adb:77:07: info: initialization of "Value" proved
 hermes-der-encode.adb:82:50: info: range check proved (CVC5: 1 VC)
 hermes-der-encode.adb:83:20: info: range check proved (CVC5: 4 VC)
@@ -197,7 +197,7 @@ hermes-der-encode.adb:124:60: info: range check proved (CVC5: 2 VC)
 hermes-der-encode.adb:133:07: medium: exception might be raised
 hermes-der-encode.adb:134:07: warning: this statement is never reached
 hermes-der-encode.adb:142:47: info: range check proved (CVC5: 2 VC)
-hermes-der-encode.adb:142:71: high: range check might fail, cannot prove upper bound for Value'Length (e.g. when Value = (others => 0) and Value'First = 0 and Value'Last = Integer'Last) [reason for check: input value must fit in parameter type]
+hermes-der-encode.adb:142:71: high: range check might fail, cannot prove upper bound for Value'Length (e.g. when Value'First = 0 and Value'Last = Integer'Last) [reason for check: input value must fit in parameter type]
 hermes-der-encode.adb:142:80: medium: range check might fail, cannot prove upper bound for Make_Leading_Identifier (Tag_Class => Class_Universal, Structured_Flag => Primitive, Tag => Tag_Octet_String) & Put_Length_Value(Value'Length) & Value [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at hermes-der-encode.ads:34 should mention Value in a precondition]
 hermes-der-encode.adb:149:39: info: range check proved (CVC5: 2 VC)
 hermes-der-encode.adb:155:07: medium: exception might be raised

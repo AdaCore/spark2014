@@ -1008,7 +1008,7 @@ strings.adb:20:21: info: index check proved (CVC5: 2 VC)
 strings.adb:33:07: info: initialization of "Equals_Found" proved
 strings.adb:34:07: info: initialization of "Equals_Position" proved
 strings.adb:39:34: info: range check proved (CVC5: 2 VC)
-strings.adb:44:23: medium: range check might fail (e.g. when Equals_Position = 3 and Text = (1 => 'NUL') and Text'First = 1 and Text'Last = 1) [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
+strings.adb:44:23: medium: range check might fail (e.g. when Equals_Position = 3 and Text'First = 1 and Text'Last = 1) [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.adb:45:32: info: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove.
 strings.adb:45:32: medium: precondition might fail [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.adb:45:40: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
@@ -1219,9 +1219,9 @@ very_longs-divide.adb:119:44: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:119:44: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:119:81: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:119:85: info: index check proved (CVC5: 2 VC)
-very_longs-divide.adb:120:32: medium: divide by zero might fail (e.g. when N = 2 and V = (Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [possible fix: precondition of subprogram at line 109 should mention V]
+very_longs-divide.adb:120:32: medium: divide by zero might fail [possible fix: precondition of subprogram at line 109 should mention V]
 very_longs-divide.adb:120:61: info: index check proved (CVC5: 2 VC)
-very_longs-divide.adb:123:32: medium: divide by zero might fail (e.g. when N = 2 and V = (Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [possible fix: precondition of subprogram at line 109 should mention V]
+very_longs-divide.adb:123:32: medium: divide by zero might fail [possible fix: precondition of subprogram at line 109 should mention V]
 very_longs-divide.adb:123:63: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:127:47: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:128:56: info: overflow check proved (CVC5: 2 VC)
@@ -1241,14 +1241,14 @@ very_longs-divide.adb:157:11: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:157:58: info: cannot unroll loop (dynamic loop bounds)
 very_longs-divide.adb:158:56: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:162:43: info: overflow check proved (CVC5: 2 VC)
-very_longs-divide.adb:162:59: medium: array index check might fail (e.g. when Divisor_Index = 1 and J = 3 and U = (Length => ?, Long_Digits => (others => Octet'Last-2)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 145 should mention J in a precondition]
+very_longs-divide.adb:162:59: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 145 should mention J in a precondition]
 very_longs-divide.adb:169:26: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:169:42: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:170:49: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:170:65: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:170:108: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:175:39: info: overflow check proved (CVC5: 2 VC)
-very_longs-divide.adb:175:39: medium: array index check might fail (e.g. when J = 1 and N = 2 and U = (Length => ?, Long_Digits => (others => 193)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 145 should mention J and N in a precondition]
+very_longs-divide.adb:175:39: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 145 should mention J and N in a precondition]
 very_longs-divide.adb:180:23: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:180:23: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:181:46: info: index check proved (CVC5: 2 VC)
@@ -1259,7 +1259,7 @@ very_longs-divide.adb:188:08: info: flow dependencies proved
 very_longs-divide.adb:191:07: info: initialization of "Carry" proved
 very_longs-divide.adb:192:07: info: initialization of "Sum" proved
 very_longs-divide.adb:194:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in 1 .. Length) to subprogram at line 185]
-very_longs-divide.adb:194:40: medium: range check might fail (e.g. when Q_Hat = 256) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 185 should mention Q_Hat in a precondition]
+very_longs-divide.adb:194:40: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 185 should mention Q_Hat in a precondition]
 very_longs-divide.adb:198:31: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:198:58: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:200:14: info: range check proved (CVC5: 2 VC)
@@ -1418,7 +1418,7 @@ very_longs.adb:303:65: info: index check proved (CVC5: 2 VC)
 very_longs.adb:305:37: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:305:41: info: index check proved (CVC5: 2 VC)
 very_longs.adb:315:07: info: initialization of "Result" proved
-very_longs.adb:315:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length (e.g. when L = (Length => 1, Long_Digits => (others => 0)) and R = (Length => Digit_Index_Type'Last, Long_Digits => (others => 0))) [possible fix: add precondition (L.Length <= Digit_Index_Type'Last - R.Length) to subprogram at very_longs.ads:61]
+very_longs.adb:315:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length [possible fix: add precondition (L.Length <= Digit_Index_Type'Last - R.Length) to subprogram at very_longs.ads:61]
 very_longs.adb:316:07: info: initialization of "L_Digit" proved
 very_longs.adb:317:07: info: initialization of "R_Digit" proved
 very_longs.adb:318:07: info: initialization of "T_Digit" proved
@@ -1455,5 +1455,5 @@ workspaces.adb:5:48: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 workspaces.adb:7:26: info: division check proved (CVC5: 1 VC)
 workspaces.adb:7:30: info: cannot unroll loop (too many loop iterations)
 workspaces.adb:8:21: info: index check proved (CVC5: 2 VC)
-workspaces.adb:9:27: high: overflow check might fail, cannot prove upper bound for Size + 1 (e.g. when Size = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4]
+workspaces.adb:9:27: high: overflow check might fail, cannot prove upper bound for Size + 1 (e.g. when Size = Positive'Last and Workspace'First = 1 and Workspace'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4]
 workspaces.adb:9:32: info: index check proved (CVC5: 2 VC)

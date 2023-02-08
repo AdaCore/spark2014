@@ -51,9 +51,9 @@ inside_out.adb:45:13: info: analyzing call to "Body_Create" in context
 inside_out.adb:56:13: medium: invariant check might fail (e.g. when X = 0)
 inside_out.adb:58:13: info: analyzing call to "Body_Update" in context
 inside_out.adb:68:20: info: invariant check proved (CVC5: 1 VC)
-inside_out.ads:5:14: medium: invariant check might fail [possible fix: add or complete related loop invariants or postconditions]
+inside_out.ads:5:14: medium: invariant check might fail (e.g. when Mode = Prv) [possible fix: add or complete related loop invariants or postconditions]
 inside_out.ads:5:22: info: initialization of "X" proved
-inside_out.ads:7:14: medium: invariant check might fail (e.g. when X = -1)
+inside_out.ads:7:14: medium: invariant check might fail (e.g. when Mode = Prv and X = 0)
 inside_out.ads:7:22: warning: unused initial value of "X"
 inside_out.ads:13:09: info: invariant check proved on default value (CVC5: 1 VC)
 inside_out.ads:14:23: info: in default value of private type at inside_out.ads:3

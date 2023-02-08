@@ -9,7 +9,7 @@ type_invariant_legal.ads:8:13: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal.ads:10:14: warning: subprogram "Pub_In" has no effect
 type_invariant_legal.ads:11:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal.ads:11:23: info: initialization of "X" proved
-type_invariant_legal.ads:12:14: medium: invariant check might fail
+type_invariant_legal.ads:12:14: medium: invariant check might fail (e.g. when X = 0)
 type_invariant_legal.ads:15:09: medium: invariant check might fail on default value
 type_invariant_legal_2.adb:3:14: warning: subprogram "Priv_In" has no effect
 type_invariant_legal_2.adb:4:24: info: initialization of "X" proved

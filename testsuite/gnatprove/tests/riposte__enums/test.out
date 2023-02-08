@@ -1,11 +1,11 @@
 enums.adb:10:19: info: postcondition proved (CVC5: 2 VC)
 enums.adb:17:11: info: flow dependencies proved
-enums.adb:19:22: high: postcondition might fail (e.g. when A = Elem_0 and B = Elem_1)
-enums.adb:27:19: high: postcondition might fail (e.g. when A = Elem_0 and B = Elem_1)
+enums.adb:19:22: high: postcondition might fail (e.g. when A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_A'Result = True)
+enums.adb:27:19: high: postcondition might fail (e.g. when A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_B'Result = True)
 enums.adb:36:19: info: postcondition proved (CVC5: 2 VC)
 enums.adb:43:19: info: postcondition proved (CVC5: 2 VC)
 enums.adb:45:07: info: initialization of "R" proved
-enums.adb:67:19: high: postcondition might fail (e.g. when A = Elem_7)
+enums.adb:67:19: high: postcondition might fail (e.g. when A = Elem_7 and Enum_LT_5_Broken_A'Result = True)
 enums.adb:69:07: info: initialization of "R" proved
 enums.adb:89:19: info: postcondition proved (CVC5: 3 VC)
 enums.adb:91:07: info: initialization of "R" proved
@@ -33,24 +33,16 @@ enums.adb:197:04: warning: analyzing unreferenced function "Subtypes_Broken"
 enums.adb:203:07: info: initialization of "Tmp" proved
 counterexample expected for check at enums.adb:19
   trace at enums.adb:16 --> A = Elem_0 and B = Elem_1
-  trace at enums.adb:19 --> A = Elem_0 and B = Elem_1
-  trace at enums.adb:21 --> Tmp = Elem_0
+  trace at enums.adb:19 --> A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_A'Result = True
+  trace at enums.adb:21 --> A = Elem_0 and Tmp = Elem_0
   trace at enums.adb:23 --> A = Elem_0 and Enum_Equals_Broken_A'Result = True
 counterexample expected for check at enums.adb:27
   trace at enums.adb:26 --> A = Elem_0 and B = Elem_1
-  trace at enums.adb:27 --> A = Elem_0 and B = Elem_1
-  trace at enums.adb:30 --> B = Elem_1 and Enum_Equals_Broken_B'Result = True
+  trace at enums.adb:27 --> A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_B'Result = True
+  trace at enums.adb:30 --> A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_B'Result = True
 counterexample expected for check at enums.adb:67
   trace at enums.adb:66 --> A = Elem_7
-  trace at enums.adb:67 --> A = Elem_7
-  trace at enums.adb:72 --> A = Elem_7
-  trace at enums.adb:73 --> R = True
-  trace at enums.adb:74 --> A = Elem_7
-  trace at enums.adb:75 --> A = Elem_7 and R = True
-  trace at enums.adb:76 --> A = Elem_7
-  trace at enums.adb:77 --> A = Elem_7 and R = True
-  trace at enums.adb:78 --> A = Elem_7
-  trace at enums.adb:79 --> A = Elem_7 and R = True
+  trace at enums.adb:67 --> A = Elem_7 and Enum_LT_5_Broken_A'Result = True
   trace at enums.adb:80 --> A = Elem_7
   trace at enums.adb:81 --> R = True
-  trace at enums.adb:85 --> Enum_LT_5_Broken_A'Result = True and R = True
+  trace at enums.adb:85 --> Enum_LT_5_Broken_A'Result = True
