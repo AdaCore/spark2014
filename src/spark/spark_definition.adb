@@ -760,12 +760,11 @@ package body SPARK_Definition is
          elsif Is_Type (E)
            and then Needs_Default_Checks_At_Decl (E)
            and then Analysis_Requested (E, With_Inlined => True)
+           and then Entity_In_SPARK (E)
          then
 
             --  If the entity is a record or private type with fields hidden
             --  from SPARK, then the default initialization was not verified.
-
-            pragma Assert (Entity_In_SPARK (E));
 
             declare
                V            : constant Subp_Type :=
@@ -5208,6 +5207,103 @@ package body SPARK_Definition is
               and then Invariant_Check_Needed (Etype (Id))
             then
                Mark_Unsupported (Lim_Access_Sub_Return_Type_With_Inv, Id);
+            end if;
+
+            --  Go over the global objects accessed by Id to make sure that
+            --  they are not written and that they are not volatile if Id
+            --  is not a volatile function. This check is done in the frontend
+            --  for explict global contracts, but we need it for the generated
+            --  ones.
+
+            if Ekind (Id) = E_Function
+              and then not Is_Predicate_Function (Id)
+            then
+               declare
+                  Globals : Global_Flow_Ids;
+               begin
+                  Get_Globals
+                    (Subprogram          => Id,
+                     Scope               => (Ent => Id, Part => Visible_Part),
+                     Classwide           => False,
+                     Globals             => Globals,
+                     Use_Deduced_Globals =>
+                        not Gnat2Why_Args.Global_Gen_Mode,
+                     Ignore_Depends      => False);
+
+                  if not Globals.Outputs.Is_Empty then
+                     for G of Globals.Outputs loop
+                        declare
+                           G_Name : constant String :=
+                             (if G.Kind in Direct_Mapping then "&"
+                              else '"' & Flow_Id_To_String (G, Pretty => True)
+                                & '"');
+                        begin
+                           if G.Kind in Direct_Mapping then
+                              Error_Msg_Node_2 := G.Node;
+                           end if;
+                           Mark_Violation
+                             ("function & with output global " & G_Name,
+                              Id,
+                              Root_Cause_Msg =>
+                                "function with global outputs");
+                        end;
+                     end loop;
+
+                  else
+                     for G of Globals.Inputs.Union (Globals.Proof_Ins) loop
+
+                        --  Volatile variable with effective reads are outputs.
+                        --  This case can only happen with abstract states
+                        --  annotated with External. Other cases are rejected
+                        --  in the frontend.
+
+                        if Has_Effective_Reads (G) then
+                           declare
+                              G_Name : constant String :=
+                                (if G.Kind in Direct_Mapping then "&"
+                                 else '"'
+                                 & Flow_Id_To_String (G, Pretty => True)
+                                 & '"');
+                           begin
+                              if G.Kind in Direct_Mapping then
+                                 Error_Msg_Node_2 := G.Node;
+                              end if;
+                              Mark_Violation
+                                ("function & with volatile input global "
+                                 & G_Name & " with effective reads",
+                                 Id,
+                                 Root_Cause_Msg => "function with global "
+                                 & "inputs with effective reads");
+                           end;
+                        end if;
+
+                        --  A nonvolatile function shall not have volatile
+                        --  global inputs (SPARK RM 7.1.3(8)).
+
+                        if not Is_Volatile_Function (Id)
+                          and then Has_Async_Writers (G)
+                        then
+                           declare
+                              G_Name : constant String :=
+                                (if G.Kind in Direct_Mapping then "&"
+                                 else '"'
+                                 & Flow_Id_To_String (G, Pretty => True)
+                                 & '"');
+                           begin
+                              if G.Kind in Direct_Mapping then
+                                 Error_Msg_Node_2 := G.Node;
+                              end if;
+                              Mark_Violation
+                                ("nonvolatile function & with volatile input "
+                                 & "global " & G_Name,
+                                 Id,
+                                 Root_Cause_Msg => "nonvolatile function with "
+                                 & " volatile global inputs");
+                           end;
+                        end if;
+                     end loop;
+                  end if;
+               end;
             end if;
          end Mark_Function_Specification;
 

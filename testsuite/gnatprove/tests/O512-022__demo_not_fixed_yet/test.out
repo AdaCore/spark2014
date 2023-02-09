@@ -13,9 +13,12 @@ adt_stack.adb:48:10: info: range check proved (CVC5: 4 VC)
 adt_stack.adb:48:45: info: range check proved (CVC5: 4 VC)
 adt_stack.ads:13:20: info: initialization of "S" proved
 adt_stack.ads:20:36: info: initialization of "X" proved
-asm_stack.adb:37:10: medium: exception might be raised
-asm_stack.adb:39:29: medium: range check might fail, cannot prove upper bound for Stack_Top + 1 (e.g. when Stack_Top = Stack_Range'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at asm_stack.ads:10 should mention Stack_Top in a precondition]
-asm_stack.adb:40:20: info: index check proved (CVC5: 2 VC)
+asm_stack.ads:11:13: error: function "Pop" with output global "Asm_Stack.Stack_Top" is not allowed in SPARK
+asm_stack.ads:11:13: error: function "Pop" with output global "Asm_Stack.Stack_Top" is not allowed in SPARK
+asm_stack.ads:11:13: error: function "Pop" with output global "Stack_Top" is not allowed in SPARK
+asm_stack.ads:11:13: error: violation of aspect SPARK_Mode at line 5
+asm_stack.ads:11:13: error: violation of aspect SPARK_Mode at line 5
+asm_stack.ads:11:13: error: violation of aspect SPARK_Mode at line 5
 generic_stack.adb:16:10: medium: exception might be raised, in instantiation at use_stacks.adb:47
 generic_stack.adb:18:22: info: overflow check proved (CVC5: 2 VC), in instantiation at use_stacks.adb:47
 generic_stack.adb:19:20: info: index check proved (CVC5: 2 VC), in instantiation at use_stacks.adb:47
@@ -23,21 +26,12 @@ generic_stack.adb:25:10: medium: exception might be raised, in instantiation at 
 generic_stack.adb:27:25: medium: array index check might fail, in instantiation at use_stacks.adb:47 [reason for check: value must be a valid index into the array] [possible fix: subprogram at generic_stack.ads:8 should mention Index in a precondition]
 generic_stack.adb:28:22: info: range check proved (CVC5: 2 VC), in instantiation at use_stacks.adb:47
 generic_stack.ads:8:19: info: initialization of "E" proved, in instantiation at use_stacks.adb:47
-main.adb:9:04: info: initialization of "A" proved
-main.adb:11:14: warning: "random_numbers.state" is set by "Fill_ADT_Stack" but not used after the call
-main.adb:14:14: medium: overflow check might fail, cannot prove lower bound for X + ASM_Stack.Pop (e.g. when X = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 13 should mention X in a loop invariant]
-main.adb:14:25: error: side effects of function "Pop" are not modeled in SPARK
-main.adb:15:21: medium: "My_Stack" might not be initialized
-main.adb:16:14: medium: overflow check might fail, cannot prove lower bound for Y + A (e.g. when A = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 15 should mention X (for argument A) in a postcondition]
-random_numbers.adb:6:04: info: initialization of "Seed" constituent of "State" proved
-random_numbers.adb:13:21: high: "My_Stack" is not initialized
-random_numbers.adb:13:21: warning: "My_Stack" is set by "Pop" but not used after the call
-random_numbers.adb:15:19: error: side effects of function "Pop" are not modeled in SPARK
-random_numbers.adb:16:27: error: side effects of function "Pop" are not modeled in SPARK
-random_numbers.adb:28:29: info: division check proved (CVC5: 1 VC)
-random_numbers.ads:7:03: info: flow dependencies proved
-random_numbers.ads:9:14: warning: "asm_stack.stack_top" is not modified, could be INPUT
-random_numbers.ads:9:22: info: initialization of "Res" proved
+main.adb:14:16: error: "Pop" is not allowed in SPARK (due to function with global outputs)
+main.adb:14:16: error: violation of aspect SPARK_Mode at line 5
+random_numbers.adb:15:10: error: "Pop" is not allowed in SPARK (due to function with global outputs)
+random_numbers.adb:15:10: error: violation of aspect SPARK_Mode at line 2
+random_numbers.adb:16:18: error: "Pop" is not allowed in SPARK (due to function with global outputs)
+random_numbers.adb:16:18: error: violation of aspect SPARK_Mode at line 2
 use_stacks.adb:10:07: info: initialization of "V" proved
 use_stacks.adb:22:07: info: initialization of "My_Stack" proved
 use_stacks.adb:23:07: info: initialization of "V" proved

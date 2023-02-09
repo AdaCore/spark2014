@@ -34,12 +34,6 @@ is
       begin
          Incr_Num_Accounts;
       end Bad_P;
-
-      function Bad_F return Natural is
-      begin
-         Incr_Num_Accounts;
-         return Num_Accounts.Get;
-      end Bad_F;
    end Bad;
 
    task body Account_Management is

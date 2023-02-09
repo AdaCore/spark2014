@@ -2,7 +2,8 @@ aliasing.adb:21:14: info: non-aliasing of formal parameters "X" and "Y" proved
 aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 aliasing.adb:26:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in A'First .. A'Last) to subprogram at aliasing.ads:17]
 aliasing.adb:26:23: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in A'First .. A'Last) to subprogram at aliasing.ads:17]
-global_stack.ads:4:12: error: function with output global "Top" is not allowed in SPARK
+global_stack.ads:4:12: error: function "Pop" with output global "Top" is not allowed in SPARK
+global_stack.ads:4:12: error: violation of aspect SPARK_Mode at line 1
 search_array.adb:7:24: info: cannot unroll loop (too many loop iterations)
 search_array.adb:9:20: info: range check proved (CVC5: 2 VC)
 search_array.adb:12:07: medium: exception might be raised
@@ -539,19 +540,19 @@ trivial_no_output.ads:10:31: warning: writing to "X" is assumed to have no effec
 trivial_no_output.ads:13:19: info: initialization of "Val" proved
 trivial_no_output.ads:14:06: info: data dependencies proved
 trivial_no_output.ads:15:06: info: flow dependencies proved
-volatile_functions.adb:5:07: error: volatile variable "AR" cannot act as global item of nonvolatile function "Read_Non_Volatile"
-volatile_functions.adb:6:07: error: volatile variable "AW" cannot act as global item of nonvolatile function "Read_Non_Volatile"
-volatile_functions.adb:7:07: error: volatile variable "EW" cannot act as global item of nonvolatile function "Read_Non_Volatile"
-volatile_functions.ads:16:13: error: function with output global "ER" is not allowed in SPARK
+volatile_functions.ads:12:13: error: nonvolatile function "Read_Non_Volatile" with volatile input global "AW" is not allowed in SPARK
+volatile_functions.ads:12:13: error: violation of aspect SPARK_Mode at line 4
+volatile_functions.ads:16:13: error: function "Read_ER" with output global "ER" is not allowed in SPARK
+volatile_functions.ads:16:13: error: violation of aspect SPARK_Mode at line 4
 volatile_variable_values.adb:9:22: info: assertion proved (CVC5: 1 VC)
 volatile_variable_values.adb:10:22: info: assertion proved (CVC5: 2 VC)
 volatile_variable_values.adb:11:22: info: assertion proved (CVC5: 1 VC)
 volatile_variable_values.adb:16:04: warning: analyzing unreferenced procedure "Read_Value"
 volatile_variable_values.adb:19:22: info: assertion proved (CVC5: 1 VC)
 volatile_variable_values.ads:13:14: warning: subprogram "Check" has no effect
-volatile_variables.adb:4:14: warning: subprogram "Set" has no effect
 volatile_variables.adb:17:07: info: analyzing call to "Set" in context
-volatile_variables.ads:14:13: error: function with output global "ER" is not allowed in SPARK
+volatile_variables.ads:14:13: error: function "Read_ER" with output global "ER" is not allowed in SPARK
+volatile_variables.ads:14:13: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof
 protected_complex.adb:7:24: error: from profile "Jorvik" at Concurrency/spark.adc:1
 protected_complex.adb:7:24: error: violation of restriction "Pure_Barriers"

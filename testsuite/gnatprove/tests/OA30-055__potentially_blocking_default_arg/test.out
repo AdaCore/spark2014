@@ -1,8 +1,9 @@
-client.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
-client.adb:3:11: warning: "ada.task_identification.tasking_state" is not modified, could be INPUT
-client.adb:5:08: error: side effects of function "Blocking" are not modeled in SPARK
+client.adb:5:08: error: "Blocking" is not allowed in SPARK (due to function with global outputs)
+client.adb:5:08: error: violation of pragma SPARK_Mode at test.adc:1
 p.adb:7:22: warning: assuming "Yield" always returns
 p.adb:7:22: warning: no returning annotation available for "Yield"
-p.adb:12:52: warning: statement has no effect
-p.ads:3:13: error: function with output global "Task_Identification.Tasking_State" is not allowed in SPARK
+p.ads:3:13: error: function "Blocking" with output global "Ada.Task_Identification.Tasking_State" is not allowed in SPARK
+p.ads:3:13: error: function "Blocking" with output global "Tasking_State" is not allowed in SPARK
+p.ads:3:13: error: violation of pragma SPARK_Mode at test.adc:1
+p.ads:3:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
