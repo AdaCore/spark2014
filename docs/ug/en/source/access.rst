@@ -636,7 +636,7 @@ access-to-subprogram type is created, |GNATprove| makes sur that:
   postcondition of True otherwise) is strong enough to imply the postcondition
   of the subprogram type.
 
-Consider the three procedures below:
+Consider the four procedures below:
 
 .. code-block:: ada
 
@@ -686,3 +686,9 @@ Theoretically, a similar notion of approximation should be used for
 these contracts are not currently allowed on access-to-subprogram types,
 |SPARK| simply disallows taking the Access attribute on a suprogram which has
 global inputs or outputs.
+
+.. note::
+
+  Annotations specifying whether or not a subprogram returns are not available
+  currently on access-to-subprogram types. As a result, all calls through
+  dereferences are considered to possibly not terminate.
