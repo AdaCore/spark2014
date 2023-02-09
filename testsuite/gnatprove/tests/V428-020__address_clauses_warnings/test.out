@@ -6,6 +6,7 @@ ext.ads:16:08: warning: make sure that all overlapping objects have Async_Writer
 ext.ads:16:08: warning: writing to "V1" is assumed to have no effects on other non-volatile objects
 ext.ads:25:08: warning: assuming correct volatile properties for "V2"
 ext.ads:25:08: warning: assuming no concurrent accesses to non-atomic object "V2"
+ext.ads:33:08: warning: assuming correct volatile properties for "V3"
 ext.ads:33:08: warning: assuming no concurrent accesses to non-atomic object "V3"
 ext.ads:41:08: warning: assuming correct volatile properties for "C2"
 ext.ads:41:08: warning: assuming no concurrent accesses to non-atomic object "C2"

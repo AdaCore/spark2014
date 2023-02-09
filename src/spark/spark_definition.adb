@@ -2780,6 +2780,10 @@ package body SPARK_Definition is
                      Error_Msg_NE
                        ("\consider annotating & with Async_Writers",
                         Address, E);
+                  else
+                     Error_Msg_NE
+                       (Warning_Message (Warn_Assumed_Volatile_Properties),
+                        Address, E);
                   end if;
 
                elsif not Has_Volatile_Property (E, Pragma_Async_Readers)
@@ -2802,7 +2806,8 @@ package body SPARK_Definition is
 
                --  If E is a variable and the address clause do not link to a
                --  part of an object, we cannot handle the case, emit a
-               --  warning.
+               --  warning. This partly addresses assumptions
+               --  SPARK_ALIASING_ADDRESS.
 
                if not Supported_Alias then
 

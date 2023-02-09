@@ -359,7 +359,6 @@ package VC_Kinds is
    type Misc_Warning_Kind is
      (Warn_Address_To_Access,
       Warn_Attribute_Valid,
-      Warn_Indirect_Writes_To_Alias,
       Warn_Initialization_To_Alias,
       Warn_Function_Is_Valid,
       Warn_Lemma_Procedure_No_Return,
@@ -385,6 +384,7 @@ package VC_Kinds is
       Warn_Assumed_Global_Null,
       Warn_Assumed_Volatile_Properties,
       Warn_Indirect_Writes_Through_Alias,
+      Warn_Indirect_Writes_To_Alias,
 
       --  Warnings only issued when using switch --pedantic
       Warn_Image_Attribute_Length,
@@ -478,7 +478,7 @@ package VC_Kinds is
      Warn_Address_To_Access .. Warn_Variant_Not_Recursive;
 
    subtype Guaranteed_Warning_Kind is Misc_Warning_Kind range
-     Warn_Address_Atomic .. Warn_Indirect_Writes_Through_Alias;
+     Warn_Address_Atomic .. Warn_Indirect_Writes_To_Alias;
 
    subtype Pedantic_Warning_Kind is Misc_Warning_Kind range
      Warn_Image_Attribute_Length .. Warn_Representation_Attribute_Value;

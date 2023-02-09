@@ -516,9 +516,6 @@ package body VC_Kinds is
           & " designating a valid value",
         when Warn_Attribute_Valid =>
           "attribute Valid is assumed to return True",
-        when Warn_Indirect_Writes_To_Alias =>
-          "writing to object is assumed to have no effects on"
-          & " other non-volatile objects",
         when Warn_Initialization_To_Alias =>
           "initialization of object is assumed to have no effects on"
           & " other non-volatile objects",
@@ -574,7 +571,12 @@ package body VC_Kinds is
           "volatile properties of an object with an imprecisely supported "
           & "address specification should be correct",
         when Warn_Indirect_Writes_Through_Alias =>
-          "indirect writes to object through a potential alias are ignored",
+          "indirect writes to object through a potential alias with an object"
+          & " with an imprecisely supported address specification are ignored",
+        when Warn_Indirect_Writes_To_Alias =>
+          "writing to an object with an imprecisely supported address"
+          & " specification is assumed to have no effects on other "
+          & "non-volatile objects",
 
         --  Warnings only issued when using switch --pedantic
         when Warn_Image_Attribute_Length =>
@@ -1354,8 +1356,6 @@ package body VC_Kinds is
           "address to access conversion",
         when Warn_Attribute_Valid =>
           "attribute Valid always True",
-        when Warn_Indirect_Writes_To_Alias =>
-          "indirect writes to alias",
         when Warn_Initialization_To_Alias =>
           "initialization of alias",
         when Warn_Function_Is_Valid =>
@@ -1391,19 +1391,21 @@ package body VC_Kinds is
         when Warn_Address_Atomic =>
           "imprecise Address without Atomic",
         when Warn_Address_Valid =>
-          "imprecise Addresse and validity",
+          "imprecise Address and validity",
         when Warn_Alias_Atomic_Vol =>
           "volatile and atomic status of aliases",
         when Warn_Alias_Different_Volatility =>
           "volatile properties of aliases",
+        when Warn_Assumed_Volatile_Properties =>
+          "imprecise Address and volatile properties",
+        when Warn_Indirect_Writes_Through_Alias =>
+          "imprecise Address and indirect writes through alias",
+        when Warn_Indirect_Writes_To_Alias =>
+          "imprecise Address and indirect writes to alias",
         when Warn_Assumed_Always_Return =>
           "assumed Always_Return",
         when Warn_Assumed_Global_Null =>
           "assumed Global null",
-        when Warn_Assumed_Volatile_Properties =>
-          "imprecise Address and volatile properties",
-        when Warn_Indirect_Writes_Through_Alias =>
-          "indirect writes through alias",
 
         --  Warnings only issued when using switch --pedantic
         when Warn_Image_Attribute_Length =>
