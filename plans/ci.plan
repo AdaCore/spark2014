@@ -1,0 +1,6 @@
+def build():
+    anod_build("why3")
+    anod_build("spark2014", qualifier="assertions")
+
+def test():
+    anod_test("spark2014", qualifier="assertions")

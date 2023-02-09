@@ -52,6 +52,8 @@ stages:
 
          anod vcs --add-repo $anod_name /tmp/$subproject ;
       done ;
+    # Tune to use our build & test plan
+    - anod tune --plan $CI_PROJECT_DIR/plans/ci.plan
 
 #########
 # Build #
@@ -70,9 +72,7 @@ build:
     # Build using anod
     - cd /it/wave
 
-    - anod build why3 --latest
-    - anod build spark2014-doc --latest
-    - anod build spark2014 --latest
+    - anod run build
 
     # Create the package
     - tar czf $PACKAGE_ABSOLUTE_NAME -C /
@@ -110,7 +110,7 @@ test:
     - anod install gnat --latest
 
     # Test using anod
-    - anod test spark2014 -Qassertions --latest
+    - anod run test
 
     # Process the results
     - e3-testsuite-report
