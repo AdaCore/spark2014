@@ -49,6 +49,7 @@ package body Gnat2Why_Opts.Writing is
 
       function To_JSON (SL : String_Lists.List) return JSON_Array;
       function To_JSON (FS : File_Specific) return JSON_Value;
+      function To_JSON (M : GP_Mode) return JSON_Value;
 
       -------------------
       -- Write_To_File --
@@ -86,6 +87,7 @@ package body Gnat2Why_Opts.Writing is
          Set_Field (Obj, No_Loop_Unrolling_Name,     FS.No_Loop_Unrolling);
          Set_Field (Obj, No_Inlining_Name,           FS.No_Inlining);
          Set_Field (Obj, Info_Messages_Name,         FS.Info);
+         Set_Field (Obj, GP_Mode_Name,               To_JSON (FS.Mode));
 
          --  Why3_Args are only needed in phase 2; also Compute_Why3_Args
          --  might call gnatwhy3, which requires Write_Why3_Conf_File to be
@@ -111,6 +113,11 @@ package body Gnat2Why_Opts.Writing is
          return A;
       end To_JSON;
 
+      function To_JSON (M : GP_Mode) return JSON_Value is
+      begin
+         return Create (GP_Mode'Image (M));
+      end To_JSON;
+
       --  Local variables
 
       Obj : constant JSON_Value := Create_Object;
@@ -119,7 +126,6 @@ package body Gnat2Why_Opts.Writing is
 
    begin
       Set_Field (Obj, Global_Gen_Mode_Name, not Translation_Phase);
-      Set_Field (Obj, Check_Mode_Name, Configuration.Mode = GPM_Check);
       Set_Field (Obj, Output_Mode_Name,
                  Gnat2Why_Opts.Output_Mode_Type'Image (Output));
       Set_Field (Obj, Exclude_Line_Name, CL_Switches.Exclude_Line.all);
@@ -134,13 +140,6 @@ package body Gnat2Why_Opts.Writing is
 
       --  Options needed only in phase 2
       if Translation_Phase then
-         Set_Field (Obj, Check_All_Mode_Name,
-                    Configuration.Mode = GPM_Check_All);
-         Set_Field (Obj, Flow_Analysis_Mode_Name,
-                    Configuration.Mode = GPM_Flow);
-         Set_Field (Obj, Prove_Mode_Name,
-                    Configuration.Mode = GPM_Prove);
-
          Set_Field (Obj, Limit_Units_Name,  CL_Switches.U);
          Set_Field (Obj, Limit_Subp_Name,   CL_Switches.Limit_Subp.all);
          Set_Field (Obj, Limit_Line_Name,   CL_Switches.Limit_Line.all);

@@ -1,0 +1,15 @@
+project Test is
+
+  package Compiler is
+    for Default_Switches ("Ada") use ("-gnatws", "-gnatdk", "-gnat2022");
+    for Local_Configuration_Pragmas use "test.adc";
+  end Compiler;
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--mode=silver");
+
+      for Proof_Switches ("stone.adb")  use ("--mode=stone");
+      for Proof_Switches ("bronze.adb") use ("--mode=bronze");
+      for Proof_Switches ("bronze_2.adb") use ("--mode=bronze");
+   end Prove;
+end Test;
