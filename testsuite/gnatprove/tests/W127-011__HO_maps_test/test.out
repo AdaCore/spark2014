@@ -8,56 +8,56 @@ check_ho_pre.adb:45:22: medium: assertion might fail [possible fix: subprogram a
 check_ho_pre.adb:49:24: info: range check proved (CVC5: 2 VC)
 check_ho_pre.adb:54:32: info: data dependencies proved
 check_ho_pre.adb:56:22: info: assertion proved (CVC5: 1 VC)
-spark-containers-functional-maps-higher_order.ads:85:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:85:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:86:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:86:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:86:36: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:86:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:86:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:86:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:87:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:87:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:87:44: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:87:44: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:87:49: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:87:49: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:87:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:87:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:115:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:115:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:116:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:116:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:117:31: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:117:31: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:117:51: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:117:51: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:162:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:162:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:176:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:176:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:192:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:192:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:207:19: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:207:19: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:207:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:207:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:207:46: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:207:46: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:220:19: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:220:19: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:220:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:220:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:220:50: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:220:50: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:235:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:235:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:255:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:255:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:268:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:268:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:284:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:284:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:86:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:86:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:87:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:87:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:87:36: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:87:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:87:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:87:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:88:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:88:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:88:44: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:88:44: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:88:49: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:88:49: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:88:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:88:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:116:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:116:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:117:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:117:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:118:31: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:118:31: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:118:51: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:118:51: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:163:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:163:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:177:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:177:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:193:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:193:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:208:19: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:208:19: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:208:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:208:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:208:46: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:208:46: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:221:19: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:221:19: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:221:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:221:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:221:50: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:221:50: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:236:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:236:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:256:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:256:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:269:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:269:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:285:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:285:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at use_map_ho.adb:9
 spark-containers-functional-maps.ads:59:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at check_ho_pre.adb:10

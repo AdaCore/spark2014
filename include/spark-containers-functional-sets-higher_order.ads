@@ -34,6 +34,7 @@ package SPARK.Containers.Functional.Sets.Higher_Order with
   SPARK_Mode,
   Annotate => (GNATprove, Always_Return)
 is
+   use SPARK.Big_Integers;
 
    function Eq_Compatible
      (S    : Set;
