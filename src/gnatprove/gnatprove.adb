@@ -64,24 +64,25 @@
 --      not done on these units.
 
 with Ada.Command_Line;
-with Ada.Directories;            use Ada.Directories;
+with Ada.Directories;   use Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Exceptions;             use Ada.Exceptions;
+with Ada.Exceptions;    use Ada.Exceptions;
 with Ada.Strings.Unbounded;
-with Ada.Text_IO;                use Ada.Text_IO;
-with Call;                       use Call;
-with Configuration;              use Configuration;
-with GNAT.Expect;                use GNAT.Expect;
+with Ada.Text_IO;       use Ada.Text_IO;
+with Call;              use Call;
+with Configuration;     use Configuration;
+with GNAT.Expect;       use GNAT.Expect;
 with GNAT.OS_Lib;
-with GNAT.Strings;               use GNAT.Strings;
+with GNAT.Strings;      use GNAT.Strings;
+with Gnat2Why_Opts;     use Gnat2Why_Opts;
 with Gnat2Why_Opts.Writing;
-with GNATCOLL.JSON;              use GNATCOLL.JSON;
-with GNATCOLL.Projects;          use GNATCOLL.Projects;
+with GNATCOLL.JSON;     use GNATCOLL.JSON;
+with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.Projects.Aux;
-with GNATCOLL.VFS;               use GNATCOLL.VFS;
-with GNATCOLL.Utils;             use GNATCOLL.Utils;
-with Named_Semaphores;           use Named_Semaphores;
-with String_Utils;               use String_Utils;
+with GNATCOLL.VFS;      use GNATCOLL.VFS;
+with GNATCOLL.Utils;    use GNATCOLL.Utils;
+with Named_Semaphores;  use Named_Semaphores;
+with String_Utils;      use String_Utils;
 
 procedure Gnatprove with SPARK_Mode is
 

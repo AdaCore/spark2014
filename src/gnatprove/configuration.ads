@@ -183,16 +183,6 @@ package Configuration is
       end Prove;
    end Prj_Attr;
 
-   type GP_Mode is (GPM_Check, GPM_Check_All, GPM_Flow, GPM_Prove, GPM_All);
-   --  The feature modes of GNATprove are:
-   --  * GPM_Check     : Check SPARK rules
-   --  * GPM_Check_All : Check all SPARK rules, including the ones checked
-   --                    during flow analysis.
-   --  * GPM_Prove     : Check validity of contracts, proof of subprogram
-   --                    bodies.
-   --  * GPM_Flow      : Check validity of Globals, Depends
-   --  * GPM_All       : Union of GPM_Prove and GPM_Flow
-
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);
 
    --  Attributes that are synthesized from the command line and project file.
@@ -203,7 +193,7 @@ package Configuration is
    Debug          : Boolean;
    Debug_Exec_RAC : Boolean;
    GnateT_Switch  : GNAT.Strings.String_Access;
-   Mode           : GP_Mode;
+   Mode           : GP_Mode := GPM_Check;
    Use_Semaphores : Boolean;
    Only_Given     : Boolean;
    Output         : Output_Mode_Type;
@@ -230,6 +220,7 @@ package Configuration is
       CE_Steps              : Integer;
       CE_Timeout            : Integer;
       No_Inlining           : Boolean;
+      Mode                  : GP_Mode;
       Info                  : Boolean;
       No_Loop_Unrolling     : Boolean;
       Proof_Warnings        : Boolean;

@@ -456,7 +456,7 @@ package body Flow_Error_Messages is
          --  to marking (filtered by Error_Kind severity) and that is why we
          --  suppress all the others.
 
-         if Check_All_Mode then
+         if Gnat2Why_Args.Mode = GPM_Check_All then
             case Severity is
                when Error_Kind =>
                   Suppressed := False;
@@ -591,7 +591,9 @@ package body Flow_Error_Messages is
          --  In check_all mode, we don't want any messages to appear even in
          --  the JSON output, unless they are error messages.
 
-         if not Check_All_Mode or else Severity = Error_Kind then
+         if Gnat2Why_Args.Mode /= GPM_Check_All
+           or else Severity = Error_Kind
+         then
             Add_Json_Msg
               (Suppr      => Suppression,
                Tag        => Flow_Tag_Kind'Image (Tag),

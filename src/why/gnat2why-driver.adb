@@ -60,6 +60,7 @@ with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
 with Gnat2Why.Borrow_Checker;         use Gnat2Why.Borrow_Checker;
 with Gnat2Why.Decls;                  use Gnat2Why.Decls;
 with Gnat2Why.Error_Messages;         use Gnat2Why.Error_Messages;
+with Gnat2Why_Opts;                   use Gnat2Why_Opts;
 with Gnat2Why.Subprograms;            use Gnat2Why.Subprograms;
 with Gnat2Why.Tables;                 use Gnat2Why.Tables;
 with Gnat2Why.Types;                  use Gnat2Why.Types;
@@ -683,7 +684,7 @@ package body Gnat2Why.Driver is
          Finalize (Last_Call => False);
 
          if Compilation_Errors
-           or else Gnat2Why_Args.Check_Mode
+           or else Gnat2Why_Args.Mode = GPM_Check
          then
             goto Leave;
          end if;
@@ -763,7 +764,7 @@ package body Gnat2Why.Driver is
          Finalize (Last_Call => False);
 
          if Compilation_Errors
-           or else Gnat2Why_Args.Check_Mode
+           or else Gnat2Why_Args.Mode = GPM_Check
          then
             Stop_Reason :=
               (if Compilation_Errors then Stop_Reason_Error_Marking
@@ -861,9 +862,7 @@ package body Gnat2Why.Driver is
 
          --  Start the translation to Why
 
-         if not Gnat2Why_Args.Check_All_Mode
-           and then not Gnat2Why_Args.Flow_Analysis_Mode
-         then
+         if Gnat2Why_Args.Mode not in GPM_Check_All | GPM_Flow then
             Why.Gen.Names.Initialize;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;
@@ -890,7 +889,7 @@ package body Gnat2Why.Driver is
             Progress := Progress_Proof;
 
          else
-            Stop_Reason := (if Gnat2Why_Args.Check_All_Mode
+            Stop_Reason := (if Gnat2Why_Args.Mode = GPM_Check_All
                             then Stop_Reason_Check_Mode
                             else Stop_Reason_Flow_Mode);
          end if;
@@ -902,7 +901,9 @@ package body Gnat2Why.Driver is
       --  as complete. So we downgrade the progress here in this case.
 
       if not Gnat2Why_Args.Global_Gen_Mode then
-         if Gnat2Why_Args.Check_All_Mode and then Progress = Progress_Flow then
+         if Gnat2Why_Args.Mode = GPM_Check_All
+           and then Progress = Progress_Flow
+         then
             Progress := Progress_Marking;
          end if;
          Create_JSON_File (Progress, Stop_Reason);

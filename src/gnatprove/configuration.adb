@@ -757,10 +757,6 @@ package body Configuration is
             Long_Switch => "--memcached-server=");
          Define_Switch
            (Config,
-            CL_Switches.Mode'Access,
-            Long_Switch => "--mode=");
-         Define_Switch
-           (Config,
             CL_Switches.M'Access,
             "-m");
          Define_Switch
@@ -868,6 +864,10 @@ package body Configuration is
            (Config,
             CL_Switches.Debug_Exec_RAC'Access,
             Long_Switch => "--debug-exec-rac");
+         Define_Switch
+           (Config,
+            CL_Switches.Mode'Access,
+            Long_Switch => "--mode=");
          Define_Switch
            (Config,
             CL_Switches.No_Counterexample'Access,
@@ -1301,7 +1301,7 @@ package body Configuration is
       procedure Set_Project_Vars (Proj : Project_Type);
       --  Set the variables of the Prj_Attr package
 
-      procedure Set_Mode;
+      procedure Set_Mode (FS : in out File_Specific);
       procedure Set_Output_Mode;
       procedure Set_Warning_Mode;
       procedure Set_Report_Mode;
@@ -1338,6 +1338,7 @@ package body Configuration is
       begin
          Set_Level_Timeout_Steps_Provers (FS);
          Set_Proof_Mode (FS);
+         Set_Mode (FS);
          FS.No_Inlining := CL_Switches.No_Inlining;
          FS.Info := CL_Switches.Info;
          FS.No_Loop_Unrolling := CL_Switches.No_Loop_Unrolling;
@@ -1581,7 +1582,6 @@ package body Configuration is
          Process_Limit_Switches;
 
          GnateT_Switch := new String'(Check_gnateT_Switch (Tree));
-         Set_Mode;
          Set_Output_Mode;
          Set_Warning_Mode;
          Set_Report_Mode;
@@ -1852,30 +1852,48 @@ package body Configuration is
       -- Set_Mode --
       --------------
 
-      procedure Set_Mode is
+      procedure Set_Mode (FS : in out File_Specific) is
       begin
          if CL_Switches.Mode.all = "" then
-            Mode := GPM_All;
+            FS.Mode := GPM_All;
          elsif CL_Switches.Mode.all = "prove" then
-            Mode := GPM_Prove;
+            FS.Mode := GPM_Prove;
          elsif CL_Switches.Mode.all = "check" then
-            Mode := GPM_Check;
+            FS.Mode := GPM_Check;
          elsif CL_Switches.Mode.all = "check_all"
            or else CL_Switches.Mode.all = "stone"
          then
-            Mode := GPM_Check_All;
+            FS.Mode := GPM_Check_All;
          elsif CL_Switches.Mode.all = "flow"
            or else CL_Switches.Mode.all = "bronze"
          then
-            Mode := GPM_Flow;
+            FS.Mode := GPM_Flow;
          elsif CL_Switches.Mode.all = "all"
            or else CL_Switches.Mode.all = "silver"
            or else CL_Switches.Mode.all = "gold"
          then
-            Mode := GPM_All;
+            FS.Mode := GPM_All;
          else
             Abort_Msg ("error: wrong argument for --mode",
                        With_Help => False);
+         end if;
+
+         --  Update mode to the highest we have seen
+         --  This follows the logic that Check < Check_All < Flow | Proof <
+         --  All.
+
+         if Mode = GPM_All then
+            null;
+         elsif (Mode = GPM_Flow and then FS.Mode in GPM_Prove | GPM_All)
+           or else (Mode = GPM_Prove and then FS.Mode in GPM_Flow | GPM_All)
+         then
+            Mode := GPM_All;
+         elsif Mode = GPM_Check_All
+           and then FS.Mode in GPM_Prove | GPM_Flow | GPM_All
+         then
+            Mode := FS.Mode;
+         elsif Mode = GPM_Check then
+            Mode := FS.Mode;
          end if;
       end Set_Mode;
 
@@ -2299,6 +2317,7 @@ package body Configuration is
             CL_Switches.Level := Invalid_Level;
             CL_Switches.Counterexamples := null;
             CL_Switches.No_Inlining := False;
+            CL_Switches.Mode := null;
             CL_Switches.No_Loop_Unrolling := False;
             CL_Switches.Proof_Warnings := False;
             CL_Switches.Proof_Warn_Timeout := Invalid_Timeout;

@@ -823,7 +823,8 @@ def prove_all(
     if vc_timeout is not None:
         fullopt += ["--timeout=%d" % vc_timeout]
 
-    fullopt += ["--mode=%s" % (mode)]
+    if mode is not None:
+        fullopt += ["--mode=%s" % (mode)]
     fullopt += ["-j%d" % (procs)]
     if prover:
         prover_arg = build_prover_switch(prover)

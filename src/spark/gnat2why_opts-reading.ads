@@ -45,25 +45,9 @@ package Gnat2Why_Opts.Reading is
 
    Global_Gen_Mode : Boolean;
 
-   --  SPARK 2014 checking mode. In this mode, gnat2why checks that code marked
-   --  with SPARK_Mode => True does not violate SPARK 2014 rules.
+   --  See the definition of GP_Mode.
 
-   Check_Mode : Boolean;
-
-   --  Check All mode. In this mode, gnat2why will do flow analysis but only
-   --  report check related messages.
-
-   Check_All_Mode : Boolean;
-
-   --  Flow Analysis mode. In this mode, gnat2why will do only flow analysis
-
-   Flow_Analysis_Mode : Boolean;
-
-   --  Prove mode. In this mode gnat2why will also perform flow analysis, but
-   --  only report soundness-related messages. Note that Flow_Analysis_Mode and
-   --  Prove_Mode are mutually exclusive.
-
-   Prove_Mode : Boolean;
+   Mode : GP_Mode;
 
    --  Enable basic debugging for gnat2why. This will dump the CFG and PDG is
    --  dot format, and print the gnatwhy3 command line.

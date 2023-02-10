@@ -48,6 +48,7 @@ with Flow_Refinement;                  use Flow_Refinement;
 with Flow_Utility;                     use Flow_Utility;
 with Gnat2Why.Assumptions;             use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
+with Gnat2Why_Opts;                    use Gnat2Why_Opts;
 with GNATCOLL.JSON;                    use GNATCOLL.JSON;
 with Namet;                            use Namet;
 with Output;                           use Output;
@@ -1616,7 +1617,7 @@ package body Flow is
                   --  In "Prove" mode we do not care about unwritten exports,
                   --  ineffective statements, dead code and incorrect Depends
                   --  aspects.
-                  if not Gnat2Why_Args.Prove_Mode then
+                  if Gnat2Why_Args.Mode /= GPM_Prove then
                      Analysis.Find_Unwritten_Exports (FA);
                      Analysis.Find_Ineffective_Imports_And_Unused_Objects (FA);
                      Analysis.Find_Ineffective_Statements (FA);
@@ -1663,7 +1664,7 @@ package body Flow is
                      --  In "Prove" mode we do not care about hidden unexposed
                      --  state, ineffective statements, dead code and
                      --  impossible to initialize state abstractions.
-                     if not Gnat2Why_Args.Prove_Mode then
+                     if Gnat2Why_Args.Mode /= GPM_Prove then
                         Analysis.Find_Ineffective_Statements (FA);
                         Analysis.Find_Stable_Conditions (FA);
                         Analysis.Find_Dead_Code (FA);
