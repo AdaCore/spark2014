@@ -306,7 +306,7 @@ test.adb:67:14: medium: overflow check might fail, cannot prove upper bound for 
 test.adb:68:07: medium: precondition might fail
 test.adb:71:09: info: precondition proved (CVC5: 1 VC)
 test.adb:76:04: info: precondition proved (CVC5: 2 VC)
-test.adb:77:04: medium: precondition might fail, cannot prove Has_Element (Container, Before) or else Before = No_Element
+test.adb:77:04: medium: precondition might fail, cannot prove (Has_Element (Container, Before) or else Before = No_Element)
 test.adb:79:19: medium: assertion might fail
 test.adb:81:19: info: precondition proved (Trivial: 1 VC)
 test.adb:81:19: medium: assertion might fail
@@ -344,7 +344,7 @@ test.adb:147:09: info: precondition proved (CVC5: 1 VC)
 test.adb:153:04: medium: precondition might fail, cannot prove Has_Element (Container, J)
 test.adb:159:04: medium: precondition might fail
 test.adb:160:04: info: precondition proved (Z3: 1 VC)
-test.adb:162:04: medium: precondition might fail, cannot prove Has_Element (Container, Before) or else Before = No_Element [possible fix: call at line 160 should mention Position (for argument C) in a postcondition]
+test.adb:162:04: medium: precondition might fail, cannot prove (Has_Element (Container, Before) or else Before = No_Element) [possible fix: call at line 160 should mention Position (for argument C) in a postcondition]
 test.adb:164:04: medium: precondition might fail
 test.adb:165:04: info: precondition proved (Z3: 2 VC)
 test.adb:172:04: info: precondition proved (Z3: 2 VC)

@@ -4,7 +4,7 @@ max.adb:10:26: info: range check proved (CVC5: 2 VC)
 max.adb:10:54: info: index check proved (CVC5: 2 VC)
 max.adb:11:18: medium: assertion might fail, cannot prove M = Max [possible fix: subprogram at max.ads:5 should mention Max in a precondition]
 max.adb:14:19: info: range check proved (CVC5: 2 VC)
-max.adb:14:46: medium: assertion might fail, cannot prove A(N) <= Max [possible fix: subprogram at max.ads:5 should mention A and Max in a precondition]
+max.adb:14:46: medium: assertion might fail, cannot prove (A(N) <= Max) [possible fix: subprogram at max.ads:5 should mention A and Max in a precondition]
 max.adb:14:49: info: index check proved (CVC5: 2 VC)
 max.adb:16:20: info: range check proved (CVC5: 2 VC)
 max.adb:16:50: info: index check proved (CVC5: 2 VC)

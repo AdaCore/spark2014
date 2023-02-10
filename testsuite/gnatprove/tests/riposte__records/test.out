@@ -17,7 +17,7 @@ records.adb:67:60: info: range check proved (CVC5: 2 VC)
 records.adb:68:60: info: range check proved (CVC5: 2 VC)
 records.adb:70:07: info: initialization of "R" proved
 records.adb:75:15: info: precondition proved (CVC5: 4 VC)
-records.adb:86:25: high: postcondition might fail, cannot prove (Safe_Add_Pair_B'Result = Pair'(A.A + B.A,  A.B + B.B)) (e.g. when A = (A => Unsigned_Byte'Last, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0))
+records.adb:86:25: high: postcondition might fail, cannot prove Safe_Add_Pair_B'Result = Pair'(A.A + B.A,  A.B + B.B) (e.g. when A = (A => Unsigned_Byte'Last, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0))
 records.adb:86:60: info: range check proved (CVC5: 2 VC)
 records.adb:87:60: info: range check proved (CVC5: 2 VC)
 records.adb:89:07: info: initialization of "R" proved

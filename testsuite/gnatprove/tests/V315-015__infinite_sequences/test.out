@@ -392,7 +392,7 @@ sequences.ads:256:08: info: predicate check proved (Trivial: 1 VC), in instantia
 sequences.ads:256:33: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:256:54: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:257:19: info: precondition proved (CVC5: 2 VC), in instantiation at use_list.adb:3
-sequences.ads:257:19: medium: postcondition might fail, cannot prove (Range_Equal (Left => Container, Right => Remove'Result, Fst => 1, Lst => Position - 1)), in instantiation at use_list.adb:3
+sequences.ads:257:19: medium: postcondition might fail, cannot prove Range_Equal (Left => Container, Right => Remove'Result, Fst => 1, Lst => Position - 1), in instantiation at use_list.adb:3
 sequences.ads:260:31: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:261:31: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:261:40: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_list.adb:3

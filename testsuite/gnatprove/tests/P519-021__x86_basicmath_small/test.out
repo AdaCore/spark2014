@@ -161,7 +161,7 @@ basicmath_small.adb:215:41: warning: no returning annotation available for "EBX"
 basicmath_small.adb:224:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:224:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:225:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:230:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:230:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 basicmath_small.adb:238:13: warning: assuming "Write_EBX" always returns
 basicmath_small.adb:238:13: warning: no returning annotation available for "Write_EBX"
 basicmath_small.adb:241:26: warning: assuming "ReadMem64" always returns
@@ -196,7 +196,7 @@ basicmath_small.adb:304:13: warning: no returning annotation available for "Writ
 basicmath_small.adb:314:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:314:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:315:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:324:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:324:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 basicmath_small.adb:326:25: warning: assuming "ReadMem64" always returns
 basicmath_small.adb:326:25: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:332:13: warning: assuming "WriteMem64" always returns
@@ -211,7 +211,7 @@ basicmath_small.adb:349:13: warning: no returning annotation available for "Writ
 basicmath_small.adb:359:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:359:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:360:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:373:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:373:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 basicmath_small.adb:375:26: warning: assuming "ReadMem64" always returns
 basicmath_small.adb:375:26: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:381:13: warning: assuming "WriteMem64" always returns
@@ -226,7 +226,7 @@ basicmath_small.adb:398:13: warning: no returning annotation available for "Writ
 basicmath_small.adb:408:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:408:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:409:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:426:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:426:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 basicmath_small.adb:428:26: warning: assuming "ReadMem64" always returns
 basicmath_small.adb:428:26: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:434:13: warning: assuming "WriteMem64" always returns
@@ -242,7 +242,7 @@ basicmath_small.adb:451:13: warning: no returning annotation available for "Writ
 basicmath_small.adb:461:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:461:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:462:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:471:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:471:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 basicmath_small.adb:482:10: info: precondition proved (CVC5: 1 VC)
 basicmath_small.adb:482:10: warning: "CarryFlag" is set by "usqrt" but not used after the call
 basicmath_small.adb:482:10: warning: "OverflowFlag" is set by "usqrt" but not used after the call
@@ -263,7 +263,7 @@ basicmath_small.adb:494:13: warning: no returning annotation available for "Writ
 basicmath_small.adb:522:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:522:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:523:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:528:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:528:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 basicmath_small.adb:531:26: warning: assuming "ReadMem64" always returns
 basicmath_small.adb:531:26: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:537:13: warning: assuming "Write_EDI" always returns
@@ -291,7 +291,7 @@ basicmath_small.adb:566:37: warning: no returning annotation available for "Read
 basicmath_small.adb:576:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:576:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:577:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:582:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:582:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 basicmath_small.adb:584:26: warning: assuming "ReadMem64" always returns
 basicmath_small.adb:584:26: warning: no returning annotation available for "ReadMem64"
 basicmath_small.adb:590:13: warning: assuming "Write_EDI" always returns
@@ -704,7 +704,7 @@ basicmath_small.ads:67:59: info: initialization of "CarryFlag" proved
 basicmath_small.ads:67:74: info: initialization of "OverflowFlag" proved
 basicmath_small.ads:68:31: warning: unused initial value of "RBP"
 basicmath_small.ads:68:40: warning: unused initial value of "RDI"
-basicmath_small.ads:74:24: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+basicmath_small.ads:74:24: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 basicmath_small.ads:78:06: info: data dependencies proved
 basicmath_small.ads:79:31: info: initialization of "XMM0" proved
 basicmath_small.ads:79:41: info: initialization of "XMM1" proved
@@ -719,7 +719,7 @@ basicmath_small.ads:81:31: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:81:45: info: initialization of "SignFlag" proved
 basicmath_small.ads:81:59: info: initialization of "CarryFlag" proved
 basicmath_small.ads:81:74: info: initialization of "OverflowFlag" proved
-basicmath_small.ads:93:24: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+basicmath_small.ads:93:24: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 basicmath_small.ads:97:06: info: data dependencies proved
 basicmath_small.ads:97:31: info: initialization of "XMM0" proved
 basicmath_small.ads:97:41: info: initialization of "XMM1" proved
@@ -736,7 +736,7 @@ basicmath_small.ads:99:31: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:99:45: info: initialization of "SignFlag" proved
 basicmath_small.ads:99:59: info: initialization of "CarryFlag" proved
 basicmath_small.ads:99:74: info: initialization of "OverflowFlag" proved
-basicmath_small.ads:115:24: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+basicmath_small.ads:115:24: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 basicmath_small.ads:119:06: info: data dependencies proved
 basicmath_small.ads:120:33: info: initialization of "XMM0" proved
 basicmath_small.ads:120:43: info: initialization of "XMM1" proved
@@ -754,7 +754,7 @@ basicmath_small.ads:122:31: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:122:45: info: initialization of "SignFlag" proved
 basicmath_small.ads:122:59: info: initialization of "CarryFlag" proved
 basicmath_small.ads:122:74: info: initialization of "OverflowFlag" proved
-basicmath_small.ads:141:24: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+basicmath_small.ads:141:24: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 basicmath_small.ads:145:06: info: data dependencies proved
 basicmath_small.ads:145:31: info: initialization of "RSI" proved
 basicmath_small.ads:146:31: info: initialization of "ZeroFlag" proved
@@ -764,21 +764,21 @@ basicmath_small.ads:146:74: info: initialization of "OverflowFlag" proved
 basicmath_small.ads:147:31: low: unused global "RBP"
 basicmath_small.ads:147:31: warning: "RBP" is not modified, could be INPUT
 basicmath_small.ads:147:40: warning: unused initial value of "RDI"
-basicmath_small.ads:158:24: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+basicmath_small.ads:158:24: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 basicmath_small.ads:162:06: info: data dependencies proved
 basicmath_small.ads:162:31: info: initialization of "XMM0" proved
 basicmath_small.ads:162:41: info: initialization of "XMM1" proved
 basicmath_small.ads:162:51: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:163:41: low: unused global "RBP"
 basicmath_small.ads:163:41: warning: "RBP" is not modified, could be INPUT
-basicmath_small.ads:169:24: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+basicmath_small.ads:169:24: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 basicmath_small.ads:173:06: info: data dependencies proved
 basicmath_small.ads:173:31: info: initialization of "XMM0" proved
 basicmath_small.ads:173:41: info: initialization of "XMM1" proved
 basicmath_small.ads:173:51: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:174:41: low: unused global "RBP"
 basicmath_small.ads:174:41: warning: "RBP" is not modified, could be INPUT
-basicmath_small.ads:180:24: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+basicmath_small.ads:180:24: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 basicmath_small.ads:184:09: info: data dependencies proved
 basicmath_small.ads:184:31: low: unused global "Dummy_Var"
 basicmath_small.ads:184:31: warning: "Dummy_Var" is not modified, could be INPUT
@@ -807,7 +807,7 @@ basicmath_small.ads:192:52: low: unused global "FS"
 basicmath_small.ads:192:60: low: unused global "GS"
 basicmath_small.ads:192:68: low: unused global "SS"
 basicmath_small.ads:192:76: low: unused global "DS"
-basicmath_small.ads:194:17: medium: postcondition might fail, cannot prove X86.Memory(X86.RSP'Old) = X86.Memory'Old(X86.RSP'old)
+basicmath_small.ads:194:17: medium: postcondition might fail, cannot prove (X86.Memory(X86.RSP'Old) = X86.Memory'Old(X86.RSP'Old))
 basicmath_small.ads:209:09: info: data dependencies proved
 basicmath_small.ads:210:30: low: unused global "StackAddressSize"
 basicmath_small.ads:210:64: low: unused global "FS"
@@ -845,7 +845,7 @@ basicmath_small.ads:241:32: warning: assuming "InRange64" always returns
 basicmath_small.ads:241:32: warning: assuming "InRange64" has no effect on global items
 basicmath_small.ads:241:32: warning: no Global contract available for "InRange64"
 basicmath_small.ads:241:32: warning: no returning annotation available for "InRange64"
-basicmath_small.ads:242:23: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+basicmath_small.ads:242:23: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 x86.ads:79:40: warning: assuming "InRange64" always returns
 x86.ads:79:40: warning: assuming "InRange64" has no effect on global items
 x86.ads:79:40: warning: no Global contract available for "InRange64"

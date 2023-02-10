@@ -55,7 +55,7 @@ test_raise.adb:68:07: warning: assuming "Rand" always returns
 test_raise.adb:68:07: warning: assuming "Rand" has no effect on global items
 test_raise.adb:68:07: warning: no Global contract available for "Rand"
 test_raise.adb:68:07: warning: no returning annotation available for "Rand"
-test_raise.adb:69:07: medium: precondition might fail, cannot prove (X /= Y) or else raise Program_Error [possible fix: subprogram at line 2 should mention X and Y in a precondition]
+test_raise.adb:69:07: medium: precondition might fail, cannot prove ((X /= Y) or else raise Program_Error) [possible fix: subprogram at line 2 should mention X and Y in a precondition]
 test_raise.adb:70:10: warning: assuming "Rand" always returns
 test_raise.adb:70:10: warning: assuming "Rand" has no effect on global items
 test_raise.adb:70:10: warning: no Global contract available for "Rand"

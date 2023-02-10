@@ -69,7 +69,7 @@ x86.adb:703:17: info: postcondition proved (CVC5: 1 VC)
 x86.adb:716:31: medium: assertion might fail, cannot prove ReadMem64(RDI'Loop_Entry+(I*8)) = RAX
 x86.adb:724:30: medium: assertion might fail, cannot prove HasMem64(Mem, RDI_Start+(I*8), RAX) [possible fix: loop invariant at line 728 should mention Mem]
 x86.adb:725:10: medium: precondition might fail, cannot prove RDI = RDI_Start + (RCX_Start - RCX)*8 [possible fix: loop invariant at line 728 should mention Mem]
-x86.adb:726:10: medium: precondition might fail, cannot prove ReadMem64(RDI) = RAX
+x86.adb:726:10: medium: precondition might fail, cannot prove (ReadMem64(RDI) = RAX)
 x86.adb:730:39: medium: loop invariant might fail in first iteration, cannot prove Memory'Loop_Entry(i) = Memory(i)
 x86.adb:730:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Memory'Loop_Entry(i) = Memory(i)
 x86.adb:731:32: info: loop invariant initialization proved (CVC5: 1 VC)

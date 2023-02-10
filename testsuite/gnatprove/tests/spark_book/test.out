@@ -718,7 +718,7 @@ operator_overload.adb:21:04: info: initialization of "P1" proved
 operator_overload.adb:22:04: info: initialization of "P2" proved
 operator_overload.adb:30:10: info: analyzing call to "<=" in context
 operator_overload.adb:37:07: info: analyzing call to "<=" in context
-overflow.adb:7:15: high: overflow check might fail, cannot prove upper bound for A + B (e.g. when A = Natural'Last and B = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A <= Integer'Last - B) to subprogram at overflow.ads:3]
+overflow.adb:7:15: high: overflow check might fail, cannot prove upper bound for (A + B) (e.g. when A = Natural'Last and B = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A <= Integer'Last - B) to subprogram at overflow.ads:3]
 overflow.adb:7:20: info: division check proved (CVC5: 1 VC)
 overflow.ads:5:19: info: initialization of "C" proved
 palindrome.adb:6:13: info: add a contract to analyze it separately from calling contexts
@@ -902,7 +902,7 @@ shapes5.ads:4:08: info: flow dependencies proved
 shapes5.ads:14:18: high: postcondition might fail (e.g. when Make_Circle'Result = (Center_X => 0, Center_Y => 0, Radius => 0) and Wild_Man = 0)
 shapes5.ads:25:11: info: data dependencies proved
 silly.adb:3:21: info: initialization of "Result" proved
-silly.adb:6:21: high: overflow check might fail, cannot prove upper bound for X + Y (e.g. when X = Positive'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+silly.adb:6:21: high: overflow check might fail, cannot prove upper bound for (X + Y) (e.g. when X = Positive'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 silly.adb:6:26: info: division check proved (CVC5: 1 VC)
 silly.adb:12:22: info: division check proved (CVC5: 1 VC)
 simple_math.adb:6:07: info: initialization of "Q" proved
@@ -1151,7 +1151,7 @@ transitive.adb:26:07: info: initialization of "X_Last" proved
 transitive.adb:32:33: info: loop invariant initialization proved (CVC5: 1 VC)
 transitive.adb:32:33: info: loop invariant preservation proved (CVC5: 1 VC)
 transitive.ads:11:19: info: postcondition proved (CVC5: 1 VC)
-unused_parameter.adb:7:15: high: overflow check might fail, cannot prove upper bound for A + A (e.g. when A = 1073741824) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A <= Integer'Last - A) to subprogram at unused_parameter.ads:3]
+unused_parameter.adb:7:15: high: overflow check might fail, cannot prove upper bound for (A + A) (e.g. when A = 1073741824) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A <= Integer'Last - A) to subprogram at unused_parameter.ads:3]
 unused_parameter.adb:7:20: info: division check proved (CVC5: 1 VC)
 unused_parameter.ads:4:19: warning: unused variable "B"
 unused_parameter.ads:5:19: info: initialization of "C" proved
@@ -1163,7 +1163,7 @@ utility.ads:12:16: info: postcondition proved (CVC5: 1 VC)
 various.adb:7:27: info: unrolling loop
 various.adb:12:07: info: raise statement or expression proved unreachable (CVC5: 1 VC)
 various.adb:20:21: info: assertion proved (CVC5: 2 VC)
-various.adb:20:23: high: overflow check might fail, cannot prove upper bound for X+Y (e.g. when X = Positive'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+various.adb:20:23: high: overflow check might fail, cannot prove upper bound for (X+Y) (e.g. when X = Positive'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 various.adb:20:26: info: division check proved (CVC5: 1 VC)
 various.adb:21:13: info: division check proved (CVC5: 1 VC)
 very_longs-divide.adb:15:12: info: range check proved (CVC5: 2 VC)
@@ -1455,5 +1455,5 @@ workspaces.adb:5:48: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 workspaces.adb:7:26: info: division check proved (CVC5: 1 VC)
 workspaces.adb:7:30: info: cannot unroll loop (too many loop iterations)
 workspaces.adb:8:21: info: index check proved (CVC5: 2 VC)
-workspaces.adb:9:27: high: overflow check might fail, cannot prove upper bound for Size + 1 (e.g. when Size = Positive'Last and Workspace'First = 1 and Workspace'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4]
+workspaces.adb:9:27: high: overflow check might fail, cannot prove upper bound for (Size + 1) (e.g. when Size = Positive'Last and Workspace'First = 1 and Workspace'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4]
 workspaces.adb:9:32: info: index check proved (CVC5: 2 VC)

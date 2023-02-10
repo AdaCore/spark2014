@@ -252,7 +252,7 @@ main.adb:171:13: warning: assuming "Rand" has no effect on global items
 main.adb:171:13: warning: no Global contract available for "Rand"
 main.adb:171:13: warning: no returning annotation available for "Rand"
 main.adb:176:29: info: assertion step proved (CVC5: 1 VC)
-main.adb:177:29: medium: assertion premise might fail, cannot prove So (A1, B1)  or So (A2, B2) [possible fix: subprogram at line 156 should mention A1 and A2 and B1 and B2 in a precondition]
+main.adb:177:29: medium: assertion premise might fail, cannot prove (So (A1, B1)  or So (A2, B2)) [possible fix: subprogram at line 156 should mention A1 and A2 and B1 and B2 in a precondition]
 main.adb:177:38: info: assertion step proved (CVC5: 1 VC)
 main.adb:178:38: info: assertion step proved (CVC5: 1 VC)
 main.adb:179:13: warning: assuming "Rand" always returns
