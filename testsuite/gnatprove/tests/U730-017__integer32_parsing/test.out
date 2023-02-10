@@ -349,4 +349,4 @@ integer32_parsing.ads:53:32: info: range check proved (CVC5: 2 VC)
 integer32_parsing.ads:66:14: medium: postcondition might fail, cannot prove Print_Int_32'Result'Length = Length (V)
 integer32_parsing.ads:66:33: medium: range check might fail, cannot prove upper bound for Print_Int_32'Result'Length
 integer32_parsing.ads:68:15: info: precondition proved (CVC5: 1 VC)
-integer32_parsing.ads:69:15: medium: precondition might fail, cannot prove s'Last < Integer'last
+integer32_parsing.ads:69:15: medium: precondition might fail, cannot prove s'Last < Integer'Last

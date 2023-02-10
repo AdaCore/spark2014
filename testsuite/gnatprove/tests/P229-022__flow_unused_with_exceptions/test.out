@@ -18,9 +18,9 @@ fileio.adb:37:10: warning: no returning annotation available for "ungetc"
 fileio.adb:39:13: medium: exception might be raised
 fileio.ads:19:38: info: initialization of "Ch" proved
 fileio.ads:20:32: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
-fileio.ads:21:14: medium: postcondition might fail, cannot prove Ch = Character'Pos (The_File (Cur_Position'old))
+fileio.ads:21:14: medium: postcondition might fail, cannot prove Ch = Character'Pos (The_File (Cur_Position'Old))
 fileio.ads:22:46: medium: overflow check might fail, cannot prove upper bound for Cur_Position'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 fileio.ads:28:06: info: data dependencies proved
-fileio.ads:29:14: medium: postcondition might fail, cannot prove (The_File = The_File'Old'Update (Cur_Position'Old => Character'Val (ch)))
-fileio.ads:29:81: medium: range check might fail, cannot prove lower bound for ch [reason for check: value must correspond to position in the type] [possible fix: add precondition (ch in Character) to subprogram at line 27]
+fileio.ads:29:14: medium: postcondition might fail, cannot prove (The_File = The_File'Old'Update (Cur_Position'Old => Character'Val (Ch)))
+fileio.ads:29:81: medium: range check might fail, cannot prove lower bound for Ch [reason for check: value must correspond to position in the type] [possible fix: add precondition (Ch in Character) to subprogram at line 27]
 helpers.ads:9:54: info: division check proved (CVC5: 1 VC)

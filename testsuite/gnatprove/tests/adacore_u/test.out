@@ -9,7 +9,7 @@ search_array.adb:9:20: info: range check proved (CVC5: 2 VC)
 search_array.adb:12:07: medium: exception might be raised
 stack.ads:7:13: error: function with "in out" parameter is not allowed in SPARK
 stack.ads:7:13: error: violation of aspect SPARK_Mode at line 1
-use_access.adb:3:41: medium: range check might fail, cannot prove lower bound for W (W'first) (e.g. when First_Letter = 'NUL' and W'Last = 0) [reason for check: default component value must fit in the type] [possible fix: subprogram at use_access.ads:4 should mention W in a precondition]
+use_access.adb:3:41: medium: range check might fail, cannot prove lower bound for W (W'First) (e.g. when First_Letter = 'NUL' and W'Last = 0) [reason for check: default component value must fit in the type] [possible fix: subprogram at use_access.ads:4 should mention W in a precondition]
 use_access.adb:3:45: medium: array index check might fail (e.g. when First_Letter = 'NUL' and W'Last = 0) [reason for check: value must be a valid index into the array]
 gnatprove: error during flow analysis and proof
 p.adb:8:09: info: data dependencies proved

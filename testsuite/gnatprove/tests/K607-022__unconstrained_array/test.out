@@ -28,7 +28,7 @@ simple_unc_arrays.adb:30:82: info: overflow check proved (CVC5: 4 VC)
 simple_unc_arrays.adb:30:82: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 simple_unc_arrays.adb:32:54: info: index check proved (CVC5: 4 VC)
 simple_unc_arrays.adb:32:75: medium: array index check might fail [reason for check: value must be a valid index into the array]
-simple_unc_arrays.adb:34:10: medium: precondition might fail, cannot prove I in A'range
+simple_unc_arrays.adb:34:10: medium: precondition might fail, cannot prove I in A'Range
 simple_unc_arrays.adb:34:32: info: range check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:35:22: info: overflow check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:36:23: info: range check proved (CVC5: 2 VC)
@@ -102,7 +102,7 @@ simple_unc_arrays.ads:52:15: medium: postcondition might fail
 simple_unc_arrays.ads:52:64: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:54:68: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:64:14: info: precondition proved (CVC5: 1 VC)
-simple_unc_arrays.ads:64:14: medium: postcondition might fail, cannot prove Min (A) <= Average'result
+simple_unc_arrays.ads:64:14: medium: postcondition might fail, cannot prove Min (A) <= Average'Result
 simple_unc_arrays.ads:65:15: info: precondition proved (CVC5: 1 VC)
 simple_unc_arrays.ads:74:17: info: postcondition proved (CVC5: 1 VC)
 simple_unc_arrays.ads:75:26: info: index check proved (CVC5: 2 VC)

@@ -79,7 +79,7 @@ bounded_queue.ads:31:18: medium: postcondition might fail, cannot prove not Empt
 bounded_queue.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1, in instantiation at bounded_queue_example.adb:7 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 bounded_queue.ads:33:18: info: precondition proved (CVC5: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:36:23: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
+bounded_queue.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'Old), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
 bounded_queue.ads:39:24: info: precondition proved (CVC5: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:45:04: medium: type "Queue_Type" is not fully initialized, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:50:10: info: range check proved (CVC5: 2 VC), in instantiation at bounded_queue_example.adb:7
@@ -126,7 +126,7 @@ bounded_queue_v1.ads:37:18: medium: postcondition might fail, cannot prove not E
 bounded_queue_v1.ads:38:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 bounded_queue_v1.ads:39:18: info: precondition proved (CVC5: 1 VC)
 bounded_queue_v1.ads:42:23: info: initialization of "Item" proved
-bounded_queue_v1.ads:45:18: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old) [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
+bounded_queue_v1.ads:45:18: medium: postcondition might fail, cannot prove Item = First_Element (Queue'Old) [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
 bounded_queue_v1.ads:45:25: info: precondition proved (CVC5: 1 VC)
 bounded_queue_v2.adb:20:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Front in 1 .. Max_Size) to subprogram at bounded_queue_v2.ads:15]
 bounded_queue_v2.adb:25:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Rear in 1 .. Max_Size) to subprogram at bounded_queue_v2.ads:19]
@@ -143,7 +143,7 @@ bounded_queue_v2.ads:31:18: medium: postcondition might fail, cannot prove not E
 bounded_queue_v2.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 bounded_queue_v2.ads:33:18: info: precondition proved (CVC5: 1 VC)
 bounded_queue_v2.ads:36:23: info: initialization of "Item" proved
-bounded_queue_v2.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old) [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
+bounded_queue_v2.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'Old) [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
 bounded_queue_v2.ads:39:24: info: precondition proved (CVC5: 1 VC)
 bounded_queue_v2.ads:45:04: medium: type "Queue_Type" is not fully initialized
 bounded_queue_v2.ads:50:10: info: range check proved (CVC5: 2 VC)

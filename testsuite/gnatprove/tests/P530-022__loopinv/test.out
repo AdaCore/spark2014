@@ -280,7 +280,7 @@ x86.ads:708:52: info: range check proved (CVC5: 2 VC)
 x86.ads:718:06: info: data dependencies proved
 x86.ads:718:46: low: unused global "ZeroFlag"
 x86.ads:718:46: warning: "ZeroFlag" is not modified, could be INPUT
-x86.ads:722:08: medium: postcondition might fail, cannot prove RDI = RDI'Old + (8*RCX'old)
+x86.ads:722:08: medium: postcondition might fail, cannot prove RDI = RDI'Old + (8*RCX'Old)
 x86.ads:729:06: info: data dependencies proved
 x86.ads:731:14: info: postcondition proved (Trivial: 1 VC)
 x86.ads:735:06: info: data dependencies proved
