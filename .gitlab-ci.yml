@@ -7,6 +7,7 @@ variables:
 
 stages:
   - build
+  - doc
   - test
 
 ###############
@@ -125,3 +126,29 @@ test:
         - xunit_output.xml
      reports:
        junit: xunit_output.xml
+
+
+build_docs:
+  stage: doc
+  services:
+     - image:sandbox
+  rules:
+    - changes:
+      - docs/**/*
+      when: always
+  artifacts:
+    when:
+      always
+    paths:
+      - spark/pdf/spark2014_rm.pdf
+      - spark/pdf/spark2014_ug.pdf
+      - spark/html/lrm
+      - spark/html/ug
+  script:
+    # Setup the "anod vcs as appropriate"
+    - *setup_repos
+
+    # Build using anod
+    - cd /it/wave
+    - anod build spark2014-doc
+    - cp -r /it/wave/x86_64-linux/spark2014-doc/install/share/doc/spark $CI_PROJECT_DIR
