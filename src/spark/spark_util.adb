@@ -4587,19 +4587,6 @@ package body SPARK_Util is
       -- Local Subprograms --
       -----------------------
 
-      function Count_Parentheses (S : String; C : Character) return Natural
-        with Pre => C in '(' | ')';
-      --  Returns the number of times parenthesis character C should be added
-      --  to string S for getting a correctly parenthesized result. For C = '('
-      --  this means prepending the character, for C = ')' this means appending
-      --  the character.
-
-      function Fix_Parentheses (S : String) return String;
-      --  Counts the number of required opening and closing parentheses in S to
-      --  respectively prepend and append for getting correct parentheses. Then
-      --  returns S with opening parentheses prepended and closing parentheses
-      --  appended so that the result is correctly parenthesized.
-
       function Ident_Image (Expr        : Node_Id;
                             Orig_Expr   : Node_Id;
                             Expand_Type : Boolean)
@@ -4615,55 +4602,6 @@ package body SPARK_Util is
       function Node_To_String is new
         Expression_Image (Real_Image_10, String_Image, Ident_Image);
       --  The actual printing function
-
-      -----------------------
-      -- Count_Parentheses --
-      -----------------------
-
-      function Count_Parentheses (S : String; C : Character) return Natural is
-
-         procedure Next_Char (Count : in out Natural; C, D, Ch : Character);
-         --  Process next character Ch and update the number Count of C
-         --  characters to add for correct parenthesizing, where D is the
-         --  opposite parenthesis.
-
-         procedure Next_Char (Count : in out Natural; C, D, Ch : Character) is
-         begin
-            if Ch = D then
-               Count := Count + 1;
-            elsif Ch = C and then Count > 0 then
-               Count := Count - 1;
-            end if;
-         end Next_Char;
-
-         Count : Natural := 0;
-
-      --  Start of processing for Count_Parentheses
-
-      begin
-         if C = '(' then
-            for Ch of reverse S loop
-               Next_Char (Count, C, ')', Ch);
-            end loop;
-         else
-            for Ch of S loop
-               Next_Char (Count, C, '(', Ch);
-            end loop;
-         end if;
-
-         return Count;
-      end Count_Parentheses;
-
-      ---------------------
-      -- Fix_Parentheses --
-      ---------------------
-
-      function Fix_Parentheses (S : String) return String is
-         Count_Open  : constant Natural := Count_Parentheses (S, '(');
-         Count_Close : constant Natural := Count_Parentheses (S, ')');
-      begin
-         return (1 .. Count_Open => '(') & S & (1 .. Count_Close => ')');
-      end Fix_Parentheses;
 
       -----------------
       -- Ident_Image --
@@ -4698,7 +4636,7 @@ package body SPARK_Util is
    --  Start of processing for String_Of_Node
 
    begin
-      return Fix_Parentheses (Node_To_String (N, ""));
+      return Node_To_String (N, "");
    end String_Of_Node;
 
    ------------------
