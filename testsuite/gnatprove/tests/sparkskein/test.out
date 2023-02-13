@@ -23,18 +23,18 @@ skein.adb:231:14: info: add a contract to analyze it separately from calling con
 skein.adb:231:14: info: local subprogram "Get_64_LSB_First" only analyzed in the context of calls
 skein.adb:231:32: info: initialization of "Dst" proved
 skein.adb:246:52: info: range check proved (altergo: 8 VC), in call inlined at skein.adb:568
-skein.adb:249:25: info: index check proved (CVC5: 15 VC; Z3: 1 VC), in call inlined at skein.adb:568
-skein.adb:250:47: info: index check proved (CVC5: 16 VC), in call inlined at skein.adb:568
-skein.adb:251:47: info: index check proved (CVC5: 15 VC; Z3: 1 VC), in call inlined at skein.adb:568
-skein.adb:252:47: info: index check proved (CVC5: 13 VC; Z3: 3 VC), in call inlined at skein.adb:568
-skein.adb:253:47: info: index check proved (CVC5: 15 VC; Z3: 1 VC), in call inlined at skein.adb:568
-skein.adb:254:47: info: index check proved (CVC5: 16 VC), in call inlined at skein.adb:568
-skein.adb:255:47: info: index check proved (CVC5: 15 VC; Z3: 1 VC), in call inlined at skein.adb:568
+skein.adb:249:25: info: index check proved (CVC5: 11 VC; Z3: 5 VC), in call inlined at skein.adb:568
+skein.adb:250:47: info: index check proved (CVC5: 11 VC; Z3: 5 VC), in call inlined at skein.adb:568
+skein.adb:251:47: info: index check proved (CVC5: 10 VC; Z3: 6 VC), in call inlined at skein.adb:568
+skein.adb:252:47: info: index check proved (CVC5: 10 VC; Z3: 6 VC), in call inlined at skein.adb:568
+skein.adb:253:47: info: index check proved (CVC5: 11 VC; Z3: 5 VC), in call inlined at skein.adb:568
+skein.adb:254:47: info: index check proved (CVC5: 10 VC; Z3: 6 VC), in call inlined at skein.adb:568
+skein.adb:255:47: info: index check proved (CVC5: 11 VC; Z3: 5 VC), in call inlined at skein.adb:568
 skein.adb:256:47: info: index check proved (CVC5: 16 VC), in call inlined at skein.adb:568
 skein.adb:261:14: info: add a contract to analyze it separately from calling contexts
 skein.adb:261:14: info: local subprogram "Skein_Start_New_Type" only analyzed in the context of calls
 skein.adb:284:11: info: data dependencies proved
-skein.adb:294:19: info: postcondition proved (CVC5: 4 VC; altergo: 2 VC)
+skein.adb:294:19: info: postcondition proved (CVC5: 4 VC; Z3: 1 VC; altergo: 1 VC)
 skein.adb:299:07: info: initialization of "TS" proved
 skein.adb:301:07: info: initialization of "X" proved
 skein.adb:302:07: info: initialization of "W" proved
@@ -57,7 +57,7 @@ skein.adb:355:45: info: division check proved (CVC5: 64 VC; altergo: 8 VC), in c
 skein.adb:358:58: info: division check proved (CVC5: 8 VC; altergo: 1 VC), in call inlined at skein.adb:528
 skein.adb:358:58: info: division check proved (CVC5: 8 VC; altergo: 1 VC), in call inlined at skein.adb:537
 skein.adb:359:64: info: division check proved (CVC5: 8 VC; altergo: 1 VC), in call inlined at skein.adb:528
-skein.adb:359:64: info: division check proved (CVC5: 8 VC; altergo: 1 VC), in call inlined at skein.adb:537
+skein.adb:359:64: info: division check proved (CVC5: 9 VC), in call inlined at skein.adb:537
 skein.adb:366:20: info: add a contract to analyze it separately from calling contexts
 skein.adb:366:20: info: local subprogram "Round_1" only analyzed in the context of calls
 skein.adb:385:20: info: add a contract to analyze it separately from calling contexts
@@ -129,26 +129,26 @@ skein.adb:674:10: info: initialization of "Final_Dst" proved, in call inlined at
 skein.adb:675:10: info: initialization of "Final_Src" proved
 skein.adb:675:10: info: initialization of "Final_Src" proved, in call inlined at skein.adb:714
 skein.adb:675:10: info: initialization of "Final_Src" proved, in call inlined at skein.adb:754
+skein.adb:681:25: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:714
 skein.adb:681:25: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:754
-skein.adb:681:25: info: range check proved (altergo: 2 VC), in call inlined at skein.adb:714
+skein.adb:683:30: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:714
 skein.adb:683:30: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:754
-skein.adb:683:30: info: range check proved (altergo: 2 VC), in call inlined at skein.adb:714
-skein.adb:688:36: info: index check proved (CVC5: 2 VC; altergo: 2 VC), in call inlined at skein.adb:754
-skein.adb:688:36: info: index check proved (altergo: 4 VC), in call inlined at skein.adb:714
+skein.adb:688:36: info: index check proved (CVC5: 2 VC; altergo: 2 VC), in call inlined at skein.adb:714
+skein.adb:688:36: info: index check proved (CVC5: 3 VC; altergo: 1 VC), in call inlined at skein.adb:754
 skein.adb:692:39: info: loop invariant initialization proved (Trivial: 1 VC), in call inlined at skein.adb:714
 skein.adb:692:39: info: loop invariant initialization proved (Trivial: 1 VC), in call inlined at skein.adb:754
 skein.adb:692:39: info: loop invariant preservation proved (Trivial: 1 VC), in call inlined at skein.adb:714
 skein.adb:692:39: info: loop invariant preservation proved (Trivial: 1 VC), in call inlined at skein.adb:754
-skein.adb:696:27: info: range check proved (altergo: 2 VC), in call inlined at skein.adb:714
-skein.adb:696:27: info: range check proved (altergo: 2 VC), in call inlined at skein.adb:754
-skein.adb:712:42: info: range check proved (altergo: 2 VC)
+skein.adb:696:27: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:714
+skein.adb:696:27: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:754
+skein.adb:712:42: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 skein.adb:714:13: info: analyzing call to "Copy_Msg_To_B" in context
-skein.adb:719:13: info: precondition proved (CVC5: 3 VC; altergo: 5 VC)
+skein.adb:719:13: info: precondition proved (CVC5: 5 VC; altergo: 3 VC)
 skein.adb:721:35: info: predicate check proved (altergo: 1 VC)
 skein.adb:721:35: info: range check proved (altergo: 1 VC)
 skein.adb:733:49: info: division check proved (altergo: 1 VC)
-skein.adb:733:49: info: range check proved (altergo: 2 VC)
-skein.adb:735:13: info: precondition proved (CVC5: 3 VC; altergo: 5 VC)
+skein.adb:733:49: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
+skein.adb:735:13: info: precondition proved (CVC5: 4 VC; altergo: 4 VC)
 skein.adb:754:07: info: analyzing call to "Copy_Msg_To_B" in context
 skein.adb:768:07: info: initialization of "Local_Ctx" proved
 skein.adb:769:07: info: initialization of "N" proved
@@ -159,18 +159,18 @@ skein.adb:773:07: info: initialization of "Tmp_B" proved
 skein.adb:774:07: info: initialization of "Tmp_Byte_Count_Add" proved
 skein.adb:776:17: info: add a contract to analyze it separately from calling contexts
 skein.adb:776:17: info: local subprogram "Zero_Pad" only analyzed in the context of calls
-skein.adb:778:14: info: range check proved (altergo: 2 VC), in call inlined at skein.adb:804
+skein.adb:778:14: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:804
 skein.adb:786:17: info: add a contract to analyze it separately from calling contexts
 skein.adb:786:17: info: local subprogram "Set_Counter" only analyzed in the context of calls
 skein.adb:788:43: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:832
 skein.adb:789:61: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:832
 skein.adb:790:61: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:832
-skein.adb:791:61: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:832
+skein.adb:791:61: info: range check proved (Z3: 1 VC; altergo: 1 VC), in call inlined at skein.adb:832
 skein.adb:792:61: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:832
 skein.adb:793:61: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:832
-skein.adb:794:61: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:832
+skein.adb:794:61: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at skein.adb:832
 skein.adb:795:61: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at skein.adb:832
-skein.adb:800:12: info: length check proved (Trivial: 1 VC; altergo: 3 VC)
+skein.adb:800:12: info: length check proved (CVC5: 1 VC; Trivial: 1 VC; altergo: 2 VC)
 skein.adb:800:15: info: predicate check proved (altergo: 1 VC)
 skein.adb:800:15: info: range check proved (altergo: 1 VC)
 skein.adb:804:10: info: analyzing call to "Zero_Pad" in context
@@ -180,13 +180,13 @@ skein.adb:810:07: info: precondition proved (CVC5: 4 VC; altergo: 4 VC)
 skein.adb:811:51: info: predicate check proved (altergo: 1 VC)
 skein.adb:811:51: info: range check proved (altergo: 1 VC)
 skein.adb:818:52: info: division check proved (altergo: 1 VC)
-skein.adb:818:52: info: range check proved (altergo: 2 VC)
+skein.adb:818:52: info: range check proved (Z3: 1 VC; altergo: 1 VC)
 skein.adb:826:44: info: division check proved (altergo: 1 VC)
 skein.adb:830:13: info: loop invariant initialization proved (altergo: 1 VC)
 skein.adb:830:13: info: loop invariant preservation proved (CVC5: 1 VC)
 skein.adb:832:10: info: analyzing call to "Set_Counter" in context
 skein.adb:834:10: info: analyzing call to "Skein_Start_New_Type" in context
-skein.adb:842:10: info: precondition proved (CVC5: 6 VC; altergo: 2 VC)
+skein.adb:842:10: info: precondition proved (CVC5: 7 VC; altergo: 1 VC)
 skein.adb:843:54: info: predicate check proved (altergo: 1 VC)
 skein.adb:843:54: info: range check proved (altergo: 1 VC)
 skein.adb:855:10: info: analyzing call to "Put_64_LSB_First" in context
@@ -194,15 +194,15 @@ skein.adb:855:10: info: cannot unroll loop (too many loop iterations)
 skein.adb:855:10: info: in inlined body at line 221
 skein.adb:876:07: info: initialization of "Ctx" proved
 skein.adb:877:07: info: initialization of "Result" proved
-skein.adb:882:07: info: precondition proved (CVC5: 5 VC; altergo: 3 VC)
-skein.adb:885:07: info: precondition proved (CVC5: 6 VC; altergo: 1 VC)
+skein.adb:882:07: info: precondition proved (CVC5: 6 VC; altergo: 2 VC)
+skein.adb:885:07: info: precondition proved (CVC5: 7 VC)
 skein.adb:886:32: info: range check proved (altergo: 1 VC)
 skein.adb:908:12: info: precondition proved (altergo: 1 VC)
 skein.ads:176:30: info: initialization of "Ctx" proved
 skein.ads:178:11: info: data dependencies proved
 skein.ads:179:19: info: postcondition proved (CVC5: 6 VC)
 skein.ads:186:11: info: data dependencies proved
-skein.ads:193:19: info: postcondition proved (CVC5: 4 VC; altergo: 1 VC)
+skein.ads:193:19: info: postcondition proved (CVC5: 5 VC)
 skein.ads:198:31: info: initialization of "Hash" proved
 skein.ads:199:11: info: data dependencies proved
 skein.ads:204:46: info: division check proved (altergo: 1 VC)

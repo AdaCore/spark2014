@@ -39,4 +39,4 @@ counterexamples.adb:55:22: medium: assertion might fail
 counterexamples.adb:55:25: info: index check proved (CVC5: 2 VC)
 counterexamples.adb:58:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 counterexamples.adb:58:04: info: initialization of "X" proved
-counterexamples.adb:61:04: medium: precondition might fail (e.g. when X = (First => null, Second => null))
+counterexamples.adb:61:04: medium: precondition might fail

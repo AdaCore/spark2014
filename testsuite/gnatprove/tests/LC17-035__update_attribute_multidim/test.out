@@ -175,7 +175,7 @@ update_logic_fn.ads:77:30: info: index check proved (CVC5: 2 VC)
 update_logic_fn.ads:77:33: info: index check proved (CVC5: 2 VC)
 update_logic_fn.ads:83:18: info: initialization of "A" proved
 update_logic_fn.ads:88:11: info: flow dependencies proved
-update_logic_fn.ads:90:17: medium: postcondition might fail, cannot prove A = A2'(5 => (7 => V2, others => 1000), others => (others => 1000))
+update_logic_fn.ads:90:17: medium: postcondition might fail, cannot prove (A = A2'(5 => (7 => V2, others => 1000), others => (others => 1000)))
 update_logic_fn.ads:97:18: info: initialization of "A" proved
 update_logic_fn.ads:102:11: info: flow dependencies proved
 update_logic_fn.ads:103:14: info: postcondition proved (CVC5: 7 VC; Trivial: 4 VC)
