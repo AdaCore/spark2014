@@ -1,0 +1,11 @@
+main.adb:9:14: info: postcondition proved (CVC5: 3 VC)
+main.adb:11:12: info: range check proved (CVC5: 2 VC)
+main.adb:13:22: medium: range check might fail, cannot prove upper bound for Id (3) (e.g. when C = 0) [reason for check: default component value must fit in the type]
+other.adb:9:14: high: postcondition might fail (e.g. when F'Result = True)
+other.adb:9:57: info: range check proved (CVC5: 2 VC)
+other.adb:9:94: info: range check proved (CVC5: 2 VC)
+other.adb:15:12: info: range check proved (CVC5: 2 VC)
+other.adb:15:29: info: range check proved (CVC5: 2 VC)
+third.adb:8:12: info: range check proved (CVC5: 2 VC)
+third.adb:10:22: medium: range check might fail, cannot prove upper bound for Id (3) (e.g. when C = 0) [reason for check: default component value must fit in the type]
+third.adb:13:14: info: postcondition proved (CVC5: 3 VC)
