@@ -7,7 +7,6 @@ variables:
 
 stages:
   - build
-  - doc
   - test
 
 ###############
@@ -174,7 +173,7 @@ test_acats:
 ################
 
 build_docs:
-  stage: doc
+  stage: build
   services:
      - image:sandbox
   rules:
