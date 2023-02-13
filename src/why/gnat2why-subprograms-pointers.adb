@@ -542,7 +542,7 @@ package body Gnat2Why.Subprograms.Pointers is
       Caller                       : constant Entity_Id :=
         Get_Called_Entity_For_Proof (Call);
       Rec_Ax_Module                : constant W_Module_Id :=
-        (if Is_Recursive (Caller)
+        (if Proof_Module_Cyclic (Caller)
          then New_Module
            (File => No_Symbol,
             Name => Img (Theory_Name) & "__rec_axioms")

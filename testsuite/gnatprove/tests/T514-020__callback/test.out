@@ -30,6 +30,7 @@ test_callback.adb:76:27: info: precondition proved (CVC5: 1 VC)
 test_callback.adb:82:14: warning: subprogram "Call_Null_Proc" has no effect
 test_callback.adb:86:09: info: pointer dereference check proved (CVC5: 1 VC)
 test_callback.adb:86:09: medium: precondition might fail
+test_callback.adb:94:13: info: implicit function contract might not be available on calls from enclosing unit
 test_callback.adb:97:36: info: precondition of target is strong enough to imply precondition of source (CVC5: 1 VC)
 test_callback.adb:104:30: info: initialization of "F" proved
 test_callback.adb:106:14: info: pointer dereference check proved (CVC5: 1 VC)

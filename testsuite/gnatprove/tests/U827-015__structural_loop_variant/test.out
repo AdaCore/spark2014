@@ -49,6 +49,7 @@ main.adb:98:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:98:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:98:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:99:23: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:104:13: info: implicit function contract might not be available on implicit recursive calls
 main.adb:107:45: info: data dependencies proved
 main.adb:109:16: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:112:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -66,6 +67,7 @@ main.adb:132:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:132:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:132:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:133:13: info: analyzing call to "Next" in context
+main.adb:138:13: info: implicit function contract might not be available on implicit recursive calls
 main.adb:141:45: info: data dependencies proved
 main.adb:143:16: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:146:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)

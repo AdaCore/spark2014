@@ -1,3 +1,4 @@
+test_aggr.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
 test_aggr.adb:9:14: info: postcondition proved (CVC5: 1 VC)
 test_aggr.adb:9:40: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 test_aggr.adb:9:46: info: index check proved (CVC5: 2 VC)

@@ -514,7 +514,8 @@ package body Why.Inter is
 
       begin
          if Present (Defined_Entity)
-           and then Is_Subprogram_Or_Entry (Defined_Entity)
+           and then Ekind (Defined_Entity) in
+             E_Function | E_Entry | E_Procedure | E_Package
          then
             Filter := Mutually_Recursive_Modules (Defined_Entity);
          end if;
@@ -533,7 +534,7 @@ package body Why.Inter is
             if Present (Defined_Entity)
               and then Is_Subprogram_Or_Entry (Defined_Entity)
               and then Has_Post_Axiom (Defined_Entity)
-              and then +M = (if Is_Recursive (Defined_Entity)
+              and then +M = (if Proof_Module_Cyclic (Defined_Entity)
                              then E_Rec_Axiom_Module (Defined_Entity)
                              else E_Axiom_Module (Defined_Entity))
             then

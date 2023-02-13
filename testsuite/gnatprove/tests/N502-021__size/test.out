@@ -1,3 +1,4 @@
+get_size.adb:9:13: info: implicit function contract might not be available on calls from enclosing unit
 get_size.adb:9:35: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "T"
 get_size.adb:9:35: medium: range check might fail, cannot prove upper bound for T'Size [reason for check: returned value must fit in the result type of the function]
 get_size.adb:11:20: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "T"

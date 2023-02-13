@@ -4,6 +4,7 @@ main.adb:3:52: info: range check proved (CVC5: 2 VC)
 main.adb:3:52: medium: in default initialization of component "KO1" at main.adb:13
 main.adb:3:52: medium: in default value at main.adb:20
 main.adb:3:52: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]
+main.adb:4:16: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:5:15: info: range check proved (CVC5: 2 VC)
 main.adb:7:52: info: in default initialization of component "OK2" at main.adb:15
 main.adb:7:52: info: in default value at main.adb:20
@@ -11,6 +12,7 @@ main.adb:7:52: info: range check proved (CVC5: 2 VC)
 main.adb:7:52: medium: in default initialization of component "KO2" at main.adb:16
 main.adb:7:52: medium: in default value at main.adb:20
 main.adb:7:52: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]
+main.adb:8:16: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:9:15: info: range check proved (CVC5: 2 VC)
 main.adb:14:24: medium: in default value at main.adb:20
 main.adb:14:24: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default component value must fit in the type]
@@ -34,12 +36,17 @@ main.adb:41:27: medium: in default value at main.adb:51, in instantiation at mai
 main.adb:41:27: medium: range check might fail, cannot prove lower bound for 0, in instantiation at main.adb:56 [reason for check: default component value must fit in the type]
 main.adb:44:27: medium: in default value at main.adb:51, in instantiation at main.adb:57
 main.adb:44:27: medium: range check might fail, cannot prove lower bound for 0, in instantiation at main.adb:56 [reason for check: default component value must fit in the type]
+main.adb:54:07: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:54:07: info: in instantiation at line 28
+main.adb:55:07: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:55:07: info: in instantiation at line 28
 main.adb:61:52: info: in default value at main.adb:82
 main.adb:61:52: info: in default value of box association at main.adb:78
 main.adb:61:52: info: range check proved (CVC5: 2 VC)
 main.adb:61:52: medium: in default value at main.adb:82
 main.adb:61:52: medium: in default value of box association at main.adb:78
 main.adb:61:52: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]
+main.adb:62:16: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:63:15: info: range check proved (CVC5: 2 VC)
 main.adb:65:52: info: in default value at main.adb:82
 main.adb:65:52: info: in default value of box association at main.adb:79
@@ -47,4 +54,5 @@ main.adb:65:52: info: range check proved (CVC5: 2 VC)
 main.adb:65:52: medium: in default value at main.adb:82
 main.adb:65:52: medium: in default value of box association at main.adb:79
 main.adb:65:52: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]
+main.adb:66:16: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:67:15: info: range check proved (CVC5: 2 VC)

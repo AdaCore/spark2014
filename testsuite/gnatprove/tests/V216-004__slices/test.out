@@ -1,3 +1,6 @@
+main.adb:2:13: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:6:18: warning: assuming "Rand" always returns
 main.adb:6:18: warning: assuming "Rand" has no effect on global items
 main.adb:6:18: warning: no Global contract available for "Rand"

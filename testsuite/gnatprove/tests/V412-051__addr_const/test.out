@@ -1,3 +1,4 @@
+p.ads:6:12: info: implicit function contract might not be available on calls from enclosing unit
 p.ads:8:38: warning: assuming "F" always returns
 p.ads:8:38: warning: assuming "F" has no effect on global items
 p.ads:8:38: warning: no Global contract available for "F"

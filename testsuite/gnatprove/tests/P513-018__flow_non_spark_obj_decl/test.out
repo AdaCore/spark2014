@@ -1,3 +1,4 @@
+p.ads:5:13: info: implicit function contract might not be available on calls from enclosing unit
 p.ads:7:19: warning: Program_Error will be raised at run time
 p.ads:7:19: warning: assuming "Id" always returns
 p.ads:7:19: warning: assuming "Id" has no effect on global items

@@ -10,6 +10,8 @@ p.adb:36:04: warning: analyzing unreferenced procedure "Proc6"
 p.adb:36:14: warning: subprogram "Proc6" has no effect
 p.adb:42:04: warning: analyzing unreferenced procedure "Proc7"
 p.adb:42:14: warning: subprogram "Proc7" has no effect
+p.adb:43:16: info: implicit function contract might not be available on calls from enclosing unit
 p.adb:49:04: warning: analyzing unreferenced procedure "Proc8"
 p.adb:49:14: warning: subprogram "Proc8" has no effect
+p.adb:50:16: info: implicit function contract might not be available on calls from enclosing unit
 p.ads:2:14: warning: subprogram "Proc" has no effect

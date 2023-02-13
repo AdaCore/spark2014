@@ -26,44 +26,45 @@ in_out_pledge.adb:38:46: info: precondition proved (CVC5: 2 VC)
 in_out_pledge.adb:40:14: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
 in_out_pledge.adb:40:14: info: range check proved (CVC5: 1 VC)
 in_out_pledge.adb:43:96: info: dynamic accessibility check proved (Trivial)
-in_out_pledge.adb:49:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-in_out_pledge.adb:50:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-in_out_pledge.adb:51:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-in_out_pledge.adb:52:04: medium: resource or memory leak might occur at end of scope
-in_out_pledge.adb:56:07: info: no contextual analysis of "Rand" (body not seen yet)
-in_out_pledge.adb:56:07: warning: assuming "Rand" always returns
-in_out_pledge.adb:56:07: warning: assuming "Rand" has no effect on global items
-in_out_pledge.adb:56:07: warning: no Global contract available for "Rand"
-in_out_pledge.adb:56:07: warning: no returning annotation available for "Rand"
-in_out_pledge.adb:61:12: info: data dependencies proved
-in_out_pledge.adb:63:20: info: postcondition proved (CVC5: 4 VC)
-in_out_pledge.adb:63:40: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:64:37: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:64:47: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:65:75: info: overflow check proved (CVC5: 2 VC)
-in_out_pledge.adb:66:72: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:69:19: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:72:25: info: assertion proved (CVC5: 1 VC)
-in_out_pledge.adb:72:25: info: precondition proved (CVC5: 1 VC)
-in_out_pledge.adb:73:25: info: assertion proved (CVC5: 1 VC)
-in_out_pledge.adb:73:25: info: precondition proved (CVC5: 1 VC)
-in_out_pledge.adb:74:25: info: assertion proved (CVC5: 1 VC)
-in_out_pledge.adb:74:25: info: precondition proved (CVC5: 1 VC)
-in_out_pledge.adb:76:13: info: precondition proved (CVC5: 1 VC)
-in_out_pledge.adb:77:13: info: precondition proved (CVC5: 1 VC)
-in_out_pledge.adb:78:14: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:81:22: info: assertion proved (CVC5: 1 VC)
-in_out_pledge.adb:82:22: info: assertion proved (CVC5: 1 VC)
-in_out_pledge.adb:82:27: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:83:22: info: assertion proved (CVC5: 1 VC)
-in_out_pledge.adb:83:27: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:83:32: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:84:22: info: assertion proved (Z3: 1 VC)
-in_out_pledge.adb:84:22: info: precondition proved (CVC5: 1 VC)
-in_out_pledge.adb:85:22: info: assertion proved (CVC5: 1 VC)
-in_out_pledge.adb:85:27: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:85:32: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:85:37: info: pointer dereference check proved (CVC5: 1 VC)
+in_out_pledge.adb:53:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+in_out_pledge.adb:54:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+in_out_pledge.adb:55:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+in_out_pledge.adb:56:07: medium: resource or memory leak might occur at end of scope
+in_out_pledge.adb:58:10: info: no contextual analysis of "Rand" (body not seen yet)
+in_out_pledge.adb:58:10: warning: assuming "Rand" always returns
+in_out_pledge.adb:58:10: warning: assuming "Rand" has no effect on global items
+in_out_pledge.adb:58:10: warning: no Global contract available for "Rand"
+in_out_pledge.adb:58:10: warning: no returning annotation available for "Rand"
+in_out_pledge.adb:63:15: info: data dependencies proved
+in_out_pledge.adb:65:23: info: postcondition proved (CVC5: 4 VC)
+in_out_pledge.adb:65:43: info: pointer dereference check proved (CVC5: 1 VC)
+in_out_pledge.adb:66:40: info: pointer dereference check proved (CVC5: 1 VC)
+in_out_pledge.adb:66:50: info: pointer dereference check proved (CVC5: 1 VC)
+in_out_pledge.adb:67:78: info: overflow check proved (CVC5: 2 VC)
+in_out_pledge.adb:68:75: info: pointer dereference check proved (CVC5: 1 VC)
+in_out_pledge.adb:71:22: info: pointer dereference check proved (CVC5: 1 VC)
+in_out_pledge.adb:74:28: info: assertion proved (CVC5: 1 VC)
+in_out_pledge.adb:74:28: info: precondition proved (CVC5: 1 VC)
+in_out_pledge.adb:75:28: info: assertion proved (CVC5: 1 VC)
+in_out_pledge.adb:75:28: info: precondition proved (CVC5: 1 VC)
+in_out_pledge.adb:76:28: info: assertion proved (CVC5: 1 VC)
+in_out_pledge.adb:76:28: info: precondition proved (CVC5: 1 VC)
+in_out_pledge.adb:78:16: info: precondition proved (CVC5: 1 VC)
+in_out_pledge.adb:79:16: info: precondition proved (CVC5: 1 VC)
+in_out_pledge.adb:80:17: info: pointer dereference check proved (CVC5: 1 VC)
+in_out_pledge.adb:83:25: info: assertion proved (CVC5: 1 VC)
+in_out_pledge.adb:84:25: info: assertion proved (CVC5: 1 VC)
+in_out_pledge.adb:84:30: info: pointer dereference check proved (CVC5: 1 VC)
+in_out_pledge.adb:85:25: info: assertion proved (CVC5: 1 VC)
+in_out_pledge.adb:85:30: info: pointer dereference check proved (CVC5: 1 VC)
+in_out_pledge.adb:85:35: info: pointer dereference check proved (CVC5: 1 VC)
+in_out_pledge.adb:86:25: info: assertion proved (Z3: 1 VC)
+in_out_pledge.adb:86:25: info: precondition proved (CVC5: 1 VC)
+in_out_pledge.adb:87:25: info: assertion proved (CVC5: 1 VC)
+in_out_pledge.adb:87:30: info: pointer dereference check proved (CVC5: 1 VC)
+in_out_pledge.adb:87:35: info: pointer dereference check proved (CVC5: 1 VC)
+in_out_pledge.adb:87:40: info: pointer dereference check proved (CVC5: 1 VC)
+in_out_pledge.ads:3:14: warning: subprogram "Main" has no effect
 pledge_constraints.adb:31:45: error: actual for a call to a function annotated with At_End_Borrow should not depend on a variable
 pledge_constraints_2.adb:30:42: error: actual for a call to a function annotated with At_End_Borrow should be rooted at a borrower or a borrowed expression
 gnatprove: error during flow analysis and proof

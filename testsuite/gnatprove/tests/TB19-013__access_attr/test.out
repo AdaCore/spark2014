@@ -5,10 +5,12 @@ test_access.adb:11:21: info: pointer dereference check proved (CVC5: 1 VC)
 test_access.adb:14:31: info: pointer dereference check proved (CVC5: 1 VC)
 test_access.adb:16:29: info: data dependencies proved
 test_access.adb:17:30: medium: predicate check might fail
+test_access.adb:26:13: info: function contract might not be available on calls from enclosing unit
 test_access.adb:27:14: info: postcondition proved (CVC5: 1 VC)
 test_access.adb:27:27: info: pointer dereference check proved (CVC5: 1 VC)
 test_access.adb:33:77: info: dynamic accessibility check proved (Trivial)
 test_access.adb:38:85: info: dynamic accessibility check proved (Trivial)
+test_access.adb:43:13: info: function contract might not be available on calls from enclosing unit
 test_access.adb:44:14: info: postcondition proved (CVC5: 1 VC)
 test_access.adb:44:36: info: pointer dereference check proved (CVC5: 1 VC)
 test_access.adb:44:52: info: pointer dereference check proved (CVC5: 1 VC)

@@ -1,3 +1,4 @@
+overflow_modulus.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
 overflow_modulus.adb:7:04: info: initialization of "X" proved
 overflow_modulus.adb:8:04: info: initialization of "Y" proved
 overflow_modulus.adb:11:19: info: assertion proved (CVC5: 1 VC)

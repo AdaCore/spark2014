@@ -53,10 +53,12 @@ test.adb:163:14: warning: subprogram "Unused_Variables_1" has no effect
 test.adb:167:10: info: initialization of "Unused" proved, in instantiation at test.adb:176
 test.adb:173:25: info: assertion proved (CVC5: 1 VC), in instantiation at test.adb:176
 test.adb:176:07: info: no contextual analysis of "Unused_Variables_1" (nested package instantiation)
+test.adb:185:13: info: implicit function contract might not be available on implicit recursive calls
 test.adb:185:39: warning: unused variable "Par2"
 test.adb:187:07: info: initialization of "X" proved
 test.adb:187:10: info: initialization of "Y" proved
 test.adb:187:13: warning: unused variable "Z"
+test.adb:189:16: info: implicit function contract might not be available on calls from enclosing unit
 test.adb:190:15: info: data dependencies proved
 test.adb:190:29: low: unused global "Y"
 test.adb:192:07: info: no contextual analysis of "Unused_Variables_2" (nested subprogram)

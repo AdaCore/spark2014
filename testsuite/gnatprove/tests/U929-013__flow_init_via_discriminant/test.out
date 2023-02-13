@@ -38,11 +38,20 @@ main.adb:13:24: medium: overflow check might fail, cannot prove upper bound for 
 main.adb:16:04: info: initialization of "A" proved
 main.adb:16:18: info: range check proved (CVC5: 2 VC)
 main.adb:17:04: info: initialization of "B" proved
+main.adb:20:13: info: function contract might not be available on calls from enclosing unit
 main.adb:21:19: info: postcondition proved (CVC5: 1 VC)
 main.adb:21:34: info: overflow check proved (CVC5: 2 VC)
 main.adb:24:14: info: initialization of "Result" proved
-main.adb:31:19: info: assertion proved (CVC5: 1 VC)
-main.adb:31:27: info: overflow check proved (CVC5: 2 VC)
+main.adb:30:64: info: overflow check proved (CVC5: 2 VC)
+main.adb:31:06: info: data dependencies proved
+main.adb:31:48: info: initialization of "Y" proved
+main.adb:31:51: info: initialization of "Z" proved
+main.adb:32:06: info: flow dependencies proved
+main.adb:33:14: info: postcondition proved (CVC5: 2 VC)
+main.adb:33:30: info: overflow check proved (CVC5: 2 VC)
+main.adb:38:22: medium: assertion might fail
+main.adb:38:30: info: overflow check proved (CVC5: 2 VC)
+main.adb:42:04: info: precondition proved (CVC5: 3 VC)
 main2.adb:3:18: info: initialization of "Y" proved
 main2.adb:4:18: info: initialization of "Z" proved
 main2.adb:6:03: info: flow dependencies proved

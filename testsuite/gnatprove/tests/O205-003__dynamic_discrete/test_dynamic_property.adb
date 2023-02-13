@@ -42,7 +42,7 @@ procedure Test_Dynamic_Property (C : Positive) with SPARK_Mode is
 begin
    X := Dyn_Return (30);
    pragma Assert (X <= C); --@ASSERT:PASS
-   pragma Assert (Dyn_Return (40) <= C); --@ASSERT:PASS
+   pragma Assert (Dyn_Return (40) <= C); -- assert might fail due to avoidance of cycles between VC modules
    Dyn_Param (X);
    pragma Assert (X <= C); --@ASSERT:PASS
    if Nested.Y > 0 then

@@ -1,4 +1,6 @@
+gencontract.adb:3:11: info: function contract might not be available on implicit recursive calls
 gencontract.adb:7:21: high: postcondition might fail, in instantiation at gencontract.adb:22 (e.g. when X = 0)
 gencontract.adb:12:22: medium: assertion might fail, in instantiation at gencontract.adb:22 [possible fix: subprogram at line 8 should mention Y in a precondition]
+gencontract.adb:15:13: info: function contract might not be available on calls from enclosing unit
 gencontract.adb:16:19: info: postcondition proved (CVC5: 1 VC)
 gencontract.adb:22:14: warning: subprogram "Local" has no effect

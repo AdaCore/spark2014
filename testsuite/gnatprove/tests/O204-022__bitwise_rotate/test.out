@@ -1,3 +1,4 @@
+test_rotate.adb:8:13: info: function contract might not be available on calls from enclosing unit
 test_rotate.adb:13:14: info: postcondition proved (CVC5: 1 VC)
 test_rotate.adb:15:06: info: data dependencies proved
 test_rotate.adb:19:39: info: range check proved (Z3: 2 VC)

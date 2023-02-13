@@ -1,3 +1,4 @@
+main.adb:2:13: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:4:53: info: in default initialization of array component at main.adb:4
 main.adb:4:53: info: in default value of box association at main.adb:26
 main.adb:4:53: info: range check proved (CVC5: 2 VC)

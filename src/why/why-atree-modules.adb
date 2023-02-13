@@ -3867,9 +3867,9 @@ package body Why.Atree.Modules is
       --  For recursive functions, include the axiom module of mutually
       --  recursive subprograms if any.
 
-      if Is_Recursive (E) then
+      if Proof_Module_Cyclic (E) then
          for C in Rec_Axiom_Modules.Iterate loop
-            if Mutually_Recursive (E, Ada_To_Why.Key (C)) then
+            if Proof_Module_Cyclic (E, Ada_To_Why.Key (C)) then
                S.Insert (Ada_To_Why.Element (C));
 
                --  If the subprogram has specializations, also include its
@@ -3895,7 +3895,7 @@ package body Why.Atree.Modules is
       --  phantom link between a function and its lemma.
 
       for C in Lemma_Axiom_Modules.Iterate loop
-         if Lemma_Mutually_Recursive (Ada_To_Why.Key (C), E) then
+         if Lemma_Module_Cyclic (Ada_To_Why.Key (C), E) then
             S.Insert (Ada_To_Why.Element (C));
 
             --  If the lemma is associated to a function which has

@@ -1,3 +1,4 @@
+shift_range.adb:10:13: info: implicit function contract might not be available on calls from enclosing unit
 shift_range.adb:11:12: info: data dependencies proved
 shift_range.adb:16:18: info: no contextual analysis of "Shift_Right" (body not seen yet)
 shift_range.adb:16:18: info: range check proved (CVC5: 2 VC)

@@ -7,6 +7,7 @@ entry_call_from_elaboration.adb:23:04: high: task "entry_call_from_elaboration.t
 nested_po.adb:4:24: warning: statement has no effect
 nested_po.ads:21:14: info: ceiling priority protocol is respected (CVC5: 1 VC)
 nested_po.ads:21:14: medium: the task might terminate, which is not allowed in SPARK
+pack.ads:3:13: info: implicit function contract might not be available on calls from enclosing unit
 pack.ads:5:14: medium: the task might terminate, which is not allowed in SPARK
 pack.ads:6:14: medium: the task might terminate, which is not allowed in SPARK
 pack.ads:14:04: high: possible data race when accessing variable "ada.text_io.file_system"

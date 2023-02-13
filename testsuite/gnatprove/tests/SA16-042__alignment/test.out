@@ -1,1 +1,2 @@
+bug_align.adb:8:13: info: implicit function contract might not be available on calls from enclosing unit
 bug_align.adb:11:20: high: assertion might fail

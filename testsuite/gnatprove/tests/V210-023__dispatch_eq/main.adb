@@ -1,20 +1,6 @@
+with Other; use Other;
 procedure Main with SPARK_Mode is
-   package Nested is
-      type Root is tagged record
-         F : Integer;
-         D : Natural;
-      end record;
-      function "=" (X, Y : Root) return Boolean is (X.F = Y.F);
 
-      type Child is new Root with record
-         G : Integer;
-      end record;
-   end Nested;
-   use Nested;
-
-   function Rand (X : Natural) return Natural with
-     Import,
-     Post => Rand'Result in 1 .. 2;
    type Root_Acc is access all Root'Class;
    type Root_Array is array (Positive range <>) of Root_Acc;
 
