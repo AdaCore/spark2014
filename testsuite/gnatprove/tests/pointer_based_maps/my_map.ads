@@ -6,7 +6,8 @@ package My_Map with SPARK_Mode is
        (First       => First,
         Next        => Next,
         Has_Element => Has_Element,
-        Element     => Element);
+        Element     => Element),
+     Default_Initial_Condition => False;
    type Map_Acc is access Map;
 
    function Model_Contains (M : access constant Map; K : Positive) return Boolean
@@ -98,7 +99,7 @@ private
    type Nullable_Int_Acc is access Integer;
    subtype Int_Acc is not null Nullable_Int_Acc;
    type Map is record
-      Key   : Positive;
+      Key   : Positive := 1;
       Value : Int_Acc;
       Next  : Map_Acc;
    end record;
