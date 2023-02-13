@@ -31,7 +31,7 @@
   <proof prover="1"><result status="unknown" steps="124"/></proof>
   <proof prover="2"><result status="unknown" steps="243"/></proof>
   <proof prover="4"><result status="unknown" steps="140"/></proof>
-  <proof prover="5"><result status="unknown" steps="32"/></proof>
+  <proof prover="5"><result status="unknown" steps="24"/></proof>
   </goal>
  </transf>
  </goal>

@@ -350,7 +350,7 @@ test_map.adb:21:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:22:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:28:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:29:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:30:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:30:22: medium: assertion might fail
 test_map.adb:31:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:33:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:35:07: info: precondition proved (Z3: 1 VC)

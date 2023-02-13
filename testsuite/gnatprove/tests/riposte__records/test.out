@@ -136,5 +136,5 @@ counterexample expected for check at records.adb:436
 counterexample expected for check at records.adb:453
   trace at records.adb:446 --> P = (Data => (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last), Command => Increment_A)
   trace at records.adb:450 --> P = (Data => (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last), Command => Increment_A)
-  trace at records.adb:452 --> P = (Data => (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last), Command => Increment_A) and R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last)
+  trace at records.adb:452 --> R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last)
   trace at records.adb:453 --> R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last)

@@ -134,8 +134,7 @@ integer32_parsing.adb:174:34: medium: loop invariant might not be preserved by a
 integer32_parsing.adb:174:34: medium: precondition might fail, cannot prove s (I) in '0' .. '9', in call inlined at integer32_parsing.adb:179
 integer32_parsing.adb:174:52: info: range check proved (CVC5: 4 VC), in call inlined at integer32_parsing.adb:179
 integer32_parsing.adb:174:60: info: range check proved (CVC5: 4 VC), in call inlined at integer32_parsing.adb:179
-integer32_parsing.adb:176:48: medium: assertion might fail, cannot prove Char_To_Int (s (Last)) = abs (V rem 10), in call inlined at integer32_parsing.adb:179
-integer32_parsing.adb:176:48: medium: in inlined expression function body at integer32_parsing.adb:79
+integer32_parsing.adb:176:24: info: assertion proved (CVC5: 4 VC; Trivial: 1 VC), in call inlined at integer32_parsing.adb:179
 integer32_parsing.adb:176:48: medium: precondition might fail, cannot prove s (I) in '0' .. '9', in call inlined at integer32_parsing.adb:179
 integer32_parsing.adb:176:66: info: range check proved (CVC5: 2 VC), in call inlined at integer32_parsing.adb:179
 integer32_parsing.adb:176:80: info: overflow check proved (CVC5: 2 VC), in call inlined at integer32_parsing.adb:179
