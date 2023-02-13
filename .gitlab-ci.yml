@@ -123,6 +123,55 @@ test:
      reports:
        junit: xunit_output.xml
 
+#################
+# Test of ACATS #
+#################
+
+test_acats:
+  services:
+     - image:sandbox
+     - cpu:8
+     - mem:16
+  stage: test
+  script:
+    # Unpack the artifact then delete it
+    - tar zxf $PACKAGE_ABSOLUTE_NAME -C /
+    - rm -f $PACKAGE_ABSOLUTE_NAME
+
+    # Setup the "anod vcs as appropriate"
+    - *setup_repos
+
+    # also check out acats repo
+    - cd /tmp
+    - git clone $GIT_CLONE_BASE/eng/fe/acats
+    - cd /it/wave
+    - anod vcs --add-repo acats /tmp/acats;
+
+    # Tell anod that the package has already been built
+    - mkdir -p fingerprints
+    - touch fingerprints/x86_64-linux.spark2014.download_bin.json.assume-unchanged
+    - touch fingerprints/x86_64-linux.spark2014.install.json.assume-unchanged
+
+    # Test using anod
+    - anod run test_acats
+
+    # Process the results
+    - e3-testsuite-report
+       --failure-exit-code 1
+       --xunit-output $CI_PROJECT_DIR/xunit_output.xml
+       x86_64-linux/acats-4-gnatprove-baseline-test/results/new/ || FAILED=true
+
+    - if [ ! -z ${FAILED+x} ]; then echo "There was at least one testcase failure" && exit 1; fi
+
+  artifacts:
+     paths:
+        - xunit_output.xml
+     reports:
+       junit: xunit_output.xml
+
+################
+# Build of Doc #
+################
 
 build_docs:
   stage: doc
