@@ -113,12 +113,14 @@ test:
        --failure-exit-code 1
        --xunit-output $CI_PROJECT_DIR/xunit_output.xml
        x86_64-linux/spark2014-test/results/new/ || FAILED=true
+    - cp -r /it/wave/x86_64-linux/spark2014-test/results/new/ $CI_PROJECT_DIR/testsuite-results
 
     - if [ ! -z ${FAILED+x} ]; then echo "There was at least one testcase failure" && exit 1; fi
 
   artifacts:
      paths:
         - xunit_output.xml
+        - testsuite-results
      reports:
        junit: xunit_output.xml
 
