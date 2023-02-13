@@ -106,10 +106,6 @@ test:
     - touch fingerprints/x86_64-linux.spark2014.download_bin.json.assume-unchanged
     - touch fingerprints/x86_64-linux.spark2014.install.json.assume-unchanged
 
-    # TODO: remove the dep on 'gnat' in the test_deps of spark2014.anod,
-    # use gcc/gprbuild/gdb instead. Then remove this line
-    - anod install gnat --latest
-
     # Test using anod
     - anod run test
 
