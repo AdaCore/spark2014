@@ -238,6 +238,10 @@ test_multiset.adb:256:22: medium: assertion might fail
 test_multiset.adb:256:40: info: predicate check proved (Trivial: 1 VC)
 test_multiset.adb:257:22: info: predicate check proved (Trivial: 1 VC)
 test_multiset.adb:257:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Nb_Occurence or turning it into an expression function in its unit spec]
+natural_multisets.ads:3:01: warning: in instantiation at spark-containers-functional-multisets.adb:65 [-gnatw.a]
+natural_multisets.ads:3:01: warning: check will fail at run time [-gnatw.a]
+natural_multisets.ads:3:01: warning: in instantiation at spark-containers-functional-multisets.adb:72 [-gnatw.a]
+natural_multisets.ads:3:01: warning: check will fail at run time [-gnatw.a]
 test_multiset.adb:257:44: info: predicate check proved (Trivial: 1 VC)
 test_multiset.adb:258:22: info: predicate check proved (Trivial: 1 VC)
 test_multiset.adb:258:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Nb_Occurence or turning it into an expression function in its unit spec]
