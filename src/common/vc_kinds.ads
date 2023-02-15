@@ -358,6 +358,8 @@ package VC_Kinds is
    --  analysis.
    type Misc_Warning_Kind is
      (Warn_Address_To_Access,
+      Warn_Alias_Atomic_Vol,
+      Warn_Alias_Different_Volatility,
       Warn_Attribute_Valid,
       Warn_Initialization_To_Alias,
       Warn_Function_Is_Valid,
@@ -378,8 +380,6 @@ package VC_Kinds is
       --  Warnings guaranteed to be issued
       Warn_Address_Atomic,
       Warn_Address_Valid,
-      Warn_Alias_Atomic_Vol,
-      Warn_Alias_Different_Volatility,
       Warn_Assumed_Always_Return,
       Warn_Assumed_Global_Null,
       Warn_Assumed_Volatile_Properties,
@@ -495,6 +495,10 @@ package VC_Kinds is
         when Warn_Address_To_Access =>
           "?call to & is assumed to return a valid access"
           & " designating a valid value",
+        when Warn_Alias_Atomic_Vol =>
+          "?aliased objects must have the same volatility and atomic status",
+        when Warn_Alias_Different_Volatility =>
+          "?aliased objects have different volatile properties",
         when Warn_Attribute_Valid =>
           "?attribute Valid is assumed to return True",
         when Warn_Indirect_Writes_To_Alias =>
@@ -537,10 +541,6 @@ package VC_Kinds is
           "?assuming no concurrent accesses to non-atomic object &",
         when Warn_Address_Valid =>
           "?assuming valid reads from object &",
-        when Warn_Alias_Atomic_Vol =>
-          "?aliased objects must have the same volatility and atomic status",
-        when Warn_Alias_Different_Volatility =>
-          "?aliased objects have different volatile properties",
         when Warn_Assumed_Always_Return =>
           "?no returning annotation available for &",
         when Warn_Assumed_Global_Null =>

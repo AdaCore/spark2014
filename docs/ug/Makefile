@@ -60,7 +60,7 @@ help:
 	@echo "  linkcheck  to check all external links for integrity"
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 
-$(GENERATED_RST_FILES): table_generator/table_generator.adb
+$(GENERATED_RST_FILES): table_generator/table_generator.adb ../../src/common/vc_kinds.ads
 	gprbuild -p -P table_generator/table_generator
 	table_generator/obj/table_generator
 

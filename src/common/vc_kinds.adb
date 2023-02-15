@@ -514,6 +514,11 @@ package body VC_Kinds is
         when Warn_Address_To_Access =>
           "call to conversion function is assumed to return a valid access"
           & " designating a valid value",
+        when Warn_Alias_Atomic_Vol  =>
+          "aliased objects should both be volatile or non-volatile, "
+          & "and both be atomic or non-atomic",
+        when Warn_Alias_Different_Volatility  =>
+          "aliased objects should have the same volatile properties",
         when Warn_Attribute_Valid =>
           "attribute Valid is assumed to return True",
         when Warn_Initialization_To_Alias =>
@@ -557,11 +562,6 @@ package body VC_Kinds is
         when Warn_Address_Valid =>
           "reads of an object with an imprecisely supported address "
           & "specification should be valid",
-        when Warn_Alias_Atomic_Vol  =>
-          "aliased objects should both be volatile or non-volatile, "
-          & "and both be atomic or non-atomic",
-        when Warn_Alias_Different_Volatility  =>
-          "aliased objects should have the same volatile properties",
         when Warn_Assumed_Always_Return =>
           "no returning annotation available for subprogram, "
           & "subprogram is assumed to always return",
@@ -1354,6 +1354,10 @@ package body VC_Kinds is
      (case Kind is
         when Warn_Address_To_Access =>
           "address to access conversion",
+        when Warn_Alias_Atomic_Vol =>
+          "volatile and atomic status of aliases",
+        when Warn_Alias_Different_Volatility =>
+          "volatile properties of aliases",
         when Warn_Attribute_Valid =>
           "attribute Valid always True",
         when Warn_Initialization_To_Alias =>
@@ -1392,10 +1396,6 @@ package body VC_Kinds is
           "imprecise Address without Atomic",
         when Warn_Address_Valid =>
           "imprecise Address and validity",
-        when Warn_Alias_Atomic_Vol =>
-          "volatile and atomic status of aliases",
-        when Warn_Alias_Different_Volatility =>
-          "volatile properties of aliases",
         when Warn_Assumed_Volatile_Properties =>
           "imprecise Address and volatile properties",
         when Warn_Indirect_Writes_Through_Alias =>
