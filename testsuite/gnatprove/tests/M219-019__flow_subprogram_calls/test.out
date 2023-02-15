@@ -55,6 +55,7 @@ test.adb:190:07: info: analyzing call to "Do_Stuff_C" in context
 test.adb:191:07: info: analyzing call to "Do_Stuff_D" in context
 test.adb:195:30: info: initialization of "B" proved
 test.adb:197:07: info: initialization of "S" proved
+test.adb:199:16: info: implicit function contract might not be available on calls from enclosing unit
 test.adb:200:14: info: data dependencies proved
 test.adb:202:07: info: no contextual analysis of "Global_Test_03" (nested subprogram)
 test.adb:215:14: warning: subprogram "Global_Test_04" has no effect
@@ -104,4 +105,3 @@ test.adb:178
 test.adb:166
 test.adb:167
 test.adb:167
-

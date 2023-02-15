@@ -1,3 +1,4 @@
+test_declare.adb:2:13: info: implicit function contract might not be available on calls from enclosing unit
 test_declare.adb:4:25: info: data dependencies proved
 test_declare.adb:8:55: info: overflow check proved (CVC5: 2 VC)
 test_declare.adb:9:39: medium: overflow check might fail, cannot prove upper bound for Y + 4 [reason for check: result of addition must fit in a 32-bits machine integer]

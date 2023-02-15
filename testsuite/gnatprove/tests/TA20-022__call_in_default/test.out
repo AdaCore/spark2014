@@ -1,3 +1,4 @@
+c371002.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
 c371002.adb:9:10: medium: range check might fail
 c371002.adb:14:31: info: range check proved (CVC5: 2 VC)
 c371002.adb:19:07: high: "Obj6.C1.C1" is not initialized

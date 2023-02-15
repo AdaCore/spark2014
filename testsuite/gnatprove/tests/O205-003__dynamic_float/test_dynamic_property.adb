@@ -50,7 +50,7 @@ procedure Test_Dynamic_Property (D : Float) with SPARK_Mode,
 begin
    X := Dyn_Return (30.0);
    pragma Assert (X <= C); --@ASSERT:PASS
-   pragma Assert (Dyn_Return (40.0) <= C); --@ASSERT:PASS
+   pragma Assert (Dyn_Return (40.0) <= C); -- assert might fail because of cycle avoidance for VC modules
    Dyn_Param (X);
    pragma Assert (X <= C); --@ASSERT:PASS
    if Nested.Y >= 1.0 then

@@ -8,12 +8,14 @@ test_access_conv.adb:13:04: warning: assuming "Incr" has no effect on global ite
 test_access_conv.adb:13:04: warning: no Global contract available for "Incr"
 test_access_conv.adb:13:04: warning: no returning annotation available for "Incr"
 test_access_conv.adb:13:10: info: discriminant check proved (CVC5: 1 VC)
+test_attributes.adb:14:13: info: implicit function contract might not be available on calls from enclosing unit
 test_attributes.adb:16:19: info: assertion proved (CVC5: 1 VC)
 test_attributes.adb:17:19: info: assertion proved (CVC5: 1 VC)
 test_attributes.adb:18:19: info: assertion proved (CVC5: 1 VC)
 test_attributes.adb:19:19: info: assertion proved (CVC5: 1 VC)
 test_attributes.adb:20:19: info: assertion proved (CVC5: 1 VC)
 test_attributes.adb:20:51: info: division check proved (CVC5: 1 VC)
+test_bv_compare.adb:4:13: info: implicit function contract might not be available on calls from enclosing unit
 test_bv_compare.adb:7:13: info: no contextual analysis of "Rand" (body not seen yet)
 test_bv_compare.adb:7:13: warning: assuming "Rand" always returns
 test_bv_compare.adb:7:13: warning: assuming "Rand" has no effect on global items
@@ -25,6 +27,9 @@ test_bv_compare.adb:8:13: warning: no Global contract available for "Rand"
 test_bv_compare.adb:8:13: warning: no returning annotation available for "Rand"
 test_bv_compare.adb:10:19: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test_bv_compare.adb:11:19: info: assertion proved (CVC5: 1 VC)
+test_enum.adb:7:13: info: implicit function contract might not be available on calls from enclosing unit
+test_enum.adb:8:13: info: implicit function contract might not be available on calls from enclosing unit
+test_enum.adb:9:13: info: implicit function contract might not be available on calls from enclosing unit
 test_enum.adb:11:19: info: assertion proved (CVC5: 1 VC)
 test_enum.adb:12:19: info: assertion proved (CVC5: 1 VC)
 test_enum.adb:13:19: info: assertion proved (CVC5: 1 VC)
@@ -43,6 +48,7 @@ test_membership.adb:23:19: info: assertion proved (CVC5: 1 VC)
 test_new.adb:5:28: info: pointer dereference check proved (CVC5: 1 VC)
 test_new.adb:7:19: info: assertion proved (CVC5: 1 VC)
 test_new.adb:7:31: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
+test_or_mod.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
 test_or_mod.adb:7:19: info: assertion proved (CVC5: 1 VC)
 test_or_mod.adb:8:19: info: assertion proved (CVC5: 1 VC)
 test_string.adb:4:19: medium: assertion might fail

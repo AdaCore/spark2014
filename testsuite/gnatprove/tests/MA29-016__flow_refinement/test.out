@@ -81,6 +81,7 @@ levels.adb:71:24: low: unused global "Y0" constituent of "Abs_0"
 levels.adb:71:36: low: unused global "Nested_1.Abs_1" constituent of "Levels.Abs_0"
 levels.adb:87:09: info: flow dependencies proved
 levels.adb:88:09: medium: initial condition might fail
+levels.adb:91:19: info: implicit function contract might not be available on calls from enclosing unit
 levels.adb:92:15: info: data dependencies proved
 levels.adb:127:25: medium: refined postcondition might fail [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_2 and function Read_Partial_0 or turning them into expression functions]
 levels.adb:127:44: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + Read_Partial_1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_0 or turning them into expression functions]

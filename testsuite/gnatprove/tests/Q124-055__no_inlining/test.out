@@ -1,5 +1,8 @@
+array_arith.adb:6:16: info: implicit function contract might not be available on calls from enclosing unit
+array_arith.adb:26:16: info: implicit function contract might not be available on calls from enclosing unit
 array_arith.adb:29:19: high: overflow check might fail, cannot prove upper bound for Y + One (e.g. when One = Integer'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 26 should mention Y and One in a precondition]
 array_arith.adb:29:19: high: range check might fail, cannot prove lower bound for Y + One (e.g. when One = -1 and Y = 0) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 26 should mention Y and One in a precondition]
+array_arith.adb:46:16: info: implicit function contract might not be available on calls from enclosing unit
 array_arith.adb:63:19: high: overflow check might fail, cannot prove upper bound for Y + One (e.g. when One = Integer'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 46 should mention Y and One in a precondition]
 array_arith.adb:63:19: high: range check might fail, cannot prove lower bound for Y + One (e.g. when One = -1 and Y = 0) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 46 should mention Y and One in a precondition]
 array_arith.adb:66:07: high: "X" is not initialized

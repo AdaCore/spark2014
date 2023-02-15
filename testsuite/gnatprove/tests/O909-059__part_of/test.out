@@ -1,3 +1,4 @@
+abstraction_ext.ads:3:14: info: implicit function contract might not be available on calls from enclosing unit
 communication.ads:5:04: info: flow dependencies proved
 communication.ads:8:14: warning: subprogram "P" has no effect
 communication.ads:16:07: error: indicator Part_Of is required in this context: constant with variable input "Max3" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))

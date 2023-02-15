@@ -7,4 +7,5 @@ nest_return.adb:38:55: info: initialization of "B" proved
 nest_return.ads:4:43: info: initialization of "Y" proved
 nest_return.ads:5:15: info: postcondition proved (CVC5: 2 VC)
 nest_return.ads:10:15: info: postcondition proved (CVC5: 2 VC)
+nest_return.ads:14:13: info: function contract might not be available on implicit recursive calls
 nest_return.ads:15:15: info: postcondition proved (CVC5: 2 VC)

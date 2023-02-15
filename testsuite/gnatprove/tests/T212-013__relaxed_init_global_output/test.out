@@ -1,3 +1,4 @@
+test_global_out.adb:13:13: info: implicit function contract might not be available on calls from enclosing unit
 test_global_out.adb:14:32: info: initialization check proved (CVC5: 1 VC)
 test_global_out.adb:17:14: info: postcondition proved (CVC5: 4 VC)
 test_global_out.adb:26:06: info: data dependencies proved
@@ -9,6 +10,7 @@ test_global_out.adb:39:28: high: "G.G" is not initialized at subprogram entry
 test_global_out.adb:40:23: high: "G.F" is not initialized at subprogram entry
 test_global_out.adb:40:23: high: "G.G" is not initialized at subprogram entry
 test_global_out.adb:48:04: info: initialization of "B" proved
+test_global_out.adb:51:13: info: implicit function contract might not be available on calls from enclosing unit
 test_global_out.adb:52:29: info: initialization check proved (CVC5: 1 VC)
 test_global_out.adb:55:14: info: postcondition proved (CVC5: 4 VC)
 test_global_out.adb:66:06: info: data dependencies proved

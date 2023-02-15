@@ -1,1 +1,2 @@
+bad.ads:3:13: info: implicit function contract might not be available on calls from enclosing unit
 bad.ads:4:12: high: range check might fail, cannot prove lower bound for Too_Small

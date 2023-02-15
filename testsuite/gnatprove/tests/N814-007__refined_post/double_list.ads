@@ -15,7 +15,7 @@ is
      with
        Global => (Output => Internal_List),
        Depends => (Internal_List => null),
-       Post => Size = 0; --@POSTCONDITION:PASS
+       Post => Size = 0; --@ POSTCONDITION:PASS
 
    procedure Insert_Before (It     : in Iterator;
                             Item   : in Element_Type;

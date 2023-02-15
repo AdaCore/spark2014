@@ -800,7 +800,7 @@ package Why.Atree.Modules is
    --  with Automatic_Instantiation.
 
    function E_Rec_Axiom_Module (E : Entity_Id) return W_Module_Id with
-     Pre => Has_Post_Axiom (E) and then Is_Recursive (E);
+     Pre => Has_Post_Axiom (E) and then Proof_Module_Cyclic (E);
    --  Return the module where File = No_Name and Name = (Full_Name (E) &
    --  "__rec_axiom"). Memoization may be used. Returns Empty when it is called
    --  with a node which is not an entity, and no module is known for this
@@ -883,7 +883,7 @@ package Why.Atree.Modules is
 
    function Mutually_Recursive_Modules (E : Entity_Id) return Why_Node_Sets.Set
    with
-     Pre => Is_Subprogram_Or_Entry (E);
+     Pre => Ekind (E) in E_Function | E_Procedure | E_Entry | E_Package;
    --  Function returning the set of axiom modules mutually recursive with a
    --  given entity. Those are the modules which should not be included in the
    --  VC module for E.

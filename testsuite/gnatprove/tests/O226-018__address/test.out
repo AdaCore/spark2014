@@ -1,3 +1,4 @@
+worker_pack.adb:8:16: info: implicit function contract might not be available on calls from enclosing unit
 worker_pack.adb:13:26: info: no contextual analysis of "XQueue_Create" (body not seen yet)
 worker_pack.adb:13:26: warning: assuming "XQueue_Create" always returns
 worker_pack.adb:13:26: warning: assuming "XQueue_Create" has no effect on global items

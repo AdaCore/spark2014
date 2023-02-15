@@ -1,3 +1,6 @@
+p.ads:11:13: info: implicit function contract might not be available on calls from enclosing unit
+p.ads:12:13: info: implicit function contract might not be available on calls from enclosing unit
+p.ads:13:13: info: implicit function contract might not be available on calls from enclosing unit
 p.ads:15:24: warning: assuming "To_Acc" always returns
 p.ads:15:24: warning: assuming "To_Acc" has no effect on global items
 p.ads:15:24: warning: no Global contract available for "To_Acc"

@@ -5,8 +5,10 @@ p.adb:16:14: info: local subprogram "Sub" only analyzed in the context of calls
 p.adb:16:14: warning: subprogram "Sub" has no effect
 p.adb:17:07: info: initialization of "Z" proved
 p.adb:17:07: info: initialization of "Z" proved, in call inlined at p.adb:43
+p.adb:21:16: info: function contract might not be available on calls from enclosing unit
 p.adb:22:22: info: postcondition proved (CVC5: 1 VC)
 p.adb:22:22: info: postcondition proved (CVC5: 1 VC), in call inlined at p.adb:43
+p.adb:26:16: info: function contract might not be available on calls from enclosing unit
 p.adb:27:22: info: postcondition proved (CVC5: 2 VC)
 p.adb:27:22: info: postcondition proved (CVC5: 2 VC), in call inlined at p.adb:43
 p.adb:32:22: info: assertion proved (CVC5: 1 VC), in call inlined at p.adb:43

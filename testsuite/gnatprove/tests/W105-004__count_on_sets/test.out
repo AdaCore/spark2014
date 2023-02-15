@@ -87,6 +87,7 @@ use_sets.adb:21:51: info: null exclusion check proved (CVC5: 1 VC)
 use_sets.adb:21:60: info: pointer dereference check proved (CVC5: 1 VC)
 use_sets.adb:21:82: info: predicate check proved (Trivial: 1 VC)
 use_sets.adb:21:92: info: predicate check proved (Trivial: 1 VC)
+use_sets.adb:27:13: info: function contract might not be available on implicit recursive calls
 use_sets.adb:27:45: warning: unused variable "A"
 use_sets.adb:27:48: warning: unused variable "B"
 use_sets.adb:28:14: info: postcondition proved (CVC5: 1 VC)

@@ -50,6 +50,7 @@ gen_access.adb:16:31: warning: assuming "Mk" always returns
 gen_access.adb:16:31: warning: assuming "Mk" has no effect on global items
 gen_access.adb:16:31: warning: no Global contract available for "Mk"
 gen_access.adb:16:31: warning: no returning annotation available for "Mk"
+gen_access.adb:23:13: info: implicit function contract might not be available on calls from enclosing unit
 gen_access.adb:24:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
 gen_access.adb:24:24: warning: assuming "Mk" always returns
 gen_access.adb:24:24: warning: assuming "Mk" has no effect on global items

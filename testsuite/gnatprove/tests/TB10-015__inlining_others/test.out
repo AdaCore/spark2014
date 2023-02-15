@@ -1,3 +1,4 @@
+repro.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
 repro.adb:7:14: info: add a contract to analyze it separately from calling contexts
 repro.adb:7:14: info: local subprogram "Check" only analyzed in the context of calls
 repro.adb:7:14: warning: subprogram "Check" has no effect

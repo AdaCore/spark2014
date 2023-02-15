@@ -1,5 +1,6 @@
 delay_cal1.adb:4:52: warning: assuming "Clock" always returns
 delay_cal1.adb:4:52: warning: no returning annotation available for "Clock"
+delay_cal1.adb:6:13: info: implicit function contract might not be available on calls from enclosing unit
 delay_cal1.adb:7:43: warning: assuming "-" always returns
 delay_cal1.adb:7:43: warning: no returning annotation available for "-"
 delay_cal1.adb:7:68: medium: divide by zero might fail

@@ -1,4 +1,4 @@
-procedure In_Out_Pledge with SPARK_mode is
+package body In_Out_Pledge with SPARK_mode is
    pragma Unevaluated_Use_Of_Old (Allow);
 
     type List_Cell;
@@ -46,43 +46,46 @@ procedure In_Out_Pledge with SPARK_mode is
    type Two_Lists is record
       L1, L2 : List;
    end record;
-   L11 : List := new List_Cell'(Value => 1, Next => null);
-   L12 : List := new List_Cell'(Value => 2, Next => L11);
-   L13 : List := new List_Cell'(Value => 3, Next => L12);
-   LL : Two_Lists := (L1 => L13, L2 => null);
 
    function Rand (X : Integer) return Boolean with Import;
-begin
-   if Rand (1) then
-      declare
-         X : access List_Cell := LL.L1;
 
-         procedure Go_To_Next with
-           Global => (In_Out => X),
-           Pre  => X /= null,
-           Post => Model (X) = Model (X.Next)'Old
-           and At_End_Borrow (X'Old).Value = X.Value'Old
-           and Integer'Min (Integer'Last - 1, Length (At_End_Borrow (X))) + 1 = Length (At_End_Borrow (X'Old))
-           and Model (At_End_Borrow (X)) = Model (At_End_Borrow (X'Old).Next)
-         is
+   procedure Main is
+      L11 : List := new List_Cell'(Value => 1, Next => null);
+      L12 : List := new List_Cell'(Value => 2, Next => L11);
+      L13 : List := new List_Cell'(Value => 3, Next => L12);
+      LL : Two_Lists := (L1 => L13, L2 => null);
+   begin
+      if Rand (1) then
+         declare
+            X : access List_Cell := LL.L1;
+
+            procedure Go_To_Next with
+              Global => (In_Out => X),
+              Pre  => X /= null,
+              Post => Model (X) = Model (X.Next)'Old
+              and At_End_Borrow (X'Old).Value = X.Value'Old
+              and Integer'Min (Integer'Last - 1, Length (At_End_Borrow (X))) + 1 = Length (At_End_Borrow (X'Old))
+              and Model (At_End_Borrow (X)) = Model (At_End_Borrow (X'Old).Next)
+            is
+            begin
+               X := X.Next;
+            end Go_To_Next;
          begin
-            X := X.Next;
-         end Go_To_Next;
-      begin
-         pragma Assert (Get_Nth_Val (X, 1) = 3);
-         pragma Assert (Get_Nth_Val (X, 2) = 2);
-         pragma Assert (Get_Nth_Val (X, 3) = 1);
-         if X /= null then
-            Go_To_Next;
-            Go_To_Next;
-            X.Value := 4;
-         end if;
-      end;
-      pragma Assert (Length (LL.L1) = 3);
-      pragma Assert (LL.L1.Value = 3);
-      pragma Assert (LL.L1.Next.Value = 2);
-      pragma Assert (Get_Nth_Val (LL.L1, 3) = 4);
-      pragma Assert (LL.L1.Next.Next.Value = 4);
+            pragma Assert (Get_Nth_Val (X, 1) = 3);
+            pragma Assert (Get_Nth_Val (X, 2) = 2);
+            pragma Assert (Get_Nth_Val (X, 3) = 1);
+            if X /= null then
+               Go_To_Next;
+               Go_To_Next;
+               X.Value := 4;
+            end if;
+         end;
+         pragma Assert (Length (LL.L1) = 3);
+         pragma Assert (LL.L1.Value = 3);
+         pragma Assert (LL.L1.Next.Value = 2);
+         pragma Assert (Get_Nth_Val (LL.L1, 3) = 4);
+         pragma Assert (LL.L1.Next.Next.Value = 4);
 
-   end if;
+      end if;
+   end Main;
 end In_Out_Pledge;

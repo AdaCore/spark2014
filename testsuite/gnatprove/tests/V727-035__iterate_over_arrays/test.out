@@ -17,6 +17,7 @@ q.adb:37:08: info: precondition proved (CVC5: 1 VC)
 q.adb:37:43: info: overflow check proved (CVC5: 2 VC)
 q.adb:51:07: info: precondition proved (CVC5: 1 VC)
 q.ads:5:09: info: default initial condition proved (CVC5: 1 VC)
+q.ads:20:13: info: implicit function contract might not be available on calls from enclosing unit
 q.ads:28:69: info: overflow check proved (CVC5: 2 VC)
 q.ads:30:19: info: assertion proved (CVC5: 1 VC)
 q.ads:39:14: info: postcondition proved (CVC5: 1 VC)

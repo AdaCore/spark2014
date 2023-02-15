@@ -1,12 +1,15 @@
 test_qualif.adb:2:25: info: data dependencies proved
+test_qualif.adb:5:16: info: implicit function contract might not be available on calls from enclosing unit
 test_qualif.adb:7:07: info: range check proved (CVC5: 2 VC)
 test_qualif.adb:7:40: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 test_qualif.adb:7:40: info: range check proved (CVC5: 2 VC)
 test_qualif.adb:8:32: info: range check proved (CVC5: 1 VC)
 test_qualif.adb:8:32: medium: predicate check might fail
 test_qualif.adb:13:25: info: data dependencies proved
+test_qualif.adb:14:16: info: implicit function contract might not be available on calls from enclosing unit
 test_qualif.adb:21:16: info: range check proved (CVC5: 2 VC)
 test_qualif.adb:21:22: info: discriminant check proved (CVC5: 1 VC)
 test_qualif.adb:22:21: medium: predicate check might fail (e.g. when W = (D => 1, F => ?) and Z = (D => 1, F => 0))
 test_qualif.adb:27:25: info: data dependencies proved
+test_qualif.adb:29:16: info: implicit function contract might not be available on calls from enclosing unit
 test_qualif.adb:32:35: medium: predicate check might fail (e.g. when X = 0)

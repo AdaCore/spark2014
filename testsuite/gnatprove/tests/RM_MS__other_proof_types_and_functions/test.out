@@ -11,6 +11,7 @@ stack.adb:52:69: info: index check proved (CVC5: 2 VC)
 stack.adb:53:36: info: index check proved (CVC5: 2 VC)
 stack.ads:4:08: info: flow dependencies proved
 stack.ads:5:08: info: initial condition proved (CVC5: 1 VC)
+stack.ads:22:13: info: implicit function contract might not be available on calls from enclosing unit
 stack.ads:23:11: info: data dependencies proved
 stack.ads:29:11: info: data dependencies proved
 stack.ads:36:11: info: data dependencies proved
@@ -69,6 +70,7 @@ stack_functional_spec.adb:57:36: info: index check proved (CVC5: 2 VC)
 stack_functional_spec.ads:5:08: info: flow dependencies proved
 stack_functional_spec.ads:6:08: info: initial condition proved (CVC5: 1 VC)
 stack_functional_spec.ads:20:11: info: data dependencies proved
+stack_functional_spec.ads:28:13: info: implicit function contract might not be available on calls from enclosing unit
 stack_functional_spec.ads:40:11: info: data dependencies proved
 stack_functional_spec.ads:44:11: info: data dependencies proved
 stack_functional_spec.ads:56:11: info: data dependencies proved

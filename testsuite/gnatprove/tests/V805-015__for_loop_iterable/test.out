@@ -1,3 +1,5 @@
+foo.adb:13:13: info: implicit function contract might not be available on calls from enclosing unit
+foo.adb:14:13: info: implicit function contract might not be available on calls from enclosing unit
 foo.adb:14:69: info: overflow check proved (CVC5: 2 VC)
 foo.adb:18:22: warning: unused variable "IR"
 foo.adb:18:38: warning: unused variable "N"

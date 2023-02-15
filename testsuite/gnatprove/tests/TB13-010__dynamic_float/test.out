@@ -1,3 +1,4 @@
+float_bounds.adb:2:13: info: implicit function contract might not be available on calls from enclosing unit
 float_bounds.adb:3:12: info: range check proved (CVC5: 2 VC)
 float_bounds.adb:9:10: info: float overflow check proved (CVC5: 1 VC; colibri: 1 VC)
 float_bounds.adb:9:16: info: float overflow check proved (CVC5: 1 VC; colibri: 1 VC)

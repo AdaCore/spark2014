@@ -1,3 +1,4 @@
+array_types.ads:5:13: info: implicit function contract might not be available on calls from enclosing unit
 array_types.ads:6:06: info: range check proved (CVC5: 2 VC)
 array_types.ads:6:10: info: range check proved (CVC5: 2 VC)
 array_types.ads:6:19: info: range check proved (CVC5: 2 VC)

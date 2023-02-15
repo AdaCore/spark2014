@@ -1,3 +1,4 @@
+integerround.adb:7:13: info: implicit function contract might not be available on calls from enclosing unit
 integerround.adb:7:47: info: predicate check proved (CVC5: 2 VC)
 integerround.adb:7:47: info: range check proved (CVC5: 2 VC)
 integerround.adb:11:15: info: precondition proved (CVC5: 4 VC)

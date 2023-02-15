@@ -1,3 +1,12 @@
+x.adb:6:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:12:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:21:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:42:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:45:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:48:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:51:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:54:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:57:13: info: implicit function contract might not be available on calls from enclosing unit
 x.adb:62:18: medium: loop might be nonterminating, terminating annotation on overriding operator "=" could be incorrect
 x.adb:62:18: warning: statement has no effect
 x.adb:70:19: medium: loop might be nonterminating, terminating annotation on overriding operator "<" could be incorrect

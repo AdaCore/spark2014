@@ -1,9 +1,9 @@
-test_annotate.adb:5:14: info: postcondition proved (CVC5: 1 VC)
-test_annotate.adb:6:04: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
-test_annotate.adb:17:14: info: postcondition proved (CVC5: 1 VC)
-test_annotate.adb:18:04: medium: Inline_For_Proof or Logical_Equal annotation might be incorrect
-test_annotate.adb:32:14: info: postcondition proved (CVC5: 1 VC)
-test_annotate.adb:33:04: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
-test_annotate.adb:41:19: info: assertion proved (CVC5: 1 VC)
-test_annotate.adb:42:19: info: assertion proved (CVC5: 1 VC)
-test_annotate.adb:43:19: info: assertion proved (CVC5: 1 VC)
+inlined.ads:3:14: info: postcondition proved (CVC5: 1 VC)
+inlined.ads:4:04: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
+inlined.ads:10:14: info: postcondition proved (CVC5: 1 VC)
+inlined.ads:11:04: medium: Inline_For_Proof or Logical_Equal annotation might be incorrect
+inlined.ads:20:14: info: postcondition proved (CVC5: 1 VC)
+inlined.ads:21:04: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
+test_annotate.adb:6:19: info: assertion proved (CVC5: 1 VC)
+test_annotate.adb:7:19: info: assertion proved (CVC5: 1 VC)
+test_annotate.adb:8:19: info: assertion proved (CVC5: 1 VC)

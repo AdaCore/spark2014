@@ -2401,6 +2401,23 @@ package body Gnat2Why.Subprograms is
 
          W_Def := Why_Empty;
 
+      --  If Function_Entity needs a separate axiom module to break cyclicity
+      --  in proof, its postcondition cannot be used to inline it.
+
+      elsif Proof_Module_Cyclic (Function_Entity)
+        and then not
+          Find_Contracts
+            (Function_Entity, Pragma_Postcondition, False, False).Is_Empty
+      then
+         Error_Msg_N
+           ("info: ?function cannot be inlined for proof",
+            Function_Entity);
+         Error_Msg_N
+           ("\inlining might cause circularity in the verification process",
+            Function_Entity);
+
+         W_Def := Why_Empty;
+
       --  Translate the Value expression in Why.
 
       else
@@ -3278,7 +3295,9 @@ package body Gnat2Why.Subprograms is
       Self_Name := Why_Empty;
       Self_Is_Mutable := False;
 
-      Close_Theory (Th, VC_Generation_Theory, E);
+      Close_Theory (Th,
+                    Kind           => VC_Generation_Theory,
+                    Defined_Entity => E);
    end Generate_VCs_For_Package_Elaboration;
 
    -------------------------------------
@@ -3838,23 +3857,32 @@ package body Gnat2Why.Subprograms is
          Params     : constant Transformation_Params := Contract_Params;
       begin
          if Need_Check then
-            return New_Assert
-              (Pred        =>
-                 New_VC_Pred
-                   (Ada_Node => Find_Inline_Pragma (E),
-                    Expr     =>
-                      New_Comparison
-                        (Symbol => Why_Eq,
-                         Left   => New_Deref
-                           (Right => Result_Name,
-                            Typ   => Get_Typ (Result_Name)),
-                         Right  => Compute_Inlined_Expr
-                           (Function_Entity    => E,
-                            Logic_Func_Binders => (1 .. 0 => <>),
-                            W_Return_Type      => Get_Typ (Result_Name),
-                            Params             => Params)),
-                    Reason   => VC_Inline_Check),
-               Assert_Kind => EW_Assert);
+            declare
+               Def : constant W_Term_Id :=
+                 Compute_Inlined_Expr
+                   (Function_Entity    => E,
+                    Logic_Func_Binders => (1 .. 0 => <>),
+                    W_Return_Type      => Get_Typ (Result_Name),
+                    Params             => Params);
+            begin
+               if Def /= Why_Empty then
+                  return New_Assert
+                    (Pred        =>
+                       New_VC_Pred
+                         (Ada_Node => Find_Inline_Pragma (E),
+                          Expr     =>
+                            New_Comparison
+                              (Symbol => Why_Eq,
+                               Left   => New_Deref
+                                 (Right => Result_Name,
+                                  Typ   => Get_Typ (Result_Name)),
+                               Right  => Def),
+                          Reason   => VC_Inline_Check),
+                     Assert_Kind => EW_Assert);
+               else
+                  return +Void;
+               end if;
+            end;
          else
             return +Void;
          end if;
@@ -5208,7 +5236,7 @@ package body Gnat2Why.Subprograms is
       --  so that we can make sure that it cannot be used to prove the function
       --  itself.
 
-      if Ekind (E) = E_Function and then Is_Recursive (E) then
+      if Ekind (E) = E_Function and then Proof_Module_Cyclic (E) then
 
          --  Raise a warning about missing (implicit) contract on recursive
          --  calls.
@@ -5228,11 +5256,27 @@ package body Gnat2Why.Subprograms is
                   String_For_Implicit : constant String :=
                     (if Has_Explicit_Contracts then ""
                      else "implicit ");
+                  Scope               : constant Entity_Id :=
+                    Enclosing_Unit (E);
+                  String_For_Scope    : constant String :=
+                    (if Present (Scope)
+                     and then Ekind (Scope) in
+                         E_Package | E_Function | E_Procedure | E_Entry
+                     and then Proof_Module_Cyclic (E, Scope)
+                     then "calls from enclosing unit"
+                     else "");
+                  String_For_Rec      : constant String :=
+                   (if String_For_Scope = "" then
+                      (if Is_Recursive (E) then "recursive calls"
+                       else "implicit recursive calls")
+                    else
+                      (if Is_Recursive (E) then "recursive calls or "
+                       else ""));
                begin
                   Error_Msg_N
                     ("info: ?" & String_For_Implicit
                      & "function contract might not be available on "
-                     & "recursive calls", E);
+                     & String_For_Rec & String_For_Scope, E);
                end;
             end if;
          end;
@@ -5536,7 +5580,7 @@ package body Gnat2Why.Subprograms is
          end if;
       end;
 
-      if Ekind (E) = E_Function and then Is_Recursive (E) then
+      if Ekind (E) = E_Function and then Proof_Module_Cyclic (E) then
          if Specialization_Module = No_Symbol then
             Close_Theory (My_Th,
                           Kind           => Axiom_Theory,
@@ -6940,7 +6984,7 @@ package body Gnat2Why.Subprograms is
            & Flat_Binders;
       Func_Guard         : constant W_Pred_Id :=
         (if not Use_Guard_For_Function (E)
-         or else not Is_Recursive (E)
+         or else not Proof_Module_Cyclic (E)
          then True_Pred
          else New_Typed_Binding
            (Name     => Result_Id,

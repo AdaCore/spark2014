@@ -41,13 +41,16 @@ test_accessibility.adb:102:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:102:17: medium: dynamic accessibility check might fail
 test_accessibility_2.adb:17:45: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:17:56: info: pointer dereference check proved (CVC5: 1 VC)
+test_accessibility_2.adb:19:13: info: function contract might not be available on calls from enclosing unit
 test_accessibility_2.adb:20:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:20:35: info: pointer dereference check proved (CVC5: 1 VC)
+test_accessibility_2.adb:26:13: info: function contract might not be available on calls from enclosing unit
 test_accessibility_2.adb:27:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:27:24: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:27:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:30:14: info: dynamic accessibility check proved (Trivial)
 test_accessibility_2.adb:30:14: info: null exclusion check proved (CVC5: 1 VC)
+test_accessibility_2.adb:33:13: info: function contract might not be available on calls from enclosing unit
 test_accessibility_2.adb:34:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:34:24: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:34:32: info: pointer dereference check proved (CVC5: 1 VC)
@@ -55,6 +58,7 @@ test_accessibility_2.adb:37:14: info: dynamic accessibility check proved (Trivia
 test_accessibility_2.adb:37:14: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:41:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:41:35: info: pointer dereference check proved (CVC5: 1 VC)
+test_accessibility_2.adb:47:13: info: function contract might not be available on calls from enclosing unit
 test_accessibility_2.adb:48:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:48:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:48:32: info: pointer dereference check proved (CVC5: 1 VC)
@@ -86,6 +90,7 @@ test_accessibility_2.adb:94:47: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:94:49: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:96:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:96:17: medium: dynamic accessibility check might fail
+test_accessibility_2.adb:100:13: info: function contract might not be available on calls from enclosing unit
 test_accessibility_2.adb:101:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:101:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:101:32: info: pointer dereference check proved (CVC5: 1 VC)
@@ -110,6 +115,7 @@ test_accessibility_2.adb:128:59: info: pointer dereference check proved (CVC5: 1
 test_accessibility_2.adb:128:62: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:130:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:130:17: medium: dynamic accessibility check might fail
+test_accessibility_2.adb:134:13: info: function contract might not be available on calls from enclosing unit
 test_accessibility_2.adb:135:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:135:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:135:32: info: pointer dereference check proved (CVC5: 1 VC)
@@ -118,6 +124,7 @@ test_accessibility_2.adb:139:47: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:139:49: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:139:52: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:141:17: info: null exclusion check proved (CVC5: 1 VC)
+test_accessibility_2.adb:145:13: info: function contract might not be available on calls from enclosing unit
 test_accessibility_2.adb:147:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:147:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:147:32: info: pointer dereference check proved (CVC5: 1 VC)
@@ -125,6 +132,7 @@ test_accessibility_2.adb:151:44: info: pointer dereference check proved (CVC5: 1
 test_accessibility_2.adb:153:17: info: dynamic accessibility check proved (Trivial)
 test_accessibility_2.adb:153:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:153:21: info: null exclusion check proved (CVC5: 1 VC)
+test_accessibility_2.adb:157:13: info: function contract might not be available on calls from enclosing unit
 test_accessibility_2.adb:158:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:158:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:158:33: info: pointer dereference check proved (CVC5: 1 VC)
@@ -145,6 +153,7 @@ test_accessibility_2.adb:174:33: info: pointer dereference check proved (CVC5: 1
 test_accessibility_2.adb:177:18: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:177:20: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:177:23: info: dynamic accessibility check proved (Trivial)
+test_accessibility_2.adb:180:13: info: function contract might not be available on calls from enclosing unit
 test_accessibility_2.adb:181:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:181:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:181:33: info: pointer dereference check proved (CVC5: 1 VC)

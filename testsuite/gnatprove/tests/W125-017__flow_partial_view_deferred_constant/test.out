@@ -17,5 +17,7 @@ use_data.adb:20:38: medium: precondition might fail
 use_data.adb:20:53: info: in reconstructed value at the end of the borrow at use_data.adb:20
 use_data.adb:20:53: info: null exclusion check proved (CVC5: 1 VC)
 use_data.adb:22:18: info: pointer dereference check proved (CVC5: 1 VC)
+use_data.ads:6:04: info: implicit function contract might not be available on calls from enclosing unit
+use_data.ads:6:04: info: in instantiation at my_data_protected_by_lock.ads:25
 use_data.ads:11:14: info: postcondition proved (CVC5: 1 VC)
 use_data.ads:16:14: info: postcondition proved (CVC5: 1 VC)

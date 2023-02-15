@@ -1,3 +1,4 @@
+fail.adb:4:13: info: function contract might not be available on calls from enclosing unit
 fail.adb:5:14: info: postcondition proved (CVC5: 2 VC)
 fail.adb:7:07: info: range check proved (CVC5: 2 VC)
 fail.adb:7:28: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)

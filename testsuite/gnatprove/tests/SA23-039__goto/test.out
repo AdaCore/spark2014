@@ -4,6 +4,7 @@ simple_flow.adb:2:43: info: data dependencies proved
 simple_flow.adb:14:28: info: raise statement or expression proved unreachable (CVC5: 1 VC)
 simple_flow.adb:20:06: warning: this statement is never reached
 simple_flow.adb:20:06: warning: unreachable code
+test_goto.adb:4:13: info: implicit function contract might not be available on calls from enclosing unit
 test_goto.adb:9:10: info: no contextual analysis of "B" (body not seen yet)
 test_goto.adb:9:10: warning: assuming "B" always returns
 test_goto.adb:9:10: warning: assuming "B" has no effect on global items

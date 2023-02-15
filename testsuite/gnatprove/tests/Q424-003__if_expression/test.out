@@ -1,6 +1,7 @@
 string_utilities.adb:7:15: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:8:15: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:10:12: info: range check proved (CVC5: 2 VC)
+string_utilities.adb:15:16: info: implicit function contract might not be available on calls from enclosing unit
 string_utilities.adb:17:24: info: index check proved (CVC5: 2 VC)
 string_utilities.adb:17:28: info: index check proved (CVC5: 2 VC)
 string_utilities.adb:18:15: info: range check proved (CVC5: 2 VC)

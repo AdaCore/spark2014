@@ -22,6 +22,7 @@ known_satellites.adb:46:31: info: index check proved (Z3: 2 VC)
 known_satellites.adb:53:23: info: index check proved (Z3: 2 VC)
 known_satellites.ads:9:03: info: flow dependencies proved
 known_satellites.ads:10:03: info: initial condition proved (Z3: 1 VC)
+known_satellites.ads:18:13: info: implicit function contract might not be available on calls from enclosing unit
 known_satellites.ads:30:07: info: initialization of "Reference" proved
 known_satellites.ads:32:08: info: data dependencies proved
 known_satellites.ads:33:08: info: flow dependencies proved
