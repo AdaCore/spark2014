@@ -903,9 +903,10 @@ being available:
   GNATprove. This is similar to [ADA_RECURSIVE_SUBPROGRAMS].
 
 * [PARTIAL_TASKING]
-  If tasks are used, one run of GNATprove should analyze all units that define
-  tasks, in order to detect all violations of SPARK rules regarding tasking.
-
+  If tasks are used but no single run of GNATprove analyzes all units that
+  define tasks, then for each run of GNATprove, all tasks `not` defined in
+  units analyzed during that run of GNATprove must comply with [ADA_TASKING] as
+  if those tasks were not SPARK tasks.
 
 In addition, the following assumptions need to be addressed when compiling the
 program with another compiler than GNAT:
