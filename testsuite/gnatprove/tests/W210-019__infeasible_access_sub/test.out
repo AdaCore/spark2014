@@ -1,0 +1,9 @@
+infeasible_access_subp.adb:6:14: info: postcondition proved (CVC5: 1 VC)
+infeasible_access_subp.adb:9:07: medium: call via access-to-subprogram, terminating annotation could be incorrect
+infeasible_access_subp.adb:9:33: info: pointer dereference check proved (CVC5: 1 VC)
+infeasible_access_subp.adb:14:58: info: postcondition proved (CVC5: 1 VC)
+infeasible_access_subp.adb:16:58: info: postcondition proved (CVC5: 1 VC)
+infeasible_access_subp.adb:19:49: info: postcondition of source is strong enough to imply postcondition of target (CVC5: 1 VC)
+infeasible_access_subp.adb:19:51: info: null exclusion check proved (Trivial: 1 VC)
+infeasible_access_subp.adb:25:49: info: postcondition of source is strong enough to imply postcondition of target (CVC5: 1 VC)
+infeasible_access_subp.adb:25:51: info: null exclusion check proved (Trivial: 1 VC)
