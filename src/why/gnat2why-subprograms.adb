@@ -3278,8 +3278,7 @@ package body Gnat2Why.Subprograms is
       Self_Name := Why_Empty;
       Self_Is_Mutable := False;
 
-      Close_Theory (Th,
-                    Kind => VC_Generation_Theory);
+      Close_Theory (Th, VC_Generation_Theory, E);
    end Generate_VCs_For_Package_Elaboration;
 
    -------------------------------------
