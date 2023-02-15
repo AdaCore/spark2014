@@ -5504,7 +5504,7 @@ package body Gnat2Why.Subprograms is
                        (Left  => +Spec_Guard,
                         Op    => EW_Equivalent,
                         Right => +New_Universal_Quantif
-                          (Binders  => Tag_Binder & Logic_Why_Binders,
+                          (Binders  => Tag_B & Logic_Why_Binders,
                            Triggers =>
                              New_Triggers
                                (Triggers =>
