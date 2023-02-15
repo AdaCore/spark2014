@@ -811,23 +811,34 @@ more time and memory.
 Subprogram Termination
 ----------------------
 
-By default, |GNATprove| does not attempt to verify termination of subprograms.
-It is only concerned with partial correctness of
-subprograms, that is, it only checks that the contract of a subprogram holds
-when it terminates normally.
+By default, |GNATprove| does not attempt to verify termination of subprograms
+and is only concerned with the partial correctness of subprograms. This means
+that |GNATprove| only verifies that the contract of each subprogram holds
+whenever that subprogram terminates normally (i.e., returns), and it is still
+possible that the subprogram does not terminate in some or all cases.
 
-What is more, |GNATprove| enforces that no exception will be raised at
-runtime, except possibly storage errors caused by primary stack allocation
-failures, secondary stack allocation failures, or heap memory allocation
-failures. Together, these two points ensure that, assuming that primary stack,
-secondary stack, and heap memory allocations don't fail,
-every |SPARK| subprogram formally verified using GNATprove will always return
-normally in a state that respects its postcondition, as long as it terminates.
+What is more, |GNATprove| enforces that no exception will be raised at runtime,
+except for storage errors possibly caused by primary stack allocation failures,
+secondary stack allocation failures, or heap memory allocation failures.
 
-A user can request from |GNATprove| that it also proves that a program
-terminates by using a specific ``Annotate`` pragma, assuming that
-primary stack, secondary stack, and heap memory allocations don't fail. In
-the following example, we specify that the five ``F`` functions
+The previous two paragraphs imply that |GNATprove| formally verifies that each
+execution of each |SPARK| subprogram it analyzes will either:
+
+* return normally in a state that respects the subprogram’s postcondition,
+* terminate abnormally as a result of a primary stack, secondary stack, or heap
+  memory allocation failure, or
+* not terminate at all.
+
+A user can request from |GNATprove| that it also proves that a subprogram
+terminates by using a specific ``Annotate`` pragma. |GNATprove| formally
+verifies that each |SPARK| subprogram it analyzes with this annotation will
+always terminate, i.e., that each execution of each such subprogram will either:
+
+* return normally in a state that respects the subprogram’s postcondition, or
+* terminate abnormally as a result of a primary stack, secondary stack, or heap
+  memory allocation failure.
+
+In the following example, we specify that the five ``F`` functions
 should terminate, which |GNATprove| will attempt proving:
 
 .. literalinclude:: /examples/ug__terminating_annotations/terminating_annotations.ads
