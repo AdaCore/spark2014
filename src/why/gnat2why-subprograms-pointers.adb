@@ -31,6 +31,7 @@ with Gnat2Why.Expr;                  use Gnat2Why.Expr;
 with Sinput;                         use Sinput;
 with SPARK_Util;                     use SPARK_Util;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
+with SPARK_Util.Types;               use SPARK_Util.Types;
 with String_Utils;                   use String_Utils;
 with VC_Kinds;                       use VC_Kinds;
 with Why.Atree.Accessors;            use Why.Atree.Accessors;
@@ -849,20 +850,30 @@ package body Gnat2Why.Subprograms.Pointers is
       --  predicate of access to function types is axiomatized in the
       --  completion module while the predicate of access to procedures is
       --  simply True, as we don't need it since we don't generate axioms for
-      --  procedures.
+      --  procedures. For derived access-to-function types or subtypes, use
+      --  the range axiom of the parent.
 
-      Emit
-        (Th,
-         Why.Gen.Binders.New_Function_Decl
-           (Domain   => EW_Pred,
-            Name     => To_Local (E_Symb (E, WNE_Range_Pred)),
-            Binders  => (1 => Subp_Binder),
-            Labels   => Symbol_Sets.Empty_Set,
-            Def      =>
-              (if Is_Function_Type (Directly_Designated_Type (E))
-               then Why_Empty
-               else +True_Pred),
-            Location => No_Location));
+      declare
+         Binder        : constant Binder_Type := Subp_Binder;
+         In_Range_Expr : constant W_Expr_Id :=
+           (if not Is_Function_Type (Directly_Designated_Type (E))
+            then +True_Pred
+            elsif No (Parent_Retysp (E)) then Why_Empty
+            else New_Call
+              (Name    => E_Symb (Parent_Retysp (E), WNE_Range_Pred),
+               Binders => (1 => Binder),
+               Domain  => EW_Pred));
+      begin
+         Emit
+           (Th,
+            Why.Gen.Binders.New_Function_Decl
+              (Domain   => EW_Pred,
+               Name     => To_Local (E_Symb (E, WNE_Range_Pred)),
+               Binders  => (1 => Binder),
+               Labels   => Symbol_Sets.Empty_Set,
+               Def      => In_Range_Expr,
+               Location => No_Location));
+      end;
 
       --  Associate call identifiers to the designated profile in the symbol
       --  table. They will be queried when translating calls through
