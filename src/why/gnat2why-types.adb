@@ -1149,72 +1149,87 @@ package body Gnat2Why.Types is
    ---------------------------
 
    procedure Generate_VCs_For_Type (E : Type_Kind_Id) is
-      Decl     : constant Node_Id := Enclosing_Declaration (E);
-      Name     : constant String := Full_Name (E);
-      Params   : constant Transformation_Params := Body_Params;
-      Why_Body : W_Prog_Id;
-      Th       : Theory_UC;
-
+      Priv_View : constant Opt_Type_Kind_Id :=
+        Find_View_For_Default_Checks (E);
+      Name      : constant String := Full_Name (E);
+      Params    : constant Transformation_Params := Body_Params;
+      Why_Body  : W_Prog_Id := +Void;
+      Th        : Theory_UC;
    begin
-      Th :=
-        Open_Theory (WF_Main,
-                   New_Module
-                     (Name => Name & "__default_checks",
-                      File => No_Symbol),
-                   Comment =>
-                     "Module for checking DIC of default value and absence"
-                   & " of runtime errors in the private part of "
-                   & """" & Get_Name_String (Chars (E)) & """"
-                   & (if Sloc (E) > 0 then
-                        " defined at " & Build_Location_String (Sloc (E))
-                     else "")
-                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Current_Subp := E;
+      --  Insert alternative tests for other on-type checks here.
+      --  (Currently redundant because there is only one).
 
-      Register_VC_Entity (E);
+      if Present (Priv_View) then
+         Th :=
+           Open_Theory (WF_Main,
+                        New_Module
+                          (Name => Name & "__default_checks",
+                           File => No_Symbol),
+                        Comment =>
+                          "Module for checking DIC of default value and"
+                        & " absence of runtime errors in the private part of "
+                        & """" & Get_Name_String (Chars (E)) & """"
+                        & (if Sloc (E) > 0 then
+                             " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      --  For private and private extension declaration, check the default
-      --  expression of newly declared fields.
+         Current_Subp := E;
 
-      Why_Body :=
-        Compute_Default_Check
-          (Ada_Node         => E,
-           Ty               => Retysp (E),
-           Params           => Params,
-           At_Declaration   => True,
-           Include_Subtypes => True,
-           Decl_Node        => Decl);
+         Register_VC_Entity (E);
 
-      --  If the type has a DIC and this DIC should be checked at
-      --  declaration, check that there can be no runtime error in the DIC
-      --  and that default values of the type and all its subtypes respect
-      --  the DIC.
+         if Present (Priv_View) then
 
-      if Has_DIC (E) and then Needs_DIC_Check_At_Decl (E) then
-         Why_Body := Sequence
-           (New_Ignore (Ada_Node => E,
-                        Prog     => Why_Body),
-            Check_Type_With_DIC (Params => Params,
-                                 Ty     => E));
+            --  For private and private extension declaration,
+            --  check the default expression of newly declared fields.
+
+            Why_Body :=
+              Sequence
+                (Why_Body,
+                 New_Ignore
+                   (Prog => Compute_Default_Check
+                      (Ada_Node         => Priv_View,
+                       Ty               => Retysp (E),
+                       Params           => Params,
+                       At_Declaration   => True,
+                       Include_Subtypes => True,
+                       Decl_Node        =>
+                         Enclosing_Declaration (Priv_View))));
+
+            --  If the type has a DIC and this DIC should be checked at
+            --  declaration, check that there can be no runtime error
+            --  in the DIC and that default values of the type and all
+            --  its subtypes respect the DIC.
+
+            if Has_DIC (Priv_View)
+              and then Needs_DIC_Check_At_Decl (Priv_View)
+            then
+               Why_Body := Sequence
+                 (Why_Body,
+                  Check_Type_With_DIC (Params => Params,
+                                       Ty     => Priv_View));
+            end if;
+         end if;
+
+         --  Assume values of constants
+
+         Assume_Value_Of_Constants (Why_Body, E, Params);
+
+         Emit (Th,
+               Why.Gen.Binders.New_Function_Decl
+                 (Domain   => EW_Prog,
+                  Name     => Def_Name,
+                  Binders  => (1 => Unit_Param),
+                  Location => No_Location,
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Def      => +Why_Body));
+
+         Close_Theory (Th,
+                       Kind => VC_Generation_Theory,
+                       Defined_Entity => E);
       end if;
 
-      --  Assume values of constants
-
-      Assume_Value_Of_Constants (Why_Body, E, Params);
-
-      Emit (Th,
-            Why.Gen.Binders.New_Function_Decl
-              (Domain   => EW_Prog,
-               Name     => Def_Name,
-               Binders  => (1 => Unit_Param),
-               Location => No_Location,
-               Labels   => Symbol_Sets.Empty_Set,
-               Def      => +Why_Body));
-
-      Close_Theory (Th,
-                    Kind => VC_Generation_Theory,
-                    Defined_Entity => E);
    end Generate_VCs_For_Type;
 
    -----------------------
