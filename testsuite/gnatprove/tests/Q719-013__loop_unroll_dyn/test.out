@@ -16,7 +16,7 @@ loops_static.adb:26:60: info: index check proved (CVC5: 2 VC)
 loops_static.adb:30:07: medium: assertion might fail
 loops_static.adb:35:23: info: unrolling loop
 loops_static.adb:36:13: high: array index check might fail (e.g. when A'First = 0 and I = 1) [reason for check: value must be a valid index into the array]
-loops_static.adb:38:46: medium: overflow check might fail, cannot prove upper bound for I - A'first [reason for check: result of subtraction must fit in a 32-bits machine integer]
+loops_static.adb:38:46: medium: overflow check might fail, cannot prove upper bound for I - A'First [reason for check: result of subtraction must fit in a 32-bits machine integer]
 loops_static.adb:38:56: info: range check proved (CVC5: 4 VC)
 loops_static.adb:38:56: medium: overflow check might fail, cannot prove upper bound for I - A'First + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 loops_static.adb:41:46: medium: assertion might fail, cannot prove A (A'First + I) = 0 [possible fix: subprogram at loops_static.ads:6 should mention A in a precondition]

@@ -37,7 +37,7 @@ bad_assign_arr.adb:4:07: high: array index check might fail [CWE 119] (e.g. when
 bad_assign_arr.adb:5:09: high: array index check might fail [CWE 119] (e.g. when Y = 1) [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (Y <= 10 - 10) to subprogram at line 2]
 bad_assign_arr.adb:5:09: info: overflow check proved (CVC5: 2 VC)
 bad_assign_rec.adb:2:27: high: "X.D.A" is not initialized in "Bad_Assign_Rec" [CWE 457] [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.D.A" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-bad_assign_rec.adb:4:13: high: overflow check might fail [CWE 190], cannot prove lower bound for Y * 1000000 (e.g. when Y = -2148) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Y * 1000000 in Integer) to subprogram at line 2]
+bad_assign_rec.adb:4:13: high: overflow check might fail [CWE 190], cannot prove lower bound for Y * 1_000_000 (e.g. when Y = -2148) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Y * 1_000_000 in Integer) to subprogram at line 2]
 bad_assign_rec.adb:5:15: info: division check proved (CVC5: 1 VC)
 bad_call_assign.adb:3:28: warning: unused initial value of "X" [CWE 563]
 bad_call_search.adb:6:20: info: unrolling loop

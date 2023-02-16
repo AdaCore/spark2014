@@ -1,6 +1,6 @@
 p.adb:4:27: info: precondition proved (CVC5: 1 VC)
 p.adb:6:07: info: precondition proved (CVC5: 1 VC)
-p.ads:27:28: medium: postcondition might fail, cannot prove Positions (L) = Positions (L'old)
+p.ads:27:28: medium: postcondition might fail, cannot prove Positions (L) = Positions (L'Old)
 spark-containers-formal-ordered_sets.ads:63:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at p.ads:13
 spark-containers-formal-ordered_sets.ads:65:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at p.ads:13
 spark-containers-formal-ordered_sets.ads:67:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at p.ads:13

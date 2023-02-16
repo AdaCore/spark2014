@@ -54,7 +54,7 @@ exp.adb:116:17: info: overflow check proved (CVC5: 2 VC)
 exp.adb:117:18: info: overflow check proved (CVC5: 1 VC)
 exp.adb:118:18: info: overflow check proved (CVC5: 1 VC)
 exp.adb:119:18: info: overflow check proved (CVC5: 1 VC)
-exp.adb:127:17: medium: postcondition might fail, cannot prove X16 = X16'old
+exp.adb:127:17: medium: postcondition might fail, cannot prove X16 = X16'Old
 exp.adb:133:20: info: overflow check proved (CVC5: 1 VC)
 exp.adb:133:20: info: overflow check proved (CVC5: 2 VC)
 exp.adb:136:21: info: overflow check proved (CVC5: 1 VC)

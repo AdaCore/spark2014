@@ -34,8 +34,8 @@ test_bad_variant.adb:144:17: medium: subprogram variant might fail [possible exp
 test_bad_variant.adb:144:30: info: range check proved (CVC5: 2 VC)
 test_bad_variant.adb:153:17: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
 test_bad_variant.adb:153:31: info: range check proved (CVC5: 2 VC)
-test_bad_variant.adb:158:06: medium: subprogram variant might fail (e.g. when X = 0)
 test_bad_variant.adb:158:07: info: precondition proved (CVC5: 1 VC)
+test_bad_variant.adb:158:07: medium: subprogram variant might fail (e.g. when X = 0)
 test_bad_variant.adb:158:17: info: overflow check proved (CVC5: 2 VC)
 test_bad_variant.adb:160:58: info: overflow check proved (CVC5: 2 VC)
 test_bad_variant.adb:163:17: medium: subprogram variant might fail (e.g. when X = 0 and Y = 0) [possible fix: subprogram at line 162 should mention B and X and Y in a precondition]

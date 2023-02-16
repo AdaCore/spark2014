@@ -230,7 +230,7 @@ very_longs.adb:423:10: info: initialization of "Temporary_Digit" proved
 very_longs.adb:424:10: info: initialization of "R_Hat" proved
 very_longs.adb:426:64: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:426:68: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 418 should mention J and N in a precondition]
-very_longs.adb:426:106: medium: overflow check might fail, cannot prove upper bound for J + N [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 418 should mention J and N in a precondition]
+very_longs.adb:426:106: medium: overflow check might fail, cannot prove upper bound for (J + N) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 418 should mention J and N in a precondition]
 very_longs.adb:426:111: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 418 should mention J and N in a precondition]
 very_longs.adb:427:35: medium: divide by zero might fail [possible fix: subprogram at line 418 should mention N and V in a precondition]
 very_longs.adb:427:66: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 418 should mention N in a precondition]

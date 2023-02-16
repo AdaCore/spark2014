@@ -2,11 +2,11 @@ lp.adb:19:11: info: index check proved (CVC5: 2 VC)
 lp.adb:19:23: info: cannot unroll loop (too many loop iterations)
 lp.adb:20:40: info: index check proved (CVC5: 2 VC)
 lp.adb:21:22: info: index check proved (CVC5: 2 VC)
-lp.adb:35:45: medium: assertion might fail, cannot prove 2 ** K in U64'range
+lp.adb:35:45: medium: assertion might fail, cannot prove 2 ** K in U64'Range
 lp.adb:35:47: medium: overflow check might fail, cannot prove upper bound for 2 ** K [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 lp.adb:36:11: info: index check proved (CVC5: 4 VC)
 lp.adb:37:33: info: loop invariant initialization proved (CVC5: 2 VC)
-lp.adb:37:56: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove 2 ** K in U64'range
+lp.adb:37:56: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove 2 ** K in U64'Range
 lp.adb:37:58: medium: overflow check might fail, cannot prove lower bound for 2 ** K [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 lp.adb:38:33: info: loop invariant initialization proved (CVC5: 2 VC)
 lp.adb:38:33: medium: loop invariant might not be preserved by an arbitrary iteration

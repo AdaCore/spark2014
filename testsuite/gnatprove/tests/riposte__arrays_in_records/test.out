@@ -44,10 +44,10 @@ arrays_in_records.adb:226:11: info: flow dependencies proved
 arrays_in_records.adb:228:22: medium: postcondition might fail
 arrays_in_records.adb:230:07: info: initialization of "Tmp" proved
 arrays_in_records.adb:242:11: info: flow dependencies proved
-arrays_in_records.adb:243:22: high: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)))
+arrays_in_records.adb:243:22: high: postcondition might fail, cannot prove A /= A'Old (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)))
 arrays_in_records.adb:245:07: info: initialization of "Tmp" proved
 arrays_in_records.adb:254:11: info: flow dependencies proved
-arrays_in_records.adb:255:22: high: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)))
+arrays_in_records.adb:255:22: high: postcondition might fail, cannot prove A /= A'Old (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)))
 arrays_in_records.adb:257:07: info: initialization of "Tmp" proved
 arrays_in_records.adb:266:11: info: flow dependencies proved
 arrays_in_records.adb:267:22: high: postcondition might fail (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)))

@@ -53,7 +53,7 @@ stack_external_prover.ads:52:11: info: data dependencies proved
 stack_external_prover.ads:55:23: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
 stack_external_prover.ads:57:14: info: subprogram "Swap2" will terminate, terminating annotation has been proved
 stack_external_prover.ads:58:11: info: data dependencies proved
-stack_external_prover.ads:61:23: medium: postcondition might fail, cannot prove Count = Count'old [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
+stack_external_prover.ads:61:23: medium: postcondition might fail, cannot prove Count = Count'Old [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
 stack_external_prover.ads:62:62: info: range check proved (CVC5: 2 VC)
 stack_external_prover.ads:63:40: medium: range check might fail, cannot prove lower bound for Count - 1 [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
 stack_functional_spec.adb:20:04: info: initialization of "My_Stack" constituent of "State" proved
