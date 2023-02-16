@@ -17,7 +17,7 @@ main.adb:21:04: error: instantiation error at line 15
 
 main.adb:21:04: error: instantiation error at line 17
    17 |      Y.F.all := Y.F.all + 1;
-      |                 ^~~~~~~
+      |                 ^~~
   "T" is not allowed in SPARK (due to component of anonymous access type)
   violation of aspect SPARK_Mode at line 1
     1 |procedure Main with SPARK_Mode is
