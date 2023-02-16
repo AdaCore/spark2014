@@ -772,6 +772,49 @@ package body SPARK_Util.Types is
       return Count;
    end Count_Non_Inherited_Discriminants;
 
+   ----------------------------------
+   -- Find_View_For_Default_Checks --
+   ----------------------------------
+
+   function Find_View_For_Default_Checks
+     (E : Type_Kind_Id)
+      return Opt_Type_Kind_Id
+   is
+      Typ  : Entity_Id := Retysp (E);
+   begin
+
+      --  Types whose full view is not in Spark do not need specific checks
+      if Nkind (Parent (Typ)) in N_Private_Extension_Declaration
+                               | N_Private_Type_Declaration
+      then
+         return Empty;
+      end if;
+
+      loop
+         Typ := Partial_View (Typ);
+
+         --  Types with no private view do not need specific checks
+         if No (Typ) then
+            return Empty;
+         end if;
+
+         if Nkind (Parent (Typ)) in N_Private_Extension_Declaration
+                                  | N_Private_Type_Declaration
+         then
+            --  Types whose private view has unknown discriminants,
+            --  including the implicit tag for class-wide type,
+            --  cannot be default initialized
+            if Is_Class_Wide_Type (Typ) or else Has_Unknown_Discriminants (Typ)
+            then
+               return Empty;
+            else
+               return Typ;
+            end if;
+         end if;
+      end loop;
+
+   end Find_View_For_Default_Checks;
+
    -------------------------
    -- Find_Predicate_Item --
    -------------------------
@@ -1242,37 +1285,6 @@ package body SPARK_Util.Types is
      (Has_Own_DIC (E) and then Present (Partial_DIC_Procedure (E)));
    --  ??? has_own_dic returns true on a type with a DIC that defaults to True
    --  but no partial_DIC_procedure is created.
-
-   ----------------------------------
-   -- Needs_Default_Checks_At_Decl --
-   ----------------------------------
-
-   function Needs_Default_Checks_At_Decl (E : Type_Kind_Id) return Boolean is
-      Decl : constant Node_Id := Parent (E);
-
-   begin
-      --  If the type is not private, its default initialization will be
-      --  checked when used.
-
-      return Nkind (Decl) in N_Private_Extension_Declaration
-                           | N_Private_Type_Declaration
-
-        --  Classwide types cannot be default initialized
-
-        and then not Is_Class_Wide_Type (E)
-
-        --  To avoid duplicate checks, only check a partial view if its full
-        --  view does not need the check.
-
-        and then (if Is_Partial_View (E)
-                  then Nkind (Parent (Full_View (E))) not in
-                      N_Private_Extension_Declaration
-                    | N_Private_Type_Declaration)
-
-        --  Types with unknown discriminants cannot be default initialized
-
-        and then not Has_Unknown_Discriminants (E);
-   end Needs_Default_Checks_At_Decl;
 
    --------------------------------
    -- Might_Contain_Relaxed_Init --

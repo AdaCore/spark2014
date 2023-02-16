@@ -758,9 +758,10 @@ package body SPARK_Definition is
             end;
 
          elsif Is_Type (E)
-           and then Needs_Default_Checks_At_Decl (E)
-           and then Analysis_Requested (E, With_Inlined => True)
            and then Entity_In_SPARK (E)
+           and then E = Retysp (E)
+           and then Analysis_Requested (E, With_Inlined => True)
+           and then Needs_Default_Checks_At_Decl (E)
          then
 
             --  If the entity is a record or private type with fields hidden

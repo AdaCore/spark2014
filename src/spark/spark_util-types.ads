@@ -258,10 +258,20 @@ package SPARK_Util.Types is
    function Is_System_Address_Type (E : Type_Kind_Id) return Boolean;
    --  Returns True iff type E is System.Address
 
-   function Needs_Default_Checks_At_Decl (E : Type_Kind_Id) return Boolean;
+   function Find_View_For_Default_Checks
+     (E : Type_Kind_Id)
+      return Opt_Type_Kind_Id;
+   --  @param E type in Spark.
+   --  @return Empty, or if E needs a specific module to check its default
+   --    expression at declaration,
+   --    the view that should be used for default checks of E
+   --    (the least private view among private views)
+
+   function Needs_Default_Checks_At_Decl (E : Type_Kind_Id) return Boolean is
+     (Present (Find_View_For_Default_Checks (E)));
    --  @param E type
    --  @return True if E needs a specific module to check its default
-   --     expression at declaration.
+   --     expression at declaration
 
    function Is_Deep (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if the type passed as argument is deep (ie. it has

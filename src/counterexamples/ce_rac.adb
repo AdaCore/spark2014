@@ -2166,10 +2166,8 @@ package body CE_RAC is
                return (Res_Kind  => Res_Normal,
                        Res_Value => (Present => False));
 
-         when E_Task_Type
-            | E_Entry
-            | E_Private_Type
-            | E_Protected_Type
+         when E_Entry
+            | Type_Kind
          =>
             RAC_Unsupported ("RAC_Execute", E);
          when others =>

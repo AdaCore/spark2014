@@ -458,11 +458,6 @@ package body Gnat2Why.Driver is
             Generate_VCs_For_Package_Elaboration (E);
 
          when Type_Kind =>
-            if Entity_Spec_In_SPARK (Enclosing_Unit (E))
-              and then Needs_Default_Checks_At_Decl (E)
-            then
-               Generate_VCs_For_Type (E);
-            end if;
 
             if Ekind (E) in E_Protected_Type | E_Task_Type
               and then Entity_Spec_In_SPARK (E)
@@ -478,6 +473,10 @@ package body Gnat2Why.Driver is
                   when others =>
                      raise Program_Error;
                end case;
+            elsif Entity_Spec_In_SPARK (Enclosing_Unit (E))
+              and then E = Retysp (E)
+            then
+               Generate_VCs_For_Type (E);
             end if;
 
          when others =>
