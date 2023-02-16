@@ -1,8 +1,14 @@
+PROOF REGRESSION at main.adb:25: mark @ASSERT_PREMISE:PASS not found
+PROOF REGRESSION at main.adb:30: mark @ASSERT_PREMISE:PASS not found
+PROOF REGRESSION at main.adb:35: mark @ASSERT_PREMISE:PASS not found
 main.adb:8:26: info: data dependencies proved
+main.adb:9:16: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:12:16: info: function contract might not be available on calls from enclosing unit
 main.adb:15:49: warning: assuming "F" always returns
 main.adb:15:49: warning: assuming "F" has no effect on global items
 main.adb:15:49: warning: no Global contract available for "F"
 main.adb:15:49: warning: no returning annotation available for "F"
+main.adb:17:16: info: function contract might not be available on calls from enclosing unit
 main.adb:20:17: warning: assuming "F" always returns
 main.adb:20:17: warning: assuming "F" has no effect on global items
 main.adb:20:17: warning: no Global contract available for "F"
@@ -12,12 +18,12 @@ main.adb:23:10: warning: assuming "Rand" always returns
 main.adb:23:10: warning: assuming "Rand" has no effect on global items
 main.adb:23:10: warning: no Global contract available for "Rand"
 main.adb:23:10: warning: no returning annotation available for "Rand"
-main.adb:25:13: info: assertion premise proved (CVC5: 1 VC)
 main.adb:26:19: info: assertion step proved (CVC5: 1 VC)
 main.adb:26:19: warning: assuming "F" always returns
 main.adb:26:19: warning: assuming "F" has no effect on global items
 main.adb:26:19: warning: no Global contract available for "F"
 main.adb:26:19: warning: no returning annotation available for "F"
+main.adb:27:19: medium: assertion premise might fail, cannot prove Axiom_F_Pos (X)
 main.adb:27:19: warning: assuming "Axiom_F_Pos" always returns
 main.adb:27:19: warning: assuming "Axiom_F_Pos" has no effect on global items
 main.adb:27:19: warning: no Global contract available for "Axiom_F_Pos"
@@ -26,12 +32,12 @@ main.adb:28:13: warning: assuming "Rand" always returns
 main.adb:28:13: warning: assuming "Rand" has no effect on global items
 main.adb:28:13: warning: no Global contract available for "Rand"
 main.adb:28:13: warning: no returning annotation available for "Rand"
-main.adb:30:13: info: assertion premise proved (CVC5: 1 VC)
 main.adb:31:19: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
 main.adb:31:19: warning: assuming "F" always returns
 main.adb:31:19: warning: assuming "F" has no effect on global items
 main.adb:31:19: warning: no Global contract available for "F"
 main.adb:31:19: warning: no returning annotation available for "F"
+main.adb:32:19: medium: assertion premise might fail, cannot prove Axiom_F_Pos (X)
 main.adb:32:19: warning: assuming "Axiom_F_Pos" always returns
 main.adb:32:19: warning: assuming "Axiom_F_Pos" has no effect on global items
 main.adb:32:19: warning: no Global contract available for "Axiom_F_Pos"
@@ -40,7 +46,7 @@ main.adb:33:13: warning: assuming "Rand" always returns
 main.adb:33:13: warning: assuming "Rand" has no effect on global items
 main.adb:33:13: warning: no Global contract available for "Rand"
 main.adb:33:13: warning: no returning annotation available for "Rand"
-main.adb:35:13: info: assertion premise proved (CVC5: 1 VC)
+main.adb:35:13: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
 main.adb:36:19: info: assertion step proved (CVC5: 1 VC)
 main.adb:36:19: warning: assuming "F" always returns
 main.adb:36:19: warning: assuming "F" has no effect on global items

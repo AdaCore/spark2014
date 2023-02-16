@@ -9,6 +9,7 @@ very_longs-divide.adb:30:04: info: initialization of "V" proved
 very_longs-divide.adb:30:39: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:31:04: info: initialization of "Q_Hat" proved
 very_longs-divide.adb:32:04: info: initialization of "Current_Borrow" proved
+very_longs-divide.adb:36:13: info: implicit function contract might not be available on calls from enclosing unit
 very_longs-divide.adb:42:27: info: unrolling loop
 very_longs-divide.adb:43:24: warning: assuming "Shift_Left" always returns
 very_longs-divide.adb:43:24: warning: no returning annotation available for "Shift_Left"

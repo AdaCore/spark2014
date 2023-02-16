@@ -288,10 +288,16 @@ bits_manipulation-functions.ads:303:26: info: postcondition proved (CVC5: 1 VC; 
 bits_manipulation-functions.ads:303:26: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.ads:303:26: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.ads:303:26: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation_unsigned.ads:42:04: info: function contract might not be available on implicit recursive calls
+bits_manipulation_unsigned.ads:42:04: info: function contract might not be available on implicit recursive calls
 bits_manipulation_unsigned.ads:42:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:42:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at bits_manipulation-functions.adb:104
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at bits_manipulation-functions.adb:110
+bits_manipulation_unsigned.ads:42:04: info: in instantiation at bits_manipulation-functions.ads:299
+bits_manipulation_unsigned.ads:42:04: info: in instantiation at bits_manipulation-functions.ads:302
+bits_manipulation_unsigned.ads:42:04: info: in instantiation at line 20
+bits_manipulation_unsigned.ads:42:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:42:04: warning: assuming "Axiom" always returns
@@ -342,10 +348,16 @@ bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available
 bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Lemma6"
 bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Lemma8"
 bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Lemma8"
+bits_manipulation_unsigned.ads:43:04: info: function contract might not be available on implicit recursive calls
+bits_manipulation_unsigned.ads:43:04: info: function contract might not be available on implicit recursive calls
 bits_manipulation_unsigned.ads:43:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:43:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at bits_manipulation-functions.adb:104
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at bits_manipulation-functions.adb:110
+bits_manipulation_unsigned.ads:43:04: info: in instantiation at bits_manipulation-functions.ads:299
+bits_manipulation_unsigned.ads:43:04: info: in instantiation at bits_manipulation-functions.ads:302
+bits_manipulation_unsigned.ads:43:04: info: in instantiation at line 20
+bits_manipulation_unsigned.ads:43:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:43:04: warning: assuming "Axiom" always returns
@@ -396,10 +408,16 @@ bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available
 bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Lemma6"
 bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Lemma8"
 bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Lemma8"
+bits_manipulation_unsigned.ads:44:04: info: function contract might not be available on implicit recursive calls
+bits_manipulation_unsigned.ads:44:04: info: function contract might not be available on implicit recursive calls
 bits_manipulation_unsigned.ads:44:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:44:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at bits_manipulation-functions.adb:104
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at bits_manipulation-functions.adb:110
+bits_manipulation_unsigned.ads:44:04: info: in instantiation at bits_manipulation-functions.ads:299
+bits_manipulation_unsigned.ads:44:04: info: in instantiation at bits_manipulation-functions.ads:302
+bits_manipulation_unsigned.ads:44:04: info: in instantiation at line 20
+bits_manipulation_unsigned.ads:44:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:44:04: warning: assuming "Axiom" always returns
@@ -450,10 +468,16 @@ bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available
 bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Lemma6"
 bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Lemma8"
 bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Lemma8"
+bits_manipulation_unsigned.ads:45:04: info: function contract might not be available on implicit recursive calls
+bits_manipulation_unsigned.ads:45:04: info: function contract might not be available on implicit recursive calls
 bits_manipulation_unsigned.ads:45:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:45:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at bits_manipulation-functions.adb:104
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at bits_manipulation-functions.adb:110
+bits_manipulation_unsigned.ads:45:04: info: in instantiation at bits_manipulation-functions.ads:299
+bits_manipulation_unsigned.ads:45:04: info: in instantiation at bits_manipulation-functions.ads:302
+bits_manipulation_unsigned.ads:45:04: info: in instantiation at line 20
+bits_manipulation_unsigned.ads:45:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:45:04: warning: assuming "Axiom" always returns

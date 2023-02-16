@@ -26,6 +26,7 @@ hermes-der-decode.adb:90:11: info: flow dependencies proved
 hermes-der-decode.adb:92:10: info: initialization of "Tag_Value" proved
 hermes-der-decode.adb:95:30: info: range check proved (CVC5: 2 VC)
 hermes-der-decode.adb:119:07: info: initialization of "Length_Of_Length" proved
+hermes-der-decode.adb:121:16: info: implicit function contract might not be available on calls from enclosing unit
 hermes-der-decode.adb:124:11: info: data dependencies proved
 hermes-der-decode.adb:126:29: high: overflow check might fail, cannot prove upper bound for (Starting + (Octet_Count - 1)) (e.g. when Octet_Count = Length_Of_Length_Type'Last and Starting = 2147483522) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 hermes-der-decode.adb:127:51: info: index check proved (CVC5: 2 VC)

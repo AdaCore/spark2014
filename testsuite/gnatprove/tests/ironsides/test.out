@@ -406,6 +406,7 @@ parser_utilities.adb:824:22: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:824:30: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:831:46: info: range check proved (CVC5: 1 VC)
 parser_utilities.adb:851:07: info: initialization of "CurrentChar" proved
+parser_utilities.adb:853:16: info: function contract might not be available on calls from enclosing unit
 parser_utilities.adb:855:22: info: postcondition proved (CVC5: 2 VC)
 parser_utilities.adb:858:10: info: initialization of "C" proved
 parser_utilities.adb:859:10: info: initialization of "RetVal" proved

@@ -271,6 +271,8 @@ spark-containers-parameter_checks.ads:124:19: info: postcondition proved (CVC5: 
 spark-containers-parameter_checks.ads:262:09: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_maps.ads:176, in instantiation at test.ads:12
 spark-containers-parameter_checks.ads:264:19: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:176, in instantiation at test.ads:12 [possible fix: you should consider adding a postcondition to function SBHash or turning it into an expression function]
 spark-containers-parameter_checks.ads:264:28: medium: call to "SBHash" might be nonterminating, terminating annotation on "Hash_Equivalent" could be incorrect, in instantiation at spark-containers-formal-hashed_maps.ads:176, in instantiation at test.ads:12
+test.ads:6:04: info: implicit function contract might not be available on calls from enclosing unit
+test.ads:6:04: info: in instantiation at a-strbou.ads:86
 test.ads:6:04: warning: in instantiation at a-strbou.ads:2569
 test.ads:6:04: warning: pragma "Stream_Convert" ignored (not yet supported)
 test.ads:12:04: info: implicit function contract not available for proof ("SBHash" might not return)

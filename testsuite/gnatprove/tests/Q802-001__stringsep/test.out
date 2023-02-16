@@ -104,6 +104,8 @@ a-strbou.ads:2559:61: info: range check proved (CVC5: 2 VC), in instantiation at
 a-strbou.ads:2566:25: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
 a-strbou.ads:2573:31: info: discriminant check proved (CVC5: 1 VC), in instantiation at sb.ads:2
 a-strbou.ads:2573:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at sb.ads:2
+sb.ads:2:01: info: implicit function contract might not be available on calls from enclosing unit
+sb.ads:2:01: info: in instantiation at a-strbou.ads:86
 sb.ads:2:01: warning: in instantiation at a-strbou.ads:2569
 sb.ads:2:01: warning: pragma "STREAM_CONVERT" ignored (not yet supported)
 spark-containers-formal-hashed_maps.ads:66:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test.ads:14

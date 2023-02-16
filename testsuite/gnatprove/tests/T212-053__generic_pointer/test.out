@@ -2,13 +2,67 @@ rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations)
 rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations)
 rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations)
 rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations)
+rflx-tlv-message.ads:5:01: info: function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: function contract might not be available on implicit recursive calls
+rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on implicit recursive calls
+rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on implicit recursive calls
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:105
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:105
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:116
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:116
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:130
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:130
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:196
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:196
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:28
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:28
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:33
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:33
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:48
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:48
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:62
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:62
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:258
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:268
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:270
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:272
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:274
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:274
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:274
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:274
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:274
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:275
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:275
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:275
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:275
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:275
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:416
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:418
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:420
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:423
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:423
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:423
 rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
 rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns

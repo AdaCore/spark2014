@@ -65,6 +65,7 @@ container.ads:16:20: warning: unused variable "C"
 container.ads:18:13: info: subprogram "Has_Element" will terminate, terminating annotation has been proved
 container.ads:18:26: warning: unused variable "C"
 container.ads:20:13: info: subprogram "Next" will terminate, terminating annotation has been proved
+container.ads:23:13: info: implicit function contract might not be available on calls from enclosing unit
 container.ads:23:13: info: subprogram "Element" will terminate, terminating annotation has been proved
 container.ads:33:04: info: initialization of "B" proved
 file_io.ads:50:33: info: implicit function contract not available for proof ("Size" might not return)

@@ -63,6 +63,7 @@ p.ads:7:28: info: initialization of "Found" proved
 p.ads:20:28: info: initialization of "Result" proved
 p.ads:25:28: info: initialization of "Result" proved
 p.ads:26:42: info: index check proved (CVC5: 2 VC)
+p.ads:30:13: info: implicit function contract might not be available on implicit recursive calls
 p.ads:35:20: info: initialization of "A" proved
 p.ads:43:06: info: flow dependencies proved
 p.ads:47:06: info: flow dependencies proved
@@ -99,6 +100,7 @@ stacks.adb:8:22: info: range check proved (CVC5: 2 VC)
 stacks.adb:9:19: info: index check proved (CVC5: 2 VC)
 stacks.ads:8:14: info: postcondition proved (CVC5: 1 VC)
 stacks.ads:27:52: info: index check proved (CVC5: 2 VC)
+abstraction_ext.ads:2:13: info: implicit function contract might not be available on calls from enclosing unit
 communication.adb:5:15: medium: length check might fail (e.g. when Address'First = 1 and Address'Last = 1 and Port = 0) [reason for check: array must be of the appropriate length] [possible fix: subprogram at communication.ads:9 should mention Address in a precondition]
 communication.adb:19:25: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:20:32: medium: overflow check might fail, cannot prove upper bound for B.First + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]

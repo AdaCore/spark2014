@@ -156,6 +156,7 @@ aco-math-very_longs.adb:317:42: info: range check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:318:07: info: initialization of "J" proved
 aco-math-very_longs.adb:319:07: info: initialization of "Q_Hat" proved
 aco-math-very_longs.adb:320:07: info: initialization of "Current_Borrow" proved
+aco-math-very_longs.adb:323:16: info: function contract might not be available on calls from enclosing unit
 aco-math-very_longs.adb:326:19: info: postcondition proved (CVC5: 2 VC)
 aco-math-very_longs.adb:326:45: medium: array index check might fail [reason for check: value must be a valid index into the array]
 aco-math-very_longs.adb:327:47: medium: overflow check might fail, cannot prove upper bound for Get_MSD'Result + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
@@ -170,6 +171,7 @@ aco-math-very_longs.adb:337:35: info: loop invariant initialization proved (CVC5
 aco-math-very_longs.adb:337:35: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 aco-math-very_longs.adb:337:85: info: overflow check proved (CVC5: 4 VC)
 aco-math-very_longs.adb:337:116: info: index check proved (CVC5: 4 VC)
+aco-math-very_longs.adb:343:16: info: implicit function contract might not be available on calls from enclosing unit
 aco-math-very_longs.adb:350:30: info: unrolling loop
 aco-math-very_longs.adb:351:43: warning: assuming "Shift_Left" always returns
 aco-math-very_longs.adb:351:43: warning: no returning annotation available for "Shift_Left"

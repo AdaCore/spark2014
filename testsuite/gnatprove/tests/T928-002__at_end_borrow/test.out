@@ -38,15 +38,16 @@ spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" w
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_borrow.adb:34
 spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_borrow.adb:34
 test_borrow.adb:15:92: info: dynamic accessibility check proved (Trivial)
+test_borrow.adb:18:13: info: implicit function contract might not be available on calls from enclosing unit
 test_borrow.adb:18:86: info: dynamic accessibility check proved (Trivial)
-test_borrow.adb:22:13: info: implicit function contract might not be available on recursive calls
+test_borrow.adb:22:13: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
 test_borrow.adb:23:07: medium: "Length" is recursive, terminating annotation could be incorrect
 test_borrow.adb:23:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_borrow.adb:23:45: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:23:54: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:23:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_borrow.adb:23:60: info: predicate check proved (Trivial: 1 VC)
-test_borrow.adb:27:13: info: implicit function contract might not be available on recursive calls
+test_borrow.adb:27:13: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
 test_borrow.adb:28:24: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:28:27: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:28:36: info: precondition proved (CVC5: 2 VC)
@@ -55,6 +56,7 @@ test_borrow.adb:28:42: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:28:50: info: range check proved (CVC5: 2 VC)
 test_borrow.adb:30:15: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:31:41: info: predicate check proved (Trivial: 1 VC)
+test_borrow.adb:38:13: info: function contract might not be available on calls from enclosing unit
 test_borrow.adb:42:09: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:50:16: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:51:41: info: predicate check proved (Trivial: 1 VC)
@@ -248,7 +250,7 @@ test_borrow.adb:157:23: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:157:25: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:157:27: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:157:30: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:158:19: info: assertion proved (Z3: 1 VC)
+test_borrow.adb:158:19: medium: assertion might fail
 test_borrow.adb:158:21: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:158:23: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:158:25: info: pointer dereference check proved (Z3: 1 VC)

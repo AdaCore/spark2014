@@ -146,6 +146,7 @@ very_longs.adb:361:07: info: initialization of "V" proved
 very_longs.adb:361:42: info: range check proved (CVC5: 2 VC)
 very_longs.adb:362:07: info: initialization of "Q_Hat" proved
 very_longs.adb:363:07: info: initialization of "Current_Borrow" proved
+very_longs.adb:367:16: info: implicit function contract might not be available on calls from enclosing unit
 very_longs.adb:373:30: info: unrolling loop
 very_longs.adb:383:33: info: initialization of "Result" proved
 very_longs.adb:385:11: info: flow dependencies proved

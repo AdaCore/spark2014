@@ -18,6 +18,7 @@ find_map.adb:20:13: info: loop invariant preservation proved (Trivial: 1 VC; Z3:
 find_map.adb:22:21: info: precondition proved (CVC5: 2 VC)
 find_map.adb:23:36: info: index check proved (CVC5: 4 VC)
 find_map.adb:23:36: info: precondition proved (CVC5: 2 VC)
+find_map.adb:36:16: info: function contract might not be available on calls from enclosing unit
 find_map.adb:37:13: info: precondition proved (CVC5: 1 VC)
 find_map.adb:37:41: info: precondition proved (CVC5: 1 VC)
 find_map.adb:40:34: info: precondition proved (CVC5: 1 VC)
@@ -41,6 +42,7 @@ find_map.ads:30:59: info: index check proved (CVC5: 2 VC)
 find_map.ads:33:14: info: precondition proved (CVC5: 1 VC)
 find_map.ads:34:17: info: index check proved (CVC5: 2 VC)
 find_map.ads:34:17: info: precondition proved (CVC5: 1 VC)
+find_map.ads:36:13: info: function contract might not be available on implicit recursive calls
 find_map.ads:39:14: info: postcondition proved (CVC5: 4 VC)
 find_map.ads:41:25: info: index check proved (CVC5: 2 VC)
 find_map.ads:43:30: info: index check proved (CVC5: 2 VC)
