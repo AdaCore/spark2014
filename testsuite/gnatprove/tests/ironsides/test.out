@@ -1350,7 +1350,7 @@ zone_file_parser.adb:773:68: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:782:86: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:782:92: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:782:96: info: division check proved (CVC5: 1 VC)
-zone_file_parser.adb:802:16: medium: assertion might fail, cannot prove BlockLengthMap (J) >= RR_Type.Nsec_Record_Type.blockLengthValue'first
+zone_file_parser.adb:802:16: medium: assertion might fail, cannot prove BlockLengthMap (J) >= RR_Type.Nsec_Record_Type.blockLengthValue'First
 zone_file_parser.adb:812:16: info: loop invariant initialization proved (CVC5: 6 VC)
 zone_file_parser.adb:812:16: info: loop invariant preservation proved (CVC5: 6 VC)
 zone_file_parser.adb:824:49: info: range check proved (CVC5: 2 VC)
@@ -1372,7 +1372,7 @@ zone_file_parser.adb:884:91: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:887:67: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:890:22: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:891:24: medium: array index check might fail [reason for check: value must be a valid index into the array]
-zone_file_parser.adb:891:55: medium: range check might fail, cannot prove lower bound for 7-BitNumber [reason for check: exponent value must fit in type Natural] [possible fix: loop invariant at line 854 should mention BitNumber]
+zone_file_parser.adb:891:55: medium: range check might fail, cannot prove lower bound for (7-BitNumber) [reason for check: exponent value must fit in type Natural] [possible fix: loop invariant at line 854 should mention BitNumber]
 zone_file_parser.adb:903:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:904:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:907:23: info: precondition proved (CVC5: 1 VC)
@@ -1469,7 +1469,7 @@ zone_file_parser.adb:1333:72: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1348:44: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1352:46: info: loop invariant initialization proved (CVC5: 3 VC)
 zone_file_parser.adb:1352:46: info: loop invariant preservation proved (CVC5: 3 VC)
-zone_file_parser.adb:1356:61: medium: overflow check might fail, cannot prove lower bound for I + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+zone_file_parser.adb:1356:61: medium: overflow check might fail, cannot prove lower bound for (I + 1) [reason for check: result of addition must fit in a 32-bits machine integer]
 zone_file_parser.adb:1356:66: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
 zone_file_parser.adb:1356:66: medium: overflow check might fail, cannot prove lower bound for (I + 1) - BegIdx [reason for check: result of subtraction must fit in a 32-bits machine integer]
 zone_file_parser.adb:1359:44: info: range check proved (CVC5: 2 VC)

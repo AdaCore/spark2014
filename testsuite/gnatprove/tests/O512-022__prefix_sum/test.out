@@ -225,6 +225,6 @@ prefixsum_general.ads:8:56: info: division check proved (CVC5: 1 VC)
 prefixsum_general.ads:10:13: info: function contract might not be available on implicit recursive calls
 prefixsum_general.ads:13:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 prefixsum_general.ads:15:41: info: initialization of "Output_Space" proved
-prefixsum_general.ads:18:17: medium: postcondition might fail, cannot prove A (A'Last) = Summation (A'Old, 0, A'last)
+prefixsum_general.ads:18:17: medium: postcondition might fail, cannot prove A (A'Last) = Summation (A'Old, 0, A'Last)
 prefixsum_general.ads:18:30: info: precondition proved (CVC5: 1 VC)
 prefixsum_general.ads:21:07: warning: unused variable "Ghost"
