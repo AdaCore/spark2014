@@ -728,12 +728,6 @@ procedure SPARK_Report is
 
    procedure Handle_SPARK_File (Fn : String) is
 
-      function Get_SPARK_Status (Status : String) return SPARK_Mode_Status
-      is (if Status = "all" then All_In_SPARK
-          elsif Status = "spec" then Spec_Only_In_SPARK
-          else Not_In_SPARK);
-      --  Returns the SPARK Mode given the "spark" entry string
-
       Basename    : constant String := Ada.Directories.Base_Name (Fn);
       Unit        : constant Unit_Type := Mk_Unit (Basename);
 
@@ -745,8 +739,7 @@ procedure SPARK_Report is
       -------------------------
 
       procedure Handle_SPARK_Status (Name : UTF8_String; Value : JSON_Value) is
-         SPARK_Status : constant SPARK_Mode_Status :=
-           Get_SPARK_Status (Get (Value));
+         SPARK_Status : constant SPARK_Mode_Status := From_JSON (Value);
       begin
          Add_SPARK_Status
            (Unit         => Unit,

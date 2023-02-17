@@ -989,6 +989,16 @@ package body VC_Kinds is
       return Res;
    end From_JSON;
 
+   function From_JSON (V : JSON_Value) return SPARK_Mode_Status is
+      S : constant String := Get (V);
+   begin
+      return
+        (if S = "all" then All_In_SPARK
+         elsif S = "spec" then Spec_Only_In_SPARK
+         elsif S = "no" then Not_In_SPARK
+         else raise Program_Error);
+   end From_JSON;
+
    ----------------------
    -- From_JSON_Labels --
    ----------------------
@@ -1616,6 +1626,16 @@ package body VC_Kinds is
          Append (Result, To_JSON (Elt));
       end loop;
       return Create (Result);
+   end To_JSON;
+
+   function To_JSON (Status : SPARK_Mode_Status) return JSON_Value is
+      S : constant String :=
+        (case Status is
+            when All_In_SPARK => "all",
+            when Spec_Only_In_SPARK => "spec",
+            when Not_In_SPARK => "no");
+   begin
+      return Create (S);
    end To_JSON;
 
    ---------------

@@ -792,6 +792,11 @@ package VC_Kinds is
    SPARK_Suffix : constant String := "spark";
    --  Extension of the files where spark_report expects gnat2why results
 
+   type SPARK_Mode_Status is
+     (All_In_SPARK,       --  Spec (and if applicable, body) are in SPARK
+      Spec_Only_In_SPARK, --  Only spec is in SPARK, body is not in SPARK
+      Not_In_SPARK);      --  Not in SPARK
+
    ------------
    -- Labels --
    ------------
@@ -1083,6 +1088,7 @@ package VC_Kinds is
    function From_JSON (V : JSON_Value) return Prover_Stat_Maps.Map;
    function From_JSON (V : JSON_Value) return Prover_Category;
    function From_JSON (V : JSON_Value) return Cntexample_File_Maps.Map;
+   function From_JSON (V : JSON_Value) return SPARK_Mode_Status;
 
    function From_JSON_Labels (Ar : JSON_Array) return S_String_List.List;
 
@@ -1090,4 +1096,5 @@ package VC_Kinds is
    function To_JSON (P : Prover_Category) return JSON_Value;
    function To_JSON (F : Cntexample_File_Maps.Map) return JSON_Value;
    function To_JSON (V : Cntexmp_Value) return JSON_Value;
+   function To_JSON (Status : SPARK_Mode_Status) return JSON_Value;
 end VC_Kinds;

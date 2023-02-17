@@ -34,11 +34,6 @@ with VC_Kinds;              use VC_Kinds;
 
 package Report_Database is
 
-   type SPARK_Mode_Status is
-     (All_In_SPARK,       --  Spec (and if applicable, body) are in SPARK
-      Spec_Only_In_SPARK, --  Only spec is in SPARK, body is not in SPARK
-      Not_In_SPARK);      --  Not in SPARK
-
    type Suppressed_Check is record
       Justif_Msg : Unbounded_String;
       Kind       : Unbounded_String;

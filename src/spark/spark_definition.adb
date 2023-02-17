@@ -744,17 +744,18 @@ package body SPARK_Definition is
                V            : constant Subp_Type :=
                  Entity_To_Subp_Assumption (E);
 
-               SPARK_Status : constant String :=
+               SPARK_Status : constant SPARK_Mode_Status :=
                  (if Entity_Body_In_SPARK (E)
-                  then "all"
+                  then All_In_SPARK
                   elsif Entity_Spec_In_SPARK (E)
                   then
                     (if Ekind (E) = E_Package and then No (Package_Body (E))
-                     then "all"
-                     else "spec")
-                  else "no");
+                     then All_In_SPARK
+                     else Spec_Only_In_SPARK)
+                  else Not_In_SPARK);
             begin
-               Set_Field (SPARK_Status_JSON, To_Key (V), SPARK_Status);
+               Set_Field (SPARK_Status_JSON, To_Key (V),
+                          To_JSON (SPARK_Status));
             end;
 
          elsif Is_Type (E)
@@ -770,15 +771,16 @@ package body SPARK_Definition is
             declare
                V            : constant Subp_Type :=
                  Entity_To_Subp_Assumption (E);
-               SPARK_Status : constant String :=
+               SPARK_Status : constant SPARK_Mode_Status :=
                  (if
                     (Has_Record_Type (E)
                      or else Has_Incomplete_Or_Private_Type (E))
                     and then Has_Private_Fields (E)
-                  then "no"
-                  else "all");
+                  then Not_In_SPARK
+                  else All_In_SPARK);
             begin
-               Set_Field (SPARK_Status_JSON, To_Key (V), SPARK_Status);
+               Set_Field (SPARK_Status_JSON, To_Key (V),
+                          To_JSON (SPARK_Status));
             end;
          end if;
       end loop;
