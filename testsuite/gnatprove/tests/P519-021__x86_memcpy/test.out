@@ -79,7 +79,7 @@ memcpy.adb:105:19: warning: assuming "WriteMem64" always returns
 memcpy.adb:105:19: warning: no returning annotation available for "WriteMem64"
 memcpy.adb:108:19: warning: assuming "WriteMem64" always returns
 memcpy.adb:108:19: warning: no returning annotation available for "WriteMem64"
-memcpy.adb:110:16: medium: precondition might fail, cannot prove X86.ReadMem64(X86.RBP - 8) = 0 [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
+memcpy.adb:110:16: medium: precondition might fail, cannot prove (X86.ReadMem64(X86.RBP - 8) = 0) [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:110:16: warning: "RAX" is set by "ZSTLoopProc_400605" but not used after the call
 memcpy.adb:116:31: warning: assuming "ReadMem64" always returns
 memcpy.adb:116:31: warning: no returning annotation available for "ReadMem64"
@@ -91,14 +91,14 @@ memcpy.adb:125:19: warning: assuming "WriteMem64" always returns
 memcpy.adb:125:19: warning: no returning annotation available for "WriteMem64"
 memcpy.adb:128:19: warning: assuming "WriteMem64" always returns
 memcpy.adb:128:19: warning: no returning annotation available for "WriteMem64"
-memcpy.adb:131:16: medium: precondition might fail, cannot prove X86.ReadMem64(X86.RBP - 8) = 0 [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
+memcpy.adb:131:16: medium: precondition might fail, cannot prove (X86.ReadMem64(X86.RBP - 8) = 0) [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:131:16: warning: "RAX" is set by "ZSTLoopProc_40064f" but not used after the call
 memcpy.adb:142:22: warning: assuming "ReadMem64" always returns
 memcpy.adb:142:22: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:145:22: warning: assuming "ReadMem64" always returns
 memcpy.adb:145:22: warning: no returning annotation available for "ReadMem64"
 memcpy.adb:151:21: info: assertion proved (CVC5: 1 VC)
-memcpy.adb:152:21: medium: assertion might fail, cannot prove X86.Memory(SaveStackPtr) = SaveMem(SaveStackPtr)
+memcpy.adb:152:21: medium: assertion might fail, cannot prove (X86.Memory(SaveStackPtr) = SaveMem(SaveStackPtr))
 memcpy.adb:160:21: medium: assertion might fail [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:162:21: warning: assuming "InRange64" always returns
 memcpy.adb:162:21: warning: assuming "InRange64" has no effect on global items
@@ -108,7 +108,7 @@ memcpy.adb:162:66: warning: assuming "InSafeRegion64" always returns
 memcpy.adb:162:66: warning: assuming "InSafeRegion64" has no effect on global items
 memcpy.adb:162:66: warning: no Global contract available for "InSafeRegion64"
 memcpy.adb:162:66: warning: no returning annotation available for "InSafeRegion64"
-memcpy.adb:164:12: medium: assertion might fail, cannot prove X86.Memory(i) = SaveMem(i)
+memcpy.adb:164:12: medium: assertion might fail, cannot prove (X86.Memory(i) = SaveMem(i))
 memcpy.adb:171:39: info: range check proved (CVC5: 1 VC)
 memcpy.adb:171:39: warning: assuming "ReadMem64" always returns
 memcpy.adb:171:39: warning: no returning annotation available for "ReadMem64"
@@ -142,7 +142,7 @@ memcpy.adb:212:45: warning: assuming "InRange64" always returns
 memcpy.adb:212:45: warning: assuming "InRange64" has no effect on global items
 memcpy.adb:212:45: warning: no Global contract available for "InRange64"
 memcpy.adb:212:45: warning: no returning annotation available for "InRange64"
-memcpy.adb:213:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+memcpy.adb:213:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 memcpy.adb:216:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:216:32: medium: loop invariant might not be preserved by an arbitrary iteration
 memcpy.adb:216:50: warning: assuming "ReadMem64" always returns
@@ -246,7 +246,7 @@ memcpy.adb:311:42: warning: assuming "InRange64" always returns
 memcpy.adb:311:42: warning: assuming "InRange64" has no effect on global items
 memcpy.adb:311:42: warning: no Global contract available for "InRange64"
 memcpy.adb:311:42: warning: no returning annotation available for "InRange64"
-memcpy.adb:312:36: medium: assertion might fail, cannot prove X86.Memory(i) = saved_mem(i)
+memcpy.adb:312:36: medium: assertion might fail, cannot prove (X86.Memory(i) = saved_mem(i))
 memcpy.adb:314:21: medium: assertion might fail
 memcpy.adb:314:39: warning: assuming "ReadMem64" always returns
 memcpy.adb:314:39: warning: no returning annotation available for "ReadMem64"
@@ -305,7 +305,7 @@ memcpy.adb:358:45: warning: assuming "InRange64" always returns
 memcpy.adb:358:45: warning: assuming "InRange64" has no effect on global items
 memcpy.adb:358:45: warning: no Global contract available for "InRange64"
 memcpy.adb:358:45: warning: no returning annotation available for "InRange64"
-memcpy.adb:359:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+memcpy.adb:359:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 memcpy.adb:362:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:362:32: medium: loop invariant might not be preserved by an arbitrary iteration
 memcpy.adb:362:46: warning: assuming "ReadMem64" always returns
@@ -376,7 +376,7 @@ memcpy.adb:446:42: warning: assuming "InRange64" always returns
 memcpy.adb:446:42: warning: assuming "InRange64" has no effect on global items
 memcpy.adb:446:42: warning: no Global contract available for "InRange64"
 memcpy.adb:446:42: warning: no returning annotation available for "InRange64"
-memcpy.adb:447:36: medium: assertion might fail, cannot prove X86.Memory(i) = saved_mem(i)
+memcpy.adb:447:36: medium: assertion might fail, cannot prove (X86.Memory(i) = saved_mem(i))
 memcpy.adb:449:21: medium: assertion might fail
 memcpy.adb:449:35: warning: assuming "ReadMem64" always returns
 memcpy.adb:449:35: warning: no returning annotation available for "ReadMem64"
@@ -538,7 +538,7 @@ memcpy.ads:46:70: warning: assuming "InSafeRegion64" always returns
 memcpy.ads:46:70: warning: assuming "InSafeRegion64" has no effect on global items
 memcpy.ads:46:70: warning: no Global contract available for "InSafeRegion64"
 memcpy.ads:46:70: warning: no returning annotation available for "InSafeRegion64"
-memcpy.ads:48:12: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+memcpy.ads:48:12: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 memcpy.ads:52:06: info: data dependencies proved
 memcpy.ads:53:31: info: initialization of "RAX" proved
 memcpy.ads:53:40: info: initialization of "CarryFlag" proved
@@ -571,7 +571,7 @@ memcpy.ads:62:32: warning: assuming "InRange64" always returns
 memcpy.ads:62:32: warning: assuming "InRange64" has no effect on global items
 memcpy.ads:62:32: warning: no Global contract available for "InRange64"
 memcpy.ads:62:32: warning: no returning annotation available for "InRange64"
-memcpy.ads:63:22: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+memcpy.ads:63:22: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 memcpy.ads:86:09: warning: assuming "ReadMem64Ghost" always returns
 memcpy.ads:86:09: warning: no returning annotation available for "ReadMem64Ghost"
 memcpy.ads:86:54: warning: assuming "ReadMem64Ghost" always returns
@@ -609,7 +609,7 @@ memcpy.ads:122:32: warning: assuming "InRange64" always returns
 memcpy.ads:122:32: warning: assuming "InRange64" has no effect on global items
 memcpy.ads:122:32: warning: no Global contract available for "InRange64"
 memcpy.ads:122:32: warning: no returning annotation available for "InRange64"
-memcpy.ads:123:22: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+memcpy.ads:123:22: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 memcpy.ads:144:09: warning: assuming "ReadMem64Ghost" always returns
 memcpy.ads:144:09: warning: no returning annotation available for "ReadMem64Ghost"
 memcpy.ads:144:54: warning: assuming "ReadMem64Ghost" always returns
@@ -619,7 +619,7 @@ memcpy.ads:170:52: warning: unused initial value of "SignFlag"
 memcpy.ads:170:66: warning: unused initial value of "ZeroFlag"
 memcpy.ads:171:44: warning: unused initial value of "RCX"
 memcpy.ads:171:54: warning: unused initial value of "RDX"
-memcpy.ads:178:09: medium: postcondition might fail, cannot prove X86.Memory(X86.RSP'Old) = X86.Memory'Old(X86.RSP'old)
+memcpy.ads:178:09: medium: postcondition might fail, cannot prove (X86.Memory(X86.RSP'Old) = X86.Memory'Old(X86.RSP'Old))
 x86.ads:79:40: warning: assuming "InRange64" always returns
 x86.ads:79:40: warning: assuming "InRange64" has no effect on global items
 x86.ads:79:40: warning: no Global contract available for "InRange64"

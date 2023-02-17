@@ -438,7 +438,7 @@ red_black_trees.adb:336:80: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:337:19: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:344:33: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:349:08: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:349:08: medium: postcondition might fail, cannot prove Size (T) = Size (T)'old
+red_black_trees.adb:349:08: medium: postcondition might fail, cannot prove Size (T) = Size (T)'Old
 red_black_trees.adb:349:27: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:355:11: medium: pointer dereference check might fail
 red_black_trees.adb:355:21: info: pointer dereference check proved (CVC5: 1 VC)
@@ -541,7 +541,7 @@ red_black_trees.adb:393:55: info: predicate check proved (CVC5: 1 VC; Trivial: 1
 red_black_trees.adb:393:57: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:398:33: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:403:08: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:403:08: medium: postcondition might fail, cannot prove Size (T) = Size (T)'old
+red_black_trees.adb:403:08: medium: postcondition might fail, cannot prove Size (T) = Size (T)'Old
 red_black_trees.adb:403:27: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:409:11: medium: pointer dereference check might fail
 red_black_trees.adb:409:21: info: pointer dereference check proved (CVC5: 1 VC)
@@ -660,7 +660,7 @@ red_black_trees.adb:476:46: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:477:41: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:477:46: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:482:08: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:482:08: medium: postcondition might fail, cannot prove Size (T) = Size (T)'old
+red_black_trees.adb:482:08: medium: postcondition might fail, cannot prove Size (T) = Size (T)'Old
 red_black_trees.adb:482:27: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:488:10: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:488:37: info: predicate check proved (Trivial: 1 VC)

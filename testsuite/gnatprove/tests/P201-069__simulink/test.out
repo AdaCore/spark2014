@@ -97,7 +97,7 @@ simulink_functions.adb:236:36: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:236:47: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:236:52: high: overflow check might fail, cannot prove lower bound for ((-1) * Quotient - 1) * Right (e.g. when Quotient = 3 and Right = 40) [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:64 should mention Left and Right in a precondition]
 simulink_functions.adb:239:25: info: overflow check proved (CVC5: 2 VC)
-simulink_functions.adb:239:33: high: overflow check might fail, cannot prove upper bound for Left / Right (e.g. when Left = Integer_8'First and Right = -1) [reason for check: result of division must fit in a 8-bits machine integer] [possible fix: add precondition (Left / Right in -128 .. 127) to subprogram at simulink_functions.ads:64]
+simulink_functions.adb:239:33: high: overflow check might fail, cannot prove upper bound for (Left / Right) (e.g. when Left = Integer_8'First and Right = -1) [reason for check: result of division must fit in a 8-bits machine integer] [possible fix: add precondition ((Left / Right) in -128 .. 127) to subprogram at simulink_functions.ads:64]
 simulink_functions.adb:239:33: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:239:42: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:255:41: high: overflow check might fail, cannot prove upper bound for abs (Left) (e.g. when Left = Integer_16'First) [reason for check: result of absolute value must fit in a 16-bits machine integer] [possible fix: add precondition (abs (Left) in -32768 .. 32767) to subprogram at simulink_functions.ads:65]
@@ -109,7 +109,7 @@ simulink_functions.adb:257:36: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:257:47: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:257:52: high: overflow check might fail, cannot prove lower bound for ((-1) * Quotient - 1) * Right (e.g. when Quotient = 3 and Right = 10920) [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:65 should mention Left and Right in a precondition]
 simulink_functions.adb:261:20: info: overflow check proved (CVC5: 2 VC)
-simulink_functions.adb:261:28: high: overflow check might fail, cannot prove upper bound for Left / Right (e.g. when Left = Integer_16'First and Right = -1) [reason for check: result of division must fit in a 16-bits machine integer] [possible fix: add precondition (Left / Right in -32768 .. 32767) to subprogram at simulink_functions.ads:65]
+simulink_functions.adb:261:28: high: overflow check might fail, cannot prove upper bound for (Left / Right) (e.g. when Left = Integer_16'First and Right = -1) [reason for check: result of division must fit in a 16-bits machine integer] [possible fix: add precondition ((Left / Right) in -32768 .. 32767) to subprogram at simulink_functions.ads:65]
 simulink_functions.adb:261:28: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:261:37: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:277:41: high: overflow check might fail, cannot prove upper bound for abs (Left) (e.g. when Left = Integer_32'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs (Left) in -2147483648 .. 2147483647) to subprogram at simulink_functions.ads:66]
@@ -121,7 +121,7 @@ simulink_functions.adb:279:36: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:279:47: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:279:52: high: overflow check might fail, cannot prove lower bound for ((-1) * Quotient - 1) * Right (e.g. when Quotient = 3 and Right = 715827880) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:66 should mention Left and Right in a precondition]
 simulink_functions.adb:283:20: info: overflow check proved (CVC5: 2 VC)
-simulink_functions.adb:283:28: high: overflow check might fail, cannot prove upper bound for Left / Right (e.g. when Left = Integer_32'First and Right = -1) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (Left / Right in -2147483648 .. 2147483647) to subprogram at simulink_functions.ads:66]
+simulink_functions.adb:283:28: high: overflow check might fail, cannot prove upper bound for (Left / Right) (e.g. when Left = Integer_32'First and Right = -1) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition ((Left / Right) in -2147483648 .. 2147483647) to subprogram at simulink_functions.ads:66]
 simulink_functions.adb:283:28: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:283:37: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:297:30: info: division check proved (CVC5: 1 VC)
@@ -175,15 +175,15 @@ simulink_functions.adb:470:47: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:470:47: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:85 should mention Left and Right in a precondition]
 simulink_functions.adb:470:56: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:85 should mention Left and Right in a precondition]
 simulink_functions.adb:483:22: info: overflow check proved (CVC5: 2 VC)
-simulink_functions.adb:483:30: high: overflow check might fail, cannot prove upper bound for Left / Right (e.g. when Left = Integer_8'First and Right = -1) [reason for check: result of division must fit in a 8-bits machine integer] [possible fix: add precondition (Left / Right in -128 .. 127) to subprogram at simulink_functions.ads:87]
+simulink_functions.adb:483:30: high: overflow check might fail, cannot prove upper bound for (Left / Right) (e.g. when Left = Integer_8'First and Right = -1) [reason for check: result of division must fit in a 8-bits machine integer] [possible fix: add precondition ((Left / Right) in -128 .. 127) to subprogram at simulink_functions.ads:87]
 simulink_functions.adb:483:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:483:39: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:496:22: info: overflow check proved (CVC5: 2 VC)
-simulink_functions.adb:496:30: high: overflow check might fail, cannot prove upper bound for Left / Right (e.g. when Left = Integer_16'First and Right = -1) [reason for check: result of division must fit in a 16-bits machine integer] [possible fix: add precondition (Left / Right in -32768 .. 32767) to subprogram at simulink_functions.ads:88]
+simulink_functions.adb:496:30: high: overflow check might fail, cannot prove upper bound for (Left / Right) (e.g. when Left = Integer_16'First and Right = -1) [reason for check: result of division must fit in a 16-bits machine integer] [possible fix: add precondition ((Left / Right) in -32768 .. 32767) to subprogram at simulink_functions.ads:88]
 simulink_functions.adb:496:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:496:39: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:509:22: info: overflow check proved (CVC5: 2 VC)
-simulink_functions.adb:509:30: high: overflow check might fail, cannot prove upper bound for Left / Right (e.g. when Left = Integer_32'First and Right = -1) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (Left / Right in -2147483648 .. 2147483647) to subprogram at simulink_functions.ads:89]
+simulink_functions.adb:509:30: high: overflow check might fail, cannot prove upper bound for (Left / Right) (e.g. when Left = Integer_32'First and Right = -1) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition ((Left / Right) in -2147483648 .. 2147483647) to subprogram at simulink_functions.ads:89]
 simulink_functions.adb:509:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:509:39: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:522:30: info: division check proved (CVC5: 1 VC)

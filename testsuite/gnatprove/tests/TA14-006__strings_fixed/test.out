@@ -23,7 +23,7 @@ main.adb:44:19: medium: precondition might fail
 main.adb:45:19: medium: assertion might fail
 main.adb:45:19: medium: precondition might fail
 main.adb:47:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-main.adb:47:09: medium: precondition might fail, cannot prove Position - Source'First <= Natural'Last - New_Item'length
+main.adb:47:09: medium: precondition might fail, cannot prove Position - Source'First <= Natural'Last - New_Item'Length
 main.adb:48:19: info: range check proved (CVC5: 4 VC)
 main.adb:48:19: medium: assertion might fail
 main.adb:49:09: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
@@ -43,6 +43,6 @@ main.adb:55:19: info: range check proved (CVC5: 4 VC)
 main.adb:55:19: medium: assertion might fail
 main.adb:55:35: info: range check proved (CVC5: 4 VC)
 main.adb:56:19: medium: assertion might fail
-main.adb:56:23: medium: precondition might fail, cannot prove Source'Length <= Natural'Last - New_Item'length
+main.adb:56:23: medium: precondition might fail, cannot prove Source'Length <= Natural'Last - New_Item'Length
 main.adb:57:19: medium: assertion might fail
 main.adb:57:23: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
