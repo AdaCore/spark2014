@@ -782,6 +782,25 @@ spark-containers-parameter_checks.ads:262:09: info: data dependencies proved, in
 spark-containers-parameter_checks.ads:264:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:176, in instantiation at test_conts.adb:17
 spark-containers-parameter_checks.ads:264:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at test_conts.adb:19
 test_conts.adb:8:23: info: initialization of "X" proved
+test_conts.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
+test_conts.adb:19:04: info: function cannot be inlined for proof
+test_conts.adb:19:04: info: function cannot be inlined for proof
+test_conts.adb:19:04: info: function contract might not be available on implicit recursive calls
+test_conts.adb:19:04: info: function contract might not be available on implicit recursive calls
+test_conts.adb:19:04: info: function contract might not be available on implicit recursive calls
+test_conts.adb:19:04: info: function contract might not be available on implicit recursive calls
+test_conts.adb:19:04: info: function contract might not be available on implicit recursive calls
+test_conts.adb:19:04: info: function contract might not be available on implicit recursive calls
+test_conts.adb:19:04: info: in instantiation at spark-containers-formal-hashed_sets.ads:1379
+test_conts.adb:19:04: info: in instantiation at spark-containers-formal-hashed_sets.ads:1408
+test_conts.adb:19:04: info: in instantiation at spark-containers-formal-hashed_sets.ads:1408
+test_conts.adb:19:04: info: in instantiation at spark-containers-formal-hashed_sets.ads:378
+test_conts.adb:19:04: info: in instantiation at spark-containers-formal-hashed_sets.ads:387
+test_conts.adb:19:04: info: in instantiation at spark-containers-formal-hashed_sets.ads:543
+test_conts.adb:19:04: info: in instantiation at spark-containers-formal-hashed_sets.ads:594
+test_conts.adb:19:04: info: in instantiation at spark-containers-formal-hashed_sets.ads:594
+test_conts.adb:19:04: info: inlining might cause circularity in the verification process
+test_conts.adb:19:04: info: inlining might cause circularity in the verification process
 test_conts.adb:26:07: info: initialization of "L" proved
 test_conts.adb:26:17: info: range check proved (CVC5: 2 VC)
 test_conts.adb:27:07: info: initialization of "C" proved
@@ -811,7 +830,7 @@ test_conts.adb:74:07: info: initialization of "L" proved
 test_conts.adb:74:16: info: range check proved (CVC5: 2 VC)
 test_conts.adb:74:21: info: range check proved (CVC5: 1 VC)
 test_conts.adb:75:07: info: initialization of "C" proved
-test_conts.adb:77:07: info: precondition proved (Z3: 2 VC)
+test_conts.adb:77:07: medium: precondition might fail, cannot prove Length (Container) < Container.Capacity
 test_conts.adb:79:07: info: precondition proved (Z3: 1 VC)
 test_conts.adb:81:17: info: overflow check proved (Z3: 2 VC)
-test_conts.adb:84:19: info: assertion proved (Z3: 1 VC)
+test_conts.adb:84:19: medium: assertion might fail

@@ -519,6 +519,7 @@ elaboration_demo.adb:5:61: info: precondition proved (CVC5: 1 VC)
 elaboration_demo.adb:5:74: info: division check proved (CVC5: 1 VC)
 elaboration_demo.adb:5:74: info: float overflow check proved (Trivial)
 enum_example.adb:15:04: info: no contextual analysis of "Next_Day" (multiple returns)
+enum_example.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
 enum_example.adb:20:32: info: range check proved (CVC5: 1 VC)
 enum_example.adb:24:04: info: initialization of "Today" proved
 enum_example.adb:25:04: info: initialization of "Tomorrow" proved
@@ -540,6 +541,7 @@ external_test.adb:11:08: warning: make sure that all overlapping objects have As
 external_test.adb:11:08: warning: writing to "Value" is assumed to have no effects on other non-volatile objects
 external_test.adb:16:12: warning: unused assignment
 external_test.ads:6:20: info: initialization of "Item" proved
+generic_examples.adb:7:13: info: implicit function contract might not be available on calls from enclosing unit
 generic_examples.adb:8:64: info: data dependencies proved
 generic_examples.adb:12:33: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:14:30: medium: overflow check might fail, cannot prove upper bound for Result + 1 (e.g. when Result = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 12 should mention Result in a loop invariant]
@@ -670,7 +672,9 @@ led_display.adb:24:41: info: initialization of "Value" constituent of "LED_State
 led_display.ads:11:09: info: data dependencies proved
 lights.adb:5:07: info: initialization of "Result" proved
 list_handler.adb:8:04: info: cannot unroll loop (too many loop iterations)
+list_handler.adb:8:04: info: implicit function contract might not be available on calls from enclosing unit
 list_handler.adb:8:04: info: in instantiation at double_list.adb:35
+list_handler.adb:8:04: info: in instantiation at double_list.ads:33
 list_handler.adb:19:07: info: initialization of "Status" proved
 list_handler.adb:26:29: info: overflow check proved (CVC5: 2 VC)
 list_handler.ads:5:07: info: flow dependencies proved
@@ -1177,6 +1181,7 @@ very_longs-divide.adb:30:04: info: initialization of "V" proved
 very_longs-divide.adb:30:39: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:31:04: info: initialization of "Q_Hat" proved
 very_longs-divide.adb:32:04: info: initialization of "Current_Borrow" proved
+very_longs-divide.adb:36:13: info: implicit function contract might not be available on calls from enclosing unit
 very_longs-divide.adb:42:27: info: unrolling loop
 very_longs-divide.adb:52:30: info: initialization of "Result" proved
 very_longs-divide.adb:54:08: info: flow dependencies proved

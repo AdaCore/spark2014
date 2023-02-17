@@ -104,6 +104,8 @@ a-strbou.ads:2559:61: info: range check proved (CVC5: 2 VC), in instantiation at
 a-strbou.ads:2566:25: info: range check proved (CVC5: 2 VC), in instantiation at repr2.ads:5
 a-strbou.ads:2573:31: info: discriminant check proved (CVC5: 1 VC), in instantiation at repr2.ads:5
 a-strbou.ads:2573:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at repr2.ads:5
+repr2.ads:5:04: info: implicit function contract might not be available on calls from enclosing unit
+repr2.ads:5:04: info: in instantiation at a-strbou.ads:86
 repr2.ads:5:04: warning: in instantiation at a-strbou.ads:2569
 repr2.ads:5:04: warning: pragma "Stream_Convert" ignored (not yet supported)
 repr3.ads:9:40: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)

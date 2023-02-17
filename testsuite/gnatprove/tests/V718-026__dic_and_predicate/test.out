@@ -35,12 +35,14 @@ main.adb:210:20: info: range check proved (CVC5: 2 VC)
 main.adb:221:12: info: default initial condition proved (CVC5: 1 VC)
 main.adb:221:12: medium: in inlined predicate at main.adb:233
 main.adb:221:12: medium: predicate check might fail on default value, cannot prove Q (F)
+main.adb:224:16: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:237:07: info: initialization of "X" proved
 main.adb:237:07: info: predicate check proved on default value (CVC5: 2 VC)
 main.adb:237:07: medium: default initial condition might fail
 main.adb:237:07: medium: for inherited default initial condition at main.adb:219
 main.adb:237:20: info: range check proved (CVC5: 2 VC)
 main.adb:246:12: medium: default initial condition might fail
+main.adb:249:16: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:251:12: info: predicate check proved on default value (CVC5: 2 VC)
 main.adb:265:07: info: initialization of "X" proved
 main.adb:265:07: info: predicate check proved on default value (CVC5: 2 VC)

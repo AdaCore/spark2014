@@ -104,6 +104,8 @@ a-strbou.ads:2559:61: info: range check proved (CVC5: 2 VC), in instantiation at
 a-strbou.ads:2566:25: info: range check proved (CVC5: 2 VC), in instantiation at general_strings.ads:3
 a-strbou.ads:2573:31: info: discriminant check proved (CVC5: 1 VC), in instantiation at general_strings.ads:3
 a-strbou.ads:2573:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at general_strings.ads:3
+general_strings.ads:3:04: info: implicit function contract might not be available on calls from enclosing unit
+general_strings.ads:3:04: info: in instantiation at a-strbou.ads:86
 general_strings.ads:3:04: warning: in instantiation at a-strbou.ads:2569
 general_strings.ads:3:04: warning: pragma "Stream_Convert" ignored (not yet supported)
 loggers.ads:17:16: error: plain precondition on dispatching subprogram is not allowed in SPARK (SPARK RM 6.1.1(2))

@@ -156,6 +156,7 @@ very_longs.adb:320:42: info: range check proved (CVC5: 2 VC)
 very_longs.adb:321:07: info: initialization of "J" proved
 very_longs.adb:322:07: info: initialization of "Q_Hat" proved
 very_longs.adb:323:07: info: initialization of "Current_Borrow" proved
+very_longs.adb:326:16: info: function contract might not be available on calls from enclosing unit
 very_longs.adb:329:19: info: postcondition proved (CVC5: 2 VC)
 very_longs.adb:329:45: medium: array index check might fail [reason for check: value must be a valid index into the array]
 very_longs.adb:330:47: medium: overflow check might fail, cannot prove upper bound for Get_MSD'Result + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
@@ -170,6 +171,7 @@ very_longs.adb:340:35: info: loop invariant initialization proved (CVC5: 1 VC; T
 very_longs.adb:340:35: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 very_longs.adb:340:85: info: overflow check proved (CVC5: 4 VC)
 very_longs.adb:340:116: info: index check proved (CVC5: 4 VC)
+very_longs.adb:346:16: info: implicit function contract might not be available on calls from enclosing unit
 very_longs.adb:353:30: info: unrolling loop
 very_longs.adb:354:27: warning: assuming "Shift_Left" always returns
 very_longs.adb:354:27: warning: no returning annotation available for "Shift_Left"
@@ -300,7 +302,7 @@ very_longs.adb:512:29: medium: range check might fail, cannot prove upper bound 
 very_longs.adb:513:15: medium: range check might fail, cannot prove lower bound for 48 - N [reason for check: result of subtraction must fit in the target type of the assignment]
 very_longs.adb:516:25: info: precondition proved (CVC5: 1 VC)
 very_longs.adb:516:66: info: index check proved (CVC5: 2 VC)
-very_longs.adb:517:07: medium: precondition might fail
+very_longs.adb:517:07: info: precondition proved (CVC5: 1 VC)
 very_longs.adb:518:12: info: discriminant check proved (CVC5: 1 VC)
 very_longs.adb:536:17: medium: range check might fail, cannot prove lower bound for J - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 524 should mention J in a loop invariant]
 very_longs.adb:540:11: info: range check proved (CVC5: 2 VC)

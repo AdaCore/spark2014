@@ -60,7 +60,7 @@ perm.adb:62:44: info: precondition proved (CVC5: 6 VC)
 perm.adb:62:55: info: range check proved (CVC5: 4 VC)
 perm.adb:64:07: info: assertion proved (Z3: 1 VC)
 perm.adb:65:07: warning: this statement is never reached
-perm.adb:69:16: info: function contract might not be available on recursive calls
+perm.adb:69:16: info: function contract might not be available on recursive calls or calls from enclosing unit
 perm.adb:71:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:71:54: info: precondition proved (CVC5: 2 VC)
 perm.adb:79:13: medium: "Induction_Hypothesis" is recursive, terminating annotation could be incorrect
@@ -71,7 +71,7 @@ perm.adb:80:58: info: precondition proved (CVC5: 3 VC)
 perm.adb:80:70: info: range check proved (CVC5: 2 VC)
 perm.adb:82:28: info: assertion proved (CVC5: 1 VC)
 perm.adb:88:14: info: precondition proved (CVC5: 3 VC)
-perm.adb:93:16: info: function contract might not be available on recursive calls
+perm.adb:93:16: info: function contract might not be available on recursive calls or calls from enclosing unit
 perm.adb:94:63: info: precondition proved (CVC5: 2 VC)
 perm.adb:95:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:95:54: info: precondition proved (CVC5: 2 VC)
@@ -126,10 +126,11 @@ perm.adb:141:44: info: overflow check proved (CVC5: 2 VC)
 perm.adb:141:62: info: index check proved (CVC5: 2 VC)
 perm.adb:141:72: info: index check proved (CVC5: 2 VC)
 perm.adb:141:72: info: overflow check proved (CVC5: 2 VC)
+perm.adb:145:13: info: function contract might not be available on implicit recursive calls
 perm.adb:147:30: info: precondition proved (CVC5: 2 VC)
 perm.adb:148:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.adb:148:43: info: precondition proved (CVC5: 2 VC)
-perm.adb:152:16: info: function contract might not be available on recursive calls
+perm.adb:152:16: info: function contract might not be available on recursive calls or calls from enclosing unit
 perm.adb:154:33: info: precondition proved (CVC5: 2 VC)
 perm.adb:155:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:155:54: info: precondition proved (CVC5: 2 VC)
@@ -201,8 +202,8 @@ perm.adb:231:63: info: range check proved (CVC5: 4 VC)
 perm.adb:232:25: info: precondition proved (CVC5: 6 VC)
 perm.adb:232:33: info: precondition proved (CVC5: 6 VC)
 perm.adb:232:54: info: range check proved (CVC5: 4 VC)
-perm.adb:234:25: info: assertion proved (Z3: 2 VC)
 perm.adb:234:25: info: precondition proved (CVC5: 4 VC)
+perm.adb:234:25: medium: assertion might fail [possible fix: loop invariant at line 287 should mention Ib]
 perm.adb:234:34: info: precondition proved (CVC5: 6 VC)
 perm.adb:234:45: info: range check proved (CVC5: 4 VC)
 perm.adb:234:50: info: precondition proved (CVC5: 6 VC)
@@ -313,7 +314,7 @@ perm.adb:290:39: info: range check proved (CVC5: 4 VC)
 perm.adb:290:43: info: precondition proved (CVC5: 6 VC)
 perm.adb:290:54: info: range check proved (CVC5: 4 VC)
 perm.adb:297:25: info: precondition proved (CVC5: 3 VC)
-perm.adb:304:16: info: function contract might not be available on recursive calls
+perm.adb:304:16: info: function contract might not be available on recursive calls or calls from enclosing unit
 perm.adb:306:18: info: precondition proved (CVC5: 2 VC)
 perm.adb:306:42: info: precondition proved (CVC5: 2 VC)
 perm.adb:307:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
@@ -388,11 +389,14 @@ perm.ads:37:30: info: precondition proved (CVC5: 3 VC)
 perm.ads:37:41: info: range check proved (CVC5: 2 VC)
 perm.ads:37:46: info: precondition proved (CVC5: 3 VC)
 perm.ads:37:57: info: range check proved (CVC5: 2 VC)
+perm.ads:38:13: info: function contract might not be available on implicit recursive calls
 perm.ads:40:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.ads:40:45: info: precondition proved (CVC5: 2 VC)
+perm.ads:42:13: info: function contract might not be available on implicit recursive calls
 perm.ads:43:60: info: precondition proved (CVC5: 2 VC)
 perm.ads:44:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.ads:44:45: info: precondition proved (CVC5: 2 VC)
+perm.ads:46:13: info: function contract might not be available on implicit recursive calls
 perm.ads:48:06: info: precondition proved (CVC5: 2 VC)
 perm.ads:48:30: info: precondition proved (CVC5: 2 VC)
 perm.ads:49:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)

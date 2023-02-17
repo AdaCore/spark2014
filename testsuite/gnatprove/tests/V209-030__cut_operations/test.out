@@ -1,82 +1,78 @@
-main.adb:8:26: info: data dependencies proved
-main.adb:15:49: warning: assuming "F" always returns
-main.adb:15:49: warning: assuming "F" has no effect on global items
-main.adb:15:49: warning: no Global contract available for "F"
-main.adb:15:49: warning: no returning annotation available for "F"
-main.adb:20:17: warning: assuming "F" always returns
-main.adb:20:17: warning: assuming "F" has no effect on global items
-main.adb:20:17: warning: no Global contract available for "F"
-main.adb:20:17: warning: no returning annotation available for "F"
-main.adb:23:10: info: no contextual analysis of "Rand" (body not seen yet)
-main.adb:23:10: warning: assuming "Rand" always returns
-main.adb:23:10: warning: assuming "Rand" has no effect on global items
-main.adb:23:10: warning: no Global contract available for "Rand"
-main.adb:23:10: warning: no returning annotation available for "Rand"
-main.adb:25:13: info: assertion premise proved (CVC5: 1 VC)
-main.adb:26:19: info: assertion step proved (CVC5: 1 VC)
-main.adb:26:19: warning: assuming "F" always returns
-main.adb:26:19: warning: assuming "F" has no effect on global items
-main.adb:26:19: warning: no Global contract available for "F"
-main.adb:26:19: warning: no returning annotation available for "F"
-main.adb:27:19: warning: assuming "Axiom_F_Pos" always returns
-main.adb:27:19: warning: assuming "Axiom_F_Pos" has no effect on global items
-main.adb:27:19: warning: no Global contract available for "Axiom_F_Pos"
-main.adb:27:19: warning: no returning annotation available for "Axiom_F_Pos"
-main.adb:28:13: warning: assuming "Rand" always returns
-main.adb:28:13: warning: assuming "Rand" has no effect on global items
-main.adb:28:13: warning: no Global contract available for "Rand"
-main.adb:28:13: warning: no returning annotation available for "Rand"
-main.adb:30:13: info: assertion premise proved (CVC5: 1 VC)
-main.adb:31:19: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
-main.adb:31:19: warning: assuming "F" always returns
-main.adb:31:19: warning: assuming "F" has no effect on global items
-main.adb:31:19: warning: no Global contract available for "F"
-main.adb:31:19: warning: no returning annotation available for "F"
-main.adb:32:19: warning: assuming "Axiom_F_Pos" always returns
-main.adb:32:19: warning: assuming "Axiom_F_Pos" has no effect on global items
-main.adb:32:19: warning: no Global contract available for "Axiom_F_Pos"
-main.adb:32:19: warning: no returning annotation available for "Axiom_F_Pos"
-main.adb:33:13: warning: assuming "Rand" always returns
-main.adb:33:13: warning: assuming "Rand" has no effect on global items
-main.adb:33:13: warning: no Global contract available for "Rand"
-main.adb:33:13: warning: no returning annotation available for "Rand"
-main.adb:35:13: info: assertion premise proved (CVC5: 1 VC)
-main.adb:36:19: info: assertion step proved (CVC5: 1 VC)
-main.adb:36:19: warning: assuming "F" always returns
-main.adb:36:19: warning: assuming "F" has no effect on global items
-main.adb:36:19: warning: no Global contract available for "F"
-main.adb:36:19: warning: no returning annotation available for "F"
-main.adb:37:23: warning: assuming "Find_F_Is_3" always returns
-main.adb:37:23: warning: assuming "Find_F_Is_3" has no effect on global items
-main.adb:37:23: warning: no Global contract available for "Find_F_Is_3"
-main.adb:37:23: warning: no returning annotation available for "Find_F_Is_3"
-main.adb:40:13: info: assertion premise proved (CVC5: 1 VC)
-main.adb:41:19: medium: assertion step might fail
-main.adb:48:26: info: data dependencies proved
-main.adb:60:13: warning: assuming "Find_First_0" always returns
-main.adb:60:13: warning: assuming "Find_First_0" has no effect on global items
-main.adb:60:13: warning: no Global contract available for "Find_First_0"
-main.adb:60:13: warning: no returning annotation available for "Find_First_0"
-main.adb:61:15: warning: assuming "Find_First_0" always returns
-main.adb:61:15: warning: assuming "Find_First_0" has no effect on global items
-main.adb:61:15: warning: no Global contract available for "Find_First_0"
-main.adb:61:15: warning: no returning annotation available for "Find_First_0"
-main.adb:62:24: warning: assuming "Find_First_0" always returns
-main.adb:62:24: warning: assuming "Find_First_0" has no effect on global items
-main.adb:62:24: warning: no Global contract available for "Find_First_0"
-main.adb:62:24: warning: no returning annotation available for "Find_First_0"
-main.adb:63:42: warning: assuming "Find_First_0" always returns
-main.adb:63:42: warning: assuming "Find_First_0" has no effect on global items
-main.adb:63:42: warning: no Global contract available for "Find_First_0"
-main.adb:63:42: warning: no returning annotation available for "Find_First_0"
-main.adb:73:09: warning: assuming "Has_Less_Than_3_0" always returns
-main.adb:73:09: warning: assuming "Has_Less_Than_3_0" has no effect on global items
-main.adb:73:09: warning: no Global contract available for "Has_Less_Than_3_0"
-main.adb:73:09: warning: no returning annotation available for "Has_Less_Than_3_0"
-main.adb:75:44: warning: assuming "Find_First_0" always returns
-main.adb:75:44: warning: assuming "Find_First_0" has no effect on global items
-main.adb:75:44: warning: no Global contract available for "Find_First_0"
-main.adb:75:44: warning: no returning annotation available for "Find_First_0"
+main.adb:14:46: warning: assuming "F" always returns
+main.adb:14:46: warning: assuming "F" has no effect on global items
+main.adb:14:46: warning: no Global contract available for "F"
+main.adb:14:46: warning: no returning annotation available for "F"
+main.adb:19:14: warning: assuming "F" always returns
+main.adb:19:14: warning: assuming "F" has no effect on global items
+main.adb:19:14: warning: no Global contract available for "F"
+main.adb:19:14: warning: no returning annotation available for "F"
+main.adb:21:26: info: data dependencies proved
+main.adb:24:10: info: no contextual analysis of "Rand" (body not seen yet)
+main.adb:24:10: warning: assuming "Rand" always returns
+main.adb:24:10: warning: assuming "Rand" has no effect on global items
+main.adb:24:10: warning: no Global contract available for "Rand"
+main.adb:24:10: warning: no returning annotation available for "Rand"
+main.adb:26:13: info: assertion premise proved (CVC5: 1 VC)
+main.adb:27:19: info: assertion step proved (CVC5: 1 VC)
+main.adb:27:19: warning: assuming "F" always returns
+main.adb:27:19: warning: assuming "F" has no effect on global items
+main.adb:27:19: warning: no Global contract available for "F"
+main.adb:27:19: warning: no returning annotation available for "F"
+main.adb:28:19: warning: assuming "Axiom_F_Pos" always returns
+main.adb:28:19: warning: assuming "Axiom_F_Pos" has no effect on global items
+main.adb:28:19: warning: no Global contract available for "Axiom_F_Pos"
+main.adb:28:19: warning: no returning annotation available for "Axiom_F_Pos"
+main.adb:29:13: warning: assuming "Rand" always returns
+main.adb:29:13: warning: assuming "Rand" has no effect on global items
+main.adb:29:13: warning: no Global contract available for "Rand"
+main.adb:29:13: warning: no returning annotation available for "Rand"
+main.adb:31:13: info: assertion premise proved (CVC5: 1 VC)
+main.adb:32:19: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+main.adb:32:19: warning: assuming "F" always returns
+main.adb:32:19: warning: assuming "F" has no effect on global items
+main.adb:32:19: warning: no Global contract available for "F"
+main.adb:32:19: warning: no returning annotation available for "F"
+main.adb:33:19: warning: assuming "Axiom_F_Pos" always returns
+main.adb:33:19: warning: assuming "Axiom_F_Pos" has no effect on global items
+main.adb:33:19: warning: no Global contract available for "Axiom_F_Pos"
+main.adb:33:19: warning: no returning annotation available for "Axiom_F_Pos"
+main.adb:34:13: warning: assuming "Rand" always returns
+main.adb:34:13: warning: assuming "Rand" has no effect on global items
+main.adb:34:13: warning: no Global contract available for "Rand"
+main.adb:34:13: warning: no returning annotation available for "Rand"
+main.adb:36:13: info: assertion premise proved (CVC5: 1 VC)
+main.adb:37:19: info: assertion step proved (CVC5: 1 VC)
+main.adb:37:19: warning: assuming "F" always returns
+main.adb:37:19: warning: assuming "F" has no effect on global items
+main.adb:37:19: warning: no Global contract available for "F"
+main.adb:37:19: warning: no returning annotation available for "F"
+main.adb:38:23: warning: assuming "Find_F_Is_3" always returns
+main.adb:38:23: warning: assuming "Find_F_Is_3" has no effect on global items
+main.adb:38:23: warning: no Global contract available for "Find_F_Is_3"
+main.adb:38:23: warning: no returning annotation available for "Find_F_Is_3"
+main.adb:41:13: info: assertion premise proved (CVC5: 1 VC)
+main.adb:42:19: medium: assertion step might fail
+main.adb:49:26: info: data dependencies proved
+main.adb:61:13: warning: assuming "Find_First_0" always returns
+main.adb:61:13: warning: assuming "Find_First_0" has no effect on global items
+main.adb:61:13: warning: no Global contract available for "Find_First_0"
+main.adb:61:13: warning: no returning annotation available for "Find_First_0"
+main.adb:62:15: warning: assuming "Find_First_0" always returns
+main.adb:62:15: warning: assuming "Find_First_0" has no effect on global items
+main.adb:62:15: warning: no Global contract available for "Find_First_0"
+main.adb:62:15: warning: no returning annotation available for "Find_First_0"
+main.adb:63:24: warning: assuming "Find_First_0" always returns
+main.adb:63:24: warning: assuming "Find_First_0" has no effect on global items
+main.adb:63:24: warning: no Global contract available for "Find_First_0"
+main.adb:63:24: warning: no returning annotation available for "Find_First_0"
+main.adb:64:42: warning: assuming "Find_First_0" always returns
+main.adb:64:42: warning: assuming "Find_First_0" has no effect on global items
+main.adb:64:42: warning: no Global contract available for "Find_First_0"
+main.adb:64:42: warning: no returning annotation available for "Find_First_0"
+main.adb:74:09: warning: assuming "Has_Less_Than_3_0" always returns
+main.adb:74:09: warning: assuming "Has_Less_Than_3_0" has no effect on global items
+main.adb:74:09: warning: no Global contract available for "Has_Less_Than_3_0"
+main.adb:74:09: warning: no returning annotation available for "Has_Less_Than_3_0"
 main.adb:76:44: warning: assuming "Find_First_0" always returns
 main.adb:76:44: warning: assuming "Find_First_0" has no effect on global items
 main.adb:76:44: warning: no Global contract available for "Find_First_0"
@@ -89,67 +85,65 @@ main.adb:78:44: warning: assuming "Find_First_0" always returns
 main.adb:78:44: warning: assuming "Find_First_0" has no effect on global items
 main.adb:78:44: warning: no Global contract available for "Find_First_0"
 main.adb:78:44: warning: no returning annotation available for "Find_First_0"
-main.adb:83:17: warning: assuming "Has_Less_Than_3_0" always returns
-main.adb:83:17: warning: assuming "Has_Less_Than_3_0" has no effect on global items
-main.adb:83:17: warning: no Global contract available for "Has_Less_Than_3_0"
-main.adb:83:17: warning: no returning annotation available for "Has_Less_Than_3_0"
-main.adb:84:17: info: postcondition proved (CVC5: 1 VC)
-main.adb:84:17: info: precondition proved (CVC5: 2 VC)
-main.adb:84:17: warning: assuming "Find_First_0" always returns
-main.adb:84:17: warning: assuming "Find_First_0" has no effect on global items
-main.adb:84:17: warning: no Global contract available for "Find_First_0"
-main.adb:84:17: warning: no returning annotation available for "Find_First_0"
-main.adb:88:10: info: initialization of "Prev_Fst" proved
-main.adb:90:26: info: unrolling loop
-main.adb:91:29: info: overflow check proved (CVC5: 6 VC)
-main.adb:92:20: info: precondition proved (CVC5: 6 VC)
-main.adb:92:20: warning: assuming "Find_First_0" always returns
-main.adb:92:20: warning: assuming "Find_First_0" has no effect on global items
-main.adb:92:20: warning: no Global contract available for "Find_First_0"
-main.adb:92:20: warning: no returning annotation available for "Find_First_0"
-main.adb:92:41: info: overflow check proved (CVC5: 6 VC)
-main.adb:94:16: info: assertion premise proved (CVC5: 6 VC)
-main.adb:94:20: info: assertion step proved (CVC5: 3 VC)
-main.adb:94:26: info: precondition proved (CVC5: 6 VC)
-main.adb:94:26: warning: assuming "Find_First_0" always returns
-main.adb:94:26: warning: assuming "Find_First_0" has no effect on global items
-main.adb:94:26: warning: no Global contract available for "Find_First_0"
-main.adb:94:26: warning: no returning annotation available for "Find_First_0"
-main.adb:94:47: info: range check proved (CVC5: 6 VC)
-main.adb:95:18: warning: assuming "Lemma_Find_First_0_Def" always returns
-main.adb:95:18: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
-main.adb:95:18: warning: no Global contract available for "Lemma_Find_First_0_Def"
-main.adb:95:18: warning: no returning annotation available for "Lemma_Find_First_0_Def"
-main.adb:95:49: info: range check proved (CVC5: 6 VC)
-main.adb:96:22: warning: assuming "Lemma_Find_First_0_Def" always returns
-main.adb:96:22: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
-main.adb:96:22: warning: no Global contract available for "Lemma_Find_First_0_Def"
-main.adb:96:22: warning: no returning annotation available for "Lemma_Find_First_0_Def"
+main.adb:79:44: warning: assuming "Find_First_0" always returns
+main.adb:79:44: warning: assuming "Find_First_0" has no effect on global items
+main.adb:79:44: warning: no Global contract available for "Find_First_0"
+main.adb:79:44: warning: no returning annotation available for "Find_First_0"
+main.adb:84:17: warning: assuming "Has_Less_Than_3_0" always returns
+main.adb:84:17: warning: assuming "Has_Less_Than_3_0" has no effect on global items
+main.adb:84:17: warning: no Global contract available for "Has_Less_Than_3_0"
+main.adb:84:17: warning: no returning annotation available for "Has_Less_Than_3_0"
+main.adb:85:17: info: postcondition proved (CVC5: 1 VC)
+main.adb:85:17: info: precondition proved (CVC5: 2 VC)
+main.adb:85:17: warning: assuming "Find_First_0" always returns
+main.adb:85:17: warning: assuming "Find_First_0" has no effect on global items
+main.adb:85:17: warning: no Global contract available for "Find_First_0"
+main.adb:85:17: warning: no returning annotation available for "Find_First_0"
+main.adb:89:10: info: initialization of "Prev_Fst" proved
+main.adb:91:26: info: unrolling loop
+main.adb:92:29: info: overflow check proved (CVC5: 6 VC)
+main.adb:93:20: info: precondition proved (CVC5: 6 VC)
+main.adb:93:20: warning: assuming "Find_First_0" always returns
+main.adb:93:20: warning: assuming "Find_First_0" has no effect on global items
+main.adb:93:20: warning: no Global contract available for "Find_First_0"
+main.adb:93:20: warning: no returning annotation available for "Find_First_0"
+main.adb:93:41: info: overflow check proved (CVC5: 6 VC)
+main.adb:95:16: info: assertion premise proved (CVC5: 6 VC)
+main.adb:95:20: info: assertion step proved (CVC5: 3 VC)
+main.adb:95:26: info: precondition proved (CVC5: 6 VC)
+main.adb:95:26: warning: assuming "Find_First_0" always returns
+main.adb:95:26: warning: assuming "Find_First_0" has no effect on global items
+main.adb:95:26: warning: no Global contract available for "Find_First_0"
+main.adb:95:26: warning: no returning annotation available for "Find_First_0"
+main.adb:95:47: info: range check proved (CVC5: 6 VC)
+main.adb:96:18: warning: assuming "Lemma_Find_First_0_Def" always returns
+main.adb:96:18: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
+main.adb:96:18: warning: no Global contract available for "Lemma_Find_First_0_Def"
+main.adb:96:18: warning: no returning annotation available for "Lemma_Find_First_0_Def"
 main.adb:96:49: info: range check proved (CVC5: 6 VC)
-main.adb:98:16: info: index check proved (CVC5: 6 VC)
-main.adb:101:13: info: assertion premise proved (CVC5: 5 VC)
-main.adb:102:16: info: assertion step proved (CVC5: 1 VC)
-main.adb:102:20: info: assertion step proved (CVC5: 1 VC)
-main.adb:102:20: info: precondition proved (CVC5: 2 VC)
-main.adb:102:20: warning: assuming "Find_First_0" always returns
-main.adb:102:20: warning: assuming "Find_First_0" has no effect on global items
-main.adb:102:20: warning: no Global contract available for "Find_First_0"
-main.adb:102:20: warning: no returning annotation available for "Find_First_0"
-main.adb:102:51: warning: assuming "Lemma_Find_First_0_Def" always returns
-main.adb:102:51: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
-main.adb:102:51: warning: no Global contract available for "Lemma_Find_First_0_Def"
-main.adb:102:51: warning: no returning annotation available for "Lemma_Find_First_0_Def"
-main.adb:104:47: info: precondition proved (CVC5: 2 VC)
-main.adb:104:47: warning: assuming "Find_First_0" always returns
-main.adb:104:47: warning: assuming "Find_First_0" has no effect on global items
-main.adb:104:47: warning: no Global contract available for "Find_First_0"
-main.adb:104:47: warning: no returning annotation available for "Find_First_0"
+main.adb:97:22: warning: assuming "Lemma_Find_First_0_Def" always returns
+main.adb:97:22: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
+main.adb:97:22: warning: no Global contract available for "Lemma_Find_First_0_Def"
+main.adb:97:22: warning: no returning annotation available for "Lemma_Find_First_0_Def"
+main.adb:97:49: info: range check proved (CVC5: 6 VC)
+main.adb:99:16: info: index check proved (CVC5: 6 VC)
+main.adb:102:13: info: assertion premise proved (CVC5: 5 VC)
+main.adb:103:16: info: assertion step proved (CVC5: 1 VC)
+main.adb:103:20: info: assertion step proved (CVC5: 1 VC)
+main.adb:103:20: info: precondition proved (CVC5: 2 VC)
+main.adb:103:20: warning: assuming "Find_First_0" always returns
+main.adb:103:20: warning: assuming "Find_First_0" has no effect on global items
+main.adb:103:20: warning: no Global contract available for "Find_First_0"
+main.adb:103:20: warning: no returning annotation available for "Find_First_0"
+main.adb:103:51: warning: assuming "Lemma_Find_First_0_Def" always returns
+main.adb:103:51: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
+main.adb:103:51: warning: no Global contract available for "Lemma_Find_First_0_Def"
+main.adb:103:51: warning: no returning annotation available for "Lemma_Find_First_0_Def"
 main.adb:105:47: info: precondition proved (CVC5: 2 VC)
 main.adb:105:47: warning: assuming "Find_First_0" always returns
 main.adb:105:47: warning: assuming "Find_First_0" has no effect on global items
 main.adb:105:47: warning: no Global contract available for "Find_First_0"
 main.adb:105:47: warning: no returning annotation available for "Find_First_0"
-main.adb:105:74: info: overflow check proved (CVC5: 2 VC)
 main.adb:106:47: info: precondition proved (CVC5: 2 VC)
 main.adb:106:47: warning: assuming "Find_First_0" always returns
 main.adb:106:47: warning: assuming "Find_First_0" has no effect on global items
@@ -162,335 +156,341 @@ main.adb:107:47: warning: assuming "Find_First_0" has no effect on global items
 main.adb:107:47: warning: no Global contract available for "Find_First_0"
 main.adb:107:47: warning: no returning annotation available for "Find_First_0"
 main.adb:107:74: info: overflow check proved (CVC5: 2 VC)
-main.adb:110:26: info: assertion step proved (CVC5: 1 VC)
-main.adb:111:75: info: assertion step proved (CVC5: 1 VC)
-main.adb:112:63: info: assertion step proved (CVC5: 1 VC)
-main.adb:112:79: warning: assuming "Lemma_Find_First_0_Def" always returns
-main.adb:112:79: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
-main.adb:112:79: warning: no Global contract available for "Lemma_Find_First_0_Def"
-main.adb:112:79: warning: no returning annotation available for "Lemma_Find_First_0_Def"
+main.adb:108:47: info: precondition proved (CVC5: 2 VC)
+main.adb:108:47: warning: assuming "Find_First_0" always returns
+main.adb:108:47: warning: assuming "Find_First_0" has no effect on global items
+main.adb:108:47: warning: no Global contract available for "Find_First_0"
+main.adb:108:47: warning: no returning annotation available for "Find_First_0"
+main.adb:108:74: info: overflow check proved (CVC5: 2 VC)
+main.adb:111:26: info: assertion step proved (CVC5: 1 VC)
+main.adb:112:75: info: assertion step proved (CVC5: 1 VC)
 main.adb:113:63: info: assertion step proved (CVC5: 1 VC)
 main.adb:113:79: warning: assuming "Lemma_Find_First_0_Def" always returns
 main.adb:113:79: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
 main.adb:113:79: warning: no Global contract available for "Lemma_Find_First_0_Def"
 main.adb:113:79: warning: no returning annotation available for "Lemma_Find_First_0_Def"
-main.adb:113:116: info: overflow check proved (CVC5: 2 VC)
 main.adb:114:63: info: assertion step proved (CVC5: 1 VC)
 main.adb:114:79: warning: assuming "Lemma_Find_First_0_Def" always returns
 main.adb:114:79: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
 main.adb:114:79: warning: no Global contract available for "Lemma_Find_First_0_Def"
 main.adb:114:79: warning: no returning annotation available for "Lemma_Find_First_0_Def"
 main.adb:114:116: info: overflow check proved (CVC5: 2 VC)
-main.adb:116:32: info: assertion step proved (CVC5: 1 VC)
-main.adb:116:43: warning: assuming "Lemma_Has_Less_Than_3_0_Def" always returns
-main.adb:116:43: warning: assuming "Lemma_Has_Less_Than_3_0_Def" has no effect on global items
-main.adb:116:43: warning: no Global contract available for "Lemma_Has_Less_Than_3_0_Def"
-main.adb:116:43: warning: no returning annotation available for "Lemma_Has_Less_Than_3_0_Def"
-main.adb:117:28: info: assertion step proved (CVC5: 1 VC)
+main.adb:115:63: info: assertion step proved (CVC5: 1 VC)
+main.adb:115:79: warning: assuming "Lemma_Find_First_0_Def" always returns
+main.adb:115:79: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
+main.adb:115:79: warning: no Global contract available for "Lemma_Find_First_0_Def"
+main.adb:115:79: warning: no returning annotation available for "Lemma_Find_First_0_Def"
+main.adb:115:116: info: overflow check proved (CVC5: 2 VC)
 main.adb:117:32: info: assertion step proved (CVC5: 1 VC)
-main.adb:117:48: warning: assuming "Lemma_Find_First_0_Def" always returns
-main.adb:117:48: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
-main.adb:117:48: warning: no Global contract available for "Lemma_Find_First_0_Def"
-main.adb:117:48: warning: no returning annotation available for "Lemma_Find_First_0_Def"
-main.adb:117:85: info: overflow check proved (CVC5: 2 VC)
-main.adb:120:28: info: precondition proved (CVC5: 2 VC)
-main.adb:120:28: warning: assuming "Find_First_0" always returns
-main.adb:120:28: warning: assuming "Find_First_0" has no effect on global items
-main.adb:120:28: warning: no Global contract available for "Find_First_0"
-main.adb:120:28: warning: no returning annotation available for "Find_First_0"
-main.adb:120:72: medium: assertion might fail, cannot prove A (Find_First_0 (A_Old, A_Old'First)) = 1
-main.adb:120:75: info: index check proved (CVC5: 2 VC)
-main.adb:120:75: info: precondition proved (CVC5: 2 VC)
-main.adb:120:75: warning: assuming "Find_First_0" always returns
-main.adb:120:75: warning: assuming "Find_First_0" has no effect on global items
-main.adb:120:75: warning: no Global contract available for "Find_First_0"
-main.adb:120:75: warning: no returning annotation available for "Find_First_0"
-main.adb:128:67: info: data dependencies proved
-main.adb:130:10: warning: assuming "Rand" always returns
-main.adb:130:10: warning: assuming "Rand" has no effect on global items
-main.adb:130:10: warning: no Global contract available for "Rand"
-main.adb:130:10: warning: no returning annotation available for "Rand"
-main.adb:135:25: info: assertion premise proved (CVC5: 3 VC)
-main.adb:135:33: info: assertion step proved (CVC5: 1 VC)
-main.adb:135:45: info: assertion step proved (CVC5: 1 VC)
-main.adb:135:61: info: assertion step proved (CVC5: 1 VC)
-main.adb:136:13: warning: assuming "Rand" always returns
-main.adb:136:13: warning: assuming "Rand" has no effect on global items
-main.adb:136:13: warning: no Global contract available for "Rand"
-main.adb:136:13: warning: no returning annotation available for "Rand"
-main.adb:141:33: info: assertion step proved (CVC5: 1 VC)
+main.adb:117:43: warning: assuming "Lemma_Has_Less_Than_3_0_Def" always returns
+main.adb:117:43: warning: assuming "Lemma_Has_Less_Than_3_0_Def" has no effect on global items
+main.adb:117:43: warning: no Global contract available for "Lemma_Has_Less_Than_3_0_Def"
+main.adb:117:43: warning: no returning annotation available for "Lemma_Has_Less_Than_3_0_Def"
+main.adb:118:28: info: assertion step proved (CVC5: 1 VC)
+main.adb:118:32: info: assertion step proved (CVC5: 1 VC)
+main.adb:118:48: warning: assuming "Lemma_Find_First_0_Def" always returns
+main.adb:118:48: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
+main.adb:118:48: warning: no Global contract available for "Lemma_Find_First_0_Def"
+main.adb:118:48: warning: no returning annotation available for "Lemma_Find_First_0_Def"
+main.adb:118:85: info: overflow check proved (CVC5: 2 VC)
+main.adb:121:28: info: precondition proved (CVC5: 2 VC)
+main.adb:121:28: warning: assuming "Find_First_0" always returns
+main.adb:121:28: warning: assuming "Find_First_0" has no effect on global items
+main.adb:121:28: warning: no Global contract available for "Find_First_0"
+main.adb:121:28: warning: no returning annotation available for "Find_First_0"
+main.adb:121:72: medium: assertion might fail, cannot prove A (Find_First_0 (A_Old, A_Old'First)) = 1
+main.adb:121:75: info: index check proved (CVC5: 2 VC)
+main.adb:121:75: info: precondition proved (CVC5: 2 VC)
+main.adb:121:75: warning: assuming "Find_First_0" always returns
+main.adb:121:75: warning: assuming "Find_First_0" has no effect on global items
+main.adb:121:75: warning: no Global contract available for "Find_First_0"
+main.adb:121:75: warning: no returning annotation available for "Find_First_0"
+main.adb:129:67: info: data dependencies proved
+main.adb:131:10: warning: assuming "Rand" always returns
+main.adb:131:10: warning: assuming "Rand" has no effect on global items
+main.adb:131:10: warning: no Global contract available for "Rand"
+main.adb:131:10: warning: no returning annotation available for "Rand"
+main.adb:136:25: info: assertion premise proved (CVC5: 3 VC)
+main.adb:136:33: info: assertion step proved (CVC5: 1 VC)
+main.adb:136:45: info: assertion step proved (CVC5: 1 VC)
+main.adb:136:61: info: assertion step proved (CVC5: 1 VC)
+main.adb:137:13: warning: assuming "Rand" always returns
+main.adb:137:13: warning: assuming "Rand" has no effect on global items
+main.adb:137:13: warning: no Global contract available for "Rand"
+main.adb:137:13: warning: no returning annotation available for "Rand"
 main.adb:142:33: info: assertion step proved (CVC5: 1 VC)
-main.adb:143:33: medium: assertion premise might fail, cannot prove A2 [possible fix: subprogram at line 128 should mention A2 in a precondition]
-main.adb:144:33: info: assertion step proved (CVC5: 1 VC)
-main.adb:145:13: warning: assuming "Rand" always returns
-main.adb:145:13: warning: assuming "Rand" has no effect on global items
-main.adb:145:13: warning: no Global contract available for "Rand"
-main.adb:145:13: warning: no returning annotation available for "Rand"
-main.adb:149:25: info: assertion premise proved (CVC5: 3 VC)
-main.adb:149:33: info: assertion step proved (CVC5: 1 VC)
-main.adb:150:33: medium: assertion step might fail [possible fix: subprogram at line 128 should mention B2 in a precondition]
-main.adb:152:33: info: assertion step proved (CVC5: 1 VC)
-main.adb:156:67: info: data dependencies proved
-main.adb:158:10: warning: assuming "Rand" always returns
-main.adb:158:10: warning: assuming "Rand" has no effect on global items
-main.adb:158:10: warning: no Global contract available for "Rand"
-main.adb:158:10: warning: no returning annotation available for "Rand"
-main.adb:163:25: info: assertion premise proved (CVC5: 1 VC)
-main.adb:163:33: info: assertion step proved (CVC5: 1 VC)
-main.adb:163:48: info: assertion step proved (CVC5: 1 VC)
-main.adb:163:59: info: assertion step proved (CVC5: 1 VC)
-main.adb:164:13: warning: assuming "Rand" always returns
-main.adb:164:13: warning: assuming "Rand" has no effect on global items
-main.adb:164:13: warning: no Global contract available for "Rand"
-main.adb:164:13: warning: no returning annotation available for "Rand"
-main.adb:168:25: medium: assertion premise might fail [possible fix: subprogram at line 156 should mention A1 and A2 and A3 and B1 and B2 and B3 in a precondition]
-main.adb:168:33: info: assertion step proved (CVC5: 1 VC)
-main.adb:169:36: info: assertion step proved (CVC5: 1 VC)
-main.adb:170:32: info: assertion step proved (CVC5: 1 VC)
-main.adb:171:13: warning: assuming "Rand" always returns
-main.adb:171:13: warning: assuming "Rand" has no effect on global items
-main.adb:171:13: warning: no Global contract available for "Rand"
-main.adb:171:13: warning: no returning annotation available for "Rand"
-main.adb:176:29: info: assertion step proved (CVC5: 1 VC)
-main.adb:177:29: medium: assertion premise might fail, cannot prove (So (A1, B1)  or So (A2, B2)) [possible fix: subprogram at line 156 should mention A1 and A2 and B1 and B2 in a precondition]
-main.adb:177:38: info: assertion step proved (CVC5: 1 VC)
+main.adb:143:33: info: assertion step proved (CVC5: 1 VC)
+main.adb:144:33: medium: assertion premise might fail, cannot prove A2 [possible fix: subprogram at line 129 should mention A2 in a precondition]
+main.adb:145:33: info: assertion step proved (CVC5: 1 VC)
+main.adb:146:13: warning: assuming "Rand" always returns
+main.adb:146:13: warning: assuming "Rand" has no effect on global items
+main.adb:146:13: warning: no Global contract available for "Rand"
+main.adb:146:13: warning: no returning annotation available for "Rand"
+main.adb:150:25: info: assertion premise proved (CVC5: 3 VC)
+main.adb:150:33: info: assertion step proved (CVC5: 1 VC)
+main.adb:151:33: medium: assertion step might fail [possible fix: subprogram at line 129 should mention B2 in a precondition]
+main.adb:153:33: info: assertion step proved (CVC5: 1 VC)
+main.adb:157:67: info: data dependencies proved
+main.adb:159:10: warning: assuming "Rand" always returns
+main.adb:159:10: warning: assuming "Rand" has no effect on global items
+main.adb:159:10: warning: no Global contract available for "Rand"
+main.adb:159:10: warning: no returning annotation available for "Rand"
+main.adb:164:25: info: assertion premise proved (CVC5: 1 VC)
+main.adb:164:33: info: assertion step proved (CVC5: 1 VC)
+main.adb:164:48: info: assertion step proved (CVC5: 1 VC)
+main.adb:164:59: info: assertion step proved (CVC5: 1 VC)
+main.adb:165:13: warning: assuming "Rand" always returns
+main.adb:165:13: warning: assuming "Rand" has no effect on global items
+main.adb:165:13: warning: no Global contract available for "Rand"
+main.adb:165:13: warning: no returning annotation available for "Rand"
+main.adb:169:25: medium: assertion premise might fail [possible fix: subprogram at line 157 should mention A1 and A2 and A3 and B1 and B2 and B3 in a precondition]
+main.adb:169:33: info: assertion step proved (CVC5: 1 VC)
+main.adb:170:36: info: assertion step proved (CVC5: 1 VC)
+main.adb:171:32: info: assertion step proved (CVC5: 1 VC)
+main.adb:172:13: warning: assuming "Rand" always returns
+main.adb:172:13: warning: assuming "Rand" has no effect on global items
+main.adb:172:13: warning: no Global contract available for "Rand"
+main.adb:172:13: warning: no returning annotation available for "Rand"
+main.adb:177:29: info: assertion step proved (CVC5: 1 VC)
+main.adb:178:29: medium: assertion premise might fail, cannot prove (So (A1, B1)  or So (A2, B2)) [possible fix: subprogram at line 157 should mention A1 and A2 and B1 and B2 in a precondition]
 main.adb:178:38: info: assertion step proved (CVC5: 1 VC)
-main.adb:179:13: warning: assuming "Rand" always returns
-main.adb:179:13: warning: assuming "Rand" has no effect on global items
-main.adb:179:13: warning: no Global contract available for "Rand"
-main.adb:179:13: warning: no returning annotation available for "Rand"
-main.adb:183:25: info: assertion premise proved (CVC5: 1 VC)
-main.adb:183:33: info: assertion step proved (CVC5: 1 VC)
-main.adb:185:32: medium: assertion step might fail [possible fix: subprogram at line 156 should mention B2 in a precondition]
-main.adb:186:32: info: assertion step proved (CVC5: 1 VC)
-main.adb:192:30: info: data dependencies proved
-main.adb:195:16: warning: assuming "A1" always returns
-main.adb:195:16: warning: assuming "A1" has no effect on global items
-main.adb:195:16: warning: no Global contract available for "A1"
-main.adb:195:16: warning: no returning annotation available for "A1"
-main.adb:197:16: warning: assuming "A1" always returns
-main.adb:197:16: warning: assuming "A1" has no effect on global items
-main.adb:197:16: warning: no Global contract available for "A1"
-main.adb:197:16: warning: no returning annotation available for "A1"
-main.adb:199:16: warning: assuming "A1" always returns
-main.adb:199:16: warning: assuming "A1" has no effect on global items
-main.adb:199:16: warning: no Global contract available for "A1"
-main.adb:199:16: warning: no returning annotation available for "A1"
-main.adb:199:28: info: precondition proved (CVC5: 1 VC)
-main.adb:199:28: warning: assuming "A2" always returns
-main.adb:199:28: warning: assuming "A2" has no effect on global items
-main.adb:199:28: warning: no Global contract available for "A2"
-main.adb:199:28: warning: no returning annotation available for "A2"
-main.adb:199:40: info: precondition proved (CVC5: 1 VC)
-main.adb:199:40: warning: assuming "B1" always returns
-main.adb:199:40: warning: assuming "B1" has no effect on global items
-main.adb:199:40: warning: no Global contract available for "B1"
-main.adb:199:40: warning: no returning annotation available for "B1"
-main.adb:201:10: warning: assuming "Rand" always returns
-main.adb:201:10: warning: assuming "Rand" has no effect on global items
-main.adb:201:10: warning: no Global contract available for "Rand"
-main.adb:201:10: warning: no returning annotation available for "Rand"
-main.adb:202:29: medium: assertion premise might fail, cannot prove A1 [possible fix: you should consider adding a postcondition to function A1 or turning it into an expression function in its unit spec]
-main.adb:202:29: warning: assuming "A1" always returns
-main.adb:202:29: warning: assuming "A1" has no effect on global items
-main.adb:202:29: warning: no Global contract available for "A1"
-main.adb:202:29: warning: no returning annotation available for "A1"
-main.adb:203:29: info: precondition proved (CVC5: 1 VC)
-main.adb:203:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
-main.adb:203:29: warning: assuming "B1" always returns
-main.adb:203:29: warning: assuming "B1" has no effect on global items
-main.adb:203:29: warning: no Global contract available for "B1"
-main.adb:203:29: warning: no returning annotation available for "B1"
-main.adb:204:33: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
-main.adb:204:33: medium: precondition might fail, cannot prove A1
-main.adb:204:33: warning: assuming "B2" always returns
-main.adb:204:33: warning: assuming "B2" has no effect on global items
-main.adb:204:33: warning: no Global contract available for "B2"
-main.adb:204:33: warning: no returning annotation available for "B2"
-main.adb:205:33: medium: precondition might fail
-main.adb:205:33: warning: assuming "A2" always returns
-main.adb:205:33: warning: assuming "A2" has no effect on global items
-main.adb:205:33: warning: no Global contract available for "A2"
-main.adb:205:33: warning: no returning annotation available for "A2"
-main.adb:206:13: warning: assuming "Rand" always returns
-main.adb:206:13: warning: assuming "Rand" has no effect on global items
-main.adb:206:13: warning: no Global contract available for "Rand"
-main.adb:206:13: warning: no returning annotation available for "Rand"
-main.adb:207:29: warning: assuming "A1" always returns
-main.adb:207:29: warning: assuming "A1" has no effect on global items
-main.adb:207:29: warning: no Global contract available for "A1"
-main.adb:207:29: warning: no returning annotation available for "A1"
-main.adb:208:29: info: precondition proved (CVC5: 1 VC)
-main.adb:208:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
-main.adb:208:29: warning: assuming "B1" always returns
-main.adb:208:29: warning: assuming "B1" has no effect on global items
-main.adb:208:29: warning: no Global contract available for "B1"
-main.adb:208:29: warning: no returning annotation available for "B1"
-main.adb:209:38: info: precondition proved (CVC5: 3 VC)
-main.adb:209:38: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
-main.adb:209:38: warning: assuming "B2" always returns
-main.adb:209:38: warning: assuming "B2" has no effect on global items
-main.adb:209:38: warning: no Global contract available for "B2"
-main.adb:209:38: warning: no returning annotation available for "B2"
-main.adb:210:38: info: precondition proved (CVC5: 1 VC)
-main.adb:210:38: medium: assertion premise might fail, cannot prove A2 [possible fix: you should consider adding a postcondition to function A2 or turning it into an expression function in its unit spec]
-main.adb:210:38: warning: assuming "A2" always returns
-main.adb:210:38: warning: assuming "A2" has no effect on global items
-main.adb:210:38: warning: no Global contract available for "A2"
-main.adb:210:38: warning: no returning annotation available for "A2"
-main.adb:212:29: info: precondition proved (CVC5: 1 VC)
-main.adb:212:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
-main.adb:212:29: warning: assuming "B1" always returns
-main.adb:212:29: warning: assuming "B1" has no effect on global items
-main.adb:212:29: warning: no Global contract available for "B1"
-main.adb:212:29: warning: no returning annotation available for "B1"
-main.adb:213:29: medium: assertion premise might fail, cannot prove A1 [possible fix: you should consider adding a postcondition to function A1 or turning it into an expression function in its unit spec]
-main.adb:213:29: warning: assuming "A1" always returns
-main.adb:213:29: warning: assuming "A1" has no effect on global items
-main.adb:213:29: warning: no Global contract available for "A1"
-main.adb:213:29: warning: no returning annotation available for "A1"
-main.adb:214:38: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
-main.adb:214:38: medium: precondition might fail, cannot prove A1
-main.adb:214:38: warning: assuming "B2" always returns
-main.adb:214:38: warning: assuming "B2" has no effect on global items
-main.adb:214:38: warning: no Global contract available for "B2"
-main.adb:214:38: warning: no returning annotation available for "B2"
-main.adb:215:38: medium: precondition might fail
-main.adb:215:38: warning: assuming "A2" always returns
-main.adb:215:38: warning: assuming "A2" has no effect on global items
-main.adb:215:38: warning: no Global contract available for "A2"
-main.adb:215:38: warning: no returning annotation available for "A2"
-main.adb:219:30: info: data dependencies proved
-main.adb:222:16: warning: assuming "A1" always returns
-main.adb:222:16: warning: assuming "A1" has no effect on global items
-main.adb:222:16: warning: no Global contract available for "A1"
-main.adb:222:16: warning: no returning annotation available for "A1"
-main.adb:224:20: warning: assuming "A1" always returns
-main.adb:224:20: warning: assuming "A1" has no effect on global items
-main.adb:224:20: warning: no Global contract available for "A1"
-main.adb:224:20: warning: no returning annotation available for "A1"
-main.adb:224:35: info: precondition proved (CVC5: 1 VC)
-main.adb:224:35: warning: assuming "B1" always returns
-main.adb:224:35: warning: assuming "B1" has no effect on global items
-main.adb:224:35: warning: no Global contract available for "B1"
-main.adb:224:35: warning: no returning annotation available for "B1"
-main.adb:226:20: warning: assuming "A1" always returns
-main.adb:226:20: warning: assuming "A1" has no effect on global items
-main.adb:226:20: warning: no Global contract available for "A1"
-main.adb:226:20: warning: no returning annotation available for "A1"
-main.adb:226:36: info: precondition proved (CVC5: 1 VC)
-main.adb:226:36: warning: assuming "B1" always returns
-main.adb:226:36: warning: assuming "B1" has no effect on global items
-main.adb:226:36: warning: no Global contract available for "B1"
-main.adb:226:36: warning: no returning annotation available for "B1"
-main.adb:226:48: info: precondition proved (CVC5: 1 VC)
-main.adb:226:48: warning: assuming "A2" always returns
-main.adb:226:48: warning: assuming "A2" has no effect on global items
-main.adb:226:48: warning: no Global contract available for "A2"
-main.adb:226:48: warning: no returning annotation available for "A2"
-main.adb:228:10: warning: assuming "Rand" always returns
-main.adb:228:10: warning: assuming "Rand" has no effect on global items
-main.adb:228:10: warning: no Global contract available for "Rand"
-main.adb:228:10: warning: no returning annotation available for "Rand"
-main.adb:229:25: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function A1 and function B1 and function A2 and function B2 or turning them into expression functions in their unit spec]
-main.adb:229:29: info: precondition proved (CVC5: 1 VC)
-main.adb:229:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
-main.adb:229:29: warning: assuming "B1" always returns
-main.adb:229:29: warning: assuming "B1" has no effect on global items
-main.adb:229:29: warning: no Global contract available for "B1"
-main.adb:229:29: warning: no returning annotation available for "B1"
-main.adb:230:29: warning: assuming "A1" always returns
-main.adb:230:29: warning: assuming "A1" has no effect on global items
-main.adb:230:29: warning: no Global contract available for "A1"
-main.adb:230:29: warning: no returning annotation available for "A1"
-main.adb:231:32: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
-main.adb:231:32: medium: precondition might fail
-main.adb:231:32: warning: assuming "B2" always returns
-main.adb:231:32: warning: assuming "B2" has no effect on global items
-main.adb:231:32: warning: no Global contract available for "B2"
-main.adb:231:32: warning: no returning annotation available for "B2"
+main.adb:179:38: info: assertion step proved (CVC5: 1 VC)
+main.adb:180:13: warning: assuming "Rand" always returns
+main.adb:180:13: warning: assuming "Rand" has no effect on global items
+main.adb:180:13: warning: no Global contract available for "Rand"
+main.adb:180:13: warning: no returning annotation available for "Rand"
+main.adb:184:25: info: assertion premise proved (CVC5: 1 VC)
+main.adb:184:33: info: assertion step proved (CVC5: 1 VC)
+main.adb:186:32: medium: assertion step might fail [possible fix: subprogram at line 157 should mention B2 in a precondition]
+main.adb:187:32: info: assertion step proved (CVC5: 1 VC)
+main.adb:193:30: info: data dependencies proved
+main.adb:196:16: warning: assuming "A1" always returns
+main.adb:196:16: warning: assuming "A1" has no effect on global items
+main.adb:196:16: warning: no Global contract available for "A1"
+main.adb:196:16: warning: no returning annotation available for "A1"
+main.adb:198:16: warning: assuming "A1" always returns
+main.adb:198:16: warning: assuming "A1" has no effect on global items
+main.adb:198:16: warning: no Global contract available for "A1"
+main.adb:198:16: warning: no returning annotation available for "A1"
+main.adb:200:16: warning: assuming "A1" always returns
+main.adb:200:16: warning: assuming "A1" has no effect on global items
+main.adb:200:16: warning: no Global contract available for "A1"
+main.adb:200:16: warning: no returning annotation available for "A1"
+main.adb:200:28: info: precondition proved (CVC5: 1 VC)
+main.adb:200:28: warning: assuming "A2" always returns
+main.adb:200:28: warning: assuming "A2" has no effect on global items
+main.adb:200:28: warning: no Global contract available for "A2"
+main.adb:200:28: warning: no returning annotation available for "A2"
+main.adb:200:40: info: precondition proved (CVC5: 1 VC)
+main.adb:200:40: warning: assuming "B1" always returns
+main.adb:200:40: warning: assuming "B1" has no effect on global items
+main.adb:200:40: warning: no Global contract available for "B1"
+main.adb:200:40: warning: no returning annotation available for "B1"
+main.adb:202:10: warning: assuming "Rand" always returns
+main.adb:202:10: warning: assuming "Rand" has no effect on global items
+main.adb:202:10: warning: no Global contract available for "Rand"
+main.adb:202:10: warning: no returning annotation available for "Rand"
+main.adb:203:29: medium: assertion premise might fail, cannot prove A1 [possible fix: you should consider adding a postcondition to function A1 or turning it into an expression function in its unit spec]
+main.adb:203:29: warning: assuming "A1" always returns
+main.adb:203:29: warning: assuming "A1" has no effect on global items
+main.adb:203:29: warning: no Global contract available for "A1"
+main.adb:203:29: warning: no returning annotation available for "A1"
+main.adb:204:29: info: precondition proved (CVC5: 1 VC)
+main.adb:204:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
+main.adb:204:29: warning: assuming "B1" always returns
+main.adb:204:29: warning: assuming "B1" has no effect on global items
+main.adb:204:29: warning: no Global contract available for "B1"
+main.adb:204:29: warning: no returning annotation available for "B1"
+main.adb:205:33: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
+main.adb:205:33: medium: precondition might fail, cannot prove A1
+main.adb:205:33: warning: assuming "B2" always returns
+main.adb:205:33: warning: assuming "B2" has no effect on global items
+main.adb:205:33: warning: no Global contract available for "B2"
+main.adb:205:33: warning: no returning annotation available for "B2"
+main.adb:206:33: medium: precondition might fail
+main.adb:206:33: warning: assuming "A2" always returns
+main.adb:206:33: warning: assuming "A2" has no effect on global items
+main.adb:206:33: warning: no Global contract available for "A2"
+main.adb:206:33: warning: no returning annotation available for "A2"
+main.adb:207:13: warning: assuming "Rand" always returns
+main.adb:207:13: warning: assuming "Rand" has no effect on global items
+main.adb:207:13: warning: no Global contract available for "Rand"
+main.adb:207:13: warning: no returning annotation available for "Rand"
+main.adb:208:29: warning: assuming "A1" always returns
+main.adb:208:29: warning: assuming "A1" has no effect on global items
+main.adb:208:29: warning: no Global contract available for "A1"
+main.adb:208:29: warning: no returning annotation available for "A1"
+main.adb:209:29: info: precondition proved (CVC5: 1 VC)
+main.adb:209:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
+main.adb:209:29: warning: assuming "B1" always returns
+main.adb:209:29: warning: assuming "B1" has no effect on global items
+main.adb:209:29: warning: no Global contract available for "B1"
+main.adb:209:29: warning: no returning annotation available for "B1"
+main.adb:210:38: info: precondition proved (CVC5: 3 VC)
+main.adb:210:38: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
+main.adb:210:38: warning: assuming "B2" always returns
+main.adb:210:38: warning: assuming "B2" has no effect on global items
+main.adb:210:38: warning: no Global contract available for "B2"
+main.adb:210:38: warning: no returning annotation available for "B2"
+main.adb:211:38: info: precondition proved (CVC5: 1 VC)
+main.adb:211:38: medium: assertion premise might fail, cannot prove A2 [possible fix: you should consider adding a postcondition to function A2 or turning it into an expression function in its unit spec]
+main.adb:211:38: warning: assuming "A2" always returns
+main.adb:211:38: warning: assuming "A2" has no effect on global items
+main.adb:211:38: warning: no Global contract available for "A2"
+main.adb:211:38: warning: no returning annotation available for "A2"
+main.adb:213:29: info: precondition proved (CVC5: 1 VC)
+main.adb:213:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
+main.adb:213:29: warning: assuming "B1" always returns
+main.adb:213:29: warning: assuming "B1" has no effect on global items
+main.adb:213:29: warning: no Global contract available for "B1"
+main.adb:213:29: warning: no returning annotation available for "B1"
+main.adb:214:29: medium: assertion premise might fail, cannot prove A1 [possible fix: you should consider adding a postcondition to function A1 or turning it into an expression function in its unit spec]
+main.adb:214:29: warning: assuming "A1" always returns
+main.adb:214:29: warning: assuming "A1" has no effect on global items
+main.adb:214:29: warning: no Global contract available for "A1"
+main.adb:214:29: warning: no returning annotation available for "A1"
+main.adb:215:38: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
+main.adb:215:38: medium: precondition might fail, cannot prove A1
+main.adb:215:38: warning: assuming "B2" always returns
+main.adb:215:38: warning: assuming "B2" has no effect on global items
+main.adb:215:38: warning: no Global contract available for "B2"
+main.adb:215:38: warning: no returning annotation available for "B2"
+main.adb:216:38: medium: precondition might fail
+main.adb:216:38: warning: assuming "A2" always returns
+main.adb:216:38: warning: assuming "A2" has no effect on global items
+main.adb:216:38: warning: no Global contract available for "A2"
+main.adb:216:38: warning: no returning annotation available for "A2"
+main.adb:220:30: info: data dependencies proved
+main.adb:223:16: warning: assuming "A1" always returns
+main.adb:223:16: warning: assuming "A1" has no effect on global items
+main.adb:223:16: warning: no Global contract available for "A1"
+main.adb:223:16: warning: no returning annotation available for "A1"
+main.adb:225:20: warning: assuming "A1" always returns
+main.adb:225:20: warning: assuming "A1" has no effect on global items
+main.adb:225:20: warning: no Global contract available for "A1"
+main.adb:225:20: warning: no returning annotation available for "A1"
+main.adb:225:35: info: precondition proved (CVC5: 1 VC)
+main.adb:225:35: warning: assuming "B1" always returns
+main.adb:225:35: warning: assuming "B1" has no effect on global items
+main.adb:225:35: warning: no Global contract available for "B1"
+main.adb:225:35: warning: no returning annotation available for "B1"
+main.adb:227:20: warning: assuming "A1" always returns
+main.adb:227:20: warning: assuming "A1" has no effect on global items
+main.adb:227:20: warning: no Global contract available for "A1"
+main.adb:227:20: warning: no returning annotation available for "A1"
+main.adb:227:36: info: precondition proved (CVC5: 1 VC)
+main.adb:227:36: warning: assuming "B1" always returns
+main.adb:227:36: warning: assuming "B1" has no effect on global items
+main.adb:227:36: warning: no Global contract available for "B1"
+main.adb:227:36: warning: no returning annotation available for "B1"
+main.adb:227:48: info: precondition proved (CVC5: 1 VC)
+main.adb:227:48: warning: assuming "A2" always returns
+main.adb:227:48: warning: assuming "A2" has no effect on global items
+main.adb:227:48: warning: no Global contract available for "A2"
+main.adb:227:48: warning: no returning annotation available for "A2"
+main.adb:229:10: warning: assuming "Rand" always returns
+main.adb:229:10: warning: assuming "Rand" has no effect on global items
+main.adb:229:10: warning: no Global contract available for "Rand"
+main.adb:229:10: warning: no returning annotation available for "Rand"
+main.adb:230:25: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function A1 and function B1 and function A2 and function B2 or turning them into expression functions in their unit spec]
+main.adb:230:29: info: precondition proved (CVC5: 1 VC)
+main.adb:230:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
+main.adb:230:29: warning: assuming "B1" always returns
+main.adb:230:29: warning: assuming "B1" has no effect on global items
+main.adb:230:29: warning: no Global contract available for "B1"
+main.adb:230:29: warning: no returning annotation available for "B1"
+main.adb:231:29: warning: assuming "A1" always returns
+main.adb:231:29: warning: assuming "A1" has no effect on global items
+main.adb:231:29: warning: no Global contract available for "A1"
+main.adb:231:29: warning: no returning annotation available for "A1"
+main.adb:232:32: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
 main.adb:232:32: medium: precondition might fail
-main.adb:232:32: warning: assuming "A2" always returns
-main.adb:232:32: warning: assuming "A2" has no effect on global items
-main.adb:232:32: warning: no Global contract available for "A2"
-main.adb:232:32: warning: no returning annotation available for "A2"
-main.adb:233:13: warning: assuming "Rand" always returns
-main.adb:233:13: warning: assuming "Rand" has no effect on global items
-main.adb:233:13: warning: no Global contract available for "Rand"
-main.adb:233:13: warning: no returning annotation available for "Rand"
-main.adb:234:25: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function A1 and function B1 and function A2 and function B2 or turning them into expression functions in their unit spec]
-main.adb:234:29: info: precondition proved (CVC5: 1 VC)
-main.adb:234:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
-main.adb:234:29: warning: assuming "B1" always returns
-main.adb:234:29: warning: assuming "B1" has no effect on global items
-main.adb:234:29: warning: no Global contract available for "B1"
-main.adb:234:29: warning: no returning annotation available for "B1"
-main.adb:235:29: warning: assuming "A1" always returns
-main.adb:235:29: warning: assuming "A1" has no effect on global items
-main.adb:235:29: warning: no Global contract available for "A1"
-main.adb:235:29: warning: no returning annotation available for "A1"
-main.adb:236:37: info: precondition proved (CVC5: 1 VC)
-main.adb:236:37: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
-main.adb:236:37: warning: assuming "B2" always returns
-main.adb:236:37: warning: assuming "B2" has no effect on global items
-main.adb:236:37: warning: no Global contract available for "B2"
-main.adb:236:37: warning: no returning annotation available for "B2"
+main.adb:232:32: warning: assuming "B2" always returns
+main.adb:232:32: warning: assuming "B2" has no effect on global items
+main.adb:232:32: warning: no Global contract available for "B2"
+main.adb:232:32: warning: no returning annotation available for "B2"
+main.adb:233:32: medium: precondition might fail
+main.adb:233:32: warning: assuming "A2" always returns
+main.adb:233:32: warning: assuming "A2" has no effect on global items
+main.adb:233:32: warning: no Global contract available for "A2"
+main.adb:233:32: warning: no returning annotation available for "A2"
+main.adb:234:13: warning: assuming "Rand" always returns
+main.adb:234:13: warning: assuming "Rand" has no effect on global items
+main.adb:234:13: warning: no Global contract available for "Rand"
+main.adb:234:13: warning: no returning annotation available for "Rand"
+main.adb:235:25: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function A1 and function B1 and function A2 and function B2 or turning them into expression functions in their unit spec]
+main.adb:235:29: info: precondition proved (CVC5: 1 VC)
+main.adb:235:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
+main.adb:235:29: warning: assuming "B1" always returns
+main.adb:235:29: warning: assuming "B1" has no effect on global items
+main.adb:235:29: warning: no Global contract available for "B1"
+main.adb:235:29: warning: no returning annotation available for "B1"
+main.adb:236:29: warning: assuming "A1" always returns
+main.adb:236:29: warning: assuming "A1" has no effect on global items
+main.adb:236:29: warning: no Global contract available for "A1"
+main.adb:236:29: warning: no returning annotation available for "A1"
 main.adb:237:37: info: precondition proved (CVC5: 1 VC)
-main.adb:237:37: warning: assuming "A2" always returns
-main.adb:237:37: warning: assuming "A2" has no effect on global items
-main.adb:237:37: warning: no Global contract available for "A2"
-main.adb:237:37: warning: no returning annotation available for "A2"
-main.adb:239:25: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function A1 and function B1 and function A2 and function B2 or turning them into expression functions in their unit spec]
-main.adb:239:29: warning: assuming "A1" always returns
-main.adb:239:29: warning: assuming "A1" has no effect on global items
-main.adb:239:29: warning: no Global contract available for "A1"
-main.adb:239:29: warning: no returning annotation available for "A1"
-main.adb:240:29: info: precondition proved (CVC5: 1 VC)
-main.adb:240:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
-main.adb:240:29: warning: assuming "B1" always returns
-main.adb:240:29: warning: assuming "B1" has no effect on global items
-main.adb:240:29: warning: no Global contract available for "B1"
-main.adb:240:29: warning: no returning annotation available for "B1"
-main.adb:241:37: info: precondition proved (CVC5: 1 VC)
-main.adb:241:37: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
-main.adb:241:37: warning: assuming "B2" always returns
-main.adb:241:37: warning: assuming "B2" has no effect on global items
-main.adb:241:37: warning: no Global contract available for "B2"
-main.adb:241:37: warning: no returning annotation available for "B2"
+main.adb:237:37: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
+main.adb:237:37: warning: assuming "B2" always returns
+main.adb:237:37: warning: assuming "B2" has no effect on global items
+main.adb:237:37: warning: no Global contract available for "B2"
+main.adb:237:37: warning: no returning annotation available for "B2"
+main.adb:238:37: info: precondition proved (CVC5: 1 VC)
+main.adb:238:37: warning: assuming "A2" always returns
+main.adb:238:37: warning: assuming "A2" has no effect on global items
+main.adb:238:37: warning: no Global contract available for "A2"
+main.adb:238:37: warning: no returning annotation available for "A2"
+main.adb:240:25: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function A1 and function B1 and function A2 and function B2 or turning them into expression functions in their unit spec]
+main.adb:240:29: warning: assuming "A1" always returns
+main.adb:240:29: warning: assuming "A1" has no effect on global items
+main.adb:240:29: warning: no Global contract available for "A1"
+main.adb:240:29: warning: no returning annotation available for "A1"
+main.adb:241:29: info: precondition proved (CVC5: 1 VC)
+main.adb:241:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
+main.adb:241:29: warning: assuming "B1" always returns
+main.adb:241:29: warning: assuming "B1" has no effect on global items
+main.adb:241:29: warning: no Global contract available for "B1"
+main.adb:241:29: warning: no returning annotation available for "B1"
 main.adb:242:37: info: precondition proved (CVC5: 1 VC)
-main.adb:242:37: warning: assuming "A2" always returns
-main.adb:242:37: warning: assuming "A2" has no effect on global items
-main.adb:242:37: warning: no Global contract available for "A2"
-main.adb:242:37: warning: no returning annotation available for "A2"
-main.adb:248:70: info: data dependencies proved
-main.adb:251:10: warning: assuming "Rand" always returns
-main.adb:251:10: warning: assuming "Rand" has no effect on global items
-main.adb:251:10: warning: no Global contract available for "Rand"
-main.adb:251:10: warning: no returning annotation available for "Rand"
-main.adb:255:25: info: assertion premise proved (CVC5: 2 VC; Trivial: 2 VC)
-main.adb:255:44: info: assertion step proved (CVC5: 1 VC)
-main.adb:256:39: warning: unreachable branch (CVC5: 1 VC)
-main.adb:256:43: info: assertion step proved (CVC5: 1 VC)
-main.adb:259:13: warning: assuming "Rand" always returns
-main.adb:259:13: warning: assuming "Rand" has no effect on global items
-main.adb:259:13: warning: no Global contract available for "Rand"
-main.adb:259:13: warning: no returning annotation available for "Rand"
-main.adb:263:25: info: assertion premise proved (CVC5: 3 VC)
-main.adb:263:44: info: assertion step proved (CVC5: 1 VC)
-main.adb:264:47: info: assertion step proved (CVC5: 1 VC)
-main.adb:265:30: warning: unreachable branch (CVC5: 1 VC)
-main.adb:266:13: warning: assuming "Rand" always returns
-main.adb:266:13: warning: assuming "Rand" has no effect on global items
-main.adb:266:13: warning: no Global contract available for "Rand"
-main.adb:266:13: warning: no returning annotation available for "Rand"
-main.adb:270:25: info: assertion premise proved (CVC5: 2 VC; Trivial: 1 VC)
-main.adb:271:50: info: assertion step proved (CVC5: 1 VC)
-main.adb:274:45: warning: unreachable branch (CVC5: 1 VC)
-main.adb:274:49: info: assertion step proved (CVC5: 1 VC)
-main.adb:276:13: warning: assuming "Rand" always returns
-main.adb:276:13: warning: assuming "Rand" has no effect on global items
-main.adb:276:13: warning: no Global contract available for "Rand"
-main.adb:276:13: warning: no returning annotation available for "Rand"
-main.adb:281:25: info: assertion premise proved (CVC5: 1 VC; Trivial: 1 VC)
-main.adb:281:72: warning: unreachable branch (CVC5: 1 VC)
-main.adb:281:76: info: assertion step proved (CVC5: 1 VC)
+main.adb:242:37: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
+main.adb:242:37: warning: assuming "B2" always returns
+main.adb:242:37: warning: assuming "B2" has no effect on global items
+main.adb:242:37: warning: no Global contract available for "B2"
+main.adb:242:37: warning: no returning annotation available for "B2"
+main.adb:243:37: info: precondition proved (CVC5: 1 VC)
+main.adb:243:37: warning: assuming "A2" always returns
+main.adb:243:37: warning: assuming "A2" has no effect on global items
+main.adb:243:37: warning: no Global contract available for "A2"
+main.adb:243:37: warning: no returning annotation available for "A2"
+main.adb:249:70: info: data dependencies proved
+main.adb:252:10: warning: assuming "Rand" always returns
+main.adb:252:10: warning: assuming "Rand" has no effect on global items
+main.adb:252:10: warning: no Global contract available for "Rand"
+main.adb:252:10: warning: no returning annotation available for "Rand"
+main.adb:256:25: info: assertion premise proved (CVC5: 2 VC; Trivial: 2 VC)
+main.adb:256:44: info: assertion step proved (CVC5: 1 VC)
+main.adb:257:39: warning: unreachable branch (CVC5: 1 VC)
+main.adb:257:43: info: assertion step proved (CVC5: 1 VC)
+main.adb:260:13: warning: assuming "Rand" always returns
+main.adb:260:13: warning: assuming "Rand" has no effect on global items
+main.adb:260:13: warning: no Global contract available for "Rand"
+main.adb:260:13: warning: no returning annotation available for "Rand"
+main.adb:264:25: info: assertion premise proved (CVC5: 3 VC)
+main.adb:264:44: info: assertion step proved (CVC5: 1 VC)
+main.adb:265:47: info: assertion step proved (CVC5: 1 VC)
+main.adb:266:30: warning: unreachable branch (CVC5: 1 VC)
+main.adb:267:13: warning: assuming "Rand" always returns
+main.adb:267:13: warning: assuming "Rand" has no effect on global items
+main.adb:267:13: warning: no Global contract available for "Rand"
+main.adb:267:13: warning: no returning annotation available for "Rand"
+main.adb:271:25: info: assertion premise proved (CVC5: 2 VC; Trivial: 1 VC)
+main.adb:272:50: info: assertion step proved (CVC5: 1 VC)
+main.adb:275:45: warning: unreachable branch (CVC5: 1 VC)
+main.adb:275:49: info: assertion step proved (CVC5: 1 VC)
+main.adb:277:13: warning: assuming "Rand" always returns
+main.adb:277:13: warning: assuming "Rand" has no effect on global items
+main.adb:277:13: warning: no Global contract available for "Rand"
+main.adb:277:13: warning: no returning annotation available for "Rand"
+main.adb:282:25: info: assertion premise proved (CVC5: 1 VC; Trivial: 1 VC)
+main.adb:282:72: warning: unreachable branch (CVC5: 1 VC)
+main.adb:282:76: info: assertion step proved (CVC5: 1 VC)

@@ -5,19 +5,20 @@ procedure Main with SPARK_Mode is
 
    --  Functionality: simple uses wit for some and for all
 
+   function F (X : Integer) return Integer with
+     Import;
+
+   function Axiom_F_Pos (X : Integer) return Boolean with
+     Ghost,
+     Import,
+     Post => (Axiom_F_Pos'Result = True) and F (X) >= 0;
+
+   function Find_F_Is_3 return Integer with
+     Ghost,
+     Import,
+     Post => F (Find_F_Is_3'Result) = 3;
+
    procedure Test_1 with Global => null is
-      function F (X : Integer) return Integer with
-        Import;
-
-      function Axiom_F_Pos (X : Integer) return Boolean with
-        Ghost,
-        Import,
-        Post => (Axiom_F_Pos'Result = True) and F (X) >= 0;
-
-      function Find_F_Is_3 return Integer with
-        Ghost,
-        Import,
-        Post => F (Find_F_Is_3'Result) = 3;
 
    begin
       if Rand (1) then

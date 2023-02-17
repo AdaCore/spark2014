@@ -2,6 +2,7 @@ complex_trajectory.adb:14:46: info: float overflow check proved (Trivial)
 complex_trajectory.adb:14:46: info: range check proved (Trivial)
 complex_trajectory.adb:14:55: info: float overflow check proved (Trivial)
 complex_trajectory.adb:14:59: info: float overflow check proved (Trivial)
+complex_trajectory.adb:15:16: info: implicit function contract might not be available on calls from enclosing unit
 complex_trajectory.adb:15:60: info: range check proved (Trivial)
 complex_trajectory.adb:18:22: info: float overflow check proved (colibri: 1 VC)
 complex_trajectory.adb:22:22: info: assertion proved (colibri: 2 VC)
@@ -171,6 +172,7 @@ complex_trajectory_overflow.adb:14:46: info: float overflow check proved (Trivia
 complex_trajectory_overflow.adb:14:46: info: range check proved (Trivial)
 complex_trajectory_overflow.adb:14:55: info: float overflow check proved (Trivial)
 complex_trajectory_overflow.adb:14:59: info: float overflow check proved (Trivial)
+complex_trajectory_overflow.adb:15:16: info: implicit function contract might not be available on calls from enclosing unit
 complex_trajectory_overflow.adb:15:60: info: range check proved (Trivial)
 complex_trajectory_overflow.adb:18:22: info: float overflow check proved (colibri: 1 VC)
 complex_trajectory_overflow.adb:22:22: info: assertion proved (colibri: 2 VC)
@@ -239,6 +241,7 @@ simple_trajectory.adb:13:46: info: float overflow check proved (Trivial)
 simple_trajectory.adb:13:46: info: range check proved (Trivial)
 simple_trajectory.adb:13:55: info: float overflow check proved (Trivial)
 simple_trajectory.adb:13:59: info: float overflow check proved (Trivial)
+simple_trajectory.adb:14:16: info: implicit function contract might not be available on calls from enclosing unit
 simple_trajectory.adb:14:60: info: range check proved (Trivial)
 simple_trajectory.adb:17:30: info: float overflow check proved (colibri: 1 VC)
 simple_trajectory.adb:21:22: info: assertion proved (colibri: 2 VC)
