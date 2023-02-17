@@ -906,10 +906,14 @@ being available:
   GNATprove. This is similar to [ADA_RECURSIVE_SUBPROGRAMS].
 
 * [PARTIAL_TASKING]
-  If tasks are used but no single run of GNATprove analyzes all units that
-  define tasks, then for each run of GNATprove, all tasks `not` defined in
-  units analyzed during that run of GNATprove must comply with [ADA_TASKING] as
-  if those tasks were not SPARK tasks.
+  If no single run of GNATprove analyzes all units that define tasks, then for
+  each run of GNATprove, all tasks `not` defined in units analyzed during that
+  run of GNATprove must comply with [ADA_TASKING] as if those tasks were not
+  SPARK tasks. Note: The environment task, which is present in every Ada
+  partition, is considered by GNATprove to be defined by the unit that defines
+  the main subprogram of that Ada partition. Note also: If an Ada partition
+  defines no tasks other than the environment task, then that Ada partition is
+  trivially in compliance with this assumption.
 
 In addition, the following assumptions need to be addressed when compiling the
 program with another compiler than GNAT:
