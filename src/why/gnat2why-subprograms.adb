@@ -5689,6 +5689,7 @@ package body Gnat2Why.Subprograms is
                    (Specialization_Module).Rec_Ax_Module);
          end if;
       end if;
+      Register_Dependency_For_Soundness (My_Th.Module, E);
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
    end Generate_Axiom_For_Post;
@@ -6151,6 +6152,8 @@ package body Gnat2Why.Subprograms is
       if Dispatch_Th /= Empty_Theory then
          Close_Theory (Dispatch_Th,
                        Kind => Definition_Theory);
+         Register_Dependency_For_Soundness
+           (E_Dispatch_Module (E, Axiom => True), E);
          Record_Extra_Dependency
            (Defining_Module => E_Dispatch_Module (E),
             Axiom_Module    => Dispatch_Th.Module);

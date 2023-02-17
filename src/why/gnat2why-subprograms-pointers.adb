@@ -1085,7 +1085,7 @@ package body Gnat2Why.Subprograms.Pointers is
       Close_Theory (Th,
                     Kind           => Axiom_Theory,
                     Defined_Entity => Expr);
-
+      Register_Dependency_For_Soundness (Th.Module, Subp);
    end Declare_Theory_For_Access_If_Needed;
 
    ---------------------------------------------

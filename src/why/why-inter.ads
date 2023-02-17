@@ -264,6 +264,21 @@ package Why.Inter is
    --  Record an extra dependency between Defining_Module and Axiom_Module so
    --  the second is withed along with the first in VC modules.
 
+   procedure Register_Dependency_For_Soundness (M : W_Module_Id;
+                                                E : Entity_Id);
+   --  Register that M is an axiom module for E. This is used for cycle
+   --  detection.
+
+   procedure Check_Safe_Guard_Cycles;
+   --  This should be called when all modules have been generated. This
+   --  subprogram considers cycles in the graph whose nodes are subprogram
+   --  entities, and there is a directed edge between two entities if one
+   --  includes the post axiom of the other. Generate a warning for cycles in
+   --  this graph.
+   --  These cycles correspond to post axioms of entities used to prove
+   --  properties of the entity itself, possibly via the proof of other
+   --  entities.
+
 private
    Module_Dependencies : Why_Node_Graphs.Map;
    --  Mapping from an module to the set of modules on which it depends. This

@@ -2,6 +2,8 @@ infeasible_access_subp.adb:2:04: medium: contract of function might not be feasi
 infeasible_access_subp.adb:6:14: info: postcondition proved (CVC5: 1 VC)
 infeasible_access_subp.adb:9:07: medium: call via access-to-subprogram, terminating annotation could be incorrect
 infeasible_access_subp.adb:9:33: info: pointer dereference check proved (CVC5: 1 VC)
+infeasible_access_subp.adb:14:13: error: "G1" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+infeasible_access_subp.adb:14:13: error: unsupported recursive subprogram
 infeasible_access_subp.adb:14:58: info: postcondition proved (CVC5: 1 VC)
 infeasible_access_subp.adb:16:58: info: postcondition proved (CVC5: 1 VC)
 infeasible_access_subp.adb:19:49: info: postcondition of source is strong enough to imply postcondition of target (CVC5: 1 VC)
@@ -14,3 +16,4 @@ test.adb:14:07: info: function contract feasibility proved (CVC5: 1 VC)
 test.adb:22:07: medium: contract of function might not be feasible
 test.adb:25:12: info: range check proved (CVC5: 2 VC)
 test.adb:29:07: medium: contract of function might not be feasible (e.g. when G = 9)
+gnatprove: error during flow analysis and proof

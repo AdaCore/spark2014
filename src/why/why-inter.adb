@@ -25,7 +25,6 @@
 
 with Ada.Containers.Hashed_Maps;
 with Errout;                         use Errout;
-with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Namet;                          use Namet;
 with Snames;                         use Snames;
@@ -62,6 +61,21 @@ package body Why.Inter is
       Equivalent_Keys => "=");
 
    Symbol_To_Theory_Map : Symbol_To_Theory_Maps.Map;
+
+   package Entity_For_Axiom_Module_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Why_Node_Id,
+      Element_Type    => Node_Id,
+      Hash            => Why_Node_Hash,
+      Equivalent_Keys => "=");
+
+   Entity_For_Axiom_Module : Entity_For_Axiom_Module_Maps.Map;
+   --  For axiom modules, we register the corresponding entity, in whose VC
+   --  generation module the soundness of the axiom is established. This
+   --  information is used to build the Safe_Guard_Graph.
+
+   Safe_Guard_Graph : Node_Graphs.Map;
+   --  This graph represents the axiom dependencies between entities. We use it
+   --  to detect circular dependencies, which are potentially unsound.
 
    -----------------------
    -- Local Subprograms --
@@ -478,7 +492,79 @@ package body Why.Inter is
    end Base_Why_Type_No_Bool;
 
    function Base_Why_Type_No_Bool (Expr : W_Expr_Id) return W_Type_Id is
-      (Base_Why_Type_No_Bool (Get_Type (Expr)));
+     (Base_Why_Type_No_Bool (Get_Type (Expr)));
+
+   -----------------------------
+   -- Check_Safe_Guard_Cycles --
+   -----------------------------
+
+   procedure Check_Safe_Guard_Cycles is
+      Seen     : Node_Sets.Set;
+
+      procedure DFS (N : Node_Id);
+      --  A non-recursive depth-first traversal of the graph stored in
+      --  Safe_Guard_Map starting from node N. This routine issues an
+      --  error message if a cycle is detected during the traversal.
+
+      procedure DFS (N : Node_Id) is
+
+         --  The Stack variable represents the remaining nodes to be
+         --  considered.
+         --  The On_Stack variable represents the nodes that would be on the
+         --  (call) stack if the DFS was implemented recursively. This is
+         --  needed for cycle detection.
+         --  The traversal never needs to traverse a node twice, so we also
+         --  have a Seen set to leave early when we have already encountered
+         --  the node.
+
+         Stack    : Node_Lists.List;
+         On_Stack : Node_Sets.Set;
+      begin
+         if Seen.Contains (N) then
+            return;
+         end if;
+         Stack.Append (N);
+         while not Stack.Is_Empty loop
+            declare
+               Cur : constant Node_Id := Stack.Last_Element;
+            begin
+               if Seen.Contains (Cur) then
+                  On_Stack.Exclude (Cur);
+                  Stack.Delete_Last;
+               else
+                  Seen.Include (Cur);
+                  On_Stack.Include (Cur);
+               end if;
+
+               if Safe_Guard_Graph.Contains (Cur) then
+                  for Next of Safe_Guard_Graph (Cur) loop
+                     if not Seen.Contains (Next) then
+                        Stack.Append (Next);
+                     elsif On_Stack.Contains (Next) then
+                        Error_Msg_F
+                          ("unsupported recursive subprogram", Next);
+                        Error_Msg_NE
+                          ("\& might include a recursive call due to a"
+                           & " type invariant"
+                           & " or subtype predicate, or there might be a"
+                           & " cycle in the"
+                           & " elaboration of the enclosing unit",
+                           Next, Next);
+                     end if;
+                  end loop;
+               end if;
+            end;
+         end loop;
+      end DFS;
+
+   --  Begining of processing for Check_Safe_Guard_Cycles
+
+   begin
+
+      for Cu in Safe_Guard_Graph.Iterate loop
+         DFS (Node_Graphs.Key (Cu));
+      end loop;
+   end Check_Safe_Guard_Cycles;
 
    ------------------
    -- Close_Theory --
@@ -525,47 +611,46 @@ package body Why.Inter is
             From   => S,
             Filter => Filter);
 
+         if Present (Defined_Entity)
+           and then not Safe_Guard_Graph.Contains (Defined_Entity)
+         then
+            Safe_Guard_Graph.Include (Defined_Entity, Node_Sets.Empty_Set);
+         end if;
+
          for M of Closure loop
-
-            --  Safe guard: the post axiom of subprograms and entries should
-            --  not be used to prove the subprogram itself. If the subprogram
-            --  is recursive, then the post axiom is in the Rec_Axiom module.
-
-            if Present (Defined_Entity)
-              and then Is_Subprogram_Or_Entry (Defined_Entity)
-              and then Has_Post_Axiom (Defined_Entity)
-              and then +M = (if Proof_Module_Cyclic (Defined_Entity)
-                             then E_Rec_Axiom_Module (Defined_Entity)
-                             else E_Axiom_Module (Defined_Entity))
-            then
-               Error_Msg_F
-                 ("unsupported recursive subprogram", Defined_Entity);
-               Error_Msg_NE
-                 ("\& might include a recursive call due to a type invariant"
-                  & " or subtype predicate, or there might be a cycle in the"
-                  & " elaboration of the enclosing unit",
-                  Defined_Entity, Defined_Entity);
-            else
+            declare
+               Node : constant Node_Id := Get_Ada_Node (M);
+            begin
 
                --  Special case for local constants. The closure contains the
                --  axiom module for local constants, but we don't need these
                --  axioms in the subprogram/package that directly contains the
                --  constant, so we filter this here.
 
-               declare
-                  Node : constant Node_Id := Get_Ada_Node (M);
-               begin
-                  if Present (Node)
-                    and then Nkind (Node) in N_Entity
-                    and then Ekind (Node) = E_Constant
-                    and then Enclosing_Unit (Node) = Defined_Entity
-                  then
-                     null;
-                  else
-                     Add_With_Clause (Th, W_Module_Id (M), EW_Clone_Default);
-                  end if;
-               end;
-            end if;
+               if Present (Node)
+                 and then Nkind (Node) in N_Entity
+                 and then Is_Constant_Object (Node)
+                 and then Enclosing_Unit (Node) = Defined_Entity
+               then
+                  null;
+               else
+                  Add_With_Clause (Th, W_Module_Id (M), EW_Clone_Default);
+
+                  --  For each includes of axiom modules, we add an edge into
+                  --  the Safe_Guard_Graph.
+
+                  declare
+                     use Entity_For_Axiom_Module_Maps;
+                     C : constant Entity_For_Axiom_Module_Maps.Cursor :=
+                       Entity_For_Axiom_Module.Find (M);
+                  begin
+                     if Has_Element (C) and then Present (Defined_Entity) then
+                        Safe_Guard_Graph (Defined_Entity).Include
+                          (Element (C));
+                     end if;
+                  end;
+               end if;
+            end;
          end loop;
       end Add_Axiom_Imports;
 
@@ -1215,6 +1300,16 @@ package body Why.Inter is
                     +Defining_Module,
                     +Axiom_Module);
    end Record_Extra_Dependency;
+
+   ---------------------------
+   -- Register_Axiom_Module --
+   ---------------------------
+
+   procedure Register_Dependency_For_Soundness (M : W_Module_Id; E : Entity_Id)
+   is
+   begin
+      Entity_For_Axiom_Module.Insert (Why_Node_Id (M), E);
+   end Register_Dependency_For_Soundness;
 
    ---------------
    -- To_Why_Id --
