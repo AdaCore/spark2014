@@ -684,6 +684,8 @@ package body Gnat2Why.Error_Messages is
                end case;
             end if;
             return "exception might be raised";
+         when VC_Feasible_Post             =>
+            return "contract of function might not be feasible";
          when VC_Inline_Check              =>
             return "Inline_For_Proof or Logical_Equal annotation might be"
               & " incorrect";
@@ -1668,6 +1670,8 @@ package body Gnat2Why.Error_Messages is
                end case;
             end if;
             return "raise statement or expression " & Verb & " unreachable";
+         when VC_Feasible_Post             =>
+            return "function contract feasibility " & Verb;
          when VC_Inline_Check              =>
             return "Inline_For_Proof or Logical_Equal annotation " & Verb;
          when VC_Subprogram_Variant        =>

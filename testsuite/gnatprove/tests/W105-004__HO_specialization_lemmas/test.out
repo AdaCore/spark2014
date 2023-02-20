@@ -1,4 +1,6 @@
+ho_lemmas.adb:13:32: info: function contract feasibility proved (CVC5: 1 VC)
 ho_lemmas.adb:14:09: info: pointer dereference check proved (CVC5: 1 VC)
+ho_lemmas.adb:19:37: info: function contract feasibility proved (CVC5: 1 VC)
 ho_lemmas.adb:22:14: info: implicit function contract not available for proof ("Call" might not return)
 ho_lemmas.adb:22:14: info: postcondition proved (CVC5: 1 VC)
 ho_lemmas.adb:22:20: info: null exclusion check proved (CVC5: 1 VC)

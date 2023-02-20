@@ -333,6 +333,13 @@ package body SPARK_Atree.Entities is
    function Invariant_Procedure (Typ : Type_Kind_Id) return Opt_E_Procedure_Id
    is (Einfo.Utils.Invariant_Procedure (Typ));
 
+   ----------------------------
+   -- Is_Abstract_Subprogram --
+   ----------------------------
+
+   function Is_Abstract_Subprogram (Subp : Callable_Kind_Id) return Boolean is
+     (Einfo.Entities.Is_Abstract_Subprogram (Subp));
+
    -------------------------------
    -- Is_Access_Subprogram_Type --
    -------------------------------

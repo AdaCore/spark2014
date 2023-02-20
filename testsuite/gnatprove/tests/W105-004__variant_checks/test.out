@@ -1,4 +1,5 @@
 spec_rec_call_with_variant.adb:7:13: info: function contract might not be available on recursive calls
+spec_rec_call_with_variant.adb:7:44: info: function contract feasibility proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:10:58: info: range check proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:10:58: medium: call via access-to-subprogram, terminating annotation could be incorrect
 spec_rec_call_with_variant.adb:10:63: info: predicate check proved (Trivial: 1 VC)
@@ -22,6 +23,7 @@ spec_rec_call_with_variant.adb:18:25: info: predicate check proved (Trivial: 1 V
 spec_rec_call_with_variant.adb:18:25: info: subprogram variant proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:18:32: info: range check proved (CVC5: 2 VC)
 spec_rec_call_with_variant.adb:22:13: info: function contract might not be available on recursive calls
+spec_rec_call_with_variant.adb:22:46: info: function contract feasibility proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:25:58: info: range check proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:25:58: medium: call via access-to-subprogram, terminating annotation could be incorrect
 spec_rec_call_with_variant.adb:25:63: info: predicate check proved (Trivial: 1 VC)

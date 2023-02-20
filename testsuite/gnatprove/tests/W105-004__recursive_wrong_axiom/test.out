@@ -1,5 +1,6 @@
 main.adb:12:13: info: function contract might not be available on recursive calls
 main.adb:12:31: warning: unused variable "F"
+main.adb:12:44: info: function contract feasibility proved (CVC5: 1 VC)
 main.adb:15:14: medium: postcondition might fail
 main.adb:22:10: medium: "Bad" is recursive, terminating annotation could be incorrect
 main.adb:22:24: info: range check proved (CVC5: 2 VC)

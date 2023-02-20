@@ -1,3 +1,4 @@
+objt_interface_jauge.ads:7:11: info: function contract feasibility proved (Trivial: 1 VC)
 spark-containers-formal-unbounded_vectors.ads:38:18: info: subprogram "Oeqr" will terminate, terminating annotation has been proved, in instantiation at objt_types_jauge.ads:20
 spark-containers-formal-unbounded_vectors.ads:42:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at objt_types_jauge.ads:20
 spark-containers-formal-unbounded_vectors.ads:44:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at objt_types_jauge.ads:20

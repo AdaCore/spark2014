@@ -9,35 +9,37 @@ stacks.adb:35:18: info: index check proved (CVC5: 2 VC)
 stacks.adb:40:28: info: range check proved (CVC5: 2 VC)
 stacks.adb:44:29: info: range check proved (CVC5: 2 VC)
 stacks.ads:7:09: info: default initial condition proved (CVC5: 1 VC)
-stacks.ads:16:20: info: postcondition proved (CVC5: 5 VC), in inherited contract at stacks.ads:40
-stacks.ads:18:33: info: range check proved (CVC5: 2 VC)
-stacks.ads:24:20: info: postcondition proved (CVC5: 1 VC), in inherited contract at stacks.ads:44
-stacks.ads:27:20: info: postcondition proved (CVC5: 2 VC), in inherited contract at stacks.ads:46
-stacks.ads:28:55: info: index check proved (CVC5: 2 VC)
-stacks.ads:31:20: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 1 VC), in inherited contract at stacks.ads:48
-stacks.ads:31:20: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC), in inherited contract at stacks.ads:48
-stacks.ads:31:45: info: range check proved (CVC5: 4 VC)
-stacks.ads:31:98: info: overflow check proved (CVC5: 2 VC)
-stacks.ads:32:75: info: index check proved (CVC5: 2 VC)
-stacks.ads:35:20: info: postcondition proved (CVC5: 1 VC), in inherited contract at stacks.ads:50
-stacks.ads:35:20: info: postcondition proved (Z3: 1 VC), in inherited contract at stacks.ads:50
-stacks.ads:35:50: info: range check proved (CVC5: 2 VC)
-stacks.ads:48:37: info: initialization of "E" proved
-stacks.ads:57:20: info: postcondition proved (Z3: 1 VC)
-stacks.ads:57:36: info: range check proved (CVC5: 2 VC)
-stacks.ads:68:38: info: initialization of "E" proved
-stacks.ads:82:15: info: range check proved (CVC5: 1 VC)
-stacks.ads:82:15: info: range check proved (CVC5: 4 VC)
-stacks.ads:84:61: info: index check proved (CVC5: 2 VC)
-stacks.ads:96:55: info: range check proved (CVC5: 2 VC)
-stacks.ads:97:35: info: range check proved (CVC5: 2 VC)
-stacks.ads:101:20: info: range check proved (CVC5: 4 VC)
-stacks.ads:101:46: info: range check proved (CVC5: 1 VC)
-stacks.ads:101:46: info: range check proved (CVC5: 2 VC)
-stacks.ads:101:49: info: range check proved (CVC5: 4 VC)
-stacks.ads:102:20: info: range check proved (CVC5: 1 VC)
-stacks.ads:102:20: info: range check proved (CVC5: 4 VC)
-stacks.ads:104:61: info: index check proved (CVC5: 2 VC)
+stacks.ads:14:13: info: function contract feasibility justified
+stacks.ads:18:08: info: postcondition proved (CVC5: 5 VC), in inherited contract at stacks.ads:45
+stacks.ads:20:33: info: range check proved (CVC5: 2 VC)
+stacks.ads:29:20: info: postcondition proved (CVC5: 1 VC), in inherited contract at stacks.ads:49
+stacks.ads:30:13: info: function contract feasibility proved (CVC5: 1 VC)
+stacks.ads:32:20: info: postcondition proved (CVC5: 2 VC), in inherited contract at stacks.ads:51
+stacks.ads:33:55: info: index check proved (CVC5: 2 VC)
+stacks.ads:36:20: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 1 VC), in inherited contract at stacks.ads:53
+stacks.ads:36:20: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC), in inherited contract at stacks.ads:53
+stacks.ads:36:45: info: range check proved (CVC5: 4 VC)
+stacks.ads:36:98: info: overflow check proved (CVC5: 2 VC)
+stacks.ads:37:75: info: index check proved (CVC5: 2 VC)
+stacks.ads:40:20: info: postcondition proved (CVC5: 1 VC), in inherited contract at stacks.ads:55
+stacks.ads:40:20: info: postcondition proved (Z3: 1 VC), in inherited contract at stacks.ads:55
+stacks.ads:40:50: info: range check proved (CVC5: 2 VC)
+stacks.ads:53:37: info: initialization of "E" proved
+stacks.ads:62:20: info: postcondition proved (Z3: 1 VC)
+stacks.ads:62:36: info: range check proved (CVC5: 2 VC)
+stacks.ads:73:38: info: initialization of "E" proved
+stacks.ads:87:15: info: range check proved (CVC5: 1 VC)
+stacks.ads:87:15: info: range check proved (CVC5: 4 VC)
+stacks.ads:89:61: info: index check proved (CVC5: 2 VC)
+stacks.ads:101:55: info: range check proved (CVC5: 2 VC)
+stacks.ads:102:35: info: range check proved (CVC5: 2 VC)
+stacks.ads:106:20: info: range check proved (CVC5: 4 VC)
+stacks.ads:106:46: info: range check proved (CVC5: 1 VC)
+stacks.ads:106:46: info: range check proved (CVC5: 2 VC)
+stacks.ads:106:49: info: range check proved (CVC5: 4 VC)
+stacks.ads:107:20: info: range check proved (CVC5: 1 VC)
+stacks.ads:107:20: info: range check proved (CVC5: 4 VC)
+stacks.ads:109:61: info: index check proved (CVC5: 2 VC)
 test_stack.adb:3:04: info: initialization of "E" proved
 test_stack.adb:6:34: info: unrolling loop
 test_stack.adb:7:08: info: precondition proved (CVC5: 5 VC)

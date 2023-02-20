@@ -1396,8 +1396,7 @@ package body Gnat2Why.Subprograms is
       W_Tag   : W_Term_Id;
       Params  : Transformation_Params) return W_Pred_Id
    is
-      D_Ty : constant Entity_Id :=
-        Find_Dispatching_Type (Subp);
+      D_Ty : constant Entity_Id := Find_Dispatching_Type (Subp);
       Pred : W_Pred_Id := True_Pred;
    begin
       for B of Binders loop
@@ -3566,6 +3565,44 @@ package body Gnat2Why.Subprograms is
    ---------------------------------
 
    procedure Generate_VCs_For_Subprogram (E : Callable_Kind_Id) is
+      Name : constant String := Full_Name (E);
+      Th   : Theory_UC;
+
+   --  Start of processing for Generate_VCs_For_Subprogram
+
+   begin
+      Th :=
+        Open_Theory
+          (WF_Main,
+           New_Module
+             (Name => Name & "__subprogram_def",
+              File => No_Symbol),
+           Comment =>
+             "Module for checking contracts and absence of "
+           & "run-time errors in subprogram "
+           & """" & Get_Name_String (Chars (E)) & """"
+           & (if Sloc (E) > 0 then
+                " defined at " & Build_Location_String (Sloc (E))
+             else "")
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Current_Subp := E;
+
+      Register_VC_Entity (E);
+
+      Generate_VCs_For_Subprogram (E, Th, Def_Name);
+
+      Close_Theory (Th,
+                    Kind => VC_Generation_Theory,
+                    Defined_Entity => E);
+   end Generate_VCs_For_Subprogram;
+
+   procedure Generate_VCs_For_Subprogram
+     (E                      : Callable_Kind_Id;
+      Th                     : Theory_UC;
+      Prog_Name              : W_Identifier_Id;
+      Is_Access_Subp_Wrapper : Boolean := False)
+   is
 
       function Assume_For_Input return W_Prog_Id;
       --  Generate assumptions for dynamic types used in the program. An
@@ -3587,6 +3624,10 @@ package body Gnat2Why.Subprograms is
       --  Usually assumes the precondition, except for main programs where
       --  the precondition needs to be proved in fact. In this latter case
       --  an assertion is returned instead of an assumption.
+
+      function Check_Feasibility return W_Prog_Id;
+      --  Generate an assertion checking that there exists a possible return
+      --  value for E consistent with its implicit or explicit postcondition.
 
       function Check_Inline_Annotation return W_Prog_Id;
       --  Checks that the expression used for inlining is equal to the result.
@@ -3783,6 +3824,70 @@ package body Gnat2Why.Subprograms is
                  Guard_Map          => Guard_Map,
                  Others_Guard_Ident => Others_Guard_Ident));
       end CC_And_RTE_Post;
+
+   -----------------------
+   -- Check_Feasibility --
+   -----------------------
+
+      function Check_Feasibility return W_Prog_Id is
+         Save_Result_Is_Mutable : constant Boolean := Result_Is_Mutable;
+         Save_Result_Name       : constant W_Identifier_Id := Result_Name;
+
+         Local_Params           : constant Transformation_Params :=
+           (Body_Params with delta Old_Policy => Ignore);
+         --  Old can safely be ignored in postconditions of functions
+         Why_Type               : constant W_Type_Id := Type_Of_Node (E);
+         Result_Id              : constant W_Identifier_Id :=
+           New_Result_Ident (Why_Type);
+
+      begin
+         --  Store an immutable local name for the result that can be
+         --  existentially quantified.
+
+         Result_Is_Mutable := False;
+         Result_Name := Result_Id;
+
+         declare
+            Dynamic_Prop_Result : constant W_Pred_Id :=
+              +New_And_Then_Expr
+              (Left   => +Compute_Dynamic_Inv_And_Initialization
+                 (Expr             => +Result_Name,
+                  Ty               => Etype (E),
+                  Only_Var         => False_Term,
+                  Include_Type_Inv =>
+                    Include_Non_Local_Type_Inv_For_Subp (E),
+                  Params           => Local_Params),
+               Right  => +Compute_Type_Invariants_For_Subprogram
+                 (E, False, Local_Params),
+               Domain => EW_Pred);
+            Post                : constant W_Pred_Id :=
+              New_And_Pred
+                (Left  => Get_Static_Call_Contract
+                   (Local_Params, E, Pragma_Postcondition),
+                 Right => Compute_Contract_Cases_Postcondition
+                   (Local_Params, E));
+
+         begin
+            --  Restore the previous state
+
+            Result_Is_Mutable := Save_Result_Is_Mutable;
+            Result_Name := Save_Result_Name;
+
+            --  Generate:
+            --    exists result : why_type.
+            --      dyn_prop result /\ post result
+
+            return New_Located_Assert
+              (Ada_Node => E,
+               Pred     => New_Existential_Quantif
+                 (Variables => (1 => Result_Id),
+                  Labels    => Symbol_Sets.Empty_Set,
+                  Var_Type  => Why_Type,
+                  Pred      => New_And_Pred (Dynamic_Prop_Result, Post)),
+               Reason   => VC_Feasible_Post,
+               Kind     => EW_Assert);
+         end;
+      end Check_Feasibility;
 
       ------------------------------
       -- Check_Init_Of_Out_Params --
@@ -4357,35 +4462,14 @@ package body Gnat2Why.Subprograms is
 
       Borrowers : Node_Lists.List;
 
-      Th        : Theory_UC;
-
    --  Start of processing for Generate_VCs_For_Subprogram
 
    begin
-      Th :=
-        Open_Theory
-          (WF_Main,
-           New_Module
-             (Name => Name & "__subprogram_def",
-              File => No_Symbol),
-           Comment =>
-             "Module for checking contracts and absence of "
-           & "run-time errors in subprogram "
-           & """" & Get_Name_String (Chars (E)) & """"
-           & (if Sloc (E) > 0 then
-                " defined at " & Build_Location_String (Sloc (E))
-             else "")
-           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      Current_Subp := E;
-
-      Register_VC_Entity (E);
-
       --  Reset the toplevel exceptions for exit paths
 
       Clear_Exceptions;
 
-      if Ekind (E) = E_Function then
+      if Is_Function_Or_Function_Type (E) then
          Result_Name :=
            New_Identifier
              (Name  => Name & "__result",
@@ -4401,7 +4485,10 @@ package body Gnat2Why.Subprograms is
          Result_Var := +Void;
       end if;
 
-      if Within_Protected_Type (E) then
+      if Within_Protected_Type (E)
+        and then Ekind (E) /= E_Subprogram_Type
+        and then not Is_Access_Subp_Wrapper
+      then
          declare
             CPT : constant Entity_Id := Containing_Protected_Type (E);
          begin
@@ -4478,7 +4565,10 @@ package body Gnat2Why.Subprograms is
 
       --  Declare global variable to hold the state of a protected object
 
-      if Within_Protected_Type (E) then
+      if Within_Protected_Type (E)
+        and then Ekind (E) /= E_Subprogram_Type
+        and then not Is_Access_Subp_Wrapper
+      then
          Emit
            (Th,
             New_Global_Ref_Declaration
@@ -4494,7 +4584,7 @@ package body Gnat2Why.Subprograms is
       --  useful both for verifying the body of E when it is in SPARK, and for
       --  the warning on inconsistent postcondition when it is issued.
 
-      if Ekind (E) = E_Function then
+      if Is_Function_Or_Function_Type (E) then
          Emit
            (Th,
             New_Global_Ref_Declaration
@@ -4674,7 +4764,18 @@ package body Gnat2Why.Subprograms is
             Search_Olds (Prag_Post);
             Search_Olds (Prag_CC);
 
-            Why_Body := +Void;
+            --  For abstract functions and access-to-functions, generate a
+            --  feasibility check.
+
+            if Is_Function_Type (E)
+              or else (Ekind (E) = E_Function
+                       and then (Is_Abstract_Subprogram (E)
+                                 or else Is_Access_Subp_Wrapper))
+            then
+               Why_Body := Check_Feasibility;
+            else
+               Why_Body := +Void;
+            end if;
          end;
       end if;
 
@@ -4731,7 +4832,7 @@ package body Gnat2Why.Subprograms is
       Emit (Th,
             Why.Gen.Binders.New_Function_Decl
               (Domain   => EW_Prog,
-               Name     => Def_Name,
+               Name     => Prog_Name,
                Binders  => (1 => Unit_Param),
                Labels   => Symbol_Sets.Empty_Set,
                Location => Safe_First_Sloc (E),
@@ -4751,13 +4852,6 @@ package body Gnat2Why.Subprograms is
       if Is_Wrapper_For_Dispatching_Result (E) then
          Continuation_Stack.Delete_Last;
       end if;
-
-      --  We should *not* filter our own entity, it is needed for recursive
-      --  calls.
-
-      Close_Theory (Th,
-                    Kind => VC_Generation_Theory,
-                    Defined_Entity => E);
 
       --  This code emits static VCs (determined by static computations inside
       --  gnat2why), so we can put this code anywhere.

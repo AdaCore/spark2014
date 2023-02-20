@@ -1,4 +1,11 @@
+infeasible_abstract.adb:6:16: medium: contract of function might not be feasible (e.g. when I = 0)
 infeasible_abstract.adb:8:23: info: postcondition proved (CVC5: 1 VC), in inherited contract at infeasible_abstract.adb:25
 infeasible_abstract.adb:8:23: info: postcondition proved (CVC5: 1 VC), in inherited contract at infeasible_abstract.adb:32
 infeasible_abstract.adb:14:14: info: postcondition proved (CVC5: 1 VC)
 infeasible_abstract.adb:17:07: medium: call via dispatching operation, terminating annotation could be incorrect
+test.adb:1:11: warning: subprogram "Test" has no effect
+test.adb:9:16: info: function contract feasibility proved (CVC5: 1 VC)
+test.adb:15:16: info: function contract feasibility proved (CVC5: 1 VC)
+test.adb:24:16: medium: contract of function might not be feasible (e.g. when X = 9)
+test.adb:27:12: info: range check proved (CVC5: 2 VC)
+test.adb:31:16: medium: contract of function might not be feasible (e.g. when G = 9)

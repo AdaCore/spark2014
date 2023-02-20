@@ -11,11 +11,16 @@ package Stacks with SPARK_Mode is
 
    function Size (S : Stack_Root'Class) return Less_Than_Max;
 
-   function Get_Model (S : Stack_Root) return Model is abstract with
+   function Get_Model (S : Stack_Root) return Model is abstract
+   with
      Ghost,
-     Post'Class => Get_Model'Result'First in Less_Than_Max
+     Post'Class =>
+       Get_Model'Result'First in Less_Than_Max
        and then Get_Model'Result'Last in Less_Than_Max
        and then Get_Model'Result'Length = Size (S);
+   pragma Annotate
+     (GNATprove, False_Positive, "contract of function might not be feasible",
+      "it is feasible, (1 .. Size => 0) is an example");
 
    function Is_Full (S : Stack_Root'Class) return Boolean is (Size (S) = Max);
    function Is_Empty (S : Stack_Root'Class) return Boolean is (Size (S) = 0);

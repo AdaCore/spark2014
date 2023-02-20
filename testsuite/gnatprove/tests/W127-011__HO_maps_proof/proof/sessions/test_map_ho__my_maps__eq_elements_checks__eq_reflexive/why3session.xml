@@ -32,7 +32,7 @@
   <proof prover="0"><result status="valid" steps="16"/></proof>
   <proof prover="1"><result status="valid" steps="515"/></proof>
   <proof prover="2"><result status="valid" steps="1972"/></proof>
-  <proof prover="4"><result status="unknown" steps="44"/></proof>
+  <proof prover="4"><result status="failure" steps="0"/></proof>
   </goal>
  </transf>
  </goal>
