@@ -933,11 +933,21 @@ package body Flow_Generated_Globals.Phase_2 is
                   declare
                      V_E     : constant Entity_Name_Graphs.Vertex_Id :=
                        Call_Graph.Get_Vertex (To_Entity_Name (E));
-                     Scope   : constant Entity_Id := Enclosing_Unit (E);
+                     Scope   : Entity_Id := Enclosing_Unit (E);
                      V_Scope : Entity_Name_Graphs.Vertex_Id :=
                        Entity_Name_Graphs.Null_Vertex;
 
                   begin
+
+                     --  Correct the scope to account for wrapper packages
+
+                     if Present (Scope)
+                       and then Ekind (Scope) = E_Package
+                       and then Is_Wrapper_Package (Scope)
+                     then
+                        Scope := Enclosing_Unit (Scope);
+                     end if;
+
                      --  Get vertex for the scope
 
                      if Present (Scope)
