@@ -853,7 +853,10 @@ only part of a program:
 
 * [ADA_RECURSIVE_SUBPROGRAMS]
   When the body of a subprogram is not analyzed by GNATprove, it shall not be
-  mutually recursive with a subprogram analyzed by GNATprove.
+  mutually recursive with a subprogram analyzed by GNATprove. Recursivity due
+  to calls through access-to-subprograms and overriding of dispatching calls
+  should not be taken into account for checking respect of this assumption if
+  they are not visible at the point of call.
 
 * [ADA_OBJECT_ADDRESSES]
   When the body of a function is not analyzed by GNATprove, its result should
@@ -903,7 +906,10 @@ being available:
 * [PARTIAL_RECURSIVE_SUBPROGRAMS]
   Subprograms which are called across the boundary of those units analyzed
   together should not be mutually recursive with a subprogram analyzed by
-  GNATprove. This is similar to [ADA_RECURSIVE_SUBPROGRAMS].
+  GNATprove. Recursivity due to calls through access-to-subprograms and
+  overriding of dispatching calls should not be taken into account for
+  checking respect of this assumption if they are not visible at the point
+  of call. This is similar to [ADA_RECURSIVE_SUBPROGRAMS].
 
 * [PARTIAL_TASKING]
   If no single run of GNATprove analyzes all units that define tasks, then for
