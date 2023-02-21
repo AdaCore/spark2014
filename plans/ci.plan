@@ -18,6 +18,11 @@ def test():
     anod_install("gprbuild", target="host", query_range=20)
     anod_test("spark2014", qualifier="assertions")
 
+def test_large():
+    anod_install("gcc", query_range=20)
+    anod_install("gprbuild", target="host", query_range=20)
+    anod_test("spark2014", qualifier="assertions,only_large")
+
 def test_acats():
     anod_install("gcc", query_range=20)
     anod_install("gprbuild", target="host", query_range=20)
