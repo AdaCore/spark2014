@@ -1,25 +1,36 @@
+spark-containers-functional-infinite_sequences-higher_order.ads:40:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:56:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:73:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:87:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:95:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:95:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:101:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:109:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:109:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:109:47: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:109:55: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:110:17: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:110:38: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:116:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:124:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:124:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:132:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:139:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:139:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:140:18: info: precondition proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:140:53: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:140:59: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:146:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:153:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:153:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:154:18: info: precondition proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:154:57: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:154:63: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:159:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:173:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:181:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:181:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:188:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:196:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:196:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:196:47: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
@@ -27,23 +38,29 @@ spark-containers-functional-infinite_sequences-higher_order.ads:196:55: info: pr
 spark-containers-functional-infinite_sequences-higher_order.ads:197:18: info: precondition proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:198:41: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:198:54: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:207:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:215:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:215:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:219:09: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:219:15: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:232:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:240:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:240:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:241:18: info: precondition proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:241:53: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:241:59: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:247:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:260:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:267:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:267:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:273:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:281:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:281:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:281:47: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:281:55: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:282:17: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:282:38: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:288:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:296:18: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:296:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences.ads:46:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at use_sequence_ho.adb:9

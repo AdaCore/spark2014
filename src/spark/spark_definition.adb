@@ -762,7 +762,10 @@ package body SPARK_Definition is
            and then Entity_In_SPARK (E)
            and then E = Retysp (E)
            and then Analysis_Requested (E, With_Inlined => True)
-           and then Needs_Default_Checks_At_Decl (E)
+           and then
+             (Needs_Default_Checks_At_Decl (E)
+              or else (Is_Access_Subprogram_Type (E)
+                       and then No (Parent_Retysp (E))))
          then
 
             --  If the entity is a record or private type with fields hidden

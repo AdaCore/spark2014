@@ -1,53 +1,61 @@
+spark-containers-functional-sets-higher_order.adb:47:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:51:07: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:51:07: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:52:10: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:53:37: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:53:47: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:53:52: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:53:62: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:53:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:53:47: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:53:52: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:53:62: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:54:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:54:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:60:33: info: function contract feasibility proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:64:07: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:64:07: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:65:10: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:66:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:66:37: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:66:58: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:73:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:78:42: info: range check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:79:28: info: postcondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:79:28: info: postcondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:79:37: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:79:48: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:81:14: info: subprogram "Lemma_Count_Rec_Eq" will terminate, terminating annotation has been proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:88:64: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:83:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:88:64: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:89:28: info: postcondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:89:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:89:43: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:89:43: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:89:51: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:89:66: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:89:66: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:90:42: info: range check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:95:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:100:42: info: range check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:101:71: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:103:08: info: postcondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:101:71: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:103:08: info: postcondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:103:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:103:22: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:103:28: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:103:30: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:103:41: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:103:56: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:103:41: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:103:56: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:104:15: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:104:29: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:104:47: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:104:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:104:49: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:108:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:113:42: info: range check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:115:14: info: subprogram "Lemma_Sum_Rec_Eq" will terminate, terminating annotation has been proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:117:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:122:64: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:123:28: info: postcondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:123:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:123:28: info: postcondition proved (Z3: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:123:28: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:123:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:123:37: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:123:46: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:123:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:123:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:123:46: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:123:55: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:123:55: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:124:42: info: range check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:129:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:134:42: info: range check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:135:71: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:137:08: info: postcondition proved (Z3: 1 VC), in instantiation at test_set_ho.adb:49
@@ -56,42 +64,42 @@ spark-containers-functional-sets-higher_order.adb:137:20: info: null exclusion c
 spark-containers-functional-sets-higher_order.adb:137:27: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:137:29: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:137:38: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:137:53: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:137:53: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:137:62: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:137:62: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:147:25: info: refined post proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:147:30: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:147:40: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:147:54: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:150:35: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:147:54: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:150:35: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:151:14: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:151:14: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:151:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:151:24: medium: loop might be nonterminating, terminating annotation on "Count" could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:153:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:153:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:153:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:153:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:153:30: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:153:38: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:153:44: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:153:63: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:154:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:154:16: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:154:22: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:154:16: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:154:22: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:155:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:155:27: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:155:27: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:155:29: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:170:07: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:170:28: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:170:28: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:171:12: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:171:12: info: subprogram variant proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:171:23: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:171:34: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:171:53: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:171:34: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:171:53: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:172:13: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:172:19: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:172:19: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:172:47: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:172:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:172:49: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:172:57: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:183:27: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:183:27: info: refined post proved (CVC5: 2 VC; Trivial: 1 VC; altergo: 2 VC), in instantiation at test_set_ho.adb:49
@@ -107,23 +115,23 @@ spark-containers-functional-sets-higher_order.adb:191:11: info: precondition pro
 spark-containers-functional-sets-higher_order.adb:192:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:193:40: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:193:50: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:195:26: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:195:26: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:197:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:198:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:198:20: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:199:34: info: loop variant proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:199:47: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:199:58: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:199:58: info: range check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:199:60: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:200:36: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:200:36: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:200:36: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:200:36: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:200:40: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:201:36: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:201:36: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:201:36: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:201:36: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:201:52: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:203:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:203:16: info: loop invariant initialization proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:203:16: info: loop invariant preservation proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:203:45: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:203:60: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
@@ -135,57 +143,57 @@ spark-containers-functional-sets-higher_order.adb:205:16: info: precondition pro
 spark-containers-functional-sets-higher_order.adb:205:63: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:205:73: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:206:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:207:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:207:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:207:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:207:16: info: precondition proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:208:19: info: precondition proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:209:47: info: pointer dereference check proved (altergo: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:209:57: info: predicate check proved (Trivial: 2 VC; altergo: 2 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:209:47: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:209:57: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:210:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:210:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:210:20: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:210:22: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:212:16: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:212:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:212:41: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:212:51: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:214:16: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:214:38: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:214:38: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:214:48: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:215:23: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:215:26: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:215:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:215:36: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:215:46: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:232:27: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:234:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:235:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:235:21: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:236:17: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:236:20: info: precondition proved (altergo: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:236:30: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:236:20: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:236:30: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:238:34: info: loop variant proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:238:47: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:238:60: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:238:62: info: range check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:238:64: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:239:36: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:239:36: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:239:36: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:239:36: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:239:41: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:240:36: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:240:36: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:240:36: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:240:36: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:240:36: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:240:51: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:241:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:242:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:242:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:242:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:242:16: info: precondition proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:242:63: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:242:73: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:242:73: info: predicate check proved (Trivial: 2 VC; altergo: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:243:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:244:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:244:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:244:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:244:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:244:16: info: precondition proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:245:19: info: precondition proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:246:47: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:246:47: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:246:57: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:247:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:247:20: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
@@ -194,22 +202,22 @@ spark-containers-functional-sets-higher_order.adb:261:07: info: precondition pro
 spark-containers-functional-sets-higher_order.adb:261:07: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:262:10: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:263:52: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:263:64: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:263:64: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:270:07: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:270:07: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:271:10: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:273:20: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:273:20: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:273:33: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:273:33: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:273:33: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:285:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:286:14: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:286:14: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:286:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:286:24: medium: loop might be nonterminating, terminating annotation on "Filter" could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:288:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:288:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:288:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:288:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:288:31: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:288:31: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:288:31: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:288:46: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:288:54: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
@@ -218,46 +226,47 @@ spark-containers-functional-sets-higher_order.adb:288:64: info: null exclusion c
 spark-containers-functional-sets-higher_order.adb:289:36: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:289:36: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:291:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:291:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:291:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:291:16: info: precondition proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:292:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:293:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:293:16: info: loop invariant initialization proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:293:16: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:293:16: info: precondition proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:294:51: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:294:51: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:296:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:296:36: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:296:36: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:296:36: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:296:36: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:296:36: info: precondition proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:296:56: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:299:41: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:301:16: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:301:19: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:302:26: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:318:11: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:318:11: info: precondition proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:318:11: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:318:11: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:318:21: medium: loop might be nonterminating, terminating annotation on "Lemma_Count_All" could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:320:13: info: loop invariant initialization proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:320:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:320:13: info: loop invariant preservation proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:320:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:320:35: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:320:43: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:321:18: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:321:32: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:321:40: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:334:07: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:334:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:334:35: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:346:11: info: precondition proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:346:11: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:346:11: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:346:11: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:346:11: info: precondition proved (altergo: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:346:21: medium: loop might be nonterminating, terminating annotation on "Lemma_Count_None" could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:348:13: info: loop invariant initialization proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:348:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:348:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:348:13: info: loop invariant preservation proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:348:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:348:35: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:348:43: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:348:50: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:348:64: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:348:64: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:348:72: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:361:10: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:361:25: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
@@ -270,59 +279,59 @@ spark-containers-functional-sets-higher_order.adb:366:13: info: subprogram varia
 spark-containers-functional-sets-higher_order.adb:366:33: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:366:49: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:380:36: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:383:10: info: precondition proved (altergo: 2 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:383:10: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:383:10: info: subprogram variant proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:383:34: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:384:10: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:384:10: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:384:10: info: subprogram variant proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:385:13: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:385:21: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:385:40: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:385:48: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:385:67: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:386:10: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:385:13: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:385:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:385:40: info: precondition proved (Z3: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:385:48: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:385:67: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:386:10: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:386:10: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:386:34: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:388:10: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:388:10: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:388:10: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:388:30: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:388:30: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:388:45: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:388:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:402:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:402:07: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:402:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:424:07: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:424:33: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:424:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:424:33: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:436:10: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:436:25: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:438:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:440:13: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:440:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:440:13: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:440:42: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:441:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:441:13: info: subprogram variant proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:441:13: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:441:31: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:441:47: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:455:36: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:458:10: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:455:36: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:458:10: info: precondition proved (altergo: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:458:10: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:458:32: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:459:10: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:459:10: info: precondition proved (Z3: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:459:10: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:460:13: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:460:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:460:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:460:48: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:460:67: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:461:10: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:461:10: info: precondition proved (Z3: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:461:10: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:461:32: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:463:10: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:463:10: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:463:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:463:43: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:463:43: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:463:58: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:477:07: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:477:35: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:477:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:477:35: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:498:25: info: refined post proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:498:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:498:38: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
@@ -331,7 +340,7 @@ spark-containers-functional-sets-higher_order.adb:502:14: info: precondition pro
 spark-containers-functional-sets-higher_order.adb:502:14: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:502:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:502:24: medium: loop might be nonterminating, terminating annotation on "Sum" could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:504:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:504:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:504:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:504:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:504:28: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
@@ -346,15 +355,15 @@ spark-containers-functional-sets-higher_order.adb:505:33: info: precondition pro
 spark-containers-functional-sets-higher_order.adb:519:07: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:520:12: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:520:12: info: subprogram variant proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:520:21: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:520:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:520:32: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:520:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:520:54: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:520:61: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:532:22: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:532:22: info: refined post proved (CVC5: 2 VC; Trivial: 1 VC; altergo: 2 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:532:22: info: refined post proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:532:51: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:533:38: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:533:38: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:534:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:534:51: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:535:18: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
@@ -364,38 +373,39 @@ spark-containers-functional-sets-higher_order.adb:538:13: info: precondition pro
 spark-containers-functional-sets-higher_order.adb:539:16: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:540:42: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:543:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:544:14: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:544:14: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:544:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:544:14: info: precondition proved (altergo: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:544:24: medium: loop might be nonterminating, terminating annotation on "Transform" could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:546:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:546:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:546:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:546:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:546:31: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:546:50: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:548:16: info: loop invariant initialization proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:548:16: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:548:36: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:548:36: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:549:21: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:549:36: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:549:54: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:550:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:551:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:551:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:551:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:551:16: info: precondition proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:553:41: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:554:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:555:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:555:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:555:16: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:555:16: info: precondition proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:556:19: info: precondition proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:557:54: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:560:16: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:560:45: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:560:61: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:563:26: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:560:45: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:560:61: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:563:26: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:581:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:582:14: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:582:14: info: precondition proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:582:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:582:24: medium: loop might be nonterminating, terminating annotation on "Transform_Distinct" could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:584:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
@@ -404,27 +414,29 @@ spark-containers-functional-sets-higher_order.adb:584:16: info: predicate check 
 spark-containers-functional-sets-higher_order.adb:584:31: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:584:49: info: predicate check proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:585:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:586:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:586:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:586:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:586:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:586:16: info: precondition proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:588:41: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:589:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:590:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:590:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:590:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:590:16: info: precondition proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:591:19: info: precondition proved (Trivial: 2 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:592:54: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:592:54: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:594:17: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:594:20: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:594:30: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:594:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:594:30: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:594:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:41:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:46:08: info: data dependencies proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:47:20: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:47:20: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; altergo: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:47:41: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:48:11: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:49:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:50:54: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:50:66: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:56:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:61:08: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:62:20: info: postcondition proved (Trivial: 1 VC; altergo: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:62:41: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
@@ -432,41 +444,44 @@ spark-containers-functional-sets-higher_order.ads:63:11: info: precondition prov
 spark-containers-functional-sets-higher_order.ads:64:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:66:22: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:66:22: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:66:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:66:35: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:66:35: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:72:29: info: function contract feasibility proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:81:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:84:09: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:84:09: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:85:12: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:85:36: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:85:41: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:86:39: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:86:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:86:49: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:86:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:86:64: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:87:18: info: postcondition proved (CVC5: 3 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:87:18: info: postcondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:87:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:87:52: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:89:12: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:90:48: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:90:48: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:90:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:91:08: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:92:12: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:93:15: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:94:43: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:94:43: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:94:53: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:98:29: info: function contract feasibility proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:106:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:108:18: info: postcondition proved (CVC5: 1 VC; altergo: 2 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:108:18: info: postcondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:108:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:108:44: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:110:12: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:111:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:111:49: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:111:39: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:111:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:112:08: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:113:12: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:114:15: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:115:43: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:115:43: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:115:53: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:119:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:126:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:129:09: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:129:09: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
@@ -474,71 +489,77 @@ spark-containers-functional-sets-higher_order.ads:130:12: info: precondition pro
 spark-containers-functional-sets-higher_order.ads:130:36: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:130:41: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:131:39: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:131:49: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:131:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:131:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:131:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:132:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:132:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:132:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:132:46: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:132:59: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:136:33: info: function contract feasibility proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:145:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:148:09: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:148:09: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:149:12: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:150:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:150:35: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:150:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:152:18: info: postcondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:152:18: info: postcondition proved (CVC5: 1 VC; altergo: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:152:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:152:55: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:153:18: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:154:57: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:154:57: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:155:08: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:156:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:157:16: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:158:42: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:162:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:172:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:175:09: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:175:09: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:176:12: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:179:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:179:18: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:179:39: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:180:18: info: postcondition proved (CVC5: 1 VC; altergo: 2 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:180:18: info: postcondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:180:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:180:47: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:181:18: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:182:48: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:182:48: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:183:08: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:184:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:185:16: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:186:42: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:190:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:197:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:200:09: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:200:09: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:201:12: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:202:35: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:202:56: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:204:18: info: postcondition proved (Z3: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:202:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:204:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:204:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:204:26: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:204:26: info: precondition proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:204:40: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:204:59: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:208:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:215:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:217:36: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:218:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:218:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:218:34: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:220:14: info: subprogram "Lemma_Count_Eq" will terminate, terminating annotation has been proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:222:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:227:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:230:37: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:231:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:231:18: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:231:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:231:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:231:29: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:231:37: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:231:29: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:231:37: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:231:37: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:231:48: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:236:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:241:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:244:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:244:61: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:245:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:245:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:245:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
@@ -546,47 +567,52 @@ spark-containers-functional-sets-higher_order.ads:245:28: info: null exclusion c
 spark-containers-functional-sets-higher_order.ads:245:34: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:246:10: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:246:10: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:246:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:246:32: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:246:17: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:246:32: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:247:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:247:43: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:247:45: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:247:53: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:251:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:256:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:258:19: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:258:19: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:258:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:259:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:259:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:258:37: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:259:18: info: postcondition proved (Z3: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:259:18: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:259:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:259:28: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:259:36: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:263:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:268:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:270:19: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:270:19: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:270:41: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:271:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:271:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:271:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:271:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:271:28: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:271:36: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:275:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:282:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:284:36: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:285:18: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:285:18: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; Z3: 2 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:285:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:285:43: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:285:43: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:285:53: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:285:53: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:287:18: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:287:48: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:287:48: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:288:08: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:289:11: info: precondition proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:289:33: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:293:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:300:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:302:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:302:36: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:304:14: info: subprogram "Lemma_Sum_Eq" will terminate, terminating annotation has been proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:306:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:311:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:314:37: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:314:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:315:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:315:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:315:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
@@ -594,17 +620,18 @@ spark-containers-functional-sets-higher_order.ads:315:27: info: null exclusion c
 spark-containers-functional-sets-higher_order.ads:315:36: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:315:36: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:315:45: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:320:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:325:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:328:61: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:329:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:329:18: info: precondition proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:329:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:329:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:329:26: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:329:26: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:329:33: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:329:35: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:329:35: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:329:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:329:55: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:329:55: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:329:64: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:329:64: info: predicate check proved (Trivial: 1 VC), in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets.ads:52:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_set_ho.adb:46
@@ -616,9 +643,9 @@ spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in 
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_set_ho.adb:46
 spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_set_ho.adb:46
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_set_ho.adb:46
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_set_ho.adb:46
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_set_ho.adb:46
 spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_set_ho.adb:46
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_set_ho.adb:46
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_set_ho.adb:46
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at test_set_ho.adb:46
 test_set_ho.adb:49:04: info: function contract might not be available on recursive calls
 test_set_ho.adb:49:04: info: in instantiation at spark-containers-functional-sets-higher_order.adb:71

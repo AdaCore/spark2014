@@ -1,5 +1,5 @@
 procedure Infeasible_Access_Subp with SPARK_Mode is
-   type Bad is not null access function (I : Integer) return Integer with Post => False;
+   type Bad is not null access function (I : Integer) return Integer with Post => False; --@FEASIBLE_POST:FAIL
 
    function F (X : Bad; I : Integer) return Integer with
      Annotate => (GNATprove, Always_Return),

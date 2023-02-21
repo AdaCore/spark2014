@@ -743,6 +743,9 @@ package SPARK_Atree.Entities is
    --  This is different from Sem_Util.Is_Volatile_Function as it does not
    --  return True for protected functions.
 
+   function Is_Abstract_Subprogram (Subp : Callable_Kind_Id) return Boolean;
+   --  Same as Einfo.Is_Abstract_Subprogram
+
    function Is_Expression_Function_Or_Completion
      (Subp : Callable_Kind_Id)
       return Boolean;

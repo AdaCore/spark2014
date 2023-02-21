@@ -1,18 +1,35 @@
+spark-containers-functional-vectors-higher_order.ads:40:27: info: function contract feasibility proved (Z3: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:51:24: info: range check proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:51:40: info: overflow check proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:53:24: info: range check proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:62:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:79:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:93:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:108:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:117:17: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:123:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:139:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:147:59: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:147:65: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:154:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:163:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:163:62: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:168:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:182:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:197:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:207:41: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:207:54: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:216:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:230:09: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:230:15: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:244:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:253:59: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:253:65: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:259:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:272:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:285:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:294:17: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
+spark-containers-functional-vectors-higher_order.ads:300:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at use_sequence_ho.adb:10
 spark-containers-functional-vectors.ads:52:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at use_sequence_ho.adb:10
 spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at use_sequence_ho.adb:10

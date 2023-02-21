@@ -1,9 +1,11 @@
 loop_types.ads:28:08: info: dynamic accessibility check proved
+loop_types.ads:32:04: info: function contract feasibility proved
 loop_types.ads:38:16: info: justified that call via access-to-subprogram, terminating annotation could be incorrect
 loop_types.ads:38:25: info: pointer dereference check proved
 loop_types.ads:38:29: info: pointer dereference check proved
 loop_types.ads:38:46: info: subprogram variant proved
 loop_types.ads:38:61: info: pointer dereference check proved
+loop_types.ads:45:04: info: function contract feasibility proved
 loop_types.ads:52:07: info: justified that call via access-to-subprogram, terminating annotation could be incorrect
 loop_types.ads:54:15: info: pointer dereference check proved
 loop_types.ads:54:20: info: pointer dereference check proved

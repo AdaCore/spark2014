@@ -1,3 +1,4 @@
+infeasible_access_subp.adb:2:04: medium: contract of function might not be feasible
 infeasible_access_subp.adb:6:14: info: postcondition proved (CVC5: 1 VC)
 infeasible_access_subp.adb:9:07: medium: call via access-to-subprogram, terminating annotation could be incorrect
 infeasible_access_subp.adb:9:33: info: pointer dereference check proved (CVC5: 1 VC)
@@ -7,3 +8,9 @@ infeasible_access_subp.adb:19:49: info: postcondition of source is strong enough
 infeasible_access_subp.adb:19:51: info: null exclusion check proved (Trivial: 1 VC)
 infeasible_access_subp.adb:25:49: info: postcondition of source is strong enough to imply postcondition of target (CVC5: 1 VC)
 infeasible_access_subp.adb:25:51: info: null exclusion check proved (Trivial: 1 VC)
+test.adb:1:11: warning: subprogram "Test" has no effect
+test.adb:8:07: info: function contract feasibility proved (CVC5: 1 VC)
+test.adb:14:07: info: function contract feasibility proved (CVC5: 1 VC)
+test.adb:22:07: medium: contract of function might not be feasible
+test.adb:25:12: info: range check proved (CVC5: 2 VC)
+test.adb:29:07: medium: contract of function might not be feasible (e.g. when G = 9)

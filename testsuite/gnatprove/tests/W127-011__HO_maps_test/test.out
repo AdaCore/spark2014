@@ -8,6 +8,14 @@ check_ho_pre.adb:45:22: medium: assertion might fail [possible fix: subprogram a
 check_ho_pre.adb:49:24: info: range check proved (CVC5: 2 VC)
 check_ho_pre.adb:54:32: info: data dependencies proved
 check_ho_pre.adb:56:22: info: assertion proved (CVC5: 1 VC)
+spark-containers-functional-maps-higher_order.ads:41:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:41:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:58:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:58:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:75:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:75:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:76:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:76:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:86:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:86:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:87:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
@@ -24,6 +32,10 @@ spark-containers-functional-maps-higher_order.ads:88:49: info: pointer dereferen
 spark-containers-functional-maps-higher_order.ads:88:49: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:88:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:88:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:104:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:104:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:105:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:105:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:116:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:116:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:117:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
@@ -32,30 +44,50 @@ spark-containers-functional-maps-higher_order.ads:118:31: info: pointer derefere
 spark-containers-functional-maps-higher_order.ads:118:31: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:118:51: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:118:51: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:134:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:134:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:153:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:153:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:163:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:163:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:168:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:168:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:177:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:177:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:184:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:184:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:193:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:193:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:200:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:200:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:208:19: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:208:19: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:208:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:208:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:208:46: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:208:46: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:213:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:213:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:221:19: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:221:19: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:221:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:221:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:221:50: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:221:50: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:226:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:226:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:236:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:236:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:246:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:246:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:256:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:256:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:260:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:260:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:269:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:269:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:276:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:276:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:285:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:285:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at check_ho_pre.adb:10

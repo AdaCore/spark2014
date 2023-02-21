@@ -1,7 +1,10 @@
-test_callback.adb:8:18: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+test_callback.adb:2:04: info: function contract feasibility proved (CVC5: 1 VC)
+test_callback.adb:6:04: info: function contract feasibility proved (CVC5: 1 VC)
+test_callback.adb:8:18: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 test_callback.adb:11:19: info: pointer dereference check proved (CVC5: 1 VC)
 test_callback.adb:11:19: info: precondition proved (CVC5: 1 VC)
 test_callback.adb:11:25: high: cannot call potentially nonreturning subprogram "S" for type "S" in its own predicate (SPARK RM 3.2.4(4))
+test_callback.adb:12:04: info: function contract feasibility proved (CVC5: 1 VC)
 test_callback.adb:20:04: warning: analyzing unreferenced procedure "Junk"
 test_callback.adb:20:14: warning: subprogram "Junk" has no effect
 test_callback.adb:25:58: info: overflow check proved (CVC5: 2 VC)
@@ -30,7 +33,11 @@ test_callback.adb:76:27: info: precondition proved (CVC5: 1 VC)
 test_callback.adb:82:14: warning: subprogram "Call_Null_Proc" has no effect
 test_callback.adb:86:09: info: pointer dereference check proved (CVC5: 1 VC)
 test_callback.adb:86:09: medium: precondition might fail
+test_callback.adb:89:25: info: function contract feasibility proved (CVC5: 1 VC)
+test_callback.adb:90:25: info: function contract feasibility proved (CVC5: 1 VC)
+test_callback.adb:91:41: info: function contract feasibility proved (CVC5: 1 VC)
 test_callback.adb:94:13: info: implicit function contract might not be available on calls from enclosing unit
+test_callback.adb:94:27: info: function contract feasibility proved (CVC5: 1 VC)
 test_callback.adb:97:36: info: precondition of target is strong enough to imply precondition of source (CVC5: 1 VC)
 test_callback.adb:104:30: info: initialization of "F" proved
 test_callback.adb:106:14: info: pointer dereference check proved (CVC5: 1 VC)
@@ -44,6 +51,7 @@ test_callback.adb:109:21: info: predicate check proved (CVC5: 1 VC)
 test_callback.adb:112:20: info: postcondition of source is strong enough to imply postcondition of target (CVC5: 1 VC)
 test_callback.adb:112:20: info: precondition of target is strong enough to imply precondition of source (CVC5: 1 VC)
 test_callback.adb:112:29: info: null exclusion check proved (Trivial: 1 VC)
+test_callback.adb:113:08: info: function contract feasibility proved (CVC5: 1 VC)
 test_callback.adb:113:56: medium: precondition of target might not be strong enough to imply precondition of source
 test_callback.adb:114:20: info: precondition of target is strong enough to imply precondition of source (CVC5: 1 VC)
 test_callback.adb:114:20: medium: postcondition of source might not be strong enough to imply postcondition of target

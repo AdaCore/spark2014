@@ -32,17 +32,20 @@ ho_sets.adb:37:10: info: precondition proved (CVC5: 1 VC)
 ho_sets.adb:37:10: info: subprogram variant proved (CVC5: 1 VC)
 ho_sets.adb:37:30: info: precondition proved (CVC5: 1 VC)
 ho_sets.ads:8:13: info: function contract might not be available on recursive calls
+ho_sets.ads:10:28: info: function contract feasibility proved (Trivial: 1 VC)
 ho_sets.ads:14:42: info: range check proved (CVC5: 1 VC)
 ho_sets.ads:16:14: info: postcondition proved (CVC5: 1 VC)
 ho_sets.ads:16:19: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:16:30: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:18:14: info: subprogram "Lemma_Count_Eq" will terminate, terminating annotation has been proved
+ho_sets.ads:20:30: info: function contract feasibility proved (Trivial: 1 VC)
 ho_sets.ads:25:42: info: range check proved (CVC5: 1 VC)
 ho_sets.ads:27:14: info: postcondition proved (CVC5: 1 VC)
 ho_sets.ads:27:14: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:27:27: info: null exclusion check proved (CVC5: 1 VC)
 ho_sets.ads:27:35: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:27:49: info: null exclusion check proved (CVC5: 1 VC)
+ho_sets.ads:32:28: info: function contract feasibility proved (Trivial: 1 VC)
 ho_sets.ads:37:42: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:37:61: medium: range check might fail [reason for check: expression of type Big_Integer must be non-negative]
 ho_sets.ads:37:63: info: predicate check proved (Trivial: 1 VC)
@@ -69,6 +72,7 @@ spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1
 spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at ho_sets.ads:5
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at ho_sets.ads:5
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at ho_sets.ads:5
+use_sets.adb:9:70: info: function contract feasibility proved (Trivial: 1 VC)
 use_sets.adb:13:14: info: postcondition proved (CVC5: 1 VC)
 use_sets.adb:13:14: info: predicate check proved (Trivial: 1 VC)
 use_sets.adb:13:21: info: precondition proved (CVC5: 1 VC)
@@ -78,6 +82,7 @@ use_sets.adb:13:48: info: null exclusion check proved (CVC5: 1 VC)
 use_sets.adb:13:57: info: pointer dereference check proved (CVC5: 1 VC)
 use_sets.adb:13:79: info: predicate check proved (Trivial: 1 VC)
 use_sets.adb:13:89: info: predicate check proved (Trivial: 1 VC)
+use_sets.adb:17:73: info: function contract feasibility proved (Trivial: 1 VC)
 use_sets.adb:21:14: info: postcondition proved (CVC5: 1 VC)
 use_sets.adb:21:14: info: predicate check proved (Trivial: 1 VC)
 use_sets.adb:21:21: info: precondition proved (CVC5: 1 VC)

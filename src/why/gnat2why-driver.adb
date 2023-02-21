@@ -425,6 +425,13 @@ package body Gnat2Why.Driver is
 
               --  Ignore invariant procedures and default initial conditions
               and then not Subprogram_Is_Ignored_For_Proof (E)
+
+              --  VCs for wrappers for access-to-subprogram types are generated
+              --  along with the type declaration.
+              and then not
+                (Is_Wrapper (E)
+                 and then (not Is_Dispatching_Operation (E)
+                           or else No (Find_Dispatching_Type (E))))
             then
                declare
                   LSP_Applies : constant Boolean :=

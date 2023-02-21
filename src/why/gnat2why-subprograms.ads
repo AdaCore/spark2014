@@ -83,6 +83,16 @@ package Gnat2Why.Subprograms is
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the absence of run-time errors in E.
 
+   procedure Generate_VCs_For_Subprogram
+     (E                      : Callable_Kind_Id;
+      Th                     : Theory_UC;
+      Prog_Name              : W_Identifier_Id;
+      Is_Access_Subp_Wrapper : Boolean := False);
+   --  Same as above except that it does not create its own theory but uses an
+   --  existing one. Is_Access_Subp_Wrapper should be True for wrappers of
+   --  access-to-subprogram types so a feasibility check is generated on
+   --  functions.
+
    procedure Generate_VCs_For_Package_Elaboration (E : E_Package_Id);
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the Initial_Condition of E and the absence of run-time

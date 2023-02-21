@@ -339,6 +339,7 @@ def is_other_proof_tag(tag):
         "ASSERT_PREMISE",
         "ASSERT_STEP",
         "INLINE_ANNOTATION",
+        "FEASIBLE_POST",
     )
 
 
@@ -512,6 +513,8 @@ def check_marks(strlist):
                 return "UNCHECKED_CONVERSION"
         elif "Inline_For_Proof or Logical_Equal annotation" in text:
             return "INLINE_ANNOTATION"
+        elif "feasible" in text or "feasibility" in text:
+            return "FEASIBLE_POST"
 
         # no tag recognized
         return None

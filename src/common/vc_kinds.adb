@@ -147,6 +147,7 @@ package body VC_Kinds is
             | VC_Assert_Premise
             | VC_Assert_Step
             | VC_Raise
+            | VC_Feasible_Post
             | VC_Inline_Check
             | VC_Weaker_Pre
             | VC_Trivial_Weaker_Pre
@@ -369,6 +370,9 @@ package body VC_Kinds is
          when VC_Raise                            =>
             return "Check that the raise statement or expression can never " &
               "be reached.";
+         when VC_Feasible_Post                    =>
+            return "Check that an abstract function or access-to-function " &
+              "type is feasible.";
          when VC_Inline_Check                     =>
             return "Check that an Annotate pragma with the Inline_For_Proof " &
               "or Logical_Equal identifier is correct.";
@@ -1245,6 +1249,7 @@ package body VC_Kinds is
              when VC_Assert_Premise => "assertion premise",
              when VC_Assert_Step => "assertion step",
              when VC_Raise => "raised exception",
+             when VC_Feasible_Post => "feasible function",
              when VC_Inline_Check =>
                "Inline_For_Proof or Logical_Equal annotation",
              when VC_UC_Source => "unchecked conversion source check",
