@@ -30,6 +30,7 @@ use_bytes2.adb:21:29: info: unrolling loop
 use_bytes2.adb:28:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Extract or turning it into an expression function]
 use_bytes_gen.adb:11:04: info: in instantiation at bytes.adb:12
 use_bytes_gen.adb:11:04: info: unrolling loop
+use_bytes_gen.adb:11:13: info: implicit function contract might not be available on implicit recursive calls
 use_bytes_gen.adb:12:04: info: in instantiation at bytes.adb:23
 use_bytes_gen.adb:12:04: info: unrolling loop
 use_bytes_gen.adb:15:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Extract_Gen or turning it into an expression function]
