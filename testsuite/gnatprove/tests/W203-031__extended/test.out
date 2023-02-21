@@ -2,6 +2,7 @@ main.adb:12:16: error: "G" might include a recursive call due to a type invarian
 main.adb:12:16: error: unsupported recursive subprogram
 main.adb:12:19: warning: unused variable "X"
 main.adb:12:58: medium: postcondition might fail
+main2.adb:2:04: info: function contract feasibility proved (CVC5: 1 VC)
 main2.adb:5:14: info: postcondition proved (CVC5: 1 VC)
 main2.adb:9:14: info: postcondition proved (CVC5: 1 VC)
 main2.adb:15:07: medium: call via access-to-subprogram, terminating annotation could be incorrect
