@@ -158,7 +158,7 @@ acats:
 
     # also check out acats repo
     - cd /tmp
-    - git clone $GIT_CLONE_BASE/eng/fe/acats
+    - git clone $GIT_CLONE_BASE/eng/toolchain/acats
     - cd /it/wave
     - anod vcs --add-repo acats /tmp/acats;
 
