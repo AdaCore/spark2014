@@ -11,17 +11,6 @@ ensure that their programs are not impacted.
 
 * Checks related to tasking do not take into account dispatching calls.
 
-* Calls occuring inside type invariants and subtype predicate are not taken into
-  account by the verification tool while computing the call graph. This can in
-  particular lead to soundness issues when such calls introduce recursion
-  between subprograms.
-
-* If a function annotated with an Ownership annotation assigns or declares
-  an object of the related private type with Ownership either directly or
-  inside a called subprogram, then the contract of the
-  function might be used to prove itself, possibly resulting in a soundness
-  issue if it is incorrect.
-
 Tool Limitations Leading to an Error Message
 --------------------------------------------
 
