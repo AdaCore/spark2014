@@ -7,7 +7,7 @@ contains_manual_proof = False
 
 def replay():
     prove_all(procs=0, level=1, opt=["--function-sandboxing=off"], sparklib=True)
-    prove_all(procs=0, level=2, opt=["--function-sandboxing=off"], sparklib=True)
+    prove_all(procs=0, level=3, opt=["--function-sandboxing=off"], sparklib=True)
 
 
 if __name__ == "__main__":

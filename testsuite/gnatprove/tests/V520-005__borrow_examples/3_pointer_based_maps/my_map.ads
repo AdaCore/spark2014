@@ -1,7 +1,7 @@
 package My_Map with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
 
-   type Map is private;
+   type Map is private with Default_Initial_Condition => False;
    type Map_Acc is access Map;
 
    function Model_Contains (M : access constant Map; K : Positive) return Boolean
@@ -63,7 +63,7 @@ package My_Map with SPARK_Mode is
 private
    type Int_Acc is not null access Integer;
    type Map is record
-      Key   : Positive;
+      Key   : Positive := 1;
       Value : Int_Acc;
       Next  : Map_Acc;
    end record;
