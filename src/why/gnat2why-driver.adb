@@ -1264,6 +1264,7 @@ package body Gnat2Why.Driver is
       --  and expression functions are defined.
 
       For_All_Entities (Generate_VCs'Access);
+      Check_Safe_Guard_Cycles;
 
       --  Clear global data that is no longer be needed to leave more memory
       --  for solvers.

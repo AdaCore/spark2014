@@ -1145,9 +1145,16 @@ package body SPARK_Util is
                        | E_Subprogram_Type
                        | E_Task_Type
          then
-            --  We have found the enclosing unit, return it
 
-            return S;
+            --  We have found the enclosing unit, unless it is a wrapper
+            --  package.
+
+            if Ekind (S) = E_Package and then Is_Wrapper_Package (S) then
+               S := Scope (S);
+            else
+               return S;
+            end if;
+
          else
             pragma Assert (not Is_Generic_Unit (S));
 

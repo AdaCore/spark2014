@@ -549,8 +549,10 @@ generic_examples.adb:35:30: medium: overflow check might fail, cannot prove uppe
 generic_examples.adb:35:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:48 (e.g. when Result = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 33 should mention Result in a loop invariant]
 generic_examples.adb:41:04: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:41:04: info: in instantiation at line 33
+generic_examples.adb:41:13: info: implicit function contract might not be available on calls from enclosing unit
 generic_examples.adb:48:04: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:48:04: info: in instantiation at line 33
+generic_examples.adb:48:13: info: implicit function contract might not be available on calls from enclosing unit
 generic_examples.adb:61:21: info: initialization of "Result" proved, in instantiation at generic_examples.adb:79
 generic_examples.adb:72:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:79 (e.g. when Result = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 70 should mention Result in a loop invariant]
 generic_examples.adb:79:04: info: cannot unroll loop (too many loop iterations)
