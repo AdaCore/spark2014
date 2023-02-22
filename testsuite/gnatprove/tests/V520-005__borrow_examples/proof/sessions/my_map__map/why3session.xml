@@ -9,17 +9,20 @@
 <prover id="4" name="colibri" version="2137" timelimit="1" steplimit="0" memlimit="1000"/>
 <file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
-<path name="binary_search__Olt__4.gnat-json"/>
-<theory name="Binary_search__Olt__4__subprogram_def" proved="true">
+<path name="my_map__map.gnat-json"/>
+<theory name="My_map__map__default_checks" proved="true">
  <goal name="def&#39;vc" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
-  <proof prover="0"><result status="valid" steps="50"/></proof>
-  <proof prover="1"><result status="valid" steps="1354"/></proof>
-  <proof prover="2"><result status="valid" steps="838"/></proof>
+  <proof prover="0"><result status="valid" steps="0"/></proof>
+  <proof prover="1"><result status="valid" steps="27"/></proof>
+  <proof prover="2"><result status="valid" steps="4"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
+  <proof prover="3"><result status="valid" steps="1"/></proof>
+  </goal>
+  <goal name="def&#39;vc.2" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
  </transf>
