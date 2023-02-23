@@ -420,18 +420,14 @@ package body Gnat2Why.Driver is
          =>
             if Entity_Spec_In_SPARK (E)
 
-              -- Ignore hardcoded subprograms
+              --  Ignore hardcoded subprograms
               and then not Is_Hardcoded_Entity (E)
 
               --  Ignore invariant procedures and default initial conditions
               and then not Subprogram_Is_Ignored_For_Proof (E)
 
-              --  VCs for wrappers for access-to-subprogram types are generated
-              --  along with the type declaration.
-              and then not
-                (Is_Wrapper (E)
-                 and then (not Is_Dispatching_Operation (E)
-                           or else No (Find_Dispatching_Type (E))))
+              --  Ignore wrappers for access-to-subprogram types
+              and then not Is_Access_Subprogram_Wrapper (E)
             then
                declare
                   LSP_Applies : constant Boolean :=
@@ -1026,7 +1022,11 @@ package body Gnat2Why.Driver is
 
        --  Ignore hardcoded subprograms
 
-       and then not Is_Hardcoded_Entity (E));
+       and then not Is_Hardcoded_Entity (E)
+
+       --  Ignore wrappers for access-to-subprogram types
+
+       and then not Is_Access_Subprogram_Wrapper (E));
 
    --------------------------
    -- Print_GNAT_Json_File --
