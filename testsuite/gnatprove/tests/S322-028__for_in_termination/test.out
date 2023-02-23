@@ -8,34 +8,34 @@ bounded_table.adb:47:15: info: range check proved (CVC5: 2 VC), in instantiation
 bounded_table.adb:48:25: info: refined post proved (CVC5: 1 VC), in instantiation at repro_main.adb:9
 bounded_table.adb:57:46: info: range check proved (CVC5: 2 VC), in instantiation at repro_main.adb:9
 bounded_table.adb:58:25: info: index check proved (CVC5: 2 VC), in instantiation at repro_main.adb:9
-bounded_table.ads:21:13: info: terminating annotation on "Model" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
-bounded_table.ads:24:13: info: terminating annotation on "Empty_Table" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
+bounded_table.ads:21:13: info: implicit terminating annotation on "Model" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
+bounded_table.ads:24:13: info: implicit terminating annotation on "Empty_Table" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 bounded_table.ads:25:17: info: postcondition proved (CVC5: 1 VC), in instantiation at repro_main.adb:9
-bounded_table.ads:27:13: info: terminating annotation on "Length" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
+bounded_table.ads:27:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 bounded_table.ads:28:17: info: postcondition proved (CVC5: 1 VC), in instantiation at repro_main.adb:9
 bounded_table.ads:28:46: info: range check proved (CVC5: 2 VC), in instantiation at repro_main.adb:9
-bounded_table.ads:30:13: info: terminating annotation on "Full" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
+bounded_table.ads:30:13: info: implicit terminating annotation on "Full" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 bounded_table.ads:33:13: info: during checks for quantification at bounded_table.ads:73, in instantiation at repro_main.adb:9
+bounded_table.ads:33:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 bounded_table.ads:33:13: info: precondition proved (Trivial: 1 VC), in instantiation at repro_main.adb:9
-bounded_table.ads:33:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 bounded_table.ads:35:13: info: during checks for quantification at bounded_table.ads:73, in instantiation at repro_main.adb:9
+bounded_table.ads:35:13: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 bounded_table.ads:35:13: info: precondition proved (Trivial: 1 VC), in instantiation at repro_main.adb:9
-bounded_table.ads:35:13: info: terminating annotation on "Has_Element" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 bounded_table.ads:37:13: info: during checks for quantification at bounded_table.ads:73, in instantiation at repro_main.adb:9
+bounded_table.ads:37:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 bounded_table.ads:37:13: info: precondition proved (CVC5: 1 VC), in instantiation at repro_main.adb:9
-bounded_table.ads:37:13: info: terminating annotation on "Next" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 bounded_table.ads:39:18: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at repro_main.adb:9
 bounded_table.ads:42:13: info: during checks for quantification at bounded_table.ads:73, in instantiation at repro_main.adb:9
+bounded_table.ads:42:13: info: implicit terminating annotation on "Member" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 bounded_table.ads:42:13: info: precondition proved (Trivial: 1 VC), in instantiation at repro_main.adb:9
-bounded_table.ads:42:13: info: terminating annotation on "Member" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 bounded_table.ads:43:17: info: postcondition proved (CVC5: 2 VC), in instantiation at repro_main.adb:9
 bounded_table.ads:45:13: info: during checks for quantification at bounded_table.ads:73, in instantiation at repro_main.adb:9
+bounded_table.ads:45:13: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 bounded_table.ads:45:13: info: precondition proved (CVC5: 1 VC), in instantiation at repro_main.adb:9
-bounded_table.ads:45:13: info: terminating annotation on "Element" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 bounded_table.ads:49:14: info: terminating annotation on "Push" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 bounded_table.ads:54:14: info: postcondition proved (CVC5: 4 VC), in instantiation at repro_main.adb:9
 bounded_table.ads:54:50: info: overflow check proved (CVC5: 2 VC), in instantiation at repro_main.adb:9
-bounded_table.ads:60:13: info: terminating annotation on "Index_Of" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
+bounded_table.ads:60:13: info: implicit terminating annotation on "Index_Of" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 repro_main.adb:4:11: info: terminating annotation on "Repro_Main" has been proved, subprogram will terminate
 repro_main.adb:9:04: error: "Member" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
 repro_main.adb:9:04: error: instantiation error at bounded_table.ads:42

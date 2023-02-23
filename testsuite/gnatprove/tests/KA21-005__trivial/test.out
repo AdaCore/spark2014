@@ -1,3 +1,4 @@
 p.adb:1:11: warning: subprogram "P" has no effect
+p.adb:2:13: info: implicit terminating annotation on "F5" has been proved, subprogram will terminate
 p.adb:7:19: info: assertion proved (CVC5: 2 VC)
 p.adb:7:19: info: no contextual analysis of "F5" (in assertion expression)

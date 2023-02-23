@@ -1,3 +1,4 @@
 p.adb:8:16: info: implicit function contract might not be available on calls from enclosing unit
+p.adb:8:16: info: implicit terminating annotation on "reference_param_via_constant" has been proved, subprogram will terminate
 p.ads:4:35: info: initialization of "b" proved
 p.ads:4:57: info: flow dependencies proved

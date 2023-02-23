@@ -1,3 +1,4 @@
+complex.ads:11:13: info: implicit terminating annotation on "Create" has been proved, subprogram will terminate
 private_a.adb:12:30: info: initialization of "Dst" proved
 private_a.adb:13:11: info: flow dependencies proved
 private_a.adb:14:22: info: postcondition proved (CVC5: 1 VC)

@@ -1,2 +1,4 @@
+p.ads:3:16: info: implicit terminating annotation on "Id1" has been proved, subprogram will terminate
 p.ads:3:54: info: flow dependencies proved
+p.ads:4:16: info: implicit terminating annotation on "Id2" has been proved, subprogram will terminate
 p.ads:4:54: info: flow dependencies proved

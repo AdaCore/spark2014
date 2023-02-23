@@ -2,6 +2,7 @@ dynamic_array.adb:1:11: warning: subprogram "Dynamic_Array" has no effect
 dynamic_array.adb:2:12: info: range check proved (CVC5: 2 VC)
 dynamic_array.adb:15:07: info: range check proved (CVC5: 2 VC)
 dynamic_array.adb:18:13: info: function contract might not be available on calls from enclosing unit
+dynamic_array.adb:18:13: info: implicit terminating annotation on "New_Holder" has been proved, subprogram will terminate
 dynamic_array.adb:19:14: info: postcondition proved (CVC5: 2 VC)
 dynamic_array.adb:25:66: info: range check proved (CVC5: 2 VC)
 dynamic_array.adb:27:37: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
@@ -9,6 +10,7 @@ dynamic_array.adb:27:37: info: range check proved (CVC5: 2 VC)
 dynamic_array.adb:27:40: info: range check proved (CVC5: 2 VC)
 dynamic_array.adb:27:66: info: range check proved (CVC5: 2 VC)
 dynamic_array.adb:31:13: info: implicit function contract might not be available on calls from enclosing unit
+dynamic_array.adb:31:13: info: implicit terminating annotation on "Increment" has been proved, subprogram will terminate
 dynamic_array.adb:32:24: info: discriminant check proved (CVC5: 1 VC)
 dynamic_array.adb:32:38: info: discriminant check proved (CVC5: 1 VC)
 dynamic_array.adb:32:42: info: overflow check proved (CVC5: 2 VC)

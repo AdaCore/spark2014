@@ -1,4 +1,5 @@
 test.ads:3:29: info: flow dependencies proved
+test.ads:10:13: info: implicit terminating annotation on "Root" has been proved, subprogram will terminate
 test.ads:10:41: info: data dependencies proved
 test.ads:19:15: info: postcondition proved (Trivial: 1 VC)
 test.ads:19:32: info: data dependencies proved

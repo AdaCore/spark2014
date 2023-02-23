@@ -4,3 +4,4 @@ lt.adb:12:36: info: loop invariant initialization proved (CVC5: 2 VC)
 lt.adb:12:36: info: loop invariant preservation proved (CVC5: 2 VC)
 lt.adb:15:33: info: loop invariant initialization proved (CVC5: 1 VC)
 lt.adb:15:33: info: loop invariant preservation proved (CVC5: 1 VC)
+lt.ads:12:13: info: implicit terminating annotation on "Total" has been proved, subprogram will terminate

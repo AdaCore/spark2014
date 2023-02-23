@@ -1,3 +1,6 @@
+data.ads:8:13: info: implicit terminating annotation on "Is_Nat32" has been proved, subprogram will terminate
+data.ads:10:13: info: implicit terminating annotation on "Get_Min_Nat32" has been proved, subprogram will terminate
+data.ads:13:13: info: implicit terminating annotation on "Create_Type" has been proved, subprogram will terminate
 data.ads:14:17: info: postcondition proved (CVC5: 2 VC)
 data.ads:15:24: info: precondition proved (CVC5: 1 VC)
 data.ads:33:24: info: discriminant check proved (CVC5: 1 VC)

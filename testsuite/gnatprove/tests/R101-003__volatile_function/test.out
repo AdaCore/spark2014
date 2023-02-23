@@ -3,3 +3,4 @@ lb.adb:19:07: warning: assuming correct volatile properties for "I"
 lb.adb:19:07: warning: assuming no concurrent accesses to non-atomic object "I"
 lb.adb:19:07: warning: make sure that all overlapping objects have Async_Writers set to True
 lb.adb:19:07: warning: writing to "I" is assumed to have no effects on other non-volatile objects
+lb.ads:7:13: info: implicit terminating annotation on "Init" has been proved, subprogram will terminate

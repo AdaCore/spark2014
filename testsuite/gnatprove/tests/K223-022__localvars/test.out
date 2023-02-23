@@ -3,4 +3,5 @@ loc.adb:4:24: info: division check proved (CVC5: 1 VC)
 loc.adb:5:07: warning: initialization of "Y" has no effect
 loc.adb:5:24: info: division check proved (CVC5: 1 VC)
 loc.adb:6:07: info: initialization of "K" proved
+loc.ads:2:13: info: implicit terminating annotation on "Local" has been proved, subprogram will terminate
 loc.ads:4:20: info: postcondition proved (CVC5: 1 VC)

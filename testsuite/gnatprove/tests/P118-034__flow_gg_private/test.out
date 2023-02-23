@@ -47,6 +47,10 @@ a.adb:12:22: medium: assertion might fail [possible fix: subprogram at a.ads:5 s
 a.adb:15:38: medium: overflow check might fail, cannot prove lower bound for H + Priv.F_6 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at a.ads:7 should mention G and H and Priv.I in a precondition]
 a.ads:2:22: warning: no procedure exists that can initialize abstract state "A.State_A"
 a.ads:5:19: info: initialization of "X" proved
+a.ads:7:13: info: implicit terminating annotation on "F_1" has been proved, subprogram will terminate
+a.ads:9:13: info: implicit terminating annotation on "F_2" has been proved, subprogram will terminate
+a.ads:11:13: info: implicit terminating annotation on "F_3" has been proved, subprogram will terminate
+a.ads:13:13: info: implicit terminating annotation on "F_4" has been proved, subprogram will terminate
 Generated contracts for A.Priv.F_5
    Global =>
       Input =>
@@ -66,3 +70,5 @@ Generated contracts for A.Priv.F_6
          A.State_A
          Priv.I
 Generated contracts for A.Priv
+a~priv.ads:5:13: info: implicit terminating annotation on "F_5" has been proved, subprogram will terminate
+a~priv.ads:7:13: info: implicit terminating annotation on "F_6" has been proved, subprogram will terminate

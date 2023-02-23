@@ -4,8 +4,7 @@ package P with SPARK_Mode is
 
    function Is_Too_Coarse (Value : Integer) return Boolean with
      Import,
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global   => null;
 
    procedure Treat_Value (Value : in out Integer) with
      Import,

@@ -1,4 +1,6 @@
 test.adb:6:27: medium: overflow check might fail, cannot prove upper bound for Integer (My_Int) + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+test.adb:15:09: warning: Always_Return annotation is useless
+test.adb:15:09: warning: function "To_Int" has implicit Always_Return annotation
 test.adb:19:24: medium: overflow check might fail, cannot prove upper bound for To_Int (S) + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 test.adb:34:09: info: initialization check proved (CVC5: 1 VC)
 test.adb:35:13: info: initialization check proved (CVC5: 1 VC)

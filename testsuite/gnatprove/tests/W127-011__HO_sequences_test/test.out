@@ -67,7 +67,7 @@ spark-containers-functional-infinite_sequences.ads:58:19: info: terminating anno
 spark-containers-functional-infinite_sequences.ads:60:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:91:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:69, in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:91:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:108:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:108:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:108:43: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:111:06: info: data dependencies proved, in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:173:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
@@ -80,7 +80,7 @@ spark-containers-functional-infinite_sequences.ads:246:28: info: predicate check
 spark-containers-functional-infinite_sequences.ads:246:47: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:270:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:270:28: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:291:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:291:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:323:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:69, in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:323:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:327:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:69, in instantiation at use_sequence_ho.adb:9
@@ -131,31 +131,43 @@ spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1
 spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at use_sequence_ho.adb:9
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at use_sequence_ho.adb:9
 spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at use_sequence_ho.adb:9
+use_sequence_ho.adb:17:16: info: implicit terminating annotation on "Starts_With_Z" has been proved, subprogram will terminate
 use_sequence_ho.adb:18:36: info: index check proved (CVC5: 2 VC)
+use_sequence_ho.adb:20:16: info: implicit terminating annotation on "Add_Zero" has been proved, subprogram will terminate
 use_sequence_ho.adb:23:19: info: postcondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:23:19: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:24:13: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:24:47: info: predicate check proved (Trivial: 1 VC)
+use_sequence_ho.adb:26:16: info: implicit terminating annotation on "Add_One" has been proved, subprogram will terminate
 use_sequence_ho.adb:29:19: info: postcondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:29:19: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:30:13: info: predicate check proved (Trivial: 1 VC)
+use_sequence_ho.adb:34:16: info: implicit terminating annotation on "Starts_With_Z" has been proved, subprogram will terminate
 use_sequence_ho.adb:35:36: info: index check proved (CVC5: 2 VC)
+use_sequence_ho.adb:37:16: info: implicit terminating annotation on "Add_Zero" has been proved, subprogram will terminate
 use_sequence_ho.adb:38:19: medium: postcondition might fail
+use_sequence_ho.adb:41:16: info: implicit terminating annotation on "Add_One" has been proved, subprogram will terminate
 use_sequence_ho.adb:44:19: info: postcondition proved (Z3: 1 VC)
 use_sequence_ho.adb:53:25: info: assertion proved (Z3: 1 VC)
 use_sequence_ho.adb:53:60: info: precondition proved (CVC5: 1 VC)
+use_sequence_ho.adb:59:16: info: implicit terminating annotation on "Value" has been proved, subprogram will terminate
 use_sequence_ho.adb:60:36: info: range check proved (CVC5: 2 VC)
+use_sequence_ho.adb:62:16: info: implicit terminating annotation on "Add_Zero" has been proved, subprogram will terminate
 use_sequence_ho.adb:65:19: info: postcondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:65:19: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:66:13: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:66:37: info: predicate check proved (Trivial: 1 VC)
+use_sequence_ho.adb:68:16: info: implicit terminating annotation on "Add_One" has been proved, subprogram will terminate
 use_sequence_ho.adb:71:19: info: postcondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:71:19: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:72:13: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:72:37: info: predicate check proved (Trivial: 1 VC)
+use_sequence_ho.adb:76:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 use_sequence_ho.adb:77:17: info: range check proved (CVC5: 2 VC)
 use_sequence_ho.adb:77:19: info: range check proved (CVC5: 4 VC)
+use_sequence_ho.adb:79:16: info: implicit terminating annotation on "Add_Zero" has been proved, subprogram will terminate
 use_sequence_ho.adb:82:19: medium: postcondition might fail
+use_sequence_ho.adb:86:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 use_sequence_ho.adb:86:19: warning: unused variable "I"
 use_sequence_ho.adb:91:17: info: postcondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:91:25: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)

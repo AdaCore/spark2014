@@ -1,9 +1,13 @@
 natural_set.adb:17:31: info: range check proved (CVC5: 2 VC)
 natural_set.adb:18:16: info: index check proved (CVC5: 2 VC)
 natural_set.adb:19:25: info: assertion proved (altergo: 1 VC)
+natural_set.ads:19:13: info: implicit terminating annotation on "Valid" has been proved, subprogram will terminate
+natural_set.ads:21:13: info: implicit terminating annotation on "Members" has been proved, subprogram will terminate
 natural_set.ads:22:19: info: postcondition proved (CVC5: 2 VC)
+natural_set.ads:25:13: info: implicit terminating annotation on "Full" has been proved, subprogram will terminate
 natural_set.ads:27:22: info: initialization of "S" proved
 natural_set.ads:28:19: info: postcondition proved (CVC5: 3 VC)
+natural_set.ads:32:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 natural_set.ads:39:19: info: postcondition proved (CVC5: 1 VC)
 natural_set.ads:59:16: info: range check proved (CVC5: 2 VC)
 natural_set.ads:59:57: info: index check proved (CVC5: 2 VC)

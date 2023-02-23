@@ -10,10 +10,12 @@ entities.ads:13:18: info: postcondition proved (CVC5: 2 VC)
 entities.ads:18:07: info: data dependencies proved
 entities.ads:19:07: info: flow dependencies proved
 entities.ads:20:18: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+entities.ads:23:13: info: implicit terminating annotation on "Get_Current_ID" has been proved, subprogram will terminate
 entities.ads:25:07: info: data dependencies proved
 entities.ads:29:07: info: data dependencies proved
 entities.ads:30:07: info: flow dependencies proved
 entities.ads:31:18: info: postcondition proved (CVC5: 1 VC)
+entities.ads:33:13: info: implicit terminating annotation on "Get_Current_Cycles" has been proved, subprogram will terminate
 entities.ads:35:07: info: data dependencies proved
 main.adb:10:19: info: assertion proved (CVC5: 1 VC)
 main.adb:11:19: info: assertion proved (CVC5: 1 VC)

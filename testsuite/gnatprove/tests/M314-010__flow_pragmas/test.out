@@ -9,5 +9,6 @@ vehicle.adb:39:33: info: loop invariant initialization proved (CVC5: 1 VC)
 vehicle.adb:39:33: info: loop invariant preservation proved (CVC5: 1 VC)
 vehicle.adb:41:13: info: precondition proved (CVC5: 1 VC)
 vehicle.adb:43:13: info: precondition proved (CVC5: 1 VC)
+vehicle.ads:16:13: info: implicit terminating annotation on "Speed_Is_Valid" has been proved, subprogram will terminate
 vehicle.ads:24:20: medium: postcondition might fail
 vehicle.ads:25:12: info: data dependencies proved

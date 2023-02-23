@@ -53,21 +53,29 @@ foo.adb:155:24: info: data dependencies proved
 foo.adb:157:07: info: no contextual analysis of "Invisible_Call_To_Nonterminating" (nested subprogram)
 foo.adb:158:28: medium: terminating annotation on "B" could be incorrect, call to "C" might be nonterminating
 foo.adb:170:13: info: implicit function contract might not be available on recursive calls
-foo.adb:170:13: info: terminating annotation on "Subnested_Package" has been proved, subprogram will terminate
+foo.adb:170:13: info: implicit terminating annotation on "Subnested_Package" has been proved, subprogram will terminate
+foo.adb:171:06: warning: Always_Return annotation is useless
+foo.adb:171:06: warning: function "Subnested_Package" has implicit Always_Return annotation
 foo.adb:174:16: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
+foo.adb:174:16: info: implicit terminating annotation on "Aux" has been proved, subprogram will terminate
 foo.adb:177:52: info: subprogram variant proved (CVC5: 1 VC)
 foo.adb:177:73: info: range check proved (CVC5: 2 VC)
 foo.adb:186:17: info: subprogram variant proved (CVC5: 1 VC)
 foo.adb:186:24: info: range check proved (CVC5: 2 VC)
 foo.adb:190:13: info: implicit function contract might not be available on recursive calls
+foo.adb:190:13: info: implicit terminating annotation on "Subnested_Package_Wo_Variant" has been proved, subprogram will terminate
+foo.adb:191:06: warning: Always_Return annotation is useless
+foo.adb:191:06: warning: function "Subnested_Package_Wo_Variant" has implicit Always_Return annotation
+foo.adb:194:16: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
 foo.adb:195:10: info: no contextual analysis of "Aux" (nested package declaration)
 foo.adb:196:52: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
 foo.adb:196:84: info: range check proved (CVC5: 2 VC)
-foo.adb:205:10: medium: terminating annotation on "Subnested_Package_Wo_Variant" could be incorrect, call to "Aux" might be nonterminating
 foo.adb:205:17: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
 foo.adb:205:24: info: range check proved (CVC5: 2 VC)
 foo.adb:209:13: info: implicit function contract might not be available on recursive calls
-foo.adb:209:13: info: terminating annotation on "Function_W_Nested_Package" has been proved, subprogram will terminate
+foo.adb:209:13: info: implicit terminating annotation on "Function_W_Nested_Package" has been proved, subprogram will terminate
+foo.adb:210:06: warning: Always_Return annotation is useless
+foo.adb:210:06: warning: function "Function_W_Nested_Package" has implicit Always_Return annotation
 foo.adb:214:49: info: subprogram variant proved (CVC5: 1 VC)
 foo.adb:214:78: info: range check proved (CVC5: 2 VC)
 foo.ads:3:14: warning: subprogram "Recursive_Proc_W_Variant" has no effect

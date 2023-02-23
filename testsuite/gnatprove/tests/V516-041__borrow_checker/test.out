@@ -1,3 +1,7 @@
+main.adb:28:06: warning: Always_Return annotation is useless
+main.adb:28:06: warning: function "Rand" has implicit Always_Return annotation
+main.adb:33:06: warning: Always_Return annotation is useless
+main.adb:33:06: warning: function "Read" has implicit Always_Return annotation
 main.adb:35:04: info: initialization of "X" proved
 main.adb:42:28: error: "X" is not readable
 main.adb:42:28: error: object was moved at line 41

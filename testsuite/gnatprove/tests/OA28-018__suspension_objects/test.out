@@ -1,3 +1,4 @@
+semaphores1.adb:8:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 semaphores1.adb:17:31: medium: overflow check might fail, cannot prove upper bound for The_Data + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 semaphores1.adb:26:14: info: add a contract to analyze it separately from calling contexts
 semaphores1.adb:26:14: info: local subprogram "Initialize_Shared_Data" only analyzed in the context of calls

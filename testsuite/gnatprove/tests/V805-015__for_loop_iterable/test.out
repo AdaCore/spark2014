@@ -1,11 +1,15 @@
 foo.adb:13:13: info: during checks for quantification at foo.adb:4
+foo.adb:13:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 foo.adb:13:13: info: precondition proved (Trivial: 1 VC)
 foo.adb:14:13: info: during checks for quantification at foo.adb:4
+foo.adb:14:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 foo.adb:14:13: info: precondition proved (CVC5: 1 VC)
 foo.adb:14:69: info: overflow check proved (CVC5: 2 VC)
 foo.adb:16:13: info: during checks for quantification at foo.adb:4
+foo.adb:16:13: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 foo.adb:16:13: info: precondition proved (Trivial: 1 VC)
 foo.adb:18:13: info: during checks for quantification at foo.adb:4
+foo.adb:18:13: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
 foo.adb:18:13: info: precondition proved (Trivial: 1 VC)
 foo.adb:18:22: warning: unused variable "IR"
 foo.adb:18:38: warning: unused variable "N"

@@ -8,4 +8,5 @@ proof.adb:25:15: info: precondition proved (CVC5: 2 VC; Z3: 2 VC)
 proof.adb:26:17: info: float overflow check proved (Trivial)
 proof.adb:27:16: info: float overflow check proved (colibri: 1 VC)
 proof.adb:28:18: info: range check proved (Trivial)
+proof.ads:9:13: info: implicit terminating annotation on "Equal" has been proved, subprogram will terminate
 proof.ads:11:14: info: float overflow check proved (Z3: 1 VC)

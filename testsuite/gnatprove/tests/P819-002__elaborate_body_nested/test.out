@@ -1,3 +1,4 @@
 p4.adb:1:15: info: initialization of "X" proved
 p4.adb:4:11: info: flow dependencies proved
 p4.adb:6:07: info: initialization of "Used" proved
+p4.adb:8:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate

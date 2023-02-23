@@ -11,6 +11,7 @@ lcp.adb:21:62: info: index check proved (CVC5: 4 VC)
 lcp.adb:21:74: info: index check proved (CVC5: 4 VC)
 lcp.adb:22:28: info: loop variant proved (CVC5: 1 VC)
 lcp.adb:24:14: info: overflow check proved (CVC5: 2 VC)
+lcp.ads:10:10: info: implicit terminating annotation on "LCP" has been proved, subprogram will terminate
 lcp.ads:14:05: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC)
 lcp.ads:14:47: info: index check proved (CVC5: 2 VC)
 lcp.ads:14:59: info: index check proved (CVC5: 2 VC)

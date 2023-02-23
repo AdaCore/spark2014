@@ -1,4 +1,5 @@
 fibo_variant.adb:2:13: info: implicit function contract might not be available on recursive calls
+fibo_variant.adb:2:13: info: implicit terminating annotation on "Fibo" has been proved, subprogram will terminate
 fibo_variant.adb:3:44: medium: overflow check might fail, cannot prove upper bound for Z + 1 (e.g. when Z = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention Z in a precondition]
 fibo_variant.adb:11:17: info: subprogram variant proved (CVC5: 1 VC)
 fibo_variant.adb:11:25: info: range check proved (CVC5: 2 VC)
@@ -7,56 +8,72 @@ fibo_variant.adb:12:14: info: subprogram variant proved (CVC5: 1 VC)
 fibo_variant.adb:12:22: info: range check proved (CVC5: 2 VC)
 test_bad_variant.adb:6:27: medium: precondition might fail
 test_bad_variant.adb:6:27: medium: subprogram variant might fail [possible explanation: recursive call should not appear in a precondition]
-test_bad_variant.adb:6:27: warning: assuming "Bad_1" always returns
 test_bad_variant.adb:6:27: warning: assuming "Bad_1" has no effect on global items
 test_bad_variant.adb:6:27: warning: no Global contract available for "Bad_1"
-test_bad_variant.adb:6:27: warning: no returning annotation available for "Bad_1"
 test_bad_variant.adb:6:36: info: range check proved (CVC5: 2 VC)
 test_bad_variant.adb:10:13: info: function contract might not be available on recursive calls
+test_bad_variant.adb:10:13: info: implicit terminating annotation on "Bad_2" has been proved, subprogram will terminate
 test_bad_variant.adb:12:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+test_bad_variant.adb:29:13: info: implicit terminating annotation on "Bad_3" has been proved, subprogram will terminate
 test_bad_variant.adb:40:37: medium: subprogram variant might fail [possible explanation: mutually recursive call should be located directly inside a subprogram]
 test_bad_variant.adb:40:46: high: range check might fail, cannot prove lower bound for X - 1 (e.g. when B = False and X = 0) [reason for check: input value must fit in parameter type] [possible fix: add precondition (X >= Natural'First + 1) to subprogram at line 29]
+test_bad_variant.adb:47:13: info: implicit terminating annotation on "Ok" has been proved, subprogram will terminate
 test_bad_variant.adb:52:59: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:52:65: info: range check proved (CVC5: 2 VC)
+test_bad_variant.adb:61:13: info: implicit terminating annotation on "Even" has been proved, subprogram will terminate
+test_bad_variant.adb:64:13: info: implicit terminating annotation on "Odd" has been proved, subprogram will terminate
 test_bad_variant.adb:72:17: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:72:24: info: range check proved (CVC5: 2 VC)
 test_bad_variant.adb:81:17: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:81:25: info: range check proved (CVC5: 2 VC)
+test_bad_variant.adb:85:13: info: implicit terminating annotation on "Even_Bad" has been proved, subprogram will terminate
+test_bad_variant.adb:88:13: info: implicit terminating annotation on "Odd_Bad" has been proved, subprogram will terminate
 test_bad_variant.adb:96:17: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
 test_bad_variant.adb:96:28: info: range check proved (CVC5: 2 VC)
 test_bad_variant.adb:105:17: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
 test_bad_variant.adb:105:29: info: range check proved (CVC5: 2 VC)
+test_bad_variant.adb:109:13: info: implicit terminating annotation on "Even_Bad_2" has been proved, subprogram will terminate
+test_bad_variant.adb:112:13: info: implicit terminating annotation on "Odd_Bad_2" has been proved, subprogram will terminate
 test_bad_variant.adb:120:17: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:120:30: info: range check proved (CVC5: 2 VC)
 test_bad_variant.adb:129:17: medium: subprogram variant might fail (e.g. when X = 1) [possible fix: subprogram at line 112 should mention X in a precondition]
 test_bad_variant.adb:129:31: info: range check proved (CVC5: 2 VC)
+test_bad_variant.adb:133:13: info: implicit terminating annotation on "Even_Bad_3" has been proved, subprogram will terminate
+test_bad_variant.adb:136:13: info: implicit terminating annotation on "Odd_Bad_3" has been proved, subprogram will terminate
 test_bad_variant.adb:144:17: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
 test_bad_variant.adb:144:30: info: range check proved (CVC5: 2 VC)
 test_bad_variant.adb:153:17: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
 test_bad_variant.adb:153:31: info: range check proved (CVC5: 2 VC)
+test_bad_variant.adb:157:13: info: implicit terminating annotation on "Infinite" has been proved, subprogram will terminate
 test_bad_variant.adb:158:07: info: precondition proved (CVC5: 1 VC)
 test_bad_variant.adb:158:07: medium: subprogram variant might fail (e.g. when X = 0)
 test_bad_variant.adb:158:17: info: overflow check proved (CVC5: 2 VC)
 test_bad_variant.adb:160:58: info: overflow check proved (CVC5: 2 VC)
+test_bad_variant.adb:162:13: info: implicit terminating annotation on "Bad_4" has been proved, subprogram will terminate
 test_bad_variant.adb:163:17: medium: subprogram variant might fail (e.g. when X = 0 and Y = 0) [possible fix: subprogram at line 162 should mention B and X and Y in a precondition]
 test_bad_variant.adb:163:26: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 162]
 test_bad_variant.adb:163:33: high: overflow check might fail, cannot prove lower bound for Y - 6 (e.g. when X = -1 and Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 6) to subprogram at line 162]
 test_bad_variant.adb:164:12: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:164:24: high: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 162]
+test_bad_variant.adb:167:13: info: implicit terminating annotation on "OK_2" has been proved, subprogram will terminate
 test_bad_variant.adb:168:17: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:168:25: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 167]
 test_bad_variant.adb:168:32: high: overflow check might fail, cannot prove lower bound for Y - 6 (e.g. when X = -1 and Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 6) to subprogram at line 167]
 test_bad_variant.adb:169:12: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:169:23: high: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 167]
+test_bad_variant.adb:172:13: info: implicit terminating annotation on "OK_3" has been proved, subprogram will terminate
 test_bad_variant.adb:173:25: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last and Y = 6) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 172]
 test_bad_variant.adb:173:32: high: overflow check might fail, cannot prove lower bound for Y - 6 (e.g. when Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 6) to subprogram at line 172]
 test_bad_variant.adb:174:12: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:174:23: high: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 172]
+test_bad_variant.adb:177:13: info: implicit terminating annotation on "Warn" has been proved, subprogram will terminate
 test_bad_variant.adb:179:11: warning: no recursive call visible
 test_bad_variant.adb:188:13: info: implicit function contract might not be available on recursive calls
-test_bad_variant.adb:188:13: info: terminating annotation on "Length" has been proved, subprogram will terminate
+test_bad_variant.adb:188:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 test_bad_variant.adb:189:67: medium: subprogram variant might fail [possible explanation: recursive call should not appear in a subprogram variant]
 test_bad_variant.adb:189:76: info: pointer dereference check proved (CVC5: 1 VC)
+test_bad_variant.adb:190:06: warning: Always_Return annotation is useless
+test_bad_variant.adb:190:06: warning: function "Length" has implicit Always_Return annotation
 test_bad_variant.adb:193:32: medium: subprogram variant might fail [possible fix: subprogram at line 188 should mention L in a precondition]
 test_bad_variant.adb:193:41: info: pointer dereference check proved (CVC5: 1 VC)
 test_bad_variant.adb:193:83: medium: subprogram variant might fail [possible fix: subprogram at line 188 should mention L in a precondition]

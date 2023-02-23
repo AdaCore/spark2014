@@ -7,8 +7,11 @@ stack_14.adb:40:15: info: index check proved (CVC5: 2 VC)
 stack_14.adb:41:26: info: range check proved (CVC5: 2 VC)
 stack_14.ads:4:08: info: flow dependencies proved
 stack_14.ads:5:08: info: initial condition proved (CVC5: 1 VC)
+stack_14.ads:8:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 stack_14.ads:9:11: info: data dependencies proved
+stack_14.ads:11:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
 stack_14.ads:12:11: info: data dependencies proved
+stack_14.ads:14:13: info: implicit terminating annotation on "Top" has been proved, subprogram will terminate
 stack_14.ads:15:11: info: data dependencies proved
 stack_14.ads:19:11: info: data dependencies proved
 stack_14.ads:21:21: info: postcondition proved (CVC5: 1 VC)

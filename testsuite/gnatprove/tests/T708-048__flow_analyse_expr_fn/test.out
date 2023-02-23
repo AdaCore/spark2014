@@ -1,3 +1,5 @@
-tcp_type.ads:21:13: info: terminating annotation on "Tcp_Syn_Queue_Item_Model" has been proved, subprogram will terminate
+tcp_type.ads:21:13: info: implicit terminating annotation on "Tcp_Syn_Queue_Item_Model" has been proved, subprogram will terminate
 tcp_type.ads:24:10: info: subprogram variant proved (Trivial)
 tcp_type.ads:24:42: info: pointer dereference check proved (CVC5: 1 VC)
+tcp_type.ads:25:21: warning: Always_Return annotation is useless
+tcp_type.ads:25:21: warning: function "Tcp_Syn_Queue_Item_Model" has implicit Always_Return annotation

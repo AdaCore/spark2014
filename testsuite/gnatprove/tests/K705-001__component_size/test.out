@@ -1,1 +1,2 @@
+a.ads:11:13: info: implicit terminating annotation on "test" has been proved, subprogram will terminate
 a.ads:12:14: info: postcondition proved (CVC5: 1 VC)

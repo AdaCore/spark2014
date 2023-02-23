@@ -32,4 +32,7 @@ test.adb:88:25: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:91:04: info: analyzing call to "Stuff3" in context
 test.adb:91:25: high: formal parameters "A" and "B" are aliased (SPARK RM 6.4.2)
 test.adb:94:04: info: analyzing call to "Stuff2" in context
+types.ads:10:13: info: implicit terminating annotation on "Constructor" has been proved, subprogram will terminate
+types.ads:12:13: info: implicit terminating annotation on "Sub" has been proved, subprogram will terminate
 types.ads:14:19: medium: overflow check might fail, cannot prove lower bound for Left.Field - Right.Field [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Right.Field >= 0 then Left.Field >= Integer'First + Right.Field else Left.Field <= Integer'Last + Right.Field) to subprogram at line 12]
+types.ads:21:24: info: implicit terminating annotation on "Constructor" has been proved, subprogram will terminate

@@ -32,12 +32,16 @@ parameter_tests.adb:50:11: info: data dependencies proved
 parameter_tests.adb:50:33: warning: unused initial value of "G"
 parameter_tests.adb:50:36: warning: "H" is not modified, could be INPUT
 test.adb:26:04: warning: analyzing unreferenced function "New_Player_01"
+test.adb:26:13: info: implicit terminating annotation on "New_Player_01" has been proved, subprogram will terminate
 test.adb:27:07: info: initialization of "P" proved
 test.adb:36:04: warning: analyzing unreferenced function "New_Player_02"
+test.adb:36:13: info: implicit terminating annotation on "New_Player_02" has been proved, subprogram will terminate
 test.adb:37:07: info: initialization of "P" proved
 test.adb:46:04: warning: analyzing unreferenced function "New_Player_03"
+test.adb:46:13: info: implicit terminating annotation on "New_Player_03" has been proved, subprogram will terminate
 test.adb:47:07: info: initialization of "P" proved
 untangle_tests.adb:22:04: warning: analyzing unreferenced function "New_Coordinate"
+untangle_tests.adb:22:13: info: implicit terminating annotation on "New_Coordinate" has been proved, subprogram will terminate
 untangle_tests.adb:24:07: info: initialization of "R" proved
 untangle_tests.adb:34:04: warning: analyzing unreferenced procedure "Swap_Triangle"
 untangle_tests.adb:37:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (A in 1 .. 100) to subprogram at line 34]

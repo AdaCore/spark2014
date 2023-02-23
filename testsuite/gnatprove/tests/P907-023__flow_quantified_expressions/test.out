@@ -1,3 +1,4 @@
+foo.adb:9:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 foo.adb:12:23: info: initialization of "B" proved
 foo.adb:13:09: info: data dependencies proved
 foo.adb:14:09: info: flow dependencies proved

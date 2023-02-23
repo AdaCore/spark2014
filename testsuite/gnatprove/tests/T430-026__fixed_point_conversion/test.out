@@ -1,2 +1,3 @@
+fp.ads:7:13: info: implicit terminating annotation on "Floor" has been proved, subprogram will terminate
 fp.ads:8:37: info: overflow check proved (CVC5: 2 VC)
 fp.ads:8:37: info: range check proved (CVC5: 2 VC)

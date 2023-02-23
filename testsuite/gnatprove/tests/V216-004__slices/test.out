@@ -1,72 +1,52 @@
 main.adb:2:13: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:2:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 main.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
-main.adb:6:18: warning: assuming "Rand" always returns
+main.adb:5:13: info: implicit terminating annotation on "Id_Pre" has been proved, subprogram will terminate
 main.adb:6:18: warning: assuming "Rand" has no effect on global items
 main.adb:6:18: warning: no Global contract available for "Rand"
-main.adb:6:18: warning: no returning annotation available for "Rand"
 main.adb:9:04: info: range check proved (CVC5: 2 VC)
 main.adb:9:41: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 main.adb:11:12: info: range check proved (CVC5: 2 VC)
 main.adb:12:12: info: range check proved (CVC5: 2 VC)
-main.adb:15:07: warning: assuming "Rand" always returns
 main.adb:15:07: warning: assuming "Rand" has no effect on global items
 main.adb:15:07: warning: no Global contract available for "Rand"
-main.adb:15:07: warning: no returning annotation available for "Rand"
 main.adb:16:10: info: index check proved (CVC5: 2 VC)
 main.adb:16:15: medium: array index check might fail [reason for check: value must be a valid index into the array]
-main.adb:20:10: warning: assuming "Rand" always returns
 main.adb:20:10: warning: assuming "Rand" has no effect on global items
 main.adb:20:10: warning: no Global contract available for "Rand"
-main.adb:20:10: warning: no returning annotation available for "Rand"
 main.adb:21:10: info: index check proved (CVC5: 2 VC)
 main.adb:21:15: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec]
-main.adb:21:15: warning: assuming "Rand" always returns
 main.adb:21:15: warning: assuming "Rand" has no effect on global items
 main.adb:21:15: warning: no Global contract available for "Rand"
-main.adb:21:15: warning: no returning annotation available for "Rand"
 main.adb:21:26: info: index check proved (CVC5: 2 VC)
-main.adb:25:10: warning: assuming "Rand" always returns
 main.adb:25:10: warning: assuming "Rand" has no effect on global items
 main.adb:25:10: warning: no Global contract available for "Rand"
-main.adb:25:10: warning: no returning annotation available for "Rand"
 main.adb:26:10: info: index check proved (CVC5: 2 VC)
 main.adb:26:15: info: index check proved (CVC5: 2 VC)
 main.adb:26:15: medium: precondition might fail
-main.adb:26:23: warning: assuming "Rand" always returns
 main.adb:26:23: warning: assuming "Rand" has no effect on global items
 main.adb:26:23: warning: no Global contract available for "Rand"
-main.adb:26:23: warning: no returning annotation available for "Rand"
 main.adb:26:35: info: index check proved (CVC5: 2 VC)
-main.adb:27:10: warning: assuming "Rand" always returns
 main.adb:27:10: warning: assuming "Rand" has no effect on global items
 main.adb:27:10: warning: no Global contract available for "Rand"
-main.adb:27:10: warning: no returning annotation available for "Rand"
 main.adb:28:10: info: index check proved (CVC5: 2 VC)
 main.adb:28:10: medium: precondition might fail
-main.adb:28:18: warning: assuming "Rand" always returns
 main.adb:28:18: warning: assuming "Rand" has no effect on global items
 main.adb:28:18: warning: no Global contract available for "Rand"
-main.adb:28:18: warning: no returning annotation available for "Rand"
 main.adb:28:31: info: index check proved (CVC5: 2 VC)
 main.adb:28:36: info: index check proved (CVC5: 2 VC)
-main.adb:32:10: warning: assuming "Rand" always returns
 main.adb:32:10: warning: assuming "Rand" has no effect on global items
 main.adb:32:10: warning: no Global contract available for "Rand"
-main.adb:32:10: warning: no returning annotation available for "Rand"
 main.adb:33:25: info: index check proved (CVC5: 2 VC)
 main.adb:33:27: info: range check proved (CVC5: 2 VC)
 main.adb:33:30: info: index check proved (CVC5: 2 VC)
-main.adb:33:30: warning: assuming "Rand" always returns
 main.adb:33:30: warning: assuming "Rand" has no effect on global items
 main.adb:33:30: warning: no Global contract available for "Rand"
-main.adb:33:30: warning: no returning annotation available for "Rand"
 main.adb:33:41: info: index check proved (CVC5: 2 VC)
 main.adb:34:25: info: index check proved (CVC5: 2 VC)
 main.adb:34:27: medium: range check might fail [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec]
 main.adb:34:30: info: index check proved (CVC5: 2 VC)
-main.adb:34:30: warning: assuming "Rand" always returns
 main.adb:34:30: warning: assuming "Rand" has no effect on global items
 main.adb:34:30: warning: no Global contract available for "Rand"
-main.adb:34:30: warning: no returning annotation available for "Rand"
 main.adb:34:41: info: index check proved (CVC5: 2 VC)

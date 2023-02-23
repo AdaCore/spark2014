@@ -29,32 +29,31 @@ psu_monitoring.adb:179:17: warning: assuming "Set_Safety_State" always returns
 psu_monitoring.adb:179:17: warning: assuming "Set_Safety_State" has no effect on global items
 psu_monitoring.adb:179:17: warning: no Global contract available for "Set_Safety_State"
 psu_monitoring.adb:179:17: warning: no returning annotation available for "Set_Safety_State"
-psu_monitoring.adb:192:35: warning: assuming "Get_U_C1" always returns
 psu_monitoring.adb:192:35: warning: assuming "Get_U_C1" has no effect on global items
 psu_monitoring.adb:192:35: warning: no Global contract available for "Get_U_C1"
-psu_monitoring.adb:192:35: warning: no returning annotation available for "Get_U_C1"
-psu_monitoring.adb:193:35: warning: assuming "Get_I_L1" always returns
 psu_monitoring.adb:193:35: warning: assuming "Get_I_L1" has no effect on global items
 psu_monitoring.adb:193:35: warning: no Global contract available for "Get_I_L1"
-psu_monitoring.adb:193:35: warning: no returning annotation available for "Get_I_L1"
-psu_monitoring.adb:194:35: warning: assuming "Get_U_C2" always returns
 psu_monitoring.adb:194:35: warning: assuming "Get_U_C2" has no effect on global items
 psu_monitoring.adb:194:35: warning: no Global contract available for "Get_U_C2"
-psu_monitoring.adb:194:35: warning: no returning annotation available for "Get_U_C2"
-psu_monitoring.adb:195:35: warning: assuming "Get_I_L2" always returns
 psu_monitoring.adb:195:35: warning: assuming "Get_I_L2" has no effect on global items
 psu_monitoring.adb:195:35: warning: no Global contract available for "Get_I_L2"
-psu_monitoring.adb:195:35: warning: no returning annotation available for "Get_I_L2"
 psu_monitoring.adb:197:22: medium: assertion might fail
 psu_monitoring.adb:198:22: medium: assertion might fail
 psu_monitoring.adb:199:22: medium: assertion might fail
 psu_monitoring.adb:200:22: medium: assertion might fail
+psu_monitoring.ads:43:16: info: implicit terminating annotation on "is_all_config_set" has been proved, subprogram will terminate
+psu_monitoring.ads:46:16: info: implicit terminating annotation on "get_monitor_pfc_voltage_config" has been proved, subprogram will terminate
+psu_monitoring.ads:49:16: info: implicit terminating annotation on "get_monitor_pfc_current_config" has been proved, subprogram will terminate
+psu_monitoring.ads:52:16: info: implicit terminating annotation on "get_monitor_output_voltage_config" has been proved, subprogram will terminate
+psu_monitoring.ads:55:16: info: implicit terminating annotation on "get_monitor_output_current_config" has been proved, subprogram will terminate
 psu_monitoring.ads:74:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 psu_monitoring.ads:74:09: info: nontermination of task proved (CVC5: 1 VC)
 psu_monitoring.ads:75:39: info: range check proved (CVC5: 2 VC)
 psu_monitoring.ads:89:15: medium: postcondition might fail, cannot prove monitor.next_state /= reset
+psu_monitoring.ads:90:13: info: implicit terminating annotation on "is_within_limits" has been proved, subprogram will terminate
 psu_monitoring.ads:92:07: info: complete contract cases proved (Z3: 1 VC)
 psu_monitoring.ads:92:07: info: disjoint contract cases proved (CVC5: 1 VC)
 psu_monitoring.ads:92:70: info: contract case proved (CVC5: 1 VC; Trivial: 2 VC)
 psu_monitoring.ads:92:132: info: float overflow check proved (CVC5: 1 VC)
 psu_monitoring.ads:93:75: medium: contract case might fail
+psu_monitoring.ads:94:13: info: implicit terminating annotation on "is_within_expanded_limits" has been proved, subprogram will terminate

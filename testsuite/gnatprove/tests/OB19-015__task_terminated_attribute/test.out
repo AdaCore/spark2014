@@ -1,3 +1,4 @@
 tti.adb:4:08: warning: initialization of "X" has no effect
 tti.adb:7:13: warning: unused assignment
 tti.ads:5:10: info: nontermination of task proved (CVC5: 1 VC)
+tti.ads:7:14: info: implicit terminating annotation on "Terminated" has been proved, subprogram will terminate

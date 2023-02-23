@@ -1,4 +1,6 @@
+c37102b.adb:3:13: info: implicit terminating annotation on "IDENT_INT" has been proved, subprogram will terminate
 c37102b.adb:6:16: info: data dependencies proved
+c37102b.adb:8:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 c37102b.adb:18:21: error: subtype constraint cannot depend on variable input "G" (SPARK RM 4.4(2))
 c37102b.adb:18:21: error: use instead a constant initialized to the expression with variable input
 c37102b.adb:18:21: info: no contextual analysis of "F" (inside record type)

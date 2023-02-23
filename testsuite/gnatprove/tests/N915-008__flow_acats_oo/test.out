@@ -1,12 +1,17 @@
 c3900050.adb:18:76: medium: overflow check might fail, cannot prove upper bound for Display_Count_For (A.Display_On) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at c3900050.ads:74 should mention A and Display_Count_For in a precondition]
-c3900050.ads:55:33: warning: assuming "Time_Of" always returns
 c3900050.ads:55:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:55:33: warning: no Global contract available for "Time_Of"
-c3900050.ads:55:33: warning: no returning annotation available for "Time_Of"
-c3900050.ads:57:33: warning: assuming "Time_Of" always returns
 c3900050.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:57:33: warning: no Global contract available for "Time_Of"
-c3900050.ads:57:33: warning: no returning annotation available for "Time_Of"
+c3900050.ads:84:13: info: implicit terminating annotation on "Get_Time" has been proved, subprogram will terminate
+c3900050.ads:86:13: info: implicit terminating annotation on "Get_Display" has been proved, subprogram will terminate
+c3900050.ads:88:13: info: implicit terminating annotation on "Initial_Values_Okay" has been proved, subprogram will terminate
+c3900050.ads:91:13: info: implicit terminating annotation on "Bad_Final_Values" has been proved, subprogram will terminate
+c3900051.adb:40:07: medium: implicit terminating annotation on "Initial_Values_Okay" could be incorrect, dispatching call might be nonterminating
+c3900051.adb:48:07: medium: implicit terminating annotation on "Bad_Final_Values" could be incorrect, dispatching call might be nonterminating
+c3900051.ads:68:13: info: implicit terminating annotation on "Get_Level" has been proved, subprogram will terminate
+c3900052.adb:36:07: medium: implicit terminating annotation on "Initial_Values_Okay" could be incorrect, dispatching call might be nonterminating
+c3900052.adb:44:07: medium: implicit terminating annotation on "Bad_Final_Values" could be incorrect, dispatching call might be nonterminating
 c3900053.adb:98:10: warning: assuming "TEST" always returns
 c3900053.adb:98:10: warning: no returning annotation available for "TEST"
 c3900053.adb:106:10: info: initialization of "Alarm" proved
@@ -42,14 +47,19 @@ c3900053.adb:185:13: warning: no returning annotation available for "FAILED"
 c3900053.adb:189:10: warning: assuming "RESULT" always returns
 c3900053.adb:189:10: warning: no returning annotation available for "RESULT"
 c3900060.adb:18:76: medium: overflow check might fail, cannot prove upper bound for Display_Count_For (A.Display_On) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at c3900060.ads:76 should mention A and Display_Count_For in a precondition]
-c3900060.ads:57:33: warning: assuming "Time_Of" always returns
 c3900060.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:57:33: warning: no Global contract available for "Time_Of"
-c3900060.ads:57:33: warning: no returning annotation available for "Time_Of"
-c3900060.ads:59:33: warning: assuming "Time_Of" always returns
 c3900060.ads:59:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:59:33: warning: no Global contract available for "Time_Of"
-c3900060.ads:59:33: warning: no returning annotation available for "Time_Of"
+c3900060.ads:86:13: info: implicit terminating annotation on "Get_Time" has been proved, subprogram will terminate
+c3900060.ads:88:13: info: implicit terminating annotation on "Get_Display" has been proved, subprogram will terminate
+c3900060.ads:90:13: info: implicit terminating annotation on "Initial_Values_Okay" has been proved, subprogram will terminate
+c3900060.ads:93:13: info: implicit terminating annotation on "Bad_Final_Values" has been proved, subprogram will terminate
+c3900061.adb:40:07: medium: implicit terminating annotation on "Initial_Values_Okay" could be incorrect, dispatching call might be nonterminating
+c3900061.adb:48:07: medium: implicit terminating annotation on "Bad_Final_Values" could be incorrect, dispatching call might be nonterminating
+c3900061.ads:69:13: info: implicit terminating annotation on "Get_Level" has been proved, subprogram will terminate
+c3900062.adb:37:07: medium: implicit terminating annotation on "Initial_Values_Okay" could be incorrect, dispatching call might be nonterminating
+c3900062.adb:45:07: medium: implicit terminating annotation on "Bad_Final_Values" could be incorrect, dispatching call might be nonterminating
 c3900063.adb:97:10: warning: assuming "TEST" always returns
 c3900063.adb:97:10: warning: no returning annotation available for "TEST"
 c3900063.adb:110:10: info: initialization of "Medium_Alarm" proved
@@ -137,6 +147,7 @@ c392008_0.adb:17:46: medium: range check might fail, cannot prove lower bound fo
 c392008_0.adb:27:46: medium: range check might fail, cannot prove lower bound for A.Current_Balance - 5_00 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at c392008_0.ads:157 should mention A in a precondition]
 c392008_0.adb:33:46: info: overflow check proved (CVC5: 2 VC)
 c392008_0.adb:33:46: info: range check proved (CVC5: 2 VC)
+c392008_0.ads:156:14: info: implicit terminating annotation on "Balance" has been proved, subprogram will terminate
 c392008_0.ads:159:30: warning: unused initial value of "A"
 c392008_1.ads:19:20: warning: unused initial value of "A"
 c392008_2.ads:26:14: error: "Current_Rate" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Open" at c392008_1.ads:19 (SPARK RM 6.1.6)
@@ -161,11 +172,13 @@ cc1311a.adb:343:11: info: initialization of "RESULTS" proved, in instantiation a
 cc1311a.adb:345:11: info: range check proved (CVC5: 2 VC), in instantiation at cc1311a.adb:447
 cc1311a.adb:347:22: info: precondition proved (CVC5: 1 VC), in instantiation at cc1311a.adb:447
 cc1311a.adb:352:15: info: add a contract to analyze it separately from calling contexts
+cc1311a.adb:352:15: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
 cc1311a.adb:352:15: info: local subprogram "F1" only analyzed in the context of calls
 cc1311a.adb:357:16: info: add a contract to analyze it separately from calling contexts
 cc1311a.adb:357:16: info: local subprogram "P2" only analyzed in the context of calls
 cc1311a.adb:357:20: info: initialization of "OUTVAR" proved
 cc1311a.adb:362:15: info: add a contract to analyze it separately from calling contexts
+cc1311a.adb:362:15: info: implicit terminating annotation on "TD_FUNC" has been proved, subprogram will terminate
 cc1311a.adb:362:15: info: local subprogram "TD_FUNC" only analyzed in the context of calls
 cc1311a.adb:375:16: info: add a contract to analyze it separately from calling contexts
 cc1311a.adb:375:16: info: local subprogram "TD_PROC" only analyzed in the context of calls
@@ -186,6 +199,7 @@ cc1311a.adb:396:06: warning: no returning annotation available for "FAILED"
 cc1311a.adb:396:06: warning: no returning annotation available for "TEST"
 cc1311a.adb:405:07: info: analyzing call to "TD_FUNC" in context
 cc1311a.adb:405:07: info: in instantiation at line 164
+cc1311a.adb:405:16: info: implicit terminating annotation on "NEW_FUNC_WITH_3D_FUNC" has been proved, subprogram will terminate
 cc1311a.adb:414:06: info: analyzing call to "TD_PROC" in context
 cc1311a.adb:414:06: info: in instantiation at line 194
 cc1311a.adb:414:06: warning: assuming "FAILED" always returns
@@ -199,8 +213,10 @@ cc1311a.adb:423:06: warning: in instantiation at line 235
 cc1311a.adb:423:06: warning: no returning annotation available for "FAILED"
 cc1311a.adb:432:06: info: analyzing call to "TD_PROC" in context
 cc1311a.adb:432:06: info: in instantiation at line 265
+cc1311a.adb:432:15: info: implicit terminating annotation on "NEW_FUNC_WITH_3D_PROC" has been proved, subprogram will terminate
 cc1311a.adb:441:06: info: analyzing call to "F1" in context
 cc1311a.adb:441:06: info: in instantiation at line 279
+cc1311a.adb:441:16: info: implicit terminating annotation on "NFUNC1" has been proved, subprogram will terminate
 cc1311a.adb:442:06: info: analyzing call to "F1" in context
 cc1311a.adb:442:06: info: in instantiation at line 290
 cc1311a.adb:442:06: warning: assuming "FAILED" always returns
@@ -214,6 +230,7 @@ cc1311a.adb:443:06: warning: no returning annotation available for "FAILED"
 cc1311a.adb:443:16: warning: subprogram "NPROC1" has no effect
 cc1311a.adb:445:06: info: analyzing call to "P2" in context
 cc1311a.adb:445:06: info: in instantiation at line 317
+cc1311a.adb:445:16: info: implicit terminating annotation on "NFUNC2" has been proved, subprogram will terminate
 cc1311a.adb:446:06: info: analyzing call to "P2" in context
 cc1311a.adb:446:06: info: in instantiation at line 330
 cc1311a.adb:446:06: warning: assuming "FAILED" always returns
@@ -239,11 +256,18 @@ cc1311a.adb:474:17: warning: assuming "FAILED" always returns
 cc1311a.adb:474:17: warning: no returning annotation available for "FAILED"
 cc1311a.adb:478:12: warning: assuming "RESULT" always returns
 cc1311a.adb:478:12: warning: no returning annotation available for "RESULT"
+report.ads:112:15: info: implicit terminating annotation on "IDENT_INT" has been proved, subprogram will terminate
 report.ads:115:18: info: data dependencies proved
+report.ads:117:15: info: implicit terminating annotation on "IDENT_CHAR" has been proved, subprogram will terminate
 report.ads:121:18: info: data dependencies proved
+report.ads:123:15: info: implicit terminating annotation on "IDENT_WIDE_CHAR" has been proved, subprogram will terminate
 report.ads:127:18: info: data dependencies proved
+report.ads:129:15: info: implicit terminating annotation on "IDENT_BOOL" has been proved, subprogram will terminate
 report.ads:132:18: info: data dependencies proved
+report.ads:134:15: info: implicit terminating annotation on "IDENT_STR" has been proved, subprogram will terminate
 report.ads:137:18: info: data dependencies proved
+report.ads:139:15: info: implicit terminating annotation on "IDENT_WIDE_STR" has been proved, subprogram will terminate
 report.ads:142:18: info: data dependencies proved
+report.ads:144:15: info: implicit terminating annotation on "EQUAL" has been proved, subprogram will terminate
 report.ads:148:22: info: data dependencies proved
 gnatprove: error during flow analysis and proof

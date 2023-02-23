@@ -162,13 +162,16 @@ instr.ads:18:06: info: data dependencies proved
 instr.ads:20:06: info: data dependencies proved
 instr.ads:30:06: info: data dependencies proved
 instr.ads:33:06: info: data dependencies proved
+instr.ads:34:14: info: implicit terminating annotation on "Value" has been proved, subprogram will terminate
 instr.ads:35:06: info: data dependencies proved
 instr.ads:46:06: info: data dependencies proved
 instr.ads:48:06: info: data dependencies proved
+instr.ads:49:14: info: implicit terminating annotation on "Value" has been proved, subprogram will terminate
 instr.ads:50:06: info: data dependencies proved
 instr.ads:55:06: info: data dependencies proved
 instr.ads:66:06: info: data dependencies proved
 instr.ads:71:06: info: data dependencies proved
+instr.ads:72:13: info: implicit terminating annotation on "Seconds" has been proved, subprogram will terminate
 instr.ads:73:06: info: data dependencies proved
 instr.ads:76:06: info: data dependencies proved
 instr.ads:81:06: info: data dependencies proved

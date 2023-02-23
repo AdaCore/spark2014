@@ -1,14 +1,10 @@
 addr.ads:13:09: warning: assuming no concurrent accesses to non-atomic object "Y"
 addr.ads:13:09: warning: make sure that all overlapping objects have Async_Writers set to True
 addr.ads:13:09: warning: writing to "Y" is assumed to have no effects on other non-volatile objects
-addr.ads:13:20: warning: assuming "F" always returns
 addr.ads:13:20: warning: assuming "F" has no effect on global items
 addr.ads:13:20: warning: no Global contract available for "F"
-addr.ads:13:20: warning: no returning annotation available for "F"
 addr.ads:17:09: warning: assuming no concurrent accesses to non-atomic object "Z"
 addr.ads:17:09: warning: make sure that all overlapping objects have Async_Writers set to True
 addr.ads:17:09: warning: writing to "Z" is assumed to have no effects on other non-volatile objects
-addr.ads:17:20: warning: assuming "F" always returns
 addr.ads:17:20: warning: assuming "F" has no effect on global items
 addr.ads:17:20: warning: no Global contract available for "F"
-addr.ads:17:20: warning: no returning annotation available for "F"

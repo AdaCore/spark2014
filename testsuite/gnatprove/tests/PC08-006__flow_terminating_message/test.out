@@ -1,9 +1,19 @@
-terminating_annotations.adb:8:10: medium: terminating annotation on "F_Rec" could be incorrect, subprogram is recursive
+terminating_annotations.adb:8:10: medium: implicit terminating annotation on "F_Rec" could be incorrect, subprogram is recursive
 terminating_annotations.adb:8:26: info: range check proved (CVC5: 2 VC)
-terminating_annotations.adb:15:19: medium: terminating annotation on "F_While" could be incorrect, loop might be nonterminating
+terminating_annotations.adb:15:19: medium: implicit terminating annotation on "F_While" could be incorrect, loop might be nonterminating
 terminating_annotations.adb:16:17: info: range check proved (CVC5: 2 VC)
-terminating_annotations.adb:37:07: medium: terminating annotation on "F_Call" could be incorrect, call to "Not_SPARK" might be nonterminating
+terminating_annotations.adb:37:07: medium: implicit terminating annotation on "F_Call" could be incorrect, call to "Not_SPARK" might be nonterminating
 terminating_annotations.adb:50:31: info: loop variant proved (CVC5: 1 VC)
 terminating_annotations.adb:51:17: info: range check proved (CVC5: 2 VC)
 terminating_annotations.ads:3:13: info: implicit function contract might not be available on recursive calls
-terminating_annotations.ads:16:13: info: terminating annotation on "F_Term" has been proved, subprogram will terminate
+terminating_annotations.ads:4:04: warning: Always_Return annotation is useless
+terminating_annotations.ads:4:04: warning: function "F_Rec" has implicit Always_Return annotation
+terminating_annotations.ads:7:04: warning: Always_Return annotation is useless
+terminating_annotations.ads:7:04: warning: function "F_While" has implicit Always_Return annotation
+terminating_annotations.ads:10:04: warning: Always_Return annotation is useless
+terminating_annotations.ads:10:04: warning: function "F_Not_SPARK" has implicit Always_Return annotation
+terminating_annotations.ads:14:04: warning: Always_Return annotation is useless
+terminating_annotations.ads:14:04: warning: function "F_Call" has implicit Always_Return annotation
+terminating_annotations.ads:16:13: info: implicit terminating annotation on "F_Term" has been proved, subprogram will terminate
+terminating_annotations.ads:17:04: warning: Always_Return annotation is useless
+terminating_annotations.ads:17:04: warning: function "F_Term" has implicit Always_Return annotation

@@ -1,6 +1,11 @@
 extensions.adb:3:07: info: initialization of "R" proved
 extensions.adb:10:07: info: initialization of "R" proved
+extensions.adb:17:07: medium: implicit terminating annotation on "Gimme_One" could be incorrect, dispatching call might be nonterminating
+extensions.ads:6:13: info: implicit terminating annotation on "Gimme_One" has been proved, subprogram will terminate
 extensions.ads:8:04: medium: type "Pub_Ext" is not fully initialized
+extensions.ads:12:13: info: implicit terminating annotation on "Gimme_One" has been proved, subprogram will terminate
 extensions.ads:19:04: medium: type "Priv_Ext" is not fully initialized
 extensions.ads:23:04: medium: type "Illegal" is not fully initialized
 tagged_dic.adb:3:07: info: initialization of "R" proved
+tagged_dic.ads:5:13: info: implicit terminating annotation on "Gimme_One" has been proved, subprogram will terminate
+tagged_dic.ads:9:13: info: implicit terminating annotation on "Gimme_One" has been proved, subprogram will terminate

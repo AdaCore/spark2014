@@ -1,3 +1,4 @@
 initial_condition_legal.ads:4:08: info: flow dependencies proved
 initial_condition_legal.ads:5:08: info: initial condition proved (CVC5: 1 VC)
+initial_condition_legal.ads:7:13: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
 initial_condition_legal.ads:8:11: info: data dependencies proved

@@ -11,10 +11,15 @@ stack.adb:52:69: info: index check proved (CVC5: 2 VC)
 stack.adb:53:36: info: index check proved (CVC5: 2 VC)
 stack.ads:4:08: info: flow dependencies proved
 stack.ads:5:08: info: initial condition proved (CVC5: 1 VC)
+stack.ads:18:13: info: implicit terminating annotation on "Max_Stack_Size" has been proved, subprogram will terminate
 stack.ads:22:13: info: implicit function contract might not be available on calls from enclosing unit
+stack.ads:22:13: info: implicit terminating annotation on "Count" has been proved, subprogram will terminate
 stack.ads:23:11: info: data dependencies proved
+stack.ads:28:13: info: implicit terminating annotation on "Stack_Entry" has been proved, subprogram will terminate
 stack.ads:29:11: info: data dependencies proved
+stack.ads:35:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 stack.ads:36:11: info: data dependencies proved
+stack.ads:39:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
 stack.ads:40:11: info: data dependencies proved
 stack.ads:51:11: info: data dependencies proved
 stack.ads:53:21: info: postcondition proved (CVC5: 3 VC)
@@ -43,19 +48,19 @@ stack_external_prover.adb:42:69: medium: array index check might fail [reason fo
 stack_external_prover.adb:43:36: info: index check proved (CVC5: 2 VC)
 stack_external_prover.ads:4:08: info: flow dependencies proved
 stack_external_prover.ads:5:08: medium: initial condition might fail
-stack_external_prover.ads:44:14: info: terminating annotation on "Push" has been proved, subprogram will terminate
-stack_external_prover.ads:45:11: info: data dependencies proved
-stack_external_prover.ads:48:23: medium: postcondition might fail, cannot prove Count = Count'Old + 1 [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
-stack_external_prover.ads:48:41: medium: overflow check might fail, cannot prove upper bound for Count'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-stack_external_prover.ads:51:14: info: terminating annotation on "Pop" has been proved, subprogram will terminate
-stack_external_prover.ads:51:19: info: initialization of "X" proved
-stack_external_prover.ads:52:11: info: data dependencies proved
-stack_external_prover.ads:55:23: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
-stack_external_prover.ads:57:14: info: terminating annotation on "Swap2" has been proved, subprogram will terminate
-stack_external_prover.ads:58:11: info: data dependencies proved
-stack_external_prover.ads:61:23: medium: postcondition might fail, cannot prove Count = Count'Old [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
-stack_external_prover.ads:62:62: info: range check proved (CVC5: 2 VC)
-stack_external_prover.ads:63:40: medium: range check might fail, cannot prove lower bound for Count - 1 [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
+stack_external_prover.ads:39:14: info: terminating annotation on "Push" has been proved, subprogram will terminate
+stack_external_prover.ads:40:11: info: data dependencies proved
+stack_external_prover.ads:43:23: medium: postcondition might fail, cannot prove Count = Count'Old + 1 [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
+stack_external_prover.ads:43:41: medium: overflow check might fail, cannot prove upper bound for Count'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+stack_external_prover.ads:46:14: info: terminating annotation on "Pop" has been proved, subprogram will terminate
+stack_external_prover.ads:46:19: info: initialization of "X" proved
+stack_external_prover.ads:47:11: info: data dependencies proved
+stack_external_prover.ads:50:23: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
+stack_external_prover.ads:52:14: info: terminating annotation on "Swap2" has been proved, subprogram will terminate
+stack_external_prover.ads:53:11: info: data dependencies proved
+stack_external_prover.ads:56:23: medium: postcondition might fail, cannot prove Count = Count'Old [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
+stack_external_prover.ads:57:62: info: range check proved (CVC5: 2 VC)
+stack_external_prover.ads:58:40: medium: range check might fail, cannot prove lower bound for Count - 1 [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
 stack_functional_spec.adb:20:04: info: initialization of "My_Stack" constituent of "State" proved
 stack_functional_spec.adb:32:25: info: range check proved (CVC5: 2 VC)
 stack_functional_spec.adb:38:44: info: range check proved (CVC5: 2 VC)
@@ -69,9 +74,15 @@ stack_functional_spec.adb:56:69: info: index check proved (CVC5: 2 VC)
 stack_functional_spec.adb:57:36: info: index check proved (CVC5: 2 VC)
 stack_functional_spec.ads:5:08: info: flow dependencies proved
 stack_functional_spec.ads:6:08: info: initial condition proved (CVC5: 1 VC)
+stack_functional_spec.ads:19:13: info: implicit terminating annotation on "State" has been proved, subprogram will terminate
 stack_functional_spec.ads:20:11: info: data dependencies proved
+stack_functional_spec.ads:22:13: info: implicit terminating annotation on "Max_Stack_Size" has been proved, subprogram will terminate
 stack_functional_spec.ads:28:13: info: implicit function contract might not be available on calls from enclosing unit
+stack_functional_spec.ads:28:13: info: implicit terminating annotation on "Count" has been proved, subprogram will terminate
+stack_functional_spec.ads:33:13: info: implicit terminating annotation on "Stack_Entry" has been proved, subprogram will terminate
+stack_functional_spec.ads:39:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 stack_functional_spec.ads:40:11: info: data dependencies proved
+stack_functional_spec.ads:43:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
 stack_functional_spec.ads:44:11: info: data dependencies proved
 stack_functional_spec.ads:56:11: info: data dependencies proved
 stack_functional_spec.ads:58:21: info: postcondition proved (CVC5: 4 VC)

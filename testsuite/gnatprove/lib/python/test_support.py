@@ -262,6 +262,8 @@ def is_flow_initialization_tag(tag):
     message"""
     return tag in ("INITIALIZED", "INITIALIZES")
 
+def is_termination_tag(tag):
+    return tag in ("TERMINATION")
 
 def is_aliasing_tag(tag):
     """Returns True if the given tag corresponds to an aliasing flow message"""
@@ -349,6 +351,7 @@ def is_flow_tag(tag):
         is_dependency_tag(tag)
         or is_flow_initialization_tag(tag)
         or is_aliasing_tag(tag)
+        or is_termination_tag(tag)
     )
 
 
@@ -417,6 +420,8 @@ def check_marks(strlist):
             return "INITIALIZED"
         elif "initializes" in text:
             return "INITIALIZES"
+        elif "terminating annotation" in text:
+            return "TERMINATION"
 
         # proof tags
 

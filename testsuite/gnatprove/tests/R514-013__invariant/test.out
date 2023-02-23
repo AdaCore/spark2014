@@ -1,4 +1,6 @@
+sorted.ads:4:13: info: implicit terminating annotation on "Is_Sorted" has been proved, subprogram will terminate
 sorted.ads:6:39: info: index check proved (CVC5: 2 VC)
+sorted.ads:13:13: info: implicit terminating annotation on "Open" has been proved, subprogram will terminate
 sorted.ads:14:14: info: postcondition proved (CVC5: 1 VC)
 sorted.ads:16:14: info: invariant check proved (CVC5: 1 VC)
 sorted.ads:18:04: medium: type "Sorted_Nat_Array" is not fully initialized

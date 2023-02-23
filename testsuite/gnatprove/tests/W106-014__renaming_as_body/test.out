@@ -1,6 +1,9 @@
 func.adb:1:10: info: implicit function contract might not be available on implicit recursive calls
+func.adb:1:10: info: implicit terminating annotation on "Func" has been proved, subprogram will terminate
 func.adb:4:13: info: implicit function contract might not be available on calls from enclosing unit
+func.adb:4:13: info: implicit terminating annotation on "Orig" has been proved, subprogram will terminate
 func.adb:10:16: info: implicit function contract might not be available on implicit recursive calls
+func.adb:10:16: info: implicit terminating annotation on "Proxy" has been proved, subprogram will terminate
 func.adb:12:16: info: no contextual analysis of "Orig" (inside expression function)
 proc.adb:4:14: info: add a contract to analyze it separately from calling contexts
 proc.adb:4:14: info: local subprogram "Orig" only analyzed in the context of calls

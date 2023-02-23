@@ -1,22 +1,24 @@
 spec_rec_call_with_variant.adb:7:13: info: function contract might not be available on recursive calls
 spec_rec_call_with_variant.adb:7:44: info: function contract feasibility proved (CVC5: 1 VC)
+spec_rec_call_with_variant.adb:8:06: warning: Always_Return annotation is useless
+spec_rec_call_with_variant.adb:8:06: warning: function "Add" has implicit Always_Return annotation
 spec_rec_call_with_variant.adb:10:58: info: range check proved (CVC5: 1 VC)
-spec_rec_call_with_variant.adb:10:58: medium: terminating annotation on "Add" could be incorrect, call via access-to-subprogram might be nonterminating
+spec_rec_call_with_variant.adb:10:58: medium: implicit terminating annotation on "Add" could be incorrect, call via access-to-subprogram might be nonterminating
 spec_rec_call_with_variant.adb:10:63: info: predicate check proved (Trivial: 1 VC)
 spec_rec_call_with_variant.adb:10:66: info: pointer dereference check proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:10:66: info: predicate check proved (Trivial: 1 VC)
 spec_rec_call_with_variant.adb:11:14: info: postcondition proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:11:17: info: predicate check proved (Trivial: 1 VC)
-spec_rec_call_with_variant.adb:11:25: medium: terminating annotation on "Add" could be incorrect, call via access-to-subprogram might be nonterminating
+spec_rec_call_with_variant.adb:11:25: medium: implicit terminating annotation on "Add" could be incorrect, call via access-to-subprogram might be nonterminating
 spec_rec_call_with_variant.adb:11:27: info: pointer dereference check proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:11:27: info: predicate check proved (Trivial: 1 VC)
 spec_rec_call_with_variant.adb:11:50: info: predicate check proved (Trivial: 1 VC)
 spec_rec_call_with_variant.adb:11:57: info: predicate check proved (Trivial: 1 VC)
 spec_rec_call_with_variant.adb:11:57: info: subprogram variant proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:11:64: info: range check proved (CVC5: 2 VC)
-spec_rec_call_with_variant.adb:16:10: medium: terminating annotation on "Add" could be incorrect, call via access-to-subprogram might be nonterminating
+spec_rec_call_with_variant.adb:16:10: medium: implicit terminating annotation on "Add" could be incorrect, call via access-to-subprogram might be nonterminating
 spec_rec_call_with_variant.adb:16:17: info: pointer dereference check proved (CVC5: 1 VC)
-spec_rec_call_with_variant.adb:18:10: medium: terminating annotation on "Add" could be incorrect, call via access-to-subprogram might be nonterminating
+spec_rec_call_with_variant.adb:18:10: medium: implicit terminating annotation on "Add" could be incorrect, call via access-to-subprogram might be nonterminating
 spec_rec_call_with_variant.adb:18:17: info: pointer dereference check proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:18:17: info: predicate check proved (Trivial: 1 VC)
 spec_rec_call_with_variant.adb:18:25: info: predicate check proved (Trivial: 1 VC)
@@ -24,14 +26,16 @@ spec_rec_call_with_variant.adb:18:25: info: subprogram variant proved (CVC5: 1 V
 spec_rec_call_with_variant.adb:18:32: info: range check proved (CVC5: 2 VC)
 spec_rec_call_with_variant.adb:22:13: info: function contract might not be available on recursive calls
 spec_rec_call_with_variant.adb:22:46: info: function contract feasibility proved (CVC5: 1 VC)
+spec_rec_call_with_variant.adb:23:06: warning: Always_Return annotation is useless
+spec_rec_call_with_variant.adb:23:06: warning: function "Add_2" has implicit Always_Return annotation
 spec_rec_call_with_variant.adb:25:58: info: range check proved (CVC5: 1 VC)
-spec_rec_call_with_variant.adb:25:58: medium: terminating annotation on "Add_2" could be incorrect, call via access-to-subprogram might be nonterminating
+spec_rec_call_with_variant.adb:25:58: medium: implicit terminating annotation on "Add_2" could be incorrect, call via access-to-subprogram might be nonterminating
 spec_rec_call_with_variant.adb:25:63: info: predicate check proved (Trivial: 1 VC)
 spec_rec_call_with_variant.adb:25:66: info: pointer dereference check proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:25:66: info: predicate check proved (Trivial: 1 VC)
 spec_rec_call_with_variant.adb:26:14: info: postcondition proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:26:19: info: predicate check proved (Trivial: 1 VC)
-spec_rec_call_with_variant.adb:26:27: medium: terminating annotation on "Add_2" could be incorrect, call via access-to-subprogram might be nonterminating
+spec_rec_call_with_variant.adb:26:27: medium: implicit terminating annotation on "Add_2" could be incorrect, call via access-to-subprogram might be nonterminating
 spec_rec_call_with_variant.adb:26:29: info: pointer dereference check proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:26:29: info: predicate check proved (Trivial: 1 VC)
 spec_rec_call_with_variant.adb:26:52: info: predicate check proved (Trivial: 1 VC)
@@ -39,6 +43,7 @@ spec_rec_call_with_variant.adb:26:59: info: predicate check proved (Trivial: 1 V
 spec_rec_call_with_variant.adb:26:59: info: subprogram variant proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:26:68: info: range check proved (CVC5: 2 VC)
 spec_rec_call_with_variant.adb:29:60: info: pointer dereference check proved (CVC5: 1 VC)
+spec_rec_call_with_variant.adb:29:60: medium: implicit terminating annotation on "F_Wrap" could be incorrect, call via access-to-subprogram might be nonterminating
 spec_rec_call_with_variant.adb:31:17: info: add a contract to analyze it separately from calling contexts
 spec_rec_call_with_variant.adb:31:17: info: local subprogram "Prove_Post" only analyzed in the context of calls
 spec_rec_call_with_variant.adb:34:36: info: loop invariant initialization proved (CVC5: 1 VC), in call inlined at spec_rec_call_with_variant.adb:41
@@ -47,10 +52,10 @@ spec_rec_call_with_variant.adb:34:36: info: predicate check proved (Trivial: 2 V
 spec_rec_call_with_variant.adb:34:36: info: subprogram variant proved (CVC5: 2 VC), in call inlined at spec_rec_call_with_variant.adb:41
 spec_rec_call_with_variant.adb:34:63: info: predicate check proved (Trivial: 2 VC), in call inlined at spec_rec_call_with_variant.adb:41
 spec_rec_call_with_variant.adb:34:63: info: subprogram variant proved (CVC5: 2 VC), in call inlined at spec_rec_call_with_variant.adb:41
-spec_rec_call_with_variant.adb:39:10: medium: terminating annotation on "Add_2" could be incorrect, call via access-to-subprogram might be nonterminating
+spec_rec_call_with_variant.adb:39:10: medium: implicit terminating annotation on "Add_2" could be incorrect, call via access-to-subprogram might be nonterminating
 spec_rec_call_with_variant.adb:39:17: info: pointer dereference check proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:41:10: info: analyzing call to "Prove_Post" in context
-spec_rec_call_with_variant.adb:42:10: medium: terminating annotation on "Add_2" could be incorrect, call via access-to-subprogram might be nonterminating
+spec_rec_call_with_variant.adb:42:10: medium: implicit terminating annotation on "Add_2" could be incorrect, call via access-to-subprogram might be nonterminating
 spec_rec_call_with_variant.adb:42:17: info: pointer dereference check proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:42:17: info: predicate check proved (Trivial: 1 VC)
 spec_rec_call_with_variant.adb:42:25: info: predicate check proved (Trivial: 1 VC)

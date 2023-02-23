@@ -4,3 +4,4 @@ foo.adb:12:34: high: range check might fail, cannot prove upper bound for I / 32
 foo.adb:12:34: info: division check proved (CVC5: 1 VC)
 foo.adb:13:27: info: division check proved (CVC5: 1 VC)
 foo.adb:13:27: info: range check proved (CVC5: 2 VC)
+foo.ads:10:13: info: implicit terminating annotation on "Bit_Set" has been proved, subprogram will terminate

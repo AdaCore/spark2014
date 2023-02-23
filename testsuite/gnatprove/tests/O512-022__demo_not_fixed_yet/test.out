@@ -1,6 +1,7 @@
 adt_stack-child.adb:18:30: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: call at line 17 should mention S (for argument S) in a postcondition]
 adt_stack-child.adb:19:36: medium: overflow check might fail, cannot prove upper bound for S.Next_Value + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 17 should mention S (for argument S) in a postcondition]
 adt_stack-child.adb:24:07: info: initialization of "Result" proved
+adt_stack-child.adb:26:07: medium: implicit terminating annotation on "Top_Identity" could be incorrect, dispatching call might be nonterminating
 adt_stack-child.adb:29:52: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (S.Stack_Top in 1 .. 100) to subprogram at adt_stack-child.ads:10]
 adt_stack-child.ads:7:20: info: initialization of "S" proved
 adt_stack.adb:28:10: medium: unexpected exception might be raised
@@ -11,8 +12,11 @@ adt_stack.adb:40:28: medium: array index check might fail [reason for check: val
 adt_stack.adb:41:33: info: range check proved (CVC5: 2 VC)
 adt_stack.adb:48:10: info: range check proved (CVC5: 4 VC)
 adt_stack.adb:48:45: info: range check proved (CVC5: 4 VC)
+adt_stack.ads:10:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
+adt_stack.ads:11:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
 adt_stack.ads:13:20: info: initialization of "S" proved
 adt_stack.ads:20:36: info: initialization of "X" proved
+adt_stack.ads:23:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 asm_stack.ads:11:13: error: function "Pop" with output global "Asm_Stack.Stack_Top" is not allowed in SPARK
 asm_stack.ads:11:13: error: function "Pop" with output global "Asm_Stack.Stack_Top" is not allowed in SPARK
 asm_stack.ads:11:13: error: function "Pop" with output global "Stack_Top" is not allowed in SPARK

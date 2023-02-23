@@ -1,8 +1,12 @@
+normalize.adb:5:13: info: implicit terminating annotation on "R1" has been proved, subprogram will terminate
 normalize.adb:6:17: info: range check proved (CVC5: 1 VC)
+normalize.adb:8:13: info: implicit terminating annotation on "R2" has been proved, subprogram will terminate
 normalize.adb:9:17: info: range check proved (CVC5: 1 VC)
+normalize.adb:12:13: info: implicit terminating annotation on "R3" has been proved, subprogram will terminate
 normalize.adb:13:17: info: range check proved (CVC5: 1 VC)
 normalize.adb:15:12: info: postcondition proved (CVC5: 2 VC)
 normalize.adb:15:51: info: float overflow check proved (Trivial)
+normalize.adb:17:13: info: implicit terminating annotation on "R4" has been proved, subprogram will terminate
 normalize.adb:18:17: info: range check proved (CVC5: 1 VC)
 normalize.adb:20:12: info: postcondition proved (CVC5: 1 VC)
 normalize.adb:26:23: info: range check proved (Z3: 1 VC)
@@ -115,3 +119,18 @@ normalize.adb:162:22: info: assertion proved (Z3: 1 VC)
 normalize.adb:163:22: info: assertion proved (colibri: 1 VC)
 normalize.adb:163:30: info: float overflow check proved (Trivial)
 normalize.adb:164:14: info: range check proved (colibri: 1 VC)
+normalize.ads:11:13: info: implicit terminating annotation on "M01" has been proved, subprogram will terminate
+normalize.ads:12:13: info: implicit terminating annotation on "M02" has been proved, subprogram will terminate
+normalize.ads:13:13: info: implicit terminating annotation on "M03" has been proved, subprogram will terminate
+normalize.ads:14:13: info: implicit terminating annotation on "M11" has been proved, subprogram will terminate
+normalize.ads:15:13: info: implicit terminating annotation on "M12" has been proved, subprogram will terminate
+normalize.ads:16:13: info: implicit terminating annotation on "M13" has been proved, subprogram will terminate
+normalize.ads:17:13: info: implicit terminating annotation on "M21" has been proved, subprogram will terminate
+normalize.ads:18:13: info: implicit terminating annotation on "M22" has been proved, subprogram will terminate
+normalize.ads:19:13: info: implicit terminating annotation on "M23" has been proved, subprogram will terminate
+normalize.ads:20:13: info: implicit terminating annotation on "M31" has been proved, subprogram will terminate
+normalize.ads:21:13: info: implicit terminating annotation on "M32" has been proved, subprogram will terminate
+normalize.ads:22:13: info: implicit terminating annotation on "M33" has been proved, subprogram will terminate
+normalize.ads:23:13: info: implicit terminating annotation on "M41" has been proved, subprogram will terminate
+normalize.ads:24:13: info: implicit terminating annotation on "M42" has been proved, subprogram will terminate
+normalize.ads:25:13: info: implicit terminating annotation on "M43" has been proved, subprogram will terminate

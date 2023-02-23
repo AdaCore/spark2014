@@ -1,3 +1,4 @@
+test_list.adb:10:12: info: implicit terminating annotation on "Tail_2" has been proved, subprogram will terminate
 test_list.adb:11:06: info: pointer dereference check proved (CVC5: 1 VC)
 test_list.adb:11:11: info: pointer dereference check proved (CVC5: 1 VC)
 test_list.adb:12:38: info: pointer dereference check proved (CVC5: 1 VC)

@@ -1,11 +1,7 @@
 impure_package.adb:7:16: medium: overflow check might fail, cannot prove lower bound for X + State.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at impure_package.ads:3 should mention X in a precondition]
 impure_package.adb:7:23: high: "Y" must be listed in the Global aspect of "Pure_Function" (SPARK RM 6.1.4(15))
 call.adb:10:08: info: data dependencies proved
-call.adb:16:18: warning: assuming "Pure_Function" always returns
-call.adb:16:18: warning: no returning annotation available for "Pure_Function"
-call.adb:17:20: warning: assuming "Impure_Function" always returns
 call.adb:17:20: warning: assuming "Impure_Function" has no effect on global items
 call.adb:17:20: warning: no Global contract available for "Impure_Function"
-call.adb:17:20: warning: no returning annotation available for "Impure_Function"
 call.adb:22:51: medium: precondition might fail
 call.adb:22:51: medium: range check might fail, cannot prove lower bound for Ada.Numerics.Elementary_Functions.Log (0.0) [reason for check: value must be convertible to the target type of the conversion]

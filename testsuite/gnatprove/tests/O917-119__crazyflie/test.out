@@ -1,8 +1,6 @@
 crtp_pack.adb:15:07: info: initialization of "Packet" proved
-crtp_pack.adb:23:25: warning: assuming "Link_Send_Packet" always returns
 crtp_pack.adb:23:25: warning: assuming "Link_Send_Packet" has no effect on global items
 crtp_pack.adb:23:25: warning: no Global contract available for "Link_Send_Packet"
-crtp_pack.adb:23:25: warning: no returning annotation available for "Link_Send_Packet"
 crtp_pack.adb:28:07: info: initialization of "Packet" proved
 crtp_pack.adb:32:10: warning: assuming "Link_Receive_Packet_Blocking" always returns
 crtp_pack.adb:32:10: warning: assuming "Link_Receive_Packet_Blocking" has no effect on global items
@@ -16,8 +14,13 @@ crtp_pack.adb:54:25: high: "Packet.Header" is not initialized
 crtp_pack.adb:54:25: high: "Packet.Raw" is not initialized
 crtp_pack.adb:54:25: high: "Packet.Reserved" is not initialized
 crtp_pack.adb:62:07: info: initialization of "Handler" proved
+crtp_pack.ads:87:13: info: implicit terminating annotation on "CRTP_Create_Packet" has been proved, subprogram will terminate
+crtp_pack.ads:92:13: info: implicit terminating annotation on "CRTP_Get_Handler_From_Packet" has been proved, subprogram will terminate
+crtp_pack.ads:96:13: info: implicit terminating annotation on "CRTP_Get_Packet_From_Handler" has been proved, subprogram will terminate
+crtp_pack.ads:132:13: info: implicit terminating annotation on "CRTP_Get_Packet_Size" has been proved, subprogram will terminate
 crtp_pack.ads:138:07: info: initialization of "Packet" proved
 crtp_pack.ads:144:07: info: initialization of "Has_Succeed" proved
+crtp_pack.ads:163:13: info: implicit terminating annotation on "CRTP_Is_Connected" has been proved, subprogram will terminate
 crtp_pack.ads:167:63: error: actual for formal object with mode in cannot depend on variable input "Bla" (SPARK RM 4.4(2))
 crtp_pack.ads:167:63: error: use instead a constant initialized to the expression with variable input
 generic_queue_pack.ads:23:07: medium: "Item.Channel" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167 [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Item.Channel" on all paths, make "Item" an IN OUT parameter or annotate it with aspect Relaxed_Initialization, in instantiation at crtp_pack.ads:167]
@@ -28,6 +31,8 @@ generic_queue_pack.ads:23:07: medium: "Item.Port" might not be initialized in "D
 generic_queue_pack.ads:23:07: medium: "Item.Raw" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167 [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Item.Raw" on all paths, make "Item" an IN OUT parameter or annotate it with aspect Relaxed_Initialization, in instantiation at crtp_pack.ads:167]
 generic_queue_pack.ads:23:07: medium: "Item.Reserved" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167 [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Item.Reserved" on all paths, make "Item" an IN OUT parameter or annotate it with aspect Relaxed_Initialization, in instantiation at crtp_pack.ads:167]
 generic_queue_pack.ads:23:07: medium: "Item.Size" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167 [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Item.Size" on all paths, make "Item" an IN OUT parameter or annotate it with aspect Relaxed_Initialization, in instantiation at crtp_pack.ads:167]
+generic_queue_pack.ads:29:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate, in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:32:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate, in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:49:10: info: initialization of "Has_Succeed" proved, in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:53:10: medium: "Item.Channel" might not be initialized in "Dequeue_Item", in instantiation at crtp_pack.ads:167 [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Item.Channel" on all paths, make "Item" an IN OUT parameter or annotate it with aspect Relaxed_Initialization, in instantiation at crtp_pack.ads:167]
 generic_queue_pack.ads:53:10: medium: "Item.Data_1" might not be initialized in "Dequeue_Item", in instantiation at crtp_pack.ads:167 [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Item.Data_1" on all paths, make "Item" an IN OUT parameter or annotate it with aspect Relaxed_Initialization, in instantiation at crtp_pack.ads:167]

@@ -1,3 +1,2 @@
 example.adb:7:20: info: range check proved (CVC5: 2 VC)
-example.adb:7:20: warning: assuming "Shift_Right" always returns
-example.adb:7:20: warning: no returning annotation available for "Shift_Right"
+example.ads:15:13: info: implicit terminating annotation on "High_Octet" has been proved, subprogram will terminate

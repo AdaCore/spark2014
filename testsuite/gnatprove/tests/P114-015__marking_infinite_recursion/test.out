@@ -2,4 +2,5 @@ q.ads:3:44: warning: predicate check includes a call to "Foo" that requires a pr
 q.ads:3:44: warning: this will result in infinite recursion
 q.ads:3:44: warning: use an explicit subtype of "T" to carry the predicate
 q.ads:3:49: high: infinite recursion might occur
+q.ads:5:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
 q.ads:5:18: warning: unused variable "X"

@@ -1,5 +1,6 @@
 refinement.adb:12:30: info: refined post proved (CVC5: 1 VC)
 refinement.ads:3:08: info: flow dependencies proved
+refinement.ads:7:13: info: implicit terminating annotation on "Get_Highest_Reading" has been proved, subprogram will terminate
 refinement.ads:8:11: info: data dependencies proved
 refinement.ads:11:11: info: data dependencies proved
 refinement.ads:12:11: info: flow dependencies proved

@@ -17,6 +17,7 @@ n02.adb:29:54: info: pointer dereference check proved (CVC5: 1 VC)
 n02.adb:30:14: info: range check proved (CVC5: 2 VC)
 n02.adb:30:28: info: range check proved (CVC5: 2 VC)
 n02.adb:30:46: info: pointer dereference check proved (CVC5: 1 VC)
+spark01.adb:8:16: info: implicit terminating annotation on "GetA" has been proved, subprogram will terminate
 spark01.adb:10:17: info: postcondition proved (CVC5: 1 VC)
 spark04.adb:8:16: medium: pointer dereference check might fail (e.g. when X = null and Y.all = 0) [possible fix: subprogram at spark04.ads:11 should mention X in a precondition]
 spark04.adb:8:26: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: subprogram at spark04.ads:11 should mention Y in a precondition]
@@ -40,5 +41,6 @@ spark04.adb:27:51: medium: pointer dereference check might fail [possible fix: s
 spark04.adb:28:17: info: range check proved (Z3: 2 VC)
 spark04.adb:28:32: info: range check proved (Z3: 2 VC)
 spark04.adb:28:51: medium: pointer dereference check might fail (e.g. when AY = null) [possible fix: subprogram at spark04.ads:21 should mention AY in a precondition]
+spark04.ads:11:16: info: implicit terminating annotation on "CreatePoint" has been proved, subprogram will terminate
 spark04.ads:22:06: info: data dependencies proved
 spark04.ads:23:28: info: initialization of "P" proved

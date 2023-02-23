@@ -1,5 +1,8 @@
+test_pledge.adb:4:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
 test_pledge.adb:5:07: info: dynamic accessibility check proved (Trivial)
+test_pledge.adb:13:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
 test_pledge.adb:14:07: info: dynamic accessibility check proved (Trivial)
+test_pledge.adb:18:13: info: implicit terminating annotation on "Get_1" has been proved, subprogram will terminate
 test_pledge.adb:19:14: info: postcondition proved (CVC5: 1 VC)
 test_pledge.adb:19:27: info: pointer dereference check proved (CVC5: 1 VC)
 test_pledge.adb:19:45: info: pointer dereference check proved (CVC5: 1 VC)
@@ -26,6 +29,7 @@ test_pledge.adb:29:18: info: null exclusion check proved (CVC5: 1 VC)
 test_pledge.adb:29:18: info: pointer dereference check proved (CVC5: 1 VC)
 test_pledge.adb:31:18: info: null exclusion check proved (CVC5: 1 VC)
 test_pledge.adb:31:18: info: pointer dereference check proved (CVC5: 1 VC)
+test_pledge.adb:37:13: info: implicit terminating annotation on "Get_2" has been proved, subprogram will terminate
 test_pledge.adb:38:14: info: postcondition proved (CVC5: 1 VC)
 test_pledge.adb:38:27: info: pointer dereference check proved (CVC5: 1 VC)
 test_pledge.adb:38:50: info: pointer dereference check proved (CVC5: 1 VC)

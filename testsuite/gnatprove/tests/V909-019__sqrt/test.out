@@ -1,2 +1,3 @@
+repr.adb:6:12: info: implicit terminating annotation on "norm" has been proved, subprogram will terminate
 repr.adb:7:39: info: precondition proved (CVC5: 1 VC)
 repr.adb:7:39: info: range check proved (Z3: 1 VC)

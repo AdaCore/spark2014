@@ -35,6 +35,7 @@ discr.adb:77:48: info: range check proved (CVC5: 2 VC)
 discr.adb:77:48: medium: in default value at discr.adb:78
 discr.adb:77:48: medium: overflow check might fail, cannot prove upper bound for C + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (C <= Integer'Last - 1) to subprogram at discr.ads:18]
 discr.adb:80:16: info: implicit function contract might not be available on calls from enclosing unit
+discr.adb:80:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 discr.adb:80:53: info: range check proved (CVC5: 2 VC)
 discr.adb:83:46: medium: in default value at discr.adb:84
 discr.adb:83:46: medium: precondition might fail [possible fix: subprogram at discr.ads:18 should mention C in a precondition]

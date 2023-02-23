@@ -16,8 +16,11 @@ binary_search.adb:29:16: info: index check proved (CVC5: 2 VC)
 binary_search.adb:30:25: info: overflow check proved (CVC5: 2 VC)
 binary_search.adb:31:19: info: index check proved (CVC5: 2 VC)
 binary_search.adb:32:26: info: range check proved (CVC5: 2 VC)
+binary_search.ads:10:13: info: implicit terminating annotation on "Empty" has been proved, subprogram will terminate
+binary_search.ads:11:13: info: implicit terminating annotation on "Sorted" has been proved, subprogram will terminate
 binary_search.ads:12:66: info: index check proved (CVC5: 2 VC)
 binary_search.ads:12:76: info: index check proved (CVC5: 2 VC)
+binary_search.ads:14:13: info: implicit terminating annotation on "Search" has been proved, subprogram will terminate
 binary_search.ads:16:57: info: index check proved (CVC5: 2 VC)
 binary_search.ads:17:49: medium: postcondition might fail, cannot prove A (Index) /= I
 binary_search.ads:17:52: info: index check proved (CVC5: 2 VC)

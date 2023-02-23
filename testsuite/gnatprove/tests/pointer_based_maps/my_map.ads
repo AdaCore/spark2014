@@ -13,14 +13,14 @@ package My_Map with SPARK_Mode is
    function Model_Contains (M : access constant Map; K : Positive) return Boolean
    with
      Ghost,
-     Annotate => (GNATprove, Always_Return),
-     Post     => True;
+     Post => True,
+     Subprogram_Variant => (Structural => M);
 
    function Model_Value (M : access constant Map; K : Positive) return Integer
    with
      Ghost,
-     Annotate => (GNATprove, Always_Return),
-     Pre => Model_Contains (M, K);
+     Pre => Model_Contains (M, K),
+     Subprogram_Variant => (Structural => M);
 
    function At_End_Borrow (X : access constant Map) return access constant Map is
      (X)
@@ -67,18 +67,17 @@ package My_Map with SPARK_Mode is
    --  For quantification purpose only, inefficient
 
    function First (M : Map) return Natural with
-     Ghost,
-     Annotate => (GNATprove, Always_Return);
+     Ghost;
    function Has_Element (M : Map; K : Natural) return Boolean with
      Ghost,
-     Annotate => (GNATprove, Always_Return);
+     Subprogram_Variant => (Structural => M);
    function Has_Element_No_Rec_Wrapper (M : Map; K : Natural) return Boolean is
      (Has_Element (M,K))
        with Ghost, Annotate => (GNATprove, Inline_For_Proof);
    function Next (M : Map; K : Natural) return Natural with
      Ghost,
-     Annotate => (GNATprove, Always_Return),
-     Pre => Has_Element (M, K);
+     Pre                => Has_Element (M, K),
+     Subprogram_Variant => (Structural => M);
    function Next_No_Rec_Wrapper (M : Map; K : Natural) return Natural is
      (Next (M,K))
        with Ghost,
@@ -86,19 +85,19 @@ package My_Map with SPARK_Mode is
        Pre => Has_Element (M, K);
    function Element (M : Map; K : Natural) return Integer with
      Ghost,
-     Annotate => (GNATprove, Always_Return),
-     Pre      => Has_Element (M, K);
+     Pre => Has_Element (M, K);
 
    function Deep_Copy (M : access constant Map) return Map_Acc with
      Ghost,
-     Annotate => (GNATprove, Always_Return),
-     Post => (Deep_Copy'Result = null) = (M = null)
-     and then
+     Subprogram_Variant => (Structural => M),
+     Post               =>
+       (Deep_Copy'Result = null) = (M = null)
+         and then
        (if M /= null then
           (for all K in M.all => Model_Contains (Deep_Copy'Result, K))
-        and then
+             and then
           (for all K in Deep_Copy'Result.all => Model_Contains (M, K)
-           and then Model_Value (M, K) = Model_Value (Deep_Copy'Result, K)));
+             and then Model_Value (M, K) = Model_Value (Deep_Copy'Result, K)));
 
    procedure Deep_Free (M : in out Map_Acc) with
      Post => M = null;
@@ -114,6 +113,9 @@ private
 
    function Model_Contains (M : access constant Map; K : Positive) return Boolean is
      (M /= null and then Has_Element (M.all, K));
+   pragma Annotate (GNATprove, False_Positive, "subprogram variant might fail",
+                    "structural variant of ""Model_Contains"" in ""Has_Element""" &
+                    "is a strict subcomponent of ""M""");
 
    function Model_Value (M : access constant Map; K : Positive) return Integer is
      (if M.Key = K then M.Value.all else Model_Value (M.Next, K));

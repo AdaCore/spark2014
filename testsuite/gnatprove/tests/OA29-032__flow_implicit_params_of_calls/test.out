@@ -1,3 +1,4 @@
 po_t9.adb:13:49: medium: overflow check might fail, cannot prove upper bound for The_Protected_Int + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 po_t9.adb:14:10: info: precondition proved (Trivial: 1 VC)
 po_t9.adb:15:10: info: precondition proved (Trivial: 1 VC)
+po_t9.ads:3:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate

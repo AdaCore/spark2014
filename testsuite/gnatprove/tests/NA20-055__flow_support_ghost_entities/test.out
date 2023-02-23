@@ -9,4 +9,5 @@ casper.ads:17:11: info: data dependencies proved
 casper.ads:19:34: info: initialization of "Ghost_G1" proved
 casper.ads:23:29: info: initialization of "Nested_Ghost_Package.Nested_State" proved
 casper.ads:24:11: info: flow dependencies proved
+casper.ads:28:16: info: implicit terminating annotation on "Is_OK" has been proved, subprogram will terminate
 casper.ads:29:14: info: data dependencies proved

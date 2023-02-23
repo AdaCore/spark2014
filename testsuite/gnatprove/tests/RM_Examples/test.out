@@ -37,10 +37,11 @@ externals.ads:16:11: info: flow dependencies proved
 externals.ads:18:14: info: terminating annotation on "Display" has been proved, subprogram will terminate
 externals.ads:19:11: info: data dependencies proved
 externals.ads:23:11: info: flow dependencies proved
-externals.ads:25:13: info: terminating annotation on "Last_Value_Sent" has been proved, subprogram will terminate
+externals.ads:25:13: info: implicit terminating annotation on "Last_Value_Sent" has been proved, subprogram will terminate
 externals.ads:27:11: info: data dependencies proved
 externals.ads:33:11: info: data dependencies proved
 externals.ads:34:11: info: flow dependencies proved
+f.adb:1:10: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 f.adb:3:16: info: postcondition proved (CVC5: 2 VC)
 f.adb:10:16: info: range check proved (CVC5: 4 VC)
 f.adb:10:38: info: overflow check proved (CVC5: 2 VC)
@@ -103,13 +104,18 @@ initialization_and_elaboration-private_child.ads:1:48: info: use pragma Elaborat
 initialization_and_elaboration-private_child.ads:4:08: info: flow dependencies proved
 initialization_and_elaboration-private_child.ads:5:08: medium: initial condition might fail
 initialization_and_elaboration-private_child.ads:11:13: info: implicit function contract might not be available on calls from enclosing unit
+initialization_and_elaboration-private_child.ads:13:11: warning: Always_Return annotation is useless
+initialization_and_elaboration-private_child.ads:13:11: warning: function "Get_Something" has implicit Always_Return annotation
 initialization_and_elaboration.ads:6:08: info: flow dependencies proved
 initialization_and_elaboration.ads:8:08: medium: initial condition might fail
 initialization_and_elaboration.ads:13:11: info: data dependencies proved
 initialization_and_elaboration.ads:15:13: info: implicit function contract might not be available on calls from enclosing unit
+initialization_and_elaboration.ads:15:13: info: implicit terminating annotation on "Get_It" has been proved, subprogram will terminate
 initialization_and_elaboration.ads:16:11: info: data dependencies proved
 input_port.ads:9:11: warning: assuming correct volatile properties for "Sensor"
 input_port.ads:9:11: warning: assuming no concurrent accesses to non-atomic object "Sensor"
+inter_1.ads:2:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+inter_2.ads:2:13: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
 inter_unit_elaboration_examples.adb:8:14: high: overflow check might fail, cannot prove lower bound for 2 * I (e.g. when I = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at inter_unit_elaboration_examples.ads:10 should mention I in a precondition]
 intra_unit_elaboration_order_examples.adb:3:50: high: overflow check might fail, cannot prove upper bound for I + 1 (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (I <= Integer'Last - 1) to subprogram at intra_unit_elaboration_order_examples.ads:26]
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved (CVC5: 2 VC)
@@ -118,6 +124,8 @@ intra_unit_elaboration_order_examples.ads:4:08: info: flow dependencies proved
 intra_unit_elaboration_order_examples.ads:17:04: info: initialization of "Y" proved
 intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved (CVC5: 1 VC)
 intra_unit_elaboration_order_examples.ads:24:11: info: data dependencies proved
+intra_unit_elaboration_order_examples.ads:26:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+intra_unit_elaboration_order_examples.ads:27:13: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
 intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail, cannot prove lower bound for 2 * F (J) (e.g. when J = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * F (J) in Integer) to subprogram at line 27]
 loop_var_loop_invar.adb:8:30: info: loop invariant initialization proved (CVC5: 1 VC)
 loop_var_loop_invar.adb:8:30: info: loop invariant preservation proved (CVC5: 1 VC)
@@ -224,6 +232,8 @@ reverse_ord.adb:20:30: info: index check proved (CVC5: 4 VC)
 reverse_ord.adb:20:51: info: index check proved (CVC5: 4 VC)
 reverse_ord.adb:24:21: info: index check proved (CVC5: 4 VC)
 reverse_ord.adb:24:40: info: index check proved (CVC5: 4 VC)
+simple_abstract_state.ads:7:11: warning: Always_Return annotation is useless
+simple_abstract_state.ads:7:11: warning: function "Is_Ready" has implicit Always_Return annotation
 stacks_1.adb:16:27: info: refined post proved (CVC5: 2 VC)
 stacks_1.adb:17:48: info: index check proved (CVC5: 2 VC)
 stacks_1.adb:17:48: info: range check proved (CVC5: 2 VC)
@@ -232,8 +242,11 @@ stacks_1.adb:24:18: info: index check proved (CVC5: 2 VC)
 stacks_1.adb:28:27: medium: refined postcondition might fail
 stacks_1.adb:34:33: info: range check proved (CVC5: 2 VC)
 stacks_1.adb:38:64: info: index check proved (CVC5: 2 VC)
+stacks_1.ads:6:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
+stacks_1.ads:9:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
 stacks_1.ads:14:19: info: postcondition proved (CVC5: 1 VC)
 stacks_1.ads:17:19: info: postcondition proved (CVC5: 1 VC)
+stacks_1.ads:19:13: info: implicit terminating annotation on "Top" has been proved, subprogram will terminate
 stacks_2.adb:15:29: info: refined post proved (CVC5: 2 VC)
 stacks_2.adb:25:29: info: refined post proved (CVC5: 2 VC)
 stacks_2.adb:34:29: info: refined post proved (CVC5: 2 VC; Trivial: 1 VC)
@@ -244,15 +257,20 @@ stacks_2.adb:46:29: info: refined post proved (CVC5: 1 VC)
 stacks_2.adb:51:30: medium: range check might fail, cannot prove lower bound for A_Pointer - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at stacks_2.ads:19 should mention A_Pointer in a precondition]
 stacks_2.adb:54:46: info: index check proved (CVC5: 2 VC)
 stacks_2.ads:4:08: info: flow dependencies proved
+stacks_2.ads:6:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 stacks_2.ads:7:11: info: data dependencies proved
+stacks_2.ads:10:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
 stacks_2.ads:11:11: info: data dependencies proved
 stacks_2.ads:15:11: info: data dependencies proved
 stacks_2.ads:17:21: info: postcondition proved (CVC5: 1 VC)
 stacks_2.ads:20:11: info: data dependencies proved
 stacks_2.ads:21:16: info: postcondition proved (CVC5: 1 VC)
+stacks_2.ads:23:13: info: implicit terminating annotation on "Top" has been proved, subprogram will terminate
 stacks_2.ads:24:11: info: data dependencies proved
+times_2.adb:1:10: info: implicit terminating annotation on "Times_2" has been proved, subprogram will terminate
 times_2.adb:3:13: high: overflow check might fail, cannot prove lower bound for 2 * X (e.g. when X = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * X in Integer) to subprogram at line 1]
 up_timer.adb:14:36: info: overflow check proved (CVC5: 2 VC)
+up_timer.ads:10:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 update_examples.ads:20:19: info: postcondition proved (CVC5: 1 VC)
 update_examples.ads:27:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 update_examples.ads:35:19: info: postcondition proved (CVC5: 1 VC)

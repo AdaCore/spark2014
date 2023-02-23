@@ -1,3 +1,4 @@
 main.adb:4:21: info: unrolling loop
+main.adb:8:22: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:9:30: info: data dependencies proved
 main.adb:11:13: info: initialization of "B4" proved

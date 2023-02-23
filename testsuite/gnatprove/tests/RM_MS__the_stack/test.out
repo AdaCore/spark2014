@@ -7,8 +7,11 @@ the_stack_14.adb:53:15: high: array index check might fail (e.g. when Pointer = 
 the_stack_14.adb:54:26: info: range check proved (CVC5: 2 VC)
 the_stack_14.adb:62:10: high: array index check might fail (e.g. when Pointer = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at the_stack_14.ads:33 should mention Pointer in a precondition]
 the_stack_14.ads:16:08: info: flow dependencies proved
+the_stack_14.ads:18:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 the_stack_14.ads:19:11: info: data dependencies proved
+the_stack_14.ads:21:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
 the_stack_14.ads:22:11: info: data dependencies proved
+the_stack_14.ads:24:13: info: implicit terminating annotation on "Top" has been proved, subprogram will terminate
 the_stack_14.ads:25:11: info: data dependencies proved
 the_stack_14.ads:28:11: info: data dependencies proved
 the_stack_14.ads:30:18: info: initialization of "X" proved

@@ -10,14 +10,12 @@ is
    --  executable.
    function Max_Stack_Size return Natural
      with Global   => null,
-          Annotate => (GNATprove, Always_Return),
           Ghost,
           Import;
 
    --  Returns the number of elements on the stack
    function Count return Natural
      with Global   => (Input => State),
-          Annotate => (GNATprove, Always_Return),
           Ghost,
           Import;
 
@@ -25,19 +23,16 @@ is
    --  top of stack
    function Stack_Entry (N : Natural) return Integer
      with Global   => (Input => State),
-          Annotate => (GNATprove, Always_Return),
           Ghost,
           Import;
 
    function Is_Empty return Boolean
      with Global   => State,
-          Annotate => (GNATprove, Always_Return),
           Ghost,
           Import;
 
    function Is_Full return Boolean
      with Global   => State,
-          Annotate => (GNATprove, Always_Return),
           Ghost,
           Import;
 

@@ -82,6 +82,7 @@ evoting.ads:57:17: info: postcondition proved (Z3: 1 VC)
 evoting.ads:59:34: info: index check proved (CVC5: 2 VC)
 evoting.ads:72:07: info: initialization of "candidates" proved
 evoting.ads:73:07: info: initialization of "last_candidate" proved
+evoting.ads:85:13: info: implicit terminating annotation on "Counters_Sum" has been proved, subprogram will terminate
 evoting.ads:97:21: info: postcondition proved (CVC5: 1 VC)
 evoting.ads:98:33: info: index check proved (CVC5: 2 VC)
 evoting.ads:105:07: medium: "winners" might not be initialized in "Compute_Winner" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "winners" on all paths, make "winners" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]

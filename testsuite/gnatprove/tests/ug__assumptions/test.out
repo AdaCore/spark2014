@@ -1,1 +1,2 @@
 assumptions.adb:12:34: info: overflow check proved
+assumptions.ads:4:13: info: implicit terminating annotation on "Get_Tick" has been proved, subprogram will terminate

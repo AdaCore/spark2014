@@ -1,3 +1,4 @@
+cannot_inline.adb:5:13: info: implicit terminating annotation on "Return_String" has been proved, subprogram will terminate
 cannot_inline.adb:6:14: warning: subprogram "Has_Local_Subprogram" has no effect
 cannot_inline.adb:7:14: warning: subprogram "Has_Local_Subprogram_In_Block" has no effect
 cannot_inline.adb:9:04: info: no contextual analysis of "Return_String" (unconstrained return type)
@@ -11,6 +12,7 @@ cannot_inline.adb:26:20: info: add a contract to analyze it separately from call
 cannot_inline.adb:26:20: info: local subprogram "Local" only analyzed in the context of calls
 cannot_inline.adb:26:20: warning: subprogram "Local" has no effect
 cannot_inline.adb:31:10: info: analyzing call to "Local" in context
+cannot_inline.adb:39:19: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate, in instantiation at cannot_inline.adb:54
 cannot_inline.adb:42:17: warning: subprogram "Proc" has no effect
 cannot_inline.adb:53:17: warning: subprogram "Other" has no effect
 cannot_inline.adb:54:10: info: no contextual analysis of "Other" (nested package instantiation)

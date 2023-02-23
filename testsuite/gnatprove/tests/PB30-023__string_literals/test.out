@@ -1,4 +1,5 @@
 test_string_literals.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
+test_string_literals.adb:5:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_string_literals.adb:7:19: info: assertion proved (CVC5: 1 VC)
 test_string_literals.adb:8:19: info: assertion proved (CVC5: 1 VC)
 test_string_literals.adb:9:19: info: assertion proved (CVC5: 1 VC)

@@ -1,8 +1,6 @@
 p.ads:6:12: info: implicit function contract might not be available on calls from enclosing unit
-p.ads:8:38: warning: assuming "F" always returns
 p.ads:8:38: warning: assuming "F" has no effect on global items
 p.ads:8:38: warning: no Global contract available for "F"
-p.ads:8:38: warning: no returning annotation available for "F"
 p.ads:9:33: warning: assuming no concurrent accesses to non-atomic object "v"
 p.ads:9:33: warning: consider annotating "v" with Async_Writers
 p.ads:9:33: warning: indirect writes to "v" through a potential alias are ignored

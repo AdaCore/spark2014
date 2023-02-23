@@ -38,35 +38,19 @@ foo.adb:33:10: warning: assuming "Append_To_Log" always returns
 foo.adb:33:10: warning: assuming "Append_To_Log" has no effect on global items
 foo.adb:33:10: warning: no Global contract available for "Append_To_Log"
 foo.adb:33:10: warning: no returning annotation available for "Append_To_Log"
-logging.ads:11:23: warning: assuming "Log_Size" always returns
 logging.ads:11:23: warning: assuming "Log_Size" has no effect on global items
 logging.ads:11:23: warning: no Global contract available for "Log_Size"
-logging.ads:11:23: warning: no returning annotation available for "Log_Size"
-logging.ads:14:23: warning: assuming "Log_Size" always returns
 logging.ads:14:23: warning: assuming "Log_Size" has no effect on global items
 logging.ads:14:23: warning: no Global contract available for "Log_Size"
-logging.ads:14:23: warning: no returning annotation available for "Log_Size"
-logging.ads:15:23: warning: assuming "Log_Size" always returns
 logging.ads:15:23: warning: assuming "Log_Size" has no effect on global items
 logging.ads:15:23: warning: no Global contract available for "Log_Size"
-logging.ads:15:23: warning: no returning annotation available for "Log_Size"
-logging.ads:15:38: warning: assuming "Log_Size" always returns
 logging.ads:15:38: warning: assuming "Log_Size" has no effect on global items
 logging.ads:15:38: warning: no Global contract available for "Log_Size"
-logging.ads:15:38: warning: no returning annotation available for "Log_Size"
-logging.ads:24:23: warning: assuming "Log_Size" always returns
 logging.ads:24:23: warning: assuming "Log_Size" has no effect on global items
 logging.ads:24:23: warning: no Global contract available for "Log_Size"
-logging.ads:24:23: warning: no returning annotation available for "Log_Size"
-logging.ads:28:23: warning: assuming "Log_Size" always returns
 logging.ads:28:23: warning: assuming "Log_Size" has no effect on global items
 logging.ads:28:23: warning: no Global contract available for "Log_Size"
-logging.ads:28:23: warning: no returning annotation available for "Log_Size"
-logging.ads:29:23: warning: assuming "Log_Size" always returns
 logging.ads:29:23: warning: assuming "Log_Size" has no effect on global items
 logging.ads:29:23: warning: no Global contract available for "Log_Size"
-logging.ads:29:23: warning: no returning annotation available for "Log_Size"
-logging.ads:29:38: warning: assuming "Log_Size" always returns
 logging.ads:29:38: warning: assuming "Log_Size" has no effect on global items
 logging.ads:29:38: warning: no Global contract available for "Log_Size"
-logging.ads:29:38: warning: no returning annotation available for "Log_Size"

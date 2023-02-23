@@ -1,10 +1,9 @@
 test_default.adb:11:21: medium: in default value at test_default.adb:14
 test_default.adb:11:21: medium: initialization check might fail [possible fix: you should consider adding a postcondition to function C or turning it into an expression function in its unit spec]
 test_default.adb:11:29: info: no contextual analysis of "C" (in default expression)
-test_default.adb:11:29: warning: assuming "C" always returns
 test_default.adb:11:29: warning: assuming "C" has no effect on global items
 test_default.adb:11:29: warning: no Global contract available for "C"
-test_default.adb:11:29: warning: no returning annotation available for "C"
+test_default.adb:22:13: info: implicit terminating annotation on "Search" has been proved, subprogram will terminate
 test_default.adb:24:08: info: postcondition proved (CVC5: 4 VC; Trivial: 3 VC)
 test_default.adb:26:31: info: initialization check proved (CVC5: 1 VC)
 test_default.adb:27:34: info: index check proved (CVC5: 2 VC)
@@ -12,6 +11,7 @@ test_default.adb:27:34: info: initialization check proved (CVC5: 1 VC)
 test_default.adb:36:33: info: loop invariant initialization proved (CVC5: 1 VC)
 test_default.adb:36:33: info: loop invariant preservation proved (CVC5: 1 VC)
 test_default.adb:36:65: info: index check proved (CVC5: 4 VC)
+test_default.adb:43:13: info: implicit terminating annotation on "Search_Bad" has been proved, subprogram will terminate
 test_default.adb:45:08: info: postcondition proved (CVC5: 3 VC; Trivial: 2 VC)
 test_default.adb:48:21: info: index check proved (CVC5: 2 VC)
 test_default.adb:57:33: info: loop invariant initialization proved (CVC5: 1 VC)

@@ -19,7 +19,9 @@ double_list.ads:18:16: medium: postcondition might fail, in instantiation at lis
 double_list.ads:22:29: info: initialization of "Status" proved, in instantiation at list_handler.adb:11
 double_list.ads:24:08: info: data dependencies proved, in instantiation at list_handler.adb:11
 double_list.ads:25:08: info: flow dependencies proved, in instantiation at list_handler.adb:11
+double_list.ads:27:13: info: implicit terminating annotation on "Back" has been proved, subprogram will terminate, in instantiation at list_handler.adb:11
 double_list.ads:29:08: info: data dependencies proved, in instantiation at list_handler.adb:11
+double_list.ads:31:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate, in instantiation at list_handler.adb:11
 double_list.ads:33:08: info: data dependencies proved, in instantiation at list_handler.adb:11
 list_handler.adb:11:04: info: cannot unroll loop (too many loop iterations)
 list_handler.adb:11:04: info: implicit function contract might not be available on calls from enclosing unit

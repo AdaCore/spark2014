@@ -3,3 +3,5 @@ main.adb:3:17: info: initialization of "X" proved
 main.adb:5:11: medium: overflow check might fail, cannot prove lower bound for A + Nested.Visible_Var [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 3 should mention A and Visible_Var in a precondition]
 main.adb:5:32: medium: overflow check might fail, cannot prove lower bound for A + Nested.Visible_Var + Nested.Foo [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 3 should mention A and Visible_Var in a precondition]
 other2.ads:2:26: warning: no procedure exists that can initialize abstract state "Other2.State"
+other2.ads:6:13: info: implicit terminating annotation on "Get_Private" has been proved, subprogram will terminate
+other2.ads:8:13: info: implicit terminating annotation on "Get_Hidden" has been proved, subprogram will terminate

@@ -2,30 +2,34 @@ predicates.ads:17:31: info: division check proved
 predicates.ads:20:32: info: division check proved
 predicates.ads:23:58: info: division check proved
 predicates.ads:23:71: info: division check proved
+predicates.ads:30:13: info: implicit terminating annotation on "Get_GCD_Pos" has been proved, subprogram will terminate
+predicates.ads:32:17: info: range check proved
+predicates.ads:34:10: info: precondition proved
+predicates.ads:34:10: info: subprogram variant proved
+predicates.ads:34:28: info: overflow check proved
+predicates.ads:36:10: info: precondition proved
+predicates.ads:36:10: info: subprogram variant proved
+predicates.ads:36:28: info: overflow check proved
+predicates.ads:42:13: info: implicit terminating annotation on "Get_GCD" has been proved, subprogram will terminate
+predicates.ads:44:10: info: precondition proved
 
-predicates.ads:32:19: high: overflow check might fail, cannot prove upper bound for abs (X)
-   32 |         Get_GCD (abs (X), abs (Y))
-      |                  ^~~~~~~
+predicates.ads:44:23: high: overflow check might fail, cannot prove upper bound for abs (X)
+   44 |         Get_GCD_Pos (abs (X), abs (Y))
+      |                      ^~~~~~~
   e.g. when X = Integer'First
   reason for check: result of absolute value must fit in a 32-bits machine integer
-  possible fix: add precondition (abs (X) in Integer) to subprogram at line 30
-   30 |   function Get_GCD (X, Y : Integer) return Natural is
+  possible fix: add precondition (abs (X) in Integer) to subprogram at line 42
+   42 |   function Get_GCD (X, Y : Integer) return Natural is
       |            ^ here
 
-predicates.ads:32:28: high: overflow check might fail, cannot prove upper bound for abs (Y)
-   32 |         Get_GCD (abs (X), abs (Y))
-      |                           ^~~~~~~
+predicates.ads:44:32: high: overflow check might fail, cannot prove upper bound for abs (Y)
+   44 |         Get_GCD_Pos (abs (X), abs (Y))
+      |                               ^~~~~~~
   e.g. when Y = Integer'First
   reason for check: result of absolute value must fit in a 32-bits machine integer
-  possible fix: add precondition (abs (Y) in Integer) to subprogram at line 30
-   30 |   function Get_GCD (X, Y : Integer) return Natural is
+  possible fix: add precondition (abs (Y) in Integer) to subprogram at line 42
+   42 |   function Get_GCD (X, Y : Integer) return Natural is
       |            ^ here
-predicates.ads:34:17: info: range check proved
-predicates.ads:36:24: info: overflow check proved
-predicates.ads:38:24: info: overflow check proved
-
-predicates.ads:44:50: high: cannot call potentially nonreturning subprogram "Get_GCD" for type "Bundle_Values" in its own predicate (SPARK RM 3.2.4(4))
-   44 |     with Dynamic_Predicate => Bundle_Values.GCD = Get_GCD (Bundle_Values.X, Bundle_Values.Y);
-      |                               ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-predicates.ads:50:07: info: range check proved
-predicates.ads:58:89: info: index check proved
+predicates.ads:45:13: info: precondition proved
+predicates.ads:57:07: info: range check proved
+predicates.ads:65:89: info: index check proved

@@ -1,12 +1,17 @@
 shift_main.adb:5:13: info: add a contract to analyze it separately from calling contexts
+shift_main.adb:5:13: info: implicit terminating annotation on "P" has been proved, subprogram will terminate
 shift_main.adb:5:13: info: local subprogram "P" only analyzed in the context of calls
 shift_main.adb:10:13: info: add a contract to analyze it separately from calling contexts
+shift_main.adb:10:13: info: implicit terminating annotation on "Q" has been proved, subprogram will terminate
 shift_main.adb:10:13: info: local subprogram "Q" only analyzed in the context of calls
 shift_main.adb:15:13: info: add a contract to analyze it separately from calling contexts
+shift_main.adb:15:13: info: implicit terminating annotation on "R" has been proved, subprogram will terminate
 shift_main.adb:15:13: info: local subprogram "R" only analyzed in the context of calls
 shift_main.adb:20:13: info: add a contract to analyze it separately from calling contexts
+shift_main.adb:20:13: info: implicit terminating annotation on "S" has been proved, subprogram will terminate
 shift_main.adb:20:13: info: local subprogram "S" only analyzed in the context of calls
 shift_main.adb:25:13: info: add a contract to analyze it separately from calling contexts
+shift_main.adb:25:13: info: implicit terminating annotation on "T" has been proved, subprogram will terminate
 shift_main.adb:25:13: info: local subprogram "T" only analyzed in the context of calls
 shift_main.adb:32:09: info: analyzing call to "P" in context
 shift_main.adb:33:09: info: analyzing call to "Q" in context

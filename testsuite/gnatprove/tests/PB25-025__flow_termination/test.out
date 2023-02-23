@@ -1,2 +1,6 @@
-terminating_annotations.adb:14:08: medium: terminating annotation on "F_Call" could be incorrect, call to "Not_SPARK" might be nonterminating
+terminating_annotations.adb:14:08: medium: implicit terminating annotation on "F_Call" could be incorrect, call to "Not_SPARK" might be nonterminating
+terminating_annotations.ads:3:05: warning: Always_Return annotation is useless
+terminating_annotations.ads:3:05: warning: function "F_Not_SPARK" has implicit Always_Return annotation
 terminating_annotations.ads:6:22: warning: unused variable "X"
+terminating_annotations.ads:7:05: warning: Always_Return annotation is useless
+terminating_annotations.ads:7:05: warning: function "F_Call" has implicit Always_Return annotation

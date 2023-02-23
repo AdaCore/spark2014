@@ -1,3 +1,5 @@
+unsound_eq.adb:10:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
+unsound_eq.adb:27:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 unsound_eq.adb:51:19: info: assertion proved (CVC5: 1 VC)
 unsound_eq.adb:52:19: info: assertion proved (CVC5: 1 VC)
 unsound_eq.adb:57:19: info: assertion proved (CVC5: 1 VC)

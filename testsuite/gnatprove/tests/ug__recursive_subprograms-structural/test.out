@@ -1,3 +1,4 @@
+recursive_subprograms.ads:12:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 recursive_subprograms.ads:13:37: info: predicate check proved
 recursive_subprograms.ads:13:45: info: subprogram variant proved
 recursive_subprograms.ads:13:45: info: predicate check proved

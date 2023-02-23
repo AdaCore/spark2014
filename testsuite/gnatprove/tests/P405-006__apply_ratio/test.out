@@ -23,5 +23,6 @@ math.adb:31:13: info: loop invariant initialization proved
 math.adb:31:13: info: loop invariant preservation proved
 math.adb:31:51: info: index check proved
 math.adb:31:69: info: index check proved
+math.ads:8:13: info: implicit terminating annotation on "Sorted" has been proved, subprogram will terminate
 math.ads:16:14: info: postcondition proved
 math.ads:16:59: info: division check proved

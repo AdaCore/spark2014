@@ -2,11 +2,14 @@ sm_using_case_expression.adb:14:40: info: initialization of "State" constituent 
 sm_using_case_expression.adb:23:40: info: initialization of "State" constituent of "Abs_State" proved
 sm_using_case_expression.adb:42:10: info: assertion proved (CVC5: 1 VC)
 sm_using_case_expression.adb:52:09: info: assertion proved (CVC5: 1 VC)
+sm_using_case_expression.ads:12:13: info: implicit terminating annotation on "Get_State" has been proved, subprogram will terminate
 sm_using_case_expression.ads:13:09: info: data dependencies proved
 sm_using_case_expression.ads:16:09: info: data dependencies proved
 sm_using_case_expression.ads:17:17: info: postcondition proved (CVC5: 1 VC)
 sm_using_case_expression.ads:57:11: info: data dependencies proved
 sm_using_case_expression.ads:58:21: info: postcondition proved (CVC5: 1 VC)
+sm_using_case_expression.ads:61:13: info: implicit terminating annotation on "My_SM" has been proved, subprogram will terminate
 sm_using_case_expression.ads:95:11: info: data dependencies proved
 sm_using_case_expression.ads:96:21: info: postcondition proved (CVC5: 1 VC)
+sm_using_case_expression.ads:100:13: info: implicit terminating annotation on "Is_Final_State" has been proved, subprogram will terminate
 sm_using_case_expression.ads:101:11: info: data dependencies proved

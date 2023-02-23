@@ -1,4 +1,5 @@
 private_types.ads:2:13: info: implicit function contract might not be available on calls from enclosing unit
+private_types.ads:2:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 private_types.ads:7:33: info: range check proved (CVC5: 2 VC)
 private_types.ads:8:15: info: range check proved (CVC5: 2 VC)
 private_types.ads:10:56: info: in default value of private type at private_types.ads:5

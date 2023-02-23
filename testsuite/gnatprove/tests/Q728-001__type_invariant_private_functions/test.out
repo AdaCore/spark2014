@@ -1,6 +1,9 @@
 test.adb:3:04: info: initialization of "X" proved
 test.adb:6:19: medium: assertion might fail (e.g. when X = (F => 0) and Y = (F => 0))
+test_type.ads:3:13: info: implicit terminating annotation on "Decr" has been proved, subprogram will terminate
 test_type.ads:3:13: info: invariant check proved (CVC5: 1 VC)
 test_type.ads:5:09: info: invariant check proved on default value (CVC5: 1 VC)
+test_type.ads:10:13: info: implicit terminating annotation on "Decr_Int" has been proved, subprogram will terminate
 test_type.ads:11:16: info: overflow check proved (CVC5: 2 VC)
+test_type.ads:14:13: info: implicit terminating annotation on "Saturate" has been proved, subprogram will terminate
 test_type.ads:18:17: info: precondition proved (CVC5: 1 VC)

@@ -1,6 +1,9 @@
+database.adb:43:16: info: implicit terminating annotation on "Some_Available" has been proved, subprogram will terminate
+database.adb:46:16: info: implicit terminating annotation on "Is_Available" has been proved, subprogram will terminate
 database.adb:49:42: info: initialization of "Account" proved
 database.adb:52:17: info: postcondition proved (Trivial: 1 VC; altergo: 3 VC)
 database.adb:60:17: info: postcondition proved (Trivial: 1 VC; altergo: 3 VC)
+database.adb:65:16: info: implicit terminating annotation on "Num_Available" has been proved, subprogram will terminate
 database.adb:118:17: info: add a contract to analyze it separately from calling contexts
 database.adb:118:17: info: local subprogram "Initialize_Links" only analyzed in the context of calls
 database.adb:122:21: info: range check proved (altergo: 2 VC)
@@ -27,6 +30,12 @@ database.adb:296:17: info: precondition proved (altergo: 1 VC)
 database.adb:302:42: info: precondition proved (altergo: 2 VC)
 database.adb:314:27: info: precondition proved (altergo: 1 VC)
 database.adb:320:42: info: precondition proved (altergo: 2 VC)
+database.ads:32:13: info: implicit terminating annotation on "Existing" has been proved, subprogram will terminate
+database.ads:34:13: info: implicit terminating annotation on "Belongs_To" has been proved, subprogram will terminate
+database.ads:39:13: info: implicit terminating annotation on "Num_Accounts" has been proved, subprogram will terminate
+database.ads:41:13: info: implicit terminating annotation on "Max_Account_Reached" has been proved, subprogram will terminate
+database.ads:43:13: info: implicit terminating annotation on "Currency" has been proved, subprogram will terminate
+database.ads:47:13: info: implicit terminating annotation on "Balance" has been proved, subprogram will terminate
 database.ads:62:07: info: initialization of "Account" proved
 database.ads:65:14: info: postcondition proved (altergo: 3 VC)
 database.ads:67:41: info: precondition proved (altergo: 1 VC)
@@ -43,7 +52,10 @@ database.ads:126:34: info: precondition proved (altergo: 1 VC)
 database.ads:126:56: info: precondition proved (altergo: 2 VC)
 money.adb:6:33: info: range check proved (altergo: 2 VC)
 money.adb:9:33: info: range check proved (altergo: 2 VC)
+money.ads:25:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
+money.ads:30:13: info: implicit terminating annotation on overriding operator "+" has been proved, subprogram will terminate
 money.ads:33:14: info: postcondition proved (altergo: 1 VC)
 money.ads:33:53: info: range check proved (altergo: 2 VC)
+money.ads:35:13: info: implicit terminating annotation on overriding operator "-" has been proved, subprogram will terminate
 money.ads:38:14: info: postcondition proved (altergo: 1 VC)
 money.ads:38:53: info: range check proved (altergo: 2 VC)

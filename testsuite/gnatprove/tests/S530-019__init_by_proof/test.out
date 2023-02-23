@@ -4,6 +4,7 @@ a.adb:31:27: info: overflow check proved (CVC5: 2 VC)
 a.adb:31:38: info: initialization check proved (CVC5: 1 VC)
 a.adb:32:17: info: overflow check proved (CVC5: 2 VC)
 a.adb:32:28: info: initialization check proved (CVC5: 1 VC)
+a.ads:7:13: info: implicit terminating annotation on "Global_A_Initalized" has been proved, subprogram will terminate
 a.ads:12:28: info: initialization of "status" proved
 a.ads:13:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 a.ads:14:06: info: data dependencies proved

@@ -1,3 +1,4 @@
+loopinv.adb:2:13: info: implicit terminating annotation on "Cond" has been proved, subprogram will terminate
 loopinv.adb:7:14: info: overflow check proved (CVC5: 4 VC)
 loopinv.adb:8:30: info: loop invariant initialization proved (CVC5: 1 VC)
 loopinv.adb:8:30: info: loop invariant preservation proved (CVC5: 1 VC)
@@ -7,6 +8,7 @@ where_are_the_run_time_errors.adb:3:07: info: initialization of "Y" proved
 where_are_the_run_time_errors.adb:3:10: info: initialization of "K" proved
 where_are_the_run_time_errors.adb:5:15: info: division check proved (CVC5: 1 VC)
 where_are_the_run_time_errors.adb:7:11: info: overflow check proved (CVC5: 2 VC)
+where_are_the_run_time_errors.adb:8:17: medium: implicit terminating annotation on "Where_Are_The_Run_Time_Errors" could be incorrect, loop might be nonterminating
 where_are_the_run_time_errors.adb:9:14: info: overflow check proved (CVC5: 4 VC)
 where_are_the_run_time_errors.adb:10:14: info: overflow check proved (CVC5: 4 VC)
 where_are_the_run_time_errors.adb:11:30: info: loop invariant initialization proved (CVC5: 1 VC)

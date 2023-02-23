@@ -1,3 +1,4 @@
+init.adb:6:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 init.adb:12:10: info: initialization of "A" proved
 init.adb:14:25: info: unrolling loop
 init.adb:15:23: medium: range check might fail, cannot prove upper bound for I + 1 [reason for check: result of addition must fit in the target type of the assignment]

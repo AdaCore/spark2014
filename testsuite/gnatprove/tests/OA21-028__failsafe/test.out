@@ -18,10 +18,12 @@ counter.adb:46:76: info: index check proved (CVC5: 2 VC)
 counter.adb:47:25: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 counter.adb:48:60: info: index check proved (CVC5: 2 VC)
 counter.adb:50:28: medium: assertion might fail, cannot prove Model.Current_Chain_Length = Count
+counter.ads:19:16: info: implicit terminating annotation on "Current_Chain_Length" has been proved, subprogram will terminate
 counter.ads:21:10: info: postcondition proved (CVC5: 3 VC)
 counter.ads:24:25: info: index check proved (CVC5: 2 VC)
 counter.ads:27:38: info: index check proved (CVC5: 2 VC)
 counter.ads:31:11: info: postcondition proved (CVC5: 4 VC)
+counter.ads:35:16: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
 counter.ads:40:14: info: postcondition proved (CVC5: 1 VC)
 counter.ads:41:06: info: data dependencies proved
 failsafe.adb:12:27: info: range check proved (CVC5: 4 VC)
@@ -49,6 +51,7 @@ failsafe.adb:68:78: info: range check proved (CVC5: 4 VC)
 failsafe.adb:73:78: info: range check proved (CVC5: 4 VC)
 failsafe.adb:76:25: medium: assertion might fail
 failsafe.ads:5:03: info: flow dependencies proved
+failsafe.ads:22:16: info: implicit terminating annotation on "Time_Below_Threshold" has been proved, subprogram will terminate
 failsafe.ads:23:09: info: disjoint contract cases proved (CVC5: 1 VC)
 failsafe.ads:25:64: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 failsafe.ads:29:80: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -57,7 +60,9 @@ failsafe.ads:37:76: info: range check proved (CVC5: 4 VC)
 failsafe.ads:39:73: info: range check proved (CVC5: 2 VC)
 failsafe.ads:40:85: info: range check proved (CVC5: 4 VC)
 failsafe.ads:45:85: info: range check proved (CVC5: 4 VC)
+failsafe.ads:48:16: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
 failsafe.ads:56:14: info: postcondition proved (CVC5: 3 VC)
+failsafe.ads:60:13: info: implicit terminating annotation on "Is_Raised" has been proved, subprogram will terminate
 failsafe.ads:62:14: info: postcondition proved (CVC5: 3 VC)
 test_failsafe.adb:6:21: info: cannot unroll loop (too many loop iterations)
 test_failsafe.adb:7:07: medium: precondition might fail [possible fix: loop at line 6 should mention Battery_Level_At and Current_Time and Failsafe.Counter in a loop invariant]

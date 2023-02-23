@@ -9,6 +9,7 @@ package body Simple_Math is
       Q := N;
       if Q > 0 then
          loop
+            pragma Loop_Variant (Decreases => Q);
             R := N/Q;
             exit when Q <= R;
             Q := (Q + R)/2;

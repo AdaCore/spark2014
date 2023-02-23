@@ -3,3 +3,4 @@ over.adb:7:20: high: overflow check might fail, cannot prove upper bound for (X 
 over.adb:7:25: info: range check proved (CVC5: 2 VC)
 over.adb:9:19: info: overflow check proved (CVC5: 2 VC)
 over.adb:9:19: info: range check proved (CVC5: 2 VC)
+over.ads:4:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate

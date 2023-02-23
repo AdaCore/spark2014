@@ -1,4 +1,6 @@
 caller_package-ghost.ads:6:03: info: initial condition proved (CVC5: 4 VC)
+caller_package-ghost.ads:12:13: info: implicit terminating annotation on "caller_func_pre_success_state" has been proved, subprogram will terminate
+caller_package-ghost.ads:20:13: info: implicit terminating annotation on "caller_func_post_success_state" has been proved, subprogram will terminate
 caller_package.adb:12:22: medium: in inlined expression function body at caller_package-ghost.ads:23
 caller_package.adb:12:22: medium: refined postcondition might fail, cannot prove test_func_post_success_state
 caller_package.adb:15:07: info: precondition proved (CVC5: 1 VC)
@@ -9,9 +11,15 @@ caller_package.ads:7:28: high: "Global_a" must be mentioned as an input of the I
 caller_package.ads:7:28: high: "test_package.test_state" must be mentioned as an input of the Initializes aspect of "caller_package" (SPARK RM 7.1.5(11))
 caller_package.ads:16:08: info: data dependencies proved
 caller_package.ads:18:16: info: postcondition proved (CVC5: 1 VC)
+caller_package.ads:22:16: info: implicit terminating annotation on "caller_func_pre_success_state" has been proved, subprogram will terminate
+caller_package.ads:25:16: info: implicit terminating annotation on "caller_func_post_success_state" has been proved, subprogram will terminate
 main.adb:6:12: info: precondition of main program proved (CVC5: 1 VC)
 main.adb:9:04: info: precondition proved (CVC5: 1 VC)
 test_package-ghost.ads:4:03: info: initial condition proved (CVC5: 6 VC)
+test_package-ghost.ads:12:13: info: implicit terminating annotation on "test_func_pre_success_state" has been proved, subprogram will terminate
+test_package-ghost.ads:19:13: info: implicit terminating annotation on "test_func_post_success_state" has been proved, subprogram will terminate
+test_package-ghost.ads:26:13: info: implicit terminating annotation on "test_func_new_pre_success_state" has been proved, subprogram will terminate
+test_package-ghost.ads:32:13: info: implicit terminating annotation on "test_func_new_post_success_state" has been proved, subprogram will terminate
 test_package.adb:12:22: info: refined post proved (CVC5: 3 VC; Trivial: 3 VC)
 test_package.adb:23:22: info: refined post proved (CVC5: 1 VC)
 test_package.ads:4:03: info: flow dependencies proved
@@ -20,7 +28,11 @@ test_package.ads:14:08: info: data dependencies proved
 test_package.ads:16:16: info: postcondition proved (CVC5: 1 VC)
 test_package.ads:20:08: info: data dependencies proved
 test_package.ads:22:16: info: postcondition proved (CVC5: 1 VC)
+test_package.ads:26:16: info: implicit terminating annotation on "test_func_pre_success_state" has been proved, subprogram will terminate
 test_package.ads:28:12: info: data dependencies proved
+test_package.ads:30:16: info: implicit terminating annotation on "test_func_post_success_state" has been proved, subprogram will terminate
 test_package.ads:32:12: info: data dependencies proved
+test_package.ads:34:16: info: implicit terminating annotation on "test_func_new_pre_success_state" has been proved, subprogram will terminate
 test_package.ads:36:12: info: data dependencies proved
+test_package.ads:38:16: info: implicit terminating annotation on "test_func_new_post_success_state" has been proved, subprogram will terminate
 test_package.ads:40:12: info: data dependencies proved

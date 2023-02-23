@@ -31,6 +31,11 @@ ordering_buffers.adb:83:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
 ordering_buffers.ads:15:09: info: default initial condition proved (CVC5: 2 VC)
 ordering_buffers.ads:18:17: info: precondition proved (CVC5: 2 VC)
 ordering_buffers.ads:18:52: info: range check proved (CVC5: 2 VC)
+ordering_buffers.ads:20:13: info: implicit terminating annotation on "Is_Null" has been proved, subprogram will terminate
+ordering_buffers.ads:22:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
+ordering_buffers.ads:24:13: info: implicit terminating annotation on "Last" has been proved, subprogram will terminate
+ordering_buffers.ads:27:13: info: implicit terminating annotation on "Get_Message" has been proved, subprogram will terminate
+ordering_buffers.ads:32:13: info: implicit terminating annotation on "Has_Message" has been proved, subprogram will terminate
 ordering_buffers.ads:35:38: info: precondition proved (CVC5: 2 VC)
 ordering_buffers.ads:43:12: info: precondition proved (CVC5: 2 VC)
 ordering_buffers.ads:44:14: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)

@@ -20,6 +20,10 @@ numerics-algo.ads:7:20: info: initialization of "X2" proved
 numerics-algo.ads:8:20: info: initialization of "X3" proved
 numerics-algo.ads:9:20: info: initialization of "X4" proved
 numerics-algo.ads:10:20: info: initialization of "X5" proved
+numerics.ads:11:13: info: implicit terminating annotation on overriding operator "+" has been proved, subprogram will terminate
+numerics.ads:12:13: info: implicit terminating annotation on overriding operator "-" has been proved, subprogram will terminate
+numerics.ads:13:13: info: implicit terminating annotation on overriding operator "*" has been proved, subprogram will terminate
+numerics.ads:14:13: info: implicit terminating annotation on overriding operator "/" has been proved, subprogram will terminate
 numerics.ads:20:99: info: float overflow check justified
 numerics.ads:20:99: info: range check proved (Trivial)
 numerics.ads:23:99: info: float overflow check justified

@@ -1,2 +1,5 @@
+renaming.adb:3:13: info: implicit terminating annotation on "A" has been proved, subprogram will terminate
 renaming.adb:5:13: info: precondition proved (CVC5: 1 VC)
 renaming.adb:7:48: info: precondition proved (CVC5: 1 VC)
+renaming.ads:3:13: info: implicit terminating annotation on "B" has been proved, subprogram will terminate
+renaming.ads:5:13: info: implicit terminating annotation on "C" has been proved, subprogram will terminate

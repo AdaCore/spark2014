@@ -4,6 +4,7 @@ pack.adb:11:19: info: assertion proved (CVC5: 1 VC)
 pack.adb:14:22: info: assertion proved (CVC5: 1 VC)
 pack.adb:16:22: high: assertion might fail (e.g. when X = 1)
 pack.ads:5:19: info: assertion proved (CVC5: 1 VC)
+pack.ads:7:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 pack.ads:9:11: warning: postcondition does not mention function result
 pack.ads:9:19: high: postcondition might fail (e.g. when X = 10)
 pack.ads:9:21: info: division check proved (CVC5: 1 VC)

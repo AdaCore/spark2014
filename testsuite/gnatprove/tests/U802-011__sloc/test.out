@@ -1,3 +1,4 @@
+repr.adb:2:13: info: implicit terminating annotation on "My_Prop" has been proved, subprogram will terminate
 repr.adb:4:17: warning: unused initial value of "D1"
 repr.adb:4:21: warning: "D2" is not modified, could be IN
 repr.adb:4:25: warning: "D3" is not modified, could be IN

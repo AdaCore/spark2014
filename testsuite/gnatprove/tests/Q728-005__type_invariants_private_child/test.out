@@ -1,10 +1,14 @@
 test_type-test.ads:2:04: info: invariant check proved (CVC5: 1 VC)
+test_type-test.ads:4:13: info: implicit terminating annotation on "Decr_Int_2" has been proved, subprogram will terminate
 test_type-test.ads:5:16: info: overflow check proved (CVC5: 2 VC)
 test_type-test.ads:7:04: info: at the end of the elaboration of package at test_type-test.ads:1
 test_type-test.ads:7:04: info: invariant check proved (CVC5: 1 VC)
 test_type-test.ads:7:13: info: precondition proved (CVC5: 1 VC)
 test_type-test.ads:8:19: medium: assertion might fail (e.g. when Y = (F => -1))
+test_type.ads:3:13: info: implicit terminating annotation on "Decr" has been proved, subprogram will terminate
 test_type.ads:3:13: info: invariant check proved (CVC5: 1 VC)
 test_type.ads:6:09: info: invariant check proved on default value (CVC5: 1 VC)
+test_type.ads:11:13: info: implicit terminating annotation on "Decr_Int" has been proved, subprogram will terminate
 test_type.ads:12:16: info: overflow check proved (CVC5: 2 VC)
+test_type.ads:15:13: info: implicit terminating annotation on "Saturate" has been proved, subprogram will terminate
 test_type.ads:19:17: info: precondition proved (CVC5: 1 VC)

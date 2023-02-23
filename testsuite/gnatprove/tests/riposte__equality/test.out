@@ -1,4 +1,6 @@
+equality.adb:11:13: info: implicit terminating annotation on "L611_019_Reduced_Testcase" has been proved, subprogram will terminate
 equality.adb:13:11: info: flow dependencies proved
 equality.adb:18:22: info: postcondition proved (CVC5: 2 VC)
+equality.adb:24:13: info: implicit terminating annotation on "L611_019_Reduced_Testcase_2" has been proved, subprogram will terminate
 equality.adb:26:11: info: flow dependencies proved
 equality.adb:32:22: info: postcondition proved (CVC5: 2 VC)

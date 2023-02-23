@@ -1,2 +1,5 @@
+bar.ads:11:13: info: implicit terminating annotation on "Im" has been proved, subprogram will terminate, in instantiation at foo.ads:19
+bar.ads:12:13: info: implicit terminating annotation on "Im" has been proved, subprogram will terminate, in instantiation at foo.ads:19
 toto.adb:5:04: warning: analyzing unreferenced function "Exp"
+toto.adb:5:13: info: implicit terminating annotation on "Exp" has been proved, subprogram will terminate
 toto.adb:5:18: warning: unused initial value of "X"

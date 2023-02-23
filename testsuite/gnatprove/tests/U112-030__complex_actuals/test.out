@@ -1,13 +1,9 @@
 main.adb:12:04: error: assignment to a complex expression is not allowed in SPARK
 main.adb:12:04: error: violation of aspect SPARK_Mode at line 1
-main.adb:12:04: warning: assuming "Id" always returns
 main.adb:12:04: warning: assuming "Id" has no effect on global items
 main.adb:12:04: warning: no Global contract available for "Id"
-main.adb:12:04: warning: no returning annotation available for "Id"
 main.adb:13:18: error: call to a traversal function as source of move is not allowed in SPARK
 main.adb:13:18: error: violation of aspect SPARK_Mode at line 1
-main.adb:13:18: warning: assuming "Id" always returns
 main.adb:13:18: warning: assuming "Id" has no effect on global items
 main.adb:13:18: warning: no Global contract available for "Id"
-main.adb:13:18: warning: no returning annotation available for "Id"
 gnatprove: error during flow analysis and proof

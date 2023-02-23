@@ -32,8 +32,10 @@ n04.adb:33:07: error: "MyStruct" is not allowed in SPARK (due to component of an
 n04.adb:33:07: error: violation of pragma SPARK_Mode at test.adc:3
 n04.adb:37:07: error: "Y" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 n04.adb:37:07: error: violation of pragma SPARK_Mode at test.adc:3
+n05.adb:31:22: info: implicit terminating annotation on "foo" has been proved, subprogram will terminate
 n05.adb:37:22: error: object was declared as not writable at line 31
 n05.adb:37:22: error: part of dereference from "X" is not writable
+n06.adb:33:22: info: implicit terminating annotation on "foo" has been proved, subprogram will terminate
 n06.adb:39:22: error: object was declared as not writable at line 33
 n06.adb:39:22: error: part of dereference from "X" is not writable
 n07.adb:10:16: error: anonymous access type for result for non-traversal functions is not allowed in SPARK
@@ -50,6 +52,7 @@ n08.adb:21:10: error: assignment into a constant object is not allowed in SPARK
 n08.adb:21:10: error: violation of pragma SPARK_Mode at test.adc:3
 n08.adb:36:09: error: "Inc_and_get" is not allowed in SPARK (due to function with global outputs)
 n08.adb:36:09: error: violation of pragma SPARK_Mode at test.adc:3
+n09.adb:11:16: info: implicit terminating annotation on "Copy_Pointer" has been proved, subprogram will terminate
 n09.adb:16:19: error: dereference from "A" is not writable
 n09.adb:16:19: error: object was declared as not writable at line 11
 n09b.adb:11:17: error: object was moved at line 20

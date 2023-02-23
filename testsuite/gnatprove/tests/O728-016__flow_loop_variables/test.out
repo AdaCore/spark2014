@@ -1,5 +1,6 @@
 foo.adb:3:23: info: initialization of "O" proved
 foo.adb:7:24: info: unrolling loop
 foo.adb:9:13: info: no contextual analysis of "Test_01" (nested subprogram)
+foo.adb:9:22: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 foo.adb:13:32: info: division check proved (CVC5: 2 VC)
 foo.adb:16:18: info: precondition proved (Trivial: 10 VC)

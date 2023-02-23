@@ -19,3 +19,4 @@ math.adb:33:10: medium: predicate check might fail [possible fix: loop invariant
 math.adb:33:23: info: division check proved (CVC5: 2 VC)
 math.adb:34:33: info: loop invariant initialization proved (Trivial: 1 VC)
 math.adb:34:33: info: loop invariant preservation proved (Trivial: 1 VC)
+math.ads:8:13: info: implicit terminating annotation on "Sorted" has been proved, subprogram will terminate

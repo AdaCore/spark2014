@@ -1,4 +1,2 @@
 records.adb:6:11: info: flow dependencies proved
-records.adb:7:53: warning: assuming "F_Of_Pair" always returns
-records.adb:7:53: warning: no returning annotation available for "F_Of_Pair"
 records.adb:10:22: medium: assertion might fail

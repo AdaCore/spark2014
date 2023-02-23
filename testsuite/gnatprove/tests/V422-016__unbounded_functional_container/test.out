@@ -141,7 +141,7 @@ spark-containers-functional-infinite_sequences.ads:58:19: info: terminating anno
 spark-containers-functional-infinite_sequences.ads:60:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at infinite_sequence.adb:6
 spark-containers-functional-infinite_sequences.ads:91:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:69, in instantiation at infinite_sequence.adb:6
 spark-containers-functional-infinite_sequences.ads:91:13: info: precondition proved (CVC5: 1 VC), in instantiation at infinite_sequence.adb:6
-spark-containers-functional-infinite_sequences.ads:108:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at infinite_sequence.adb:6
+spark-containers-functional-infinite_sequences.ads:108:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at infinite_sequence.adb:6
 spark-containers-functional-infinite_sequences.ads:108:43: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
 spark-containers-functional-infinite_sequences.ads:111:06: info: data dependencies proved, in instantiation at infinite_sequence.adb:6
 spark-containers-functional-infinite_sequences.ads:173:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
@@ -154,7 +154,7 @@ spark-containers-functional-infinite_sequences.ads:246:28: info: predicate check
 spark-containers-functional-infinite_sequences.ads:246:47: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
 spark-containers-functional-infinite_sequences.ads:270:16: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
 spark-containers-functional-infinite_sequences.ads:270:28: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
-spark-containers-functional-infinite_sequences.ads:291:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at infinite_sequence.adb:6
+spark-containers-functional-infinite_sequences.ads:291:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at infinite_sequence.adb:6
 spark-containers-functional-infinite_sequences.ads:323:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:69, in instantiation at infinite_sequence.adb:6
 spark-containers-functional-infinite_sequences.ads:323:13: info: precondition proved (Trivial: 1 VC), in instantiation at infinite_sequence.adb:6
 spark-containers-functional-infinite_sequences.ads:327:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:69, in instantiation at infinite_sequence.adb:6

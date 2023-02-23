@@ -1,10 +1,13 @@
 p.adb:9:33: info: pointer dereference check proved
-p.adb:11:13: info: loop invariant initialization proved
-p.adb:11:13: info: loop invariant preservation proved
-p.adb:11:41: info: null exclusion check proved
-p.adb:12:45: info: null exclusion check proved
-p.adb:13:16: info: pointer dereference check proved
-p.adb:16:14: info: dynamic accessibility check proved
+p.adb:10:10: info: loop variant proved
+p.adb:12:13: info: loop invariant initialization proved
+p.adb:12:13: info: loop invariant preservation proved
+p.adb:12:41: info: null exclusion check proved
+p.adb:13:45: info: null exclusion check proved
+p.adb:14:16: info: pointer dereference check proved
+p.adb:17:14: info: dynamic accessibility check proved
+p.ads:6:13: info: implicit terminating annotation on "Is_Non_Zero" has been proved, subprogram will terminate
+p.ads:9:13: info: implicit terminating annotation on "Search_List_Zero" has been proved, subprogram will terminate
 p.ads:11:08: info: postcondition proved
 p.ads:11:72: info: null exclusion check proved
 p.ads:13:77: info: pointer dereference check proved

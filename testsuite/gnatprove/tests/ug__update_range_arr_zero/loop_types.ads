@@ -1,5 +1,6 @@
 with SPARK.Containers.Formal.Doubly_Linked_Lists;
 with SPARK.Containers.Formal.Vectors;
+with SPARK.Big_Integers; use SPARK.Big_Integers;
 
 package Loop_Types
   with SPARK_Mode
@@ -23,6 +24,10 @@ is
       Next  : List_Acc;
    end record;
 
+   function Length (L : access constant List_Cell) return Big_Natural is
+     (if L = null then 0 else Length (L.Next) + 1)
+   with Subprogram_Variant => (Structural => L);
+
    function At_End
      (L : access constant List_Cell) return access constant List_Cell
    is (L)
@@ -37,7 +42,6 @@ is
    is
      (L = null or else (P (L.Value) and then For_All_List (L.Next, P)))
    with
-     Annotate => (GNATprove, Always_Return),
      Subprogram_Variant => (Structural => L);
    pragma Annotate (GNATprove, False_Positive, "call via access-to-subprogram",
                     "We only call For_All_List on terminating functions");
@@ -54,7 +58,6 @@ is
          then P (L1.Value, L2.Value)
          and then For_All_List (L1.Next, L2.Next, P)))
    with
-     Annotate => (GNATprove, Always_Return),
      Subprogram_Variant => (Structural => L1);
    pragma Annotate (GNATprove, False_Positive, "call via access-to-subprogram",
                     "We only call For_All_List on terminating functions");

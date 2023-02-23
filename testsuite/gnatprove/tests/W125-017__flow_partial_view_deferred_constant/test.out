@@ -1,8 +1,8 @@
 my_data_protected_by_lock.ads:9:06: info: initialization of "Int_Data.Lock_State" proved, in instantiation at use_data.ads:6
 my_data_protected_by_lock.ads:15:03: info: flow dependencies proved, in instantiation at use_data.ads:6
-my_data_protected_by_lock.ads:46:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at use_data.ads:6
+my_data_protected_by_lock.ads:46:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at use_data.ads:6
 my_data_protected_by_lock.ads:47:07: info: dynamic accessibility check proved (Trivial), in instantiation at use_data.ads:6
-my_data_protected_by_lock.ads:51:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at use_data.ads:6
+my_data_protected_by_lock.ads:51:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at use_data.ads:6
 my_data_protected_by_lock.ads:52:07: info: dynamic accessibility check proved (Trivial), in instantiation at use_data.ads:6
 use_data.adb:4:07: info: initialization of "Acquired" proved
 use_data.adb:7:33: info: loop invariant initialization proved (CVC5: 1 VC)

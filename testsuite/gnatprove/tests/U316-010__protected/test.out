@@ -13,3 +13,4 @@ p.adb:9:27: warning: make sure that all overlapping objects have Async_Writers s
 p.adb:9:27: warning: writing to "A" is assumed to have no effects on other non-volatile objects
 p.adb:9:39: warning: assuming valid reads from object "A"
 p.adb:11:19: high: "A" is not initialized
+p.ads:4:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate

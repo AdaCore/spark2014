@@ -40,6 +40,8 @@ keccak-duplex.ads:75:19: info: initialization of "Ctx" proved, in instantiation 
 keccak-duplex.ads:77:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:79:14: info: postcondition proved (CVC5: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:80:06: info: data dependencies proved, in instantiation at keccak-keccak_1600.ads:66
+keccak-duplex.ads:97:13: info: implicit terminating annotation on "Rate_Of" has been proved, subprogram will terminate, in instantiation at keccak-keccak_1600.ads:66
+keccak-duplex.ads:103:13: info: implicit terminating annotation on "Max_Input_Length" has been proved, subprogram will terminate, in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:118:21: info: initialization of "Out_Data" proved, in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:120:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:123:30: medium: range check might fail, cannot prove upper bound for In_Data'Length, in instantiation at keccak-keccak_1600.ads:66
@@ -397,6 +399,8 @@ keccak-sponge.ads:94:11: info: flow dependencies proved, in instantiation at kec
 keccak-sponge.ads:95:39: info: division check proved (CVC5: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:96:16: info: postcondition proved (CVC5: 3 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:99:06: info: data dependencies proved, in instantiation at keccak-keccak_1600.ads:57
+keccak-sponge.ads:120:13: info: implicit terminating annotation on "State_Of" has been proved, subprogram will terminate, in instantiation at keccak-keccak_1600.ads:57
+keccak-sponge.ads:136:13: info: implicit terminating annotation on "Rate_Of" has been proved, subprogram will terminate, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:137:19: info: postcondition proved (CVC5: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:149:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:152:35: info: overflow check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:57
@@ -417,7 +421,17 @@ keccak-sponge.ads:188:81: info: division check proved (CVC5: 1 VC), in instantia
 keccak-sponge.ads:223:22: info: initialization of "Digest" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:224:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:225:15: info: postcondition proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:57
+keccak-sponge.ads:242:13: info: implicit terminating annotation on "In_Queue_Bit_Length" has been proved, subprogram will terminate, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:243:19: info: postcondition proved (CVC5: 1 VC), in instantiation at keccak-keccak_1600.ads:57
+keccak-types.ads:49:13: info: implicit terminating annotation on "Shift_Left_1" has been proved, subprogram will terminate
+keccak-types.ads:54:13: info: implicit terminating annotation on "Shift_Left_2" has been proved, subprogram will terminate
+keccak-types.ads:59:13: info: implicit terminating annotation on "Shift_Left_4" has been proved, subprogram will terminate
+keccak-types.ads:65:13: info: implicit terminating annotation on "Shift_Right_1" has been proved, subprogram will terminate
+keccak-types.ads:70:13: info: implicit terminating annotation on "Shift_Right_2" has been proved, subprogram will terminate
+keccak-types.ads:75:13: info: implicit terminating annotation on "Shift_Right_4" has been proved, subprogram will terminate
+keccak-types.ads:81:13: info: implicit terminating annotation on "Rotate_Left_1" has been proved, subprogram will terminate
+keccak-types.ads:86:13: info: implicit terminating annotation on "Rotate_Left_2" has been proved, subprogram will terminate
+keccak-types.ads:91:13: info: implicit terminating annotation on "Rotate_Left_4" has been proved, subprogram will terminate
 keccak-types.ads:101:62: info: range check proved (CVC5: 2 VC)
 keccak-types.ads:105:62: info: range check proved (CVC5: 2 VC)
 keccak-types.ads:109:62: info: range check proved (CVC5: 2 VC)

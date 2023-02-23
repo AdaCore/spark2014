@@ -4,7 +4,11 @@ fsb.adb:17:20: high: overflow check might fail, cannot prove lower bound for X +
 fsb.adb:24:16: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at fsb.ads:15]
 fsb.adb:31:16: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at fsb.ads:19]
 fsb.adb:31:20: high: overflow check might fail, cannot prove lower bound for X + Y + S (e.g. when S = Integer'First and X = -1 and Y = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at fsb.ads:19 should mention X and Y and S in a precondition]
+fsb.ads:9:13: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
+fsb.ads:12:13: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
+fsb.ads:15:13: info: implicit terminating annotation on "F3" has been proved, subprogram will terminate
 fsb.ads:16:11: info: data dependencies proved
+fsb.ads:19:13: info: implicit terminating annotation on "F4" has been proved, subprogram will terminate
 fsb.ads:20:11: info: data dependencies proved
 p.adb:15:26: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:15:26: error: use instead a constant initialized to the expression with variable input
@@ -22,40 +26,22 @@ p.adb:34:27: error: default initialization cannot depend on variable input "S" (
 p.adb:34:27: error: use instead a constant initialized to the expression with variable input
 p.adb:35:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:35:27: error: use instead a constant initialized to the expression with variable input
-p.adb:43:27: warning: assuming "F5" always returns
 p.adb:43:27: warning: assuming "F5" has no effect on global items
 p.adb:43:27: warning: no Global contract available for "F5"
-p.adb:43:27: warning: no returning annotation available for "F5"
-p.adb:44:27: warning: assuming "F5" always returns
 p.adb:44:27: warning: assuming "F5" has no effect on global items
 p.adb:44:27: warning: no Global contract available for "F5"
-p.adb:44:27: warning: no returning annotation available for "F5"
 p.adb:45:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:45:27: error: use instead a constant initialized to the expression with variable input
-p.adb:45:27: warning: assuming "F5" always returns
 p.adb:45:27: warning: assuming "F5" has no effect on global items
 p.adb:45:27: warning: no Global contract available for "F5"
-p.adb:45:27: warning: no returning annotation available for "F5"
-p.adb:49:27: warning: assuming "F6" always returns
-p.adb:49:27: warning: no returning annotation available for "F6"
-p.adb:50:27: warning: assuming "F6" always returns
-p.adb:50:27: warning: no returning annotation available for "F6"
 p.adb:51:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:51:27: error: use instead a constant initialized to the expression with variable input
-p.adb:51:27: warning: assuming "F6" always returns
-p.adb:51:27: warning: no returning annotation available for "F6"
 p.adb:56:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:56:27: error: use instead a constant initialized to the expression with variable input
-p.adb:56:27: warning: assuming "F7" always returns
-p.adb:56:27: warning: no returning annotation available for "F7"
 p.adb:57:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:57:27: error: use instead a constant initialized to the expression with variable input
-p.adb:57:27: warning: assuming "F7" always returns
-p.adb:57:27: warning: no returning annotation available for "F7"
 p.adb:58:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:58:27: error: use instead a constant initialized to the expression with variable input
-p.adb:58:27: warning: assuming "F7" always returns
-p.adb:58:27: warning: no returning annotation available for "F7"
 p.adb:99:07: info: initialization of "X" proved
 p.adb:122:13: info: initialization of "Q" proved
 p.ads:25:25: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
@@ -63,5 +49,6 @@ p.ads:25:25: error: use instead a constant initialized to the expression with va
 p.ads:32:28: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.ads:32:28: error: use instead a constant initialized to the expression with variable input
 p.ads:40:11: info: flow dependencies proved
+p.ads:42:13: info: implicit terminating annotation on "Op2" has been proved, subprogram will terminate
 p.ads:46:11: info: flow dependencies proved
 gnatprove: error during flow analysis and proof

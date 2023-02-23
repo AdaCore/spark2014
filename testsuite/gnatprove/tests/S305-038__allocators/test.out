@@ -3,6 +3,7 @@ alloc_range_check.adb:3:57: info: in default value at alloc_range_check.adb:20
 alloc_range_check.adb:3:57: info: range check proved (CVC5: 2 VC)
 alloc_range_check.adb:3:57: info: range check proved (CVC5: 2 VC)
 alloc_range_check.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
+alloc_range_check.adb:5:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 alloc_range_check.adb:11:31: info: precondition proved (Trivial: 1 VC)
 alloc_range_check.adb:12:12: info: range check proved (CVC5: 2 VC)
 alloc_range_check.adb:13:31: info: range check proved (CVC5: 2 VC)

@@ -1,3 +1,4 @@
 sat.adb:4:07: info: initialization of "Res" proved
 sat.adb:7:19: info: range check proved (CVC5: 2 VC)
+sat.ads:5:13: info: implicit terminating annotation on "Add" has been proved, subprogram will terminate
 sat.ads:7:10: info: postcondition proved (CVC5: 1 VC)

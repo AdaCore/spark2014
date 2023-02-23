@@ -6,6 +6,8 @@ double_shift.adb:13:39: info: overflow check proved (CVC5: 2 VC)
 double_shift.adb:14:35: info: range check proved (altergo: 2 VC)
 double_shift.adb:14:49: info: overflow check proved (CVC5: 2 VC)
 double_shift.adb:14:49: info: range check proved (CVC5: 1 VC)
+double_shift.ads:11:12: warning: Always_Return annotation is useless
+double_shift.ads:11:12: warning: function "Shift_Left" has implicit Always_Return annotation
 double_shift.ads:18:14: info: postcondition proved (CVC5: 1 VC)
 double_shift.ads:18:50: info: range check proved (altergo: 2 VC)
 double_shift.ads:18:64: info: range check proved (altergo: 2 VC)

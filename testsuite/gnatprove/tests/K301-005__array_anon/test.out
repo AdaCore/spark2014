@@ -1,3 +1,4 @@
+named.ads:4:13: info: implicit terminating annotation on "L" has been proved, subprogram will terminate
 named.ads:4:16: warning: unused variable "X"
 named.ads:5:12: warning: postcondition does not check the outcome of calling "L"
 named.ads:5:12: warning: postcondition does not mention function result

@@ -16,8 +16,8 @@ spark-containers-functional-maps.ads:380:13: info: during checks for quantificat
 spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
@@ -26,7 +26,7 @@ spark-containers-functional-maps.ads:526:13: info: during checks for quantificat
 spark-containers-functional-maps.ads:526:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:531:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:43:13: info: terminating annotation on "Cardinality_Rec" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:43:13: info: implicit terminating annotation on "Cardinality_Rec" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:48:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:49:46: info: range check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:51:09: info: postcondition proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
@@ -876,9 +876,9 @@ spark-containers-functional-multisets.ads:53:19: info: terminating annotation on
 spark-containers-functional-multisets.ads:55:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:63:09: info: default initial condition proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:64:35: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:83:13: info: terminating annotation on "Nb_Occurence" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:83:13: info: implicit terminating annotation on "Nb_Occurence" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:88:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:90:14: info: terminating annotation on "Lemma_Nb_Occurence_Equivalent" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:90:14: info: implicit terminating annotation on "Lemma_Nb_Occurence_Equivalent" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:96:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:100:18: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:100:18: info: postcondition proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
@@ -886,27 +886,27 @@ spark-containers-functional-multisets.ads:100:18: info: predicate check proved (
 spark-containers-functional-multisets.ads:101:10: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:101:10: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:103:13: info: during checks for quantification at spark-containers-functional-multisets.ads:507, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:103:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:103:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:103:13: info: terminating annotation on "Contains" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:108:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:109:18: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:109:37: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:109:37: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:109:73: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:110:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:112:13: info: terminating annotation on "Choose" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:112:13: info: implicit terminating annotation on "Choose" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:115:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:116:20: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:117:16: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:117:16: info: postcondition proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:119:13: info: terminating annotation on "Cardinality" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:119:13: info: implicit terminating annotation on "Cardinality" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:123:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:125:09: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:125:09: info: postcondition proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:126:11: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:126:11: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:126:59: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:132:13: info: terminating annotation on overriding operator "<=" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:132:13: info: implicit terminating annotation on overriding operator "<=" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:135:04: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:137:08: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; Z3: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:138:11: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
@@ -918,7 +918,7 @@ spark-containers-functional-multisets.ads:141:25: info: invariant check proved (
 spark-containers-functional-multisets.ads:141:25: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:141:47: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:141:47: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:143:13: info: terminating annotation on overriding operator "=" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:143:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:147:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:149:08: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:150:12: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
@@ -935,14 +935,14 @@ spark-containers-functional-multisets.ads:156:24: info: invariant check proved (
 spark-containers-functional-multisets.ads:156:24: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:156:45: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:156:45: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:159:13: info: terminating annotation on "Is_Empty" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:159:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:163:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:165:08: info: postcondition proved (CVC5: 1 VC; altergo: 3 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:166:12: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:167:38: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:167:38: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:167:64: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:170:13: info: terminating annotation on "Equal_Except" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:170:13: info: implicit terminating annotation on "Equal_Except" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:178:04: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:180:06: info: postcondition proved (CVC5: 3 VC; Trivial: 2 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:181:10: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
@@ -955,13 +955,13 @@ spark-containers-functional-multisets.ads:187:22: info: invariant check proved (
 spark-containers-functional-multisets.ads:187:22: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:187:47: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:187:47: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:196:13: info: implicit terminating annotation on "Empty_Multiset" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:196:13: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:196:13: info: terminating annotation on "Empty_Multiset" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:199:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:200:16: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:200:16: info: postcondition proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:202:13: info: implicit terminating annotation on "Add" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:202:13: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:202:13: info: terminating annotation on "Add" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:208:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:210:08: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:210:08: info: postcondition proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
@@ -976,8 +976,8 @@ spark-containers-functional-multisets.ads:213:21: info: invariant check proved (
 spark-containers-functional-multisets.ads:213:21: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:213:57: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:214:19: info: invariant check proved (CVC5: 2 VC), in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:216:13: info: implicit terminating annotation on "Add" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:216:13: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:216:13: info: terminating annotation on "Add" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:223:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:225:08: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:225:08: info: postcondition proved (CVC5: 1 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
@@ -992,8 +992,8 @@ spark-containers-functional-multisets.ads:228:12: info: invariant check proved (
 spark-containers-functional-multisets.ads:228:12: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:228:48: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:229:19: info: invariant check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:231:13: info: implicit terminating annotation on "Remove_All" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:231:13: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:231:13: info: terminating annotation on "Remove_All" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:236:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:237:16: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:238:16: info: postcondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
@@ -1005,8 +1005,8 @@ spark-containers-functional-multisets.ads:240:29: info: predicate check proved (
 spark-containers-functional-multisets.ads:241:31: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:241:31: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:242:27: info: invariant check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:244:13: info: implicit terminating annotation on "Remove" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:244:13: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:244:13: info: terminating annotation on "Remove" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:251:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:252:16: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:252:25: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
@@ -1023,8 +1023,8 @@ spark-containers-functional-multisets.ads:257:21: info: invariant check proved (
 spark-containers-functional-multisets.ads:257:21: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:257:47: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:258:19: info: invariant check proved (altergo: 2 VC), in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:260:13: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:260:13: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:260:13: info: terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:265:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:267:08: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:267:08: info: postcondition proved (Z3: 3 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
@@ -1042,8 +1042,8 @@ spark-containers-functional-multisets.ads:272:19: info: invariant check proved (
 spark-containers-functional-multisets.ads:272:19: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:273:23: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:273:23: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:279:13: info: implicit terminating annotation on "Difference" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:279:13: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:279:13: info: terminating annotation on "Difference" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:286:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:288:09: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:288:09: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
@@ -1060,8 +1060,8 @@ spark-containers-functional-multisets.ads:294:21: info: invariant check proved (
 spark-containers-functional-multisets.ads:294:21: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:294:46: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:294:46: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:300:13: info: implicit terminating annotation on "Intersection" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:300:13: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:300:13: info: terminating annotation on "Intersection" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:305:04: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:307:09: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:307:09: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at my_multiset.ads:6
@@ -1074,8 +1074,8 @@ spark-containers-functional-multisets.ads:313:19: info: invariant check proved (
 spark-containers-functional-multisets.ads:313:19: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:314:19: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:314:19: info: predicate check proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:316:13: info: implicit terminating annotation on "Union" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:316:13: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:316:13: info: terminating annotation on "Union" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:322:04: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:324:07: info: postcondition proved (CVC5: 1 VC; Z3: 2 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:324:12: info: invariant check proved (CVC5: 2 VC), in instantiation at my_multiset.ads:6
@@ -1105,25 +1105,25 @@ spark-containers-functional-multisets.ads:358:16: info: invariant check proved (
 spark-containers-functional-multisets.ads:358:16: info: postcondition proved (Z3: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:358:34: info: invariant check proved (altergo: 2 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:358:36: info: invariant check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:380:13: info: terminating annotation on "Multiset_Logic_Equal" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:380:13: info: implicit terminating annotation on "Multiset_Logic_Equal" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:382:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 2 VC), in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:385:13: info: implicit terminating annotation on "Iterate" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:385:13: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:385:13: info: terminating annotation on "Iterate" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:386:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:387:16: info: invariant check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:387:16: info: postcondition proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:387:38: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:390:13: info: implicit terminating annotation on "Get_Multiset" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:390:13: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:390:13: info: terminating annotation on "Get_Multiset" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:391:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:394:13: info: terminating annotation on "Valid_Subset" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:394:13: info: implicit terminating annotation on "Valid_Subset" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:398:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:399:17: info: postcondition proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:399:52: info: invariant check proved (CVC5: 2 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:399:55: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:403:13: info: during checks for quantification at spark-containers-functional-multisets.ads:520, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:403:13: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:403:13: info: precondition proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:403:13: info: terminating annotation on "Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:404:07: warning: unused variable "Iterator", in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:406:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:407:22: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
@@ -1131,18 +1131,18 @@ spark-containers-functional-multisets.ads:408:18: info: postcondition proved (CV
 spark-containers-functional-multisets.ads:408:35: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:408:35: info: precondition proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:413:13: info: during checks for quantification at spark-containers-functional-multisets.ads:520, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:413:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:413:13: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:413:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:413:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:414:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:415:16: info: invariant check proved (altergo: 2 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:415:16: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:415:52: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:416:17: info: invariant check proved (altergo: 2 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:420:13: info: during checks for quantification at spark-containers-functional-multisets.ads:520, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:420:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:420:13: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:420:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:420:13: info: terminating annotation on "Next" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:423:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:424:16: info: invariant check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:424:61: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
@@ -1154,35 +1154,35 @@ spark-containers-functional-multisets.ads:427:24: info: precondition proved (alt
 spark-containers-functional-multisets.ads:427:44: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:427:44: info: precondition proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:430:13: info: during checks for quantification at spark-containers-functional-multisets.ads:520, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:430:13: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:430:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:430:13: info: terminating annotation on "Has_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:434:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:435:16: info: postcondition proved (altergo: 3 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:436:09: info: invariant check proved (altergo: 2 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:436:54: info: invariant check proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:446:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:446:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:469:13: info: during checks for quantification at spark-containers-functional-multisets.ads:507, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:469:13: info: implicit terminating annotation on "Iter_First" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:469:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:469:13: info: terminating annotation on "Iter_First" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:470:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:472:13: info: during checks for quantification at spark-containers-functional-multisets.ads:507, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:472:13: info: implicit terminating annotation on "Iter_Has_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:472:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:472:13: info: terminating annotation on "Iter_Has_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:476:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:478:13: info: during checks for quantification at spark-containers-functional-multisets.ads:507, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:478:13: info: implicit terminating annotation on "Iter_Next" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:478:13: info: precondition proved (altergo: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:478:13: info: terminating annotation on "Iter_Next" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:481:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:482:16: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:484:13: info: during checks for quantification at spark-containers-functional-multisets.ads:507, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:484:13: info: implicit terminating annotation on "Iter_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:484:13: info: precondition proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:484:13: info: terminating annotation on "Iter_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:488:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:489:16: info: invariant check proved (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:507:09: info: invariant check proved on default value (altergo: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:509:29: info: in default value of private type at spark-containers-functional-multisets.ads:63, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:509:29: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:513:13: info: terminating annotation on "Invariant" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:513:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:520:09: info: invariant check proved on default value (CVC5: 1 VC), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:522:29: info: in default value of private type at spark-containers-functional-multisets.ads:373, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:522:29: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at my_multiset.ads:6
@@ -1263,3 +1263,7 @@ spark-containers-parameter_checks.ads:103:40: info: predicate check proved (Triv
 spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:499, in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
 spark-containers-parameter_checks.ads:104:23: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:499, in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
 spark-containers-parameter_checks.ads:104:26: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:499, in instantiation at spark-containers-functional-multisets.ads:498, in instantiation at my_multiset.ads:6
+types.ads:5:06: warning: Always_Return annotation is useless
+types.ads:5:06: warning: function "Eq" has implicit Always_Return annotation
+types.ads:10:06: warning: Always_Return annotation is useless
+types.ads:10:06: warning: function "Witness" has implicit Always_Return annotation

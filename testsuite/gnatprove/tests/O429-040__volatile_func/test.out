@@ -1,1 +1,2 @@
+p.ads:4:13: info: implicit terminating annotation on "Func_1" has been proved, subprogram will terminate
 p.ads:4:13: warning: volatile function "Func_1" has no volatile effects

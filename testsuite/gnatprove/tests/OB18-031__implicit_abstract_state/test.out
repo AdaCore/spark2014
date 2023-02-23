@@ -1,3 +1,4 @@
 interfering_volatile_attribute.adb:4:08: warning: initialization of "X" has no effect
 interfering_volatile_attribute.adb:7:13: warning: unused assignment
 interfering_volatile_attribute.ads:3:10: info: nontermination of task proved (CVC5: 1 VC)
+interfering_volatile_attribute.ads:5:14: info: implicit terminating annotation on "Check" has been proved, subprogram will terminate

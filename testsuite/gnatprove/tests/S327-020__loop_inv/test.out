@@ -33,3 +33,6 @@ lp.adb:58:37: medium: overflow check might fail, cannot prove upper bound for 2 
 lp.adb:58:37: medium: range check might fail [reason for check: result of exponentiation must be convertible to the target type of the conversion]
 lp.adb:58:40: info: index check proved (CVC5: 2 VC)
 lp.adb:59:22: info: index check proved (CVC5: 2 VC)
+lp.ads:8:13: info: implicit terminating annotation on "Power" has been proved, subprogram will terminate
+lp.ads:9:13: info: implicit terminating annotation on "Power1" has been proved, subprogram will terminate
+lp.ads:10:13: info: implicit terminating annotation on "Power2" has been proved, subprogram will terminate

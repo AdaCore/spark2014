@@ -1,8 +1,22 @@
+neverending_dispatching.adb:6:16: info: implicit terminating annotation on "Init" has been proved, subprogram will terminate
+neverending_dispatching.adb:7:16: info: implicit terminating annotation on "Work" has been proved, subprogram will terminate
+neverending_dispatching.adb:19:16: info: implicit terminating annotation on "Init" has been proved, subprogram will terminate
+neverending_dispatching.adb:26:21: medium: implicit terminating annotation on "Work" could be incorrect, loop might be nonterminating
 neverending_dispatching.adb:26:21: warning: statement has no effect
 neverending_dispatching.adb:36:04: medium: terminating annotation on "Neverending_Dispatching" could be incorrect, dispatching call might be nonterminating
-neverending_dispatching_2.adb:7:16: info: terminating annotation on "Work" has been proved, subprogram will terminate
+neverending_dispatching_2.adb:6:16: info: implicit terminating annotation on "Init" has been proved, subprogram will terminate
+neverending_dispatching_2.adb:7:16: info: implicit terminating annotation on "Work" has been proved, subprogram will terminate
+neverending_dispatching_2.adb:7:46: warning: Always_Return annotation is useless
+neverending_dispatching_2.adb:7:46: warning: function "Work" has implicit Always_Return annotation
+neverending_dispatching_2.adb:19:16: info: implicit terminating annotation on "Init" has been proved, subprogram will terminate
+neverending_dispatching_2.adb:26:21: medium: implicit terminating annotation on "Work" could be incorrect, loop might be nonterminating
 neverending_dispatching_2.adb:26:21: warning: statement has no effect
 neverending_dispatching_2.adb:36:04: medium: terminating annotation on "Neverending_Dispatching_2" could be incorrect, dispatching call might be nonterminating
-neverending_dispatching_3.adb:26:21: medium: terminating annotation on "Work" could be incorrect, loop might be nonterminating
+neverending_dispatching_3.adb:6:16: info: implicit terminating annotation on "Init" has been proved, subprogram will terminate
+neverending_dispatching_3.adb:7:16: info: implicit terminating annotation on "Work" has been proved, subprogram will terminate
+neverending_dispatching_3.adb:19:16: info: implicit terminating annotation on "Init" has been proved, subprogram will terminate
+neverending_dispatching_3.adb:20:46: warning: Always_Return annotation is useless
+neverending_dispatching_3.adb:20:46: warning: function "Work" has implicit Always_Return annotation
+neverending_dispatching_3.adb:26:21: medium: implicit terminating annotation on "Work" could be incorrect, loop might be nonterminating
 neverending_dispatching_3.adb:26:21: warning: statement has no effect
 neverending_dispatching_3.adb:36:04: medium: terminating annotation on "Neverending_Dispatching_3" could be incorrect, dispatching call might be nonterminating

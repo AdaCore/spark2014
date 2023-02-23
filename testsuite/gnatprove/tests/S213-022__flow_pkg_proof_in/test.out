@@ -2,6 +2,8 @@ repro-c.ads:4:03: info: flow dependencies proved
 repro-c.ads:5:03: medium: in inlined expression function body at repro-c.adb:7
 repro-c.ads:5:03: medium: initial condition might fail, cannot prove Get_Foo > 0
 repro-c.ads:5:24: high: "Repro.State" must be mentioned as an input of the Initializes aspect of "C" (SPARK RM 7.1.5(11))
+repro-c.ads:10:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
 repro-c.ads:13:06: info: data dependencies proved
 repro.ads:4:03: info: flow dependencies proved
+repro.ads:11:13: info: implicit terminating annotation on "Get_Foo" has been proved, subprogram will terminate
 repro.ads:12:09: info: data dependencies proved

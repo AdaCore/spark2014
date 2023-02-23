@@ -29,17 +29,13 @@ is
      Annotate   => (GNATprove, Always_Return);
 
    function Closed (F : S_File) return Boolean with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global   => null;
    function Is_Open (F : S_File) return Boolean with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global   => null;
    function Is_Writable (F : S_File) return Boolean with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global   => null;
    function Is_Synchronized (F : S_File) return Boolean with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global   => null;
 
 private
    type State is (Closed, Open_Read, Open_Read_Write);

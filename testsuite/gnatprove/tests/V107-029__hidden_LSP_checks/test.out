@@ -8,7 +8,9 @@ fl1.ads:14:20: info: postcondition proved (CVC5: 1 VC)
 fl1.ads:14:20: info: postcondition proved (CVC5: 1 VC), in inherited contract at fl1.ads:19
 fl1.ads:14:20: info: postcondition proved (CVC5: 1 VC), in inherited contract at fl1.ads:25
 fl1.ads:14:20: medium: postcondition might fail, in inherited contract at fl1.ads:33
+fl1.ads:18:13: info: implicit terminating annotation on "Get_F" has been proved, subprogram will terminate
 fl1.ads:20:13: info: precondition is weaker than class-wide precondition (CVC5: 1 VC)
+fl1.ads:24:13: info: implicit terminating annotation on "Get_F" has been proved, subprogram will terminate
 fl1.ads:26:13: medium: precondition might be stronger than class-wide precondition
 fl1.ads:29:13: medium: precondition is stronger than the default class-wide precondition of True
 fl1.ads:33:22: warning: "X" is not modified, could be IN

@@ -3,3 +3,4 @@ logging.adb:16:30: info: range check proved (CVC5: 2 VC)
 logging.adb:20:16: high: types used for unchecked conversion do not have the same size [possible explanation: type Byte_Array doesn't have a Size representation clause or aspect]
 logging.adb:21:20: high: type is unsuitable for unchecked conversion [possible explanation: can't determine size for unconstrained array type Byte_Array]
 logging.adb:22:20: high: type is unsuitable as a target for unchecked conversion [possible explanation: bounds of type Payload_As_String_T are not known at compile time]
+payload.ads:22:13: info: implicit terminating annotation on "Get_Packed_Payload" has been proved, subprogram will terminate

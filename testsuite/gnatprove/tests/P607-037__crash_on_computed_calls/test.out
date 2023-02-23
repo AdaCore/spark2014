@@ -1,4 +1,2 @@
-call_from_sub_in_pt.adb:13:15: warning: assuming "Current_Task" always returns
-call_from_sub_in_pt.adb:13:15: warning: no returning annotation available for "Current_Task"
 call_from_sub_in_pt.ads:4:13: high: Current_Task should not be called from an entry body "E" (RM C.7.1(17))
 call_from_sub_in_pt.ads:5:23: info: initialization of "T" proved

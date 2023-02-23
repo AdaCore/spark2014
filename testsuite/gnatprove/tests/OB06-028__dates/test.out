@@ -1,5 +1,8 @@
+dates.adb:7:12: info: implicit terminating annotation on "Split" has been proved, subprogram will terminate
 dates.adb:7:19: warning: unused variable "Days"
 dates.adb:9:13: info: initialization of "T" proved
+dates.adb:15:12: info: implicit terminating annotation on "Split" has been proved, subprogram will terminate
 dates.adb:16:06: info: no contextual analysis of "Split" (inside expression function)
+dates.ads:7:12: info: implicit terminating annotation on "Is_Leap_Year" has been proved, subprogram will terminate
 dates.ads:8:11: info: division check proved (CVC5: 1 VC)
 dates.ads:8:31: info: division check proved (CVC5: 1 VC)

@@ -10,6 +10,8 @@ is
       Res : Search_Result;
    begin
       while Pos < A'Last loop
+         pragma Loop_Variant (Increases => Pos);
+
          if A(Pos) = Val then
             Res.At_Index := Pos;
             Res.Found := True;

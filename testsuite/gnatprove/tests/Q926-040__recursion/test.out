@@ -1,6 +1,8 @@
+FAILED CHECK UNEXPECTED at recursion.adb:25
 recursion.adb:9:07: info: initialization of "count" proved
 recursion.adb:10:07: info: initialization of "current_increment" proved
 recursion.adb:12:14: info: index check proved (CVC5: 2 VC)
+recursion.adb:25:16: medium: implicit terminating annotation on "count_true_recursive" could be incorrect, subprogram is recursive
 recursion.adb:25:37: info: overflow check proved (CVC5: 2 VC)
 recursion.adb:25:39: info: precondition proved (CVC5: 3 VC)
 recursion.adb:25:71: info: range check proved (CVC5: 2 VC)
@@ -9,8 +11,10 @@ recursion.adb:43:32: info: loop invariant preservation proved (CVC5: 1 VC)
 recursion.adb:43:47: info: overflow check proved (CVC5: 4 VC)
 recursion.adb:43:59: info: overflow check proved (CVC5: 4 VC)
 recursion.adb:53:28: info: overflow check proved (CVC5: 2 VC)
+recursion.ads:15:13: info: function contract might not be available on recursive calls
 recursion.ads:18:14: info: postcondition proved (CVC5: 1 VC)
 recursion.ads:18:53: info: overflow check proved (CVC5: 2 VC)
 recursion.ads:18:65: info: overflow check proved (CVC5: 2 VC)
+recursion.ads:24:13: info: implicit terminating annotation on "count_true_loop" has been proved, subprogram will terminate
 recursion.ads:26:14: info: postcondition proved (CVC5: 1 VC)
 recursion.ads:26:44: info: range check proved (CVC5: 2 VC)

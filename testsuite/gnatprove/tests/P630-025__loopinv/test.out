@@ -95,6 +95,7 @@ decadriver.ads:81:19: info: initialization of "Size" proved
 decadriver.ads:82:19: info: initialization of "Error" proved
 decadriver.ads:83:12: info: flow dependencies proved
 decadriver.ads:88:17: info: postcondition proved (CVC5: 3 VC)
+decadriver.ads:110:16: info: implicit terminating annotation on "Pending_Frames_Count" has been proved, subprogram will terminate
 decadriver.ads:111:22: medium: postcondition might fail
 decadriver.ads:115:28: info: initialization of "Result" proved
 decadriver.ads:116:14: info: data dependencies proved
@@ -107,6 +108,7 @@ decadriver.ads:131:07: warning: no check message justified by this pragma
 decadriver.ads:144:14: info: flow dependencies proved
 decadriver.ads:150:34: medium: in inlined predicate at decadriver.ads:66
 decadriver.ads:150:34: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size > 0
+decadriver.ads:173:16: info: implicit terminating annotation on "Is_Tx_Complete" has been proved, subprogram will terminate
 decadriver.ads:180:14: info: data dependencies proved
 decadriver.ads:181:09: info: flow dependencies proved
 decadriver.ads:187:21: info: range check proved (CVC5: 2 VC)
@@ -132,6 +134,9 @@ decadriver.ads:294:07: warning: no check message justified by this pragma
 decadriver.ads:305:14: info: data dependencies proved
 decadriver.ads:306:09: info: flow dependencies proved
 decadriver.ads:318:07: warning: no check message justified by this pragma
+decadriver.ads:323:16: info: implicit terminating annotation on "Get_Part_ID" has been proved, subprogram will terminate
+decadriver.ads:324:16: info: implicit terminating annotation on "Get_Lot_ID" has been proved, subprogram will terminate
+decadriver.ads:326:16: info: implicit terminating annotation on "PHR_Mode" has been proved, subprogram will terminate
 decadriver.ads:327:14: info: flow dependencies proved
 decadriver.ads:331:17: info: ceiling priority protocol is respected (CVC5: 1 VC)
 decadriver.ads:332:49: medium: this interrupt might be reserved

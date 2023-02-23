@@ -5,4 +5,8 @@ binary_search_trees.adb:33:11: info: data dependencies proved
 binary_search_trees.adb:68:10: warning: "Node" is set by "Insert_Node" but not used after the call
 binary_search_trees.adb:68:26: high: formal parameter "Starting_At" and global "Tree" are aliased (SPARK RM 6.4.2)
 binary_search_trees.adb:76:10: info: initialization of "Result" proved
+binary_search_trees.adb:84:23: medium: implicit terminating annotation on "Lookup_Node" could be incorrect, subprogram is recursive
+binary_search_trees.adb:86:23: medium: implicit terminating annotation on "Lookup_Node" could be incorrect, subprogram is recursive
+binary_search_trees.ads:16:13: info: implicit terminating annotation on "Lookup" has been proved, subprogram will terminate
+binary_search_trees.ads:19:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof

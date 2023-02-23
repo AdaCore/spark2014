@@ -1,0 +1,5 @@
+parent_14-private_child_b_14.ads:4:13: info: implicit terminating annotation on "H" has been proved, subprogram will terminate
+parent_14-public_child_a_14.ads:4:12: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
+parent_14-public_child_b_14.ads:4:13: info: implicit terminating annotation on "H" has been proved, subprogram will terminate
+parent_14.ads:4:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+parent_14.ads:5:13: info: implicit terminating annotation on "G" has been proved, subprogram will terminate

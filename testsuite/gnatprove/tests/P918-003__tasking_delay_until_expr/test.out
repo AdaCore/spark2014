@@ -1,2 +1,3 @@
 main2.adb:3:11: warning: file name does not match unit name, should be "main.adb"
+main2.adb:5:13: info: implicit terminating annotation on "Div" has been proved, subprogram will terminate
 main2.adb:16:29: medium: precondition might fail

@@ -1,4 +1,5 @@
 subtype_check.adb:6:13: info: implicit function contract might not be available on calls from enclosing unit
+subtype_check.adb:6:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 subtype_check.adb:10:04: info: range check proved (CVC5: 2 VC)
 subtype_check.adb:20:14: warning: subprogram "Wrong" has no effect
 subtype_check.adb:21:07: info: range check proved (CVC5: 2 VC)

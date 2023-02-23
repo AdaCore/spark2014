@@ -1,4 +1,5 @@
 no_warn_unreachable.adb:4:03: info: data dependencies proved
+no_warn_unreachable.adb:8:13: info: implicit terminating annotation on "Unreachable" has been proved, subprogram will terminate
 no_warn_unreachable.adb:15:12: info: precondition proved (CVC5: 1 VC)
 no_warn_unreachable.adb:21:19: info: precondition proved (CVC5: 1 VC)
 no_warn_unreachable.adb:22:26: info: precondition proved (CVC5: 1 VC)

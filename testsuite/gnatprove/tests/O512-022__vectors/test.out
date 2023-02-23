@@ -24,3 +24,8 @@ vectors.adb:117:58: medium: array index check might fail [reason for check: resu
 vectors.adb:119:52: medium: range check might fail, cannot prove lower bound for Container.Last_Index - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 116 should mention Container in a loop invariant]
 vectors.adb:120:07: info: analyzing call to "Bump_Sig" in context
 vectors.ads:16:27: info: initialization of "Container" proved
+vectors.ads:19:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
+vectors.ads:21:13: info: implicit terminating annotation on "First_Cursor" has been proved, subprogram will terminate
+vectors.ads:23:13: info: implicit terminating annotation on "Last_Cursor" has been proved, subprogram will terminate
+vectors.ads:25:13: info: implicit terminating annotation on "Associated" has been proved, subprogram will terminate
+vectors.ads:29:13: info: implicit terminating annotation on "Element_At" has been proved, subprogram will terminate

@@ -1,3 +1,4 @@
 elab.ads:4:13: info: implicit function contract might not be available on calls from enclosing unit
+elab.ads:4:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 elab.ads:6:19: warning: Program_Error will be raised at run time
 elab.ads:6:19: warning: cannot call "F" before body seen

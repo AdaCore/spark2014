@@ -1,75 +1,93 @@
+test_accessibility.adb:7:13: info: implicit terminating annotation on "Hidden_Access" has been proved, subprogram will terminate
 test_accessibility.adb:8:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:8:35: info: pointer dereference check proved (CVC5: 1 VC)
+test_accessibility.adb:14:13: info: implicit terminating annotation on "Hidden_Access" has been proved, subprogram will terminate
 test_accessibility.adb:15:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:15:35: info: pointer dereference check proved (CVC5: 1 VC)
+test_accessibility.adb:21:13: info: implicit terminating annotation on "OK1" has been proved, subprogram will terminate
 test_accessibility.adb:22:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:22:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:22:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:26:44: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:28:17: info: dynamic accessibility check proved (Trivial)
 test_accessibility.adb:28:17: info: null exclusion check proved (CVC5: 1 VC)
+test_accessibility.adb:32:13: info: implicit terminating annotation on "OK2" has been proved, subprogram will terminate
 test_accessibility.adb:33:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:33:25: info: pointer dereference check proved (CVC5: 1 VC)
+test_accessibility.adb:39:13: info: implicit terminating annotation on "OK3" has been proved, subprogram will terminate
 test_accessibility.adb:40:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:40:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:43:14: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:43:14: medium: dynamic accessibility check might fail [possible fix: subprogram at line 39 should mention X in a precondition]
+test_accessibility.adb:48:13: info: implicit terminating annotation on "OK4" has been proved, subprogram will terminate
 test_accessibility.adb:49:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:49:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:49:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:51:45: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:54:44: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:56:17: info: null exclusion check proved (CVC5: 1 VC)
+test_accessibility.adb:60:13: info: implicit terminating annotation on "KO1" has been proved, subprogram will terminate
 test_accessibility.adb:61:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:61:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:66:44: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:68:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:68:17: medium: dynamic accessibility check might fail
+test_accessibility.adb:72:13: info: implicit terminating annotation on "KO2" has been proved, subprogram will terminate
 test_accessibility.adb:73:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:73:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:79:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:79:17: medium: dynamic accessibility check might fail
+test_accessibility.adb:83:13: info: implicit terminating annotation on "KO3" has been proved, subprogram will terminate
 test_accessibility.adb:84:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:84:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:86:43: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:89:59: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:91:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:91:17: medium: dynamic accessibility check might fail
+test_accessibility.adb:95:13: info: implicit terminating annotation on "KO4" has been proved, subprogram will terminate
 test_accessibility.adb:96:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:96:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:102:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:102:17: medium: dynamic accessibility check might fail
+test_accessibility_2.adb:14:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 test_accessibility_2.adb:17:45: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:17:56: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:19:13: info: function contract might not be available on calls from enclosing unit
+test_accessibility_2.adb:19:13: info: implicit terminating annotation on "Hidden_Access" has been proved, subprogram will terminate
 test_accessibility_2.adb:20:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:20:35: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:26:13: info: function contract might not be available on calls from enclosing unit
+test_accessibility_2.adb:26:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_accessibility_2.adb:27:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:27:24: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:27:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:30:14: info: dynamic accessibility check proved (Trivial)
 test_accessibility_2.adb:30:14: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:33:13: info: function contract might not be available on calls from enclosing unit
+test_accessibility_2.adb:33:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_accessibility_2.adb:34:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:34:24: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:34:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:37:14: info: dynamic accessibility check proved (Trivial)
 test_accessibility_2.adb:37:14: info: null exclusion check proved (CVC5: 1 VC)
+test_accessibility_2.adb:40:13: info: implicit terminating annotation on "Hidden_Access" has been proved, subprogram will terminate
 test_accessibility_2.adb:41:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:41:35: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:47:13: info: function contract might not be available on calls from enclosing unit
+test_accessibility_2.adb:47:13: info: implicit terminating annotation on "OK1" has been proved, subprogram will terminate
 test_accessibility_2.adb:48:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:48:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:48:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:51:15: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:51:18: info: dynamic accessibility check proved (Trivial)
+test_accessibility_2.adb:54:13: info: implicit terminating annotation on "OK1_bis" has been proved, subprogram will terminate
 test_accessibility_2.adb:56:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:56:29: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:56:36: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:60:44: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:62:17: info: dynamic accessibility check proved (Trivial)
 test_accessibility_2.adb:62:17: info: null exclusion check proved (CVC5: 1 VC)
+test_accessibility_2.adb:66:13: info: implicit terminating annotation on "KO2" has been proved, subprogram will terminate
 test_accessibility_2.adb:67:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:67:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:67:32: info: pointer dereference check proved (CVC5: 1 VC)
@@ -77,12 +95,14 @@ test_accessibility_2.adb:71:44: info: pointer dereference check proved (CVC5: 1 
 test_accessibility_2.adb:72:47: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:74:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:74:17: medium: dynamic accessibility check might fail
+test_accessibility_2.adb:78:13: info: implicit terminating annotation on "KO3" has been proved, subprogram will terminate
 test_accessibility_2.adb:79:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:79:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:79:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:83:59: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:85:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:85:17: medium: dynamic accessibility check might fail
+test_accessibility_2.adb:89:13: info: implicit terminating annotation on "KO4" has been proved, subprogram will terminate
 test_accessibility_2.adb:90:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:90:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:90:32: info: pointer dereference check proved (CVC5: 1 VC)
@@ -91,6 +111,7 @@ test_accessibility_2.adb:94:49: info: pointer dereference check proved (CVC5: 1 
 test_accessibility_2.adb:96:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:96:17: medium: dynamic accessibility check might fail
 test_accessibility_2.adb:100:13: info: function contract might not be available on calls from enclosing unit
+test_accessibility_2.adb:100:13: info: implicit terminating annotation on "OK5" has been proved, subprogram will terminate
 test_accessibility_2.adb:101:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:101:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:101:32: info: pointer dereference check proved (CVC5: 1 VC)
@@ -98,6 +119,7 @@ test_accessibility_2.adb:101:35: info: pointer dereference check proved (CVC5: 1
 test_accessibility_2.adb:105:44: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:105:47: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:107:17: info: null exclusion check proved (CVC5: 1 VC)
+test_accessibility_2.adb:111:13: info: implicit terminating annotation on "KO6" has been proved, subprogram will terminate
 test_accessibility_2.adb:112:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:112:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:112:32: info: pointer dereference check proved (CVC5: 1 VC)
@@ -107,6 +129,7 @@ test_accessibility_2.adb:116:47: info: pointer dereference check proved (CVC5: 1
 test_accessibility_2.adb:117:47: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:119:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:119:17: medium: dynamic accessibility check might fail
+test_accessibility_2.adb:123:13: info: implicit terminating annotation on "KO7" has been proved, subprogram will terminate
 test_accessibility_2.adb:124:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:124:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:124:32: info: pointer dereference check proved (CVC5: 1 VC)
@@ -116,6 +139,7 @@ test_accessibility_2.adb:128:62: info: pointer dereference check proved (CVC5: 1
 test_accessibility_2.adb:130:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:130:17: medium: dynamic accessibility check might fail
 test_accessibility_2.adb:134:13: info: function contract might not be available on calls from enclosing unit
+test_accessibility_2.adb:134:13: info: implicit terminating annotation on "OK8" has been proved, subprogram will terminate
 test_accessibility_2.adb:135:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:135:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:135:32: info: pointer dereference check proved (CVC5: 1 VC)
@@ -125,6 +149,7 @@ test_accessibility_2.adb:139:49: info: pointer dereference check proved (CVC5: 1
 test_accessibility_2.adb:139:52: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:141:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:145:13: info: function contract might not be available on calls from enclosing unit
+test_accessibility_2.adb:145:13: info: implicit terminating annotation on "OK9" has been proved, subprogram will terminate
 test_accessibility_2.adb:147:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:147:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:147:32: info: pointer dereference check proved (CVC5: 1 VC)
@@ -133,6 +158,7 @@ test_accessibility_2.adb:153:17: info: dynamic accessibility check proved (Trivi
 test_accessibility_2.adb:153:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:153:21: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:157:13: info: function contract might not be available on calls from enclosing unit
+test_accessibility_2.adb:157:13: info: implicit terminating annotation on "OK10" has been proved, subprogram will terminate
 test_accessibility_2.adb:158:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:158:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:158:33: info: pointer dereference check proved (CVC5: 1 VC)
@@ -141,12 +167,14 @@ test_accessibility_2.adb:160:43: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:162:14: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:162:30: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:162:33: info: pointer dereference check proved (CVC5: 1 VC)
+test_accessibility_2.adb:165:13: info: implicit terminating annotation on "OK11" has been proved, subprogram will terminate
 test_accessibility_2.adb:166:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:166:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:166:33: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:169:14: info: dynamic accessibility check proved (Trivial)
 test_accessibility_2.adb:169:14: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:169:30: info: pointer dereference check proved (CVC5: 1 VC)
+test_accessibility_2.adb:172:13: info: implicit terminating annotation on "OK12" has been proved, subprogram will terminate
 test_accessibility_2.adb:174:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:174:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:174:33: info: pointer dereference check proved (CVC5: 1 VC)
@@ -154,6 +182,7 @@ test_accessibility_2.adb:177:18: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:177:20: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:177:23: info: dynamic accessibility check proved (Trivial)
 test_accessibility_2.adb:180:13: info: function contract might not be available on calls from enclosing unit
+test_accessibility_2.adb:180:13: info: implicit terminating annotation on "OK13" has been proved, subprogram will terminate
 test_accessibility_2.adb:181:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:181:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:181:33: info: pointer dereference check proved (CVC5: 1 VC)
@@ -183,14 +212,16 @@ test_accessibility_2.adb:206:04: info: absence of resource or memory leak at end
 test_accessibility_2.adb:207:04: medium: resource or memory leak might occur at end of scope
 test_accessibility_2.adb:209:04: info: precondition proved (CVC5: 2 VC)
 test_accessibility_list.adb:12:13: info: implicit function contract might not be available on recursive calls
-test_accessibility_list.adb:13:07: medium: terminating annotation on "Length" could be incorrect, subprogram is recursive
+test_accessibility_list.adb:13:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive
 test_accessibility_list.adb:13:40: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_accessibility_list.adb:13:48: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:13:60: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_list.adb:13:65: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_accessibility_list.adb:13:67: info: predicate check proved (Trivial: 1 VC)
+test_accessibility_list.adb:15:08: warning: Always_Return annotation is useless
+test_accessibility_list.adb:15:08: warning: function "Length" has implicit Always_Return annotation
 test_accessibility_list.adb:17:13: info: implicit function contract might not be available on recursive calls
-test_accessibility_list.adb:18:07: medium: terminating annotation on "Nth_Int" could be incorrect, subprogram is recursive
+test_accessibility_list.adb:18:07: medium: implicit terminating annotation on "Nth_Int" could be incorrect, subprogram is recursive
 test_accessibility_list.adb:18:10: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:18:14: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:18:30: info: precondition proved (CVC5: 1 VC)
@@ -198,6 +229,8 @@ test_accessibility_list.adb:18:43: info: pointer dereference check proved (CVC5:
 test_accessibility_list.adb:18:48: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:18:50: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_accessibility_list.adb:18:52: info: predicate check proved (Trivial: 1 VC)
+test_accessibility_list.adb:20:08: warning: Always_Return annotation is useless
+test_accessibility_list.adb:20:08: warning: function "Nth_Int" has implicit Always_Return annotation
 test_accessibility_list.adb:21:15: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:21:20: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:24:16: info: predicate check proved (Trivial: 1 VC)
@@ -213,6 +246,7 @@ test_accessibility_list.adb:34:32: info: predicate check proved (CVC5: 1 VC; Tri
 test_accessibility_list.adb:34:34: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:36:16: info: predicate check proved (Trivial: 2 VC)
 test_accessibility_list.adb:36:20: info: predicate check proved (Trivial: 2 VC)
+test_accessibility_list.adb:36:22: medium: implicit terminating annotation on "Nth" could be incorrect, loop might be nonterminating
 test_accessibility_list.adb:37:36: info: loop invariant initialization proved (CVC5: 1 VC)
 test_accessibility_list.adb:37:36: info: loop invariant preservation proved (CVC5: 1 VC)
 test_accessibility_list.adb:37:36: info: predicate check proved (Trivial: 2 VC)
@@ -237,6 +271,7 @@ test_accessibility_list.adb:52:29: info: pointer dereference check proved (CVC5:
 test_accessibility_list.adb:52:35: info: precondition proved (CVC5: 1 VC)
 test_accessibility_list.adb:57:13: info: predicate check proved (Trivial: 2 VC)
 test_accessibility_list.adb:57:17: info: predicate check proved (Trivial: 2 VC)
+test_accessibility_list.adb:57:19: medium: implicit terminating annotation on "Nth_Bad" could be incorrect, loop might be nonterminating
 test_accessibility_list.adb:58:33: info: loop invariant initialization proved (CVC5: 1 VC)
 test_accessibility_list.adb:58:33: info: loop invariant preservation proved (CVC5: 1 VC)
 test_accessibility_list.adb:58:33: info: predicate check proved (Trivial: 2 VC)

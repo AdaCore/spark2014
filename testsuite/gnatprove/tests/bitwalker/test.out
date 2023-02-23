@@ -1,7 +1,9 @@
+bitspec.ads:9:13: info: implicit terminating annotation on "Nth8_Stream" has been proved, subprogram will terminate
 bitspec.ads:10:24: info: division check proved (altergo: 1 VC)
 bitspec.ads:10:24: info: index check proved (CVC5: 2 VC)
 bitspec.ads:10:39: info: division check proved (altergo: 1 VC)
 bitspec.ads:11:47: info: division check proved (altergo: 1 VC)
+bitspec.ads:13:13: info: implicit terminating annotation on "MaxValue" has been proved, subprogram will terminate
 bitwalker.adb:10:60: info: range check proved (CVC5: 3 VC; altergo: 1 VC)
 bitwalker.adb:26:22: info: assertion proved (altergo: 1 VC)
 bitwalker.adb:27:22: info: assertion proved (altergo: 1 VC)
@@ -78,7 +80,10 @@ bitwalker.adb:152:31: info: range check proved (altergo: 2 VC)
 bitwalker.adb:153:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 bitwalker.adb:153:32: info: range check proved (altergo: 2 VC)
 bitwalker.adb:153:65: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
+bitwalker.adb:159:13: info: implicit terminating annotation on "Cases64" has been proved, subprogram will terminate
+bitwalker.adb:180:13: info: implicit terminating annotation on "Cond_Unit" has been proved, subprogram will terminate
 bitwalker.adb:183:59: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
+bitwalker.adb:185:13: info: implicit terminating annotation on "Less_Than_Max_Cond" has been proved, subprogram will terminate
 bitwalker.adb:225:22: info: assertion proved (CVC5: 1 VC)
 bitwalker.adb:226:22: info: assertion proved (Z3: 1 VC)
 bitwalker.adb:231:22: info: assertion proved (CVC5: 1 VC)
@@ -107,8 +112,10 @@ bitwalker.adb:281:07: info: precondition proved (CVC5: 4 VC; altergo: 1 VC)
 bitwalker.adb:283:22: info: assertion proved (altergo: 1 VC)
 bitwalker.adb:285:17: info: precondition proved (CVC5: 2 VC; altergo: 2 VC)
 bitwalker.adb:287:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+bitwalker.ads:9:13: info: implicit terminating annotation on "PeekBit8" has been proved, subprogram will terminate
 bitwalker.ads:12:14: info: postcondition proved (CVC5: 2 VC)
 bitwalker.ads:12:45: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
+bitwalker.ads:14:13: info: implicit terminating annotation on "PeekBit8Array" has been proved, subprogram will terminate
 bitwalker.ads:15:07: info: precondition proved (CVC5: 1 VC)
 bitwalker.ads:15:28: info: division check proved (altergo: 1 VC)
 bitwalker.ads:15:28: info: index check proved (CVC5: 2 VC)
@@ -117,9 +124,11 @@ bitwalker.ads:18:31: info: range check proved (CVC5: 2 VC)
 bitwalker.ads:19:06: info: data dependencies proved
 bitwalker.ads:20:16: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
 bitwalker.ads:20:39: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+bitwalker.ads:22:13: info: implicit terminating annotation on "PokeBit64" has been proved, subprogram will terminate
 bitwalker.ads:28:06: info: data dependencies proved
 bitwalker.ads:29:16: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; altergo: 2 VC)
 bitwalker.ads:33:52: info: range check proved (CVC5: 2 VC)
+bitwalker.ads:35:13: info: implicit terminating annotation on "Peek" has been proved, subprogram will terminate
 bitwalker.ads:42:34: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 bitwalker.ads:43:08: info: data dependencies proved
 bitwalker.ads:44:08: info: complete contract cases proved (altergo: 1 VC)
@@ -131,9 +140,11 @@ bitwalker.ads:47:46: info: contract case proved (Trivial: 1 VC; Z3: 3 VC)
 bitwalker.ads:49:21: info: precondition proved (CVC5: 2 VC)
 bitwalker.ads:49:59: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 bitwalker.ads:52:64: info: range check proved (CVC5: 2 VC)
+bitwalker.ads:54:13: info: implicit terminating annotation on "PeekBit64" has been proved, subprogram will terminate
 bitwalker.ads:58:36: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 bitwalker.ads:61:16: info: postcondition proved (CVC5: 2 VC)
 bitwalker.ads:61:51: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
+bitwalker.ads:63:13: info: implicit terminating annotation on "PokeBit8" has been proved, subprogram will terminate
 bitwalker.ads:70:10: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 2 VC; altergo: 1 VC)
 bitwalker.ads:73:34: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 bitwalker.ads:79:55: info: range check proved (CVC5: 2 VC)
@@ -176,11 +187,18 @@ bitwalker.ads:155:28: info: initialization of "Result" proved
 bitwalker.ads:160:18: info: range check proved (altergo: 2 VC)
 bitwalker.ads:162:29: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 bitwalker.ads:165:11: info: postcondition proved (altergo: 1 VC)
+bvext.ads:7:13: info: implicit terminating annotation on "Nth" has been proved, subprogram will terminate
+bvext.ads:11:13: info: implicit terminating annotation on "Nth" has been proved, subprogram will terminate
+bvext.ads:15:13: info: implicit terminating annotation on "Nth_Bv" has been proved, subprogram will terminate
 bvext.ads:16:34: info: range check proved (Z3: 2 VC)
+bvext.ads:20:13: info: implicit terminating annotation on "Nth_Bv" has been proved, subprogram will terminate
+bvext.ads:24:13: info: implicit terminating annotation on "Extract_Seq" has been proved, subprogram will terminate
 bvext.ads:25:49: info: range check proved (altergo: 2 VC)
 bvext.ads:25:54: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
+bvext.ads:28:13: info: implicit terminating annotation on "Eq_Sub" has been proved, subprogram will terminate
 bvext.ads:29:08: info: precondition proved (CVC5: 3 VC; altergo: 1 VC)
 bvext.ads:29:32: info: precondition proved (CVC5: 2 VC; altergo: 2 VC)
+bvext.ads:32:13: info: implicit terminating annotation on "Eq_Sub_Bv" has been proved, subprogram will terminate
 bvext.ads:33:08: info: precondition proved (altergo: 4 VC)
 bvext.ads:33:33: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 bvext.ads:33:46: info: range check proved (CVC5: 1 VC; altergo: 1 VC)

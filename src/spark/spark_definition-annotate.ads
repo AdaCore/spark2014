@@ -339,6 +339,13 @@ package SPARK_Definition.Annotate is
    --  Return True if a pragma Annotate Always_Return applies to the subprogram
    --  E.
 
+   function Has_Implicit_Always_Return_Annotation
+     (E : Entity_Id) return Boolean;
+   --  Return True if E has an implicit Always_Return annotation. The two
+   --  cases currently are:
+   --  - E is a function.
+   --  - E is an automatically instantiated lemma.
+
    function Has_At_End_Borrow_Annotation (E : Entity_Id) return Boolean;
    --  Return True if the function E is a function annotated with at_end_borrow
 

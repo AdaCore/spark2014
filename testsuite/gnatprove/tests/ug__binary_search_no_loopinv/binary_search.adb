@@ -21,6 +21,8 @@ is
       end if;
 
       while Left <= Right loop
+         pragma Loop_Variant (Increases => Left, Decreases => Right);
+
          Med := Left + (Right - Left) / 2;
 
          if A (Med) < I then

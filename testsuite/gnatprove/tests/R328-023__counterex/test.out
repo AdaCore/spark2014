@@ -1,3 +1,4 @@
+p.ads:7:13: info: implicit terminating annotation on "Last_Length" has been proved, subprogram will terminate
 p.ads:8:14: high: overflow check might fail, cannot prove lower bound for A'Last - B'First (e.g. when A'First = 0 and A'Last = Integer'First and B'First = 1 and B'Last = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 p.ads:8:24: high: overflow check might fail, cannot prove lower bound for A'Last - B'First - 2 * B'Length (e.g. when A'First = 0 and A'Last = -2147483571 and B'First = 0 and B'Last = 38) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 p.ads:8:31: info: range check proved (CVC5: 2 VC)

@@ -1,6 +1,7 @@
 pi_euler.adb:3:04: info: initialization of "Index" proved
 pi_euler.adb:4:04: info: initialization of "Pi" proved
 pi_euler.adb:4:08: info: initialization of "Erreur" proved
+pi_euler.adb:9:34: medium: implicit terminating annotation on "Pi_Euler" could be incorrect, loop might be nonterminating
 pi_euler.adb:11:33: info: loop invariant initialization proved (altergo: 1 VC)
 pi_euler.adb:11:33: info: loop invariant preservation proved (altergo: 1 VC)
 pi_euler.adb:12:25: info: assertion proved (altergo: 1 VC)
@@ -15,6 +16,7 @@ pi_euler_2.adb:4:04: info: initialization of "Pi" proved
 pi_euler_2.adb:4:08: info: initialization of "Erreur" proved
 pi_euler_2.adb:5:04: info: initialization of "Index_Float" proved
 pi_euler_2.adb:8:10: warning: unused assignment
+pi_euler_2.adb:11:34: medium: implicit terminating annotation on "Pi_Euler_2" could be incorrect, loop might be nonterminating
 pi_euler_2.adb:15:33: info: loop invariant initialization proved (altergo: 1 VC)
 pi_euler_2.adb:15:33: info: loop invariant preservation proved (altergo: 1 VC)
 pi_euler_2.adb:16:25: info: assertion proved (altergo: 1 VC)

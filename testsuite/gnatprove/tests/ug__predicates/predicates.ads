@@ -27,15 +27,22 @@ is
    end record
      with Dynamic_Predicate => Distinct_Pair.Val1 /= Distinct_Pair.Val2;
 
-   function Get_GCD (X, Y : Integer) return Natural is
-      (if X < 0 or Y < 0 then
-         Get_GCD (abs (X), abs (Y))
-       elsif X = 0 or Y = 0 then
+   function Get_GCD_Pos (X, Y : Integer) return Natural is
+      (if X = 0 or Y = 0 then
          Integer'Max (X, Y)
        elsif X >= Y then
-         Get_GCD (Y, X - Y)
+         Get_GCD_Pos (Y, X - Y)
        else
-         Get_GCD (X, Y - X));
+         Get_GCD_Pos (X, Y - X))
+    with
+      Pre => X >= 0 and Y >= 0,
+      Subprogram_Variant => (Decreases => X, Decreases => Y);
+
+
+   function Get_GCD (X, Y : Integer) return Natural is
+      (if X < 0 or Y < 0 then
+         Get_GCD_Pos (abs (X), abs (Y))
+       else Get_GCD_Pos (X, Y));
 
    type Bundle_Values is record
      X, Y : Integer;

@@ -1,6 +1,10 @@
 stacks.adb:5:18: info: range check proved (CVC5: 2 VC)
 stacks.adb:11:18: info: range check proved (CVC5: 2 VC)
+stacks.ads:8:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate
 stacks.ads:8:33: warning: unused variable "Data"
+stacks.ads:10:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
+stacks.ads:12:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
+stacks.ads:14:13: info: implicit terminating annotation on "Peer" has been proved, subprogram will terminate
 stacks.ads:18:14: info: postcondition proved (CVC5: 1 VC)
 stacks.ads:18:58: info: overflow check proved (CVC5: 2 VC)
 stacks.ads:20:40: warning: "Data" is not modified, could be IN

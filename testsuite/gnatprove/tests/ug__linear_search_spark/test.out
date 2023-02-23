@@ -1,4 +1,4 @@
 
-linear_search.adb:23:14: high: "Res.At_Index" is not initialized
-   23 |      return Res;
+linear_search.adb:25:14: high: "Res.At_Index" is not initialized
+   25 |      return Res;
       |             ^~~

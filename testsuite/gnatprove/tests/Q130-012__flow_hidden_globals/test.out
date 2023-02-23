@@ -1,0 +1,2 @@
+remote1.ads:3:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
+remote2.ads:3:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate

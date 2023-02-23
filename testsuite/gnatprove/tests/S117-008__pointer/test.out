@@ -1,5 +1,7 @@
+formal_vectors.adb:8:13: info: implicit terminating annotation on "New_Size" has been proved, subprogram will terminate, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:9:14: info: postcondition proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:16:20: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
+formal_vectors.adb:19:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:21:22: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:21:25: info: range check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:34:38: medium: postcondition might fail, cannot prove Size (V) > V.Top, in instantiation at use_formal_vectors.ads:11
@@ -245,6 +247,7 @@ formal_vectors.adb:204:31: info: pointer dereference check proved (CVC5: 1 VC), 
 formal_vectors.adb:204:41: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array]
 formal_vectors.adb:204:44: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:13:09: info: predicate check proved on default value (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
+formal_vectors.ads:15:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate, in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:19:14: info: postcondition proved (CVC5: 1 VC; Z3: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:19:42: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:20:19: info: precondition proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
@@ -255,8 +258,10 @@ formal_vectors.ads:24:43: info: overflow check proved (CVC5: 2 VC), in instantia
 formal_vectors.ads:27:19: info: precondition proved (CVC5: 4 VC; Trivial: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:27:19: medium: postcondition might fail, cannot prove Range_Shifted (Model (E)'Old, Model (V), 1, Length (E)'Old, Count_Type (Length (V)'Old)), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:29:71: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
+formal_vectors.ads:43:13: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate, in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:45:14: info: postcondition proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:45:39: info: precondition proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
+formal_vectors.ads:53:13: info: implicit terminating annotation on "Model" has been proved, subprogram will terminate, in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:54:14: info: postcondition proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:67:45: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:69:48: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
@@ -269,11 +274,11 @@ spark-containers-functional-vectors.ads:62:19: info: terminating annotation on "
 spark-containers-functional-vectors.ads:64:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
@@ -307,6 +312,10 @@ spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1
 spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
+use_formal_vectors.ads:6:13: info: implicit terminating annotation on "Model" has been proved, subprogram will terminate
 use_formal_vectors.ads:6:65: info: pointer dereference check proved (CVC5: 1 VC)
+use_formal_vectors.ads:7:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 use_formal_vectors.ads:7:60: info: pointer dereference check proved (CVC5: 1 VC)
 use_formal_vectors.ads:7:68: info: pointer dereference check proved (CVC5: 1 VC)
+use_formal_vectors.ads:9:52: warning: Always_Return annotation is useless
+use_formal_vectors.ads:9:52: warning: function "Copy" has implicit Always_Return annotation

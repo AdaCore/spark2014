@@ -93,7 +93,9 @@ lexer.adb:584:12: info: precondition proved (CVC5: 1 VC)
 lexer.ads:28:09: info: Initial_Condition of package "Names" is ignored
 lexer.ads:28:09: info: the elaboration of "Names" is not known to precede the elaboration of the current unit
 lexer.ads:28:09: info: use pragma Elaborate_Body in "Names" or pragma Elaborate in the current unit
+lexer.ads:60:13: info: implicit terminating annotation on "Local_Invariant" has been proved, subprogram will terminate
 lexer.ads:62:09: info: data dependencies proved
+lexer.ads:65:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
 lexer.ads:68:09: info: data dependencies proved
 lexer.ads:73:09: info: data dependencies proved
 lexer.ads:76:17: info: postcondition proved (CVC5: 2 VC)

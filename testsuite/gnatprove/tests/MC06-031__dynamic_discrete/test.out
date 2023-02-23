@@ -11,6 +11,7 @@ dynamic_ranges.adb:25:38: info: overflow check proved (CVC5: 2 VC)
 dynamic_ranges.adb:25:38: info: range check proved (CVC5: 2 VC)
 dynamic_ranges.adb:26:15: info: range check proved (CVC5: 2 VC)
 dynamic_ranges.adb:28:16: info: function contract might not be available on calls from enclosing unit
+dynamic_ranges.adb:28:16: info: implicit terminating annotation on "Nested" has been proved, subprogram will terminate
 dynamic_ranges.adb:32:46: info: overflow check proved (CVC5: 2 VC)
 dynamic_ranges.adb:33:17: info: postcondition proved (CVC5: 1 VC)
 dynamic_ranges.adb:34:60: info: index check proved (CVC5: 2 VC)
@@ -34,9 +35,12 @@ dynamic_ranges.adb:71:25: info: range check proved (CVC5: 4 VC)
 dynamic_ranges.adb:73:13: info: loop invariant initialization proved (CVC5: 1 VC)
 dynamic_ranges.adb:73:13: info: loop invariant preservation proved (CVC5: 1 VC)
 dynamic_ranges.adb:73:45: info: index check proved (CVC5: 4 VC)
+dynamic_ranges.ads:11:13: info: implicit terminating annotation on "Resize" has been proved, subprogram will terminate
+dynamic_ranges.ads:14:13: info: implicit terminating annotation on "Search" has been proved, subprogram will terminate
 dynamic_ranges.ads:15:14: info: postcondition proved (CVC5: 1 VC)
 dynamic_ranges.ads:17:25: info: index check proved (CVC5: 2 VC)
 dynamic_ranges.ads:19:13: info: function contract might not be available on implicit recursive calls
+dynamic_ranges.ads:19:13: info: implicit terminating annotation on "Search_0" has been proved, subprogram will terminate
 dynamic_ranges.ads:20:47: info: overflow check proved (CVC5: 2 VC)
 dynamic_ranges.ads:21:14: info: postcondition proved (CVC5: 1 VC)
 dynamic_ranges.ads:22:52: info: index check proved (CVC5: 2 VC)

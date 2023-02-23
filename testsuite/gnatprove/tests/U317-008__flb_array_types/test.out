@@ -15,6 +15,7 @@ test_first_bound.adb:23:29: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:23:29: medium: range check might fail, cannot prove lower bound for W [reason for check: value must be convertible to the target type of the conversion]
 test_first_bound.adb:28:26: info: data dependencies proved
 test_first_bound.adb:31:16: info: implicit function contract might not be available on calls from enclosing unit
+test_first_bound.adb:31:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:32:21: info: range check proved (CVC5: 1 VC)
 test_first_bound.adb:33:21: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:33:21: info: range check proved (CVC5: 4 VC)
@@ -38,7 +39,9 @@ test_first_bound.adb:45:28: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:45:34: info: index check proved (CVC5: 2 VC)
 test_first_bound.adb:48:26: info: data dependencies proved
 test_first_bound.adb:51:16: info: implicit function contract might not be available on calls from enclosing unit
+test_first_bound.adb:51:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:53:16: info: implicit function contract might not be available on calls from enclosing unit
+test_first_bound.adb:53:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test_first_bound.adb:56:25: info: assertion proved (CVC5: 1 VC)
 test_first_bound.adb:60:31: info: precondition proved (Trivial: 1 VC)
 test_first_bound.adb:60:34: info: range check proved (CVC5: 2 VC)
@@ -80,11 +83,14 @@ test_first_bound.adb:88:21: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:88:21: medium: range check might fail, cannot prove upper bound for X [reason for check: default component value must fit in the type]
 test_first_bound.adb:93:26: info: data dependencies proved
 test_first_bound.adb:95:16: info: implicit function contract might not be available on calls from enclosing unit
+test_first_bound.adb:95:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:96:07: medium: range check might fail
 test_first_bound.adb:101:41: info: data dependencies proved
 test_first_bound.adb:103:07: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:104:16: info: implicit function contract might not be available on calls from enclosing unit
+test_first_bound.adb:104:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:106:16: info: implicit function contract might not be available on calls from enclosing unit
+test_first_bound.adb:106:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test_first_bound.adb:109:25: info: assertion proved (CVC5: 1 VC)
 test_first_bound.adb:113:31: info: precondition proved (Trivial: 1 VC)
 test_first_bound.adb:113:34: info: range check proved (CVC5: 2 VC)
@@ -129,8 +135,11 @@ test_first_bound.adb:134:36: info: index check proved (CVC5: 2 VC)
 test_first_bound.adb:134:36: info: overflow check proved (CVC5: 2 VC)
 test_first_bound.adb:137:26: info: data dependencies proved
 test_first_bound.adb:140:16: info: implicit function contract might not be available on calls from enclosing unit
+test_first_bound.adb:140:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:141:16: info: implicit function contract might not be available on calls from enclosing unit
+test_first_bound.adb:141:16: info: implicit terminating annotation on "Id2" has been proved, subprogram will terminate
 test_first_bound.adb:142:16: info: implicit function contract might not be available on calls from enclosing unit
+test_first_bound.adb:142:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:144:07: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:144:40: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 test_first_bound.adb:144:40: info: range check proved (CVC5: 2 VC)
@@ -143,19 +152,23 @@ test_first_bound.adb:148:33: info: index check proved (CVC5: 1 VC)
 test_first_bound.adb:148:33: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:151:27: info: data dependencies proved
 test_first_bound.adb:153:16: info: implicit function contract might not be available on calls from enclosing unit
+test_first_bound.adb:153:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:155:07: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:155:07: medium: range check might fail
 test_first_bound.adb:160:27: info: data dependencies proved
 test_first_bound.adb:162:16: info: implicit function contract might not be available on calls from enclosing unit
+test_first_bound.adb:162:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:164:07: info: range check proved (CVC5: 1 VC)
 test_first_bound.adb:164:07: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:169:27: info: data dependencies proved
 test_first_bound.adb:171:16: info: implicit function contract might not be available on calls from enclosing unit
+test_first_bound.adb:171:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:173:07: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:174:21: info: range check proved (CVC5: 1 VC)
 test_first_bound.adb:175:21: medium: length check might fail [reason for check: array must be of the appropriate length]
 test_first_bound.adb:180:27: info: data dependencies proved
 test_first_bound.adb:181:16: info: implicit function contract might not be available on calls from enclosing unit
+test_first_bound.adb:181:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:185:07: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:186:21: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 test_first_bound.adb:186:21: info: range check proved (CVC5: 2 VC)

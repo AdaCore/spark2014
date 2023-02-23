@@ -1,3 +1,4 @@
+spark05.adb:16:16: info: implicit terminating annotation on "CreatePoint" has been proved, subprogram will terminate
 spark05.adb:21:16: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: subprogram at line 16 should mention X in a precondition]
 spark05.adb:21:26: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: subprogram at line 16 should mention Y in a precondition]
 spark05.adb:28:04: medium: resource or memory leak might occur at end of scope

@@ -1,5 +1,6 @@
 p_init.ads:14:24: info: range check proved (CVC5: 2 VC)
 p_init.ads:15:24: info: range check proved (CVC5: 2 VC)
+p_init.ads:17:13: info: implicit terminating annotation on "Init" has been proved, subprogram will terminate
 run.adb:6:21: info: range check proved (CVC5: 2 VC)
 run.adb:6:30: info: discriminant check proved (CVC5: 1 VC)
 run.adb:8:21: info: range check proved (CVC5: 2 VC)

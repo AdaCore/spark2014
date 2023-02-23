@@ -1,3 +1,5 @@
+p.adb:11:13: info: implicit terminating annotation on "Pow2" has been proved, subprogram will terminate
+p.adb:14:13: info: implicit terminating annotation on "Sqr" has been proved, subprogram will terminate
 p.adb:41:07: info: initialization of "Num" proved
 p.adb:41:12: info: initialization of "Bits" proved
 p.adb:41:18: info: initialization of "Res" proved
@@ -39,8 +41,11 @@ p.adb:92:25: info: assertion proved (CVC5: 1 VC)
 p.adb:93:25: info: assertion proved (CVC5: 1 VC)
 p.adb:103:23: info: division check proved (CVC5: 1 VC)
 p.adb:113:29: info: range check proved (altergo: 2 VC)
+p.ads:19:13: info: implicit terminating annotation on "Sqrt_Von_Neumann_Aux16" has been proved, subprogram will terminate
 p.ads:20:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 2 VC)
+p.ads:32:13: info: implicit terminating annotation on "Sqrt_Von_Neumann16" has been proved, subprogram will terminate
 p.ads:33:19: info: postcondition proved (Trivial: 1 VC; altergo: 2 VC)
+p32.adb:11:13: info: implicit terminating annotation on "Pow2" has been proved, subprogram will terminate
 p32.adb:13:31: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 p32.adb:21:22: info: assertion proved (Z3: 1 VC)
 p32.adb:49:07: info: initialization of "Num" proved
@@ -118,10 +123,14 @@ p32.adb:137:22: info: assertion proved (CVC5: 1 VC)
 p32.adb:139:22: info: assertion proved (Z3: 1 VC)
 p32.adb:140:22: info: assertion proved (CVC5: 1 VC)
 p32.adb:148:29: info: range check proved (altergo: 2 VC)
+p32.ads:15:13: info: implicit terminating annotation on "Sqr" has been proved, subprogram will terminate
 p32.ads:20:14: info: postcondition proved (CVC5: 1 VC)
+p32.ads:23:13: info: implicit terminating annotation on "Sqrt_Von_Neumann_Aux32" has been proved, subprogram will terminate
 p32.ads:24:19: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; Z3: 1 VC)
+p32.ads:36:13: info: implicit terminating annotation on "Sqrt_Von_Neumann32" has been proved, subprogram will terminate
 p32.ads:37:19: info: postcondition proved (Trivial: 1 VC; altergo: 2 VC)
 p32.ads:40:41: info: overflow check proved (altergo: 2 VC)
+p64.adb:11:13: info: implicit terminating annotation on "Pow2" has been proved, subprogram will terminate
 p64.adb:13:31: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 p64.adb:21:22: info: assertion proved (Z3: 1 VC)
 p64.adb:49:07: info: initialization of "Num" proved
@@ -199,7 +208,10 @@ p64.adb:132:22: info: assertion proved (CVC5: 1 VC)
 p64.adb:134:22: info: assertion proved (colibri: 1 VC)
 p64.adb:135:22: info: assertion proved (CVC5: 1 VC)
 p64.adb:143:29: info: range check proved (altergo: 2 VC)
+p64.ads:15:13: info: implicit terminating annotation on "Sqr" has been proved, subprogram will terminate
 p64.ads:20:14: info: postcondition proved (CVC5: 1 VC)
+p64.ads:23:13: info: implicit terminating annotation on "Sqrt_Von_Neumann_Aux64" has been proved, subprogram will terminate
 p64.ads:24:19: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; colibri: 1 VC)
+p64.ads:36:13: info: implicit terminating annotation on "Sqrt_Von_Neumann64" has been proved, subprogram will terminate
 p64.ads:37:19: info: postcondition proved (Trivial: 1 VC; altergo: 2 VC)
 p64.ads:40:41: info: overflow check proved (altergo: 2 VC)

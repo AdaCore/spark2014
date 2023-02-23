@@ -1,25 +1,32 @@
+traversals.adb:15:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
 traversals.adb:16:07: info: dynamic accessibility check proved (Trivial)
+traversals.adb:19:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
 traversals.adb:20:07: info: dynamic accessibility check proved (Trivial)
 traversals.adb:24:13: info: function contract might not be available on recursive calls
-traversals.adb:25:07: medium: terminating annotation on "Length" could be incorrect, subprogram is recursive
+traversals.adb:25:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive
 traversals.adb:26:14: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:27:52: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:27:54: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:27:59: info: overflow check proved (CVC5: 2 VC)
+traversals.adb:29:06: warning: Always_Return annotation is useless
+traversals.adb:29:06: warning: function "Length" has implicit Always_Return annotation
 traversals.adb:30:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
-traversals.adb:30:15: medium: terminating annotation on "Length" could be incorrect, "Length" and "Length" are mutually recursive
+traversals.adb:30:15: medium: implicit terminating annotation on "Length" could be incorrect, "Length" and "Length" are mutually recursive
 traversals.adb:30:89: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:30:94: info: overflow check proved (CVC5: 2 VC)
 traversals.adb:32:13: info: function contract might not be available on recursive calls
-traversals.adb:33:07: medium: terminating annotation on "Length" could be incorrect, subprogram is recursive
+traversals.adb:33:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive
 traversals.adb:34:14: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:35:52: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:35:54: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:35:59: info: overflow check proved (CVC5: 2 VC)
+traversals.adb:37:06: warning: Always_Return annotation is useless
+traversals.adb:37:06: warning: function "Length" has implicit Always_Return annotation
 traversals.adb:38:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
-traversals.adb:38:15: medium: terminating annotation on "Length" could be incorrect, "Length" and "Length" are mutually recursive
+traversals.adb:38:15: medium: implicit terminating annotation on "Length" could be incorrect, "Length" and "Length" are mutually recursive
 traversals.adb:38:89: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:38:94: info: overflow check proved (CVC5: 2 VC)
+traversals.adb:40:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 traversals.adb:43:18: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
 traversals.adb:44:18: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
 traversals.adb:45:122: info: overflow check proved (CVC5: 2 VC)

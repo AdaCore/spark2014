@@ -1,9 +1,8 @@
-package Recursive_Subprograms with SPARK_Mode is
-   type Nat is new Natural;
-   function "+" (X, Y : Nat) return Nat is
-     (if X > Nat'Last - Y then Nat'Last else X + Y);
+with SPARK.Big_Integers; use SPARK.Big_Integers;
 
-   function Fibonacci (N : Nat) return Nat is
+package Recursive_Subprograms with SPARK_Mode is
+
+   function Fibonacci (N : Big_Natural) return Big_Natural is
      (if N = 0 then 0
       elsif N = 1 then 1
       else Fibonacci (N - 1) + Fibonacci (N - 2))

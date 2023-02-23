@@ -72,6 +72,7 @@ package body Math_Euclid is
               (Divides (X, A) and Divides (X, B))
                 =
               (Divides (X, An) and (Bn = 0 or else Divides (X, Bn))));
+         pragma Loop_Variant (Decreases => Bn);
       end loop;
 
       pragma Assert (Divides (An, An));

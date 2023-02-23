@@ -1,2 +1,4 @@
 main.adb:7:19: high: assertion might fail (e.g. when X = False) [possible fix: subprogram at line 3 should mention X in a precondition]
 main.adb:8:19: high: assertion might fail (e.g. when Y = False) [possible fix: subprogram at line 3 should mention Y in a precondition]
+procs.ads:4:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+procs2.ads:4:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate

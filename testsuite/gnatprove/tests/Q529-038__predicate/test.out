@@ -11,6 +11,10 @@ bounded_stacks.adb:70:29: info: index check proved (CVC5: 2 VC), in instantiatio
 bounded_stacks.adb:70:49: info: index check proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:6:09: info: default initial condition proved (CVC5: 1 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:6:09: info: predicate check proved on default value (CVC5: 1 VC), in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:9:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate, in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:11:13: info: implicit terminating annotation on "Extent" has been proved, subprogram will terminate, in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:13:13: info: implicit terminating annotation on "Empty" has been proved, subprogram will terminate, in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:15:13: info: implicit terminating annotation on "Full" has been proved, subprogram will terminate, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:17:21: info: justified that "This.Values" is not set in "Reset", in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:18:20: info: postcondition proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:18:27: info: justified that "This.Values" is not set, in instantiation at integer_stacks.ads:4
@@ -24,6 +28,7 @@ bounded_stacks.ads:35:41: info: initialization of "Item" proved, in instantiatio
 bounded_stacks.ads:37:20: info: postcondition proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:39:06: info: data dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:40:06: info: flow dependencies proved, in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:42:13: info: implicit terminating annotation on "Peek" has been proved, subprogram will terminate, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:44:06: info: data dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:45:06: info: flow dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:51:04: info: justified that type "Stack" is not fully initialized, in instantiation at integer_stacks.ads:4

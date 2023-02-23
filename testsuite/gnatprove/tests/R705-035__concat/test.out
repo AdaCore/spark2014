@@ -1,3 +1,4 @@
+main.adb:16:13: info: implicit terminating annotation on "Combine" has been proved, subprogram will terminate
 main.adb:18:17: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 16 should mention Count in a precondition]
 main.adb:18:42: info: range check proved (CVC5: 4 VC)
 main.adb:18:86: info: range check proved (CVC5: 2 VC)

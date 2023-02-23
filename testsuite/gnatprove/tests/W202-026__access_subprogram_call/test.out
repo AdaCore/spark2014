@@ -1,5 +1,9 @@
 main.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:8:06: warning: Always_Return annotation is useless
+main.adb:8:06: warning: function "First" has implicit Always_Return annotation
 main.adb:10:13: info: function contract might not be available on calls from enclosing unit
+main.adb:13:06: warning: Always_Return annotation is useless
+main.adb:13:06: warning: function "Last" has implicit Always_Return annotation
 main.adb:16:12: info: range check proved (CVC5: 2 VC)
 main.adb:19:06: info: data dependencies proved
 main.adb:23:07: info: pointer dereference check proved (CVC5: 1 VC)

@@ -14,6 +14,7 @@ advancebutton.adb:48:07: info: initialization of "StillPressed" proved
 advancebutton.adb:49:07: info: initialization of "TimeNow" proved
 advancebutton.adb:57:34: info: range check proved (CVC5: 2 VC)
 advancebutton.adb:69:07: info: initialization of "Pressed" proved
+advancebutton.ads:23:13: info: implicit terminating annotation on "CurrentMode" has been proved, subprogram will terminate
 advancebutton.ads:29:27: info: initialization of "Result" proved
 advancebutton.ads:33:26: info: initialization of "Result" proved
 advancebutton.ads:37:26: info: initialization of "Result" proved
@@ -110,6 +111,7 @@ heatingsystem_dfa.adb:124:17: info: add a contract to analyze it separately from
 heatingsystem_dfa.adb:124:17: info: local subprogram "TurnOn" only analyzed in the context of calls
 heatingsystem_dfa.adb:133:17: info: add a contract to analyze it separately from calling contexts
 heatingsystem_dfa.adb:133:17: info: local subprogram "TurnOff" only analyzed in the context of calls
+heatingsystem_dfa.adb:143:16: info: implicit terminating annotation on "IsBetween" has been proved, subprogram will terminate
 heatingsystem_dfa.adb:150:17: info: add a contract to analyze it separately from calling contexts
 heatingsystem_dfa.adb:150:17: info: local subprogram "OperateIfNeeded" only analyzed in the context of calls
 heatingsystem_dfa.adb:156:16: info: analyzing call to "TurnOff" in context

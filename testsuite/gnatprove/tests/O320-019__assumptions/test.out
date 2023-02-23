@@ -1,10 +1,13 @@
 full.adb:9:16: info: overflow check proved (CVC5: 2 VC)
 full.adb:14:12: info: precondition proved (CVC5: 1 VC)
+full.ads:7:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
+full.ads:9:13: info: implicit terminating annotation on "Bump" has been proved, subprogram will terminate
 full.ads:11:20: info: postcondition proved (CVC5: 1 VC)
 full.ads:11:36: info: overflow check proved (CVC5: 2 VC)
 full.ads:14:12: info: data dependencies proved
 full.ads:16:22: info: postcondition proved (CVC5: 1 VC)
 my_pack.adb:15:07: info: precondition proved (CVC5: 1 VC)
+my_pack.ads:7:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 my_pack.ads:14:12: info: data dependencies proved
 my_pack.ads:16:22: info: postcondition proved (CVC5: 1 VC)
 my_pack.ads:16:36: info: overflow check proved (CVC5: 2 VC)
@@ -23,9 +26,18 @@ max steps used for successful proof: 1
  My_Pack.Use_Bump at my_pack.ads:13 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (3 checks)
  absence of run-time errors of My_Pack.Bump
  absence of run-time errors of My_Pack.Bump
+ effects on parameters and Global variables of Full.Bump
+ effects on parameters and Global variables of Full.Bump
+ effects on parameters and Global variables of Full.Bump
+ effects on parameters and Global variables of Full.Id
+ effects on parameters and Global variables of Full.Id
+ effects on parameters and Global variables of Full.Id
  effects on parameters and Global variables of My_Pack.Bump
  effects on parameters and Global variables of My_Pack.Bump
  effects on parameters and Global variables of My_Pack.Bump
+ effects on parameters and Global variables of My_Pack.Id
+ effects on parameters and Global variables of My_Pack.Id
+ effects on parameters and Global variables of My_Pack.Id
  the postcondition of My_Pack.Bump
  the postcondition of My_Pack.Bump
 -
@@ -44,22 +56,19 @@ Non-Aliasing . . . . .
 Run-time Checks 3 . 3 . .
 SPARK Analysis results Total Flow Provers Justified Unproved
 Summary of SPARK analysis
-Termination . . . . .
-Total 10 2 (20%) 8 (80%) . .
+Termination 3 3 . . .
+Total 13 5 (38%) 8 (62%) . .
 absence of run-time errors of Full fully established
 absence of run-time errors of Full.Bump fully established
 absence of run-time errors of Full.Id fully established
-absence of run-time errors of Full.Use_Bump fully established
+absence of run-time errors of Full.Use_Bump depends on
 absence of run-time errors of My_Pack fully established
 absence of run-time errors of My_Pack.Id fully established
 absence of run-time errors of My_Pack.Use_Bump depends on
-effects on parameters and Global variables of Full.Bump fully established
-effects on parameters and Global variables of Full.Id fully established
-effects on parameters and Global variables of Full.Use_Bump fully established
-effects on parameters and Global variables of My_Pack.Id fully established
+effects on parameters and Global variables of Full.Use_Bump depends on
 effects on parameters and Global variables of My_Pack.Use_Bump depends on
 in unit full, 4 subprograms and packages out of 4 analyzed
 in unit my_pack, 3 subprograms and packages out of 4 analyzed
 the postcondition of Full.Bump fully established
-the postcondition of Full.Use_Bump fully established
+the postcondition of Full.Use_Bump depends on
 the postcondition of My_Pack.Use_Bump depends on

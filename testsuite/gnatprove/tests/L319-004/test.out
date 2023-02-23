@@ -1,3 +1,5 @@
 p.adb:12:07: warning: initialization of "T" has no effect, in instantiation at q.ads:3
+p.ads:5:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate, in instantiation at q.ads:3
 p.ads:5:23: warning: unused initial value of "Y", in instantiation at q.ads:3
+p.ads:6:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate, in instantiation at q.ads:3
 p.ads:6:19: warning: unused variable "Y", in instantiation at q.ads:3

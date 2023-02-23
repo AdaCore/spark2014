@@ -1,13 +1,19 @@
 test_dic.adb:9:12: info: default initial condition proved (CVC5: 1 VC)
+test_dic.adb:13:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test_dic.adb:17:12: info: default initial condition proved (CVC5: 1 VC)
 test_dic.adb:17:12: info: predicate check proved on default value (CVC5: 1 VC)
+test_dic.adb:21:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test_dic.adb:24:12: medium: default initial condition might fail
+test_dic.adb:28:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test_dic.adb:32:12: info: default initial condition proved (CVC5: 1 VC)
 test_dic.adb:32:12: medium: predicate check might fail on default value
+test_dic.adb:36:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test_dic.adb:38:07: medium: type "T1" is not fully initialized
 test_dic.adb:46:07: medium: type "T2" is not fully initialized
 test_dic.adb:55:07: medium: type "T3" is not fully initialized
 test_dic.adb:63:07: medium: type "T4" is not fully initialized
+test_predicates.adb:8:06: warning: Always_Return annotation is useless
+test_predicates.adb:8:06: warning: function "Rand" has implicit Always_Return annotation
 test_predicates.adb:23:04: warning: analyzing unreferenced procedure "P"
 test_predicates.adb:23:17: warning: "X" cannot be partially initialized
 test_predicates.adb:23:17: warning: Relaxed_Initialization annotation is useless
@@ -18,6 +24,7 @@ test_predicates.adb:32:17: medium: initialization check might fail
 test_predicates.adb:32:17: medium: predicate check might fail
 test_predicates.adb:37:12: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:42:04: warning: analyzing unreferenced function "Default"
+test_predicates.adb:42:13: info: implicit terminating annotation on "Default" has been proved, subprogram will terminate
 test_predicates.adb:42:13: warning: Relaxed_Initialization annotation is useless
 test_predicates.adb:42:13: warning: the result of "Default" cannot be partially initialized
 test_predicates.adb:47:14: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
@@ -32,6 +39,7 @@ test_predicates.adb:62:17: medium: initialization check might fail
 test_predicates.adb:62:17: medium: predicate check might fail
 test_predicates.adb:65:15: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:70:04: warning: analyzing unreferenced function "Default"
+test_predicates.adb:70:13: info: implicit terminating annotation on "Default" has been proved, subprogram will terminate
 test_predicates.adb:73:14: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:73:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:73:14: medium: initialization check might fail
@@ -65,6 +73,8 @@ test_predicates.adb:108:14: info: local subprogram "Q" only analyzed in the cont
 test_predicates.adb:113:16: info: predicate check proved (CVC5: 1 VC), in call inlined at test_predicates.adb:173
 test_predicates.adb:113:36: info: predicate check proved (CVC5: 1 VC), in call inlined at test_predicates.adb:173
 test_predicates.adb:118:04: warning: analyzing unreferenced function "Default"
+test_predicates.adb:118:13: info: implicit terminating annotation on "Default" has been proved, subprogram will terminate
+test_predicates.adb:128:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 test_predicates.adb:128:13: warning: Relaxed_Initialization annotation is useless
 test_predicates.adb:128:13: warning: the result of "Get" cannot be partially initialized
 test_predicates.adb:134:18: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
@@ -74,7 +84,9 @@ test_predicates.adb:134:18: medium: predicate check might fail
 test_predicates.adb:136:18: info: initialization check proved (CVC5: 2 VC; Trivial: 7 VC)
 test_predicates.adb:136:18: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:136:18: info: predicate check proved (CVC5: 1 VC)
+test_predicates.adb:140:13: info: implicit terminating annotation on "Read" has been proved, subprogram will terminate
 test_predicates.adb:140:19: warning: unused variable "X"
+test_predicates.adb:142:13: info: implicit terminating annotation on "No_Read" has been proved, subprogram will terminate
 test_predicates.adb:142:22: warning: unused variable "X"
 test_predicates.adb:152:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:153:14: info: predicate check proved (CVC5: 1 VC)
@@ -147,6 +159,10 @@ test_predicates_2.adb:61:10: info: initialization check proved (CVC5: 2 VC; Triv
 test_predicates_2.adb:61:10: info: predicate check proved (CVC5: 1 VC)
 test_predicates_2.adb:61:11: medium: initialization check might fail
 test_predicates_2.adb:61:11: medium: predicate check might fail
+test_scalar_preds.adb:5:06: warning: Always_Return annotation is useless
+test_scalar_preds.adb:5:06: warning: function "Rand" has implicit Always_Return annotation
+test_scalar_preds.adb:10:06: warning: Always_Return annotation is useless
+test_scalar_preds.adb:10:06: warning: function "F" has implicit Always_Return annotation
 test_scalar_preds.adb:25:06: info: data dependencies proved
 test_scalar_preds.adb:28:22: info: assertion proved (CVC5: 1 VC)
 test_scalar_preds.adb:34:21: medium: initialization check might fail

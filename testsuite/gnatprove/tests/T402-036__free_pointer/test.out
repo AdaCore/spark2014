@@ -23,3 +23,4 @@ ghc_sort.adb:34:07: info: absence of resource or memory leak at end of scope pro
 ghc_sort.adb:34:07: info: initialization of "L" proved
 ghc_sort.adb:36:39: warning: "L" may be null
 ghc_sort.adb:36:40: info: pointer dereference check proved (CVC5: 1 VC)
+ghc_sort.ads:4:13: info: implicit terminating annotation on "Sort" has been proved, subprogram will terminate

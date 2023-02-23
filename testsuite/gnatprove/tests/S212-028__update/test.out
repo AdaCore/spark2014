@@ -22,12 +22,12 @@ generic_ring_buffer.adb:77:13: medium: predicate check might fail, cannot prove 
 generic_ring_buffer.adb:78:13: info: predicate check proved (CVC5: 5 VC), in instantiation at tester.adb:9
 generic_ring_buffer.ads:19:09: info: default initial condition proved (CVC5: 1 VC), in instantiation at tester.adb:9
 generic_ring_buffer.ads:19:09: info: predicate check proved on default value (CVC5: 5 VC), in instantiation at tester.adb:9
-generic_ring_buffer.ads:24:13: info: terminating annotation on "Empty" has been proved, subprogram will terminate, in instantiation at tester.adb:9
-generic_ring_buffer.ads:29:13: info: terminating annotation on "Full" has been proved, subprogram will terminate, in instantiation at tester.adb:9
-generic_ring_buffer.ads:34:13: info: terminating annotation on "Size" has been proved, subprogram will terminate, in instantiation at tester.adb:9
-generic_ring_buffer.ads:39:13: info: terminating annotation on "Free" has been proved, subprogram will terminate, in instantiation at tester.adb:9
-generic_ring_buffer.ads:44:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at tester.adb:9
-generic_ring_buffer.ads:51:13: info: terminating annotation on "Last" has been proved, subprogram will terminate, in instantiation at tester.adb:9
+generic_ring_buffer.ads:24:13: info: implicit terminating annotation on "Empty" has been proved, subprogram will terminate, in instantiation at tester.adb:9
+generic_ring_buffer.ads:29:13: info: implicit terminating annotation on "Full" has been proved, subprogram will terminate, in instantiation at tester.adb:9
+generic_ring_buffer.ads:34:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate, in instantiation at tester.adb:9
+generic_ring_buffer.ads:39:13: info: implicit terminating annotation on "Free" has been proved, subprogram will terminate, in instantiation at tester.adb:9
+generic_ring_buffer.ads:44:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at tester.adb:9
+generic_ring_buffer.ads:51:13: info: implicit terminating annotation on "Last" has been proved, subprogram will terminate, in instantiation at tester.adb:9
 generic_ring_buffer.ads:59:14: info: terminating annotation on "Get" has been proved, subprogram will terminate, in instantiation at tester.adb:9
 generic_ring_buffer.ads:61:07: info: initialization of "Element" proved, in instantiation at tester.adb:9
 generic_ring_buffer.ads:65:15: info: postcondition proved (CVC5: 3 VC), in instantiation at tester.adb:9

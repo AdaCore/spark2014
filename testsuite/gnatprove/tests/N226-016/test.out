@@ -2,13 +2,16 @@ main.adb:5:04: info: data dependencies proved
 main.adb:5:37: info: initialization of "The_Sink" proved
 main.adb:6:04: info: flow dependencies proved
 main.adb:12:13: info: function contract might not be available on calls from enclosing unit
+main.adb:12:13: info: implicit terminating annotation on "With_Postcondition" has been proved, subprogram will terminate
 main.adb:16:07: info: data dependencies proved
 main.adb:17:17: info: postcondition proved (CVC5: 1 VC)
 main.adb:23:13: info: function contract might not be available on calls from enclosing unit
+main.adb:23:13: info: implicit terminating annotation on "With_Invariant" has been proved, subprogram will terminate
 main.adb:27:07: info: data dependencies proved
 main.adb:28:17: info: postcondition proved (CVC5: 1 VC)
 main.adb:31:22: info: assertion proved (CVC5: 1 VC)
 main.adb:35:13: info: function contract might not be available on calls from enclosing unit
+main.adb:35:13: info: implicit terminating annotation on "With_Spoon_Feeding" has been proved, subprogram will terminate
 main.adb:39:07: info: data dependencies proved
 main.adb:40:17: info: postcondition proved (CVC5: 1 VC)
 main.adb:43:22: info: assertion proved (CVC5: 2 VC)

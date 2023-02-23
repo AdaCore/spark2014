@@ -1,10 +1,13 @@
+borrow_frame.adb:9:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
 borrow_frame.adb:11:08: info: dynamic accessibility check proved (Trivial)
 borrow_frame.adb:15:13: info: implicit function contract might not be available on recursive calls
-borrow_frame.adb:16:07: medium: terminating annotation on "Last" could be incorrect, subprogram is recursive
+borrow_frame.adb:16:07: medium: implicit terminating annotation on "Last" could be incorrect, subprogram is recursive
 borrow_frame.adb:16:11: info: pointer dereference check proved (CVC5: 1 VC)
 borrow_frame.adb:16:27: info: pointer dereference check proved (CVC5: 1 VC)
 borrow_frame.adb:16:35: info: precondition proved (CVC5: 1 VC)
 borrow_frame.adb:16:42: info: pointer dereference check proved (CVC5: 1 VC)
+borrow_frame.adb:17:27: warning: Always_Return annotation is useless
+borrow_frame.adb:17:27: warning: function "Last" has implicit Always_Return annotation
 borrow_frame.adb:20:40: info: null exclusion check proved (CVC5: 1 VC)
 borrow_frame.adb:23:33: info: loop invariant initialization proved (CVC5: 1 VC)
 borrow_frame.adb:23:33: info: loop invariant preservation proved (CVC5: 1 VC)

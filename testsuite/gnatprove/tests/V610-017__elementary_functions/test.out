@@ -23,34 +23,63 @@ elementary_functions_wrapper.adb:64:50: medium: overflow check might fail [reaso
 elementary_functions_wrapper.adb:68:52: info: precondition proved (CVC5: 1 VC)
 elementary_functions_wrapper.adb:70:52: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer]
 elementary_functions_wrapper.adb:72:52: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer]
+elementary_functions_wrapper.ads:3:13: info: implicit terminating annotation on "Sqrt" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:5:14: info: postcondition proved (CVC5: 4 VC; Trivial: 3 VC)
+elementary_functions_wrapper.ads:10:13: info: implicit terminating annotation on "Log" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:12:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:14:13: info: implicit terminating annotation on "Log" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:16:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:18:13: info: implicit terminating annotation on "Exp" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:19:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:21:13: info: implicit terminating annotation on overriding operator "**" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:23:14: info: postcondition proved (CVC5: 5 VC; Trivial: 4 VC)
+elementary_functions_wrapper.ads:29:13: info: implicit terminating annotation on "Sin" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:31:14: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:34:13: info: implicit terminating annotation on "Sin" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:36:14: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:39:13: info: implicit terminating annotation on "Cos" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:41:14: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:44:13: info: implicit terminating annotation on "Cos" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:46:14: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:49:13: info: implicit terminating annotation on "Tan" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:50:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:52:13: info: implicit terminating annotation on "Tan" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:54:26: info: division check proved (CVC5: 1 VC)
 elementary_functions_wrapper.ads:54:56: info: float overflow check proved (Trivial)
 elementary_functions_wrapper.ads:55:14: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
+elementary_functions_wrapper.ads:57:13: info: implicit terminating annotation on "Cot" has been proved, subprogram will terminate
+elementary_functions_wrapper.ads:60:13: info: implicit terminating annotation on "Cot" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:63:22: info: division check proved (CVC5: 1 VC)
 elementary_functions_wrapper.ads:64:26: info: division check proved (Z3: 1 VC)
 elementary_functions_wrapper.ads:64:55: info: float overflow check proved (Trivial)
+elementary_functions_wrapper.ads:66:13: info: implicit terminating annotation on "Arcsin" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:68:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:70:13: info: implicit terminating annotation on "Arcsin" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:72:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:74:13: info: implicit terminating annotation on "Arccos" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:76:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:78:13: info: implicit terminating annotation on "Arccos" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:80:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:82:13: info: implicit terminating annotation on "Arctan" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:87:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:89:13: info: implicit terminating annotation on "Arctan" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:95:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:97:13: info: implicit terminating annotation on "Arccot" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:102:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:104:13: info: implicit terminating annotation on "Arccot" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:110:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:112:13: info: implicit terminating annotation on "Sinh" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:113:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:115:13: info: implicit terminating annotation on "Cosh" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:116:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:119:13: info: implicit terminating annotation on "Tanh" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:120:14: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:123:13: info: implicit terminating annotation on "Coth" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:125:14: info: postcondition proved (CVC5: 1 VC)
+elementary_functions_wrapper.ads:127:13: info: implicit terminating annotation on "Arcsinh" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:128:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:130:13: info: implicit terminating annotation on "Arccosh" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:132:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:135:13: info: implicit terminating annotation on "Arctanh" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:137:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+elementary_functions_wrapper.ads:139:13: info: implicit terminating annotation on "Arccoth" has been proved, subprogram will terminate

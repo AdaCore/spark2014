@@ -3,6 +3,7 @@ bounded_strings.adb:10:38: info: range check proved (CVC5: 2 VC)
 bounded_strings.adb:16:19: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 bounded_strings.adb:16:22: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 bounded_strings.ads:9:09: info: default initial condition proved (CVC5: 1 VC)
+bounded_strings.ads:15:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 bounded_strings.ads:17:08: info: data dependencies proved
 bounded_strings.ads:22:08: info: data dependencies proved
 bounded_strings.ads:23:08: info: flow dependencies proved

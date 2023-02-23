@@ -1,5 +1,7 @@
-logging.ads:10:13: info: terminating annotation on "Log_Size" has been proved, subprogram will terminate
+logging.ads:10:13: info: implicit terminating annotation on "Log_Size" has been proved, subprogram will terminate
 logging.ads:11:06: info: data dependencies proved
+logging.ads:12:06: warning: Always_Return annotation is useless
+logging.ads:12:06: warning: function "Log_Size" has implicit Always_Return annotation
 use_logging.adb:3:24: info: initialization of "Log" proved
 use_logging.adb:8:04: info: precondition proved (CVC5: 1 VC)
 use_logging_classwide.adb:4:34: high: extension of "Log" is not initialized in "Use_Logging_Classwide" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "Log" on all paths or make "Log" an IN OUT parameter]

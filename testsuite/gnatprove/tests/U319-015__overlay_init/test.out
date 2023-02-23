@@ -3,15 +3,11 @@ test_overlays.adb:10:04: error: violation of aspect SPARK_Mode at line 3
 test_overlays.adb:14:06: warning: assuming no concurrent accesses to non-atomic object "C4"
 test_overlays.adb:14:06: warning: consider annotating "C4" with Async_Writers
 test_overlays.adb:14:06: warning: indirect writes to "C4" through a potential alias are ignored
-test_overlays.adb:14:17: warning: assuming "To_Address" always returns
-test_overlays.adb:14:17: warning: no returning annotation available for "To_Address"
 test_overlays.adb:16:06: warning: assuming no concurrent accesses to non-atomic object "C5"
 test_overlays.adb:16:06: warning: consider annotating "C5" with Async_Writers
 test_overlays.adb:16:06: warning: consider annotating "C5" with Import
 test_overlays.adb:16:06: warning: indirect writes to "C5" through a potential alias are ignored
 test_overlays.adb:16:06: warning: initialization of "C5" is assumed to have no effects on other non-volatile objects
-test_overlays.adb:16:17: warning: assuming "To_Address" always returns
-test_overlays.adb:16:17: warning: no returning annotation available for "To_Address"
 test_overlays.adb:26:04: error: consider marking it as imported
 test_overlays.adb:26:04: error: object with an address clause which is not fully initialized at declaration is not allowed in SPARK
 test_overlays.adb:26:04: error: violation of aspect SPARK_Mode at line 3
@@ -20,13 +16,9 @@ test_overlays.adb:30:06: warning: consider annotating "V6" with Async_Writers
 test_overlays.adb:30:06: warning: indirect writes to "V6" through a potential alias are ignored
 test_overlays.adb:30:06: warning: make sure that all overlapping objects have Async_Writers set to True
 test_overlays.adb:30:06: warning: writing to "V6" is assumed to have no effects on other non-volatile objects
-test_overlays.adb:30:17: warning: assuming "To_Address" always returns
-test_overlays.adb:30:17: warning: no returning annotation available for "To_Address"
 test_overlays.adb:32:06: warning: assuming no concurrent accesses to non-atomic object "V7"
 test_overlays.adb:32:06: warning: consider annotating "V7" with Async_Writers
 test_overlays.adb:32:06: warning: indirect writes to "V7" through a potential alias are ignored
 test_overlays.adb:32:06: warning: make sure that all overlapping objects have Async_Writers set to True
 test_overlays.adb:32:06: warning: writing to "V7" is assumed to have no effects on other non-volatile objects
-test_overlays.adb:32:17: warning: assuming "To_Address" always returns
-test_overlays.adb:32:17: warning: no returning annotation available for "To_Address"
 gnatprove: error during flow analysis and proof

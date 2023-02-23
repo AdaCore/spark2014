@@ -5,6 +5,4 @@ misplaced_around.adb:4:07: error: violation of aspect SPARK_Mode at line 1
 misplaced_around.adb:8:07: info: no contextual analysis of "Hide" (nested package declaration)
 misplaced_around.adb:9:10: error: pragma Assert_And_Cut outside a sequence of statements is not allowed in SPARK
 misplaced_around.adb:9:10: error: violation of aspect SPARK_Mode at line 1
-misplaced_around.adb:16:07: warning: assuming "Rand" always returns
-misplaced_around.adb:16:07: warning: no returning annotation available for "Rand"
 gnatprove: error during flow analysis and proof

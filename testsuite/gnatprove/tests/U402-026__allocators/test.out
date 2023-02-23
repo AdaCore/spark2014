@@ -2,10 +2,16 @@ allocs.adb:16:47: info: initialization of "Result" proved
 allocs.adb:17:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 allocs.adb:21:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
 allocs.adb:23:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
+allocs.adb:27:13: info: implicit terminating annotation on "Alloc" has been proved, subprogram will terminate
 allocs.adb:35:50: info: initialization of "Result" proved
 allocs.adb:36:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 allocs.adb:42:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
 allocs.adb:47:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
+allocs.adb:51:13: info: implicit terminating annotation on "Alloc_10" has been proved, subprogram will terminate
 allocs.adb:52:07: info: absence of resource or memory leak at end of scope proved (altergo: 1 VC)
 allocs.adb:52:07: info: initialization of "Tmp" proved
 allocs.adb:55:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
+allocs.ads:5:13: info: implicit terminating annotation on "Alloc" has been proved, subprogram will terminate
+allocs.ads:6:13: info: implicit terminating annotation on "Alloc" has been proved, subprogram will terminate
+allocs.ads:10:13: info: implicit terminating annotation on "Alloc_10" has been proved, subprogram will terminate
+allocs.ads:11:13: info: implicit terminating annotation on "Alloc_10" has been proved, subprogram will terminate

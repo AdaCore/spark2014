@@ -1,5 +1,7 @@
 mutrec2.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
+mutrec2.adb:5:13: info: implicit terminating annotation on "Inc" has been proved, subprogram will terminate
 mutrec2.adb:6:13: info: implicit function contract might not be available on calls from enclosing unit
+mutrec2.adb:6:13: info: implicit terminating annotation on "Dec" has been proved, subprogram will terminate
 mutrec2.adb:17:38: info: range check proved (CVC5: 2 VC)
 mutrec2.adb:17:48: info: range check proved (CVC5: 2 VC)
 mutrec2.adb:17:58: info: range check proved (CVC5: 2 VC)

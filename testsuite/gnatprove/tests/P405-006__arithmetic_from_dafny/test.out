@@ -1,3 +1,4 @@
+div_lemmas.adb:13:13: info: implicit terminating annotation on "Sign" has been proved, subprogram will terminate
 div_lemmas.adb:16:37: info: initialization of "Res" proved
 div_lemmas.adb:18:14: info: postcondition proved (CVC5: 1 VC)
 div_lemmas.adb:21:16: info: division check proved (CVC5: 1 VC)
@@ -20,6 +21,7 @@ div_lemmas.adb:60:04: info: precondition proved (CVC5: 1 VC)
 div_lemmas.adb:60:15: info: range check proved (CVC5: 2 VC)
 div_lemmas.adb:60:18: info: range check proved (CVC5: 2 VC)
 div_lemmas.adb:62:04: info: precondition proved (CVC5: 3 VC)
+mod_lemmas.adb:13:13: info: implicit terminating annotation on "Sign" has been proved, subprogram will terminate
 mod_lemmas.adb:16:49: info: initialization of "Res" proved
 mod_lemmas.adb:17:14: info: postcondition proved (CVC5: 1 VC)
 mod_lemmas.adb:20:16: info: division check proved (CVC5: 1 VC)
@@ -77,6 +79,7 @@ mod_lemmas.adb:106:19: info: range check proved (CVC5: 2 VC)
 mod_lemmas.adb:111:13: info: range check proved (CVC5: 2 VC)
 mod_lemmas.adb:111:16: info: range check proved (CVC5: 2 VC)
 mod_lemmas.adb:111:19: info: range check proved (CVC5: 2 VC)
+mul_lemmas.adb:13:13: info: implicit terminating annotation on "Sign" has been proved, subprogram will terminate
 mul_lemmas.adb:16:60: info: initialization of "Res" proved
 mul_lemmas.adb:17:14: info: postcondition proved (CVC5: 1 VC)
 mul_lemmas.adb:23:49: info: initialization of "Res" proved

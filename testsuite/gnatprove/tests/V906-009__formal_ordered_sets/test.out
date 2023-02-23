@@ -14,10 +14,10 @@ spark-containers-formal-ordered_sets.ads:79:19: info: terminating annotation on 
 spark-containers-formal-ordered_sets.ads:79:19: info: terminating annotation on "Lt_Order" has been proved, subprogram will terminate, in instantiation at test_set.ads:6
 spark-containers-formal-ordered_sets.ads:597:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:110, in instantiation at test_set.ads:19
 spark-containers-formal-ordered_sets.ads:597:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:110, in instantiation at test_set.ads:6
+spark-containers-formal-ordered_sets.ads:597:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_set.ads:19
+spark-containers-formal-ordered_sets.ads:597:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_set.ads:6
 spark-containers-formal-ordered_sets.ads:597:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set.ads:19
 spark-containers-formal-ordered_sets.ads:597:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set.ads:6
-spark-containers-formal-ordered_sets.ads:597:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_set.ads:19
-spark-containers-formal-ordered_sets.ads:597:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_set.ads:6
 spark-containers-formal-ordered_sets.ads:601:06: info: data dependencies proved, in instantiation at test_set.ads:19
 spark-containers-formal-ordered_sets.ads:601:06: info: data dependencies proved, in instantiation at test_set.ads:6
 spark-containers-formal-ordered_sets.ads:604:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:110, in instantiation at test_set.ads:19
@@ -117,10 +117,10 @@ spark-containers-functional-maps.ads:388:13: info: during checks for quantificat
 spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:6
 spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:350, in instantiation at test_set.ads:19
@@ -157,8 +157,8 @@ spark-containers-functional-sets.ads:349:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
 spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
 spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
-spark-containers-functional-sets.ads:365:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
-spark-containers-functional-sets.ads:365:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
+spark-containers-functional-sets.ads:365:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
+spark-containers-functional-sets.ads:365:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
 spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
 spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:6
 spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:181, in instantiation at test_set.ads:19
@@ -185,16 +185,16 @@ spark-containers-functional-vectors.ads:104:13: info: during checks for quantifi
 spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:6
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:196, in instantiation at test_set.ads:19
@@ -415,8 +415,8 @@ spark-containers-parameter_checks.ads:219:09: info: data dependencies proved, in
 spark-containers-parameter_checks.ads:219:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
 spark-containers-parameter_checks.ads:221:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
 spark-containers-parameter_checks.ads:221:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
-spark-containers-parameter_checks.ads:227:16: info: terminating annotation on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
-spark-containers-parameter_checks.ads:227:16: info: terminating annotation on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
+spark-containers-parameter_checks.ads:227:16: info: implicit terminating annotation on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
+spark-containers-parameter_checks.ads:227:16: info: implicit terminating annotation on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
 spark-containers-parameter_checks.ads:229:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
 spark-containers-parameter_checks.ads:229:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:6
 spark-containers-parameter_checks.ads:230:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_set.ads:19
@@ -688,7 +688,9 @@ test_set.adb:422:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_set.adb:424:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:426:08: info: precondition proved (altergo: 1 VC)
 test_set.adb:428:07: medium: assertion might fail
+test_set.ads:15:13: info: implicit terminating annotation on "My_Lt" has been proved, subprogram will terminate
 test_set.ads:16:12: info: postcondition proved (altergo: 2 VC)
+test_set.ads:26:13: info: implicit terminating annotation on "Get_F" has been proved, subprogram will terminate
 test_set.ads:27:17: info: postcondition proved (CVC5: 1 VC)
 test_set.ads:35:36: info: data dependencies proved
 test_set.ads:37:30: info: data dependencies proved

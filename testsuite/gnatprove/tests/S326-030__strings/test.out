@@ -1,0 +1,1 @@
+test_string.ads:8:13: info: implicit terminating annotation on "Get_Result_Text" has been proved, subprogram will terminate

@@ -22,8 +22,13 @@ q.adb:85:36: error: renamed index cannot depend on variable input "V" (SPARK RM 
 q.adb:85:36: error: use instead a constant initialized to the expression with variable input
 q.adb:87:36: error: renamed index cannot depend on variable input "V" (SPARK RM 4.4(2))
 q.adb:87:36: error: use instead a constant initialized to the expression with variable input
+q.ads:38:13: info: implicit terminating annotation on "Get_V" has been proved, subprogram will terminate
 q.ads:39:11: info: data dependencies proved
+q.ads:41:13: info: implicit terminating annotation on "Get_P" has been proved, subprogram will terminate
+q.ads:43:13: info: implicit terminating annotation on "Get_Arr" has been proved, subprogram will terminate
 q.ads:44:11: info: data dependencies proved
+q.ads:46:13: info: implicit terminating annotation on "Get_Arr_P1" has been proved, subprogram will terminate
+q.ads:48:13: info: implicit terminating annotation on "Get_Arr_P2" has been proved, subprogram will terminate
 r.ads:24:34: error: renamed index cannot depend on variable input "V" (SPARK RM 4.4(2))
 r.ads:24:34: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof

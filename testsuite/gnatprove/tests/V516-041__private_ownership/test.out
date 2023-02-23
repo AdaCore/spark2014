@@ -27,7 +27,11 @@ test_borrow.adb:72:06: info: data dependencies proved
 test_borrow.adb:79:07: info: initialization of "B" proved
 test_borrow.adb:85:30: error: object was moved at line 84
 test_borrow.adb:85:30: error: part of "B" is not readable
+test_move.adb:6:06: warning: Always_Return annotation is useless
+test_move.adb:6:06: warning: function "Rand" has implicit Always_Return annotation
 test_move.adb:30:06: info: data dependencies proved
+test_move.adb:39:09: warning: Always_Return annotation is useless
+test_move.adb:39:09: warning: function "Read" has implicit Always_Return annotation
 test_move.adb:41:07: info: initialization of "X" proved
 test_move.adb:46:31: error: "X" is not readable
 test_move.adb:46:31: error: object was moved at line 42
@@ -38,6 +42,8 @@ test_move.adb:56:31: error: object was moved at line 51
 test_move.adb:64:31: error: "Y" is not readable
 test_move.adb:64:31: error: object was moved at line 51
 test_move.adb:69:06: info: data dependencies proved
+test_move.adb:78:09: warning: Always_Return annotation is useless
+test_move.adb:78:09: warning: function "Read" has implicit Always_Return annotation
 test_move.adb:80:07: info: initialization of "X" proved
 test_move.adb:85:31: error: "X" is not readable
 test_move.adb:85:31: error: object was moved at line 81
@@ -48,6 +54,8 @@ test_move.adb:95:31: error: object was moved at line 90
 test_move.adb:103:31: error: "Y" is not readable
 test_move.adb:103:31: error: object was moved at line 90
 test_move.adb:108:06: info: data dependencies proved
+test_move.adb:117:09: warning: Always_Return annotation is useless
+test_move.adb:117:09: warning: function "Read" has implicit Always_Return annotation
 test_move.adb:124:07: info: initialization of "X" proved
 test_move.adb:136:31: error: "X" is not readable
 test_move.adb:136:31: error: object was moved at line 125

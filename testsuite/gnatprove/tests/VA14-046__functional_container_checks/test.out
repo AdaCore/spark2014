@@ -12,8 +12,8 @@ spark-containers-functional-infinite_sequences.ads:91:13: info: during checks fo
 spark-containers-functional-infinite_sequences.ads:91:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:69, in instantiation at test_functional.ads:25
 spark-containers-functional-infinite_sequences.ads:91:13: info: precondition proved (Z3: 1 VC), in instantiation at test_functional.ads:10
 spark-containers-functional-infinite_sequences.ads:91:13: info: precondition proved (Z3: 1 VC), in instantiation at test_functional.ads:25
-spark-containers-functional-infinite_sequences.ads:108:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_functional.ads:10
-spark-containers-functional-infinite_sequences.ads:108:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:108:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:108:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_functional.ads:25
 spark-containers-functional-infinite_sequences.ads:108:43: info: predicate check proved (Trivial: 1 VC; Z3: 1 VC), in instantiation at test_functional.ads:10
 spark-containers-functional-infinite_sequences.ads:108:43: info: predicate check proved (Trivial: 1 VC; Z3: 1 VC), in instantiation at test_functional.ads:25
 spark-containers-functional-infinite_sequences.ads:111:06: info: data dependencies proved, in instantiation at test_functional.ads:10
@@ -38,8 +38,8 @@ spark-containers-functional-infinite_sequences.ads:270:16: info: predicate check
 spark-containers-functional-infinite_sequences.ads:270:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
 spark-containers-functional-infinite_sequences.ads:270:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
 spark-containers-functional-infinite_sequences.ads:270:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:25
-spark-containers-functional-infinite_sequences.ads:291:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:10
-spark-containers-functional-infinite_sequences.ads:291:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:25
+spark-containers-functional-infinite_sequences.ads:291:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:10
+spark-containers-functional-infinite_sequences.ads:291:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:25
 spark-containers-functional-infinite_sequences.ads:323:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:69, in instantiation at test_functional.ads:10
 spark-containers-functional-infinite_sequences.ads:323:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:69, in instantiation at test_functional.ads:25
 spark-containers-functional-infinite_sequences.ads:323:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_functional.ads:10
@@ -125,10 +125,10 @@ spark-containers-functional-maps.ads:388:13: info: during checks for quantificat
 spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at test_functional.ads:34
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_functional.ads:13
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_functional.ads:34
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at test_functional.ads:13
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at test_functional.ads:34
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:13
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:34
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at test_functional.ads:13
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at test_functional.ads:34
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:13
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:34
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test_functional.ads:13
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test_functional.ads:34
 spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_functional.ads:13
@@ -168,8 +168,8 @@ spark-containers-functional-sets.ads:349:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at test_functional.ads:48
 spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_functional.ads:18
 spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_functional.ads:48
-spark-containers-functional-sets.ads:365:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:18
-spark-containers-functional-sets.ads:365:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:48
+spark-containers-functional-sets.ads:365:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:18
+spark-containers-functional-sets.ads:365:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:48
 spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at test_functional.ads:18
 spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at test_functional.ads:48
 spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_functional.ads:18
@@ -196,16 +196,16 @@ spark-containers-functional-vectors.ads:104:13: info: during checks for quantifi
 spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_functional.ads:54
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (Z3: 2 VC), in instantiation at test_functional.ads:21
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (Z3: 2 VC), in instantiation at test_functional.ads:54
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_functional.ads:21
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_functional.ads:54
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at test_functional.ads:21
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at test_functional.ads:54
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (Z3: 2 VC), in instantiation at test_functional.ads:21
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (Z3: 2 VC), in instantiation at test_functional.ads:54
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (Z3: 1 VC), in instantiation at test_functional.ads:21
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (Z3: 1 VC), in instantiation at test_functional.ads:54
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:21
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_functional.ads:54
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_functional.ads:21
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_functional.ads:54
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_functional.ads:21
@@ -415,3 +415,13 @@ spark-containers-parameter_checks.ads:104:19: info: postcondition proved (Z3: 1 
 spark-containers-parameter_checks.ads:104:19: medium: postcondition might fail, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_functional.ads:10 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
 spark-containers-parameter_checks.ads:104:19: medium: postcondition might fail, in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_functional.ads:13 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
 spark-containers-parameter_checks.ads:104:19: medium: postcondition might fail, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_functional.ads:21 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
+types.ads:9:06: warning: Always_Return annotation is useless
+types.ads:9:06: warning: function "=" has implicit Always_Return annotation
+types.ads:14:06: warning: Always_Return annotation is useless
+types.ads:14:06: warning: function "Equivalent" has implicit Always_Return annotation
+types.ads:19:06: warning: Always_Return annotation is useless
+types.ads:19:06: warning: function "<" has implicit Always_Return annotation
+types.ads:24:06: warning: Always_Return annotation is useless
+types.ads:24:06: warning: function "Hash" has implicit Always_Return annotation
+types.ads:29:06: warning: Always_Return annotation is useless
+types.ads:29:06: warning: function "F" has implicit Always_Return annotation

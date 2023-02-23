@@ -27,3 +27,4 @@ students.adb:54:25: info: overflow check proved (CVC5: 2 VC)
 students.adb:54:33: info: overflow check proved (CVC5: 2 VC)
 students.adb:54:43: info: overflow check proved (CVC5: 2 VC)
 students.adb:54:43: info: range check proved (CVC5: 2 VC)
+students.ads:17:13: info: implicit terminating annotation on "Compute_Bill" has been proved, subprogram will terminate

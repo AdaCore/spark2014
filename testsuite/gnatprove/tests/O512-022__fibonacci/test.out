@@ -116,7 +116,9 @@ fib.adb:157:45: info: cannot unroll loop (too many loop iterations)
 fib.adb:158:13: info: index check proved (CVC5: 2 VC)
 fib.adb:158:24: info: index check proved (CVC5: 2 VC)
 fib.adb:158:24: info: overflow check proved (CVC5: 2 VC)
+fib.ads:6:13: info: implicit terminating annotation on "Fibonacci" has been proved, subprogram will terminate
 fib.ads:14:14: info: postcondition proved (CVC5: 1 VC)
+fib.ads:17:13: info: implicit terminating annotation on "Factorial" has been proved, subprogram will terminate
 fib.ads:23:48: info: initialization of "p1" proved
 fib.ads:23:52: info: initialization of "p2" proved
 fib.ads:25:14: info: postcondition proved (CVC5: 1 VC)

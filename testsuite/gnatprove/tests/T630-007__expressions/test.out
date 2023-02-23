@@ -9,6 +9,7 @@ test_access_conv.adb:13:04: warning: no Global contract available for "Incr"
 test_access_conv.adb:13:04: warning: no returning annotation available for "Incr"
 test_access_conv.adb:13:10: info: discriminant check proved (CVC5: 1 VC)
 test_attributes.adb:14:13: info: implicit function contract might not be available on calls from enclosing unit
+test_attributes.adb:14:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_attributes.adb:16:19: info: assertion proved (CVC5: 1 VC)
 test_attributes.adb:17:19: info: assertion proved (CVC5: 1 VC)
 test_attributes.adb:18:19: info: assertion proved (CVC5: 1 VC)
@@ -16,20 +17,20 @@ test_attributes.adb:19:19: info: assertion proved (CVC5: 1 VC)
 test_attributes.adb:20:19: info: assertion proved (CVC5: 1 VC)
 test_attributes.adb:20:51: info: division check proved (CVC5: 1 VC)
 test_bv_compare.adb:4:13: info: implicit function contract might not be available on calls from enclosing unit
+test_bv_compare.adb:5:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_bv_compare.adb:7:13: info: no contextual analysis of "Rand" (body not seen yet)
-test_bv_compare.adb:7:13: warning: assuming "Rand" always returns
 test_bv_compare.adb:7:13: warning: assuming "Rand" has no effect on global items
 test_bv_compare.adb:7:13: warning: no Global contract available for "Rand"
-test_bv_compare.adb:7:13: warning: no returning annotation available for "Rand"
-test_bv_compare.adb:8:13: warning: assuming "Rand" always returns
 test_bv_compare.adb:8:13: warning: assuming "Rand" has no effect on global items
 test_bv_compare.adb:8:13: warning: no Global contract available for "Rand"
-test_bv_compare.adb:8:13: warning: no returning annotation available for "Rand"
 test_bv_compare.adb:10:19: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test_bv_compare.adb:11:19: info: assertion proved (CVC5: 1 VC)
 test_enum.adb:7:13: info: implicit function contract might not be available on calls from enclosing unit
+test_enum.adb:7:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_enum.adb:8:13: info: implicit function contract might not be available on calls from enclosing unit
+test_enum.adb:8:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_enum.adb:9:13: info: implicit function contract might not be available on calls from enclosing unit
+test_enum.adb:9:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_enum.adb:11:19: info: assertion proved (CVC5: 1 VC)
 test_enum.adb:12:19: info: assertion proved (CVC5: 1 VC)
 test_enum.adb:13:19: info: assertion proved (CVC5: 1 VC)
@@ -40,26 +41,27 @@ test_membership.adb:11:40: info: pointer dereference check proved (CVC5: 1 VC)
 test_membership.adb:12:04: info: function contract feasibility proved (CVC5: 1 VC)
 test_membership.adb:14:29: high: cannot call potentially nonreturning subprogram "S6" for type "S6" in its own predicate (SPARK RM 3.2.4(4))
 test_membership.adb:14:66: info: pointer dereference check proved (CVC5: 1 VC)
+test_membership.adb:15:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_membership.adb:19:19: info: assertion proved (CVC5: 1 VC)
 test_membership.adb:20:19: info: assertion proved (CVC5: 1 VC)
 test_membership.adb:21:19: info: assertion proved (CVC5: 1 VC)
 test_membership.adb:22:19: info: assertion proved (CVC5: 1 VC)
 test_membership.adb:22:24: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 test_membership.adb:23:19: info: assertion proved (CVC5: 1 VC)
+test_new.adb:4:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test_new.adb:5:28: info: pointer dereference check proved (CVC5: 1 VC)
 test_new.adb:7:19: info: assertion proved (CVC5: 1 VC)
 test_new.adb:7:31: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 test_or_mod.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
+test_or_mod.adb:3:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_or_mod.adb:7:19: info: assertion proved (CVC5: 1 VC)
 test_or_mod.adb:8:19: info: assertion proved (CVC5: 1 VC)
 test_string.adb:4:19: medium: assertion might fail
 test_string.adb:4:26: info: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove.
 test_string.adb:4:26: medium: precondition might fail
 test_tagged_records.adb:12:07: info: no contextual analysis of "Rand" (body not seen yet)
-test_tagged_records.adb:12:07: warning: assuming "Rand" always returns
 test_tagged_records.adb:12:07: warning: assuming "Rand" has no effect on global items
 test_tagged_records.adb:12:07: warning: no Global contract available for "Rand"
-test_tagged_records.adb:12:07: warning: no returning annotation available for "Rand"
 test_tagged_records.adb:13:23: info: predicate check proved (CVC5: 1 VC)
 test_tagged_records.adb:15:17: medium: predicate check might fail
 test_tagged_records.adb:15:23: info: predicate check proved (CVC5: 1 VC)

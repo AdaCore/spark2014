@@ -1,6 +1,11 @@
 hw-gfx-dp_aux_ch.adb:31:07: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:46:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:51:13: info: implicit terminating annotation on "Is_Aux_Ack" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:53:07: info: flow dependencies proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:59:13: info: implicit terminating annotation on "Is_Aux_Defer" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:64:13: info: implicit terminating annotation on "Is_I2C_Ack" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:66:07: info: flow dependencies proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:72:13: info: implicit terminating annotation on "Is_I2C_Defer" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:83:07: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:84:07: info: initialization of "Response_Length" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:85:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
@@ -30,11 +35,13 @@ hw-gfx-dp_info.adb:31:07: info: initialization of "Data" proved, in instantiatio
 hw-gfx-dp_info.adb:32:07: info: initialization of "Length" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:92:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:94:07: info: flow dependencies proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:96:16: info: implicit terminating annotation on "Link_Pixel_Per_Second" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:113:07: info: initialization of "Count" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:192:07: info: initialization of "M" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:193:07: info: initialization of "N" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:200:10: info: flow dependencies proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:210:13: info: initialization of "RN" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:213:13: medium: implicit terminating annotation on "Round_N" could be incorrect, loop might be nonterminating, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:292:07: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:293:07: info: initialization of "Length" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.ads:82:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
@@ -46,8 +53,16 @@ hw-gfx-dp_info.ads:111:07: info: initialization of "Link_M" proved, in instantia
 hw-gfx-dp_info.ads:112:07: info: initialization of "Link_N" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.ads:118:07: info: initialization of "Status" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.ads:119:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.ads:121:13: info: implicit terminating annotation on "All_CR_Done" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.ads:126:13: info: implicit terminating annotation on "All_EQ_Done" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.ads:131:13: info: implicit terminating annotation on "Max_Requested_VS" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.ads:136:13: info: implicit terminating annotation on "Max_Requested_Emph" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_training.adb:28:13: info: implicit terminating annotation on "Training_Set" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-connectors-edp.adb:238
+hw-gfx-dp_training.adb:28:13: info: implicit terminating annotation on "Training_Set" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-pch-dp.adb:167
 hw-gfx-dp_training.adb:36:07: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
 hw-gfx-dp_training.adb:36:07: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
+hw-gfx-dp_training.adb:64:13: info: implicit terminating annotation on "Lane_Count" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-connectors-edp.adb:238
+hw-gfx-dp_training.adb:64:13: info: implicit terminating annotation on "Lane_Count" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-pch-dp.adb:167
 hw-gfx-dp_training.adb:75:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
 hw-gfx-dp_training.adb:75:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
 hw-gfx-dp_training.adb:80:07: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
@@ -72,10 +87,24 @@ hw-gfx-dp_training.adb:296:07: info: initialization of "Train_Set" proved, in in
 hw-gfx-dp_training.adb:296:07: info: initialization of "Train_Set" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
 hw-gfx-dp_training.adb:296:18: info: initialization of "Last_Train_Set" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
 hw-gfx-dp_training.adb:296:18: info: initialization of "Last_Train_Set" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
+hw-gfx-dp_training.adb:298:16: info: implicit terminating annotation on "CR_Delay" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-connectors-edp.adb:238
+hw-gfx-dp_training.adb:298:16: info: implicit terminating annotation on "CR_Delay" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-pch-dp.adb:167
+hw-gfx-dp_training.adb:309:16: info: implicit terminating annotation on "EQ_Delay" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-connectors-edp.adb:238
+hw-gfx-dp_training.adb:309:16: info: implicit terminating annotation on "EQ_Delay" has been proved, subprogram will terminate, in instantiation at hw-gfx-gma-pch-dp.adb:167
 hw-gfx-dp_training.ads:56:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
 hw-gfx-dp_training.ads:56:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
+hw-gfx-edid.adb:30:13: info: implicit terminating annotation on "Checksum_Valid" has been proved, subprogram will terminate
+hw-gfx-edid.adb:44:13: info: implicit terminating annotation on "Header_Score" has been proved, subprogram will terminate
 hw-gfx-edid.adb:113:07: info: initialization of "Mode" proved
+hw-gfx-edid.adb:115:16: info: implicit terminating annotation on "Read_12" has been proved, subprogram will terminate
+hw-gfx-edid.adb:122:16: info: implicit terminating annotation on "Read_10" has been proved, subprogram will terminate
+hw-gfx-edid.adb:129:16: info: implicit terminating annotation on "Read_6" has been proved, subprogram will terminate
+hw-gfx-edid.ads:24:13: info: implicit terminating annotation on "Valid" has been proved, subprogram will terminate
 hw-gfx-edid.ads:25:57: info: initialization of "Success" proved
+hw-gfx-edid.ads:31:13: info: implicit terminating annotation on "Read_LE16" has been proved, subprogram will terminate
+hw-gfx-edid.ads:38:13: info: implicit terminating annotation on "Compatible_Display" has been proved, subprogram will terminate
+hw-gfx-edid.ads:45:13: info: implicit terminating annotation on "Has_Preferred_Mode" has been proved, subprogram will terminate
+hw-gfx-edid.ads:65:13: info: implicit terminating annotation on "Preferred_Mode" has been proved, subprogram will terminate
 hw-gfx-framebuffer_filler.adb:25:04: warning: assuming no concurrent accesses to non-atomic object "MMIO"
 hw-gfx-framebuffer_filler.adb:25:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-framebuffer_filler.adb:25:04: warning: in instantiation at hw-mmio_range.adb:22
@@ -88,21 +117,33 @@ hw-gfx-framebuffer_filler.adb:40:15: warning: this statement is never reached
 hw-gfx-framebuffer_filler.adb:42:21: warning: this statement is never reached
 hw-gfx-framebuffer_filler.ads:24:14: warning: subprogram "Fill" has no effect
 hw-gfx-gma-config.ads:17:04: info: flow dependencies proved
+hw-gfx-gma-config.ads:324:13: info: implicit terminating annotation on "Is_Broadwell_H" has been proved, subprogram will terminate
+hw-gfx-gma-config.ads:327:13: info: implicit terminating annotation on "Is_Skylake_U" has been proved, subprogram will terminate
+hw-gfx-gma-config.ads:333:13: info: implicit terminating annotation on "Is_GPU" has been proved, subprogram will terminate
+hw-gfx-gma-config.ads:361:13: info: implicit terminating annotation on "Compatible_GPU" has been proved, subprogram will terminate
 hw-gfx-gma-config_helpers.adb:89:07: info: initialization of "Success" proved
 hw-gfx-gma-config_helpers.adb:95:10: info: initialization of "Enabled" proved
 hw-gfx-gma-config_helpers.adb:114:47: info: non-aliasing of formal parameters "Link" and "Mode" proved
+hw-gfx-gma-config_helpers.ads:20:13: info: implicit terminating annotation on "To_GPU_Port" has been proved, subprogram will terminate
+hw-gfx-gma-config_helpers.ads:25:13: info: implicit terminating annotation on "To_PCH_Port" has been proved, subprogram will terminate
+hw-gfx-gma-config_helpers.ads:27:13: info: implicit terminating annotation on "To_Display_Type" has been proved, subprogram will terminate
 hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg" proved
 hw-gfx-gma-config_helpers.ads:34:07: info: initialization of "Success" proved
+hw-gfx-gma-config_helpers.ads:42:13: info: implicit terminating annotation on "Validate_Config" has been proved, subprogram will terminate
 hw-gfx-gma-connector_info.adb:42:13: warning: statement has no effect
 hw-gfx-gma-connector_info.adb:45:21: warning: this statement is never reached
 hw-gfx-gma-connector_info.adb:55:36: info: non-aliasing of formal parameters "Link" and "Mode" proved
 hw-gfx-gma-connector_info.adb:74:33: info: non-aliasing of formal parameters "Link" and "Mode" proved
 hw-gfx-gma-connector_info.ads:21:07: info: initialization of "Success" proved
 hw-gfx-gma-connector_info.ads:29:07: info: initialization of "Success" proved
+hw-gfx-gma-connector_info.ads:35:13: info: implicit terminating annotation on "Default_BPC" has been proved, subprogram will terminate
+hw-gfx-gma-connectors-edp.adb:97:13: info: implicit terminating annotation on "Max_V_Swing" has been proved, subprogram will terminate
+hw-gfx-gma-connectors-edp.adb:105:13: info: implicit terminating annotation on "Max_Pre_Emph" has been proved, subprogram will terminate
 hw-gfx-gma-connectors-edp.adb:151:07: info: initialization of "VSwing_Emph" proved
 hw-gfx-gma-connectors-edp.adb:185:07: info: initialization of "DP_CTL_Set" proved
 hw-gfx-gma-connectors-edp.adb:221:11: warning: assuming "U_Delay" always returns
 hw-gfx-gma-connectors-edp.adb:221:11: warning: no returning annotation available for "U_Delay"
+hw-gfx-gma-connectors-edp.adb:232:16: info: implicit terminating annotation on "To_DP" has been proved, subprogram will terminate
 hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" always returns
 hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" always returns
 hw-gfx-gma-connectors-edp.adb:238:07: warning: assuming "New_Line" always returns
@@ -227,6 +268,7 @@ hw-gfx-gma-connectors-edp.adb:270:07: info: initialization of "Enabled" proved
 hw-gfx-gma-connectors-edp.adb:296:14: warning: assuming "U_Delay" always returns
 hw-gfx-gma-connectors-edp.adb:296:14: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-connectors-edp.ads:22:07: info: initialization of "Success" proved
+hw-gfx-gma-connectors-fdi.adb:58:13: info: implicit terminating annotation on "FDI_TX_CTL_PORT_WIDTH_SEL" has been proved, subprogram will terminate
 hw-gfx-gma-connectors-fdi.adb:73:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors-fdi.adb:103:17: warning: assuming "U_Delay" always returns
 hw-gfx-gma-connectors-fdi.adb:103:17: warning: no returning annotation available for "U_Delay"
@@ -242,8 +284,13 @@ hw-gfx-gma-connectors-fdi.adb:298:11: warning: no returning annotation available
 hw-gfx-gma-connectors-fdi.adb:311:40: warning: this statement is never reached
 hw-gfx-gma-connectors-fdi.adb:313:40: warning: this statement is never reached
 hw-gfx-gma-connectors-fdi.ads:38:07: info: initialization of "Success" proved
+hw-gfx-gma-connectors.adb:35:13: info: implicit terminating annotation on "Is_Internal" has been proved, subprogram will terminate
 hw-gfx-gma-connectors.ads:29:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors.ads:35:07: info: initialization of "Success" proved
+hw-gfx-gma-display_probing.adb:30:13: info: implicit terminating annotation on "Port_Configured" has been proved, subprogram will terminate
+hw-gfx-gma-display_probing.adb:37:13: info: implicit terminating annotation on "Sibling_Port" has been proved, subprogram will terminate
+hw-gfx-gma-display_probing.adb:47:13: info: implicit terminating annotation on "Has_Sibling_Port" has been proved, subprogram will terminate
+hw-gfx-gma-display_probing.adb:50:13: info: implicit terminating annotation on "Is_DVI_I" has been proved, subprogram will terminate
 hw-gfx-gma-display_probing.adb:56:07: info: initialization of "Raw_EDID" proved
 hw-gfx-gma-display_probing.adb:58:07: info: initialization of "Success" proved
 hw-gfx-gma-display_probing.adb:73:32: warning: assuming "Power_Up" always returns
@@ -263,6 +310,7 @@ hw-gfx-gma-dp_aux_ch.ads:19:09: warning: in instantiation at hw-gfx-dp_aux_ch.ad
 hw-gfx-gma-dp_aux_ch.ads:19:09: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-dp_aux_ch.ads:19:09: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-dp_aux_ch.ads:19:09: warning: no returning annotation available for "U_Delay"
+hw-gfx-gma-dp_aux_request.adb:47:13: info: implicit terminating annotation on "DP_AUX_CTL_MESSAGE_SIZE" has been proved, subprogram will terminate
 hw-gfx-gma-dp_aux_request.adb:161:07: info: initialization of "Response" proved
 hw-gfx-gma-dp_aux_request.adb:162:07: info: initialization of "Response_Length" proved
 hw-gfx-gma-dp_aux_request.adb:163:07: info: initialization of "Success" proved
@@ -318,6 +366,9 @@ hw-gfx-gma-dp_info.ads:19:09: warning: no returning annotation available for "Pu
 hw-gfx-gma-dp_info.ads:19:09: warning: no returning annotation available for "Put"
 hw-gfx-gma-dp_info.ads:19:09: warning: no returning annotation available for "Put_Int32"
 hw-gfx-gma-dp_info.ads:19:09: warning: no returning annotation available for "Put_Int32"
+hw-gfx-gma-i2c.adb:90:13: info: implicit terminating annotation on "GMBUS1_TOTAL_BYTE_COUNT" has been proved, subprogram will terminate
+hw-gfx-gma-i2c.adb:97:13: info: implicit terminating annotation on "GMBUS1_SLAVE_ADDRESS" has been proved, subprogram will terminate
+hw-gfx-gma-i2c.adb:104:13: info: implicit terminating annotation on "GMBUS0_PIN_PAIR_SELECT" has been proved, subprogram will terminate
 hw-gfx-gma-i2c.adb:124:27: info: initialization of "Result" proved
 hw-gfx-gma-i2c.adb:126:07: info: initialization of "GMBUS2" proved
 hw-gfx-gma-i2c.adb:135:27: info: initialization of "Success" proved
@@ -331,11 +382,15 @@ hw-gfx-gma-i2c.adb:203:07: info: initialization of "GMBUS3" proved
 hw-gfx-gma-i2c.adb:205:07: info: initialization of "Current" proved
 hw-gfx-gma-i2c.ads:23:07: info: initialization of "Data" proved
 hw-gfx-gma-i2c.ads:24:07: info: initialization of "Success" proved
+hw-gfx-gma-panel.adb:61:13: info: implicit terminating annotation on "Div_Round_Up32" has been proved, subprogram will terminate
+hw-gfx-gma-panel.adb:108:13: info: implicit terminating annotation on "PCH_PP_ON_DELAYS_PWR_UP" has been proved, subprogram will terminate
+hw-gfx-gma-panel.adb:112:13: info: implicit terminating annotation on "PCH_PP_ON_DELAYS_PWR_UP_BL_ON" has been proved, subprogram will terminate
+hw-gfx-gma-panel.adb:119:13: info: implicit terminating annotation on "PCH_PP_OFF_DELAYS_PWR_DOWN" has been proved, subprogram will terminate
+hw-gfx-gma-panel.adb:123:13: info: implicit terminating annotation on "PCH_PP_OFF_DELAYS_BL_OFF_PWR_DOWN" has been proved, subprogram will terminate
+hw-gfx-gma-panel.adb:130:13: info: implicit terminating annotation on "PCH_PP_DIVISOR_PWR_CYC_DELAY" has been proved, subprogram will terminate
 hw-gfx-gma-panel.adb:160:21: info: initialization of "Power_Cycle_Timer" constituent of "Panel_State" proved
 hw-gfx-gma-panel.adb:160:40: info: initialization of "Power_Up_Timer" constituent of "Panel_State" proved
 hw-gfx-gma-panel.adb:160:56: info: initialization of "Delays_US" constituent of "Panel_State" proved
-hw-gfx-gma-panel.adb:164:32: warning: assuming "Now" always returns
-hw-gfx-gma-panel.adb:164:32: warning: no returning annotation available for "Now"
 hw-gfx-gma-panel.adb:186:07: info: initialization of "Power_Delay" proved
 hw-gfx-gma-panel.adb:186:20: info: initialization of "Port_Select" proved
 hw-gfx-gma-panel.adb:219:10: warning: statement has no effect
@@ -347,15 +402,11 @@ hw-gfx-gma-panel.adb:262:19: warning: this statement is never reached
 hw-gfx-gma-panel.adb:283:07: info: initialization of "Was_On" proved
 hw-gfx-gma-panel.adb:289:14: warning: assuming "Delay_Until" always returns
 hw-gfx-gma-panel.adb:289:14: warning: no returning annotation available for "Delay_Until"
-hw-gfx-gma-panel.adb:294:32: warning: assuming "US_From_Now" always returns
-hw-gfx-gma-panel.adb:294:32: warning: no returning annotation available for "US_From_Now"
 hw-gfx-gma-panel.adb:305:11: warning: assuming "Delay_Until" always returns
 hw-gfx-gma-panel.adb:305:11: warning: no returning annotation available for "Delay_Until"
 hw-gfx-gma-panel.adb:316:07: info: initialization of "Was_On" proved
 hw-gfx-gma-panel.adb:326:14: warning: assuming "U_Delay" always returns
 hw-gfx-gma-panel.adb:326:14: warning: no returning annotation available for "U_Delay"
-hw-gfx-gma-panel.adb:333:35: warning: assuming "US_From_Now" always returns
-hw-gfx-gma-panel.adb:333:35: warning: no returning annotation available for "US_From_Now"
 hw-gfx-gma-panel.adb:369:07: info: initialization of "Reg" proved
 hw-gfx-gma-panel.ads:25:07: info: data dependencies proved
 hw-gfx-gma-panel.ads:29:14: info: initialization of "Delays_US" constituent of "Panel_State" proved
@@ -364,6 +415,12 @@ hw-gfx-gma-panel.ads:29:14: info: initialization of "Power_Up_Timer" constituent
 hw-gfx-gma-panel.ads:31:07: info: data dependencies proved
 hw-gfx-gma-panel.ads:35:07: info: flow dependencies proved
 hw-gfx-gma-panel.ads:59:33: info: initialization of "Level" proved
+hw-gfx-gma-pch-dp.adb:46:13: info: implicit terminating annotation on "DP_CTL_VSWING_LEVEL_SET" has been proved, subprogram will terminate
+hw-gfx-gma-pch-dp.adb:56:13: info: implicit terminating annotation on "DP_CTL_PREEMPH_LEVEL_SET" has been proved, subprogram will terminate
+hw-gfx-gma-pch-dp.adb:63:13: info: implicit terminating annotation on "DP_CTL_PORT_WIDTH" has been proved, subprogram will terminate
+hw-gfx-gma-pch-dp.adb:83:13: info: implicit terminating annotation on "Max_V_Swing" has been proved, subprogram will terminate
+hw-gfx-gma-pch-dp.adb:91:13: info: implicit terminating annotation on "Max_Pre_Emph" has been proved, subprogram will terminate
+hw-gfx-gma-pch-dp.adb:158:16: info: implicit terminating annotation on "To_DP" has been proved, subprogram will terminate
 hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "New_Line" always returns
 hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "New_Line" always returns
 hw-gfx-gma-pch-dp.adb:167:07: warning: assuming "New_Line" always returns
@@ -485,6 +542,11 @@ hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "Pu
 hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-pch-dp.adb:167:07: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-pch-dp.ads:20:07: info: initialization of "Success" proved
+hw-gfx-gma-pch-fdi.adb:43:13: info: implicit terminating annotation on "FDI_RX_CTL_PORT_WIDTH_SEL" has been proved, subprogram will terminate
+hw-gfx-gma-pch-fdi.adb:51:13: info: implicit terminating annotation on "FDI_RX_CTL_BPC" has been proved, subprogram will terminate
+hw-gfx-gma-pch-fdi.adb:70:13: info: implicit terminating annotation on "FDI_RX_MISC_FDI_RX_PWRDN_LANE1" has been proved, subprogram will terminate
+hw-gfx-gma-pch-fdi.adb:77:13: info: implicit terminating annotation on "FDI_RX_MISC_FDI_RX_PWRDN_LANE0" has been proved, subprogram will terminate
+hw-gfx-gma-pch-fdi.adb:86:13: info: implicit terminating annotation on "FDI_RX_TUSIZE" has been proved, subprogram will terminate
 hw-gfx-gma-pch-fdi.adb:173:11: warning: assuming "U_Delay" always returns
 hw-gfx-gma-pch-fdi.adb:173:11: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-pch-fdi.adb:203:17: warning: assuming "U_Delay" always returns
@@ -506,6 +568,10 @@ hw-gfx-gma-pch-sideband.adb:109:07: info: initialization of "Value" proved
 hw-gfx-gma-pch-sideband.adb:120:07: info: initialization of "Value" proved
 hw-gfx-gma-pch-sideband.adb:132:07: info: initialization of "Value" proved
 hw-gfx-gma-pch-sideband.ads:27:07: info: initialization of "Value" proved
+hw-gfx-gma-pch-transcoder.adb:34:13: info: implicit terminating annotation on "DPLL_SEL_TRANSCODER_x_DPLL_SEL" has been proved, subprogram will terminate
+hw-gfx-gma-pch-transcoder.adb:66:13: info: implicit terminating annotation on "TRANS_DP_CTL_BPC" has been proved, subprogram will terminate
+hw-gfx-gma-pch-transcoder.adb:77:13: info: implicit terminating annotation on "TRANS_DATA_M_TU" has been proved, subprogram will terminate
+hw-gfx-gma-pch-transcoder.adb:156:16: info: implicit terminating annotation on "Encode" has been proved, subprogram will terminate
 hw-gfx-gma-pch-transcoder.adb:163:07: warning: statement has no effect
 hw-gfx-gma-pch-transcoder.adb:192:13: info: initialization of "Data_M" proved
 hw-gfx-gma-pch-transcoder.adb:192:21: info: initialization of "Link_M" proved
@@ -518,10 +584,20 @@ hw-gfx-gma-pch-transcoder.adb:268:07: warning: statement has no effect
 hw-gfx-gma-pch-transcoder.adb:274:07: warning: statement has no effect
 hw-gfx-gma-pch-vga.adb:69:07: warning: initialization of "Sync_Disable" has no effect
 hw-gfx-gma-pch-vga.adb:73:07: warning: statement has no effect
+hw-gfx-gma-pch-vga.adb:99:13: info: implicit terminating annotation on "SBI_SSCDIVINTPHASE_DIVSEL" has been proved, subprogram will terminate
+hw-gfx-gma-pch-vga.adb:104:13: info: implicit terminating annotation on "SBI_SSCDIVINTPHASE_INCVAL" has been proved, subprogram will terminate
+hw-gfx-gma-pch-vga.adb:109:13: info: implicit terminating annotation on "SBI_SSCDIVINTPHASE_DIR" has been proved, subprogram will terminate
+hw-gfx-gma-pch-vga.adb:114:13: info: implicit terminating annotation on "SBI_SSCAUXDIV_FINALDIV2SEL" has been proved, subprogram will terminate
 hw-gfx-gma-pch-vga.adb:123:07: info: initialization of "Aux_Div" proved
 hw-gfx-gma-pch-vga.adb:124:07: info: initialization of "Div_Sel" proved
 hw-gfx-gma-pch-vga.adb:125:07: info: initialization of "Phase_Inc" proved
 hw-gfx-gma-pch-vga.adb:126:07: info: initialization of "Phase_Dir" proved
+hw-gfx-gma-pipe_setup.adb:94:13: info: implicit terminating annotation on "CUR_POS_Y" has been proved, subprogram will terminate
+hw-gfx-gma-pipe_setup.adb:98:13: info: implicit terminating annotation on "CUR_POS_X" has been proved, subprogram will terminate
+hw-gfx-gma-pipe_setup.adb:104:13: info: implicit terminating annotation on "VGA_CONTROL_VSYNC_BLINK_RATE" has been proved, subprogram will terminate
+hw-gfx-gma-pipe_setup.adb:136:13: info: implicit terminating annotation on "PLANE_WM_LINES" has been proved, subprogram will terminate
+hw-gfx-gma-pipe_setup.adb:142:13: info: implicit terminating annotation on "PLANE_WM_BLOCKS" has been proved, subprogram will terminate
+hw-gfx-gma-pipe_setup.adb:149:13: info: implicit terminating annotation on "Encode" has been proved, subprogram will terminate
 hw-gfx-gma-pipe_setup.adb:205:07: info: data dependencies proved
 hw-gfx-gma-pipe_setup.adb:206:07: info: flow dependencies proved
 hw-gfx-gma-pipe_setup.adb:220:07: warning: statement has no effect
@@ -557,6 +633,7 @@ hw-gfx-gma-pipe_setup.adb:314:22: warning: this statement is never reached
 hw-gfx-gma-pipe_setup.adb:318:22: warning: this statement is never reached
 hw-gfx-gma-pipe_setup.adb:344:07: warning: statement has no effect
 hw-gfx-gma-pipe_setup.adb:345:19: warning: this statement is never reached
+hw-gfx-gma-pipe_setup.adb:396:13: info: implicit terminating annotation on "Scale" has been proved, subprogram will terminate
 hw-gfx-gma-pipe_setup.adb:403:07: info: initialization of "Width" proved
 hw-gfx-gma-pipe_setup.adb:404:07: info: initialization of "Height" proved
 hw-gfx-gma-pipe_setup.adb:463:07: info: initialization of "Width" proved
@@ -625,10 +702,12 @@ hw-gfx-gma-plls.adb:450:14: warning: assuming "U_Delay" always returns
 hw-gfx-gma-plls.adb:450:14: warning: no returning annotation available for "U_Delay"
 hw-gfx-gma-plls.adb:479:07: info: initialization of "PLL" proved
 hw-gfx-gma-plls.adb:480:07: info: initialization of "Success" proved
+hw-gfx-gma-plls.adb:484:16: info: implicit terminating annotation on "Config_Matches" has been proved, subprogram will terminate
 hw-gfx-gma-plls.ads:25:14: info: initialization of "PLLs" constituent of "State" proved
 hw-gfx-gma-plls.ads:27:07: info: data dependencies proved
 hw-gfx-gma-plls.ads:31:07: info: initialization of "PLL" proved
 hw-gfx-gma-plls.ads:32:07: info: initialization of "Success" proved
+hw-gfx-gma-plls.ads:38:13: info: implicit terminating annotation on "Register_Value" has been proved, subprogram will terminate
 hw-gfx-gma-port_detect.adb:58:07: info: initialization of "Internal_Detected" proved
 hw-gfx-gma-port_detect.adb:59:07: info: initialization of "HDMI_Detected" proved
 hw-gfx-gma-port_detect.adb:60:07: info: initialization of "DP_Detected" proved
@@ -654,6 +733,8 @@ hw-gfx-gma-registers.adb:54:04: warning: in instantiation at hw-mmio_range.adb:2
 hw-gfx-gma-registers.adb:54:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-gma-registers.adb:54:04: warning: make sure that all overlapping objects have Async_Writers set to True
 hw-gfx-gma-registers.adb:54:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
+hw-gfx-gma-registers.adb:71:13: info: implicit terminating annotation on "Fence_Lower_Idx" has been proved, subprogram will terminate
+hw-gfx-gma-registers.adb:73:13: info: implicit terminating annotation on "Fence_Upper_Idx" has been proved, subprogram will terminate
 hw-gfx-gma-registers.adb:92:07: info: initialization of "Reg32" proved
 hw-gfx-gma-registers.adb:128:07: info: initialization of "Fence_Upper" proved
 hw-gfx-gma-registers.adb:128:20: info: initialization of "Fence_Lower" proved
@@ -663,10 +744,6 @@ hw-gfx-gma-registers.adb:240:07: info: initialization of "Value" proved
 hw-gfx-gma-registers.adb:261:07: info: initialization of "Current" proved
 hw-gfx-gma-registers.adb:262:07: info: initialization of "Timeout" proved
 hw-gfx-gma-registers.adb:263:07: info: initialization of "Timed_Out" proved
-hw-gfx-gma-registers.adb:274:22: warning: assuming "MS_From_Now" always returns
-hw-gfx-gma-registers.adb:274:22: warning: no returning annotation available for "MS_From_Now"
-hw-gfx-gma-registers.adb:276:27: warning: assuming "Timed_Out" always returns
-hw-gfx-gma-registers.adb:276:27: warning: no returning annotation available for "Timed_Out"
 hw-gfx-gma-registers.adb:322:07: info: initialization of "Value" proved
 hw-gfx-gma-registers.adb:341:07: info: initialization of "Value" proved
 hw-gfx-gma-registers.adb:361:07: info: initialization of "Value" proved
@@ -690,6 +767,9 @@ hw-gfx-gma-registers.ads:1729:07: medium: missing dependency "null => Base"
 hw-gfx-gma-registers.ads:1729:07: medium: missing dependency "null => GTT_Base"
 hw-gfx-gma-registers.ads:1729:38: medium: incorrect dependency "Registers.Address_State constituent of GMA.State => Base"
 hw-gfx-gma-registers.ads:1729:44: medium: incorrect dependency "Registers.Address_State constituent of GMA.State => GTT_Base"
+hw-gfx-gma-transcoder.adb:28:13: info: implicit terminating annotation on "Get_Idx" has been proved, subprogram will terminate
+hw-gfx-gma-transcoder.adb:134:13: info: implicit terminating annotation on "TRANS_DATA_M_TU" has been proved, subprogram will terminate
+hw-gfx-gma-transcoder.adb:141:13: info: implicit terminating annotation on "Encode" has been proved, subprogram will terminate
 hw-gfx-gma-transcoder.adb:153:07: info: data dependencies proved
 hw-gfx-gma-transcoder.adb:154:07: info: flow dependencies proved
 hw-gfx-gma-transcoder.adb:156:07: info: initialization of "Data_M" proved
@@ -710,6 +790,7 @@ hw-gfx-gma-transcoder.adb:299:23: warning: this statement is never reached
 hw-gfx-gma-transcoder.adb:301:10: warning: this statement is never reached
 hw-gfx-gma-transcoder.adb:305:13: warning: this statement is never reached
 hw-gfx-gma-transcoder.ads:26:07: warning: unused initial value of "Scale"
+hw-gfx-gma-transcoder.ads:31:13: info: implicit terminating annotation on "BPC_Conf" has been proved, subprogram will terminate
 hw-gfx-gma.adb:68:04: warning: assuming no concurrent accesses to non-atomic object "MMIO"
 hw-gfx-gma.adb:68:04: warning: assuming no concurrent accesses to non-atomic object "MMIO"
 hw-gfx-gma.adb:68:04: warning: assuming no concurrent accesses to non-atomic object "MMIO"
@@ -737,24 +818,23 @@ hw-gfx-gma.adb:68:04: warning: make sure that all overlapping objects have Async
 hw-gfx-gma.adb:68:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
 hw-gfx-gma.adb:68:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
 hw-gfx-gma.adb:68:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
+hw-gfx-gma.adb:88:13: info: implicit terminating annotation on "PCH_RAWCLK_FREQ" has been proved, subprogram will terminate
 hw-gfx-gma.adb:99:07: info: initialization of "Success" proved
 hw-gfx-gma.adb:103:07: info: initialization of "Port_Cfg" proved
 hw-gfx-gma.adb:104:07: info: initialization of "Scaler_Available" proved
 hw-gfx-gma.adb:193:07: info: initialization of "Port_Cfg" proved
 hw-gfx-gma.adb:194:07: info: initialization of "Success" proved
 hw-gfx-gma.adb:214:56: info: initialization of "Detected" proved
-hw-gfx-gma.adb:216:51: warning: assuming "Timed_Out" always returns
-hw-gfx-gma.adb:216:51: warning: no returning annotation available for "Timed_Out"
-hw-gfx-gma.adb:220:37: warning: assuming "MS_From_Now" always returns
-hw-gfx-gma.adb:220:37: warning: no returning annotation available for "MS_From_Now"
 hw-gfx-gma.adb:227:07: info: initialization of "Old_Configs" proved
 hw-gfx-gma.adb:235:29: warning: assuming "Power_Up" always returns
 hw-gfx-gma.adb:235:29: warning: no returning annotation available for "Power_Up"
+hw-gfx-gma.adb:240:16: info: implicit terminating annotation on "Full_Update" has been proved, subprogram will terminate
 hw-gfx-gma.adb:262:13: info: initialization of "Unplug_Detected" proved
 hw-gfx-gma.adb:281:13: info: initialization of "Success" proved
 hw-gfx-gma.adb:282:13: info: initialization of "Scaler_Available" proved
 hw-gfx-gma.adb:325:26: warning: assuming "Power_Down" always returns
 hw-gfx-gma.adb:325:26: warning: no returning annotation available for "Power_Down"
+hw-gfx-gma.adb:356:16: info: implicit terminating annotation on "Cap_Add" has been proved, subprogram will terminate
 hw-gfx-gma.adb:382:16: high: "Dev.Address_State" constituent of "GMA.State" is not initialized
 hw-gfx-gma.adb:382:16: low: unused global "Dev.Address_State" constituent of "GMA.State"
 hw-gfx-gma.adb:383:22: info: initialization of "Registers.Address_State" constituent of "GMA.State" proved
@@ -768,8 +848,6 @@ hw-gfx-gma.adb:387:13: info: initialization of "Linear_FB_Base" constituent of "
 hw-gfx-gma.adb:387:29: info: initialization of "Initialized" constituent of "Init_State" proved
 hw-gfx-gma.adb:391:07: info: initialization of "PCI_MMIO_Base" proved
 hw-gfx-gma.adb:391:22: info: initialization of "PCI_GTT_Base" proved
-hw-gfx-gma.adb:393:36: warning: assuming "Now" always returns
-hw-gfx-gma.adb:393:36: warning: no returning annotation available for "Now"
 hw-gfx-gma.adb:395:33: info: initialization of "Success" proved
 hw-gfx-gma.adb:397:10: info: initialization of "Audio_VID_DID" proved
 hw-gfx-gma.adb:401:25: warning: this statement is never reached
@@ -784,6 +862,21 @@ hw-gfx-gma.adb:496:26: warning: no returning annotation available for "Post_All_
 hw-gfx-gma.adb:509:07: warning: statement has no effect
 hw-gfx-gma.adb:544:23: warning: assuming "Power_Up" always returns
 hw-gfx-gma.adb:544:23: warning: no returning annotation available for "Power_Up"
+hw-gfx-gma.adb:549:13: info: implicit terminating annotation on "FB_First_Page" has been proved, subprogram will terminate
+hw-gfx-gma.adb:551:13: info: implicit terminating annotation on "FB_Pages" has been proved, subprogram will terminate
+hw-gfx-gma.adb:553:13: info: implicit terminating annotation on "FB_Last_Page" has been proved, subprogram will terminate
+hw-gfx-gma.adb:559:13: info: implicit terminating annotation on "Valid_FB" has been proved, subprogram will terminate
+hw-gfx-gma.adb:569:13: info: implicit terminating annotation on "Valid_Phys_FB" has been proved, subprogram will terminate
+hw-gfx-gma.adb:631:13: info: implicit terminating annotation on "GGMS_Gen4" has been proved, subprogram will terminate
+hw-gfx-gma.adb:633:13: info: implicit terminating annotation on "GTT_Size_Gen4" has been proved, subprogram will terminate
+hw-gfx-gma.adb:637:13: info: implicit terminating annotation on "GMS_Gen4" has been proved, subprogram will terminate
+hw-gfx-gma.adb:642:13: info: implicit terminating annotation on "Stolen_Size_Gen4" has been proved, subprogram will terminate
+hw-gfx-gma.adb:646:13: info: implicit terminating annotation on "GTT_Size_Gen6" has been proved, subprogram will terminate
+hw-gfx-gma.adb:649:13: info: implicit terminating annotation on "Stolen_Size_Gen6" has been proved, subprogram will terminate
+hw-gfx-gma.adb:652:13: info: implicit terminating annotation on "GTT_Size_Gen8" has been proved, subprogram will terminate
+hw-gfx-gma.adb:655:13: info: implicit terminating annotation on "GMS_Gen8" has been proved, subprogram will terminate
+hw-gfx-gma.adb:657:13: info: implicit terminating annotation on "Stolen_Size_Gen8" has been proved, subprogram will terminate
+hw-gfx-gma.adb:660:13: info: implicit terminating annotation on "Stolen_Size_Gen9" has been proved, subprogram will terminate
 hw-gfx-gma.adb:667:07: info: initialization of "GTT_Size" proved
 hw-gfx-gma.adb:668:07: info: initialization of "Stolen_Size" proved
 hw-gfx-gma.adb:676:07: info: initialization of "GGC" proved
@@ -1079,9 +1172,23 @@ hw-gfx-gma.adb:897:18: warning: no returning annotation available for "Put_Line"
 hw-gfx-gma.ads:27:04: info: flow dependencies proved
 hw-gfx-gma.ads:98:07: info: initialization of "Success" proved
 hw-gfx-gma.ads:100:07: info: data dependencies proved
+hw-gfx-gma.ads:105:13: info: implicit terminating annotation on "Is_Initialized" has been proved, subprogram will terminate
 hw-gfx-gma.ads:107:07: info: data dependencies proved
 hw-gfx-gma.ads:140:07: info: initialization of "Success" proved
 hw-gfx-gma.ads:144:29: info: initialization of "Linear_FB" proved
+hw-gfx-gma.ads:154:13: info: implicit terminating annotation on "Phys_Offset" has been proved, subprogram will terminate
+hw-gfx-gma.ads:164:13: info: implicit terminating annotation on "Requires_Scaling" has been proved, subprogram will terminate
+hw-gfx-gma.ads:167:13: info: implicit terminating annotation on "Scaling_Type" has been proved, subprogram will terminate
+hw-gfx-gma.ads:218:13: info: implicit terminating annotation on "FB_Pitch" has been proved, subprogram will terminate
+hw-gfx-gma.ads:222:13: info: implicit terminating annotation on "Valid_Stride" has been proved, subprogram will terminate
+hw-gfx.ads:185:13: info: implicit terminating annotation on "Rotation_90" has been proved, subprogram will terminate
+hw-gfx.ads:188:13: info: implicit terminating annotation on "Rotated_Width" has been proved, subprogram will terminate
+hw-gfx.ads:190:13: info: implicit terminating annotation on "Rotated_Height" has been proved, subprogram will terminate
+hw-gfx.ads:193:13: info: implicit terminating annotation on "Pixel_To_Bytes" has been proved, subprogram will terminate
+hw-gfx.ads:195:13: info: implicit terminating annotation on "FB_Size" has been proved, subprogram will terminate
+hw-gfx.ads:198:13: info: implicit terminating annotation on "Requires_Scaling" has been proved, subprogram will terminate
+hw-gfx.ads:204:13: info: implicit terminating annotation on "Scaling_Type" has been proved, subprogram will terminate
+hw-gfx.ads:213:13: info: implicit terminating annotation on "Scaling_Type" has been proved, subprogram will terminate
 hw-mmio_range.ads:26:07: info: initialization of "GTT.Base_Address" constituent of "Registers.Address_State" proved, in instantiation at hw-gfx-gma-registers.adb:54
 hw-mmio_range.ads:26:07: info: initialization of "MM16.Base_Address" constituent of "MM.Address_State" proved, in instantiation at hw-pci-mmconf.adb:38, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-mmio_range.ads:26:07: info: initialization of "MM32.Base_Address" constituent of "MM.Address_State" proved, in instantiation at hw-pci-mmconf.adb:40, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
@@ -1123,4 +1230,13 @@ hw-pci-mmconf.ads:28:21: info: initialization of "Value" proved, in instantiatio
 hw-pci-mmconf.ads:29:22: info: initialization of "Value" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:32:22: info: initialization of "Value" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:44:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
+hw-pci.ads:54:13: info: implicit terminating annotation on "Calc_Base_Address" has been proved, subprogram will terminate
 hw-time-timer.ads:21:07: info: flow dependencies proved
+hw.ads:57:13: info: implicit terminating annotation on "Div_Round_Up" has been proved, subprogram will terminate
+hw.ads:60:13: info: implicit terminating annotation on "Div_Round_Closest" has been proved, subprogram will terminate
+hw.ads:65:13: info: implicit terminating annotation on "Div_Round_Up" has been proved, subprogram will terminate
+hw.ads:68:13: info: implicit terminating annotation on "Div_Round_Closest" has been proved, subprogram will terminate
+hw.ads:73:13: info: implicit terminating annotation on "Div_Round_Up" has been proved, subprogram will terminate
+hw.ads:76:13: info: implicit terminating annotation on "Div_Round_Closest" has been proved, subprogram will terminate
+hw.ads:81:13: info: implicit terminating annotation on "Div_Round_Up" has been proved, subprogram will terminate
+hw.ads:84:13: info: implicit terminating annotation on "Div_Round_Closest" has been proved, subprogram will terminate

@@ -4057,7 +4057,9 @@ package body SPARK_Definition is
                     ("\\assuming & has no effect on global items", N, E);
                end if;
 
-               if not Has_Any_Returning_Annotation (E) then
+               if not Has_Any_Returning_Annotation (E)
+                 and then not Has_Implicit_Always_Return_Annotation (E)
+               then
                   Error_Msg_NE
                     (Warning_Message (Warn_Assumed_Always_Return), N, E);
                   Error_Msg_NE

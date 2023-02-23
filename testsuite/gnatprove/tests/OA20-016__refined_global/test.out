@@ -1,5 +1,7 @@
 repro.adb:4:04: info: initialization of "Cur_Board" constituent of "Game_State" proved
 repro.ads:3:05: info: flow dependencies proved
+repro.ads:13:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
+repro.ads:17:13: info: implicit terminating annotation on "Get_Board" has been proved, subprogram will terminate
 repro.ads:18:09: info: data dependencies proved
 repro.ads:20:14: info: initialization of "Cur_Board" constituent of "Game_State" proved
 repro.ads:22:06: info: data dependencies proved

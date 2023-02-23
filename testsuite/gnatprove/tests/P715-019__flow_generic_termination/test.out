@@ -7,7 +7,7 @@ spark-containers-formal-hashed_sets.ads:81:19: info: terminating annotation on "
 spark-containers-formal-hashed_sets.ads:88:19: info: terminating annotation on "Hash_Equivalent" has been proved, subprogram will terminate, in instantiation at term.ads:16
 spark-containers-formal-hashed_sets.ads:231:09: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:16
 spark-containers-formal-hashed_sets.ads:393:09: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:16
-spark-containers-formal-hashed_sets.ads:593:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at term.ads:16
+spark-containers-formal-hashed_sets.ads:593:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at term.ads:16
 spark-containers-formal-hashed_sets.ads:597:06: info: data dependencies proved, in instantiation at term.ads:16
 spark-containers-formal-hashed_sets.ads:684:06: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:16
 spark-containers-formal-hashed_sets.ads:1390:06: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:16
@@ -20,18 +20,18 @@ spark-containers-functional-maps.ads:71:19: info: terminating annotation on "Equ
 spark-containers-functional-maps.ads:77:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at term.ads:16
 spark-containers-functional-maps.ads:79:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at term.ads:16
 spark-containers-functional-maps.ads:81:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at term.ads:16
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at term.ads:16
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at term.ads:16
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at term.ads:16
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at term.ads:16
 spark-containers-functional-sets.ads:99:06: error: "S" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at term.ads:16
 spark-containers-functional-sets.ads:150:06: error: "S" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at term.ads:16
 spark-containers-functional-sets.ads:189:06: error: "S" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at term.ads:16
-spark-containers-functional-sets.ads:365:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at term.ads:16
+spark-containers-functional-sets.ads:365:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at term.ads:16
 spark-containers-functional-vectors.ads:50:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at term.ads:16
 spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at term.ads:16
 spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at term.ads:16
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at term.ads:16
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at term.ads:16
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at term.ads:16
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at term.ads:16
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at term.ads:16
 spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:146, in instantiation at term.ads:16
 spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:480, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at term.ads:16
 spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:489, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at term.ads:16
@@ -94,7 +94,7 @@ spark-containers-parameter_checks.ads:121:17: info: terminating annotation on "E
 spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:155, in instantiation at term.ads:16
 spark-containers-parameter_checks.ads:262:09: error: "S" is referenced in Pre but missing from the Global, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at term.ads:16
 spark-containers-parameter_checks.ads:263:21: high: "S" must be listed in the Global aspect of "Hash_Equivalent" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at term.ads:16
-term.adb:5:07: medium: terminating annotation on "Eq" could be incorrect, "Eq" and "Contains" are mutually recursive
-term.ads:14:13: info: terminating annotation on "Hash" has been proved, subprogram will terminate
+term.adb:5:07: medium: implicit terminating annotation on "Eq" could be incorrect, "Eq" and "Contains" are mutually recursive
+term.ads:14:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
 term.ads:14:19: warning: unused variable "X"
 gnatprove: error during flow analysis and proof

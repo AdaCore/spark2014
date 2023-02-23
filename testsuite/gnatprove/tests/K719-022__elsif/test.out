@@ -1,3 +1,5 @@
 minus.adb:19:70: warning: unreachable branch (CVC5: 1 VC)
+minus.ads:2:13: info: implicit terminating annotation on "Minus" has been proved, subprogram will terminate
 minus.ads:4:14: info: postcondition proved (CVC5: 1 VC)
+minus.ads:6:13: info: implicit terminating annotation on "Minus2" has been proved, subprogram will terminate
 minus.ads:8:14: info: postcondition proved (CVC5: 1 VC)

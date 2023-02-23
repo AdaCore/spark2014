@@ -1,1 +1,3 @@
+bad_function.adb:3:13: info: implicit terminating annotation on "Ident" has been proved, subprogram will terminate
+bad_function.adb:4:13: info: implicit terminating annotation on "Bad" has been proved, subprogram will terminate
 bad_function.adb:4:57: medium: overflow check might fail, cannot prove upper bound for Ident (Integer'Last) + 1 [reason for check: result of addition must fit in a 32-bits machine integer]

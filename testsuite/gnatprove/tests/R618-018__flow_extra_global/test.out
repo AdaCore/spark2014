@@ -4,4 +4,5 @@ p.adb:15:21: high: as a result "Extra.State2e" constituent of "P.State2" must be
 p.ads:3:08: info: flow dependencies proved
 p.ads:6:42: info: initialization of "Extra.State2e" constituent of "P.State2" proved
 p.ads:6:75: info: flow dependencies proved
+p.ads:7:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 p.ads:7:40: info: data dependencies proved

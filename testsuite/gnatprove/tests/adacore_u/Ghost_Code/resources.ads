@@ -7,9 +7,7 @@ is
    type Data is array (Index) of Resource;
 
    function Sum (D : Data; To : Num) return Natural is
-      (if To = 0 then 0 else D(To) + Sum(D,To-1))
-   with Ghost, Annotate => (GNATprove, Always_Return);
---   pragma Annotate (GNATprove, Always_Return, Sum);
+      (if To = 0 then 0 else D(To) + Sum(D,To-1));
 
    procedure Create (D : out Data) with
      Post => Sum (D, D'Last) < 42;

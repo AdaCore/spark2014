@@ -18,7 +18,44 @@ allocator.adb:71:44: info: index check proved (CVC5: 2 VC)
 allocator.adb:72:16: info: index check proved (CVC5: 2 VC)
 allocator.ads:8:03: info: flow dependencies proved
 allocator.ads:9:03: info: initial condition proved (CVC5: 1 VC)
+allocator.ads:18:13: info: implicit terminating annotation on "Is_Available" has been proved, subprogram will terminate
+allocator.ads:19:13: info: implicit terminating annotation on "Is_Allocated" has been proved, subprogram will terminate
+allocator.ads:21:13: info: implicit terminating annotation on "All_Available" has been proved, subprogram will terminate
+allocator.ads:25:07: warning: Always_Return annotation is useless
+allocator.ads:25:07: warning: Always_Return annotation is useless
+allocator.ads:25:07: warning: Always_Return annotation is useless
+allocator.ads:25:07: warning: Always_Return annotation is useless
+allocator.ads:25:07: warning: Always_Return annotation is useless
+allocator.ads:25:07: warning: Always_Return annotation is useless
+allocator.ads:25:07: warning: Always_Return annotation is useless
+allocator.ads:25:07: warning: Always_Return annotation is useless
+allocator.ads:25:07: warning: Always_Return annotation is useless
+allocator.ads:25:07: warning: Always_Return annotation is useless
+allocator.ads:25:07: warning: function "=" has implicit Always_Return annotation
+allocator.ads:25:07: warning: function "Add" has implicit Always_Return annotation
+allocator.ads:25:07: warning: function "First_Element" has implicit Always_Return annotation
+allocator.ads:25:07: warning: function "Inc" has implicit Always_Return annotation
+allocator.ads:25:07: warning: function "Is_Add" has implicit Always_Return annotation
+allocator.ads:25:07: warning: function "Is_Empty" has implicit Always_Return annotation
+allocator.ads:25:07: warning: function "Is_Intersection" has implicit Always_Return annotation
+allocator.ads:25:07: warning: function "Is_Union" has implicit Always_Return annotation
+allocator.ads:25:07: warning: function "Mem" has implicit Always_Return annotation
+allocator.ads:25:07: warning: function "Next_Element" has implicit Always_Return annotation
+allocator.ads:25:07: warning: in instantiation at functional_sets.ads:110
+allocator.ads:25:07: warning: in instantiation at functional_sets.ads:115
+allocator.ads:25:07: warning: in instantiation at functional_sets.ads:28
+allocator.ads:25:07: warning: in instantiation at functional_sets.ads:34
+allocator.ads:25:07: warning: in instantiation at functional_sets.ads:42
+allocator.ads:25:07: warning: in instantiation at functional_sets.ads:50
+allocator.ads:25:07: warning: in instantiation at functional_sets.ads:60
+allocator.ads:25:07: warning: in instantiation at functional_sets.ads:69
+allocator.ads:25:07: warning: in instantiation at functional_sets.ads:79
+allocator.ads:25:07: warning: in instantiation at functional_sets.ads:97
+allocator.ads:34:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
+allocator.ads:39:16: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
+allocator.ads:41:16: info: implicit terminating annotation on "Model" has been proved, subprogram will terminate
 allocator.ads:41:44: info: postcondition proved (CVC5: 6 VC)
+allocator.ads:47:13: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
 allocator.ads:49:21: info: initialization of "Res" proved
 allocator.ads:55:36: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
 allocator.ads:62:16: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)

@@ -1,7 +1,7 @@
-bad.adb:5:34: info: expression function body not available for proof ("B" might not return)
-bad.adb:6:34: info: expression function body not available for proof ("A" might not return)
-bad.adb:9:43: high: cannot call potentially nonreturning subprogram "A" for type "T" in its own predicate (SPARK RM 3.2.4(4))
-bad.adb:9:43: info: expression function body not available for proof ("A" might not return)
+bad.adb:5:34: medium: implicit terminating annotation on "A" could be incorrect, "A" and "B" are mutually recursive
+bad.adb:6:34: medium: implicit terminating annotation on "B" could be incorrect, "B" and "A" are mutually recursive
 bad.adb:12:13: info: add a contract to analyze it separately from calling contexts
+bad.adb:12:13: info: implicit terminating annotation on "In_T" has been proved, subprogram will terminate
 bad.adb:12:13: info: local subprogram "In_T" only analyzed in the context of calls
-bad.adb:18:07: medium: terminating annotation on "In_T" could be incorrect, call to "A" might be nonterminating
+bad.adb:13:04: warning: Always_Return annotation is useless
+bad.adb:13:04: warning: function "In_T" has implicit Always_Return annotation

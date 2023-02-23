@@ -183,7 +183,8 @@ package CertProc is
      (RawCert       : in     CertTypes.RawCertificateT;
       RawData       :    out CertTypes.RawDataT;
       ObtainSuccess :    out Boolean)
-     with Global => null;
+     with Global   => null,
+          Annotate => (GNATprove, Always_Return);
 
    ------------------------------------------------------------------
    -- ObtainSignatureData
@@ -198,7 +199,8 @@ package CertProc is
      (RawCert       : in     CertTypes.RawCertificateT;
       SignatureData :    out CertTypes.SignatureT;
       ObtainSuccess :    out Boolean)
-     with Global => null;
+     with Global   => null,
+          Annotate => (GNATprove, Always_Return);
 
    ------------------------------------------------------------------
    -- ConstructAuthCert

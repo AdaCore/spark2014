@@ -1,13 +1,36 @@
+SOUNDNESS BUG at test_bad.adb:201: mark @POSTCONDITION:FAIL not found
+test_bad.adb:11:09: warning: Always_Return annotation is useless
+test_bad.adb:11:09: warning: function "P" has implicit Always_Return annotation
+test_bad.adb:16:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+test_bad.adb:19:17: info: implicit terminating annotation on "Lemma_Prove_P" has been proved, subprogram will terminate
 test_bad.adb:22:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
+test_bad.adb:42:09: warning: Always_Return annotation is useless
+test_bad.adb:42:09: warning: function "P" has implicit Always_Return annotation
+test_bad.adb:47:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+test_bad.adb:50:17: info: implicit terminating annotation on "Lemma_Prove_P" has been proved, subprogram will terminate
 test_bad.adb:53:17: info: postcondition proved (CVC5: 1 VC)
+test_bad.adb:56:16: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
 test_bad.adb:58:42: medium: postcondition might fail, cannot prove P (X) [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
+test_bad.adb:78:09: warning: Always_Return annotation is useless
+test_bad.adb:78:09: warning: function "P" has implicit Always_Return annotation
+test_bad.adb:83:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+test_bad.adb:86:17: info: implicit terminating annotation on "Lemma_Prove_P1" has been proved, subprogram will terminate
 test_bad.adb:89:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
+test_bad.adb:94:17: info: implicit terminating annotation on "Lemma_Prove_P2" has been proved, subprogram will terminate
 test_bad.adb:97:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
+test_bad.adb:122:09: warning: Always_Return annotation is useless
+test_bad.adb:122:09: warning: function "P" has implicit Always_Return annotation
+test_bad.adb:127:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+test_bad.adb:130:17: info: implicit terminating annotation on "Lemma_Prove_P1" has been proved, subprogram will terminate
 test_bad.adb:133:17: info: postcondition proved (CVC5: 1 VC)
 test_bad.adb:137:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
+test_bad.adb:142:16: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
+test_bad.adb:145:17: info: implicit terminating annotation on "Lemma_Prove_P3" has been proved, subprogram will terminate
 test_bad.adb:148:17: info: postcondition proved (CVC5: 1 VC)
 test_bad.adb:152:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
-test_bad.adb:193:17: warning: lemma procedure cannot be instantiated automatically
-test_bad.adb:193:17: warning: procedure "Lemma_Prove_P" might not return
+test_bad.adb:185:09: warning: Always_Return annotation is useless
+test_bad.adb:185:09: warning: function "P" has implicit Always_Return annotation
+test_bad.adb:190:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test_bad.adb:196:17: info: postcondition proved (CVC5: 1 VC)
-test_bad.adb:201:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
+test_bad.adb:201:17: info: postcondition proved (CVC5: 1 VC)
+test_bad.adb:211:13: medium: implicit terminating annotation on "Lemma_Prove_P" could be incorrect, loop might be nonterminating

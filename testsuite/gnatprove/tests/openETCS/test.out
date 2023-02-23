@@ -1,3 +1,5 @@
+com_map.ads:27:13: info: implicit terminating annotation on "RBC_RIU_ID_Hash" has been proved, subprogram will terminate
+com_map.ads:37:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 com_map.ads:39:22: info: precondition proved (CVC5: 1 VC)
 spark-containers-formal-hashed_maps.ads:66:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at com_map.ads:30
 spark-containers-formal-hashed_maps.ads:68:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at com_map.ads:30
@@ -7,15 +9,15 @@ spark-containers-formal-hashed_maps.ads:78:19: info: terminating annotation on "
 spark-containers-formal-hashed_maps.ads:80:19: info: terminating annotation on "Equivalent_Keys_Transitive" has been proved, subprogram will terminate, in instantiation at com_map.ads:30
 spark-containers-formal-hashed_maps.ads:86:19: info: terminating annotation on "Hash_Equivalent" has been proved, subprogram will terminate, in instantiation at com_map.ads:30
 spark-containers-formal-hashed_maps.ads:461:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:102, in instantiation at com_map.ads:30
+spark-containers-formal-hashed_maps.ads:461:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at com_map.ads:30
 spark-containers-formal-hashed_maps.ads:461:13: info: precondition proved (Trivial: 1 VC), in instantiation at com_map.ads:30
-spark-containers-formal-hashed_maps.ads:461:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at com_map.ads:30
 spark-containers-formal-hashed_maps.ads:465:06: info: data dependencies proved, in instantiation at com_map.ads:30
 spark-containers-formal-hashed_maps.ads:468:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:102, in instantiation at com_map.ads:30
 spark-containers-formal-hashed_maps.ads:468:13: info: precondition proved (CVC5: 1 VC), in instantiation at com_map.ads:30
-spark-containers-formal-hashed_maps.ads:514:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at com_map.ads:30
+spark-containers-formal-hashed_maps.ads:514:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at com_map.ads:30
 spark-containers-formal-hashed_maps.ads:516:08: info: dynamic accessibility check proved (Trivial), in instantiation at com_map.ads:30
 spark-containers-formal-hashed_maps.ads:516:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at com_map.ads:30
-spark-containers-formal-hashed_maps.ads:520:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at com_map.ads:30
+spark-containers-formal-hashed_maps.ads:520:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at com_map.ads:30
 spark-containers-formal-hashed_maps.ads:522:08: info: dynamic accessibility check proved (Trivial), in instantiation at com_map.ads:30
 spark-containers-formal-hashed_maps.ads:542:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at com_map.ads:30
 spark-containers-formal-hashed_maps.ads:582:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at com_map.ads:30
@@ -61,10 +63,10 @@ spark-containers-functional-maps.ads:388:13: info: during checks for quantificat
 spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-hashed_maps.ads:258, in instantiation at com_map.ads:30
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:191, in instantiation at com_map.ads:30
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:258, in instantiation at com_map.ads:30
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:191, in instantiation at com_map.ads:30
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:258, in instantiation at com_map.ads:30
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:191, in instantiation at com_map.ads:30
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:258, in instantiation at com_map.ads:30
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:191, in instantiation at com_map.ads:30
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:258, in instantiation at com_map.ads:30
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:191, in instantiation at com_map.ads:30
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:258, in instantiation at com_map.ads:30
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-hashed_maps.ads:191, in instantiation at com_map.ads:30
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-hashed_maps.ads:258, in instantiation at com_map.ads:30
 spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:191, in instantiation at com_map.ads:30
@@ -86,11 +88,11 @@ spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "
 spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:212, in instantiation at com_map.ads:30
 spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-hashed_maps.ads:212, in instantiation at com_map.ads:30
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:212, in instantiation at com_map.ads:30
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:212, in instantiation at com_map.ads:30
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:212, in instantiation at com_map.ads:30
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_maps.ads:212, in instantiation at com_map.ads:30
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_maps.ads:212, in instantiation at com_map.ads:30
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:212, in instantiation at com_map.ads:30
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:212, in instantiation at com_map.ads:30
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:212, in instantiation at com_map.ads:30
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-hashed_maps.ads:212, in instantiation at com_map.ads:30
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:212, in instantiation at com_map.ads:30
 spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-hashed_maps.ads:212, in instantiation at com_map.ads:30
@@ -219,6 +221,7 @@ spark-containers-parameter_checks.ads:261:17: info: terminating annotation on "H
 spark-containers-parameter_checks.ads:262:09: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_maps.ads:176, in instantiation at com_map.ads:30
 spark-containers-parameter_checks.ads:264:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_maps.ads:176, in instantiation at com_map.ads:30
 deceleration_curve.adb:33:07: info: initialization of "delta_speed" proved
+deceleration_curve.adb:36:65: medium: implicit terminating annotation on "Distance_To_Speed" could be incorrect, loop might be nonterminating
 deceleration_curve.adb:37:25: info: assertion proved (CVC5: 4 VC)
 deceleration_curve.adb:40:13: info: loop invariant initialization proved (CVC5: 2 VC)
 deceleration_curve.adb:40:45: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove speed <= Initial_Speed
@@ -273,38 +276,48 @@ deceleration_curve.adb:110:10: warning: assuming "New_Line" has no effect on glo
 deceleration_curve.adb:110:10: warning: no Global contract available for "New_Line"
 deceleration_curve.adb:110:10: warning: no returning annotation available for "New_Line"
 deceleration_curve.ads:28:06: info: precondition proved (CVC5: 2 VC)
+deceleration_curve.ads:75:13: info: implicit terminating annotation on "Curve_Index_From_Location" has been proved, subprogram will terminate
 deceleration_curve.ads:81:32: medium: "Braking_Curve.curve" might not be initialized in "Curve_From_Target" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Braking_Curve.curve" on all paths, make "Braking_Curve" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 deceleration_curve.ads:85:14: warning: subprogram "Print_Curve" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved (CVC5: 2 VC)
 deceleration_curve_test.adb:11:04: info: initialization of "braking_curve" proved
-deceleration_curve_test.adb:15:19: info: implicit function contract not available for proof ("Distance_To_Speed" might not return)
 deceleration_curve_test.adb:15:19: info: precondition proved (CVC5: 6 VC)
 deceleration_curve_test.adb:15:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Distance_To_Speed or turning it into an expression function in its unit spec]
 deceleration_curve_test.adb:17:04: info: precondition proved (CVC5: 1 VC)
 example.adb:4:13: info: overflow check proved (CVC5: 2 VC)
 example.adb:5:20: info: overflow check proved (CVC5: 2 VC)
+example.ads:2:13: info: implicit terminating annotation on "Saturated_Sum" has been proved, subprogram will terminate
 example.ads:5:14: info: postcondition proved (CVC5: 2 VC)
 sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved (CVC5: 2 VC)
 sec_3_13_2_monitoring_inputs.adb:32:61: medium: range check might fail, cannot prove lower bound for V [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at sec_3_13_2_monitoring_inputs.ads:180 should mention V]
 sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved (CVC5: 2 VC)
 sec_3_13_2_monitoring_inputs.adb:38:61: medium: range check might fail, cannot prove lower bound for V [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at sec_3_13_2_monitoring_inputs.ads:196 should mention V]
+sec_3_13_2_monitoring_inputs.ads:56:13: info: implicit terminating annotation on "Is_Valid_Deceleration_Model" has been proved, subprogram will terminate
+sec_3_13_2_monitoring_inputs.ads:175:13: info: implicit terminating annotation on "Is_Valid_Kdry_rst" has been proved, subprogram will terminate
+sec_3_13_2_monitoring_inputs.ads:180:13: info: implicit terminating annotation on "Kdry_rst" has been proved, subprogram will terminate
 sec_3_13_2_monitoring_inputs.ads:184:08: info: postcondition proved (CVC5: 1 VC)
 sec_3_13_2_monitoring_inputs.ads:185:24: info: precondition proved (CVC5: 2 VC)
 sec_3_13_2_monitoring_inputs.ads:186:58: info: range check proved (CVC5: 2 VC)
+sec_3_13_2_monitoring_inputs.ads:191:13: info: implicit terminating annotation on "Is_Valid_Kwet_rst" has been proved, subprogram will terminate
+sec_3_13_2_monitoring_inputs.ads:196:13: info: implicit terminating annotation on "Kwet_rst" has been proved, subprogram will terminate
 sec_3_13_2_monitoring_inputs.ads:200:08: info: postcondition proved (CVC5: 1 VC)
 sec_3_13_2_monitoring_inputs.ads:201:24: info: precondition proved (CVC5: 2 VC)
 sec_3_13_2_monitoring_inputs.ads:202:58: info: range check proved (CVC5: 2 VC)
+sec_3_13_2_monitoring_inputs.ads:212:13: info: implicit terminating annotation on "Is_Valid_Kn" has been proved, subprogram will terminate
 sec_3_13_2_monitoring_inputs.ads:244:46: info: precondition proved (CVC5: 2 VC)
 sec_3_13_2_monitoring_inputs.ads:248:14: warning: subprogram "dummy" has no effect
+sec_3_13_4_gradient_accel_decel.ads:26:13: info: implicit terminating annotation on "A_gradient" has been proved, subprogram will terminate
 sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "d"
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved (CVC5: 2 VC)
 sec_3_13_6_deceleration.adb:26:37: info: range check proved (CVC5: 1 VC)
 sec_3_13_6_deceleration.adb:27:71: info: range check proved (CVC5: 2 VC)
+sec_3_13_6_deceleration.ads:34:13: info: implicit terminating annotation on "A_brake_emergency" has been proved, subprogram will terminate
 sec_3_13_6_deceleration.ads:34:43: warning: unused variable "d"
 sec_3_13_6_deceleration.ads:39:06: info: postcondition proved (CVC5: 1 VC)
 sec_3_13_6_deceleration.ads:40:37: info: precondition proved (CVC5: 2 VC)
 sec_3_13_6_deceleration.ads:40:37: info: range check proved (CVC5: 1 VC)
 sec_3_13_6_deceleration.ads:41:71: info: range check proved (CVC5: 2 VC)
+sec_3_13_6_deceleration.ads:44:13: info: implicit terminating annotation on "A_brake_safe" has been proved, subprogram will terminate
 sec_3_13_6_deceleration.ads:45:23: info: precondition proved (CVC5: 2 VC)
 sec_3_13_6_deceleration.ads:46:23: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 44 should mention V in a precondition]
 sec_3_13_6_deceleration.ads:46:26: info: precondition proved (CVC5: 2 VC)
@@ -316,18 +329,31 @@ sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail [reas
 sec_3_13_6_deceleration.ads:47:22: medium: range check might fail [reason for check: result of multiplication must be convertible to the target type of the conversion] [possible fix: subprogram at line 44 should mention d and V in a precondition]
 sec_3_13_6_deceleration.ads:47:30: medium: in inlined expression function body at units.ads:42
 sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at line 44 should mention V in a precondition]
+sec_3_13_6_deceleration.ads:51:13: info: implicit terminating annotation on "A_safe" has been proved, subprogram will terminate
 sec_3_13_6_deceleration.ads:52:26: info: range check proved (Trivial)
 sec_3_13_6_deceleration.ads:52:26: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 51 should mention d and V in a precondition]
 sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail
+sec_3_13_8_targets_decel_curves.ads:48:13: info: implicit terminating annotation on "Is_Valid_Target" has been proved, subprogram will terminate
 sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve" proved
 section_3_5_3.adb:41:54: info: overflow check proved (CVC5: 2 VC)
 section_3_5_3.ads:49:04: info: initialization of "Connections" proved
 section_3_5_3.ads:49:49: info: range check proved (CVC5: 2 VC)
 section_3_5_3.ads:51:53: info: range check proved (CVC5: 1 VC)
+section_3_5_3.ads:53:13: info: implicit terminating annotation on "Authorize_New_Communication_Session" has been proved, subprogram will terminate
 section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" has no effect
 section_3_5_3.ads:75:14: medium: in inlined expression function body at com_map.ads:38
 section_3_5_3.ads:75:14: medium: postcondition might fail, cannot prove Com_To_RBC_Map.Contains (Map, Id)
 section_3_5_3.ads:80:14: warning: subprogram "Contact_RBC" has no effect
+section_4_6.ads:56:13: info: implicit terminating annotation on "condition_1" has been proved, subprogram will terminate
+section_4_6.ads:59:13: info: implicit terminating annotation on "condition_5" has been proved, subprogram will terminate
+section_4_6.ads:65:13: info: implicit terminating annotation on "condition_6" has been proved, subprogram will terminate
+section_4_6.ads:70:13: info: implicit terminating annotation on "condition_10" has been proved, subprogram will terminate
+section_4_6.ads:75:13: info: implicit terminating annotation on "condition_50" has been proved, subprogram will terminate
+section_4_6.ads:84:13: info: implicit terminating annotation on "condition_transition_SB_to_SH" has been proved, subprogram will terminate
+section_4_6.ads:87:13: info: implicit terminating annotation on "condition_transition_SB_to_FS" has been proved, subprogram will terminate
+section_4_6.ads:90:13: info: implicit terminating annotation on "condition_transition_SB_to_IS" has been proved, subprogram will terminate
+section_4_6.ads:94:13: info: implicit terminating annotation on "disjoint_condition_transitions" has been proved, subprogram will terminate
+section_4_6.ads:102:13: info: implicit terminating annotation on "transition" has been proved, subprogram will terminate
 section_4_6.ads:102:24: warning: unused variable "mode"
 section_4_6.ads:106:06: medium: contract cases might not be complete
 section_4_6.ads:106:06: medium: contract cases might not be disjoint
@@ -431,16 +457,21 @@ step_function.adb:182:22: info: precondition proved (CVC5: 1 VC)
 step_function.adb:183:22: info: precondition proved (CVC5: 1 VC)
 step_function.adb:183:39: medium: "Merge.Step" might not be initialized
 step_function.adb:188:22: info: range check proved (CVC5: 2 VC)
+step_function.ads:39:13: info: implicit terminating annotation on "Min" has been proved, subprogram will terminate
 step_function.ads:40:17: info: postcondition proved (CVC5: 2 VC)
+step_function.ads:42:13: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
 step_function.ads:46:24: info: index check proved (CVC5: 2 VC)
 step_function.ads:46:24: info: overflow check proved (CVC5: 2 VC)
 step_function.ads:46:50: info: index check proved (CVC5: 2 VC)
+step_function.ads:48:13: info: implicit terminating annotation on "Has_Same_Delimiters" has been proved, subprogram will terminate
 step_function.ads:52:23: info: index check proved (CVC5: 2 VC)
 step_function.ads:52:49: info: index check proved (CVC5: 2 VC)
+step_function.ads:54:13: info: implicit terminating annotation on "Get_Value" has been proved, subprogram will terminate
 step_function.ads:56:12: info: postcondition proved (Z3: 1 VC)
 step_function.ads:58:27: info: index check proved (CVC5: 2 VC)
 step_function.ads:59:36: info: index check proved (CVC5: 2 VC)
 step_function.ads:60:50: info: index check proved (CVC5: 2 VC)
+step_function.ads:66:13: info: implicit terminating annotation on "Minimum_Until_Point" has been proved, subprogram will terminate
 step_function.ads:72:06: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 step_function.ads:73:28: info: index check proved (CVC5: 2 VC)
 step_function.ads:74:50: info: index check proved (CVC5: 2 VC)
@@ -490,7 +521,11 @@ step_function_test.adb:67:19: medium: assertion might fail
 units.adb:24:38: info: float overflow check proved (CVC5: 1 VC)
 units.adb:24:48: info: division check proved (CVC5: 1 VC)
 units.adb:24:48: info: float overflow check proved (Trivial)
+units.ads:32:13: info: implicit terminating annotation on "Is_Valid_Speed_km_per_h" has been proved, subprogram will terminate
+units.ads:35:13: info: implicit terminating annotation on "m_per_s_From_km_per_h" has been proved, subprogram will terminate
 units.ads:37:22: info: float overflow check proved (CVC5: 1 VC)
 units.ads:37:32: info: division check proved (CVC5: 1 VC)
 units.ads:37:32: info: float overflow check proved (Trivial)
+units.ads:41:13: info: implicit terminating annotation on "Is_Valid_Speed" has been proved, subprogram will terminate
 units.ads:43:20: info: precondition proved (CVC5: 1 VC)
+units.ads:45:13: info: implicit terminating annotation on "km_per_h_From_m_per_s" has been proved, subprogram will terminate

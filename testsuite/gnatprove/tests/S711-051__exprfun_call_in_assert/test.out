@@ -1,4 +1,5 @@
 test.adb:10:38: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:12:22: info: assertion proved (CVC5: 1 VC)
 test.adb:13:22: info: assertion proved (CVC5: 1 VC)
+test.ads:10:13: info: implicit terminating annotation on "Context_Field" has been proved, subprogram will terminate
 test.ads:14:14: info: postcondition proved (CVC5: 1 VC)

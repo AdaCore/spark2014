@@ -4,5 +4,7 @@ sub.adb:25:18: info: range check proved (CVC5: 2 VC)
 sub.adb:30:04: warning: analyzing unreferenced procedure "P"
 sub.adb:30:14: warning: subprogram "P" has no effect
 sub.adb:32:18: info: range check proved (CVC5: 2 VC)
+sub.ads:6:13: info: implicit terminating annotation on "Remove_Absent" has been proved, subprogram will terminate
 sub.ads:8:10: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+sub.ads:10:13: info: implicit terminating annotation on "Remove_Absent" has been proved, subprogram will terminate
 sub.ads:12:10: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)

@@ -44,10 +44,14 @@ simple_trajectory.adb:41:35: info: float overflow check proved (Z3: 1 VC)
 simple_trajectory.adb:41:55: info: range check proved (CVC5: 2 VC)
 simple_trajectory.adb:42:22: info: assertion proved (colibri: 1 VC)
 simple_trajectory.adb:42:46: info: range check proved (CVC5: 2 VC)
+simple_trajectory.ads:15:13: info: implicit terminating annotation on "Low_Bound" has been proved, subprogram will terminate
 simple_trajectory.ads:16:16: info: range check proved (Trivial)
 simple_trajectory.ads:16:19: info: float overflow check proved (Trivial)
+simple_trajectory.ads:19:13: info: implicit terminating annotation on "High_Bound" has been proved, subprogram will terminate
 simple_trajectory.ads:20:16: info: range check proved (Trivial)
 simple_trajectory.ads:20:19: info: float overflow check proved (Trivial)
+simple_trajectory.ads:23:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
+simple_trajectory.ads:27:13: info: implicit terminating annotation on "In_Bounds" has been proved, subprogram will terminate
 simple_trajectory.ads:34:33: info: initialization of "New_Speed" proved
 simple_trajectory.ads:35:09: info: data dependencies proved
 simple_trajectory.ads:38:19: info: postcondition proved (Z3: 1 VC)

@@ -1,8 +1,12 @@
+perm.ads:8:13: info: implicit terminating annotation on "Occurrences" has been proved, subprogram will terminate
 perm.ads:10:17: info: precondition proved
 perm.ads:10:17: info: subprogram variant proved
 perm.ads:10:42: info: overflow check proved
 perm.ads:10:56: info: index check proved
+perm.ads:14:13: info: implicit terminating annotation on "Occurrences" has been proved, subprogram will terminate
 perm.ads:15:07: info: precondition proved
+perm.ads:17:13: info: implicit terminating annotation on "Occ" has been proved, subprogram will terminate
+perm.ads:20:13: info: implicit terminating annotation on "Is_Perm" has been proved, subprogram will terminate
 perm-lemma_subprograms.adb:3:14: info: terminating annotation on "Occ_Eq" has been proved, subprogram will terminate
 perm-lemma_subprograms.adb:6:15: info: range check proved
 perm-lemma_subprograms.adb:6:35: info: range check proved
@@ -54,7 +58,7 @@ perm-lemma_subprograms.adb:51:42: info: precondition proved
 perm-lemma_subprograms.adb:52:25: info: predicate check proved
 perm-lemma_subprograms.adb:52:39: info: precondition proved
 perm-lemma_subprograms.adb:59:07: info: precondition proved
-perm-lemma_subprograms.ads:7:13: info: terminating annotation on "Is_Set" has been proved, subprogram will terminate
+perm-lemma_subprograms.ads:7:13: info: implicit terminating annotation on "Is_Set" has been proved, subprogram will terminate
 perm-lemma_subprograms.ads:10:20: info: index check proved
 perm-lemma_subprograms.ads:12:39: info: index check proved
 perm-lemma_subprograms.ads:12:47: info: index check proved

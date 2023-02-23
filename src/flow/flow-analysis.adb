@@ -5872,13 +5872,21 @@ package body Flow.Analysis is
       Spec_Entity_Id : constant Flow_Id :=
         Direct_Mapping_Id (Enclosing_Subp);
 
+      Implicit_Annotation : constant Boolean :=
+        Has_Implicit_Always_Return_Annotation (Enclosing_Subp);
+
       Proved : Boolean := True;
 
       function Check_Msg (Reason : String) return String is
-        ("terminating annotation on & could be incorrect, " & Reason);
+        ((if Implicit_Annotation
+          then "implicit "
+          else "") &
+         "terminating annotation on & could be incorrect, " & Reason);
 
    begin
-      if Has_Always_Return_Annotation (Enclosing_Subp) then
+      if Has_Always_Return_Annotation (Enclosing_Subp)
+        or else Implicit_Annotation
+      then
 
          --  If all paths in subprogram raise exceptions or, more importantly,
          --  call procedures with No_Return, then the CFG will be pruned. We
@@ -6032,13 +6040,15 @@ package body Flow.Analysis is
             end;
          end loop;
 
-         if Proved
-           and then Is_Subprogram_Or_Entry (FA.Spec_Entity)
+         if Proved and then Is_Subprogram_Or_Entry (FA.Spec_Entity)
          then
             Error_Msg_Flow (FA       => FA,
-                            Msg      => "terminating annotation on & has " &
-                                        "been proved, subprogram will " &
-                                        "terminate",
+                            Msg      =>
+                              (if Implicit_Annotation
+                               then "implicit "
+                               else "") &
+                              "terminating annotation on & has been proved, " &
+                              "subprogram will terminate",
                             Severity => Info_Kind,
                             N        => FA.Spec_Entity,
                             F1       => Spec_Entity_Id,

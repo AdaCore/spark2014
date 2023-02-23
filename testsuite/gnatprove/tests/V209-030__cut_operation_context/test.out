@@ -8,38 +8,26 @@ cut_operations_context.adb:18:25: error: call to a cut operation in an incorrect
 cut_operations_context.adb:18:25: error: violation of aspect SPARK_Mode at line 2
 cut_operations_context.adb:23:27: error: call to a cut operation in an incorrect context is not allowed in SPARK
 cut_operations_context.adb:23:27: error: violation of aspect SPARK_Mode at line 2
-cut_operations_context.adb:29:50: warning: assuming "A" always returns
 cut_operations_context.adb:29:50: warning: assuming "A" has no effect on global items
 cut_operations_context.adb:29:50: warning: no Global contract available for "A"
-cut_operations_context.adb:29:50: warning: no returning annotation available for "A"
-cut_operations_context.adb:29:57: warning: assuming "B" always returns
 cut_operations_context.adb:29:57: warning: assuming "B" has no effect on global items
 cut_operations_context.adb:29:57: warning: no Global contract available for "B"
-cut_operations_context.adb:29:57: warning: no returning annotation available for "B"
 cut_operations_context.adb:30:48: error: call to a cut operation in an incorrect context is not allowed in SPARK
 cut_operations_context.adb:30:48: error: violation of aspect SPARK_Mode at line 2
-cut_operations_context.adb:30:52: warning: assuming "A" always returns
 cut_operations_context.adb:30:52: warning: assuming "A" has no effect on global items
 cut_operations_context.adb:30:52: warning: no Global contract available for "A"
-cut_operations_context.adb:30:52: warning: no returning annotation available for "A"
-cut_operations_context.adb:30:59: warning: assuming "B" always returns
 cut_operations_context.adb:30:59: warning: assuming "B" has no effect on global items
 cut_operations_context.adb:30:59: warning: no Global contract available for "B"
-cut_operations_context.adb:30:59: warning: no returning annotation available for "B"
 cut_operations_context.adb:31:31: error: subtype of "Boolean" is not allowed in SPARK (due to call to a cut operation in an incorrect context)
 cut_operations_context.adb:31:31: error: violation of aspect SPARK_Mode at line 2
 cut_operations_context.adb:31:36: error: subtype of "Boolean" is not allowed in SPARK (due to call to a cut operation in an incorrect context)
 cut_operations_context.adb:31:36: error: violation of aspect SPARK_Mode at line 2
 cut_operations_context.adb:31:50: error: call to a cut operation in an incorrect context is not allowed in SPARK
 cut_operations_context.adb:31:50: error: violation of aspect SPARK_Mode at line 2
-cut_operations_context.adb:31:54: warning: assuming "A" always returns
 cut_operations_context.adb:31:54: warning: assuming "A" has no effect on global items
 cut_operations_context.adb:31:54: warning: no Global contract available for "A"
-cut_operations_context.adb:31:54: warning: no returning annotation available for "A"
-cut_operations_context.adb:31:61: warning: assuming "B" always returns
 cut_operations_context.adb:31:61: warning: assuming "B" has no effect on global items
 cut_operations_context.adb:31:61: warning: no Global contract available for "B"
-cut_operations_context.adb:31:61: warning: no returning annotation available for "B"
 cut_operations_context.adb:43:54: error: call to a cut operation in an incorrect context is not allowed in SPARK
 cut_operations_context.adb:43:54: error: violation of aspect SPARK_Mode at line 2
 cut_operations_context.adb:43:77: error: "D" is not allowed in SPARK (due to call to a cut operation in an incorrect context)

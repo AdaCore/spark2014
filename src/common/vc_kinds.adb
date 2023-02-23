@@ -561,6 +561,11 @@ package body VC_Kinds is
         when Warn_Useless_Relaxed_Init_Obj =>
           "object annotated with Relaxed_Initialization cannot be"
           & " partially initialized",
+        when Warn_Useless_Always_Return_Fun =>
+          "functions are implicitly annotated with Always_Return",
+        when Warn_Useless_Always_Return_Lemma =>
+          "automatically instantiated lemmas are implicitly annotated with"
+           & " Always_Return",
         when Warn_Variant_Not_Recursive =>
           "no recursive call visible on subprogram with Subprogram_Variant",
 
@@ -1415,6 +1420,11 @@ package body VC_Kinds is
           "useless Relaxed_Initialization aspect on function result",
         when Warn_Useless_Relaxed_Init_Obj =>
           "useless Relaxed_Initialization aspect on object",
+        when Warn_Useless_Always_Return_Fun =>
+          "useless Always_Return annotation on function",
+        when Warn_Useless_Always_Return_Lemma =>
+          "useless Always_Return annotation on automatically instantiated"
+           & " lemma",
         when Warn_Variant_Not_Recursive =>
           "variant not recursive",
 

@@ -1,48 +1,50 @@
+main.adb:13:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 main.adb:13:79: info: dynamic accessibility check proved (Trivial)
+main.adb:14:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 main.adb:14:91: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:16:13: info: implicit terminating annotation on "Length_1" has been proved, subprogram will terminate
 main.adb:19:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:21:13: info: loop variant proved (Trivial)
 main.adb:25:21: info: predicate check proved (Trivial: 1 VC)
 main.adb:25:23: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:25:25: info: predicate check proved (Trivial: 1 VC)
 main.adb:26:22: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:32:13: info: implicit terminating annotation on "Length_2" has been proved, subprogram will terminate
 main.adb:35:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:37:13: medium: loop variant might fail [possible explanation: a goto statement was found in the loop]
 main.adb:38:16: info: no contextual analysis of "Rand" (body not seen yet)
-main.adb:38:16: warning: assuming "Rand" always returns
 main.adb:38:16: warning: assuming "Rand" has no effect on global items
 main.adb:38:16: warning: no Global contract available for "Rand"
-main.adb:38:16: warning: no returning annotation available for "Rand"
 main.adb:41:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:41:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:41:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:43:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:48:13: info: implicit terminating annotation on "Length_2_b" has been proved, subprogram will terminate
 main.adb:51:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:53:13: info: loop variant proved (Trivial)
 main.adb:54:19: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:55:16: warning: assuming "Rand" always returns
 main.adb:55:16: warning: assuming "Rand" has no effect on global items
 main.adb:55:16: warning: no Global contract available for "Rand"
-main.adb:55:16: warning: no returning annotation available for "Rand"
 main.adb:58:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:58:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:58:22: info: predicate check proved (Trivial: 1 VC)
+main.adb:64:13: info: implicit terminating annotation on "Length_3" has been proved, subprogram will terminate
 main.adb:67:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:69:13: info: loop variant proved (Trivial)
 main.adb:70:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:70:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:70:22: info: predicate check proved (Trivial: 1 VC)
-main.adb:71:18: warning: assuming "Rand" always returns
 main.adb:71:18: warning: assuming "Rand" has no effect on global items
 main.adb:71:18: warning: no Global contract available for "Rand"
-main.adb:71:18: warning: no returning annotation available for "Rand"
 main.adb:75:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:80:13: info: implicit terminating annotation on "Length_4" has been proved, subprogram will terminate
 main.adb:83:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:85:13: medium: loop variant might fail [possible explanation: "C" might not be updated on all paths]
 main.adb:86:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:86:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:86:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:87:24: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:92:13: info: implicit terminating annotation on "Length_4_b" has been proved, subprogram will terminate
 main.adb:95:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:97:13: info: loop variant proved (Trivial)
 main.adb:98:18: info: predicate check proved (Trivial: 1 VC)
@@ -50,6 +52,7 @@ main.adb:98:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:98:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:99:23: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:104:13: info: implicit function contract might not be available on implicit recursive calls
+main.adb:104:13: info: implicit terminating annotation on "Length_5" has been proved, subprogram will terminate
 main.adb:107:45: info: data dependencies proved
 main.adb:109:16: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:112:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -58,6 +61,7 @@ main.adb:115:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:115:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:115:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:116:13: info: precondition proved (CVC5: 1 VC)
+main.adb:121:13: info: implicit terminating annotation on "Length_5_b" has been proved, subprogram will terminate
 main.adb:124:17: info: add a contract to analyze it separately from calling contexts
 main.adb:124:17: info: local subprogram "Next" only analyzed in the context of calls
 main.adb:126:16: info: pointer dereference check proved (CVC5: 1 VC), in call inlined at main.adb:133
@@ -68,6 +72,7 @@ main.adb:132:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:132:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:133:13: info: analyzing call to "Next" in context
 main.adb:138:13: info: implicit function contract might not be available on implicit recursive calls
+main.adb:138:13: info: implicit terminating annotation on "Length_5_t" has been proved, subprogram will terminate
 main.adb:141:45: info: data dependencies proved
 main.adb:143:16: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:146:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -77,12 +82,14 @@ main.adb:149:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:149:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:150:13: info: precondition proved (CVC5: 1 VC)
 main.adb:154:22: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:160:13: info: implicit terminating annotation on "Length_6" has been proved, subprogram will terminate
 main.adb:163:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:165:13: info: loop variant proved (Trivial)
 main.adb:166:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:166:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:166:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:167:25: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:172:13: info: implicit terminating annotation on "Length_7" has been proved, subprogram will terminate
 main.adb:175:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:177:13: medium: loop variant might fail [possible explanation: "C" might not be updated on all paths]
 main.adb:178:18: info: predicate check proved (Trivial: 1 VC)
@@ -91,6 +98,7 @@ main.adb:178:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:179:29: info: unrolling loop
 main.adb:179:29: warning: statement has no effect
 main.adb:180:28: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:186:13: info: implicit terminating annotation on "Length_7_b" has been proved, subprogram will terminate
 main.adb:189:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:191:13: info: loop variant proved (Trivial)
 main.adb:192:29: info: unrolling loop
@@ -192,24 +200,26 @@ main.adb:323:17: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:323:19: info: predicate check proved (Trivial: 1 VC)
 main.adb:327:26: info: null exclusion check proved (CVC5: 1 VC)
 main.adb:329:16: info: pointer dereference check proved (CVC5: 1 VC)
+main_bad.adb:13:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 main_bad.adb:13:79: info: dynamic accessibility check proved (Trivial)
+main_bad.adb:14:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 main_bad.adb:14:91: info: pointer dereference check proved (CVC5: 1 VC)
+main_bad.adb:16:13: info: implicit terminating annotation on "Length_1" has been proved, subprogram will terminate
 main_bad.adb:19:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:21:13: medium: loop variant might fail [possible explanation: "C" might not be updated on all paths]
 main_bad.adb:22:18: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:22:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:22:22: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:23:20: info: pointer dereference check proved (CVC5: 1 VC)
+main_bad.adb:28:13: info: implicit terminating annotation on "Length_2" has been proved, subprogram will terminate
 main_bad.adb:31:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:33:13: medium: loop variant might fail [possible explanation: a goto statement was found in the loop]
 main_bad.adb:34:18: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:34:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:34:22: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:35:16: info: no contextual analysis of "Rand" (body not seen yet)
-main_bad.adb:35:16: warning: assuming "Rand" always returns
 main_bad.adb:35:16: warning: assuming "Rand" has no effect on global items
 main_bad.adb:35:16: warning: no Global contract available for "Rand"
-main_bad.adb:35:16: warning: no returning annotation available for "Rand"
 main_bad.adb:38:19: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:44:43: info: initialization of "R" proved
 main_bad.adb:47:12: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -226,55 +236,48 @@ main_bad.adb:55:14: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:55:17: medium: resource or memory leak might occur
 main_bad.adb:55:21: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:55:23: info: pointer dereference check proved (CVC5: 1 VC)
+main_bad.adb:60:13: info: implicit terminating annotation on "Length_4" has been proved, subprogram will terminate
 main_bad.adb:63:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:65:13: medium: loop variant might fail [possible explanation: "C" might not be updated on all paths]
 main_bad.adb:66:18: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:66:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:66:22: info: predicate check proved (Trivial: 1 VC)
+main_bad.adb:72:13: info: implicit terminating annotation on "Length_5" has been proved, subprogram will terminate
 main_bad.adb:75:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:77:13: medium: loop variant might fail [possible explanation: "C" might not be updated on all paths]
 main_bad.adb:78:18: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:78:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:78:22: info: predicate check proved (Trivial: 1 VC)
+main_bad.adb:84:13: info: implicit terminating annotation on "Length_6" has been proved, subprogram will terminate
 main_bad.adb:87:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:89:13: medium: loop variant might fail [possible explanation: "C" might not be updated on all paths]
 main_bad.adb:90:18: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:90:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:90:22: info: predicate check proved (Trivial: 1 VC)
-main_bad.adb:91:16: warning: assuming "Rand" always returns
 main_bad.adb:91:16: warning: assuming "Rand" has no effect on global items
 main_bad.adb:91:16: warning: no Global contract available for "Rand"
-main_bad.adb:91:16: warning: no returning annotation available for "Rand"
 main_bad.adb:92:22: info: pointer dereference check proved (CVC5: 1 VC)
-main_bad.adb:94:19: warning: assuming "Rand" always returns
 main_bad.adb:94:19: warning: assuming "Rand" has no effect on global items
 main_bad.adb:94:19: warning: no Global contract available for "Rand"
-main_bad.adb:94:19: warning: no returning annotation available for "Rand"
-main_bad.adb:95:22: warning: assuming "Rand" always returns
 main_bad.adb:95:22: warning: assuming "Rand" has no effect on global items
 main_bad.adb:95:22: warning: no Global contract available for "Rand"
-main_bad.adb:95:22: warning: no returning annotation available for "Rand"
 main_bad.adb:96:28: info: pointer dereference check proved (CVC5: 1 VC)
-main_bad.adb:97:25: warning: assuming "Rand" always returns
 main_bad.adb:97:25: warning: assuming "Rand" has no effect on global items
 main_bad.adb:97:25: warning: no Global contract available for "Rand"
-main_bad.adb:97:25: warning: no returning annotation available for "Rand"
-main_bad.adb:99:25: warning: assuming "Rand" always returns
 main_bad.adb:99:25: warning: assuming "Rand" has no effect on global items
 main_bad.adb:99:25: warning: no Global contract available for "Rand"
-main_bad.adb:99:25: warning: no returning annotation available for "Rand"
 main_bad.adb:102:28: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:105:25: info: pointer dereference check proved (CVC5: 1 VC)
+main_bad.adb:112:13: info: implicit terminating annotation on "Length_7" has been proved, subprogram will terminate
 main_bad.adb:115:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:117:13: medium: loop variant might fail [possible explanation: "C" might not be updated on all paths]
 main_bad.adb:118:18: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:118:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:118:22: info: predicate check proved (Trivial: 1 VC)
-main_bad.adb:119:18: warning: assuming "Rand" always returns
 main_bad.adb:119:18: warning: assuming "Rand" has no effect on global items
 main_bad.adb:119:18: warning: no Global contract available for "Rand"
-main_bad.adb:119:18: warning: no returning annotation available for "Rand"
 main_bad.adb:120:35: info: pointer dereference check proved (CVC5: 1 VC)
+main_bad.adb:127:13: info: implicit terminating annotation on "Length_8" has been proved, subprogram will terminate
 main_bad.adb:130:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:132:13: medium: loop variant might fail [possible explanation: a goto statement was found in the loop]
 main_bad.adb:133:18: info: predicate check proved (Trivial: 1 VC)
@@ -282,10 +285,8 @@ main_bad.adb:133:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:133:22: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:134:29: info: unrolling loop
 main_bad.adb:134:29: warning: statement has no effect
-main_bad.adb:135:19: warning: assuming "Rand" always returns
 main_bad.adb:135:19: warning: assuming "Rand" has no effect on global items
 main_bad.adb:135:19: warning: no Global contract available for "Rand"
-main_bad.adb:135:19: warning: no returning annotation available for "Rand"
 main_bad.adb:139:19: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:145:43: info: initialization of "R" proved
 main_bad.adb:148:12: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)

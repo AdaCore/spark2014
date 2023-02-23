@@ -1,3 +1,4 @@
+original.ads:2:13: info: implicit terminating annotation on "Opposite" has been proved, subprogram will terminate
 original.ads:3:14: info: postcondition proved (CVC5: 2 VC)
 report.adb:6:07: info: initialization of "X" proved
 report.adb:9:22: info: assertion proved (CVC5: 1 VC)

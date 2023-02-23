@@ -1,3 +1,4 @@
 parent-child-grandchild-proc.adb:6:31: medium: range check might fail, cannot prove upper bound for I + 1 [reason for check: result of addition must fit in component type] [possible fix: add precondition (I <= Idx_T'Last - 1) to subprogram at parent-child-grandchild.adb:10]
 parent-child-grandchild.adb:10:51: info: initialization of "Nf" proved
 parent-child-grandchild.adb:13:11: info: data dependencies proved
+parent-child-grandchild.ads:27:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate

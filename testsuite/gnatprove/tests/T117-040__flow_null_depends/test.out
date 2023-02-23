@@ -7,3 +7,4 @@ test.adb:13:13: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test.ads:7:20: info: initialization of "C" proved
 test.ads:7:75: info: flow dependencies proved
 test.ads:7:123: info: postcondition proved (CVC5: 1 VC)
+test.ads:9:13: info: implicit terminating annotation on "Init_Test" has been proved, subprogram will terminate

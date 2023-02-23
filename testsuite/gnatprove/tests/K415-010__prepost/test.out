@@ -1,2 +1,6 @@
 prepost.adb:5:22: info: assertion proved (CVC5: 1 VC)
 prepost.adb:16:22: medium: assertion might fail
+prepost.ads:3:13: info: implicit terminating annotation on "Is_Zero" has been proved, subprogram will terminate
+prepost.ads:6:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+prepost.ads:9:13: info: implicit terminating annotation on "Fun_Is_Zero" has been proved, subprogram will terminate
+prepost.ads:11:13: info: implicit terminating annotation on "G" has been proved, subprogram will terminate

@@ -1,17 +1,22 @@
 correct variant
 ethernet_dissector.adb:5:05: info: in instantiation at types.adb:28
 ethernet_dissector.adb:5:05: info: unrolling loop
+ethernet_dissector.adb:5:14: info: implicit terminating annotation on "Convert_To_Two_Octets" has been proved, subprogram will terminate
 ethernet_dissector.adb:6:05: info: in instantiation at types.adb:28
 ethernet_dissector.adb:6:05: info: unrolling loop
+ethernet_dissector.adb:6:14: info: implicit terminating annotation on "Convert_To_Four_Octets" has been proved, subprogram will terminate
 ethernet_dissector.adb:7:05: info: in instantiation at types.adb:28
 ethernet_dissector.adb:7:05: info: unrolling loop
+ethernet_dissector.adb:7:14: info: implicit terminating annotation on "Convert_To_Six_Octets" has been proved, subprogram will terminate
 ethernet_dissector.adb:11:09: info: initialization of "EtherType_Length_1" proved
 ethernet_dissector.adb:12:09: info: initialization of "EtherType_Length_2" proved
 ethernet_dissector.adb:13:09: info: initialization of "EtherType_Length_3" proved
 ethernet_dissector.adb:14:09: info: initialization of "Length" proved
 ethernet_dissector.adb:20:23: info: assertion proved (CVC5: 1 VC)
+ethernet_dissector.adb:21:09: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:21:20: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:21:57: info: overflow check proved (CVC5: 2 VC)
+ethernet_dissector.adb:23:09: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:23:20: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:23:41: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:23:61: info: overflow check proved (CVC5: 2 VC)
@@ -20,10 +25,12 @@ ethernet_dissector.adb:25:31: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:25:52: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:25:73: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:26:14: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
+ethernet_dissector.adb:28:17: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:28:28: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:28:49: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:28:70: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:29:34: info: overflow check proved (CVC5: 2 VC)
+ethernet_dissector.adb:31:17: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:31:28: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:31:49: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:31:70: info: overflow check proved (CVC5: 2 VC)
@@ -33,6 +40,7 @@ ethernet_dissector.adb:33:39: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:33:60: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:33:81: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:34:22: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
+ethernet_dissector.adb:36:25: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:36:36: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:36:57: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:36:78: info: overflow check proved (CVC5: 2 VC)
@@ -50,19 +58,23 @@ ethernet_dissector.adb:48:48: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:48:53: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:48:78: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:48:83: info: overflow check proved (CVC5: 2 VC)
+ethernet_dissector.adb:49:17: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:50:23: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:50:32: medium: overflow check might fail, cannot prove lower bound for 15 + Offset + Natural (Convert_To_Two_Octets (Length)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Convert_To_Two_Octets or turning it into an expression function]
 ethernet_dissector.adb:50:43: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
 ethernet_dissector.adb:50:88: info: range check proved (CVC5: 2 VC)
+ethernet_dissector.adb:53:17: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:53:28: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:53:65: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:53:76: medium: precondition might fail, cannot prove Buffer'Length = UXX'Size / 8
 ethernet_dissector.adb:53:108: info: overflow check proved (CVC5: 2 VC)
+ethernet_dissector.adb:57:17: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:57:28: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:57:49: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:57:54: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:57:79: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:57:84: info: overflow check proved (CVC5: 2 VC)
+ethernet_dissector.adb:58:17: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:58:28: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:58:65: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:58:73: info: range check proved (CVC5: 2 VC)
@@ -86,17 +98,22 @@ types.ads:13:09: info: flow dependencies proved, in instantiation at ethernet_di
 incorrect variant
 ethernet_dissector.adb:5:05: info: in instantiation at types.adb:28
 ethernet_dissector.adb:5:05: info: unrolling loop
+ethernet_dissector.adb:5:14: info: implicit terminating annotation on "Convert_To_Two_Octets" has been proved, subprogram will terminate
 ethernet_dissector.adb:6:05: info: in instantiation at types.adb:28
 ethernet_dissector.adb:6:05: info: unrolling loop
+ethernet_dissector.adb:6:14: info: implicit terminating annotation on "Convert_To_Four_Octets" has been proved, subprogram will terminate
 ethernet_dissector.adb:7:05: info: in instantiation at types.adb:28
 ethernet_dissector.adb:7:05: info: unrolling loop
+ethernet_dissector.adb:7:14: info: implicit terminating annotation on "Convert_To_Six_Octets" has been proved, subprogram will terminate
 ethernet_dissector.adb:11:09: info: initialization of "EtherType_Length_1" proved
 ethernet_dissector.adb:12:09: info: initialization of "EtherType_Length_2" proved
 ethernet_dissector.adb:13:09: info: initialization of "EtherType_Length_3" proved
 ethernet_dissector.adb:14:09: info: initialization of "Length" proved
 ethernet_dissector.adb:20:23: info: assertion proved (CVC5: 1 VC)
+ethernet_dissector.adb:21:09: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:21:20: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:21:57: info: overflow check proved (CVC5: 2 VC)
+ethernet_dissector.adb:23:09: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:23:20: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:23:41: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:23:61: info: overflow check proved (CVC5: 2 VC)
@@ -105,10 +122,12 @@ ethernet_dissector.adb:25:31: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:25:52: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:25:73: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:26:14: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
+ethernet_dissector.adb:28:17: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:28:28: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:28:49: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:28:70: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:29:34: info: overflow check proved (CVC5: 2 VC)
+ethernet_dissector.adb:31:17: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:31:28: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:31:49: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:31:70: info: overflow check proved (CVC5: 2 VC)
@@ -118,6 +137,7 @@ ethernet_dissector.adb:33:39: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:33:60: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:33:81: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:34:22: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
+ethernet_dissector.adb:36:25: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:36:36: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:36:57: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:36:78: info: overflow check proved (CVC5: 2 VC)
@@ -135,19 +155,23 @@ ethernet_dissector.adb:48:48: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:48:53: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:48:78: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:48:83: info: overflow check proved (CVC5: 2 VC)
+ethernet_dissector.adb:49:17: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:50:23: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:50:32: medium: overflow check might fail, cannot prove lower bound for 15 + Offset + Natural (Convert_To_Two_Octets (Length)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Convert_To_Two_Octets or turning it into an expression function]
 ethernet_dissector.adb:50:43: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
 ethernet_dissector.adb:50:88: info: range check proved (CVC5: 2 VC)
+ethernet_dissector.adb:53:17: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:53:28: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:53:65: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:53:76: medium: precondition might fail, cannot prove Buffer'Length = UXX'Size / 8
 ethernet_dissector.adb:53:108: info: overflow check proved (CVC5: 2 VC)
+ethernet_dissector.adb:57:17: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:57:28: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:57:49: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:57:54: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:57:79: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:57:84: info: overflow check proved (CVC5: 2 VC)
+ethernet_dissector.adb:58:17: medium: implicit terminating annotation on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating
 ethernet_dissector.adb:58:28: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:58:65: medium: overflow check might fail, cannot prove upper bound for Buffer'First + Buffer'Length [reason for check: result of addition must fit in a 32-bits machine integer]
 ethernet_dissector.adb:58:73: info: range check proved (CVC5: 2 VC)

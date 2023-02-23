@@ -1,4 +1,6 @@
+p.adb:3:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 p.adb:3:46: info: postcondition proved (CVC5: 1 VC)
+p.adb:7:16: info: implicit terminating annotation on "Zero" has been proved, subprogram will terminate
 p.adb:10:37: info: precondition proved (Trivial: 1 VC)
 p.adb:10:64: info: refined post proved (CVC5: 1 VC)
 p.adb:13:19: medium: assertion might fail

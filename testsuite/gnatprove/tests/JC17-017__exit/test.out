@@ -1,3 +1,4 @@
+p.adb:3:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 p.adb:4:19: info: postcondition proved (CVC5: 1 VC)
 p.adb:4:29: info: overflow check proved (CVC5: 2 VC)
 p.adb:15:09: info: overflow check proved (CVC5: 2 VC)
@@ -19,3 +20,4 @@ p.adb:45:33: info: loop invariant preservation proved (CVC5: 10 VC)
 p.adb:48:16: warning: loop exit condition is stable
 p.adb:54:13: info: overflow check proved (CVC5: 2 VC)
 p.adb:54:18: info: overflow check proved (CVC5: 2 VC)
+p.ads:1:10: info: implicit terminating annotation on "P" has been proved, subprogram will terminate

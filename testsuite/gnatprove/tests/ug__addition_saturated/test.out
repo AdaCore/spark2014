@@ -1,3 +1,4 @@
+addition.adb:1:10: info: implicit terminating annotation on "Addition" has been proved, subprogram will terminate
 addition.adb:3:03: info: disjoint contract cases proved
 addition.adb:3:03: info: complete contract cases proved
 addition.adb:3:44: info: contract case proved

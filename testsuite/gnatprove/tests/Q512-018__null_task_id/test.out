@@ -1,6 +1,2 @@
 main.adb:7:41: medium: precondition might fail
-main.adb:7:41: warning: assuming "Is_Terminated" always returns
-main.adb:7:41: warning: no returning annotation available for "Is_Terminated"
 main.adb:8:41: medium: precondition might fail
-main.adb:8:41: warning: assuming "Is_Callable" always returns
-main.adb:8:41: warning: no returning annotation available for "Is_Callable"

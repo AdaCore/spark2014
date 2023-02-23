@@ -1,5 +1,8 @@
+nested_pkg.adb:6:13: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
 nested_pkg.adb:10:11: info: flow dependencies proved
+nested_pkg.adb:13:16: info: implicit terminating annotation on "H" has been proved, subprogram will terminate
 nested_pkg.adb:13:38: info: data dependencies proved
+nested_pkg.adb:26:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 nested_pkg.adb:29:25: medium: "Z.State" constituent of "Nested_Pkg.Foobar" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
 nested_pkg.adb:44:14: info: data dependencies proved
 nested_pkg.adb:47:25: info: assertion proved (CVC5: 1 VC)
@@ -16,7 +19,9 @@ stack_asm.adb:38:40: high: "The_Stack" constituent of "State" is not initialized
 stack_asm.adb:38:40: low: unused global "The_Stack" constituent of "State"
 stack_asm.adb:38:51: info: initialization of "The_Ptr" constituent of "State" proved
 stack_asm.adb:45:39: info: initialization of "The_Ptr" constituent of "State" proved
+stack_asm.ads:7:12: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 stack_asm.ads:8:10: info: data dependencies proved
+stack_asm.ads:10:12: info: implicit terminating annotation on "Top" has been proved, subprogram will terminate
 stack_asm.ads:11:10: info: data dependencies proved
 stack_asm.ads:15:10: info: data dependencies proved
 stack_asm.ads:16:20: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Is_Empty or turning it into an expression function]

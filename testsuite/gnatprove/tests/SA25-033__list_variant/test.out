@@ -1,5 +1,7 @@
 list_variant.adb:10:13: info: function contract might not be available on recursive calls
-list_variant.adb:10:13: info: terminating annotation on "Length_Ann" has been proved, subprogram will terminate
+list_variant.adb:10:13: info: implicit terminating annotation on "Length_Ann" has been proved, subprogram will terminate
+list_variant.adb:12:06: warning: Always_Return annotation is useless
+list_variant.adb:12:06: warning: function "Length_Ann" has implicit Always_Return annotation
 list_variant.adb:13:14: info: postcondition proved (CVC5: 1 VC)
 list_variant.adb:16:52: info: subprogram variant proved (CVC5: 1 VC)
 list_variant.adb:16:65: info: pointer dereference check proved (CVC5: 1 VC)

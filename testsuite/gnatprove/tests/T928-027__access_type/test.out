@@ -1,3 +1,4 @@
+null_exclusion.adb:4:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 null_exclusion.adb:5:08: info: dynamic accessibility check proved (Trivial)
 null_exclusion.adb:8:56: info: pointer dereference check proved (CVC5: 1 VC)
 null_exclusion.adb:10:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)

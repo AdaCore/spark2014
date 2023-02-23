@@ -1,6 +1,9 @@
+at_end_borrow.adb:6:13: info: implicit terminating annotation on "AE" has been proved, subprogram will terminate
 at_end_borrow.adb:6:73: info: dynamic accessibility check proved (Trivial)
+at_end_borrow.adb:10:13: info: implicit terminating annotation on "AE" has been proved, subprogram will terminate
 at_end_borrow.adb:10:81: info: dynamic accessibility check proved (Trivial)
 at_end_borrow.adb:15:16: info: function contract might not be available on calls from enclosing unit
+at_end_borrow.adb:15:16: info: implicit terminating annotation on "Get_I" has been proved, subprogram will terminate
 at_end_borrow.adb:16:17: info: postcondition proved (CVC5: 2 VC)
 at_end_borrow.adb:16:18: info: pointer dereference check proved (CVC5: 1 VC)
 at_end_borrow.adb:16:36: info: pointer dereference check proved (CVC5: 1 VC)

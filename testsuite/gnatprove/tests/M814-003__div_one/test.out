@@ -1,2 +1,3 @@
+div_one.ads:3:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 div_one.ads:4:20: info: postcondition proved (CVC5: 1 VC)
 div_one.ads:4:30: info: division check proved (CVC5: 1 VC)

@@ -1,3 +1,4 @@
 loopframe.adb:8:26: info: unrolling loop
+loopframe.ads:11:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 loopframe.ads:12:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 loopframe.ads:12:45: info: index check proved (CVC5: 2 VC)

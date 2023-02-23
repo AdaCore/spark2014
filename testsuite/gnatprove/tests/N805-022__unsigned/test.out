@@ -97,22 +97,28 @@ x86.adb:143:22: info: assertion proved (CVC5: 1 VC)
 x86.adb:153:07: info: initialization of "val1" proved
 x86.adb:153:13: info: initialization of "val2" proved
 x86.adb:157:25: info: assertion proved (CVC5: 1 VC)
+x86.ads:22:13: info: implicit terminating annotation on "ECX" has been proved, subprogram will terminate
 x86.ads:23:06: info: data dependencies proved
 x86.ads:24:16: info: postcondition proved (CVC5: 1 VC)
 x86.ads:30:06: info: data dependencies proved
 x86.ads:31:16: info: postcondition proved (CVC5: 2 VC)
+x86.ads:40:13: info: implicit terminating annotation on "ESI" has been proved, subprogram will terminate
 x86.ads:41:06: info: data dependencies proved
 x86.ads:42:16: info: postcondition proved (CVC5: 1 VC)
 x86.ads:48:06: info: data dependencies proved
 x86.ads:49:16: info: postcondition proved (CVC5: 2 VC)
+x86.ads:58:13: info: implicit terminating annotation on "EDI" has been proved, subprogram will terminate
 x86.ads:59:06: info: data dependencies proved
 x86.ads:60:16: info: postcondition proved (CVC5: 1 VC)
 x86.ads:66:06: info: data dependencies proved
 x86.ads:67:16: info: postcondition proved (CVC5: 2 VC)
+x86.ads:74:13: info: implicit terminating annotation on "ReadMem8" has been proved, subprogram will terminate
 x86.ads:75:06: info: data dependencies proved
 x86.ads:76:14: info: postcondition proved (CVC5: 2 VC)
+x86.ads:80:13: info: implicit terminating annotation on "ReadMem16" has been proved, subprogram will terminate
 x86.ads:81:06: info: data dependencies proved
 x86.ads:82:14: info: postcondition proved (CVC5: 2 VC)
+x86.ads:87:13: info: implicit terminating annotation on "ReadMem32" has been proved, subprogram will terminate
 x86.ads:88:06: info: data dependencies proved
 x86.ads:89:14: info: postcondition proved (CVC5: 2 VC)
 x86.ads:96:06: info: data dependencies proved

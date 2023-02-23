@@ -1,2 +1,4 @@
+enum_rep.adb:5:13: info: implicit terminating annotation on "My_Enum_Enumrep" has been proved, subprogram will terminate
 enum_rep.adb:6:19: info: postcondition proved (CVC5: 1 VC)
+enum_rep.adb:17:13: info: implicit terminating annotation on "My_Enum_Enumrep_2" has been proved, subprogram will terminate
 enum_rep.adb:18:19: medium: postcondition might fail (e.g. when My_Enum_Enumrep_2'Result = 12)

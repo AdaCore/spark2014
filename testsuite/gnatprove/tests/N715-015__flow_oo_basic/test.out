@@ -1,3 +1,6 @@
+foo.ads:8:06: warning: Always_Return annotation is useless
+foo.ads:8:06: warning: function "Hash" has implicit Always_Return annotation
+tests.adb:16:13: info: implicit terminating annotation on "F_Get_Item_E" has been proved, subprogram will terminate
 tests.adb:19:28: info: initialization of "B" proved
 tests.adb:20:09: info: data dependencies proved
 tests.adb:22:28: info: initialization of "B" proved
@@ -7,18 +10,14 @@ tests.adb:26:09: info: data dependencies proved
 tests.adb:31:09: info: data dependencies proved
 tests.adb:34:09: info: data dependencies proved
 tests.adb:37:09: info: data dependencies proved
-tests.adb:41:09: warning: assuming "Hash" always returns
 tests.adb:41:09: warning: assuming "Hash" has no effect on global items
 tests.adb:41:09: warning: no Global contract available for "Hash"
-tests.adb:41:09: warning: no returning annotation available for "Hash"
-tests.adb:44:09: warning: assuming "Hash" always returns
+tests.adb:41:15: medium: implicit terminating annotation on "F_Get_Item" could be incorrect, dispatching call might be nonterminating
 tests.adb:44:09: warning: assuming "Hash" has no effect on global items
 tests.adb:44:09: warning: no Global contract available for "Hash"
-tests.adb:44:09: warning: no returning annotation available for "Hash"
-tests.adb:81:15: warning: assuming "Hash" always returns
+tests.adb:44:15: medium: implicit terminating annotation on "F_Get_Item_C" could be incorrect, dispatching call might be nonterminating
 tests.adb:81:15: warning: assuming "Hash" has no effect on global items
 tests.adb:81:15: warning: no Global contract available for "Hash"
-tests.adb:81:15: warning: no returning annotation available for "Hash"
 tests.adb:100:23: info: initialization of "N" proved
 tests.adb:101:09: info: data dependencies proved
 tests.adb:102:21: medium: missing dependency "N => Obj"
@@ -28,46 +27,36 @@ tests.adb:114:21: medium: missing dependency "N => Obj"
 tests.adb:122:23: info: initialization of "N" proved
 tests.adb:123:09: info: data dependencies proved
 tests.adb:124:09: info: flow dependencies proved
-tests.adb:127:15: warning: assuming "Hash" always returns
 tests.adb:127:15: warning: assuming "Hash" has no effect on global items
 tests.adb:127:15: warning: no Global contract available for "Hash"
-tests.adb:127:15: warning: no returning annotation available for "Hash"
 tests.adb:131:23: info: initialization of "N" proved
 tests.adb:132:09: info: data dependencies proved
 tests.adb:133:09: info: flow dependencies proved
 tests.adb:140:23: info: initialization of "N" proved
 tests.adb:141:09: info: data dependencies proved
 tests.adb:142:09: info: flow dependencies proved
-tests.adb:145:15: warning: assuming "Hash" always returns
 tests.adb:145:15: warning: assuming "Hash" has no effect on global items
 tests.adb:145:15: warning: no Global contract available for "Hash"
-tests.adb:145:15: warning: no returning annotation available for "Hash"
 tests.adb:151:23: info: initialization of "N" proved
 tests.adb:152:09: info: data dependencies proved
 tests.adb:153:21: medium: missing dependency "N => C"
 tests.adb:154:29: medium: incorrect dependency "null => C"
-tests.adb:161:15: warning: assuming "Hash" always returns
 tests.adb:161:15: warning: assuming "Hash" has no effect on global items
 tests.adb:161:15: warning: no Global contract available for "Hash"
-tests.adb:161:15: warning: no returning annotation available for "Hash"
 tests.adb:166:23: info: initialization of "N" proved
 tests.adb:167:09: info: data dependencies proved
 tests.adb:168:21: medium: missing dependency "N => C"
 tests.adb:169:29: medium: incorrect dependency "null => C"
-tests.adb:175:26: warning: assuming "Hash" always returns
 tests.adb:175:26: warning: assuming "Hash" has no effect on global items
 tests.adb:175:26: warning: no Global contract available for "Hash"
-tests.adb:175:26: warning: no returning annotation available for "Hash"
 tests.adb:180:23: info: initialization of "N" proved
 tests.adb:181:09: info: data dependencies proved
 tests.adb:182:21: medium: missing dependency "N => A"
 tests.adb:182:21: medium: missing dependency "N => B"
 tests.adb:183:30: medium: incorrect dependency "null => A"
 tests.adb:183:33: medium: incorrect dependency "null => B"
-tests.adb:191:15: warning: assuming "Hash" always returns
 tests.adb:191:15: warning: assuming "Hash" has no effect on global items
 tests.adb:191:15: warning: no Global contract available for "Hash"
-tests.adb:191:15: warning: no returning annotation available for "Hash"
 tests.adb:196:23: info: initialization of "N" proved
 tests.adb:197:09: info: data dependencies proved
 tests.adb:198:09: info: flow dependencies proved
@@ -76,32 +65,24 @@ tests.adb:208:07: warning: assuming "Zero_Widget" always returns
 tests.adb:208:07: warning: assuming "Zero_Widget" has no effect on global items
 tests.adb:208:07: warning: no Global contract available for "Zero_Widget"
 tests.adb:208:07: warning: no returning annotation available for "Zero_Widget"
-tests.adb:209:15: warning: assuming "Hash" always returns
 tests.adb:209:15: warning: assuming "Hash" has no effect on global items
 tests.adb:209:15: warning: no Global contract available for "Hash"
-tests.adb:209:15: warning: no returning annotation available for "Hash"
 tests.adb:215:23: info: initialization of "N" proved
 tests.adb:216:09: info: data dependencies proved
 tests.adb:217:21: medium: missing dependency "N => C"
 tests.adb:218:29: medium: incorrect dependency "null => C"
-tests.adb:227:16: warning: assuming "Hash" always returns
 tests.adb:227:16: warning: assuming "Hash" has no effect on global items
 tests.adb:227:16: warning: no Global contract available for "Hash"
-tests.adb:227:16: warning: no returning annotation available for "Hash"
 tests.adb:233:23: info: initialization of "N" proved
 tests.adb:234:09: info: data dependencies proved
 tests.adb:235:09: info: flow dependencies proved
-tests.adb:241:15: warning: assuming "Hash" always returns
 tests.adb:241:15: warning: assuming "Hash" has no effect on global items
 tests.adb:241:15: warning: no Global contract available for "Hash"
-tests.adb:241:15: warning: no returning annotation available for "Hash"
 tests.adb:245:23: info: initialization of "N" proved
 tests.adb:246:09: info: data dependencies proved
 tests.adb:247:09: info: flow dependencies proved
-tests.adb:251:15: warning: assuming "Hash" always returns
 tests.adb:251:15: warning: assuming "Hash" has no effect on global items
 tests.adb:251:15: warning: no Global contract available for "Hash"
-tests.adb:251:15: warning: no returning annotation available for "Hash"
 tests.adb:256:23: info: initialization of "Y" proved
 tests.adb:257:09: info: data dependencies proved
 tests.adb:258:09: info: flow dependencies proved
@@ -116,10 +97,8 @@ tests.adb:282:21: medium: missing dependency "Z => A"
 tests.adb:284:07: info: initialization of "Obj" proved
 tests.adb:285:07: info: initialization of "Tmp" proved
 tests.adb:286:07: info: initialization of "Tmp2" proved
-tests.adb:295:29: warning: assuming "Hash" always returns
 tests.adb:295:29: warning: assuming "Hash" has no effect on global items
 tests.adb:295:29: warning: no Global contract available for "Hash"
-tests.adb:295:29: warning: no returning annotation available for "Hash"
 tests.adb:301:23: info: initialization of "X" proved
 tests.adb:302:09: info: data dependencies proved
 tests.adb:315:13: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -127,11 +106,13 @@ tests.adb:320:23: info: initialization of "X" proved
 tests.adb:321:09: info: data dependencies proved
 tests.adb:331:48: info: range check proved (CVC5: 1 VC)
 tests.adb:333:16: info: implicit function contract might not be available on calls from enclosing unit
+tests.adb:333:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 tests.adb:334:20: info: range check proved (CVC5: 1 VC)
 tests.adb:336:16: high: "H1.Content.Field" is not initialized
 tests.adb:336:19: info: range check proved (CVC5: 1 VC)
 tests.adb:340:23: info: initialization of "R" proved
 tests.adb:341:09: info: data dependencies proved
+tests.adb:351:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 tests.adb:352:14: info: range check proved (CVC5: 1 VC)
 tests.adb:352:24: info: discriminant check proved (CVC5: 1 VC)
 tests.adb:353:07: info: initialization of "B" proved
@@ -146,20 +127,14 @@ tests.adb:373:07: warning: assuming "Zero_Widget" always returns
 tests.adb:373:07: warning: assuming "Zero_Widget" has no effect on global items
 tests.adb:373:07: warning: no Global contract available for "Zero_Widget"
 tests.adb:373:07: warning: no returning annotation available for "Zero_Widget"
-tests.adb:376:18: warning: assuming "Hash" always returns
 tests.adb:376:18: warning: assuming "Hash" has no effect on global items
 tests.adb:376:18: warning: no Global contract available for "Hash"
-tests.adb:376:18: warning: no returning annotation available for "Hash"
-tests.adb:377:29: warning: assuming "Hash" always returns
 tests.adb:377:29: warning: assuming "Hash" has no effect on global items
 tests.adb:377:29: warning: no Global contract available for "Hash"
-tests.adb:377:29: warning: no returning annotation available for "Hash"
 tests.adb:381:23: info: initialization of "N" proved
 tests.adb:384:07: info: initialization of "Tmp" proved
-tests.adb:387:15: warning: assuming "Hash" always returns
 tests.adb:387:15: warning: assuming "Hash" has no effect on global items
 tests.adb:387:15: warning: no Global contract available for "Hash"
-tests.adb:387:15: warning: no returning annotation available for "Hash"
 tests.adb:393:23: info: initialization of "B" proved
 tests.adb:394:09: info: data dependencies proved
 tests.adb:395:09: info: flow dependencies proved
@@ -173,10 +148,8 @@ tests.adb:411:09: info: data dependencies proved
 tests.adb:413:21: medium: missing dependency "M => B"
 tests.adb:414:21: medium: missing dependency "O => A"
 tests.adb:420:43: info: tag check proved (CVC5: 1 VC)
-tests.adb:422:13: warning: assuming "Hash" always returns
 tests.adb:422:13: warning: assuming "Hash" has no effect on global items
 tests.adb:422:13: warning: no Global contract available for "Hash"
-tests.adb:422:13: warning: no returning annotation available for "Hash"
 tests.adb:423:13: medium: range check might fail, cannot prove lower bound for Z.X [reason for check: value must fit in the target type of the assignment]
 tests.adb:428:23: info: initialization of "N" proved
 tests.adb:429:09: info: data dependencies proved
@@ -190,14 +163,10 @@ tests.adb:470:21: medium: tag check might fail
 tests.adb:478:23: info: initialization of "M" proved
 tests.adb:479:23: info: initialization of "N" proved
 tests.adb:480:09: info: data dependencies proved
-tests.adb:485:13: warning: assuming "Hash" always returns
 tests.adb:485:13: warning: assuming "Hash" has no effect on global items
 tests.adb:485:13: warning: no Global contract available for "Hash"
-tests.adb:485:13: warning: no returning annotation available for "Hash"
-tests.adb:486:13: warning: assuming "Hash" always returns
 tests.adb:486:13: warning: assuming "Hash" has no effect on global items
 tests.adb:486:13: warning: no Global contract available for "Hash"
-tests.adb:486:13: warning: no returning annotation available for "Hash"
 tests.adb:491:23: info: initialization of "O1" proved
 tests.adb:492:23: info: initialization of "O2" proved
 tests.adb:493:23: info: initialization of "O3" proved
@@ -206,26 +175,16 @@ tests.adb:495:23: info: initialization of "O5" proved
 tests.adb:496:09: info: data dependencies proved
 tests.adb:497:21: medium: missing dependency "O1 => A"
 tests.adb:509:07: warning: initialization of "Y" has no effect
-tests.adb:516:14: warning: assuming "Hash" always returns
 tests.adb:516:14: warning: assuming "Hash" has no effect on global items
 tests.adb:516:14: warning: no Global contract available for "Hash"
-tests.adb:516:14: warning: no returning annotation available for "Hash"
-tests.adb:520:14: warning: assuming "Hash" always returns
 tests.adb:520:14: warning: assuming "Hash" has no effect on global items
 tests.adb:520:14: warning: no Global contract available for "Hash"
-tests.adb:520:14: warning: no returning annotation available for "Hash"
-tests.adb:523:14: warning: assuming "Hash" always returns
 tests.adb:523:14: warning: assuming "Hash" has no effect on global items
 tests.adb:523:14: warning: no Global contract available for "Hash"
-tests.adb:523:14: warning: no returning annotation available for "Hash"
-tests.adb:527:15: warning: assuming "Hash" always returns
 tests.adb:527:15: warning: assuming "Hash" has no effect on global items
 tests.adb:527:15: warning: no Global contract available for "Hash"
-tests.adb:527:15: warning: no returning annotation available for "Hash"
-tests.adb:529:55: warning: assuming "Hash" always returns
 tests.adb:529:55: warning: assuming "Hash" has no effect on global items
 tests.adb:529:55: warning: no Global contract available for "Hash"
-tests.adb:529:55: warning: no returning annotation available for "Hash"
 tests.adb:534:23: info: initialization of "O1" proved
 tests.adb:535:23: info: initialization of "O2" proved
 tests.adb:536:23: info: initialization of "O3" proved
@@ -251,13 +210,12 @@ tests.adb:614:23: info: initialization of "O1" proved
 tests.adb:615:09: info: data dependencies proved
 tests.adb:619:12: info: data dependencies proved
 tests.adb:620:33: info: initialization of "O1" proved
-tests.adb:624:19: warning: assuming "Hash" always returns
 tests.adb:624:19: warning: assuming "Hash" has no effect on global items
 tests.adb:624:19: warning: no Global contract available for "Hash"
-tests.adb:624:19: warning: no returning annotation available for "Hash"
 tests.adb:628:12: info: data dependencies proved
 tests.adb:629:33: info: initialization of "W2" proved
 tests.adb:632:30: medium: tag check might fail
+untangle.adb:33:13: info: implicit terminating annotation on "Wibble" has been proved, subprogram will terminate
 untangle.adb:35:09: info: data dependencies proved
 untangle.adb:40:09: info: data dependencies proved
 untangle.adb:43:08: medium: discriminant check might fail [possible fix: subprogram at line 38 should mention X in a precondition]

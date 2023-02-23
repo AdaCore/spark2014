@@ -7,3 +7,4 @@ gen_proc.ads:6:08: info: data dependencies proved, in instantiation at main.adb:
 gen_proc.ads:7:24: low: unused global "External", in instantiation at main.adb:8
 gen_proc.ads:9:08: medium: missing dependency "null => External", in instantiation at main.adb:8
 gen_proc.ads:10:21: medium: incorrect dependency "Formal => External", in instantiation at main.adb:8
+main.adb:6:13: info: implicit terminating annotation on "Func_Inst_1" has been proved, subprogram will terminate

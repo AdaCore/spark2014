@@ -1,11 +1,15 @@
+main.adb:12:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
 main.adb:12:83: info: dynamic accessibility check proved (Trivial)
 main.adb:15:13: info: implicit function contract might not be available on recursive calls
-main.adb:16:07: medium: terminating annotation on "Length" could be incorrect, subprogram is recursive
+main.adb:16:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive
 main.adb:16:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:16:45: info: predicate check proved (Trivial: 1 VC)
 main.adb:16:54: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:16:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:16:60: info: predicate check proved (Trivial: 1 VC)
+main.adb:17:16: warning: Always_Return annotation is useless
+main.adb:17:16: warning: function "Length" has implicit Always_Return annotation
+main.adb:19:13: info: implicit terminating annotation on "All_Zero" has been proved, subprogram will terminate
 main.adb:20:26: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:20:42: info: subprogram variant proved (CVC5: 1 VC)
 main.adb:20:53: info: pointer dereference check proved (CVC5: 1 VC)
@@ -21,6 +25,7 @@ main.adb:33:25: info: predicate check proved (Trivial: 1 VC)
 main.adb:33:38: info: predicate check proved (Trivial: 1 VC)
 main.adb:33:47: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:34:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:38:13: info: implicit terminating annotation on "All_Zero_Bad" has been proved, subprogram will terminate
 main.adb:39:26: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:39:42: info: subprogram variant proved (CVC5: 1 VC)
 main.adb:39:57: info: pointer dereference check proved (CVC5: 1 VC)
