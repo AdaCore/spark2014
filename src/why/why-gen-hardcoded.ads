@@ -54,6 +54,11 @@ package Why.Gen.Hardcoded is
    --  Return True if Subp is a comparison operator and gains to be translated
    --  in the predicate domain.
 
+   function Is_Hardcoded_Operation (Op          : N_Binary_Op;
+                                    Left, Right : Type_Kind_Id)
+                                    return Boolean;
+   --  Return True if the binary operator is hardcoded.
+
    function Transform_Hardcoded_Function_Call
      (Subp     : Entity_Id;
       Args     : W_Expr_Array;
@@ -74,5 +79,15 @@ package Why.Gen.Hardcoded is
    --  Transform a literal of an hardcoded type in a precise way
    --  whenever possible. If no precise translation was achieved, return
    --  Why_Empty;
+
+   function Transform_Hardcoded_Operation
+     (Op                  : N_Binary_Op;
+      Lty, Rty, Expr_Type : Type_Kind_Id;
+      LT, RT              : W_Expr_Id;
+      Domain              : EW_Domain;
+      Ada_Node            : Node_Id)
+      return W_Expr_Id
+     with Pre => Is_Hardcoded_Operation (Op, Lty, Rty);
+   --  Transform an operation "LT op RT" if "op" is hardcoded.
 
 end Why.Gen.Hardcoded;

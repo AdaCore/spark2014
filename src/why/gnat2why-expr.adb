@@ -18318,22 +18318,28 @@ package body Gnat2Why.Expr is
                Left  : constant N_Subexpr_Id := Left_Opnd (Expr);
                Right : constant N_Subexpr_Id := Right_Opnd (Expr);
                Base  : constant W_Type_Id := Base_Why_Type (Left, Right);
+               Lty   : constant Type_Kind_Id := Etype (Left);
+               Rty   : constant Type_Kind_Id := Etype (Right);
+               LT    : constant W_Expr_Id :=
+                 Transform_Expr (Left, Base, Domain, Local_Params);
+               RT    : constant W_Expr_Id :=
+                 Transform_Expr (Right, Base, Domain, Local_Params);
             begin
-               T := New_Binary_Op_Expr
-                 (Op          => Nkind (Expr),
-                  Left        => Transform_Expr (Left,
-                    Base,
-                    Domain,
-                    Local_Params),
-                  Right       => Transform_Expr (Right,
-                    Base,
-                    Domain,
-                    Local_Params),
-                  Left_Type   => Etype (Left),
-                  Right_Type  => Etype (Right),
-                  Return_Type => Expr_Type,
-                  Domain      => Domain,
-                  Ada_Node    => Expr);
+               if Is_Hardcoded_Operation (Nkind (Expr), Lty, Rty)
+               then
+                  T := Transform_Hardcoded_Operation
+                    (Nkind (Expr), Lty, Rty, Expr_Type, LT, RT, Domain, Expr);
+               else
+                  T := New_Binary_Op_Expr
+                    (Op          => Nkind (Expr),
+                     Left        => LT,
+                     Right       => RT,
+                     Left_Type   => Lty,
+                     Right_Type  => Rty,
+                     Return_Type => Expr_Type,
+                     Domain      => Domain,
+                     Ada_Node    => Expr);
+               end if;
             end;
 
          when N_Op_Expon =>

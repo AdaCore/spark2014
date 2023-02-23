@@ -1466,6 +1466,8 @@ package body SPARK_Util.Subprograms is
       return
         Is_Intrinsic (E)
         and then Present (Parent (E))
+        and then Parent (E) in
+          N_Subprogram_Specification_Id | N_Package_Specification_Id
         and then Present (Generic_Parent (Parent (E)))
         and then Chars (Generic_Parent (Parent (E)))
                          = Name_Unchecked_Deallocation;
