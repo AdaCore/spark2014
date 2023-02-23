@@ -54,7 +54,7 @@ type_invariant_legal_3.ads:9:16: warning: unused variable "X"
 type_invariant_legal_3.ads:10:16: warning: unused variable "X"
 type_invariant_legal_3.ads:13:13: error: "G" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
 type_invariant_legal_3.ads:13:13: error: unsupported recursive subprogram
-type_invariant_legal_3.ads:13:43: medium: invariant check might fail [possible fix: subprogram at line 13 should mention X in a precondition]
+type_invariant_legal_3.ads:13:43: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_3.ads:15:09: info: invariant check proved on default value (CVC5: 1 VC)
 type_invariant_legal_3.ads:15:50: high: cannot call boundary subprogram "F" for type "T1" in its own invariant (SPARK RM 7.3.2(5))
 type_invariant_legal_3.ads:15:50: info: invariant check proved (CVC5: 1 VC)

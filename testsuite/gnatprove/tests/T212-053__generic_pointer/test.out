@@ -21,8 +21,8 @@ rflx-tlv-message.ads:5:01: info: implicit function contract might not be availab
 rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
 rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
 rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
-rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on implicit recursive calls
-rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on implicit recursive calls
+rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
+rflx-tlv-message.ads:5:01: info: implicit function contract might not be available on calls from enclosing unit
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:105
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:105
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:116
