@@ -1,5 +1,9 @@
-with "strings";
+project Strings is
 
-project Test is
-   for Source_Dirs use ();
-end Test;
+   package Compiler is
+      for Switches ("ada") use ("-gnata");
+   end Compiler;
+
+   for Main use ("test_search.adb");
+
+end Strings;
