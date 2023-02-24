@@ -4,14 +4,12 @@ main.adb:13:07: info: initialization of "M" proved
 main.adb:15:12: info: precondition proved (CVC5: 1 VC)
 main.adb:17:22: info: assertion proved (CVC5: 1 VC)
 main.adb:22:22: info: assertion proved (CVC5: 1 VC)
-main.adb:22:22: info: precondition proved (Trivial: 1 VC)
 main.adb:25:14: warning: subprogram "Test_Sets" has no effect
 main.adb:26:07: info: no contextual analysis of "Test_Sets" (nested package instantiation)
 main.adb:29:07: info: initialization of "S" proved
 main.adb:31:12: info: precondition proved (CVC5: 1 VC)
 main.adb:33:22: info: assertion proved (CVC5: 1 VC)
 main.adb:38:22: info: assertion proved (CVC5: 1 VC)
-main.adb:38:22: info: precondition proved (Trivial: 1 VC)
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:10
 spark-containers-functional-maps.ads:59:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:10
 spark-containers-functional-maps.ads:61:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:10
@@ -21,12 +19,48 @@ spark-containers-functional-maps.ads:71:19: info: subprogram "Equivalent_Keys_Tr
 spark-containers-functional-maps.ads:77:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:10
 spark-containers-functional-maps.ads:79:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:10
 spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:10
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at main.adb:10
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:10
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at main.adb:10
+spark-containers-functional-maps.ads:365:13: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:10
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at main.adb:10
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:10
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at main.adb:10
+spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:10
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at main.adb:10
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:10
 spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at main.adb:10
 spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:10
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at main.adb:10
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:10
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at main.adb:10
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:10
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at main.adb:10
+spark-containers-functional-maps.ads:526:13: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:10
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at main.adb:10
+spark-containers-functional-maps.ads:531:13: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:10
 spark-containers-functional-sets.ads:52:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at main.adb:26
 spark-containers-functional-sets.ads:54:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at main.adb:26
 spark-containers-functional-sets.ads:56:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at main.adb:26
+spark-containers-functional-sets.ads:89:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at main.adb:26
+spark-containers-functional-sets.ads:89:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:26
+spark-containers-functional-sets.ads:326:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at main.adb:26
+spark-containers-functional-sets.ads:326:13: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:26
+spark-containers-functional-sets.ads:335:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at main.adb:26
+spark-containers-functional-sets.ads:335:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:26
+spark-containers-functional-sets.ads:341:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at main.adb:26
+spark-containers-functional-sets.ads:341:13: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:26
+spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at main.adb:26
+spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:26
 spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at main.adb:26
+spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at main.adb:26
+spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:26
+spark-containers-functional-sets.ads:391:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at main.adb:26
+spark-containers-functional-sets.ads:391:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:26
+spark-containers-functional-sets.ads:397:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at main.adb:26
+spark-containers-functional-sets.ads:397:13: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:26
+spark-containers-functional-sets.ads:404:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at main.adb:26
+spark-containers-functional-sets.ads:404:13: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:26
 spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:499, in instantiation at main.adb:10
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:480, in instantiation at main.adb:10
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:489, in instantiation at main.adb:10

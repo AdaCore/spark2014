@@ -13,10 +13,6 @@ spark-containers-functional-sets-higher_order.ads:56:24: info: function contract
 spark-containers-functional-sets-higher_order.ads:56:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:72:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:72:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:84:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:84:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:85:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:85:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:85:36: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:85:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:85:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
@@ -33,10 +29,6 @@ spark-containers-functional-sets-higher_order.ads:98:29: info: function contract
 spark-containers-functional-sets-higher_order.ads:98:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:119:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:119:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:129:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:129:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:130:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:130:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:130:36: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:130:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:130:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
@@ -51,30 +43,18 @@ spark-containers-functional-sets-higher_order.ads:131:64: info: predicate check 
 spark-containers-functional-sets-higher_order.ads:131:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:136:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:136:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:148:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:148:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:149:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:149:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:150:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:150:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:150:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:150:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:162:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:162:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:175:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:175:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:176:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:176:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:179:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:179:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:179:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:179:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:190:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:190:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:200:09: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:200:09: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:201:12: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:201:12: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:202:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:202:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:202:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
@@ -93,14 +73,10 @@ spark-containers-functional-sets-higher_order.ads:244:61: info: null exclusion c
 spark-containers-functional-sets-higher_order.ads:244:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:251:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:251:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:258:19: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:258:19: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:258:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:258:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:263:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:263:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:270:19: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:270:19: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:270:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:270:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:275:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
@@ -125,8 +101,44 @@ spark-containers-functional-sets.ads:54:19: info: subprogram "Equivalent_Element
 spark-containers-functional-sets.ads:54:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at use_set_ho.adb:9
 spark-containers-functional-sets.ads:56:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-sets.ads:56:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:89:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:89:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:89:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:89:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:326:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:326:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:326:13: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:326:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:335:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:335:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:335:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:335:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:341:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:341:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:341:13: info: precondition proved (CVC5: 2 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:341:13: info: precondition proved (CVC5: 2 VC), in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:9
 spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:391:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:391:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:391:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:391:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:397:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:397:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:397:13: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:397:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:404:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:404:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:404:13: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:404:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:9
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at check_ho_pre.adb:10
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at use_set_ho.adb:9
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at check_ho_pre.adb:10

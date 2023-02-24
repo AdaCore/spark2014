@@ -1,8 +1,15 @@
-foo.adb:13:13: info: implicit function contract might not be available on calls from enclosing unit
-foo.adb:14:13: info: implicit function contract might not be available on calls from enclosing unit
+foo.adb:13:13: info: during checks for quantification at foo.adb:4
+foo.adb:13:13: info: precondition proved (Trivial: 1 VC)
+foo.adb:14:13: info: during checks for quantification at foo.adb:4
+foo.adb:14:13: info: precondition proved (CVC5: 1 VC)
 foo.adb:14:69: info: overflow check proved (CVC5: 2 VC)
+foo.adb:16:13: info: during checks for quantification at foo.adb:4
+foo.adb:16:13: info: precondition proved (Trivial: 1 VC)
+foo.adb:18:13: info: during checks for quantification at foo.adb:4
+foo.adb:18:13: info: precondition proved (Trivial: 1 VC)
 foo.adb:18:22: warning: unused variable "IR"
 foo.adb:18:38: warning: unused variable "N"
-foo.adb:20:22: info: predicate check proved (CVC5: 1 VC)
-foo.adb:22:08: info: precondition proved (CVC5: 1 VC)
-foo.adb:22:08: info: precondition proved (Trivial: 1 VC)
+foo.adb:20:04: warning: analyzing unreferenced procedure "Test"
+foo.adb:21:25: info: predicate check proved (CVC5: 1 VC)
+foo.adb:23:11: info: precondition proved (CVC5: 1 VC)
+foo.adb:23:11: info: precondition proved (Trivial: 1 VC)

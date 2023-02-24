@@ -25,26 +25,45 @@ partition_refinement.ads:29:07: warning: "P" is not modified, could be IN
 spark-containers-formal-vectors.ads:46:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
 spark-containers-formal-vectors.ads:48:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
 spark-containers-formal-vectors.ads:50:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
-spark-containers-formal-vectors.ads:348:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
-spark-containers-formal-vectors.ads:349:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:20
-spark-containers-formal-vectors.ads:353:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
-spark-containers-formal-vectors.ads:355:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:20
-spark-containers-formal-vectors.ads:375:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-vectors.ads:375:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-vectors.ads:688:57: info: range check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-vectors.ads:816:23: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-vectors.ads:819:38: info: range check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-vectors.ads:852:14: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-vectors.ads:856:35: info: range check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:317:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:317:13: info: precondition proved (Trivial: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:317:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:321:06: info: data dependencies proved, in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:324:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:324:13: info: precondition proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:355:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:356:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:360:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:362:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:382:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:382:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:695:57: info: range check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:823:23: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:826:38: info: range check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:859:14: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:863:35: info: range check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:1019:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:1019:13: info: precondition proved (Trivial: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:1022:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:1022:13: info: precondition proved (Trivial: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:1032:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at partition_refinement.ads:20
+spark-containers-formal-vectors.ads:1032:13: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:52:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:490:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:491:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:20

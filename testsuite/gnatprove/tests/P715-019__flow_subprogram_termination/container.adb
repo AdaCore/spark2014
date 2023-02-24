@@ -45,6 +45,43 @@ package body Container is
       Test3 (Int, Cont);
    end Test4;
 
+   procedure Test5 is
+   begin
+      -- non terminating loop
+      for E of My_Container loop
+         B := False;
+      end loop;
+
+      -- non terminating loop
+      for E of My_Container loop
+         if (X < 5) then
+            -- terminating loop
+            loop
+               X := X + 1;
+               pragma Loop_Invariant (X <= 5);
+               pragma Loop_Variant (Increases => X);
+               exit when X = 5;
+            end loop;
+         end if;
+         B := False;
+      end loop;
+
+      -- terminating loop
+      for E of My_Container loop
+         B := True;
+         exit when R = 1;
+         R := R - 1;
+         pragma Loop_Invariant (B);
+         pragma Loop_Variant (Decreases => R);
+         -- terminating loop (simple for)
+         for I in My_Integer'Range loop
+            X := X + 1;
+            pragma Loop_Variant (Increases => I);
+            pragma Loop_Variant (Increases => X);
+         end loop;
+      end loop;
+   end Test5;
+
 begin
 
    -- non terminating loop
@@ -75,36 +112,6 @@ begin
       X := X + 1;
       pragma Loop_Variant (Increases => X);
       exit when X = 5;
-   end loop;
-
-   -- non terminating loop
-   for E of My_Container loop
-      B := False;
-   end loop;
-
-   -- non terminating loop
-   for E of My_Container loop
-      -- terminating loop
-      loop
-         X := X + 1;
-         pragma Loop_Variant (Increases => X);
-         exit when X = 5;
-      end loop;
-      B := False;
-   end loop;
-
-   -- terminating loop
-   for E of My_Container loop
-      B := True;
-      R := R - 1;
-      pragma Loop_Invariant (B);
-      pragma Loop_Variant (Decreases => R);
-      -- terminating loop (simple for)
-      for I in My_Integer'Range loop
-         X := X + 1;
-         pragma Loop_Variant (Increases => I);
-         pragma Loop_Variant (Increases => X);
-      end loop;
    end loop;
 
 end Container;

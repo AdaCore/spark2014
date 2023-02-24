@@ -22,7 +22,7 @@ multiset.ads:17:09: info: default initial condition proved (CVC5: 1 VC)
 multiset.ads:18:35: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:25:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved
 multiset.ads:29:06: info: data dependencies proved
-multiset.ads:30:35: info: precondition proved (Trivial: 1 VC)
+multiset.ads:30:35: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:30:43: warning: unused variable "Element"
 multiset.ads:31:27: medium: postcondition might fail, cannot prove Is_Empty'Result = (Cardinality (Container) = 2)
 multiset.ads:31:46: info: invariant check proved (CVC5: 1 VC)
@@ -32,6 +32,8 @@ multiset.ads:33:13: info: subprogram "Cardinality" will terminate, terminating a
 multiset.ads:37:06: info: data dependencies proved
 multiset.ads:40:13: info: subprogram "Nb_Occurence" will terminate, terminating annotation has been proved
 multiset.ads:45:06: info: data dependencies proved
+multiset.ads:47:13: info: during checks for quantification at multiset.ads:107
+multiset.ads:47:13: info: precondition proved (Trivial: 1 VC)
 multiset.ads:47:13: info: subprogram "Contains" will terminate, terminating annotation has been proved
 multiset.ads:52:06: info: data dependencies proved
 multiset.ads:53:16: info: postcondition proved (CVC5: 2 VC)
@@ -44,13 +46,21 @@ multiset.ads:57:06: info: data dependencies proved
 multiset.ads:58:20: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:59:16: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:59:16: info: postcondition proved (CVC5: 1 VC)
+multiset.ads:63:13: info: during checks for quantification at multiset.ads:107
+multiset.ads:63:13: info: precondition proved (Trivial: 1 VC)
 multiset.ads:63:13: info: subprogram "Iter_First" will terminate, terminating annotation has been proved
 multiset.ads:64:06: info: data dependencies proved
+multiset.ads:66:13: info: during checks for quantification at multiset.ads:107
+multiset.ads:66:13: info: precondition proved (Trivial: 1 VC)
 multiset.ads:66:13: info: subprogram "Iter_Has_Element" will terminate, terminating annotation has been proved
 multiset.ads:70:06: info: data dependencies proved
+multiset.ads:72:13: info: during checks for quantification at multiset.ads:107
+multiset.ads:72:13: info: precondition proved (CVC5: 1 VC)
 multiset.ads:72:13: info: subprogram "Iter_Next" will terminate, terminating annotation has been proved
 multiset.ads:75:06: info: data dependencies proved
 multiset.ads:76:16: info: invariant check proved (CVC5: 1 VC)
+multiset.ads:78:13: info: during checks for quantification at multiset.ads:107
+multiset.ads:78:13: info: precondition proved (CVC5: 1 VC)
 multiset.ads:78:13: info: subprogram "Iter_Element" will terminate, terminating annotation has been proved
 multiset.ads:82:06: info: data dependencies proved
 multiset.ads:83:16: info: invariant check proved (CVC5: 1 VC)
@@ -72,8 +82,26 @@ spark-containers-functional-maps.ads:71:19: info: subprogram "Equivalent_Keys_Tr
 spark-containers-functional-maps.ads:77:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at multiset.ads:88
 spark-containers-functional-maps.ads:79:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at multiset.ads:88
 spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:365:13: info: precondition proved (CVC5: 1 VC), in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 2 VC), in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at multiset.ads:88
 spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at multiset.ads:88
 spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:526:13: info: precondition proved (CVC5: 1 VC), in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at multiset.ads:88
+spark-containers-functional-maps.ads:531:13: info: precondition proved (CVC5: 1 VC), in instantiation at multiset.ads:88
 spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:499, in instantiation at multiset.ads:88
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:480, in instantiation at multiset.ads:88
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:489, in instantiation at multiset.ads:88

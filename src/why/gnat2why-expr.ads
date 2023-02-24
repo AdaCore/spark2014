@@ -147,9 +147,22 @@ package Gnat2Why.Expr is
    --  condition. It also checks that the DIC holds for default values of the
    --  type.
    --  @param Params transformation parameters
-   --  @param N a type with a defult initial condition that needs to be checked
+   --  @param Ty a type with a default initial condition
+   --            that needs to be checked
    --  @return a program that checks that no error can appear in N's DIC
    --          and it holds for default values of type N.
+
+   function Check_Type_With_Iterable
+     (Params : Transformation_Params;
+      Ty     : Type_Kind_Id)
+      return W_Prog_Id;
+   --  Generate checks for absence of runtime errors for
+   --  executing a quantified expression over the elements of
+   --  a value of (Ty) in any context.
+   --  @param Params transformation parameters
+   --  @param Ty a type with Iterable aspect
+   --  @return a program that checks that no error can occur
+   --          when executing a quantified expression in any context.
 
    procedure Compute_Borrow_At_End_Value
      (Check_Node    : Entity_Id := Empty;

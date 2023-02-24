@@ -236,7 +236,6 @@ is
         Ghost,
         Global => null,
         Post   => M.Length (Model'Result) = Length (Container);
-      pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model);
 
       function Element
         (S : M.Sequence;
@@ -315,6 +314,13 @@ is
      Pre    => Length (Source) <= Capacity (Target),
      Post   => Model (Target) = Model (Source)'Old and Length (Source) = 0;
 
+   function Iter_Model (Container : Vector) return M.Sequence is
+     (Model (Container))
+   with
+     Ghost,
+     Global   => null,
+     Annotate => (GNATprove, Inline_For_Proof);
+
    function Element
      (Container : Vector;
       Index     : Extended_Index) return Element_Type
@@ -323,6 +329,7 @@ is
      Pre    => Index in First_Index (Container) .. Last_Index (Container),
      Post   => Element'Result = Element (Model (Container), Index);
    pragma Annotate (GNATprove, Inline_For_Proof, Element);
+   pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Iter_Model);
 
    procedure Replace_Element
      (Container : in out Vector;

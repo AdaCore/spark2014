@@ -465,7 +465,6 @@ is
                   and
                     E_Is_Find
                       (Elements'Result, E.Get (Elements'Result, I), I));
-      pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Elements);
 
       function Positions (Container : Set) return P.Map with
       --  The Positions map is used to model cursors. It only contains valid
@@ -576,6 +575,13 @@ is
          and Elements (Copy'Result) = Elements (Source)
          and Positions (Copy'Result) = Positions (Source);
 
+   function Iter_Model (Container : Set) return E.Sequence is
+      (Elements (Container))
+   with
+     Ghost,
+     Global   => null,
+     Annotate => (GNATprove, Inline_For_Proof);
+
    function Element
      (Container : Set;
       Position  : Cursor) return Element_Type
@@ -586,6 +592,7 @@ is
        Element'Result =
          E.Get (Elements (Container), P.Get (Positions (Container), Position));
    pragma Annotate (GNATprove, Inline_For_Proof, Element);
+   pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Iter_Model);
 
    procedure Replace_Element
      (Container : in out Set;

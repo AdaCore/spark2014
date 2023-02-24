@@ -1,0 +1,147 @@
+iterable_invariant.adb:5:09: info: range check proved (CVC5: 2 VC)
+iterable_invariant.ads:10:13: info: during checks for quantification at iterable_invariant.ads:28
+iterable_invariant.ads:10:13: info: precondition proved (Trivial: 1 VC)
+iterable_invariant.ads:10:20: warning: unused variable "C"
+iterable_invariant.ads:11:13: info: during checks for quantification at iterable_invariant.ads:28
+iterable_invariant.ads:11:13: info: precondition proved (CVC5: 1 VC)
+iterable_invariant.ads:12:18: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:13:13: info: during checks for quantification at iterable_invariant.ads:28
+iterable_invariant.ads:13:13: info: precondition proved (Trivial: 1 VC)
+iterable_invariant.ads:13:26: warning: unused variable "C"
+iterable_invariant.ads:14:13: info: during checks for quantification at iterable_invariant.ads:28
+iterable_invariant.ads:14:13: info: precondition proved (Trivial: 1 VC)
+iterable_invariant.ads:14:22: warning: unused variable "C"
+iterable_invariant.ads:16:14: warning: subprogram "Allowed_Quantification" has no effect
+iterable_invariant.ads:18:08: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:18:08: info: postcondition proved (CVC5: 5 VC)
+iterable_invariant.ads:18:24: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:19:21: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:19:33: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:20:17: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:20:33: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:20:33: info: precondition proved (CVC5: 1 VC)
+iterable_invariant.ads:20:42: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:21:17: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:21:29: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:21:29: info: precondition proved (CVC5: 1 VC)
+iterable_invariant.ads:21:38: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:23:09: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:23:09: warning: conjunct in postcondition does not check the outcome of calling "Allowed_Quantification"
+iterable_invariant.ads:24:12: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:25:28: warning: consider extracting disjunct from quantified expression
+iterable_invariant.ads:25:28: warning: unused variable "Y" in disjunct
+iterable_invariant.ads:28:09: info: invariant check proved on default value (CVC5: 1 VC)
+iterable_invariant.ads:30:25: info: in default value of private type at iterable_invariant.ads:3
+iterable_invariant.ads:30:25: info: range check proved (CVC5: 2 VC)
+iterable_invariant.ads:33:14: warning: subprogram "Forbidden_Quantification" has no effect
+iterable_invariant.ads:34:19: medium: invariant check might fail
+iterable_invariant.ads:34:27: warning: unused variable "X"
+iterable_invariant.ads:35:06: warning: postcondition does not check the outcome of calling "Forbidden_Quantification"
+iterable_invariant.ads:35:14: medium: postcondition might fail (e.g. when C = Correct_Value)
+quant_checks.adb:10:16: info: during checks for quantification at quant_checks.adb:4
+quant_checks.adb:10:16: info: precondition proved (Trivial: 1 VC)
+quant_checks.adb:11:16: info: during checks for quantification at quant_checks.adb:4
+quant_checks.adb:11:16: info: precondition proved (Trivial: 1 VC)
+quant_checks.adb:13:16: info: during checks for quantification at quant_checks.adb:4
+quant_checks.adb:13:16: info: precondition proved (CVC5: 1 VC)
+quant_checks.adb:13:68: info: range check proved (CVC5: 2 VC)
+quant_checks.adb:15:16: info: during checks for quantification at quant_checks.adb:4
+quant_checks.adb:15:16: info: precondition proved (CVC5: 1 VC)
+quant_checks.adb:28:16: medium: during checks for quantification at quant_checks.adb:21
+quant_checks.adb:28:16: medium: precondition might fail
+quant_checks.adb:30:16: medium: during checks for quantification at quant_checks.adb:21
+quant_checks.adb:30:16: medium: precondition might fail
+quant_checks.adb:30:37: warning: unused variable "Y"
+quant_checks.adb:32:16: medium: during checks for quantification at quant_checks.adb:21
+quant_checks.adb:32:16: medium: precondition might fail
+quant_checks.adb:32:44: warning: unused variable "Y"
+quant_checks.adb:34:16: medium: during checks for quantification at quant_checks.adb:21
+quant_checks.adb:34:16: medium: precondition might fail
+quant_checks.adb:34:41: warning: unused variable "Y"
+quant_checks.adb:36:16: medium: during checks for quantification at quant_checks.adb:21
+quant_checks.adb:36:16: medium: precondition might fail
+quant_checks.adb:36:40: warning: unused variable "Y"
+quant_checks.adb:41:41: warning: unused variable "Y"
+quant_checks.adb:50:16: info: during checks for quantification at quant_checks.adb:45
+quant_checks.adb:50:16: info: precondition proved (Trivial: 1 VC)
+quant_checks.adb:51:16: info: during checks for quantification at quant_checks.adb:45
+quant_checks.adb:51:16: info: precondition proved (Trivial: 1 VC)
+quant_checks.adb:52:25: info: overflow check proved (CVC5: 2 VC)
+quant_checks.adb:53:16: info: during checks for quantification at quant_checks.adb:45
+quant_checks.adb:53:16: info: precondition proved (Trivial: 1 VC)
+quant_checks.adb:55:16: info: during checks for quantification at quant_checks.adb:45
+quant_checks.adb:55:16: info: precondition proved (Trivial: 1 VC)
+quant_checks.adb:63:16: medium: during checks for quantification at quant_checks.adb:56
+quant_checks.adb:63:16: medium: precondition might fail
+quant_checks.adb:65:16: medium: during checks for quantification at quant_checks.adb:56
+quant_checks.adb:65:16: medium: precondition might fail
+quant_checks.adb:65:37: warning: unused variable "Y"
+quant_checks.adb:67:16: medium: during checks for quantification at quant_checks.adb:56
+quant_checks.adb:67:16: medium: precondition might fail
+quant_checks.adb:67:44: warning: unused variable "Y"
+quant_checks.adb:69:16: medium: during checks for quantification at quant_checks.adb:56
+quant_checks.adb:69:16: medium: precondition might fail
+quant_checks.adb:72:16: medium: during checks for quantification at quant_checks.adb:56
+quant_checks.adb:72:16: medium: precondition might fail
+quant_checks.adb:72:40: warning: unused variable "Y"
+quant_checks.adb:77:41: warning: unused variable "Y"
+quant_checks.adb:89:16: info: during checks for quantification at quant_checks.adb:81
+quant_checks.adb:89:16: info: precondition proved (Trivial: 1 VC)
+quant_checks.adb:91:16: medium: during checks for quantification at quant_checks.adb:81
+quant_checks.adb:91:16: medium: precondition might fail
+quant_checks.adb:97:16: medium: during checks for quantification at quant_checks.adb:81
+quant_checks.adb:97:16: medium: precondition might fail, cannot prove Unknown (0)
+quant_checks.adb:97:68: medium: range check might fail, cannot prove upper bound for I+1 [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (I <= Cursor'Last - 1) to subprogram at line 97]
+quant_checks.adb:99:16: medium: during checks for quantification at quant_checks.adb:81
+quant_checks.adb:99:16: medium: precondition might fail
+quant_checks.adb:99:41: warning: unused variable "B"
+quant_checks.adb:105:16: medium: during checks for quantification at quant_checks.adb:81
+quant_checks.adb:105:16: medium: precondition might fail, cannot prove Unknown (0)
+quant_late_errors.adb:13:16: error: iteration primitive shall not be recursive, (including implicitly so)
+quant_late_errors.adb:13:16: info: during checks for quantification at quant_late_errors.adb:6
+quant_late_errors.adb:13:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:14:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:15:16: error: iteration primitive shall not be recursive, (including implicitly so)
+quant_late_errors.adb:15:16: info: during checks for quantification at quant_late_errors.adb:6
+quant_late_errors.adb:15:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:16:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:17:16: error: iteration primitive shall not be recursive, (including implicitly so)
+quant_late_errors.adb:17:16: info: during checks for quantification at quant_late_errors.adb:6
+quant_late_errors.adb:17:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:18:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:19:16: info: during checks for quantification at quant_late_errors.adb:6
+quant_late_errors.adb:19:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:20:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:21:16: error: iteration primitive shall not be recursive, (including implicitly so)
+quant_late_errors.adb:21:16: info: during checks for quantification at quant_late_errors.adb:6
+quant_late_errors.adb:21:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:22:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:49:16: info: during checks for quantification at quant_late_errors.adb:44
+quant_late_errors.adb:49:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:50:16: info: during checks for quantification at quant_late_errors.adb:44
+quant_late_errors.adb:50:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:51:25: info: overflow check proved (CVC5: 2 VC)
+quant_late_errors.adb:52:16: info: during checks for quantification at quant_late_errors.adb:44
+quant_late_errors.adb:52:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:54:16: info: during checks for quantification at quant_late_errors.adb:44
+quant_late_errors.adb:54:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:62:16: error: iteration primitive shall not be recursive, (including implicitly so)
+quant_late_errors.adb:62:16: info: during checks for quantification at quant_late_errors.adb:55
+quant_late_errors.adb:62:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:63:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:64:16: error: iteration primitive shall not be recursive, (including implicitly so)
+quant_late_errors.adb:64:16: info: during checks for quantification at quant_late_errors.adb:55
+quant_late_errors.adb:64:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:65:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:66:16: error: iteration primitive shall not be recursive, (including implicitly so)
+quant_late_errors.adb:66:16: info: during checks for quantification at quant_late_errors.adb:55
+quant_late_errors.adb:66:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:67:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:68:16: info: during checks for quantification at quant_late_errors.adb:55
+quant_late_errors.adb:68:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:69:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:70:16: error: iteration primitive shall not be recursive, (including implicitly so)
+quant_late_errors.adb:70:16: info: during checks for quantification at quant_late_errors.adb:55
+quant_late_errors.adb:70:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:71:22: info: postcondition proved (Trivial: 1 VC)
+gnatprove: error during flow analysis and proof

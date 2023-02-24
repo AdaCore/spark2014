@@ -184,6 +184,15 @@ package SPARK_Util.Types is
    --  @params E any type
    --  @returns True if E has a type invariant and the invariant is in SPARK.
 
+   function Has_Iterable_Aspect_In_SPARK (E : Type_Kind_Id) return Boolean;
+   --  @params E any type (already marked).
+   --  @returns True if E has a SPARK-visible Iterable aspect.
+
+   function Declares_Iterable_Aspect (E : Type_Kind_Id) return Boolean;
+   --  @params E any type
+   --  @returns True if one of E's partial view
+   --    (including E itself) declares an Iterable aspect.
+
    function Has_Unconstrained_UU_Component (Typ : Type_Kind_Id) return Boolean;
    --  Returns True iff Typ has a component visible in SPARK whose type is an
    --  unchecked union type which is unconstrained. Predefined equality on

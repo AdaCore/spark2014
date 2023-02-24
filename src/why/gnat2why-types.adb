@@ -1154,7 +1154,9 @@ package body Gnat2Why.Types is
       Check_Default : constant Boolean := Present (Priv_View);
       Check_Subp    : constant Boolean := Is_Access_Subprogram_Type (E)
         and then No (Parent_Retysp (E));
-      Need_Check    : constant Boolean := Check_Default or else Check_Subp;
+      Check_Iter    : constant Boolean := Declares_Iterable_Aspect (E);
+      Need_Check    : constant Boolean :=
+        Check_Default or else Check_Iter or else Check_Subp;
       Name          : constant String := Full_Name (E);
       Params        : constant Transformation_Params := Body_Params;
       Why_Body      : W_Prog_Id := +Void;
@@ -1214,6 +1216,22 @@ package body Gnat2Why.Types is
                                     Ty     => Priv_View));
          end if;
 
+      end if;
+
+      --  If the type has an iterable aspect, insert checks
+      --  that a quantified expression on the elements
+      --  of the type will always execute correctly
+      --  without run-time errors.
+
+      if Check_Iter then
+         Why_Body := Sequence
+           (New_Ignore (Ada_Node => E,
+                        Prog     => Why_Body),
+            Check_Type_With_Iterable (Params => Params,
+                                      Ty     => E));
+      end if;
+
+      if Why_Body /= +Void then
          --  Assume values of constants
 
          Assume_Value_Of_Constants (Why_Body, E, Params);

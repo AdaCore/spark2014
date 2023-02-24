@@ -4,20 +4,35 @@ my_container.adb:12:66: info: index check proved (CVC5: 4 VC)
 my_container.adb:18:54: info: overflow check proved (CVC5: 2 VC)
 my_container.adb:23:11: info: index check proved (CVC5: 2 VC)
 my_container.ads:16:14: info: postcondition proved (CVC5: 1 VC)
-my_container.ads:16:15: info: precondition proved (CVC5: 1 VC)
-my_container.ads:16:15: info: precondition proved (Trivial: 1 VC)
+my_container.ads:18:13: info: during checks for quantification at my_container.ads:26
+my_container.ads:18:13: info: precondition proved (Trivial: 1 VC)
 my_container.ads:18:20: warning: unused variable "C"
+my_container.ads:19:13: info: during checks for quantification at my_container.ads:26
+my_container.ads:19:13: info: precondition proved (CVC5: 1 VC)
+my_container.ads:21:13: info: during checks for quantification at my_container.ads:26
+my_container.ads:21:13: info: precondition proved (Trivial: 1 VC)
 my_container.ads:21:26: warning: unused variable "C"
+my_container.ads:22:13: info: during checks for quantification at my_container.ads:26
+my_container.ads:22:13: info: precondition proved (CVC5: 1 VC)
 my_container_contains.adb:14:33: info: loop invariant initialization proved (CVC5: 1 VC)
 my_container_contains.adb:14:33: info: loop invariant preservation proved (CVC5: 1 VC)
 my_container_contains.adb:14:66: info: index check proved (CVC5: 4 VC)
 my_container_contains.adb:20:54: info: overflow check proved (CVC5: 2 VC)
 my_container_contains.adb:25:11: info: index check proved (CVC5: 2 VC)
-my_container_contains.ads:20:14: info: postcondition proved (CVC5: 1 VC)
-my_container_contains.ads:20:15: info: precondition proved (Trivial: 1 VC)
-my_container_contains.ads:22:20: warning: unused variable "C"
-my_container_contains.ads:25:26: warning: unused variable "C"
-my_container_contains.ads:28:14: info: postcondition proved (altergo: 1 VC)
+my_container_contains.ads:13:13: info: during checks for quantification at my_container_contains.ads:32
+my_container_contains.ads:13:13: info: precondition proved (Trivial: 1 VC)
+my_container_contains.ads:18:14: info: postcondition proved (CVC5: 1 VC)
+my_container_contains.ads:20:13: info: during checks for quantification at my_container_contains.ads:32
+my_container_contains.ads:20:13: info: precondition proved (Trivial: 1 VC)
+my_container_contains.ads:20:20: warning: unused variable "C"
+my_container_contains.ads:21:13: info: during checks for quantification at my_container_contains.ads:32
+my_container_contains.ads:21:13: info: precondition proved (CVC5: 1 VC)
+my_container_contains.ads:23:13: info: during checks for quantification at my_container_contains.ads:32
+my_container_contains.ads:23:13: info: precondition proved (Trivial: 1 VC)
+my_container_contains.ads:23:26: warning: unused variable "C"
+my_container_contains.ads:24:13: info: during checks for quantification at my_container_contains.ads:32
+my_container_contains.ads:24:13: info: precondition proved (CVC5: 1 VC)
+my_container_contains.ads:26:14: info: postcondition proved (altergo: 1 VC)
 my_container_model.adb:14:33: info: loop invariant initialization proved (CVC5: 1 VC)
 my_container_model.adb:14:33: info: loop invariant preservation proved (CVC5: 1 VC)
 my_container_model.adb:14:66: info: index check proved (CVC5: 4 VC)
@@ -25,13 +40,29 @@ my_container_model.adb:20:54: info: overflow check proved (CVC5: 2 VC)
 my_container_model.adb:25:11: info: index check proved (CVC5: 2 VC)
 my_container_model.adb:28:66: info: overflow check proved (CVC5: 2 VC)
 my_container_model.adb:32:11: info: index check proved (CVC5: 2 VC)
-my_container_model.ads:26:14: info: postcondition proved (CVC5: 1 VC)
-my_container_model.ads:26:15: info: precondition proved (CVC5: 1 VC)
-my_container_model.ads:26:15: info: precondition proved (Trivial: 1 VC)
-my_container_model.ads:28:20: warning: unused variable "C"
-my_container_model.ads:31:26: warning: unused variable "C"
+my_container_model.ads:19:13: info: during checks for quantification at my_container_model.ads:43
+my_container_model.ads:19:13: info: precondition proved (Trivial: 1 VC)
+my_container_model.ads:24:14: info: postcondition proved (CVC5: 1 VC)
+my_container_model.ads:26:13: info: during checks for quantification at my_container_model.ads:43
+my_container_model.ads:26:13: info: precondition proved (Trivial: 1 VC)
+my_container_model.ads:26:20: warning: unused variable "C"
+my_container_model.ads:27:13: info: during checks for quantification at my_container_model.ads:43
+my_container_model.ads:27:13: info: precondition proved (CVC5: 1 VC)
+my_container_model.ads:29:13: info: during checks for quantification at my_container_model.ads:43
+my_container_model.ads:29:13: info: precondition proved (Trivial: 1 VC)
+my_container_model.ads:29:26: warning: unused variable "C"
+my_container_model.ads:30:13: info: during checks for quantification at my_container_model.ads:43
+my_container_model.ads:30:13: info: precondition proved (CVC5: 1 VC)
+my_container_model.ads:35:13: info: during checks for quantification at my_container_model.ads:44
+my_container_model.ads:35:13: info: precondition proved (Trivial: 1 VC)
 my_container_model.ads:35:22: warning: unused variable "C"
+my_container_model.ads:36:13: info: during checks for quantification at my_container_model.ads:44
+my_container_model.ads:36:13: info: precondition proved (CVC5: 1 VC)
+my_container_model.ads:38:13: info: during checks for quantification at my_container_model.ads:44
+my_container_model.ads:38:13: info: precondition proved (Trivial: 1 VC)
 my_container_model.ads:38:28: warning: unused variable "C"
+my_container_model.ads:39:13: info: during checks for quantification at my_container_model.ads:44
+my_container_model.ads:39:13: info: precondition proved (CVC5: 1 VC)
 test_containers.adb:12:25: high: "C1" is not initialized
 test_containers.adb:13:49: high: "P1" is not initialized
 test_containers.adb:14:19: info: assertion proved (CVC5: 1 VC)

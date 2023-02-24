@@ -1,6 +1,14 @@
 declare_iterable.adb:5:18: info: index check proved (CVC5: 2 VC)
+declare_iterable.ads:13:13: info: during checks for quantification at declare_iterable.ads:27
+declare_iterable.ads:13:13: info: precondition proved (Trivial: 1 VC)
 declare_iterable.ads:13:26: warning: unused variable "X"
+declare_iterable.ads:14:13: info: during checks for quantification at declare_iterable.ads:27
+declare_iterable.ads:14:13: info: precondition proved (CVC5: 1 VC)
+declare_iterable.ads:16:13: info: during checks for quantification at declare_iterable.ads:27
+declare_iterable.ads:16:13: info: precondition proved (Trivial: 1 VC)
 declare_iterable.ads:16:20: warning: unused variable "X"
+declare_iterable.ads:17:13: info: during checks for quantification at declare_iterable.ads:27
+declare_iterable.ads:17:13: info: precondition proved (CVC5: 1 VC)
 declare_iterable.ads:34:33: info: range check proved (CVC5: 2 VC)
 declare_iterable.ads:37:18: info: index check proved (CVC5: 2 VC)
 for_loop_iterable.adb:9:14: warning: subprogram "P1" has no effect

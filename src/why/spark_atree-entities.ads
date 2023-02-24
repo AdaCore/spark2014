@@ -28,7 +28,6 @@ with Checked_Types;          use Checked_Types;
 with Einfo.Entities;
 with Einfo.Utils;
 with Sinfo.Nodes;
-with Sem_Aux;
 with SPARK_Util;
 with SPARK_Util.Subprograms;
 
@@ -417,15 +416,13 @@ package SPARK_Atree.Entities is
    function Get_Iterable_Type_Primitive
      (Typ : Type_Kind_Id;
       Nam : Name_Id)
-      return E_Function_Id
+      return Opt_E_Function_Id
    with Pre  => Nam in Name_Element
                      | Name_First
                      | Name_Has_Element
                      | Name_Last
                      | Name_Next
-                     | Name_Previous,
-        Post => Get_Iterable_Type_Primitive'Result =
-                Sem_Aux.Ultimate_Alias (Get_Iterable_Type_Primitive'Result);
+                     | Name_Previous;
 
    function Has_Default_Aspect (Typ : Type_Kind_Id) return Boolean;
    --  Same as EE.Has_Default_Aspect except that it goes to the

@@ -282,7 +282,8 @@ package body SPARK_Definition.Annotate is
 
    procedure Check_Iterable_Annotation
      (Arg3_Exp : Node_Id;
-      Arg4_Exp : Node_Id);
+      Arg4_Exp : Node_Id;
+      Prag : Node_Id);
    --  Check validity of a pragma Annotate (GNATprove, Iterate_For_Proof, E)
    --  and insert it in the Iterable_Annotations map.
 
@@ -1422,16 +1423,36 @@ package body SPARK_Definition.Annotate is
 
    procedure Check_Iterable_Annotation
      (Arg3_Exp : Node_Id;
-      Arg4_Exp : Node_Id)
+      Arg4_Exp : Node_Id;
+      Prag     : Node_Id)
    is
 
-      procedure Check_Contains_Entity (E : Entity_Id; Ok : in out Boolean);
-      --  Checks that E is a valid Contains function for a type with an
-      --  Iterable aspect.
+      procedure Check_Common_Properties
+        (Container_Ty   : Type_Kind_Id;
+         E              : Entity_Id;
+         Ok             : in out Boolean;
+         Name_For_Error : String);
+      --  Checks that are common for Model/Contains function:
+      --  No Globals, not volatile, primitive.
 
-      procedure Check_Model_Entity (E : Entity_Id; Ok : in out Boolean);
+      procedure Check_Contains_Entity
+        (E            : Entity_Id;
+         Ok           : in out Boolean;
+         Cont_Element : out Entity_Id);
+      --  Checks that E is a valid Contains function for a type with an
+      --  Iterable aspect. Initializes Cont_Element correctly if succeeding.
+
+      procedure Check_Model_Entity
+        (E            : Entity_Id;
+         Ok           : in out Boolean;
+         Cont_Element : out Entity_Id);
       --  Checks that E is a valid Model function for a type with an
-      --  Iterable aspect.
+      --  Iterable aspect. Initializes Cont_Element correctly if succeeding.
+
+      function Find_Model_Root (Container_Type : Entity_Id) return Entity_Id;
+      --  Computes the final container type at the end of the
+      --  model chain for the currently known Iterable_For_Proof(...,"Model")
+      --  annotations.
 
       procedure Process_Iterable_Annotation
         (Kind   : Iterable_Kind;
@@ -1439,15 +1460,65 @@ package body SPARK_Definition.Annotate is
       --  Insert an iterable annotation into the Iterable_Annotations map and
       --  mark the iterable functions.
 
+      -----------------------------
+      -- Check_Common_Properties --
+      -----------------------------
+
+      procedure Check_Common_Properties
+        (Container_Ty   : Type_Kind_Id;
+         E              : Entity_Id;
+         Ok             : in out Boolean;
+         Name_For_Error : String)
+      is
+         Globals : Global_Flow_Ids;
+      begin
+         Ok := False;
+         if Scope (E) /= Scope (Container_Ty) then
+            Error_Msg_N
+              (Name_For_Error
+               & " function must be primitive for container type", E);
+            return;
+         end if;
+         if Is_Volatile_Function (E) then
+            Error_Msg_N
+              (Name_For_Error & " function must not be volatile", E);
+            return;
+         end if;
+         Get_Globals
+           (Subprogram          => E,
+            Scope               =>
+              (Ent => E, Part => Visible_Part),
+            Classwide           => False,
+            Globals             => Globals,
+            Use_Deduced_Globals =>
+               not Gnat2Why_Args.Global_Gen_Mode,
+            Ignore_Depends      => False);
+         if not Globals.Proof_Ins.Is_Empty
+           or else not Globals.Inputs.Is_Empty
+           or else not Globals.Outputs.Is_Empty
+         then
+            Error_Msg_N
+              (Name_For_Error
+               & " function shall not access global data", E);
+            return;
+         else
+            Ok := True;
+         end if;
+      end Check_Common_Properties;
+
       ---------------------------
       -- Check_Contains_Entity --
       ---------------------------
 
-      procedure Check_Contains_Entity (E : Entity_Id; Ok : in out Boolean) is
-         Params : constant List_Id :=
-           Parameter_Specifications (Subprogram_Specification (E));
+      procedure Check_Contains_Entity
+        (E            : Entity_Id;
+         Ok           : in out Boolean;
+         Cont_Element : out Entity_Id) is
+         C_Param : constant Node_Id := First_Formal (E);
+         E_Param : constant Node_Id :=
+           (if Present (C_Param) then Next_Formal (C_Param) else Empty);
       begin
-         if List_Length (Params) /= 2 then
+         if No (E_Param) or else Present (Next_Formal (E_Param)) then
             Error_Msg_N
               ("Contains function must have exactly two parameters", E);
          elsif not Is_Standard_Boolean_Type (Etype (E)) then
@@ -1455,31 +1526,31 @@ package body SPARK_Definition.Annotate is
               ("Contains function must return Booleans", E);
          else
             declare
-               C_Param        : constant Node_Id := First (Params);
-               E_Param        : constant Node_Id := Next (C_Param);
-               Container_Type : constant Entity_Id :=
-                 Entity (Parameter_Type (C_Param));
-               --  Type of the first Argument of the Contains function
+               Container_Type : constant Entity_Id := Etype (C_Param);
+               --  Type of the first argument of the Contains function
 
-               Element_Type   : constant Entity_Id :=
-                 Entity (Parameter_Type (E_Param));
+               Element_Type   : constant Entity_Id := Etype (E_Param);
                --  Type of the second argument of the Contains function
 
-               Cont_Element   : constant Entity_Id :=
+            begin
+               Cont_Element :=
                  Get_Iterable_Type_Primitive (Container_Type, Name_Element);
                --  Element primitive of Container_Type
-
-            begin
                if No (Cont_Element) then
                   Error_Msg_N
                     ("first parameter of Contains function must allow for of "
                      & "iteration", C_Param);
-               elsif Etype (Cont_Element) /= Element_Type then
+               elsif not In_SPARK (Cont_Element) then
+                  Error_Msg_N
+                    ("first parameter of Contains functions must allow for of "
+                     & "iteration in SPARK", C_Param);
+               elsif Retysp (Etype (Cont_Element)) /= Retysp (Element_Type)
+               then
                   Error_Msg_N
                     ("second parameter of Contains must have the type of "
                      & "elements", E_Param);
                else
-                  Ok := True;
+                  Check_Common_Properties (Container_Type, E, Ok, "Contains");
                end if;
             end;
          end if;
@@ -1489,46 +1560,94 @@ package body SPARK_Definition.Annotate is
       -- Check_Model_Entity --
       ------------------------
 
-      procedure Check_Model_Entity (E : Entity_Id; Ok : in out Boolean) is
-         Params : constant List_Id :=
-           Parameter_Specifications (Subprogram_Specification (E));
+      procedure Check_Model_Entity
+        (E            : Entity_Id;
+         Ok           : in out Boolean;
+         Cont_Element : out Entity_Id) is
+         Param : constant Node_Id := First_Formal (E);
       begin
-         if List_Length (Params) /= 1 then
+         if No (Param) or else Present (Next_Formal (Param)) then
             Error_Msg_N
               ("Model function must have exactly one parameter", E);
          else
             declare
-               Param          : constant Node_Id := First (Params);
-               Container_Type : constant Entity_Id :=
-                 Entity (Parameter_Type (Param));
-               --  Type of the first Argument of the model function
+               Container_Type : constant Entity_Id := Etype (Param);
+               --  Type of first argument of the model function
 
                Model_Type     : constant Entity_Id := Etype (E);
                --  Return type of the model function
-
-               Cont_Element   : constant Entity_Id :=
-                 Get_Iterable_Type_Primitive (Container_Type, Name_Element);
-               --  Element primitive of Container_Type
 
                Model_Element  : constant Entity_Id :=
                  Get_Iterable_Type_Primitive (Model_Type, Name_Element);
                --  Element primitive of Model_Type
 
             begin
+               Cont_Element :=
+                 Get_Iterable_Type_Primitive (Container_Type, Name_Element);
                if No (Cont_Element) then
                   Error_Msg_N
                     ("parameter of Model function must allow for of iteration",
                      Param);
+               elsif not In_SPARK (Cont_Element) then
+                  Error_Msg_N
+                    ("parameter of Model function must allow for of iteration "
+                       & "in SPARK", Param);
                elsif No (Model_Element) then
                   Error_Msg_N
-                    ("return type of Model function must allow for of " &
-                       "iteration", E);
+                    ("return type of Model function must allow for of "
+                     & "iteration", E);
+               elsif not In_SPARK (Model_Element) then
+                  Error_Msg_N
+                    ("return type of Model function must allow for of "
+                     & "iteration in SPARK", E);
+               elsif Retysp (Etype (Cont_Element))
+                 /= Retysp (Etype (Model_Element))
+               then
+                  Error_Msg_N
+                    ("parameter and return type of Model function must "
+                     & "allow for of iteration with the same element type",
+                     E);
+               elsif Has_Controlling_Result (E) then
+                  Error_Msg_N
+                    ("Model function must not have a controlling result", E);
                else
-                  Ok := True;
+                  Check_Common_Properties (Container_Type, E, Ok, "Model");
+                  if Ok and then
+                    Unchecked_Full_Type (Find_Model_Root (Model_Type)) =
+                      Unchecked_Full_Type (Container_Type)
+                  then
+                     Ok := False;
+                     Error_Msg_N
+                       ("adding this Model function would produce a circular "
+                        & "definition for container model", E);
+                  end if;
                end if;
             end;
          end if;
       end Check_Model_Entity;
+
+      ---------------------
+      -- Find_Model_Root --
+      ---------------------
+
+      function Find_Model_Root (Container_Type : Entity_Id) return Entity_Id is
+         Cursor : Entity_Id := Container_Type;
+         Found  : Boolean := True;
+         Annot  : Iterable_Annotation;
+      begin
+         while Found loop
+            Retrieve_Iterable_Annotation (Cursor, Found, Annot);
+            if Found then
+               case Annot.Kind is
+                  when Contains =>
+                     Found := False;
+                  when Model =>
+                     Cursor := Etype (Annot.Entity);
+               end case;
+            end if;
+         end loop;
+         return Cursor;
+      end Find_Model_Root;
 
       ---------------------------------
       -- Process_Iterable_Annotation --
@@ -1542,8 +1661,6 @@ package body SPARK_Definition.Annotate is
            Etype (First_Entity (Entity));
          Iterable_Node         : constant Node_Id :=
            Find_Value_Of_Aspect (Container_Type, Aspect_Iterable);
-         Model_Iterable_Aspect : constant Node_Id :=
-           Find_Aspect (Etype (Entity), Aspect_Iterable);
          Position              : Iterable_Maps.Cursor;
          Inserted              : Boolean;
       begin
@@ -1562,15 +1679,15 @@ package body SPARK_Definition.Annotate is
             return;
          end if;
 
-         if Present (Model_Iterable_Aspect) then
-            SPARK_Definition.Mark_Iterable_Aspect (Model_Iterable_Aspect);
-         end if;
       end Process_Iterable_Annotation;
 
-      Args_Str : constant String_Id := Strval (Arg3_Exp);
-      Kind     : Iterable_Kind;
-      New_Prim : Entity_Id;
-      Ok       : Boolean := False;
+      Args_Str     : constant String_Id := Strval (Arg3_Exp);
+      Kind         : Iterable_Kind;
+      New_Prim     : Entity_Id;
+      Ok           : Boolean := False;
+      Cont_Element : Entity_Id;
+      --  "Element" primitive for relevant container.
+      --  Set at most once.
 
    --  Start of processing for Check_Iterable_Annotation
 
@@ -1585,6 +1702,7 @@ package body SPARK_Definition.Annotate is
            ("the entity of a Gnatprove Annotate Iterable_For_Proof "
             & "pragma must be a function",
             New_Prim);
+         return;
       end if;
 
       --  Pull function specified by the annotation for translation (and report
@@ -1597,10 +1715,10 @@ package body SPARK_Definition.Annotate is
 
       if To_Lower (To_String (Args_Str)) = "model" then
          Kind := Model;
-         Check_Model_Entity (New_Prim, Ok);
+         Check_Model_Entity (New_Prim, Ok, Cont_Element);
       elsif To_Lower (To_String (Args_Str)) = "contains" then
          Kind := Contains;
-         Check_Contains_Entity (New_Prim, Ok);
+         Check_Contains_Entity (New_Prim, Ok, Cont_Element);
       else
          Error_Msg_N
            ("the third argument of a Gnatprove Annotate Iterable_For_Proof "
@@ -1609,9 +1727,43 @@ package body SPARK_Definition.Annotate is
          return;
       end if;
 
-      if Ok then
-         Process_Iterable_Annotation (Kind, New_Prim);
+      if not Ok then
+         return;
       end if;
+
+      --  Check that pragma is placed immediately after declaration
+      --  of 'Element' primitive
+      declare
+         Cursor : Node_Id := Parent (Declaration_Node (Cont_Element));
+      begin
+         if Is_List_Member (Cursor)
+           and then Decl_Starts_Pragma_Annotate_Range (Cursor)
+         then
+            Next (Cursor);
+            while Present (Cursor) loop
+               if Is_Pragma_Annotate_GNATprove (Cursor)
+               then
+                  if Cursor = Prag
+                  then
+                     goto Found;
+                  end if;
+               elsif Decl_Starts_Pragma_Annotate_Range (Cursor)
+                 and then
+                   Nkind (Cursor) not in N_Pragma | N_Null_Statement
+               then
+                  exit;
+               end if;
+               Next (Cursor);
+            end loop;
+         end if;
+         Error_Msg_N ("pragma Iterable_For_Proof must immediately follow"
+                      & " the declaration of the Element", Prag);
+         return;
+         <<Found>>
+      end;
+
+      Process_Iterable_Annotation (Kind, New_Prim);
+
    end Check_Iterable_Annotation;
 
    ------------------------------
@@ -2721,7 +2873,7 @@ package body SPARK_Definition.Annotate is
          Check_Ownership_Annotation (Aspect_Or_Pragma, Arg3_Exp, Arg4_Exp);
 
       elsif Name = "iterable_for_proof" then
-         Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp);
+         Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp, Prag);
 
       --  Annotation for justifying check messages. This is where we set
       --  Result.Present to True and fill in values for components Kind,

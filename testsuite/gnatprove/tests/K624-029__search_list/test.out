@@ -11,27 +11,39 @@ linked_list.ads:14:16: info: precondition proved (CVC5: 2 VC)
 spark-containers-formal-doubly_linked_lists.ads:40:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at linked_list.ads:6
 spark-containers-formal-doubly_linked_lists.ads:42:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at linked_list.ads:6
 spark-containers-formal-doubly_linked_lists.ads:44:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:449:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:450:08: info: dynamic accessibility check proved (Trivial), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:454:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:456:08: info: dynamic accessibility check proved (Trivial), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:477:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:586:49: info: overflow check proved (CVC5: 2 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:721:49: info: overflow check proved (CVC5: 2 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:811:57: info: overflow check proved (CVC5: 2 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:878:57: info: overflow check proved (CVC5: 2 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:965:28: info: overflow check proved (CVC5: 2 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:965:39: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1141:43: info: overflow check proved (CVC5: 2 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1323:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1464:20: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1479:20: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1494:20: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1509:20: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1531:14: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1537:23: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1586:14: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
-spark-containers-formal-doubly_linked_lists.ads:1593:23: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:408:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:60, in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:408:13: info: precondition proved (Trivial: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:408:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:412:06: info: data dependencies proved, in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:415:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:60, in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:415:13: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:456:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:457:08: info: dynamic accessibility check proved (Trivial), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:461:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:463:08: info: dynamic accessibility check proved (Trivial), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:484:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:593:49: info: overflow check proved (CVC5: 2 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:728:49: info: overflow check proved (CVC5: 2 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:818:57: info: overflow check proved (CVC5: 2 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:885:57: info: overflow check proved (CVC5: 2 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:972:28: info: overflow check proved (CVC5: 2 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:972:39: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1148:43: info: overflow check proved (CVC5: 2 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1330:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1432:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:60, in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1432:13: info: precondition proved (Trivial: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1465:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:60, in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1465:13: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1471:20: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1486:20: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1501:20: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1516:20: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1538:14: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1544:23: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1593:14: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1600:23: info: precondition proved (CVC5: 1 VC), in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1647:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:60, in instantiation at linked_list.ads:6
+spark-containers-formal-doubly_linked_lists.ads:1647:13: info: precondition proved (Trivial: 1 VC), in instantiation at linked_list.ads:6
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
 spark-containers-functional-maps.ads:59:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
 spark-containers-functional-maps.ads:61:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
@@ -41,17 +53,42 @@ spark-containers-functional-maps.ads:71:19: info: subprogram "Equivalent_Keys_Tr
 spark-containers-functional-maps.ads:77:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
 spark-containers-functional-maps.ads:79:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
 spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:365:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
 spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
 spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:526:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
+spark-containers-functional-maps.ads:531:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at linked_list.ads:6
 spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
 spark-containers-functional-vectors.ads:52:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
 spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
 spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
 spark-containers-functional-vectors.ads:490:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6
 spark-containers-functional-vectors.ads:491:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at linked_list.ads:6

@@ -1,4 +1,3 @@
-map_list_incr.adb:6:12: info: precondition proved
 map_list_incr.adb:7:11: info: postcondition proved
 map_list_incr.adb:9:18: info: precondition proved
 map_list_incr.adb:9:43: info: precondition proved

@@ -8,21 +8,32 @@ spark-containers-formal-hashed_sets.ads:77:19: info: subprogram "Equivalent_Elem
 spark-containers-formal-hashed_sets.ads:79:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at p.ads:12
 spark-containers-formal-hashed_sets.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at p.ads:12
 spark-containers-formal-hashed_sets.ads:88:19: info: subprogram "Hash_Equivalent" will terminate, terminating annotation has been proved, in instantiation at p.ads:12
-spark-containers-formal-hashed_sets.ads:628:18: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:12
-spark-containers-formal-hashed_sets.ads:959:39: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:12
-spark-containers-formal-hashed_sets.ads:968:17: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:12
-spark-containers-formal-hashed_sets.ads:989:24: info: overflow check proved (CVC5: 2 VC), in instantiation at p.ads:12
-spark-containers-formal-hashed_sets.ads:990:26: info: overflow check proved (CVC5: 2 VC), in instantiation at p.ads:12
-spark-containers-formal-hashed_sets.ads:1038:49: info: overflow check proved (CVC5: 2 VC), in instantiation at p.ads:12
-spark-containers-formal-hashed_sets.ads:1215:24: info: overflow check proved (CVC5: 2 VC), in instantiation at p.ads:12
-spark-containers-formal-hashed_sets.ads:1216:26: info: overflow check proved (CVC5: 2 VC), in instantiation at p.ads:12
-spark-containers-formal-hashed_sets.ads:1216:44: info: overflow check proved (CVC5: 2 VC), in instantiation at p.ads:12
-spark-containers-formal-hashed_sets.ads:1256:49: info: overflow check proved (CVC5: 2 VC), in instantiation at p.ads:12
-spark-containers-formal-hashed_sets.ads:1348:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:12
-spark-containers-formal-hashed_sets.ads:1369:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:12
-spark-containers-formal-hashed_sets.ads:1435:22: info: subprogram "Eq_Compatible" will terminate, terminating annotation has been proved, in instantiation at p.ads:20
-spark-containers-formal-hashed_sets.ads:1441:22: info: subprogram "Hash_Compatible" will terminate, terminating annotation has been proved, in instantiation at p.ads:20
-spark-containers-formal-hashed_sets.ads:1616:13: info: precondition proved (Trivial: 1 VC), in instantiation at p.ads:20
+spark-containers-formal-hashed_sets.ads:593:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:111, in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:593:13: info: precondition proved (Trivial: 1 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:593:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:597:06: info: data dependencies proved, in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:600:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:111, in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:600:13: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:635:18: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:966:39: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:975:17: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:996:24: info: overflow check proved (CVC5: 2 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:997:26: info: overflow check proved (CVC5: 2 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:1045:49: info: overflow check proved (CVC5: 2 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:1222:24: info: overflow check proved (CVC5: 2 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:1223:26: info: overflow check proved (CVC5: 2 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:1223:44: info: overflow check proved (CVC5: 2 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:1263:49: info: overflow check proved (CVC5: 2 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:1337:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:111, in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:1337:13: info: precondition proved (Trivial: 1 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:1349:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:111, in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:1349:13: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:1355:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:1376:20: info: precondition proved (CVC5: 1 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:1420:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:111, in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:1420:13: info: precondition proved (Trivial: 1 VC), in instantiation at p.ads:12
+spark-containers-formal-hashed_sets.ads:1442:22: info: subprogram "Eq_Compatible" will terminate, terminating annotation has been proved, in instantiation at p.ads:20
+spark-containers-formal-hashed_sets.ads:1448:22: info: subprogram "Hash_Compatible" will terminate, terminating annotation has been proved, in instantiation at p.ads:20
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
 spark-containers-functional-maps.ads:59:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
 spark-containers-functional-maps.ads:61:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
@@ -32,18 +43,61 @@ spark-containers-functional-maps.ads:71:19: info: subprogram "Equivalent_Keys_Tr
 spark-containers-functional-maps.ads:77:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
 spark-containers-functional-maps.ads:79:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
 spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:365:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
 spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
 spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:526:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-maps.ads:531:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:312, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:89:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:89:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:326:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:326:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:335:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:335:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:341:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:341:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
 spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:391:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:391:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:397:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:397:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:404:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
+spark-containers-functional-sets.ads:404:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:189, in instantiation at p.ads:12
 spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
 spark-containers-functional-vectors.ads:52:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
 spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
 spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
 spark-containers-functional-vectors.ads:490:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
 spark-containers-functional-vectors.ads:491:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:204, in instantiation at p.ads:12
@@ -144,9 +198,9 @@ spark-containers-parameter_checks.ads:124:19: info: postcondition proved (CVC5: 
 spark-containers-parameter_checks.ads:261:17: info: subprogram "Hash_Equivalent" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at p.ads:12
 spark-containers-parameter_checks.ads:262:09: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at p.ads:12
 spark-containers-parameter_checks.ads:264:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at p.ads:12
-spark-containers-parameter_checks.ads:282:17: info: subprogram "Op_Compatible" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:1452, in instantiation at p.ads:20
-spark-containers-parameter_checks.ads:283:09: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:1452, in instantiation at p.ads:20
-spark-containers-parameter_checks.ads:284:19: info: postcondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:1452, in instantiation at p.ads:20
-spark-containers-parameter_checks.ads:302:17: info: subprogram "Hash_Compatible" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:1462, in instantiation at p.ads:20
-spark-containers-parameter_checks.ads:303:09: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:1462, in instantiation at p.ads:20
-spark-containers-parameter_checks.ads:304:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:1462, in instantiation at p.ads:20
+spark-containers-parameter_checks.ads:282:17: info: subprogram "Op_Compatible" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:1459, in instantiation at p.ads:20
+spark-containers-parameter_checks.ads:283:09: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:1459, in instantiation at p.ads:20
+spark-containers-parameter_checks.ads:284:19: info: postcondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:1459, in instantiation at p.ads:20
+spark-containers-parameter_checks.ads:302:17: info: subprogram "Hash_Compatible" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-hashed_sets.ads:1469, in instantiation at p.ads:20
+spark-containers-parameter_checks.ads:303:09: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:1469, in instantiation at p.ads:20
+spark-containers-parameter_checks.ads:304:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:1469, in instantiation at p.ads:20
