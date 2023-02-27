@@ -854,13 +854,6 @@ only part of a program:
     alias the callee's parameters and accessed global objects in ways that
     are not allowed in SPARK)
 
-* [ADA_RECURSIVE_SUBPROGRAMS]
-  When the body of a subprogram is not analyzed by GNATprove, it shall not be
-  mutually recursive with a subprogram analyzed by GNATprove. Recursivity due
-  to calls through access-to-subprograms and overriding of dispatching calls
-  should not be taken into account for checking respect of this assumption if
-  they are not visible at the point of call.
-
 * [ADA_OBJECT_ADDRESSES]
   When the body of a function is not analyzed by GNATprove, its result should
   not depend on the address of parts of its parameters or global inputs unless
@@ -906,14 +899,6 @@ being available:
   `assumed Always_Return` is guaranteed to be issued in cases where review is
   required.
 
-* [PARTIAL_RECURSIVE_SUBPROGRAMS]
-  Subprograms which are called across the boundary of those units analyzed
-  together should not be mutually recursive with a subprogram analyzed by
-  GNATprove. Recursivity due to calls through access-to-subprograms and
-  overriding of dispatching calls should not be taken into account for
-  checking respect of this assumption if they are not visible at the point
-  of call. This is similar to [ADA_RECURSIVE_SUBPROGRAMS].
-
 * [PARTIAL_TASKING]
   If no single run of GNATprove analyzes all units that define tasks, then for
   each run of GNATprove, all tasks `not` defined in units analyzed during that
@@ -923,6 +908,15 @@ being available:
   the main subprogram of that Ada partition. Note also: If an Ada partition
   defines no tasks other than the environment task, then that Ada partition is
   trivially in compliance with this assumption.
+
+* [PARTIAL_ACYCLIC_ANALYSIS]
+  Consider the directed graph where the nodes are the compilation units and
+  there is an edge from a unit A to a unit B if there is a with clause for B in
+  the specification or the body of A. All (bodies of) units of a strongly
+  connected component in this graph should be analyzed as part of a single
+  analysis of GNATprove. This is so GNATprove can detect that the analyses of
+  strongly connected units depend on each other and use its internal
+  mechanism to avoid unsoundness.
 
 In addition, the following assumptions need to be addressed when compiling the
 program with another compiler than GNAT:
