@@ -30,7 +30,8 @@ package SPARK_Util.Hardcoded is
       Big_Reals,
       Cut_Operations,
       Elementary_Functions,
-      System_Storage_Elements
+      System_Storage_Elements,
+      System
      );
    --  Enum type of the hardcoded units
 
@@ -74,16 +75,9 @@ package SPARK_Util.Hardcoded is
    package System_Storage_Elements_Names is
       To_Address : constant String := "to_address";
       To_Integer : constant String := "to_integer";
-      Add        : constant String := "Oadd";
-      Subtract   : constant String := "Osubtract";
-      Modulus    : constant String := "Omod";
    end System_Storage_Elements_Names;
    --  Names of entities that will be considered hardcoded in the
    --  System.Storage_Elements unit.
-   --  Note that both "+" and "-" have two versions with different argument and
-   --  return types (all versions are binary operations). But it turns out the
-   --  handling of the homonyms is identical, so we don't need to distinguish
-   --  them.
 
    package Cut_Operations_Names is
       By : constant String := "by";
@@ -138,5 +132,13 @@ package SPARK_Util.Hardcoded is
    function Get_Hardcoded_Unit (E : Entity_Id) return Hardcoded_Enum
      with Pre => Is_Hardcoded_Entity (E);
    --  Returns the unit in which the hardcoded entity E is defined
+
+   function Has_Stoele_Offset (E : Type_Kind_Id) return Boolean;
+   --  Return true if the entity is (a derived type of) the type
+   --  System.Storage_Elements.Storage_Offset.
+
+   function Is_System_Address (E : Type_Kind_Id) return Boolean;
+   --  Return true if the entity is (a subtype of) the type
+   --  System.Address;
 
 end SPARK_Util.Hardcoded;

@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Common_Containers;   use Common_Containers;
 with Errout;              use Errout;
 with Namet;               use Namet;
@@ -74,6 +73,7 @@ package body Why.Gen.Hardcoded is
          when Cut_Operations
             | System_Storage_Elements
             | Elementary_Functions
+            | System
          =>
             raise Program_Error;
       end case;
@@ -96,6 +96,19 @@ package body Why.Gen.Hardcoded is
                              | Name_Op_Le
                              | Name_Op_Gt
                              | Name_Op_Ge);
+
+   ----------------------------
+   -- Is_Hardcoded_Operation --
+   ----------------------------
+
+   function Is_Hardcoded_Operation
+     (Op          : N_Binary_Op;
+      Left, Right : Type_Kind_Id)
+      return Boolean
+   is
+     (Op = N_Op_Mod
+      and then Is_System_Address (Left)
+      and then Has_Stoele_Offset (Right));
 
    ----------------------------
    -- New_Hardcoded_Equality --
@@ -129,6 +142,7 @@ package body Why.Gen.Hardcoded is
          when Cut_Operations
             | System_Storage_Elements
             | Elementary_Functions
+            | System
          =>
             raise Program_Error;
 
@@ -764,77 +778,13 @@ package body Why.Gen.Hardcoded is
          end;
 
       elsif Is_From_Hardcoded_Unit (Subp, System_Storage_Elements) then
-         if Name_String = SSEN.To_Integer
-           or else Name_String = SSEN.To_Address
-         then
-            T := Insert_Simple_Conversion (Ada_Node => Ada_Node,
-                                           Domain   => Domain,
-                                           Expr     => Args (1),
-                                           To       =>
-                                             Type_Of_Node (Etype (Subp)));
-         else
-            declare
-               Arg_1 : constant Node_Id := First_Formal (Subp);
-               Arg_1_Ty : constant Type_Kind_Id := Retysp (Etype (Arg_1));
-               Arg_2_Ty : constant Type_Kind_Id :=
-                 Retysp (Etype (Next_Formal (Arg_1)));
-               Arg_2 : constant W_Expr_Id :=
-                 New_Temp_For_Expr (Args (Args'Last));
-            begin
-               pragma Assert (Args'Length = 2);
-               T := New_Binary_Op_Expr
-                 (Op          =>
-                    (if Name_String = SSEN.Add then N_Op_Add
-                     elsif Name_String = SSEN.Subtract then N_Op_Subtract
-                     else N_Op_Mod),
-                  Left        => Args (Args'First),
-                  Right       => Arg_2,
-                  Left_Type   => Arg_1_Ty,
-                  Right_Type  => Arg_2_Ty,
-                  Return_Type => Retysp (Etype (Subp)),
-                  Domain      => Domain,
-                  Ada_Node    => Ada_Node);
-
-               --  The mod operator has a precondition that the second argument
-               --  is positive.
-
-               if Name_String = SSEN.Modulus and then Domain = EW_Prog then
-                  declare
-                     Ty         : constant W_Type_Id :=
-                       Base_Why_Type (Arg_2_Ty);
-                     Msg        : constant Unbounded_String :=
-                       To_Unbounded_String
-                         ("modulus operation on addresses requires "
-                          & "positive modulus");
-                     Check_Info : Check_Info_Type :=
-                       New_Check_Info;
-                     Check : W_Pred_Id;
-                  begin
-                     Check_Info.Continuation.Append
-                       (Continuation_Type'(
-                        Ada_Node => Subp,
-                        Message => Msg));
-                     Check :=
-                       New_VC_Pred
-                         (Ada_Node,
-                          New_Comparison (
-                            Transform_Compare_Op (N_Op_Gt, Ty, Domain),
-                            +Arg_2,
-                            New_Integer_Constant (Value => Uint_0)),
-                          VC_Precondition,
-                          Check_Info);
-                     T :=
-                       +Sequence
-                         (New_Assert
-                            (Ada_Node    => Ada_Node,
-                             Assert_Kind => EW_Check,
-                             Pred        => Check),
-                          +T);
-                  end;
-               end if;
-               T := Binding_For_Temp (Empty, Domain, Arg_2, T);
-            end;
-         end if;
+         pragma Assert (Name_String = SSEN.To_Integer
+                        or else Name_String = SSEN.To_Address);
+         T := Insert_Simple_Conversion (Ada_Node => Ada_Node,
+                                        Domain   => Domain,
+                                        Expr     => Args (1),
+                                        To       =>
+                                          Type_Of_Node (Etype (Subp)));
 
       elsif Is_From_Hardcoded_Generic_Unit (Subp, Elementary_Functions) then
          declare
@@ -1210,6 +1160,60 @@ package body Why.Gen.Hardcoded is
          raise Program_Error;
       end if;
    end Transform_Hardcoded_Literal;
+
+   -----------------------------------
+   -- Transform_Hardcoded_Operation --
+   -----------------------------------
+
+   function Transform_Hardcoded_Operation
+     (Op                   : N_Binary_Op;
+      Lty, Rty, Expr_Type : Type_Kind_Id;
+      LT, RT               : W_Expr_Id;
+      Domain               : EW_Domain;
+      Ada_Node             : Node_Id)
+      return W_Expr_Id
+   is
+      T : W_Expr_Id;
+      RTT : constant W_Expr_Id := New_Temp_For_Expr (RT, Domain = EW_Prog);
+   begin
+      pragma Assert (Op = N_Op_Mod);
+      pragma Assert (Is_System_Address (Lty)
+                     and then Has_Stoele_Offset (Rty));
+      T := New_Binary_Op_Expr
+        (Op          => Op,
+         Left        => LT,
+         Right       => RTT,
+         Left_Type   => Lty,
+         Right_Type  => Rty,
+         Return_Type => Expr_Type,
+         Domain      => Domain,
+         Ada_Node    => Ada_Node);
+      if Domain = EW_Prog then
+         declare
+            Ty         : constant W_Type_Id :=  Base_Why_Type (Retysp (Rty));
+            Check : W_Pred_Id;
+         begin
+            Check :=
+              New_VC_Pred
+                (Ada_Node,
+                 New_Comparison (
+                   Transform_Compare_Op (N_Op_Gt, Ty, Domain),
+                   +Insert_Simple_Conversion
+                     (Ada_Node, EW_Pred, RTT, EW_Int_Type),
+                   New_Integer_Constant (Value => Uint_0)),
+                 VC_Precondition);
+            T :=
+              +Sequence
+              (New_Assert
+                 (Ada_Node    => Ada_Node,
+                  Assert_Kind => EW_Check,
+                  Pred        => Check),
+               +T);
+         end;
+      end if;
+      T := Binding_For_Temp (Empty, Domain, RTT, T);
+      return T;
+   end Transform_Hardcoded_Operation;
 
    ----------------------
    -- Uint_From_String --
