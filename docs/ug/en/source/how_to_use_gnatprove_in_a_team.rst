@@ -695,7 +695,6 @@ of a program:
   tasking-related effects. In particular, GNATprove assumes that the overriding
   operation:
 
-  * is not potentially blocking,
   * does not call protected entries,
   * does not suspend on suspection objects,
   * does not access unsynchronised global objects,
@@ -718,6 +717,15 @@ only part of a program:
   Two global objects and/or by-reference parameters referring to the same
   object are said to conflict if both (1) they are not both synchronized
   and (2) at least one can be modified by the callee.
+
+  In addition, calls from SPARK units to subprograms which are not analyzed by
+  GNATprove should not have any adverse tasking-related effects. In particular,
+  GNATprove assumes that such calls do not cause tasks visible from SPARK to:
+
+  * call protected entries that they are not calling in a way which is visible
+    from SPARK,
+  * suspend on suspension objects on which they do not suspend in a way which
+    is visible from SPARK.
 
 * [ADA_EXTERNAL]
   Objects accessed outside of SPARK, either directly for statically allocated
