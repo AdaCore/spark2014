@@ -1587,7 +1587,7 @@ package body Configuration is
          Set_Report_Mode;
          Set_Proof_Dir;
 
-         Use_Semaphores := (not Debug) and then (not CL_Switches.Dbg_No_Sem);
+         Use_Semaphores := not Debug and then not CL_Switches.Dbg_No_Sem;
       end Postprocess;
 
       ----------------------------

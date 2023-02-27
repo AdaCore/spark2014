@@ -1266,13 +1266,13 @@ begin
 
    Assumptions :=
      Has_Field (Info, "assumptions")
-     and then (Get (Info, "assumptions") = True);
+     and then Get (Info, "assumptions") = True;
    Output_Header :=
      Has_Field (Info, "output_header")
-     and then (Get (Info, "output_header") = True);
+     and then Get (Info, "output_header") = True;
    Quiet :=
      Has_Field (Info, "quiet")
-     and then (Get (Info, "quiet") = True);
+     and then Get (Info, "quiet") = True;
 
    --  ??? FIXME we are not reading the "limit_subp" field
 

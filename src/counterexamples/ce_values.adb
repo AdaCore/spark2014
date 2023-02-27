@@ -86,7 +86,7 @@ package body CE_Values is
       and then
         (case V1.K is
             when Enum_K    =>
-             (Nkind (V1.Enum_Entity) = Nkind (V2.Enum_Entity))
+              Nkind (V1.Enum_Entity) = Nkind (V2.Enum_Entity)
               and then
                 (if Nkind (V1.Enum_Entity) = N_Character_Literal
                 then Char_Literal_Value (V1.Enum_Entity) =

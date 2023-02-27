@@ -1483,10 +1483,9 @@ package body Gnat2Why.Subprograms is
 
                   pragma Assert
                     (K = Regular
-                     and then (Ty in
-                           M_Main.Type_Of_Heap |
-                       EW_Private_Type |
-                       EW_Unit_Type));
+                     and then Ty in M_Main.Type_Of_Heap
+                                  | EW_Private_Type
+                                  | EW_Unit_Type);
                end;
             end if;
 

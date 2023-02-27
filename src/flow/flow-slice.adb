@@ -601,8 +601,8 @@ package body Flow.Slice is
 
                Is_Written := Is_Written
                  or else
-                   (not (FA.PDG.In_Neighbour_Count (V_Final) = 1
-                         and then FA.PDG.Parent (V_Final) = V_Initial));
+                   not (FA.PDG.In_Neighbour_Count (V_Final) = 1
+                        and then FA.PDG.Parent (V_Final) = V_Initial);
 
                --  If everything is already known then exit early
                if Is_Used and Is_Written then

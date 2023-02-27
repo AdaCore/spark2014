@@ -2503,7 +2503,7 @@ package body Flow.Analysis is
          --  their initialization is obvious.
 
          if (Ekind (E) = E_Variable
-               and then (Present (Expression (Declaration_Node (E)))))
+               and then Present (Expression (Declaration_Node (E))))
 
            --  Internal objects created by the frontend, because they are
            --  initialized-by-construction.
