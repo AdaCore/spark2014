@@ -518,7 +518,7 @@ package body CE_Display is
    begin
       return
         File'Length >= 4 and then
-        (File ((File'Last - 2) .. File'Last) in "adb" | "ads");
+        File ((File'Last - 2) .. File'Last) in "adb" | "ads";
    end Is_Ada_File_Name;
 
    ----------------------
