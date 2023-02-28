@@ -406,7 +406,7 @@ is
      Global => null,
      Post   =>
        Is_Empty'Result = M.Is_Empty (Model (Container))
-         and (Is_Empty'Result = (Length (Container) = 0));
+         and Is_Empty'Result = (Length (Container) = 0);
 
    procedure Clear (Container : in out Map) with
      Global => null,
@@ -666,7 +666,7 @@ is
      Global => null,
      Pre    =>
        Length (Container) < Count_Type'Last
-         and then (not Contains (Container, Key)),
+         and then not Contains (Container, Key),
      Post   =>
        Length (Container) = Length (Container)'Old + 1
          and Contains (Container, Key)

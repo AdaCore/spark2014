@@ -612,7 +612,6 @@ test_set.adb:265:22: info: assertion proved (altergo: 1 VC)
 test_set.adb:267:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:273:22: info: assertion proved (altergo: 1 VC)
 test_set.adb:274:22: info: assertion proved (Z3: 1 VC)
-spark-containers-formal-ordered_sets.ads:756:19: (style) redundant parentheses [-gnatyz]
 test_set.adb:275:22: info: assertion proved (altergo: 1 VC)
 test_set.adb:277:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:278:07: info: precondition proved (CVC5: 2 VC)

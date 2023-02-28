@@ -80,9 +80,9 @@ is
    with
        Global => null,
        Pre =>
-         (Val1 in Fl'First / 2.0 .. Fl'Last / 2.0) and then
-         (Val2 in Fl'First / 2.0 .. Fl'Last / 2.0) and then
-         (Val3 in Fl'First / 2.0 .. Fl'Last / 2.0) and then
+         Val1 in Fl'First / 2.0 .. Fl'Last / 2.0 and then
+         Val2 in Fl'First / 2.0 .. Fl'Last / 2.0 and then
+         Val3 in Fl'First / 2.0 .. Fl'Last / 2.0 and then
           Val1 <= Val2,
        Post => Val1 + Val3 <= Val2 + Val3;
 
@@ -93,9 +93,9 @@ is
      with
        Global => null,
        Pre =>
-         (Val1 in Fl'First / 2.0 .. Fl'Last / 2.0) and then
-         (Val2 in Fl'First / 2.0 .. Fl'Last / 2.0) and then
-         (Val3 in Fl'First / 2.0 .. Fl'Last / 2.0) and then
+         Val1 in Fl'First / 2.0 .. Fl'Last / 2.0 and then
+         Val2 in Fl'First / 2.0 .. Fl'Last / 2.0 and then
+         Val3 in Fl'First / 2.0 .. Fl'Last / 2.0 and then
          Val1 <= Val2,
        Post => Val1 - Val3 <= Val2 - Val3;
 
@@ -106,9 +106,9 @@ is
      with
        Global => null,
        Pre =>
-         (Val1 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
-         (Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
-         (Val3 in 0.0 .. Fl_Last_Sqrt) and then
+         Val1 in -Fl_Last_Sqrt .. Fl_Last_Sqrt and then
+         Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt and then
+         Val3 in 0.0 .. Fl_Last_Sqrt and then
          Val1 <= Val2,
        Post => Val1 * Val3 <= Val2 * Val3;  --  COLIBRI
 
@@ -119,9 +119,9 @@ is
      with
        Global => null,
        Pre =>
-         (Val1 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
-         (Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
-         (Val3 in -Fl_Last_Sqrt .. 0.0) and then
+         Val1 in -Fl_Last_Sqrt .. Fl_Last_Sqrt and then
+         Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt and then
+         Val3 in -Fl_Last_Sqrt .. 0.0 and then
          Val1 <= Val2,
        Post => Val2 * Val3 <= Val1 * Val3;  --  COLIBRI
 
@@ -140,9 +140,9 @@ is
      with
        Global => null,
        Pre =>
-         (Val1 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
-         (Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
-         (Val3 in 1.0 / Fl_Last_Sqrt .. Fl'Last) and then
+         Val1 in -Fl_Last_Sqrt .. Fl_Last_Sqrt and then
+         Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt and then
+         Val3 in 1.0 / Fl_Last_Sqrt .. Fl'Last and then
          Val1 <= Val2,
        Post => Val1 / Val3 <= Val2 / Val3;  --  COLIBRI
 
@@ -153,9 +153,9 @@ is
      with
        Global => null,
        Pre =>
-         (Val1 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
-         (Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
-         (Val3 in Fl'First .. -1.0 / Fl_Last_Sqrt) and then
+         Val1 in -Fl_Last_Sqrt .. Fl_Last_Sqrt and then
+         Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt and then
+         Val3 in Fl'First .. -1.0 / Fl_Last_Sqrt and then
          Val1 <= Val2,
        Post => Val2 / Val3 <= Val1 / Val3;  --  COLIBRI
 
@@ -166,7 +166,7 @@ is
      with
        Global => null,
        Pre =>
-         (Val1 in 0.0 .. Fl_Last_Sqrt) and then
+         Val1 in 0.0 .. Fl_Last_Sqrt and then
          ((Val2 in 1.0 / Fl_Last_Sqrt .. Fl'Last and then
                    Val3 in 1.0 / Fl_Last_Sqrt .. Fl'Last) or else
             (Val2 in Fl'First .. -1.0 / Fl_Last_Sqrt and then
@@ -323,30 +323,30 @@ is
 
    procedure Lemma_Rounding_Error_Add (Val1, Val2 : Fl) with
      Pre  =>
-       (Val1 in Fl'First / 2.0 .. Fl'Last / 2.0) and then
-       (Val2 in Fl'First / 2.0 .. Fl'Last / 2.0),
+       Val1 in Fl'First / 2.0 .. Fl'Last / 2.0 and then
+       Val2 in Fl'First / 2.0 .. Fl'Last / 2.0,
      Post => abs (Real (Val1 + Val2) - (Real (Val1) + Real (Val2))) <=
          Epsilon * abs (Real (Val1) + Real (Val2)) + Eta;
 
    procedure Lemma_Rounding_Error_Sub (Val1, Val2 : Fl) with
      Pre  =>
-       (Val1 in Fl'First / 2.0 .. Fl'Last / 2.0) and then
-       (Val2 in Fl'First / 2.0 .. Fl'Last / 2.0),
+       Val1 in Fl'First / 2.0 .. Fl'Last / 2.0 and then
+       Val2 in Fl'First / 2.0 .. Fl'Last / 2.0,
      Post => abs (Real (Val1 - Val2) - (Real (Val1) - Real (Val2))) <=
          Epsilon * abs (Real (Val1) - Real (Val2)) + Eta;
 
    procedure Lemma_Rounding_Error_Mul (Val1, Val2 : Fl) with
      Pre  =>
-       (Val1 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
-       (Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt),
+       Val1 in -Fl_Last_Sqrt .. Fl_Last_Sqrt and then
+       Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt,
      Post => abs (Real (Val1 * Val2) - (Real (Val1) * Real (Val2))) <=
          Epsilon * abs (Real (Val1) * Real (Val2)) + Eta;
 
    procedure Lemma_Rounding_Error_Div (Val1, Val2 : Fl) with
      Pre  =>
-       (Val1 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
-       (Val2 in Fl'First .. -1.0 / Fl_Last_Sqrt
-              | 1.0 / Fl_Last_Sqrt .. Fl'Last),
+       Val1 in -Fl_Last_Sqrt .. Fl_Last_Sqrt and then
+       Val2 in Fl'First .. -1.0 / Fl_Last_Sqrt
+              | 1.0 / Fl_Last_Sqrt .. Fl'Last,
      Post => abs (Real (Val1 / Val2) - (Real (Val1) / Real (Val2))) <=
          Epsilon * abs (Real (Val1) / Real (Val2)) + Eta;
 

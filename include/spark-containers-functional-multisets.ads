@@ -134,9 +134,9 @@ is
 
    Global => null,
    Post   =>
-       ("<="'Result =
+       "<="'Result =
          (for all Item of Left =>
-            Nb_Occurence (Left, Item) <= Nb_Occurence (Right, Item)))
+            Nb_Occurence (Left, Item) <= Nb_Occurence (Right, Item))
          and then (if "<="'Result
                    then Cardinality (Left) <= Cardinality (Right));
 
@@ -162,9 +162,9 @@ is
 
      Global => null,
      Post   =>
-       (Is_Empty'Result =
-          (for all Element of Container => False))
-         and then (Is_Empty'Result = (Cardinality (Container) = 0));
+       Is_Empty'Result =
+          (for all Element of Container => False)
+         and then Is_Empty'Result = (Cardinality (Container) = 0);
    pragma Warnings (On, "unused variable ""Element""");
 
    function Equal_Except

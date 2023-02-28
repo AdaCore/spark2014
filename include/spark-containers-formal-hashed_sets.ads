@@ -746,7 +746,7 @@ is
    procedure Insert  (Container : in out Set; New_Item : Element_Type) with
      Global => null,
      Pre    => Length (Container) < Container.Capacity
-                 and then (not Contains (Container, New_Item)),
+                 and then not Contains (Container, New_Item),
      Post   =>
        Length (Container) = Length (Container)'Old + 1
          and Contains (Container, New_Item)

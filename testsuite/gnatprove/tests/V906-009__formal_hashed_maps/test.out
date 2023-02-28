@@ -538,8 +538,6 @@ test_map.adb:124:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:125:07: medium: assertion might fail
 test_map.adb:130:07: info: precondition proved (Trivial: 1 VC)
 test_map.adb:131:07: info: precondition proved (Trivial: 1 VC)
-spark-containers-formal-hashed_maps.ads:424:14: (style) redundant parentheses [-gnatyz]
-spark-containers-formal-hashed_maps.ads:686:18: (style) redundant parentheses [-gnatyz]
 test_map.adb:132:07: info: precondition proved (Trivial: 1 VC)
 test_map.adb:138:07: info: initialization of "L" proved
 test_map.adb:138:10: info: initialization of "K" proved

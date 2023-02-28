@@ -588,8 +588,6 @@ test_map.adb:133:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:135:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:136:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:137:22: info: assertion proved (Z3: 1 VC)
-spark-containers-formal-ordered_maps.ads:426:14: (style) redundant parentheses [-gnatyz]
-spark-containers-formal-ordered_maps.ads:691:19: (style) redundant parentheses [-gnatyz]
 test_map.adb:140:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:142:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:143:07: medium: assertion might fail
