@@ -1,4 +1,3 @@
-example_recursive.adb:21:07: info: precondition proved (Trivial: 1 VC)
 example_recursive.adb:21:25: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:35:18: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:35:18: info: subprogram variant proved (CVC5: 1 VC)
@@ -40,7 +39,6 @@ example_recursive.adb:93:51: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:93:78: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:102:06: info: data dependencies proved
 example_recursive.adb:103:67: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:104:16: info: precondition proved (Trivial: 1 VC)
 example_recursive.adb:105:22: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:106:47: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:106:61: info: precondition proved (CVC5: 1 VC)
@@ -53,7 +51,6 @@ example_recursive.adb:113:50: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:113:69: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:122:06: info: data dependencies proved
 example_recursive.adb:123:67: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:124:16: info: precondition proved (Trivial: 1 VC)
 example_recursive.adb:125:22: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:126:47: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:126:61: info: precondition proved (CVC5: 1 VC)
@@ -333,12 +330,27 @@ example_untagged_obj.adb:67:19: info: assertion proved (CVC5: 1 VC)
 example_untagged_obj.adb:67:19: info: precondition proved (CVC5: 1 VC)
 example_untagged_obj.adb:68:19: info: assertion proved (CVC5: 1 VC)
 example_untagged_obj.adb:68:19: info: precondition proved (CVC5: 1 VC)
+spark-pointers-abstract_maps.ads:57:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:42, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:57:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:42, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:57:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:42, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:57:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:57:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:57:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:68:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:42, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:68:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:42, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:68:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:42, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:68:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:68:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:68:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:71:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:42, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:71:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:42, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:71:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:42, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:71:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:71:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:71:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
 spark-pointers-abstract_maps.ads:76:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
 spark-pointers-abstract_maps.ads:76:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
 spark-pointers-abstract_maps.ads:76:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
-spark-pointers-abstract_maps.ads:77:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
-spark-pointers-abstract_maps.ads:77:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
-spark-pointers-abstract_maps.ads:77:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
 spark-pointers-abstract_maps.ads:79:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
 spark-pointers-abstract_maps.ads:79:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
 spark-pointers-abstract_maps.ads:79:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
@@ -348,9 +360,6 @@ spark-pointers-abstract_maps.ads:88:13: info: subprogram overriding operator "="
 spark-pointers-abstract_maps.ads:92:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
 spark-pointers-abstract_maps.ads:92:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
 spark-pointers-abstract_maps.ads:92:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
-spark-pointers-abstract_maps.ads:93:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
-spark-pointers-abstract_maps.ads:93:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
-spark-pointers-abstract_maps.ads:93:07: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
 spark-pointers-abstract_maps.ads:95:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
 spark-pointers-abstract_maps.ads:95:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
 spark-pointers-abstract_maps.ads:95:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10

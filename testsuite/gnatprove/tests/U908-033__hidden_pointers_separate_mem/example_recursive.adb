@@ -353,17 +353,21 @@ procedure Example_Recursive with SPARK_Mode is
       L1.L := L1.L + L2.L;
    end Merge;
 
-   X : List := Create (1); --@RESOURCE_LEAK:FAIL
-   Y : List := Create (1);
-   --  No attempt is made to deallocate X, we have a memory leak. The cells of
-   --  Y are moved to X, so they are not reported as leaked here.
+   procedure Do_Test (L1, L2 : in out List) is
+      X : List := Create (1); --@RESOURCE_LEAK:FAIL
+      Y : List := Create (1);
+      --  No attempt is made to deallocate X, we have a memory leak. The cells of
+      --  Y are moved to X, so they are not reported as leaked here.
+   begin
+      Add (X, 2);
+      Add (X, 3);
+      Add (Y, 2);
+      Add (Y, 3);
+      pragma Assert (X.L = 3);
+      pragma Assert (Y.L = 3);
+      Merge (X, Y);
+      pragma Assert (X.L = 6);
+   end;
 begin
-   Add (X, 2);
-   Add (X, 3);
-   Add (Y, 2);
-   Add (Y, 3);
-   pragma Assert (X.L = 3);
-   pragma Assert (Y.L = 3);
-   Merge (X, Y);
-   pragma Assert (X.L = 6);
+   null;
 end Example_Recursive;

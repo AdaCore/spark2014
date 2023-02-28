@@ -22,11 +22,16 @@ procedure Test_Hashed_Sets with SPARK_Mode is
       end;
    end Test;
 
-   S : aliased Set (100, Default_Modulus (100));
+   procedure Do_Test is
+      S : aliased Set (100, Default_Modulus (100));
+   begin
+      Insert (S, 1);
+      Insert (S, 2);
+      Insert (S, 3);
+      Insert (S, 4);
+      Test (S);
+   end Do_Test;
+
 begin
-   Insert (S, 1);
-   Insert (S, 2);
-   Insert (S, 3);
-   Insert (S, 4);
-   Test (S);
+   null;
 end Test_Hashed_Sets;
