@@ -9,44 +9,68 @@ spark-containers-formal-ordered_maps.ads:75:19: info: subprogram "Lt_Irreflexive
 spark-containers-formal-ordered_maps.ads:77:19: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:79:19: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:81:19: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:498:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:498:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:500:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:500:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:500:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:500:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:504:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:504:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:506:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:506:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:526:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:526:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:566:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:566:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:942:39: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:942:39: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:951:17: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:951:17: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:986:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:986:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:994:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:994:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1021:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1021:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1029:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1029:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1099:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1099:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1114:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1114:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1129:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1129:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1144:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1144:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1184:46: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1184:46: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1199:40: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1199:40: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:452:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:452:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:452:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:452:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:452:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:452:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:456:06: info: data dependencies proved, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:456:06: info: data dependencies proved, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:459:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:459:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:459:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:459:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:506:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:506:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:508:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:508:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:508:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:508:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:512:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:512:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:514:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:514:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:534:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:534:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:574:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:574:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:950:39: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:950:39: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:959:17: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:959:17: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:994:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:994:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1002:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1002:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1029:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1029:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1037:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1037:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1051:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1051:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1051:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1051:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1101:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1101:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1101:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1101:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1107:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1107:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1122:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1122:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1137:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1137:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1152:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1152:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1192:46: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1192:46: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1207:40: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1207:40: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1224:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1224:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1224:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1224:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:8
 spark-containers-formal-unbounded_ordered_maps.ads:49:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:51:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:53:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:21
@@ -54,44 +78,68 @@ spark-containers-formal-unbounded_ordered_maps.ads:59:19: info: subprogram "Lt_I
 spark-containers-formal-unbounded_ordered_maps.ads:61:19: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:63:19: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:65:19: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:475:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:475:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:477:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:477:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:477:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:477:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:481:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:481:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:483:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:483:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:503:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:503:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:543:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:543:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:921:39: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:921:39: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:930:17: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:930:17: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:965:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:965:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:973:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:973:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1000:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1000:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1008:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1008:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1078:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1078:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1093:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1093:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1108:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1108:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1123:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1123:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1164:46: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1164:46: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1179:40: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1179:40: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:429:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:429:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:429:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:429:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:429:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:429:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:433:06: info: data dependencies proved, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:433:06: info: data dependencies proved, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:436:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:436:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:436:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:436:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:482:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:482:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:484:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:484:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:484:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:484:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:488:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:488:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:490:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:490:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:510:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:510:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:550:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:550:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:928:39: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:928:39: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:937:17: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:937:17: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:972:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:972:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:980:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:980:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1007:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1007:42: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1015:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1015:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1029:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1029:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1029:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1029:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1079:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1079:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1079:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1079:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1085:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1085:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1100:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1100:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1115:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1115:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1130:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1130:20: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1171:46: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1171:46: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1186:40: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1186:40: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1203:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1203:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1203:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1203:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:24
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
@@ -140,6 +188,86 @@ spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Element
 spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
 spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
 spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:365:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:365:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:365:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:365:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:365:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:365:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:365:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:365:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:380:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:380:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:380:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:380:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:380:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:380:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:380:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:380:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
 spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
 spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
 spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
@@ -156,6 +284,70 @@ spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" wil
 spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
 spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
 spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:526:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:526:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:526:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:526:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:526:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:526:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:526:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:526:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:531:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:531:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:531:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:531:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:531:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:531:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:531:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:531:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
 spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
 spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
 spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
@@ -168,6 +360,14 @@ spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" 
 spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
 spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
 spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
 spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
 spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
 spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
@@ -176,10 +376,6 @@ spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, 
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
@@ -192,6 +388,30 @@ spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" 
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21

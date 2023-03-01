@@ -8,86 +8,134 @@ spark-containers-formal-vectors.ads:48:19: info: subprogram "Eq_Symmetric" will 
 spark-containers-formal-vectors.ads:48:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:8
 spark-containers-formal-vectors.ads:50:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:23
 spark-containers-formal-vectors.ads:50:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:348:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:348:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:348:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:348:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:349:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:349:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:349:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:349:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:353:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:353:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:353:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:353:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:355:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:355:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:355:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:355:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:375:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:375:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:375:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:375:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:375:69: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:375:69: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:375:69: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:375:69: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:399:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:399:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:399:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:399:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:441:73: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:441:73: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:441:73: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:441:73: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:475:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:475:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:475:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:475:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:510:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:510:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:510:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:510:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:557:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:557:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:557:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:557:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:581:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:581:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:581:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:581:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:623:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:623:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:623:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:623:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:688:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:688:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:688:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:688:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:688:57: info: range check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:688:57: info: range check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:688:57: info: range check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:688:57: info: range check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:816:23: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:816:23: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:816:23: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:816:23: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:852:14: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:852:14: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:852:14: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:852:14: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:913:22: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:17
-spark-containers-formal-vectors.ads:913:22: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:32
-spark-containers-formal-vectors.ads:915:22: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:17
-spark-containers-formal-vectors.ads:915:22: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:32
-spark-containers-formal-vectors.ads:917:22: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:17
-spark-containers-formal-vectors.ads:917:22: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:32
-spark-containers-formal-vectors.ads:919:22: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:17
-spark-containers-formal-vectors.ads:919:22: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:32
-spark-containers-formal-vectors.ads:984:56: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:17
-spark-containers-formal-vectors.ads:984:56: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:18
-spark-containers-formal-vectors.ads:984:56: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:32
-spark-containers-formal-vectors.ads:984:56: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:33
+spark-containers-formal-vectors.ads:317:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:317:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:317:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:317:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:317:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:317:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:317:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:317:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:317:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:317:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:317:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:317:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:321:06: info: data dependencies proved, in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:321:06: info: data dependencies proved, in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:321:06: info: data dependencies proved, in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:321:06: info: data dependencies proved, in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:324:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:324:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:324:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:324:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:324:13: info: precondition proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:324:13: info: precondition proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:324:13: info: precondition proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:324:13: info: precondition proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:355:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:355:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:355:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:355:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:356:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:356:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:356:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:356:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:360:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:360:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:360:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:360:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:362:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:362:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:362:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:362:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:382:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:382:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:382:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:382:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:382:69: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:382:69: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:382:69: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:382:69: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:406:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:406:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:406:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:406:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:448:73: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:448:73: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:448:73: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:448:73: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:482:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:482:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:482:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:482:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:517:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:517:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:517:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:517:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:564:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:564:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:564:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:564:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:588:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:588:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:588:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:588:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:630:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:630:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:630:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:630:59: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:695:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:695:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:695:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:695:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:695:57: info: range check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:695:57: info: range check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:695:57: info: range check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:695:57: info: range check proved (Z3: 2 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:823:23: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:823:23: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:823:23: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:823:23: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:859:14: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:859:14: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:859:14: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:859:14: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:920:22: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:17
+spark-containers-formal-vectors.ads:920:22: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:32
+spark-containers-formal-vectors.ads:922:22: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:17
+spark-containers-formal-vectors.ads:922:22: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:32
+spark-containers-formal-vectors.ads:924:22: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:17
+spark-containers-formal-vectors.ads:924:22: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:32
+spark-containers-formal-vectors.ads:926:22: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:17
+spark-containers-formal-vectors.ads:926:22: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at test_vectors.ads:32
+spark-containers-formal-vectors.ads:991:56: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:17
+spark-containers-formal-vectors.ads:991:56: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:18
+spark-containers-formal-vectors.ads:991:56: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:32
+spark-containers-formal-vectors.ads:991:56: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:33
+spark-containers-formal-vectors.ads:1019:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:1019:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:1019:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:1019:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:1019:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:1019:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:1019:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:1019:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:1022:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:1022:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:1022:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:1022:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:1022:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:1022:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:1022:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:1022:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:1032:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:1032:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:1032:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:1032:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at test_vectors.ads:8
+spark-containers-formal-vectors.ads:1032:13: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:11
+spark-containers-formal-vectors.ads:1032:13: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:23
+spark-containers-formal-vectors.ads:1032:13: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:26
+spark-containers-formal-vectors.ads:1032:13: info: precondition proved (Z3: 1 VC), in instantiation at test_vectors.ads:8
 spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:11
 spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
 spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
@@ -100,6 +148,14 @@ spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" 
 spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
 spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
 spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:8
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:11
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:8
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:11
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:8
 spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:11
 spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
 spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
@@ -108,10 +164,6 @@ spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, 
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:8
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:11
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:8
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:11
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
@@ -124,6 +176,30 @@ spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" 
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:8
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:11
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:8
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:11
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:8
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:11
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:8
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:11
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:8
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:11
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:8
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:11
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:8
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:11
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
@@ -164,46 +240,46 @@ spark-containers-parameter_checks.adb:103:10: info: precondition proved (Z3: 2 V
 spark-containers-parameter_checks.adb:103:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:23
 spark-containers-parameter_checks.adb:103:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:26
 spark-containers-parameter_checks.adb:103:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at test_vectors.ads:8
-spark-containers-parameter_checks.adb:263:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.adb:263:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.adb:263:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.adb:263:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.adb:268:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.adb:268:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.adb:268:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.adb:268:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.adb:269:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.adb:269:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.adb:269:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.adb:269:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.adb:270:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.adb:270:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.adb:270:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.adb:270:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.adb:286:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.adb:286:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.adb:286:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.adb:286:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.adb:287:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.adb:287:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.adb:287:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.adb:287:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.adb:289:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.adb:289:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.adb:289:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.adb:289:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.adb:290:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.adb:290:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.adb:290:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.adb:290:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.adb:300:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.adb:300:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.adb:309:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.adb:309:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.adb:318:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.adb:318:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.adb:327:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.adb:327:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.adb:263:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.adb:263:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.adb:263:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.adb:263:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.adb:268:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.adb:268:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.adb:268:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.adb:268:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.adb:269:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.adb:269:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.adb:269:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.adb:269:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.adb:270:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.adb:270:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.adb:270:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.adb:270:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.adb:286:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.adb:286:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.adb:286:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.adb:286:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.adb:287:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.adb:287:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.adb:287:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.adb:287:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.adb:289:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.adb:289:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.adb:289:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.adb:289:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.adb:290:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.adb:290:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.adb:290:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.adb:290:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.adb:300:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.adb:300:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.adb:309:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.adb:309:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.adb:318:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.adb:318:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.adb:327:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.adb:327:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:117, in instantiation at test_vectors.ads:11
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:117, in instantiation at test_vectors.ads:23
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:117, in instantiation at test_vectors.ads:26
@@ -336,103 +412,103 @@ spark-containers-parameter_checks.ads:124:19: info: postcondition proved (Z3: 1 
 spark-containers-parameter_checks.ads:124:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:126, in instantiation at test_vectors.ads:23
 spark-containers-parameter_checks.ads:124:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:126, in instantiation at test_vectors.ads:26
 spark-containers-parameter_checks.ads:124:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:126, in instantiation at test_vectors.ads:8
-spark-containers-parameter_checks.ads:203:17: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:203:17: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:203:17: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:203:17: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:204:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:204:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:204:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:204:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:206:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:206:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:206:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:206:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:208:17: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:208:17: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:208:17: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:208:17: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:209:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:209:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:209:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:209:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:211:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:211:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:211:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:211:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:213:17: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:213:17: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:213:17: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:213:17: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:216:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:216:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:216:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:216:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:218:17: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:218:17: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:218:17: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:218:17: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:219:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:219:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:219:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:219:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:221:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:221:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:221:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:221:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:227:16: info: subprogram "Eq" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:227:16: info: subprogram "Eq" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:227:16: info: subprogram "Eq" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:227:16: info: subprogram "Eq" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:229:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:229:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:229:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:229:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:230:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:230:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:230:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:230:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:231:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:231:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:231:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:231:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:233:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:233:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:233:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:233:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:234:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:234:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:234:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:234:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:236:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:236:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:236:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:236:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:238:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:238:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:238:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:238:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:239:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:239:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:239:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:239:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:241:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:241:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:241:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:241:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:243:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:243:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:243:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:243:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:244:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:244:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:244:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:244:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
-spark-containers-parameter_checks.ads:246:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:17
-spark-containers-parameter_checks.ads:246:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:18
-spark-containers-parameter_checks.ads:246:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:32
-spark-containers-parameter_checks.ads:246:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:929, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:203:17: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:203:17: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:203:17: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:203:17: info: subprogram "Lt_Irreflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:204:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:204:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:204:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:204:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:206:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:206:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:206:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:206:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:208:17: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:208:17: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:208:17: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:208:17: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:209:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:209:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:209:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:209:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:211:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:211:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:211:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:211:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:213:17: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:213:17: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:213:17: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:213:17: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:216:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:216:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:216:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:216:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:218:17: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:218:17: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:218:17: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:218:17: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:219:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:219:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:219:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:219:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:221:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:221:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:221:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:221:19: medium: postcondition might fail, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:227:16: info: subprogram "Eq" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:227:16: info: subprogram "Eq" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:227:16: info: subprogram "Eq" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:227:16: info: subprogram "Eq" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:229:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:229:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:229:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:229:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:230:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:230:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:230:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:230:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:231:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:231:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:231:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:231:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:233:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:233:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:233:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:233:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:234:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:234:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:234:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:234:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:236:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:236:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:236:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:236:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:238:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:238:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:238:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:238:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:239:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:239:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:239:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:239:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:241:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:241:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:241:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:241:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:243:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:243:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:243:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:243:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:244:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:244:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:244:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:244:09: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33
+spark-containers-parameter_checks.ads:246:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:17
+spark-containers-parameter_checks.ads:246:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:18
+spark-containers-parameter_checks.ads:246:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:32
+spark-containers-parameter_checks.ads:246:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-vectors.ads:936, in instantiation at test_vectors.ads:33

@@ -1,9 +1,7 @@
 infinite_sequences.adb:13:07: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.adb:13:14: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.adb:13:20: info: predicate check proved (Trivial: 1 VC)
-infinite_sequences.adb:14:17: info: precondition proved (Trivial: 1 VC)
 infinite_sequences.adb:14:65: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
-infinite_sequences.adb:15:17: info: precondition proved (Trivial: 1 VC)
 infinite_sequences.adb:15:45: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.adb:19:07: info: precondition proved (CVC5: 1 VC)
 infinite_sequences.adb:22:06: info: predicate check proved (CVC5: 3 VC)
@@ -51,7 +49,6 @@ infinite_sequences.adb:51:55: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:51:61: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:51:63: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:53:19: info: loop invariant initialization proved (CVC5: 2 VC)
-infinite_sequences.adb:53:19: info: precondition proved (Trivial: 2 VC)
 infinite_sequences.adb:54:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Has_Key (Content, K) [possible fix: you should consider adding a postcondition to function Has_Key or turning it into an expression function]
 infinite_sequences.adb:54:41: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:55:28: info: precondition proved (CVC5: 2 VC)
@@ -59,7 +56,6 @@ infinite_sequences.adb:55:42: info: predicate check proved (CVC5: 2 VC; Trivial:
 infinite_sequences.adb:55:47: info: precondition proved (CVC5: 4 VC)
 infinite_sequences.adb:55:56: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:57:19: info: loop invariant initialization proved (CVC5: 2 VC)
-infinite_sequences.adb:57:19: info: precondition proved (Trivial: 2 VC)
 infinite_sequences.adb:57:43: medium: in inlined expression function body at a-nbnbin.ads:66
 infinite_sequences.adb:57:43: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Low <= Arg
 infinite_sequences.adb:57:53: info: predicate check proved (Trivial: 2 VC)
@@ -85,7 +81,6 @@ infinite_sequences.ads:18:09: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.ads:18:21: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.ads:18:40: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.ads:18:51: info: predicate check proved (Trivial: 1 VC)
-infinite_sequences.ads:20:12: info: precondition proved (Trivial: 1 VC)
 infinite_sequences.ads:21:14: info: precondition proved (CVC5: 2 VC)
 infinite_sequences.ads:21:22: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 infinite_sequences.ads:21:27: info: precondition proved (CVC5: 2 VC)
@@ -95,7 +90,6 @@ infinite_sequences.ads:25:09: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.ads:25:22: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.ads:25:41: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.ads:25:53: info: predicate check proved (Trivial: 1 VC)
-infinite_sequences.ads:27:12: info: precondition proved (Trivial: 1 VC)
 infinite_sequences.ads:28:14: info: precondition proved (CVC5: 2 VC)
 infinite_sequences.ads:28:22: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 infinite_sequences.ads:28:27: info: precondition proved (CVC5: 2 VC)
@@ -160,7 +154,6 @@ red_black_trees.adb:111:11: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:111:23: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:111:36: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:111:48: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:112:21: info: precondition proved (Trivial: 1 VC)
 red_black_trees.adb:113:25: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:113:34: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:113:39: info: precondition proved (CVC5: 2 VC)
@@ -221,7 +214,6 @@ red_black_trees.adb:190:08: medium: postcondition might fail, cannot prove Last 
 red_black_trees.adb:190:33: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:190:59: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:190:84: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:191:18: info: precondition proved (Trivial: 1 VC)
 red_black_trees.adb:192:20: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:192:20: medium: precondition might fail, cannot prove Low <= Arg
 red_black_trees.adb:192:42: medium: in inlined predicate at a-nbnbin.ads:55
@@ -233,7 +225,6 @@ red_black_trees.adb:192:73: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:192:78: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:192:78: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
 red_black_trees.adb:192:80: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:193:18: info: precondition proved (Trivial: 1 VC)
 red_black_trees.adb:194:20: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:194:20: medium: precondition might fail, cannot prove Low <= Arg
 red_black_trees.adb:194:42: medium: in inlined predicate at a-nbnbin.ads:55
@@ -270,7 +261,6 @@ red_black_trees.adb:216:68: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:216:75: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:216:82: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:216:84: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:218:13: info: precondition proved (Trivial: 1 VC)
 red_black_trees.adb:218:56: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:219:17: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T.Left, Pos1), I) [possible fix: subprogram at line 186 should mention Pos1 and T in a precondition]
 red_black_trees.adb:219:17: medium: in inlined expression function body at a-nbnbin.ads:66
@@ -281,7 +271,6 @@ red_black_trees.adb:219:44: medium: precondition might fail, cannot prove Low <=
 red_black_trees.adb:219:57: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:219:71: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:219:71: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
-red_black_trees.adb:221:13: info: precondition proved (Trivial: 1 VC)
 red_black_trees.adb:221:56: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:222:17: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T, Pos2), I - Pos1 + Pos2) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 and T in a precondition]
 red_black_trees.adb:222:17: medium: in inlined expression function body at a-nbnbin.ads:66
@@ -295,7 +284,6 @@ red_black_trees.adb:222:70: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:222:75: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:222:75: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 in a precondition]
 red_black_trees.adb:222:77: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:224:13: info: precondition proved (Trivial: 1 VC)
 red_black_trees.adb:224:36: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:224:43: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:224:50: info: pointer dereference check proved (CVC5: 1 VC)
@@ -320,7 +308,6 @@ red_black_trees.adb:225:84: info: predicate check proved (CVC5: 1 VC; Trivial: 1
 red_black_trees.adb:225:86: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:225:90: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:225:90: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
-red_black_trees.adb:227:13: info: precondition proved (Trivial: 1 VC)
 red_black_trees.adb:227:36: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:227:43: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:227:50: info: pointer dereference check proved (CVC5: 1 VC)
@@ -343,7 +330,6 @@ red_black_trees.adb:228:68: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:228:73: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:228:73: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 in a precondition]
 red_black_trees.adb:228:75: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:230:13: info: precondition proved (Trivial: 1 VC)
 red_black_trees.adb:231:17: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T, Pos2), I - Pos1 + Pos2) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 and T in a precondition]
 red_black_trees.adb:231:17: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:231:17: medium: precondition might fail, cannot prove Low <= Arg
@@ -356,15 +342,18 @@ red_black_trees.adb:231:70: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:231:75: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:231:75: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 in a precondition]
 red_black_trees.adb:231:77: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:271:22: info: precondition proved (Trivial: 1 VC)
-red_black_trees.adb:272:24: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:272:24: medium: assertion might fail, cannot prove Get (X3, I - First (Y3) + First (X3)) = Get (Y3, I) [possible fix: you should consider adding a postcondition to function First and function Get or turning them into expression functions in their unit spec]
+red_black_trees.adb:272:24: medium: in inlined expression function body at a-nbnbin.ads:66
+red_black_trees.adb:272:24: medium: precondition might fail, cannot prove Low <= Arg
 red_black_trees.adb:272:33: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:272:37: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:272:48: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+red_black_trees.adb:272:48: medium: in inlined predicate at a-nbnbin.ads:55
+red_black_trees.adb:272:48: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: you should consider adding a postcondition to function First or turning it into an expression function in its unit spec]
 red_black_trees.adb:272:50: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:272:64: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:272:73: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+red_black_trees.adb:272:64: medium: in inlined expression function body at a-nbnbin.ads:66
+red_black_trees.adb:272:64: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:272:73: medium: in inlined predicate at a-nbnbin.ads:55
+red_black_trees.adb:272:73: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
 red_black_trees.adb:298:29: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:304:33: info: loop invariant initialization proved (CVC5: 1 VC)
 red_black_trees.adb:304:33: info: predicate check proved (Trivial: 2 VC)
@@ -406,7 +395,6 @@ red_black_trees.adb:330:33: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:330:40: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:330:42: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:331:19: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:334:16: info: precondition proved (Trivial: 1 VC)
 red_black_trees.adb:334:39: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:334:45: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:334:52: info: pointer dereference check proved (CVC5: 1 VC)
@@ -1086,8 +1074,6 @@ red_black_trees.ads:54:14: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:54:37: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:54:48: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:54:70: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.ads:61:08: info: precondition proved (Trivial: 1 VC)
-red_black_trees.ads:62:11: info: precondition proved (Trivial: 1 VC)
 red_black_trees.ads:63:19: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:63:23: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:63:30: info: precondition proved (CVC5: 2 VC)
@@ -1095,14 +1081,11 @@ red_black_trees.ads:63:38: info: predicate check proved (CVC5: 1 VC; Trivial: 1 
 red_black_trees.ads:63:43: info: precondition proved (CVC5: 2 VC)
 red_black_trees.ads:63:51: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.ads:65:14: info: postcondition proved (Trivial: 1 VC)
-red_black_trees.ads:69:08: info: precondition proved (Trivial: 1 VC)
 red_black_trees.ads:69:56: info: precondition proved (CVC5: 2 VC)
 red_black_trees.ads:69:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.ads:71:14: info: postcondition proved (Trivial: 1 VC)
-red_black_trees.ads:76:12: info: precondition proved (Trivial: 1 VC)
 red_black_trees.ads:77:27: info: precondition proved (CVC5: 2 VC)
 red_black_trees.ads:77:35: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
-red_black_trees.ads:78:12: info: precondition proved (Trivial: 1 VC)
 red_black_trees.ads:79:14: info: precondition proved (CVC5: 2 VC)
 red_black_trees.ads:79:22: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.ads:79:45: info: precondition proved (CVC5: 2 VC)
@@ -1154,10 +1137,28 @@ spark-containers-functional-maps.ads:71:19: info: subprogram "Equivalent_Keys_Tr
 spark-containers-functional-maps.ads:77:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
 spark-containers-functional-maps.ads:79:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
 spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
 spark-containers-functional-maps.ads:146:34: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
 spark-containers-functional-maps.ads:146:41: info: predicate check proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:365:13: info: precondition proved (CVC5: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 2 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
 spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
 spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:526:13: info: precondition proved (CVC5: 1 VC), in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at infinite_sequences.ads:44
+spark-containers-functional-maps.ads:531:13: info: precondition proved (CVC5: 1 VC), in instantiation at infinite_sequences.ads:44
 spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:499, in instantiation at infinite_sequences.ads:44
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:480, in instantiation at infinite_sequences.ads:44
 spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:489, in instantiation at infinite_sequences.ads:44

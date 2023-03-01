@@ -1,6 +1,5 @@
 partition_refinement.adb:14:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 partition_refinement.adb:25:17: info: precondition proved (CVC5: 1 VC)
-partition_refinement.adb:27:16: info: precondition proved (Trivial: 1 VC)
 partition_refinement.adb:27:37: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:27:55: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:28:15: info: postcondition proved (CVC5: 3 VC; Z3: 3 VC)
@@ -16,7 +15,6 @@ partition_refinement.adb:31:78: medium: range check might fail, cannot prove upp
 partition_refinement.adb:31:80: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:31:94: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:32:23: info: precondition proved (CVC5: 1 VC)
-partition_refinement.adb:42:18: info: precondition proved (Trivial: 1 VC)
 partition_refinement.adb:42:39: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:42:57: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:77:29: info: precondition proved (CVC5: 1 VC)
@@ -26,7 +24,6 @@ partition_refinement.adb:87:48: info: index check proved (CVC5: 2 VC)
 partition_refinement.adb:87:63: info: index check proved (CVC5: 2 VC)
 partition_refinement.adb:91:22: info: assertion proved (CVC5: 1 VC)
 partition_refinement.adb:93:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-partition_refinement.adb:93:22: info: precondition proved (Trivial: 1 VC)
 partition_refinement.adb:93:44: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:93:67: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:93:94: info: precondition proved (CVC5: 1 VC)
@@ -35,36 +32,30 @@ partition_refinement.adb:96:22: info: assertion proved (CVC5: 1 VC)
 partition_refinement.adb:97:07: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:98:22: info: assertion proved (CVC5: 1 VC)
 partition_refinement.adb:100:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
-partition_refinement.adb:100:22: info: precondition proved (Trivial: 1 VC)
 partition_refinement.adb:100:44: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:100:67: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:100:94: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:100:112: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:101:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-partition_refinement.adb:101:22: info: precondition proved (Trivial: 1 VC)
 partition_refinement.adb:101:44: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:101:70: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:101:88: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:102:07: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:103:22: info: assertion proved (CVC5: 1 VC)
 partition_refinement.adb:105:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
-partition_refinement.adb:105:22: info: precondition proved (Trivial: 1 VC)
 partition_refinement.adb:105:44: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:105:67: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:105:94: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:105:112: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:106:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
-partition_refinement.adb:106:22: info: precondition proved (Trivial: 1 VC)
 partition_refinement.adb:106:44: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:106:70: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:106:88: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:107:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-partition_refinement.adb:107:22: info: precondition proved (Trivial: 1 VC)
 partition_refinement.adb:107:44: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:107:70: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:107:88: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:108:22: info: assertion proved (CVC5: 1 VC)
-partition_refinement.adb:108:22: info: precondition proved (Trivial: 1 VC)
 partition_refinement.adb:108:43: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:108:61: info: precondition proved (CVC5: 1 VC)
 partition_refinement.adb:110:36: info: range check proved (CVC5: 2 VC)
@@ -94,22 +85,18 @@ partition_refinement.adb:184:33: info: loop invariant initialization proved (CVC
 partition_refinement.adb:184:33: info: loop invariant preservation proved (CVC5: 1 VC)
 partition_refinement.adb:185:33: info: loop invariant initialization proved (CVC5: 1 VC)
 partition_refinement.adb:185:33: info: loop invariant preservation proved (CVC5: 1 VC)
-partition_refinement.adb:185:33: info: precondition proved (Trivial: 2 VC)
 partition_refinement.adb:185:54: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:185:72: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:188:33: info: loop invariant initialization proved (Z3: 1 VC)
 partition_refinement.adb:188:33: info: loop invariant preservation proved (Z3: 1 VC)
-partition_refinement.adb:188:33: info: precondition proved (Trivial: 2 VC)
 partition_refinement.adb:188:64: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:189:33: info: loop invariant initialization proved (CVC5: 1 VC)
 partition_refinement.adb:189:33: info: loop invariant preservation proved (CVC5: 1 VC)
 partition_refinement.adb:191:31: info: loop variant proved (Z3: 1 VC)
 partition_refinement.adb:193:71: info: precondition proved (CVC5: 2 VC)
 partition_refinement.adb:197:07: info: precondition proved (CVC5: 2 VC)
-partition_refinement.ads:52:16: info: precondition proved (Trivial: 1 VC)
 partition_refinement.ads:52:37: info: precondition proved (CVC5: 1 VC)
 partition_refinement.ads:52:55: info: precondition proved (CVC5: 1 VC)
-partition_refinement.ads:54:16: info: precondition proved (Trivial: 1 VC)
 partition_refinement.ads:54:47: info: precondition proved (CVC5: 1 VC)
 partition_refinement.ads:57:43: info: precondition proved (CVC5: 2 VC)
 partition_refinement.ads:57:70: info: precondition proved (CVC5: 2 VC)
@@ -119,27 +106,39 @@ partition_refinement.ads:59:81: info: range check proved (CVC5: 2 VC)
 spark-containers-formal-doubly_linked_lists.ads:40:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:15
 spark-containers-formal-doubly_linked_lists.ads:42:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:15
 spark-containers-formal-doubly_linked_lists.ads:44:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:449:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:450:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:454:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:456:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:477:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:586:49: info: overflow check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:721:49: info: overflow check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:811:57: info: overflow check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:878:57: info: overflow check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:965:28: info: overflow check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:965:39: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1141:43: info: overflow check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1323:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1464:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1479:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1494:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1509:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1531:14: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1537:23: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1586:14: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1593:23: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:408:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:60, in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:408:13: info: precondition proved (Trivial: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:408:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:412:06: info: data dependencies proved, in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:415:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:60, in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:415:13: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:456:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:457:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:461:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:463:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:484:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:593:49: info: overflow check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:728:49: info: overflow check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:818:57: info: overflow check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:885:57: info: overflow check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:972:28: info: overflow check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:972:39: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1148:43: info: overflow check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1330:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1432:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:60, in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1432:13: info: precondition proved (Trivial: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1465:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:60, in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1465:13: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1471:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1486:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1501:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1516:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1538:14: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1544:23: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1593:14: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1600:23: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1647:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:60, in instantiation at partition_refinement.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1647:13: info: precondition proved (Trivial: 1 VC), in instantiation at partition_refinement.ads:15
 spark-containers-formal-ordered_maps.ads:65:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
 spark-containers-formal-ordered_maps.ads:67:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
 spark-containers-formal-ordered_maps.ads:69:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
@@ -147,39 +146,63 @@ spark-containers-formal-ordered_maps.ads:75:19: info: subprogram "Lt_Irreflexive
 spark-containers-formal-ordered_maps.ads:77:19: info: subprogram "Lt_Asymmetric" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
 spark-containers-formal-ordered_maps.ads:79:19: info: subprogram "Lt_Transitive" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
 spark-containers-formal-ordered_maps.ads:81:19: info: subprogram "Lt_Order" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:498:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:500:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:500:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:504:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:506:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:526:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:566:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:942:39: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:951:17: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:986:42: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:994:21: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:1021:42: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:1029:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:1099:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:1114:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:1129:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:1144:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:1184:46: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
-spark-containers-formal-ordered_maps.ads:1199:40: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:452:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:452:13: info: precondition proved (Trivial: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:452:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:456:06: info: data dependencies proved, in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:459:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:459:13: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:506:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:508:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:508:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:512:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:514:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:534:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:574:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:950:39: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:959:17: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:994:42: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1002:21: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1029:42: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1037:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1051:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1051:13: info: precondition proved (Trivial: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1101:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1101:13: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1107:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1122:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1137:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1152:20: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1192:46: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1207:40: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1224:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at partition_refinement.ads:20
+spark-containers-formal-ordered_maps.ads:1224:13: info: precondition proved (Trivial: 1 VC), in instantiation at partition_refinement.ads:20
 spark-containers-formal-vectors.ads:46:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:32
 spark-containers-formal-vectors.ads:48:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:32
 spark-containers-formal-vectors.ads:50:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:32
-spark-containers-formal-vectors.ads:348:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:32
-spark-containers-formal-vectors.ads:349:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:32
-spark-containers-formal-vectors.ads:353:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:32
-spark-containers-formal-vectors.ads:355:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:32
-spark-containers-formal-vectors.ads:375:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:32
-spark-containers-formal-vectors.ads:375:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:32
-spark-containers-formal-vectors.ads:688:57: info: range check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:32
-spark-containers-formal-vectors.ads:816:23: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:32
-spark-containers-formal-vectors.ads:819:38: info: range check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:32
-spark-containers-formal-vectors.ads:852:14: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:32
-spark-containers-formal-vectors.ads:856:35: info: range check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:317:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:317:13: info: precondition proved (Trivial: 1 VC), in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:317:13: info: subprogram "Iter_Model" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:321:06: info: data dependencies proved, in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:324:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:324:13: info: precondition proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:355:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:356:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:360:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:362:08: info: dynamic accessibility check proved (Trivial), in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:382:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:382:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:695:57: info: range check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:823:23: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:826:38: info: range check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:859:14: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:863:35: info: range check proved (CVC5: 2 VC), in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:1019:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:1019:13: info: precondition proved (Trivial: 1 VC), in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:1022:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:1022:13: info: precondition proved (Trivial: 1 VC), in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:1032:13: info: during checks for quantification at spark-containers-formal-vectors.ads:88, in instantiation at partition_refinement.ads:32
+spark-containers-formal-vectors.ads:1032:13: info: precondition proved (CVC5: 1 VC), in instantiation at partition_refinement.ads:32
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
 spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
@@ -201,12 +224,66 @@ spark-containers-functional-maps.ads:79:19: info: subprogram "Equivalent_Element
 spark-containers-functional-maps.ads:79:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
 spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
 spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:365:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:365:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:365:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:374:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:374:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:380:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
 spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
 spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
 spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
 spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
 spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
 spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:520:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:526:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:526:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:526:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:526:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:531:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at partition_refinement.ads:15
+spark-containers-functional-maps.ads:531:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at partition_refinement.ads:20
+spark-containers-functional-maps.ads:531:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
 spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
@@ -216,15 +293,18 @@ spark-containers-functional-vectors.ads:52:19: info: subprogram "Eq_Symmetric" w
 spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
 spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
 spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
 spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
@@ -234,6 +314,24 @@ spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at partition_refinement.ads:15
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at partition_refinement.ads:20
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-vectors.ads:137, in instantiation at partition_refinement.ads:32
