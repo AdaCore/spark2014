@@ -2496,9 +2496,16 @@ package body Gnat2Why.Expr is
       is
          Res_Id : constant W_Identifier_Id :=
            New_Result_Ident (Ty_Why);
-         Post   : constant W_Pred_Id :=
+         Post   : W_Pred_Id :=
            Compute_Dynamic_Invariant (+Res_Id, Ty_Spk, Params);
       begin
+         if Has_Visible_Type_Invariants (Ty_Spk) then
+            Post := +New_And_Expr
+              (Left => +Post,
+               Right => +Compute_Type_Invariant
+                 (+Res_Id, Ty_Spk, Params, On_Internal  => True),
+               Domain => EW_Pred);
+         end if;
          Checks := New_Typed_Binding
            (Name    => V_Name,
             Def     => New_Any_Expr
