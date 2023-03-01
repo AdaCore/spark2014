@@ -2451,7 +2451,7 @@ package body SPARK_Definition is
             | N_Raise_When_Statement
             | N_Return_When_Statement
          =>
-            Mark_Violation ("INOX", N);
+            Mark_Violation ("'I'N'O'X", N);
 
          --  The following kinds can be safely ignored by marking
 
