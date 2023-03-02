@@ -732,7 +732,7 @@ is
      Global => null,
      Pre    =>
        Length (Container) < Count_Type'Last
-         and then (not Contains (Container, New_Item)),
+         and then not Contains (Container, New_Item),
      Post   =>
        Length (Container) = Length (Container)'Old + 1
          and Contains (Container, New_Item)

@@ -445,7 +445,7 @@ is
      Global => null,
      Pre    =>
        Length (Container) < Capacity (Container)
-         and then (Before in Index_Type'First .. Last_Index (Container) + 1),
+         and then Before in Index_Type'First .. Last_Index (Container) + 1,
      Post   =>
        Length (Container) = Length (Container)'Old + 1
 

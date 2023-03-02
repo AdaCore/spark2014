@@ -29,7 +29,7 @@ spark-containers-formal-vectors.ads:382:39: info: pointer dereference check prov
 spark-containers-formal-vectors.ads:382:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_vectors.adb:342
 spark-containers-formal-vectors.ads:382:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_vectors.ads:4
 spark-containers-formal-vectors.ads:406:51: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
-spark-containers-formal-vectors.ads:448:73: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
+spark-containers-formal-vectors.ads:448:72: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
 spark-containers-formal-vectors.ads:482:51: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
 spark-containers-formal-vectors.ads:517:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
 spark-containers-formal-vectors.ads:564:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.ads:4
@@ -310,7 +310,6 @@ test_vectors.adb:171:07: info: precondition proved (CVC5: 1 VC)
 test_vectors.adb:172:07: info: precondition proved (CVC5: 1 VC)
 test_vectors.adb:173:07: info: precondition proved (CVC5: 1 VC)
 test_vectors.adb:175:07: info: precondition proved (CVC5: 1 VC)
-spark-containers-formal-vectors.ads:448:19: (style) redundant parentheses [-gnatyz]
 test_vectors.adb:176:07: info: precondition proved (CVC5: 1 VC)
 test_vectors.adb:177:07: info: precondition proved (CVC5: 1 VC)
 test_vectors.adb:179:22: info: assertion proved (CVC5: 1 VC)

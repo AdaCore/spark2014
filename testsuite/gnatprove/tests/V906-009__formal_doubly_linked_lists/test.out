@@ -554,8 +554,6 @@ test_list.adb:198:10: info: initialization of "S" proved
 test_list.adb:198:20: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_list.adb:200:10: info: precondition proved (Z3: 1 VC)
 test_list.adb:201:10: info: precondition proved (Z3: 1 VC)
-spark-containers-stable_sorting.adb:97:22: (style) redundant parentheses [-gnatyz]
-spark-containers-stable_sorting.adb:97:42: (style) redundant parentheses [-gnatyz]
 test_list.adb:203:10: info: precondition proved (Z3: 1 VC)
 test_list.adb:205:25: info: assertion proved (Z3: 1 VC)
 test_list.adb:206:25: info: assertion proved (altergo: 1 VC)

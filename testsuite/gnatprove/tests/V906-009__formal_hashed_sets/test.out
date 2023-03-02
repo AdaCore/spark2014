@@ -576,7 +576,6 @@ test_set.adb:263:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:265:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:274:30: info: assertion proved (Z3: 1 VC)
 test_set.adb:275:22: info: assertion proved (altergo: 1 VC)
-spark-containers-formal-hashed_sets.ads:749:27: (style) redundant parentheses [-gnatyz]
 test_set.adb:277:33: info: loop invariant initialization proved (CVC5: 1 VC)
 test_set.adb:277:33: info: loop invariant preservation proved (CVC5: 1 VC)
 test_set.adb:277:75: info: range check proved (CVC5: 4 VC)

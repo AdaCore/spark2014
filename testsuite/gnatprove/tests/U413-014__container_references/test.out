@@ -188,7 +188,7 @@ spark-containers-formal-unbounded_vectors.ads:332:08: info: dynamic accessibilit
 spark-containers-formal-unbounded_vectors.ads:352:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_indefinite_vectors.adb:5
 spark-containers-formal-unbounded_vectors.ads:352:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_indefinite_vectors.adb:5
 spark-containers-formal-unbounded_vectors.ads:376:41: info: overflow check proved (CVC5: 2 VC), in instantiation at test_indefinite_vectors.adb:5
-spark-containers-formal-unbounded_vectors.ads:418:73: info: overflow check proved (CVC5: 2 VC), in instantiation at test_indefinite_vectors.adb:5
+spark-containers-formal-unbounded_vectors.ads:418:72: info: overflow check proved (CVC5: 2 VC), in instantiation at test_indefinite_vectors.adb:5
 spark-containers-formal-unbounded_vectors.ads:452:41: info: overflow check proved (CVC5: 2 VC), in instantiation at test_indefinite_vectors.adb:5
 spark-containers-formal-unbounded_vectors.ads:487:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_indefinite_vectors.adb:5
 spark-containers-formal-unbounded_vectors.ads:534:49: info: overflow check proved (CVC5: 2 VC), in instantiation at test_indefinite_vectors.adb:5
@@ -220,7 +220,7 @@ spark-containers-formal-vectors.ads:362:08: info: dynamic accessibility check pr
 spark-containers-formal-vectors.ads:382:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_vectors.adb:5
 spark-containers-formal-vectors.ads:382:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_vectors.adb:5
 spark-containers-formal-vectors.ads:406:51: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.adb:5
-spark-containers-formal-vectors.ads:448:73: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.adb:5
+spark-containers-formal-vectors.ads:448:72: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.adb:5
 spark-containers-formal-vectors.ads:482:51: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.adb:5
 spark-containers-formal-vectors.ads:517:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.adb:5
 spark-containers-formal-vectors.ads:564:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test_vectors.adb:5
