@@ -69,6 +69,7 @@ VC_REFINED_POST(assertion) - refined postcondition - Check that the refined post
 VC_CONTRACT_CASE(assertion) - contract case - Check that all cases of the contract case evaluate to true at the end of the subprogram. - MEDIUM
 VC_DISJOINT_CONTRACT_CASES(assertion) - disjoint contract cases - Check that the cases of the contract cases aspect are all mutually disjoint. - MEDIUM
 VC_COMPLETE_CONTRACT_CASES(assertion) - complete contract cases - Check that the cases of the contract cases aspect cover the state space that is allowed by the precondition aspect. - MEDIUM
+VC_EXCEPTIONAL_CASE(assertion) - exceptional case - Check that all cases of the exceptional cases evaluate to true on exceptional exits. - MEDIUM
 VC_LOOP_INVARIANT(assertion) - loop invariant - Check that the loop invariant evaluates to True on all iterations of the loop. - MEDIUM
 VC_LOOP_INVARIANT_INIT(assertion) - loop invariant in first iteration - Check that the loop invariant evaluates to True on the first iteration of the loop. - MEDIUM
 VC_LOOP_INVARIANT_PRESERV(assertion) - loop invariant after first iteration - Check that the loop invariant evaluates to True at each further iteration of the loop. - MEDIUM
@@ -77,7 +78,7 @@ VC_SUBPROGRAM_VARIANT(assertion) - subprogram variant - Check that the given sub
 VC_ASSERT(assertion) - assertion - Check that the given assertion evaluates to True. - MEDIUM
 VC_ASSERT_STEP(assertion) - assertion step - Check that the side-condition of a cut operation evaluates to True. - MEDIUM
 VC_ASSERT_PREMISE(assertion) - assertion premise - Check that the premise of an assertion with cut operations evaluates to True. - MEDIUM
-VC_RAISE(assertion) - raised exception - Check that the raise statement or expression can never be reached. - MEDIUM
+VC_RAISE(assertion) - raised exception - Check that raise expressions can never be reached and that all exceptions raised by raise statement and procedure calls are expected. - MEDIUM
 VC_FEASIBLE_POST(assertion) - feasible function - Check that an abstract function or access-to-function type is feasible. - MEDIUM
 VC_INLINE_CHECK(assertion) - Inline_For_Proof or Logical_Equal annotation - Check that an Annotate pragma with the Inline_For_Proof or Logical_Equal identifier is correct. - MEDIUM
 VC_UC_SOURCE(assertion) - unchecked conversion source check - Check that a source type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object. - MEDIUM

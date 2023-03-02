@@ -937,6 +937,12 @@ package body Why.Atree.Modules is
          4 =>
            New_Module (File => Gnatprove_Standard_File,
                        Name => "Array__4"));
+
+      --  Generated specific modules
+
+      Exception_Module :=
+           New_Module (File => GNATCOLL.Symbols.No_Symbol,
+                       Name => "Standard__ada_exceptions");
    end Initialize;
 
    -----------------------
@@ -2539,6 +2545,9 @@ package body Why.Atree.Modules is
 
       M_Main.Return_Exc :=
         New_Name (Symb => NID ("Return__exc"));
+
+      M_Main.Ada_Exc :=
+        New_Name (Symb => NID ("Ada__exc"));
 
       M_Main.Spark_CE_Branch :=
         New_Identifier (Domain => EW_Term,

@@ -1,0 +1,10 @@
+test.adb:7:14: error: exceptional exit from "Swap_Bad" with moved value for "Y"
+test.adb:7:14: error: object was moved at line 13
+test.adb:20:14: error: object was moved at line 24
+test.adb:20:14: error: return from "Swap_Bad_2" with moved value for "X"
+test.adb:34:14: warning: subprogram "Raise_E" has no effect
+test.adb:43:14: error: exceptional exit from "Swap_Call_Bad" with moved value for "Y"
+test.adb:43:14: error: object was moved at line 49
+test.adb:54:14: error: object was moved at line 58
+test.adb:54:14: error: return from "Swap_Call_Bad_2" with moved value for "X"
+gnatprove: error during flow analysis and proof

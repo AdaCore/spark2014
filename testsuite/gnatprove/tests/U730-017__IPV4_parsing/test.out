@@ -47,7 +47,7 @@ ipv4_parsing.adb:83:25: info: overflow check proved (CVC5: 1 VC; Z3: 2 VC; alter
 ipv4_parsing.adb:85:39: info: index check proved (CVC5: 2 VC; altergo: 4 VC)
 ipv4_parsing.adb:89:23: info: index check proved (CVC5: 1 VC; Z3: 3 VC; altergo: 2 VC)
 ipv4_parsing.adb:90:72: info: index check proved (CVC5: 4 VC; Z3: 1 VC; altergo: 1 VC)
-ipv4_parsing.adb:96:07: info: raise statement or expression proved unreachable (altergo: 1 VC)
+ipv4_parsing.adb:96:07: info: only expected exception raised (altergo: 1 VC)
 ipv4_parsing.adb:101:07: info: initialization of "Byte" proved
 ipv4_parsing.adb:108:23: info: unrolling loop
 ipv4_parsing.adb:109:09: info: precondition proved (CVC5: 5 VC; Z3: 5 VC; altergo: 2 VC)

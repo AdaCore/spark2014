@@ -3,10 +3,10 @@ adt_stack-child.adb:19:36: medium: overflow check might fail, cannot prove upper
 adt_stack-child.adb:24:07: info: initialization of "Result" proved
 adt_stack-child.adb:29:52: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (S.Stack_Top in 1 .. 100) to subprogram at adt_stack-child.ads:10]
 adt_stack-child.ads:7:20: info: initialization of "S" proved
-adt_stack.adb:28:10: medium: exception might be raised
+adt_stack.adb:28:10: medium: unexpected exception might be raised
 adt_stack.adb:30:33: medium: range check might fail, cannot prove upper bound for S.Stack_Top + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at adt_stack.ads:15 should mention S in a precondition]
 adt_stack.adb:31:23: info: index check proved (CVC5: 2 VC)
-adt_stack.adb:38:10: medium: exception might be raised
+adt_stack.adb:38:10: medium: unexpected exception might be raised
 adt_stack.adb:40:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at adt_stack.ads:20 should mention S in a precondition]
 adt_stack.adb:41:33: info: range check proved (CVC5: 2 VC)
 adt_stack.adb:48:10: info: range check proved (CVC5: 4 VC)
@@ -19,10 +19,10 @@ asm_stack.ads:11:13: error: function "Pop" with output global "Stack_Top" is not
 asm_stack.ads:11:13: error: violation of aspect SPARK_Mode at line 5
 asm_stack.ads:11:13: error: violation of aspect SPARK_Mode at line 5
 asm_stack.ads:11:13: error: violation of aspect SPARK_Mode at line 5
-generic_stack.adb:16:10: medium: exception might be raised, in instantiation at use_stacks.adb:47
+generic_stack.adb:16:10: medium: unexpected exception might be raised, in instantiation at use_stacks.adb:47
 generic_stack.adb:18:22: info: overflow check proved (CVC5: 2 VC), in instantiation at use_stacks.adb:47
 generic_stack.adb:19:20: info: index check proved (CVC5: 2 VC), in instantiation at use_stacks.adb:47
-generic_stack.adb:25:10: medium: exception might be raised, in instantiation at use_stacks.adb:47
+generic_stack.adb:25:10: medium: unexpected exception might be raised, in instantiation at use_stacks.adb:47
 generic_stack.adb:27:25: medium: array index check might fail, in instantiation at use_stacks.adb:47 [reason for check: value must be a valid index into the array] [possible fix: subprogram at generic_stack.ads:8 should mention Index in a precondition]
 generic_stack.adb:28:22: info: range check proved (CVC5: 2 VC), in instantiation at use_stacks.adb:47
 generic_stack.ads:8:19: info: initialization of "E" proved, in instantiation at use_stacks.adb:47

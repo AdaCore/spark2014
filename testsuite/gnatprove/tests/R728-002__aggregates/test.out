@@ -7,7 +7,7 @@ pragmarc-b_strings.adb:36:27: info: index check proved (CVC5: 2 VC)
 pragmarc-b_strings.adb:36:33: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:36:40: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:36:40: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
-pragmarc-b_strings.adb:44:10: medium: exception might be raised
+pragmarc-b_strings.adb:44:10: medium: unexpected exception might be raised
 pragmarc-b_strings.adb:50:19: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:50:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:50:26: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
@@ -23,7 +23,7 @@ pragmarc-b_strings.adb:65:20: info: index check proved (CVC5: 2 VC)
 pragmarc-b_strings.adb:65:27: info: index check proved (CVC5: 2 VC)
 pragmarc-b_strings.adb:65:33: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:65:36: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-pragmarc-b_strings.adb:73:10: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+pragmarc-b_strings.adb:73:10: info: only expected exception raised (CVC5: 1 VC)
 pragmarc-b_strings.adb:79:19: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:79:22: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:79:22: info: range check proved (CVC5: 4 VC)

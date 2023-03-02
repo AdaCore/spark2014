@@ -1,7 +1,7 @@
 main.adb:8:14: warning: subprogram "Test" has no effect
 main.adb:9:18: info: range check proved (CVC5: 1 VC)
 main.adb:12:10: info: range check proved (CVC5: 1 VC)
-main.adb:13:10: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+main.adb:13:10: info: only expected exception raised (CVC5: 1 VC)
 main.adb:18:04: info: precondition proved (CVC5: 1 VC)
 two.adb:3:13: info: for array dimension 1 at two.adb:2
 two.adb:3:13: info: for array dimension 2 at two.adb:2

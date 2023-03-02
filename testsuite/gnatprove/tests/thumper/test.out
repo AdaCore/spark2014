@@ -1,5 +1,5 @@
-client_spark_boundary.adb:20:07: medium: exception might be raised
-client_spark_boundary.adb:27:07: medium: exception might be raised
+client_spark_boundary.adb:20:07: medium: unexpected exception might be raised
+client_spark_boundary.adb:27:07: medium: unexpected exception might be raised
 client_spark_boundary.adb:28:07: warning: this statement is never reached
 client_spark_boundary.ads:17:14: high: all paths in "Fetch_Timestamp" raise exceptions or do not terminate normally
 client_spark_boundary.ads:17:14: warning: subprogram "Fetch_Timestamp" has no effect
@@ -9,8 +9,8 @@ client_timestamp_maker.adb:35:10: info: initialization of "Local_Host" proved
 client_timestamp_maker.adb:36:10: info: initialization of "Request_Message" proved
 client_timestamp_maker.adb:37:10: info: initialization of "Network_Status" proved
 client_timestamp_maker.adb:38:10: info: initialization of "Address_Status" proved
-client_timestamp_maker.adb:60:07: medium: exception might be raised
-client_timestamp_maker.adb:68:07: medium: exception might be raised
+client_timestamp_maker.adb:60:07: medium: unexpected exception might be raised
+client_timestamp_maker.adb:68:07: medium: unexpected exception might be raised
 client_timestamp_maker.adb:69:07: warning: this statement is never reached
 client_timestamp_maker.ads:17:14: high: all paths in "Create_Timestamp" raise exceptions or do not terminate normally
 client_timestamp_maker.ads:23:13: high: all paths in "Verify_Timestamp" raise exceptions or do not terminate normally
@@ -195,13 +195,13 @@ hermes-der-encode.adb:112:54: info: range check proved (CVC5: 1 VC)
 hermes-der-encode.adb:113:20: info: range check proved (CVC5: 4 VC)
 hermes-der-encode.adb:124:45: info: range check proved (CVC5: 2 VC)
 hermes-der-encode.adb:124:60: info: range check proved (CVC5: 2 VC)
-hermes-der-encode.adb:133:07: medium: exception might be raised
+hermes-der-encode.adb:133:07: medium: unexpected exception might be raised
 hermes-der-encode.adb:134:07: warning: this statement is never reached
 hermes-der-encode.adb:142:47: info: range check proved (CVC5: 2 VC)
 hermes-der-encode.adb:142:71: high: range check might fail, cannot prove upper bound for Value'Length (e.g. when Value'First = 0 and Value'Last = Integer'Last) [reason for check: input value must fit in parameter type]
 hermes-der-encode.adb:142:80: medium: range check might fail, cannot prove upper bound for Make_Leading_Identifier (Tag_Class => Class_Universal, Structured_Flag => Primitive, Tag => Tag_Octet_String) & Put_Length_Value(Value'Length) & Value [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at hermes-der-encode.ads:34 should mention Value in a precondition]
 hermes-der-encode.adb:149:39: info: range check proved (CVC5: 2 VC)
-hermes-der-encode.adb:155:07: medium: exception might be raised
+hermes-der-encode.adb:155:07: medium: unexpected exception might be raised
 hermes-der-encode.adb:156:07: warning: this statement is never reached
 hermes-der-encode.ads:24:19: info: postcondition proved (Z3: 1 VC)
 hermes-der-encode.ads:28:19: info: postcondition proved (CVC5: 1 VC)
@@ -389,10 +389,10 @@ server_timestamp_maker.adb:80:55: warning: "Version_Stop" is set by "Get_Integer
 server_timestamp_maker.adb:89:16: info: analyzing call to "Get_Message_Imprint" in context
 server_timestamp_maker.adb:91:51: medium: range check might fail, cannot prove upper bound for Version_Stop + 1, in call inlined at server_timestamp_maker.adb:115 [reason for check: default component value must fit in the type]
 server_timestamp_maker.adb:96:19: high: "Imprint_Status" is not initialized
-server_timestamp_maker.adb:100:19: medium: exception might be raised, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:100:19: medium: unexpected exception might be raised, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:115:14: info: analyzing call to "Valid_Request" in context
-server_timestamp_maker.adb:116:10: medium: exception might be raised
-server_timestamp_maker.adb:119:10: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+server_timestamp_maker.adb:116:10: medium: unexpected exception might be raised
+server_timestamp_maker.adb:119:10: info: only expected exception raised (CVC5: 1 VC)
 server_timestamp_maker.ads:18:14: high: all paths in "Create_Timestamp" raise exceptions or do not terminate normally
 server_timestamp_maker.ads:21:08: info: data dependencies proved
 server_timestamp_maker.ads:22:46: warning: "Serial_Generator.State" is not modified, could be INPUT
@@ -401,10 +401,10 @@ server_timestamp_maker.ads:23:08: medium: missing dependency "null => Request_Me
 server_timestamp_maker.ads:24:23: medium: incorrect dependency "Response_Message => Request_Message"
 server_timestamp_maker.ads:24:40: medium: incorrect dependency "Response_Message => Cryptographic_Services.Key"
 server_timestamp_maker.ads:24:68: medium: incorrect dependency "Response_Message => Serial_Generator.State"
-timestamp_messages-client.adb:21:07: medium: exception might be raised
-timestamp_messages-client.adb:28:07: medium: exception might be raised
+timestamp_messages-client.adb:21:07: medium: unexpected exception might be raised
+timestamp_messages-client.adb:28:07: medium: unexpected exception might be raised
 timestamp_messages-client.adb:29:07: warning: this statement is never reached
-timestamp_messages-client.adb:40:07: medium: exception might be raised
+timestamp_messages-client.adb:40:07: medium: unexpected exception might be raised
 timestamp_messages-client.ads:19:14: high: all paths in "Get_Timestamp_Value" raise exceptions or do not terminate normally
 timestamp_messages-client.ads:26:08: info: data dependencies proved
 timestamp_messages-client.ads:27:08: medium: missing dependency "null => Message"

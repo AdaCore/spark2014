@@ -11,6 +11,9 @@ module Main
   (* exception used to simulate return statements *)
   exception Return__exc
 
+  (* exception used to translate Ada exceptions *)
+  exception Ada__exc int
+
   (* The type for the heap, and the heap variable. This variable represents
      all effects that we cannot describe more precisely, and that do not
      interfere with other variables, i.e., writes through pointers, aliased

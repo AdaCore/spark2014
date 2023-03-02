@@ -7,7 +7,7 @@ aida-strings-generic_immutable_unbounded_string.adb:23:62: info: range check pro
 aida-strings-generic_immutable_unbounded_string.adb:23:83: info: cannot unroll loop (too many loop iterations)
 aida-strings-generic_immutable_unbounded_string.adb:24:19: info: index check proved (CVC5: 2 VC)
 aida-strings-generic_immutable_unbounded_string.adb:24:37: info: precondition proved (CVC5: 2 VC)
-aida-strings-generic_immutable_unbounded_string.adb:30:10: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+aida-strings-generic_immutable_unbounded_string.adb:30:10: info: only expected exception raised (CVC5: 1 VC)
 aida-strings-generic_immutable_unbounded_string.ads:11:06: info: data dependencies proved
 aida-strings-generic_immutable_unbounded_string.ads:15:06: info: data dependencies proved
 aida-strings-generic_immutable_unbounded_string.ads:16:59: info: range check proved (CVC5: 2 VC)

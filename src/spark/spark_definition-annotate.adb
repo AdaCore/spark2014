@@ -383,6 +383,14 @@ package body SPARK_Definition.Annotate is
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Always_Return must not also be marked with Might_Not_Return",
             Arg3_Exp);
+      elsif Ekind (E) in E_Procedure | E_Generic_Procedure
+        and then Might_Raise_Exceptions (E)
+      then
+         Error_Msg_N
+           ("subprogram annotated with the " & Aspect_Or_Pragma
+            & " Always_Return shall not raise exceptions",
+            E);
+         return;
       end if;
 
       --  Go through renamings to find the appropriate entity
@@ -739,6 +747,12 @@ package body SPARK_Definition.Annotate is
          Error_Msg_N
            ("procedure annotated with the " & Aspect_Or_Pragma
             & " Automatic_Instantiation must be ghost",
+            E);
+         return;
+      elsif Might_Raise_Exceptions (E) then
+         Error_Msg_N
+           ("procedure annotated with the " & Aspect_Or_Pragma
+            & " Automatic_Instantiation shall not raise exceptions",
             E);
          return;
       end if;

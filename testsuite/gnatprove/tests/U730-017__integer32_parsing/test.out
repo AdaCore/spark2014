@@ -1,4 +1,4 @@
-integer32_parsing.adb:15:25: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+integer32_parsing.adb:15:25: info: only expected exception raised (CVC5: 1 VC)
 integer32_parsing.adb:33:10: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:34:13: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:35:22: info: index check proved (CVC5: 2 VC)

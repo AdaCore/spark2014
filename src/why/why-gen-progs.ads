@@ -108,6 +108,13 @@ package Why.Gen.Progs is
      (Ada_Node   : Node_Id;
       Check_Kind : Scalar_Check_Kind);
 
+   function New_Absurd_Statement
+     (Ada_Node : Node_Id;
+      Reason   : VC_Kind)
+      return W_Prog_Id;
+   --  Absurd causes Why3 to prove that a branch is dead. It is then cut for
+   --  the rest of the analysis.
+
    function New_Any_Statement
      (Ada_Node    : Node_Id := Empty;
       Post        : W_Pred_Id;

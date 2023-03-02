@@ -1196,6 +1196,7 @@ procedure SPARK_Report is
             | VC_Contract_Case
             | VC_Disjoint_Contract_Cases
             | VC_Complete_Contract_Cases
+            | VC_Exceptional_Case
             | VC_Inline_Check
             | VC_Feasible_Post
          =>

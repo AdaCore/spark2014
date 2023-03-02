@@ -1057,4 +1057,50 @@ package SPARK_Util is
       Explanation : out Unbounded_String);
    --  Return True if Brower is a structural variant for Loop_Stmt
 
+   procedure Register_Exception (E : E_Exception_Id);
+   --  Register an exception
+
+   function All_Exceptions return Node_Sets.Set;
+   --  Get all the exceptions visible from analyzed code
+
+   function Might_Raise_Exceptions (E : Entity_Id) return Boolean is
+     (Present (Get_Pragma (E, Pragma_Exceptional_Cases)));
+
+   function Exception_Handled
+     (E    : E_Exception_Id;
+      Stmt : Node_Id)
+      return Boolean;
+   --  Return True is a raise of E is handled above Stmt. For now, this occurs
+   --  only if Stmt occurs in the body of a subprogram annotated with
+   --  Exceptional_Cases.
+
+   procedure Collect_Raised_Exceptions
+     (Subp    : Entity_Id;
+      All_Exc : out Boolean;
+      Exc_Set : out Node_Sets.Set)
+   with Post => (if All_Exc then Exc_Set.Is_Empty);
+   --  Retrieve all exceptions raise by Subp. If any exception can be raise,
+   --  then All_Exc is set to True. Otherwise raised exceptions are stored in
+   --  Exc_Set.
+
+   procedure Collect_Handled_Exceptions
+     (Call    : Node_Id;
+      All_Exc : out Boolean;
+      Exc_Set : out Node_Sets.Set)
+   with Post => (if All_Exc then Exc_Set.Is_Empty);
+   --  Retrieve all exceptions raise by Call handled above it. If all
+   --  exceptions are handled, All_Exc is set to True. Otherwise handled
+   --  exceptions are stored in Exc_Set.
+
+   function Call_Raises_Handled_Exceptions (Call : Node_Id) return Boolean;
+   --  Return True if a call needs handling for exceptional paths
+
+   function By_Copy (Obj : Formal_Kind_Id) return Boolean;
+   --  Return True if Obj is known to be passed by copy. In parameters of an
+   --  access-to-variable type are considered to be passed by reference in
+   --  accordance to ownership principles.
+
+   function By_Reference (Obj : Formal_Kind_Id) return Boolean;
+   --  Return True if Obj is known to be passed by reference. See above.
+
 end SPARK_Util;

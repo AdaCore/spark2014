@@ -1164,10 +1164,10 @@ unused_parameter.ads:5:19: info: initialization of "C" proved
 utility.adb:13:13: info: loop invariant initialization proved (CVC5: 1 VC)
 utility.adb:13:13: info: loop invariant preservation proved (CVC5: 1 VC)
 utility.adb:13:67: info: index check proved (CVC5: 4 VC)
-utility.adb:15:07: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+utility.adb:15:07: info: only expected exception raised (CVC5: 1 VC)
 utility.ads:12:16: info: postcondition proved (CVC5: 1 VC)
 various.adb:7:27: info: unrolling loop
-various.adb:12:07: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+various.adb:12:07: info: only expected exception raised (CVC5: 1 VC)
 various.adb:20:21: info: assertion proved (CVC5: 2 VC)
 various.adb:20:23: high: overflow check might fail, cannot prove upper bound for (X+Y) (e.g. when X = Positive'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 various.adb:20:26: info: division check proved (CVC5: 1 VC)
