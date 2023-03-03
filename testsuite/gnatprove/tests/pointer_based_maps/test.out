@@ -1,4 +1,4 @@
-my_map.adb:14:10: medium: "Deep_Copy" is recursive, terminating annotation could be incorrect
+my_map.adb:14:10: medium: terminating annotation on "Deep_Copy" could be incorrect, subprogram is recursive
 my_map.adb:14:36: info: pointer dereference check proved (altergo: 1 VC)
 my_map.adb:15:35: info: null exclusion check proved (CVC5: 1 VC)
 my_map.adb:15:49: info: pointer dereference check proved (altergo: 1 VC)
@@ -174,7 +174,7 @@ my_map.ads:65:12: info: precondition proved (CVC5: 1 VC)
 my_map.ads:65:82: info: pointer dereference check proved (altergo: 1 VC)
 my_map.ads:69:13: info: during checks for quantification at my_map.ads:109
 my_map.ads:69:13: info: precondition proved (Trivial: 1 VC)
-my_map.ads:69:13: info: subprogram "First" will terminate, terminating annotation has been proved
+my_map.ads:69:13: info: terminating annotation on "First" has been proved, subprogram will terminate
 my_map.ads:75:13: info: during checks for quantification at my_map.ads:109
 my_map.ads:75:13: info: precondition proved (Trivial: 1 VC)
 my_map.ads:78:13: info: implicit function contract might not be available on recursive calls
@@ -183,7 +183,7 @@ my_map.ads:82:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 my_map.ads:83:07: info: precondition proved (CVC5: 2 VC)
 my_map.ads:87:13: info: during checks for quantification at my_map.ads:109
 my_map.ads:87:13: info: precondition proved (altergo: 2 VC)
-my_map.ads:87:13: info: subprogram "Element" will terminate, terminating annotation has been proved
+my_map.ads:87:13: info: terminating annotation on "Element" has been proved, subprogram will terminate
 my_map.ads:92:13: info: function contract might not be available on recursive calls
 my_map.ads:95:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; altergo: 3 VC)
 my_map.ads:98:27: info: pointer dereference check proved (altergo: 1 VC)
@@ -197,17 +197,17 @@ my_map.ads:101:73: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 my_map.ads:104:14: info: postcondition proved (CVC5: 1 VC)
 my_map.ads:111:07: info: in default value of private type at my_map.ads:4
 my_map.ads:111:07: info: null exclusion check proved (altergo: 1 VC)
-my_map.ads:116:17: medium: "Model_Contains" and "Has_Element" are mutually recursive, terminating annotation on "Model_Contains" could be incorrect
+my_map.ads:116:17: medium: terminating annotation on "Model_Contains" could be incorrect, "Model_Contains" and "Has_Element" are mutually recursive
 my_map.ads:116:41: info: pointer dereference check proved (CVC5: 1 VC)
-my_map.ads:119:07: medium: "Model_Value" is recursive, terminating annotation could be incorrect
+my_map.ads:119:07: medium: terminating annotation on "Model_Value" could be incorrect, subprogram is recursive
 my_map.ads:119:11: info: pointer dereference check proved (altergo: 1 VC)
 my_map.ads:119:26: info: pointer dereference check proved (CVC5: 1 VC)
 my_map.ads:119:33: info: pointer dereference check proved (altergo: 1 VC)
 my_map.ads:119:42: info: precondition proved (altergo: 1 VC)
 my_map.ads:119:56: info: pointer dereference check proved (altergo: 1 VC)
-my_map.ads:124:14: medium: "Has_Element" and "Model_Contains" are mutually recursive, terminating annotation on "Has_Element" could be incorrect
+my_map.ads:124:14: medium: terminating annotation on "Has_Element" could be incorrect, "Has_Element" and "Model_Contains" are mutually recursive
 my_map.ads:125:52: info: range check proved (CVC5: 2 VC)
-my_map.ads:127:07: medium: "Next" is recursive, terminating annotation could be incorrect
+my_map.ads:127:07: medium: terminating annotation on "Next" could be incorrect, subprogram is recursive
 my_map.ads:127:26: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 my_map.ads:127:39: info: pointer dereference check proved (CVC5: 1 VC)
 my_map.ads:129:18: info: pointer dereference check proved (CVC5: 1 VC)

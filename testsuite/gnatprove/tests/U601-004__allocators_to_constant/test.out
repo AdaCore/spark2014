@@ -4,7 +4,7 @@ constant_access.adb:24:38: info: pointer dereference check proved (CVC5: 1 VC)
 constant_access.adb:25:46: info: pointer dereference check proved (CVC5: 1 VC)
 constant_access.adb:33:13: info: function contract might not be available on recursive calls
 constant_access.adb:35:14: info: postcondition proved (CVC5: 2 VC)
-constant_access.adb:41:10: medium: "Deep_Copy_Ann" is recursive, terminating annotation could be incorrect
+constant_access.adb:41:10: medium: terminating annotation on "Deep_Copy_Ann" could be incorrect, subprogram is recursive
 constant_access.adb:41:32: info: null exclusion check proved (CVC5: 1 VC)
 constant_access.adb:41:46: info: pointer dereference check proved (CVC5: 1 VC)
 constant_access.adb:41:49: info: pointer dereference check proved (CVC5: 1 VC)

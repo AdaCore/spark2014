@@ -1,2 +1,2 @@
-main.adb:4:14: info: subprogram "Foo" will terminate, terminating annotation has been proved
+main.adb:4:14: info: terminating annotation on "Foo" has been proved, subprogram will terminate
 main.adb:4:14: warning: subprogram "Foo" has no effect

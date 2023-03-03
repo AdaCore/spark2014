@@ -2,35 +2,35 @@ warnings_on_lemmas.adb:5:21: info: function contract feasibility proved (CVC5: 1
 warnings_on_lemmas.adb:5:58: info: null exclusion check proved (Trivial: 1 VC)
 warnings_on_lemmas.adb:6:04: info: function contract feasibility proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:8:50: info: function contract feasibility proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:9:08: medium: call via access-to-subprogram, terminating annotation could be incorrect
+warnings_on_lemmas.adb:9:08: medium: terminating annotation on "Call_2" could be incorrect, call via access-to-subprogram might be nonterminating
 warnings_on_lemmas.adb:9:20: info: pointer dereference check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:9:31: info: pointer dereference check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:10:17: info: postcondition proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:10:31: medium: call via access-to-subprogram, terminating annotation could be incorrect
+warnings_on_lemmas.adb:10:31: medium: terminating annotation on "Call_2" could be incorrect, call via access-to-subprogram might be nonterminating
 warnings_on_lemmas.adb:10:46: info: pointer dereference check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:10:57: info: pointer dereference check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:15:53: info: function contract feasibility proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:21:14: info: postcondition proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:21:25: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:21:28: info: null exclusion check proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:21:31: medium: call via access-to-subprogram, terminating annotation could be incorrect
+warnings_on_lemmas.adb:21:31: medium: terminating annotation on "Lemma_Ok" could be incorrect, call via access-to-subprogram might be nonterminating
 warnings_on_lemmas.adb:21:35: info: pointer dereference check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:23:55: info: function contract feasibility proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:29:14: info: postcondition proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:29:25: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:29:28: info: null exclusion check proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:29:31: medium: call via access-to-subprogram, terminating annotation could be incorrect
+warnings_on_lemmas.adb:29:31: medium: terminating annotation on "Lemma_Ok_2" could be incorrect, call via access-to-subprogram might be nonterminating
 warnings_on_lemmas.adb:29:35: info: pointer dereference check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:31:55: info: function contract feasibility proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:37:16: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 warnings_on_lemmas.adb:37:30: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:37:33: info: null exclusion check proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:37:36: medium: call via access-to-subprogram, terminating annotation could be incorrect
+warnings_on_lemmas.adb:37:36: medium: terminating annotation on "Lemma_Ok_3" could be incorrect, call via access-to-subprogram might be nonterminating
 warnings_on_lemmas.adb:37:40: info: pointer dereference check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:38:16: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 warnings_on_lemmas.adb:38:30: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:38:33: info: null exclusion check proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:38:36: medium: call via access-to-subprogram, terminating annotation could be incorrect
+warnings_on_lemmas.adb:38:36: medium: terminating annotation on "Lemma_Ok_3" could be incorrect, call via access-to-subprogram might be nonterminating
 warnings_on_lemmas.adb:38:40: info: pointer dereference check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:41:14: warning: automatically instantiated lemma is not annotated with Higher_Order_Specialization
 warnings_on_lemmas.adb:41:14: warning: it will not be automatically instantiated on specializations of "Call_2"
@@ -38,14 +38,14 @@ warnings_on_lemmas.adb:41:58: info: function contract feasibility proved (CVC5: 
 warnings_on_lemmas.adb:46:14: info: postcondition proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:46:25: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:46:28: info: null exclusion check proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:46:31: medium: call via access-to-subprogram, terminating annotation could be incorrect
+warnings_on_lemmas.adb:46:31: medium: terminating annotation on "Lemma_No_Spec" could be incorrect, call via access-to-subprogram might be nonterminating
 warnings_on_lemmas.adb:46:35: info: pointer dereference check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:49:14: warning: automatically instantiated lemma does not contain any specializable calls to "Call_2"
 warnings_on_lemmas.adb:49:14: warning: it will not be automatically instantiated on specializations of "Call_2"
 warnings_on_lemmas.adb:49:42: info: function contract feasibility proved (Trivial: 1 VC)
 warnings_on_lemmas.adb:54:14: info: postcondition proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:54:24: info: pointer dereference check proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:54:59: medium: call via access-to-subprogram, terminating annotation could be incorrect
+warnings_on_lemmas.adb:54:59: medium: terminating annotation on "Lemma_No_Call" could be incorrect, call via access-to-subprogram might be nonterminating
 warnings_on_lemmas.adb:56:14: warning: automatically instantiated lemma does not contain any specializable calls to "Call_2"
 warnings_on_lemmas.adb:56:14: warning: it will not be automatically instantiated on specializations of "Call_2"
 warnings_on_lemmas.adb:56:44: info: function contract feasibility proved (Trivial: 1 VC)
@@ -53,20 +53,20 @@ warnings_on_lemmas.adb:61:14: info: postcondition proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:61:24: info: pointer dereference check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:61:29: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:61:36: info: null exclusion check proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:61:43: medium: call via access-to-subprogram, terminating annotation could be incorrect
+warnings_on_lemmas.adb:61:43: medium: terminating annotation on "Lemma_No_Call_2" could be incorrect, call via access-to-subprogram might be nonterminating
 warnings_on_lemmas.adb:61:51: info: pointer dereference check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:63:14: warning: automatically instantiated lemma does not contain any specializable calls to "Call_2"
 warnings_on_lemmas.adb:63:14: warning: it will not be automatically instantiated on specializations of "Call_2"
 warnings_on_lemmas.adb:63:44: info: function contract feasibility proved (Trivial: 1 VC)
 warnings_on_lemmas.adb:68:15: info: pointer dereference check proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:68:15: medium: call via access-to-subprogram, terminating annotation could be incorrect
+warnings_on_lemmas.adb:68:15: medium: terminating annotation on "Lemma_No_Call_3" could be incorrect, call via access-to-subprogram might be nonterminating
 warnings_on_lemmas.adb:69:14: info: postcondition proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:69:24: info: pointer dereference check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:69:29: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:69:32: info: null exclusion check proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:69:35: medium: call via access-to-subprogram, terminating annotation could be incorrect
+warnings_on_lemmas.adb:69:35: medium: terminating annotation on "Lemma_No_Call_3" could be incorrect, call via access-to-subprogram might be nonterminating
 warnings_on_lemmas.adb:69:39: info: pointer dereference check proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:72:14: info: subprogram "Lemma_Partial_Call" will terminate, terminating annotation has been proved
+warnings_on_lemmas.adb:72:14: info: terminating annotation on "Lemma_Partial_Call" has been proved, subprogram will terminate
 warnings_on_lemmas.adb:72:14: warning: automatically instantiated lemma contains calls to "Call_2" which cannot be arbitrarily specialized
 warnings_on_lemmas.adb:72:14: warning: it will not be automatically instantiated on specializations of "Call_2"
 warnings_on_lemmas.adb:72:60: info: function contract feasibility proved (CVC5: 1 VC)
@@ -78,7 +78,7 @@ warnings_on_lemmas.adb:80:62: info: function contract feasibility proved (CVC5: 
 warnings_on_lemmas.adb:86:14: info: postcondition proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:86:25: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:86:32: info: null exclusion check proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:86:35: medium: call via access-to-subprogram, terminating annotation could be incorrect
+warnings_on_lemmas.adb:86:35: medium: terminating annotation on "Lemma_Partial_Call_2" could be incorrect, call via access-to-subprogram might be nonterminating
 warnings_on_lemmas.adb:86:43: info: pointer dereference check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:88:14: warning: automatically instantiated lemma contains calls to "Call_2" which cannot be arbitrarily specialized
 warnings_on_lemmas.adb:88:14: warning: it will not be automatically instantiated on specializations of "Call_2"
@@ -86,9 +86,9 @@ warnings_on_lemmas.adb:88:62: info: function contract feasibility proved (CVC5: 
 warnings_on_lemmas.adb:94:14: info: postcondition proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:94:25: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:94:28: info: null exclusion check proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:94:31: medium: call via access-to-subprogram, terminating annotation could be incorrect
+warnings_on_lemmas.adb:94:31: medium: terminating annotation on "Lemma_Partial_Call_3" could be incorrect, call via access-to-subprogram might be nonterminating
 warnings_on_lemmas.adb:94:35: info: pointer dereference check proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:97:14: info: subprogram "Lemma_Two_Calls" will terminate, terminating annotation has been proved
+warnings_on_lemmas.adb:97:14: info: terminating annotation on "Lemma_Two_Calls" has been proved, subprogram will terminate
 warnings_on_lemmas.adb:97:14: warning: automatically instantiated lemma contains several calls to "Call_2" with different specializations
 warnings_on_lemmas.adb:97:14: warning: it will not be automatically instantiated on specializations of "Call_2"
 warnings_on_lemmas.adb:97:60: info: function contract feasibility proved (CVC5: 1 VC)
@@ -97,7 +97,7 @@ warnings_on_lemmas.adb:102:25: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:102:28: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:102:48: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:102:51: info: null exclusion check proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:104:14: info: subprogram "Lemma_Two_Calls_2" will terminate, terminating annotation has been proved
+warnings_on_lemmas.adb:104:14: info: terminating annotation on "Lemma_Two_Calls_2" has been proved, subprogram will terminate
 warnings_on_lemmas.adb:104:14: warning: automatically instantiated lemma contains several calls to "Call_2" with different specializations
 warnings_on_lemmas.adb:104:14: warning: it will not be automatically instantiated on specializations of "Call_2"
 warnings_on_lemmas.adb:104:65: info: function contract feasibility proved (CVC5: 1 VC)

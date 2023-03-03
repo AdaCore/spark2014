@@ -348,63 +348,63 @@ spark-pointers-abstract_maps.ads:71:13: info: during checks for quantification a
 spark-pointers-abstract_maps.ads:71:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
 spark-pointers-abstract_maps.ads:71:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
 spark-pointers-abstract_maps.ads:71:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
-spark-pointers-abstract_maps.ads:76:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
-spark-pointers-abstract_maps.ads:76:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
-spark-pointers-abstract_maps.ads:76:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:76:13: info: terminating annotation on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:76:13: info: terminating annotation on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:76:13: info: terminating annotation on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
 spark-pointers-abstract_maps.ads:79:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
 spark-pointers-abstract_maps.ads:79:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
 spark-pointers-abstract_maps.ads:79:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
-spark-pointers-abstract_maps.ads:88:13: info: subprogram overriding operator "=" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
-spark-pointers-abstract_maps.ads:88:13: info: subprogram overriding operator "=" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
-spark-pointers-abstract_maps.ads:88:13: info: subprogram overriding operator "=" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
-spark-pointers-abstract_maps.ads:92:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
-spark-pointers-abstract_maps.ads:92:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
-spark-pointers-abstract_maps.ads:92:13: info: subprogram "Is_Empty" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:88:13: info: terminating annotation on overriding operator "=" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:88:13: info: terminating annotation on overriding operator "=" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:88:13: info: terminating annotation on overriding operator "=" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:92:13: info: terminating annotation on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:92:13: info: terminating annotation on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:92:13: info: terminating annotation on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
 spark-pointers-abstract_maps.ads:95:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
 spark-pointers-abstract_maps.ads:95:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
 spark-pointers-abstract_maps.ads:95:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
-spark-pointers-abstract_maps.ads:109:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
-spark-pointers-abstract_maps.ads:109:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
-spark-pointers-abstract_maps.ads:109:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
-spark-pointers-abstract_maps.ads:111:13: info: subprogram "Copy_Object" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
-spark-pointers-abstract_maps.ads:111:13: info: subprogram "Copy_Object" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
-spark-pointers-abstract_maps.ads:111:13: info: subprogram "Copy_Object" will terminate, terminating annotation has been proved, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:47:13: info: subprogram "Check_No_Deep_Objects" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:47:13: info: subprogram "Check_No_Deep_Objects" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:47:13: info: subprogram "Check_No_Deep_Objects" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:79:16: info: subprogram "None" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:79:16: info: subprogram "None" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:79:16: info: subprogram "None" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:82:16: info: subprogram "Only" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:82:16: info: subprogram "Only" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:82:16: info: subprogram "Only" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:86:16: info: subprogram "Writes" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:86:16: info: subprogram "Writes" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:86:16: info: subprogram "Writes" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:109:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:109:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:109:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-abstract_maps.ads:111:13: info: terminating annotation on "Copy_Object" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_recursive.adb:10
+spark-pointers-abstract_maps.ads:111:13: info: terminating annotation on "Copy_Object" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_tagged_obj.adb:18
+spark-pointers-abstract_maps.ads:111:13: info: terminating annotation on "Copy_Object" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing.ads:55, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:47:13: info: terminating annotation on "Check_No_Deep_Objects" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:47:13: info: terminating annotation on "Check_No_Deep_Objects" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:47:13: info: terminating annotation on "Check_No_Deep_Objects" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:79:16: info: terminating annotation on "None" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:79:16: info: terminating annotation on "None" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:79:16: info: terminating annotation on "None" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:82:16: info: terminating annotation on "Only" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:82:16: info: terminating annotation on "Only" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:82:16: info: terminating annotation on "Only" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:86:16: info: terminating annotation on "Writes" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:86:16: info: terminating annotation on "Writes" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:86:16: info: terminating annotation on "Writes" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
 spark-pointers-pointers_with_aliasing.ads:91:38: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
 spark-pointers-pointers_with_aliasing.ads:91:38: info: precondition proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
 spark-pointers-pointers_with_aliasing.ads:91:38: info: precondition proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10
 spark-pointers-pointers_with_aliasing.ads:91:51: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
 spark-pointers-pointers_with_aliasing.ads:91:51: info: precondition proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
 spark-pointers-pointers_with_aliasing.ads:91:51: info: precondition proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:94:16: info: subprogram "Allocates" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:94:16: info: subprogram "Allocates" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:94:16: info: subprogram "Allocates" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:103:16: info: subprogram "Deallocates" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:103:16: info: subprogram "Deallocates" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:103:16: info: subprogram "Deallocates" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:94:16: info: terminating annotation on "Allocates" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:94:16: info: terminating annotation on "Allocates" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:94:16: info: terminating annotation on "Allocates" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:103:16: info: terminating annotation on "Deallocates" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:103:16: info: terminating annotation on "Deallocates" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:103:16: info: terminating annotation on "Deallocates" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
 spark-pointers-pointers_with_aliasing.ads:115:04: info: initialization of "Memory" proved, in instantiation at example_recursive.adb:10
 spark-pointers-pointers_with_aliasing.ads:115:04: info: initialization of "Memory" proved, in instantiation at example_tagged_obj.adb:18
 spark-pointers-pointers_with_aliasing.ads:115:04: info: initialization of "Memory" proved, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:185:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:185:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:185:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:185:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:185:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:185:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
 spark-pointers-pointers_with_aliasing.ads:188:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
 spark-pointers-pointers_with_aliasing.ads:188:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_tagged_obj.adb:18
 spark-pointers-pointers_with_aliasing.ads:188:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:193:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:193:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:193:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:193:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:193:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:193:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
 spark-pointers-pointers_with_aliasing.ads:196:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
 spark-pointers-pointers_with_aliasing.ads:196:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_tagged_obj.adb:18
 spark-pointers-pointers_with_aliasing.ads:196:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_untagged_obj.adb:10

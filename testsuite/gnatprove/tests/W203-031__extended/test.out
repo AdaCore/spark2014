@@ -7,8 +7,8 @@ main2.adb:4:13: error: "F1" might include a recursive call due to a type invaria
 main2.adb:4:13: error: unsupported recursive subprogram
 main2.adb:5:14: info: postcondition proved (CVC5: 1 VC)
 main2.adb:9:14: info: postcondition proved (CVC5: 1 VC)
-main2.adb:15:07: medium: call via access-to-subprogram, terminating annotation could be incorrect
+main2.adb:15:07: medium: terminating annotation on "F1" could be incorrect, call via access-to-subprogram might be nonterminating
 main2.adb:15:29: info: pointer dereference check proved (CVC5: 1 VC)
-main2.adb:21:07: medium: call via access-to-subprogram, terminating annotation could be incorrect
+main2.adb:21:07: medium: terminating annotation on "F2" could be incorrect, call via access-to-subprogram might be nonterminating
 main2.adb:21:29: info: pointer dereference check proved (CVC5: 1 VC)
 gnatprove: error during flow analysis and proof

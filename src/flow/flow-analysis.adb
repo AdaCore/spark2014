@@ -5859,6 +5859,9 @@ package body Flow.Analysis is
 
       Proved : Boolean := True;
 
+      function Check_Msg (Reason : String) return String is
+        ("terminating annotation on & could be incorrect, " & Reason);
+
    begin
       if Has_Always_Return_Annotation (Enclosing_Subp) then
 
@@ -5882,9 +5885,7 @@ package body Flow.Analysis is
                      Proved := False;
                      Error_Msg_Flow
                        (FA       => FA,
-                        Msg      => "loop might be nonterminating, " &
-                                    "terminating annotation on & could be " &
-                                    "incorrect",
+                        Msg      => Check_Msg ("loop might be nonterminating"),
                         Severity => Medium_Check_Kind,
                         N        => Atr.Error_Location,
                         F1       => Spec_Entity_Id,
@@ -5910,11 +5911,12 @@ package body Flow.Analysis is
                         Proved := False;
                         Error_Msg_Flow
                           (FA       => FA,
-                           Msg      => "call via access-to-subprogram, " &
-                                       "terminating annotation could " &
-                                       "be incorrect",
+                           Msg      => Check_Msg
+                                         ("call via access-to-subprogram " &
+                                          "might be nonterminating"),
                            Severity => Medium_Check_Kind,
                            N        => Atr.Error_Location,
+                           F1       => Spec_Entity_Id,
                            Tag      => Subprogram_Termination,
                            Vertex   => V);
 
@@ -5925,11 +5927,12 @@ package body Flow.Analysis is
                         Proved := False;
                         Error_Msg_Flow
                           (FA       => FA,
-                           Msg      => "call via dispatching operation, " &
-                                       "terminating annotation could be " &
-                                       "incorrect",
+                           Msg      => Check_Msg
+                                         ("dispatching call might be " &
+                                          "nonterminating"),
                            Severity => Medium_Check_Kind,
                            N        => Atr.Error_Location,
+                           F1       => Spec_Entity_Id,
                            Tag      => Subprogram_Termination,
                            Vertex   => V);
 
@@ -5943,9 +5946,8 @@ package body Flow.Analysis is
                            Proved := False;
                            Error_Msg_Flow
                              (FA       => FA,
-                              Msg      => "& is recursive, " &
-                                          "terminating annotation could " &
-                                          "be incorrect",
+                              Msg      => Check_Msg
+                                            ("subprogram is recursive"),
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
                               F1       => Direct_Mapping_Id (E),
@@ -5974,15 +5976,14 @@ package body Flow.Analysis is
                            Proved := False;
                            Error_Msg_Flow
                              (FA       => FA,
-                              Msg      => "& and & are mutually recursive, " &
-                                          "terminating annotation on & " &
-                                          "could be incorrect",
+                              Msg      => Check_Msg
+                                           ("& and & are mutually recursive"),
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
-                              F1       => Direct_Mapping_Id
+                              F1       => Spec_Entity_Id,
+                              F2       => Direct_Mapping_Id
                                 (FA.Spec_Entity),
-                              F2       => Direct_Mapping_Id (E),
-                              F3       => Spec_Entity_Id,
+                              F3       => Direct_Mapping_Id (E),
                               Tag      => Subprogram_Termination,
                               Vertex   => V);
                         end if;
@@ -6002,13 +6003,12 @@ package body Flow.Analysis is
                            Proved := False;
                            Error_Msg_Flow
                              (FA       => FA,
-                              Msg      => "call to & might be nonterminating" &
-                                          ", terminating annotation on & " &
-                                          "could be incorrect",
+                              Msg      => Check_Msg ("call to & might be " &
+                                                     "nonterminating"),
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
-                              F1       => Direct_Mapping_Id (E),
-                              F2       => Spec_Entity_Id,
+                              F1       => Spec_Entity_Id,
+                              F2       => Direct_Mapping_Id (E),
                               Tag      => Subprogram_Termination,
                               Vertex   => V);
                         end if;
@@ -6022,9 +6022,9 @@ package body Flow.Analysis is
            and then Is_Subprogram_Or_Entry (FA.Spec_Entity)
          then
             Error_Msg_Flow (FA       => FA,
-                            Msg      => "subprogram & will terminate, " &
-                                        "terminating annotation has been " &
-                                        "proved",
+                            Msg      => "terminating annotation on & has " &
+                                        "been proved, subprogram will " &
+                                        "terminate",
                             Severity => Info_Kind,
                             N        => FA.Spec_Entity,
                             F1       => Spec_Entity_Id,

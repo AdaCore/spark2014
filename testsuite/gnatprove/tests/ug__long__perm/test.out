@@ -3,7 +3,7 @@ perm.ads:10:17: info: subprogram variant proved
 perm.ads:10:42: info: overflow check proved
 perm.ads:10:56: info: index check proved
 perm.ads:15:07: info: precondition proved
-perm-lemma_subprograms.adb:3:14: info: subprogram "Occ_Eq" will terminate, terminating annotation has been proved
+perm-lemma_subprograms.adb:3:14: info: terminating annotation on "Occ_Eq" has been proved, subprogram will terminate
 perm-lemma_subprograms.adb:6:15: info: range check proved
 perm-lemma_subprograms.adb:6:35: info: range check proved
 perm-lemma_subprograms.adb:7:14: info: precondition proved
@@ -13,7 +13,7 @@ perm-lemma_subprograms.adb:15:07: info: precondition proved
 perm-lemma_subprograms.adb:15:07: info: subprogram variant proved
 perm-lemma_subprograms.adb:15:24: info: overflow check proved
 perm-lemma_subprograms.adb:15:32: info: overflow check proved
-perm-lemma_subprograms.adb:18:14: info: subprogram "Occ_Set_Rec" will terminate, terminating annotation has been proved
+perm-lemma_subprograms.adb:18:14: info: terminating annotation on "Occ_Set_Rec" has been proved, subprogram will terminate
 perm-lemma_subprograms.adb:22:36: info: precondition proved
 perm-lemma_subprograms.adb:24:08: info: postcondition proved
 perm-lemma_subprograms.adb:24:19: info: index check proved
@@ -54,11 +54,11 @@ perm-lemma_subprograms.adb:51:42: info: precondition proved
 perm-lemma_subprograms.adb:52:25: info: predicate check proved
 perm-lemma_subprograms.adb:52:39: info: precondition proved
 perm-lemma_subprograms.adb:59:07: info: precondition proved
-perm-lemma_subprograms.ads:7:13: info: subprogram "Is_Set" will terminate, terminating annotation has been proved
+perm-lemma_subprograms.ads:7:13: info: terminating annotation on "Is_Set" has been proved, subprogram will terminate
 perm-lemma_subprograms.ads:10:20: info: index check proved
 perm-lemma_subprograms.ads:12:39: info: index check proved
 perm-lemma_subprograms.ads:12:47: info: index check proved
-perm-lemma_subprograms.ads:15:14: info: subprogram "Occ_Set" will terminate, terminating annotation has been proved
+perm-lemma_subprograms.ads:15:14: info: terminating annotation on "Occ_Set" has been proved, subprogram will terminate
 perm-lemma_subprograms.ads:17:06: info: data dependencies proved
 perm-lemma_subprograms.ads:18:38: info: precondition proved
 perm-lemma_subprograms.ads:20:08: info: postcondition proved

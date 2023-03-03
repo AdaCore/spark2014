@@ -3,7 +3,7 @@ spark-containers-functional-maps-higher_order.adb:52:42: info: range check prove
 spark-containers-functional-maps-higher_order.adb:53:28: info: postcondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:53:37: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:53:48: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:55:14: info: subprogram "Lemma_Count_Rec_Eq" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:55:14: info: terminating annotation on "Lemma_Count_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:57:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:64:71: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:65:28: info: postcondition proved (Z3: 1 VC), in instantiation at test_map_ho.adb:67
@@ -20,7 +20,7 @@ spark-containers-functional-maps-higher_order.adb:78:70: info: null exclusion ch
 spark-containers-functional-maps-higher_order.adb:80:08: info: postcondition proved (Z3: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:80:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:80:22: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:80:28: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:80:28: medium: terminating annotation on "Lemma_Count_Rec_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:80:30: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:80:41: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:80:56: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
@@ -31,7 +31,7 @@ spark-containers-functional-maps-higher_order.adb:81:59: info: predicate check p
 spark-containers-functional-maps-higher_order.adb:81:61: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:85:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:91:42: info: range check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:93:14: info: subprogram "Lemma_Sum_Rec_Eq" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:93:14: info: terminating annotation on "Lemma_Sum_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:95:25: info: function contract feasibility proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:102:71: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:103:28: info: postcondition proved (Z3: 1 VC), in instantiation at test_map_ho.adb:67
@@ -48,7 +48,7 @@ spark-containers-functional-maps-higher_order.adb:116:70: info: null exclusion c
 spark-containers-functional-maps-higher_order.adb:118:08: info: postcondition proved (Z3: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:118:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:118:20: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:118:27: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:118:27: medium: terminating annotation on "Lemma_Sum_Rec_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:119:10: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:119:19: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:119:34: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
@@ -63,7 +63,7 @@ spark-containers-functional-maps-higher_order.adb:133:35: info: predicate check 
 spark-containers-functional-maps-higher_order.adb:134:14: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:134:14: info: precondition proved (CVC5: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:134:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:134:24: medium: loop might be nonterminating, terminating annotation on "Count" could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:134:24: medium: terminating annotation on "Count" could be incorrect, loop might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:136:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:136:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:136:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
@@ -72,13 +72,13 @@ spark-containers-functional-maps-higher_order.adb:136:38: info: predicate check 
 spark-containers-functional-maps-higher_order.adb:136:44: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:136:63: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:138:37: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:140:16: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:140:16: medium: terminating annotation on "Count" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:140:19: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:140:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:141:26: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:141:30: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:141:32: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:158:07: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:158:07: medium: terminating annotation on "Count_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:158:28: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:159:12: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:159:12: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
@@ -96,7 +96,7 @@ spark-containers-functional-maps-higher_order.adb:174:27: info: predicate check 
 spark-containers-functional-maps-higher_order.adb:176:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:177:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:177:21: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:178:17: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:178:17: medium: terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:178:20: info: precondition proved (altergo: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:178:30: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:178:43: info: pointer dereference check proved (altergo: 2 VC), in instantiation at test_map_ho.adb:67
@@ -113,17 +113,17 @@ spark-containers-functional-maps-higher_order.adb:181:36: info: loop invariant i
 spark-containers-functional-maps-higher_order.adb:181:36: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:181:36: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:181:51: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:182:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:182:13: medium: terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:183:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:183:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:183:62: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:183:71: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:184:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:184:13: medium: terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:185:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:185:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:187:43: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:187:52: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:188:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:188:13: medium: terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:189:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:189:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:190:41: info: precondition proved (altergo: 2 VC), in instantiation at test_map_ho.adb:67
@@ -134,12 +134,12 @@ spark-containers-functional-maps-higher_order.adb:190:75: info: predicate check 
 spark-containers-functional-maps-higher_order.adb:191:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:191:20: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:191:22: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:206:07: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:206:07: medium: terminating annotation on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:209:20: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:209:30: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:209:45: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:209:55: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:217:07: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:217:07: medium: terminating annotation on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:220:20: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:220:20: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:220:31: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
@@ -149,7 +149,7 @@ spark-containers-functional-maps-higher_order.adb:220:57: info: precondition pro
 spark-containers-functional-maps-higher_order.adb:233:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:234:14: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:234:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:234:24: medium: loop might be nonterminating, terminating annotation on "Filter" could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:234:24: medium: terminating annotation on "Filter" could be incorrect, loop might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:236:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:236:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:236:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
@@ -163,18 +163,18 @@ spark-containers-functional-maps-higher_order.adb:237:36: info: loop invariant i
 spark-containers-functional-maps-higher_order.adb:237:36: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:239:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:239:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:240:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:240:13: medium: terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:241:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:241:16: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:242:50: info: pointer dereference check proved (altergo: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:242:59: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:244:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:244:13: medium: terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:244:36: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:244:36: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:244:56: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:244:65: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:247:37: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:249:16: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:249:16: medium: terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:249:19: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:249:28: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:250:26: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
@@ -182,7 +182,7 @@ spark-containers-functional-maps-higher_order.adb:250:39: info: precondition pro
 spark-containers-functional-maps-higher_order.adb:267:11: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:267:11: info: precondition proved (CVC5: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:267:11: info: precondition proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:267:21: medium: loop might be nonterminating, terminating annotation on "Lemma_Count_All" could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:267:21: medium: terminating annotation on "Lemma_Count_All" could be incorrect, loop might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:269:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:269:13: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:269:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
@@ -196,7 +196,7 @@ spark-containers-functional-maps-higher_order.adb:284:35: info: null exclusion c
 spark-containers-functional-maps-higher_order.adb:297:11: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:297:11: info: precondition proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:297:11: info: precondition proved (altergo: 2 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:297:21: medium: loop might be nonterminating, terminating annotation on "Lemma_Count_None" could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:297:21: medium: terminating annotation on "Lemma_Count_None" could be incorrect, loop might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:299:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:299:13: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:299:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
@@ -276,7 +276,7 @@ spark-containers-functional-maps-higher_order.adb:437:50: info: null exclusion c
 spark-containers-functional-maps-higher_order.adb:441:14: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:441:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:441:14: info: precondition proved (altergo: 2 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:441:24: medium: loop might be nonterminating, terminating annotation on "Sum" could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:441:24: medium: terminating annotation on "Sum" could be incorrect, loop might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:443:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:443:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:443:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
@@ -285,12 +285,12 @@ spark-containers-functional-maps-higher_order.adb:443:37: info: predicate check 
 spark-containers-functional-maps-higher_order.adb:443:43: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:443:60: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:445:37: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:447:20: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:447:20: medium: terminating annotation on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:447:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:447:29: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:447:29: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:447:39: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:463:07: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:463:07: medium: terminating annotation on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:464:12: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:464:12: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:464:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
@@ -304,21 +304,21 @@ spark-containers-functional-maps-higher_order.adb:479:14: info: initialization o
 spark-containers-functional-maps-higher_order.adb:480:14: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:480:14: info: precondition proved (CVC5: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:480:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:480:24: medium: loop might be nonterminating, terminating annotation on "Transform" could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:480:24: medium: terminating annotation on "Transform" could be incorrect, loop might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:482:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:482:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:482:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:482:31: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:482:49: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:483:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:483:13: medium: terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:484:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:484:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:485:60: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:486:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:486:13: medium: terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:487:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:487:16: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:489:48: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:490:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:490:13: medium: terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:491:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:491:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:494:19: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
@@ -326,7 +326,7 @@ spark-containers-functional-maps-higher_order.adb:494:29: info: pointer derefere
 spark-containers-functional-maps-higher_order.adb:494:49: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:494:65: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:497:37: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:499:20: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:499:20: medium: terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:499:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:500:24: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:500:43: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
@@ -335,7 +335,7 @@ spark-containers-functional-maps-higher_order.adb:517:14: info: initialization o
 spark-containers-functional-maps-higher_order.adb:518:14: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:518:14: info: precondition proved (CVC5: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:518:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:518:24: medium: loop might be nonterminating, terminating annotation on "Transform_Element" could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:518:24: medium: terminating annotation on "Transform_Element" could be incorrect, loop might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:520:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:520:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:520:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_map_ho.adb:67
@@ -345,21 +345,21 @@ spark-containers-functional-maps-higher_order.adb:522:16: info: loop invariant i
 spark-containers-functional-maps-higher_order.adb:522:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:525:16: info: loop invariant initialization proved (CVC5: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:525:16: info: loop invariant preservation proved (CVC5: 2 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:527:13: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:527:13: medium: terminating annotation on "Transform_Element" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:528:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:528:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:530:21: info: precondition proved (CVC5: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:530:35: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:530:51: info: precondition proved (CVC5: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:533:37: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:535:20: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:535:20: medium: terminating annotation on "Transform_Element" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:535:23: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:535:36: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:535:52: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:41:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:47:08: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:48:20: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; altergo: 2 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:48:41: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:48:41: medium: terminating annotation on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:52:22: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:52:32: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:52:47: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
@@ -367,7 +367,7 @@ spark-containers-functional-maps-higher_order.ads:52:57: info: precondition prov
 spark-containers-functional-maps-higher_order.ads:58:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:64:08: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:65:20: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:65:41: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:65:41: medium: terminating annotation on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:69:22: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:69:22: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:69:33: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
@@ -377,7 +377,7 @@ spark-containers-functional-maps-higher_order.ads:69:59: info: precondition prov
 spark-containers-functional-maps-higher_order.ads:75:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:76:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:83:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:86:09: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:86:09: medium: terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:87:36: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:87:41: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:88:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
@@ -391,7 +391,7 @@ spark-containers-functional-maps-higher_order.ads:92:38: info: pointer dereferen
 spark-containers-functional-maps-higher_order.ads:92:47: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:96:39: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:96:48: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:97:08: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:97:08: medium: terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:100:17: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:100:37: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:100:46: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_map_ho.adb:67
@@ -400,7 +400,7 @@ spark-containers-functional-maps-higher_order.ads:100:61: info: predicate check 
 spark-containers-functional-maps-higher_order.ads:104:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:105:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:113:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:116:09: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:116:09: medium: terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:118:31: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:118:51: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:120:18: info: postcondition proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:67
@@ -408,7 +408,7 @@ spark-containers-functional-maps-higher_order.ads:120:18: info: predicate check 
 spark-containers-functional-maps-higher_order.ads:120:46: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:122:47: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:125:55: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:126:08: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:126:08: medium: terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:129:18: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:129:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:130:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
@@ -418,7 +418,7 @@ spark-containers-functional-maps-higher_order.ads:141:06: info: data dependencie
 spark-containers-functional-maps-higher_order.ads:143:18: info: postcondition proved (CVC5: 1 VC; altergo: 2 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:143:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:143:54: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:145:08: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:145:08: medium: terminating annotation on "Transform_Element" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:148:18: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:149:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:149:34: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
@@ -428,7 +428,7 @@ spark-containers-functional-maps-higher_order.ads:163:36: info: null exclusion c
 spark-containers-functional-maps-higher_order.ads:164:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:164:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:164:34: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:166:14: info: subprogram "Lemma_Count_Eq" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:166:14: info: terminating annotation on "Lemma_Count_Eq" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:168:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:174:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:177:37: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
@@ -446,7 +446,7 @@ spark-containers-functional-maps-higher_order.ads:194:18: info: postcondition pr
 spark-containers-functional-maps-higher_order.ads:194:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:194:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:194:28: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:194:34: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:194:34: medium: terminating annotation on "Lemma_Count_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:195:10: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:195:10: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:195:17: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
@@ -458,7 +458,7 @@ spark-containers-functional-maps-higher_order.ads:196:57: info: predicate check 
 spark-containers-functional-maps-higher_order.ads:196:65: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:200:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:206:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:208:19: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:208:19: medium: terminating annotation on "Lemma_Count_All" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:208:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:208:46: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:209:18: info: postcondition proved (Z3: 1 VC), in instantiation at test_map_ho.adb:67
@@ -468,7 +468,7 @@ spark-containers-functional-maps-higher_order.ads:209:28: info: null exclusion c
 spark-containers-functional-maps-higher_order.ads:209:36: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:213:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:219:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:221:19: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:221:19: medium: terminating annotation on "Lemma_Count_None" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:221:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:221:50: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:222:18: info: postcondition proved (Z3: 1 VC), in instantiation at test_map_ho.adb:67
@@ -486,13 +486,13 @@ spark-containers-functional-maps-higher_order.ads:237:43: info: predicate check 
 spark-containers-functional-maps-higher_order.ads:237:53: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:239:48: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:239:57: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:240:08: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:240:08: medium: terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:242:17: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:242:26: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:246:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:254:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:256:36: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:258:14: info: subprogram "Lemma_Sum_Eq" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:258:14: info: terminating annotation on "Lemma_Sum_Eq" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:260:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:266:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:269:37: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
@@ -510,7 +510,7 @@ spark-containers-functional-maps-higher_order.ads:286:18: info: postcondition pr
 spark-containers-functional-maps-higher_order.ads:286:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:286:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:286:26: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:286:33: medium: call via access-to-subprogram, terminating annotation could be incorrect, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:286:33: medium: terminating annotation on "Lemma_Sum_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:287:10: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:287:10: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:287:15: info: precondition proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
@@ -518,15 +518,15 @@ spark-containers-functional-maps-higher_order.ads:287:30: info: null exclusion c
 spark-containers-functional-maps-higher_order.ads:287:39: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:287:39: info: predicate check proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:287:49: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps.ads:57:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:59:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:61:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:67:19: info: subprogram "Equivalent_Keys_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:69:19: info: subprogram "Equivalent_Keys_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:71:19: info: subprogram "Equivalent_Keys_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:77:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:79:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:81:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:57:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:59:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:61:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:67:19: info: terminating annotation on "Equivalent_Keys_Reflexive" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:69:19: info: terminating annotation on "Equivalent_Keys_Symmetric" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:71:19: info: terminating annotation on "Equivalent_Keys_Transitive" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:77:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:79:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:81:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
 spark-containers-functional-maps.ads:115:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test_map_ho.adb:64
 spark-containers-functional-maps.ads:115:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:64
 spark-containers-functional-maps.ads:365:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at test_map_ho.adb:64
@@ -537,8 +537,8 @@ spark-containers-functional-maps.ads:380:13: info: during checks for quantificat
 spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_map_ho.adb:64
 spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at test_map_ho.adb:64
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:472:13: info: subprogram "Copy_Key" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:473:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test_map_ho.adb:64
 spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_map_ho.adb:64
 spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test_map_ho.adb:64
@@ -548,34 +548,34 @@ spark-containers-functional-maps.ads:526:13: info: precondition proved (CVC5: 1 
 spark-containers-functional-maps.ads:531:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at test_map_ho.adb:64
 spark-containers-functional-maps.ads:531:13: info: precondition proved (CVC5: 1 VC), in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:480, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:489, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:480, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:489, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:480, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:489, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:480, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:489, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:480, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:489, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:480, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:489, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:480, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:489, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:480, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:489, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:480, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:489, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:480, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:489, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:480, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:489, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:480, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:489, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:94:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:499, in instantiation at test_map_ho.adb:64
 test_map_ho.adb:67:04: info: function contract might not be available on recursive calls

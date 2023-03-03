@@ -54,7 +54,7 @@ test_bad_variant.adb:174:12: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:174:23: high: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 172]
 test_bad_variant.adb:179:11: warning: no recursive call visible
 test_bad_variant.adb:188:13: info: implicit function contract might not be available on recursive calls
-test_bad_variant.adb:188:13: info: subprogram "Length" will terminate, terminating annotation has been proved
+test_bad_variant.adb:188:13: info: terminating annotation on "Length" has been proved, subprogram will terminate
 test_bad_variant.adb:189:67: medium: subprogram variant might fail [possible explanation: recursive call should not appear in a subprogram variant]
 test_bad_variant.adb:189:76: info: pointer dereference check proved (CVC5: 1 VC)
 test_bad_variant.adb:193:32: medium: subprogram variant might fail [possible fix: subprogram at line 188 should mention L in a precondition]

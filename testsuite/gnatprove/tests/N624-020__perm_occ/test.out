@@ -18,7 +18,7 @@ perm.adb:36:19: info: precondition proved (CVC5: 1 VC)
 perm.ads:7:07: info: range check proved (CVC5: 4 VC)
 perm.ads:7:28: info: overflow check proved (CVC5: 2 VC)
 perm.ads:10:13: info: function contract might not be available on recursive calls
-perm.ads:11:07: info: justified that "Occ_Def" is recursive, terminating annotation could be incorrect
+perm.ads:11:07: info: justified that terminating annotation on "Occ_Def" could be incorrect, subprogram is recursive
 perm.ads:12:17: info: index check proved (CVC5: 2 VC)
 perm.ads:12:42: info: precondition proved (CVC5: 1 VC)
 perm.ads:12:62: info: range check proved (CVC5: 2 VC)

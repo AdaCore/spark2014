@@ -1,4 +1,4 @@
-inherited_discr.adb:1:11: info: subprogram "Inherited_Discr" will terminate, terminating annotation has been proved
+inherited_discr.adb:1:11: info: terminating annotation on "Inherited_Discr" has been proved, subprogram will terminate
 inherited_discr.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
 inherited_discr.adb:11:47: info: range check proved (CVC5: 2 VC)
 inherited_discr.adb:15:53: info: division check proved (CVC5: 1 VC)
