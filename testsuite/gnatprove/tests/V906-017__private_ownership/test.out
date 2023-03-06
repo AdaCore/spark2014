@@ -1,4 +1,4 @@
-private_ownership.ads:17:13: info: subprogram "Is_Null" will terminate, terminating annotation has been proved
+private_ownership.ads:17:13: info: terminating annotation on "Is_Null" has been proved, subprogram will terminate
 private_ownership.ads:18:06: info: data dependencies proved
 private_ownership.ads:19:14: medium: postcondition might fail
 private_ownership.ads:23:07: warning: assuming "Is_D" always returns

@@ -1,2 +1,2 @@
-terminating_annotations.adb:14:08: medium: call to "Not_SPARK" might be nonterminating, terminating annotation on "F_Call" could be incorrect
+terminating_annotations.adb:14:08: medium: terminating annotation on "F_Call" could be incorrect, call to "Not_SPARK" might be nonterminating
 terminating_annotations.ads:6:22: warning: unused variable "X"

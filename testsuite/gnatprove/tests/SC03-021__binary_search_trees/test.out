@@ -1,13 +1,13 @@
 binary_search.adb:19:07: info: dynamic accessibility check proved (Trivial)
 binary_search.adb:23:13: info: function contract might not be available on recursive calls
-binary_search.adb:24:08: medium: "M_Contains" is recursive, terminating annotation could be incorrect
+binary_search.adb:24:08: medium: terminating annotation on "M_Contains" could be incorrect, subprogram is recursive
 binary_search.adb:25:18: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:25:45: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search.adb:25:76: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:27:14: info: postcondition proved (Trivial: 1 VC)
 binary_search.adb:29:13: info: function contract might not be available on recursive calls
 binary_search.adb:32:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; altergo: 3 VC)
-binary_search.adb:34:06: medium: overriding operator "<" is recursive, terminating annotation could be incorrect
+binary_search.adb:34:06: medium: terminating annotation on overriding operator "<" could be incorrect, subprogram is recursive
 binary_search.adb:35:32: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:35:47: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:35:62: info: pointer dereference check proved (CVC5: 1 VC)
@@ -15,13 +15,13 @@ binary_search.adb:41:25: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 binary_search.adb:42:44: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search.adb:43:25: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_search.adb:44:44: info: pointer dereference check proved (CVC5: 1 VC)
-binary_search.adb:45:10: medium: overriding operator "<" is recursive, terminating annotation could be incorrect
+binary_search.adb:45:10: medium: terminating annotation on overriding operator "<" could be incorrect, subprogram is recursive
 binary_search.adb:45:22: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:45:37: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:45:52: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:49:13: info: function contract might not be available on recursive calls
 binary_search.adb:52:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; Z3: 2 VC)
-binary_search.adb:54:06: medium: overriding operator "<" is recursive, terminating annotation could be incorrect
+binary_search.adb:54:06: medium: terminating annotation on overriding operator "<" could be incorrect, subprogram is recursive
 binary_search.adb:55:28: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search.adb:55:43: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:55:58: info: pointer dereference check proved (altergo: 1 VC)
@@ -29,11 +29,11 @@ binary_search.adb:61:25: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_search.adb:62:44: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:63:25: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_search.adb:64:44: info: pointer dereference check proved (CVC5: 1 VC)
-binary_search.adb:65:10: medium: overriding operator "<" is recursive, terminating annotation could be incorrect
+binary_search.adb:65:10: medium: terminating annotation on overriding operator "<" could be incorrect, subprogram is recursive
 binary_search.adb:65:18: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search.adb:65:33: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:65:48: info: pointer dereference check proved (altergo: 1 VC)
-binary_search.adb:70:07: medium: "Sorted" is recursive, terminating annotation could be incorrect
+binary_search.adb:70:07: medium: terminating annotation on "Sorted" could be incorrect, subprogram is recursive
 binary_search.adb:71:13: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search.adb:71:22: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:71:38: info: pointer dereference check proved (CVC5: 1 VC)
@@ -54,7 +54,7 @@ binary_search.adb:108:30: info: discriminant check proved (CVC5: 1 VC)
 binary_search.adb:112:26: info: discriminant check proved (CVC5: 1 VC)
 binary_search.adb:116:30: info: discriminant check proved (CVC5: 1 VC)
 binary_search.adb:122:13: info: implicit function contract might not be available on recursive calls
-binary_search.adb:123:07: medium: "Size" is recursive, terminating annotation could be incorrect
+binary_search.adb:123:07: medium: terminating annotation on "Size" could be incorrect, subprogram is recursive
 binary_search.adb:124:20: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:124:42: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
 binary_search.adb:124:51: info: pointer dereference check proved (altergo: 1 VC)
@@ -66,7 +66,7 @@ binary_search.adb:130:13: info: function contract might not be available on recu
 binary_search.adb:134:14: info: postcondition proved (Z3: 2 VC; altergo: 1 VC)
 binary_search.adb:134:14: info: predicate check proved (Trivial: 1 VC)
 binary_search.adb:138:14: info: initialization of "S" proved
-binary_search.adb:143:12: medium: "All_V" is recursive, terminating annotation could be incorrect
+binary_search.adb:143:12: medium: terminating annotation on "All_V" could be incorrect, subprogram is recursive
 binary_search.adb:143:22: info: precondition proved (altergo: 1 VC)
 binary_search.adb:143:30: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:143:38: info: precondition proved (altergo: 1 VC)
@@ -130,9 +130,9 @@ binary_search.adb:224:45: info: precondition proved (CVC5: 1 VC)
 binary_search.adb:224:53: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:224:62: info: pointer dereference check proved (altergo: 1 VC)
 binary_search.adb:225:25: info: pointer dereference check proved (altergo: 1 VC)
-spark-containers-functional-sets.ads:52:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at binary_search.adb:119
-spark-containers-functional-sets.ads:54:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at binary_search.adb:119
-spark-containers-functional-sets.ads:56:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at binary_search.adb:119
+spark-containers-functional-sets.ads:52:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at binary_search.adb:119
+spark-containers-functional-sets.ads:54:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at binary_search.adb:119
+spark-containers-functional-sets.ads:56:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at binary_search.adb:119
 spark-containers-functional-sets.ads:89:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at binary_search.adb:119
 spark-containers-functional-sets.ads:89:13: info: precondition proved (Trivial: 1 VC), in instantiation at binary_search.adb:119
 spark-containers-functional-sets.ads:326:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at binary_search.adb:119
@@ -143,7 +143,7 @@ spark-containers-functional-sets.ads:341:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:341:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at binary_search.adb:119
 spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at binary_search.adb:119
 spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at binary_search.adb:119
-spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at binary_search.adb:119
+spark-containers-functional-sets.ads:365:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at binary_search.adb:119
 spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at binary_search.adb:119
 spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at binary_search.adb:119
 spark-containers-functional-sets.ads:391:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at binary_search.adb:119
@@ -152,12 +152,12 @@ spark-containers-functional-sets.ads:397:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:397:13: info: precondition proved (CVC5: 1 VC), in instantiation at binary_search.adb:119
 spark-containers-functional-sets.ads:404:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at binary_search.adb:119
 spark-containers-functional-sets.ads:404:13: info: precondition proved (altergo: 1 VC), in instantiation at binary_search.adb:119
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
+spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
+spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
 spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
+spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_search.adb:119

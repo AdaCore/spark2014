@@ -14,7 +14,7 @@ p.adb:25:52: info: range check proved
 p.adb:26:22: info: pointer dereference check proved
 p.adb:29:23: info: dynamic accessibility check proved
 p.adb:29:23: info: null exclusion check proved
-p.ads:6:13: info: subprogram "All_Smaller_Than_Max" will terminate, terminating annotation has been proved
+p.ads:6:13: info: terminating annotation on "All_Smaller_Than_Max" has been proved, subprogram will terminate
 p.ads:9:12: info: pointer dereference check proved
 p.ads:9:35: info: subprogram variant proved
 p.ads:9:58: info: pointer dereference check proved

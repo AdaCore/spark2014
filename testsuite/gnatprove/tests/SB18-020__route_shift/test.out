@@ -1,16 +1,16 @@
-spark-containers-functional-vectors.ads:50:19: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_route.adb:38
-spark-containers-functional-vectors.ads:52:19: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_route.adb:38
-spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_route.adb:38
-spark-containers-functional-vectors.ads:60:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_route.adb:38
-spark-containers-functional-vectors.ads:62:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_route.adb:38
-spark-containers-functional-vectors.ads:64:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_route.adb:38
+spark-containers-functional-vectors.ads:50:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at test_route.adb:38
+spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at test_route.adb:38
+spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at test_route.adb:38
+spark-containers-functional-vectors.ads:60:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at test_route.adb:38
+spark-containers-functional-vectors.ads:62:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at test_route.adb:38
+spark-containers-functional-vectors.ads:64:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:104:13: medium: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:104:13: medium: precondition might fail, in instantiation at test_route.adb:38
-spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test_route.adb:38
+spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at test_route.adb:38
-spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_route.adb:38
+spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_route.adb:38
@@ -23,25 +23,25 @@ spark-containers-functional-vectors.ads:491:59: info: overflow check proved (CVC
 spark-containers-functional-vectors.ads:491:76: info: overflow check proved (CVC5: 2 VC), in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:492:30: info: range check proved (CVC5: 2 VC), in instantiation at test_route.adb:38
 spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_route.adb:38
+spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_route.adb:38
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_route.adb:38
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_route.adb:38
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_route.adb:38
+spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_route.adb:38
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_route.adb:38
 spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_route.adb:38
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_route.adb:38
+spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_route.adb:38
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_route.adb:38
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:319, in instantiation at test_route.adb:38
-spark-containers-parameter_checks.ads:84:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
+spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
 spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
 spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
-spark-containers-parameter_checks.ads:92:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
+spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
 spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
 spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
-spark-containers-parameter_checks.ads:96:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
+spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
 spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
 spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
-spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
+spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
 spark-containers-parameter_checks.ads:104:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_route.adb:38
 test_route.adb:11:30: info: pointer dereference check proved (altergo: 1 VC)
@@ -58,11 +58,11 @@ test_route.adb:17:08: info: pointer dereference check proved (CVC5: 1 VC)
 test_route.adb:17:15: info: pointer dereference check proved (altergo: 1 VC)
 test_route.adb:17:18: info: overflow check proved (CVC5: 2 VC)
 test_route.adb:28:13: info: implicit function contract might not be available on recursive calls
-test_route.adb:29:07: medium: "Length" is recursive, terminating annotation could be incorrect
+test_route.adb:29:07: medium: terminating annotation on "Length" could be incorrect, subprogram is recursive
 test_route.adb:30:52: info: pointer dereference check proved (altergo: 1 VC)
 test_route.adb:30:60: info: overflow check proved (CVC5: 2 VC)
 test_route.adb:33:13: info: implicit function contract might not be available on recursive calls
-test_route.adb:34:07: medium: "Nth_X" is recursive, terminating annotation could be incorrect
+test_route.adb:34:07: medium: terminating annotation on "Nth_X" could be incorrect, subprogram is recursive
 test_route.adb:34:22: info: pointer dereference check proved (altergo: 1 VC)
 test_route.adb:34:30: info: pointer dereference check proved (altergo: 1 VC)
 test_route.adb:34:38: info: precondition proved (altergo: 1 VC)

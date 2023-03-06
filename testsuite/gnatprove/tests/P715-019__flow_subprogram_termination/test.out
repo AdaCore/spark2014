@@ -8,9 +8,9 @@ call_proc_no_body.adb:9:07: warning: assuming "P_03" always returns
 call_proc_no_body.adb:9:07: warning: assuming "P_03" has no effect on global items
 call_proc_no_body.adb:9:07: warning: no Global contract available for "P_03"
 call_proc_no_body.adb:9:07: warning: no returning annotation available for "P_03"
-call_proc_no_body.ads:4:14: info: subprogram "Returning" will terminate, terminating annotation has been proved
+call_proc_no_body.ads:4:14: info: terminating annotation on "Returning" has been proved, subprogram will terminate
 call_proc_no_body.ads:4:14: warning: subprogram "Returning" has no effect
-call_proc_no_body.ads:6:14: info: subprogram "Nonreturning" will terminate, terminating annotation has been proved
+call_proc_no_body.ads:6:14: info: terminating annotation on "Nonreturning" has been proved, subprogram will terminate
 call_proc_no_body.ads:6:14: warning: subprogram "Nonreturning" has no effect
 container.adb:19:67: info: overflow check proved (CVC5: 2 VC)
 container.adb:23:14: info: index check proved (CVC5: 2 VC)
@@ -18,18 +18,18 @@ container.adb:26:14: info: add a contract to analyze it separately from calling 
 container.adb:26:14: info: local subprogram "Test3" only analyzed in the context of calls
 container.adb:30:11: info: precondition proved (CVC5: 1 VC), in call inlined at container.adb:45
 container.adb:30:11: info: precondition proved (Trivial: 1 VC), in call inlined at container.adb:45
-container.adb:30:16: medium: loop might be nonterminating, terminating annotation on "Test3" could be incorrect
-container.adb:30:16: medium: loop might be nonterminating, terminating annotation on "Test4" could be incorrect, in call inlined at container.adb:45
+container.adb:30:16: medium: terminating annotation on "Test3" could be incorrect, loop might be nonterminating
+container.adb:30:16: medium: terminating annotation on "Test4" could be incorrect, loop might be nonterminating, in call inlined at container.adb:45
 container.adb:33:20: medium: range check might fail, cannot prove upper bound for X + 1, in call inlined at container.adb:45 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 32 should mention Int in a loop invariant]
 container.adb:34:34: info: loop variant proved (CVC5: 1 VC), in call inlined at container.adb:45
 container.adb:45:07: info: analyzing call to "Test3" in context
 container.adb:48:04: warning: analyzing unreferenced procedure "Test5"
 container.adb:51:11: info: precondition proved (CVC5: 1 VC)
 container.adb:51:11: info: precondition proved (Trivial: 1 VC)
-container.adb:51:16: medium: loop might be nonterminating, terminating annotation on "Test5" could be incorrect
+container.adb:51:16: medium: terminating annotation on "Test5" could be incorrect, loop might be nonterminating
 container.adb:56:11: info: precondition proved (CVC5: 1 VC)
 container.adb:56:11: info: precondition proved (Trivial: 1 VC)
-container.adb:56:16: medium: loop might be nonterminating, terminating annotation on "Test5" could be incorrect
+container.adb:56:16: medium: terminating annotation on "Test5" could be incorrect, loop might be nonterminating
 container.adb:60:23: info: range check proved (CVC5: 4 VC)
 container.adb:61:39: info: loop invariant initialization proved (CVC5: 1 VC)
 container.adb:61:39: info: loop invariant preservation proved (CVC5: 1 VC)
@@ -61,18 +61,18 @@ container.adb:112:14: info: range check proved (CVC5: 4 VC)
 container.adb:113:28: info: loop variant proved (CVC5: 1 VC)
 container.ads:16:13: info: during checks for quantification at container.ads:38
 container.ads:16:13: info: precondition proved (Trivial: 1 VC)
-container.ads:16:13: info: subprogram "First" will terminate, terminating annotation has been proved
+container.ads:16:13: info: terminating annotation on "First" has been proved, subprogram will terminate
 container.ads:16:20: warning: unused variable "C"
 container.ads:18:13: info: during checks for quantification at container.ads:38
 container.ads:18:13: info: precondition proved (Trivial: 1 VC)
-container.ads:18:13: info: subprogram "Has_Element" will terminate, terminating annotation has been proved
+container.ads:18:13: info: terminating annotation on "Has_Element" has been proved, subprogram will terminate
 container.ads:18:26: warning: unused variable "C"
 container.ads:20:13: info: during checks for quantification at container.ads:38
 container.ads:20:13: info: precondition proved (CVC5: 1 VC)
-container.ads:20:13: info: subprogram "Next" will terminate, terminating annotation has been proved
+container.ads:20:13: info: terminating annotation on "Next" has been proved, subprogram will terminate
 container.ads:23:13: info: during checks for quantification at container.ads:38
 container.ads:23:13: info: precondition proved (CVC5: 1 VC)
-container.ads:23:13: info: subprogram "Element" will terminate, terminating annotation has been proved
+container.ads:23:13: info: terminating annotation on "Element" has been proved, subprogram will terminate
 file_io.ads:50:33: info: implicit function contract not available for proof ("Size" might not return)
 file_io.ads:55:17: info: function contract not available for proof ("Index" might not return)
 file_io.ads:61:17: info: implicit function contract not available for proof ("Size" might not return)
@@ -86,11 +86,11 @@ file_io.ads:64:54: info: function contract not available for proof ("Index" migh
 formal_cont.adb:11:14: warning: unreachable code (CVC5: 1 VC)
 formal_cont.adb:15:07: info: initialization of "L" proved
 formal_cont.adb:26:07: info: initialization of "L" proved
-formal_cont.ads:18:14: info: subprogram "Test_01" will terminate, terminating annotation has been proved
+formal_cont.ads:18:14: info: terminating annotation on "Test_01" has been proved, subprogram will terminate
 formal_cont.ads:18:14: warning: subprogram "Test_01" has no effect
-formal_cont.ads:32:14: info: subprogram "Test_02" will terminate, terminating annotation has been proved
+formal_cont.ads:32:14: info: terminating annotation on "Test_02" has been proved, subprogram will terminate
 formal_cont.ads:32:14: warning: subprogram "Test_02" has no effect
-functions.adb:8:18: medium: loop might be nonterminating, terminating annotation on "Non_Ter_Func" could be incorrect
+functions.adb:8:18: medium: terminating annotation on "Non_Ter_Func" could be incorrect, loop might be nonterminating
 functions.adb:11:07: warning: unreachable code (CVC5: 1 VC)
 functions.adb:14:14: high: all paths in "G" raise exceptions or do not terminate normally
 functions.adb:14:14: info: add a contract to analyze it separately from calling contexts
@@ -104,7 +104,7 @@ functions.adb:22:10: warning: assuming "P" has no effect on global items
 functions.adb:22:10: warning: no Global contract available for "P"
 functions.adb:29:04: info: analyzing call to "G" in context
 functions.ads:4:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
-functions.ads:6:13: info: subprogram "Expr_Func" will terminate, terminating annotation has been proved
+functions.ads:6:13: info: terminating annotation on "Expr_Func" has been proved, subprogram will terminate
 functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not terminate normally
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
 imported.adb:5:07: warning: assuming "P_01" always returns
@@ -116,25 +116,25 @@ imported.adb:10:07: warning: assuming "P_02" always returns
 imported.adb:10:07: warning: assuming "P_02" has no effect on global items
 imported.adb:10:07: warning: no Global contract available for "P_02"
 imported.adb:10:07: warning: no returning annotation available for "P_02"
-imported.ads:9:14: info: subprogram "Q_01" will terminate, terminating annotation has been proved
+imported.ads:9:14: info: terminating annotation on "Q_01" has been proved, subprogram will terminate
 imported.ads:9:14: warning: subprogram "Q_01" has no effect
-imported.ads:16:14: info: subprogram "Q_02" will terminate, terminating annotation has been proved
+imported.ads:16:14: info: terminating annotation on "Q_02" has been proved, subprogram will terminate
 imported.ads:16:14: warning: subprogram "Q_02" has no effect
 modular_analysis.adb:5:04: warning: analyzing unreferenced procedure "Test_01"
 modular_analysis.adb:5:23: info: initialization of "F" proved
-modular_analysis.adb:8:14: medium: call to "Open_Read" might be nonterminating, terminating annotation on "Test_01" could be incorrect
+modular_analysis.adb:8:14: medium: terminating annotation on "Test_01" could be incorrect, call to "Open_Read" might be nonterminating
 modular_analysis.adb:8:14: warning: assuming "Open_Read" always returns
 modular_analysis.adb:8:14: warning: assuming "Open_Read" has no effect on global items
 modular_analysis.adb:8:14: warning: no Global contract available for "Open_Read"
 modular_analysis.adb:8:14: warning: no returning annotation available for "Open_Read"
-nest_in_proc.adb:5:17: info: subprogram "Nothing" will terminate, terminating annotation has been proved
+nest_in_proc.adb:5:17: info: terminating annotation on "Nothing" has been proved, subprogram will terminate
 nest_in_proc.adb:5:17: warning: subprogram "Nothing" has no effect
 nest_in_proc.adb:7:20: warning: subprogram "Nothing2" has no effect
-nest_in_proc.adb:20:21: medium: loop might be nonterminating, terminating annotation on "Nest_In_Proc" could be incorrect
+nest_in_proc.adb:20:21: medium: terminating annotation on "Nest_In_Proc" could be incorrect, loop might be nonterminating
 nest_in_proc.adb:20:21: warning: statement has no effect
 nested_blocks.adb:10:37: warning: statement has no effect
 nested_loops.adb:3:04: warning: analyzing unreferenced procedure "Proc"
-nested_loops.adb:3:14: info: subprogram "Proc" will terminate, terminating annotation has been proved
+nested_loops.adb:3:14: info: terminating annotation on "Proc" has been proved, subprogram will terminate
 nested_loops.adb:3:14: warning: subprogram "Proc" has no effect
 nested_loops.adb:5:07: info: initialization of "X" proved
 nested_loops.adb:8:17: info: overflow check proved (CVC5: 4 VC)
@@ -147,23 +147,23 @@ nested_loops.adb:22:14: warning: subprogram "Proc2" has no effect
 nested_loops.adb:26:17: info: overflow check proved (CVC5: 4 VC)
 nested_loops.adb:27:31: info: loop variant proved (CVC5: 1 VC)
 nested_loops.adb:29:34: info: loop variant proved (CVC5: 1 VC)
-nested_loops.adb:30:24: medium: loop might be nonterminating, terminating annotation on "Proc2" could be incorrect
+nested_loops.adb:30:24: medium: terminating annotation on "Proc2" could be incorrect, loop might be nonterminating
 nested_loops.adb:38:04: warning: analyzing unreferenced procedure "Proc3"
 nested_loops.adb:38:14: warning: subprogram "Proc3" has no effect
-nested_loops.adb:41:19: medium: loop might be nonterminating, terminating annotation on "Proc3" could be incorrect
+nested_loops.adb:41:19: medium: terminating annotation on "Proc3" could be incorrect, loop might be nonterminating
 nested_loops.adb:42:17: info: overflow check proved (CVC5: 2 VC)
 nested_loops.adb:43:26: info: unrolling loop
-nested_loops.adb:44:24: medium: loop might be nonterminating, terminating annotation on "Proc3" could be incorrect
+nested_loops.adb:44:24: medium: terminating annotation on "Proc3" could be incorrect, loop might be nonterminating
 nested_packages.adb:7:20: warning: subprogram "Null_Pck" has no effect
 nested_packages.adb:10:23: warning: subprogram "Null_Pck2" has no effect
-nested_packages.adb:26:24: medium: loop might be nonterminating, terminating annotation on "Contains_Packages" could be incorrect
+nested_packages.adb:26:24: medium: terminating annotation on "Contains_Packages" could be incorrect, loop might be nonterminating
 nested_packages.adb:26:24: warning: statement has no effect
 nested_packages.adb:55:21: warning: statement has no effect
 nested_packages.adb:61:18: warning: statement has no effect
 nested_packages.ads:3:14: warning: subprogram "Contains_Packages" has no effect
-nested_packages.ads:6:17: info: subprogram "Do_Nothing" will terminate, terminating annotation has been proved
+nested_packages.ads:6:17: info: terminating annotation on "Do_Nothing" has been proved, subprogram will terminate
 nested_packages.ads:6:17: warning: subprogram "Do_Nothing" has no effect
-nested_packages.ads:8:20: info: subprogram "Do_Nothing2" will terminate, terminating annotation has been proved
+nested_packages.ads:8:20: info: terminating annotation on "Do_Nothing2" has been proved, subprogram will terminate
 nested_packages.ads:8:20: warning: subprogram "Do_Nothing2" has no effect
 p.adb:6:14: warning: subprogram "Proc2" has no effect
 p.adb:7:14: warning: subprogram "Proc3" has no effect
@@ -171,28 +171,28 @@ p.adb:9:14: info: add a contract to analyze it separately from calling contexts
 p.adb:9:14: info: local subprogram "Proc" only analyzed in the context of calls
 p.adb:9:14: warning: subprogram "Proc" has no effect
 p.adb:11:07: info: no contextual analysis of "Proc2" (body not seen yet)
-p.adb:11:07: medium: call to "Proc2" might be nonterminating, terminating annotation on "Proc" could be incorrect
+p.adb:11:07: medium: terminating annotation on "Proc" could be incorrect, call to "Proc2" might be nonterminating
 p.adb:16:07: info: no contextual analysis of "Proc3" (body not seen yet)
 p.adb:26:04: warning: analyzing unreferenced procedure "Proc4"
 p.adb:26:14: warning: subprogram "Proc4" has no effect
-p.adb:29:14: medium: call to "Proc3" might be nonterminating, terminating annotation on "Proc4" could be incorrect
+p.adb:29:14: medium: terminating annotation on "Proc4" could be incorrect, call to "Proc3" might be nonterminating
 p.adb:32:14: warning: subprogram "Proc5" has no effect
 p.adb:35:10: info: analyzing call to "Proc5" in context
 p.adb:35:10: info: no contextual analysis of call to recursive subprogram
-p.adb:35:10: medium: "Proc5" is recursive, terminating annotation could be incorrect
+p.adb:35:10: medium: terminating annotation on "Proc5" could be incorrect, subprogram is recursive
 p.adb:39:14: warning: subprogram "Proc7" has no effect
 p.adb:41:14: info: add a contract to analyze it separately from calling contexts
 p.adb:41:14: info: local subprogram "Proc6" only analyzed in the context of calls
-p.adb:41:14: info: subprogram "Proc6" will terminate, terminating annotation has been proved
+p.adb:41:14: info: terminating annotation on "Proc6" has been proved, subprogram will terminate
 p.adb:41:14: warning: subprogram "Proc6" has no effect
 p.adb:44:10: info: no contextual analysis of "Proc7" (body not seen yet)
-p.adb:44:10: medium: "Proc7" is recursive, terminating annotation could be incorrect, in call inlined at p.adb:51
+p.adb:44:10: medium: terminating annotation on "Proc7" could be incorrect, subprogram is recursive, in call inlined at p.adb:51
 p.adb:51:10: info: analyzing call to "Proc6" in context
 p.adb:55:04: info: initialization of "B" proved
 p.adb:59:04: info: analyzing call to "Proc" in context
-preconditions.adb:6:18: medium: loop might be nonterminating, terminating annotation on "Nonreturning_Precondition" could be incorrect
+preconditions.adb:6:18: medium: terminating annotation on "Nonreturning_Precondition" could be incorrect, loop might be nonterminating
 preconditions.adb:9:14: warning: unreachable code (CVC5: 1 VC)
-preconditions.ads:2:13: info: subprogram "Returning_Precondition" will terminate, terminating annotation has been proved
+preconditions.ads:2:13: info: terminating annotation on "Returning_Precondition" has been proved, subprogram will terminate
 r.adb:17:36: info: unrolling loop
 r.adb:18:13: high: potentially blocking entry call in protected operation "E"
 r.adb:18:13: warning: potentially blocking operation in protected operation
@@ -214,12 +214,12 @@ r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
 r.adb:58:04: warning: no Global contract available for "OS_Exit"
 r.adb:59:04: info: call to nonreturning procedure never executed (CVC5: 1 VC)
 r.adb:59:04: warning: unreachable code
-spark-containers-functional-sets.ads:52:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:12
-spark-containers-functional-sets.ads:52:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
-spark-containers-functional-sets.ads:54:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:12
-spark-containers-functional-sets.ads:54:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
-spark-containers-functional-sets.ads:56:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:12
-spark-containers-functional-sets.ads:56:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:52:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:52:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:54:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:54:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:56:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:56:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at formal_cont.ads:26
 spark-containers-functional-sets.ads:89:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:12
 spark-containers-functional-sets.ads:89:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:26
 spark-containers-functional-sets.ads:89:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:12
@@ -240,8 +240,8 @@ spark-containers-functional-sets.ads:349:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at formal_cont.ads:26
 spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:12
 spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:26
-spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:12
-spark-containers-functional-sets.ads:365:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
+spark-containers-functional-sets.ads:365:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at formal_cont.ads:12
+spark-containers-functional-sets.ads:365:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at formal_cont.ads:26
 spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:12
 spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:26
 spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_cont.ads:12
@@ -258,23 +258,23 @@ spark-containers-functional-sets.ads:404:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:404:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at formal_cont.ads:26
 spark-containers-functional-sets.ads:404:13: info: precondition proved (CVC5: 1 VC), in instantiation at formal_cont.ads:12
 spark-containers-functional-sets.ads:404:13: info: precondition proved (CVC5: 1 VC), in instantiation at formal_cont.ads:26
-spark-containers-parameter_checks.ads:52:17: info: subprogram "Eq_Reflexive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
+spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
-spark-containers-parameter_checks.ads:54:19: medium: call to "My_Equal_01" might be nonterminating, terminating annotation on "Eq_Reflexive" could be incorrect, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
 spark-containers-parameter_checks.ads:54:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
-spark-containers-parameter_checks.ads:56:17: info: subprogram "Eq_Symmetric" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
+spark-containers-parameter_checks.ads:54:19: medium: terminating annotation on "Eq_Reflexive" could be incorrect, call to "My_Equal_01" might be nonterminating, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
+spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
-spark-containers-parameter_checks.ads:58:19: medium: call to "My_Equal_01" might be nonterminating, terminating annotation on "Eq_Symmetric" could be incorrect, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
+spark-containers-parameter_checks.ads:58:19: medium: terminating annotation on "Eq_Symmetric" could be incorrect, call to "My_Equal_01" might be nonterminating, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
 spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
-spark-containers-parameter_checks.ads:59:19: medium: call to "My_Equal_01" might be nonterminating, terminating annotation on "Eq_Symmetric" could be incorrect, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
 spark-containers-parameter_checks.ads:59:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
-spark-containers-parameter_checks.ads:61:17: info: subprogram "Eq_Transitive" will terminate, terminating annotation has been proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
+spark-containers-parameter_checks.ads:59:19: medium: terminating annotation on "Eq_Symmetric" could be incorrect, call to "My_Equal_01" might be nonterminating, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
+spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
-spark-containers-parameter_checks.ads:63:29: medium: call to "My_Equal_01" might be nonterminating, terminating annotation on "Eq_Transitive" could be incorrect, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
+spark-containers-parameter_checks.ads:63:29: medium: terminating annotation on "Eq_Transitive" could be incorrect, call to "My_Equal_01" might be nonterminating, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:26
-spark-containers-parameter_checks.ads:64:19: medium: call to "My_Equal_01" might be nonterminating, terminating annotation on "Eq_Transitive" could be incorrect, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12
 spark-containers-parameter_checks.ads:64:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
+spark-containers-parameter_checks.ads:64:19: medium: terminating annotation on "Eq_Transitive" could be incorrect, call to "My_Equal_01" might be nonterminating, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at formal_cont.ads:12

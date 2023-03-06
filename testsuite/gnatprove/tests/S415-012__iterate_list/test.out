@@ -26,12 +26,12 @@ list_ex_pledge.adb:23:11: info: pointer dereference check proved (CVC5: 1 VC)
 list_ex_pledge.adb:24:16: info: pointer dereference check proved (CVC5: 1 VC)
 list_ex_pledge.adb:26:17: info: overflow check proved (CVC5: 2 VC)
 list_ex_pledge.ads:9:14: info: implicit function contract might not be available on recursive calls
-list_ex_pledge.ads:10:08: medium: "Length_Aux" is recursive, terminating annotation could be incorrect
+list_ex_pledge.ads:10:08: medium: terminating annotation on "Length_Aux" could be incorrect, subprogram is recursive
 list_ex_pledge.ads:11:27: info: pointer dereference check proved (CVC5: 1 VC)
 list_ex_pledge.ads:13:15: info: overflow check proved (CVC5: 2 VC)
 list_ex_pledge.ads:13:30: info: pointer dereference check proved (CVC5: 1 VC)
 list_ex_pledge.ads:18:14: info: implicit function contract might not be available on recursive calls
-list_ex_pledge.ads:19:08: medium: "Get_Nth_Val" is recursive, terminating annotation could be incorrect
+list_ex_pledge.ads:19:08: medium: terminating annotation on "Get_Nth_Val" could be incorrect, subprogram is recursive
 list_ex_pledge.ads:19:23: info: pointer dereference check proved (CVC5: 1 VC)
 list_ex_pledge.ads:19:35: info: precondition proved (CVC5: 1 VC)
 list_ex_pledge.ads:19:49: info: pointer dereference check proved (CVC5: 1 VC)

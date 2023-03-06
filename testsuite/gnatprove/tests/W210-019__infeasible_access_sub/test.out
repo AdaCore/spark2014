@@ -1,6 +1,6 @@
 infeasible_access_subp.adb:2:04: medium: contract of function might not be feasible
 infeasible_access_subp.adb:6:14: info: postcondition proved (CVC5: 1 VC)
-infeasible_access_subp.adb:9:07: medium: call via access-to-subprogram, terminating annotation could be incorrect
+infeasible_access_subp.adb:9:07: medium: terminating annotation on "F" could be incorrect, call via access-to-subprogram might be nonterminating
 infeasible_access_subp.adb:9:33: info: pointer dereference check proved (CVC5: 1 VC)
 infeasible_access_subp.adb:14:13: error: "G1" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
 infeasible_access_subp.adb:14:13: error: unsupported recursive subprogram

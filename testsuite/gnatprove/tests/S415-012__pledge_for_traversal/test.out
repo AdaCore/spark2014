@@ -1,6 +1,6 @@
 traversal_funcs.adb:11:86: info: dynamic accessibility check proved (Trivial)
 traversal_funcs.adb:15:13: info: implicit function contract might not be available on recursive calls
-traversal_funcs.adb:16:07: medium: "Length" is recursive, terminating annotation could be incorrect
+traversal_funcs.adb:16:07: medium: terminating annotation on "Length" could be incorrect, subprogram is recursive
 traversal_funcs.adb:17:52: info: pointer dereference check proved (CVC5: 1 VC)
 traversal_funcs.adb:17:57: info: overflow check proved (CVC5: 2 VC)
 traversal_funcs.adb:24:18: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)

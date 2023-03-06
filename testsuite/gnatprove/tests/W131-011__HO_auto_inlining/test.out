@@ -1,4 +1,4 @@
 test_bad_infer.adb:9:13: info: implicit function contract might not be available on calls from enclosing unit
-test_bad_infer.adb:9:13: info: subprogram "Bad" will terminate, terminating annotation has been proved
+test_bad_infer.adb:9:13: info: terminating annotation on "Bad" has been proved, subprogram will terminate
 test_bad_infer.adb:9:22: info: function contract feasibility proved (CVC5: 1 VC)
 test_bad_infer.adb:20:19: medium: assertion might fail (e.g. when I = 0)

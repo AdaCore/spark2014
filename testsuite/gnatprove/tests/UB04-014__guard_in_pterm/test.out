@@ -1,12 +1,12 @@
 main.adb:12:13: info: implicit function contract might not be available on recursive calls
-main.adb:13:07: medium: "B_Length" is recursive, terminating annotation could be incorrect
+main.adb:13:07: medium: terminating annotation on "B_Length" could be incorrect, subprogram is recursive
 main.adb:13:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:13:45: info: predicate check proved (Trivial: 1 VC)
 main.adb:13:56: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:13:60: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:13:62: info: predicate check proved (Trivial: 1 VC)
 main.adb:16:13: info: function contract might not be available on recursive calls
-main.adb:17:07: medium: "Length" is recursive, terminating annotation could be incorrect
+main.adb:17:07: medium: terminating annotation on "Length" could be incorrect, subprogram is recursive
 main.adb:17:31: info: precondition proved (CVC5: 1 VC)
 main.adb:17:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:17:44: info: overflow check proved (CVC5: 2 VC)

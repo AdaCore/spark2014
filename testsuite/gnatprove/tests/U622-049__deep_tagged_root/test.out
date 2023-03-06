@@ -1,6 +1,6 @@
 main.adb:12:07: error: owning component "Data2" of tagged extension "Channel_Bad" is not allowed in SPARK
 main.adb:12:07: error: violation of aspect SPARK_Mode at line 1
-recursive_cw.adb:10:07: medium: "All_Less_Than" is recursive, terminating annotation could be incorrect
+recursive_cw.adb:10:07: medium: terminating annotation on "All_Less_Than" could be incorrect, subprogram is recursive
 recursive_cw.adb:10:35: info: pointer dereference check proved (CVC5: 1 VC)
 recursive_cw.adb:10:67: info: pointer dereference check proved (CVC5: 1 VC)
 recursive_cw.adb:13:04: medium: resource or memory leak might occur at end of scope

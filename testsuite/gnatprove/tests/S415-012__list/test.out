@@ -1,4 +1,4 @@
-list_borrow.adb:9:07: medium: "All_Pos" is recursive, terminating annotation could be incorrect
+list_borrow.adb:9:07: medium: terminating annotation on "All_Pos" could be incorrect, subprogram is recursive
 list_borrow.adb:9:26: info: pointer dereference check proved (CVC5: 1 VC)
 list_borrow.adb:10:26: info: pointer dereference check proved (CVC5: 1 VC)
 list_borrow.adb:16:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
