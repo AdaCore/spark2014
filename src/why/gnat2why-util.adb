@@ -1276,15 +1276,14 @@ package body Gnat2Why.Util is
    -- Map_For_Loop_Entry --
    ------------------------
 
-   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Ada_To_Why_Ident.Map
-   is
+   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Loop_Entry_Values is
       use Loop_Entry_Nodes;
       C : constant Loop_Entry_Nodes.Cursor := Loop_Entry_Map.Find (Loop_Id);
    begin
       return (if Has_Element (C) then
                  Element (C)
               else
-                 Ada_To_Why_Ident.Empty_Map);
+                 (Ada_To_Why_Ident.Empty_Map, Ada_To_Why_Ident.Empty_Map));
    end Map_For_Loop_Entry;
 
    -------------------------
@@ -1333,8 +1332,9 @@ package body Gnat2Why.Util is
    end Name_For_Loop_Entry;
 
    function Name_For_Loop_Entry
-     (Expr    : Node_Or_Entity_Id;
-      Loop_Id : E_Loop_Id)
+     (Expr      : Node_Or_Entity_Id;
+      Loop_Id   : E_Loop_Id;
+      No_Checks : Boolean := False)
       return W_Identifier_Id
    is
       Result : W_Identifier_Id;
@@ -1344,6 +1344,12 @@ package body Gnat2Why.Util is
          Loop_Map : in out Ada_To_Why_Ident.Map);
       --  Update the mapping Loop_Map with an entry for Expr if not already
       --  present, and store the corresponding identifier in Result.
+
+      procedure Get_Name
+        (Loop_Id   :        Node_Id;
+         Loop_Maps : in out Loop_Entry_Values);
+      --  Same as above but chooses the map to update depending on the value of
+      --  No_Checks.
 
       --------------
       -- Get_Name --
@@ -1403,6 +1409,18 @@ package body Gnat2Why.Util is
          end if;
 
          Result := Loop_Map (Pos);
+      end Get_Name;
+
+      procedure Get_Name
+        (Loop_Id   :        Node_Id;
+         Loop_Maps : in out Loop_Entry_Values)
+      is
+      begin
+         if No_Checks then
+            Get_Name (Loop_Id, Loop_Maps.No_Checks);
+         else
+            Get_Name (Loop_Id, Loop_Maps.Regular);
+         end if;
       end Get_Name;
 
       Cur   : Loop_Entry_Nodes.Cursor;
