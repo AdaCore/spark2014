@@ -701,6 +701,16 @@ package Gnat2Why.Util is
       Equivalent_Keys => "=",
       "="             => "=");
 
+   type Loop_Entry_Values is record
+      Regular   : Ada_To_Why_Ident.Map;
+      No_Checks : Ada_To_Why_Ident.Map;
+   end record;
+   --  For values at the beginning of the loop, store 2 tables depending on
+   --  whether or not checks are mandated for the expression at the beginning
+   --  of the loop. This is necessary to distinguish between references to the
+   --  'Loop_Entry attribute and initial values introduced for frame
+   --  conditions.
+
    function Name_For_Loop_Entry
      (Attr : N_Attribute_Reference_Id)
       return E_Loop_Id
@@ -715,14 +725,17 @@ package Gnat2Why.Util is
    --  Returns the identifier to use for Attr
 
    function Name_For_Loop_Entry
-     (Expr    : Node_Or_Entity_Id;
-      Loop_Id : E_Loop_Id)
+     (Expr      : Node_Or_Entity_Id;
+      Loop_Id   : E_Loop_Id;
+      No_Checks : Boolean := False)
       return W_Identifier_Id;
-   --  Returns the identifier to use for a Expr'Loop_Entry(Loop_Id)
+   --  Returns the identifier to use for a Expr'Loop_Entry (Loop_Id)
    --  Can be called both on expressions and on identifiers.
+   --  If No_Checks is True, no checks will be introduced for the value of
+   --  Expr at the beginning of the loop.
 
-   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Ada_To_Why_Ident.Map;
-   --  Returns the map of identifiers to use for Loop_Entry attribute
+   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Loop_Entry_Values;
+   --  Returns the maps of identifiers to use for Loop_Entry attribute
    --  references applying to loop Loop_Id.
 
    function Map_For_Old return Ada_To_Why_Ident.Map;
@@ -755,13 +768,11 @@ package Gnat2Why.Util is
    --  specialization.
 
 private
-
    package Loop_Entry_Nodes is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
-      Element_Type    => Ada_To_Why_Ident.Map,
+      Element_Type    => Loop_Entry_Values,
       Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => Ada_To_Why_Ident."=");
+      Equivalent_Keys => "=");
 
    --  Mapping of all expressions whose 'Old attribute is used in the current
    --  postcondition to the translation of the corresponding expression in

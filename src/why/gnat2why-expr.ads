@@ -798,6 +798,14 @@ package Gnat2Why.Expr is
    --  This is used to bind names for 'Old and 'Loop_Entry attribute reference
    --  to their value.
 
+   function Bind_From_Mapping_In_Prog
+     (Params : Transformation_Params;
+      Map    : Loop_Entry_Values;
+      Expr   : W_Prog_Id)
+      return W_Prog_Id;
+   --  Same as above but takes a pair of maps as provided for the 'Loop_Entry
+   --  attribute reference.
+
    function Bind_From_Mapping_In_Expr
      (Params : Transformation_Params;
       Map    : Ada_To_Why_Ident.Map;

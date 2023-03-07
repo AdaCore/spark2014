@@ -1156,10 +1156,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                               else True_Pred),
 
                         --  Unmodified fields are preserved. Nothing can be
-                        --  preserved if the variable is a scalar. Avoid
-                        --  creating a reference of Loop_Entry for such
-                        --  variable as they could generate spurious
-                        --  initialization checks.
+                        --  preserved if the variable is a scalar. Use
+                        --  No_Checks to avoid spurious checks on values with
+                        --  Relaxed_Initialization.
 
                         4 => (if Has_Scalar_Type (Etype (N)) then True_Pred
                               else Equality_Of_Preserved_Components
@@ -1170,8 +1169,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                                  Loop_Vars => Modified,
                                  Expr      => +Expr,
                                  At_Entry  => +Name_For_Loop_Entry
-                                   (Expr    => N,
-                                    Loop_Id => Loop_Id),
+                                   (Expr      => N,
+                                    Loop_Id   => Loop_Id,
+                                    No_Checks => True),
                                  Expr_Ty   => Retysp (Etype (N)),
                                  Status    => Status))));
                end;

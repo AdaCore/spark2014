@@ -1994,6 +1994,37 @@ package body Gnat2Why.Expr is
       return Result;
    end Bind_From_Mapping_In_Prog;
 
+   function Bind_From_Mapping_In_Prog
+     (Params : Transformation_Params;
+      Map    : Loop_Entry_Values;
+      Expr   : W_Prog_Id) return W_Prog_Id
+   is
+      Result : W_Prog_Id := Expr;
+
+   begin
+      for C in Map.No_Checks.Iterate loop
+         Result := +Bind_From_Mapping_In_Expr
+           (Params => Params,
+            Expr   => +Result,
+            N      => Ada_To_Why_Ident.Key (C),
+            Name   => Ada_To_Why_Ident.Element (C),
+            Domain => EW_Pterm,
+            As_Old => False);
+      end loop;
+
+      for C in Map.Regular.Iterate loop
+         Result := +Bind_From_Mapping_In_Expr
+           (Params => Params,
+            Expr   => +Result,
+            N      => Ada_To_Why_Ident.Key (C),
+            Name   => Ada_To_Why_Ident.Element (C),
+            Domain => EW_Prog,
+            As_Old => False);
+      end loop;
+
+      return Result;
+   end Bind_From_Mapping_In_Prog;
+
    ---------------------------
    -- Check_No_Memory_Leaks --
    ---------------------------
