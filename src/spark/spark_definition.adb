@@ -49,6 +49,7 @@ with Nmake;
 with Opt;                             use Opt;
 with Rtsfind;                         use Rtsfind;
 with Sem_Aux;                         use Sem_Aux;
+with Sem_Ch12;
 with Sem_Disp;
 with Sem_Prag;                        use Sem_Prag;
 with Sinfo.Utils;                     use Sinfo.Utils;
@@ -7525,23 +7526,48 @@ package body SPARK_Definition is
               (if Is_Subprogram (E) then
                     Parent (Declaration_Node (E))
                else Declaration_Node (E));
-            Cur       : Node_Id;
-         begin
-            if Is_List_Member (Decl_Node)
-              and then Decl_Starts_Pragma_Annotate_Range (Decl_Node)
-            then
-               Cur := Next (Decl_Node);
-               while Present (Cur) loop
+            procedure Scan_For_Pragma_Annotate (Start_Node : Node_Id);
+            --  Mark pragma Annotate occurring immediately after Start_Node.
+
+            ------------------------------
+            -- Scan_For_Pragma_Annotate --
+            ------------------------------
+
+            procedure Scan_For_Pragma_Annotate (Start_Node : Node_Id) is
+               Cur : Node_Id := Start_Node;
+            begin
+               if not Is_List_Member (Cur) then
+                  return;
+               end if;
+               loop
+                  Next (Cur);
+                  exit when No (Cur);
                   if Is_Pragma_Annotate_GNATprove (Cur) then
-                     Mark_Pragma_Annotate (Cur, Decl_Node,
+                     Mark_Pragma_Annotate (Cur, Start_Node,
                                            Consider_Next => True);
                   elsif Decl_Starts_Pragma_Annotate_Range (Cur)
                     and then Nkind (Cur) not in N_Pragma | N_Null_Statement
                   then
                      exit;
                   end if;
-                  Next (Cur);
                end loop;
+            end Scan_For_Pragma_Annotate;
+         begin
+            if Is_List_Member (Decl_Node)
+              and then Decl_Starts_Pragma_Annotate_Range (Decl_Node)
+            then
+               Scan_For_Pragma_Annotate (Decl_Node);
+
+               --  If the declaration matches a generic instance,
+               --  we also need to scan the sector following the instantiation
+               --  node.
+               if Nkind (Decl_Node) in N_Subprogram_Declaration
+                 and then Is_Generic_Instance (Defining_Entity (Decl_Node))
+               then
+                  Scan_For_Pragma_Annotate
+                    (Sem_Ch12.Get_Unit_Instantiation_Node
+                       (Defining_Entity (Parent (Decl_Node))));
+               end if;
 
                --  If we are in a package, we also need to scan the beginning
                --  of the declaration list, in case there is a pragma Annotate
@@ -8734,6 +8760,20 @@ package body SPARK_Definition is
                end if;
                Next (Cur);
             end loop;
+
+            --  For nested packages, we need to mark annotations
+            --    of parent packages as well.
+
+            if Is_List_Member (Decl) and then not Is_Child_Unit (E) then
+               declare
+                  Outer_Spec : constant Node_Id :=
+                    Parent (List_Containing (Decl));
+               begin
+                  if Nkind (Outer_Spec) = N_Package_Specification then
+                     Mark_Pragma_Annot_In_Pkg (Defining_Entity (Outer_Spec));
+                  end if;
+               end;
+            end if;
          end;
       end if;
    end Mark_Pragma_Annot_In_Pkg;
