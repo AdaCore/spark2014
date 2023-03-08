@@ -38,6 +38,7 @@ with Gnat2Why_Args;
 with Namet;                        use Namet;
 with Nlists;                       use Nlists;
 with Sem_Aux;                      use Sem_Aux;
+with Sem_Ch12;
 with Sinfo.Utils;                  use Sinfo.Utils;
 with Sinput;                       use Sinput;
 with Snames;                       use Snames;
@@ -2196,6 +2197,20 @@ package body SPARK_Definition.Annotate is
          end if;
       end;
    end Check_Ownership_Annotation;
+
+   ---------------------------------------
+   -- Decl_Starts_Pragma_Annotate_Range --
+   ---------------------------------------
+
+   function Decl_Starts_Pragma_Annotate_Range (N : Node_Id) return Boolean is
+     (Comes_From_Source (N)
+      or else (Is_Rewrite_Substitution (N)
+               and then Comes_From_Source (Original_Node (N)))
+      or else (Nkind (N) in N_Subprogram_Declaration
+               and then Is_Generic_Instance (Defining_Entity (N))
+               and then Comes_From_Source
+                           (Sem_Ch12.Get_Unit_Instantiation_Node
+                              (Defining_Entity (Parent (N))))));
 
    ------------------------------------------
    -- Do_Delayed_Checks_On_Pragma_Annotate --
