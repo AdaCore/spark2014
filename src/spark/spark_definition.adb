@@ -7520,67 +7520,115 @@ package body SPARK_Definition is
 
       if not Violation_Detected then
          declare
+            Is_Subp       : constant Boolean := Is_Subprogram (E);
             --  See the documentation of Declaration_Node for the exception for
             --  subprograms.
-            Decl_Node : constant Node_Id :=
-              (if Is_Subprogram (E) then
-                    Parent (Declaration_Node (E))
+            Decl_Node     : constant Node_Id :=
+              (if Is_Subp then Parent (Declaration_Node (E))
                else Declaration_Node (E));
+            Is_Subp_Cunit : constant Boolean :=
+              Is_Subp and then Is_Compilation_Unit (E);
+
+            procedure Scan_For_Pragma_Annotate
+              (Preceding_Node, Start_Node : Node_Id);
+            --  Mark pragma Annotate occurring from Start_Node (inclusive).
+            --  Preceding_Node is used as node immediately before
+            --  the scanning range in source code, for later purpose
+            --  of inserting annotation ranges for pragmas Annotate
+            --  justifying checks.
+            --  It can happen that Preceding_Node is not the immediately
+            --  preceding node of Start_Node in the syntax tree
+            --  (case of compilation units)
+
             procedure Scan_For_Pragma_Annotate (Start_Node : Node_Id);
-            --  Mark pragma Annotate occurring immediately after Start_Node.
+            --  Shortcut for the 'normal' case where Preceding_Node
+            --  would be right before the search range.
+            --  If Start_Node is in a list, scan the pragmas immediately
+            --  following Start_Node (exclusive), using Start_Node
+            --  as preceding node.
+            --  (we cannot use this in case of compilation units)
 
             ------------------------------
             -- Scan_For_Pragma_Annotate --
             ------------------------------
 
-            procedure Scan_For_Pragma_Annotate (Start_Node : Node_Id) is
+            procedure Scan_For_Pragma_Annotate
+              (Preceding_Node, Start_Node : Node_Id) is
                Cur : Node_Id := Start_Node;
             begin
-               if not Is_List_Member (Cur) then
-                  return;
-               end if;
-               loop
-                  Next (Cur);
-                  exit when No (Cur);
+               while Present (Cur) loop
                   if Is_Pragma_Annotate_GNATprove (Cur) then
-                     Mark_Pragma_Annotate (Cur, Start_Node,
+                     Mark_Pragma_Annotate (Cur, Preceding_Node,
                                            Consider_Next => True);
                   elsif Decl_Starts_Pragma_Annotate_Range (Cur)
                     and then Nkind (Cur) not in N_Pragma | N_Null_Statement
                   then
                      exit;
                   end if;
+                  Next (Cur);
                end loop;
             end Scan_For_Pragma_Annotate;
+
+            procedure Scan_For_Pragma_Annotate (Start_Node : Node_Id) is
+            begin
+               if Is_List_Member (Start_Node) then
+                  Scan_For_Pragma_Annotate (Start_Node, Next (Start_Node));
+               end if;
+            end Scan_For_Pragma_Annotate;
+
          begin
-            if Is_List_Member (Decl_Node)
-              and then Decl_Starts_Pragma_Annotate_Range (Decl_Node)
+            if Decl_Starts_Pragma_Annotate_Range (Decl_Node)
             then
                Scan_For_Pragma_Annotate (Decl_Node);
 
-               --  If the declaration matches a generic instance,
-               --  we also need to scan the sector following the instantiation
-               --  node.
-               if Nkind (Decl_Node) in N_Subprogram_Declaration
-                 and then Is_Generic_Instance (Defining_Entity (Decl_Node))
-               then
-                  Scan_For_Pragma_Annotate
-                    (Sem_Ch12.Get_Unit_Instantiation_Node
-                       (Defining_Entity (Parent (Decl_Node))));
+               --  specific cases for subprograms that are
+               --  instances/compilation units.
+
+               if Is_Subp then
+                  declare
+                     Is_Gen : constant Boolean := Is_Generic_Instance (E);
+                     Prec   : constant Node_Id :=
+                       (if Is_Gen
+                        then Sem_Ch12.Get_Unit_Instantiation_Node
+                          (Defining_Entity (Parent (Decl_Node)))
+                        else Decl_Node);
+                     Cunit  : Node_Id := Decl_Node;
+                  begin
+                     if Is_Subp_Cunit then
+                        --  Compilation units: need to scan
+                        --  the additional pragma after declaration.
+                        while Nkind (Cunit) /= N_Compilation_Unit loop
+                           Cunit := Atree.Parent (Cunit);
+                        end loop;
+                        Scan_For_Pragma_Annotate
+                          (Prec,
+                           First (Pragmas_After (Aux_Decls_Node (Cunit))));
+                     elsif Is_Gen then
+                        --  Other generic instances: need to scan
+                        --  the additional pragma after instantiation node
+                        --  in source.
+                        Scan_For_Pragma_Annotate (Prec);
+                     end if;
+                  end;
                end if;
 
-               --  If we are in a package, we also need to scan the beginning
-               --  of the declaration list, in case there is a pragma Annotate
-               --  that governs our declaration.
+               --  If we are in a package (excluding for compilation units)
+               --  we also need to scan the pragma annotate applying to
+               --  the package
+               --  For compilation units, generic instances have a wrapper
+               --  package that could mis-appropriate annotation pragmas
+               --  for the instance if scanned.
 
-               declare
-                  Spec : constant Node_Id :=
-                    Parent (List_Containing (Decl_Node));
-               begin
-                  if Nkind (Spec) = N_Package_Specification then
-                     Mark_Pragma_Annot_In_Pkg (Defining_Entity (Spec));
-                  end if;
-               end;
+               if not Is_Subp_Cunit and then Is_List_Member (Decl_Node) then
+                  declare
+                     Spec : constant Node_Id :=
+                       Parent (List_Containing (Decl_Node));
+                  begin
+                     if Nkind (Spec) = N_Package_Specification then
+                        Mark_Pragma_Annot_In_Pkg (Defining_Entity (Spec));
+                     end if;
+                  end;
+               end if;
             end if;
          end;
       end if;
