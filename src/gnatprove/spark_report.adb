@@ -774,10 +774,14 @@ procedure SPARK_Report is
         Stop_Reason_Type'Value (String'(Get (Dict, "stop_reason")));
 
       SPARK_Status_Dict : constant JSON_Value := Get (Dict, "spark");
+      Skip_Proofs_List : constant JSON_Array := Get (Dict, "skip_proofs");
    begin
       Parse_Entity_Table (Get (Dict, "entities"));
       Add_Analysis_Progress (Unit, Analysis, Stop_Reason);
       Map_JSON_Object (SPARK_Status_Dict, Handle_SPARK_Status'Access);
+      for Index in 1 .. Length (Skip_Proofs_List) loop
+         Add_Skip_Proof (From_JSON (Get (Skip_Proofs_List, Index)));
+      end loop;
       Max_Progress := Analysis_Progress'Max (Max_Progress, Analysis);
       if Has_Flow then
          Handle_Flow_Items (Get (Get (Dict, "flow")), Unit);
@@ -868,16 +872,21 @@ procedure SPARK_Report is
                        & " pragma Assume " & "statements)");
 
                   if Analysis = Progress_Proof then
-                     Put (Handle, " and");
-                     if Stat.Proof_Checks = Stat.Proof_Checks_OK then
+                     if Has_Skip_Proof (Subp) then
                         Put (Handle,
-                             " proved ("
-                             & Image (Stat.Proof_Checks, 1) & " checks)");
+                             ", proof skipped (pragma Annotate Skip_Proof)");
                      else
-                        Put (Handle,
-                             " not proved," & Stat.Proof_Checks_OK'Img
-                             & " checks out of" & Stat.Proof_Checks'Img
-                             & " proved");
+                        Put (Handle, " and");
+                        if Stat.Proof_Checks = Stat.Proof_Checks_OK then
+                           Put (Handle,
+                                " proved ("
+                                & Image (Stat.Proof_Checks, 1) & " checks)");
+                        else
+                           Put (Handle,
+                                " not proved," & Stat.Proof_Checks_OK'Img
+                                & " checks out of" & Stat.Proof_Checks'Img
+                                & " proved");
+                        end if;
                      end if;
                   end if;
 

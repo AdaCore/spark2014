@@ -1,0 +1,40 @@
+nested.ads:3:14: warning: subprogram "P" has no effect
+pack.adb:6:12: high: "Z" must be listed in the Global aspect of "Incr_Glob" (SPARK RM 6.1.4(15))
+pack.adb:16:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at pack.ads:8 should mention X in a precondition]
+Summary of SPARK analysis
+=========================
+
+-
+SPARK Analysis results Total Flow Provers Justified Unproved
+-
+Data Dependencies 1 . . . 1
+Flow Dependencies . . . . .
+Initialization . . . . .
+Non-Aliasing . . . . .
+Run-time Checks 1 . . . 1
+Assertions . . . . .
+Functional Contracts . . . . .
+LSP Verification . . . . .
+Termination . . . . .
+Concurrency . . . . .
+-
+Total 2 . . . 2 (100%)
+
+
+max steps used for successful proof: 0
+
+Analyzed 2 units
+in unit nested, 3 subprograms and packages out of 3 analyzed
+ Nested at nested.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+ Nested.P at nested.ads:3 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+ Nested.P.Incr at nested.adb:6 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+effects on parameters and Global variables of Nested.P.Incr fully established
+in unit pack, 4 subprograms and packages out of 4 analyzed
+ Pack at pack.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+absence of run-time errors of Pack fully established
+ Pack.Incr at pack.ads:6 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+effects on parameters and Global variables of Pack.Incr fully established
+ Pack.Incr_Full at pack.ads:8 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and not proved, 0 checks out of 1 proved
+effects on parameters and Global variables of Pack.Incr_Full fully established
+ Pack.Incr_Glob at pack.ads:3 flow analyzed (0 errors, 1 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+

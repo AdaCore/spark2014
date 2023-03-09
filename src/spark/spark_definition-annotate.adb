@@ -163,6 +163,10 @@ package body SPARK_Definition.Annotate is
    --  Stores type entities with a pragma Annotate
    --  (GNATprove, No_Wrap_Around, E).
 
+   Skip_Proof_Annotations : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  Stores entities with pragma Annotate (GNATprove, Skip_Proof, E);
+
    type Ownership_Annotation (Needs_Reclamation : Boolean := False) is record
       case Needs_Reclamation is
          when True =>
@@ -310,6 +314,10 @@ package body SPARK_Definition.Annotate is
       Arg4_Exp         : Node_Id);
    --  Check validity of a pragma Annotate (GNATprove, Ownership, ???, E)
    --  and update the Ownership_Annotations map.
+
+   procedure Check_Skip_Proof_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id);
 
    ---------
    -- "<" --
@@ -2400,6 +2408,23 @@ package body SPARK_Definition.Annotate is
    function Has_Ownership_Annotation (E : Entity_Id) return Boolean is
      (Ownership_Annotations.Contains (Root_Retysp (E)));
 
+   -------------------------------
+   -- Has_Skip_Proof_Annotation --
+   -------------------------------
+
+   function Has_Skip_Proof_Annotation (E : Entity_Id) return Boolean is
+      Cur : Entity_Id := E;
+   begin
+      loop
+         if Skip_Proof_Annotations.Contains (Cur) then
+            return True;
+         end if;
+         Cur := Scope (Cur);
+         exit when No (Cur);
+      end loop;
+      return False;
+   end Has_Skip_Proof_Annotation;
+
    ------------------------------------------------
    -- Is_Pragma_Annotate_Automatic_Instantiation --
    ------------------------------------------------
@@ -2806,6 +2831,7 @@ package body SPARK_Definition.Annotate is
         or else Name = "no_wrap_around"
         or else Name = "always_return"
         or else Name = "terminating"
+        or else Name = "skip_proof"
       then
          Check_Argument_Number (Name, 3, Ok);
 
@@ -2889,6 +2915,8 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "iterable_for_proof" then
          Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp, Prag);
+      elsif Name = "skip_proof" then
+         Check_Skip_Proof_Annotation (Arg3_Exp, Prag);
 
       --  Annotation for justifying check messages. This is where we set
       --  Result.Present to True and fill in values for components Kind,
@@ -2940,6 +2968,47 @@ package body SPARK_Definition.Annotate is
          end;
       end if;
    end Check_Pragma_Annotate_GNATprove;
+
+   ---------------------------------
+   -- Check_Skip_Proof_Annotation --
+   ---------------------------------
+
+   procedure Check_Skip_Proof_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id)
+   is
+      From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
+      Aspect_Or_Pragma : constant String :=
+        (if From_Aspect then "aspect" else "pragma");
+      E : Entity_Id;
+   begin
+      if Nkind (Arg3_Exp) not in N_Has_Entity then
+         pragma Assert (not From_Aspect);
+         Error_Msg_N
+           ("third argument of pragma Annotate Skip_Proof must be an entity",
+            Arg3_Exp);
+         return;
+      else
+         E := Unique_Entity (Entity (Arg3_Exp));
+      end if;
+
+      --  This entity must be a unit of analysis
+
+      if Ekind (E) not in Subprogram_Kind
+                        | Task_Kind
+                        | Entry_Kind
+                        | E_Package
+      then
+         Error_Msg_N
+           (Aspect_Or_Pragma
+            & " Annotate Skip_Proof must apply to a"
+            & " subprogram, task, entry or package",
+            Arg3_Exp);
+         return;
+      end if;
+
+      Skip_Proof_Annotations.Insert (E);
+   end Check_Skip_Proof_Annotation;
 
    ---------------------------------------
    -- Set_Has_No_Wrap_Around_Annotation --

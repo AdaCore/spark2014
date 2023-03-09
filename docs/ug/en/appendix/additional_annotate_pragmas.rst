@@ -88,6 +88,24 @@ annotations.
 
 .. index:: Annotate; No_Wrap_Around
 
+Using Annotations to Request Skipping Proof for an Entity
+---------------------------------------------------------
+
+Subprograms, packages, tasks, entries and protected subprograms can be
+annotated to skip generating proof obligations for their implementation, and
+the implementations of all such entities defined inside.
+
+.. code-block:: ada
+
+   procedure P
+     with Annotate => (GNATprove, Skip_Proof);
+
+If an entity is annotated in this way, no messages related to possible run-time
+errors and functional contracts are issued for this entity and any contained
+entities. This is similar to specifying `--mode=flow` on the command line (see
+:ref:`Effect of Mode on Output`), except that the effect is limited to this
+entity.
+
 Using Annotations to Request Overflow Checking on Modular Types
 ---------------------------------------------------------------
 

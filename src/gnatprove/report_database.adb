@@ -98,6 +98,8 @@ package body Report_Database is
    --  This map maps subprograms to their unit. It is filled by the
    --  Add_SPARK_Status procedure.
 
+   Skipped_Proof : Ordered_Subp_Sets.Set := Ordered_Subp_Sets.Empty_Set;
+
    procedure Update_Subp_Entry
      (Unit    : Unit_Type;
       Subp    : Subp_Type;
@@ -250,6 +252,11 @@ package body Report_Database is
       Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_Proof_Result;
 
+   procedure Add_Skip_Proof (S : Subp_Type) is
+   begin
+      Skipped_Proof.Include (S);
+   end Add_Skip_Proof;
+
    ----------------------
    -- Add_SPARK_Status --
    ----------------------
@@ -318,6 +325,15 @@ package body Report_Database is
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_Suppressed_Check;
+
+   --------------------
+   -- Has_Skip_Proof --
+   --------------------
+
+   function Has_Skip_Proof (S : Subp_Type) return Boolean is
+   begin
+      return Skipped_Proof.Contains (S);
+   end Has_Skip_Proof;
 
    --------------------
    -- Iter_All_Subps --

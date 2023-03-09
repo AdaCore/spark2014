@@ -356,6 +356,10 @@ package SPARK_Definition.Annotate is
      with Pre => Is_Type (E);
    --  Return True if E is annotated with ownership
 
+   function Has_Skip_Proof_Annotation (E : Entity_Id) return Boolean;
+   --  True if E or an enclosing entity has pragma Annotate(GNATProve,
+   --  Skip_Proof).
+
    function Needs_Reclamation (E : Entity_Id) return Boolean
      with Pre => Is_Type (E) and then Has_Ownership_Annotation (E);
    --  Return True if E needs checks to ensure that the memory is reclaimed
