@@ -2995,9 +2995,11 @@ package body SPARK_Definition.Annotate is
       --  This entity must be a unit of analysis
 
       if Ekind (E) not in Subprogram_Kind
+                        | Generic_Subprogram_Kind
                         | Task_Kind
                         | Entry_Kind
                         | E_Package
+                        | E_Generic_Package
       then
          Error_Msg_N
            (Aspect_Or_Pragma
@@ -3007,7 +3009,9 @@ package body SPARK_Definition.Annotate is
          return;
       end if;
 
-      Skip_Proof_Annotations.Insert (E);
+      if Ekind (E) not in Generic_Subprogram_Kind | E_Generic_Package then
+         Skip_Proof_Annotations.Insert (E);
+      end if;
    end Check_Skip_Proof_Annotation;
 
    ---------------------------------------

@@ -1,0 +1,49 @@
+gen.adb:5:14: high: overflow check might fail, cannot prove upper bound for X + 1, in instantiation at pack.adb:5 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at gen.ads:5 should mention X]
+pack.ads:3:14: warning: subprogram "P" has no effect
+pack.ads:5:14: warning: subprogram "Annot" has no effect
+Summary of SPARK analysis
+=========================
+
+-
+SPARK Analysis results Total Flow Provers Justified Unproved
+-
+Data Dependencies . . . . .
+Flow Dependencies . . . . .
+Initialization . . . . .
+Non-Aliasing . . . . .
+Run-time Checks 1 . . . 1
+Assertions . . . . .
+Functional Contracts . . . . .
+LSP Verification . . . . .
+Termination . . . . .
+Concurrency . . . . .
+-
+Total 1 . . . 1 (100%)
+
+
+max steps used for successful proof: 0
+
+Analyzed 2 units
+in unit gen, 1 subprograms and packages out of 1 analyzed
+ Gen at gen.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+in unit pack, 11 subprograms and packages out of 11 analyzed
+ Pack at pack.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+absence of run-time errors of Pack fully established
+ Pack.Annot at pack.ads:5 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+ Pack.Annot.Should_Skip1gp237 at pack.adb:12 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+ Pack.Annot.Should_Skip1gp237.Should_Skip1 at pack.adb:12 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+effects on parameters and Global variables of Pack.Annot.Should_Skip1gp237.Should_Skip1 fully established
+ Pack.Annot.Should_Skip2gp293 at pack.adb:13 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+ Pack.Annot.Should_Skip2gp293.Should_Skip2 at pack.adb:13 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+effects on parameters and Global variables of Pack.Annot.Should_Skip2gp293.Should_Skip2 fully established
+ Pack.P at pack.ads:3 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
+absence of run-time errors of Pack.P fully established
+ Pack.P.Should_Provegp66 at pack.adb:5 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+absence of run-time errors of Pack.P.Should_Provegp66 fully established
+ Pack.P.Should_Provegp66.Should_Prove at pack.adb:5 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and not proved, 0 checks out of 1 proved
+effects on parameters and Global variables of Pack.P.Should_Provegp66.Should_Prove fully established
+ Pack.P.Should_Skipgp122 at pack.adb:6 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+absence of run-time errors of Pack.P.Should_Skipgp122 fully established
+ Pack.P.Should_Skipgp122.Should_Skip at pack.adb:6 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+effects on parameters and Global variables of Pack.P.Should_Skipgp122.Should_Skip fully established
+
