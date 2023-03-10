@@ -73,7 +73,6 @@ package body Call is
      (Command   : String;
       Arguments : String_Lists.List;
       Status    : out Integer;
-      Output_FD : File_Descriptor := Standout;
       Verbose   : Boolean := False)
    is
       Executable : String_Access := Locate_Exec_On_Path (Command);
@@ -90,7 +89,7 @@ package body Call is
          Ada.Text_IO.New_Line;
       end if;
 
-      Spawn (Executable.all, Arg_List, Output_FD, Status, Err_To_Out => True);
+      Spawn (Executable.all, Arg_List, Standout, Status, Err_To_Out => False);
       GNATCOLL.Utils.Free (Arg_List);
       Free (Executable);
    end Call_With_Status;

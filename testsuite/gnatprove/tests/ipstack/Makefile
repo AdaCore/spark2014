@@ -89,7 +89,7 @@ run: $(APP_IMAGE).bin
 spark: force
 	mkdir -p spark && \
 	cd spark && \
-	gnatprove -aP ../projects -aP ../projects.native -P../projects.native/ipstack_dev.gpr --mode=flow --warnings=continue --output=brief --quiet | sort
+	gnatprove -aP ../projects -aP ../projects.native -P../projects.native/ipstack_dev.gpr --mode=flow --warnings=continue --output=brief --quiet 2>&1 | sort
 
 codepeer: force
 	$(MAKE) TARGET=$(TARGET) \
