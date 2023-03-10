@@ -33,19 +33,19 @@
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <proof prover="0"><result status="valid" steps="53"/></proof>
-  <proof prover="1"><result status="valid" steps="4926"/></proof>
+  <proof prover="1"><result status="valid" steps="4770"/></proof>
   <proof prover="2"><result status="valid" steps="9991"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="4929"/></proof>
+  <proof prover="0"><result status="failure" steps="0"/></proof>
+  <proof prover="1"><result status="valid" steps="4773"/></proof>
   <proof prover="2"><result status="failure" steps="0"/></proof>
   <proof prover="4"><result status="failure" steps="0"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
   <proof prover="0"><result status="valid" steps="55"/></proof>
-  <proof prover="1"><result status="valid" steps="4926"/></proof>
+  <proof prover="1"><result status="valid" steps="4768"/></proof>
   <proof prover="2"><result status="valid" steps="10189"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
@@ -57,7 +57,7 @@
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <proof prover="0"><result status="valid" steps="37"/></proof>
-  <proof prover="1"><result status="valid" steps="1720"/></proof>
+  <proof prover="1"><result status="valid" steps="1699"/></proof>
   <proof prover="2"><result status="valid" steps="10727"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
@@ -66,7 +66,7 @@
   </goal>
   <goal name="def&#39;vc.13" proved="true">
   <proof prover="0"><result status="valid" steps="54"/></proof>
-  <proof prover="1"><result status="valid" steps="5926"/></proof>
+  <proof prover="1"><result status="valid" steps="5585"/></proof>
   <proof prover="2"><result status="valid" steps="13182"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
