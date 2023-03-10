@@ -45,7 +45,6 @@ package Call is
      (Command   : String;
       Arguments : String_Lists.List;
       Status    : out Integer;
-      Output_FD : File_Descriptor := Standout;
       Verbose   : Boolean := False);
 
    function Read_File_Into_String (Fn : String) return String;
