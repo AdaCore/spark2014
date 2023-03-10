@@ -1,0 +1,2 @@
+error.ads:4:44: error: pragma Annotate Skip_Proof must apply to a subprogram, task, entry or package
+gnatprove: error during generation of Global contracts
