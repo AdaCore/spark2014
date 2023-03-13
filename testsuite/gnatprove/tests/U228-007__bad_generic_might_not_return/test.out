@@ -1,16 +1,25 @@
-bad_spec.ads:7:06: error: aspect Annotate Might_Not_Return must apply to a procedure
-bad_spec.ads:14:06: error: procedure with aspect Annotate Might_Not_Return must not also be marked with No_Return
+bad_spec.ads:9:04: error: aspect Annotate Might_Not_Return must apply to a procedure
+bad_spec.ads:9:04: error: instantiation error at line 7
+bad_spec.ads:18:04: error: instantiation error at line 14
+bad_spec.ads:18:04: error: procedure with aspect Annotate Might_Not_Return must not also be marked with No_Return
 gnatprove: error during generation of Global contracts
 bad_spec_prag.ads:5:04: error: wrong number of arguments in pragma Annotate (GNATprove, Might_Not_Return, ...), expected 3
-bad_spec_prag.ads:9:50: error: pragma Annotate Might_Not_Return must apply to a procedure
-bad_spec_prag.ads:16:50: error: procedure with pragma Annotate Might_Not_Return must not also be marked with No_Return
+bad_spec_prag.ads:9:04: error: pragma Annotate Might_Not_Return must be in aspect form for generic subprogram
+bad_spec_prag.ads:16:04: error: pragma Annotate Might_Not_Return must be in aspect form for generic subprogram
 bad_spec_prag.ads:21:50: error: pragma Annotate Might_Not_Return must apply to a procedure
+bad_spec_prag.ads:26:04: error: pragma Annotate Might_Not_Return must be in aspect form for generic subprogram
 gnatprove: error during generation of Global contracts
 bad.adb:26:07: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
 gnatprove: error during generation of Global contracts
-weird.ads:6:06: error: procedure with aspect Annotate Might_Not_Return must not also be marked with Always_Return
-weird.ads:12:06: error: procedure with aspect Annotate Always_Return must not also be marked with Might_Not_Return
-weird.ads:17:06: error: procedure with aspect Annotate Always_Return must not also be marked with No_Return
+weird_inst.adb:4:04: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
+weird_inst.adb:4:04: error: consider annotating caller "PG_Inst" with pragma Annotate (GNATprove, Might_Not_Return)
+weird_inst.adb:4:04: error: instantiation error at weird.adb:10
+weird_inst.adb:4:04: error: instantiation error at weird.ads:6
+weird_inst.adb:4:04: error: procedure with aspect Annotate Might_Not_Return must not also be marked with Always_Return
+weird_inst.adb:5:04: error: instantiation error at weird.ads:12
+weird_inst.adb:5:04: error: procedure with aspect Annotate Always_Return must not also be marked with Might_Not_Return
+weird_inst.adb:6:04: error: instantiation error at weird.ads:17
+weird_inst.adb:6:04: error: procedure with aspect Annotate Always_Return must not also be marked with No_Return
 gnatprove: error during generation of Global contracts
 pack.adb:5:07: medium: unexpected exception might be raised
 pack.adb:11:10: high: precondition might fail, in instantiation at pack.adb:15
