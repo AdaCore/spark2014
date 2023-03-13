@@ -1,0 +1,5 @@
+p.adb:28:10: high: potentially blocking delay statement in protected operation "Proc"
+p.adb:28:10: warning: potentially blocking operation in protected operation
+p.ads:8:17: warning: subprogram "Process" has no effect
+p.ads:16:17: warning: subprogram "Process" has no effect
+p.ads:19:14: warning: subprogram "Proxy" has no effect
