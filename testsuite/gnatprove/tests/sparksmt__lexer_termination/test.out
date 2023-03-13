@@ -56,7 +56,7 @@ lexer.adb:322:33: info: initialization of "T" proved
 lexer.adb:325:20: info: postcondition proved (CVC5: 4 VC)
 lexer.adb:333:18: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 lexer.adb:339:18: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-lexer.adb:345:16: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+lexer.adb:345:16: info: only expected exception raised (CVC5: 1 VC)
 lexer.adb:351:12: info: data dependencies proved
 lexer.adb:356:33: info: initialization of "T" proved
 lexer.adb:360:20: info: postcondition proved (CVC5: 5 VC)
@@ -95,7 +95,7 @@ lexer.adb:576:22: info: precondition proved (CVC5: 10 VC)
 lexer.adb:588:33: info: discriminant check proved (CVC5: 1 VC)
 lexer.adb:590:25: info: precondition proved (CVC5: 9 VC)
 lexer.adb:592:25: info: precondition proved (CVC5: 10 VC)
-lexer.adb:602:16: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+lexer.adb:602:16: info: only expected exception raised (CVC5: 1 VC)
 lexer.adb:606:10: info: precondition proved (CVC5: 4 VC; Z3: 6 VC)
 lexer.adb:609:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
 lexer.adb:636:40: info: range check proved (CVC5: 4 VC)

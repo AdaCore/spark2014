@@ -872,10 +872,11 @@ package body Gnat2Why.Borrow_Checker is
    --  error message with the appropriate values.
 
    procedure Perm_Error_Subprogram_End
-     (E          : Entity_Id;
-      Subp       : Entity_Id;
-      Found_Perm : Perm_Kind;
-      Expl       : Node_Id);
+     (E           : Entity_Id;
+      Subp        : Entity_Id;
+      Found_Perm  : Perm_Kind;
+      Expl        : Node_Id;
+      Exceptional : Boolean);
    --  A procedure that is called when the permissions found contradict the
    --  rules established by the RM at the end of subprograms. This function is
    --  called with the node, the node of the returning function, and adds an
@@ -908,20 +909,25 @@ package body Gnat2Why.Borrow_Checker is
    --  Check correct permission for the path in the checking mode Mode, and
    --  update permissions of the path and its prefixes/extensions.
 
-   procedure Return_Globals (Subp : Entity_Id);
+   procedure Return_Globals
+     (Subp        : Entity_Id;
+      Exceptional : Boolean := False);
    --  Takes a subprogram as input, and checks that all borrowed global items
    --  of the subprogram indeed have Read_Write permission at the end of the
    --  subprogram execution.
 
    procedure Return_Parameter_Or_Global
-     (Id         : Entity_Id;
-      Typ        : Entity_Id;
-      Kind       : Formal_Kind;
-      Subp       : Entity_Id;
-      Global_Var : Boolean);
+     (Id          : Entity_Id;
+      Typ         : Entity_Id;
+      Kind        : Formal_Kind;
+      Subp        : Entity_Id;
+      Global_Var  : Boolean;
+      Exceptional : Boolean);
    --  Auxiliary procedure to Return_Parameters and Return_Globals
 
-   procedure Return_Parameters (Subp : Entity_Id);
+   procedure Return_Parameters
+     (Subp        : Entity_Id;
+      Exceptional : Boolean := False);
    --  Takes a subprogram as input, and checks that all out parameters of the
    --  subprogram indeed have Read_Write permission at the end of the
    --  subprogram execution.
@@ -3170,6 +3176,29 @@ package body Gnat2Why.Borrow_Checker is
          when N_Procedure_Call_Statement =>
             Check_Call_Statement (N);
 
+            --  If some exceptions are handled, exit the enclosing procedure
+
+            if Call_Raises_Handled_Exceptions (N) then
+               declare
+                  function Is_Body (N : Node_Id) return Boolean is
+                    (Nkind (N) in N_Entity_Body);
+
+                  function Enclosing_Body is new
+                    First_Parent_With_Property (Is_Body);
+
+                  Subp : constant Entity_Id :=
+                    Unique_Defining_Entity (Enclosing_Body (N));
+
+               begin
+                  Check_End_Of_Scopes
+                    (From => N, Stop => Subprogram_Body (Subp));
+
+                  pragma Assert (Ekind (Subp) = E_Procedure);
+                  Return_Parameters (Subp, Exceptional => True);
+                  Return_Globals (Subp, Exceptional => True);
+               end;
+            end if;
+
          when N_Package_Body =>
             declare
                Id : constant Entity_Id := Unique_Defining_Entity (N);
@@ -3998,10 +4027,11 @@ package body Gnat2Why.Borrow_Checker is
 
                      if Perm /= Read_Write then
                         Perm_Error_Subprogram_End
-                          (E          => Obj,
-                           Subp       => Subp,
-                           Found_Perm => Perm,
-                           Expl       => Get_Expl (E_Obj));
+                          (E           => Obj,
+                           Subp        => Subp,
+                           Found_Perm  => Perm,
+                           Expl        => Get_Expl (E_Obj),
+                           Exceptional => False);
                      end if;
                   end;
                end if;
@@ -4110,7 +4140,36 @@ package body Gnat2Why.Borrow_Checker is
             end;
 
          when N_Raise_Statement =>
-            Reset_Env (Current_Perm_Env);
+
+            --  If the exception is handled, exit the enclosing procedure
+
+            if Exception_Handled (Entity (Name (Stmt)), Stmt) then
+               declare
+                  function Is_Body (N : Node_Id) return Boolean is
+                    (Nkind (N) in N_Entity_Body);
+
+                  function Enclosing_Body is new
+                    First_Parent_With_Property (Is_Body);
+
+                  Subp : constant Entity_Id :=
+                    Unique_Defining_Entity (Enclosing_Body (Stmt));
+
+               begin
+                  Check_End_Of_Scopes
+                    (From => Stmt, Stop => Subprogram_Body (Subp));
+
+                  pragma Assert (Ekind (Subp) = E_Procedure);
+                  Return_Parameters (Subp, Exceptional => True);
+                  Return_Globals (Subp, Exceptional => True);
+
+                  Reset_Env (Current_Perm_Env);
+               end;
+
+            --  Otherwise the branch is dead
+
+            else
+               Reset_Env (Current_Perm_Env);
+            end if;
 
          when N_Null_Statement =>
             null;
@@ -4544,10 +4603,11 @@ package body Gnat2Why.Borrow_Checker is
 
       if Ekind (Root) in Formal_Kind or else Scop /= Current_Subp then
          Perm_Error_Subprogram_End
-           (E          => Root,
-            Subp       => Current_Subp,
-            Found_Perm => Write_Only,
-            Expl       => Expr);
+           (E           => Root,
+            Subp        => Current_Subp,
+            Found_Perm  => Write_Only,
+            Expl        => Expr,
+            Exceptional => False);
       end if;
 
       --  Check that the root of the moved expression does not have overlays.
@@ -5239,15 +5299,21 @@ package body Gnat2Why.Borrow_Checker is
    -------------------------------
 
    procedure Perm_Error_Subprogram_End
-     (E          : Entity_Id;
-      Subp       : Entity_Id;
-      Found_Perm : Perm_Kind;
-      Expl       : Node_Id)
+     (E           : Entity_Id;
+      Subp        : Entity_Id;
+      Found_Perm  : Perm_Kind;
+      Expl        : Node_Id;
+      Exceptional : Boolean)
    is
       Ent : constant Expr_Or_Ent := (Is_Ent => True, Ent => E, Loc => Subp);
    begin
       Error_Msg_Node_2 := E;
-      Error_Msg_NE ("return from & with moved value for &", Subp, Subp);
+      if Exceptional then
+         Error_Msg_NE
+           ("exceptional exit from & with moved value for &", Subp, Subp);
+      else
+         Error_Msg_NE ("return from & with moved value for &", Subp, Subp);
+      end if;
       Permission_Error := True;
       Perm_Mismatch (Subp, Ent, Read_Write, Found_Perm, Expl);
    end Perm_Error_Subprogram_End;
@@ -5629,7 +5695,10 @@ package body Gnat2Why.Borrow_Checker is
    -- Return_Globals --
    --------------------
 
-   procedure Return_Globals (Subp : Entity_Id) is
+   procedure Return_Globals
+     (Subp        : Entity_Id;
+      Exceptional : Boolean := False)
+   is
 
       procedure Return_Global
         (Expr       : Expr_Or_Ent;
@@ -5653,11 +5722,12 @@ package body Gnat2Why.Borrow_Checker is
       is
       begin
          Return_Parameter_Or_Global
-           (Id         => Expr.Ent,
-            Typ        => Typ,
-            Kind       => Kind,
-            Subp       => Subp,
-            Global_Var => Global_Var);
+           (Id          => Expr.Ent,
+            Typ         => Typ,
+            Kind        => Kind,
+            Subp        => Subp,
+            Global_Var  => Global_Var,
+            Exceptional => Exceptional);
       end Return_Global;
 
       procedure Return_Globals_Inst is new Handle_Globals (Return_Global);
@@ -5673,11 +5743,12 @@ package body Gnat2Why.Borrow_Checker is
    --------------------------------
 
    procedure Return_Parameter_Or_Global
-     (Id         : Entity_Id;
-      Typ        : Entity_Id;
-      Kind       : Formal_Kind;
-      Subp       : Entity_Id;
-      Global_Var : Boolean)
+     (Id          : Entity_Id;
+      Typ         : Entity_Id;
+      Kind        : Formal_Kind;
+      Subp        : Entity_Id;
+      Global_Var  : Boolean;
+      Exceptional : Boolean)
    is
    begin
       --  Shallow parameters and globals need not be considered
@@ -5720,10 +5791,11 @@ package body Gnat2Why.Borrow_Checker is
       begin
          if Permission (Tree) /= Read_Write then
             Perm_Error_Subprogram_End
-              (E          => Id,
-               Subp       => Subp,
-               Found_Perm => Permission (Tree),
-               Expl       => Explanation (Tree));
+              (E           => Id,
+               Subp        => Subp,
+               Found_Perm  => Permission (Tree),
+               Expl        => Explanation (Tree),
+               Exceptional => Exceptional);
          end if;
       end;
    end Return_Parameter_Or_Global;
@@ -5732,17 +5804,21 @@ package body Gnat2Why.Borrow_Checker is
    -- Return_Parameters --
    -----------------------
 
-   procedure Return_Parameters (Subp : Entity_Id) is
+   procedure Return_Parameters
+     (Subp        : Entity_Id;
+      Exceptional : Boolean := False)
+   is
       Formal : Entity_Id;
    begin
       Formal := First_Formal (Subp);
       while Present (Formal) loop
          Return_Parameter_Or_Global
-           (Id         => Formal,
-            Typ        => Retysp (Etype (Formal)),
-            Kind       => Ekind (Formal),
-            Subp       => Subp,
-            Global_Var => False);
+           (Id          => Formal,
+            Typ         => Retysp (Etype (Formal)),
+            Kind        => Ekind (Formal),
+            Subp        => Subp,
+            Global_Var  => False,
+            Exceptional => Exceptional);
          Next_Formal (Formal);
       end loop;
    end Return_Parameters;

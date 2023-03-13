@@ -1,7 +1,7 @@
 simple_flow.adb:1:37: info: initialization of "Y" proved
 simple_flow.adb:2:36: info: postcondition proved (CVC5: 1 VC)
 simple_flow.adb:2:43: info: data dependencies proved
-simple_flow.adb:14:28: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+simple_flow.adb:14:28: info: only expected exception raised (CVC5: 1 VC)
 simple_flow.adb:20:06: warning: this statement is never reached
 simple_flow.adb:20:06: warning: unreachable code
 test_goto.adb:4:13: info: implicit function contract might not be available on calls from enclosing unit

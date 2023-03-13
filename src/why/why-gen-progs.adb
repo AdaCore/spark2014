@@ -114,6 +114,19 @@ package body Why.Gen.Progs is
                                 Current_Subp);
    end Emit_Always_True_Range_Check;
 
+   --------------------------
+   -- New_Absurd_Statement --
+   --------------------------
+
+   function New_Absurd_Statement
+     (Ada_Node : Node_Id;
+      Reason   : VC_Kind)
+      return W_Prog_Id
+   is
+     (New_VC_Prog (Ada_Node => Ada_Node,
+                   Expr     => +New_Identifier (Name => "absurd"),
+                   Reason   => Reason));
+
    -----------------------
    -- New_Any_Statement --
    -----------------------

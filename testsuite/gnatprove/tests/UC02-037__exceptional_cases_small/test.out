@@ -1,0 +1,222 @@
+test_borrow_and_leaks.adb:16:06: info: disjoint contract cases proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:17:42: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+test_borrow_and_leaks.adb:17:47: warning: contract case does not check the outcome of calling "Test_Borrow"
+test_borrow_and_leaks.adb:18:29: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:18:42: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
+test_borrow_and_leaks.adb:19:13: warning: conjunct in contract case does not check the outcome of calling "Test_Borrow"
+test_borrow_and_leaks.adb:19:26: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:19:44: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:19:53: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:20:29: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:20:53: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:20:58: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:20:71: info: contract case proved (CVC5: 5 VC; Trivial: 1 VC)
+test_borrow_and_leaks.adb:21:13: warning: conjunct in contract case does not check the outcome of calling "Test_Borrow"
+test_borrow_and_leaks.adb:21:26: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:21:45: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:21:54: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:22:12: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:22:17: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:22:35: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:22:40: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:22:49: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:22:54: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:23:42: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+test_borrow_and_leaks.adb:25:14: info: exceptional case proved (CVC5: 4 VC)
+test_borrow_and_leaks.adb:25:29: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:25:48: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:25:53: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:26:14: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:26:19: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:26:24: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:33:40: info: in reconstructed value at the end of the borrow at test_borrow_and_leaks.adb:33
+test_borrow_and_leaks.adb:33:40: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:33:40: info: when an exception is raised at test_borrow_and_leaks.adb:41
+test_borrow_and_leaks.adb:37:46: info: in reconstructed value at the end of the borrow at test_borrow_and_leaks.adb:37
+test_borrow_and_leaks.adb:37:46: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:37:46: info: when an exception is raised at test_borrow_and_leaks.adb:41
+test_borrow_and_leaks.adb:40:24: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:50:14: info: postcondition proved (CVC5: 2 VC)
+test_borrow_and_leaks.adb:50:15: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:50:20: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:50:35: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:50:40: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:50:45: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:50:50: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:52:14: info: exceptional case proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:52:41: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:55:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:55:07: medium: on exceptional exit at test_borrow_and_leaks.adb:54
+test_borrow_and_leaks.adb:55:07: medium: resource or memory leak might occur at end of scope
+test_borrow_and_leaks.adb:60:11: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:60:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:60:21: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:61:11: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:61:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:63:38: info: in reconstructed value at the end of the borrow at test_borrow_and_leaks.adb:63
+test_borrow_and_leaks.adb:63:38: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:63:38: info: when an exception is raised at test_borrow_and_leaks.adb:67
+test_borrow_and_leaks.adb:63:43: info: in reconstructed value at the end of the borrow at test_borrow_and_leaks.adb:63
+test_borrow_and_leaks.adb:63:43: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:63:43: info: when an exception is raised at test_borrow_and_leaks.adb:67
+test_borrow_and_leaks.adb:64:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:64:13: medium: resource or memory leak might occur at end of scope
+test_borrow_and_leaks.adb:64:13: medium: when an exception is raised at test_borrow_and_leaks.adb:67
+test_borrow_and_leaks.adb:69:17: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:69:23: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:69:27: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:70:17: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:70:23: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:76:14: high: all paths in "Raise_E" raise exceptions or do not terminate normally
+test_borrow_and_leaks.adb:76:14: warning: subprogram "Raise_E" has no effect
+test_borrow_and_leaks.adb:78:33: info: exceptional case proved (Trivial: 1 VC)
+test_borrow_and_leaks.adb:85:06: info: disjoint contract cases proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:86:42: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+test_borrow_and_leaks.adb:86:47: warning: contract case does not check the outcome of calling "Test_Borrow_Call"
+test_borrow_and_leaks.adb:87:29: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:87:42: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
+test_borrow_and_leaks.adb:88:13: warning: conjunct in contract case does not check the outcome of calling "Test_Borrow_Call"
+test_borrow_and_leaks.adb:88:26: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:88:44: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:88:53: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:89:29: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:89:53: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:89:58: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:89:71: info: contract case proved (CVC5: 5 VC; Trivial: 1 VC)
+test_borrow_and_leaks.adb:90:13: warning: conjunct in contract case does not check the outcome of calling "Test_Borrow_Call"
+test_borrow_and_leaks.adb:90:26: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:90:45: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:90:54: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:91:12: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:91:17: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:91:35: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:91:40: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:91:49: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:91:54: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:92:42: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+test_borrow_and_leaks.adb:94:14: info: exceptional case proved (CVC5: 4 VC)
+test_borrow_and_leaks.adb:94:29: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:94:48: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:94:53: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:95:14: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:95:19: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:95:24: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:102:40: info: in reconstructed value at the end of the borrow at test_borrow_and_leaks.adb:102
+test_borrow_and_leaks.adb:102:40: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:102:40: info: when an exception is raised at test_borrow_and_leaks.adb:110
+test_borrow_and_leaks.adb:106:46: info: in reconstructed value at the end of the borrow at test_borrow_and_leaks.adb:106
+test_borrow_and_leaks.adb:106:46: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:106:46: info: when an exception is raised at test_borrow_and_leaks.adb:110
+test_borrow_and_leaks.adb:109:24: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:110:22: info: only expected exception raised (CVC5: 1 VC)
+test_borrow_and_leaks.adb:119:14: info: postcondition proved (CVC5: 2 VC)
+test_borrow_and_leaks.adb:119:15: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:119:20: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:119:35: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:119:40: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:119:45: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:119:50: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:121:14: info: exceptional case proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:121:41: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:124:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:124:07: medium: on exceptional exit at test_borrow_and_leaks.adb:123
+test_borrow_and_leaks.adb:124:07: medium: resource or memory leak might occur at end of scope
+test_borrow_and_leaks.adb:129:11: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:129:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:129:21: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:130:11: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:130:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:132:38: info: in reconstructed value at the end of the borrow at test_borrow_and_leaks.adb:132
+test_borrow_and_leaks.adb:132:38: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:132:38: info: when an exception is raised at test_borrow_and_leaks.adb:136
+test_borrow_and_leaks.adb:132:43: info: in reconstructed value at the end of the borrow at test_borrow_and_leaks.adb:132
+test_borrow_and_leaks.adb:132:43: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:132:43: info: when an exception is raised at test_borrow_and_leaks.adb:136
+test_borrow_and_leaks.adb:133:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:133:13: medium: resource or memory leak might occur at end of scope
+test_borrow_and_leaks.adb:133:13: medium: when an exception is raised at test_borrow_and_leaks.adb:136
+test_borrow_and_leaks.adb:136:16: info: only expected exception raised (CVC5: 1 VC)
+test_borrow_and_leaks.adb:138:17: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:138:23: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:138:27: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:139:17: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow_and_leaks.adb:139:23: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_call_basic.adb:12:34: info: exceptional case proved (CVC5: 2 VC)
+test_call_basic.adb:12:49: info: exceptional case proved (CVC5: 1 VC)
+test_call_basic.adb:12:62: info: exceptional case proved (CVC5: 1 VC)
+test_call_basic.adb:27:34: info: exceptional case proved (Trivial: 1 VC)
+test_call_basic.adb:31:07: medium: unexpected exception might be raised
+test_call_basic.adb:37:34: info: exceptional case proved (Trivial: 1 VC)
+test_call_basic.adb:41:07: info: only expected exception raised (CVC5: 1 VC)
+test_call_basic.adb:46:34: info: exceptional case proved (Trivial: 1 VC)
+test_call_basic.adb:53:10: medium: unexpected exception might be raised
+test_call_basic.adb:59:34: info: exceptional case proved (Trivial: 1 VC)
+test_call_basic.adb:64:10: info: only expected exception raised (CVC5: 1 VC)
+test_call_basic.adb:72:39: info: exceptional case proved (Trivial: 1 VC)
+test_call_basic.adb:76:07: medium: unexpected exception might be raised
+test_call_basic.adb:82:39: info: exceptional case proved (Trivial: 1 VC)
+test_call_basic.adb:86:07: info: only expected exception raised (CVC5: 1 VC)
+test_call_basic.adb:91:39: info: exceptional case proved (Trivial: 1 VC)
+test_call_basic.adb:98:10: medium: unexpected exception might be raised
+test_call_basic.adb:106:39: info: exceptional case proved (Trivial: 1 VC)
+test_call_basic.adb:111:10: info: only expected exception raised (CVC5: 1 VC)
+test_call_others.adb:12:34: medium: exceptional case might fail
+test_call_others.adb:12:51: info: exceptional case proved (Trivial: 1 VC)
+test_call_others.adb:25:34: info: exceptional case proved (CVC5: 1 VC)
+test_call_others.adb:25:51: info: exceptional case proved (Trivial: 1 VC)
+test_call_others.adb:38:34: medium: exceptional case might fail
+test_call_others.adb:38:47: info: exceptional case proved (CVC5: 1 VC)
+test_call_others.adb:38:64: info: exceptional case proved (Trivial: 1 VC)
+test_call_others.adb:51:34: info: exceptional case proved (CVC5: 1 VC)
+test_call_others.adb:51:47: info: exceptional case proved (CVC5: 1 VC)
+test_call_others.adb:51:64: info: exceptional case proved (Trivial: 1 VC)
+test_call_others.adb:64:38: info: exceptional case proved (Trivial: 1 VC)
+test_call_others.adb:79:34: medium: exceptional case might fail [possible fix: subprogram at line 77 should mention A in a precondition]
+test_call_others.adb:79:51: info: exceptional case proved (Trivial: 1 VC)
+test_call_others.adb:92:34: info: exceptional case proved (CVC5: 1 VC)
+test_call_others.adb:92:47: info: exceptional case proved (Trivial: 1 VC)
+test_invariants.adb:5:18: info: overflow check proved (CVC5: 2 VC)
+test_invariants.adb:9:18: info: overflow check proved (CVC5: 2 VC)
+test_invariants.adb:14:18: info: overflow check proved (CVC5: 2 VC)
+test_invariants.adb:18:18: info: overflow check proved (CVC5: 2 VC)
+test_invariants.ads:9:14: info: invariant check proved (CVC5: 1 VC)
+test_invariants.ads:10:33: info: exceptional case proved (Trivial: 1 VC)
+test_invariants.ads:14:14: info: invariant check proved (CVC5: 1 VC)
+test_invariants.ads:14:14: medium: invariant check might fail (e.g. when B = True and X = (F => 0, G => 1))
+test_invariants.ads:14:14: medium: on exceptional exit at test_invariants.adb:12
+test_invariants.ads:15:33: info: exceptional case proved (Trivial: 1 VC)
+test_invariants.ads:19:09: info: invariant check proved on default value (CVC5: 1 VC)
+test_parameter_passing.adb:10:28: info: initialization of "X" proved
+test_parameter_passing.adb:11:33: info: exceptional case proved (CVC5: 1 VC)
+test_parameter_passing.adb:16:07: info: only expected exception raised (CVC5: 1 VC)
+test_parameter_passing.adb:16:07: warning: assuming "P" always returns
+test_parameter_passing.adb:16:07: warning: no returning annotation available for "P"
+test_parameter_passing.adb:31:33: info: initialization of "X" proved
+test_parameter_passing.adb:31:58: info: initialization of "Y" proved
+test_parameter_passing.adb:32:33: info: exceptional case proved (CVC5: 3 VC)
+test_parameter_passing.adb:32:67: info: pointer dereference check proved (CVC5: 1 VC)
+test_parameter_passing.adb:36:07: info: only expected exception raised (CVC5: 1 VC)
+test_parameter_passing.adb:36:07: warning: assuming "P" always returns
+test_parameter_passing.adb:36:07: warning: no returning annotation available for "P"
+test_parameter_passing.adb:36:16: info: null exclusion check proved (CVC5: 1 VC)
+test_parameter_passing.adb:48:28: info: initialization of "X" proved
+test_parameter_passing.adb:49:33: medium: exceptional case might fail
+test_parameter_passing.adb:54:07: info: only expected exception raised (CVC5: 1 VC)
+test_parameter_passing.adb:54:07: warning: assuming "P" always returns
+test_parameter_passing.adb:54:07: warning: no returning annotation available for "P"
+test_relaxed_parameters.adb:13:17: warning: unused variable "X"
+test_relaxed_parameters.adb:16:33: info: exceptional case proved (Trivial: 1 VC)
+test_relaxed_parameters.adb:23:22: info: initialization of "X" proved
+test_relaxed_parameters.adb:25:33: info: exceptional case proved (Trivial: 1 VC)
+test_relaxed_parameters.adb:29:07: info: only expected exception raised (CVC5: 1 VC)
+test_relaxed_parameters.adb:29:10: info: initialization check proved (CVC5: 3 VC; Trivial: 3 VC)
+test_relaxed_parameters.adb:29:10: info: predicate check proved (CVC5: 1 VC)
+test_relaxed_parameters.adb:29:10: medium: initialization check might fail [possible fix: call at line 29 should mention X'Initialized (for argument X) in a postcondition]
+test_relaxed_parameters.adb:32:17: warning: unused variable "X"
+test_relaxed_parameters.adb:35:33: info: exceptional case proved (CVC5: 3 VC; Trivial: 3 VC)
+test_relaxed_parameters.adb:39:12: info: predicate check proved (CVC5: 1 VC)
+test_relaxed_parameters.adb:43:22: info: initialization of "X" proved
+test_relaxed_parameters.adb:45:33: info: exceptional case proved (Trivial: 1 VC)
+test_relaxed_parameters.adb:49:07: info: only expected exception raised (CVC5: 1 VC)
+test_relaxed_parameters.adb:49:10: info: initialization check proved (CVC5: 3 VC; Trivial: 3 VC)
+test_relaxed_parameters.adb:49:10: info: predicate check proved (CVC5: 1 VC)

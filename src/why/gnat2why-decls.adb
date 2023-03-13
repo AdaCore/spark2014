@@ -32,6 +32,7 @@ with Gnat2Why.Util;       use Gnat2Why.Util;
 with Namet;               use Namet;
 with Sinput;              use Sinput;
 with Types;               use Types;
+with Uintp;               use Uintp;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
@@ -181,6 +182,42 @@ package body Gnat2Why.Decls is
       Register_Dependency_For_Soundness
         (E_Axiom_Module (E), Enclosing_Unit (E));
    end Translate_Constant_Value;
+
+   --------------------------
+   -- Translate_Exceptions --
+   --------------------------
+
+   procedure Translate_Exceptions is
+      Th : Theory_UC;
+      V  : Int := 1;
+   begin
+      Th :=
+        Open_Theory
+          (WF_Context,
+           Module  => Exception_Module,
+           Comment =>
+             "Module declaring the Ada exceptions, created in "
+           & GNAT.Source_Info.Enclosing_Entity);
+
+      --  Declare a distinct constant for all Ada exceptions
+
+      for E of All_Exceptions loop
+         Emit
+           (Th,
+            New_Function_Decl
+              (Name        => To_Why_Id (E, Local => True),
+               Domain      => EW_Pterm,
+               Labels      => Symbol_Sets.Empty_Set,
+               Location    => No_Location,
+               Return_Type => EW_Int_Type,
+               Def         => New_Integer_Constant
+                 (Value => UI_From_Int  (V))));
+         V := V + 1;
+      end loop;
+
+      Close_Theory (Th,
+                    Kind => Standalone_Theory);
+   end Translate_Exceptions;
 
    -------------------------------
    -- Translate_External_Object --

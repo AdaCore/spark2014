@@ -3,7 +3,7 @@ dead_code.adb:14:23: info: cannot unroll loop (too many loop iterations)
 dead_code.adb:17:07: info: assertion proved (CVC5: 1 VC)
 dead_code.adb:18:07: warning: this statement is never reached
 dead_code.adb:23:23: info: cannot unroll loop (too many loop iterations)
-dead_code.adb:26:07: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+dead_code.adb:26:07: info: only expected exception raised (CVC5: 1 VC)
 dead_code.adb:31:23: info: cannot unroll loop (too many loop iterations)
 dead_code.adb:34:07: warning: unreachable code (CVC5: 1 VC)
 dead_code.adb:40:25: warning: loop condition is stable
@@ -11,7 +11,7 @@ dead_code.adb:49:25: warning: loop condition is stable
 dead_code.adb:52:07: info: assertion proved (CVC5: 1 VC)
 dead_code.adb:53:07: warning: this statement is never reached
 dead_code.adb:59:25: warning: loop condition is stable
-dead_code.adb:62:07: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+dead_code.adb:62:07: info: only expected exception raised (CVC5: 1 VC)
 dead_code.adb:68:25: warning: loop condition is stable
 dead_code.adb:71:07: warning: unreachable code (CVC5: 1 VC)
 dead_code.adb:78:10: warning: loop exit condition is stable
@@ -20,6 +20,6 @@ dead_code.adb:88:10: warning: loop exit condition is stable
 dead_code.adb:91:07: info: assertion proved (CVC5: 1 VC)
 dead_code.adb:92:07: warning: this statement is never reached
 dead_code.adb:99:10: warning: loop exit condition is stable
-dead_code.adb:102:07: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+dead_code.adb:102:07: info: only expected exception raised (CVC5: 1 VC)
 dead_code.adb:109:10: warning: loop exit condition is stable
 dead_code.adb:112:07: warning: unreachable code (CVC5: 1 VC)

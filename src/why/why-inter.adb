@@ -1363,6 +1363,22 @@ package body Why.Inter is
             end if;
          end;
 
+      --  Exceptions are translated as integers declared in Exception_Module
+
+      elsif Ekind (E) = E_Exception then
+         declare
+            Name : constant String := Full_Name (E);
+         begin
+            if Local then
+               return New_Identifier (Name => Name, Typ => EW_Int_Type);
+            else
+               return New_Identifier
+                 (Module => Exception_Module,
+                  Name   => Name,
+                  Typ    => EW_Int_Type);
+            end if;
+         end;
+
       --  The name of local parameters should always be prefixed to avoid
       --  collision with the name of the function.
 

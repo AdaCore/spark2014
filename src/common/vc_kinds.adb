@@ -105,6 +105,7 @@ package body VC_Kinds is
 
          when VC_Postcondition
             | VC_Refined_Post
+            | VC_Exceptional_Case
             | VC_Contract_Case             => "682",
 
          --  CWE-843 Access of Resource Using Incompatible Type ('Type
@@ -350,6 +351,9 @@ package body VC_Kinds is
          when VC_Complete_Contract_Cases          =>
             return "Check that the cases of the contract cases aspect cover " &
               "the state space that is allowed by the precondition aspect.";
+         when VC_Exceptional_Case                 =>
+            return "Check that all cases of the exceptional cases evaluate " &
+              "to true on exceptional exits.";
          when VC_Loop_Invariant                   =>
             return "Check that the loop invariant evaluates to True on all " &
               "iterations of the loop.";
@@ -368,8 +372,9 @@ package body VC_Kinds is
             return "Check that the side-condition of a cut operation " &
               "evaluates to True.";
          when VC_Raise                            =>
-            return "Check that the raise statement or expression can never " &
-              "be reached.";
+            return "Check that raise expressions can never be reached and " &
+              "that all exceptions raised by raise statement and procedure " &
+              "calls are expected.";
          when VC_Feasible_Post                    =>
             return "Check that an abstract function or access-to-function " &
               "type is feasible.";
@@ -665,6 +670,12 @@ package body VC_Kinds is
           & "annotated with an address clause whose value is the address of "
           & "another object",
          when Lim_Entry_Family => "entry families",
+         when Lim_Exceptional_Cases_Dispatch =>
+           "aspect ""Exceptional_Cases"" on dispatching operations",
+         when Lim_Exceptional_Cases_Ownership =>
+           "procedures with exceptional contracts and parameters of mode"
+          & " ""in out"" or ""out"" subjected to ownerhsip which might not be "
+          & "passed by reference",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "an extension aggregate whose ancestor part is a subtype mark",
          when Lim_Goto_Cross_Inv =>
@@ -1238,6 +1249,7 @@ package body VC_Kinds is
              when VC_Contract_Case => "contract case",
              when VC_Disjoint_Contract_Cases => "disjoint contract cases",
              when VC_Complete_Contract_Cases => "complete contract cases",
+             when VC_Exceptional_Case => "exceptional case",
              when VC_Loop_Invariant => "loop invariant",
              when VC_Loop_Invariant_Init =>
                "loop invariant in first iteration",

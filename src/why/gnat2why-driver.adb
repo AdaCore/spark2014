@@ -1276,6 +1276,10 @@ package body Gnat2Why.Driver is
 
       For_All_Entities (Register_Symbol'Access);
 
+      --  Declare distinct constants for all Ada exceptions
+
+      Translate_Exceptions;
+
       --  Translate Ada entities into Why3
 
       For_All_Entities (Translate_Entity'Access);

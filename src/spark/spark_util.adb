@@ -100,6 +100,9 @@ package body SPARK_Util is
    --  marking and queried (via a getter function) during flow and proof.
    --  ??? this could be a map from nodes to lists of nodes (not set of nodes)
 
+   Exceptions : Node_Sets.Set;
+   --  All exceptions visible from analyzed code
+
    ----------------------
    -- Set_Partial_View --
    ----------------------
@@ -230,6 +233,21 @@ package body SPARK_Util is
       end if;
 
    end Overlay_Alias;
+
+   ------------------------
+   -- Register_Exception --
+   ------------------------
+
+   procedure Register_Exception (E : E_Exception_Id) is
+   begin
+      Exceptions.Include (E);
+   end Register_Exception;
+
+   --------------------
+   -- All_Exceptions --
+   --------------------
+
+   function All_Exceptions return Node_Sets.Set is (Exceptions);
 
    ---------------------------------
    -- Extra tables on expressions --
@@ -391,6 +409,40 @@ package body SPARK_Util is
      (Nkind (N) not in N_Expanded_Name | N_Identifier
       or else Ekind (Entity (N)) not in
         E_Variable | E_Out_Parameter | E_In_Out_Parameter);
+
+   -------------
+   -- By_Copy --
+   -------------
+
+   function By_Copy (Obj : Formal_Kind_Id) return Boolean is
+     (not By_Reference (Obj)
+      and then Is_By_Copy_Type (Etype (Obj)));
+
+   ------------------
+   -- By_Reference --
+   ------------------
+
+   function By_Reference (Obj : Formal_Kind_Id) return Boolean is
+     (Is_By_Reference_Type (Etype (Obj))
+      or else Is_Aliased (Obj)
+      or else (Ekind (Obj) = E_In_Parameter
+        and then Is_Access_Variable (Etype (Obj))));
+
+   ------------------------------------
+   -- Call_Raises_Handled_Exceptions --
+   ------------------------------------
+
+   function Call_Raises_Handled_Exceptions (Call : Node_Id) return Boolean is
+      All_Handled : Boolean;
+      Handled_Exc : Node_Sets.Set;
+   begin
+      if Might_Raise_Exceptions (Get_Called_Entity (Call)) then
+         Collect_Handled_Exceptions (Call, All_Handled, Handled_Exc);
+         return All_Handled or else not Handled_Exc.Is_Empty;
+      end if;
+
+      return False;
+   end Call_Raises_Handled_Exceptions;
 
    ----------------------
    -- Canonical_Entity --
@@ -811,6 +863,114 @@ package body SPARK_Util is
       pragma Annotate (Xcov, Exempt_Off);
    end Char_To_String_Representation;
 
+   --------------------------------
+   -- Collect_Handled_Exceptions --
+   --------------------------------
+
+   procedure Collect_Handled_Exceptions
+     (Call    : Node_Id;
+      All_Exc : out Boolean;
+      Exc_Set : out Node_Sets.Set)
+   is
+      function Is_Body (N : Node_Id) return Boolean is
+        (Nkind (N) in N_Entity_Body);
+
+      function Enclosing_Body is new
+        First_Parent_With_Property (Is_Body);
+
+      Scop   : constant Node_Id := Enclosing_Body (Call);
+      Caller : constant Entity_Id :=
+        (if Nkind (Scop) = N_Subprogram_Body
+         then Unique_Defining_Entity (Scop) else Empty);
+      Callee : constant Entity_Id := Get_Called_Entity (Call);
+
+   begin
+      Exc_Set := Node_Sets.Empty_Set;
+
+      if not Might_Raise_Exceptions (Callee) then
+         All_Exc := True;
+      elsif No (Caller) or else not Might_Raise_Exceptions (Caller) then
+         All_Exc := False;
+      else
+         declare
+            Caller_All_Exc : Boolean;
+            Caller_Exc_Set : Node_Sets.Set;
+            Callee_All_Exc : Boolean;
+            Callee_Exc_Set : Node_Sets.Set;
+         begin
+            Collect_Raised_Exceptions (Caller, Caller_All_Exc, Caller_Exc_Set);
+            Collect_Raised_Exceptions (Callee, Callee_All_Exc, Callee_Exc_Set);
+
+            if Caller_All_Exc then
+               All_Exc := True;
+            elsif Callee_All_Exc then
+               All_Exc := False;
+            else
+               Exc_Set := Callee_Exc_Set;
+               Exc_Set.Intersection (Caller_Exc_Set);
+               All_Exc := Exc_Set.Is_Empty;
+            end if;
+         end;
+      end if;
+   end Collect_Handled_Exceptions;
+
+   -------------------------------
+   -- Collect_Raised_Exceptions --
+   -------------------------------
+
+   procedure Collect_Raised_Exceptions
+     (Subp    : Entity_Id;
+      All_Exc : out Boolean;
+      Exc_Set : out Node_Sets.Set)
+   is
+      Prag : constant Node_Id := Get_Pragma (Subp, Pragma_Exceptional_Cases);
+   begin
+      All_Exc := False;
+      Exc_Set := Node_Sets.Empty_Set;
+
+      if No (Prag) then
+         return;
+      end if;
+
+      declare
+         Aggr     : constant Node_Id :=
+           Expression (First (Pragma_Argument_Associations (Prag)));
+         Exc_Case : Node_Id := Last (Component_Associations (Aggr));
+      begin
+         --  Collect exceptions in Prag. Start from the last case to look
+         --  for the others case first. Ignore cases with a statically False
+         --  postcondition.
+
+         while Present (Exc_Case) loop
+            declare
+               Exc  : Node_Id := First (Choices (Exc_Case));
+               Post : constant Node_Id := Expression (Exc_Case);
+            begin
+               if not Compile_Time_Known_Value (Post)
+                 or else not Is_False (Expr_Value (Post))
+               then
+                  while Present (Exc) loop
+                     case Nkind (Exc) is
+                        when N_Others_Choice =>
+                           All_Exc := True;
+                           return;
+                        when N_Identifier
+                           | N_Expanded_Name
+                           =>
+                           Exc_Set.Insert (Entity (Exc));
+                        when others =>
+                           raise Program_Error;
+                     end case;
+                     Next (Exc);
+                  end loop;
+               end if;
+            end;
+
+            Prev (Exc_Case);
+         end loop;
+      end;
+   end Collect_Raised_Exceptions;
+
    -----------------------------
    -- Comes_From_Declare_Expr --
    -----------------------------
@@ -1199,6 +1359,74 @@ package body SPARK_Util is
       return Mk_Subp (Name => Full_Source_Name (E),
                       Sloc => Loc_To_Assume_Sloc (Sloc (E)));
    end Entity_To_Subp_Assumption;
+
+   -----------------------
+   -- Exception_Handled --
+   -----------------------
+
+   function Exception_Handled
+     (E    : E_Exception_Id;
+      Stmt : Node_Id)
+      return Boolean
+   is
+      function Is_Body (N : Node_Id) return Boolean is
+        (Nkind (N) in N_Entity_Body);
+
+      function Enclosing_Body is new
+        First_Parent_With_Property (Is_Body);
+
+      Scop : constant Node_Id := Enclosing_Body (Stmt);
+      Prag : Node_Id;
+   begin
+      if Nkind (Scop) in N_Subprogram_Body then
+         Prag := Get_Pragma
+           (Unique_Defining_Entity (Scop), Pragma_Exceptional_Cases);
+
+         if No (Prag) then
+            return False;
+         end if;
+
+         declare
+            Aggr     : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (Prag)));
+            Exc_Case : Node_Id := Last (Component_Associations (Aggr));
+         begin
+            --  Search for E in Prag. Start from the last case to look for
+            --  the others case first. Ignore cases with a statically False
+            --  postcondition.
+
+            while Present (Exc_Case) loop
+               declare
+                  Exc  : Node_Id := First (Choices (Exc_Case));
+                  Post : constant Node_Id := Expression (Exc_Case);
+               begin
+                  if not Compile_Time_Known_Value (Post)
+                    or else not Is_False (Expr_Value (Post))
+                  then
+                     while Present (Exc) loop
+                        case Nkind (Exc) is
+                           when N_Others_Choice =>
+                              return True;
+                           when N_Identifier
+                              | N_Expanded_Name
+                              =>
+                              if Entity (Exc) = E then
+                                 return True;
+                              end if;
+                           when others =>
+                              raise Program_Error;
+                        end case;
+                        Next (Exc);
+                     end loop;
+                  end if;
+               end;
+
+               Prev (Exc_Case);
+            end loop;
+         end;
+      end if;
+      return False;
+   end Exception_Handled;
 
    ---------------------------
    -- Expr_Has_Relaxed_Init --

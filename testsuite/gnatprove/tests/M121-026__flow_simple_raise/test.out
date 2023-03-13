@@ -1,5 +1,5 @@
 simple_exceptions.adb:3:04: warning: analyzing unreferenced procedure "In_SPARK"
-simple_exceptions.adb:6:10: medium: exception might be raised
+simple_exceptions.adb:6:10: medium: unexpected exception might be raised
 simple_exceptions.adb:9:14: info: overflow check proved (CVC5: 2 VC)
 simple_exceptions.adb:13:04: info: no contextual analysis of "In_SPARK_2" (multiple returns)
-simple_exceptions.adb:21:07: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+simple_exceptions.adb:21:07: info: only expected exception raised (CVC5: 1 VC)

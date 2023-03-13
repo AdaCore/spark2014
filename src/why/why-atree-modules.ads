@@ -142,6 +142,7 @@ package Why.Atree.Modules is
       Fixed_Type        : W_Type_Id;
       Bool_Not          : W_Identifier_Id;
       Return_Exc        : W_Name_Id;
+      Ada_Exc           : W_Name_Id;
       String_Image_Type : W_Type_Id;
       Type_Of_Heap      : W_Type_Id;
       Spark_CE_Branch   : W_Identifier_Id;
@@ -578,77 +579,6 @@ package Why.Atree.Modules is
 
    M_Arrays_Conversion : Name_Id_Name_Id_Conversion_Name_Map.Map;
 
-   --  M_Subprogram_Profiles maps the profile of a subprogram, represented
-   --  as a name, to a Why3 module. If the subprogram is a function, the module
-   --  contains a Why3 logic function and a predicate which can be used to call
-   --  the access-to-subprogram object designating the expected profile in the
-   --  term domain. For now, the module contains nothing for procedures. The
-   --  name of a profile can be obtained by Get_Profile_Theory_Name from
-   --  Gnat2why.Subprograms.Pointers.
-
-   type M_Subprogram_Profile_Type (Is_Function : Boolean := True) is record
-      Module : W_Module_Id;
-      case Is_Function is
-         when True  =>
-            Call_Id : W_Identifier_Id;
-            Pred_Id : W_Identifier_Id;
-         when False =>
-            null;
-      end case;
-   end record;
-
-   package Name_Id_Profile_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => M_Subprogram_Profile_Type,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
-
-   M_Subprogram_Profiles : Name_Id_Profile_Map.Map;
-
-   type M_HO_Specialization_Type is record
-      Module        : W_Module_Id;
-      Ax_Module     : W_Module_Id;
-      Rec_Ax_Module : W_Module_Id;
-      Prog_Id       : W_Identifier_Id;
-      Fun_Id        : W_Identifier_Id;
-      Guard_Id      : W_Identifier_Id;
-      Variant_Id    : W_Identifier_Id;
-   end record;
-
-   package Name_Id_HO_Specializations_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => M_HO_Specialization_Type,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
-
-   package Node_Id_HO_Specializations_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Name_Id_HO_Specializations_Map.Map,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => Name_Id_HO_Specializations_Map."=");
-
-   M_HO_Specializations : Node_Id_HO_Specializations_Map.Map;
-   --  M_HO_Specializations maps subprogram entities to a map containing all
-   --  their specializations.
-
-   package Name_Id_Module_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => W_Module_Id,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
-
-   package Node_Id_Modules_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Name_Id_Module_Map.Map,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => Name_Id_Module_Map."=");
-
-   M_Lemma_HO_Specializations : Node_Id_Modules_Map.Map;
-   --  M_Lemma_HO_Specializations maps lemma procedure entities to a map
-   --  containing all the axiom modules generated for their specializations.
-
    M_BV_Conv_128_256 : M_BV_Conv_Type;
    M_BV_Conv_64_128  : M_BV_Conv_Type;
    M_BV_Conv_32_128  : M_BV_Conv_Type;
@@ -755,6 +685,83 @@ package Why.Atree.Modules is
    Model_Projected : Symbol;
    VC_Annotation   : Symbol;
    Model_VC_Post   : Symbol;
+
+   ------------------------------------
+   -- Specific generated Why modules --
+   ------------------------------------
+
+   Exception_Module : W_Module_Id;
+
+   --  M_Subprogram_Profiles maps the profile of a subprogram, represented
+   --  as a name, to a Why3 module. If the subprogram is a function, the module
+   --  contains a Why3 logic function and a predicate which can be used to call
+   --  the access-to-subprogram object designating the expected profile in the
+   --  term domain. For now, the module contains nothing for procedures. The
+   --  name of a profile can be obtained by Get_Profile_Theory_Name from
+   --  Gnat2why.Subprograms.Pointers.
+
+   type M_Subprogram_Profile_Type (Is_Function : Boolean := True) is record
+      Module : W_Module_Id;
+      case Is_Function is
+         when True  =>
+            Call_Id : W_Identifier_Id;
+            Pred_Id : W_Identifier_Id;
+         when False =>
+            null;
+      end case;
+   end record;
+
+   package Name_Id_Profile_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Symbol,
+      Element_Type    => M_Subprogram_Profile_Type,
+      Hash            => GNATCOLL.Symbols.Hash,
+      Equivalent_Keys => "=");
+
+   M_Subprogram_Profiles : Name_Id_Profile_Map.Map;
+
+   type M_HO_Specialization_Type is record
+      Module        : W_Module_Id;
+      Ax_Module     : W_Module_Id;
+      Rec_Ax_Module : W_Module_Id;
+      Prog_Id       : W_Identifier_Id;
+      Fun_Id        : W_Identifier_Id;
+      Guard_Id      : W_Identifier_Id;
+      Variant_Id    : W_Identifier_Id;
+   end record;
+
+   package Name_Id_HO_Specializations_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Symbol,
+      Element_Type    => M_HO_Specialization_Type,
+      Hash            => GNATCOLL.Symbols.Hash,
+      Equivalent_Keys => "=");
+
+   package Node_Id_HO_Specializations_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Name_Id_HO_Specializations_Map.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Name_Id_HO_Specializations_Map."=");
+
+   M_HO_Specializations : Node_Id_HO_Specializations_Map.Map;
+   --  M_HO_Specializations maps subprogram entities to a map containing all
+   --  their specializations.
+
+   package Name_Id_Module_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Symbol,
+      Element_Type    => W_Module_Id,
+      Hash            => GNATCOLL.Symbols.Hash,
+      Equivalent_Keys => "=");
+
+   package Node_Id_Modules_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Name_Id_Module_Map.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Name_Id_Module_Map."=");
+
+   M_Lemma_HO_Specializations : Node_Id_Modules_Map.Map;
+   --  M_Lemma_HO_Specializations maps lemma procedure entities to a map
+   --  containing all the axiom modules generated for their specializations.
 
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package

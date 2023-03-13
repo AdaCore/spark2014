@@ -65,4 +65,7 @@ package Gnat2Why.Decls is
    --  Generate Why declarations that correspond to an Ada top-level object
    --  declaration.
 
+   procedure Translate_Exceptions;
+   --  Generate a Why3 module for all the visible exceptions
+
 end Gnat2Why.Decls;

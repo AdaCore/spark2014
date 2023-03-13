@@ -9,7 +9,7 @@ test.adb:28:04: warning: analyzing unreferenced function "Ext_Return_01"
 test.adb:30:14: info: initialization of "R" proved
 test.adb:31:17: medium: overflow check might fail, cannot prove upper bound for N + 1 (e.g. when N = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (N <= Integer'Last - 1) to subprogram at line 28]
 test.adb:35:04: info: no contextual analysis of "No_Return" (multiple returns)
-test.adb:44:07: medium: exception might be raised
+test.adb:44:07: medium: unexpected exception might be raised
 ------------------
 test.adb:3:04: warning: analyzing unreferenced function "Random_Number"
 test.adb:9:04: info: no contextual analysis of "Multiple_Returns" (multiple returns)
@@ -22,4 +22,4 @@ test.adb:28:04: warning: analyzing unreferenced function "Ext_Return_01"
 test.adb:30:14: info: initialization of "R" proved
 test.adb:31:17: medium: overflow check might fail, cannot prove upper bound for N + 1 (e.g. when N = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (N <= Integer'Last - 1) to subprogram at line 28]
 test.adb:35:04: info: no contextual analysis of "No_Return" (multiple returns)
-test.adb:44:07: medium: exception might be raised
+test.adb:44:07: medium: unexpected exception might be raised

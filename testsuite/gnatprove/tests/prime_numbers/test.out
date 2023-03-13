@@ -50,7 +50,7 @@ prime_and_coprime_numbers.adb:162:23: info: range check proved (CVC5: 1 VC; alte
 prime_and_coprime_numbers.adb:165:23: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:169:20: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:175:20: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:178:13: info: raise statement or expression proved unreachable (CVC5: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:178:13: info: only expected exception raised (CVC5: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:191:14: info: precondition proved (CVC5: 2 VC; altergo: 3 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:197:06: info: data dependencies proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:197:30: info: initialization of "Set.Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6

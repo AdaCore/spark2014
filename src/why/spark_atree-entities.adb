@@ -365,7 +365,7 @@ package body SPARK_Atree.Entities is
    -- Is_Aliased --
    ----------------
 
-   function Is_Aliased (Obj : E_In_Parameter_Id) return Boolean is
+   function Is_Aliased (Obj : Formal_Kind_Id) return Boolean is
      (Einfo.Entities.Is_Aliased (Obj));
 
    ------------------

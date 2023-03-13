@@ -1848,6 +1848,8 @@ package body SPARK_Definition is
                Mark (Expression (N));
             end if;
 
+            Register_Exception (Entity (Name (N)));
+
          --  The frontend inserts explicit raise-statements/expressions during
          --  semantic analysis in some cases that are statically known to raise
          --  an exception, like simple cases of infinite recursion or division
@@ -5400,6 +5402,61 @@ package body SPARK_Definition is
                end;
             end if;
 
+            Prag := Get_Pragma (E, Pragma_Exceptional_Cases);
+            if Present (Prag) then
+
+               --  Functions shall never raise exceptions
+
+               if Ekind (E) = E_Function then
+                  Mark_Violation
+                    (Msg => "aspect ""Exceptional_Cases"" on function",
+                     N   => Prag);
+
+               --  The frontend does not allow Exceptional_Cases on entries
+
+               elsif Ekind (E) = E_Entry then
+                  raise Program_Error;
+
+               --  Reject dispatching operations for now. Supporting them would
+               --  require handling Liskov on exceptional contracts.
+
+               elsif Is_Dispatching_Operation (E)
+                 and then Present (Find_Dispatching_Type (E))
+               then
+                  Mark_Unsupported (Lim_Exceptional_Cases_Dispatch, Prag);
+               end if;
+
+               declare
+                  Aggr             : constant Node_Id :=
+                    Expression (First (Pragma_Argument_Associations (Prag)));
+                  Exceptional_Case : Node_Id :=
+                    First (Component_Associations (Aggr));
+               begin
+                  while Present (Exceptional_Case) loop
+                     declare
+                        Exc : Node_Id := First (Choices (Exceptional_Case));
+                     begin
+                        while Present (Exc) loop
+                           case Nkind (Exc) is
+                              when N_Others_Choice =>
+                                 null;
+                              when N_Identifier
+                                 | N_Expanded_Name
+                              =>
+                                 Register_Exception (Entity (Exc));
+                              when others =>
+                                 raise Program_Error;
+                           end case;
+                           Next (Exc);
+                        end loop;
+                     end;
+
+                     Mark (Expression (Exceptional_Case));
+                     Next (Exceptional_Case);
+                  end loop;
+               end;
+            end if;
+
             Prag := Get_Pragma (E, Pragma_Subprogram_Variant);
             if Present (Prag) then
                declare
@@ -5448,6 +5505,7 @@ package body SPARK_Definition is
             Formal      : Opt_Formal_Kind_Id := First_Formal (Id);
             Contract    : Node_Id;
             Raw_Globals : Raw_Global_Nodes;
+            Exceptions  : constant Boolean := Might_Raise_Exceptions (Id);
 
          begin
             case Ekind (Id) is
@@ -5479,6 +5537,24 @@ package body SPARK_Definition is
                  and then Invariant_Check_Needed (Etype (Formal))
                then
                   Mark_Unsupported (Lim_Access_Sub_Formal_With_Inv, Formal);
+
+               --  Parameters of mode IN OUT or OUT subjected to ownerhsip are
+               --  not supported on procedures with exceptional contracts
+               --  unless they are either aliased or have a "by reference"
+               --  type. This is to simplify ownership checking, especially
+               --  when the parameter is not "by copy" either.
+
+               elsif Exceptions
+                 and then Ekind (Formal) /= E_In_Parameter
+                 and then Is_Deep (Etype (Formal))
+                 and then not By_Reference (Formal)
+               then
+                  Mark_Unsupported
+                    (Lim_Exceptional_Cases_Ownership,
+                     Formal,
+                     Root_Cause_Msg =>
+                       "exceptional contracts and parameters with ownership",
+                     Cont_Msg       => "& should be marked as aliased");
                end if;
 
                Next_Formal (Formal);
@@ -8517,6 +8593,7 @@ package body SPARK_Definition is
             | Pragma_Depends
             | Pragma_Effective_Reads
             | Pragma_Effective_Writes
+            | Pragma_Exceptional_Cases
             | Pragma_Extensions_Visible
             | Pragma_Ghost
             | Pragma_Global

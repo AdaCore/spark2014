@@ -98,6 +98,7 @@ package VC_Kinds is
       VC_Contract_Case,
       VC_Disjoint_Contract_Cases,
       VC_Complete_Contract_Cases,
+      VC_Exceptional_Case,
       VC_Loop_Invariant,             --  internal check kind, transformed
                                      --  by gnatwhy3 into
                                      --    VC_Loop_Invariant_Init
@@ -426,6 +427,8 @@ package VC_Kinds is
       Lim_Conv_Incompatible_Fixed,
       Lim_Deep_Object_With_Addr,
       Lim_Entry_Family,
+      Lim_Exceptional_Cases_Dispatch,
+      Lim_Exceptional_Cases_Ownership,
       Lim_Ext_Aggregate_With_Type_Ancestor,
       Lim_Goto_Cross_Inv,
       Lim_Img_On_Non_Scalar,
@@ -604,6 +607,12 @@ package VC_Kinds is
            "uninitialized allocator inside expression function",
          when Lim_Iterator_In_Component_Assoc =>
            "iterated component association with iterator specification",
+         when Lim_Exceptional_Cases_Dispatch =>
+           "aspect ""Exceptional_Cases"" on dispatching operation",
+         when Lim_Exceptional_Cases_Ownership =>
+           "procedures with exceptional contracts and parameters of mode"
+          & " ""in out"" or ""out"" subjected to ownerhsip which might not be "
+          & "passed by reference",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "extension aggregate with subtype ancestor part",
          when Lim_Iterated_Element_Association =>

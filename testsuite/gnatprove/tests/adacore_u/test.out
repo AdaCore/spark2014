@@ -6,7 +6,7 @@ global_stack.ads:4:12: error: function "Pop" with output global "Top" is not all
 global_stack.ads:4:12: error: violation of aspect SPARK_Mode at line 1
 search_array.adb:7:24: info: cannot unroll loop (too many loop iterations)
 search_array.adb:9:20: info: range check proved (CVC5: 2 VC)
-search_array.adb:12:07: medium: exception might be raised
+search_array.adb:12:07: medium: unexpected exception might be raised
 stack.ads:7:13: error: function with "in out" parameter is not allowed in SPARK
 stack.ads:7:13: error: violation of aspect SPARK_Mode at line 1
 use_access.adb:3:41: medium: range check might fail, cannot prove lower bound for W (W'First) (e.g. when First_Letter = 'NUL' and W'Last = 0) [reason for check: default component value must fit in the type] [possible fix: subprogram at use_access.ads:4 should mention W in a precondition]
@@ -26,7 +26,7 @@ p.adb:33:24: info: cannot unroll loop (too many loop iterations)
 p.adb:54:33: info: loop invariant initialization proved (CVC5: 1 VC)
 p.adb:54:33: info: loop invariant preservation proved (CVC5: 1 VC)
 p.adb:54:65: info: index check proved (CVC5: 4 VC)
-p.adb:56:07: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+p.adb:56:07: info: only expected exception raised (CVC5: 1 VC)
 p.adb:63:24: info: cannot unroll loop (too many loop iterations)
 p.adb:65:20: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 p.adb:70:14: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -95,7 +95,7 @@ p.ads:18:41: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 p.ads:19:43: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 p.ads:20:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 p.ads:21:35: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
-stacks.adb:5:10: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+stacks.adb:5:10: info: only expected exception raised (CVC5: 1 VC)
 stacks.adb:8:22: info: range check proved (CVC5: 2 VC)
 stacks.adb:9:19: info: index check proved (CVC5: 2 VC)
 stacks.ads:8:14: info: postcondition proved (CVC5: 1 VC)
@@ -645,7 +645,7 @@ fixed_mem.adb:9:55: medium: range check might fail, cannot prove lower bound for
 fixed_mem.adb:12:07: info: initialization of "Free_Init" proved
 fixed_mem.adb:14:17: info: add a contract to analyze it separately from calling contexts
 fixed_mem.adb:14:17: info: local subprogram "Check" only analyzed in the context of calls
-fixed_mem.adb:17:13: info: raise statement or expression proved unreachable (CVC5: 1 VC), in call inlined at fixed_mem.adb:25
+fixed_mem.adb:17:13: info: only expected exception raised (CVC5: 1 VC), in call inlined at fixed_mem.adb:25
 fixed_mem.adb:24:20: info: overflow check proved (CVC5: 2 VC)
 fixed_mem.adb:25:07: info: analyzing call to "Check" in context
 fixed_mem.ads:6:14: info: postcondition proved (CVC5: 1 VC)
