@@ -3,8 +3,8 @@
 import argparse
 from e3.gaia.api import GAIA
 from e3.testsuite.optfileparser import OptFileParse
-from e3.testsuite.report.index import ReportIndex
-from e3.testsuite.result import TestStatus
+from e3.testsuite.report.rewriting import BaseBaselineRewriter, RewritingError
+from e3.testsuite.utils import ColorConfig
 import os.path
 import re
 import shutil
@@ -32,19 +32,6 @@ def parse_options():
     )
     args = parser.parse_args()
     return args
-
-
-def update_baseline(testname, out):
-    testdir = os.path.join("tests", testname)
-    if not os.path.exists(testdir):
-        testdir = os.path.join("internal", testname)
-    if not os.path.exists(testdir):
-        print("can't find test with name " + testname)
-        exit(1)
-    fn = os.path.join(testdir, "test.out")
-    print("Update output " + fn)
-    with open(fn, "w") as f:
-        f.write(out)
 
 
 def output_too_long(output_file):
@@ -130,6 +117,16 @@ def update_from_gaia(gaia_id):
     shutil.rmtree(targetdir)
 
 
+class BaselineRewriter(BaseBaselineRewriter):
+    def baseline_filename(self, test_name: str) -> str:
+        testdir = os.path.join("tests", test_name)
+        if not os.path.exists(testdir):
+            testdir = os.path.join("internal", test_name)
+        if not os.path.exists(testdir):
+            raise RewritingError(f"cannot find test {test_name!r}")
+        return os.path.join(testdir, "test.out")
+
+
 def main():
     args = parse_options()
     if args.gaia_id:
@@ -139,11 +136,14 @@ def main():
             outputdir = "out"
         else:
             outputdir = args.outputdir
-        index = ReportIndex.read(os.path.join(outputdir, "new"))
-        for entry in index.entries.values():
-            if entry.status == TestStatus.FAIL:
-                result = entry.load()
-                update_baseline(result.env["test_name"], result.out)
+        BR = BaselineRewriter(ColorConfig())
+        summary = BR.rewrite(os.path.join(outputdir, "new"))
+        for elt in summary.new_baselines:
+            print(f"updated baseline for {elt}")
+        for elt in summary.deleted_baselines:
+            print(f"deleted empty baseline for {elt}")
+        for elt in summary.errors:
+            print(f"error updating baseline for {elt}")
 
 
 main()
