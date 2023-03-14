@@ -1,1 +1,2 @@
 loop9_bug.adb:5:17: info: initialization of "Bad" proved
+loop9_bug.adb:6:16: warning: unused assignment

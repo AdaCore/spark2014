@@ -2889,6 +2889,22 @@ package body Flow.Control_Flow_Graph is
          LB     : constant Node_Id := Low_Bound (R);
          HB     : constant Node_Id := High_Bound (R);
          Filter : constant Node_Id := Iterator_Filter (LPS);
+         Vars   : constant Flow_Id_Sets.Set :=
+           Get_Variables
+             (N                    => LB,
+              Scope                => FA.B_Scope,
+              Target_Name          => Null_Flow_Id,
+              Fold_Functions       => Inputs,
+              Use_Computed_Globals => not FA.Generating_Globals)
+             or
+           Get_Variables
+             (N                    => HB,
+              Scope                => FA.B_Scope,
+              Target_Name          => Null_Flow_Id,
+              Fold_Functions       => Inputs,
+              Use_Computed_Globals => not FA.Generating_Globals)
+             or
+           Get_Filter_Variables (Filter);
 
          V : Flow_Graphs.Vertex_Id;
          Funcs : Node_Sets.Set;
@@ -2897,20 +2913,33 @@ package body Flow.Control_Flow_Graph is
          --  in Create, so we should set it up.
          Create_Initial_And_Final_Vertices (LP, FA);
 
-         --  Work out which of the three variants (empty, full,
-         --  unknown) we have... When an iterator filter is present, we
-         --  consider the unknown case.
-         if Is_Null_Range (LB, HB) then
-            --  We have an empty range. We should complain!
-            Add_Vertex
-              (FA,
-               Direct_Mapping_Id (N),
-               Make_Basic_Attributes
-                 (Var_Def       => Flatten_Variable (LP, FA.B_Scope),
-                  Vertex_Ctx    => Ctx.Vertex_Ctx,
-                  E_Loc         => N),
-               V);
+         Collect_Functions_And_Read_Locked_POs
+           (DSD,
+            FA.B_Scope,
+            Functions_Called   => Funcs,
+            Tasking            => FA.Tasking,
+            Generating_Globals => FA.Generating_Globals);
 
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (N),
+            Make_Basic_Attributes
+              (Var_Def    => Flatten_Variable (LP, FA.B_Scope),
+               Var_Ex_Use => Vars,
+               Sub_Called => Funcs,
+               Vertex_Ctx => Ctx.Vertex_Ctx,
+               E_Loc      => N),
+            V);
+         Ctx.Folded_Function_Checks.Append (LB);
+         Ctx.Folded_Function_Checks.Append (HB);
+
+         --  Work out which of the three variants (empty, full, unknown)
+         --  we have... When an iterator filter is present, we consider
+         --  the unknown case.
+
+         --  We have an empty range. We should complain!
+
+         if Is_Null_Range (LB, HB) then
             --  Flow goes into and out of the loop. Note that we do
             --  NOT hook up the loop body.
             CM (Union_Id (N)).Standard_Entry := V;
@@ -2918,20 +2947,11 @@ package body Flow.Control_Flow_Graph is
 
             Fully_Initialized := Flow_Id_Sets.Empty_Set;
 
+         --  The loop is executed exactly once
+
          elsif Compile_Time_Compare (LB, HB, Assume_Valid => True) = EQ
            and then No (Filter)
          then
-            --  The loop is executed exactly once
-
-            Add_Vertex
-              (FA,
-               Direct_Mapping_Id (N),
-               Make_Basic_Attributes
-                 (Var_Def       => Flatten_Variable (LP, FA.B_Scope),
-                  Vertex_Ctx    => Ctx.Vertex_Ctx,
-                  E_Loc         => N),
-               V);
-
             --  Flow goes into loop declaration and out of the loop statements
             CM (Union_Id (N)).Standard_Entry := V;
             CM (Union_Id (N)).Standard_Exits.Union
@@ -2942,18 +2962,9 @@ package body Flow.Control_Flow_Graph is
 
             Fully_Initialized := Variables_Initialized_By_Loop (N);
 
+         --  We need to make sure the loop is executed at least once
+
          elsif Not_Null_Range (LB, HB) and then No (Filter) then
-            --  We need to make sure the loop is executed at least once
-
-            Add_Vertex
-              (FA,
-               Direct_Mapping_Id (N),
-               Make_Basic_Attributes
-                 (Var_Def       => Flatten_Variable (LP, FA.B_Scope),
-                  Vertex_Ctx    => Ctx.Vertex_Ctx,
-                  E_Loc         => N),
-               V);
-
             --  Flow goes into the first statement and out the loop vertex
             CM (Union_Id (N)).Standard_Entry :=
               CM (Union_Id (Statements (N))).Standard_Entry;
@@ -2965,43 +2976,9 @@ package body Flow.Control_Flow_Graph is
 
             Fully_Initialized := Variables_Initialized_By_Loop (N);
 
+         --  We don't know if the loop will be executed or not
+
          else
-            --  We don't know if the loop will be executed or not
-            Collect_Functions_And_Read_Locked_POs
-              (DSD,
-               FA.B_Scope,
-               Functions_Called   => Funcs,
-               Tasking            => FA.Tasking,
-               Generating_Globals => FA.Generating_Globals);
-
-            Add_Vertex
-              (FA,
-               Direct_Mapping_Id (N),
-               Make_Basic_Attributes
-                 (Var_Def       => Flatten_Variable (LP, FA.B_Scope),
-                  Var_Ex_Use    =>
-                    Get_Variables
-                      (N                    => LB,
-                       Scope                => FA.B_Scope,
-                       Target_Name          => Null_Flow_Id,
-                       Fold_Functions       => Inputs,
-                       Use_Computed_Globals => not FA.Generating_Globals)
-                      or
-                    Get_Variables
-                      (N                    => HB,
-                       Scope                => FA.B_Scope,
-                       Target_Name          => Null_Flow_Id,
-                       Fold_Functions       => Inputs,
-                       Use_Computed_Globals => not FA.Generating_Globals)
-                      or
-                    Get_Filter_Variables (Filter),
-                  Sub_Called    => Funcs,
-                  Vertex_Ctx    => Ctx.Vertex_Ctx,
-                  E_Loc         => N),
-               V);
-            Ctx.Folded_Function_Checks.Append (LB);
-            Ctx.Folded_Function_Checks.Append (HB);
-
             --  Flow for the conditional for loop is like a while loop
             CM (Union_Id (N)).Standard_Entry := V;
             CM (Union_Id (N)).Standard_Exits.Insert (V);
