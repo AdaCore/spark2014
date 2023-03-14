@@ -243,6 +243,60 @@ package body SPARK_Definition.Annotate is
    --  has been detected, or if the pragma Annotate is not used for
    --  justification purposes.
 
+   procedure Check_Annotate_Entity_Argument
+     (Arg                 : Node_Id;
+      Nth                 : String;
+      Prag                : Node_Id;
+      Prag_Name           : String;
+      Continue            : out Boolean;
+      Ignore_SPARK_Status : Boolean := False);
+   --  Check that 'Arg' maps to an entity, and emit appropriate error message.
+   --  If generic, also checks that the pragma is at a location that will be
+   --  duplicated for instances.
+   --  Use continue flag to determine if subsequent checks should be performed
+   --  (continue if not generic, no error and entity in SPARK).
+   --  If Ignore_SPARK_Status flag is set, do not check whether entity is
+   --  in SPARK. In this case, the caller will determine the right entity
+   --  for the test.
+
+   type Annotate_Placement_Kind is
+     (Placed_At_Specification,
+      --  For subprogram/packages, placed at specification.
+      Placed_At_Task_Specification,
+      --  For task types, placed at specification.
+      Placed_At_Full_View, --  For type: placed at full view declaration
+      Placed_At_Private_View); --  For type: placed at private view declaration
+
+   procedure Check_Annotate_Placement
+     (Ent            : Entity_Id;
+      Ent_Decl_Kind  : Annotate_Placement_Kind;
+      Prag           : Node_Id;
+      Prag_Name      : String;
+      Decl_Name      : String;
+      Ok             : out Boolean;
+      Aspect_Allowed : Boolean := True);
+   --  Check that 'Prag' is declared immediately after declaration of
+   --  given entity, emitting appropriate error message.
+   --  In case of package specification, the allowed range for the pragma
+   --  is immediately after the 'is' of the package.
+   --  Aspect_Allowed should be false only in the cases where the pragma
+   --  must be found at a location differing from its argument entity.
+
+   procedure Check_Annotate_Placement
+     (E         : Entity_Id;
+      Prag      : Node_Id;
+      Prag_Name : String;
+      Ok        : out Boolean)
+     with Pre =>
+       Ekind (E) in Subprogram_Kind
+                  | E_Package
+                  | Generic_Unit_Kind
+                  | E_Task_Type
+                  | Entry_Kind;
+   --  Short form with common filling of arguments for case of entity
+   --  being the pragma argument, in particular covering
+   --  subprograms and packages.
+
    procedure Check_Automatic_Inst_And_HO_Specialization_Compatibility
      (Lemma : Subprogram_Kind_Id;
       Fun   : Function_Kind_Id)
@@ -269,7 +323,9 @@ package body SPARK_Definition.Annotate is
    --  Check validity of a pragma Annotate (GNATprove, Always_Return, E) and
    --  insert it in the Always_Return_Annotations map.
 
-   procedure Check_At_End_Borrow_Annotation (Arg3_Exp : Node_Id) with
+   procedure Check_At_End_Borrow_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag : Node_Id) with
      Pre => Present (Arg3_Exp);
    --  Check validity of a pragma Annotate (GNATprove, At_End_Borrow, E) and
    --  insert it in the At_End_Borrow_Annotations map.
@@ -304,14 +360,17 @@ package body SPARK_Definition.Annotate is
    --  Check validity of a pragma Annotate (GNATprove, Might_Not_Return, E)
    --  and insert it in the Might_Not_Return_Annotations map.
 
-   procedure Check_No_Wrap_Around_Annotation (Arg3_Exp : Node_Id);
+   procedure Check_No_Wrap_Around_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id);
    --  Check validity of a pragma Annotate (GNATprove, No_Wrap_Around, E)
    --  and insert it in the No_Wrap_Around_Annotations map.
 
    procedure Check_Ownership_Annotation
      (Aspect_Or_Pragma : String;
       Arg3_Exp         : Node_Id;
-      Arg4_Exp         : Node_Id);
+      Arg4_Exp         : Node_Id;
+      Prag             : Node_Id);
    --  Check validity of a pragma Annotate (GNATprove, Ownership, ???, E)
    --  and update the Ownership_Annotations map.
 
@@ -339,16 +398,15 @@ package body SPARK_Definition.Annotate is
       From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
       Aspect_Or_Pragma : constant String :=
         (if From_Aspect then "aspect" else "pragma");
-      E : Entity_Id;
+      E                : Entity_Id;
+      Ok               : Boolean;
 
    begin
       --  The third argument must be an entity
 
-      if Nkind (Arg3_Exp) not in N_Has_Entity then
-         Error_Msg_N
-           ("third argument of pragma Annotate Always_Return must be "
-            & "an entity",
-            Arg3_Exp);
+      Check_Annotate_Entity_Argument
+        (Arg3_Exp, "third", Prag, "Always_Return", Ok);
+      if not Ok then
          return;
       end if;
 
@@ -373,6 +431,7 @@ package body SPARK_Definition.Annotate is
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Always_Return must not also be marked with No_Return",
             Arg3_Exp);
+         return;
 
       --  It must not be a procedure with Might_Not_Return
 
@@ -383,6 +442,7 @@ package body SPARK_Definition.Annotate is
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Always_Return must not also be marked with Might_Not_Return",
             Arg3_Exp);
+         return;
       elsif Ekind (E) in E_Procedure | E_Generic_Procedure
         and then Might_Raise_Exceptions (E)
       then
@@ -391,6 +451,11 @@ package body SPARK_Definition.Annotate is
             & " Always_Return shall not raise exceptions",
             E);
          return;
+      else
+         Check_Annotate_Placement (E, Prag, "Always_Return", Ok);
+         if not Ok then
+            return;
+         end if;
       end if;
 
       --  Go through renamings to find the appropriate entity
@@ -399,12 +464,213 @@ package body SPARK_Definition.Annotate is
    end Check_Always_Return_Annotation;
 
    ------------------------------------
+   -- Check_Annotate_Entity_Argument --
+   ------------------------------------
+
+   procedure Check_Annotate_Entity_Argument
+     (Arg                 : Node_Id;
+      Nth                 : String;
+      Prag                : Node_Id;
+      Prag_Name           : String;
+      Continue            : out Boolean;
+      Ignore_SPARK_Status : Boolean := False)
+   is
+      E : Entity_Id;
+   begin
+      if Nkind (Arg) not in N_Has_Entity then
+         Error_Msg_N
+           (Nth & " argument of pragma Annotate "
+            & Prag_Name & " must be an entity",
+            Arg);
+         Continue := False;
+         return;
+      end if;
+      E := Entity (Arg);
+      case Ekind (E) is
+         when E_Package => Continue := True;
+         when Subprogram_Kind
+            | Type_Kind
+            | Entry_Kind =>
+            Continue := Ignore_SPARK_Status or else In_SPARK (E);
+         when Generic_Unit_Kind =>
+            --  For generic units: SPARK does not verify anything,
+            --  so we delay most checks on instance copy.
+            --  We nevertheless check the placement to make sure the pragma
+            --  is duplicated on instances.
+            Check_Annotate_Placement (E, Prag, Prag_Name, Continue);
+            Continue := False;
+         when others =>
+            Error_Msg_N
+              ("Entity argument of pragma Annotate G'N'A'Tprove "
+               & " shall be a subprogram, a type or a package",
+               Arg);
+            Continue := False;
+      end case;
+   end Check_Annotate_Entity_Argument;
+
+   procedure Check_Annotate_Placement
+     (Ent            : Entity_Id;
+      Ent_Decl_Kind  : Annotate_Placement_Kind;
+      Prag           : Node_Id;
+      Prag_Name      : String;
+      Decl_Name      : String;
+      Ok             : out Boolean;
+      Aspect_Allowed : Boolean := True)
+   is
+      Cursor        : Node_Id := Prag;
+      Target        : Node_Id;
+      Base_Ent      : Entity_Id;
+   begin
+
+      if From_Aspect_Specification (Prag)
+      then
+         Ok := Aspect_Allowed;
+      elsif not Is_List_Member (Cursor) then
+         Ok := False;
+      else
+         case Ent_Decl_Kind is
+            when Placed_At_Specification =>
+               case Ekind (Ent) is
+                  when Generic_Subprogram_Kind =>
+                     --  For generic subprograms, only aspect form of
+                     --  annotate will be duplicated as instances.
+                     Ok := False;
+                     Error_Msg_N
+                       ("pragma Annotate " & Prag_Name
+                        & " must be in aspect form for generic subprogram",
+                        Prag);
+                     return;
+                  when E_Generic_Package =>
+                     Target := Empty;
+                  when E_Package | Subprogram_Kind =>
+                     Base_Ent := Get_Renamed_Entity (Ent);
+                     Target := Parent (Declaration_Node (Base_Ent));
+                     if Nkind (Atree.Parent (Target)) = N_Compilation_Unit then
+                        --  For compilation units, pragmas are located at
+                        --  a special place in the tree. Note that the target
+                        --  node might be the pragma we are looking
+                        --  for already.
+                        Target :=
+                          First (Pragmas_After
+                                 (Aux_Decls_Node (Atree.Parent (Target))));
+                     elsif Ekind (Ent) in Subprogram_Kind
+                       and then Is_Generic_Instance (Base_Ent)
+                     then
+                        --  For generic instances of subprograms,
+                        --  the non-aspect pragmas are necessarily placed
+                        --  after the instantiation node.
+                        Target :=
+                          Sem_Ch12.Get_Unit_Instantiation_Node
+                            (Defining_Entity (Parent (Target)));
+                     end if;
+                  when Entry_Kind =>
+                     Target := Declaration_Node (Ent);
+                  when others => raise Program_Error;
+               end case;
+            when Placed_At_Full_View
+               | Placed_At_Private_View
+               | Placed_At_Task_Specification =>
+               pragma Assert (Ekind (Ent) in Type_Kind);
+               Target := Unique_Entity (Ent);
+         end case;
+         loop
+            if No (Cursor) then
+               Ok := Ent_Decl_Kind = Placed_At_Specification
+                 and then Ekind (Ent) in E_Package
+                 and then Parent (Prag) =
+                 Package_Specification (Get_Renamed_Entity (Ent));
+               goto Not_Found;
+            end if;
+            case Ent_Decl_Kind is
+               when Placed_At_Specification =>
+                  exit when Cursor = Target;
+               when Placed_At_Task_Specification =>
+                  exit when Nkind (Cursor) in N_Task_Type_Declaration
+                    and then Unique_Defining_Entity (Cursor) = Target;
+               when Placed_At_Full_View =>
+                  exit when Nkind (Cursor) in N_Full_Type_Declaration
+                    and then Unique_Defining_Entity (Cursor) = Target;
+               when Placed_At_Private_View =>
+                  exit when Nkind (Cursor) in N_Private_Type_Declaration
+                                            | N_Private_Extension_Declaration
+                    and then Unique_Defining_Entity (Cursor) = Target;
+            end case;
+            if Decl_Starts_Pragma_Annotate_Range (Cursor)
+              and then not (Nkind (Cursor) in N_Pragma | N_Null_Statement)
+            then
+               Ok := False;
+               goto Not_Found;
+            end if;
+            Prev (Cursor);
+         end loop;
+         Ok := True;
+         <<Not_Found>>
+      end if;
+      if not Ok then
+         Error_Msg_N
+           ("pragma Annotate " & Prag_Name & " must immediately follow the "
+            & Decl_Name,
+            Prag);
+      end if;
+      return;
+   end Check_Annotate_Placement;
+
+   procedure Check_Annotate_Placement
+     (E         : Entity_Id;
+      Prag      : Node_Id;
+      Prag_Name : String;
+      Ok        : out Boolean)
+   is
+   begin
+      case Ekind (E) is
+         when Subprogram_Kind | Generic_Subprogram_Kind =>
+            Check_Annotate_Placement
+              (E,
+               Placed_At_Specification,
+               Prag,
+               Prag_Name,
+               "specification of subprogram " & Source_Name (E),
+               Ok);
+         when Entry_Kind =>
+            Check_Annotate_Placement
+              (E,
+               Placed_At_Specification,
+               Prag,
+               Prag_Name,
+               "declaration of entry " & Source_Name (E),
+               Ok);
+         when E_Package | E_Generic_Package =>
+            Check_Annotate_Placement
+              (E,
+               Placed_At_Specification,
+               Prag,
+               Prag_Name,
+               "beginning or end of package specification " & Source_Name (E),
+               Ok);
+         when E_Task_Type =>
+            Check_Annotate_Placement
+              (E,
+               Placed_At_Task_Specification,
+               Prag,
+               Prag_Name,
+               "declaration of task " & Source_Name (E),
+               Ok);
+         when others =>
+            pragma Assert (False);
+      end case;
+   end Check_Annotate_Placement;
+
+   ------------------------------------
    -- Check_At_End_Borrow_Annotation --
    ------------------------------------
 
-   procedure Check_At_End_Borrow_Annotation (Arg3_Exp : Node_Id) is
+   procedure Check_At_End_Borrow_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id) is
 
-      procedure Check_At_End_Borrow_Entity (E : Entity_Id);
+      procedure Check_At_End_Borrow_Entity
+        (E  : Entity_Id;
+         Ok : out Boolean);
       --  E should be a ghost identity expression function taking (and
       --  returning) an access-to-constant type.
 
@@ -412,10 +678,14 @@ package body SPARK_Definition.Annotate is
       -- Check_At_End_Borrow_Entity --
       --------------------------------
 
-      procedure Check_At_End_Borrow_Entity (E : Entity_Id) is
+      procedure Check_At_End_Borrow_Entity
+        (E  : Entity_Id;
+         Ok : out Boolean)
+      is
          Path      : constant Entity_Id := First_Formal (E);
          Contracts : constant Node_Id := Contract (E);
       begin
+         Ok := False;
          if No (Path)
            or else Present (Next_Formal (Path))
          then
@@ -457,24 +727,26 @@ package body SPARK_Definition.Annotate is
                   Error_Msg_N
                     ("At_End_Borrow function must be the identity function",
                      E);
+               else
+                  Ok := True;
                end if;
             end;
          end if;
       end Check_At_End_Borrow_Entity;
 
-      E : Entity_Id;
+      E  : Entity_Id;
+      Ok : Boolean;
 
    --  Start of processing for Check_At_End_Borrow_Annotation
 
    begin
-      if Nkind (Arg3_Exp) not in N_Has_Entity then
-         Error_Msg_N
-           ("third parameter of a pragma At_End_Borrow must be an entity",
-            Arg3_Exp);
+
+      Check_Annotate_Entity_Argument
+        (Arg3_Exp, "third", Prag, "At_End_Borrow", Ok);
+      if not Ok then
          return;
-      else
-         E := Entity (Arg3_Exp);
       end if;
+      E := Entity (Arg3_Exp);
 
       --  This entity must be a function
 
@@ -484,7 +756,14 @@ package body SPARK_Definition.Annotate is
             Arg3_Exp);
          return;
       else
-         Check_At_End_Borrow_Entity (E);
+         Check_At_End_Borrow_Entity (E, Ok);
+         if not Ok then
+            return;
+         end if;
+         Check_Annotate_Placement (E, Prag, "At_End_Borrow", Ok);
+         if not Ok then
+            return;
+         end if;
       end if;
 
       --  Go through renamings to find the appropriate entity
@@ -720,15 +999,14 @@ package body SPARK_Definition.Annotate is
       From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
       Aspect_Or_Pragma : constant String :=
         (if From_Aspect then "aspect" else "pragma");
-      E : Entity_Id;
+      E                : Entity_Id;
+      Ok               : Boolean;
    begin
       --  The third argument must be an entity
 
-      if Nkind (Arg3_Exp) not in N_Has_Entity then
-         Error_Msg_N
-           ("third argument of pragma Annotate Automatic_Instantiation must be"
-            & " an entity",
-            Arg3_Exp);
+      Check_Annotate_Entity_Argument
+        (Arg3_Exp, "third", Prag, "Automatic_Instantiation", Ok);
+      if not Ok then
          return;
       end if;
 
@@ -813,6 +1091,11 @@ package body SPARK_Definition.Annotate is
             return;
          end if;
       end;
+
+      Check_Annotate_Placement (E, Prag, "Automatic_Instantiation", Ok);
+      if not Ok then
+         return;
+      end if;
 
       --  Check that E is declared directly after a function
 
@@ -923,6 +1206,7 @@ package body SPARK_Definition.Annotate is
             end if;
          end loop;
       end;
+
    end Check_Automatic_Instantiation_Annotation;
 
    --------------------------------------------------
@@ -937,14 +1221,14 @@ package body SPARK_Definition.Annotate is
       Aspect_Or_Pragma : constant String :=
         (if From_Aspect then "aspect" else "pragma");
       E                : Entity_Id;
+      Okay             : Boolean;
+      --  Ok would shadow enumeration value OK here.
    begin
       --  The third argument must be an entity
 
-      if Nkind (Arg3_Exp) not in N_Has_Entity then
-         Error_Msg_N
-           ("third argument of pragma Annotate Higher_Order_Specialization "
-            & "must be an entity",
-            Arg3_Exp);
+      Check_Annotate_Entity_Argument
+        (Arg3_Exp, "third", Prag, "Higher_Order_Specialization", Okay);
+      if not Okay then
          return;
       end if;
 
@@ -1249,6 +1533,11 @@ package body SPARK_Definition.Annotate is
          end if;
       end;
 
+      Check_Annotate_Placement (E, Prag, "Higher_Order_Specialization", Okay);
+      if not Okay then
+         return;
+      end if;
+
       Higher_Order_Spec_Annotations.Include (E, Node_Sets.Empty_Set);
    end Check_Higher_Order_Specialization_Annotation;
 
@@ -1260,6 +1549,7 @@ package body SPARK_Definition.Annotate is
       E     : Entity_Id;
       Nodes : Common_Containers.Node_Lists.List;
       Value : Node_Id;
+      Ok    : Boolean;
 
       package NL renames Common_Containers.Node_Lists;
 
@@ -1268,11 +1558,9 @@ package body SPARK_Definition.Annotate is
    begin
       --  The third argument must be an entity
 
-      if Nkind (Arg3_Exp) not in N_Has_Entity then
-         Error_Msg_N
-           ("third argument of pragma Annotate Inline_For_Proof must be "
-            & "an entity",
-            Arg3_Exp);
+      Check_Annotate_Entity_Argument
+        (Arg3_Exp, "third", Prag, "Inline_For_Proof", Ok);
+      if not Ok then
          return;
       end if;
 
@@ -1360,6 +1648,11 @@ package body SPARK_Definition.Annotate is
            ("function annotated with both Higher_Order_Specialization and"
             & " Inline_For_Proof shall have a postcondition",
             E);
+         return;
+      end if;
+
+      Check_Annotate_Placement (E, Prag, "Inline_For_Proof", Ok);
+      if not Ok then
          return;
       end if;
 
@@ -1453,21 +1746,21 @@ package body SPARK_Definition.Annotate is
       procedure Check_Common_Properties
         (Container_Ty   : Type_Kind_Id;
          E              : Entity_Id;
-         Ok             : in out Boolean;
+         Ok             : out Boolean;
          Name_For_Error : String);
       --  Checks that are common for Model/Contains function:
       --  No Globals, not volatile, primitive.
 
       procedure Check_Contains_Entity
         (E            : Entity_Id;
-         Ok           : in out Boolean;
+         Ok           : out Boolean;
          Cont_Element : out Entity_Id);
       --  Checks that E is a valid Contains function for a type with an
       --  Iterable aspect. Initializes Cont_Element correctly if succeeding.
 
       procedure Check_Model_Entity
         (E            : Entity_Id;
-         Ok           : in out Boolean;
+         Ok           : out Boolean;
          Cont_Element : out Entity_Id);
       --  Checks that E is a valid Model function for a type with an
       --  Iterable aspect. Initializes Cont_Element correctly if succeeding.
@@ -1490,12 +1783,16 @@ package body SPARK_Definition.Annotate is
       procedure Check_Common_Properties
         (Container_Ty   : Type_Kind_Id;
          E              : Entity_Id;
-         Ok             : in out Boolean;
+         Ok             : out Boolean;
          Name_For_Error : String)
       is
          Globals : Global_Flow_Ids;
       begin
          Ok := False;
+         if not In_SPARK (E) then
+            Mark_Violation (Arg4_Exp, From => E);
+            return;
+         end if;
          if Scope (E) /= Scope (Container_Ty) then
             Error_Msg_N
               (Name_For_Error
@@ -1535,47 +1832,61 @@ package body SPARK_Definition.Annotate is
 
       procedure Check_Contains_Entity
         (E            : Entity_Id;
-         Ok           : in out Boolean;
-         Cont_Element : out Entity_Id) is
-         C_Param : constant Node_Id := First_Formal (E);
-         E_Param : constant Node_Id :=
+         Ok           : out Boolean;
+         Cont_Element : out Entity_Id)
+      is
+
+         C_Param        : constant Node_Id := First_Formal (E);
+         E_Param        : constant Node_Id :=
            (if Present (C_Param) then Next_Formal (C_Param) else Empty);
+
+         Container_Type : Entity_Id;
+         --  Type of the first argument of the Contains function
+         Element_Type   : Entity_Id;
+         --  Type of the second argument of the Contains function
+
       begin
+
+         Ok := False;
+
          if No (E_Param) or else Present (Next_Formal (E_Param)) then
             Error_Msg_N
               ("Contains function must have exactly two parameters", E);
-         elsif not Is_Standard_Boolean_Type (Etype (E)) then
+            return;
+         end if;
+
+         Container_Type := Etype (C_Param);
+         Element_Type := Etype (E_Param);
+
+         if not In_SPARK (Container_Type) then
+            return;
+            --  No needs for checks if container type is not in SPARK,
+            --  the annotation can be silently ignored in that case.
+         end if;
+
+         if not Is_Standard_Boolean_Type (Etype (E)) then
             Error_Msg_N
               ("Contains function must return Booleans", E);
          else
-            declare
-               Container_Type : constant Entity_Id := Etype (C_Param);
-               --  Type of the first argument of the Contains function
-
-               Element_Type   : constant Entity_Id := Etype (E_Param);
-               --  Type of the second argument of the Contains function
-
-            begin
-               Cont_Element :=
-                 Get_Iterable_Type_Primitive (Container_Type, Name_Element);
-               --  Element primitive of Container_Type
-               if No (Cont_Element) then
-                  Error_Msg_N
-                    ("first parameter of Contains function must allow for of "
-                     & "iteration", C_Param);
-               elsif not In_SPARK (Cont_Element) then
-                  Error_Msg_N
-                    ("first parameter of Contains functions must allow for of "
-                     & "iteration in SPARK", C_Param);
-               elsif Retysp (Etype (Cont_Element)) /= Retysp (Element_Type)
-               then
-                  Error_Msg_N
-                    ("second parameter of Contains must have the type of "
-                     & "elements", E_Param);
-               else
-                  Check_Common_Properties (Container_Type, E, Ok, "Contains");
-               end if;
-            end;
+            Cont_Element :=
+              Get_Iterable_Type_Primitive (Container_Type, Name_Element);
+            --  Element primitive of Container_Type
+            if No (Cont_Element) then
+               Error_Msg_N
+                 ("first parameter of Contains function must allow for of "
+                  & "iteration", C_Param);
+            elsif not In_SPARK (Cont_Element) then
+               Error_Msg_N
+                 ("first parameter of Contains functions must allow for of "
+                  & "iteration in SPARK", C_Param);
+            elsif Retysp (Etype (Cont_Element)) /= Retysp (Element_Type)
+            then
+               Error_Msg_N
+                 ("second parameter of Contains must have the type of "
+                  & "elements", E_Param);
+            else
+               Check_Common_Properties (Container_Type, E, Ok, "Contains");
+            end if;
          end if;
       end Check_Contains_Entity;
 
@@ -1585,67 +1896,80 @@ package body SPARK_Definition.Annotate is
 
       procedure Check_Model_Entity
         (E            : Entity_Id;
-         Ok           : in out Boolean;
-         Cont_Element : out Entity_Id) is
-         Param : constant Node_Id := First_Formal (E);
+         Ok           : out Boolean;
+         Cont_Element : out Entity_Id)
+      is
+
+         Param          : constant Node_Id := First_Formal (E);
+
+         Model_Type     : constant Entity_Id := Etype (E);
+         --  Return type of the model function
+
+         Container_Type : Entity_Id;
+         --  Type of first argument of the model function
+
+         Model_Element  : Entity_Id;
+
       begin
+
+         Ok := False;
+
          if No (Param) or else Present (Next_Formal (Param)) then
             Error_Msg_N
               ("Model function must have exactly one parameter", E);
+            return;
+         end if;
+
+         Container_Type := Etype (Param);
+
+         if not In_SPARK (Container_Type) then
+            return;
+            --  No needs for checks if container type is not in SPARK,
+            --  the annotation can be silently ignored in that case.
+         end if;
+
+         Cont_Element :=
+           Get_Iterable_Type_Primitive (Container_Type, Name_Element);
+         Model_Element :=
+           Get_Iterable_Type_Primitive (Model_Type, Name_Element);
+
+         if No (Cont_Element) then
+            Error_Msg_N
+              ("parameter of Model function must allow for of iteration",
+               Param);
+         elsif not In_SPARK (Cont_Element) then
+            Error_Msg_N
+              ("parameter of Model function must allow for of iteration "
+               & "in SPARK", Param);
+         elsif No (Model_Element) then
+            Error_Msg_N
+              ("return type of Model function must allow for of "
+               & "iteration", E);
+         elsif not In_SPARK (Model_Element) then
+            Error_Msg_N
+              ("return type of Model function must allow for of "
+               & "iteration in SPARK", E);
+         elsif Retysp (Etype (Cont_Element))
+           /= Retysp (Etype (Model_Element))
+         then
+            Error_Msg_N
+              ("parameter and return type of Model function must "
+               & "allow for of iteration with the same element type",
+               E);
+         elsif Has_Controlling_Result (E) then
+            Error_Msg_N
+              ("Model function must not have a controlling result", E);
          else
-            declare
-               Container_Type : constant Entity_Id := Etype (Param);
-               --  Type of first argument of the model function
-
-               Model_Type     : constant Entity_Id := Etype (E);
-               --  Return type of the model function
-
-               Model_Element  : constant Entity_Id :=
-                 Get_Iterable_Type_Primitive (Model_Type, Name_Element);
-               --  Element primitive of Model_Type
-
-            begin
-               Cont_Element :=
-                 Get_Iterable_Type_Primitive (Container_Type, Name_Element);
-               if No (Cont_Element) then
-                  Error_Msg_N
-                    ("parameter of Model function must allow for of iteration",
-                     Param);
-               elsif not In_SPARK (Cont_Element) then
-                  Error_Msg_N
-                    ("parameter of Model function must allow for of iteration "
-                       & "in SPARK", Param);
-               elsif No (Model_Element) then
-                  Error_Msg_N
-                    ("return type of Model function must allow for of "
-                     & "iteration", E);
-               elsif not In_SPARK (Model_Element) then
-                  Error_Msg_N
-                    ("return type of Model function must allow for of "
-                     & "iteration in SPARK", E);
-               elsif Retysp (Etype (Cont_Element))
-                 /= Retysp (Etype (Model_Element))
-               then
-                  Error_Msg_N
-                    ("parameter and return type of Model function must "
-                     & "allow for of iteration with the same element type",
-                     E);
-               elsif Has_Controlling_Result (E) then
-                  Error_Msg_N
-                    ("Model function must not have a controlling result", E);
-               else
-                  Check_Common_Properties (Container_Type, E, Ok, "Model");
-                  if Ok and then
-                    Unchecked_Full_Type (Find_Model_Root (Model_Type)) =
-                      Unchecked_Full_Type (Container_Type)
-                  then
-                     Ok := False;
-                     Error_Msg_N
-                       ("adding this Model function would produce a circular "
-                        & "definition for container model", E);
-                  end if;
-               end if;
-            end;
+            Check_Common_Properties (Container_Type, E, Ok, "Model");
+            if Ok and then
+              Unchecked_Full_Type (Find_Model_Root (Model_Type)) =
+                Unchecked_Full_Type (Container_Type)
+            then
+               Ok := False;
+               Error_Msg_N
+                 ("adding this Model function would produce a circular "
+                  & "definition for container model", E);
+            end if;
          end if;
       end Check_Model_Entity;
 
@@ -1707,7 +2031,7 @@ package body SPARK_Definition.Annotate is
       Args_Str     : constant String_Id := Strval (Arg3_Exp);
       Kind         : Iterable_Kind;
       New_Prim     : Entity_Id;
-      Ok           : Boolean := False;
+      Ok           : Boolean;
       Cont_Element : Entity_Id;
       --  "Element" primitive for relevant container.
       --  Set at most once.
@@ -1717,7 +2041,13 @@ package body SPARK_Definition.Annotate is
    begin
       --  The fourth argument must be an entity
 
-      pragma Assert (Present (Arg4_Exp) and then Present (Entity (Arg4_Exp)));
+      Check_Annotate_Entity_Argument
+        (Arg4_Exp, "fourth", Prag, "Iterable_For_Proof", Ok,
+         Ignore_SPARK_Status => True);
+      if not Ok then
+         return;
+      end if;
+
       New_Prim := Entity (Arg4_Exp);
 
       if Ekind (New_Prim) /= E_Function then
@@ -1725,14 +2055,6 @@ package body SPARK_Definition.Annotate is
            ("the entity of a Gnatprove Annotate Iterable_For_Proof "
             & "pragma must be a function",
             New_Prim);
-         return;
-      end if;
-
-      --  Pull function specified by the annotation for translation (and report
-      --  a violation this function is not in SPARK).
-
-      if not In_SPARK (New_Prim) then
-         Mark_Violation (Arg4_Exp, From => New_Prim);
          return;
       end if;
 
@@ -1754,36 +2076,17 @@ package body SPARK_Definition.Annotate is
          return;
       end if;
 
-      --  Check that pragma is placed immediately after declaration
-      --  of 'Element' primitive
-      declare
-         Cursor : Node_Id := Parent (Declaration_Node (Cont_Element));
-      begin
-         if Is_List_Member (Cursor)
-           and then Decl_Starts_Pragma_Annotate_Range (Cursor)
-         then
-            Next (Cursor);
-            while Present (Cursor) loop
-               if Is_Pragma_Annotate_GNATprove (Cursor)
-               then
-                  if Cursor = Prag
-                  then
-                     goto Found;
-                  end if;
-               elsif Decl_Starts_Pragma_Annotate_Range (Cursor)
-                 and then
-                   Nkind (Cursor) not in N_Pragma | N_Null_Statement
-               then
-                  exit;
-               end if;
-               Next (Cursor);
-            end loop;
-         end if;
-         Error_Msg_N ("pragma Iterable_For_Proof must immediately follow"
-                      & " the declaration of the Element", Prag);
+      Check_Annotate_Placement
+        (Cont_Element,
+         Placed_At_Specification,
+         Prag,
+         "Iterable_For_Proof",
+         "declaration of Iterable primitive Element",
+         Ok,
+         False);
+      if not Ok then
          return;
-         <<Found>>
-      end;
+      end if;
 
       Process_Iterable_Annotation (Kind, New_Prim);
 
@@ -1796,16 +2099,15 @@ package body SPARK_Definition.Annotate is
    procedure Check_Logical_Equal_Annotation
      (Arg3_Exp : Node_Id; Prag : Node_Id)
    is
-      E : Entity_Id;
+      E  : Entity_Id;
+      Ok : Boolean;
 
    begin
       --  The third argument must be an entity
 
-      if Nkind (Arg3_Exp) not in N_Has_Entity then
-         Error_Msg_N
-           ("third argument of pragma Annotate Logical_Equal must be "
-            & "an entity",
-            Arg3_Exp);
+      Check_Annotate_Entity_Argument
+        (Arg3_Exp, "third", Prag, "Logical_Equal", Ok);
+      if not Ok then
          return;
       end if;
 
@@ -1882,6 +2184,11 @@ package body SPARK_Definition.Annotate is
          return;
       end if;
 
+      Check_Annotate_Placement (E, Prag, "Logical_Equal", Ok);
+      if not Ok then
+         return;
+      end if;
+
       Logical_Eq_Annotations.Include (E);
       Inline_Pragmas.Include (E, Prag);
    end Check_Logical_Equal_Annotation;
@@ -1898,21 +2205,19 @@ package body SPARK_Definition.Annotate is
       Aspect_Or_Pragma : constant String :=
         (if From_Aspect then "aspect" else "pragma");
       E                : Entity_Id;
+      Ok               : Boolean;
 
    begin
       --  Correct number of arguments was checked before, hence third and last
       --  argument is correct in the aspect case, since it is generated.
 
-      if Nkind (Arg3_Exp) not in N_Has_Entity then
-         pragma Assert (not From_Aspect);
-         Error_Msg_N
-           ("third argument of pragma Annotate Might_Not_Return must be "
-            & "an entity",
-            Arg3_Exp);
+      Check_Annotate_Entity_Argument
+        (Arg3_Exp, "third", Prag, "Might_Not_Return", Ok);
+      if not Ok then
          return;
-      else
-         E := Unique_Entity (Entity (Arg3_Exp));
       end if;
+
+      E := Unique_Entity (Entity (Arg3_Exp));
 
       --  This entity must be a (generic) procedure
 
@@ -1930,7 +2235,7 @@ package body SPARK_Definition.Annotate is
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Might_Not_Return must not also be marked with No_Return",
             Arg3_Exp);
-
+         return;
       --  The procedure should not be annotated as Always_Return
 
       elsif Has_Always_Return_Annotation (E) then
@@ -1938,7 +2243,7 @@ package body SPARK_Definition.Annotate is
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Might_Not_Return must not also be marked with Always_Return",
             Arg3_Exp);
-
+         return;
       --  The procedure should not be dispatching
 
       elsif Is_Dispatching_Operation (E) then
@@ -1946,6 +2251,12 @@ package body SPARK_Definition.Annotate is
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Might_Not_Return must not also be dispatching",
             Arg3_Exp);
+         return;
+      else
+         Check_Annotate_Placement (E, Prag, "Might_Not_Return", Ok);
+         if not Ok then
+            return;
+         end if;
       end if;
 
       Might_Not_Return_Annotations.Include (E);
@@ -1955,17 +2266,19 @@ package body SPARK_Definition.Annotate is
    -- Check_No_Wrap_Around_Annotation --
    -------------------------------------
 
-   procedure Check_No_Wrap_Around_Annotation (Arg3_Exp : Node_Id) is
+   procedure Check_No_Wrap_Around_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag : Node_Id)
+   is
       E    : Entity_Id;
       Decl : Node_Id;
       Base : Entity_Id;
+      Ok   : Boolean;
 
    begin
-      if Nkind (Arg3_Exp) not in N_Has_Entity then
-         Error_Msg_N
-           ("third argument of pragma Annotate No_Wrap_Around must be "
-            & "an entity",
-            Arg3_Exp);
+      Check_Annotate_Entity_Argument
+        (Arg3_Exp, "third", Prag, "No_Wrap_Around", Ok);
+      if not Ok then
          return;
       end if;
 
@@ -2000,6 +2313,14 @@ package body SPARK_Definition.Annotate is
       end if;
       pragma Assert (Ekind (Base) = E_Modular_Integer_Type);
 
+      Check_Annotate_Placement
+        (E,
+         Placed_At_Full_View,
+         Prag,
+         "No_Wrap_Around",
+         "full type declaration of " & Source_Name (E),
+         Ok);
+
       Set_Has_No_Wrap_Around_Annotation (Base);
    end Check_No_Wrap_Around_Annotation;
 
@@ -2010,21 +2331,24 @@ package body SPARK_Definition.Annotate is
    procedure Check_Ownership_Annotation
      (Aspect_Or_Pragma : String;
       Arg3_Exp         : Node_Id;
-      Arg4_Exp         : Node_Id)
+      Arg4_Exp         : Node_Id;
+      Prag             : Node_Id)
    is
       Last_Exp  : constant Node_Id :=
         (if No (Arg4_Exp) then Arg3_Exp else Arg4_Exp);
       Extra_Exp : constant Node_Id :=
         (if No (Arg4_Exp) then Empty else Arg3_Exp);
+      Ok        : Boolean;
 
    begin
       --  The last argument must be an entity
 
-      if Nkind (Last_Exp) not in N_Has_Entity then
-         Error_Msg_N
-           ("last argument of " & Aspect_Or_Pragma
-            & " Annotate Ownership must be an entity",
-            Last_Exp);
+      Check_Annotate_Entity_Argument
+        (Last_Exp, "last", Prag, "Ownership", Ok,
+         Ignore_SPARK_Status => True);
+      --  It would be fine to take SPARK status into account for type case,
+      --    but not in function case.
+      if not Ok then
          return;
       end if;
 
@@ -2048,6 +2372,11 @@ package body SPARK_Definition.Annotate is
       begin
          if Ekind (Ent) in Type_Kind then
 
+            if not In_SPARK (Ent) then
+               return;
+               --  Annotation Irrelevant if type not in SPARK
+            end if;
+
             --  Check that the entity is a private type whose whose full view
             --  has SPARK_Mode => Off.
 
@@ -2063,16 +2392,36 @@ package body SPARK_Definition.Annotate is
                   Ent);
 
             --  pragma Annotate (GNATprove, Ownership, Ent);
-
-            elsif No (Extra_Exp) then
-               Ownership_Annotations.Insert
-                 (Ent, (Needs_Reclamation => False));
-
+            --  or else
             --  pragma Annotate (GNATprove, Ownership, Needs_Reclamation, Ent);
 
-            elsif Kind = "needs_reclamation" then
-               Ownership_Annotations.Insert
-                 (Ent, (Needs_Reclamation => True, others => <>));
+            elsif No (Extra_Exp) or else Kind = "needs_reclamation" then
+               Check_Annotate_Placement
+                 (Ent,
+                  Placed_At_Private_View,
+                  Prag,
+                  "Ownership",
+                  " private declaration of type " & Source_Name (Ent),
+                  Ok);
+               if not Ok then
+                  return;
+               end if;
+
+               declare
+                  Position : Node_To_Ownership_Maps.Cursor;
+               begin
+                  Ownership_Annotations.Insert
+                    (Ent,
+                     (if No (Extra_Exp) then (Needs_Reclamation => False)
+                      else (Needs_Reclamation => True, others => <>)),
+                     Position,
+                     Ok
+                    );
+                  if not Ok then
+                     Error_Msg_N ("type shall not have multiple ownership "
+                                  & "annotations", Ent);
+                  end if;
+               end;
 
             --  Nothing else is allowed
 
@@ -2114,6 +2463,20 @@ package body SPARK_Definition.Annotate is
                   Ent);
 
             else
+
+               --  Annotation for a type that is not in SPARK is irrelevant.
+
+               if not In_SPARK (Etype (First_Formal (Ent))) then
+                  return;
+               end if;
+
+               --  Function must be in SPARK.
+
+               if not In_SPARK (Ent) then
+                  Mark_Violation (Last_Exp, From => Ent);
+                  return;
+               end if;
+
                declare
                   G_Typ   : constant Entity_Id :=
                     Retysp (Etype (First_Formal (Ent)));
@@ -2185,19 +2548,33 @@ package body SPARK_Definition.Annotate is
                         & " annotation",
                         Ent, Ownership_Annotations (Typ).Check_Function);
 
+                  elsif Scope (Typ) /= Scope (Ent) then
+                     Error_Msg_N
+                       ("ownership function shall be declared in same "
+                        & "declaration list as input type",
+                        Ent);
+
                   --  pragma Annotate
                   --   (GNATprove, Ownership, Needs_Reclamation, Ent);
-
-                  elsif Kind = "needs_reclamation" then
-                     Ownership_Annotations (Typ).Check_Function := Ent;
-                     Ownership_Annotations (Typ).Reclaimed := False;
-
+                  --  or else
                   --  pragma Annotate
                   --   (GNATprove, Ownership, Is_Reclaimed, Ent);
 
-                  elsif Kind = "is_reclaimed" then
+                  elsif Kind = "needs_reclamation"
+                    or else Kind = "is_reclaimed"
+                  then
+
+                     --  Check placement. No good solution here.
+
+                     Check_Annotate_Placement
+                       (Ent, Prag, "Ownership", Ok);
+                     if not Ok then
+                        return;
+                     end if;
+
                      Ownership_Annotations (Typ).Check_Function := Ent;
-                     Ownership_Annotations (Typ).Reclaimed := True;
+                     Ownership_Annotations (Typ).Reclaimed :=
+                       (Kind = "is_reclaimed");
 
                   --  Nothing else is allowed
 
@@ -2893,7 +3270,7 @@ package body SPARK_Definition.Annotate is
       --  Annotations with 3 arguments
 
       if Name = "at_end_borrow" then
-         Check_At_End_Borrow_Annotation (Arg3_Exp);
+         Check_At_End_Borrow_Annotation (Arg3_Exp, Prag);
 
       elsif Name = "automatic_instantiation" then
          Check_Automatic_Instantiation_Annotation (Arg3_Exp, Prag);
@@ -2911,7 +3288,7 @@ package body SPARK_Definition.Annotate is
          Check_Might_Not_Return_Annotation (Arg3_Exp, Prag);
 
       elsif Name = "no_wrap_around" then
-         Check_No_Wrap_Around_Annotation (Arg3_Exp);
+         Check_No_Wrap_Around_Annotation (Arg3_Exp, Prag);
 
       elsif Name in "always_return" | "terminating" then
          if Name = "terminating" then
@@ -2925,7 +3302,8 @@ package body SPARK_Definition.Annotate is
       --  Annotations with 4 arguments
 
       elsif Name = "ownership" then
-         Check_Ownership_Annotation (Aspect_Or_Pragma, Arg3_Exp, Arg4_Exp);
+         Check_Ownership_Annotation
+           (Aspect_Or_Pragma, Arg3_Exp, Arg4_Exp, Prag);
 
       elsif Name = "iterable_for_proof" then
          Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp, Prag);
@@ -2994,23 +3372,22 @@ package body SPARK_Definition.Annotate is
       From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
       Aspect_Or_Pragma : constant String :=
         (if From_Aspect then "aspect" else "pragma");
-      E : Entity_Id;
+      E                : Entity_Id;
+      Ok               : Boolean;
    begin
-      if Nkind (Arg3_Exp) not in N_Has_Entity then
-         pragma Assert (not From_Aspect);
-         Error_Msg_N
-           ("third argument of pragma Annotate Skip_Proof must be an entity",
-            Arg3_Exp);
+      Check_Annotate_Entity_Argument
+        (Arg3_Exp, "third", Prag, "Skip_Proof", Ok);
+      if not Ok then
          return;
-      else
-         E := Unique_Entity (Entity (Arg3_Exp));
       end if;
+
+      E := Unique_Entity (Entity (Arg3_Exp));
 
       --  This entity must be a unit of analysis
 
       if Ekind (E) not in Subprogram_Kind
                         | Generic_Subprogram_Kind
-                        | Task_Kind
+                        | E_Task_Type
                         | Entry_Kind
                         | E_Package
                         | E_Generic_Package
@@ -3020,6 +3397,11 @@ package body SPARK_Definition.Annotate is
             & " Annotate Skip_Proof must apply to a"
             & " subprogram, task, entry or package",
             Arg3_Exp);
+         return;
+      end if;
+
+      Check_Annotate_Placement (E, Prag, "Skip_Proof", Ok);
+      if not Ok then
          return;
       end if;
 

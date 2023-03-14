@@ -12,6 +12,8 @@ bad.adb:24:07: error: call to possibly nonreturning procedure outside a (possibl
 bad.adb:30:07: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
 bad.adb:30:07: error: consider annotating caller "Proc" with pragma Annotate (GNATprove, Might_Not_Return)
 gnatprove: error during generation of Global contracts
+weird.adb:10:14: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
+weird.adb:10:14: error: consider annotating caller "P" with pragma Annotate (GNATprove, Might_Not_Return)
 weird.ads:5:06: error: procedure with aspect Annotate Might_Not_Return must not also be marked with Always_Return
 weird.ads:10:06: error: procedure with aspect Annotate Always_Return must not also be marked with Might_Not_Return
 weird.ads:14:06: error: procedure with aspect Annotate Always_Return must not also be marked with No_Return
