@@ -13726,8 +13726,7 @@ package body Gnat2Why.Expr is
                      Next (Expression);
                   end loop;
 
-               else
-                  pragma Assert (Present (Association));
+               elsif Present (Association) then
 
                   --  Go over the choices  which are not the others choice.
                   --  Note that a single choice is handled as an others choice.
@@ -13940,9 +13939,7 @@ package body Gnat2Why.Expr is
                         Else_Part   => Else_Part);
                   end;
 
-               else
-                  pragma Assert (Present (Association));
-
+               elsif Present (Association) then
                   declare
                      Cond        : W_Pred_Id;
                      Then_Part   : W_Pred_Id;
@@ -13996,6 +13993,11 @@ package body Gnat2Why.Expr is
                            Else_Part   => Else_Part);
                      end if;
                   end;
+
+               --  Expr is the empty string or a null aggregate
+
+               else
+                  return True_Pred;
                end if;
             end Transform_Rec_Complex_Aggregate;
 
