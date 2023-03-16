@@ -17668,6 +17668,11 @@ package body Gnat2Why.Expr is
          =>
             null;
 
+         when N_Raise_xxx_Error =>
+
+            pragma Assert (No (Condition (Decl)));
+            return Transform_Unhandled_Raise (Decl);
+
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Declaration] kind = "
                                   & Node_Kind'Image (Nkind (Decl)));
