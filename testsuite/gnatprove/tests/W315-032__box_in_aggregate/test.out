@@ -1,0 +1,3 @@
+test_box_in_aggregate.adb:6:31: info: in default value of box association at test_box_in_aggregate.adb:10
+test_box_in_aggregate.adb:6:31: info: range check proved (CVC5: 2 VC)
+test_box_in_aggregate.adb:17:07: info: assertion proved (CVC5: 1 VC)
