@@ -1,0 +1,13 @@
+assert_assume_in_declare.adb:2:13: info: implicit function contract might not be available on calls from enclosing unit
+assert_assume_in_declare.adb:4:24: info: assertion proved (CVC5: 1 VC)
+assert_assume_in_declare.adb:6:11: info: overflow check proved (CVC5: 2 VC)
+assert_assume_in_declare.adb:8:37: info: data dependencies proved
+assert_assume_in_declare.adb:9:38: info: data dependencies proved
+assert_assume_in_declare.adb:15:39: info: overflow check proved (CVC5: 2 VC)
+assert_assume_in_declare.adb:16:28: info: assertion proved (CVC5: 1 VC)
+assert_assume_in_declare.adb:18:13: info: precondition proved (CVC5: 1 VC)
+assert_assume_in_declare.adb:21:22: info: assertion proved (CVC5: 1 VC)
+assert_assume_in_declare.adb:26:28: medium: assertion might fail (e.g. when X = 0) [possible fix: subprogram at line 9 should mention X in a precondition]
+assert_assume_in_declare.adb:27:39: info: overflow check proved (CVC5: 2 VC)
+assert_assume_in_declare.adb:29:13: info: precondition proved (CVC5: 1 VC)
+assert_assume_in_declare.adb:32:22: info: assertion proved (CVC5: 1 VC)
