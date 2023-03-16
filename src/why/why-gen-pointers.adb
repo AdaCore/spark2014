@@ -54,10 +54,15 @@ package body Why.Gen.Pointers is
    with Pre => Is_Access_Type (E);
    --  Similar to Declare_Rep_Record_Type but for pointer types.
 
-   procedure Complete_Rep_Pointer_Type (Th : Theory_UC; E : Entity_Id)
+   procedure Complete_Rep_Pointer_Type
+     (Th        : Theory_UC;
+      E         : Entity_Id;
+      Separated : Boolean)
    with Pre => Is_Access_Type (E);
    --  Declares everything for a representative access type but the type and
-   --  predefined equality.
+   --  predefined equality. If Separated is True then conversion functions
+   --  are already declared in another module and we only generate axioms for
+   --  them here.
 
    function Get_Rep_Pointer_Module (E : Entity_Id) return W_Module_Id;
    --  Return the name of a record's representative module.
@@ -107,14 +112,19 @@ package body Why.Gen.Pointers is
    -- Complete_Rep_Pointer_Type --
    -------------------------------
 
-   procedure Complete_Rep_Pointer_Type (Th : Theory_UC; E : Entity_Id) is
+   procedure Complete_Rep_Pointer_Type
+     (Th        : Theory_UC;
+      E         : Entity_Id;
+      Separated : Boolean)
+   is
 
       procedure Declare_Conversion_Check_Function;
       --  Generate a range predicate and a range check function for E
 
-      procedure Declare_Conversion_Functions;
+      procedure Declare_Conversion_Functions (As_Axioms : Boolean);
       --  Generate conversion functions from this type to the root type, and
-      --  back.
+      --  back. If As_Axioms is True, the conversions are already declared in
+      --  another module, only emit defining axioms.
 
       procedure Declare_Access_Function;
       --  Generate the predicate related to the access to a pointer value
@@ -421,7 +431,7 @@ package body Why.Gen.Pointers is
       -- Declare_Conversion_Functions --
       ----------------------------------
 
-      procedure Declare_Conversion_Functions is
+      procedure Declare_Conversion_Functions (As_Axioms : Boolean) is
          R_Ident   : constant W_Identifier_Id :=
            New_Identifier (Name => "r", Typ => EW_Abstract (Root));
          R_Binder  : constant Binder_Array :=
@@ -460,16 +470,25 @@ package body Why.Gen.Pointers is
             --   is_null = a.is_null)
 
          begin
-            Emit
-              (Th,
-               New_Function_Decl
-                 (Domain      => EW_Pterm,
-                  Name        => To_Local (E_Symb (E, WNE_To_Base)),
-                  Binders     => A_Binder,
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Return_Type => Root_Ty,
-                  Def         => +Def));
+            if As_Axioms then
+               Emit
+                 (Th,
+                  New_Defining_Axiom
+                    (Name     => To_Local (E_Symb (E, WNE_To_Base)),
+                     Binders  => A_Binder,
+                     Def      => Def));
+            else
+               Emit
+                 (Th,
+                  New_Function_Decl
+                    (Domain      => EW_Pterm,
+                     Name        => To_Local (E_Symb (E, WNE_To_Base)),
+                     Binders     => A_Binder,
+                     Location    => No_Location,
+                     Labels      => Symbol_Sets.Empty_Set,
+                     Return_Type => Root_Ty,
+                     Def         => +Def));
+            end if;
          end;
 
          declare
@@ -500,16 +519,25 @@ package body Why.Gen.Pointers is
             --   is_null = r.is_null)
 
          begin
-            Emit
-              (Th,
-               New_Function_Decl
-                 (Domain      => EW_Pterm,
-                  Name        => To_Local (E_Symb (E, WNE_Of_Base)),
-                  Binders     => R_Binder,
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Return_Type => Abstr_Ty,
-                  Def         => +Def));
+            if As_Axioms then
+               Emit
+                 (Th,
+                  New_Defining_Axiom
+                    (Name     => To_Local (E_Symb (E, WNE_Of_Base)),
+                     Binders  => R_Binder,
+                     Def      => Def));
+            else
+               Emit
+                 (Th,
+                  New_Function_Decl
+                    (Domain      => EW_Pterm,
+                     Name        => To_Local (E_Symb (E, WNE_Of_Base)),
+                     Binders     => R_Binder,
+                     Location    => No_Location,
+                     Labels      => Symbol_Sets.Empty_Set,
+                     Return_Type => Abstr_Ty,
+                     Def         => +Def));
+            end if;
          end;
       end Declare_Conversion_Functions;
 
@@ -519,7 +547,7 @@ package body Why.Gen.Pointers is
       Declare_Access_Function;
 
       if not Is_Root then
-         Declare_Conversion_Functions;
+         Declare_Conversion_Functions (As_Axioms => Separated);
          Declare_Conversion_Check_Function;
       else
 
@@ -829,7 +857,7 @@ package body Why.Gen.Pointers is
                           (EW_Abstract
                                (Des_Ty, Has_Relaxed_Init (Des_Ty)))))));
 
-         Complete_Rep_Pointer_Type (Th, E);
+         Complete_Rep_Pointer_Type (Th, E, Separated => True);
 
          Close_Theory (Th, Kind => Definition_Theory, Defined_Entity => E);
       end if;
@@ -979,7 +1007,37 @@ package body Why.Gen.Pointers is
       Declare_Equality_Function;
 
       if not Designates_Incomplete_Type (E) then
-         Complete_Rep_Pointer_Type (Th, E);
+         Complete_Rep_Pointer_Type (Th, E, Separated => False);
+      elsif Root_Pointer_Type (E) /= E then
+         declare
+            Root      : constant Entity_Id := Root_Pointer_Type (E);
+            R_Ident   : constant W_Identifier_Id :=
+              New_Identifier (Name => "r", Typ => EW_Abstract (Root));
+            R_Binder  : constant Binder_Array :=
+              (1 => (B_Name => R_Ident,
+                     others => <>));
+            Root_Ty   : constant W_Type_Id := EW_Abstract (Root);
+
+         begin
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => To_Local (E_Symb (E, WNE_To_Base)),
+                  Binders     => A_Binder,
+                  Location    => No_Location,
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Return_Type => Root_Ty));
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => To_Local (E_Symb (E, WNE_Of_Base)),
+                  Binders     => R_Binder,
+                  Location    => No_Location,
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Return_Type => Abstr_Ty));
+         end;
       end if;
    end Declare_Rep_Pointer_Type;
 
