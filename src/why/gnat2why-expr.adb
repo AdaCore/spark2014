@@ -22335,6 +22335,14 @@ package body Gnat2Why.Expr is
                      Emit_Static_Proof_Result
                        (Expr, Reason, Proved, Current_Subp);
                      Append (T, +Void);
+
+                  --  Pragma assume does not require check.
+                  --  Do not emit inconsistency warning in this specific
+                  --  case as a plain pragma Assume (False) is almost
+                  --  certainly deliberate.
+                  elsif Is_Pragma_Check (Prag, Name_Assume) then
+                     Append (T, New_Assume_Statement (Pred => Pred));
+                     Register_Pragma_Assume_Statement (Prag);
                   else
                      Append
                        (T, New_VC_Prog
