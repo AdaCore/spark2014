@@ -1,0 +1,3 @@
+test_aggr.adb:15:16: info: range check proved (CVC5: 2 VC)
+test_aggr.adb:29:11: info: data dependencies proved
+test_aggr.adb:43:33: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: subprogram at line 22 should mention S in a precondition]

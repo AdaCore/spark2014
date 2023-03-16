@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Gnat2Why.Tables;      use Gnat2Why.Tables;
 with Gnat2Why.Util;        use Gnat2Why.Util;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
@@ -175,45 +176,51 @@ package Why.Gen.Records is
    --  modify normal fields (not discrimiants).
 
    function New_Ada_Record_Aggregate
-     (Ada_Node     : Node_Id := Empty;
-      Domain       : EW_Domain;
-      Discr_Assocs : W_Field_Association_Array;
-      Field_Assocs : W_Field_Association_Array;
-      Ty           : Entity_Id;
-      Init_Wrapper : Boolean := False)
+     (Ada_Node       : Node_Id := Empty;
+      Domain         : EW_Domain;
+      Discr_Assocs   : W_Field_Association_Array;
+      Field_Assocs   : W_Field_Association_Array;
+      Ty             : Entity_Id;
+      Init_Wrapper   : Boolean := False;
+      Missing_Fields : Component_Sets.Set := Component_Sets.Empty_Set)
       return W_Expr_Id;
    --  Generate a record aggregate of Ada type Ty from the association in
-   --  Discr_Assocs and Field_Assocs.
+   --  Discr_Assocs and Field_Assocs. Missing_Fields shall be the set of fields
+   --  which are not present in the aggregate and should be intialized by
+   --  default.
 
    function New_Ada_Record_Aggregate
-     (Ada_Node     : Node_Id := Empty;
-      Domain       : EW_Domain;
-      Discr_Expr   : W_Expr_Id;
-      Field_Assocs : W_Field_Association_Array;
-      Ty           : Entity_Id;
-      Init_Wrapper : Boolean := False;
-      Anc_Ty       : Entity_Id := Empty)
+     (Ada_Node       : Node_Id := Empty;
+      Domain         : EW_Domain;
+      Discr_Expr     : W_Expr_Id;
+      Field_Assocs   : W_Field_Association_Array;
+      Ty             : Entity_Id;
+      Init_Wrapper   : Boolean := False;
+      Missing_Fields : Component_Sets.Set := Component_Sets.Empty_Set)
       return W_Expr_Id;
-   --  @param Ada_Node    node for the aggregate if any
-   --  @param Domain      domain for the translation
-   --  @param Discr_Expr  expression for the whole top-level field for
-   --                     discriminants
-   --  @param Field_Assoc associations for the record's fields
-   --  @param Ty          Ada type of the aggregate
-   --  @param Anc_Ty      type of the aggregate's ancestor part if any
+   --  @param Ada_Node       node for the aggregate if any
+   --  @param Domain         domain for the translation
+   --  @param Discr_Expr     expression for the whole top-level field for
+   --                        discriminants
+   --  @param Field_Assoc    associations for the record's fields
+   --  @param Ty             Ada type of the aggregate
+   --  @param Missing_Fields set of fields which are not present in the
+   --                        aggregate and should be intialized by default.
    --  Same as above except that discriminant associations are given as a
    --  whole.
 
    procedure Generate_Associations_From_Ancestor
-     (Ada_Node     : Node_Id := Empty;
-      Domain       : EW_Domain;
-      Expr         : W_Expr_Id;
-      Anc_Ty       : Entity_Id;
-      Ty           : Entity_Id;
-      Discr_Expr   : out W_Expr_Id;
-      Field_Assocs : out W_Field_Association_Array);
+     (Ada_Node       : Node_Id := Empty;
+      Domain         : EW_Domain;
+      Expr           : W_Expr_Id;
+      Anc_Ty         : Entity_Id;
+      Ty             : Entity_Id;
+      Discr_Expr     : out W_Expr_Id;
+      Field_Assocs   : out W_Field_Association_Array;
+      Missing_Fields : in out Component_Sets.Set);
    --  Generate a record aggregate of Ada type Ty from the association in
    --  Discr_Assocs and Field_Assocs.
+   --  Components of Ty coming from Anc_Ty are removed from Missing_Fields.
 
    function Get_Compatible_Tags_Predicate
      (E : Entity_Id) return W_Identifier_Id
