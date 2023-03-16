@@ -900,7 +900,8 @@ package body Gnat2Why.Expr is
       In_Extension       : Boolean := False;
       Init_Wrapper       : Boolean;
       Discr_Ids          : out W_Identifier_Array;
-      Discr_Vals         : out W_Expr_Array)
+      Discr_Vals         : out W_Expr_Array;
+      Missing_Fields     : out Component_Sets.Set)
       return W_Field_Association_Array
    with Pre =>
        (if In_Delta_Aggregate or In_Extension
@@ -917,6 +918,8 @@ package body Gnat2Why.Expr is
    --  depend on the discriminants. In this case, Discr_Ids contains an
    --  identifier per discriminant in Typ and Discr_Vals contains their
    --  expected values.
+   --  After the call, Missing_Fields contains components from Typ's component
+   --  set which do not have an association.
 
    function Transform_Function_Call
      (Expr   : Node_Id;
@@ -17914,11 +17917,13 @@ package body Gnat2Why.Expr is
 
             --  Transform the associations. We don't expect any new
             --  discriminants here so the corresponding OUT parameters are
-            --  empty.
+            --  empty. Missing fields are not relevant either, we keep the
+            --  existing values for them.
 
             declare
-               Dummy_Ids  : W_Identifier_Array (1 .. 0);
-               Dummy_Vals : W_Expr_Array (1 .. 0);
+               Dummy_Ids    : W_Identifier_Array (1 .. 0);
+               Dummy_Vals   : W_Expr_Array (1 .. 0);
+               Dummy_Fields : Component_Sets.Set;
             begin
                T := New_Ada_Record_Update
                  (Name     => W_Pref,
@@ -17934,7 +17939,8 @@ package body Gnat2Why.Expr is
                        Init_Wrapper        => Get_Relaxed_Init
                          (Get_Type (W_Pref)),
                        Discr_Ids           => Dummy_Ids,
-                       Discr_Vals          => Dummy_Vals));
+                       Discr_Vals          => Dummy_Vals,
+                       Missing_Fields      => Dummy_Fields));
             end;
 
             --  If we are in the program domain and Pref_Typ has discriminants,
@@ -18357,36 +18363,40 @@ package body Gnat2Why.Expr is
                     +E_Symb (Root_Retysp (Expr_Type), WNE_Dummy);
                else
                   declare
-                     Init_Wrapper : constant Boolean :=
+                     Init_Wrapper   : constant Boolean :=
                        Expr_Has_Relaxed_Init (Expr, No_Eval => False);
-                     Num_Discrs : constant Natural :=
+                     Num_Discrs     : constant Natural :=
                        Count_Non_Inherited_Discriminants
                          (Component_Associations (Expr));
 
-                     Discr_Ids  : W_Identifier_Array (1 .. Num_Discrs);
-                     Discr_Vals : W_Expr_Array (1 .. Num_Discrs);
+                     Discr_Ids      : W_Identifier_Array (1 .. Num_Discrs);
+                     Discr_Vals     : W_Expr_Array (1 .. Num_Discrs);
                      --  Arrays that will contain the bindings for
                      --  discriminants
 
-                     Assocs : constant W_Field_Association_Array :=
+                     Missing_Fields : Component_Sets.Set;
+
+                     Assocs         : constant W_Field_Association_Array :=
                        Transform_Record_Component_Associations
                          (Domain,
                           Expr_Type,
                           Component_Associations (Expr),
                           Local_Params,
-                          Init_Wrapper => Init_Wrapper,
-                          Discr_Ids    => Discr_Ids,
-                          Discr_Vals   => Discr_Vals);
+                          Init_Wrapper   => Init_Wrapper,
+                          Discr_Ids      => Discr_Ids,
+                          Discr_Vals     => Discr_Vals,
+                          Missing_Fields => Missing_Fields);
                   begin
                      T :=
                        New_Ada_Record_Aggregate
-                         (Ada_Node     => Expr,
-                          Domain       => Domain,
-                          Discr_Assocs => Assocs (1 .. Num_Discrs),
-                          Field_Assocs =>
+                         (Ada_Node       => Expr,
+                          Domain         => Domain,
+                          Discr_Assocs   => Assocs (1 .. Num_Discrs),
+                          Field_Assocs   =>
                             Assocs (Num_Discrs + 1 .. Assocs'Last),
-                          Ty           => Expr_Type,
-                          Init_Wrapper => Init_Wrapper);
+                          Ty             => Expr_Type,
+                          Missing_Fields => Missing_Fields,
+                          Init_Wrapper   => Init_Wrapper);
 
                      --  Add the bindings for the discriminants
 
@@ -18418,21 +18428,23 @@ package body Gnat2Why.Expr is
                Init_Wrapper : constant Boolean :=
                  Expr_Has_Relaxed_Init (Expr, No_Eval => False);
 
-               Dummy_Ids  : W_Identifier_Array (1 .. 0);
-               Dummy_Vals : W_Expr_Array (1 .. 0);
+               Dummy_Ids      : W_Identifier_Array (1 .. 0);
+               Dummy_Vals     : W_Expr_Array (1 .. 0);
                --  We don't expect any new discriminants here so the
                --  corresponding OUT parameters are empty.
+               Missing_Fields : Component_Sets.Set;
 
-               Assocs     : constant W_Field_Association_Array :=
+               Assocs         : constant W_Field_Association_Array :=
                  Transform_Record_Component_Associations
                    (Domain,
                     Expr_Type,
                     Component_Associations (Expr),
                     Local_Params,
-                    In_Extension => True,
-                    Init_Wrapper => Init_Wrapper,
-                    Discr_Ids    => Dummy_Ids,
-                    Discr_Vals   => Dummy_Vals);
+                    In_Extension   => True,
+                    Init_Wrapper   => Init_Wrapper,
+                    Discr_Ids      => Dummy_Ids,
+                    Discr_Vals     => Dummy_Vals,
+                    Missing_Fields => Missing_Fields);
 
                --  Use the base type of the ancestor part as intermediate type
                --  to which the ancestor is converted if needed before copying
@@ -18463,26 +18475,27 @@ package body Gnat2Why.Expr is
 
                Anc_Discr_Expr   : W_Expr_Id;
                Anc_Field_Assocs : W_Field_Association_Array
-                                    (1 .. Anc_Num_Fields);
+                    (1 .. Anc_Num_Fields);
 
             begin
                Generate_Associations_From_Ancestor
-                 (Ada_Node     => Expr,
-                  Domain       => Domain,
-                  Expr         => Tmp,
-                  Anc_Ty       => Anc_Ty,
-                  Ty           => Expr_Type,
-                  Discr_Expr   => Anc_Discr_Expr,
-                  Field_Assocs => Anc_Field_Assocs);
+                 (Ada_Node       => Expr,
+                  Domain         => Domain,
+                  Expr           => Tmp,
+                  Anc_Ty         => Anc_Ty,
+                  Ty             => Expr_Type,
+                  Discr_Expr     => Anc_Discr_Expr,
+                  Field_Assocs   => Anc_Field_Assocs,
+                  Missing_Fields => Missing_Fields);
                T :=
                  New_Ada_Record_Aggregate
-                   (Ada_Node     => Expr,
-                    Domain       => Domain,
-                    Discr_Expr   => Anc_Discr_Expr,
-                    Field_Assocs => Anc_Field_Assocs & Assocs,
-                    Ty           => Expr_Type,
-                    Anc_Ty       => Anc_Ty,
-                    Init_Wrapper => Init_Wrapper);
+                   (Ada_Node       => Expr,
+                    Domain         => Domain,
+                    Discr_Expr     => Anc_Discr_Expr,
+                    Field_Assocs   => Anc_Field_Assocs & Assocs,
+                    Ty             => Expr_Type,
+                    Missing_Fields => Missing_Fields,
+                    Init_Wrapper   => Init_Wrapper);
                T := Binding_For_Temp (Domain   => Domain,
                                       Tmp      => Tmp,
                                       Context  => T);
@@ -22541,7 +22554,8 @@ package body Gnat2Why.Expr is
       In_Extension       : Boolean := False;
       Init_Wrapper       : Boolean;
       Discr_Ids          : out W_Identifier_Array;
-      Discr_Vals         : out W_Expr_Array)
+      Discr_Vals         : out W_Expr_Array;
+      Missing_Fields     : out Component_Sets.Set)
       return W_Field_Association_Array
    is
       function Components_Count (Assocs : List_Id) return Natural;
@@ -22595,6 +22609,8 @@ package body Gnat2Why.Expr is
       --  normal, fully defined aggregate, has singleton choice lists
       pragma Assert (In_Delta_Aggregate or else List_Length (CL) = 1);
       Choice := First (CL);
+
+      Missing_Fields := Get_Component_Set (Typ);
 
       --  Loop over the associations and component choice lists
       while Present (Choice) loop
@@ -22696,6 +22712,7 @@ package body Gnat2Why.Expr is
                      Discr_Index := Discr_Index + 1;
                   end if;
                else
+                  Missing_Fields.Delete (Component);
                   Field_Assoc (Field_Index) := New_Field_Association
                     (Domain => Domain,
                      Field  => To_Why_Id
