@@ -14,9 +14,6 @@ stages:
 ###############
 
 .common_setup_repos: &setup_repos
-    - . ~/.aws_container_credentials
-    - export PATH=/it/e3/bin:$PATH
-
     # Setup the 'anod vcs' for this repo
     - cd /it/wave
     - anod vcs --add-repo spark2014 $CI_PROJECT_DIR
