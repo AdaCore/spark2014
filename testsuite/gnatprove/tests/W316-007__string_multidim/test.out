@@ -1,0 +1,8 @@
+empty_string.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
+empty_string.adb:6:04: info: range check proved (CVC5: 2 VC)
+empty_string.adb:9:14: info: length check proved (CVC5: 6 VC; Trivial: 1 VC)
+empty_string.adb:9:25: info: range check proved (CVC5: 2 VC)
+empty_string.adb:13:07: info: range check proved (CVC5: 2 VC)
+empty_string.adb:13:10: info: range check proved (CVC5: 2 VC)
+empty_string.adb:13:22: info: range check proved (CVC5: 2 VC)
+empty_string.adb:14:07: info: assertion proved (CVC5: 1 VC)
