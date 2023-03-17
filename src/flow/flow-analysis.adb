@@ -46,11 +46,12 @@ with VC_Kinds;                    use VC_Kinds;
 
 with Flow.Analysis.Antialiasing;
 with Flow.Analysis.Sanity;
-with Flow.Slice;                     use Flow.Slice;
+with Flow_Classwide;
 with Flow_Debug;                     use Flow_Debug;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Error_Messages;            use Flow_Error_Messages;
 with Flow_Refinement;                use Flow_Refinement;
+with Flow.Slice;                     use Flow.Slice;
 with Flow_Utility;                   use Flow_Utility;
 with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 
@@ -4812,6 +4813,20 @@ package body Flow.Analysis is
                        (FA       => FA,
                         Msg      =>
                           "potentially blocking entry call " &
+                          "in protected operation &",
+                        N        => Atr.Error_Location,
+                        F1       => Direct_Mapping_Id (Protected_Subp),
+                        Tag      => Potentially_Blocking_In_Protected,
+                        Severity => High_Check_Kind,
+                        Vertex   => V);
+
+                  elsif Nkind (SC.N) in N_Subprogram_Call
+                    and then Flow_Classwide.Is_Dispatching_Call (SC.N)
+                  then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      =>
+                          "potentially blocking dispatching call " &
                           "in protected operation &",
                         N        => Atr.Error_Location,
                         F1       => Direct_Mapping_Id (Protected_Subp),

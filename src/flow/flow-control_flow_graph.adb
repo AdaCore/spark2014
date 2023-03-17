@@ -7624,6 +7624,30 @@ package body Flow.Control_Flow_Graph is
                if not Atr.In_Nested_Package then
                   FA.Direct_Calls.Union
                     (To_Subprograms (Atr.Subprogram_Calls));
+
+                  --  Calls to entries and to predefined potentially blocking
+                  --  subprograms make this entity potentially blocking.
+                  --  We do this here, because otherwise we would
+                  --  have to do it in both Do_Call_Statement and
+                  --  Callect_Functions_And_Read_Locked_POs.
+
+                  if FA.Has_Only_Nonblocking_Statements then
+                     for SC of Atr.Subprogram_Calls loop
+                        if Is_Entry (SC.E)
+                          or else
+                            (Ekind (SC.E) in E_Function | E_Procedure
+                               and then
+                             Is_Predefined_Potentially_Blocking (SC.E))
+                          or else
+                            (Nkind (SC.N) in N_Subprogram_Call
+                               and then
+                             Flow_Classwide.Is_Dispatching_Call (SC.N))
+                        then
+                           FA.Has_Only_Nonblocking_Statements := False;
+                           exit;
+                        end if;
+                     end loop;
+                  end if;
                end if;
             end;
          end loop;
@@ -7718,19 +7742,6 @@ package body Flow.Control_Flow_Graph is
                      V);
                   Linkup (FA, FA.End_Vertex, V);
                end;
-            end if;
-
-            --  Calls to entries and to predefined potentially blocking
-            --  subprograms make this entity potentially blocking. We do this
-            --  here, because otherwise we would have to do it in both
-            --  Do_Call_Statement and Callect_Functions_And_Read_Locked_POs.
-            if FA.Has_Only_Nonblocking_Statements
-              and then (Is_Entry (E)
-                          or else
-                        (Ekind (E) in E_Function | E_Procedure
-                         and then Is_Predefined_Potentially_Blocking (E)))
-            then
-               FA.Has_Only_Nonblocking_Statements := False;
             end if;
          end loop;
       end if;
