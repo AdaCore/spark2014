@@ -1,0 +1,1 @@
+main.adb:7:07: info: no contextual analysis of "Are_Zeros" (subtype declaration with predicate)
