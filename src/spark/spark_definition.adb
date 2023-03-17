@@ -451,6 +451,9 @@ package body SPARK_Definition is
    --  called before the node to which the actions apply is marked, so
    --  that declarations of constants in actions are possibly marked in SPARK.
 
+   procedure Mark_Exception_Handler (N : N_Exception_Handler_Id);
+   --  Mark an exception handler
+
    procedure Mark_List (L : List_Id);
    --  Call Mark on all nodes in list L
 
@@ -919,6 +922,7 @@ package body SPARK_Definition is
 
       procedure Check_Loop_Invariant_Placement
         (Stmts       : List_Id;
+         In_Handled  : Boolean;
          Goto_Labels : in out Node_Sets.Set;
          Inv_Found   : in out Boolean);
       --  Checks that no non-scalar object declaration appears before the
@@ -928,6 +932,8 @@ package body SPARK_Definition is
       --  loop variants have been found after the current statement in the
       --  program. Goto_Labels contains the labels encountered while traversing
       --  statements occurring after the loop invariant in the initial loop.
+      --  In_Handled is True if we are inside a handled sequence of statements
+      --  with handlers. Reject loop invariants in this case.
 
       procedure Check_Loop_Invariant_Placement (Stmts : List_Id);
       --  Same as above with Nested set to False and Goto_Labels initialized to
@@ -975,11 +981,12 @@ package body SPARK_Definition is
          Goto_Labels : Node_Sets.Set;
          Inv_Found   : Boolean := False;
       begin
-         Check_Loop_Invariant_Placement (Stmts, Goto_Labels, Inv_Found);
+         Check_Loop_Invariant_Placement (Stmts, False, Goto_Labels, Inv_Found);
       end Check_Loop_Invariant_Placement;
 
       procedure Check_Loop_Invariant_Placement
         (Stmts       : List_Id;
+         In_Handled  : Boolean;
          Goto_Labels : in out Node_Sets.Set;
          Inv_Found   : in out Boolean)
       is
@@ -993,13 +1000,18 @@ package body SPARK_Definition is
             if Nkind (N) = N_Block_Statement then
                Check_Loop_Invariant_Placement
                  (Statements (Handled_Statement_Sequence (N)),
+                  In_Handled
+                  or else Present
+                    (Exception_Handlers (Handled_Statement_Sequence (N))),
                   Goto_Labels, Inv_Found);
 
-               --  Only check declarations if the invariant has been found
+               --  Only check declarations if the invariant has been found.
+               --  Never look into handlers, loop invariants cannot occur
+               --  there.
 
                if Inv_Found and then Present (Declarations (N)) then
                   Check_Loop_Invariant_Placement
-                    (Declarations (N), Goto_Labels, Inv_Found);
+                    (Declarations (N), In_Handled, Goto_Labels, Inv_Found);
                end if;
 
             elsif not Inv_Found then
@@ -1010,6 +1022,13 @@ package body SPARK_Definition is
                  or else Is_Pragma (N, Pragma_Loop_Variant)
                then
                   Inv_Found := True;
+
+                  --  Check whether N is inside a sequence of statements with
+                  --  an exception handler.
+
+                  if In_Handled then
+                     Mark_Unsupported (Lim_Loop_Inv_And_Handler, N);
+                  end if;
                elsif Nkind (N) = N_Label then
                   Goto_Labels.Insert (Entity (Identifier (N)));
                end if;
@@ -1043,18 +1062,21 @@ package body SPARK_Definition is
 
                   when N_If_Statement =>
                      Check_Loop_Invariant_Placement
-                       (Then_Statements (N), Goto_Labels, Inv_Found);
+                       (Then_Statements (N),
+                        In_Handled, Goto_Labels, Inv_Found);
                      declare
                         Cur : Node_Id := First (Elsif_Parts (N));
                      begin
                         while Present (Cur) loop
                            Check_Loop_Invariant_Placement
-                             (Then_Statements (Cur), Goto_Labels, Inv_Found);
+                             (Then_Statements (Cur),
+                              In_Handled, Goto_Labels, Inv_Found);
                            Next (Cur);
                         end loop;
                      end;
                      Check_Loop_Invariant_Placement
-                       (Else_Statements (N), Goto_Labels, Inv_Found);
+                       (Else_Statements (N),
+                        In_Handled, Goto_Labels, Inv_Found);
 
                   when N_Case_Statement =>
                      declare
@@ -1063,7 +1085,8 @@ package body SPARK_Definition is
                      begin
                         while Present (Cur) loop
                            Check_Loop_Invariant_Placement
-                             (Statements (Cur), Goto_Labels, Inv_Found);
+                             (Statements (Cur),
+                              In_Handled, Goto_Labels, Inv_Found);
                            Next_Non_Pragma (Cur);
                         end loop;
                      end;
@@ -1071,17 +1094,17 @@ package body SPARK_Definition is
                   when N_Extended_Return_Statement =>
                      Check_Loop_Invariant_Placement
                        (Return_Object_Declarations (N),
-                        Goto_Labels, Inv_Found);
+                        In_Handled, Goto_Labels, Inv_Found);
                      Check_Loop_Invariant_Placement
                        (Statements (Handled_Statement_Sequence (N)),
-                        Goto_Labels, Inv_Found);
+                        In_Handled, Goto_Labels, Inv_Found);
 
                   when N_Block_Statement =>
                      raise Program_Error;
 
                   when N_Loop_Statement =>
                      Check_Loop_Invariant_Placement
-                       (Statements (N), Goto_Labels, Inv_Found);
+                       (Statements (N), In_Handled, Goto_Labels, Inv_Found);
 
                   when N_Goto_Statement =>
 
@@ -1835,6 +1858,10 @@ package body SPARK_Definition is
          when N_Procedure_Call_Statement =>
             Mark_Call (N);
 
+            --  Collect handlers reachable from N if it might raise exceptions
+
+            Collect_Reachable_Handlers (N);
+
          when N_Qualified_Expression =>
             Mark (Subtype_Mark (N));
             Mark (Expression (N));
@@ -1862,7 +1889,17 @@ package body SPARK_Definition is
                Mark (Expression (N));
             end if;
 
-            Register_Exception (Entity (Name (N)));
+            --  For now, reject reraise statements
+
+            if No (Name (N)) then
+               Mark_Violation ("reraise statement", N);
+            else
+               Register_Exception (Entity (Name (N)));
+
+               --  Collect handlers reachable from N
+
+               Collect_Reachable_Handlers (N);
+            end if;
 
          --  The frontend inserts explicit raise-statements/expressions during
          --  semantic analysis in some cases that are statically known to raise
@@ -5510,7 +5547,7 @@ package body SPARK_Definition is
             Formal      : Opt_Formal_Kind_Id := First_Formal (Id);
             Contract    : Node_Id;
             Raw_Globals : Raw_Global_Nodes;
-            Exceptions  : constant Boolean := Might_Raise_Exceptions (Id);
+            Exceptions  : constant Boolean := Has_Exceptional_Contract (Id);
 
          begin
             case Ekind (Id) is
@@ -7882,6 +7919,41 @@ package body SPARK_Definition is
       Current_Incomplete_Type := Save_Current_Incomplete_Type;
    end Mark_Entity;
 
+   -----------------------------
+   -- Mark_Exception_Handler --
+   -----------------------------
+
+   procedure Mark_Exception_Handler (N : N_Exception_Handler_Id) is
+   begin
+      --  Do not allow to name exceptions. If such a name is encountered, do
+      --  not mark the handler to avoid stumbling upon references to this
+      --  name.
+
+      if Present (Choice_Parameter (N)) then
+         Mark_Violation ("choice parameter in handler", Choice_Parameter (N));
+
+      else
+         declare
+            Choice : Node_Id := First (Exception_Choices (N));
+         begin
+            loop
+               case Nkind (Choice) is
+                  when N_Others_Choice =>
+                     null;
+                  when N_Identifier | N_Expanded_Name =>
+                     Register_Exception (Entity (Choice));
+                  when others =>
+                     raise Program_Error;
+               end case;
+               Next (Choice);
+               exit when No (Choice);
+            end loop;
+         end;
+
+         Mark_Stmt_Or_Decl_List (Statements (N));
+      end if;
+   end Mark_Exception_Handler;
+
    ------------------------------------
    -- Mark_Extended_Return_Statement --
    ------------------------------------
@@ -7925,7 +7997,15 @@ package body SPARK_Definition is
       Handlers : constant List_Id := Exception_Handlers (N);
    begin
       if Present (Handlers) then
-         Mark_Violation ("handler", First (Handlers));
+         declare
+            Handler : Node_Id := First (Handlers);
+         begin
+            loop
+               Mark_Exception_Handler (Handler);
+               Next (Handler);
+               exit when No (Handler);
+            end loop;
+         end;
       end if;
 
       Mark_Stmt_Or_Decl_List (Statements (N));

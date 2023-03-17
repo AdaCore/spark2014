@@ -160,21 +160,25 @@ test_call_basic.adb:91:39: info: exceptional case proved (Trivial: 1 VC)
 test_call_basic.adb:98:10: medium: unexpected exception might be raised
 test_call_basic.adb:106:39: info: exceptional case proved (Trivial: 1 VC)
 test_call_basic.adb:111:10: info: only expected exception raised (CVC5: 1 VC)
-test_call_others.adb:12:34: medium: exceptional case might fail
+test_call_others.adb:12:34: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:12:51: info: exceptional case proved (Trivial: 1 VC)
+test_call_others.adb:17:10: medium: unexpected exception might be raised
 test_call_others.adb:25:34: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:25:51: info: exceptional case proved (Trivial: 1 VC)
-test_call_others.adb:38:34: medium: exceptional case might fail
+test_call_others.adb:38:34: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:38:47: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:38:64: info: exceptional case proved (Trivial: 1 VC)
+test_call_others.adb:43:10: medium: unexpected exception might be raised
 test_call_others.adb:51:34: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:51:47: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:51:64: info: exceptional case proved (Trivial: 1 VC)
 test_call_others.adb:64:38: info: exceptional case proved (Trivial: 1 VC)
 test_call_others.adb:79:34: medium: exceptional case might fail [possible fix: subprogram at line 77 should mention A in a precondition]
 test_call_others.adb:79:51: info: exceptional case proved (Trivial: 1 VC)
+test_call_others.adb:84:10: info: only expected exception raised (CVC5: 1 VC)
 test_call_others.adb:92:34: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:92:47: info: exceptional case proved (Trivial: 1 VC)
+test_call_others.adb:97:10: info: only expected exception raised (CVC5: 1 VC)
 test_invariants.adb:5:18: info: overflow check proved (CVC5: 2 VC)
 test_invariants.adb:9:18: info: overflow check proved (CVC5: 2 VC)
 test_invariants.adb:14:18: info: overflow check proved (CVC5: 2 VC)

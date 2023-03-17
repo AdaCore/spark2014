@@ -210,18 +210,20 @@ package body Gnat2Why.Borrow_Checker is
 
       package Env_Maps is new Simple_HTable
         (Header_Num => Elaboration_Context_Index,
-         Key        => Entity_Id,
+         Key        => Node_Id,
          Element    => Perm_Env_Access,
          No_Element => null,
          Hash       => Elaboration_Context_Hash,
          Equal      => "=");
       --  The instantiation of a hash table whose elements are permission
-      --  environments. This hash table is used to save the environments at
-      --  the entry of each loop, with the key being the loop label.
+      --  environments. This hash table is used to save the environments:
+      --   * at the entry of each loop, with the key being the loop label,
+      --   * at a goto label, with the key being the goto label entity, and
+      --   * at exception handlers, with the keys being the node of the
+      --     handler.
 
       type Env_Backups is new Env_Maps.Instance;
-      --  The type defining the hash table saving the environments at the entry
-      --  of each loop.
+      --  The type defining the hash table saving the environments
 
       package Variable_Maps is new Simple_HTable
         (Header_Num => Elaboration_Context_Index,
@@ -932,6 +934,11 @@ package body Gnat2Why.Borrow_Checker is
    --  subprogram indeed have Read_Write permission at the end of the
    --  subprogram execution.
 
+   procedure Set_Environment_For_Exceptions (Stmt : Node_Id);
+   --  If Stmt raises handled exceptions, merge the environment into the
+   --  appropriate handlers accumulators and/or exit the enclosing procedure.
+   --  Also reset the current environment if necessary.
+
    procedure Set_Perm_Extensions
      (T    : Perm_Tree_Access;
       P    : Perm_Kind;
@@ -1042,6 +1049,13 @@ package body Gnat2Why.Borrow_Checker is
    --  labels, that consist of the merge of all environments at each goto
    --  statements mentioning this label. When a goto label is encountered, this
    --  environment is merged with the current one.
+
+   Current_Exc_Accumulators : Env_Backups;
+   --  This variable contains the environments used as accumulators for
+   --  exception handling, that consist of the merge of all environments at
+   --  each raise or call statements which might jump to the handler. When such
+   --  a statement is encountered, this environment is merged with the current
+   --  one.
 
    Current_Borrowers : Variable_Mapping;
    --  Mapping from borrowers to the path borrowed
@@ -3176,27 +3190,10 @@ package body Gnat2Why.Borrow_Checker is
          when N_Procedure_Call_Statement =>
             Check_Call_Statement (N);
 
-            --  If some exceptions are handled, exit the enclosing procedure
+            --  If N might raise some exceptions, handle the exceptional paths
 
-            if Call_Raises_Handled_Exceptions (N) then
-               declare
-                  function Is_Body (N : Node_Id) return Boolean is
-                    (Nkind (N) in N_Entity_Body);
-
-                  function Enclosing_Body is new
-                    First_Parent_With_Property (Is_Body);
-
-                  Subp : constant Entity_Id :=
-                    Unique_Defining_Entity (Enclosing_Body (N));
-
-               begin
-                  Check_End_Of_Scopes
-                    (From => N, Stop => Subprogram_Body (Subp));
-
-                  pragma Assert (Ekind (Subp) = E_Procedure);
-                  Return_Parameters (Subp, Exceptional => True);
-                  Return_Globals (Subp, Exceptional => True);
-               end;
+            if Has_Exceptional_Contract (Get_Called_Entity (N)) then
+               Set_Environment_For_Exceptions (N);
             end if;
 
          when N_Package_Body =>
@@ -3233,6 +3230,36 @@ package body Gnat2Why.Borrow_Checker is
 
          when N_Handled_Sequence_Of_Statements =>
             Check_List (Statements (N));
+
+            --  Go over the exception handlers. They start in the environment
+            --  accumulated for them if any. Their output environment is merged
+            --  back into the current environment.
+
+            declare
+               Handlers : constant List_Id := Exception_Handlers (N);
+               Handler  : Node_Id;
+               Save_Env : Perm_Env := Current_Perm_Env;
+            begin
+               if Present (Handlers) then
+                  Handler := First (Handlers);
+                  loop
+                     declare
+                        Handler_Env : constant Perm_Env_Access :=
+                          Get (Current_Exc_Accumulators, Handler);
+                     begin
+                        if Handler_Env /= null then
+                           Remove (Current_Exc_Accumulators, Handler);
+                           Current_Perm_Env := Handler_Env.all;
+                           Check_List (Statements (Handler));
+                           Merge_Env (Current_Perm_Env, Save_Env);
+                        end if;
+                     end;
+                     Next (Handler);
+                     exit when No (Handler);
+                  end loop;
+                  Current_Perm_Env := Save_Env;
+               end if;
+            end;
 
          when N_Pragma =>
             Check_Pragma (N);
@@ -4141,35 +4168,11 @@ package body Gnat2Why.Borrow_Checker is
 
          when N_Raise_Statement =>
 
-            --  If the exception is handled, exit the enclosing procedure
+            --  If the exception is handled, merge the environment into the
+            --  appropriate handlers accumulators and/or exit the enclosing
+            --  procedure.
 
-            if Exception_Handled (Entity (Name (Stmt)), Stmt) then
-               declare
-                  function Is_Body (N : Node_Id) return Boolean is
-                    (Nkind (N) in N_Entity_Body);
-
-                  function Enclosing_Body is new
-                    First_Parent_With_Property (Is_Body);
-
-                  Subp : constant Entity_Id :=
-                    Unique_Defining_Entity (Enclosing_Body (Stmt));
-
-               begin
-                  Check_End_Of_Scopes
-                    (From => Stmt, Stop => Subprogram_Body (Subp));
-
-                  pragma Assert (Ekind (Subp) = E_Procedure);
-                  Return_Parameters (Subp, Exceptional => True);
-                  Return_Globals (Subp, Exceptional => True);
-
-                  Reset_Env (Current_Perm_Env);
-               end;
-
-            --  Otherwise the branch is dead
-
-            else
-               Reset_Env (Current_Perm_Env);
-            end if;
+            Set_Environment_For_Exceptions (Stmt);
 
          when N_Null_Statement =>
             null;
@@ -5822,6 +5825,105 @@ package body Gnat2Why.Borrow_Checker is
          Next_Formal (Formal);
       end loop;
    end Return_Parameters;
+
+   -------------------------------------
+   -- Set_Environment_For_Exceptions --
+   -------------------------------------
+
+   procedure Set_Environment_For_Exceptions (Stmt : Node_Id) is
+      Handlers       : Node_Lists.List;
+      Proc_Body      : Node_Id := Empty;
+      Might_Continue : Boolean;
+
+   begin
+      --  Set Might_Continue to True iff the Stmt does not cut the execution
+      --  path completely.
+
+      case Nkind (Stmt) is
+         when N_Raise_Statement =>
+            Might_Continue := False;
+         when N_Procedure_Call_Statement =>
+            declare
+               Subp : constant Entity_Id := Get_Called_Entity (Stmt);
+            begin
+               Might_Continue := not No_Return (Subp);
+            end;
+         when others =>
+            raise Program_Error;
+      end case;
+
+      --  Retrieve the handlers associated to Stmt. Separate the unit body
+      --  from the list if any.
+
+      Handlers := Reachable_Handlers (Stmt);
+      if not Handlers.Is_Empty
+        and then Nkind (Handlers.Last_Element) in N_Entity_Body
+      then
+         Proc_Body := Handlers.Last_Element;
+         Handlers.Delete_Last;
+      end if;
+
+      --  Store the current environment in the
+      --  Current_Exc_Accumulators map for all accessible handlers.
+
+      for Handler of Handlers loop
+         declare
+            Handler_Env      : constant Perm_Env_Access :=
+              Get (Current_Exc_Accumulators, Handler);
+            Environment_Copy : constant Perm_Env_Access :=
+              new Perm_Env;
+         begin
+            Copy_Env (Current_Perm_Env, Environment_Copy.all);
+
+            if Handler_Env = null then
+               Set
+                 (Current_Exc_Accumulators,
+                  Handler,
+                  Environment_Copy);
+            else
+               Merge_Env
+                 (Environment_Copy.all, Handler_Env.all);
+            end if;
+         end;
+      end loop;
+
+      --  Check that all borrowers in the enclosing scopes
+      --  are in the Unrestricted state before jumping to the
+      --  handler. If the exception can exit the subprogram, take the
+      --  subprogram body, otherwise, take the last handled sequence
+      --  of statements.
+
+      if Present (Proc_Body) then
+         Check_End_Of_Scopes
+           (From => Stmt,
+            Stop => Proc_Body);
+      elsif not Handlers.Is_Empty then
+         Check_End_Of_Scopes
+           (From => Stmt,
+            Stop => Parent (Handlers.Last_Element));
+      end if;
+
+      --  If the exception can exit the enclosing subprogram, then
+      --  check the scope exit.
+
+      if Present (Proc_Body) then
+         declare
+            Subp : constant Entity_Id :=
+              Unique_Defining_Entity (Proc_Body);
+
+         begin
+            pragma Assert (Ekind (Subp) = E_Procedure);
+            Return_Parameters (Subp, Exceptional => True);
+            Return_Globals (Subp, Exceptional => True);
+         end;
+      end if;
+
+      --  If Might_Continue is False, the branch is dead
+
+      if not Might_Continue then
+         Reset_Env (Current_Perm_Env);
+      end if;
+   end Set_Environment_For_Exceptions;
 
    -------------------------
    -- Set_Perm_Extensions --

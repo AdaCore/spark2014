@@ -697,6 +697,9 @@ package body VC_Kinds is
          when Lim_Limited_Type_From_Limited_With =>
            "the use of an incomplete view of a type coming from a limited"
           & " with",
+         when Lim_Loop_Inv_And_Handler =>
+           "a loop invariant in a list of statements with an exception "
+          & "handler",
          when Lim_Loop_With_Iterator_Filter =>
            "a loop with an iterator filter in its parameter specification",
          when Lim_Max_Array_Dimension =>

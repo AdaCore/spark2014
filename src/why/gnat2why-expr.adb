@@ -50,7 +50,6 @@ with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
 with Gnat2Why.Subprograms.Pointers;  use Gnat2Why.Subprograms.Pointers;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Namet;                          use Namet;
-with Nlists;                         use Nlists;
 with Opt;                            use type Opt.Warning_Mode_Type;
 with Rtsfind;                        use Rtsfind;
 with Sem;
@@ -783,6 +782,12 @@ package body Gnat2Why.Expr is
    --  @return the check program expression that corresponds to the assertion
    --     expression.
 
+   function Transform_Statements_And_Declarations
+     (Stmts_And_Decls : List_Id)
+      return W_Prog_Id;
+   --  Transforms a list of statements and declarations into a Why expression.
+   --  An empty list is transformed into the void expression.
+
    function Type_Invariant_Expression
      (Expr     : W_Term_Id;
       Inv_Subp : E_Procedure_Id;
@@ -1063,7 +1068,9 @@ package body Gnat2Why.Expr is
    function Havoc_Borrowed_And_Check_No_Leaks_On_Raise
      (Stmt_Or_Decl : Node_Id) return W_Prog_Id;
    --  Havoc the local borrowers and check for resource leaks for objects
-   --  declared in blocks traversed by a raise statement.
+   --  declared in blocks traversed by a raise statement. Stop at the first
+   --  exception handler or entity body. Exceptions which might not be handled
+   --  at this point are propagated using an implicit reraise.
 
    function Havoc_Overlay_Aliases (Aliases : Node_Sets.Set) return W_Prog_Id;
    --  For each variable in the parameter set, havoc its contents and assume
@@ -6083,6 +6090,39 @@ package body Gnat2Why.Expr is
       Continuation_Stack.Delete_Last;
    end Compute_Exceptional_Store;
 
+   ----------------------------------
+   -- Compute_Guard_For_Exceptions --
+   ----------------------------------
+
+   function Compute_Guard_For_Exceptions
+     (Choices : List_Id;
+      Exc_Id  : W_Identifier_Id;
+      Domain  : EW_Domain) return W_Expr_Id
+   is
+      Exc  : Node_Id := First (Choices);
+      Cond : W_Expr_Id := New_Literal (Value => EW_False, Domain => Domain);
+   begin
+      while Present (Exc) loop
+         case Nkind (Exc) is
+            when N_Identifier
+               | N_Expanded_Name
+               =>
+               Cond := New_Or_Expr
+                 (Cond,
+                  New_Comparison
+                    (Why_Eq,
+                     +Exc_Id,
+                     +To_Why_Id (Entity (Exc)),
+                     Domain),
+                  Domain);
+            when others =>
+               raise Program_Error;
+         end case;
+         Next (Exc);
+      end loop;
+      return Cond;
+   end Compute_Guard_For_Exceptions;
+
    -------------------------------
    -- Compute_Is_Moved_Property --
    -------------------------------
@@ -8923,7 +8963,18 @@ package body Gnat2Why.Expr is
    function Havoc_Borrowed_And_Check_No_Leaks_On_Raise
      (Stmt_Or_Decl : Node_Id) return W_Prog_Id
    is
-      Res : W_Prog_Id;
+      function Is_Block_Or_Handler (N : Node_Id) return Boolean is
+        (Nkind (N) in N_Block_Statement
+                    | N_Handled_Sequence_Of_Statements
+                    | N_Exception_Handler
+                    | N_Entity_Body);
+
+      function Enclosing_Block_Or_Handler is new
+        First_Parent_With_Property (Is_Block_Or_Handler);
+
+      Scop : Node_Id := Stmt_Or_Decl;
+      Res  : W_Statement_Sequence_Id := Void_Sequence;
+
    begin
       --  Add a continuation locating the potential checks on exceptional exits
 
@@ -8932,11 +8983,33 @@ package body Gnat2Why.Expr is
            (Ada_Node => Stmt_Or_Decl,
             Message  => To_Unbounded_String ("when an exception is raised")));
 
-      Res := Havoc_Borrowed_And_Check_No_Leaks_On_Return (Stmt_Or_Decl);
+      loop
+         --  If we are in a handler, skip the enclosing sequence of statements
+
+         if Nkind (Scop) = N_Exception_Handler then
+            Scop := Enclosing_Statement (Scop);
+         end if;
+
+         Scop := Enclosing_Block_Or_Handler (Scop);
+
+         --  Stop at the first enclosing exception handler
+
+         exit when Nkind (Scop) in N_Entity_Body
+           or else (Nkind (Scop) = N_Handled_Sequence_Of_Statements
+                    and then Present (Exception_Handlers (Scop)));
+
+         --  Produce a havoc on traversed block statements
+
+         if Nkind (Scop) = N_Block_Statement then
+            Append (Res, Havoc_Borrowed_From_Block (Scop));
+            Append (Res, Check_No_Memory_Leaks_At_End_Of_Scope
+                    (Declarations (Scop)));
+         end if;
+      end loop;
 
       Continuation_Stack.Delete_Last;
 
-      return Res;
+      return +Res;
    end Havoc_Borrowed_And_Check_No_Leaks_On_Raise;
 
    -------------------------------------------------
@@ -16096,8 +16169,7 @@ package body Gnat2Why.Expr is
       return W_Prog_Id
    is
       Core : W_Prog_Id :=
-        Transform_Statements_And_Declarations
-          (Statements (Handled_Statement_Sequence (N)));
+        Transform_Handled_Statements (Handled_Statement_Sequence (N));
    begin
       if Present (Declarations (N)) then
 
@@ -21016,6 +21088,110 @@ package body Gnat2Why.Expr is
       return T;
    end Transform_Function_Call;
 
+   ----------------------------------
+   -- Transform_Handled_Statements --
+   ----------------------------------
+
+   function Transform_Handled_Statements (N : Node_Id) return W_Prog_Id is
+
+      function Transform_Handler (Handler : Node_Id) return W_Prog_Id is
+      --  Transform the statements and warn on dead code if necessary
+
+        (+Warn_On_Dead_Code
+           (First (Statements (Handler)),
+            +Transform_Statements_And_Declarations
+              (Statements (Handler)),
+            Body_Params.Phase));
+
+      Handlers       : constant List_Id := Exception_Handlers (N);
+      Core           : constant W_Prog_Id :=
+        Transform_Statements_And_Declarations (Statements (N));
+   begin
+      if Present (Handlers) then
+         declare
+            Exc_Id         : constant W_Identifier_Id :=
+              New_Temp_Identifier (Base_Name => "exc", Typ => EW_Int_Type);
+            Others_Present : constant Boolean :=
+              Nkind (First (Exception_Choices (Last (Handlers)))) =
+                N_Others_Choice;
+            Nb_Cases       : constant Integer :=
+              Natural (List_Length (Handlers));
+            Elsif_Parts    : W_Expr_Array
+              (2 .. Nb_Cases - (if Others_Present then 1 else 0));
+            Else_Part      : W_Prog_Id;
+            Handler        : Node_Id := First (Handlers);
+            W_Handler      : W_Prog_Id;
+            Handled_Exc    : constant Exception_Sets.Set :=
+              Get_Exceptions_From_Handler (N);
+            Handled_Above  : constant Exception_Sets.Set :=
+              Get_Handled_Exceptions (N);
+
+         begin
+            if Nb_Cases = 1 and then Others_Present then
+               W_Handler := Transform_Handler (Handler);
+            else
+               --  Fill the Elsif_Parts if any
+
+               Next (Handler);
+               if Elsif_Parts'Length > 0 then
+                  for Num in Elsif_Parts'Range loop
+                     Elsif_Parts (Num) := New_Elsif
+                       (Condition => Compute_Guard_For_Exceptions
+                          (Exception_Choices (Handler), Exc_Id, EW_Prog),
+                        Then_Part => +Transform_Handler (Handler),
+                        Domain    => EW_Prog);
+                     Next (Handler);
+                  end loop;
+               end if;
+
+               --  Fill the Else_Part if any
+
+               if Others_Present then
+                  Else_Part := Transform_Handler (Handler);
+
+               --  If there are some expected exceptions above N, reraise the
+               --  exception in the others case as it was not actually caught.
+
+               elsif not Handled_Above.Is_Subset (Handled_Exc) then
+                  Else_Part := Sequence
+                    (Left  => Havoc_Borrowed_And_Check_No_Leaks_On_Raise (N),
+                     Right => New_Raise
+                       (Name => M_Main.Ada_Exc, Arg => +Exc_Id));
+
+               --  All exceptions will be handled at this point as we only
+               --  raise expected exceptions.
+
+               else
+                  Else_Part := +Void;
+               end if;
+
+               --  Reconstruct the conditional
+
+               Handler := First (Handlers);
+
+               W_Handler := New_Conditional
+                    (Ada_Node    => N,
+                     Condition   => +Compute_Guard_For_Exceptions
+                       (Exception_Choices (Handler), Exc_Id, EW_Prog),
+                     Then_Part   => Transform_Handler (Handler),
+                     Elsif_Parts => Elsif_Parts,
+                     Else_Part   => Else_Part);
+            end if;
+
+            return New_Try_Block
+              (Ada_Node => N,
+               Prog     => Core,
+               Handler  =>
+                 (1 => New_Handler
+                      (Name   => M_Main.Ada_Exc,
+                       Arg_Id => Exc_Id,
+                       Def    => W_Handler)));
+         end;
+      else
+         return Core;
+      end if;
+   end Transform_Handled_Statements;
+
    --------------------------
    -- Transform_Identifier --
    --------------------------
@@ -23323,9 +23499,8 @@ package body Gnat2Why.Expr is
                if Present (Handled_Statement_Sequence (Stmt_Or_Decl)) then
                   Append
                     (Expr,
-                     Transform_Statements_And_Declarations
-                       (Statements
-                            (Handled_Statement_Sequence (Stmt_Or_Decl))));
+                     Transform_Handled_Statements
+                       (Handled_Statement_Sequence (Stmt_Or_Decl)));
                end if;
 
                --  Wrap the sequence of statements inside a try block, in case
@@ -23387,19 +23562,19 @@ package body Gnat2Why.Expr is
             | N_Entry_Call_Statement
          =>
             declare
-               Context   : Ref_Context;
-               Store     : W_Statement_Sequence_Id := Void_Sequence;
-               Exc_Exit  : constant Boolean :=
-                 Call_Raises_Handled_Exceptions (Stmt_Or_Decl);
-               Exc_Store : W_Statement_Sequence_Id := Void_Sequence;
-               Call      : W_Prog_Id;
-               Subp      : constant Entity_Id :=
+               Context     : Ref_Context;
+               Store       : W_Statement_Sequence_Id := Void_Sequence;
+               Handled_Exc : constant Exception_Sets.Set :=
+                 Get_Raised_Exceptions (Stmt_Or_Decl, Only_Handled => True);
+               Exc_Store   : W_Statement_Sequence_Id := Void_Sequence;
+               Call        : W_Prog_Id;
+               Subp        : constant Entity_Id :=
                  Get_Called_Entity_For_Proof (Stmt_Or_Decl);
 
-               Args     : constant W_Expr_Array :=
+               Args        : constant W_Expr_Array :=
                  Compute_Call_Args
                    (Stmt_Or_Decl, EW_Prog, Context, Store,
-                    Exc_Exit  => Exc_Exit,
+                    Exc_Exit  => not Handled_Exc.Is_Empty,
                     Exc_Store => Exc_Store,
                     Params    => Body_Params,
                     Use_Tmps  => Subp_Needs_Invariant_Checks (Subp)
@@ -23410,7 +23585,7 @@ package body Gnat2Why.Expr is
                --  procedure. Force the use of temporary identifiers to avoid
                --  duplicating checks.
 
-               Selector : constant Selection_Kind :=
+               Selector    : constant Selection_Kind :=
                   --  When calling an error-signaling procedure from an
                   --  ordinary program unit, use the No_Return variant of the
                   --  program function, which has a precondition of False. This
@@ -23445,7 +23620,7 @@ package body Gnat2Why.Expr is
 
                   else Why.Inter.Standard);
 
-               Why_Name :  W_Identifier_Id;
+               Why_Name    :  W_Identifier_Id;
 
             begin
                --  For procedures with higher order specialization, generate a
@@ -23495,23 +23670,21 @@ package body Gnat2Why.Expr is
                --  should be appended to call if it should also be done for
                --  exceptions.
 
-               if Might_Raise_Exceptions (Subp) then
+               if Has_Exceptional_Contract (Subp) then
                   declare
-                     All_Handled     : Boolean;
-                     Handled_Exc     : Node_Sets.Set;
                      Ex_Name         : constant W_Identifier_Id :=
                        New_Temp_Identifier
                          (Base_Name => "exn", Typ => EW_Int_Type);
                      Raise_Or_Absurd : W_Prog_Id;
+                     All_But         : Boolean;
+                     Exc_Set         : Node_Sets.Set;
 
                   begin
-                     Collect_Handled_Exceptions
-                       (Stmt_Or_Decl, All_Handled, Handled_Exc);
 
                      --  Check whether all raised exceptions are handled and if
                      --  not, use absurd to cut unhandled branches.
 
-                     if not Exc_Exit then
+                     if Handled_Exc.Is_Empty then
                         Raise_Or_Absurd := New_Statement_Sequence
                           (Statements =>
                              (1 => New_Absurd_Statement
@@ -23530,24 +23703,33 @@ package body Gnat2Why.Expr is
                                 Arg      => +Ex_Name,
                                 Typ      => EW_Unit_Type));
 
-                        if not All_Handled then
-                           declare
-                              Cond : W_Prog_Id := False_Prog;
-                           begin
-                              for Exc of Handled_Exc loop
-                                 Cond := New_Or_Prog
-                                   (Cond,
-                                    New_Comparison
-                                      (Why_Eq, +Ex_Name, +To_Why_Id (Exc)));
-                              end loop;
+                        --  Create a condition from the elements in Handled_Exc
 
-                              Raise_Or_Absurd := New_Conditional
-                                (Condition => Cond,
-                                 Then_Part => Raise_Or_Absurd,
-                                 Else_Part => New_Absurd_Statement
-                                   (Stmt_Or_Decl, VC_Raise));
-                           end;
-                        end if;
+                        Handled_Exc.Disclose (All_But, Exc_Set);
+
+                        declare
+                           Handled_Cond : W_Prog_Id := False_Prog;
+                        begin
+                           for Exc of Exc_Set loop
+                              Handled_Cond := New_Or_Prog
+                                (Handled_Cond,
+                                 New_Comparison
+                                   (Why_Eq, +Ex_Name, +To_Why_Id (Exc)));
+                           end loop;
+
+                           if All_But then
+                              Handled_Cond := New_Not (Right => Handled_Cond);
+                           end if;
+
+                           --  Raise the exception of handled exceptions and
+                           --  cut the branch for others.
+
+                           Raise_Or_Absurd := New_Conditional
+                             (Condition => Handled_Cond,
+                              Then_Part => Raise_Or_Absurd,
+                              Else_Part => New_Absurd_Statement
+                                (Stmt_Or_Decl, VC_Raise));
+                        end;
                      end if;
 
                      --  Put the raise at the end of the handler
@@ -23885,8 +24067,7 @@ package body Gnat2Why.Expr is
             --  For handled exceptions, raise the Why3 exception Ada_Exc.
             --  Otherwise, check that the path is dead.
 
-            if Exception_Handled (Entity (Name (Stmt_Or_Decl)), Stmt_Or_Decl)
-            then
+            if Might_Raise_Handled_Exceptions (Stmt_Or_Decl) then
 
                --  Havoc borrowed objects and check for resource leaks on
                --  scopes traversed by the raise statement.

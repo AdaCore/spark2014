@@ -146,6 +146,8 @@ package SPARK_Atree is
      SN.N_Entry_Call_Statement;
    N_Entry_Declaration               : Node_Kind renames
      SN.N_Entry_Declaration;
+   N_Exception_Handler               : Node_Kind renames
+     SN.N_Exception_Handler;
    N_Exit_Statement                  : Node_Kind renames
      SN.N_Exit_Statement;
    N_Explicit_Dereference            : Node_Kind renames
@@ -480,11 +482,16 @@ package SPARK_Atree is
      Pre => Nkind (N) = N_If_Statement;
 
    function Enclosing_Statement (N : Node_Id) return Node_Id with
-     Pre  => Nkind (N) in N_Elsif_Part | N_Case_Statement_Alternative,
-     Post => (if Nkind (N) = N_Elsif_Part then
-                  Nkind (Enclosing_Statement'Result) = N_If_Statement
-              else Nkind (Enclosing_Statement'Result) = N_Case_Statement);
-   --  Renaming of Parent for parts of conditional statements
+     Pre  => Nkind (N) in N_Elsif_Part
+                        | N_Case_Statement_Alternative
+                        | N_Exception_Handler,
+     Post => (if Nkind (N) = N_Elsif_Part
+              then Nkind (Enclosing_Statement'Result) = N_If_Statement
+              elsif  Nkind (N) = N_Case_Statement_Alternative
+              then Nkind (Enclosing_Statement'Result) = N_Case_Statement
+              else Nkind (Enclosing_Statement'Result) =
+                N_Handled_Sequence_Of_Statements);
+   --  Renaming of Parent for parts of conditional statements and handlers
 
    function Entity (N : Node_Id) return Entity_Id with
      Pre => Nkind (N) in N_Has_Entity
@@ -497,6 +504,16 @@ package SPARK_Atree is
 
    function Etype (N : Node_Id) return Entity_Id with
      Pre => Nkind (N) in SN.N_Has_Etype;
+
+   function Exception_Choices
+     (N : Sinfo.Nodes.N_Exception_Handler_Id)
+      return List_Id
+   renames Sinfo.Nodes.Exception_Choices;
+
+   function Exception_Handlers
+     (N : Sinfo.Nodes.N_Handled_Sequence_Of_Statements_Id)
+      return List_Id
+   renames Sinfo.Nodes.Exception_Handlers;
 
    function Expression (N : Node_Id) return Node_Id with
      Post => No (Expression'Result)

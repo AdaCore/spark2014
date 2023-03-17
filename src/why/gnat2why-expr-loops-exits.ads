@@ -38,8 +38,6 @@
 --  usual, with the exit paths being replaced by raising an exception, which
 --  is later caught to apply the instructions from the exit path.
 
-with Nlists; use Nlists;
-
 package Gnat2Why.Expr.Loops.Exits is
 
    procedure Before_Start_Of_Loop;

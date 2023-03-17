@@ -1,12 +1,28 @@
-excep.adb:10:07: error: handler is not allowed in SPARK
-excep.adb:10:07: error: violation of aspect SPARK_Mode at line 2
+excep.adb:8:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at excep.ads:7 should mention X in a precondition]
 excep.adb:17:12: warning: "raise" statement may result in abnormal return (RM 6.4.1(17))
 excep.adb:17:12: warning: assignment to pass-by-copy formal may have no effect
+excep.adb:17:17: info: overflow check proved (CVC5: 2 VC)
+excep.adb:18:10: medium: unexpected exception might be raised
+excep.adb:20:14: info: overflow check proved (CVC5: 2 VC)
 excep.adb:25:09: warning: "raise" statement may result in abnormal return (RM 6.4.1(17))
 excep.adb:25:09: warning: assignment to pass-by-copy formal may have no effect
+excep.adb:25:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at excep.ads:11 should mention X in a precondition]
+excep.adb:26:07: medium: unexpected exception might be raised
+excep.adb:27:09: warning: this statement is never reached
 excep.adb:27:09: warning: unreachable code
 excep.adb:32:09: warning: "raise" statement may result in abnormal return (RM 6.4.1(17))
 excep.adb:32:09: warning: assignment to pass-by-copy formal may have no effect
+excep.adb:32:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at excep.ads:13 should mention X in a precondition]
+excep.adb:33:07: medium: unexpected exception might be raised
+excep.adb:39:10: medium: unexpected exception might be raised
+excep.adb:41:14: info: overflow check proved (CVC5: 2 VC)
 excep.adb:46:09: warning: "raise" statement may result in abnormal return (RM 6.4.1(17))
 excep.adb:46:09: warning: assignment to pass-by-copy formal may have no effect
-gnatprove: error during flow analysis and proof
+excep.adb:46:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at excep.ads:17 should mention X in a precondition]
+excep.adb:47:07: medium: unexpected exception might be raised
+excep.ads:11:14: high: all paths in "Bad3" raise exceptions or do not terminate normally
+excep.ads:11:20: warning: "X" is not modified, could be IN
+excep.ads:13:14: high: all paths in "Bad4" raise exceptions or do not terminate normally
+excep.ads:13:20: warning: "X" is not modified, could be IN
+excep.ads:17:14: high: all paths in "OK2" raise exceptions or do not terminate normally
+excep.ads:17:19: warning: "X" is not modified, could be IN

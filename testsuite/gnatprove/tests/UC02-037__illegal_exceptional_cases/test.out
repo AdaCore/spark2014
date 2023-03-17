@@ -3,8 +3,6 @@ alias_on_exc_exit.adb:10:20: error: procedures with exceptional contracts and pa
 alias_on_exc_exit.adb:11:14: warning: conjunct in postcondition does not check the outcome of calling "Swap"
 alias_on_exc_exit.adb:27:04: error: "Swap" is not allowed in SPARK (due to exceptional contracts and parameters with ownership)
 alias_on_exc_exit.adb:27:04: error: violation of aspect SPARK_Mode at line 3
-alias_on_exc_exit.adb:29:04: error: handler is not allowed in SPARK
-alias_on_exc_exit.adb:29:04: error: violation of aspect SPARK_Mode at line 3
 illegal_uses_of_exc_cases.ads:6:06: error: aspect "Exceptional_Cases" on function is not allowed in SPARK
 illegal_uses_of_exc_cases.ads:6:06: error: violation of aspect SPARK_Mode at line 1
 illegal_uses_of_exc_cases.ads:11:06: error: aspect "Exceptional_Cases" on dispatching operation is not yet supported
