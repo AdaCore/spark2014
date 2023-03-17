@@ -682,71 +682,79 @@ package body SPARK_Atree is
 
          when N_Aggregate =>
 
-            --  This parent is a special choice, the LHS of an association
-            --  of a 'Update of a multi-dimensional array, for example:
-            --  (I, J, K) of 'Update((I, J, K) => New_Val).
+            if No (Etype (Par)) then
 
-            pragma Assert
-              (Nkind (Atree.Parent (Par)) = N_Component_Association);
+               --  This parent is a special choice, the LHS of an association
+               --  of a 'Update of a multi-dimensional array, for example:
+               --  (I, J, K) of 'Update((I, J, K) => New_Val).
 
-            Aggregate : declare
+               Update_Aggregate : declare
 
-               Aggr : constant Node_Id := Atree.Parent (Atree.Parent (Par));
+                  Aggr : constant Node_Id := Atree.Parent (Atree.Parent (Par));
 
-               pragma Assert
-                 (Nkind (Aggr) = N_Aggregate
-                  and then Sem_Util.Is_Attribute_Update (Atree.Parent (Aggr)));
+                  pragma Assert
+                    (Nkind (Aggr) = N_Aggregate
+                     and then Sem_Util.Is_Attribute_Update
+                       (Atree.Parent (Aggr)));
 
-               Pref        : constant Node_Id := Prefix (Atree.Parent (Aggr));
-               Num_Dim     : constant Pos :=
-                 Einfo.Utils.Number_Dimensions
-                   (SPARK_Util.Types.Retysp (Etype (Pref)));
-               Multi_Exprs : constant List_Id := Expressions (Par);
+                  Pref        : constant Node_Id :=
+                    Prefix (Atree.Parent (Aggr));
+                  Num_Dim     : constant Pos :=
+                    Einfo.Utils.Number_Dimensions
+                      (SPARK_Util.Types.Retysp (Etype (Pref)));
+                  Multi_Exprs : constant List_Id := Expressions (Par);
 
-               Dim_Expr      : Node_Id;
-               Array_Type    : Entity_Id;
-               Current_Index : Node_Id;
-               Found         : Boolean;
+                  Dim_Expr      : Node_Id;
+                  Array_Type    : Entity_Id;
+                  Current_Index : Node_Id;
+                  Found         : Boolean;
 
-               pragma Assert (1 < Num_Dim
-                              and then No (Component_Associations (Par))
-                              and then List_Length (Multi_Exprs) = Num_Dim);
+                  pragma Assert (1 < Num_Dim
+                                 and then No (Component_Associations (Par))
+                                 and then List_Length (Multi_Exprs) = Num_Dim);
 
-            begin
+               begin
 
-               --  When present, the Actual_Subtype of the entity should be
-               --  used instead of the Etype of the prefix.
+                  --  When present, the Actual_Subtype of the entity should be
+                  --  used instead of the Etype of the prefix.
 
-               if Einfo.Utils.Is_Entity_Name (Pref)
-                 and then
-                   Present (Einfo.Entities.Actual_Subtype (Entity (Pref)))
-               then
-                  Array_Type := Einfo.Entities.Actual_Subtype (Entity (Pref));
-               else
-                  Array_Type := Etype (Pref);
-               end if;
-
-               --  Find the index type for this expression's dimension
-
-               Dim_Expr      := Nlists.First (Multi_Exprs);
-               Current_Index :=
-                 Einfo.Entities.First_Index
-                   (Sem_Util.Unique_Entity (Array_Type));
-               Found         := False;
-
-               while Present (Dim_Expr) loop
-                  if N = Dim_Expr then
-                     Check_Type := Etype (Current_Index);
-                     Found := True;
-                     exit;
+                  if Einfo.Utils.Is_Entity_Name (Pref)
+                    and then
+                      Present (Einfo.Entities.Actual_Subtype (Entity (Pref)))
+                  then
+                     Array_Type := Einfo.Entities.Actual_Subtype
+                       (Entity (Pref));
+                  else
+                     Array_Type := Etype (Pref);
                   end if;
-                  Next (Dim_Expr);
-                  Einfo.Utils.Next_Index (Current_Index);
-               end loop;
 
-               pragma Assert (Found);
+                  --  Find the index type for this expression's dimension
 
-            end Aggregate;
+                  Dim_Expr      := Nlists.First (Multi_Exprs);
+                  Current_Index :=
+                    Einfo.Entities.First_Index
+                      (Sem_Util.Unique_Entity (Array_Type));
+                  Found         := False;
+
+                  while Present (Dim_Expr) loop
+                     if N = Dim_Expr then
+                        Check_Type := Etype (Current_Index);
+                        Found := True;
+                        exit;
+                     end if;
+                     Next (Dim_Expr);
+                     Einfo.Utils.Next_Index (Current_Index);
+                  end loop;
+
+                  pragma Assert (Found);
+
+               end Update_Aggregate;
+
+            --  Normal positional aggregates, the range is the element
+
+            else
+               Check_Type := Einfo.Entities.Component_Type (Etype (Par));
+            end if;
 
          when N_Aspect_Specification =>
 
