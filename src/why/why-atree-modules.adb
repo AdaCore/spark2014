@@ -3736,14 +3736,14 @@ package body Why.Atree.Modules is
                  (E, WNE_To_Base,
                   New_Identifier
                     (Symb   => NID ("to_base"),
-                     Module => M_C,
+                     Module => M,
                      Domain => EW_Term,
                      Typ    => Root_Ty));
                Insert_Symbol
                  (E, WNE_Of_Base,
                   New_Identifier
                     (Symb   => NID ("of_base"),
-                     Module => M_C,
+                     Module => M,
                      Domain => EW_Term,
                      Typ    => Ty));
 
