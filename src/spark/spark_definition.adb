@@ -2188,8 +2188,8 @@ package body SPARK_Definition is
                         exit;
                      end if;
 
-                     Target_Index := Next_Index (Target_Index);
-                     Source_Index := Next_Index (Source_Index);
+                     Next_Index (Target_Index);
+                     Next_Index (Source_Index);
                   end loop;
                end;
 

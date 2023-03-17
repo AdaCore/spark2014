@@ -2885,20 +2885,123 @@ package body Flow_Utility is
 
             when Attribute_Update =>
                declare
+                  --  There is exactly one attribute expression, which is an
+                  --  aggregate with component associations only.
+
+                  Expr : constant Node_Id := First (Expressions (N));
+                  pragma Assert
+                    (No (Next (Expr))
+                       and then
+                     Nkind (Expr) = N_Aggregate
+                       and then
+                     No (Expressions (Expr))
+                       and then
+                     not Null_Record_Present (Expr));
+
+                  Assoc  : Node_Id;
+                  Choice : Node_Id;
+                  Index  : Node_Id;
+
                   T : constant Entity_Id := Get_Type (N, Ctx.Scope);
+
                begin
+                  Variables.Union (Recurse (Prefix (N)));
+
                   if Is_Record_Type (T) then
                      if Is_Tagged_Type (T) then
-                        --  ??? Precise analysis is disabled for tagged types,
-                        --      so we just do the usual instead.
-                        null;
+                        --  ??? Precise analysis is disabled for tagged types
+
+                        --  The syntax is:
+                        --
+                        --  PREFIX'Update
+                        --    ( Comp1a | Comp1b | ... => Expr1, ...)
+                        --
+                        --  so we sanity check component names CompXY and
+                        --  recurse into expresions ExprX.
+                        Assoc := First (Component_Associations (Expr));
+                        loop
+                           Choice := First (Choices (Assoc));
+                           loop
+                              pragma Assert (Nkind (Choice) = N_Identifier);
+                              Next (Choice);
+                              exit when No (Choice);
+                           end loop;
+                           Variables.Union (Recurse (Expression (Assoc)));
+                           Next (Assoc);
+                           exit when No (Assoc);
+                        end loop;
+
+                        return Variables;
                      else
                         return Untangle_With_Context (N);
                      end if;
                   else
                      pragma Assert (Is_Array_Type (T));
+
+                     --  The syntax differs between single and multiple
+                     --  dimensional array updates:
+                     --
+                     --  PREFIX'Update
+                     --    ( ARRAY_COMPONENT_ASSOCIATION
+                     --   {, ARRAY_COMPONENT_ASSOCIATION } )
+                     --
+                     --  PREFIX'Update
+                     --    ( MULTIDIMENSIONAL_ARRAY_COMPONENT_ASSOCIATION
+                     --   {, MULTIDIMENSIONAL_ARRAY_COMPONENT_ASSOCIATION } )
+                     --
+                     --  MULTIDIMENSIONAL_ARRAY_COMPONENT_ASSOCIATION ::=
+                     --    INDEX_EXPRESSION_LIST_LIST => EXPRESSION
+                     --
+                     --  INDEX_EXPRESSION_LIST_LIST ::=
+                     --    INDEX_EXPRESSION_LIST {| INDEX_EXPRESSION_LIST }
+                     --
+                     --  INDEX_EXPRESSION_LIST ::=
+                     --    ( EXPRESSION {, EXPRESSION } )
+
+                     Assoc := First (Component_Associations (Expr));
+                     loop
+                        Choice := First (Choices (Assoc));
+                        loop
+                           --  For multi-dimensional array update the n-dim
+                           --  indices appear as nested aggregates whose
+                           --  expressions stand for the indices within the
+                           --  individual dimensions.
+
+                           if Nkind (Choice) = N_Aggregate then
+                              pragma Assert (Number_Dimensions (T) > 1);
+                              pragma Assert
+                                (No (Component_Associations (Choice))
+                                   and then
+                                 not Null_Record_Present (Choice));
+
+                              Index := First (Expressions (Choice));
+                              loop
+                                 Variables.Union (Recurse (Index));
+                                 Next (Index);
+                                 exit when No (Index);
+                              end loop;
+
+                           --  For one-dimentionsal array update the indices
+                           --  appear simply as aggregate choices.
+
+                           else
+                              pragma Assert (Number_Dimensions (T) = 1);
+                              Variables.Union (Recurse (Choice));
+                           end if;
+
+                           Next (Choice);
+                           exit when No (Choice);
+                        end loop;
+
+                        Variables.Union (Recurse (Expression (Assoc)));
+
+                        Next (Assoc);
+                        exit when No (Assoc);
+                     end loop;
                   end if;
                end;
+
+               return Variables;
 
             when Attribute_Constrained =>
                for F of Recurse (Prefix (N)) loop
@@ -3747,57 +3850,55 @@ package body Flow_Utility is
                      Variables.Union (Recurse (High_Bound (Array_Bounds)));
                   end if;
                end;
-               --  If this aggregate has a type (not always the case despite
-               --  N_Aggregate being in N_Has_Etype) pull dependencies arising
-               --  from the aggregate type's components' default initialization
-               --  when the box notation is used.
-               if Present (Etype (N)) then
-                  declare
-                     P         : Node_Id :=
-                       First (Component_Associations (N));
-                     Aggr_Type : constant Entity_Id := Get_Type (N, Ctx.Scope);
-                     Comp_Type : Entity_Id;
-                     Any_Boxes : Boolean := False;
-                     Def_Expr  : Node_Id;
-                  begin
-                     while Present (P) loop
-                        --  Each component must be associated with either a
-                        --  box or an expression. Expressions are detected and
-                        --  handled elsewhere.
-                        pragma Assert
-                          (Box_Present (P) xor Present (Expression (P)));
 
-                        if Box_Present (P) then
-                           Any_Boxes := True;
-                           exit;
-                        end if;
-                        Next (P);
-                     end loop;
-                     --  ??? Record components are handled properly by the
-                     --  Untangle_... machinery. Consider similar machinery
-                     --  for array types.
-                     if Any_Boxes and then Is_Array_Type (Aggr_Type) then
-                        Comp_Type := Component_Type (Aggr_Type);
-                        if Has_Discriminants (Comp_Type) then
-                           for C of Iter (Discriminant_Constraint (Comp_Type))
-                           loop
-                              Variables.Union (Recurse (C));
-                           end loop;
-                        end if;
+               --  Include variables from the default values that correspond to
+               --  boxes in aggregate expressions.
 
-                        for F of Flatten_Variable (Comp_Type, Ctx.Scope) loop
-                           Def_Expr := Get_Default_Initialization (F);
-                           if Present (Def_Expr) then
-                              --  Discriminant dependencies from default
-                              --  expressions are managed above.
-                              Variables.Union
-                                (Ignore_Record_Type_Discriminants
-                                   (Recurse (Def_Expr)));
-                           end if;
+               declare
+                  Assoc     : Node_Id;
+                  Aggr_Type : constant Entity_Id := Get_Type (N, Ctx.Scope);
+                  Any_Boxes : Boolean := False;
+                  Comp_Type : Entity_Id;
+                  Def_Expr  : Node_Id;
+               begin
+                  Assoc := First (Component_Associations (N));
+                  while Present (Assoc) loop
+                     --  Each component must be associated with either a box
+                     --  or an expression. Expressions are detected and handled
+                     --  elsewhere.
+                     pragma Assert
+                       (Box_Present (Assoc) xor Present (Expression (Assoc)));
+
+                     if Box_Present (Assoc) then
+                        Any_Boxes := True;
+                        exit;
+                     end if;
+                     Next (Assoc);
+                  end loop;
+                  --  ??? Record components are handled properly by the
+                  --  Untangle_... machinery. Consider similar machinery
+                  --  for array types.
+                  if Any_Boxes and then Is_Array_Type (Aggr_Type) then
+                     Comp_Type := Component_Type (Aggr_Type);
+                     if Has_Discriminants (Comp_Type) then
+                        for C of Iter (Discriminant_Constraint (Comp_Type))
+                        loop
+                           Variables.Union (Recurse (C));
                         end loop;
                      end if;
-                  end;
-               end if;
+
+                     for F of Flatten_Variable (Comp_Type, Ctx.Scope) loop
+                        Def_Expr := Get_Default_Initialization (F);
+                        if Present (Def_Expr) then
+                           --  Discriminant dependencies from default
+                           --  expressions are managed above.
+                           Variables.Union
+                             (Ignore_Record_Type_Discriminants
+                                (Recurse (Def_Expr)));
+                        end if;
+                     end loop;
+                  end if;
+               end;
 
             when N_Delta_Aggregate =>
                declare

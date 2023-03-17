@@ -21615,8 +21615,8 @@ package body Gnat2Why.Expr is
                                        Result := False_Expr;
                                        exit;
                                     end if;
-                                    Ty_Index := Next_Index (Ty_Index);
-                                    Var_Index := Next_Index (Var_Index);
+                                    Next_Index (Ty_Index);
+                                    Next_Index (Var_Index);
                                  end loop;
                               end if;
                            end;
