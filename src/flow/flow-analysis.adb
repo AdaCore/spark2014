@@ -5935,8 +5935,8 @@ package body Flow.Analysis is
                            Tag      => Subprogram_Termination,
                            Vertex   => V);
 
-                     elsif Is_Dispatching_Operation (SC.E)
-                       and then Present (Find_Dispatching_Type (SC.E))
+                     elsif Nkind (SC.N) in N_Subprogram_Call
+                       and then Flow_Classwide.Is_Dispatching_Call (SC.N)
                      then
 
                         Proved := False;
