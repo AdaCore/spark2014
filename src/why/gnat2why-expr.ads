@@ -653,7 +653,8 @@ package Gnat2Why.Expr is
    function Transform_Pragma
      (Prag  : N_Pragma_Id;
       Force : Boolean)
-      return W_Prog_Id;
+      return W_Prog_Id
+     with Pre => not Is_Pragma_Assert_And_Cut (Prag);
    --  Returns the Why program for pragma.
    --  @param Prag The pragma to translate into Why3.
    --  @param Force True to force the translation of the pragma, for those
@@ -667,7 +668,7 @@ package Gnat2Why.Expr is
       Expr    : out N_Subexpr_Id;
       Runtime : out W_Prog_Id;
       Pred    : out W_Pred_Id);
-   --  Translates a pragma Check into Why3.
+   --  For a pragma Check, produces the components of its translation into Why3
    --  @param Stmt The pragma Check to translate.
    --  @param Force True to force the translation of the pragma, even for those
    --     pragmas normally translated elsewhere like preconditions and
@@ -681,7 +682,8 @@ package Gnat2Why.Expr is
    function Transform_Pragma_Check
      (Prag  : N_Pragma_Id;
       Force : Boolean)
-      return W_Prog_Id;
+      return W_Prog_Id
+     with Pre => not Is_Pragma_Assert_And_Cut (Prag);
    --  Returns the Why program for pragma Check. As most assertion pragmas
    --  (like Assert or Assume) are internally rewritten by semantic analysis
    --  into pragma Check, this is where these are translated.
