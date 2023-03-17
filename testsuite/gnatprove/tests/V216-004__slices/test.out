@@ -57,8 +57,16 @@ main.adb:32:10: warning: no returning annotation available for "Rand"
 main.adb:33:25: info: index check proved (CVC5: 2 VC)
 main.adb:33:27: info: range check proved (CVC5: 2 VC)
 main.adb:33:30: info: index check proved (CVC5: 2 VC)
+main.adb:33:30: warning: assuming "Rand" always returns
+main.adb:33:30: warning: assuming "Rand" has no effect on global items
+main.adb:33:30: warning: no Global contract available for "Rand"
+main.adb:33:30: warning: no returning annotation available for "Rand"
 main.adb:33:41: info: index check proved (CVC5: 2 VC)
 main.adb:34:25: info: index check proved (CVC5: 2 VC)
 main.adb:34:27: medium: range check might fail [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec]
 main.adb:34:30: info: index check proved (CVC5: 2 VC)
+main.adb:34:30: warning: assuming "Rand" always returns
+main.adb:34:30: warning: assuming "Rand" has no effect on global items
+main.adb:34:30: warning: no Global contract available for "Rand"
+main.adb:34:30: warning: no returning annotation available for "Rand"
 main.adb:34:41: info: index check proved (CVC5: 2 VC)

@@ -9439,6 +9439,7 @@ package body SPARK_Definition is
 
    procedure Mark_Subtype_Indication (N : N_Subtype_Indication_Id) is
       T : constant Type_Kind_Id := Etype (Subtype_Mark (N));
+      C : constant Node_Id := Constraint (N);
 
    begin
       --  Check that the base type is in SPARK
@@ -9448,11 +9449,11 @@ package body SPARK_Definition is
       end if;
 
       --  Floating- and fixed-point constraints are static in Ada, so do
-      --  not require marking. Violations in range constraints render the
-      --  (implicit) type of the subtype indication as not-in-SPARK anyway,
-      --  so they also do not require explicit marking here.
-      --  ??? error messages for this would be better if located at the
-      --  exact subexpression of the range constraint that causes problem
+      --  not require marking.
+      --  Range constraints are static for type definitions, so would not
+      --  require marking here, but dynamic constraints are allowed for
+      --  range used in some expressions, like aggregates. So we mark the
+      --  constraint systematically to deal with that case.
       --
       --  Note: in general, constraints can also be an N_Range and
       --  N_Index_Or_Discriminant_Constraint. We would see them when marking
@@ -9463,11 +9464,18 @@ package body SPARK_Definition is
       --  as part of an allocator in an interfering context, which will get
       --  rejected.
 
-      pragma Assert
-        (Nkind (Constraint (N)) in N_Delta_Constraint
-                                 | N_Digits_Constraint
-                                 | N_Range_Constraint
-                                 | N_Index_Or_Discriminant_Constraint);
+      case Nkind (C) is
+         when N_Delta_Constraint
+            | N_Digits_Constraint
+            | N_Index_Or_Discriminant_Constraint
+         =>
+            null;
+         when N_Range_Constraint =>
+            Mark (Range_Expression (C));
+         when others =>
+            raise Program_Error;
+      end case;
+
    end Mark_Subtype_Indication;
 
    ---------------------------------
