@@ -102,7 +102,10 @@ Manual install
 
 You can download a "gnatprove" package from this `github project
 <https://github.com/alire-project/GNAT-FSF-builds/releases>`_. Extracting the
-package and adding the ``bin`` directory to your PATH is enough.
+package and adding the ``bin`` directory to your PATH is enough. You can get
+the GNAT compiler from the same link, and there is a `different
+project <https://github.com/AdaCore/gnatstudio/releases>`_ for GNATStudio, the
+IDE.
 
 Install using alire
 ^^^^^^^^^^^^^^^^^^^
