@@ -91,3 +91,33 @@ Then do the same with the SPARK tarball, e.g.::
 
 Note that you need to have sufficient rights for installing the package at the
 chosen location (e.g. root rights for installing under /opt/spark).
+
+Installation of the FSF version of SPARK
+----------------------------------------
+
+A so-called FSF version of SPARK is freely available.
+
+Manual install
+^^^^^^^^^^^^^^
+
+You can download a "gnatprove" package from this `github project
+<https://github.com/alire-project/GNAT-FSF-builds/releases>`_. Extracting the
+package and adding the ``bin`` directory to your PATH is enough.
+
+Install using alire
+^^^^^^^^^^^^^^^^^^^
+
+You can obtain SPARK via `Alire <https://alire.ada.dev/crates/gnatprove>`_. To
+do this, follow the installation instructions of Alire, then you can add the
+``gnatprove`` dependency to an alire project using::
+
+    alr with gnatprove
+
+Alire will download gnatprove if necessary.
+
+The older GNAT Community version
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There is an older community version of the tools, packaged with GNAT and
+GNATStudio. You can download it from `AdaCore's website
+<https://www.adacore.com/download>`_.
