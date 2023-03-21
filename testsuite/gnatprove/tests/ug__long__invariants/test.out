@@ -19,10 +19,13 @@ invariants.adb:43:07: info: precondition proved
 invariants.adb:43:07: info: invariant check proved
 invariants.adb:51:07: info: precondition proved
 invariants.adb:51:07: info: invariant check proved
+invariants.ads:9:13: info: implicit terminating annotation on "Max" has been proved, subprogram will terminate
+invariants.ads:11:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate
 invariants.ads:13:14: info: invariant check proved
 invariants.ads:14:13: info: invariant check proved
 invariants.ads:16:14: info: invariant check proved
 invariants.ads:17:13: info: invariant check proved
+invariants.ads:19:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate
 
 invariants.ads:21:14: medium: invariant check might fail
    21 |   procedure Push (E : Element) with
@@ -31,6 +34,7 @@ invariants.ads:22:13: info: invariant check proved
 invariants.ads:24:14: info: invariant check proved
 invariants.ads:25:13: info: invariant check proved
 invariants.ads:31:09: info: invariant check proved on default value
+invariants.ads:38:13: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
 invariants.ads:39:47: info: index check proved
 invariants.ads:41:57: info: index check proved
 

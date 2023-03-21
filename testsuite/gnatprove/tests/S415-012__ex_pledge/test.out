@@ -1,14 +1,20 @@
 in_out_pledge.adb:11:14: info: implicit function contract might not be available on recursive calls
-in_out_pledge.adb:12:08: medium: terminating annotation on "Length_Aux" could be incorrect, subprogram is recursive
+in_out_pledge.adb:12:08: medium: implicit terminating annotation on "Length_Aux" could be incorrect, subprogram is recursive
 in_out_pledge.adb:13:27: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:15:15: info: overflow check proved (CVC5: 2 VC)
 in_out_pledge.adb:15:30: info: pointer dereference check proved (CVC5: 1 VC)
+in_out_pledge.adb:16:05: warning: Always_Return annotation is useless
+in_out_pledge.adb:16:05: warning: function "Length_Aux" has implicit Always_Return annotation
+in_out_pledge.adb:18:14: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 in_out_pledge.adb:20:14: info: implicit function contract might not be available on recursive calls
-in_out_pledge.adb:21:08: medium: terminating annotation on "Get_Nth_Val" could be incorrect, subprogram is recursive
+in_out_pledge.adb:21:08: medium: implicit terminating annotation on "Get_Nth_Val" could be incorrect, subprogram is recursive
 in_out_pledge.adb:21:23: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:21:35: info: precondition proved (CVC5: 1 VC)
 in_out_pledge.adb:21:49: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:21:58: info: range check proved (CVC5: 2 VC)
+in_out_pledge.adb:23:05: warning: Always_Return annotation is useless
+in_out_pledge.adb:23:05: warning: function "Get_Nth_Val" has implicit Always_Return annotation
+in_out_pledge.adb:26:13: info: implicit terminating annotation on "Model" has been proved, subprogram will terminate
 in_out_pledge.adb:28:14: info: postcondition proved (CVC5: 3 VC)
 in_out_pledge.adb:29:57: info: index check proved (CVC5: 2 VC)
 in_out_pledge.adb:29:62: info: precondition proved (CVC5: 1 VC)
@@ -25,16 +31,15 @@ in_out_pledge.adb:38:41: info: index check proved (CVC5: 4 VC)
 in_out_pledge.adb:38:46: info: precondition proved (CVC5: 2 VC)
 in_out_pledge.adb:40:14: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
 in_out_pledge.adb:40:14: info: range check proved (CVC5: 1 VC)
+in_out_pledge.adb:43:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
 in_out_pledge.adb:43:96: info: dynamic accessibility check proved (Trivial)
 in_out_pledge.adb:53:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 in_out_pledge.adb:54:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 in_out_pledge.adb:55:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 in_out_pledge.adb:56:07: medium: resource or memory leak might occur at end of scope
 in_out_pledge.adb:58:10: info: no contextual analysis of "Rand" (body not seen yet)
-in_out_pledge.adb:58:10: warning: assuming "Rand" always returns
 in_out_pledge.adb:58:10: warning: assuming "Rand" has no effect on global items
 in_out_pledge.adb:58:10: warning: no Global contract available for "Rand"
-in_out_pledge.adb:58:10: warning: no returning annotation available for "Rand"
 in_out_pledge.adb:63:15: info: data dependencies proved
 in_out_pledge.adb:65:23: info: postcondition proved (CVC5: 4 VC)
 in_out_pledge.adb:65:43: info: pointer dereference check proved (CVC5: 1 VC)
@@ -65,6 +70,10 @@ in_out_pledge.adb:87:30: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:87:35: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:87:40: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.ads:3:14: warning: subprogram "Main" has no effect
+pledge_constraints.adb:15:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
+pledge_constraints.adb:18:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
 pledge_constraints.adb:31:45: error: actual for a call to a function annotated with At_End_Borrow should not depend on a variable
+pledge_constraints_2.adb:15:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
+pledge_constraints_2.adb:18:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
 pledge_constraints_2.adb:30:42: error: actual for a call to a function annotated with At_End_Borrow should be rooted at a borrower or a borrowed expression
 gnatprove: error during flow analysis and proof

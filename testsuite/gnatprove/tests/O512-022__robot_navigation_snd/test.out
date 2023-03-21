@@ -1,5 +1,4 @@
 algorithm.adb:86:07: info: cannot unroll loop (too many loop iterations)
-algorithm.adb:89:44: info: function contract not available for proof ("alDiff" might not return)
 algorithm.adb:94:65: info: division check proved (CVC5: 1 VC)
 algorithm.adb:94:65: info: float overflow check proved (Trivial)
 algorithm.adb:95:19: warning: statement has no effect
@@ -20,11 +19,9 @@ algorithm.adb:117:25: warning: statement has no effect
 algorithm.adb:118:28: warning: this statement is never reached
 algorithm.adb:119:28: warning: this statement is never reached
 algorithm.adb:120:28: warning: this statement is never reached
-algorithm.adb:145:46: info: function contract not available for proof ("Create" might not return)
 algorithm.adb:149:10: info: cannot unroll loop (too many loop iterations)
 algorithm.adb:152:63: info: range check proved (Trivial)
 algorithm.adb:152:70: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:152:72: info: function contract not available for proof ("alDiff" might not return)
 algorithm.adb:156:70: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:158:25: warning: statement has no effect
 algorithm.adb:159:28: warning: this statement is never reached
@@ -41,7 +38,6 @@ algorithm.adb:197:89: medium: float overflow check might fail [reason for check:
 algorithm.adb:197:95: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 algorithm.adb:197:108: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 algorithm.adb:197:121: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:197:129: info: implicit function contract not available for proof ("ccwDiff" might not return)
 algorithm.adb:200:13: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:204:31: info: assertion proved (CVC5: 2 VC)
 algorithm.adb:209:33: info: loop invariant initialization proved (CVC5: 2 VC)
@@ -56,7 +52,6 @@ algorithm.adb:233:89: medium: float overflow check might fail [reason for check:
 algorithm.adb:233:95: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 209 should mention rayR]
 algorithm.adb:233:108: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 209 should mention rayL and rayR]
 algorithm.adb:233:121: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:233:129: info: implicit function contract not available for proof ("ccwDiff" might not return)
 algorithm.adb:237:13: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:248:17: info: postcondition proved (CVC5: 1 VC)
 algorithm.adb:252:17: info: postcondition proved (CVC5: 1 VC)
@@ -94,7 +89,7 @@ algorithm.adb:318:10: info: initialization of "riterR" proved
 algorithm.adb:318:18: info: initialization of "riterL" proved
 algorithm.adb:322:10: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:326:35: info: loop invariant initialization proved (CVC5: 4 VC)
-algorithm.adb:326:35: info: loop invariant preservation proved (CVC5: 3 VC; Z3: 1 VC)
+algorithm.adb:326:35: info: loop invariant preservation proved (CVC5: 4 VC)
 algorithm.adb:328:44: info: precondition proved (CVC5: 2 VC)
 algorithm.adb:332:25: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:332:64: info: precondition proved (CVC5: 1 VC)
@@ -122,6 +117,7 @@ algorithm.adb:363:27: info: precondition proved (Z3: 1 VC)
 algorithm.adb:383:15: info: range check proved (CVC5: 2 VC)
 algorithm.adb:383:71: medium: range check might fail, cannot prove lower bound for Length (This.gapVec) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Length (This.gapVec) in Gap_ID) to subprogram at algorithm.ads:91]
 algorithm.adb:397:22: info: assertion proved (CVC5: 1 VC)
+algorithm.adb:399:43: medium: implicit terminating annotation on "findBestValley" could be incorrect, loop might be nonterminating
 algorithm.adb:400:33: info: loop invariant initialization proved (CVC5: 2 VC)
 algorithm.adb:400:33: info: loop invariant preservation proved (CVC5: 2 VC)
 algorithm.adb:405:73: info: precondition proved (CVC5: 1 VC)
@@ -274,9 +270,9 @@ algorithm.adb:682:22: medium: assertion might fail
 algorithm.adb:682:46: info: division check proved (CVC5: 1 VC)
 algorithm.adb:682:46: info: float overflow check proved (Trivial)
 algorithm.adb:683:21: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:683:21: info: range check proved (Z3: 1 VC)
+algorithm.adb:683:21: info: range check proved (CVC5: 1 VC)
 algorithm.adb:683:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-algorithm.adb:683:57: info: float overflow check proved (altergo: 1 VC)
+algorithm.adb:683:57: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:683:109: info: division check proved (CVC5: 1 VC)
 algorithm.adb:683:109: info: float overflow check proved (Trivial)
 algorithm.adb:686:42: info: non-aliasing of formal parameters "gapVec" and "laserscan" proved
@@ -312,7 +308,7 @@ algorithm.adb:765:37: info: assertion proved (CVC5: 2 VC)
 algorithm.adb:768:46: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:768:99: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:768:115: info: range check proved (Trivial)
-algorithm.adb:768:122: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: you should consider adding a postcondition to function dCast or turning it into an expression function in its unit spec]
+algorithm.adb:768:122: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:770:27: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:771:53: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:771:90: info: discriminant check proved (CVC5: 1 VC)
@@ -349,7 +345,7 @@ algorithm.adb:853:10: warning: this statement is never reached
 algorithm.adb:854:10: warning: this statement is never reached
 algorithm.adb:857:31: info: assertion proved (CVC5: 1 VC)
 algorithm.adb:859:16: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:861:49: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:861:49: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:861:56: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:861:64: info: division check proved (CVC5: 1 VC)
 algorithm.adb:861:64: info: float overflow check proved (Trivial)
@@ -396,23 +392,27 @@ algorithm.adb:880:10: warning: this statement is never reached
 algorithm.adb:881:10: warning: this statement is never reached
 algorithm.adb:882:10: warning: this statement is never reached
 algorithm.ads:43:38: info: range check proved (CVC5: 2 VC)
+algorithm.ads:68:13: info: implicit terminating annotation on "isFilterClear" has been proved, subprogram will terminate
+algorithm.ads:76:13: info: implicit terminating annotation on "isRisingGapSafe" has been proved, subprogram will terminate
 algorithm.ads:89:14: info: postcondition proved (CVC5: 1 VC)
+algorithm.ads:98:13: info: implicit terminating annotation on "ObsAvoidDelta" has been proved, subprogram will terminate
 formal-numerics-elementary_functions.ads:91:22: info: division check proved (CVC5: 1 VC)
 formal-numerics-elementary_functions.ads:91:52: info: float overflow check proved (Trivial)
 formal-numerics-elementary_functions.ads:100:23: info: division check proved (CVC5: 1 VC)
 formal-numerics-elementary_functions.ads:100:51: info: float overflow check proved (Trivial)
+formal-numerics.ads:17:13: info: implicit terminating annotation on "e" has been proved, subprogram will terminate
 spark-containers-formal-doubly_linked_lists.ads:40:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at algorithm.ads:40
 spark-containers-formal-doubly_linked_lists.ads:42:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at algorithm.ads:40
 spark-containers-formal-doubly_linked_lists.ads:44:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at algorithm.ads:40
 spark-containers-formal-doubly_linked_lists.ads:408:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:60, in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:408:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at algorithm.ads:40
 spark-containers-formal-doubly_linked_lists.ads:408:13: info: precondition proved (Trivial: 1 VC), in instantiation at algorithm.ads:40
-spark-containers-formal-doubly_linked_lists.ads:408:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at algorithm.ads:40
 spark-containers-formal-doubly_linked_lists.ads:412:06: info: data dependencies proved, in instantiation at algorithm.ads:40
 spark-containers-formal-doubly_linked_lists.ads:415:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:60, in instantiation at algorithm.ads:40
 spark-containers-formal-doubly_linked_lists.ads:415:13: info: precondition proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
-spark-containers-formal-doubly_linked_lists.ads:456:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:456:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at algorithm.ads:40
 spark-containers-formal-doubly_linked_lists.ads:457:08: info: dynamic accessibility check proved (Trivial), in instantiation at algorithm.ads:40
-spark-containers-formal-doubly_linked_lists.ads:461:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at algorithm.ads:40
+spark-containers-formal-doubly_linked_lists.ads:461:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at algorithm.ads:40
 spark-containers-formal-doubly_linked_lists.ads:463:08: info: dynamic accessibility check proved (Trivial), in instantiation at algorithm.ads:40
 spark-containers-formal-doubly_linked_lists.ads:484:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at algorithm.ads:40
 spark-containers-formal-doubly_linked_lists.ads:593:49: info: overflow check proved (CVC5: 2 VC), in instantiation at algorithm.ads:40
@@ -456,8 +456,8 @@ spark-containers-functional-maps.ads:380:13: info: during checks for quantificat
 spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at algorithm.ads:40
 spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at algorithm.ads:40
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at algorithm.ads:40
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at algorithm.ads:40
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at algorithm.ads:40
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at algorithm.ads:40
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at algorithm.ads:40
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at algorithm.ads:40
 spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at algorithm.ads:40
 spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at algorithm.ads:40
@@ -471,11 +471,11 @@ spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "
 spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at algorithm.ads:40
 spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at algorithm.ads:40
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at algorithm.ads:40
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at algorithm.ads:40
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at algorithm.ads:40
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at algorithm.ads:40
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at algorithm.ads:40
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at algorithm.ads:40
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at algorithm.ads:40
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at algorithm.ads:40
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at algorithm.ads:40
 spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at algorithm.ads:40

@@ -1,5 +1,8 @@
+test.ads:14:13: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
 test.ads:16:20: info: postcondition proved (CVC5: 1 VC)
+test.ads:18:13: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
 test.ads:20:20: info: postcondition proved (CVC5: 1 VC)
+test.ads:22:13: info: implicit terminating annotation on "F3" has been proved, subprogram will terminate
 test.ads:24:20: info: postcondition proved (CVC5: 1 VC)
 test.ads:27:20: info: postcondition proved (CVC5: 1 VC)
 test.ads:30:20: info: postcondition proved (CVC5: 1 VC)

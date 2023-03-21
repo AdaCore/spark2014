@@ -14,10 +14,8 @@ is
      (if A'Length = 0 then 0
       elsif A (A'Last) = E then Occ_Def (Remove_Last (A), E) + 1
       else Occ_Def (Remove_Last (A), E))
-   with Post => Occ_Def'Result <= A'Length;
-   pragma Annotate (GNATprove, Always_Return, Occ_Def);
-   pragma Annotate (GNATprove, False_Positive, "recursive",
-                    "Occ_Def is called recursively on a strictly smaller array");
+   with Post               => Occ_Def'Result <= A'Length,
+        Subprogram_Variant => (Decreases => A'Length);
 
    function Occ (A : Arr; E : Integer) return Nb_Occ is (Occ_Def (A, E))
    with

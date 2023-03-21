@@ -18,3 +18,5 @@ parse.adb:71:17: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 parse.adb:75:14: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 parse.ads:16:27: info: initialization of "Result" proved
 util.adb:7:36: info: index check proved (CVC5: 2 VC)
+util.ads:5:13: info: implicit terminating annotation on "Extract_Unsigned_16" has been proved, subprogram will terminate
+util.ads:11:13: info: implicit terminating annotation on "Extract_Bits_Of_Octet" has been proved, subprogram will terminate

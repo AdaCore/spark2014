@@ -1,6 +1,10 @@
+pack.adb:4:13: info: implicit terminating annotation on "Query_X1_Bis" has been proved, subprogram will terminate
 pack.adb:5:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+pack.adb:9:13: info: implicit terminating annotation on "Query_X2_Bis" has been proved, subprogram will terminate
 pack.adb:10:14: info: postcondition proved (CVC5: 1 VC)
+pack.ads:9:13: info: implicit terminating annotation on "Query_X1" has been proved, subprogram will terminate
 pack.ads:10:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+pack.ads:12:13: info: implicit terminating annotation on "Query_X2" has been proved, subprogram will terminate
 pack.ads:13:14: info: postcondition proved (CVC5: 1 VC)
 user.adb:2:11: warning: subprogram "User" has no effect
 user.adb:5:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)

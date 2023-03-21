@@ -1,2 +1,3 @@
+gen.ads:24:13: info: implicit terminating annotation on "Get_Val" has been proved, subprogram will terminate
 gen.ads:24:22: warning: unused variable "E"
 gen.ads:27:14: high: postcondition might fail

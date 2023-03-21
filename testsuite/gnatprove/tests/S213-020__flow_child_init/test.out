@@ -1,9 +1,11 @@
 repro-b.adb:18:14: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at repro-b.ads:10 should mention X in a precondition]
 repro-b.ads:4:03: info: flow dependencies proved
+repro-b.ads:7:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 repro-b.ads:8:09: info: data dependencies proved
 repro-b.ads:11:09: info: data dependencies proved
 repro-c.adb:15:14: medium: overflow check might fail, cannot prove upper bound for Y + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at repro-c.ads:7 should mention Y in a precondition]
 repro-c.ads:4:03: info: flow dependencies proved
 repro-c.ads:9:06: info: data dependencies proved
 repro.ads:4:03: info: flow dependencies proved
+repro.ads:11:13: info: implicit terminating annotation on "Get_Foo" has been proved, subprogram will terminate
 repro.ads:12:09: info: data dependencies proved

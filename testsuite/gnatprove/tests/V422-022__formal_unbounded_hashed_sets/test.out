@@ -14,10 +14,10 @@ spark-containers-formal-unbounded_hashed_sets.ads:74:19: info: terminating annot
 spark-containers-formal-unbounded_hashed_sets.ads:74:19: info: terminating annotation on "Hash_Equivalent" has been proved, subprogram will terminate, in instantiation at test_set.ads:8
 spark-containers-formal-unbounded_hashed_sets.ads:540:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:96, in instantiation at test_set.ads:24
 spark-containers-formal-unbounded_hashed_sets.ads:540:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:96, in instantiation at test_set.ads:8
+spark-containers-formal-unbounded_hashed_sets.ads:540:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_set.ads:24
+spark-containers-formal-unbounded_hashed_sets.ads:540:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_set.ads:8
 spark-containers-formal-unbounded_hashed_sets.ads:540:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set.ads:24
 spark-containers-formal-unbounded_hashed_sets.ads:540:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_set.ads:8
-spark-containers-formal-unbounded_hashed_sets.ads:540:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_set.ads:24
-spark-containers-formal-unbounded_hashed_sets.ads:540:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_set.ads:8
 spark-containers-formal-unbounded_hashed_sets.ads:544:06: info: data dependencies proved, in instantiation at test_set.ads:24
 spark-containers-formal-unbounded_hashed_sets.ads:544:06: info: data dependencies proved, in instantiation at test_set.ads:8
 spark-containers-formal-unbounded_hashed_sets.ads:547:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:96, in instantiation at test_set.ads:24
@@ -100,10 +100,10 @@ spark-containers-functional-maps.ads:388:13: info: during checks for quantificat
 spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:296, in instantiation at test_set.ads:8
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:296, in instantiation at test_set.ads:24
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:296, in instantiation at test_set.ads:8
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:296, in instantiation at test_set.ads:24
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:296, in instantiation at test_set.ads:8
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:296, in instantiation at test_set.ads:24
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:296, in instantiation at test_set.ads:8
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:296, in instantiation at test_set.ads:24
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:296, in instantiation at test_set.ads:8
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:296, in instantiation at test_set.ads:24
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:296, in instantiation at test_set.ads:8
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:296, in instantiation at test_set.ads:24
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:296, in instantiation at test_set.ads:8
 spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:296, in instantiation at test_set.ads:24
@@ -140,8 +140,8 @@ spark-containers-functional-sets.ads:349:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:173, in instantiation at test_set.ads:8
 spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:173, in instantiation at test_set.ads:24
 spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:173, in instantiation at test_set.ads:8
-spark-containers-functional-sets.ads:365:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:173, in instantiation at test_set.ads:24
-spark-containers-functional-sets.ads:365:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:173, in instantiation at test_set.ads:8
+spark-containers-functional-sets.ads:365:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:173, in instantiation at test_set.ads:24
+spark-containers-functional-sets.ads:365:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:173, in instantiation at test_set.ads:8
 spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:173, in instantiation at test_set.ads:24
 spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:173, in instantiation at test_set.ads:8
 spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:173, in instantiation at test_set.ads:24
@@ -168,16 +168,16 @@ spark-containers-functional-vectors.ads:104:13: info: during checks for quantifi
 spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:8
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:24
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:8
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:24
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:8
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:24
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:8
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:24
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:8
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:24
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:8
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:24
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:8
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:24
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:8
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:24
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:8
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:24
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:8
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:188, in instantiation at test_set.ads:24
@@ -618,7 +618,11 @@ test_set.adb:386:10: info: precondition proved (CVC5: 1 VC)
 test_set.adb:387:25: info: assertion proved (CVC5: 1 VC)
 test_set.adb:388:25: info: assertion proved (CVC5: 1 VC)
 test_set.adb:393:07: medium: assertion might fail
+test_set.ads:6:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
+test_set.ads:18:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
 test_set.ads:19:17: info: postcondition proved (CVC5: 2 VC)
+test_set.ads:22:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
+test_set.ads:29:13: info: implicit terminating annotation on "Get_F" has been proved, subprogram will terminate
 test_set.ads:30:17: info: postcondition proved (CVC5: 1 VC)
 test_set.ads:39:14: warning: subprogram "Run_Test" has no effect
 test_set.ads:41:14: warning: subprogram "Large_Test" has no effect

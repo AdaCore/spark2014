@@ -27,14 +27,11 @@ is
      Annotate   => (GNATprove, Always_Return);
 
    function Closed (F : File) return Boolean with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global   => null;
    function Is_Open (F : File) return Boolean with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global   => null;
    function Is_Writable (F : File) return Boolean with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global   => null;
 
 private
    type State is (Closed, Open_Read, Open_Read_Write);

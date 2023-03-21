@@ -1,2 +1,4 @@
+funcs.ads:4:13: info: implicit terminating annotation on "Valid" has been proved, subprogram will terminate
 funcs.ads:8:19: info: precondition proved (Trivial: 1 VC)
+funcs.ads:8:19: medium: implicit terminating annotation on "Id" could be incorrect, dispatching call might be nonterminating
 funcs.ads:8:19: medium: postcondition might fail

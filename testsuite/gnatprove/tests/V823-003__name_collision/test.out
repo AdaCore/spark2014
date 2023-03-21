@@ -1,3 +1,6 @@
+p.ads:4:16: info: implicit terminating annotation on "B" has been proved, subprogram will terminate
+p.ads:5:16: info: implicit terminating annotation on "C" has been proved, subprogram will terminate
+p.ads:6:16: info: implicit terminating annotation on "D" has been proved, subprogram will terminate
 p.ads:14:10: info: division check proved (CVC5: 1 VC)
 p.ads:14:10: info: overflow check proved (CVC5: 2 VC)
 p.ads:14:18: info: division check proved (CVC5: 1 VC)

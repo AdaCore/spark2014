@@ -1,4 +1,5 @@
 raise_xxx_in_decl.adb:1:11: high: all paths in "Raise_XXX_In_Decl" raise exceptions or do not terminate normally
+raise_xxx_in_decl.adb:3:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 raise_xxx_in_decl.adb:7:29: high: range check might fail
 raise_xxx_in_decl.adb:7:29: warning: delta value is too small
 raise_xxx_in_decl.adb:8:04: warning: this statement is never reached

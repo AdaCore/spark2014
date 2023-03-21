@@ -1,12 +1,16 @@
+numerics.ads:10:13: info: implicit terminating annotation on overriding operator "+" has been proved, subprogram will terminate
 numerics.ads:10:100: info: postcondition proved (CVC5: 1 VC)
 numerics.ads:10:142: info: float overflow check proved (CVC5: 1 VC)
 numerics.ads:10:142: info: range check proved (Trivial)
+numerics.ads:13:13: info: implicit terminating annotation on overriding operator "-" has been proved, subprogram will terminate
 numerics.ads:13:100: info: postcondition proved (CVC5: 1 VC)
 numerics.ads:13:142: info: float overflow check proved (CVC5: 1 VC)
 numerics.ads:13:142: info: range check proved (Trivial)
+numerics.ads:16:13: info: implicit terminating annotation on overriding operator "*" has been proved, subprogram will terminate
 numerics.ads:16:100: info: postcondition proved (CVC5: 1 VC)
 numerics.ads:16:142: info: float overflow check proved (CVC5: 1 VC)
 numerics.ads:16:142: info: range check proved (Trivial)
+numerics.ads:19:13: info: implicit terminating annotation on overriding operator "/" has been proved, subprogram will terminate
 numerics.ads:19:108: info: postcondition proved (CVC5: 1 VC)
 numerics.ads:19:150: info: division check proved (CVC5: 1 VC)
 numerics.ads:19:150: info: float overflow check proved (CVC5: 1 VC)

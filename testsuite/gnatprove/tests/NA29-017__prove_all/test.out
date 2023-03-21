@@ -1,3 +1,7 @@
+sorting.adb:8:42: warning: Always_Return annotation is useless
+sorting.adb:8:42: warning: function "Perm2" has implicit Always_Return annotation
+sorting.adb:14:42: warning: Always_Return annotation is useless
+sorting.adb:14:42: warning: function "Le_Array" has implicit Always_Return annotation
 sorting.adb:25:07: info: flow dependencies proved
 sorting.adb:28:18: high: overflow check might fail, cannot prove upper bound for A_First + Length (e.g. when A_First = Natural'Last and Length = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 sorting.adb:28:37: high: overflow check might fail, cannot prove upper bound for A'Last + 1 (e.g. when A'First = 0 and A'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
@@ -152,6 +156,10 @@ sorting.adb:155:77: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:155:81: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:158:24: info: overflow check proved (CVC5: 2 VC)
 sorting.adb:159:14: info: overflow check proved (CVC5: 2 VC)
+sorting.ads:9:42: warning: Always_Return annotation is useless
+sorting.ads:9:42: warning: function "Sorted" has implicit Always_Return annotation
+sorting.ads:15:42: warning: Always_Return annotation is useless
+sorting.ads:15:42: warning: function "Perm" has implicit Always_Return annotation
 sorting.ads:22:11: info: flow dependencies proved
 sorting.ads:23:54: high: overflow check might fail, cannot prove upper bound for A_First + Length (e.g. when A'First = 1 and A'Last = 0 and A_First = Natural'Last and B'First = 1 and B'Last = 0 and Length = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 sorting.ads:23:73: high: overflow check might fail, cannot prove upper bound for A'Last + 1 (e.g. when A'First = 0 and A'Last = Integer'Last and B'First = 1 and B'Last = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]

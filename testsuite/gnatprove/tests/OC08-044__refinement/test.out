@@ -2,12 +2,14 @@ foo.adb:4:04: info: initialization of "A" constituent of "State" proved
 foo.adb:5:04: info: initialization of "B" constituent of "State" proved
 foo.ads:3:03: info: flow dependencies proved
 foo.ads:4:03: info: initial condition proved (CVC5: 1 VC)
+foo.ads:7:13: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
 foo.ads:7:36: info: data dependencies proved
 foo.ads:10:04: info: initialization of "C" constituent of "State" proved
 foo2.adb:4:04: info: initialization of "A" constituent of "State" proved
 foo2.adb:5:04: info: initialization of "B" constituent of "State" proved
 foo2.ads:3:03: info: flow dependencies proved
 foo2.ads:4:03: info: initial condition proved (CVC5: 1 VC)
+foo2.ads:7:13: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
 foo2.ads:7:36: info: flow dependencies proved
 foo2.ads:10:04: info: initialization of "C" constituent of "State" proved
 ok_semantics-priv.adb:6:35: low: unused global "X" constituent of "State1"
@@ -25,6 +27,7 @@ ok_semantics-priv.adb:18:45: low: unused global "Priv.YY" constituent of "OK_Sem
 ok_semantics-priv.adb:18:45: warning: "Priv.YY" constituent of "OK_Semantics.State2" is not modified, could be INPUT
 ok_semantics-priv.adb:18:49: low: unused global "ZZ" constituent of "State"
 ok_semantics-priv.adb:18:49: warning: "ZZ" constituent of "State" is not modified, could be INPUT
+ok_semantics-priv.ads:5:13: info: implicit terminating annotation on "Check" has been proved, subprogram will terminate
 ok_semantics-priv.ads:6:06: info: data dependencies proved
 ok_semantics-priv.ads:8:14: high: "Priv.YY" constituent of "OK_Semantics.State2" is not initialized
 ok_semantics-priv.ads:8:14: high: "X" constituent of "State1" is not initialized
@@ -54,6 +57,7 @@ ok_semantics-pub.adb:19:49: low: unused global "Priv.YY" constituent of "OK_Sema
 ok_semantics-pub.adb:19:49: warning: "Priv.YY" constituent of "OK_Semantics.State2" is not modified, could be INPUT
 ok_semantics-pub.adb:19:58: low: unused global "Priv.State" constituent of "OK_Semantics.State3"
 ok_semantics-pub.adb:19:58: warning: "Priv.State" constituent of "OK_Semantics.State3" is not modified, could be INPUT
+ok_semantics-pub.ads:4:13: info: implicit terminating annotation on "Check" has been proved, subprogram will terminate
 ok_semantics-pub.ads:5:06: info: data dependencies proved
 ok_semantics-pub.ads:7:14: high: "Priv.State" constituent of "OK_Semantics.State3" is not initialized
 ok_semantics-pub.ads:7:14: high: "Priv.YY" constituent of "OK_Semantics.State2" is not initialized
@@ -93,6 +97,7 @@ ok_semantics.adb:24:49: low: unused global "Priv.YY" constituent of "OK_Semantic
 ok_semantics.adb:24:49: warning: "Priv.YY" constituent of "OK_Semantics.State2" is not modified, could be INPUT
 ok_semantics.adb:24:58: low: unused global "Priv.State" constituent of "OK_Semantics.State3"
 ok_semantics.adb:24:58: warning: "Priv.State" constituent of "OK_Semantics.State3" is not modified, could be INPUT
+ok_semantics.ads:11:13: info: implicit terminating annotation on "Check" has been proved, subprogram will terminate
 ok_semantics.ads:12:06: info: data dependencies proved
 ok_semantics.ads:15:06: info: data dependencies proved
 ok_semantics.ads:18:06: info: data dependencies proved
@@ -106,6 +111,7 @@ ok_semantics2-priv.adb:6:46: medium: incorrect dependency "Check'Result => Y con
 ok_semantics2-priv.adb:6:49: medium: incorrect dependency "Check'Result => Z constituent of State3"
 ok_semantics2-priv.adb:6:52: medium: incorrect dependency "Check'Result => Priv.YY constituent of OK_Semantics2.State2"
 ok_semantics2-priv.adb:6:56: medium: incorrect dependency "Check'Result => ZZ constituent of State"
+ok_semantics2-priv.ads:5:13: info: implicit terminating annotation on "Check" has been proved, subprogram will terminate
 ok_semantics2-priv.ads:5:13: low: unused global "Priv.YY" constituent of "OK_Semantics2.State2"
 ok_semantics2-priv.ads:5:13: low: unused global "X" constituent of "State1"
 ok_semantics2-priv.ads:5:13: low: unused global "Y" constituent of "State2"
@@ -144,6 +150,7 @@ ok_semantics2-pub.adb:7:46: medium: incorrect dependency "Check'Result => Y cons
 ok_semantics2-pub.adb:7:49: medium: incorrect dependency "Check'Result => Z constituent of State3"
 ok_semantics2-pub.adb:7:52: medium: incorrect dependency "Check'Result => Priv.YY constituent of OK_Semantics2.State2"
 ok_semantics2-pub.adb:7:61: medium: incorrect dependency "Check'Result => Priv.State constituent of OK_Semantics2.State3"
+ok_semantics2-pub.ads:4:13: info: implicit terminating annotation on "Check" has been proved, subprogram will terminate
 ok_semantics2-pub.ads:4:13: low: unused global "Priv.State" constituent of "OK_Semantics2.State3"
 ok_semantics2-pub.ads:4:13: low: unused global "Priv.YY" constituent of "OK_Semantics2.State2"
 ok_semantics2-pub.ads:4:13: low: unused global "X" constituent of "State1"
@@ -182,6 +189,7 @@ ok_semantics2.adb:10:46: medium: incorrect dependency "Check'Result => Y constit
 ok_semantics2.adb:10:49: medium: incorrect dependency "Check'Result => Z constituent of State3"
 ok_semantics2.adb:10:52: medium: incorrect dependency "Check'Result => Priv.YY constituent of OK_Semantics2.State2"
 ok_semantics2.adb:10:61: medium: incorrect dependency "Check'Result => Priv.State constituent of OK_Semantics2.State3"
+ok_semantics2.ads:11:13: info: implicit terminating annotation on "Check" has been proved, subprogram will terminate
 ok_semantics2.ads:11:13: low: unused global "Priv.State" constituent of "OK_Semantics2.State3"
 ok_semantics2.ads:11:13: low: unused global "Priv.YY" constituent of "OK_Semantics2.State2"
 ok_semantics2.ads:11:13: low: unused global "X" constituent of "State1"

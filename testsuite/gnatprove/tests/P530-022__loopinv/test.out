@@ -92,192 +92,249 @@ x86.adb:759:31: info: loop variant proved (CVC5: 1 VC)
 x86.adb:779:07: info: initialization of "Val1" proved
 x86.adb:779:13: info: initialization of "Val2" proved
 x86.adb:783:31: info: loop variant proved (CVC5: 1 VC)
+x86.ads:55:13: info: implicit terminating annotation on "SafeDivision64" has been proved, subprogram will terminate
 x86.ads:57:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:57:47: info: division check proved (CVC5: 1 VC)
+x86.ads:64:13: info: implicit terminating annotation on "InRange64" has been proved, subprogram will terminate
 x86.ads:69:14: info: postcondition proved (CVC5: 5 VC)
+x86.ads:85:13: info: implicit terminating annotation on "RangesIntersect" has been proved, subprogram will terminate
 x86.ads:88:14: info: postcondition proved (CVC5: 2 VC)
+x86.ads:90:13: info: implicit terminating annotation on "InSafeRegion64" has been proved, subprogram will terminate
 x86.ads:92:14: info: postcondition proved (CVC5: 2 VC)
 x86.ads:95:06: info: data dependencies proved
 x86.ads:95:27: info: initialization of "Exit_Called" proved
 x86.ads:96:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:109:13: info: implicit terminating annotation on "readRegLow8" has been proved, subprogram will terminate
 x86.ads:110:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:110:50: info: range check proved (CVC5: 2 VC)
 x86.ads:113:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:115:13: info: implicit terminating annotation on "writeRegLow8Post" has been proved, subprogram will terminate
 x86.ads:117:14: info: postcondition proved (CVC5: 3 VC)
+x86.ads:120:13: info: implicit terminating annotation on "readRegHigh8" has been proved, subprogram will terminate
 x86.ads:121:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:121:82: info: division check proved (CVC5: 1 VC)
 x86.ads:124:13: info: postcondition proved (CVC5: 1 VC)
+x86.ads:126:13: info: implicit terminating annotation on "writeRegHigh8Post" has been proved, subprogram will terminate
 x86.ads:128:14: info: postcondition proved (CVC5: 3 VC)
+x86.ads:131:13: info: implicit terminating annotation on "readReg16" has been proved, subprogram will terminate
 x86.ads:132:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:132:49: info: range check proved (CVC5: 2 VC)
 x86.ads:135:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:137:13: info: implicit terminating annotation on "writeReg16Post" has been proved, subprogram will terminate
 x86.ads:139:14: info: postcondition proved (CVC5: 3 VC)
+x86.ads:142:13: info: implicit terminating annotation on "readReg32" has been proved, subprogram will terminate
 x86.ads:143:16: info: postcondition proved (CVC5: 1 VC)
 x86.ads:143:51: info: range check proved (CVC5: 2 VC)
 x86.ads:145:25: warning: unused initial value of "Reg"
 x86.ads:146:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:148:13: info: implicit terminating annotation on "writeReg32Post" has been proved, subprogram will terminate
 x86.ads:150:14: info: postcondition proved (CVC5: 3 VC)
+x86.ads:158:13: info: implicit terminating annotation on "AL" has been proved, subprogram will terminate
 x86.ads:159:06: info: data dependencies proved
 x86.ads:160:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:164:06: info: data dependencies proved
 x86.ads:165:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:168:13: info: implicit terminating annotation on "AH" has been proved, subprogram will terminate
 x86.ads:169:08: info: data dependencies proved
 x86.ads:170:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:174:06: info: data dependencies proved
 x86.ads:175:13: info: postcondition proved (CVC5: 1 VC)
+x86.ads:179:13: info: implicit terminating annotation on "AX" has been proved, subprogram will terminate
 x86.ads:180:06: info: data dependencies proved
 x86.ads:181:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:185:06: info: data dependencies proved
 x86.ads:186:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:189:13: info: implicit terminating annotation on "EAX" has been proved, subprogram will terminate
 x86.ads:190:06: info: data dependencies proved
 x86.ads:191:16: info: postcondition proved (CVC5: 1 VC)
 x86.ads:191:45: info: range check proved (CVC5: 2 VC)
 x86.ads:194:06: info: data dependencies proved
 x86.ads:194:27: warning: unused initial value of "RAX"
 x86.ads:195:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:204:13: info: implicit terminating annotation on "CL" has been proved, subprogram will terminate
 x86.ads:205:06: info: data dependencies proved
 x86.ads:206:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:210:06: info: data dependencies proved
 x86.ads:211:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:214:13: info: implicit terminating annotation on "CH" has been proved, subprogram will terminate
 x86.ads:215:06: info: data dependencies proved
 x86.ads:216:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:220:06: info: data dependencies proved
 x86.ads:221:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:225:13: info: implicit terminating annotation on "CX" has been proved, subprogram will terminate
 x86.ads:226:06: info: data dependencies proved
 x86.ads:227:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:231:06: info: data dependencies proved
 x86.ads:232:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:235:13: info: implicit terminating annotation on "ECX" has been proved, subprogram will terminate
 x86.ads:236:06: info: data dependencies proved
 x86.ads:237:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:241:06: info: data dependencies proved
 x86.ads:241:27: warning: unused initial value of "RCX"
 x86.ads:242:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:251:13: info: implicit terminating annotation on "DL" has been proved, subprogram will terminate
 x86.ads:252:06: info: data dependencies proved
 x86.ads:253:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:257:06: info: data dependencies proved
 x86.ads:258:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:261:13: info: implicit terminating annotation on "DH" has been proved, subprogram will terminate
 x86.ads:262:06: info: data dependencies proved
 x86.ads:263:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:267:06: info: data dependencies proved
 x86.ads:268:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:272:13: info: implicit terminating annotation on "DX" has been proved, subprogram will terminate
 x86.ads:273:06: info: data dependencies proved
 x86.ads:274:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:278:06: info: data dependencies proved
 x86.ads:279:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:282:13: info: implicit terminating annotation on "EDX" has been proved, subprogram will terminate
 x86.ads:283:06: info: data dependencies proved
 x86.ads:284:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:288:06: info: data dependencies proved
 x86.ads:288:27: warning: unused initial value of "RDX"
 x86.ads:289:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:298:13: info: implicit terminating annotation on "BL" has been proved, subprogram will terminate
 x86.ads:299:06: info: data dependencies proved
 x86.ads:300:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:304:06: info: data dependencies proved
 x86.ads:305:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:308:13: info: implicit terminating annotation on "BH" has been proved, subprogram will terminate
 x86.ads:309:06: info: data dependencies proved
 x86.ads:310:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:314:06: info: data dependencies proved
 x86.ads:315:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:319:13: info: implicit terminating annotation on "BX" has been proved, subprogram will terminate
 x86.ads:320:06: info: data dependencies proved
 x86.ads:321:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:325:06: info: data dependencies proved
 x86.ads:326:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:329:13: info: implicit terminating annotation on "EBX" has been proved, subprogram will terminate
 x86.ads:330:06: info: data dependencies proved
 x86.ads:331:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:335:06: info: data dependencies proved
 x86.ads:335:27: warning: unused initial value of "RBX"
 x86.ads:336:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:346:13: info: implicit terminating annotation on "SP" has been proved, subprogram will terminate
 x86.ads:347:06: info: data dependencies proved
 x86.ads:348:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:352:06: info: data dependencies proved
 x86.ads:353:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:356:13: info: implicit terminating annotation on "ESP" has been proved, subprogram will terminate
 x86.ads:357:06: info: data dependencies proved
 x86.ads:358:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:362:06: info: data dependencies proved
 x86.ads:362:27: warning: unused initial value of "RSP"
 x86.ads:363:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:373:13: info: implicit terminating annotation on "BP" has been proved, subprogram will terminate
 x86.ads:374:06: info: data dependencies proved
 x86.ads:375:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:379:06: info: data dependencies proved
 x86.ads:380:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:383:13: info: implicit terminating annotation on "EBP" has been proved, subprogram will terminate
 x86.ads:384:06: info: data dependencies proved
 x86.ads:385:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:389:06: info: data dependencies proved
 x86.ads:389:27: warning: unused initial value of "RBP"
 x86.ads:390:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:400:13: info: implicit terminating annotation on "SI" has been proved, subprogram will terminate
 x86.ads:401:06: info: data dependencies proved
 x86.ads:402:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:406:06: info: data dependencies proved
 x86.ads:407:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:410:13: info: implicit terminating annotation on "ESI" has been proved, subprogram will terminate
 x86.ads:411:06: info: data dependencies proved
 x86.ads:412:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:416:06: info: data dependencies proved
 x86.ads:416:27: warning: unused initial value of "RSI"
 x86.ads:417:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:427:13: info: implicit terminating annotation on "DI" has been proved, subprogram will terminate
 x86.ads:428:06: info: data dependencies proved
 x86.ads:429:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:433:06: info: data dependencies proved
 x86.ads:434:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:437:13: info: implicit terminating annotation on "EDI" has been proved, subprogram will terminate
 x86.ads:438:06: info: data dependencies proved
 x86.ads:439:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:443:06: info: data dependencies proved
 x86.ads:443:27: warning: unused initial value of "RDI"
 x86.ads:444:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:454:13: info: implicit terminating annotation on "R8L" has been proved, subprogram will terminate
 x86.ads:455:06: info: data dependencies proved
 x86.ads:456:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:460:06: info: data dependencies proved
 x86.ads:461:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:471:13: info: implicit terminating annotation on "R9L" has been proved, subprogram will terminate
 x86.ads:472:06: info: data dependencies proved
 x86.ads:473:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:477:06: info: data dependencies proved
 x86.ads:478:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:488:13: info: implicit terminating annotation on "R10L" has been proved, subprogram will terminate
 x86.ads:489:06: info: data dependencies proved
 x86.ads:490:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:494:06: info: data dependencies proved
 x86.ads:495:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:505:13: info: implicit terminating annotation on "R11L" has been proved, subprogram will terminate
 x86.ads:506:06: info: data dependencies proved
 x86.ads:507:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:511:06: info: data dependencies proved
 x86.ads:512:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:522:13: info: implicit terminating annotation on "R12L" has been proved, subprogram will terminate
 x86.ads:523:06: info: data dependencies proved
 x86.ads:524:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:528:06: info: data dependencies proved
 x86.ads:529:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:539:13: info: implicit terminating annotation on "R13L" has been proved, subprogram will terminate
 x86.ads:540:06: info: data dependencies proved
 x86.ads:541:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:545:06: info: data dependencies proved
 x86.ads:546:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:556:13: info: implicit terminating annotation on "R14L" has been proved, subprogram will terminate
 x86.ads:557:06: info: data dependencies proved
 x86.ads:558:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:562:06: info: data dependencies proved
 x86.ads:563:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:573:13: info: implicit terminating annotation on "R15L" has been proved, subprogram will terminate
 x86.ads:574:06: info: data dependencies proved
 x86.ads:575:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:579:06: info: data dependencies proved
 x86.ads:580:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:588:13: info: implicit terminating annotation on "ReadMem8" has been proved, subprogram will terminate
 x86.ads:589:06: info: data dependencies proved
 x86.ads:590:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:593:06: info: data dependencies proved
 x86.ads:595:16: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+x86.ads:602:13: info: implicit terminating annotation on "ReadMem16" has been proved, subprogram will terminate
 x86.ads:603:06: info: data dependencies proved
 x86.ads:606:14: info: postcondition proved (CVC5: 2 VC)
 x86.ads:610:06: info: data dependencies proved
 x86.ads:612:17: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
+x86.ads:619:13: info: implicit terminating annotation on "ReadMem32" has been proved, subprogram will terminate
 x86.ads:620:06: info: data dependencies proved
 x86.ads:623:14: info: postcondition proved (CVC5: 4 VC)
 x86.ads:631:06: info: data dependencies proved
 x86.ads:633:06: info: postcondition proved (CVC5: 5 VC; Trivial: 1 VC)
+x86.ads:642:13: info: implicit terminating annotation on "NoOverlap8" has been proved, subprogram will terminate
+x86.ads:646:13: info: implicit terminating annotation on "NoOverlap8Equal" has been proved, subprogram will terminate
+x86.ads:650:13: info: implicit terminating annotation on "HasMem64" has been proved, subprogram will terminate
+x86.ads:661:13: info: implicit terminating annotation on "ReadMem64" has been proved, subprogram will terminate
 x86.ads:662:06: info: data dependencies proved
 x86.ads:665:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:670:06: info: data dependencies proved
 x86.ads:671:14: info: postcondition proved (Trivial: 1 VC; Z3: 2 VC)
+x86.ads:678:13: info: implicit terminating annotation on "SignedLT_32" has been proved, subprogram will terminate
 x86.ads:679:14: info: postcondition proved (CVC5: 2 VC)
+x86.ads:682:13: info: implicit terminating annotation on "SignedLTE_32" has been proved, subprogram will terminate
 x86.ads:683:14: info: postcondition proved (CVC5: 2 VC)
+x86.ads:689:13: info: implicit terminating annotation on "SignExtend8To16" has been proved, subprogram will terminate
 x86.ads:690:14: info: postcondition proved (CVC5: 3 VC)
 x86.ads:694:50: info: range check proved (CVC5: 2 VC)
+x86.ads:696:13: info: implicit terminating annotation on "SignExtend16To32" has been proved, subprogram will terminate
 x86.ads:697:14: info: postcondition proved (CVC5: 3 VC)
 x86.ads:701:52: info: range check proved (CVC5: 2 VC)
+x86.ads:703:13: info: implicit terminating annotation on "SignExtend32To64" has been proved, subprogram will terminate
 x86.ads:704:14: info: postcondition proved (CVC5: 3 VC)
 x86.ads:708:52: info: range check proved (CVC5: 2 VC)
+x86.ads:714:13: info: implicit terminating annotation on "All_Equal_RAX" has been proved, subprogram will terminate
 x86.ads:718:06: info: data dependencies proved
 x86.ads:718:46: low: unused global "ZeroFlag"
 x86.ads:718:46: warning: "ZeroFlag" is not modified, could be INPUT
@@ -290,9 +347,11 @@ x86.ads:745:06: info: data dependencies proved
 x86.ads:746:14: info: postcondition proved (CVC5: 2 VC)
 x86.ads:750:06: info: data dependencies proved
 x86.ads:751:14: info: postcondition proved (CVC5: 2 VC)
+x86.ads:756:13: info: implicit terminating annotation on "ReadMem64Ghost" has been proved, subprogram will terminate
 x86.ads:758:06: info: data dependencies proved
 x86.ads:758:26: low: unused global "Memory"
 x86.ads:759:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:768:13: info: implicit terminating annotation on "ReadMem8Ghost" has been proved, subprogram will terminate
 x86.ads:770:06: info: data dependencies proved
 x86.ads:770:26: low: unused global "Memory"
 x86.ads:771:14: info: postcondition proved (CVC5: 1 VC)

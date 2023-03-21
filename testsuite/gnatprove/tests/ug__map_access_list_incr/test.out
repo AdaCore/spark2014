@@ -9,6 +9,8 @@ p.adb:14:11: info: pointer dereference check proved
 p.adb:14:22: info: pointer dereference check proved
 p.adb:14:29: info: overflow check proved
 p.adb:15:16: info: pointer dereference check proved
+p.ads:6:13: info: implicit terminating annotation on "Small_Enough" has been proved, subprogram will terminate
+p.ads:8:13: info: implicit terminating annotation on "Bigger_Than_First" has been proved, subprogram will terminate
 p.ads:12:43: info: null exclusion check proved
 p.ads:13:14: info: postcondition proved
 p.ads:13:48: info: null exclusion check proved

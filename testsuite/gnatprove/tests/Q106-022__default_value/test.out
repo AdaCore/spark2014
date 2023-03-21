@@ -1,9 +1,12 @@
 check_component_default_value.ads:2:13: info: implicit function contract might not be available on calls from enclosing unit
+check_component_default_value.ads:2:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 check_component_default_value.ads:7:33: info: range check proved (CVC5: 2 VC)
 check_component_default_value.ads:8:15: info: range check proved (CVC5: 2 VC)
 check_component_default_value.ads:10:36: medium: in default value at check_component_default_value.ads:12
 check_component_default_value.ads:10:36: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default component value must fit in the component type]
 check_default_value.ads:2:13: info: implicit function contract might not be available on calls from enclosing unit
+check_default_value.ads:2:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
+check_default_value.ads:6:16: info: implicit terminating annotation on "Is_OK" has been proved, subprogram will terminate
 check_default_value.ads:8:33: info: range check proved (CVC5: 2 VC)
 check_default_value.ads:9:15: info: range check proved (CVC5: 2 VC)
 check_default_value.ads:11:55: info: in default value of private type at check_default_value.ads:5

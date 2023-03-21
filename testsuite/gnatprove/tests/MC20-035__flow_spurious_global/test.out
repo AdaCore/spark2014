@@ -1,8 +1,7 @@
+c34014g.adb:42:20: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 c34014g.adb:49:26: medium: range check might fail, cannot prove lower bound for IDENT_INT (1) [reason for check: value must be convertible to the target type of the conversion] [possible fix: you should consider adding a postcondition to function IDENT_INT or turning it into an expression function in its unit spec]
-c34014g.adb:49:26: warning: assuming "IDENT_INT" always returns
 c34014g.adb:49:26: warning: assuming "IDENT_INT" has no effect on global items
 c34014g.adb:49:26: warning: no Global contract available for "IDENT_INT"
-c34014g.adb:49:26: warning: no returning annotation available for "IDENT_INT"
 c34014g.adb:54:06: warning: assuming "TEST" always returns
 c34014g.adb:54:06: warning: assuming "TEST" has no effect on global items
 c34014g.adb:54:06: warning: no Global contract available for "TEST"

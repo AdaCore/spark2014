@@ -811,11 +811,14 @@ more time and memory.
 Subprogram Termination
 ----------------------
 
-By default, |GNATprove| does not attempt to verify termination of subprograms
-and is only concerned with the partial correctness of subprograms. This means
-that |GNATprove| only verifies that the contract of each subprogram holds
-whenever that subprogram terminates normally (i.e., returns), and it is still
-possible that the subprogram does not terminate in some or all cases.
+By default, |GNATprove| verifies termination of all functions
+and automatically instantiated lemmas (procedures annotated with
+``Automatic_Instantiation``). For procedures or entries, |GNATprove| does not
+attempt to verify termination and is only concerned with their partial
+correctness. This means that |GNATprove| only verifies that the contract of
+each procedure or entry holds whenever it terminates normally (i.e., returns),
+and it is still possible that the subprogram does not terminate in some or
+all cases.
 
 What is more, |GNATprove| enforces that no exception will be raised at runtime,
 except for storage errors possibly caused by primary stack allocation failures,
@@ -829,16 +832,20 @@ execution of each |SPARK| subprogram it analyzes will either:
   memory allocation failure, or
 * not terminate at all.
 
-A user can request from |GNATprove| that it also proves that a subprogram
+A user can request from |GNATprove| that it also proves that a procedure
 terminates by using a specific ``Annotate`` pragma. |GNATprove| formally
-verifies that each |SPARK| subprogram it analyzes with this annotation will
+verifies that each |SPARK| procedure it analyzes with this annotation will
 always terminate, i.e., that each execution of each such subprogram will either:
 
 * return normally in a state that respects the subprogram’s postcondition, or
 * terminate abnormally as a result of a primary stack, secondary stack, or heap
   memory allocation failure.
 
-In the following example, we specify that the five ``F`` functions
+Functions and procedures annotated with ``Automatic_Instantiation`` are considered
+to have an implicit ``Always_Return`` annotation, so |GNATprove| will attempt to
+prove the annotation if their body is visible.
+
+In the following example, we specify that the five ``P`` procedures
 should terminate, which |GNATprove| will attempt proving:
 
 .. literalinclude:: /examples/ug__terminating_annotations/terminating_annotations.ads
@@ -861,48 +868,47 @@ An aspect can be used instead of a pragma for both packages and subprograms:
    ...
 
 If a subprogram in |SPARK| is explicitly annotated with ``Always_Return``,
-flow analysis
-will attempt to make sure that all the paths through the subprogram effectively
-return. In effect, it will look for while loops with no loop variants, recursive
-calls and calls to subprograms which are not known to always return. If
+flow analysis will attempt to make sure that all the paths through the subprogram
+effectively return. In effect, it will look for while loops with no loop variants,
+recursive calls and calls to subprograms which are not known to always return. If
 |GNATprove| cannot make sure that the annotated subprogram will always
 return, it will then emit a failed check. As an example, let us consider
-the following implementation of the five ``F`` functions:
+the following implementation of the five ``P`` procedures:
 
 .. literalinclude:: /examples/ug__terminating_annotations/terminating_annotations.adb
    :language: ada
    :linenos:
 
 As can be easily verified by review, all these functions terminate, and all
-return 0. As can be seen below, |GNATprove| will fail to verify that ``F_Rec``,
-``F_While``, and ``F_Call`` always return.
+return 0. As can be seen below, |GNATprove| will fail to verify that ``P_Rec``,
+``P_While``, and ``P_Call`` always return.
 
 .. literalinclude:: /examples/ug__terminating_annotations/test.out
    :language: none
    :linenos:
 
-Let us look at each function to understand what happens. The function ``F_Rec``
-is recursive, and the function ``F_While`` contains a while loop. Both cases
+Let us look at each procedure to understand what happens. The procedure ``P_Rec``
+is recursive, and the procedure ``P_While`` contains a while loop. Both cases
 can theoretically lead to an infinite path in the subprogram, which is why
 |GNATprove| cannot verify that they terminate. |GNATprove| does not complain
-about not being able to verify the termination of ``F_Not_SPARK``. Clearly, it
+about not being able to verify the termination of ``P_Not_SPARK``. Clearly, it
 is not because it could verify it, as it contains exactly the same loop as
-``F_While``. It is because, as the body of ``F_Not_SPARK`` has been excluded
+``P_While``. It is because, as the body of ``P_Not_SPARK`` has been excluded
 from analysis using ``SPARK_Mode => Off``, |GNATprove| does not attempt to
-prove that it terminates.  When looking at the body of ``F_Call``, we can see
+prove that it terminates.  When looking at the body of ``P_Call``, we can see
 that it calls a procedure ``Not_SPARK``. Clearly, this procedure always
 returns, as it does not do anything. But, as the body of ``No_SPARK`` has
 been hidden from analysis using ``SPARK_Mode => Off``, |GNATprove| cannot
 deduce that it terminates. As a result, it stays in the safe side, and assumes
-that ``Not_SPARK`` could loop, which causes the verification of ``F_Call`` to
-fail. Finally, |GNATprove| is able to verify that ``F_Term`` always returns,
+that ``Not_SPARK`` could loop, which causes the verification of ``P_Call`` to
+fail. Finally, |GNATprove| is able to verify that ``P_Term`` always returns,
 though it contains both a while loop and  a recursive call.  Indeed, we have
 bounded both the number of possible iterations of the loop and the number of
 recursive calls using a ``Loop_Variant`` (for the loop iterations) and a
 ``Subprogram_Variant`` (for the recursive calls). Also note that, though it was
-not able to prove termination of ``F_Rec``, ``F_While``, and ``F_Call``,
+not able to prove termination of ``P_Rec``, ``P_While``, and ``P_Call``,
 |GNATprove| will still trust the annotation and consider them as always
-returning when verifying ``F_Term``.
+returning when verifying ``P_Term``.
 
 .. note::
 

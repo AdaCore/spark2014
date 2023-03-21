@@ -42,7 +42,7 @@ spark-higher_order-fold.ads:269:39: info: precondition proved (CVC5: 2 VC), in i
 spark-higher_order-fold.ads:269:59: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:305, in instantiation at test_higher_order.ads:47
 spark-higher_order-fold.ads:316:38: info: precondition proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:47
 spark-higher_order-fold.ads:316:58: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:47
-spark-higher_order-fold.ads:339:16: info: terminating annotation on overriding operator "+" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
+spark-higher_order-fold.ads:339:16: info: implicit terminating annotation on overriding operator "+" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:340:11: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:347:17: info: terminating annotation on "Prove_Add" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:351:17: info: postcondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:83
@@ -50,36 +50,36 @@ spark-higher_order-fold.ads:351:63: info: precondition proved (CVC5: 1 VC), in i
 spark-higher_order-fold.ads:354:17: info: terminating annotation on "Prove_Zero" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:356:17: info: postcondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:356:33: info: predicate check proved (Trivial: 1 VC), in instantiation at test_higher_order.ads:83
-spark-higher_order-fold.ads:366:19: info: terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
-spark-higher_order-fold.ads:372:19: info: terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
-spark-higher_order-fold.ads:376:19: info: terminating annotation on "Add_Value" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
+spark-higher_order-fold.ads:366:19: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
+spark-higher_order-fold.ads:372:19: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
+spark-higher_order-fold.ads:376:19: info: implicit terminating annotation on "Add_Value" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:378:35: info: predicate check proved (Trivial: 1 VC), in instantiation at test_higher_order.ads:83
-spark-higher_order-fold.ads:390:19: info: terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
+spark-higher_order-fold.ads:390:19: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:391:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:396:58: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:396:67: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:83
-spark-higher_order-fold.ads:401:19: info: terminating annotation on "Length" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
+spark-higher_order-fold.ads:401:19: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:403:30: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:403:50: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:403:60: info: predicate check proved (Trivial: 1 VC), in instantiation at test_higher_order.ads:83
-spark-higher_order-fold.ads:412:16: info: terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
+spark-higher_order-fold.ads:412:16: info: implicit terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:424:52: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:426:33: info: precondition proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:426:33: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:426:52: info: precondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:426:64: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:426:71: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:83
-spark-higher_order-fold.ads:428:16: info: terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
+spark-higher_order-fold.ads:428:16: info: implicit terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:429:31: info: precondition proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:83
 spark-higher_order-fold.ads:429:55: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:83
-spark-higher_order-fold.ads:447:16: info: terminating annotation on "In_Range" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:98
+spark-higher_order-fold.ads:447:16: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:98
 spark-higher_order-fold.ads:449:27: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:98
 spark-higher_order-fold.ads:449:27: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:98
-spark-higher_order-fold.ads:453:16: info: terminating annotation on "In_Range_Last" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:98
+spark-higher_order-fold.ads:453:16: info: implicit terminating annotation on "In_Range_Last" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:98
 spark-higher_order-fold.ads:455:17: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:98
-spark-higher_order-fold.ads:458:16: info: terminating annotation on "Add_One" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:98
+spark-higher_order-fold.ads:458:16: info: implicit terminating annotation on "Add_One" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:98
 spark-higher_order-fold.ads:459:32: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:98
-spark-higher_order-fold.ads:472:16: info: terminating annotation on "Count" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:98
+spark-higher_order-fold.ads:472:16: info: implicit terminating annotation on "Count" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:98
 spark-higher_order-fold.ads:473:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:98
 spark-higher_order-fold.ads:479:55: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:98
 spark-higher_order-fold.ads:479:64: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:98
@@ -177,7 +177,7 @@ spark-higher_order-fold.ads:624:37: info: range check proved (CVC5: 2 VC), in in
 spark-higher_order-fold.ads:624:50: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:624:50: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:624:50: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:67
-spark-higher_order-fold.ads:650:16: info: terminating annotation on overriding operator "+" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
+spark-higher_order-fold.ads:650:16: info: implicit terminating annotation on overriding operator "+" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:651:11: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:658:17: info: terminating annotation on "Prove_Add" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:662:17: info: postcondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:106
@@ -185,25 +185,25 @@ spark-higher_order-fold.ads:662:63: info: precondition proved (CVC5: 1 VC), in i
 spark-higher_order-fold.ads:665:17: info: terminating annotation on "Prove_Zero" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:667:17: info: postcondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:667:33: info: predicate check proved (Trivial: 1 VC), in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:680:19: info: terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:687:19: info: terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:691:19: info: terminating annotation on "Add_Value" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
+spark-higher_order-fold.ads:680:19: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
+spark-higher_order-fold.ads:687:19: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
+spark-higher_order-fold.ads:691:19: info: implicit terminating annotation on "Add_Value" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:693:35: info: predicate check proved (Trivial: 1 VC), in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:706:19: info: terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
+spark-higher_order-fold.ads:706:19: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:707:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:718:55: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:718:58: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:718:67: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:718:70: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:723:19: info: terminating annotation on "Length_1" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
+spark-higher_order-fold.ads:723:19: info: implicit terminating annotation on "Length_1" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:725:30: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:725:54: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:725:68: info: predicate check proved (Trivial: 1 VC), in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:727:19: info: terminating annotation on "Length_2" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
+spark-higher_order-fold.ads:727:19: info: implicit terminating annotation on "Length_2" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:729:30: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:729:54: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:729:68: info: predicate check proved (Trivial: 1 VC), in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:739:16: info: terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
+spark-higher_order-fold.ads:739:16: info: implicit terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:753:52: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:753:55: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:756:19: info: precondition proved (CVC5: 4 VC), in instantiation at test_higher_order.ads:106
@@ -219,11 +219,11 @@ spark-higher_order-fold.ads:758:50: info: index check proved (CVC5: 2 VC), in in
 spark-higher_order-fold.ads:758:53: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:758:60: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:758:66: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:760:16: info: terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
+spark-higher_order-fold.ads:760:16: info: implicit terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:762:15: info: precondition proved (CVC5: 4 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:762:39: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:762:52: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:783:16: info: terminating annotation on "In_Range" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:783:16: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:786:26: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:786:26: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:786:41: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
@@ -232,14 +232,14 @@ spark-higher_order-fold.ads:787:10: info: overflow check proved (CVC5: 2 VC), in
 spark-higher_order-fold.ads:787:23: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:787:23: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:790:18: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_higher_order.ads:124
-spark-higher_order-fold.ads:792:16: info: terminating annotation on "Add_One" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:792:16: info: implicit terminating annotation on "Add_One" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:793:32: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:795:17: info: postcondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:795:56: info: overflow check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
-spark-higher_order-fold.ads:798:16: info: terminating annotation on "Result_In_Range" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:798:16: info: implicit terminating annotation on "Result_In_Range" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:800:17: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:800:32: info: range check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
-spark-higher_order-fold.ads:812:16: info: terminating annotation on "Count" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:812:16: info: implicit terminating annotation on "Count" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:813:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:822:50: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:822:53: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:124
@@ -286,7 +286,12 @@ spark-higher_order.ads:84:15: info: postcondition proved (CVC5: 1 VC), in instan
 spark-higher_order.ads:84:42: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:27
 spark-higher_order.ads:84:47: info: precondition proved (CVC5: 1 VC), in instantiation at test_higher_order.ads:27
 spark-higher_order.ads:84:57: info: index check proved (CVC5: 2 VC), in instantiation at test_higher_order.ads:27
+test_higher_order.ads:9:13: info: implicit terminating annotation on "Small_Enough" has been proved, subprogram will terminate
+test_higher_order.ads:12:13: info: implicit terminating annotation on "Add_One" has been proved, subprogram will terminate
 test_higher_order.ads:12:56: info: overflow check proved (CVC5: 2 VC)
+test_higher_order.ads:15:13: info: implicit terminating annotation on "Add_All" has been proved, subprogram will terminate
+test_higher_order.ads:24:13: info: implicit terminating annotation on "A_Small_Enough" has been proved, subprogram will terminate
+test_higher_order.ads:40:13: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate
 test_higher_order.ads:42:27: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:42:33: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:42:38: info: overflow check proved (CVC5: 2 VC)
@@ -295,8 +300,10 @@ test_higher_order.ads:42:69: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:42:75: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:42:80: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:42:90: info: overflow check proved (CVC5: 2 VC)
+test_higher_order.ads:45:13: info: implicit terminating annotation on "Result_In_Range" has been proved, subprogram will terminate
 test_higher_order.ads:45:30: warning: unused variable "A"
 test_higher_order.ads:45:51: warning: unused variable "X"
+test_higher_order.ads:58:13: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate
 test_higher_order.ads:60:26: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:60:32: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:60:47: info: overflow check proved (CVC5: 2 VC)
@@ -314,9 +321,12 @@ test_higher_order.ads:61:72: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:61:85: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:61:89: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:63:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+test_higher_order.ads:65:13: info: implicit terminating annotation on "Result_In_Range" has been proved, subprogram will terminate
 test_higher_order.ads:65:30: warning: unused variable "A"
 test_higher_order.ads:65:42: warning: unused variable "X"
 test_higher_order.ads:77:13: info: implicit function contract might not be available on calls from enclosing unit
+test_higher_order.ads:77:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
+test_higher_order.ads:79:13: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate
 test_higher_order.ads:81:10: info: predicate check proved (Trivial: 1 VC)
 test_higher_order.ads:83:04: info: function contract might not be available on implicit recursive calls
 test_higher_order.ads:83:04: info: function contract might not be available on implicit recursive calls
@@ -331,6 +341,7 @@ test_higher_order.ads:83:04: info: in instantiation at spark-higher_order-fold.a
 test_higher_order.ads:83:04: info: in instantiation at spark-higher_order-fold.ads:74
 test_higher_order.ads:94:19: medium: assertion might fail
 test_higher_order.ads:94:24: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
+test_higher_order.ads:96:13: info: implicit terminating annotation on "Is_Pos" has been proved, subprogram will terminate
 test_higher_order.ads:98:04: info: function contract might not be available on implicit recursive calls
 test_higher_order.ads:98:04: info: function contract might not be available on implicit recursive calls
 test_higher_order.ads:98:04: info: implicit function contract might not be available on implicit recursive calls

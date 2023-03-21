@@ -1,3 +1,4 @@
+main.adb:2:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 main.adb:9:22: info: division check proved (CVC5: 1 VC)
 main.adb:19:22: info: in default value at main.adb:51
 main.adb:19:22: info: in default value at main.adb:51

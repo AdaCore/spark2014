@@ -4,7 +4,10 @@ inrange.adb:14:14: info: range check proved (CVC5: 2 VC)
 inrange.adb:21:07: info: precondition proved (CVC5: 1 VC)
 inrange.adb:21:16: info: range check proved (CVC5: 2 VC)
 inrange.adb:21:16: medium: range check might fail, cannot prove upper bound for X (e.g. when X'Old = 10) [reason for check: input value must fit in parameter type and output value must fit in argument type]
+inrange.ads:5:13: info: implicit terminating annotation on "Add1" has been proved, subprogram will terminate
 inrange.ads:7:12: info: postcondition proved (CVC5: 1 VC)
+inrange.ads:9:13: info: implicit terminating annotation on "Add" has been proved, subprogram will terminate
 inrange.ads:10:17: info: postcondition proved (CVC5: 1 VC)
 inrange.ads:14:20: info: postcondition proved (CVC5: 1 VC)
+inrange.ads:16:13: info: implicit terminating annotation on "Do_It" has been proved, subprogram will terminate
 inrange.ads:17:20: info: postcondition proved (CVC5: 1 VC)

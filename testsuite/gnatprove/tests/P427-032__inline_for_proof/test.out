@@ -2,6 +2,7 @@ inline_for_proof.adb:4:20: info: index check proved (CVC5: 2 VC)
 inline_for_proof.adb:4:31: info: index check proved (CVC5: 2 VC)
 inline_for_proof.adb:9:20: info: index check proved (CVC5: 2 VC)
 inline_for_proof.adb:9:31: info: index check proved (CVC5: 2 VC)
+inline_for_proof.ads:9:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 inline_for_proof.ads:11:14: info: postcondition proved (CVC5: 1 VC)
 inline_for_proof.ads:11:41: info: index check proved (CVC5: 2 VC)
 inline_for_proof.ads:11:52: info: index check proved (CVC5: 2 VC)
@@ -9,6 +10,7 @@ inline_for_proof.ads:15:14: warning: subprogram "P" has no effect
 inline_for_proof.ads:17:14: info: postcondition proved (Z3: 1 VC)
 inline_for_proof.ads:18:43: info: precondition proved (CVC5: 2 VC)
 inline_for_proof.ads:18:56: info: precondition proved (CVC5: 2 VC)
+inline_for_proof.ads:20:13: info: implicit terminating annotation on "Get2" has been proved, subprogram will terminate
 inline_for_proof.ads:22:14: info: postcondition proved (CVC5: 1 VC)
 inline_for_proof.ads:22:42: info: index check proved (CVC5: 2 VC)
 inline_for_proof.ads:22:53: info: index check proved (CVC5: 2 VC)

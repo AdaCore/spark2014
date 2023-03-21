@@ -1,3 +1,6 @@
+range_logging.ads:9:13: info: implicit terminating annotation on "Log_Min" has been proved, subprogram will terminate
+range_logging.ads:12:13: info: implicit terminating annotation on "Log_Max" has been proved, subprogram will terminate
 range_logging.ads:16:20: info: class-wide postcondition is stronger than overridden one
 range_logging.ads:22:20: info: class-wide precondition is weaker than overridden one
 range_logging.ads:23:20: info: class-wide postcondition is stronger than overridden one
+logging.ads:10:13: info: implicit terminating annotation on "Log_Size" has been proved, subprogram will terminate

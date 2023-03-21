@@ -1,7 +1,9 @@
 repr.adb:8:10: info: range check proved (CVC5: 2 VC)
+repr.adb:11:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 repr.adb:12:28: info: pointer dereference check proved (CVC5: 1 VC)
 repr.adb:12:38: info: pointer dereference check proved (CVC5: 1 VC)
 repr.adb:18:35: info: range check proved (CVC5: 2 VC)
+repr.adb:23:13: info: implicit terminating annotation on "Test" has been proved, subprogram will terminate
 repr.adb:24:19: info: postcondition proved (CVC5: 4 VC)
 repr.adb:24:52: info: pointer dereference check proved (CVC5: 1 VC)
 repr.adb:24:62: info: pointer dereference check proved (CVC5: 1 VC)

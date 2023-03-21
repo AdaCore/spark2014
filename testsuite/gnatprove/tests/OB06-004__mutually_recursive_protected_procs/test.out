@@ -1,3 +1,4 @@
+p1.adb:7:13: info: implicit terminating annotation on "Prio" has been proved, subprogram will terminate
 p1.adb:10:24: info: range check proved (CVC5: 2 VC)
 p1.adb:11:17: medium: ceiling priority protocol might not be respected
 p1.adb:18:12: high: "PO" constituent of "State" must be listed in the Global aspect of "Dummy" (SPARK RM 6.1.4(15))
@@ -7,6 +8,7 @@ p12.adb:14:15: high: "PO1" constituent of "State1" must be listed in the Global 
 p12.adb:14:15: high: external call to "Dummy1" from "p12.p2.po2T.dummy2" in protected operation "Dummy1"
 p12.adb:30:20: info: ceiling priority protocol is respected (CVC5: 1 VC)
 p12.adb:36:15: high: external call to "Dummy2" from "p12.p1.po1T.dummy1" in protected operation "Dummy2"
+p2.adb:7:13: info: implicit terminating annotation on "Prio" has been proved, subprogram will terminate
 p2.adb:10:24: info: range check proved (CVC5: 2 VC)
 p2.adb:11:17: medium: ceiling priority protocol might not be respected
 p2.adb:17:12: high: external call to "Dummy" from "p1.proxy" in protected operation "Dummy"

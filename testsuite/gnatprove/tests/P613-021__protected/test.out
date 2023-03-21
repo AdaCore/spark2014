@@ -1,5 +1,6 @@
 core.adb:19:28: info: range check proved (CVC5: 2 VC)
 core.adb:28:25: info: range check proved (CVC5: 2 VC)
+core.ads:26:16: info: implicit terminating annotation on "Item_Count" has been proved, subprogram will terminate
 core.ads:27:14: info: data dependencies proved
 core.ads:30:22: info: postcondition proved (CVC5: 1 VC)
 core.ads:33:25: info: initialization of "N" proved

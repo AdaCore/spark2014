@@ -49,9 +49,13 @@ Generated contracts for Bar
       B
       G1
       G2
+bar.adb:8:13: info: implicit terminating annotation on "Wobble" has been proved, subprogram will terminate
+bar.adb:18:13: info: implicit terminating annotation on "Wibble" has been proved, subprogram will terminate
 bar.adb:23:22: medium: assertion might fail [possible fix: subprogram at line 18 should mention G2 and Y in a precondition]
 bar.adb:24:21: medium: overflow check might fail, cannot prove lower bound for G1 + G2 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 18 should mention G1 and G2 in a precondition]
+bar.adb:27:13: info: implicit terminating annotation on "Donk" has been proved, subprogram will terminate
 bar.adb:31:19: info: postcondition proved (Trivial: 1 VC)
+bar.adb:49:13: info: implicit terminating annotation on "No_Globals" has been proved, subprogram will terminate
 Generated contracts for Entity_Name.Proxy
    Global =>
       Input =>
@@ -62,6 +66,7 @@ Generated contracts for Entity_Name.Proxy
 Generated contracts for Entity_Name
    Initializes =>
       Hidden
+entity_name.ads:2:13: info: implicit terminating annotation on "Proxy" has been proved, subprogram will terminate
 Generated contracts for Outer.Inner.Get
    Global =>
       Input =>
@@ -81,6 +86,8 @@ Generated contracts for Outer.Inner.Get
 Generated contracts for Outer.Inner
 Generated contracts for Outer
 foo.ads:1:09: warning: file name does not match unit name, should be "outer.ads"
+foo.ads:6:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+foo.ads:7:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 foo.ads:7:47: medium: overflow check might fail, cannot prove lower bound for Outer.X + Outer.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention X and Y in a precondition]
 Generated contracts for Main
    Global =>
@@ -107,7 +114,9 @@ Generated contracts for Outer.Inner.Get
          Y
 Generated contracts for Outer.Inner
 Generated contracts for Outer
+outer.ads:6:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 outer.ads:7:21: warning: unused variable "B"
+outer.ads:12:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 outer.ads:12:47: medium: overflow check might fail, cannot prove lower bound for Outer.X + Outer.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 12 should mention X and Y in a precondition]
 Generated global .gg contents:
 filename: gnatprove/bar.gg
@@ -356,3 +365,4 @@ contents:
     }
   ]
 }
+

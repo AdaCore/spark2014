@@ -24,6 +24,7 @@ int_arith.adb:24:26: info: predicate check proved (CVC5: 2 VC)
 int_arith.adb:24:26: info: range check proved (CVC5: 1 VC)
 int_arith.adb:24:29: info: range check proved (CVC5: 2 VC)
 int_arith.ads:13:13: info: function contract might not be available on recursive calls
+int_arith.ads:13:13: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate
 int_arith.ads:14:32: info: initialization check proved (CVC5: 1 VC)
 int_arith.ads:14:32: info: predicate check proved (CVC5: 2 VC)
 int_arith.ads:14:34: info: index check proved (CVC5: 2 VC)

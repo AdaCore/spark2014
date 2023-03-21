@@ -1,1 +1,7 @@
+types_and_subtypes_legal.ads:8:11: warning: Always_Return annotation is useless
+types_and_subtypes_legal.ads:8:11: warning: function "Get_Data" has implicit Always_Return annotation
+types_and_subtypes_legal.ads:10:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
+types_and_subtypes_legal.ads:14:11: warning: Always_Return annotation is useless
+types_and_subtypes_legal.ads:14:11: warning: function "Get_Next" has implicit Always_Return annotation
+user_of_types_and_subtypes_legal.ads:6:13: info: implicit terminating annotation on "Same_As_Next" has been proved, subprogram will terminate
 user_of_types_and_subtypes_legal.ads:8:06: info: postcondition proved (CVC5: 2 VC)

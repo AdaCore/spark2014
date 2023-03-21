@@ -24,4 +24,5 @@ actions.adb:41:45: info: index check proved (CVC5: 2 VC)
 actions.adb:41:53: warning: loop condition is stable
 actions.adb:41:53: warning: statement has no effect
 actions.adb:47:10: warning: initialization of "V" has no effect
+actions.adb:48:19: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 actions.adb:51:22: info: overflow check proved (CVC5: 2 VC)

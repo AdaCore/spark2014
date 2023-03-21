@@ -1,3 +1,4 @@
+foo.adb:8:13: info: implicit terminating annotation on "Eq" has been proved, subprogram will terminate
 foo.adb:15:04: warning: analyzing unreferenced procedure "Test_01"
 foo.adb:15:23: info: initialization of "X" proved
 foo.adb:17:07: info: initialization of "L" proved
@@ -9,14 +10,14 @@ spark-containers-formal-doubly_linked_lists.ads:40:19: info: terminating annotat
 spark-containers-formal-doubly_linked_lists.ads:42:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at foo.adb:10
 spark-containers-formal-doubly_linked_lists.ads:44:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at foo.adb:10
 spark-containers-formal-doubly_linked_lists.ads:408:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:60, in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:408:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at foo.adb:10
 spark-containers-formal-doubly_linked_lists.ads:408:13: info: precondition proved (Trivial: 1 VC), in instantiation at foo.adb:10
-spark-containers-formal-doubly_linked_lists.ads:408:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at foo.adb:10
 spark-containers-formal-doubly_linked_lists.ads:412:06: info: data dependencies proved, in instantiation at foo.adb:10
 spark-containers-formal-doubly_linked_lists.ads:415:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:60, in instantiation at foo.adb:10
 spark-containers-formal-doubly_linked_lists.ads:415:13: info: precondition proved (CVC5: 1 VC), in instantiation at foo.adb:10
-spark-containers-formal-doubly_linked_lists.ads:456:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:456:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at foo.adb:10
 spark-containers-formal-doubly_linked_lists.ads:457:08: info: dynamic accessibility check proved (Trivial), in instantiation at foo.adb:10
-spark-containers-formal-doubly_linked_lists.ads:461:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at foo.adb:10
+spark-containers-formal-doubly_linked_lists.ads:461:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at foo.adb:10
 spark-containers-formal-doubly_linked_lists.ads:463:08: info: dynamic accessibility check proved (Trivial), in instantiation at foo.adb:10
 spark-containers-formal-doubly_linked_lists.ads:484:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at foo.adb:10
 spark-containers-formal-doubly_linked_lists.ads:593:49: info: overflow check proved (CVC5: 2 VC), in instantiation at foo.adb:10
@@ -60,8 +61,8 @@ spark-containers-functional-maps.ads:380:13: info: during checks for quantificat
 spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at foo.adb:10
 spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at foo.adb:10
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at foo.adb:10
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at foo.adb:10
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at foo.adb:10
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at foo.adb:10
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at foo.adb:10
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at foo.adb:10
 spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at foo.adb:10
 spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-doubly_linked_lists.ads:213, in instantiation at foo.adb:10
@@ -75,11 +76,11 @@ spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "
 spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at foo.adb:10
 spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at foo.adb:10
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at foo.adb:10
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at foo.adb:10
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at foo.adb:10
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at foo.adb:10
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at foo.adb:10
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at foo.adb:10
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at foo.adb:10
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at foo.adb:10
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at foo.adb:10
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at foo.adb:10
 spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-doubly_linked_lists.ads:119, in instantiation at foo.adb:10

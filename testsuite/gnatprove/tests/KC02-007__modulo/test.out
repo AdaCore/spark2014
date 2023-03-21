@@ -1,4 +1,8 @@
+p.ads:5:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 p.ads:7:14: high: postcondition might fail (e.g. when F'Result = 1)
+p.ads:10:13: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
 p.ads:12:14: info: postcondition proved (CVC5: 1 VC)
+p.ads:15:13: info: implicit terminating annotation on "M" has been proved, subprogram will terminate
 p.ads:16:19: info: postcondition proved (CVC5: 1 VC)
+p.ads:18:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 p.ads:19:20: info: postcondition proved (CVC5: 1 VC)

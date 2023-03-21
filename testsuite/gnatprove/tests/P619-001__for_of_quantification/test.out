@@ -8,5 +8,6 @@ math_utils.adb:24:13: info: loop invariant initialization proved (CVC5: 1 VC)
 math_utils.adb:24:13: info: loop invariant preservation proved (CVC5: 1 VC)
 math_utils.adb:24:55: info: index check proved (CVC5: 4 VC)
 math_utils.adb:27:22: info: assertion proved (CVC5: 1 VC)
+math_utils.ads:6:13: info: implicit terminating annotation on "Max" has been proved, subprogram will terminate
 math_utils.ads:9:08: info: flow dependencies proved
 math_utils.ads:11:16: info: postcondition proved (CVC5: 2 VC)

@@ -1,1 +1,3 @@
+pf.ads:4:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+pf.ads:5:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 pf.ads:13:14: warning: subprogram "Proc" has no effect

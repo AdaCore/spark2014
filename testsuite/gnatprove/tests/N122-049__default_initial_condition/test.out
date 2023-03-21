@@ -1,6 +1,12 @@
 p.ads:56:09: medium: default initial condition might fail
+p.ads:60:06: warning: Always_Return annotation is useless
+p.ads:60:06: warning: function "P10" has implicit Always_Return annotation
 p.ads:63:09: medium: default initial condition might fail
+p.ads:67:06: warning: Always_Return annotation is useless
+p.ads:67:06: warning: function "P11" has implicit Always_Return annotation
 p.ads:70:09: medium: default initial condition might fail
+p.ads:74:06: warning: Always_Return annotation is useless
+p.ads:74:06: warning: function "P12" has implicit Always_Return annotation
 p.ads:117:04: medium: type "T4" is not fully initialized
 p.ads:131:04: medium: type "T5" is not fully initialized
 p.ads:184:04: medium: type "T10" is not fully initialized

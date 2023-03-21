@@ -1,3 +1,5 @@
 cli.ads:6:06: info: data dependencies proved
 cli.ads:6:33: warning: "Engine.State" is not modified, could be INPUT
 cli.ads:8:14: medium: postcondition might fail
+engine.ads:4:13: info: implicit terminating annotation on "Has_No_Piece" has been proved, subprogram will terminate
+engine.ads:6:13: info: implicit terminating annotation on "Has_Piece" has been proved, subprogram will terminate

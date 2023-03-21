@@ -1,3 +1,7 @@
+notag_base.ads:6:13: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate
+notag_base.ads:8:13: info: implicit terminating annotation on "Create" has been proved, subprogram will terminate
 notag_base.ads:9:14: info: postcondition proved (CVC5: 1 VC)
 notag_ext.adb:8:22: info: assertion proved (CVC5: 1 VC)
+notag_ext.ads:8:13: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate
+notag_ext.ads:10:13: info: implicit terminating annotation on "Create" has been proved, subprogram will terminate
 notag_ext.ads:12:14: warning: subprogram "Test" has no effect

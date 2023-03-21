@@ -8,7 +8,9 @@ linear_search.adb:22:56: info: range check proved (CVC5: 4 VC)
 linear_search.adb:23:31: info: loop variant proved (CVC5: 1 VC)
 linear_search.adb:25:21: info: overflow check proved (CVC5: 2 VC)
 linear_search.adb:28:11: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+linear_search.ads:27:13: info: implicit terminating annotation on "Value_Found_In_Range" has been proved, subprogram will terminate
 linear_search.ads:31:37: info: index check proved (CVC5: 2 VC)
+linear_search.ads:33:13: info: implicit terminating annotation on "Search" has been proved, subprogram will terminate
 linear_search.ads:38:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 linear_search.ads:39:33: info: discriminant check proved (CVC5: 1 VC)
 linear_search.ads:40:06: info: complete contract cases proved (CVC5: 1 VC)

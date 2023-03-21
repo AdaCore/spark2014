@@ -1,2 +1,3 @@
+specexpr.adb:2:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 specexpr.adb:6:30: info: no contextual analysis of "F" (in default expression)
 specexpr.adb:9:19: medium: assertion might fail

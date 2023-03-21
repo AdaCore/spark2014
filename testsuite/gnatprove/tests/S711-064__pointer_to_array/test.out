@@ -1,3 +1,4 @@
+test.ads:9:13: info: implicit terminating annotation on "Check_Array_Ptr" has been proved, subprogram will terminate
 test.ads:10:07: info: pointer dereference check proved (CVC5: 1 VC)
 test.ads:11:16: info: pointer dereference check proved (CVC5: 1 VC)
 test.ads:12:23: info: pointer dereference check proved (CVC5: 1 VC)
@@ -12,11 +13,14 @@ test.ads:13:28: info: pointer dereference check proved (CVC5: 1 VC)
 test.ads:13:41: info: overflow check proved (CVC5: 2 VC)
 test.ads:13:49: info: pointer dereference check proved (CVC5: 1 VC)
 test.ads:13:62: info: overflow check proved (CVC5: 2 VC)
+test.ads:15:13: info: implicit terminating annotation on "Check_Array" has been proved, subprogram will terminate
 test.ads:18:16: info: range check proved (CVC5: 4 VC)
 test.ads:18:37: info: overflow check proved (CVC5: 2 VC)
 test.ads:18:58: info: overflow check proved (CVC5: 2 VC)
 test.ads:19:16: info: range check proved (CVC5: 4 VC)
 test.ads:19:37: info: overflow check proved (CVC5: 2 VC)
 test.ads:19:58: info: overflow check proved (CVC5: 2 VC)
+test2.ads:8:13: info: implicit terminating annotation on "Zero" has been proved, subprogram will terminate
+test2.ads:11:13: info: implicit terminating annotation on "Check_Array" has been proved, subprogram will terminate
 test2.ads:14:16: info: range check proved (CVC5: 4 VC)
 test2.ads:14:24: info: precondition proved (CVC5: 1 VC)

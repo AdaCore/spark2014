@@ -1,3 +1,4 @@
+time.adb:3:13: info: implicit terminating annotation on "ddays_in_year" has been proved, subprogram will terminate
 time.adb:5:07: info: initialization of "result" proved
 time.adb:22:07: info: initialization of "temp_time" proved
 time.adb:26:07: info: initialization of "temp_years" proved

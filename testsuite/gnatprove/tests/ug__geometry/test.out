@@ -1,2 +1,4 @@
-geometry.ads:34:20: info: class-wide postcondition is stronger than overridden one
-geometry.ads:37:20: info: class-wide postcondition is stronger than overridden one
+geometry.ads:8:13: info: implicit terminating annotation on "Valid" has been proved, subprogram will terminate
+geometry.ads:27:52: info: justified that implicit terminating annotation on "Valid" could be incorrect, dispatching call might be nonterminating
+geometry.ads:36:20: info: class-wide postcondition is stronger than overridden one
+geometry.ads:39:20: info: class-wide postcondition is stronger than overridden one

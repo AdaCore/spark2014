@@ -2,6 +2,8 @@ stacks_14.adb:19:42: info: range check proved (CVC5: 2 VC)
 stacks_14.adb:20:23: info: index check proved (CVC5: 2 VC)
 stacks_14.adb:25:28: info: index check proved (CVC5: 2 VC)
 stacks_14.adb:26:42: info: range check proved (CVC5: 2 VC)
+stacks_14.ads:6:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
+stacks_14.ads:7:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
 stacks_14.ads:10:19: info: postcondition proved (CVC5: 1 VC)
 stacks_14.ads:14:19: info: postcondition proved (CVC5: 1 VC)
 stacks_14.ads:16:36: info: initialization of "X" proved

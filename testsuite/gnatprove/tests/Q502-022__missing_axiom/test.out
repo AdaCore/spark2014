@@ -1,4 +1,6 @@
+p2.ads:5:14: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 p2.ads:5:19: warning: unused variable "X"
 p2.ads:5:22: warning: unused variable "Y"
+p2.ads:11:14: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate
 p2.ads:12:15: info: postcondition proved (CVC5: 2 VC)
 p2.ads:12:41: warning: conjunct in postcondition does not check the outcome of calling "Always_True"

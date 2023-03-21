@@ -8,15 +8,16 @@ aida-strings-generic_immutable_unbounded_string.adb:23:83: info: cannot unroll l
 aida-strings-generic_immutable_unbounded_string.adb:24:19: info: index check proved (CVC5: 2 VC)
 aida-strings-generic_immutable_unbounded_string.adb:24:37: info: precondition proved (CVC5: 2 VC)
 aida-strings-generic_immutable_unbounded_string.adb:30:10: info: only expected exception raised (CVC5: 1 VC)
+aida-strings-generic_immutable_unbounded_string.ads:10:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 aida-strings-generic_immutable_unbounded_string.ads:11:06: info: data dependencies proved
+aida-strings-generic_immutable_unbounded_string.ads:13:13: info: implicit terminating annotation on "Char_At" has been proved, subprogram will terminate
 aida-strings-generic_immutable_unbounded_string.ads:15:06: info: data dependencies proved
 aida-strings-generic_immutable_unbounded_string.ads:16:59: info: range check proved (CVC5: 2 VC)
+aida-strings-generic_immutable_unbounded_string.ads:18:13: info: implicit terminating annotation on "To_String" has been proved, subprogram will terminate
 aida-strings-generic_immutable_unbounded_string.ads:20:06: info: data dependencies proved
 aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:20: info: range check proved (CVC5: 2 VC), in instantiation at extension.ads:9
 aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:20: info: range check proved (CVC5: 2 VC), in instantiation at vk.ads:25
 aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:20:59: info: range check proved (CVC5: 2 VC), in instantiation at vk.ads:10
-extension.ads:9:04: info: implicit function contract not available for proof ("Length" might not return)
-extension.ads:9:04: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:10
 main.adb:10:04: info: initialization of "Tag_V" proved
 main.adb:16:04: info: initialization of "N" proved
 main.adb:26:30: info: precondition proved (CVC5: 1 VC)
@@ -25,14 +26,14 @@ spark-containers-formal-unbounded_vectors.ads:42:19: info: terminating annotatio
 spark-containers-formal-unbounded_vectors.ads:44:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-formal-unbounded_vectors.ads:46:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-formal-unbounded_vectors.ads:287:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:287:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-formal-unbounded_vectors.ads:287:13: info: precondition proved (Trivial: 1 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
-spark-containers-formal-unbounded_vectors.ads:287:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-formal-unbounded_vectors.ads:291:06: info: data dependencies proved, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-formal-unbounded_vectors.ads:294:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-formal-unbounded_vectors.ads:294:13: info: precondition proved (CVC5: 2 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
-spark-containers-formal-unbounded_vectors.ads:325:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:325:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-formal-unbounded_vectors.ads:326:08: info: dynamic accessibility check proved (Trivial), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
-spark-containers-formal-unbounded_vectors.ads:330:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-formal-unbounded_vectors.ads:330:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-formal-unbounded_vectors.ads:332:08: info: dynamic accessibility check proved (Trivial), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-formal-unbounded_vectors.ads:352:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-formal-unbounded_vectors.ads:352:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
@@ -58,11 +59,11 @@ spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "
 spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
@@ -111,11 +112,4 @@ spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 
 spark-containers-parameter_checks.ads:121:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:120, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:120, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
 spark-containers-parameter_checks.ads:124:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:120, in instantiation at aida-strings-generic_immutable_unbounded_string.ads:24
-vk.ads:10:10: info: implicit function contract not available for proof ("Length" might not return)
-vk.ads:10:10: info: implicit function contract not available for proof ("Length" might not return)
-vk.ads:10:10: info: implicit function contract not available for proof ("Length" might not return)
-vk.ads:10:10: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:12
-vk.ads:10:10: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:20
-vk.ads:10:10: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:23
-vk.ads:25:07: info: implicit function contract not available for proof ("Length" might not return)
-vk.ads:25:07: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:10
+vk.ads:16:16: info: implicit terminating annotation on "Name" has been proved, subprogram will terminate

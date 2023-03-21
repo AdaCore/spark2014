@@ -78,7 +78,6 @@ is
                 Memchr'Result = Find_Char_In_String (S, Ch, N)
               else
                 Memchr'Result = 0);
-   pragma Annotate (GNATprove, Always_Return, Memchr);
    function Memchr
      (S  : String;
       Ch : Character;

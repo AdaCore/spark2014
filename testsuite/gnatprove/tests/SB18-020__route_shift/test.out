@@ -6,11 +6,11 @@ spark-containers-functional-vectors.ads:62:19: info: terminating annotation on "
 spark-containers-functional-vectors.ads:64:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:104:13: medium: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:104:13: medium: precondition might fail, in instantiation at test_route.adb:38
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_route.adb:38
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at test_route.adb:38
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_route.adb:38
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_route.adb:38
 spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_route.adb:38
@@ -58,16 +58,21 @@ test_route.adb:17:08: info: pointer dereference check proved (CVC5: 1 VC)
 test_route.adb:17:15: info: pointer dereference check proved (altergo: 1 VC)
 test_route.adb:17:18: info: overflow check proved (CVC5: 2 VC)
 test_route.adb:28:13: info: implicit function contract might not be available on recursive calls
-test_route.adb:29:07: medium: terminating annotation on "Length" could be incorrect, subprogram is recursive
+test_route.adb:29:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive
 test_route.adb:30:52: info: pointer dereference check proved (altergo: 1 VC)
 test_route.adb:30:60: info: overflow check proved (CVC5: 2 VC)
+test_route.adb:31:09: warning: Always_Return annotation is useless
+test_route.adb:31:09: warning: function "Length" has implicit Always_Return annotation
 test_route.adb:33:13: info: implicit function contract might not be available on recursive calls
-test_route.adb:34:07: medium: terminating annotation on "Nth_X" could be incorrect, subprogram is recursive
+test_route.adb:34:07: medium: implicit terminating annotation on "Nth_X" could be incorrect, subprogram is recursive
 test_route.adb:34:22: info: pointer dereference check proved (altergo: 1 VC)
 test_route.adb:34:30: info: pointer dereference check proved (altergo: 1 VC)
 test_route.adb:34:38: info: precondition proved (altergo: 1 VC)
 test_route.adb:34:46: info: pointer dereference check proved (altergo: 1 VC)
 test_route.adb:34:55: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
+test_route.adb:35:09: warning: Always_Return annotation is useless
+test_route.adb:35:09: warning: function "Nth_X" has implicit Always_Return annotation
+test_route.adb:43:13: info: implicit terminating annotation on "All_X" has been proved, subprogram will terminate
 test_route.adb:44:14: info: postcondition proved (CVC5: 2 VC)
 test_route.adb:46:15: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_route.adb:46:39: info: precondition proved (altergo: 1 VC)
@@ -80,8 +85,11 @@ test_route.adb:53:43: info: precondition proved (CVC5: 4 VC)
 test_route.adb:53:56: info: precondition proved (CVC5: 2 VC)
 test_route.adb:54:18: info: precondition proved (CVC5: 2 VC)
 test_route.adb:54:26: info: precondition proved (altergo: 1 VC)
+test_route.adb:59:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
 test_route.adb:60:07: info: dynamic accessibility check proved (Trivial)
+test_route.adb:63:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
 test_route.adb:64:07: info: dynamic accessibility check proved (Trivial)
+test_route.adb:68:13: info: function contract might not be available on recursive calls
 test_route.adb:72:09: info: postcondition proved (Trivial: 1 VC; altergo: 3 VC)
 test_route.adb:73:13: info: precondition proved (CVC5: 1 VC)
 test_route.adb:73:76: info: pointer dereference check proved (altergo: 1 VC)
@@ -89,7 +97,7 @@ test_route.adb:75:32: info: precondition proved (altergo: 1 VC)
 test_route.adb:75:63: info: precondition proved (CVC5: 1 VC)
 test_route.adb:80:18: info: null exclusion check proved (altergo: 1 VC)
 test_route.adb:80:18: info: pointer dereference check proved (CVC5: 1 VC)
-test_route.adb:82:17: info: function contract not available for proof ("Nth_Point" might not return)
+test_route.adb:82:10: medium: implicit terminating annotation on "Nth_Point" could be incorrect, subprogram is recursive
 test_route.adb:82:17: info: precondition proved (altergo: 1 VC)
 test_route.adb:82:29: info: pointer dereference check proved (CVC5: 1 VC)
 test_route.adb:82:38: info: range check proved (altergo: 2 VC)
@@ -97,13 +105,12 @@ test_route.adb:88:30: info: precondition proved (altergo: 1 VC)
 test_route.adb:88:59: info: overflow check proved (altergo: 2 VC)
 test_route.adb:89:21: info: precondition proved (altergo: 1 VC)
 test_route.adb:89:51: info: overflow check proved (altergo: 2 VC)
-test_route.adb:90:14: info: postcondition proved (Trivial: 1 VC; Z3: 3 VC)
+test_route.adb:90:14: medium: postcondition might fail, cannot prove Length (R) = Length (R)'Old
 test_route.adb:91:15: info: precondition proved (altergo: 1 VC)
 test_route.adb:91:30: info: precondition proved (altergo: 1 VC)
 test_route.adb:91:47: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
 test_route.adb:93:31: info: precondition proved (CVC5: 1 VC)
 test_route.adb:93:46: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
-test_route.adb:95:27: info: function contract not available for proof ("Nth_Point" might not return)
 test_route.adb:95:27: info: precondition proved (altergo: 1 VC)
 test_route.adb:97:07: info: precondition proved (altergo: 2 VC)
 test_route.adb:97:16: info: null exclusion check proved (altergo: 1 VC)

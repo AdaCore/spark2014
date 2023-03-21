@@ -1,4 +1,5 @@
 main2.adb:1:43: info: data dependencies proved
+main2.adb:3:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main2.adb:3:55: info: data dependencies proved
 main2.adb:5:24: info: data dependencies proved
 main2.adb:7:22: info: assertion proved (CVC5: 1 VC)

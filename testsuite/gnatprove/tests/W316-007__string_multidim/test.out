@@ -1,4 +1,5 @@
 empty_string.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
+empty_string.adb:3:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 empty_string.adb:6:04: info: range check proved (CVC5: 2 VC)
 empty_string.adb:9:14: info: length check proved (CVC5: 6 VC; Trivial: 1 VC)
 empty_string.adb:9:25: info: range check proved (CVC5: 2 VC)

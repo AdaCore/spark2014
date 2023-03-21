@@ -1,5 +1,7 @@
 arith.adb:18:07: info: initialization of "Z" proved
 arith.adb:20:22: info: unrolling loop
 arith.adb:21:23: medium: overflow check might fail, cannot prove lower bound for X(J) + Y(J) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at arith.ads:15 should mention X and Y in a precondition]
+arith.ads:5:13: info: implicit terminating annotation on "Sum_Ok" has been proved, subprogram will terminate
 arith.ads:6:40: info: overflow check proved (CVC5: 2 VC)
 arith.ads:6:68: info: overflow check proved (CVC5: 2 VC)
+arith.ads:15:13: info: implicit terminating annotation on "Sum_Array" has been proved, subprogram will terminate

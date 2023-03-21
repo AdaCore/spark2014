@@ -1,4 +1,7 @@
 p.ads:25:25: info: range check proved (CVC5: 2 VC)
+p.ads:27:13: info: implicit terminating annotation on "My_Capacity" has been proved, subprogram will terminate
 p.ads:28:17: info: postcondition proved (CVC5: 1 VC)
+p.ads:30:13: info: implicit terminating annotation on "Identity1" has been proved, subprogram will terminate
 p.ads:31:17: medium: postcondition might fail
+p.ads:33:13: info: implicit terminating annotation on "Identity2" has been proved, subprogram will terminate
 p.ads:34:17: medium: postcondition might fail

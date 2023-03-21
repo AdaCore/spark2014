@@ -190,9 +190,11 @@ recursive_mergesort.adb:168:111: info: precondition proved (altergo: 1 VC)
 recursive_mergesort.adb:168:134: info: overflow check proved (altergo: 2 VC)
 recursive_mergesort.adb:168:143: info: precondition proved (altergo: 1 VC)
 recursive_mergesort.adb:168:166: info: precondition proved (altergo: 1 VC)
+recursive_mergesort.ads:23:16: info: implicit terminating annotation on "Is_Add" has been proved, subprogram will terminate
 recursive_mergesort.ads:26:19: info: precondition proved (CVC5: 1 VC)
 recursive_mergesort.ads:26:38: info: precondition proved (altergo: 1 VC)
 recursive_mergesort.ads:29:19: info: precondition proved (altergo: 1 VC)
+recursive_mergesort.ads:34:16: info: implicit terminating annotation on "Is_Merge" has been proved, subprogram will terminate
 recursive_mergesort.ads:39:32: info: precondition proved (CVC5: 1 VC)
 recursive_mergesort.ads:39:50: info: precondition proved (CVC5: 1 VC)
 recursive_mergesort.ads:39:67: info: precondition proved (altergo: 1 VC)
@@ -205,7 +207,7 @@ recursive_mergesort.ads:60:17: info: postcondition proved (CVC5: 5 VC; altergo: 
 recursive_mergesort.ads:64:17: info: postcondition proved (CVC5: 1 VC)
 recursive_mergesort.ads:68:17: info: postcondition proved (CVC5: 1 VC)
 recursive_mergesort.ads:72:13: info: function contract might not be available on recursive calls
-recursive_mergesort.ads:72:13: info: terminating annotation on "Occurrences" has been proved, subprogram will terminate
+recursive_mergesort.ads:72:13: info: implicit terminating annotation on "Occurrences" has been proved, subprogram will terminate
 recursive_mergesort.ads:75:14: info: postcondition proved (CVC5: 1 VC)
 recursive_mergesort.ads:76:07: info: predicate check proved (Trivial: 1 VC)
 recursive_mergesort.ads:76:60: info: overflow check proved (altergo: 2 VC)
@@ -220,6 +222,9 @@ recursive_mergesort.ads:80:27: info: subprogram variant proved (altergo: 1 VC)
 recursive_mergesort.ads:80:27: warning: call to "Occurrences" within its postcondition will lead to infinite recursion
 recursive_mergesort.ads:80:48: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 recursive_mergesort.ads:80:57: info: index check proved (CVC5: 2 VC)
+recursive_mergesort.ads:82:06: warning: Always_Return annotation is useless
+recursive_mergesort.ads:82:06: warning: function "Occurrences" has implicit Always_Return annotation
+recursive_mergesort.ads:85:13: info: implicit terminating annotation on "Is_Sorted" has been proved, subprogram will terminate
 recursive_mergesort.ads:88:32: info: index check proved (altergo: 2 VC)
 recursive_mergesort.ads:88:40: info: index check proved (CVC5: 2 VC)
 recursive_mergesort.ads:96:28: info: range check proved (altergo: 4 VC)
@@ -264,8 +269,8 @@ spark-containers-functional-maps.ads:380:13: info: during checks for quantificat
 spark-containers-functional-maps.ads:380:13: info: precondition proved (CVC5: 2 VC), in instantiation at recursive_mergesort.ads:15
 spark-containers-functional-maps.ads:388:13: info: during checks for quantification at spark-containers-functional-maps.ads:333, in instantiation at recursive_mergesort.ads:15
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at recursive_mergesort.ads:15
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at recursive_mergesort.ads:15
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at recursive_mergesort.ads:15
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at recursive_mergesort.ads:15
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at recursive_mergesort.ads:15
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at recursive_mergesort.ads:15
 spark-containers-functional-maps.ads:517:13: info: precondition proved (Trivial: 1 VC), in instantiation at recursive_mergesort.ads:15
 spark-containers-functional-maps.ads:520:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at recursive_mergesort.ads:15

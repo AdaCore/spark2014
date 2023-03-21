@@ -1,9 +1,15 @@
 illegal_1.adb:4:07: info: initialization of "E" proved
+illegal_1.adb:9:25: medium: implicit terminating annotation on "New_Object" could be incorrect, dispatching call might be nonterminating
 illegal_1.adb:16:07: info: initialization of "E" proved
+illegal_1.adb:18:25: medium: implicit terminating annotation on "New_Object" could be incorrect, dispatching call might be nonterminating
 illegal_1.adb:25:07: info: initialization of "E" proved
+illegal_1.adb:27:25: medium: implicit terminating annotation on "New_Object_From_State" could be incorrect, dispatching call might be nonterminating
 illegal_1.adb:36:07: info: initialization of "E" proved
+illegal_1.adb:38:27: medium: implicit terminating annotation on "New_P_Object" could be incorrect, dispatching call might be nonterminating
 illegal_1.adb:46:07: info: initialization of "E" proved
+illegal_1.adb:48:27: medium: implicit terminating annotation on "New_P_Object" could be incorrect, dispatching call might be nonterminating
 illegal_1.adb:56:07: info: initialization of "E" proved
+illegal_1.adb:58:27: medium: implicit terminating annotation on "New_P_Object_From_State" could be incorrect, dispatching call might be nonterminating
 illegal_1.ads:13:13: error: "G" is a Proof_In of overriding subprogram, but not of overridden subprogram "New_Object" at root.ads:14 (SPARK RM 6.1.6)
 illegal_1.ads:19:13: error: "G" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "New_Object_From_State" at root.ads:18 (SPARK RM 6.1.6)
 illegal_1.ads:28:13: error: "G" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "New_P_Object_From_State" at root.ads:25 (SPARK RM 6.1.6)
@@ -16,7 +22,13 @@ root.adb:11:29: info: overflow check proved (CVC5: 2 VC)
 root.adb:43:40: info: initialization of "Counter" constituent of "State" proved
 root.ads:3:08: info: flow dependencies proved
 root.ads:6:11: info: data dependencies proved
+root.ads:14:13: info: implicit terminating annotation on "New_Object" has been proved, subprogram will terminate
+root.ads:16:13: info: implicit terminating annotation on "New_Object" has been proved, subprogram will terminate
+root.ads:18:13: info: implicit terminating annotation on "New_Object_From_State" has been proved, subprogram will terminate
 root.ads:19:11: info: data dependencies proved
+root.ads:21:13: info: implicit terminating annotation on "New_P_Object" has been proved, subprogram will terminate
+root.ads:23:13: info: implicit terminating annotation on "New_P_Object" has been proved, subprogram will terminate
+root.ads:25:13: info: implicit terminating annotation on "New_P_Object_From_State" has been proved, subprogram will terminate
 root.ads:26:11: info: data dependencies proved
 root.ads:28:52: info: initialization of "O" proved
 root.ads:29:11: info: data dependencies proved

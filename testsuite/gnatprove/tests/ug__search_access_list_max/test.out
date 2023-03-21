@@ -1,22 +1,36 @@
-p.adb:12:33: info: loop invariant initialization proved
-p.adb:12:33: info: loop invariant preservation proved
-p.adb:14:13: info: loop invariant initialization proved
-p.adb:14:13: info: loop invariant preservation proved
-p.adb:14:27: info: pointer dereference check proved
-p.adb:15:44: info: range check proved
-p.adb:16:46: info: range check proved
-p.adb:19:45: info: pointer dereference check proved
-p.adb:21:39: info: pointer dereference check proved
-p.adb:23:19: info: loop invariant preservation proved
-p.adb:23:19: info: loop invariant initialization proved
-p.adb:24:50: info: range check proved
-p.adb:25:52: info: range check proved
-p.adb:26:22: info: pointer dereference check proved
-p.adb:29:23: info: dynamic accessibility check proved
-p.adb:29:23: info: null exclusion check proved
-p.ads:6:13: info: terminating annotation on "All_Smaller_Than_Max" has been proved, subprogram will terminate
+p.adb:13:33: info: loop invariant preservation proved
+p.adb:13:33: info: loop invariant initialization proved
+p.adb:15:13: info: loop invariant initialization proved
+p.adb:15:13: info: loop invariant preservation proved
+p.adb:15:27: info: pointer dereference check proved
+p.adb:16:44: info: range check proved
+p.adb:17:46: info: range check proved
+p.adb:18:31: info: loop variant proved
+p.adb:18:44: info: range check proved
+p.adb:21:45: info: pointer dereference check proved
+p.adb:24:22: info: pointer dereference check proved
+p.adb:25:44: info: pointer dereference check proved
+p.adb:26:39: info: loop invariant initialization proved
+p.adb:26:39: info: loop invariant preservation proved
+p.adb:27:39: info: loop invariant initialization proved
+p.adb:27:39: info: loop invariant preservation proved
+p.adb:27:40: info: pointer dereference check proved
+p.adb:28:39: info: predicate check proved
+p.adb:28:39: info: loop invariant initialization proved
+p.adb:28:39: info: loop invariant preservation proved
+p.adb:28:62: info: predicate check proved
+p.adb:30:19: info: loop invariant initialization proved
+p.adb:30:19: info: loop invariant preservation proved
+p.adb:31:50: info: range check proved
+p.adb:32:52: info: range check proved
+p.adb:33:37: info: loop variant proved
+p.adb:33:50: info: range check proved
+p.adb:36:23: info: dynamic accessibility check proved
+p.adb:36:23: info: null exclusion check proved
+p.ads:6:13: info: implicit terminating annotation on "All_Smaller_Than_Max" has been proved, subprogram will terminate
 p.ads:9:12: info: pointer dereference check proved
 p.ads:9:35: info: subprogram variant proved
 p.ads:9:58: info: pointer dereference check proved
-p.ads:17:14: info: postcondition proved
-p.ads:17:61: info: pointer dereference check proved
+p.ads:13:13: info: implicit terminating annotation on "Search_List_Max" has been proved, subprogram will terminate
+p.ads:16:14: info: postcondition proved
+p.ads:16:61: info: pointer dereference check proved

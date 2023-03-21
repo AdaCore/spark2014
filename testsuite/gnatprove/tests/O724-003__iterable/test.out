@@ -2,18 +2,23 @@ with_iterable.adb:4:27: info: discriminant check proved (CVC5: 1 VC)
 with_iterable.adb:4:27: info: predicate check proved (CVC5: 2 VC)
 with_iterable.adb:7:22: info: assertion proved (CVC5: 1 VC)
 with_iterable.ads:14:36: info: range check proved (CVC5: 2 VC)
+with_iterable.ads:16:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 with_iterable.ads:17:18: info: index check proved (CVC5: 2 VC)
 with_iterable.ads:21:13: info: during checks for quantification at with_iterable.ads:4
+with_iterable.ads:21:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 with_iterable.ads:21:13: info: precondition proved (Trivial: 1 VC)
 with_iterable.ads:21:20: warning: unused variable "A"
 with_iterable.ads:22:07: info: discriminant check proved (CVC5: 1 VC)
 with_iterable.ads:22:07: info: predicate check proved (CVC5: 2 VC)
 with_iterable.ads:23:13: info: during checks for quantification at with_iterable.ads:4
+with_iterable.ads:23:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 with_iterable.ads:23:13: info: precondition proved (CVC5: 1 VC)
 with_iterable.ads:24:09: info: predicate check proved (CVC5: 2 VC)
 with_iterable.ads:24:27: info: overflow check proved (CVC5: 2 VC)
 with_iterable.ads:26:13: info: during checks for quantification at with_iterable.ads:4
+with_iterable.ads:26:13: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 with_iterable.ads:26:13: info: precondition proved (Trivial: 1 VC)
 with_iterable.ads:26:26: warning: unused variable "A"
+with_iterable.ads:29:13: info: implicit terminating annotation on "Contains_0" has been proved, subprogram will terminate
 with_iterable.ads:30:27: info: precondition proved (CVC5: 2 VC)
 with_iterable.ads:33:12: info: postcondition proved (CVC5: 1 VC)

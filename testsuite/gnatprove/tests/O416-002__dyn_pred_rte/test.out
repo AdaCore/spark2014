@@ -1,4 +1,5 @@
 pred.adb:1:11: warning: subprogram "Pred" has no effect
+pred.adb:5:13: info: implicit terminating annotation on "Prop" has been proved, subprogram will terminate
 pred.adb:5:54: info: division check proved (CVC5: 1 VC)
 pred.adb:8:09: info: range check proved (CVC5: 2 VC)
 pred.adb:10:08: info: precondition proved (CVC5: 1 VC)

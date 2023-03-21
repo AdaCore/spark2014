@@ -1,12 +1,17 @@
 test.adb:3:04: warning: analyzing unreferenced function "Random_Number"
+test.adb:3:13: info: implicit terminating annotation on "Random_Number" has been proved, subprogram will terminate
 test.adb:9:04: info: no contextual analysis of "Multiple_Returns" (multiple returns)
+test.adb:9:13: info: implicit terminating annotation on "Multiple_Returns" has been proved, subprogram will terminate
 test.adb:18:04: info: no contextual analysis of "Is_Prime" (multiple returns)
+test.adb:18:13: info: implicit terminating annotation on "Is_Prime" has been proved, subprogram will terminate
 test.adb:20:11: info: range check proved (CVC5: 2 VC)
 test.adb:20:38: info: division check proved (CVC5: 1 VC)
 test.adb:20:42: info: cannot unroll loop (too many loop iterations)
 test.adb:21:15: info: division check proved (CVC5: 1 VC)
 test.adb:28:04: warning: analyzing unreferenced function "Ext_Return_01"
+test.adb:28:13: info: implicit terminating annotation on "Ext_Return_01" has been proved, subprogram will terminate
 test.adb:30:14: info: initialization of "R" proved
 test.adb:31:17: medium: overflow check might fail, cannot prove upper bound for N + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (N <= Integer'Last - 1) to subprogram at line 28]
 test.adb:35:04: info: no contextual analysis of "No_Return" (multiple returns)
+test.adb:35:13: info: implicit terminating annotation on "No_Return" has been proved, subprogram will terminate
 test.adb:44:07: medium: unexpected exception might be raised

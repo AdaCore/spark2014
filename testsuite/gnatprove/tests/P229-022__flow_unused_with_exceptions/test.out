@@ -7,10 +7,8 @@ fileio.adb:20:14: medium: overflow check might fail, cannot prove upper bound fo
 fileio.adb:21:14: medium: overflow check might fail, cannot prove upper bound for Y + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at fileio.ads:17 should mention Y in a precondition]
 fileio.adb:26:07: warning: assuming "fgetc" always returns
 fileio.adb:26:07: warning: no returning annotation available for "fgetc"
-fileio.adb:28:28: warning: assuming "ferror" always returns
 fileio.adb:28:28: warning: assuming "ferror" has no effect on global items
 fileio.adb:28:28: warning: no Global contract available for "ferror"
-fileio.adb:28:28: warning: no returning annotation available for "ferror"
 fileio.adb:29:10: medium: unexpected exception might be raised
 fileio.adb:34:07: info: initialization of "Result" proved
 fileio.adb:37:10: warning: assuming "ungetc" always returns

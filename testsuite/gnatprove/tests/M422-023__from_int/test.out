@@ -10,6 +10,8 @@ sgs.adb:19:22: info: assertion proved (CVC5: 1 VC)
 sgs.adb:20:22: info: assertion proved (CVC5: 1 VC)
 sgs.adb:21:22: info: assertion proved (CVC5: 1 VC)
 sgs.adb:22:22: info: assertion proved (CVC5: 1 VC)
+sgs.ads:5:13: info: implicit terminating annotation on "C" has been proved, subprogram will terminate
 sgs.ads:5:53: info: range check proved (Trivial)
 sgs.ads:10:14: warning: subprogram "F" has no effect
+sgs.ads:12:13: info: implicit terminating annotation on "A" has been proved, subprogram will terminate
 sgs.ads:13:17: info: postcondition proved (CVC5: 1 VC; colibri: 1 VC)

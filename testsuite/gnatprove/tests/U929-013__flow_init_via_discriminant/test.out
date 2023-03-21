@@ -39,6 +39,7 @@ main.adb:16:04: info: initialization of "A" proved
 main.adb:16:18: info: range check proved (CVC5: 2 VC)
 main.adb:17:04: info: initialization of "B" proved
 main.adb:20:13: info: function contract might not be available on calls from enclosing unit
+main.adb:20:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:21:19: info: postcondition proved (CVC5: 1 VC)
 main.adb:21:34: info: overflow check proved (CVC5: 2 VC)
 main.adb:24:14: info: initialization of "Result" proved
@@ -68,6 +69,7 @@ main2.adb:19:04: info: initialization of "G" proved
 main2.adb:19:18: info: range check proved (CVC5: 2 VC)
 main2.adb:20:04: info: initialization of "H" proved
 main2.adb:23:10: info: range check proved (CVC5: 2 VC)
+n.adb:1:10: info: implicit terminating annotation on "N" has been proved, subprogram will terminate
 n.adb:3:03: info: flow dependencies proved
 n.adb:3:39: info: postcondition proved (CVC5: 1 VC)
 n.adb:6:24: info: in default value at n.adb:13

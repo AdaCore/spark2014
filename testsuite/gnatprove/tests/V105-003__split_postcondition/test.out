@@ -1,1 +1,2 @@
+test.ads:5:14: info: implicit terminating annotation on "Test_Post" has been proved, subprogram will terminate
 test.ads:9:18: high: postcondition might fail (e.g. when X = 4 and Y = 5)

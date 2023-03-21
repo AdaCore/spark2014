@@ -1,4 +1,5 @@
 foo.ads:9:04: info: flow dependencies proved
+foo.ads:14:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 foo.ads:16:07: info: data dependencies proved
 foo.ads:20:07: info: data dependencies proved
 foo.ads:21:07: info: flow dependencies proved

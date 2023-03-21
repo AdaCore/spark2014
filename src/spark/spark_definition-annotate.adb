@@ -458,6 +458,21 @@ package body SPARK_Definition.Annotate is
          end if;
       end if;
 
+      --  If E is a function or automatically instantiated lemma, the
+      --  Always_Return annotation is useless. Termination of such subprograms
+      --  is checked when possible, and assumed otherwise.
+
+      if Ekind (E) = E_Function
+        or else Has_Automatic_Instantiation_Annotation (E)
+      then
+         Error_Msg_NE
+           (Warning_Message
+              (if Ekind (E) = E_Function
+               then Warn_Useless_Always_Return_Fun
+               else Warn_Useless_Always_Return_Lemma), Prag, E);
+         Error_Msg_N ("\Always_Return annotation is useless", Prag);
+      end if;
+
       --  Go through renamings to find the appropriate entity
 
       Always_Return_Annotations.Include (Get_Renamed_Entity (E));
@@ -1207,6 +1222,15 @@ package body SPARK_Definition.Annotate is
          end loop;
       end;
 
+      --  If E is annotated explicitly with Always_Return, the Always_Return
+      --  annotation is useless. Termination of automatically instantiated
+      --  lemmas is checked when possible, and assumed otherwise.
+
+      if Always_Return_Annotations.Contains (E) then
+         Error_Msg_NE
+           (Warning_Message (Warn_Useless_Always_Return_Lemma), Prag, E);
+         Error_Msg_N ("\Always_Return annotation is useless", Prag);
+      end if;
    end Check_Automatic_Instantiation_Annotation;
 
    --------------------------------------------------
@@ -2768,6 +2792,16 @@ package body SPARK_Definition.Annotate is
      (E : Entity_Id) return Boolean
    is
      (Higher_Order_Spec_Annotations.Contains (E));
+
+   -------------------------------------------
+   -- Has_Implicit_Always_Return_Annotation --
+   -------------------------------------------
+
+   function Has_Implicit_Always_Return_Annotation
+     (E : Entity_Id) return Boolean
+   is
+     (Ekind (E) = E_Function
+        or else Has_Automatic_Instantiation_Annotation (E));
 
    -------------------------------
    -- Has_Logical_Eq_Annotation --

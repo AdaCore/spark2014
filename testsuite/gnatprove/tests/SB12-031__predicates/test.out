@@ -1,2 +1,3 @@
 test.adb:8:10: info: predicate check proved (CVC5: 1 VC)
 test.adb:8:30: info: division check proved (CVC5: 1 VC)
+test.ads:7:13: info: implicit terminating annotation on "Valid_Context" has been proved, subprogram will terminate

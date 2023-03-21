@@ -1,1 +1,2 @@
+enum.ads:5:13: info: implicit terminating annotation on "Sunday" has been proved, subprogram will terminate
 enum.ads:6:20: info: postcondition proved (CVC5: 1 VC)

@@ -27,6 +27,7 @@ hermes-der-decode.adb:92:10: info: initialization of "Tag_Value" proved
 hermes-der-decode.adb:95:30: info: range check proved (CVC5: 2 VC)
 hermes-der-decode.adb:119:07: info: initialization of "Length_Of_Length" proved
 hermes-der-decode.adb:121:16: info: implicit function contract might not be available on calls from enclosing unit
+hermes-der-decode.adb:121:16: info: implicit terminating annotation on "Convert_Length" has been proved, subprogram will terminate
 hermes-der-decode.adb:124:11: info: data dependencies proved
 hermes-der-decode.adb:126:29: high: overflow check might fail, cannot prove upper bound for (Starting + (Octet_Count - 1)) (e.g. when Octet_Count = Length_Of_Length_Type'Last and Starting = 2147483522) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 hermes-der-decode.adb:127:51: info: index check proved (CVC5: 2 VC)
@@ -203,10 +204,17 @@ hermes-der-encode.adb:142:80: medium: range check might fail, cannot prove upper
 hermes-der-encode.adb:149:39: info: range check proved (CVC5: 2 VC)
 hermes-der-encode.adb:155:07: medium: unexpected exception might be raised
 hermes-der-encode.adb:156:07: warning: this statement is never reached
+hermes-der-encode.ads:17:13: info: implicit terminating annotation on "Make_Leading_Identifier" has been proved, subprogram will terminate
+hermes-der-encode.ads:23:13: info: implicit terminating annotation on "Put_Length_Value" has been proved, subprogram will terminate
 hermes-der-encode.ads:24:19: info: postcondition proved (Z3: 1 VC)
+hermes-der-encode.ads:27:13: info: implicit terminating annotation on "Put_Boolean_Value" has been proved, subprogram will terminate
 hermes-der-encode.ads:28:19: info: postcondition proved (CVC5: 1 VC)
 hermes-der-encode.ads:31:13: high: all paths in "Put_Integer_Value" raise exceptions or do not terminate normally
+hermes-der-encode.ads:34:13: info: implicit terminating annotation on "Put_Octet_String_Value" has been proved, subprogram will terminate
+hermes-der-encode.ads:37:13: info: implicit terminating annotation on "Put_Null_Value" has been proved, subprogram will terminate
 hermes-der-encode.ads:40:13: high: all paths in "Put_OID_Value" raise exceptions or do not terminate normally
+hermes-oid.adb:23:16: info: implicit terminating annotation on "Bad_First_Level" has been proved, subprogram will terminate
+hermes-oid.adb:26:16: info: implicit terminating annotation on "Bad_Second_Level" has been proved, subprogram will terminate
 hermes-oid.adb:38:74: info: index check proved (CVC5: 2 VC)
 hermes-oid.adb:41:35: info: range check proved (CVC5: 2 VC)
 hermes-oid.adb:41:54: info: index check proved (CVC5: 2 VC)
@@ -278,6 +286,7 @@ hermes-oid.adb:165:40: info: index check proved (Z3: 2 VC)
 hermes-oid.ads:26:39: info: initialization of "Result" proved
 hermes-oid.ads:26:71: info: initialization of "Status" proved
 hermes-oid.ads:27:11: info: flow dependencies proved
+hermes-oid.ads:30:13: info: implicit terminating annotation on "Component_Count" has been proved, subprogram will terminate
 hermes-oid.ads:40:07: info: initialization of "Result" proved
 hermes-oid.ads:41:07: info: initialization of "Number_Of_Components" proved
 hermes-oid.ads:43:08: info: flow dependencies proved
@@ -289,7 +298,9 @@ messages.adb:21:13: info: loop invariant initialization proved (CVC5: 3 VC)
 messages.adb:21:13: info: loop invariant preservation proved (CVC5: 3 VC)
 messages.adb:38:13: info: loop invariant initialization proved (CVC5: 3 VC)
 messages.adb:38:13: info: loop invariant preservation proved (CVC5: 3 VC)
+messages.ads:39:13: info: implicit terminating annotation on "From_Network" has been proved, subprogram will terminate
 messages.ads:40:19: info: postcondition proved (CVC5: 3 VC)
+messages.ads:46:13: info: implicit terminating annotation on "To_Network" has been proved, subprogram will terminate
 messages.ads:47:19: info: postcondition proved (CVC5: 3 VC)
 network-addresses.adb:30:07: info: initialization of "Result_Index" proved
 network-addresses.adb:31:07: info: initialization of "Value" proved
@@ -335,14 +346,15 @@ network-addresses.ads:39:07: info: initialization of "Text" proved
 network-addresses.ads:40:07: info: initialization of "Character_Count" proved
 network-addresses.ads:42:08: info: data dependencies proved
 network-addresses.ads:43:08: info: flow dependencies proved
+network-addresses.ads:46:13: info: implicit terminating annotation on "To_UDPv4_Address" has been proved, subprogram will terminate
+network-addresses.ads:49:13: info: implicit terminating annotation on "Get_Port" has been proved, subprogram will terminate
+network-addresses.ads:52:13: info: implicit terminating annotation on "Get_IPv4" has been proved, subprogram will terminate
 network-socket-writer.ads:17:06: warning: no procedure exists that can initialize abstract state "Writer.Output_Message_Stream"
 serial_generator.adb:21:04: info: initialization of "Current" constituent of "State" proved
 serial_generator.adb:36:07: info: initialization of "Year" proved
 serial_generator.adb:37:07: info: initialization of "Month" proved
 serial_generator.adb:38:07: info: initialization of "Day" proved
 serial_generator.adb:39:07: info: initialization of "Seconds" proved
-serial_generator.adb:40:34: warning: assuming "Clock" always returns
-serial_generator.adb:40:34: warning: no returning annotation available for "Clock"
 serial_generator.adb:45:07: warning: assuming "Split" always returns
 serial_generator.adb:45:07: warning: no returning annotation available for "Split"
 serial_generator.adb:48:33: info: range check proved (CVC5: 1 VC)
@@ -371,6 +383,7 @@ server_timestamp_maker.adb:38:07: warning: unused variable "Message_Imprint"
 server_timestamp_maker.adb:39:07: high: "Imprint_Status" is not initialized in "Get_Message_Imprint" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Imprint_Status" on all paths or make "Imprint_Status" an IN OUT parameter]
 server_timestamp_maker.adb:39:07: warning: unused variable "Imprint_Status"
 server_timestamp_maker.adb:45:13: info: add a contract to analyze it separately from calling contexts
+server_timestamp_maker.adb:45:13: info: implicit terminating annotation on "Valid_Request" has been proved, subprogram will terminate
 server_timestamp_maker.adb:45:13: info: local subprogram "Valid_Request" only analyzed in the context of calls
 server_timestamp_maker.adb:47:07: warning: initialization of "Result" has no effect
 server_timestamp_maker.adb:48:07: info: initialization of "Length_Stop" proved
@@ -437,3 +450,4 @@ timestamp_messages-server.adb:35:40: medium: range check might fail, cannot prov
 timestamp_messages-server.adb:42:46: info: range check proved (CVC5: 2 VC)
 timestamp_messages-server.adb:42:73: medium: range check might fail, cannot prove upper bound for TST_Info'Length [reason for check: input value must fit in parameter type]
 timestamp_messages-server.adb:42:82: medium: range check might fail, cannot prove upper bound for (Make_Leading_Identifier (Tag_Class => Class_Universal, Structured_Flag => Constructed, Tag => Tag_Sequence) & Put_Length_Value(TST_Info'Length) & TST_Info) [reason for check: returned value must fit in the result type of the function] [possible fix: you should consider adding a postcondition to function Make_Leading_Identifier or turning it into an expression function in its unit spec]
+timestamp_messages-server.ads:19:13: info: implicit terminating annotation on "Put_Timestamp_Value" has been proved, subprogram will terminate

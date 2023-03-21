@@ -2,3 +2,4 @@ aip-arp.ads:5:06: info: data dependencies proved
 aip-net.adb:17:23: info: overflow check proved (CVC5: 2 VC)
 aip-net.adb:20:23: info: overflow check proved (CVC5: 2 VC)
 aip-net.adb:22:20: info: overflow check proved (CVC5: 2 VC)
+aip-net.ads:4:13: info: implicit terminating annotation on "HLEN_To" has been proved, subprogram will terminate

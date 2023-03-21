@@ -11,34 +11,29 @@ p.adb:16:11: info: data dependencies proved
 p.adb:17:35: low: unused global "Low"
 p.adb:17:40: low: unused global "High"
 p.adb:21:16: medium: predicate check might fail
+termination.adb:7:07: medium: implicit terminating annotation on "Infinite_Loop" could be incorrect, loop might be nonterminating
 termination.adb:10:07: warning: unreachable code
-termination.ads:9:55: high: cannot call potentially nonreturning subprogram "Infinite_Loop" for type "Int1" in its own predicate (SPARK RM 3.2.4(4))
-termination.ads:11:51: high: cannot call potentially nonreturning subprogram "Rec_Func" for type "Int3" in its own predicate (SPARK RM 3.2.4(4))
-termination.ads:14:51: high: cannot call potentially nonreturning subprogram "Infinite_Loop" for type "Int5" in its own predicate (SPARK RM 3.2.4(4))
-termination.ads:17:51: high: cannot call potentially nonreturning subprogram "Another_Nonterminating_Func" for type "Int7" in its own predicate (SPARK RM 3.2.4(4))
-termination.ads:19:51: high: cannot call potentially nonreturning subprogram "Rec_Func" for type "Int8" in its own predicate (SPARK RM 3.2.4(4))
-termination.ads:24:41: high: cannot call potentially nonreturning subprogram "Infinite_Loop" for type "Tag" in its own predicate (SPARK RM 3.2.4(4))
-termination.ads:24:41: high: cannot call potentially nonreturning subprogram "Rec_Func" for type "Tag" in its own predicate (SPARK RM 3.2.4(4))
-termination.ads:33:32: high: cannot call potentially nonreturning subprogram "Another_Nonterminating_Func" for type "Tag3" in its own predicate (SPARK RM 3.2.4(4))
-termination.ads:35:53: high: cannot call potentially nonreturning subprogram "Rec_Func" for type "Int_Acc" in its own predicate (SPARK RM 3.2.4(4))
+termination.adb:18:07: medium: implicit terminating annotation on "Rec_Func" could be incorrect, subprogram is recursive
+termination.adb:19:10: medium: implicit terminating annotation on "Rec_Func" could be incorrect, subprogram is recursive
+termination.adb:21:10: medium: implicit terminating annotation on "Rec_Func" could be incorrect, subprogram is recursive
+termination.ads:7:13: info: implicit terminating annotation on "Another_Nonterminating_Func" has been proved, subprogram will terminate
+termination.ads:39:13: info: implicit terminating annotation on "Infinite_Loop2" has been proved, subprogram will terminate
 termination.ads:44:09: medium: invariant check might fail on default value
 termination.ads:44:52: high: cannot call boundary subprogram "Infinite_Loop2" for type "Int6" in its own invariant (SPARK RM 7.3.2(5))
-termination.ads:44:52: high: cannot call potentially nonreturning subprogram "Infinite_Loop2" for type "Int6" in its own invariant (SPARK RM 7.3.2(11))
 termination.ads:46:09: info: invariant check proved on default value (CVC5: 1 VC)
 termination.ads:47:32: high: cannot call boundary subprogram "Infinite_Loop2" for type "Int7" in its own invariant (SPARK RM 7.3.2(5))
-termination.ads:47:32: high: cannot call potentially nonreturning subprogram "Infinite_Loop2" for type "Int7" in its own invariant (SPARK RM 7.3.2(11))
 termination.ads:49:09: info: invariant check proved on default value (CVC5: 2 VC)
 termination.ads:53:09: medium: invariant check might fail on default value
 termination.ads:54:07: info: range check proved (CVC5: 2 VC)
 termination.ads:54:30: info: in default value of private type at termination.ads:37
 termination.ads:54:30: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 termination.ads:56:29: high: cannot call boundary subprogram "Infinite_Loop2" for type "Discr_Rec" in its own invariant (SPARK RM 7.3.2(5))
-termination.ads:56:29: high: cannot call potentially nonreturning subprogram "Infinite_Loop2" for type "Discr_Rec" in its own invariant (SPARK RM 7.3.2(11))
 visibility.adb:10:07: warning: unreachable code
 wrapper.adb:1:46: info: data dependencies proved
 wrapper.adb:3:25: info: data dependencies proved
 wrapper.adb:3:49: low: unused global "Low"
 wrapper.adb:3:54: low: unused global "High"
 wrapper.adb:5:16: info: implicit function contract might not be available on calls from enclosing unit
+wrapper.adb:5:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 wrapper.adb:5:58: info: data dependencies proved
 wrapper.adb:6:26: medium: predicate check might fail

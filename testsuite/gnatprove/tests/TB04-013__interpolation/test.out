@@ -23,9 +23,11 @@ interpol.adb:27:40: info: index check proved (CVC5: 2 VC)
 interpol.ads:18:48: info: index check proved (CVC5: 2 VC)
 interpol.ads:18:61: info: index check proved (CVC5: 2 VC)
 interpol.ads:18:61: info: overflow check proved (CVC5: 2 VC)
+interpol.ads:20:13: info: implicit terminating annotation on "Increasing" has been proved, subprogram will terminate
 interpol.ads:23:29: info: index check proved (CVC5: 2 VC)
 interpol.ads:23:39: info: index check proved (CVC5: 2 VC)
 interpol.ads:32:44: info: index check proved (CVC5: 2 VC)
 interpol.ads:32:57: info: index check proved (CVC5: 2 VC)
+interpol.ads:34:13: info: implicit terminating annotation on "Increasing2" has been proved, subprogram will terminate
 interpol.ads:37:29: info: index check proved (CVC5: 2 VC)
 interpol.ads:37:39: info: index check proved (CVC5: 2 VC)

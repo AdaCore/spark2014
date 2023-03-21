@@ -1,3 +1,4 @@
+init_pred_in_loop.adb:2:13: info: implicit terminating annotation on "My_False" has been proved, subprogram will terminate
 init_pred_in_loop.adb:10:04: warning: analyzing unreferenced procedure "Test_No_Init_1"
 init_pred_in_loop.adb:10:14: warning: subprogram "Test_No_Init_1" has no effect
 init_pred_in_loop.adb:11:07: info: initialization of "X" proved

@@ -1,28 +1,38 @@
 main.adb:6:13: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:6:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 main.adb:8:13: info: function contract might not be available on calls from enclosing unit
+main.adb:8:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:9:14: info: postcondition proved (CVC5: 3 VC)
 main.adb:11:12: info: range check proved (CVC5: 2 VC)
 main.adb:13:22: medium: range check might fail, cannot prove upper bound for Id (3) (e.g. when C = 0) [reason for check: default component value must fit in the type]
 other.adb:6:13: info: implicit function contract might not be available on calls from enclosing unit
+other.adb:6:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 other.adb:8:13: info: function contract might not be available on calls from enclosing unit
+other.adb:8:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 other.adb:9:14: high: postcondition might fail (e.g. when F'Result = True)
 other.adb:9:57: info: range check proved (CVC5: 2 VC)
 other.adb:9:94: info: range check proved (CVC5: 2 VC)
 other.adb:15:12: info: range check proved (CVC5: 2 VC)
 other.adb:15:29: info: range check proved (CVC5: 2 VC)
 p_main.ads:5:11: info: implicit function contract might not be available on calls from enclosing unit
+p_main.ads:5:11: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 p_main.ads:7:12: info: range check proved (CVC5: 2 VC)
 p_main.ads:9:13: info: function contract might not be available on calls from enclosing unit
+p_main.ads:9:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 p_main.ads:10:06: warning: postcondition does not mention function result
 p_main.ads:10:14: info: postcondition proved (CVC5: 2 VC)
 p_main.ads:12:22: medium: range check might fail, cannot prove upper bound for Id (3) (e.g. when C = 0) [reason for check: default component value must fit in the type]
 pack.ads:6:13: info: implicit function contract might not be available on calls from enclosing unit
+pack.ads:6:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 pack.ads:8:13: info: function contract might not be available on calls from enclosing unit
+pack.ads:8:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 pack.ads:9:14: info: postcondition proved (CVC5: 3 VC)
 pack.ads:11:12: info: range check proved (CVC5: 2 VC)
 pack.ads:13:22: medium: range check might fail, cannot prove upper bound for Id (3) (e.g. when C = 0) [reason for check: default component value must fit in the type]
 third.adb:6:13: info: implicit function contract might not be available on calls from enclosing unit
+third.adb:6:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 third.adb:8:12: info: range check proved (CVC5: 2 VC)
 third.adb:10:22: medium: range check might fail, cannot prove upper bound for Id (3) (e.g. when C = 0) [reason for check: default component value must fit in the type]
 third.adb:12:13: info: function contract might not be available on calls from enclosing unit
+third.adb:12:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 third.adb:13:14: info: postcondition proved (CVC5: 3 VC)

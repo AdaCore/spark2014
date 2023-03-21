@@ -43,11 +43,22 @@ default_init.ads:13:09: medium: default initial condition might fail
 default_init.ads:15:09: medium: default initial condition might fail
 default_init.ads:17:09: info: default initial condition proved (CVC5: 1 VC)
 default_init.ads:19:09: medium: default initial condition might fail
+default_init.ads:22:13: info: implicit terminating annotation on "Rec_Ok" has been proved, subprogram will terminate
+default_init.ads:23:13: info: implicit terminating annotation on "Arr_Ok" has been proved, subprogram will terminate
+default_init.ads:24:13: info: implicit terminating annotation on "Nat_Ok" has been proved, subprogram will terminate
+default_init.ads:25:13: info: implicit terminating annotation on "Wrong_Ok" has been proved, subprogram will terminate
+default_init.ads:26:13: info: implicit terminating annotation on "Pre_Rte_Ok" has been proved, subprogram will terminate
+default_init.ads:27:13: info: implicit terminating annotation on "Rte_Ok" has been proved, subprogram will terminate
+default_init.ads:29:13: info: implicit terminating annotation on "Glob1_Ok" has been proved, subprogram will terminate
+default_init.ads:30:13: info: implicit terminating annotation on "Glob2_Ok" has been proved, subprogram will terminate
+default_init.ads:31:13: info: implicit terminating annotation on "Discr_Ok" has been proved, subprogram will terminate
+default_init.ads:32:13: info: implicit terminating annotation on "Mut_Discr_Ok" has been proved, subprogram will terminate
 default_init.ads:36:14: warning: subprogram "Def_Simple" has no effect
 default_init.ads:38:14: warning: subprogram "Def_Wrong" has no effect
 default_init.ads:40:14: warning: subprogram "Def_Rte" has no effect
 default_init.ads:42:14: warning: subprogram "Def_Glob1" has no effect
 default_init.ads:46:14: warning: subprogram "Def_Discr" has no effect
+default_init.ads:51:13: info: implicit terminating annotation on "Init" has been proved, subprogram will terminate
 default_init.ads:61:50: info: in default value of private type at default_init.ads:7
 default_init.ads:61:50: info: range check proved (CVC5: 2 VC)
 default_init.ads:63:52: info: in default value of private type at default_init.ads:9

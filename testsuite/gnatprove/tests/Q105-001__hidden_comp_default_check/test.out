@@ -1,3 +1,5 @@
+tagged_component_check.ads:4:07: warning: Always_Return annotation is useless
+tagged_component_check.ads:4:07: warning: function "Hide" has implicit Always_Return annotation
 tagged_component_check.ads:14:28: medium: in default value at tagged_component_check.ads:88
 tagged_component_check.ads:14:28: medium: range check might fail, cannot prove lower bound for Hide (0) [reason for check: default component value must fit in the type]
 tagged_component_check.ads:17:28: medium: in default value at tagged_component_check.ads:88

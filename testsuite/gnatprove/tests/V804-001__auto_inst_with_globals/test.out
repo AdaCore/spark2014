@@ -1,6 +1,9 @@
+main.adb:8:13: info: implicit terminating annotation on "Is_Ordered" has been proved, subprogram will terminate
 main.adb:10:44: info: index check proved (CVC5: 2 VC)
+main.adb:12:14: info: implicit terminating annotation on "Lemma_Ordered" has been proved, subprogram will terminate
 main.adb:14:06: info: data dependencies proved
 main.adb:16:14: info: postcondition proved (Z3: 1 VC)
+main.adb:19:13: info: implicit terminating annotation on "Is_Ordered_Strong" has been proved, subprogram will terminate
 main.adb:30:19: info: loop invariant initialization proved (CVC5: 4 VC; Trivial: 4 VC)
 main.adb:30:19: info: loop invariant preservation proved (CVC5: 2 VC; Trivial: 4 VC; Z3: 2 VC)
 main.adb:31:63: info: index check proved (CVC5: 16 VC)

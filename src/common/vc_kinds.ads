@@ -377,6 +377,8 @@ package VC_Kinds is
       Warn_Precondition_Statically_False,
       Warn_Unreferenced_Function,
       Warn_Unreferenced_Procedure,
+      Warn_Useless_Always_Return_Fun,
+      Warn_Useless_Always_Return_Lemma,
       Warn_Useless_Relaxed_Init_Fun,
       Warn_Useless_Relaxed_Init_Obj,
       Warn_Variant_Not_Recursive,
@@ -535,6 +537,11 @@ package VC_Kinds is
           "?analyzing unreferenced function &",
         when Warn_Unreferenced_Procedure =>
           "?analyzing unreferenced procedure &",
+        when Warn_Useless_Always_Return_Fun =>
+          "?function & has implicit Always_Return annotation",
+        when Warn_Useless_Always_Return_Lemma =>
+          "?automatically instantiated lemma & has implicit Always_Return"
+           & " annotation",
         when Warn_Useless_Relaxed_Init_Fun =>
           "?the result of & cannot be partially initialized",
         when Warn_Useless_Relaxed_Init_Obj =>

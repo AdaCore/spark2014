@@ -26,9 +26,11 @@ simple_arrays.adb:89:36: info: index check proved (CVC5: 2 VC)
 simple_arrays.adb:90:32: info: index check proved (CVC5: 2 VC)
 simple_arrays.adb:90:56: info: index check proved (CVC5: 2 VC)
 simple_arrays.adb:91:52: info: index check proved (CVC5: 2 VC)
+simple_arrays.adb:97:13: info: implicit terminating annotation on "Array_Axiom_Transitivity" has been proved, subprogram will terminate
 simple_arrays.adb:98:11: info: flow dependencies proved
 simple_arrays.adb:100:36: info: index check proved (CVC5: 2 VC)
 simple_arrays.adb:101:22: info: postcondition proved (CVC5: 1 VC)
+simple_arrays.adb:108:13: info: implicit terminating annotation on "Array_Axiom_Transitivity_Worse" has been proved, subprogram will terminate
 simple_arrays.adb:110:11: info: flow dependencies proved
 simple_arrays.adb:112:40: info: index check proved (CVC5: 2 VC)
 simple_arrays.adb:113:46: info: index check proved (CVC5: 2 VC)

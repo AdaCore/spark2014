@@ -1,3 +1,5 @@
-p.adb:4:18: medium: terminating annotation on "Fun" could be incorrect, loop might be nonterminating
+p.adb:4:18: medium: implicit terminating annotation on "Fun" could be incorrect, loop might be nonterminating
 p.adb:4:18: warning: statement has no effect
+p.ads:2:37: warning: Always_Return annotation is useless
+p.ads:2:37: warning: function "Fun" has implicit Always_Return annotation
 q.adb:2:11: info: terminating annotation on "Q" has been proved, subprogram will terminate

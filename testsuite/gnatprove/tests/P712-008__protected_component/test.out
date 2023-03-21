@@ -1,3 +1,4 @@
 pack.adb:17:12: warning: unused assignment
+pack.ads:9:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 pack.ads:10:19: info: initialization of "R" proved
 pack.ads:11:19: info: initialization of "A" proved

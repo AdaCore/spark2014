@@ -1,4 +1,5 @@
 len_problem.adb:6:13: info: implicit function contract might not be available on calls from enclosing unit
+len_problem.adb:6:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 len_problem.adb:8:04: info: range check proved (CVC5: 2 VC)
 len_problem.adb:8:61: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 len_problem.adb:12:19: high: assertion might fail (e.g. when S'First = 65535 and S'Last = 65791)

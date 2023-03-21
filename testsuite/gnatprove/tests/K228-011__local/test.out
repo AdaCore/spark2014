@@ -1,3 +1,6 @@
+localcst.ads:3:13: info: implicit terminating annotation on "Cst" has been proved, subprogram will terminate
 localcst.ads:4:20: info: postcondition proved (CVC5: 1 VC)
+localcst.ads:6:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 localcst.ads:7:20: info: postcondition proved (CVC5: 1 VC)
+localcst.ads:9:13: info: implicit terminating annotation on "Glob" has been proved, subprogram will terminate
 localcst.ads:10:20: info: postcondition proved (CVC5: 1 VC)

@@ -1,3 +1,4 @@
+test.adb:22:13: info: implicit terminating annotation on "Found_None" has been proved, subprogram will terminate
 test.adb:26:04: info: cannot unroll loop (too many loop iterations)
 test.adb:26:04: info: in instantiation at line 13
 test.ads:12:14: info: flow dependencies proved, in instantiation at test.adb:26

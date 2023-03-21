@@ -7,6 +7,7 @@ longest_common_prefix.adb:10:23: info: index check proved (CVC5: 4 VC)
 longest_common_prefix.adb:10:23: info: overflow check proved (CVC5: 4 VC)
 longest_common_prefix.adb:10:35: info: index check proved (CVC5: 4 VC)
 longest_common_prefix.adb:10:35: info: overflow check proved (CVC5: 4 VC)
+longest_common_prefix.adb:11:07: medium: implicit terminating annotation on "LCP" could be incorrect, loop might be nonterminating
 longest_common_prefix.adb:12:15: high: "L" is not initialized
 longest_common_prefix.adb:12:17: info: overflow check proved (CVC5: 2 VC)
 longest_common_prefix.adb:14:14: medium: "L" might not be initialized

@@ -1,4 +1,5 @@
 rec_ptr_discr.adb:2:13: info: implicit function contract might not be available on calls from enclosing unit
+rec_ptr_discr.adb:2:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 rec_ptr_discr.adb:27:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 rec_ptr_discr.adb:31:07: info: absence of resource or memory leak proved (CVC5: 1 VC)
 rec_ptr_discr.adb:31:10: info: discriminant check proved (CVC5: 1 VC)

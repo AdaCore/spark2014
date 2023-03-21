@@ -3,6 +3,7 @@ bad.adb:5:21: info: division check proved (CVC5: 1 VC)
 bad.adb:6:19: high: assertion might fail (e.g. when X = -1 and Y = -1)
 bad.adb:6:21: info: division check proved (CVC5: 1 VC)
 mod_rem.adb:3:11: warning: subprogram "Mod_Rem" has no effect
+mod_rem.adb:9:13: info: implicit terminating annotation on "Same_Sign" has been proved, subprogram will terminate
 mod_rem.adb:14:19: info: assertion proved (CVC5: 1 VC)
 mod_rem.adb:14:19: info: predicate check proved (Trivial: 1 VC)
 mod_rem.adb:14:27: info: predicate check proved (Trivial: 1 VC)

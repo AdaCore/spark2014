@@ -1,4 +1,6 @@
 refined_global_legal-pr_child.ads:5:08: info: flow dependencies proved
+refined_global_legal-pr_child.ads:9:11: warning: Always_Return annotation is useless
+refined_global_legal-pr_child.ads:9:11: warning: function "Priv_F" has implicit Always_Return annotation
 refined_global_legal.adb:14:41: info: initialization of "Var" constituent of "State2" proved
 refined_global_legal.adb:14:46: info: initialization of "Var2" constituent of "State2" proved
 refined_global_legal.adb:14:52: info: initialization of "Var3" constituent of "State3" proved

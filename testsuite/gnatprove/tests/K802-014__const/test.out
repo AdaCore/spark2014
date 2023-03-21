@@ -1,7 +1,11 @@
 a.adb:7:07: warning: analyzing unreferenced function "Test"
+a.adb:7:16: info: implicit terminating annotation on "Test" has been proved, subprogram will terminate
 a.adb:18:07: warning: analyzing unreferenced function "Test"
+a.adb:18:16: info: implicit terminating annotation on "Test" has been proved, subprogram will terminate
 a.adb:26:19: info: unrolling loop
 a.adb:29:10: warning: analyzing unreferenced function "Test"
+a.adb:29:19: info: implicit terminating annotation on "Test" has been proved, subprogram will terminate
 a.adb:40:17: warning: subprogram "Outer" has no effect
 a.adb:41:10: info: no contextual analysis of "Outer" (nested subprogram)
 a.adb:41:10: warning: analyzing unreferenced function "Test"
+a.adb:41:19: info: implicit terminating annotation on "Test" has been proved, subprogram will terminate

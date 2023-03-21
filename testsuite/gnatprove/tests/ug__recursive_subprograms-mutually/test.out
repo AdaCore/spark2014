@@ -1,3 +1,5 @@
+recursive_subprograms-mutually.ads:2:13: info: implicit terminating annotation on "Is_Odd" has been proved, subprogram will terminate
+recursive_subprograms-mutually.ads:4:13: info: implicit terminating annotation on "Is_Even" has been proved, subprogram will terminate
 recursive_subprograms-mutually.ads:8:36: info: subprogram variant proved
 recursive_subprograms-mutually.ads:8:47: info: range check proved
 recursive_subprograms-mutually.ads:10:35: info: subprogram variant proved

@@ -1,1 +1,2 @@
+seqs.adb:2:13: info: implicit terminating annotation on "Seq_Le" has been proved, subprogram will terminate
 seqs.adb:6:19: info: assertion proved (CVC5: 1 VC)

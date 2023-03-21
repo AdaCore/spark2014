@@ -48,6 +48,7 @@ bad_moves_of_deep.adb:82:07: error: "X" is not writable
 bad_moves_of_deep.adb:82:07: error: object was moved at line 76
 bad_moves_of_deep.adb:85:13: error: object was moved at line 86
 bad_moves_of_deep.adb:85:13: error: return from "Get" with moved value for "X"
+bad_moves_of_deep.adb:85:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 bad_moves_of_deep.adb:89:21: error: dereference from "X" is not readable
 bad_moves_of_deep.adb:89:21: error: object was moved at line 9
 bad_moves_of_deep.adb:90:06: error: dereference from "X" is not writable
@@ -65,6 +66,7 @@ bad_moves_of_shallow.adb:21:07: warning: initialization of "Z" has no effect
 bad_moves_of_shallow.adb:23:22: error: object was moved at line 21
 bad_moves_of_shallow.adb:26:13: error: object was moved at line 27
 bad_moves_of_shallow.adb:26:13: error: return from "Get" with moved value for "X3"
+bad_moves_of_shallow.adb:26:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 bad_moves_of_shallow.adb:30:04: error: object was moved at line 6
 bad_moves_of_shallow.adb:31:19: error: object was moved at line 6
 gnatprove: error during flow analysis and proof

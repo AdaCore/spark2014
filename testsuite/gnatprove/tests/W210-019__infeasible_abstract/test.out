@@ -1,12 +1,18 @@
 infeasible_abstract.adb:6:16: medium: contract of function might not be feasible (e.g. when I = 0)
+infeasible_abstract.adb:7:09: warning: Always_Return annotation is useless
+infeasible_abstract.adb:7:09: warning: function "Bad" has implicit Always_Return annotation
 infeasible_abstract.adb:8:23: info: postcondition proved (CVC5: 1 VC), in inherited contract at infeasible_abstract.adb:25
 infeasible_abstract.adb:8:23: info: postcondition proved (CVC5: 1 VC), in inherited contract at infeasible_abstract.adb:32
 infeasible_abstract.adb:12:13: error: "F" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
 infeasible_abstract.adb:12:13: error: unsupported recursive subprogram
+infeasible_abstract.adb:13:06: warning: Always_Return annotation is useless
+infeasible_abstract.adb:13:06: warning: function "F" has implicit Always_Return annotation
 infeasible_abstract.adb:14:14: info: postcondition proved (CVC5: 1 VC)
-infeasible_abstract.adb:17:07: medium: terminating annotation on "F" could be incorrect, dispatching call might be nonterminating
+infeasible_abstract.adb:17:07: medium: implicit terminating annotation on "F" could be incorrect, dispatching call might be nonterminating
+infeasible_abstract.adb:25:16: info: implicit terminating annotation on "Bad" has been proved, subprogram will terminate
 infeasible_abstract.adb:32:16: error: "Bad" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
 infeasible_abstract.adb:32:16: error: unsupported recursive subprogram
+infeasible_abstract.adb:32:16: info: implicit terminating annotation on "Bad" has been proved, subprogram will terminate
 test.adb:1:11: warning: subprogram "Test" has no effect
 test.adb:9:16: info: function contract feasibility proved (CVC5: 1 VC)
 test.adb:15:16: info: function contract feasibility proved (CVC5: 1 VC)

@@ -5,4 +5,5 @@ s.adb:25:24: info: range check proved (CVC5: 2 VC)
 s.ads:10:07: info: initialization of "Found" proved
 s.ads:11:07: info: initialization of "Index" proved
 s.ads:12:26: info: postcondition proved (CVC5: 1 VC)
+s.ads:14:13: info: implicit terminating annotation on "Check_Index" has been proved, subprogram will terminate
 s.ads:19:26: info: postcondition proved (CVC5: 2 VC)

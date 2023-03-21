@@ -7,6 +7,7 @@ conv.adb:15:04: info: analyzing call to "Incr" in context
 conv.adb:15:10: info: range check proved (CVC5: 2 VC)
 conv.adb:16:19: info: assertion proved (CVC5: 1 VC)
 ident.adb:5:13: info: add a contract to analyze it separately from calling contexts
+ident.adb:5:13: info: implicit terminating annotation on "Id_Body" has been proved, subprogram will terminate
 ident.adb:5:13: info: local subprogram "Id_Body" only analyzed in the context of calls
 ident.adb:6:14: info: add a contract to analyze it separately from calling contexts
 ident.adb:6:14: info: local subprogram "Incr_Body" only analyzed in the context of calls
@@ -24,6 +25,8 @@ ident.adb:53:22: medium: assertion might fail (e.g. when Y = 0) [possible fix: c
 ident.adb:54:07: info: analyzing call to "Incr_Body" in context
 ident.adb:54:18: info: range check proved (CVC5: 2 VC)
 ident.adb:55:22: info: assertion proved (CVC5: 1 VC)
+ident.ads:4:13: info: implicit terminating annotation on "Id_Public" has been proved, subprogram will terminate
 ident.ads:5:44: info: initialization of "Y" proved
 ident.ads:6:14: warning: subprogram "Test" has no effect
+ident.ads:8:13: info: implicit terminating annotation on "Id_Private" has been proved, subprogram will terminate
 ident.ads:9:45: info: initialization of "Y" proved

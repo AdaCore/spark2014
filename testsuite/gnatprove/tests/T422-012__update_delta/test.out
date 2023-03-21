@@ -1,6 +1,9 @@
+aggr.ads:8:13: info: implicit terminating annotation on "Create" has been proved, subprogram will terminate
 aggr.ads:9:22: high: range check might fail, cannot prove lower bound for Z (e.g. when Z = 0) [reason for check: value must fit in component type] [possible fix: add precondition (Z in Positive) to subprogram at line 8]
+aggr.ads:11:13: info: implicit terminating annotation on "Up" has been proved, subprogram will terminate
 aggr.ads:11:17: warning: unused variable "R"
 aggr.ads:12:27: medium: range check might fail, cannot prove lower bound for Z [reason for check: value must fit in component type] [possible fix: add precondition (Z in Positive) to subprogram at line 11]
+aggr.ads:14:13: info: implicit terminating annotation on "Del" has been proved, subprogram will terminate
 aggr.ads:14:18: warning: unused variable "R"
 aggr.ads:15:31: medium: range check might fail, cannot prove lower bound for Z [reason for check: value must fit in component type] [possible fix: add precondition (Z in Positive) to subprogram at line 14]
 test_delta_checks.adb:7:25: info: data dependencies proved

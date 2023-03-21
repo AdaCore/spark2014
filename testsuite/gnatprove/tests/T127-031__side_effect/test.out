@@ -3,11 +3,14 @@ pre_post_exercise.adb:21:15: info: index check proved (CVC5: 2 VC)
 pre_post_exercise.adb:25:20: info: index check proved (CVC5: 2 VC)
 pre_post_exercise.adb:26:39: info: range check proved (CVC5: 2 VC)
 pre_post_exercise.adb:30:08: info: range check proved (CVC5: 4 VC)
+pre_post_exercise.ads:3:14: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
 pre_post_exercise.ads:4:15: info: postcondition proved (CVC5: 2 VC)
+pre_post_exercise.ads:5:14: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 pre_post_exercise.ads:6:15: info: postcondition proved (CVC5: 2 VC)
 pre_post_exercise.ads:10:15: info: postcondition proved (Z3: 1 VC)
 pre_post_exercise.ads:10:33: info: range check proved (CVC5: 2 VC)
 pre_post_exercise.ads:12:20: info: initialization of "X" proved
 pre_post_exercise.ads:14:15: info: postcondition proved (CVC5: 1 VC)
 pre_post_exercise.ads:14:21: info: range check proved (CVC5: 2 VC)
+pre_post_exercise.ads:18:14: info: implicit terminating annotation on "Model" has been proved, subprogram will terminate
 pre_post_exercise.ads:19:15: info: postcondition proved (CVC5: 1 VC)

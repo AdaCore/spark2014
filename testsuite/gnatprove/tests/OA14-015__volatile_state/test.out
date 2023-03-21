@@ -1,1 +1,3 @@
+prot.ads:7:16: info: implicit terminating annotation on "Peek" has been proved, subprogram will terminate
+prot.ads:12:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 prot.ads:12:37: info: data dependencies proved

@@ -1,5 +1,6 @@
 =========== prove file =============
 pack-p.adb:4:13: info: implicit function contract might not be available on calls from enclosing unit
+pack-p.adb:4:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 pack-p.adb:7:19: info: precondition proved (Trivial: 1 VC)
 pack-p.adb:9:19: info: assertion proved (CVC5: 1 VC)
 pack-p.adb:10:11: info: overflow check proved (CVC5: 2 VC)
@@ -9,6 +10,7 @@ pack-p.adb:13:19: info: assertion proved (CVC5: 1 VC)
 pack.adb:3:04: warning: analyzing unreferenced procedure "Q"
 pack.adb:3:14: warning: subprogram "Q" has no effect
 pack.adb:5:16: info: implicit function contract might not be available on calls from enclosing unit
+pack.adb:5:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 pack.adb:8:22: info: precondition proved (Trivial: 1 VC)
 pack.adb:10:22: info: assertion proved (CVC5: 1 VC)
 pack.adb:11:14: info: overflow check proved (CVC5: 2 VC)

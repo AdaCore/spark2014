@@ -1,5 +1,6 @@
 useless_annot.adb:3:04: warning: no check message justified by this pragma
 useless_annot.adb:7:13: info: function contract might not be available on calls from enclosing unit
+useless_annot.adb:7:13: info: implicit terminating annotation on "Posit" has been proved, subprogram will terminate
 useless_annot.adb:9:20: info: postcondition proved (CVC5: 1 VC)
 useless_annot.adb:13:16: info: overflow check proved (CVC5: 2 VC)
 useless_annot.adb:16:19: info: precondition proved (CVC5: 1 VC)

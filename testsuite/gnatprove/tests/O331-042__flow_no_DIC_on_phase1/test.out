@@ -1,4 +1,5 @@
 types.ads:4:09: info: default initial condition proved (CVC5: 1 VC)
+types.ads:5:13: info: implicit terminating annotation on "Valid" has been proved, subprogram will terminate
 types.ads:5:20: warning: unused variable "X"
 types.ads:8:04: medium: type "T" is not fully initialized
 use_types.adb:5:04: info: initialization of "X" proved

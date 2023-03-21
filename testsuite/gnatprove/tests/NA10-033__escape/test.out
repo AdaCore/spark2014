@@ -14,4 +14,5 @@ escape.adb:20:22: medium: overflow check might fail, cannot prove upper bound fo
 escape.adb:22:24: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 18 should mention TI in a loop invariant]
 escape.adb:23:25: medium: overflow check might fail, cannot prove upper bound for TI + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 18 should mention TI in a loop invariant]
 escape.adb:26:17: medium: "Result" might not be initialized
+escape.ads:5:13: info: implicit terminating annotation on "Backslash_Escape" has been proved, subprogram will terminate
 escape.ads:6:20: info: postcondition proved (CVC5: 1 VC)

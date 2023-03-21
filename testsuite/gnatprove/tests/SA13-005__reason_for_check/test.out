@@ -9,6 +9,7 @@ reason_for_check.adb:19:25: medium: range check might fail, cannot prove lower b
 reason_for_check.adb:19:29: info: range check proved (CVC5: 2 VC)
 reason_for_check.adb:19:29: medium: range check might fail, cannot prove lower bound for Y2 (e.g. when Y2 = 1) [reason for check: input value must fit in parameter type and output value must fit in argument type] [possible fix: precondition of subprogram at line 16 should mention Y2]
 reason_for_check.adb:24:04: warning: analyzing unreferenced function "Get"
+reason_for_check.adb:24:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 reason_for_check.adb:26:16: high: array index check might fail (e.g. when J = 1 and S'First = 2 and S'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in Positive) to subprogram at line 24]
 reason_for_check.adb:29:04: warning: analyzing unreferenced procedure "Set"
 reason_for_check.adb:31:09: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in S'First .. S'Last) to subprogram at line 29]
@@ -60,6 +61,7 @@ reason_for_check.adb:119:04: warning: analyzing unreferenced procedure "Assign"
 reason_for_check.adb:119:34: info: initialization of "T" proved
 reason_for_check.adb:121:09: medium: length check might fail [reason for check: source and destination arrays for the assignment must have the same length] [possible fix: subprogram at line 119 should mention T'Length or T'First or T'Last in a precondition]
 reason_for_check.adb:126:04: warning: analyzing unreferenced function "Get_Small"
+reason_for_check.adb:126:13: info: implicit terminating annotation on "Get_Small" has been proved, subprogram will terminate
 reason_for_check.adb:128:27: medium: length check might fail (e.g. when S'First = 1 and S'Last = 1) [reason for check: value must have same length as the target array type of the conversion] [possible fix: subprogram at line 126 should mention S in a precondition]
 reason_for_check.adb:134:04: warning: analyzing unreferenced procedure "Oper_Mask"
 reason_for_check.adb:137:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)

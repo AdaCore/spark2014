@@ -1,5 +1,7 @@
 ren.ads:3:13: info: implicit function contract might not be available on calls from enclosing unit
+ren.ads:3:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 ren.ads:5:13: info: implicit function contract might not be available on calls from enclosing unit
+ren.ads:5:13: info: implicit terminating annotation on "RF" has been proved, subprogram will terminate
 ren.ads:8:19: info: assertion proved (CVC5: 1 VC)
 ren.ads:9:19: info: assertion proved (CVC5: 1 VC)
 ren.ads:9:19: info: precondition proved (CVC5: 1 VC)

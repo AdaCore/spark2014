@@ -37,4 +37,5 @@ p.ads:65:19: info: initialization of "L" proved
 p.ads:66:11: info: flow dependencies proved
 p.ads:69:19: info: initialization of "L" proved
 p.ads:70:11: info: flow dependencies proved
+p.ads:72:13: info: implicit terminating annotation on "Same_Length" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof

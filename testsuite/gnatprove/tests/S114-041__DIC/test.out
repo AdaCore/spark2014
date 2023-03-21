@@ -1,3 +1,1 @@
-ada_tio.ads:55:40: warning: assuming "Is_Open" always returns
-ada_tio.ads:55:40: warning: no returning annotation available for "Is_Open"
 text_io_warnings.adb:5:04: info: initialization of "File" proved

@@ -1,3 +1,4 @@
 test_eq.ads:9:13: error: user-defined equality shall have a Global aspect of null (SPARK RM 6.6(1))
+test_eq.ads:9:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 test_eq.ads:15:21: info: data dependencies proved
 gnatprove: error during flow analysis and proof

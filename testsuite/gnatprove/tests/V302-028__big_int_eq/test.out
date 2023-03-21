@@ -1,6 +1,7 @@
 bigint_generic.adb:7:04: warning: analyzing unreferenced procedure "Plane"
 bigint_generic.adb:7:14: warning: subprogram "Plane" has no effect
 bigint_generic.adb:10:22: info: assertion proved (CVC5: 1 VC)
+bigint_generic.adb:16:16: info: implicit terminating annotation on "Identity" has been proved, subprogram will terminate, in instantiation at bigint_generic.adb:25
 bigint_generic.adb:17:22: info: postcondition proved (CVC5: 1 VC), in instantiation at bigint_generic.adb:25
 bigint_generic.adb:17:30: info: predicate check proved (Trivial: 1 VC), in instantiation at bigint_generic.adb:25
 bigint_generic.adb:17:40: info: predicate check proved (Trivial: 1 VC), in instantiation at bigint_generic.adb:25

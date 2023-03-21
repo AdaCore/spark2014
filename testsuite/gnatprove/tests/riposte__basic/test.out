@@ -1,8 +1,11 @@
+basic.adb:5:13: info: implicit terminating annotation on "Add_UB" has been proved, subprogram will terminate
 basic.adb:6:19: info: postcondition proved (CVC5: 1 VC)
 basic.adb:9:16: high: range check might fail, cannot prove upper bound for A + B (e.g. when A = Unsigned_Byte'Last and B = 1) [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (A <= Unsigned_Byte'Last - B) to subprogram at line 5]
+basic.adb:12:13: info: implicit terminating annotation on "Add_I" has been proved, subprogram will terminate
 basic.adb:13:19: info: postcondition proved (CVC5: 1 VC)
 basic.adb:13:36: info: overflow check proved (CVC5: 2 VC)
 basic.adb:16:16: high: overflow check might fail, cannot prove lower bound for A + B (e.g. when A = Integer'First and B = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if B >= 0 then A <= Integer'Last - B else A >= Integer'First - B) to subprogram at line 12]
+basic.adb:19:13: info: implicit terminating annotation on "Min_UB" has been proved, subprogram will terminate
 basic.adb:20:19: info: postcondition proved (CVC5: 3 VC)
 basic.adb:24:07: info: initialization of "R" proved
 basic.adb:31:30: info: assertion proved (CVC5: 2 VC; Trivial: 2 VC)
@@ -30,12 +33,16 @@ basic.adb:70:30: info: assertion proved (CVC5: 2 VC)
 basic.adb:70:41: info: overflow check proved (CVC5: 2 VC)
 basic.adb:70:60: info: overflow check proved (CVC5: 2 VC)
 basic.adb:71:14: info: overflow check proved (CVC5: 2 VC)
+basic.adb:74:13: info: implicit terminating annotation on "Int_Min_A" has been proved, subprogram will terminate
 basic.adb:75:19: info: postcondition proved (CVC5: 1 VC)
 basic.adb:77:07: info: initialization of "R" proved
+basic.adb:87:13: info: implicit terminating annotation on "Int_Min_B" has been proved, subprogram will terminate
 basic.adb:88:19: high: postcondition might fail (e.g. when A = -1 and B = -2 and Int_Min_B'Result = -1)
 basic.adb:90:07: info: initialization of "R" proved
+basic.adb:100:13: info: implicit terminating annotation on "Int_Max_A" has been proved, subprogram will terminate
 basic.adb:101:19: info: postcondition proved (CVC5: 1 VC)
 basic.adb:103:07: info: initialization of "R" proved
+basic.adb:113:13: info: implicit terminating annotation on "Equality_Rewrite_Loop_Test" has been proved, subprogram will terminate
 basic.adb:114:11: info: flow dependencies proved
 basic.adb:117:22: info: postcondition proved (CVC5: 1 VC)
 basic.adb:120:22: info: assertion proved (Trivial)

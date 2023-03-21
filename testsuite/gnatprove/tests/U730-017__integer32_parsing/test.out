@@ -1,4 +1,7 @@
+integer32_parsing.adb:3:13: info: implicit terminating annotation on "Char_To_Int" has been proved, subprogram will terminate
 integer32_parsing.adb:15:25: info: only expected exception raised (CVC5: 1 VC)
+integer32_parsing.adb:18:13: info: implicit terminating annotation on "Int_To_Char" has been proved, subprogram will terminate
+integer32_parsing.adb:32:13: info: implicit terminating annotation on "Is_Less_Than_Max" has been proved, subprogram will terminate
 integer32_parsing.adb:33:10: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:34:13: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:35:22: info: index check proved (CVC5: 2 VC)
@@ -50,6 +53,7 @@ integer32_parsing.adb:74:58: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:75:30: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:76:31: info: precondition proved (CVC5: 3 VC)
 integer32_parsing.adb:76:60: info: range check proved (CVC5: 2 VC)
+integer32_parsing.adb:78:13: info: implicit terminating annotation on "Is_Integer_32" has been proved, subprogram will terminate
 integer32_parsing.adb:79:07: info: precondition proved (CVC5: 2 VC)
 integer32_parsing.adb:79:23: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:79:39: info: division check proved (CVC5: 1 VC)
@@ -317,12 +321,15 @@ integer32_parsing.adb:297:46: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:298:09: medium: precondition might fail, cannot prove Valid_Int (s1) [possible fix: loop at line 267 should mention res and top in a loop invariant]
 integer32_parsing.adb:298:39: info: range check proved (CVC5: 4 VC)
 integer32_parsing.adb:298:48: info: overflow check proved (CVC5: 2 VC)
+integer32_parsing.ads:9:13: info: implicit terminating annotation on "Valid_Int" has been proved, subprogram will terminate
 integer32_parsing.ads:13:08: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
 integer32_parsing.ads:13:59: info: index check proved (CVC5: 2 VC)
 integer32_parsing.ads:14:40: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.ads:14:60: info: index check proved (CVC5: 2 VC)
+integer32_parsing.ads:16:13: info: implicit terminating annotation on "Valid_Int_32" has been proved, subprogram will terminate
 integer32_parsing.ads:19:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 integer32_parsing.ads:19:43: info: precondition proved (CVC5: 1 VC)
+integer32_parsing.ads:21:13: info: implicit terminating annotation on "Is_Integer_32" has been proved, subprogram will terminate
 integer32_parsing.ads:23:44: info: precondition proved (CVC5: 1 VC)
 integer32_parsing.ads:27:44: info: precondition proved (CVC5: 1 VC)
 integer32_parsing.ads:28:15: info: precondition proved (CVC5: 2 VC)
@@ -336,6 +343,7 @@ integer32_parsing.ads:40:56: info: precondition proved (CVC5: 2 VC)
 integer32_parsing.ads:41:14: info: postcondition proved (CVC5: 4 VC)
 integer32_parsing.ads:41:14: info: precondition proved (CVC5: 1 VC)
 integer32_parsing.ads:41:38: info: precondition proved (CVC5: 2 VC)
+integer32_parsing.ads:43:13: info: implicit terminating annotation on "Parse_Int_32" has been proved, subprogram will terminate
 integer32_parsing.ads:44:44: info: precondition proved (CVC5: 1 VC)
 integer32_parsing.ads:45:14: info: postcondition proved (CVC5: 3 VC)
 integer32_parsing.ads:45:14: medium: precondition might fail, cannot prove Valid_Int (s)
@@ -344,8 +352,10 @@ integer32_parsing.ads:47:59: info: initialization of "error" proved
 integer32_parsing.ads:49:14: medium: postcondition might fail, cannot prove error = not Valid_Int_32 (s) [possible fix: loop at integer32_parsing.adb:221 should mention error in a loop invariant]
 integer32_parsing.ads:49:26: info: precondition proved (CVC5: 1 VC)
 integer32_parsing.ads:50:36: info: precondition proved (CVC5: 2 VC)
+integer32_parsing.ads:52:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 integer32_parsing.ads:53:32: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.ads:53:32: info: range check proved (CVC5: 2 VC)
+integer32_parsing.ads:65:13: info: implicit terminating annotation on "Print_Int_32" has been proved, subprogram will terminate
 integer32_parsing.ads:66:14: medium: postcondition might fail, cannot prove Print_Int_32'Result'Length = Length (V)
 integer32_parsing.ads:66:33: medium: range check might fail, cannot prove upper bound for Print_Int_32'Result'Length
 integer32_parsing.ads:68:15: info: precondition proved (CVC5: 1 VC)

@@ -1,6 +1,8 @@
 odometer.adb:22:20: info: overflow check proved (CVC5: 2 VC)
 odometer.adb:22:40: info: overflow check proved (CVC5: 2 VC)
 odometer.ads:7:20: info: postcondition proved (CVC5: 1 VC)
+odometer.ads:9:13: info: implicit terminating annotation on "Read_Trip" has been proved, subprogram will terminate
+odometer.ads:10:13: info: implicit terminating annotation on "Read_Total" has been proved, subprogram will terminate
 odometer.ads:14:20: info: postcondition proved (CVC5: 2 VC)
 odometer.ads:14:37: info: overflow check proved (CVC5: 2 VC)
 odometer.ads:14:68: info: overflow check proved (CVC5: 2 VC)

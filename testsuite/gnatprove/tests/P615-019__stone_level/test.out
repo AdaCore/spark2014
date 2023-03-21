@@ -15,3 +15,4 @@ all_violations.ads:5:13: error: violation of pragma SPARK_Mode at test.adc:1
 all_violations.ads:9:13: error: function "Increment_And_Log" with output global "Last" is not allowed in SPARK
 all_violations.ads:9:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during analysis of data and information flow
+correct.adb:106:07: medium: implicit terminating annotation on "Increment_And_Log" could be incorrect, call to "Log" might be nonterminating

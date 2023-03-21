@@ -1,4 +1,1 @@
-p.adb:6:32: warning: assuming "Current_Task" always returns
-p.adb:6:32: warning: no returning annotation available for "Current_Task"
-p.adb:8:17: warning: assuming "=" always returns
-p.adb:8:17: warning: no returning annotation available for "="
+p.ads:3:13: info: implicit terminating annotation on "Dummy" has been proved, subprogram will terminate

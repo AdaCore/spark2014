@@ -1,44 +1,62 @@
 main_call.adb:6:13: info: function contract might not be available on calls from enclosing unit
 main_call.adb:6:32: info: function contract feasibility proved (CVC5: 1 VC)
+main_call.adb:8:06: warning: Always_Return annotation is useless
+main_call.adb:8:06: warning: function "Call" has implicit Always_Return annotation
 main_call.adb:9:06: info: flow dependencies proved
 main_call.adb:10:14: info: postcondition proved (CVC5: 1 VC)
-main_call.adb:10:26: medium: terminating annotation on "Call" could be incorrect, call via access-to-subprogram might be nonterminating
+main_call.adb:10:26: medium: implicit terminating annotation on "Call" could be incorrect, call via access-to-subprogram might be nonterminating
 main_call.adb:10:30: info: pointer dereference check proved (CVC5: 1 VC)
-main_call.adb:14:07: medium: terminating annotation on "Call" could be incorrect, call via access-to-subprogram might be nonterminating
+main_call.adb:14:07: medium: implicit terminating annotation on "Call" could be incorrect, call via access-to-subprogram might be nonterminating
 main_call.adb:14:16: info: pointer dereference check proved (CVC5: 1 VC)
+main_call.adb:17:13: info: function contract might not be available on calls from enclosing unit
 main_call.adb:17:37: info: function contract feasibility proved (CVC5: 1 VC)
 main_call.adb:19:06: info: flow dependencies proved
 main_call.adb:20:14: medium: postcondition might fail
 main_call.adb:20:39: info: null exclusion check proved (CVC5: 1 VC)
+main_call.adb:24:07: medium: implicit terminating annotation on "Call_Call" could be incorrect, call via access-to-subprogram might be nonterminating
 main_call.adb:24:16: info: pointer dereference check proved (CVC5: 1 VC)
+main_call.adb:29:13: info: implicit terminating annotation on "Read_V" has been proved, subprogram will terminate
+main_call.adb:30:13: info: implicit terminating annotation on "Cst_1" has been proved, subprogram will terminate
 main_call.adb:32:04: info: initialization of "I" proved
 main_call.adb:35:19: medium: assertion might fail
 main_call.adb:37:19: medium: assertion might fail
 two_calls.adb:6:13: info: function contract might not be available on calls from enclosing unit
 two_calls.adb:6:37: info: function contract feasibility proved (CVC5: 1 VC)
+two_calls.adb:8:06: warning: Always_Return annotation is useless
+two_calls.adb:8:06: warning: function "Call_2" has implicit Always_Return annotation
 two_calls.adb:9:06: info: flow dependencies proved
 two_calls.adb:10:14: info: postcondition proved (CVC5: 1 VC)
-two_calls.adb:10:28: medium: terminating annotation on "Call_2" could be incorrect, call via access-to-subprogram might be nonterminating
+two_calls.adb:10:28: medium: implicit terminating annotation on "Call_2" could be incorrect, call via access-to-subprogram might be nonterminating
 two_calls.adb:10:43: info: pointer dereference check proved (CVC5: 1 VC)
 two_calls.adb:10:54: info: pointer dereference check proved (CVC5: 1 VC)
-two_calls.adb:15:10: medium: terminating annotation on "Call_2" could be incorrect, call via access-to-subprogram might be nonterminating
+two_calls.adb:15:10: medium: implicit terminating annotation on "Call_2" could be incorrect, call via access-to-subprogram might be nonterminating
 two_calls.adb:15:19: info: pointer dereference check proved (CVC5: 1 VC)
-two_calls.adb:17:10: medium: terminating annotation on "Call_2" could be incorrect, call via access-to-subprogram might be nonterminating
+two_calls.adb:17:10: medium: implicit terminating annotation on "Call_2" could be incorrect, call via access-to-subprogram might be nonterminating
 two_calls.adb:17:19: info: pointer dereference check proved (CVC5: 1 VC)
+two_calls.adb:21:13: info: implicit terminating annotation on "Cst_1" has been proved, subprogram will terminate
 two_calls.adb:24:13: info: implicit function contract might not be available on calls from enclosing unit
+two_calls.adb:24:13: info: implicit terminating annotation on "Read_V" has been proved, subprogram will terminate
+two_calls.adb:26:13: info: function contract might not be available on calls from enclosing unit
 two_calls.adb:26:43: info: function contract feasibility proved (CVC5: 1 VC)
 two_calls.adb:28:14: medium: postcondition might fail
 two_calls.adb:28:47: info: null exclusion check proved (CVC5: 1 VC)
+two_calls.adb:33:10: medium: implicit terminating annotation on "Call_Call_First" could be incorrect, call via access-to-subprogram might be nonterminating
 two_calls.adb:33:19: info: pointer dereference check proved (CVC5: 1 VC)
+two_calls.adb:39:13: info: function contract might not be available on calls from enclosing unit
 two_calls.adb:39:41: info: function contract feasibility proved (CVC5: 1 VC)
 two_calls.adb:41:14: medium: postcondition might fail
 two_calls.adb:41:60: info: null exclusion check proved (CVC5: 1 VC)
+two_calls.adb:48:10: medium: implicit terminating annotation on "Call_Call_Snd" could be incorrect, call via access-to-subprogram might be nonterminating
 two_calls.adb:48:19: info: pointer dereference check proved (CVC5: 1 VC)
+two_calls.adb:52:13: info: function contract might not be available on calls from enclosing unit
 two_calls.adb:52:42: info: function contract feasibility proved (CVC5: 1 VC)
 two_calls.adb:54:14: medium: postcondition might fail
 two_calls.adb:54:46: info: null exclusion check proved (CVC5: 1 VC)
 two_calls.adb:54:49: info: null exclusion check proved (CVC5: 1 VC)
+two_calls.adb:58:07: medium: implicit terminating annotation on "Call_Call_Both" could be incorrect, call via access-to-subprogram might be nonterminating
 two_calls.adb:58:16: info: pointer dereference check proved (CVC5: 1 VC)
+two_calls.adb:64:06: warning: Always_Return annotation is useless
+two_calls.adb:64:06: warning: function "Rand" has implicit Always_Return annotation
 two_calls.adb:66:04: info: initialization of "I" proved
 two_calls.adb:69:19: medium: assertion might fail
 two_calls.adb:71:19: medium: assertion might fail

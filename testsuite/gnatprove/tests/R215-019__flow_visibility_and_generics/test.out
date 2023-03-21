@@ -1,6 +1,7 @@
 gen.ads:3:29: info: initialization of "Instance.State" constituent of "P.Hash" proved, in instantiation at p.adb:5
 gen.ads:4:08: info: flow dependencies proved, in instantiation at p.adb:5
 gen.ads:5:08: medium: initial condition might fail, in instantiation at p.adb:5
+gen.ads:7:13: info: implicit terminating annotation on "Foo_Ghost" has been proved, subprogram will terminate, in instantiation at p.adb:5
 gen.ads:9:11: info: data dependencies proved, in instantiation at p.adb:5
 gen.ads:12:11: info: data dependencies proved, in instantiation at p.adb:5
 gen.ads:13:21: medium: postcondition might fail, in instantiation at p.adb:5 [possible fix: you should consider adding a postcondition to function Foo_Ghost or turning it into an expression function]

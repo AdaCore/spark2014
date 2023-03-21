@@ -24,6 +24,8 @@ test.adb:95:12: warning: assuming "Swap_Without_Contract" has no effect on globa
 test.adb:95:12: warning: no Global contract available for "Swap_Without_Contract"
 test.adb:95:12: warning: no returning annotation available for "Swap_Without_Contract"
 test.adb:114:04: info: no contextual analysis of "Factorial" (multiple returns)
+test.adb:114:13: info: implicit function contract might not be available on recursive calls
+test.adb:119:10: medium: implicit terminating annotation on "Factorial" could be incorrect, subprogram is recursive
 test.adb:119:19: medium: overflow check might fail, cannot prove upper bound for N * Factorial (N - 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (N * Factorial (N - 1) in Integer) to subprogram at line 114]
 test.adb:119:34: info: range check proved (CVC5: 2 VC)
 test.adb:123:04: warning: analyzing unreferenced procedure "Calling_Function_01"
@@ -56,6 +58,7 @@ test.adb:191:07: info: analyzing call to "Do_Stuff_D" in context
 test.adb:195:30: info: initialization of "B" proved
 test.adb:197:07: info: initialization of "S" proved
 test.adb:199:16: info: implicit function contract might not be available on calls from enclosing unit
+test.adb:199:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test.adb:200:14: info: data dependencies proved
 test.adb:202:07: info: no contextual analysis of "Global_Test_03" (nested subprogram)
 test.adb:215:14: warning: subprogram "Global_Test_04" has no effect
@@ -105,3 +108,4 @@ test.adb:178
 test.adb:166
 test.adb:167
 test.adb:167
+

@@ -3,6 +3,8 @@ pack.adb:10:14: info: precondition proved (CVC5: 4 VC)
 pack.adb:10:19: info: precondition proved (CVC5: 4 VC)
 pack.adb:10:42: info: precondition proved (CVC5: 4 VC)
 pack.adb:10:52: info: precondition proved (CVC5: 4 VC)
+pack.ads:10:13: info: implicit terminating annotation on "Add" has been proved, subprogram will terminate
 pack.ads:15:19: info: postcondition proved (CVC5: 1 VC)
 pack.ads:15:37: info: float overflow check proved (CVC5: 1 VC)
+pack.ads:17:13: info: implicit terminating annotation on "Associativity_Test" has been proved, subprogram will terminate
 pack.ads:18:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)

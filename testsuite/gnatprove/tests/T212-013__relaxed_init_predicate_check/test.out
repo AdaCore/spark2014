@@ -1,3 +1,4 @@
+test_pred.adb:9:13: info: implicit terminating annotation on "Ignore" has been proved, subprogram will terminate
 test_pred.adb:9:21: warning: unused variable "X"
 test_pred.adb:16:26: info: data dependencies proved
 test_pred.adb:21:22: info: assertion proved (CVC5: 1 VC)

@@ -1,3 +1,4 @@
+semaphores1.adb:8:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 
 semaphores1.adb:17:31: medium: overflow check might fail, cannot prove upper bound for The_Data + 1
    17 |         The_Data := The_Data + 1;

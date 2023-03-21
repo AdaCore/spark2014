@@ -1,4 +1,6 @@
 p.adb:8:17: info: initialization of "Result" proved, in instantiation at test.adb:4
 p.adb:9:23: info: discriminant check proved (CVC5: 1 VC), in instantiation at test.adb:4
+p.ads:7:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate, in instantiation at test.adb:4
 p.ads:10:31: info: range check proved (CVC5: 2 VC), in instantiation at test.adb:4
+super.ads:7:13: info: implicit terminating annotation on "Super_Id" has been proved, subprogram will terminate
 test.adb:3:11: warning: subprogram "Test" has no effect

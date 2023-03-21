@@ -8,7 +8,7 @@ spark-higher_order-fold.ads:68:17: info: postcondition proved (CVC5: 1 VC), in i
 spark-higher_order-fold.ads:68:39: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:111, in instantiation at spark-higher_order-fold.ads:381, in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:75:59: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:111, in instantiation at spark-higher_order-fold.ads:381, in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:122:58: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:381, in instantiation at sum_test.ads:21
-spark-higher_order-fold.ads:339:16: info: terminating annotation on overriding operator "+" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
+spark-higher_order-fold.ads:339:16: info: implicit terminating annotation on overriding operator "+" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:340:16: info: predicate check proved (Trivial: 1 VC), in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:340:22: info: predicate check proved (Trivial: 1 VC), in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:342:26: info: predicate check proved (Trivial: 1 VC), in instantiation at sum_test.ads:21
@@ -25,20 +25,20 @@ spark-higher_order-fold.ads:354:17: info: terminating annotation on "Prove_Zero"
 spark-higher_order-fold.ads:356:17: info: postcondition proved (CVC5: 1 VC), in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:356:17: info: predicate check proved (Trivial: 1 VC), in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:356:33: info: predicate check proved (Trivial: 1 VC), in instantiation at sum_test.ads:21
-spark-higher_order-fold.ads:366:19: info: terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
-spark-higher_order-fold.ads:372:19: info: terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
-spark-higher_order-fold.ads:376:19: info: terminating annotation on "Add_Value" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
+spark-higher_order-fold.ads:366:19: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
+spark-higher_order-fold.ads:372:19: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
+spark-higher_order-fold.ads:376:19: info: implicit terminating annotation on "Add_Value" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:378:14: info: predicate check proved (Trivial: 1 VC), in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:378:35: info: predicate check proved (Trivial: 1 VC), in instantiation at sum_test.ads:21
-spark-higher_order-fold.ads:390:19: info: terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
+spark-higher_order-fold.ads:390:19: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:391:21: info: precondition proved (CVC5: 1 VC), in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:396:58: info: index check proved (CVC5: 2 VC), in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:396:67: info: index check proved (CVC5: 2 VC), in instantiation at sum_test.ads:21
-spark-higher_order-fold.ads:401:19: info: terminating annotation on "Length" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
+spark-higher_order-fold.ads:401:19: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:403:30: info: range check proved (CVC5: 2 VC), in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:403:50: info: range check proved (CVC5: 2 VC), in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:403:60: info: predicate check proved (Trivial: 1 VC), in instantiation at sum_test.ads:21
-spark-higher_order-fold.ads:412:16: info: terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
+spark-higher_order-fold.ads:412:16: info: implicit terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:424:21: info: predicate check proved (Trivial: 1 VC), in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:424:34: info: predicate check proved (Trivial: 1 VC), in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:424:52: info: index check proved (CVC5: 2 VC), in instantiation at sum_test.ads:21
@@ -47,16 +47,16 @@ spark-higher_order-fold.ads:426:33: info: subprogram variant proved (CVC5: 1 VC)
 spark-higher_order-fold.ads:426:52: info: precondition proved (CVC5: 1 VC), in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:426:64: info: index check proved (CVC5: 2 VC), in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:426:71: info: overflow check proved (CVC5: 2 VC), in instantiation at sum_test.ads:21
-spark-higher_order-fold.ads:428:16: info: terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
+spark-higher_order-fold.ads:428:16: info: implicit terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:429:31: info: precondition proved (CVC5: 2 VC), in instantiation at sum_test.ads:21
 spark-higher_order-fold.ads:429:55: info: range check proved (CVC5: 2 VC), in instantiation at sum_test.ads:21
 sum_test.ads:12:30: info: predicate check proved (Trivial: 1 VC)
 sum_test.ads:12:46: info: predicate check proved (Trivial: 1 VC)
 sum_test.ads:13:32: info: predicate check proved (Trivial: 1 VC)
 sum_test.ads:13:48: info: predicate check proved (Trivial: 1 VC)
-sum_test.ads:16:13: info: terminating annotation on "To_Big_Int_Type" has been proved, subprogram will terminate
+sum_test.ads:16:13: info: implicit terminating annotation on "To_Big_Int_Type" has been proved, subprogram will terminate
 sum_test.ads:17:07: info: predicate check proved (CVC5: 2 VC)
-sum_test.ads:19:14: info: terminating annotation on "Prefix_Sums_To_Big" has been proved, subprogram will terminate
-sum_test.ads:20:14: info: terminating annotation on "Prefix_Sums_In_Range" has been proved, subprogram will terminate
+sum_test.ads:19:14: info: implicit terminating annotation on "Prefix_Sums_To_Big" has been proved, subprogram will terminate
+sum_test.ads:20:14: info: implicit terminating annotation on "Prefix_Sums_In_Range" has been proved, subprogram will terminate
 sum_test.ads:20:72: info: predicate check proved (Trivial: 1 VC)
 sum_test.ads:20:76: info: predicate check proved (Trivial: 1 VC)

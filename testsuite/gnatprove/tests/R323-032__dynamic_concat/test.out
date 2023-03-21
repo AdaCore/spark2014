@@ -1,4 +1,5 @@
 concat.adb:2:13: info: implicit function contract might not be available on calls from enclosing unit
+concat.adb:2:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 concat.adb:7:09: info: range check proved (CVC5: 2 VC)
 concat.adb:11:21: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 concat.adb:12:21: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)

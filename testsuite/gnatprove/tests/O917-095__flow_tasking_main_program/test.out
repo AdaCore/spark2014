@@ -7,15 +7,19 @@ client1.ads:3:04: high: possible data race when accessing variable "t.x"
 client1.ads:3:04: high: task "client1.t1" accesses "t.x"
 client1.ads:3:04: high: task "client3.t3" accesses "t.x"
 t.ads:2:14: info: nontermination of task proved (CVC5: 2 VC)
+original_fake_main_func.ads:1:10: info: implicit terminating annotation on "Original_Fake_Main_Func" has been proved, subprogram will terminate
 pt.ads:2:09: info: nontermination of task proved (CVC5: 1 VC)
-pt.ads:2:09: info: nontermination of task proved (CVC5: 1 VC)
-original_main_func.ads:1:10: high: possible data race when accessing variable "p.x"
-original_main_func.ads:1:10: high: task "original_main_func" accesses "p.x"
-original_main_func.ads:1:10: high: task "pt.t" accesses "p.x"
+original_fake_main_func.ads:1:10: info: implicit terminating annotation on "Original_Fake_Main_Func" has been proved, subprogram will terminate
 pt.ads:2:09: info: nontermination of task proved (CVC5: 1 VC)
 original_main_func.ads:1:10: high: possible data race when accessing variable "p.x"
 original_main_func.ads:1:10: high: task "original_main_func" accesses "p.x"
 original_main_func.ads:1:10: high: task "pt.t" accesses "p.x"
+original_main_func.ads:1:10: info: implicit terminating annotation on "Original_Main_Func" has been proved, subprogram will terminate
+pt.ads:2:09: info: nontermination of task proved (CVC5: 1 VC)
+original_main_func.ads:1:10: high: possible data race when accessing variable "p.x"
+original_main_func.ads:1:10: high: task "original_main_func" accesses "p.x"
+original_main_func.ads:1:10: high: task "pt.t" accesses "p.x"
+original_main_func.ads:1:10: info: implicit terminating annotation on "Original_Main_Func" has been proved, subprogram will terminate
 pt.ads:2:09: info: nontermination of task proved (CVC5: 1 VC)
 gen_inst.ads:5:11: high: possible data race when accessing variable "p.x"
 gen_inst.ads:5:11: high: task "gen_inst" accesses "p.x"

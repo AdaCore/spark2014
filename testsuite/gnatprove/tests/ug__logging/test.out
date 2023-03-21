@@ -1,1 +1,1 @@
-(no output)
+logging.ads:10:13: info: implicit terminating annotation on "Log_Size" has been proved, subprogram will terminate

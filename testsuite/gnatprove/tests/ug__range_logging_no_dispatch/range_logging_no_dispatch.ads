@@ -31,6 +31,8 @@ private
    end record;
 
    function Log_Size (Log : Log_Type) return Log_Count is (Log_Size (Log.Log));
+   pragma Annotate (GNATprove, False_Positive, "dispatching call",
+                    "this call will always return");
 
    function Log_Min (Log : Log_Type) return Integer is (Log.Min_Entry);
    function Log_Max (Log : Log_Type) return Integer is (Log.Max_Entry);

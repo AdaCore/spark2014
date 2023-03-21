@@ -2,10 +2,12 @@ main.adb:6:04: info: analyzing call to "Log2_Estimate" in context
 main.adb:6:04: info: analyzing call to "Minus_Log2_Estimate" in context
 main.adb:6:04: info: in instantiation at a-nbnbre.adb:256
 main.adb:6:04: info: in instantiation at a-nbnbre.adb:264
+main.adb:18:13: info: implicit terminating annotation on "Prove_Exact" has been proved, subprogram will terminate
 main.adb:20:06: warning: postcondition does not mention function result
 main.adb:20:14: medium: postcondition might fail
 main.adb:20:65: info: range check proved (Trivial)
 main.adb:25:04: warning: analyzing unreferenced function "Prove_Constr_Exact"
+main.adb:25:13: info: implicit terminating annotation on "Prove_Constr_Exact" has been proved, subprogram will terminate
 main.adb:28:45: info: range check proved (Trivial)
 main.adb:29:36: info: float overflow check proved (Trivial)
 main.adb:31:22: info: assertion proved (colibri: 1 VC)

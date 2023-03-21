@@ -1,6 +1,6 @@
 p.adb:7:07: info: absence of resource or memory leak at end of scope justified
-p.adb:14:33: info: loop invariant preservation proved
 p.adb:14:33: info: loop invariant initialization proved
+p.adb:14:33: info: loop invariant preservation proved
 p.adb:14:62: info: null exclusion check proved
 p.adb:16:13: info: loop invariant initialization proved
 p.adb:16:13: info: loop invariant preservation proved
@@ -9,13 +9,14 @@ p.adb:19:14: info: pointer dereference check proved
 p.adb:21:16: info: pointer dereference check proved
 p.adb:22:24: info: pointer dereference check proved
 p.adb:25:10: info: assertion proved
-p.ads:15:13: info: terminating annotation on "Updated_If_Less_Than_Threshold" has been proved, subprogram will terminate
-p.ads:22:20: info: pointer dereference check proved
-p.ads:22:47: info: pointer dereference check proved
-p.ads:23:22: info: pointer dereference check proved
-p.ads:23:33: info: pointer dereference check proved
-p.ads:24:19: info: subprogram variant proved
-p.ads:24:53: info: pointer dereference check proved
-p.ads:24:62: info: pointer dereference check proved
-p.ads:30:14: info: postcondition proved
-p.ads:30:46: info: absence of resource or memory leak justified
+p.ads:6:13: info: implicit terminating annotation on "Equal" has been proved, subprogram will terminate
+p.ads:14:13: info: implicit terminating annotation on "Updated_If_Less_Than_Threshold" has been proved, subprogram will terminate
+p.ads:21:20: info: pointer dereference check proved
+p.ads:21:47: info: pointer dereference check proved
+p.ads:22:22: info: pointer dereference check proved
+p.ads:22:33: info: pointer dereference check proved
+p.ads:23:19: info: subprogram variant proved
+p.ads:23:53: info: pointer dereference check proved
+p.ads:23:62: info: pointer dereference check proved
+p.ads:28:14: info: postcondition proved
+p.ads:28:46: info: absence of resource or memory leak justified

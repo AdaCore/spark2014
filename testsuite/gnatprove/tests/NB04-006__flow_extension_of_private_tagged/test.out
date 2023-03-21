@@ -1,1 +1,3 @@
+base.ads:3:13: info: implicit terminating annotation on "Make" has been proved, subprogram will terminate
 derived.adb:3:07: info: initialization of "R" proved
+derived.adb:5:18: medium: implicit terminating annotation on "Make" could be incorrect, dispatching call might be nonterminating

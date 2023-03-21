@@ -42,6 +42,7 @@ sort.adb:56:22: info: assertion proved
 sort.adb:56:38: info: range check proved
 sort.adb:56:47: info: index check proved
 sort.adb:57:07: info: precondition proved
+sort.adb:61:13: info: implicit terminating annotation on "Index_Of_Minimum" has been proved, subprogram will terminate
 sort.adb:65:16: info: postcondition proved
 sort.adb:67:35: info: index check proved
 sort.adb:67:55: info: index check proved

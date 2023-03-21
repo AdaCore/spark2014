@@ -1,4 +1,5 @@
 tab.adb:6:16: info: implicit function contract might not be available on calls from enclosing unit
+tab.adb:6:16: info: implicit terminating annotation on "Prev" has been proved, subprogram will terminate
 tab.adb:9:33: info: loop invariant initialization proved (CVC5: 2 VC)
 tab.adb:9:33: info: loop invariant preservation proved (CVC5: 2 VC)
 tab.adb:11:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)

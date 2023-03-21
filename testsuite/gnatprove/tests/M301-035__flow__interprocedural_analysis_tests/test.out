@@ -11,10 +11,14 @@ across_compilation_units.adb:4:27: info: cannot unroll loop (too many loop itera
 across_compilation_units.adb:5:16: info: division check proved (CVC5: 1 VC)
 across_compilation_units.adb:13:07: info: initialization of "Temp" proved
 across_compilation_units.adb:21:07: info: initialization of "Temp" proved
+across_compilation_units.ads:2:13: info: implicit terminating annotation on "Prime" has been proved, subprogram will terminate
 across_compilation_units.ads:7:12: info: flow dependencies proved
 caller_of_across_compilation_units.adb:19:32: info: cannot unroll loop (too many loop iterations)
 caller_of_across_compilation_units.adb:20:16: info: division check proved (CVC5: 1 VC)
 caller_of_across_compilation_units.adb:20:39: info: division check proved (CVC5: 1 VC)
+caller_of_across_compilation_units.ads:5:13: info: implicit terminating annotation on "Min" has been proved, subprogram will terminate
+caller_of_across_compilation_units.ads:11:13: info: implicit terminating annotation on "Coprime" has been proved, subprogram will terminate
+single_compilation_unit.adb:13:13: info: implicit terminating annotation on "Double_Max" has been proved, subprogram will terminate
 single_compilation_unit.adb:18:19: info: initialization of "Maximum" proved
 single_compilation_unit.adb:19:12: info: data dependencies proved
 single_compilation_unit.adb:20:12: info: flow dependencies proved
@@ -31,6 +35,8 @@ single_compilation_unit.adb:53:10: info: no contextual analysis of call to recur
 single_compilation_unit.adb:53:25: info: range check proved (CVC5: 2 VC)
 single_compilation_unit.adb:54:23: medium: overflow check might fail, cannot prove upper bound for Fact * Var [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: call at line 53 should mention Fact (for argument Fact) in a postcondition]
 single_compilation_unit.adb:64:04: info: no contextual analysis of "Fibonacci" (multiple returns)
+single_compilation_unit.adb:64:13: info: implicit function contract might not be available on recursive calls
+single_compilation_unit.adb:69:10: medium: implicit terminating annotation on "Fibonacci" could be incorrect, subprogram is recursive
 single_compilation_unit.adb:69:30: info: overflow check proved (CVC5: 2 VC)
 single_compilation_unit.adb:69:35: medium: overflow check might fail, cannot prove lower bound for Fibonacci (N - 1) + Fibonacci (N - 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Fibonacci (N - 2) >= 0 then Fibonacci (N - 1) <= Integer'Last - Fibonacci (N - 2) else Fibonacci (N - 1) >= Integer'First - Fibonacci (N - 2)) to subprogram at line 64]
 single_compilation_unit.adb:69:50: info: overflow check proved (CVC5: 2 VC)

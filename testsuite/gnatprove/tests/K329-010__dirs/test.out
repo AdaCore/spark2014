@@ -1,3 +1,4 @@
+a.ads:3:13: info: implicit terminating annotation on "Any" has been proved, subprogram will terminate
 a.ads:4:20: info: postcondition proved (CVC5: 1 VC)
 b.adb:4:04: info: initialization of "X" proved
 b.adb:7:19: info: assertion proved (CVC5: 1 VC)

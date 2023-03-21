@@ -1,1 +1,2 @@
+context.ads:8:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate, in instantiation at responsestream.ads:4
 context.ads:8:56: info: division check proved (CVC5: 1 VC), in instantiation at responsestream.ads:4

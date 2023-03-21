@@ -1,3 +1,4 @@
+traversal_funcs.adb:9:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 traversal_funcs.adb:9:16: warning: unused variable "X"
 traversal_funcs.adb:11:14: error: return value of a traversal function should be rooted at "X"
 gnatprove: error during flow analysis and proof

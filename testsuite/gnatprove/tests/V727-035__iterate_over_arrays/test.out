@@ -17,27 +17,39 @@ q.adb:37:08: info: precondition proved (CVC5: 1 VC)
 q.adb:37:43: info: overflow check proved (CVC5: 2 VC)
 q.adb:51:07: info: precondition proved (CVC5: 1 VC)
 q.ads:5:09: info: default initial condition proved (CVC5: 1 VC)
+q.ads:14:13: info: implicit terminating annotation on "Empty" has been proved, subprogram will terminate
+q.ads:16:13: info: implicit terminating annotation on "Null_Set" has been proved, subprogram will terminate
 q.ads:20:13: info: implicit function contract might not be available on calls from enclosing unit
+q.ads:20:13: info: implicit terminating annotation on "As_Cursor" has been proved, subprogram will terminate
+q.ads:23:13: info: implicit terminating annotation on "Valid_Contained_Element" has been proved, subprogram will terminate
 q.ads:28:69: info: overflow check proved (CVC5: 2 VC)
 q.ads:30:19: info: assertion proved (CVC5: 1 VC)
+q.ads:35:13: info: implicit terminating annotation on "Is_Next_Cursor" has been proved, subprogram will terminate
 q.ads:38:13: info: during checks for quantification at q.ads:67
+q.ads:38:13: info: implicit terminating annotation on "First_Iter_Index" has been proved, subprogram will terminate
 q.ads:38:13: info: precondition proved (Trivial: 1 VC)
 q.ads:39:14: info: postcondition proved (CVC5: 1 VC)
 q.ads:40:14: info: precondition proved (CVC5: 1 VC)
+q.ads:44:13: info: implicit terminating annotation on "Next_Iter_Index" has been proved, subprogram will terminate
 q.ads:44:13: medium: during checks for quantification at q.ads:67
 q.ads:44:13: medium: precondition might fail, cannot prove Position < Cursor'Last
 q.ads:47:14: info: postcondition proved (CVC5: 1 VC)
 q.ads:48:14: info: precondition proved (CVC5: 1 VC)
 q.ads:48:78: info: overflow check proved (CVC5: 2 VC)
 q.ads:52:13: info: during checks for quantification at q.ads:67
+q.ads:52:13: info: implicit terminating annotation on "Iter_Has_Element" has been proved, subprogram will terminate
 q.ads:52:13: info: precondition proved (Trivial: 1 VC)
+q.ads:59:13: info: implicit terminating annotation on "Iter_Element" has been proved, subprogram will terminate
 q.ads:59:13: medium: during checks for quantification at q.ads:67
 q.ads:59:13: medium: precondition might fail
+q.ads:75:13: info: implicit terminating annotation on "As_Contained_Element" has been proved, subprogram will terminate
 q.ads:76:36: info: range check proved (CVC5: 2 VC)
 q.ads:81:13: info: precondition proved (CVC5: 1 VC)
 q.ads:84:40: info: overflow check proved (CVC5: 2 VC)
 q.ads:84:57: info: precondition proved (CVC5: 1 VC)
+q.ads:86:13: info: implicit terminating annotation on "None_True" has been proved, subprogram will terminate
 q.ads:87:20: info: precondition proved (CVC5: 1 VC)
+q.ads:90:13: info: implicit terminating annotation on "Next_True" has been proved, subprogram will terminate
 q.ads:92:14: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
 q.ads:92:43: info: precondition proved (CVC5: 1 VC)
 q.ads:94:20: info: precondition proved (CVC5: 1 VC)

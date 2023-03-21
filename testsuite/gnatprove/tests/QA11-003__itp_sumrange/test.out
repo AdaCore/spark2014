@@ -8,11 +8,14 @@ sum.adb:17:37: info: precondition proved (CVC5: 2 VC)
 sum.adb:17:48: info: range check proved (CVC5: 4 VC)
 sum.adb:18:17: info: overflow check proved (CVC5: 2 VC)
 sum.ads:11:13: info: function contract might not be available on recursive calls
-sum.ads:12:08: medium: terminating annotation on "Sum" could be incorrect, subprogram is recursive
+sum.ads:12:08: medium: implicit terminating annotation on "Sum" could be incorrect, subprogram is recursive
 sum.ads:15:17: info: overflow check proved (CVC5: 2 VC)
 sum.ads:15:19: info: precondition proved (CVC5: 1 VC)
 sum.ads:15:29: info: range check proved (CVC5: 2 VC)
 sum.ads:18:12: info: overflow check proved (CVC5: 2 VC)
 sum.ads:18:12: info: postcondition proved (CVC5: 1 VC)
+sum.ads:25:04: warning: Always_Return annotation is useless
+sum.ads:25:04: warning: function "Sum" has implicit Always_Return annotation
+sum.ads:34:13: info: implicit terminating annotation on "Simple_Sum" has been proved, subprogram will terminate
 sum.ads:36:14: medium: postcondition might fail
 sum.ads:36:34: info: precondition proved (CVC5: 1 VC)

@@ -107,35 +107,49 @@ bounded_dynamic_arrays.adb:254:34: info: loop invariant initialization proved (C
 bounded_dynamic_arrays.adb:254:34: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:254:73: info: index check proved (CVC5: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:23:09: info: predicate check proved on default value (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:28:13: info: implicit terminating annotation on "Null_Sequence" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:29:14: info: postcondition proved (CVC5: 3 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:33:13: info: implicit terminating annotation on "Instance" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:34:21: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:35:14: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:36:48: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:39:13: info: implicit terminating annotation on "Instance" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:41:14: info: postcondition proved (CVC5: 3 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:42:39: info: index check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:45:13: info: implicit terminating annotation on "Instance" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:46:21: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:47:14: info: postcondition proved (CVC5: 3 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:47:48: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:49:48: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:51:13: info: implicit terminating annotation on "Value" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:52:14: info: postcondition proved (CVC5: 5 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:52:26: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:61:13: info: implicit terminating annotation on "Value" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:65:13: info: implicit terminating annotation on "Empty" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:66:13: info: postcondition proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:69:21: info: initialization of "This" proved, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:70:14: info: postcondition proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:74:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:78:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:83:13: info: implicit terminating annotation on overriding operator "&" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:85:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:85:48: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:89:13: info: implicit terminating annotation on overriding operator "&" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:90:35: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:91:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:91:48: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:92:57: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:93:57: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:95:13: info: implicit terminating annotation on overriding operator "&" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:96:18: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:97:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:97:40: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:98:40: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:99:40: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:101:13: info: implicit terminating annotation on overriding operator "&" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:103:14: info: postcondition proved (CVC5: 1 VC; Z3: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:103:48: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:107:13: info: implicit terminating annotation on overriding operator "&" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:109:14: info: postcondition proved (CVC5: 1 VC; Z3: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:109:40: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:115:14: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
@@ -162,8 +176,13 @@ bounded_dynamic_arrays.ads:162:28: info: range check proved (CVC5: 2 VC), in ins
 bounded_dynamic_arrays.ads:163:48: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:170:14: info: postcondition proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:170:28: info: index check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:175:13: info: implicit terminating annotation on "Location" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:182:13: info: implicit terminating annotation on "Location" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:185:17: medium: postcondition might fail, cannot prove Location'Result = 0, in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:193:13: info: implicit terminating annotation on "Location" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:194:14: info: postcondition proved (CVC5: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:199:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:202:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:212:07: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:212:48: info: in default value at bounded_dynamic_arrays.adb:18, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:212:48: info: in default value at bounded_dynamic_arrays.adb:30, in instantiation at bounded_dynamic_strings.ads:5

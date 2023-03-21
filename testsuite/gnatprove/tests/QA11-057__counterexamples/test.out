@@ -1,3 +1,4 @@
+absolute_values.adb:1:10: info: implicit terminating annotation on "Absolute_Value" has been proved, subprogram will terminate
 absolute_values.adb:1:10: warning: file name does not match unit name, should be "absolute_value.adb"
 absolute_values.adb:5:13: info: postcondition proved (CVC5: 1 VC)
 absolute_values.adb:5:37: info: overflow check proved (CVC5: 2 VC)

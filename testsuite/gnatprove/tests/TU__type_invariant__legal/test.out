@@ -1,16 +1,22 @@
+external_6.adb:5:07: medium: implicit terminating annotation on "Read" could be incorrect, "Read" and "Pub" are mutually recursive
+external_6.ads:5:13: info: implicit function contract might not be available on recursive calls
 external_6.ads:6:14: warning: subprogram "Read" has no effect
 external_6.ads:7:21: info: initialization of "X" proved
 type_invariant_legal.adb:3:14: warning: subprogram "Priv_In" has no effect
 type_invariant_legal.adb:4:24: info: initialization of "X" proved
 type_invariant_legal.adb:41:14: info: range check proved (CVC5: 2 VC)
 type_invariant_legal.adb:47:14: medium: range check might fail, cannot prove lower bound for X - 1 (e.g. when X = 0) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 5 should mention X]
+type_invariant_legal.ads:7:13: info: implicit terminating annotation on "Pub" has been proved, subprogram will terminate
 type_invariant_legal.ads:7:13: medium: invariant check might fail (e.g. when Pub'Result = 0) [possible fix: add or complete related loop invariants or postconditions]
+type_invariant_legal.ads:8:13: info: implicit terminating annotation on "E_Pub" has been proved, subprogram will terminate
 type_invariant_legal.ads:8:13: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal.ads:10:14: warning: subprogram "Pub_In" has no effect
 type_invariant_legal.ads:11:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal.ads:11:23: info: initialization of "X" proved
 type_invariant_legal.ads:12:14: medium: invariant check might fail (e.g. when X = 0)
 type_invariant_legal.ads:15:09: medium: invariant check might fail on default value
+type_invariant_legal.ads:17:13: info: implicit terminating annotation on "Priv" has been proved, subprogram will terminate
+type_invariant_legal.ads:18:13: info: implicit terminating annotation on "E_Priv" has been proved, subprogram will terminate
 type_invariant_legal_2.adb:3:14: warning: subprogram "Priv_In" has no effect
 type_invariant_legal_2.adb:4:24: info: initialization of "X" proved
 type_invariant_legal_2.adb:5:27: warning: unused initial value of "X"
@@ -40,7 +46,9 @@ type_invariant_legal_2.adb:78:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_2.adb:83:04: warning: analyzing unreferenced procedure "Extra_Test"
 type_invariant_legal_2.adb:85:07: medium: invariant check might fail (e.g. when X = 0)
 type_invariant_legal_2.adb:86:07: info: precondition proved (Trivial: 1 VC)
+type_invariant_legal_2.ads:12:13: info: implicit terminating annotation on "Pub" has been proved, subprogram will terminate
 type_invariant_legal_2.ads:12:18: warning: unused variable "X"
+type_invariant_legal_2.ads:13:13: info: implicit terminating annotation on "E_Pub" has been proved, subprogram will terminate
 type_invariant_legal_2.ads:13:20: warning: unused variable "X"
 type_invariant_legal_2.ads:15:14: warning: subprogram "Pub_In" has no effect
 type_invariant_legal_2.ads:16:14: info: invariant check proved (CVC5: 1 VC)
@@ -48,12 +56,17 @@ type_invariant_legal_2.ads:16:23: info: initialization of "X" proved
 type_invariant_legal_2.ads:17:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_2.ads:17:26: warning: unused initial value of "X"
 type_invariant_legal_2.ads:20:09: medium: invariant check might fail on default value
+type_invariant_legal_2.ads:22:13: info: implicit terminating annotation on "Priv" has been proved, subprogram will terminate
 type_invariant_legal_2.ads:22:19: warning: unused variable "X"
+type_invariant_legal_2.ads:23:13: info: implicit terminating annotation on "E_Priv" has been proved, subprogram will terminate
 type_invariant_legal_2.ads:23:21: warning: unused variable "X"
+type_invariant_legal_3.ads:9:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 type_invariant_legal_3.ads:9:16: warning: unused variable "X"
+type_invariant_legal_3.ads:10:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 type_invariant_legal_3.ads:10:16: warning: unused variable "X"
 type_invariant_legal_3.ads:13:13: error: "G" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
 type_invariant_legal_3.ads:13:13: error: unsupported recursive subprogram
+type_invariant_legal_3.ads:13:13: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
 type_invariant_legal_3.ads:13:43: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_3.ads:15:09: info: invariant check proved on default value (CVC5: 1 VC)
 type_invariant_legal_3.ads:15:50: high: cannot call boundary subprogram "F" for type "T1" in its own invariant (SPARK RM 7.3.2(5))
@@ -105,6 +118,8 @@ type_invariant_legal_4.adb:85:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_4.adb:87:07: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_4.adb:88:07: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_4.adb:88:07: info: precondition proved (Trivial: 1 VC)
+type_invariant_legal_4.ads:11:13: info: implicit terminating annotation on "Pub" has been proved, subprogram will terminate
+type_invariant_legal_4.ads:12:13: info: implicit terminating annotation on "E_Pub" has been proved, subprogram will terminate
 type_invariant_legal_4.ads:14:14: warning: subprogram "Pub_In" has no effect
 type_invariant_legal_4.ads:15:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_4.ads:15:27: info: data dependencies proved
@@ -112,6 +127,8 @@ type_invariant_legal_4.ads:16:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_4.ads:19:09: medium: invariant check might fail on default value
 type_invariant_legal_4.ads:21:04: info: at the end of the elaboration of package at type_invariant_legal_4.ads:7
 type_invariant_legal_4.ads:21:04: info: invariant check proved (CVC5: 1 VC)
+type_invariant_legal_4.ads:23:13: info: implicit terminating annotation on "Priv" has been proved, subprogram will terminate
+type_invariant_legal_4.ads:24:13: info: implicit terminating annotation on "E_Priv" has been proved, subprogram will terminate
 type_invariant_legal_5.adb:6:40: info: data dependencies proved
 type_invariant_legal_5.adb:7:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_5.adb:7:41: info: data dependencies proved
@@ -160,7 +177,9 @@ type_invariant_legal_5.adb:88:06: info: data dependencies proved
 type_invariant_legal_5.adb:91:07: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_5.adb:92:07: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_5.adb:92:07: info: precondition proved (Trivial: 1 VC)
+type_invariant_legal_5.ads:14:13: info: implicit terminating annotation on "Pub" has been proved, subprogram will terminate
 type_invariant_legal_5.ads:14:37: info: data dependencies proved
+type_invariant_legal_5.ads:15:13: info: implicit terminating annotation on "E_Pub" has been proved, subprogram will terminate
 type_invariant_legal_5.ads:15:39: info: data dependencies proved
 type_invariant_legal_5.ads:17:26: info: data dependencies proved
 type_invariant_legal_5.ads:18:14: info: invariant check proved (CVC5: 1 VC)
@@ -171,11 +190,15 @@ type_invariant_legal_5.ads:19:30: info: data dependencies proved
 type_invariant_legal_5.ads:22:09: medium: invariant check might fail on default value
 type_invariant_legal_5.ads:24:04: info: at the end of the elaboration of package at type_invariant_legal_5.ads:7
 type_invariant_legal_5.ads:24:04: info: invariant check proved (CVC5: 1 VC)
+type_invariant_legal_5.ads:26:13: info: implicit terminating annotation on "Priv" has been proved, subprogram will terminate
 type_invariant_legal_5.ads:26:38: info: data dependencies proved
+type_invariant_legal_5.ads:27:13: info: implicit terminating annotation on "E_Priv" has been proved, subprogram will terminate
 type_invariant_legal_5.ads:27:40: info: data dependencies proved
+type_invariant_legal_6.adb:5:13: info: implicit terminating annotation on "Priv" has been proved, subprogram will terminate
 type_invariant_legal_6.adb:6:14: warning: subprogram "Priv_In" has no effect
 type_invariant_legal_6.adb:7:24: info: initialization of "X" proved
 type_invariant_legal_6.adb:8:27: warning: unused initial value of "X"
+type_invariant_legal_6.adb:12:07: medium: implicit terminating annotation on "Pub" could be incorrect, "Pub" and "Read" are mutually recursive
 type_invariant_legal_6.adb:12:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_6.adb:17:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: precondition of subprogram at line 5 should mention X]
 type_invariant_legal_6.adb:22:07: info: invariant check proved (CVC5: 1 VC)
@@ -200,6 +223,7 @@ type_invariant_legal_6.adb:55:07: medium: invariant check might fail (e.g. when 
 type_invariant_legal_6.adb:55:07: warning: statement has no effect
 type_invariant_legal_6.adb:55:19: warning: "X" is set by "Read_Write" but not used after the call
 type_invariant_legal_6.adb:57:07: medium: invariant check might fail (e.g. when X = 0)
+type_invariant_legal_6.ads:10:13: info: implicit function contract might not be available on recursive calls
 type_invariant_legal_6.ads:11:14: warning: subprogram "Pub_In" has no effect
 type_invariant_legal_6.ads:12:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_6.ads:12:23: info: initialization of "X" proved

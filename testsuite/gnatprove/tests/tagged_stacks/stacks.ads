@@ -31,6 +31,8 @@ package Stacks with SPARK_Mode is
      Pre'Class  => not S.Is_Empty,
      Post'Class => not S.Is_Empty
        and then Peek'Result = S.Get_Model (S.Get_Model'Last);
+   pragma Annotate (GNATprove, False_Positive, "dispatching call",
+                    "call is not dispatching");
    procedure Pop (S : in out Stack_Root; E : out Element) is abstract with
      Pre'Class  => not S.Is_Empty,
      Post'Class => S.Get_Model = S.Get_Model'Old (S.Get_Model'Old'First ..  S.Get_Model'Old'Last - 1)
@@ -100,11 +102,17 @@ private
    function Last (S : Buffer) return Less_Than_Max is
      (if not Wraps_Around (S) then S.First + S.Length - 1
       else S.First + S.Length - 1 - Max);
+   pragma Annotate (GNATprove, False_Positive, "dispatching call",
+                    "call is not dispatching");
 
    function Get_Model (S : Buffer) return Model is
      (if Wraps_Around (S) then
            Model (S.Content (S.First .. Max) & S.Content (1 .. Last (S)))
       else Model (S.Content (S.First .. Last (S))));
+   pragma Annotate (GNATprove, False_Positive, "dispatching call",
+                    "call is not dispatching");
 
    function Peek (S : Buffer) return Element is (S.Content (Last (S)));
+   pragma Annotate (GNATprove, False_Positive, "dispatching call",
+                    "call is not dispatching");
 end Stacks;

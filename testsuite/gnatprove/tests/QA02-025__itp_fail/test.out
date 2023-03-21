@@ -1,5 +1,7 @@
 bounded_dynamic_arrays.ads:19:09: info: predicate check proved on default value (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:24:13: info: implicit terminating annotation on "Empty" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:25:13: medium: postcondition might fail, in instantiation at bounded_dynamic_strings.ads:5 (e.g. when Empty'Result = True and This = (Capacity => 0, Current_Length => 0, Content => ?))
+bounded_dynamic_arrays.ads:28:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:37:07: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:37:48: info: in default value of private type at bounded_dynamic_arrays.ads:19, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:37:48: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at bounded_dynamic_strings.ads:5

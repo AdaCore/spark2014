@@ -1,4 +1,6 @@
 test.adb:4:03: warning: analyzing unreferenced function "Fun"
+test.adb:4:12: info: implicit terminating annotation on "Fun" has been proved, subprogram will terminate
 test.adb:4:17: warning: unused variable "N"
 test.adb:4:03: warning: analyzing unreferenced function "Fun"
+test.adb:4:12: info: implicit terminating annotation on "Fun" has been proved, subprogram will terminate
 test.adb:4:17: warning: unused variable "N"

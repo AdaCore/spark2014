@@ -3,6 +3,7 @@ basic.adb:13:17: high: discriminant check might fail (e.g. when V = (X => B, Bas
 basic.adb:17:17: info: discriminant check proved (CVC5: 1 VC)
 basic.adb:18:22: info: discriminant check proved (CVC5: 1 VC)
 basic.ads:45:14: warning: subprogram "P" has no effect
+conv.adb:5:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 conv.adb:6:20: info: postcondition proved (CVC5: 1 VC)
 conv.adb:15:17: info: discriminant check proved (CVC5: 1 VC)
 conv.adb:17:17: info: discriminant check proved (CVC5: 1 VC)

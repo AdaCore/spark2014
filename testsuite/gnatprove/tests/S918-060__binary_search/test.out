@@ -37,10 +37,13 @@ binary_search_trees.adb:68:43: info: predicate check proved (CVC5: 2 VC)
 binary_search_trees.adb:76:10: info: initialization of "Result" proved
 binary_search_trees.adb:81:34: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search_trees.adb:83:37: info: pointer dereference check proved (CVC5: 1 VC)
+binary_search_trees.adb:84:23: medium: implicit terminating annotation on "Lookup_Node" could be incorrect, subprogram is recursive
 binary_search_trees.adb:84:49: info: pointer dereference check proved (CVC5: 1 VC)
+binary_search_trees.adb:86:23: medium: implicit terminating annotation on "Lookup_Node" could be incorrect, subprogram is recursive
 binary_search_trees.adb:86:49: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search_trees.adb:100:55: info: null exclusion check proved (CVC5: 1 VC)
 binary_search_trees.adb:102:20: info: pointer dereference check proved (CVC5: 2 VC)
+binary_search_trees.adb:102:34: medium: implicit terminating annotation on "Minimum_Node" could be incorrect, loop might be nonterminating
 binary_search_trees.adb:103:28: info: null exclusion check proved (CVC5: 1 VC)
 binary_search_trees.adb:103:28: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search_trees.adb:105:14: info: dynamic accessibility check proved (Trivial)
@@ -48,3 +51,6 @@ binary_search_trees.adb:105:14: info: null exclusion check proved (CVC5: 1 VC)
 binary_search_trees.adb:111:31: info: null exclusion check proved (CVC5: 1 VC)
 binary_search_trees.adb:111:37: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search_trees.ads:5:09: info: predicate check proved on default value (CVC5: 2 VC)
+binary_search_trees.ads:16:13: info: implicit terminating annotation on "Lookup" has been proved, subprogram will terminate
+binary_search_trees.ads:19:13: info: implicit terminating annotation on "Minimum" has been proved, subprogram will terminate
+binary_search_trees.ads:27:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate

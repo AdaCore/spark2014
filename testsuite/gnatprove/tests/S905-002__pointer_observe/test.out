@@ -1,3 +1,4 @@
 p.adb:7:10: error: object was declared as not writable at line 5
 p.adb:7:10: error: part of dereference from "C" is not writable
+p.ads:10:13: info: implicit terminating annotation on "With_Side_Effect" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof

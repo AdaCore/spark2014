@@ -1,2 +1,3 @@
 p.adb:3:08: high: subprogram "Fun" with global constant after elaboration "CAE" must not be called during elaboration of "P" (SPARK RM 6.1.4(22))
+p.ads:4:13: info: implicit terminating annotation on "Fun" has been proved, subprogram will terminate
 p.ads:4:46: info: data dependencies proved

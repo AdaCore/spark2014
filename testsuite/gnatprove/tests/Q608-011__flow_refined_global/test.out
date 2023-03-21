@@ -1,3 +1,4 @@
+prop.ads:6:13: info: implicit terminating annotation on "Get_Val" has been proved, subprogram will terminate
 prop.ads:8:07: info: data dependencies proved
 test.adb:12:14: medium: overflow check might fail, cannot prove lower bound for T + Prop.Get_Val [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at test.ads:10 should mention T and Values.Val in a precondition]
 test.ads:12:07: info: data dependencies proved

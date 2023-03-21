@@ -1,9 +1,12 @@
 test.adb:3:13: error: "F" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
 test.adb:3:13: error: unsupported recursive subprogram
+test.adb:4:06: warning: Always_Return annotation is useless
+test.adb:4:06: warning: function "F" has implicit Always_Return annotation
 test.adb:5:14: info: postcondition proved (CVC5: 2 VC)
 test.adb:7:04: info: function contract feasibility proved (Z3: 1 VC)
+test.adb:10:13: info: implicit terminating annotation on "V" has been proved, subprogram will terminate
 test.adb:13:16: medium: postcondition of source might not be strong enough to imply postcondition of target, cannot prove False
 test.adb:13:17: info: null exclusion check proved (Trivial: 1 VC)
-test.adb:15:07: medium: terminating annotation on "F" could be incorrect, call via access-to-subprogram might be nonterminating
+test.adb:15:07: medium: implicit terminating annotation on "F" could be incorrect, call via access-to-subprogram might be nonterminating
 test.adb:15:20: info: pointer dereference check proved (CVC5: 1 VC)
 gnatprove: error during flow analysis and proof

@@ -1,4 +1,5 @@
 fail.adb:4:13: info: function contract might not be available on calls from enclosing unit
+fail.adb:4:13: info: implicit terminating annotation on "Create" has been proved, subprogram will terminate
 fail.adb:5:14: info: postcondition proved (CVC5: 2 VC)
 fail.adb:7:07: info: range check proved (CVC5: 2 VC)
 fail.adb:7:28: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
@@ -15,4 +16,5 @@ fail.adb:48:04: info: precondition proved (CVC5: 2 VC)
 fail.adb:49:04: info: precondition proved (CVC5: 2 VC)
 fail.adb:50:04: info: precondition proved (CVC5: 2 VC)
 fail.adb:51:04: info: precondition proved (CVC5: 2 VC)
+mod_array.ads:6:13: info: implicit terminating annotation on "My_Length" has been proved, subprogram will terminate
 mod_array.ads:6:52: medium: range check might fail [reason for check: returned value must fit in the result type of the function]

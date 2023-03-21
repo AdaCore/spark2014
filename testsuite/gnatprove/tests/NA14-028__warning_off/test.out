@@ -2,6 +2,7 @@ foo.adb:15:25: info: refined post proved (CVC5: 1 VC)
 foo.adb:25:37: info: initialization of "Value" constituent of "State" proved
 foo.adb:27:26: info: refined post proved (CVC5: 1 VC)
 foo.ads:5:04: info: flow dependencies proved
+foo.ads:8:13: info: implicit terminating annotation on "Get_Data" has been proved, subprogram will terminate
 foo.ads:10:07: info: data dependencies proved
 foo.ads:14:07: info: data dependencies proved
 foo.ads:15:07: info: flow dependencies proved

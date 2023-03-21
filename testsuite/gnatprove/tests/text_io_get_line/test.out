@@ -1,62 +1,47 @@
 helpers.ads:15:54: info: division check proved (CVC5: 1 VC)
+helpers.ads:17:13: info: implicit terminating annotation on "fpeek" has been proved, subprogram will terminate
 helpers.ads:17:20: warning: unused variable "stream"
+helpers.ads:25:13: info: implicit terminating annotation on "No_Char_In_Slice" has been proved, subprogram will terminate
 helpers.ads:26:47: info: index check proved (CVC5: 2 VC)
+helpers.ads:33:13: info: implicit terminating annotation on "Has_Char_In_Slice" has been proved, subprogram will terminate
 helpers.ads:34:48: info: index check proved (CVC5: 2 VC)
+helpers.ads:48:13: info: implicit terminating annotation on "No_Char_In_String" has been proved, subprogram will terminate
 helpers.ads:49:42: info: overflow check proved (CVC5: 2 VC)
 helpers.ads:49:46: info: overflow check proved (CVC5: 2 VC)
 helpers.ads:49:56: info: index check proved (CVC5: 2 VC)
+helpers.ads:53:13: info: implicit terminating annotation on "Has_Char_In_String" has been proved, subprogram will terminate
 helpers.ads:54:43: info: overflow check proved (CVC5: 2 VC)
 helpers.ads:54:47: info: overflow check proved (CVC5: 2 VC)
 helpers.ads:54:57: info: index check proved (CVC5: 2 VC)
 helpers.ads:60:50: info: precondition proved (CVC5: 1 VC)
-helpers.ads:76:18: warning: assuming "ferror" always returns
 helpers.ads:76:18: warning: assuming "ferror" has no effect on global items
 helpers.ads:76:18: warning: no Global contract available for "ferror"
-helpers.ads:76:18: warning: no returning annotation available for "ferror"
-helpers.ads:107:55: warning: assuming "Find_Char_In_Slice" always returns
 helpers.ads:107:55: warning: assuming "Find_Char_In_Slice" has no effect on global items
 helpers.ads:107:55: warning: no Global contract available for "Find_Char_In_Slice"
-helpers.ads:107:55: warning: no returning annotation available for "Find_Char_In_Slice"
-helpers.ads:128:56: warning: assuming "Find_Char_In_Slice" always returns
 helpers.ads:128:56: warning: assuming "Find_Char_In_Slice" has no effect on global items
 helpers.ads:128:56: warning: no Global contract available for "Find_Char_In_Slice"
-helpers.ads:128:56: warning: no returning annotation available for "Find_Char_In_Slice"
-helpers.ads:152:20: warning: assuming "ferror" always returns
 helpers.ads:152:20: warning: assuming "ferror" has no effect on global items
 helpers.ads:152:20: warning: no Global contract available for "ferror"
-helpers.ads:152:20: warning: no returning annotation available for "ferror"
 textio-get_line.adb:22:04: info: initialization of "ch" proved
 textio-get_line.adb:23:04: info: initialization of "N" proved
 textio-get_line.adb:25:39: info: initialization of "Rest" proved
-textio-get_line.adb:60:48: warning: assuming "Find_Char_In_Slice" always returns
 textio-get_line.adb:60:48: warning: assuming "Find_Char_In_Slice" has no effect on global items
 textio-get_line.adb:60:48: warning: no Global contract available for "Find_Char_In_Slice"
-textio-get_line.adb:60:48: warning: no returning annotation available for "Find_Char_In_Slice"
-textio-get_line.adb:69:47: warning: assuming "Find_Char_In_Slice" always returns
 textio-get_line.adb:69:47: warning: assuming "Find_Char_In_Slice" has no effect on global items
 textio-get_line.adb:69:47: warning: no Global contract available for "Find_Char_In_Slice"
-textio-get_line.adb:69:47: warning: no returning annotation available for "Find_Char_In_Slice"
-textio-get_line.adb:71:32: warning: assuming "Find_Char_In_Slice" always returns
 textio-get_line.adb:71:32: warning: assuming "Find_Char_In_Slice" has no effect on global items
 textio-get_line.adb:71:32: warning: no Global contract available for "Find_Char_In_Slice"
-textio-get_line.adb:71:32: warning: no returning annotation available for "Find_Char_In_Slice"
-textio-get_line.adb:72:52: warning: assuming "Find_Char_In_Slice" always returns
 textio-get_line.adb:72:52: warning: assuming "Find_Char_In_Slice" has no effect on global items
 textio-get_line.adb:72:52: warning: no Global contract available for "Find_Char_In_Slice"
-textio-get_line.adb:72:52: warning: no returning annotation available for "Find_Char_In_Slice"
 textio-get_line.adb:85:07: info: initialization of "Buf" proved
 textio-get_line.adb:86:07: info: initialization of "P" proved
 textio-get_line.adb:87:07: info: initialization of "Success" proved
 textio-get_line.adb:106:07: warning: assuming "Fgets" always returns
 textio-get_line.adb:106:07: warning: no returning annotation available for "Fgets"
-textio-get_line.adb:109:13: warning: assuming "ferror" always returns
 textio-get_line.adb:109:13: warning: assuming "ferror" has no effect on global items
 textio-get_line.adb:109:13: warning: no Global contract available for "ferror"
-textio-get_line.adb:109:13: warning: no returning annotation available for "ferror"
-textio-get_line.adb:152:35: warning: assuming "Find_Char_In_Slice" always returns
 textio-get_line.adb:152:35: warning: assuming "Find_Char_In_Slice" has no effect on global items
 textio-get_line.adb:152:35: warning: no Global contract available for "Find_Char_In_Slice"
-textio-get_line.adb:152:35: warning: no returning annotation available for "Find_Char_In_Slice"
 textio-get_line.adb:173:04: info: initialization of "Rest" proved
 textio-get_line.adb:192:26: medium: terminating annotation on "Get_Line" could be incorrect, loop might be nonterminating
 textio.adb:10:14: info: terminating annotation on "Getc" has been proved, subprogram will terminate
@@ -64,21 +49,17 @@ textio.adb:10:38: info: initialization of "Ch" proved
 textio.adb:11:40: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
 textio.adb:32:07: warning: assuming "fgetc" always returns
 textio.adb:32:07: warning: no returning annotation available for "fgetc"
-textio.adb:34:28: warning: assuming "ferror" always returns
 textio.adb:34:28: warning: assuming "ferror" has no effect on global items
 textio.adb:34:28: warning: no Global contract available for "ferror"
-textio.adb:34:28: warning: no returning annotation available for "ferror"
-textio.adb:78:33: warning: assuming "Find_Char_In_String" always returns
 textio.adb:78:33: warning: assuming "Find_Char_In_String" has no effect on global items
 textio.adb:78:33: warning: no Global contract available for "Find_Char_In_String"
-textio.adb:78:33: warning: no returning annotation available for "Find_Char_In_String"
-textio.adb:145:39: medium: "Result" might not be initialized in "Get_Rest" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Result" on all paths, make "Result" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-textio.adb:145:60: info: initialization of "Num" proved
-textio.adb:146:09: info: data dependencies proved
-textio.adb:155:17: medium: "Result" might not be initialized
-textio.adb:174:10: info: initialization of "Buffer" proved
-textio.adb:175:10: info: initialization of "Last" proved
-textio.adb:211:07: medium: terminating annotation on "Get_Line_Function" could be incorrect, call to "Get_Rest" might be nonterminating
+textio.adb:144:39: medium: "Result" might not be initialized in "Get_Rest" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Result" on all paths, make "Result" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+textio.adb:144:60: info: initialization of "Num" proved
+textio.adb:145:09: info: data dependencies proved
+textio.adb:154:17: medium: "Result" might not be initialized
+textio.adb:173:10: info: initialization of "Buffer" proved
+textio.adb:174:10: info: initialization of "Last" proved
+textio.adb:210:07: medium: terminating annotation on "Get_Line_Function" could be incorrect, call to "Get_Rest" might be nonterminating
 textio.ads:6:21: warning: no procedure exists that can initialize abstract state "TextIO.Current_Input_File"
 textio.ads:13:07: warning: "File" is not modified, could be IN
 textio.ads:14:07: info: initialization of "Item" proved
@@ -94,6 +75,6 @@ textio.ads:113:06: error: "Cur_Position" is referenced in Post but missing from 
 textio.ads:113:06: error: "The_File" is referenced in Post but missing from the Global
 textio.ads:113:06: error: constant with variable input "EOF" is referenced in Post but missing from the Global
 textio.ads:113:06: error: constant with variable input "EOF_Ch" is referenced in Post but missing from the Global
-textio.ads:120:13: info: terminating annotation on "Fpeek" has been proved, subprogram will terminate
-textio.ads:127:13: info: terminating annotation on "Current_File" has been proved, subprogram will terminate
+textio.ads:120:13: info: implicit terminating annotation on "Fpeek" has been proved, subprogram will terminate
+textio.ads:127:13: info: implicit terminating annotation on "Current_File" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof

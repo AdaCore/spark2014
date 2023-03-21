@@ -1,18 +1,12 @@
 p.ads:11:13: info: implicit function contract might not be available on calls from enclosing unit
 p.ads:12:13: info: implicit function contract might not be available on calls from enclosing unit
 p.ads:13:13: info: implicit function contract might not be available on calls from enclosing unit
-p.ads:15:24: warning: assuming "To_Acc" always returns
 p.ads:15:24: warning: assuming "To_Acc" has no effect on global items
 p.ads:15:24: warning: no Global contract available for "To_Acc"
-p.ads:15:24: warning: no returning annotation available for "To_Acc"
-p.ads:16:24: warning: assuming "To_Rec" always returns
 p.ads:16:24: warning: assuming "To_Rec" has no effect on global items
 p.ads:16:24: warning: no Global contract available for "To_Rec"
-p.ads:16:24: warning: no returning annotation available for "To_Rec"
-p.ads:17:24: warning: assuming "To_Arr" always returns
 p.ads:17:24: warning: assuming "To_Arr" has no effect on global items
 p.ads:17:24: warning: no Global contract available for "To_Arr"
-p.ads:17:24: warning: no returning annotation available for "To_Arr"
 p.ads:19:19: info: assertion proved (CVC5: 1 VC)
 p.ads:20:19: info: assertion proved (CVC5: 1 VC)
 p.ads:21:19: info: assertion proved (CVC5: 1 VC)

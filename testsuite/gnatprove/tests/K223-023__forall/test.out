@@ -1,2 +1,4 @@
+forall.ads:4:13: info: implicit terminating annotation on "Get_Zero" has been proved, subprogram will terminate
 forall.ads:6:20: info: postcondition proved (CVC5: 1 VC)
+forall.ads:8:13: info: implicit terminating annotation on "Has_Zero" has been proved, subprogram will terminate
 forall.ads:10:20: medium: postcondition might fail

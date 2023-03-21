@@ -1,1 +1,2 @@
+main.adb:5:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 main.adb:18:19: medium: assertion might fail (e.g. when C1 = (F => 1, G => 1) and C2 = (F => 1, G => 2))

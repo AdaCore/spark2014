@@ -1,13 +1,19 @@
-traverse_list.adb:13:21: medium: terminating annotation on overriding operator "=" could be incorrect, overriding operator "=" and "Eq" are mutually recursive
-traverse_list.adb:18:07: medium: terminating annotation on "Eq" could be incorrect, "Eq" and overriding operator "=" are mutually recursive
+traverse_list.adb:11:06: warning: Always_Return annotation is useless
+traverse_list.adb:11:06: warning: function "Eq" has implicit Always_Return annotation
+traverse_list.adb:13:21: medium: implicit terminating annotation on overriding operator "=" could be incorrect, overriding operator "=" and "Eq" are mutually recursive
+traverse_list.adb:15:06: warning: Always_Return annotation is useless
+traverse_list.adb:15:06: warning: function "=" has implicit Always_Return annotation
+traverse_list.adb:18:07: medium: implicit terminating annotation on "Eq" could be incorrect, "Eq" and overriding operator "=" are mutually recursive
 traverse_list.adb:18:37: info: pointer dereference check proved (CVC5: 1 VC)
 traverse_list.adb:18:45: info: pointer dereference check proved (CVC5: 1 VC)
 traverse_list.adb:23:06: info: data dependencies proved
 traverse_list.adb:24:14: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
 traverse_list.adb:28:10: medium: terminating annotation on "Prove_Eq_Refl" could be incorrect, subprogram is recursive
 traverse_list.adb:28:26: info: pointer dereference check proved (CVC5: 1 VC)
+traverse_list.adb:32:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
 traverse_list.adb:33:07: info: dynamic accessibility check proved (Trivial)
 traverse_list.adb:37:13: info: function contract might not be available on calls from enclosing unit
+traverse_list.adb:37:13: info: implicit terminating annotation on "Tail" has been proved, subprogram will terminate
 traverse_list.adb:39:18: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
 traverse_list.adb:41:18: info: contract case proved (CVC5: 4 VC; Trivial: 2 VC)
 traverse_list.adb:41:38: info: pointer dereference check proved (CVC5: 1 VC)

@@ -2,12 +2,17 @@ foo.adb:5:04: info: initialization of "A" constituent of "State" proved
 foo.adb:6:04: info: initialization of "B" constituent of "State" proved
 foo.ads:3:04: info: flow dependencies proved
 foo.ads:4:04: medium: initial condition might fail
+foo.ads:7:13: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
 foo.ads:7:36: info: data dependencies proved
+foo.ads:11:13: info: implicit terminating annotation on "F3" has been proved, subprogram will terminate
 foo.ads:11:36: info: data dependencies proved
 foo.ads:13:51: low: global Input "Foo.State" of "F3_Totally_Unused" not read
+foo.ads:15:13: info: implicit terminating annotation on "F4" has been proved, subprogram will terminate
 foo.ads:15:36: info: data dependencies proved
 foo.ads:17:13: info: implicit function contract might not be available on calls from enclosing unit
+foo.ads:17:13: info: implicit terminating annotation on "Get_A" has been proved, subprogram will terminate
 foo.ads:17:39: info: data dependencies proved
 foo.ads:19:13: info: implicit function contract might not be available on calls from enclosing unit
+foo.ads:19:13: info: implicit terminating annotation on "Get_C" has been proved, subprogram will terminate
 foo.ads:19:39: info: data dependencies proved
 foo.ads:23:04: info: initialization of "C" constituent of "State" proved

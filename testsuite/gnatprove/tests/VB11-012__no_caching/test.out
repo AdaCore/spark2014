@@ -10,5 +10,7 @@ verification
 ############
 noc.adb:6:07: warning: assuming "Store" always returns
 noc.adb:6:07: warning: no returning annotation available for "Store"
+noc.ads:19:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+noc.ads:28:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 noc.ads:35:07: info: assertion proved (CVC5: 1 VC)
 noc.ads:44:07: info: assertion proved (CVC5: 1 VC)

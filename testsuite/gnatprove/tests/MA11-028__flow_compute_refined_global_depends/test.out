@@ -97,9 +97,14 @@ lots_of_tests.ads:109:11: info: data dependencies proved
 lots_of_tests.ads:110:11: info: flow dependencies proved
 lots_of_tests.ads:115:11: info: data dependencies proved
 other.ads:3:08: info: flow dependencies proved
+other.ads:7:11: warning: Always_Return annotation is useless
+other.ads:7:11: warning: function "Wibble" has implicit Always_Return annotation
 refinement_needed.adb:14:17: medium: overflow check might fail, cannot prove lower bound for V1 + V2 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at refinement_needed.ads:12 should mention V1 and V2 in a precondition]
+refinement_needed.ads:9:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
 refinement_needed.ads:10:11: info: data dependencies proved
+refinement_needed.ads:12:13: info: implicit terminating annotation on "Bar" has been proved, subprogram will terminate
 refinement_needed.ads:13:11: info: flow dependencies proved
+refinement_needed.ads:15:13: info: implicit terminating annotation on "Hmmm" has been proved, subprogram will terminate
 refinement_needed.ads:16:11: info: data dependencies proved
 user.ads:4:36: info: initialization of "X" proved
 user.ads:5:11: info: data dependencies proved

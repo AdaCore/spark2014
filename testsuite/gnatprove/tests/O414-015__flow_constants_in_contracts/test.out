@@ -11,6 +11,7 @@ const.ads:12:04: low: initialization of constant with variable input "D" through
 const.ads:12:33: info: precondition proved (Trivial: 1 VC)
 const.ads:13:04: low: initialization of constant with variable input "E" through constant with variable input "C" must be listed in the Initializes contract (SPARK RM 7.1.5(9))
 const.ads:15:33: info: precondition proved (Trivial: 1 VC)
+const.ads:19:13: info: implicit terminating annotation on "Add_Everything" has been proved, subprogram will terminate
 const.ads:20:11: info: data dependencies proved
 const2.adb:2:08: error: all constituents must be declared before body at line 5
 const2.adb:2:08: error: body "Get_V" declared at line 5 freezes the contract of "Const2"
@@ -33,6 +34,7 @@ const3.adb:31:17: medium: overflow check might fail, cannot prove lower bound fo
 const4.adb:2:08: medium: constant without variable input "C2" cannot appear in Refined_State (SPARK RM 7.2.2(16))
 const4.ads:6:27: medium: constant without variable input "C" cannot appear in Initializes
 const4.ads:7:32: medium: constant without variable input "S" cannot appear in Initializes
+const4.ads:12:13: info: implicit terminating annotation on "Get_C" has been proved, subprogram will terminate
 const4.ads:13:11: info: data dependencies proved
 const4.ads:13:21: medium: constant without variable input "C" cannot appear in Globals
 const4.ads:15:14: medium: constant without variable input "C" cannot appear in Globals
@@ -41,5 +43,9 @@ const4.ads:16:28: medium: constant without variable input "C" cannot appear in D
 const4.ads:19:11: info: flow dependencies proved
 other.adb:4:49: medium: overflow check might fail, cannot prove lower bound for V + C [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at other.ads:13 should mention V]
 other.ads:2:08: info: flow dependencies proved
+other.ads:10:13: info: implicit terminating annotation on "Gimme_C" has been proved, subprogram will terminate
+other.ads:13:13: info: implicit terminating annotation on "Gimme_V_Plus_C" has been proved, subprogram will terminate
+other.ads:16:13: info: implicit terminating annotation on "Gimme_Zero" has been proved, subprogram will terminate
+other.ads:19:13: info: implicit terminating annotation on "Identity" has been proved, subprogram will terminate
 other.ads:20:11: info: data dependencies proved
 other.ads:21:21: info: postcondition proved (CVC5: 1 VC)

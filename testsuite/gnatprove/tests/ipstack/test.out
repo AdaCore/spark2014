@@ -8,6 +8,8 @@ aip-arp.adb:61:13: warning: statement has no effect
 aip-buffers.adb:477:25: warning: "N_Deallocs" is set by "Buffer_Free" but not used after the call
 aip-ip.adb:187:10: warning: statement has no effect
 aip-ip.adb:188:19: warning: this statement is never reached
+aip-pcbs.adb:235:48: medium: terminating annotation on "Find_PCB_In_List" could be incorrect, loop might be nonterminating
+aip-pcbs.adb:51:20: medium: implicit terminating annotation on "Available_Port" could be incorrect, loop might be nonterminating
 aip-tcp.adb:1863:24: warning: "Err" is set by "TCP_Event" but not used after the call
 aip-tcp.adb:1895:32: warning: "Err" is set by "TCP_Send_Control" but not used after the call
 aip-tcp.adb:2153:22: warning: "Err" is set by "TCP_Send_Rst" but not used after the call

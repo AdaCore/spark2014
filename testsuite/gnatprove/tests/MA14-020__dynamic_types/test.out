@@ -2,12 +2,15 @@ dynamic_in_post.adb:2:14: info: add a contract to analyze it separately from cal
 dynamic_in_post.adb:2:14: info: local subprogram "Test_1" only analyzed in the context of calls
 dynamic_in_post.adb:2:14: warning: subprogram "Test_1" has no effect
 dynamic_in_post.adb:3:16: info: implicit function contract might not be available on calls from enclosing unit
+dynamic_in_post.adb:3:16: info: implicit terminating annotation on "Get_Last" has been proved, subprogram will terminate
+dynamic_in_post.adb:3:16: info: implicit terminating annotation on "Get_Last" has been proved, subprogram will terminate, in call inlined at dynamic_in_post.adb:35
 dynamic_in_post.adb:3:57: info: range check proved (CVC5: 4 VC)
 dynamic_in_post.adb:3:57: info: range check proved (CVC5: 4 VC), in call inlined at dynamic_in_post.adb:35
 dynamic_in_post.adb:7:22: high: assertion might fail, in call inlined at dynamic_in_post.adb:35 (e.g. when X = (others => 'NUL') and Y = (others => 'NUL'))
 dynamic_in_post.adb:10:14: warning: subprogram "Test_2" has no effect
 dynamic_in_post.adb:11:07: info: no contextual analysis of "Test_2" (nested subprogram)
 dynamic_in_post.adb:11:16: info: function contract might not be available on calls from enclosing unit
+dynamic_in_post.adb:11:16: info: implicit terminating annotation on "Get_Last" has been proved, subprogram will terminate
 dynamic_in_post.adb:12:22: info: postcondition proved (CVC5: 1 VC)
 dynamic_in_post.adb:12:40: info: range check proved (CVC5: 4 VC)
 dynamic_in_post.adb:22:22: high: assertion might fail (e.g. when A = 0 and B = 0)

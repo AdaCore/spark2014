@@ -1,9 +1,12 @@
+attempt_1.adb:13:13: info: implicit terminating annotation on "Low_Bound" has been proved, subprogram will terminate
 attempt_1.adb:14:17: info: range check proved (Trivial)
 attempt_1.adb:14:20: info: float overflow check proved (Trivial)
 attempt_1.adb:14:27: info: float overflow check proved (Trivial)
+attempt_1.adb:16:13: info: implicit terminating annotation on "High_Bound" has been proved, subprogram will terminate
 attempt_1.adb:17:17: info: range check proved (Trivial)
 attempt_1.adb:17:20: info: float overflow check proved (Trivial)
 attempt_1.adb:17:24: info: float overflow check proved (Trivial)
+attempt_1.adb:19:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
 attempt_1.adb:25:33: info: initialization of "New_Speed" proved
 attempt_1.adb:26:33: info: initialization of "Average" proved
 attempt_1.adb:27:09: info: data dependencies proved
@@ -15,14 +18,17 @@ attempt_1.adb:33:44: info: float overflow check proved (Trivial)
 attempt_1.adb:34:31: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 attempt_1.adb:34:44: info: division check proved (CVC5: 1 VC)
 attempt_1.adb:34:44: info: float overflow check proved (Trivial)
+attempt_2.adb:15:13: info: implicit terminating annotation on "Low_Bound" has been proved, subprogram will terminate
 attempt_2.adb:16:18: info: range check proved (Trivial)
 attempt_2.adb:16:18: medium: overflow check might fail, cannot prove upper bound for N*N [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: add precondition (N*N in -32768 .. 32767) to subprogram at line 15]
 attempt_2.adb:16:22: info: float overflow check proved (Trivial)
 attempt_2.adb:16:37: info: float overflow check proved (Trivial)
+attempt_2.adb:18:13: info: implicit terminating annotation on "High_Bound" has been proved, subprogram will terminate
 attempt_2.adb:19:18: info: range check proved (Trivial)
 attempt_2.adb:19:18: medium: overflow check might fail, cannot prove upper bound for N*N [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: add precondition (N*N in -32768 .. 32767) to subprogram at line 18]
 attempt_2.adb:19:22: info: float overflow check proved (Trivial)
 attempt_2.adb:19:36: info: float overflow check proved (Trivial)
+attempt_2.adb:21:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
 attempt_2.adb:27:33: info: initialization of "New_Speed" proved
 attempt_2.adb:28:33: info: initialization of "Average" proved
 attempt_2.adb:29:09: info: data dependencies proved
@@ -34,10 +40,14 @@ attempt_2.adb:35:44: info: float overflow check proved (Trivial)
 attempt_2.adb:36:31: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 attempt_2.adb:36:44: info: division check proved (CVC5: 1 VC)
 attempt_2.adb:36:44: info: float overflow check proved (Trivial)
+attempt_3.adb:16:13: info: implicit terminating annotation on "Low_Bound" has been proved, subprogram will terminate
 attempt_3.adb:17:17: info: range check proved (Trivial)
 attempt_3.adb:17:20: info: float overflow check proved (Trivial)
+attempt_3.adb:19:13: info: implicit terminating annotation on "High_Bound" has been proved, subprogram will terminate
 attempt_3.adb:20:17: info: range check proved (Trivial)
 attempt_3.adb:20:20: info: float overflow check proved (Trivial)
+attempt_3.adb:22:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
+attempt_3.adb:25:13: info: implicit terminating annotation on "In_Bounds" has been proved, subprogram will terminate
 attempt_3.adb:32:33: info: initialization of "New_Speed" proved
 attempt_3.adb:33:33: info: initialization of "Average" proved
 attempt_3.adb:35:09: info: data dependencies proved
@@ -114,6 +124,7 @@ attempt_3.adb:83:44: info: division check proved (CVC5: 1 VC)
 attempt_3.adb:83:44: info: float overflow check proved (Trivial)
 attempt_3.adb:84:29: info: float overflow check proved (colibri: 1 VC)
 attempt_3.adb:84:39: info: float overflow check proved (Trivial)
+attempt_4.adb:22:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
 attempt_4.adb:26:26: info: range check proved (Trivial)
 attempt_4.adb:26:29: info: float overflow check proved (Trivial)
 attempt_4.adb:27:26: info: range check proved (Trivial)

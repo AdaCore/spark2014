@@ -1,17 +1,25 @@
+test_enum.adb:6:13: info: implicit terminating annotation on "My_Enum_Enumval" has been proved, subprogram will terminate
 test_enum.adb:8:14: info: postcondition proved (CVC5: 1 VC)
 test_enum.adb:13:34: info: only expected exception raised (CVC5: 1 VC)
 test_enum.adb:18:32: info: range check proved (CVC5: 1 VC)
 test_enum.adb:21:04: warning: analyzing unreferenced function "My_Enum_Enumval_Bad"
+test_enum.adb:21:13: info: implicit terminating annotation on "My_Enum_Enumval_Bad" has been proved, subprogram will terminate
 test_enum.adb:24:32: medium: range check might fail (e.g. when X = -1) [reason for check: value must correspond to representation in the type] [possible fix: add precondition (X in Integer) to subprogram at line 21]
+test_enum.adb:27:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_enum.adb:29:14: info: postcondition proved (CVC5: 1 VC)
 test_enum.adb:33:50: info: range check proved (CVC5: 1 VC)
+test_enum.adb:36:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_enum.adb:37:14: info: postcondition proved (CVC5: 1 VC)
 test_enum.adb:41:39: info: range check proved (CVC5: 1 VC)
+test_enum.adb:44:13: info: implicit terminating annotation on "My_Enum_Enumval" has been proved, subprogram will terminate
 test_enum.adb:46:14: info: postcondition proved (CVC5: 1 VC)
 test_enum.adb:51:34: info: only expected exception raised (CVC5: 1 VC)
 test_enum.adb:56:34: info: range check proved (CVC5: 2 VC)
 test_enum.adb:59:04: warning: analyzing unreferenced function "My_Enum_Enumval_Bad"
+test_enum.adb:59:13: info: implicit terminating annotation on "My_Enum_Enumval_Bad" has been proved, subprogram will terminate
 test_enum.adb:62:34: medium: range check might fail, cannot prove lower bound for X (e.g. when X = -1) [reason for check: value must correspond to position in the type] [possible fix: add precondition (X in My_Enum_2) to subprogram at line 59]
+test_enum.adb:65:13: info: implicit terminating annotation on "Id_2" has been proved, subprogram will terminate
 test_enum.adb:67:14: info: postcondition proved (CVC5: 1 VC)
 test_enum.adb:71:54: info: range check proved (CVC5: 2 VC)
+test_enum.adb:74:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_enum.adb:75:14: info: postcondition proved (CVC5: 1 VC)

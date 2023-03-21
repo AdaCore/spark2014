@@ -7,27 +7,42 @@ aida-containers-formal_vectors.adb:105:24: medium: precondition might fail, cann
 aida-containers-formal_vectors.adb:116:31: medium: precondition might fail, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:126:31: medium: precondition might fail, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:19:09: medium: default initial condition might fail, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:31:13: info: implicit terminating annotation on "Empty_Vector" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:33:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:34:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:36:13: info: implicit terminating annotation on "To_Vector" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:40:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:42:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:43:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:45:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:46:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:49:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:55:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:57:13: info: implicit terminating annotation on "Copy" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:60:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:65:08: info: data dependencies proved, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:66:30: medium: implicit terminating annotation on "Element" could be incorrect, dispatching call might be nonterminating, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:73:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:80:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:86:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:91:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:94:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:97:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:101:13: info: implicit terminating annotation on "First_Index" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:102:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:104:13: info: implicit terminating annotation on "First_Element" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:105:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:108:13: info: implicit terminating annotation on "Last_Index" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:109:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:111:13: info: implicit terminating annotation on "Last_Element" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:112:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:115:13: info: implicit terminating annotation on "Find_Index" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:120:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:122:13: info: implicit terminating annotation on "Reverse_Find_Index" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:127:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:129:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:133:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:135:13: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:139:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 hnco-test2.adb:10:22: medium: assertion might fail [possible fix: call at line 8 should mention Container (for argument V) in a postcondition]
 hnco-test2.adb:11:22: medium: assertion might fail [possible fix: call at line 8 should mention Container (for argument V) in a postcondition]
@@ -36,14 +51,14 @@ spark-containers-formal-unbounded_vectors.ads:42:19: info: terminating annotatio
 spark-containers-formal-unbounded_vectors.ads:44:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-formal-unbounded_vectors.ads:46:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-formal-unbounded_vectors.ads:287:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
+spark-containers-formal-unbounded_vectors.ads:287:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-formal-unbounded_vectors.ads:287:13: info: precondition proved (Trivial: 1 VC), in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
-spark-containers-formal-unbounded_vectors.ads:287:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-formal-unbounded_vectors.ads:291:06: info: data dependencies proved, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-formal-unbounded_vectors.ads:294:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-formal-unbounded_vectors.ads:294:13: info: precondition proved (CVC5: 2 VC), in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
-spark-containers-formal-unbounded_vectors.ads:325:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
+spark-containers-formal-unbounded_vectors.ads:325:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-formal-unbounded_vectors.ads:326:08: info: dynamic accessibility check proved (Trivial), in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
-spark-containers-formal-unbounded_vectors.ads:330:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
+spark-containers-formal-unbounded_vectors.ads:330:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-formal-unbounded_vectors.ads:332:08: info: dynamic accessibility check proved (Trivial), in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-formal-unbounded_vectors.ads:352:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-formal-unbounded_vectors.ads:352:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
@@ -69,11 +84,11 @@ spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "
 spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8
 spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at aida-containers-formal_vectors.ads:155, in instantiation at hnco-test2.ads:8

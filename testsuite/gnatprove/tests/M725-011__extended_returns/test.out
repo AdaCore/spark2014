@@ -5,4 +5,5 @@ extended_returns.adb:7:33: medium: range check might fail, cannot prove lower bo
 extended_returns.adb:11:19: info: discriminant check proved (CVC5: 1 VC)
 extended_returns.adb:13:19: info: discriminant check proved (CVC5: 1 VC)
 extended_returns.adb:14:19: info: discriminant check proved (CVC5: 1 VC)
+extended_returns.ads:15:13: info: implicit terminating annotation on "Init" has been proved, subprogram will terminate
 extended_returns.ads:17:20: info: postcondition proved (CVC5: 1 VC)

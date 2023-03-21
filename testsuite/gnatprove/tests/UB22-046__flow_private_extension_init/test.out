@@ -1,2 +1,3 @@
+test.adb:21:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
 test.adb:21:13: warning: not dispatching (must be defined in a package spec)
 test.adb:26:12: high: private part of "G" is not initialized

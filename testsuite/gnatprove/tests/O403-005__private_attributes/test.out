@@ -1,4 +1,5 @@
 private_with_attributes.ads:16:63: info: range check proved (CVC5: 2 VC)
+public_derives_private.ads:20:13: info: implicit terminating annotation on "Get_F2" has been proved, subprogram will terminate
 use_private_attributes.adb:6:07: info: initialization of "U1" proved
 use_private_attributes.adb:7:39: info: range check proved (CVC5: 2 VC)
 use_private_attributes.adb:10:22: info: assertion proved (CVC5: 1 VC)

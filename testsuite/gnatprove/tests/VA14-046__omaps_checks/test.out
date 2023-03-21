@@ -11,24 +11,24 @@ spark-containers-formal-ordered_maps.ads:79:19: info: terminating annotation on 
 spark-containers-formal-ordered_maps.ads:81:19: info: terminating annotation on "Lt_Order" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:452:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:452:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:452:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:452:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:452:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:452:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:452:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:452:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:456:06: info: data dependencies proved, in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:456:06: info: data dependencies proved, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:459:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:459:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:459:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:459:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:506:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:506:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:506:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:506:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:508:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:508:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:508:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:508:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:512:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:512:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:512:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:512:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:514:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:514:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:534:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
@@ -80,24 +80,24 @@ spark-containers-formal-unbounded_ordered_maps.ads:63:19: info: terminating anno
 spark-containers-formal-unbounded_ordered_maps.ads:65:19: info: terminating annotation on "Lt_Order" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:429:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:429:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:429:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:429:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:24
 spark-containers-formal-unbounded_ordered_maps.ads:429:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:429:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:429:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:429:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:24
 spark-containers-formal-unbounded_ordered_maps.ads:433:06: info: data dependencies proved, in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:433:06: info: data dependencies proved, in instantiation at test_omaps.ads:24
 spark-containers-formal-unbounded_ordered_maps.ads:436:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:436:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:87, in instantiation at test_omaps.ads:24
 spark-containers-formal-unbounded_ordered_maps.ads:436:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:436:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:482:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:482:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:482:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:482:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:24
 spark-containers-formal-unbounded_ordered_maps.ads:484:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:484:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:24
 spark-containers-formal-unbounded_ordered_maps.ads:484:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:484:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:488:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:488:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:488:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:488:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:24
 spark-containers-formal-unbounded_ordered_maps.ads:490:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:490:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:24
 spark-containers-formal-unbounded_ordered_maps.ads:510:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
@@ -268,22 +268,22 @@ spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial:
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
 spark-containers-functional-maps.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
-spark-containers-functional-maps.ads:472:13: info: terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
-spark-containers-functional-maps.ads:473:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:472:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:8
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:166, in instantiation at test_omaps.ads:24
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:21
+spark-containers-functional-maps.ads:473:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:265, in instantiation at test_omaps.ads:24
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:11
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_omaps.ads:8
 spark-containers-functional-maps.ads:517:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_omaps.ads:11
@@ -368,10 +368,10 @@ spark-containers-functional-vectors.ads:104:13: info: precondition proved (Z3: 2
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
@@ -384,10 +384,10 @@ spark-containers-functional-vectors.ads:267:52: info: overflow check proved (Z3:
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:24
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:11
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_omaps.ads:8
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:187, in instantiation at test_omaps.ads:21
@@ -934,10 +934,10 @@ spark-containers-parameter_checks.ads:161:19: info: postcondition proved (Z3: 1 
 spark-containers-parameter_checks.ads:161:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:143, in instantiation at test_omaps.ads:24
 spark-containers-parameter_checks.ads:161:19: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
 spark-containers-parameter_checks.ads:161:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:143, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:167:16: info: terminating annotation on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_omaps.ads:11
-spark-containers-parameter_checks.ads:167:16: info: terminating annotation on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_omaps.ads:8
-spark-containers-parameter_checks.ads:167:16: info: terminating annotation on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:143, in instantiation at test_omaps.ads:21
-spark-containers-parameter_checks.ads:167:16: info: terminating annotation on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:143, in instantiation at test_omaps.ads:24
+spark-containers-parameter_checks.ads:167:16: info: implicit terminating annotation on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_omaps.ads:11
+spark-containers-parameter_checks.ads:167:16: info: implicit terminating annotation on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_omaps.ads:8
+spark-containers-parameter_checks.ads:167:16: info: implicit terminating annotation on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:143, in instantiation at test_omaps.ads:21
+spark-containers-parameter_checks.ads:167:16: info: implicit terminating annotation on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:143, in instantiation at test_omaps.ads:24
 spark-containers-parameter_checks.ads:169:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_omaps.ads:11
 spark-containers-parameter_checks.ads:169:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_omaps.ads:8
 spark-containers-parameter_checks.ads:169:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:143, in instantiation at test_omaps.ads:21
@@ -974,3 +974,13 @@ spark-containers-parameter_checks.ads:181:19: info: postcondition proved (Z3: 2 
 spark-containers-parameter_checks.ads:181:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_omaps.ads:8
 spark-containers-parameter_checks.ads:181:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:143, in instantiation at test_omaps.ads:21
 spark-containers-parameter_checks.ads:181:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:143, in instantiation at test_omaps.ads:24
+types.ads:9:06: warning: Always_Return annotation is useless
+types.ads:9:06: warning: function "=" has implicit Always_Return annotation
+types.ads:14:06: warning: Always_Return annotation is useless
+types.ads:14:06: warning: function "Equivalent" has implicit Always_Return annotation
+types.ads:19:06: warning: Always_Return annotation is useless
+types.ads:19:06: warning: function "<" has implicit Always_Return annotation
+types.ads:24:06: warning: Always_Return annotation is useless
+types.ads:24:06: warning: function "Hash" has implicit Always_Return annotation
+types.ads:29:06: warning: Always_Return annotation is useless
+types.ads:29:06: warning: function "F" has implicit Always_Return annotation

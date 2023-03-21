@@ -1,3 +1,5 @@
+private_pointer.ads:5:17: info: implicit terminating annotation on "Is_Null" has been proved, subprogram will terminate
+private_pointer.ads:6:17: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 private_pointer.ads:14:46: info: pointer dereference check proved (CVC5: 1 VC)
 private_pointer.ads:14:54: info: pointer dereference check proved (CVC5: 1 VC)
 private_pointer.ads:29:05: info: initialization of "X_1" proved

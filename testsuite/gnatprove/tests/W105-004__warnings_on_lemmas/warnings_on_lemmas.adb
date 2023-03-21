@@ -13,7 +13,7 @@ procedure Warnings_On_Lemmas with SPARK_Mode is
 
    --  These lemmas can be specialized, no warnings
    procedure Lemma_Ok (B : Boolean; F, G : not null access function return Integer) with
-     Annotate => (GNATprove, Always_Return),
+
      Annotate => (GNATprove, Automatic_Instantiation),
      Annotate => (GNATprove, Higher_Order_Specialization),
      Ghost,
@@ -21,7 +21,7 @@ procedure Warnings_On_Lemmas with SPARK_Mode is
      Post => Call_2 (B, F, G) = F.all;
 
    procedure Lemma_Ok_2 (B : Boolean; F, G : not null access function return Integer) with
-     Annotate => (GNATprove, Always_Return),
+
      Annotate => (GNATprove, Automatic_Instantiation),
      Annotate => (GNATprove, Higher_Order_Specialization),
      Ghost,

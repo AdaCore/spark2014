@@ -1,3 +1,4 @@
+polyorb_hi-epoch.adb:43:15: info: implicit terminating annotation on "System_Startup_Time" has been proved, subprogram will terminate
 polyorb_hi-epoch.ads:40:08: info: flow dependencies proved
 polyorb_hi-epoch.ads:43:14: warning: "Epoch_Data" constituent of "Elaborated_Variables" is not modified, could be INPUT
 polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved

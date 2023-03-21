@@ -10,6 +10,7 @@ array_algorithms.adb:43:33: info: loop invariant initialization proved (CVC5: 3 
 array_algorithms.adb:43:33: info: loop invariant preservation proved (CVC5: 3 VC)
 array_algorithms.adb:43:42: info: range check proved (CVC5: 4 VC)
 array_algorithms.adb:44:38: info: index check proved (CVC5: 4 VC)
+array_algorithms.ads:20:13: info: implicit terminating annotation on "Equal" has been proved, subprogram will terminate
 array_algorithms.ads:21:15: info: range check proved (CVC5: 2 VC)
 array_algorithms.ads:21:61: info: index check proved (CVC5: 2 VC)
 array_algorithms.ads:21:69: info: index check proved (CVC5: 2 VC)
@@ -26,8 +27,10 @@ array_algorithms.ads:34:77: info: index check proved (CVC5: 2 VC)
 array_algorithms.ads:35:28: info: range check proved (CVC5: 2 VC)
 array_algorithms.ads:36:44: info: index check proved (CVC5: 2 VC)
 array_algorithms.ads:36:52: info: index check proved (CVC5: 2 VC)
+array_algorithms.ads:39:13: info: implicit terminating annotation on "Has_Value_Inc" has been proved, subprogram will terminate
 array_algorithms.ads:43:17: info: range check proved (CVC5: 2 VC)
 array_algorithms.ads:43:64: info: index check proved (CVC5: 2 VC)
+array_algorithms.ads:47:13: info: implicit terminating annotation on "Has_Value_Exc" has been proved, subprogram will terminate
 array_algorithms.ads:51:17: info: range check proved (CVC5: 2 VC)
 array_algorithms.ads:52:31: info: index check proved (CVC5: 2 VC)
 array_algorithms.ads:58:20: info: initialization of "Found" proved

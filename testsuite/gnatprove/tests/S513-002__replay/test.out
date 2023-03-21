@@ -1,3 +1,4 @@
+binary_trees.adb:22:13: info: implicit terminating annotation on "All_Indexes" has been proved, subprogram will terminate
 binary_trees.adb:29:08: info: postcondition proved (CVC5: 2 VC)
 binary_trees.adb:30:20: info: predicate check proved (Trivial: 1 VC)
 binary_trees.adb:33:07: info: initialization of "S" proved
@@ -19,7 +20,9 @@ binary_trees.adb:87:36: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:90:36: info: index check proved (CVC5: 2 VC)
 binary_trees.ads:14:09: info: default initial condition proved (CVC5: 1 VC)
 binary_trees.ads:14:61: info: invariant check proved (Z3: 1 VC)
+binary_trees.ads:17:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate
 binary_trees.ads:28:09: info: invariant check proved on default value (Z3: 1 VC)
+binary_trees.ads:36:13: info: implicit terminating annotation on "Tree_Structure" has been proved, subprogram will terminate
 binary_trees.ads:37:06: info: data dependencies proved
 spark-containers-functional-sets.ads:52:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:54:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at binary_trees.adb:20
@@ -34,7 +37,7 @@ spark-containers-functional-sets.ads:341:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:341:13: info: precondition proved (CVC5: 2 VC), in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at binary_trees.adb:20
-spark-containers-functional-sets.ads:365:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at binary_trees.adb:20
+spark-containers-functional-sets.ads:365:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:391:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at binary_trees.adb:20
@@ -51,11 +54,11 @@ spark-containers-functional-vectors.ads:62:19: info: terminating annotation on "
 spark-containers-functional-vectors.ads:64:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
@@ -99,6 +102,7 @@ spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "E
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at tree_model.ads:22
 spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at tree_model.ads:22
 --------------------------------------
+binary_trees.adb:22:13: info: implicit terminating annotation on "All_Indexes" has been proved, subprogram will terminate
 binary_trees.adb:29:08: info: postcondition proved (CVC5: 2 VC)
 binary_trees.adb:30:20: info: predicate check proved (Trivial: 1 VC)
 binary_trees.adb:33:07: info: initialization of "S" proved
@@ -120,7 +124,9 @@ binary_trees.adb:87:36: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:90:36: info: index check proved (CVC5: 2 VC)
 binary_trees.ads:14:09: info: default initial condition proved (CVC5: 1 VC)
 binary_trees.ads:14:61: info: invariant check proved (Z3: 1 VC)
+binary_trees.ads:17:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate
 binary_trees.ads:28:09: info: invariant check proved on default value (Z3: 1 VC)
+binary_trees.ads:36:13: info: implicit terminating annotation on "Tree_Structure" has been proved, subprogram will terminate
 binary_trees.ads:37:06: info: data dependencies proved
 spark-containers-functional-sets.ads:52:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:54:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at binary_trees.adb:20
@@ -135,7 +141,7 @@ spark-containers-functional-sets.ads:341:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:341:13: info: precondition proved (CVC5: 2 VC), in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at binary_trees.adb:20
-spark-containers-functional-sets.ads:365:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at binary_trees.adb:20
+spark-containers-functional-sets.ads:365:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:391:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at binary_trees.adb:20
@@ -152,11 +158,11 @@ spark-containers-functional-vectors.ads:62:19: info: terminating annotation on "
 spark-containers-functional-vectors.ads:64:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22

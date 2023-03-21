@@ -1,4 +1,6 @@
 others_in_assoc.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
+others_in_assoc.adb:3:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 others_in_assoc.adb:4:13: info: implicit function contract might not be available on calls from enclosing unit
+others_in_assoc.adb:4:13: info: implicit terminating annotation on "No" has been proved, subprogram will terminate
 others_in_assoc.adb:6:58: info: precondition proved (CVC5: 1 VC)
 others_in_assoc.adb:7:60: info: overflow check proved (CVC5: 2 VC)

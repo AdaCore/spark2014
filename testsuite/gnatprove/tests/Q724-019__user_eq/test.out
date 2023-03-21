@@ -1,2 +1,4 @@
+user_eq.adb:7:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
+user_eq.adb:12:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 user_eq.adb:27:19: info: assertion proved (CVC5: 1 VC)
 user_eq.adb:28:19: medium: assertion might fail

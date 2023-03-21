@@ -1,5 +1,5 @@
-p.ads:12:16: info: expression function body not available for proof ("Sum" might not return)
-p.ads:12:16: info: implicit function contract not available for proof ("Sum" might not return)
+p.ads:10:12: info: implicit function contract might not be available on recursive calls
+p.ads:11:10: medium: implicit terminating annotation on "Sum" could be incorrect, subprogram is recursive
 p.ads:12:31: high: range check might fail, cannot prove lower bound for Hi - 1 (e.g. when Hi = 0) [reason for check: input value must fit in parameter type] [possible fix: add precondition (Hi >= Index'First + 1) to subprogram at line 10]
 p.ads:12:36: info: overflow check proved (CVC5: 2 VC)
 p.ads:12:41: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Hi in Index) to subprogram at line 10]

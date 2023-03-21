@@ -5,6 +5,7 @@ example.adb:28:14: high: divide by zero might fail (e.g. when A = 0 and B = 255)
 example.adb:29:14: medium: range check might fail, cannot prove lower bound for A - B [reason for check: result of subtraction must fit in the target type of the assignment]
 example.adb:30:14: medium: overflow check might fail, cannot prove lower bound for B * A [reason for check: result of multiplication must fit in a 16-bits machine integer]
 example.adb:30:14: medium: range check might fail, cannot prove lower bound for B * A [reason for check: result of multiplication must fit in the target type of the assignment]
+example.adb:36:13: info: implicit terminating annotation on "Is_Id" has been proved, subprogram will terminate
 example.adb:39:19: medium: postcondition might fail
 example.adb:39:38: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 36 should mention C in a precondition]
 example.adb:42:17: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 36 should mention C in a precondition]

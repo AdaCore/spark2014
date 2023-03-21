@@ -1,2 +1,5 @@
+p.ads:4:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 p.ads:7:21: info: postcondition proved (CVC5: 3 VC)
 p.ads:7:21: info: postcondition proved (CVC5: 3 VC), in inherited contract at p.ads:13
+p.ads:7:49: medium: implicit terminating annotation on overriding operator "=" could be incorrect, dispatching call might be nonterminating
+p.ads:7:49: medium: implicit terminating annotation on overriding operator "=" could be incorrect, dispatching call might be nonterminating, in inherited contract at p.ads:13

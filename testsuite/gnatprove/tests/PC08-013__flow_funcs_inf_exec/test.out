@@ -1,4 +1,8 @@
+p.adb:6:10: medium: implicit terminating annotation on "F1" could be incorrect, loop might be nonterminating
+p.adb:18:10: medium: implicit terminating annotation on "F2" could be incorrect, loop might be nonterminating
 p.adb:21:10: warning: unreachable code
 p.adb:21:10: warning: unreachable code (CVC5: 1 VC)
+p.adb:23:10: medium: implicit terminating annotation on "F2" could be incorrect, loop might be nonterminating
 p.ads:3:13: medium: function "F1" does not return on some paths
 p.ads:4:13: medium: function "F2" does not return on some paths
+p.ads:5:13: info: implicit terminating annotation on "F3" has been proved, subprogram will terminate

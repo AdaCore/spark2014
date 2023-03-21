@@ -4,6 +4,8 @@ gen.ads:5:27: info: initialization of "X" proved, in instantiation at user.adb:7
 gen.ads:5:27: info: initialization of "Y" proved, in instantiation at user.adb:8
 gen.ads:6:16: info: postcondition proved (CVC5: 1 VC), in instantiation at user.adb:7
 gen.ads:6:16: info: postcondition proved (CVC5: 1 VC), in instantiation at user.adb:8
+gen.ads:7:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate, in instantiation at user.adb:7
+gen.ads:7:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate, in instantiation at user.adb:8
 gen.ads:8:06: info: data dependencies proved, in instantiation at user.adb:7
 gen.ads:8:06: info: data dependencies proved, in instantiation at user.adb:8
 user.adb:5:04: info: initialization of "X" proved

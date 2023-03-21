@@ -1,54 +1,90 @@
 x.adb:6:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:7:04: warning: Always_Return annotation is useless
+x.adb:7:04: warning: function "abs" has implicit Always_Return annotation
+x.adb:10:04: warning: Always_Return annotation is useless
+x.adb:10:04: warning: function "and" has implicit Always_Return annotation
 x.adb:12:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:13:04: warning: Always_Return annotation is useless
+x.adb:13:04: warning: function "mod" has implicit Always_Return annotation
+x.adb:16:04: warning: Always_Return annotation is useless
+x.adb:16:04: warning: function "not" has implicit Always_Return annotation
+x.adb:19:04: warning: Always_Return annotation is useless
+x.adb:19:04: warning: function "or" has implicit Always_Return annotation
 x.adb:21:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:22:04: warning: Always_Return annotation is useless
+x.adb:22:04: warning: function "rem" has implicit Always_Return annotation
+x.adb:25:04: warning: Always_Return annotation is useless
+x.adb:25:04: warning: function "xor" has implicit Always_Return annotation
+x.adb:28:04: warning: Always_Return annotation is useless
+x.adb:28:04: warning: function "=" has implicit Always_Return annotation
+x.adb:31:04: warning: Always_Return annotation is useless
+x.adb:31:04: warning: function "<" has implicit Always_Return annotation
+x.adb:34:04: warning: Always_Return annotation is useless
+x.adb:34:04: warning: function "<=" has implicit Always_Return annotation
+x.adb:37:04: warning: Always_Return annotation is useless
+x.adb:37:04: warning: function ">" has implicit Always_Return annotation
+x.adb:40:04: warning: Always_Return annotation is useless
+x.adb:40:04: warning: function ">=" has implicit Always_Return annotation
 x.adb:42:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:43:04: warning: Always_Return annotation is useless
+x.adb:43:04: warning: function "+" has implicit Always_Return annotation
 x.adb:45:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:46:04: warning: Always_Return annotation is useless
+x.adb:46:04: warning: function "-" has implicit Always_Return annotation
 x.adb:48:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:49:04: warning: Always_Return annotation is useless
+x.adb:49:04: warning: function "&" has implicit Always_Return annotation
 x.adb:51:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:52:04: warning: Always_Return annotation is useless
+x.adb:52:04: warning: function "*" has implicit Always_Return annotation
 x.adb:54:13: info: implicit function contract might not be available on calls from enclosing unit
+x.adb:55:04: warning: Always_Return annotation is useless
+x.adb:55:04: warning: function "/" has implicit Always_Return annotation
 x.adb:57:13: info: implicit function contract might not be available on calls from enclosing unit
-x.adb:62:18: medium: terminating annotation on overriding operator "=" could be incorrect, loop might be nonterminating
+x.adb:58:04: warning: Always_Return annotation is useless
+x.adb:58:04: warning: function "**" has implicit Always_Return annotation
+x.adb:62:18: medium: implicit terminating annotation on overriding operator "=" could be incorrect, loop might be nonterminating
 x.adb:62:18: warning: statement has no effect
-x.adb:70:19: medium: terminating annotation on overriding operator "<" could be incorrect, loop might be nonterminating
+x.adb:70:19: medium: implicit terminating annotation on overriding operator "<" could be incorrect, loop might be nonterminating
 x.adb:70:19: warning: statement has no effect
-x.adb:78:19: medium: terminating annotation on overriding operator "<=" could be incorrect, loop might be nonterminating
+x.adb:78:19: medium: implicit terminating annotation on overriding operator "<=" could be incorrect, loop might be nonterminating
 x.adb:78:19: warning: statement has no effect
-x.adb:86:19: medium: terminating annotation on overriding operator ">" could be incorrect, loop might be nonterminating
+x.adb:86:19: medium: implicit terminating annotation on overriding operator ">" could be incorrect, loop might be nonterminating
 x.adb:86:19: warning: statement has no effect
-x.adb:94:19: medium: terminating annotation on overriding operator ">=" could be incorrect, loop might be nonterminating
+x.adb:94:19: medium: implicit terminating annotation on overriding operator ">=" could be incorrect, loop might be nonterminating
 x.adb:94:19: warning: statement has no effect
-x.adb:102:19: medium: terminating annotation on overriding operator "abs" could be incorrect, loop might be nonterminating
+x.adb:102:19: medium: implicit terminating annotation on overriding operator "abs" could be incorrect, loop might be nonterminating
 x.adb:102:19: warning: statement has no effect
-x.adb:110:19: medium: terminating annotation on overriding operator "and" could be incorrect, loop might be nonterminating
+x.adb:110:19: medium: implicit terminating annotation on overriding operator "and" could be incorrect, loop might be nonterminating
 x.adb:110:19: warning: statement has no effect
-x.adb:118:19: medium: terminating annotation on overriding operator "mod" could be incorrect, loop might be nonterminating
+x.adb:118:19: medium: implicit terminating annotation on overriding operator "mod" could be incorrect, loop might be nonterminating
 x.adb:118:19: warning: statement has no effect
 x.adb:121:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:126:19: medium: terminating annotation on overriding operator "not" could be incorrect, loop might be nonterminating
+x.adb:126:19: medium: implicit terminating annotation on overriding operator "not" could be incorrect, loop might be nonterminating
 x.adb:126:19: warning: statement has no effect
-x.adb:134:19: medium: terminating annotation on overriding operator "or" could be incorrect, loop might be nonterminating
+x.adb:134:19: medium: implicit terminating annotation on overriding operator "or" could be incorrect, loop might be nonterminating
 x.adb:134:19: warning: statement has no effect
-x.adb:142:19: medium: terminating annotation on overriding operator "rem" could be incorrect, loop might be nonterminating
+x.adb:142:19: medium: implicit terminating annotation on overriding operator "rem" could be incorrect, loop might be nonterminating
 x.adb:142:19: warning: statement has no effect
 x.adb:145:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:150:19: medium: terminating annotation on overriding operator "xor" could be incorrect, loop might be nonterminating
+x.adb:150:19: medium: implicit terminating annotation on overriding operator "xor" could be incorrect, loop might be nonterminating
 x.adb:150:19: warning: statement has no effect
-x.adb:158:19: medium: terminating annotation on overriding operator "+" could be incorrect, loop might be nonterminating
+x.adb:158:19: medium: implicit terminating annotation on overriding operator "+" could be incorrect, loop might be nonterminating
 x.adb:158:19: warning: statement has no effect
 x.adb:161:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:166:19: medium: terminating annotation on overriding operator "-" could be incorrect, loop might be nonterminating
+x.adb:166:19: medium: implicit terminating annotation on overriding operator "-" could be incorrect, loop might be nonterminating
 x.adb:166:19: warning: statement has no effect
 x.adb:169:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:174:19: medium: terminating annotation on overriding operator "&" could be incorrect, loop might be nonterminating
+x.adb:174:19: medium: implicit terminating annotation on overriding operator "&" could be incorrect, loop might be nonterminating
 x.adb:174:19: warning: statement has no effect
 x.adb:177:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:182:19: medium: terminating annotation on overriding operator "*" could be incorrect, loop might be nonterminating
+x.adb:182:19: medium: implicit terminating annotation on overriding operator "*" could be incorrect, loop might be nonterminating
 x.adb:182:19: warning: statement has no effect
 x.adb:185:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:190:19: medium: terminating annotation on overriding operator "/" could be incorrect, loop might be nonterminating
+x.adb:190:19: medium: implicit terminating annotation on overriding operator "/" could be incorrect, loop might be nonterminating
 x.adb:190:19: warning: statement has no effect
 x.adb:193:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:198:19: medium: terminating annotation on overriding operator "**" could be incorrect, loop might be nonterminating
+x.adb:198:19: medium: implicit terminating annotation on overriding operator "**" could be incorrect, loop might be nonterminating
 x.adb:198:19: warning: statement has no effect
 x.adb:201:29: info: overflow check proved (CVC5: 2 VC)
 x.adb:207:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function]

@@ -1,14 +1,18 @@
 iterable_invariant.adb:5:09: info: range check proved (CVC5: 2 VC)
 iterable_invariant.ads:10:13: info: during checks for quantification at iterable_invariant.ads:28
+iterable_invariant.ads:10:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 iterable_invariant.ads:10:13: info: precondition proved (Trivial: 1 VC)
 iterable_invariant.ads:10:20: warning: unused variable "C"
 iterable_invariant.ads:11:13: info: during checks for quantification at iterable_invariant.ads:28
+iterable_invariant.ads:11:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 iterable_invariant.ads:11:13: info: precondition proved (CVC5: 1 VC)
 iterable_invariant.ads:12:18: info: invariant check proved (CVC5: 1 VC)
 iterable_invariant.ads:13:13: info: during checks for quantification at iterable_invariant.ads:28
+iterable_invariant.ads:13:13: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 iterable_invariant.ads:13:13: info: precondition proved (Trivial: 1 VC)
 iterable_invariant.ads:13:26: warning: unused variable "C"
 iterable_invariant.ads:14:13: info: during checks for quantification at iterable_invariant.ads:28
+iterable_invariant.ads:14:13: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
 iterable_invariant.ads:14:13: info: precondition proved (Trivial: 1 VC)
 iterable_invariant.ads:14:22: warning: unused variable "C"
 iterable_invariant.ads:16:14: warning: subprogram "Allowed_Quantification" has no effect
@@ -39,109 +43,193 @@ iterable_invariant.ads:34:27: warning: unused variable "X"
 iterable_invariant.ads:35:06: warning: postcondition does not check the outcome of calling "Forbidden_Quantification"
 iterable_invariant.ads:35:14: medium: postcondition might fail (e.g. when C = Correct_Value)
 quant_checks.adb:10:16: info: during checks for quantification at quant_checks.adb:4
+quant_checks.adb:10:16: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 quant_checks.adb:10:16: info: precondition proved (Trivial: 1 VC)
 quant_checks.adb:11:16: info: during checks for quantification at quant_checks.adb:4
+quant_checks.adb:11:16: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 quant_checks.adb:11:16: info: precondition proved (Trivial: 1 VC)
 quant_checks.adb:13:16: info: during checks for quantification at quant_checks.adb:4
+quant_checks.adb:13:16: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 quant_checks.adb:13:16: info: precondition proved (CVC5: 1 VC)
 quant_checks.adb:13:68: info: range check proved (CVC5: 2 VC)
 quant_checks.adb:15:16: info: during checks for quantification at quant_checks.adb:4
+quant_checks.adb:15:16: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
 quant_checks.adb:15:16: info: precondition proved (CVC5: 1 VC)
+quant_checks.adb:28:16: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 quant_checks.adb:28:16: medium: during checks for quantification at quant_checks.adb:21
 quant_checks.adb:28:16: medium: precondition might fail
+quant_checks.adb:30:16: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 quant_checks.adb:30:16: medium: during checks for quantification at quant_checks.adb:21
 quant_checks.adb:30:16: medium: precondition might fail
 quant_checks.adb:30:37: warning: unused variable "Y"
+quant_checks.adb:32:16: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 quant_checks.adb:32:16: medium: during checks for quantification at quant_checks.adb:21
 quant_checks.adb:32:16: medium: precondition might fail
 quant_checks.adb:32:44: warning: unused variable "Y"
+quant_checks.adb:34:16: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 quant_checks.adb:34:16: medium: during checks for quantification at quant_checks.adb:21
 quant_checks.adb:34:16: medium: precondition might fail
 quant_checks.adb:34:41: warning: unused variable "Y"
+quant_checks.adb:36:16: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
 quant_checks.adb:36:16: medium: during checks for quantification at quant_checks.adb:21
 quant_checks.adb:36:16: medium: precondition might fail
 quant_checks.adb:36:40: warning: unused variable "Y"
+quant_checks.adb:39:16: info: implicit terminating annotation on "Last" has been proved, subprogram will terminate
+quant_checks.adb:41:16: info: implicit terminating annotation on "Previous" has been proved, subprogram will terminate
 quant_checks.adb:41:41: warning: unused variable "Y"
 quant_checks.adb:50:16: info: during checks for quantification at quant_checks.adb:45
+quant_checks.adb:50:16: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 quant_checks.adb:50:16: info: precondition proved (Trivial: 1 VC)
 quant_checks.adb:51:16: info: during checks for quantification at quant_checks.adb:45
+quant_checks.adb:51:16: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 quant_checks.adb:51:16: info: precondition proved (Trivial: 1 VC)
 quant_checks.adb:52:25: info: overflow check proved (CVC5: 2 VC)
 quant_checks.adb:53:16: info: during checks for quantification at quant_checks.adb:45
+quant_checks.adb:53:16: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 quant_checks.adb:53:16: info: precondition proved (Trivial: 1 VC)
 quant_checks.adb:55:16: info: during checks for quantification at quant_checks.adb:45
+quant_checks.adb:55:16: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
 quant_checks.adb:55:16: info: precondition proved (Trivial: 1 VC)
+quant_checks.adb:63:16: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 quant_checks.adb:63:16: medium: during checks for quantification at quant_checks.adb:56
 quant_checks.adb:63:16: medium: precondition might fail
+quant_checks.adb:65:16: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 quant_checks.adb:65:16: medium: during checks for quantification at quant_checks.adb:56
 quant_checks.adb:65:16: medium: precondition might fail
 quant_checks.adb:65:37: warning: unused variable "Y"
+quant_checks.adb:67:16: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 quant_checks.adb:67:16: medium: during checks for quantification at quant_checks.adb:56
 quant_checks.adb:67:16: medium: precondition might fail
 quant_checks.adb:67:44: warning: unused variable "Y"
+quant_checks.adb:69:16: info: implicit terminating annotation on "Get_Model" has been proved, subprogram will terminate
 quant_checks.adb:69:16: medium: during checks for quantification at quant_checks.adb:56
 quant_checks.adb:69:16: medium: precondition might fail
+quant_checks.adb:72:16: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
 quant_checks.adb:72:16: medium: during checks for quantification at quant_checks.adb:56
 quant_checks.adb:72:16: medium: precondition might fail
 quant_checks.adb:72:40: warning: unused variable "Y"
+quant_checks.adb:75:16: info: implicit terminating annotation on "Last" has been proved, subprogram will terminate
+quant_checks.adb:77:16: info: implicit terminating annotation on "Previous" has been proved, subprogram will terminate
 quant_checks.adb:77:41: warning: unused variable "Y"
+quant_checks.adb:88:38: warning: Always_Return annotation is useless
+quant_checks.adb:88:38: warning: function "Unknown" has implicit Always_Return annotation
 quant_checks.adb:89:16: info: during checks for quantification at quant_checks.adb:81
 quant_checks.adb:89:16: info: precondition proved (Trivial: 1 VC)
+quant_checks.adb:90:38: warning: Always_Return annotation is useless
+quant_checks.adb:90:38: warning: function "Has_Element" has implicit Always_Return annotation
+quant_checks.adb:91:16: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 quant_checks.adb:91:16: medium: during checks for quantification at quant_checks.adb:81
 quant_checks.adb:91:16: medium: precondition might fail
+quant_checks.adb:97:16: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 quant_checks.adb:97:16: medium: during checks for quantification at quant_checks.adb:81
 quant_checks.adb:97:16: medium: precondition might fail, cannot prove Unknown (0)
 quant_checks.adb:97:68: medium: range check might fail, cannot prove upper bound for I+1 [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (I <= Cursor'Last - 1) to subprogram at line 97]
+quant_checks.adb:99:16: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 quant_checks.adb:99:16: medium: during checks for quantification at quant_checks.adb:81
 quant_checks.adb:99:16: medium: precondition might fail
 quant_checks.adb:99:41: warning: unused variable "B"
+quant_checks.adb:105:16: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
 quant_checks.adb:105:16: medium: during checks for quantification at quant_checks.adb:81
 quant_checks.adb:105:16: medium: precondition might fail, cannot prove Unknown (0)
 quant_late_errors.adb:13:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:13:16: info: during checks for quantification at quant_late_errors.adb:6
+quant_late_errors.adb:13:16: info: function contract might not be available on recursive calls
 quant_late_errors.adb:13:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:14:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:15:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:15:16: info: during checks for quantification at quant_late_errors.adb:6
+quant_late_errors.adb:15:16: info: function contract might not be available on recursive calls
 quant_late_errors.adb:15:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:16:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:17:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:17:16: info: during checks for quantification at quant_late_errors.adb:6
+quant_late_errors.adb:17:16: info: function contract might not be available on recursive calls
 quant_late_errors.adb:17:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:18:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:19:16: error: "Contains" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+quant_late_errors.adb:19:16: error: unsupported recursive subprogram
 quant_late_errors.adb:19:16: info: during checks for quantification at quant_late_errors.adb:6
+quant_late_errors.adb:19:16: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 quant_late_errors.adb:19:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:20:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:21:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:21:16: info: during checks for quantification at quant_late_errors.adb:6
+quant_late_errors.adb:21:16: info: function contract might not be available on recursive calls
 quant_late_errors.adb:21:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:22:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:24:16: info: implicit terminating annotation on "Last" has been proved, subprogram will terminate
+quant_late_errors.adb:25:16: info: implicit terminating annotation on "Previous" has been proved, subprogram will terminate
+quant_late_errors.adb:29:10: medium: implicit terminating annotation on "First" could be incorrect, "First" and "Element" are mutually recursive
+quant_late_errors.adb:29:10: medium: implicit terminating annotation on "First" could be incorrect, "First" and "Has_Element" are mutually recursive
+quant_late_errors.adb:29:10: medium: implicit terminating annotation on "First" could be incorrect, "First" and "Next" are mutually recursive
+quant_late_errors.adb:29:10: medium: implicit terminating annotation on "First" could be incorrect, subprogram is recursive
+quant_late_errors.adb:31:10: medium: implicit terminating annotation on "Next" could be incorrect, "Next" and "Element" are mutually recursive
+quant_late_errors.adb:31:10: medium: implicit terminating annotation on "Next" could be incorrect, "Next" and "First" are mutually recursive
+quant_late_errors.adb:31:10: medium: implicit terminating annotation on "Next" could be incorrect, "Next" and "Has_Element" are mutually recursive
+quant_late_errors.adb:31:10: medium: implicit terminating annotation on "Next" could be incorrect, subprogram is recursive
+quant_late_errors.adb:33:10: medium: implicit terminating annotation on "Has_Element" could be incorrect, "Has_Element" and "Element" are mutually recursive
+quant_late_errors.adb:33:10: medium: implicit terminating annotation on "Has_Element" could be incorrect, "Has_Element" and "First" are mutually recursive
+quant_late_errors.adb:33:10: medium: implicit terminating annotation on "Has_Element" could be incorrect, "Has_Element" and "Next" are mutually recursive
+quant_late_errors.adb:33:10: medium: implicit terminating annotation on "Has_Element" could be incorrect, subprogram is recursive
+quant_late_errors.adb:35:10: medium: implicit terminating annotation on "Element" could be incorrect, "Element" and "First" are mutually recursive
+quant_late_errors.adb:35:10: medium: implicit terminating annotation on "Element" could be incorrect, "Element" and "Has_Element" are mutually recursive
+quant_late_errors.adb:35:10: medium: implicit terminating annotation on "Element" could be incorrect, "Element" and "Next" are mutually recursive
+quant_late_errors.adb:35:10: medium: implicit terminating annotation on "Element" could be incorrect, subprogram is recursive
 quant_late_errors.adb:49:16: info: during checks for quantification at quant_late_errors.adb:44
+quant_late_errors.adb:49:16: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 quant_late_errors.adb:49:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:50:16: info: during checks for quantification at quant_late_errors.adb:44
+quant_late_errors.adb:50:16: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 quant_late_errors.adb:50:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:51:25: info: overflow check proved (CVC5: 2 VC)
 quant_late_errors.adb:52:16: info: during checks for quantification at quant_late_errors.adb:44
+quant_late_errors.adb:52:16: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 quant_late_errors.adb:52:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:54:16: info: during checks for quantification at quant_late_errors.adb:44
+quant_late_errors.adb:54:16: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
 quant_late_errors.adb:54:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:62:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:62:16: info: during checks for quantification at quant_late_errors.adb:55
+quant_late_errors.adb:62:16: info: function contract might not be available on recursive calls
 quant_late_errors.adb:62:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:63:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:64:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:64:16: info: during checks for quantification at quant_late_errors.adb:55
+quant_late_errors.adb:64:16: info: function contract might not be available on recursive calls
 quant_late_errors.adb:64:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:65:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:66:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:66:16: info: during checks for quantification at quant_late_errors.adb:55
+quant_late_errors.adb:66:16: info: function contract might not be available on recursive calls
 quant_late_errors.adb:66:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:67:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:68:16: error: "Get_Model" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+quant_late_errors.adb:68:16: error: unsupported recursive subprogram
 quant_late_errors.adb:68:16: info: during checks for quantification at quant_late_errors.adb:55
+quant_late_errors.adb:68:16: info: implicit terminating annotation on "Get_Model" has been proved, subprogram will terminate
 quant_late_errors.adb:68:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:69:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:70:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:70:16: info: during checks for quantification at quant_late_errors.adb:55
+quant_late_errors.adb:70:16: info: function contract might not be available on recursive calls
 quant_late_errors.adb:70:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:71:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:73:16: info: implicit terminating annotation on "Last" has been proved, subprogram will terminate
+quant_late_errors.adb:75:16: info: implicit terminating annotation on "Previous" has been proved, subprogram will terminate
+quant_late_errors.adb:80:10: medium: implicit terminating annotation on "First" could be incorrect, "First" and "Element" are mutually recursive
+quant_late_errors.adb:80:10: medium: implicit terminating annotation on "First" could be incorrect, "First" and "Has_Element" are mutually recursive
+quant_late_errors.adb:80:10: medium: implicit terminating annotation on "First" could be incorrect, "First" and "Next" are mutually recursive
+quant_late_errors.adb:80:10: medium: implicit terminating annotation on "First" could be incorrect, subprogram is recursive
+quant_late_errors.adb:82:10: medium: implicit terminating annotation on "Next" could be incorrect, "Next" and "Element" are mutually recursive
+quant_late_errors.adb:82:10: medium: implicit terminating annotation on "Next" could be incorrect, "Next" and "First" are mutually recursive
+quant_late_errors.adb:82:10: medium: implicit terminating annotation on "Next" could be incorrect, "Next" and "Has_Element" are mutually recursive
+quant_late_errors.adb:82:10: medium: implicit terminating annotation on "Next" could be incorrect, subprogram is recursive
+quant_late_errors.adb:84:10: medium: implicit terminating annotation on "Has_Element" could be incorrect, "Has_Element" and "Element" are mutually recursive
+quant_late_errors.adb:84:10: medium: implicit terminating annotation on "Has_Element" could be incorrect, "Has_Element" and "First" are mutually recursive
+quant_late_errors.adb:84:10: medium: implicit terminating annotation on "Has_Element" could be incorrect, "Has_Element" and "Next" are mutually recursive
+quant_late_errors.adb:84:10: medium: implicit terminating annotation on "Has_Element" could be incorrect, subprogram is recursive
+quant_late_errors.adb:86:10: medium: implicit terminating annotation on "Element" could be incorrect, "Element" and "First" are mutually recursive
+quant_late_errors.adb:86:10: medium: implicit terminating annotation on "Element" could be incorrect, "Element" and "Has_Element" are mutually recursive
+quant_late_errors.adb:86:10: medium: implicit terminating annotation on "Element" could be incorrect, "Element" and "Next" are mutually recursive
+quant_late_errors.adb:86:10: medium: implicit terminating annotation on "Element" could be incorrect, subprogram is recursive
 gnatprove: error during flow analysis and proof

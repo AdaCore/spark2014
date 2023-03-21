@@ -1,1 +1,2 @@
+new_eq.adb:6:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 new_eq.adb:11:19: high: assertion might fail (e.g. when X = (F => 0, G => 0) and Y = (F => 0, G => 0))

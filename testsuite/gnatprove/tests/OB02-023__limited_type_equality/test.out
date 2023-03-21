@@ -6,3 +6,5 @@ client.adb:24:19: high: "A" is not initialized
 client.adb:24:19: info: assertion proved (CVC5: 1 VC)
 client.adb:26:19: info: assertion proved (CVC5: 1 VC)
 client.adb:26:23: high: "C" is not initialized
+p3.ads:8:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
+p6.ads:9:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate

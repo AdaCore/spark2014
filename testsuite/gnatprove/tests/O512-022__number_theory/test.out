@@ -9,7 +9,7 @@ number_theory.adb:19:50: info: range check proved (CVC5: 4 VC)
 number_theory.adb:19:74: info: range check proved (CVC5: 4 VC)
 number_theory.adb:23:30: medium: overflow check might fail, cannot prove upper bound for Old + Temp [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 19 should mention Temp]
 number_theory.ads:17:13: info: function contract might not be available on recursive calls
-number_theory.ads:18:08: medium: terminating annotation on "Fib" could be incorrect, subprogram is recursive
+number_theory.ads:18:08: medium: implicit terminating annotation on "Fib" could be incorrect, subprogram is recursive
 number_theory.ads:20:32: info: range check proved (CVC5: 2 VC)
 number_theory.ads:20:37: info: overflow check proved (CVC5: 2 VC)
 number_theory.ads:20:45: info: range check proved (CVC5: 2 VC)
@@ -20,5 +20,9 @@ number_theory.ads:23:43: info: float overflow check proved (CVC5: 1 VC)
 number_theory.ads:23:47: info: division check proved (CVC5: 1 VC)
 number_theory.ads:23:47: info: float overflow check proved (Trivial)
 number_theory.ads:23:55: info: float overflow check proved (Trivial)
+number_theory.ads:24:04: warning: Always_Return annotation is useless
+number_theory.ads:24:04: warning: function "Fib" has implicit Always_Return annotation
+number_theory.ads:27:13: info: implicit terminating annotation on "Fibonacci" has been proved, subprogram will terminate
 number_theory.ads:28:19: info: postcondition proved (CVC5: 1 VC)
+number_theory.ads:31:13: info: implicit terminating annotation on "Fibonacci2" has been proved, subprogram will terminate
 number_theory.ads:32:19: medium: postcondition might fail

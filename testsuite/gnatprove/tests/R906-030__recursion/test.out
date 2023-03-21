@@ -20,15 +20,18 @@ pack.adb:26:33: info: loop invariant initialization proved (CVC5: 1 VC)
 pack.adb:26:33: info: loop invariant preservation proved (CVC5: 1 VC)
 pack.adb:27:14: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 pack.ads:6:13: info: function contract might not be available on recursive calls
-pack.ads:7:07: medium: terminating annotation on "Sum" could be incorrect, subprogram is recursive
+pack.ads:7:07: medium: implicit terminating annotation on "Sum" could be incorrect, subprogram is recursive
 pack.ads:8:17: info: range check proved (CVC5: 4 VC)
 pack.ads:8:38: info: overflow check proved (CVC5: 2 VC)
 pack.ads:8:44: info: overflow check proved (CVC5: 2 VC)
 pack.ads:8:50: info: index check proved (CVC5: 2 VC)
 pack.ads:9:21: info: postcondition proved (CVC5: 1 VC)
 pack.ads:9:42: info: range check proved (CVC5: 2 VC)
+pack.ads:10:04: warning: Always_Return annotation is useless
+pack.ads:10:04: warning: function "Sum" has implicit Always_Return annotation
 pack.ads:13:14: info: postcondition proved (CVC5: 1 VC)
 test_rec.adb:4:13: info: implicit function contract might not be available on calls from enclosing unit
+test_rec.adb:4:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_rec.adb:11:18: info: precondition proved (Trivial: 1 VC)
 test_rec.adb:14:22: info: assertion proved (CVC5: 1 VC)
 test_rec.adb:14:40: info: range check proved (CVC5: 2 VC)

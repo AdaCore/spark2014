@@ -1,16 +1,14 @@
+assert_in_declare.ads:5:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 assert_in_declare.ads:8:25: info: assertion proved (Trivial)
-assert_in_declare.ads:13:39: warning: assuming "Rand" always returns
+assert_in_declare.ads:11:13: info: implicit terminating annotation on "F_2" has been proved, subprogram will terminate
 assert_in_declare.ads:13:39: warning: assuming "Rand" has no effect on global items
 assert_in_declare.ads:13:39: warning: no Global contract available for "Rand"
-assert_in_declare.ads:13:39: warning: no returning annotation available for "Rand"
 assert_in_declare.ads:14:25: medium: assertion might fail
 assert_in_declare.ads:15:25: info: assertion proved (CVC5: 1 VC)
-assert_in_declare.ads:20:39: warning: assuming "Rand" always returns
+assert_in_declare.ads:18:13: info: implicit terminating annotation on "F_3" has been proved, subprogram will terminate
 assert_in_declare.ads:20:39: warning: assuming "Rand" has no effect on global items
 assert_in_declare.ads:20:39: warning: no Global contract available for "Rand"
-assert_in_declare.ads:20:39: warning: no returning annotation available for "Rand"
 assert_in_declare.ads:21:25: info: assertion justified
-assume_in_declare.ads:7:39: warning: assuming "Rand" always returns
+assume_in_declare.ads:5:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 assume_in_declare.ads:7:39: warning: assuming "Rand" has no effect on global items
 assume_in_declare.ads:7:39: warning: no Global contract available for "Rand"
-assume_in_declare.ads:7:39: warning: no returning annotation available for "Rand"

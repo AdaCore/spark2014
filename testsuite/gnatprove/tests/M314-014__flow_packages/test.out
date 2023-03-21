@@ -1,5 +1,6 @@
 ic.adb:13:11: info: flow dependencies proved
 ic.adb:16:07: info: initialization of "Test_01.X" constituent of "IC.State_A" proved
+ic.adb:19:16: info: implicit terminating annotation on "Get_Stuff" has been proved, subprogram will terminate
 ic.adb:23:11: info: flow dependencies proved
 ic.adb:24:36: high: "Test_02.Y" constituent of "IC.State_B" is not initialized
 ic.adb:24:36: high: initialization of "IC.State_B" is specified at line 23
@@ -26,6 +27,7 @@ ic.ads:2:36: warning: no procedure exists that can initialize abstract state "IC
 ic.ads:3:08: info: flow dependencies proved
 initialized.adb:5:04: info: initialization of "Var" constituent of "State" proved
 initialized.ads:4:08: info: flow dependencies proved
+initialized.ads:6:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 initialized.ads:7:11: info: data dependencies proved
 main.adb:6:09: info: data dependencies proved
 main.adb:7:44: info: initialization of "Uninitialized.State" proved
@@ -36,6 +38,7 @@ other.ads:3:08: info: flow dependencies proved
 pkg_a.adb:7:04: high: "A" constituent of "State_A" is not initialized in "Pkg_A" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "A" constituent of "State_A" at declaration or in the package body statements]
 pkg_a.adb:7:04: high: initialization of "Pkg_A.State_A" is specified at pkg_a.ads:3
 pkg_a.adb:11:13: info: implicit function contract might not be available on calls from enclosing unit
+pkg_a.adb:11:13: info: implicit terminating annotation on "Do_Something" has been proved, subprogram will terminate
 pkg_a.adb:11:61: info: overflow check proved (CVC5: 2 VC)
 pkg_a.adb:16:09: medium: precondition might fail
 pkg_a.adb:16:23: high: "X" is not initialized

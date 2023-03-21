@@ -1,1 +1,3 @@
+demo-core-mlm.ads:5:13: info: implicit terminating annotation on "Obit" has been proved, subprogram will terminate
+demo-proc2.ads:7:13: info: implicit terminating annotation on "Obit" has been proved, subprogram will terminate
 lib-cont-g_b.ads:17:10: info: range check proved (CVC5: 2 VC), in instantiation at lib-mlm-g_fum_cm-g_q.ads:6, in instantiation at lib-mlm-g_mlms.ads:12, in instantiation at demo-core.ads:5

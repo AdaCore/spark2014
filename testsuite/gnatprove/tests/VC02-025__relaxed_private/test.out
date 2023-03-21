@@ -32,6 +32,8 @@ relaxed_private.adb:144:36: warning: Relaxed_Initialization annotation is useles
 relaxed_private.adb:163:26: info: initialization check proved (CVC5: 1 VC)
 relaxed_private.adb:169:14: warning: subprogram "Test_Private_Scalar_Ownership" has no effect
 relaxed_private.adb:170:07: info: no contextual analysis of "Test_Private_Scalar_Ownership" (nested package declaration)
+relaxed_private.adb:175:12: warning: Always_Return annotation is useless
+relaxed_private.adb:175:12: warning: function "C" has implicit Always_Return annotation
 relaxed_private.adb:177:36: warning: "X" cannot be partially initialized
 relaxed_private.adb:177:36: warning: Relaxed_Initialization annotation is useless
 relaxed_private.adb:194:23: medium: initialization check might fail (e.g. when R = -1)

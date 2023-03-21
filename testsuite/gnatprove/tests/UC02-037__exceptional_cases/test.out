@@ -29,19 +29,23 @@ test_interval.adb:46:62: info: index check proved (CVC5: 4 VC)
 test_interval.adb:46:62: info: overflow check proved (CVC5: 4 VC)
 test_interval.adb:48:13: info: initialization of "Found" proved
 test_interval.adb:50:13: info: only expected exception raised (CVC5: 1 VC)
+test_interval.adb:59:13: info: implicit terminating annotation on "Find_Interval" has been proved, subprogram will terminate
 test_interval.adb:61:14: info: postcondition proved (CVC5: 3 VC)
 test_interval.adb:65:07: info: initialization of "R" proved
 test_interval.adb:67:07: info: only expected exception raised (CVC5: 1 VC)
 test_interval.adb:67:28: info: initialization check proved (CVC5: 3 VC; Trivial: 3 VC)
 test_interval.adb:67:28: info: predicate check proved (CVC5: 1 VC)
+test_list_search.adb:13:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 test_list_search.adb:14:29: info: pointer dereference check proved (CVC5: 1 VC)
 test_list_search.adb:14:47: info: subprogram variant proved (Trivial)
 test_list_search.adb:14:58: info: pointer dereference check proved (CVC5: 1 VC)
+test_list_search.adb:17:13: info: implicit terminating annotation on "Eq" has been proved, subprogram will terminate
 test_list_search.adb:20:21: info: pointer dereference check proved (CVC5: 1 VC)
 test_list_search.adb:20:31: info: pointer dereference check proved (CVC5: 1 VC)
 test_list_search.adb:20:46: info: subprogram variant proved (Trivial)
 test_list_search.adb:20:52: info: pointer dereference check proved (CVC5: 1 VC)
 test_list_search.adb:20:61: info: pointer dereference check proved (CVC5: 1 VC)
+test_list_search.adb:23:13: info: implicit terminating annotation on "Eq_But_One" has been proved, subprogram will terminate
 test_list_search.adb:25:20: info: pointer dereference check proved (CVC5: 1 VC)
 test_list_search.adb:25:30: info: pointer dereference check proved (CVC5: 1 VC)
 test_list_search.adb:25:45: info: subprogram variant proved (Trivial)
@@ -51,30 +55,19 @@ test_list_search.adb:26:20: info: pointer dereference check proved (CVC5: 1 VC)
 test_list_search.adb:26:31: info: pointer dereference check proved (CVC5: 1 VC)
 test_list_search.adb:26:52: info: pointer dereference check proved (CVC5: 1 VC)
 test_list_search.adb:26:61: info: pointer dereference check proved (CVC5: 1 VC)
+test_list_search.adb:34:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
 test_list_search.adb:35:07: info: dynamic accessibility check proved (Trivial)
 test_list_search.adb:39:57: warning: unused variable "V2"
 test_list_search.adb:40:14: info: postcondition proved (CVC5: 1 VC)
 test_list_search.adb:42:22: info: exceptional case proved (CVC5: 4 VC)
 test_list_search.adb:42:36: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
-test_list_search.adb:42:36: warning: assuming "Copy" always returns
-test_list_search.adb:42:36: warning: no returning annotation available for "Copy"
 test_list_search.adb:42:65: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
-test_list_search.adb:42:65: warning: assuming "Copy" always returns
-test_list_search.adb:42:65: warning: no returning annotation available for "Copy"
 test_list_search.adb:43:22: info: exceptional case proved (CVC5: 8 VC)
 test_list_search.adb:43:32: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
-test_list_search.adb:43:32: warning: assuming "Copy" always returns
-test_list_search.adb:43:32: warning: no returning annotation available for "Copy"
 test_list_search.adb:44:37: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
-test_list_search.adb:44:37: warning: assuming "Copy" always returns
-test_list_search.adb:44:37: warning: no returning annotation available for "Copy"
 test_list_search.adb:44:71: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
-test_list_search.adb:44:71: warning: assuming "Copy" always returns
-test_list_search.adb:44:71: warning: no returning annotation available for "Copy"
 test_list_search.adb:49:07: medium: on exceptional exit at test_list_search.adb:48
 test_list_search.adb:49:07: medium: resource or memory leak might occur at end of scope
-test_list_search.adb:49:32: warning: assuming "Copy" always returns
-test_list_search.adb:49:32: warning: no returning annotation available for "Copy"
 test_list_search.adb:55:13: info: loop invariant initialization proved (CVC5: 4 VC)
 test_list_search.adb:55:13: info: loop invariant preservation proved (CVC5: 4 VC)
 test_list_search.adb:56:33: info: loop invariant initialization proved (CVC5: 3 VC)

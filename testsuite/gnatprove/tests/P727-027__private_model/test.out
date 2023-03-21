@@ -1,2 +1,2 @@
-private_type.ads:8:45: info: implicit function contract not available for proof ("F" might not return)
+private_type.ads:8:45: medium: implicit terminating annotation on "G" could be incorrect, dispatching call might be nonterminating
 private_type.ads:8:45: medium: precondition might fail [possible fix: subprogram at line 8 should mention R in a precondition]

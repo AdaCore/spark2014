@@ -1,9 +1,11 @@
 indexbis.adb:8:33: info: range check proved (CVC5: 2 VC)
+indexbis.adb:10:10: medium: implicit terminating annotation on "IndexBis" could be incorrect, loop might be nonterminating
 indexbis.adb:12:16: info: loop invariant initialization proved (CVC5: 3 VC)
 indexbis.adb:12:16: info: loop invariant preservation proved (CVC5: 2 VC; altergo: 1 VC)
 indexbis.adb:13:99: info: index check proved (CVC5: 4 VC)
 indexbis.adb:13:107: info: index check proved (CVC5: 4 VC)
 indexbis.adb:15:40: info: range check proved (CVC5: 2 VC)
+indexbis.adb:17:16: medium: implicit terminating annotation on "IndexBis" could be incorrect, loop might be nonterminating
 indexbis.adb:19:22: info: loop invariant initialization proved (CVC5: 6 VC)
 indexbis.adb:19:22: info: loop invariant preservation proved (CVC5: 6 VC)
 indexbis.adb:20:105: info: index check proved (CVC5: 4 VC)

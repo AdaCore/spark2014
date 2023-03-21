@@ -1,1 +1,2 @@
+inter.ads:2:13: info: implicit terminating annotation on "Call_Get" has been proved, subprogram will terminate
 user.adb:7:09: high: "pack.b" must be listed in the Global aspect of "User" (SPARK RM 6.1.4(15))

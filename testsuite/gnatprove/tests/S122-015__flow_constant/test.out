@@ -2,3 +2,4 @@ const.ads:5:08: info: flow dependencies proved
 const.ads:7:33: info: precondition proved (Trivial: 1 VC)
 other.adb:2:49: medium: overflow check might fail, cannot prove lower bound for V + C [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at other.ads:8 should mention V]
 other.ads:2:08: info: flow dependencies proved
+other.ads:8:13: info: implicit terminating annotation on "Gimme_V_Plus_C" has been proved, subprogram will terminate

@@ -1,8 +1,10 @@
+arithmetic.adb:6:13: info: implicit terminating annotation on "Halve_D" has been proved, subprogram will terminate
 arithmetic.adb:7:19: info: postcondition proved (CVC5: 1 VC)
 arithmetic.adb:7:38: info: division check proved (CVC5: 1 VC)
 arithmetic.adb:9:07: info: initialization of "R" proved
 arithmetic.adb:15:33: info: loop invariant initialization proved (CVC5: 4 VC)
 arithmetic.adb:15:33: info: loop invariant preservation proved (CVC5: 4 VC)
+arithmetic.adb:6:13: info: implicit terminating annotation on "Halve_D" has been proved, subprogram will terminate
 arithmetic.adb:7:19: medium: postcondition might fail
 arithmetic.adb:7:38: info: division check proved (altergo: 1 VC)
 arithmetic.adb:9:07: info: initialization of "R" proved

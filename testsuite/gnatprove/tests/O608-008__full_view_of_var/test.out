@@ -1,14 +1,26 @@
+p.adb:3:13: info: implicit terminating annotation on "G_True" has been proved, subprogram will terminate
+p.adb:4:13: info: implicit terminating annotation on "G_X" has been proved, subprogram will terminate
+p.adb:6:13: info: implicit terminating annotation on "G_False" has been proved, subprogram will terminate
 p.adb:7:19: info: postcondition proved (CVC5: 1 VC)
+p.adb:11:13: info: implicit terminating annotation on "G_Y" has been proved, subprogram will terminate
 p.adb:12:19: info: postcondition proved (CVC5: 2 VC)
 p.adb:16:14: info: add a contract to analyze it separately from calling contexts
 p.adb:16:14: info: local subprogram "Sub" only analyzed in the context of calls
 p.adb:16:14: warning: subprogram "Sub" has no effect
 p.adb:17:07: info: initialization of "Z" proved
 p.adb:17:07: info: initialization of "Z" proved, in call inlined at p.adb:43
+p.adb:18:16: info: implicit terminating annotation on "H_True" has been proved, subprogram will terminate
+p.adb:18:16: info: implicit terminating annotation on "H_True" has been proved, subprogram will terminate, in call inlined at p.adb:43
+p.adb:19:16: info: implicit terminating annotation on "H_X" has been proved, subprogram will terminate
+p.adb:19:16: info: implicit terminating annotation on "H_X" has been proved, subprogram will terminate, in call inlined at p.adb:43
 p.adb:21:16: info: function contract might not be available on calls from enclosing unit
+p.adb:21:16: info: implicit terminating annotation on "H_False" has been proved, subprogram will terminate
+p.adb:21:16: info: implicit terminating annotation on "H_False" has been proved, subprogram will terminate, in call inlined at p.adb:43
 p.adb:22:22: info: postcondition proved (CVC5: 1 VC)
 p.adb:22:22: info: postcondition proved (CVC5: 1 VC), in call inlined at p.adb:43
 p.adb:26:16: info: function contract might not be available on calls from enclosing unit
+p.adb:26:16: info: implicit terminating annotation on "H_Y" has been proved, subprogram will terminate
+p.adb:26:16: info: implicit terminating annotation on "H_Y" has been proved, subprogram will terminate, in call inlined at p.adb:43
 p.adb:27:22: info: postcondition proved (CVC5: 2 VC)
 p.adb:27:22: info: postcondition proved (CVC5: 2 VC), in call inlined at p.adb:43
 p.adb:32:22: info: assertion proved (CVC5: 1 VC), in call inlined at p.adb:43
@@ -18,5 +30,9 @@ p.adb:38:22: info: assertion proved (CVC5: 1 VC), in call inlined at p.adb:43
 p.adb:41:04: warning: analyzing unreferenced procedure "Dummy"
 p.adb:41:14: warning: subprogram "Dummy" has no effect
 p.adb:43:07: info: analyzing call to "Sub" in context
+p.ads:5:13: info: implicit terminating annotation on "F_True" has been proved, subprogram will terminate
+p.ads:6:13: info: implicit terminating annotation on "F_X" has been proved, subprogram will terminate
+p.ads:8:13: info: implicit terminating annotation on "F_False" has been proved, subprogram will terminate
 p.ads:9:19: info: postcondition proved (CVC5: 1 VC)
+p.ads:13:13: info: implicit terminating annotation on "F_Y" has been proved, subprogram will terminate
 p.ads:14:19: info: postcondition proved (CVC5: 2 VC)

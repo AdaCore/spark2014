@@ -1,3 +1,4 @@
+main.adb:3:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 main.adb:3:63: info: dynamic accessibility check proved (Trivial)
 main.adb:6:30: info: loop invariant initialization proved (CVC5: 1 VC)
 main.adb:6:30: info: loop invariant preservation proved (CVC5: 1 VC)

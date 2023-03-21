@@ -1,3 +1,5 @@
+random.adb:36:13: info: implicit terminating annotation on "To_State" has been proved, subprogram will terminate
+random.adb:37:13: info: implicit terminating annotation on "To_State" has been proved, subprogram will terminate
 random.adb:45:07: info: initialization of "Last" proved
 random.adb:47:14: info: initialization of "G" proved
 random.adb:49:31: info: cannot unroll loop (too many loop iterations)
@@ -16,6 +18,7 @@ random.adb:93:33: info: range check proved (CVC5: 4 VC)
 random.adb:95:36: info: loop invariant initialization proved (CVC5: 1 VC)
 random.adb:95:36: info: loop invariant preservation proved (CVC5: 1 VC)
 random.adb:109:16: info: implicit function contract might not be available on calls from enclosing unit
+random.adb:109:16: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 random.adb:112:18: info: range check proved (CVC5: 2 VC)
 random.adb:126:68: info: range check proved (CVC5: 2 VC)
 random.adb:127:68: info: range check proved (CVC5: 2 VC)
@@ -26,6 +29,8 @@ random.adb:159:61: info: division check proved (altergo: 1 VC)
 random.adb:166:20: info: division check proved (altergo: 1 VC)
 random.adb:167:28: medium: assertion might fail [possible fix: loop at line 161 should mention X in a loop invariant]
 random.adb:170:47: info: range check proved (altergo: 2 VC)
+random.ads:40:13: info: implicit terminating annotation on "Reset" has been proved, subprogram will terminate
+random.ads:43:13: info: implicit terminating annotation on "Reset" has been proved, subprogram will terminate
 random.ads:48:22: info: initialization of "Value" proved
 random.ads:52:30: info: initialization of "Value" proved
 random.ads:56:17: info: postcondition proved (altergo: 2 VC)
@@ -33,3 +38,4 @@ Testing SPARK.Random...
 Everything is OK with Random.
 Testing GNAT.Random_Numbers...
 Everything is OK with GNAT.Random_Numbers.
+

@@ -17,10 +17,15 @@ Generated contracts for A
       VI1
 a.adb:4:55: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at a.ads:3]
 a.adb:6:65: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at a.ads:4]
+a.adb:8:13: info: implicit terminating annotation on "Add_Annotated_Local" has been proved, subprogram will terminate
 a.adb:8:13: info: implicit function contract might not be available on calls from enclosing unit
 a.adb:10:10: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at line 8]
 a.adb:11:09: info: data dependencies proved
+a.adb:28:13: info: implicit terminating annotation on "Test_01" has been proved, subprogram will terminate
+a.adb:29:13: info: implicit terminating annotation on "Test_02" has been proved, subprogram will terminate
+a.adb:30:13: info: implicit terminating annotation on "Test_03" has been proved, subprogram will terminate
 a.adb:30:54: info: data dependencies proved
+a.adb:31:13: info: implicit terminating annotation on "Test_04" has been proved, subprogram will terminate
 a.adb:31:54: info: data dependencies proved
 a.adb:36:22: info: overflow check proved (CVC5: 2 VC)
 a.adb:36:27: info: overflow check proved (CVC5: 2 VC)
@@ -34,6 +39,8 @@ a.adb:48:32: info: overflow check proved (CVC5: 2 VC)
 a.adb:48:37: info: overflow check proved (CVC5: 2 VC)
 a.adb:48:42: info: overflow check proved (CVC5: 2 VC)
 a.adb:48:47: info: overflow check proved (CVC5: 2 VC)
+a.ads:3:13: info: implicit terminating annotation on "Add" has been proved, subprogram will terminate
 a.ads:3:13: info: implicit function contract might not be available on calls from enclosing unit
+a.ads:4:13: info: implicit terminating annotation on "Add_Annotated" has been proved, subprogram will terminate
 a.ads:4:13: info: implicit function contract might not be available on calls from enclosing unit
 a.ads:4:64: info: data dependencies proved

@@ -41,6 +41,8 @@ package body Binary_Search with SPARK_Mode is
    begin
       while X /= null loop
 
+         pragma Loop_Variant (Structural => X);
+
          --  X is sorted
 
          pragma Loop_Invariant (Sorted (X));

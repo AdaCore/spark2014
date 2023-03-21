@@ -22,6 +22,7 @@ refined_post_illegal_2.adb:33:23: high: overflow check might fail, cannot prove 
 refined_post_illegal_2.adb:35:23: high: overflow check might fail, cannot prove bounds for Par1 * Par1 (e.g. when Par1 = Integer'Last) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Par1 * Par1 in Integer) to subprogram at refined_post_illegal_2.ads:19]
 refined_post_illegal_2.ads:4:18: info: initialization of "Par" proved
 refined_post_illegal_2.ads:13:19: medium: postcondition might fail (e.g. when Par = 1) [possible fix: add or complete related loop invariants or postconditions]
+refined_post_illegal_2.ads:15:13: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
 refined_post_illegal_2.ads:17:14: warning: subprogram "Calls_F1" has no effect
 refined_post_illegal_2.ads:19:41: info: initialization of "Par3" proved
 refined_post_illegal_2.ads:47:19: medium: postcondition might fail (e.g. when Par3 = 1) [possible fix: add or complete related loop invariants or postconditions]

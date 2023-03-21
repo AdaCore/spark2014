@@ -1,3 +1,4 @@
 ext_ax.ads:2:04: warning: External Axiomatizations are not supported anymore, ignored
+ext_ax.ads:3:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
 use_ext_ax.adb:4:19: info: assertion proved (CVC5: 1 VC)
 use_ext_ax.adb:5:19: info: assertion proved (CVC5: 1 VC)

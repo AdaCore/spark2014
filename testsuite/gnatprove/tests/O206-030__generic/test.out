@@ -14,6 +14,7 @@ gen_pack.adb:16:16: medium: incorrect dependency "Func'Result => External", in i
 gen_pack.adb:17:16: medium: incorrect dependency "Func'Result => constant with variable input Outer", in instantiation at main.adb:24
 gen_pack.adb:18:16: medium: incorrect dependency "Func'Result => Constit constituent of State", in instantiation at main.adb:24
 gen_pack.adb:19:16: medium: incorrect dependency "Func'Result => Pack_Inner", in instantiation at main.adb:24
+gen_pack.ads:9:13: info: implicit terminating annotation on "Func" has been proved, subprogram will terminate, in instantiation at main.adb:24
 gen_pack.ads:10:11: info: data dependencies proved, in instantiation at main.adb:24
 gen_pack_gen.ads:13:11: info: data dependencies proved, in instantiation at main.adb:33
 gen_pack_gen.ads:21:11: info: flow dependencies proved, in instantiation at main.adb:33
@@ -31,6 +32,7 @@ gen_pack_pragmas.adb:16:20: medium: incorrect dependency "Func'Result => Externa
 gen_pack_pragmas.adb:17:20: medium: incorrect dependency "Func'Result => constant with variable input Outer", in instantiation at main.adb:28
 gen_pack_pragmas.adb:18:20: medium: incorrect dependency "Func'Result => Constit constituent of State", in instantiation at main.adb:28
 gen_pack_pragmas.adb:19:20: medium: incorrect dependency "Func'Result => Pack_Inner", in instantiation at main.adb:28
+gen_pack_pragmas.ads:9:13: info: implicit terminating annotation on "Func" has been proved, subprogram will terminate, in instantiation at main.adb:28
 gen_pack_pragmas.ads:10:04: info: data dependencies proved, in instantiation at main.adb:28
 main.adb:16:42: error: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
 main.adb:16:42: error: use instead a constant initialized to the expression with variable input
@@ -52,6 +54,7 @@ main.adb:42:47: error: actual for formal object with mode in cannot depend on va
 main.adb:42:47: error: use instead a constant initialized to the expression with variable input
 main.adb:46:55: error: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
 main.adb:46:55: error: use instead a constant initialized to the expression with variable input
+main_refs.adb:5:13: info: implicit terminating annotation on "Func_Inst" has been proved, subprogram will terminate
 pack_gen.ads:5:08: info: flow dependencies proved
 pack_gen.ads:11:11: info: data dependencies proved, in instantiation at main.adb:42
 pack_gen.ads:18:11: info: flow dependencies proved, in instantiation at main.adb:42

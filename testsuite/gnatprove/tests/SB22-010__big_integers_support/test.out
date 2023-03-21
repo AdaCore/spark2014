@@ -163,7 +163,7 @@ big_integers_test.adb:142:19: info: predicate check proved (Trivial: 1 VC)
 big_integers_test.adb:142:44: info: predicate check proved (Trivial: 1 VC)
 big_integers_test.adb:142:47: info: predicate check proved (Trivial: 1 VC)
 big_integers_test.adb:144:11: info: precondition proved (Z3: 4 VC)
-conversion.ads:15:07: medium: terminating annotation on "Partial_Conversion_Rec" could be incorrect, subprogram is recursive
+conversion.ads:15:07: medium: implicit terminating annotation on "Partial_Conversion_Rec" could be incorrect, subprogram is recursive
 conversion.ads:15:26: info: index check proved (CVC5: 2 VC)
 conversion.ads:15:32: info: predicate check proved (Trivial: 1 VC)
 conversion.ads:17:10: info: precondition proved (CVC5: 4 VC)
@@ -172,9 +172,9 @@ conversion.ads:17:39: info: range check proved (CVC5: 2 VC)
 conversion.ads:17:51: info: index check proved (CVC5: 2 VC)
 conversion.ads:17:57: info: predicate check proved (Trivial: 1 VC)
 conversion.ads:17:75: info: index check proved (CVC5: 2 VC)
-conversion.ads:21:13: info: terminating annotation on "Partial_Conversion" has been proved, subprogram will terminate
+conversion.ads:21:13: info: implicit terminating annotation on "Partial_Conversion" has been proved, subprogram will terminate
 conversion.ads:26:32: info: precondition proved (CVC5: 4 VC)
-conversion.ads:30:13: info: terminating annotation on "To_Integer_255" has been proved, subprogram will terminate
+conversion.ads:30:13: info: implicit terminating annotation on "To_Integer_255" has been proved, subprogram will terminate
 conversion.ads:31:07: info: precondition proved (CVC5: 3 VC)
 curve25519.adb:39:27: info: overflow check proved (CVC5: 4 VC)
 curve25519.adb:41:33: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -223,9 +223,11 @@ curve25519.adb:63:35: info: precondition proved (CVC5: 6 VC)
 curve25519.adb:63:35: info: predicate check proved (Trivial: 2 VC)
 curve25519.adb:64:35: info: precondition proved (CVC5: 6 VC)
 curve25519.adb:64:35: info: predicate check proved (Trivial: 2 VC)
+curve25519.ads:13:13: info: implicit terminating annotation on "Add" has been proved, subprogram will terminate
 curve25519.ads:17:14: info: postcondition proved (CVC5: 2 VC)
 curve25519.ads:18:40: info: overflow check proved (CVC5: 2 VC)
 curve25519.ads:19:26: info: predicate check proved (Trivial: 1 VC)
 curve25519.ads:20:29: info: predicate check proved (Trivial: 1 VC)
 curve25519.ads:20:50: info: predicate check proved (Trivial: 1 VC)
+types.ads:18:13: info: implicit terminating annotation on "Two_Power" has been proved, subprogram will terminate
 types.ads:19:08: info: predicate check proved (Trivial: 1 VC)

@@ -4,26 +4,28 @@ p.adb:31:22: info: assertion proved (CVC5: 1 VC)
 p.adb:32:14: info: precondition proved (CVC5: 2 VC)
 p.adb:42:10: info: justified that "X" might not be initialized
 p.adb:43:28: info: justified that "Z" is not initialized
+p.ads:5:13: info: implicit terminating annotation on "Add_Or_Subtract" has been proved, subprogram will terminate
 p.ads:7:20: info: postcondition proved (CVC5: 2 VC)
+p.ads:9:13: info: implicit terminating annotation on "Assume_Natural" has been proved, subprogram will terminate
 p.ads:12:14: warning: subprogram "Annotate_Intentional" has no effect
 Summary of SPARK analysis
 =========================
 
---------------------------------------------------------------------------------
-SPARK Analysis results        Total      Flow     Provers   Justified   Unproved
---------------------------------------------------------------------------------
-Data Dependencies                 .         .           .           .          .
-Flow Dependencies                 .         .           .           .          .
-Initialization                    2         .           .           2          .
-Non-Aliasing                      .         .           .           .          .
-Run-time Checks                   2         .    2 (CVC5)           .          .
-Assertions                        1         .    1 (CVC5)           .          .
-Functional Contracts              2         .    2 (CVC5)           .          .
-LSP Verification                  .         .           .           .          .
-Termination                       .         .           .           .          .
-Concurrency                       .         .           .           .          .
---------------------------------------------------------------------------------
-Total                             7         .     5 (71%)     2 (29%)          .
+---------------------------------------------------------------------------------
+SPARK Analysis results        Total       Flow     Provers   Justified   Unproved
+---------------------------------------------------------------------------------
+Data Dependencies                 .          .           .           .          .
+Flow Dependencies                 .          .           .           .          .
+Initialization                    2          .           .           2          .
+Non-Aliasing                      .          .           .           .          .
+Run-time Checks                   2          .    2 (CVC5)           .          .
+Assertions                        1          .    1 (CVC5)           .          .
+Functional Contracts              2          .    2 (CVC5)           .          .
+LSP Verification                  .          .           .           .          .
+Termination                       2          2           .           .          .
+Concurrency                       .          .           .           .          .
+---------------------------------------------------------------------------------
+Total                             9    2 (22%)     5 (56%)     2 (22%)          .
 
 
 max steps used for successful proof: 1
@@ -33,6 +35,7 @@ in unit main, 1 subprograms and packages out of 1 analyzed
   Main at main.adb:6 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of Main depends on
   effects on parameters and Global variables of P.Annotate_Intentional
+  effects on parameters and Global variables of P.Assume_Natural
   effects on parameters and Global variables of Q
   effects on parameters and Global variables of Q2
   effects on parameters and Global variables of Q3
@@ -43,7 +46,6 @@ absence of run-time errors of P depends on
   absence of run-time errors of P.Inner
   P.Add_Or_Subtract at p.ads:5 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (3 checks)
 the postcondition of P.Add_Or_Subtract fully established
-effects on parameters and Global variables of P.Add_Or_Subtract fully established
 absence of run-time errors of P.Add_Or_Subtract fully established
   P.Annotate_Intentional at p.ads:12 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
    Justified check messages:
@@ -56,8 +58,8 @@ absence of run-time errors of P.Annotate_Intentional depends on
    pragma Assume statements:
     p.adb:26:7
     p.adb:30:7
-effects on parameters and Global variables of P.Assume_Natural fully established
-absence of run-time errors of P.Assume_Natural fully established
+absence of run-time errors of P.Assume_Natural depends on
+  effects on parameters and Global variables of P.Add_Or_Subtract
   P.Inner at p.adb:4 skipped; body is SPARK_Mode => Off
   P.Inner.Do_Nothing at p.adb:5 skipped; body is SPARK_Mode => Off
 in unit q, 0 subprograms and packages out of 1 analyzed
@@ -66,3 +68,4 @@ in unit q2, 0 subprograms and packages out of 1 analyzed
   Q2 at q2.adb:1 skipped; SPARK_Mode => Off
 in unit q3, 0 subprograms and packages out of 1 analyzed
   Q3 at q3.adb:1 skipped; SPARK_Mode => Off
+

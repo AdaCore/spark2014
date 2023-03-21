@@ -10,8 +10,10 @@ pf.adb:24:22: info: assertion proved (CVC5: 1 VC)
 pf.adb:24:28: info: division check proved (CVC5: 1 VC)
 pf.adb:25:22: info: assertion proved (CVC5: 1 VC)
 pf.adb:26:22: info: assertion proved (CVC5: 1 VC)
+pf.ads:4:13: info: implicit terminating annotation on "Prf_Public" has been proved, subprogram will terminate
 pf.ads:5:17: info: postcondition proved (CVC5: 1 VC)
 pf.ads:5:39: info: division check proved (CVC5: 1 VC)
+pf.ads:7:13: info: implicit terminating annotation on "Prf_Hidden" has been proved, subprogram will terminate
 pf.ads:9:36: info: initialization of "B" proved
 pf.ads:10:17: info: postcondition proved (CVC5: 2 VC)
 pfmain.adb:8:04: info: initialization of "B" proved

@@ -7,3 +7,5 @@ test.adb:5:35: info: unrolling loop
 test.adb:6:10: warning: "B1" is set by "Do_Nothing" but not used after the call
 test.adb:9:35: info: unrolling loop
 test.adb:56:13: warning: unused assignment
+test.ads:11:13: info: implicit terminating annotation on "My_B1" has been proved, subprogram will terminate
+test.ads:12:13: info: implicit terminating annotation on "My_B2" has been proved, subprogram will terminate

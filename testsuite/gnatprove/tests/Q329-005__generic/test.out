@@ -1,4 +1,6 @@
 generic_parent-child_instance.adb:20:29: info: range check proved (CVC5: 2 VC), in instantiation at this_instance.ads:3
 generic_parent-child_instance.adb:24:29: info: range check proved (CVC5: 2 VC), in instantiation at this_instance.ads:3
+generic_parent-child_instance.ads:23:14: medium: implicit terminating annotation on "Create" could be incorrect, dispatching call might be nonterminating, in instantiation at this_instance.ads:3
 generic_parent.adb:18:29: info: range check proved (CVC5: 2 VC), in instantiation at this_parent.ads:3
+generic_parent.ads:7:13: info: implicit terminating annotation on "Create" has been proved, subprogram will terminate, in instantiation at this_parent.ads:3
 main_overriding_test.adb:8:31: info: unrolling loop

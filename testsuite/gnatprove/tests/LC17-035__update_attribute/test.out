@@ -8,21 +8,27 @@ arrays.adb:69:21: info: index check proved (CVC5: 2 VC)
 arrays.adb:69:30: info: index check proved (CVC5: 2 VC)
 arrays.adb:73:07: info: initialization of "Tmp" proved
 arrays.adb:90:10: info: index check proved (CVC5: 2 VC)
+arrays.ads:12:13: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
 arrays.ads:14:19: info: postcondition proved (Z3: 1 VC)
 arrays.ads:16:51: info: overflow check proved (CVC5: 2 VC)
 arrays.ads:23:19: info: postcondition proved (CVC5: 2 VC)
 arrays.ads:31:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+arrays.ads:34:13: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
 arrays.ads:35:19: info: postcondition proved (CVC5: 1 VC)
 arrays.ads:35:47: info: index check proved (CVC5: 2 VC)
+arrays.ads:38:13: info: implicit terminating annotation on "F3" has been proved, subprogram will terminate
 arrays.ads:39:19: info: postcondition proved (CVC5: 1 VC)
 arrays.ads:39:47: info: index check proved (CVC5: 2 VC)
 arrays.ads:40:46: info: index check proved (CVC5: 2 VC)
 arrays.ads:41:46: info: index check proved (CVC5: 2 VC)
+arrays.ads:44:13: info: implicit terminating annotation on "F4" has been proved, subprogram will terminate
 arrays.ads:45:19: info: postcondition proved (CVC5: 1 VC)
 arrays.ads:45:47: info: index check proved (CVC5: 2 VC)
 arrays.ads:45:59: info: index check proved (CVC5: 2 VC)
+arrays.ads:48:13: info: implicit terminating annotation on "F5" has been proved, subprogram will terminate
 arrays.ads:49:19: info: postcondition proved (CVC5: 1 VC)
 arrays.ads:49:46: info: index check proved (CVC5: 2 VC)
+arrays.ads:52:13: info: implicit terminating annotation on "F6" has been proved, subprogram will terminate
 arrays.ads:53:19: info: postcondition proved (CVC5: 1 VC)
 arrays.ads:53:48: info: index check proved (CVC5: 2 VC)
 arrays.ads:53:55: info: index check proved (CVC5: 2 VC)
@@ -35,6 +41,7 @@ arrays.ads:61:19: info: postcondition proved (CVC5: 1 VC)
 arrays.ads:61:53: info: index check proved (CVC5: 2 VC)
 arrays.ads:61:62: info: index check proved (CVC5: 2 VC)
 arrays.ads:65:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+arrays.ads:68:13: info: implicit terminating annotation on "Swap_Fun" has been proved, subprogram will terminate
 arrays.ads:69:19: info: postcondition proved (CVC5: 1 VC)
 arrays.ads:69:43: info: index check proved (CVC5: 2 VC)
 arrays.ads:70:43: info: index check proved (CVC5: 2 VC)

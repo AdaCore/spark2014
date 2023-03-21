@@ -1,10 +1,14 @@
 infeasible_access_subp.adb:2:04: medium: contract of function might not be feasible
+infeasible_access_subp.adb:5:06: warning: Always_Return annotation is useless
+infeasible_access_subp.adb:5:06: warning: function "F" has implicit Always_Return annotation
 infeasible_access_subp.adb:6:14: info: postcondition proved (CVC5: 1 VC)
-infeasible_access_subp.adb:9:07: medium: terminating annotation on "F" could be incorrect, call via access-to-subprogram might be nonterminating
+infeasible_access_subp.adb:9:07: medium: implicit terminating annotation on "F" could be incorrect, call via access-to-subprogram might be nonterminating
 infeasible_access_subp.adb:9:33: info: pointer dereference check proved (CVC5: 1 VC)
 infeasible_access_subp.adb:14:13: error: "G1" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
 infeasible_access_subp.adb:14:13: error: unsupported recursive subprogram
+infeasible_access_subp.adb:14:13: info: implicit terminating annotation on "G1" has been proved, subprogram will terminate
 infeasible_access_subp.adb:14:58: info: postcondition proved (CVC5: 1 VC)
+infeasible_access_subp.adb:16:13: info: implicit terminating annotation on "G2" has been proved, subprogram will terminate
 infeasible_access_subp.adb:16:58: info: postcondition proved (CVC5: 1 VC)
 infeasible_access_subp.adb:19:49: info: postcondition of source is strong enough to imply postcondition of target (CVC5: 1 VC)
 infeasible_access_subp.adb:19:51: info: null exclusion check proved (Trivial: 1 VC)

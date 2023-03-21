@@ -426,6 +426,7 @@ libst-reals-errors.ads:15:50: info: predicate check proved (Trivial: 1 VC)
 libst-reals-errors.ads:16:13: info: predicate check proved (Trivial: 1 VC)
 libst-reals-errors.ads:16:24: info: predicate check proved (Trivial: 1 VC)
 libst-reals-errors.ads:19:13: info: function contract might not be available on recursive calls
+libst-reals-errors.ads:19:13: info: implicit terminating annotation on "Weighted_Sum_Abs_Rec" has been proved, subprogram will terminate
 libst-reals-errors.ads:25:12: info: predicate check proved (Trivial: 1 VC)
 libst-reals-errors.ads:25:12: info: subprogram variant proved (altergo: 1 VC)
 libst-reals-errors.ads:25:53: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
@@ -434,6 +435,7 @@ libst-reals-errors.ads:26:63: info: index check proved (CVC5: 2 VC)
 libst-reals-errors.ads:28:16: info: postcondition proved (altergo: 1 VC)
 libst-reals-errors.ads:28:36: info: predicate check proved (Trivial: 1 VC)
 libst-reals-errors.ads:28:47: info: predicate check proved (Trivial: 1 VC)
+libst-reals-errors.ads:30:13: info: implicit terminating annotation on "Weighted_Average_Abs" has been proved, subprogram will terminate
 libst-reals-errors.ads:34:07: info: predicate check proved (Trivial: 1 VC)
 libst-reals-errors.ads:34:57: info: division check proved (CVC5: 1 VC)
 libst-reals-errors.ads:34:59: info: predicate check proved (Trivial: 1 VC)
@@ -475,6 +477,7 @@ libst-reals.ads:7:04: info: analyzing call to "Minus_Log2_Estimate" in context
 libst-reals.ads:7:04: info: in instantiation at a-nbnbre.adb:256
 libst-reals.ads:7:04: info: in instantiation at a-nbnbre.adb:264
 libst-reals.ads:15:13: info: function contract might not be available on recursive calls
+libst-reals.ads:15:13: info: implicit terminating annotation on "Sum_Weight_Rec" has been proved, subprogram will terminate
 libst-reals.ads:20:12: info: predicate check proved (Trivial: 1 VC)
 libst-reals.ads:20:12: info: subprogram variant proved (altergo: 1 VC)
 libst-reals.ads:20:39: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
@@ -482,11 +485,14 @@ libst-reals.ads:20:68: info: index check proved (CVC5: 2 VC)
 libst-reals.ads:22:14: info: postcondition proved (altergo: 1 VC)
 libst-reals.ads:22:28: info: predicate check proved (Trivial: 1 VC)
 libst-reals.ads:22:39: info: predicate check proved (Trivial: 1 VC)
+libst-reals.ads:23:13: info: implicit terminating annotation on "Sum_Weight" has been proved, subprogram will terminate
+libst-reals.ads:27:13: info: implicit terminating annotation on "Weighted_Sum_Rec" has been proved, subprogram will terminate
 libst-reals.ads:33:12: info: predicate check proved (Trivial: 1 VC)
 libst-reals.ads:33:12: info: subprogram variant proved (altergo: 1 VC)
 libst-reals.ads:33:49: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 libst-reals.ads:34:33: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
 libst-reals.ads:34:60: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
+libst-reals.ads:36:13: info: implicit terminating annotation on "Weighted_Average" has been proved, subprogram will terminate
 libst-reals.ads:40:07: info: predicate check proved (Trivial: 1 VC)
 libst-reals.ads:40:53: info: division check proved (CVC5: 1 VC)
 libst-reals.ads:40:55: info: predicate check proved (Trivial: 1 VC)
@@ -546,14 +552,17 @@ libst.adb:81:18: info: division check proved (altergo: 1 VC)
 libst.adb:81:18: info: float overflow check proved (CVC5: 1 VC)
 libst.adb:81:18: info: range check proved (CVC5: 1 VC)
 libst.ads:30:13: info: function contract might not be available on recursive calls
+libst.ads:30:13: info: implicit terminating annotation on "Sum_Weight_Rec" has been proved, subprogram will terminate
 libst.ads:36:14: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC)
 libst.ads:37:34: info: subprogram variant proved (altergo: 1 VC)
 libst.ads:37:61: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 libst.ads:37:66: info: float overflow check proved (altergo: 1 VC)
 libst.ads:37:77: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
 libst.ads:38:70: info: range check proved (Trivial)
+libst.ads:39:13: info: implicit terminating annotation on "Sum_Weight" has been proved, subprogram will terminate
 libst.ads:40:14: info: postcondition proved (altergo: 1 VC)
 libst.ads:45:13: info: function contract might not be available on recursive calls
+libst.ads:45:13: info: implicit terminating annotation on "Weighted_Sum_Rec" has been proved, subprogram will terminate
 libst.ads:52:14: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC; colibri: 1 VC)
 libst.ads:54:16: info: subprogram variant proved (altergo: 1 VC)
 libst.ads:54:53: info: range check proved (altergo: 2 VC)
@@ -565,6 +574,7 @@ libst.ads:56:26: info: float overflow check proved (Trivial)
 libst.ads:56:35: info: range check proved (Trivial)
 libst.ads:56:52: info: float overflow check proved (Trivial)
 libst.ads:56:61: info: range check proved (Trivial)
+libst.ads:57:13: info: implicit terminating annotation on "Weighted_Average" has been proved, subprogram will terminate
 libst.ads:62:16: info: postcondition proved (altergo: 1 VC)
 libst.ads:62:88: info: division check proved (CVC5: 1 VC)
 libst.ads:62:88: info: float overflow check proved (altergo: 1 VC)

@@ -1,3 +1,4 @@
+repr.adb:6:13: info: implicit terminating annotation on "Index_Of_Minimum" has been proved, subprogram will terminate
 repr.adb:6:31: warning: unused variable "Unsorted"
 repr.adb:10:30: warning: "Values" is not modified, could be IN
 repr.adb:12:07: info: data dependencies proved
@@ -16,6 +17,7 @@ sorters.adb:22:29: info: index check proved (CVC5: 2 VC)
 sorters.adb:23:15: info: index check proved (CVC5: 2 VC)
 sorters.adb:23:29: info: index check proved (CVC5: 2 VC)
 sorters.adb:24:15: info: index check proved (CVC5: 2 VC)
+sorters.adb:29:13: info: implicit terminating annotation on "Index_Of_Minimum" has been proved, subprogram will terminate
 sorters.adb:35:10: info: postcondition proved (CVC5: 3 VC)
 sorters.adb:37:39: info: index check proved (CVC5: 2 VC)
 sorters.adb:37:61: info: index check proved (CVC5: 2 VC)

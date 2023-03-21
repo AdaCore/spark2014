@@ -2,6 +2,7 @@ essai05.adb:1:11: warning: SPARK elaboration checks require static elaboration m
 essai05.adb:1:11: warning: dynamic elaboration model is in effect
 essai05.adb:9:04: info: no contextual analysis of "Conv" (unconstrained return type)
 essai05.adb:9:13: info: implicit function contract might not be available on calls from enclosing unit
+essai05.adb:9:13: info: implicit terminating annotation on "Conv" has been proved, subprogram will terminate
 essai05.adb:13:07: medium: range check might fail
 essai05.adb:13:07: warning: initialization of "R" has no effect
 essai05.adb:13:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)

@@ -5,8 +5,10 @@ init.adb:11:46: medium: overflow check might fail, cannot prove lower bound for 
 init.adb:11:50: medium: overflow check might fail, cannot prove lower bound for A + B + C + D [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at init.ads:12 should mention A and B and C and D in a precondition]
 init.ads:4:08: info: flow dependencies proved
 init.ads:5:08: info: initial condition proved (CVC5: 1 VC)
+init.ads:9:13: info: implicit terminating annotation on "Sum_State" has been proved, subprogram will terminate
 init.ads:10:11: info: data dependencies proved
 init.ads:12:13: info: implicit function contract might not be available on calls from enclosing unit
+init.ads:12:13: info: implicit terminating annotation on "Sum_All" has been proved, subprogram will terminate
 init.ads:13:11: info: data dependencies proved
 init_2.ads:6:08: info: flow dependencies proved
 init_2.ads:8:08: medium: initial condition might fail
@@ -18,6 +20,7 @@ initializes_legal.ads:7:27: medium: initialization of V must not depend on A (SP
 initializes_legal.ads:7:27: medium: initialization of V must not depend on Init.State (SPARK RM 7.1.5(11))
 initializes_legal.ads:17:04: info: initialization of "X" proved
 initializes_legal.ads:19:13: info: implicit function contract might not be available on calls from enclosing unit
+initializes_legal.ads:19:13: info: implicit terminating annotation on "Add" has been proved, subprogram will terminate
 initializes_illegal.adb:5:04: high: "Y" constituent of "SA" is not initialized in "Initializes_Illegal" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Y" constituent of "SA" at declaration or in the package body statements]
 initializes_illegal.adb:5:04: high: initialization of "Initializes_Illegal.SA" is specified at initializes_illegal.ads:7
 initializes_illegal.adb:5:07: info: initialization of "Z" constituent of "SA" proved

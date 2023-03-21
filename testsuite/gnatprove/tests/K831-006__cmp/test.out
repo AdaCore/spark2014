@@ -1,1 +1,2 @@
+max.ads:3:13: info: implicit terminating annotation on "Max" has been proved, subprogram will terminate
 max.ads:4:19: info: postcondition proved (CVC5: 2 VC)

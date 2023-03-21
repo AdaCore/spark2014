@@ -6,9 +6,11 @@ binary_search.adb:32:22: info: range check proved (CVC5: 20 VC)
 binary_search.adb:32:39: info: division check proved (CVC5: 10 VC)
 binary_search.adb:35:25: info: range check proved (CVC5: 20 VC)
 binary_search.adb:37:26: info: range check proved (CVC5: 20 VC)
+binary_search.ads:17:13: info: implicit terminating annotation on "Search" has been proved, subprogram will terminate
 binary_search.ads:21:33: info: index check proved (CVC5: 2 VC)
 binary_search.ads:23:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
 binary_search.ads:23:57: info: index check proved (CVC5: 2 VC)
+langley.adb:5:13: info: implicit terminating annotation on "Add" has been proved, subprogram will terminate
 langley.adb:7:14: info: postcondition proved (CVC5: 1 VC)
 langley.adb:7:63: info: overflow check proved (CVC5: 2 VC)
 langley.adb:10:07: info: initialization of "Sum" proved
@@ -23,6 +25,7 @@ lcp.adb:20:36: info: overflow check proved (CVC5: 20 VC)
 lcp.adb:20:48: info: index check proved (CVC5: 20 VC)
 lcp.adb:20:48: info: overflow check proved (CVC5: 20 VC)
 lcp.adb:21:14: info: overflow check proved (CVC5: 20 VC)
+lcp.ads:10:10: info: implicit terminating annotation on "LCP" has been proved, subprogram will terminate
 lcp.ads:14:05: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
 lcp.ads:14:47: info: index check proved (CVC5: 2 VC)
 lcp.ads:14:47: info: overflow check proved (CVC5: 2 VC)

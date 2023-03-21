@@ -1,3 +1,4 @@
+p.ads:8:13: info: implicit terminating annotation on "Wakeup_Time" has been proved, subprogram will terminate
 p.ads:10:14: info: nontermination of task proved (CVC5: 1 VC)
 p.ads:12:04: high: possible data race when accessing variable "p.wakeup"
 p.ads:12:04: high: task "p.t1" accesses "p.wakeup"

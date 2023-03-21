@@ -7,9 +7,14 @@ p.adb:31:28: info: range check proved (CVC5: 2 VC)
 p.adb:40:28: info: range check proved (CVC5: 2 VC)
 p.adb:49:33: info: range check proved (CVC5: 2 VC)
 p.adb:58:10: high: "Input" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(15))
+p.ads:5:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
 p.ads:6:11: info: flow dependencies proved
+p.ads:8:13: info: implicit terminating annotation on "Bar" has been proved, subprogram will terminate
 p.ads:9:11: info: flow dependencies proved
+p.ads:11:13: info: implicit terminating annotation on "Bla" has been proved, subprogram will terminate
 p.ads:12:11: info: flow dependencies proved
+p.ads:14:13: info: implicit terminating annotation on "Boo" has been proved, subprogram will terminate
 p.ads:15:11: info: flow dependencies proved
+p.ads:17:13: info: implicit terminating annotation on "Baz" has been proved, subprogram will terminate
 p.ads:18:11: info: flow dependencies proved
 p.ads:20:14: warning: subprogram "Proc" has no effect

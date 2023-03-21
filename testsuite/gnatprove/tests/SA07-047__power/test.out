@@ -1,2 +1,4 @@
 test.adb:6:16: info: implicit function contract might not be available on calls from enclosing unit
+test.adb:6:16: info: implicit terminating annotation on "X" has been proved, subprogram will terminate
 test.adb:8:29: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
+test.ads:5:14: info: implicit terminating annotation on "Test" has been proved, subprogram will terminate

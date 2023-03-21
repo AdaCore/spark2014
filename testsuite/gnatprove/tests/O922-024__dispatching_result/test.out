@@ -1,2 +1,4 @@
+dispatching_result.ads:5:13: info: implicit terminating annotation on "Init" has been proved, subprogram will terminate
 dispatching_result.ads:6:20: info: postcondition proved (CVC5: 1 VC)
 dispatching_result.ads:6:20: info: postcondition proved (CVC5: 1 VC), in inherited contract at dispatching_result.ads:13
+dispatching_result.ads:13:13: info: implicit terminating annotation on "Init" has been proved, subprogram will terminate

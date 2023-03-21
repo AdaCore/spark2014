@@ -1,0 +1,4 @@
+p1.ads:6:14: info: implicit terminating annotation on "Get_X" has been proved, subprogram will terminate
+p1.ads:7:14: info: implicit terminating annotation on "Call_Get_X" has been proved, subprogram will terminate
+p1.ads:8:14: info: implicit terminating annotation on "Get_Y" has been proved, subprogram will terminate
+p2.ads:4:14: info: implicit terminating annotation on "F" has been proved, subprogram will terminate

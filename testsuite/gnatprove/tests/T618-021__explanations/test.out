@@ -7,7 +7,9 @@ inline.adb:16:20: info: no contextual analysis of "A" (body not seen yet)
 inline.adb:16:20: medium: terminating annotation on "A" could be incorrect, subprogram is recursive, in call inlined at inline.adb:21
 inline.adb:21:20: info: analyzing call to "B" in context
 mutually_recursive_nested_package.adb:1:10: info: implicit function contract might not be available on recursive calls
-mutually_recursive_nested_package.adb:3:17: medium: terminating annotation on "Mutually_Recursive_Nested_Package" could be incorrect, "P" and "Mutually_Recursive_Nested_Package" are mutually recursive
+mutually_recursive_nested_package.adb:2:03: warning: Always_Return annotation is useless
+mutually_recursive_nested_package.adb:2:03: warning: function "Mutually_Recursive_Nested_Package" has implicit Always_Return annotation
+mutually_recursive_nested_package.adb:3:17: medium: implicit terminating annotation on "Mutually_Recursive_Nested_Package" could be incorrect, "P" and "Mutually_Recursive_Nested_Package" are mutually recursive
 mutually_recursive_nested_package.adb:3:17: warning: initialization of "X" has no effect
 nonterminating.adb:1:11: warning: subprogram "Nonterminating" has no effect
 nonterminating.adb:4:14: info: add a contract to analyze it separately from calling contexts
@@ -16,9 +18,9 @@ nonterminating.adb:4:14: warning: subprogram "Infinite_Loop" has no effect
 nonterminating.adb:7:20: medium: terminating annotation on "Nonterminating" could be incorrect, loop might be nonterminating, in call inlined at nonterminating.adb:21
 nonterminating.adb:8:15: medium: overflow check might fail, cannot prove upper bound for -X, in call inlined at nonterminating.adb:21 (e.g. when X = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer]
 nonterminating.adb:12:33: warning: unused variable "I"
+nonterminating.adb:14:07: medium: implicit terminating annotation on "Infinite_Recursion" could be incorrect, subprogram is recursive
 nonterminating.adb:14:14: info: analyzing call to "Infinite_Recursion" in context
 nonterminating.adb:14:14: info: no contextual analysis of call to recursive subprogram
-nonterminating.adb:18:33: medium: terminating annotation on "Nonterminating" could be incorrect, call to "Infinite_Recursion" might be nonterminating
 nonterminating.adb:18:33: medium: terminating annotation on "Nonterminating" could be incorrect, loop might be nonterminating
 nonterminating.adb:18:33: warning: loop condition is stable
 nonterminating.adb:21:04: info: analyzing call to "Infinite_Loop" in context

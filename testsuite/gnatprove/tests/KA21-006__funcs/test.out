@@ -1,5 +1,11 @@
+funcs.adb:7:13: info: implicit terminating annotation on "F3" has been proved, subprogram will terminate
+funcs.adb:9:13: info: implicit terminating annotation on "F4" has been proved, subprogram will terminate
+funcs.adb:21:13: info: implicit terminating annotation on "G3" has been proved, subprogram will terminate
 funcs.adb:21:17: warning: unused variable "X"
+funcs.adb:23:13: info: implicit terminating annotation on "G4" has been proved, subprogram will terminate
 funcs.adb:23:17: warning: unused variable "X"
+funcs.adb:38:13: info: implicit terminating annotation on "P4" has been proved, subprogram will terminate
+funcs.adb:53:13: info: implicit terminating annotation on "Q4" has been proved, subprogram will terminate
 funcs.adb:53:58: info: postcondition proved (CVC5: 2 VC)
 funcs.adb:61:04: warning: analyzing unreferenced procedure "Test"
 funcs.adb:62:07: info: initialization of "Y" proved
@@ -45,8 +51,18 @@ funcs.adb:105:22: info: assertion proved (CVC5: 2 VC)
 funcs.adb:106:35: info: assertion proved (CVC5: 2 VC)
 funcs.adb:107:22: info: assertion proved (CVC5: 2 VC)
 funcs.adb:108:35: info: assertion proved (CVC5: 2 VC)
+funcs.ads:2:13: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
+funcs.ads:3:13: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
+funcs.ads:4:13: info: implicit terminating annotation on "F5" has been proved, subprogram will terminate
+funcs.ads:8:13: info: implicit terminating annotation on "G1" has been proved, subprogram will terminate
 funcs.ads:8:17: warning: unused variable "X"
+funcs.ads:9:13: info: implicit terminating annotation on "G2" has been proved, subprogram will terminate
 funcs.ads:9:17: warning: unused variable "X"
+funcs.ads:10:13: info: implicit terminating annotation on "G5" has been proved, subprogram will terminate
 funcs.ads:10:17: warning: unused variable "X"
+funcs.ads:14:13: info: implicit terminating annotation on "P2" has been proved, subprogram will terminate
+funcs.ads:15:13: info: implicit terminating annotation on "P5" has been proved, subprogram will terminate
+funcs.ads:19:13: info: implicit terminating annotation on "Q2" has been proved, subprogram will terminate
 funcs.ads:19:58: info: postcondition proved (CVC5: 2 VC)
+funcs.ads:20:13: info: implicit terminating annotation on "Q5" has been proved, subprogram will terminate
 funcs.ads:20:58: info: postcondition proved (CVC5: 2 VC)

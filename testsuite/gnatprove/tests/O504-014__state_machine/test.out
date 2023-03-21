@@ -1,16 +1,16 @@
-spark-containers-formal-unbounded_vectors.ads:38:18: info: terminating annotation on "Oeqr" has been proved, subprogram will terminate, in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:38:18: info: implicit terminating annotation on "Oeqr" has been proved, subprogram will terminate, in instantiation at state_machine_with_oop.ads:75
 spark-containers-formal-unbounded_vectors.ads:42:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at state_machine_with_oop.ads:75
 spark-containers-formal-unbounded_vectors.ads:44:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at state_machine_with_oop.ads:75
 spark-containers-formal-unbounded_vectors.ads:46:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at state_machine_with_oop.ads:75
 spark-containers-formal-unbounded_vectors.ads:287:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:287:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at state_machine_with_oop.ads:75
 spark-containers-formal-unbounded_vectors.ads:287:13: info: precondition proved (Trivial: 1 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-unbounded_vectors.ads:287:13: info: terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at state_machine_with_oop.ads:75
 spark-containers-formal-unbounded_vectors.ads:291:06: info: data dependencies proved, in instantiation at state_machine_with_oop.ads:75
 spark-containers-formal-unbounded_vectors.ads:294:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at state_machine_with_oop.ads:75
 spark-containers-formal-unbounded_vectors.ads:294:13: info: precondition proved (CVC5: 2 VC), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-unbounded_vectors.ads:325:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:325:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at state_machine_with_oop.ads:75
 spark-containers-formal-unbounded_vectors.ads:326:08: info: dynamic accessibility check proved (Trivial), in instantiation at state_machine_with_oop.ads:75
-spark-containers-formal-unbounded_vectors.ads:330:13: info: terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at state_machine_with_oop.ads:75
+spark-containers-formal-unbounded_vectors.ads:330:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at state_machine_with_oop.ads:75
 spark-containers-formal-unbounded_vectors.ads:332:08: info: dynamic accessibility check proved (Trivial), in instantiation at state_machine_with_oop.ads:75
 spark-containers-formal-unbounded_vectors.ads:352:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at state_machine_with_oop.ads:75
 spark-containers-formal-unbounded_vectors.ads:352:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at state_machine_with_oop.ads:75
@@ -36,11 +36,11 @@ spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "
 spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at state_machine_with_oop.ads:75
 spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at state_machine_with_oop.ads:75
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at state_machine_with_oop.ads:75
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at state_machine_with_oop.ads:75
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at state_machine_with_oop.ads:75
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at state_machine_with_oop.ads:75
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at state_machine_with_oop.ads:75
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at state_machine_with_oop.ads:75
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at state_machine_with_oop.ads:75
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at state_machine_with_oop.ads:75
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at state_machine_with_oop.ads:75
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at state_machine_with_oop.ads:75
 spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at state_machine_with_oop.ads:75
@@ -101,6 +101,10 @@ state_machine_with_discriminant.adb:29:13: info: precondition proved (CVC5: 1 VC
 state_machine_with_discriminant.adb:31:13: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
 state_machine_with_discriminant.adb:33:13: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
 state_machine_with_discriminant.adb:35:13: info: precondition proved (CVC5: 3 VC)
+state_machine_with_discriminant.ads:12:13: info: implicit terminating annotation on "Can_Move_To_A" has been proved, subprogram will terminate
+state_machine_with_discriminant.ads:14:13: info: implicit terminating annotation on "Can_Move_To_B" has been proved, subprogram will terminate
+state_machine_with_discriminant.ads:16:13: info: implicit terminating annotation on "Can_Move_To_C" has been proved, subprogram will terminate
+state_machine_with_discriminant.ads:19:13: info: implicit terminating annotation on "Can_Increase_Value" has been proved, subprogram will terminate
 state_machine_with_discriminant.ads:26:14: info: postcondition proved (CVC5: 1 VC)
 state_machine_with_discriminant.ads:30:14: info: postcondition proved (CVC5: 1 VC)
 state_machine_with_discriminant.ads:34:14: info: postcondition proved (CVC5: 1 VC)
@@ -131,23 +135,39 @@ state_machine_with_oop.adb:77:16: info: precondition proved (CVC5: 2 VC)
 state_machine_with_oop.adb:77:44: info: precondition proved (CVC5: 1 VC)
 state_machine_with_oop.adb:79:16: info: precondition proved (CVC5: 3 VC)
 state_machine_with_oop.adb:80:16: info: precondition proved (CVC5: 2 VC)
+state_machine_with_oop.ads:8:13: info: implicit terminating annotation on "Can_Move_To_A" has been proved, subprogram will terminate
 state_machine_with_oop.ads:8:28: warning: unused variable "Current"
+state_machine_with_oop.ads:9:13: info: implicit terminating annotation on "Can_Move_To_B" has been proved, subprogram will terminate
 state_machine_with_oop.ads:9:28: warning: unused variable "Current"
+state_machine_with_oop.ads:10:13: info: implicit terminating annotation on "Can_Move_To_C" has been proved, subprogram will terminate
 state_machine_with_oop.ads:10:28: warning: unused variable "Current"
 state_machine_with_oop.ads:12:13: info: function contract feasibility proved (CVC5: 1 VC)
+state_machine_with_oop.ads:14:19: medium: implicit terminating annotation on "Move_To_A" could be incorrect, dispatching call might be nonterminating, in inherited contract at state_machine_with_oop.ads:68
 state_machine_with_oop.ads:16:13: info: function contract feasibility proved (CVC5: 1 VC)
+state_machine_with_oop.ads:18:19: medium: implicit terminating annotation on "Move_To_B" could be incorrect, dispatching call might be nonterminating, in inherited contract at state_machine_with_oop.ads:41
 state_machine_with_oop.ads:20:13: info: function contract feasibility proved (CVC5: 1 VC)
+state_machine_with_oop.ads:22:19: medium: implicit terminating annotation on "Move_To_C" could be incorrect, dispatching call might be nonterminating, in inherited contract at state_machine_with_oop.ads:42
+state_machine_with_oop.ads:34:13: info: implicit terminating annotation on "Can_Move_To_A" has been proved, subprogram will terminate
 state_machine_with_oop.ads:34:28: warning: unused variable "Current"
+state_machine_with_oop.ads:35:13: info: implicit terminating annotation on "Can_Move_To_B" has been proved, subprogram will terminate
+state_machine_with_oop.ads:37:13: info: implicit terminating annotation on "Can_Move_To_C" has been proved, subprogram will terminate
 state_machine_with_oop.ads:40:13: high: all paths in "Move_To_A" raise exceptions or do not terminate normally
 state_machine_with_oop.ads:43:14: high: all paths in "Stay_Here" raise exceptions or do not terminate normally
 state_machine_with_oop.ads:43:25: warning: "Current" is not modified, could be IN
+state_machine_with_oop.ads:47:13: info: implicit terminating annotation on "Can_Move_To_A" has been proved, subprogram will terminate
 state_machine_with_oop.ads:47:28: warning: unused variable "Current"
+state_machine_with_oop.ads:48:13: info: implicit terminating annotation on "Can_Move_To_B" has been proved, subprogram will terminate
 state_machine_with_oop.ads:48:28: warning: unused variable "Current"
+state_machine_with_oop.ads:49:13: info: implicit terminating annotation on "Can_Move_To_C" has been proved, subprogram will terminate
 state_machine_with_oop.ads:49:28: warning: unused variable "Current"
 state_machine_with_oop.ads:51:13: high: all paths in "Move_To_A" raise exceptions or do not terminate normally
 state_machine_with_oop.ads:52:13: high: all paths in "Move_To_B" raise exceptions or do not terminate normally
 state_machine_with_oop.ads:53:13: high: all paths in "Move_To_C" raise exceptions or do not terminate normally
+state_machine_with_oop.ads:56:13: info: implicit terminating annotation on "Can_Increase_Value" has been proved, subprogram will terminate
+state_machine_with_oop.ads:63:13: info: implicit terminating annotation on "Can_Move_To_A" has been proved, subprogram will terminate
+state_machine_with_oop.ads:65:13: info: implicit terminating annotation on "Can_Move_To_B" has been proved, subprogram will terminate
 state_machine_with_oop.ads:65:28: warning: unused variable "Current"
+state_machine_with_oop.ads:66:13: info: implicit terminating annotation on "Can_Move_To_C" has been proved, subprogram will terminate
 state_machine_with_oop.ads:66:28: warning: unused variable "Current"
 state_machine_with_oop.ads:69:13: high: all paths in "Move_To_B" raise exceptions or do not terminate normally
 state_machine_with_oop.ads:70:13: high: all paths in "Move_To_C" raise exceptions or do not terminate normally

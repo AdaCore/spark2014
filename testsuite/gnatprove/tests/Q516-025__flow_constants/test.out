@@ -1,5 +1,4 @@
-main_func.adb:6:16: warning: assuming "Func" always returns
-main_func.adb:6:16: warning: no returning annotation available for "Func"
+main_func.adb:3:10: info: implicit terminating annotation on "Main_Func" has been proved, subprogram will terminate
 main_proc.adb:6:09: warning: assuming "Proc" always returns
 main_proc.adb:6:09: warning: no returning annotation available for "Proc"
 state.ads:5:49: medium: constant without variable input "Val" not allowed as input to "Proc" (SPARK RM 6.1.4(16))
