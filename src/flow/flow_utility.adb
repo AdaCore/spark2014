@@ -2982,15 +2982,59 @@ package body Flow_Utility is
                               end loop;
 
                            --  For one-dimentionsal array update the indices
-                           --  appear simply as aggregate choices.
+                           --  appear as aggregate choices.
 
                            else
                               pragma Assert (Number_Dimensions (T) = 1);
-                              Variables.Union (Recurse (Choice));
-                           end if;
 
-                           Next (Choice);
-                           exit when No (Choice);
+                              --  Array component choice appears in a
+                              --  subset of forms allowed for aggregates,
+                              --  which are handled when processing
+                              --  N_Component_Association nodes.
+
+                              --  "(Low .. High => ...)"
+
+                              if Nkind (Choice) = N_Range then
+                                 Variables.Union
+                                   (Recurse (Low_Bound (Choice)));
+                                 Variables.Union
+                                   (Recurse (High_Bound (Choice)));
+
+                              --  "(A_Subtype range Low .. High => ...)"
+
+                              elsif Nkind (Choice) = N_Subtype_Indication then
+                                 declare
+                                    R : constant Node_Id :=
+                                      Range_Expression (Constraint (Choice));
+                                 begin
+                                    Variables.Union (Recurse (Low_Bound (R)));
+                                    Variables.Union (Recurse (High_Bound (R)));
+                                 end;
+
+                              --  "(A_Subtype => ...)"
+
+                              elsif Is_Entity_Name (Choice)
+                                and then Is_Type (Entity (Choice))
+                              then
+                                 Variables.Union
+                                   (Recurse
+                                      (Type_Low_Bound (Entity (Choice))));
+                                 Variables.Union
+                                   (Recurse
+                                      (Type_High_Bound (Entity (Choice))));
+
+                              --  "(1 => ...)" or "(X + Y => ...)", etc.
+
+                              elsif Nkind (Choice) in N_Subexpr then
+                                 Variables.Union (Recurse (Choice));
+
+                              else
+                                 raise Program_Error;
+                              end if;
+
+                              Next (Choice);
+                              exit when No (Choice);
+                           end if;
                         end loop;
 
                         Variables.Union (Recurse (Expression (Assoc)));
