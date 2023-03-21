@@ -3031,10 +3031,10 @@ package body Flow_Utility is
                               else
                                  raise Program_Error;
                               end if;
-
-                              Next (Choice);
-                              exit when No (Choice);
                            end if;
+
+                           Next (Choice);
+                           exit when No (Choice);
                         end loop;
 
                         Variables.Union (Recurse (Expression (Assoc)));
