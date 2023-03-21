@@ -205,7 +205,7 @@ package body Flow_Utility is
    procedure Collect_Functions_And_Read_Locked_POs
      (N                  : Node_Id;
       Scop               : Flow_Scope;
-      Functions_Called   : in out Node_Sets.Set;
+      Function_Calls     : in out Call_Sets.Set;
       Tasking            : in out Tasking_Info;
       Generating_Globals : Boolean)
    is
@@ -228,7 +228,7 @@ package body Flow_Utility is
             Collect_Functions_And_Read_Locked_POs
               (N                  => Get_Expr_From_Return_Only_Func (P),
                Scop               => Scop,
-               Functions_Called   => Functions_Called,
+               Function_Calls     => Function_Calls,
                Tasking            => Tasking,
                Generating_Globals => Generating_Globals);
          end if;
@@ -271,7 +271,8 @@ package body Flow_Utility is
                      return OK;
                   end if;
 
-                  Functions_Called.Include (Called_Func);
+                  Function_Calls.Include
+                    (Subprogram_Call'(N => N, E => Called_Func));
 
                   --  Only external calls to protected functions trigger
                   --  priority ceiling protocol checks; internal calls do not.
@@ -320,34 +321,44 @@ package body Flow_Utility is
             when N_Iterator_Specification =>
                declare
                   Typ : constant Entity_Id := Etype (Name (N));
+
+                  procedure Process_Iterable_Primitive (Nam : Name_Id);
+                  --  Process implicit call to iterable primitive function Nam
+
+                  --------------------------------
+                  -- Process_Iterable_Primitive --
+                  --------------------------------
+
+                  procedure Process_Iterable_Primitive (Nam : Name_Id) is
+                  begin
+                     Function_Calls.Include
+                       (Subprogram_Call'
+                          (N => N,
+                           E => Get_Iterable_Type_Primitive (Typ, Nam)));
+                  end Process_Iterable_Primitive;
+
                begin
                   if Has_Aspect (Typ, Aspect_Iterable) then
 
                      --  Has_Element is called always
 
-                     Functions_Called.Include
-                       (Get_Iterable_Type_Primitive (Typ, Name_Has_Element));
+                     Process_Iterable_Primitive (Name_Has_Element);
 
                      --  Element is called when OF keyword is present
 
                      if Of_Present (N) then
-                        Functions_Called.Include
-                          (Get_Iterable_Type_Primitive (Typ, Name_Element));
+                        Process_Iterable_Primitive (Name_Element);
                      end if;
 
                      --  First/Next and Last/Previous are called depening on
                      --  the REVERSE keyword.
 
                      if Reverse_Present (N) then
-                        Functions_Called.Include
-                          (Get_Iterable_Type_Primitive (Typ, Name_Last));
-                        Functions_Called.Include
-                          (Get_Iterable_Type_Primitive (Typ, Name_Previous));
+                        Process_Iterable_Primitive (Name_Last);
+                        Process_Iterable_Primitive (Name_Previous);
                      else
-                        Functions_Called.Include
-                          (Get_Iterable_Type_Primitive (Typ, Name_First));
-                        Functions_Called.Include
-                          (Get_Iterable_Type_Primitive (Typ, Name_Next));
+                        Process_Iterable_Primitive (Name_First);
+                        Process_Iterable_Primitive (Name_Next);
                      end if;
                   else
                      pragma Assert
@@ -1123,16 +1134,16 @@ package body Flow_Utility is
       Include_Predicates : Boolean)
       return Node_Sets.Set
    is
-      Funcs  : Node_Sets.Set := Node_Sets.Empty_Set;
-      Unused : Tasking_Info;
+      Funcalls : Call_Sets.Set;
+      Unused   : Tasking_Info;
    begin
       Collect_Functions_And_Read_Locked_POs
         (N,
          Scop               => Get_Flow_Scope (N), --  ??? could be parameter
-         Functions_Called   => Funcs,
+         Function_Calls     => Funcalls,
          Tasking            => Unused,
          Generating_Globals => Include_Predicates);
-      return Funcs;
+      return To_Subprograms (Funcalls);
    end Get_Functions;
 
    ---------------------------
@@ -6809,5 +6820,19 @@ package body Flow_Utility is
 
       return Obj;
    end Path_To_Flow_Id;
+
+   --------------------
+   -- To_Subprograms --
+   --------------------
+
+   function To_Subprograms (Calls : Call_Sets.Set) return Node_Sets.Set is
+      Subps : Node_Sets.Set;
+   begin
+      for SC of Calls loop
+         Subps.Include (SC.E);
+      end loop;
+
+      return Subps;
+   end To_Subprograms;
 
 end Flow_Utility;

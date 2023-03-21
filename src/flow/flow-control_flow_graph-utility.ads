@@ -52,7 +52,7 @@ package Flow.Control_Flow_Graph.Utility is
      (Var_Def       : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Ex_Use    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Im_Use    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Sub_Called    : Node_Sets.Set       := Node_Sets.Empty_Set;
+      Subp_Calls    : Call_Sets.Set       := Call_Sets.Empty_Set;
       Vertex_Ctx    : Vertex_Context      := No_Vertex_Context;
       E_Loc         : Node_Or_Entity_Id   := Empty;
       Print_Hint    : Pretty_Print_Kind_T := Pretty_Print_Null)
@@ -79,7 +79,7 @@ package Flow.Control_Flow_Graph.Utility is
 
    function Make_Sink_Vertex_Attributes
      (Var_Use       : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Sub_Called    : Node_Sets.Set     := Node_Sets.Empty_Set;
+      Subp_Calls    : Call_Sets.Set     := Call_Sets.Empty_Set;
       Aspect        : Type_Aspect       := No_Aspect;
       Is_Assertion  : Boolean           := False;
       Is_Loop_Entry : Boolean           := False;
@@ -124,7 +124,7 @@ package Flow.Control_Flow_Graph.Utility is
    function Make_Call_Attributes
      (Callsite   : Node_Id;
       Var_Use    : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Sub_Called : Node_Sets.Set     := Node_Sets.Empty_Set;
+      Subp_Calls : Call_Sets.Set     := Call_Sets.Empty_Set;
       Vertex_Ctx : Vertex_Context    := No_Vertex_Context;
       E_Loc      : Node_Or_Entity_Id := Empty)
       return V_Attributes
@@ -145,7 +145,7 @@ package Flow.Control_Flow_Graph.Utility is
       Formal                       : Entity_Id;
       In_Vertex                    : Boolean;
       Discriminants_Or_Bounds_Only : Boolean;
-      Sub_Called                   : Node_Sets.Set  := Node_Sets.Empty_Set;
+      Subp_Calls                   : Call_Sets.Set  := Call_Sets.Empty_Set;
       Vertex_Ctx                   : Vertex_Context := No_Vertex_Context;
       E_Loc                        : Node_Or_Entity_Id)
       return V_Attributes
@@ -196,7 +196,7 @@ package Flow.Control_Flow_Graph.Utility is
       Call_Vertex : Node_Id;
       In_Vertex   : Boolean;
       Scope       : Flow_Scope;
-      Sub_Called  : Node_Sets.Set  := Node_Sets.Empty_Set;
+      Subp_Calls  : Call_Sets.Set  := Call_Sets.Empty_Set;
       Vertex_Ctx  : Vertex_Context := No_Vertex_Context;
       E_Loc       : Node_Or_Entity_Id)
       return V_Attributes

@@ -46,11 +46,12 @@ with VC_Kinds;                    use VC_Kinds;
 
 with Flow.Analysis.Antialiasing;
 with Flow.Analysis.Sanity;
-with Flow.Slice;                     use Flow.Slice;
+with Flow_Classwide;
 with Flow_Debug;                     use Flow_Debug;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Error_Messages;            use Flow_Error_Messages;
 with Flow_Refinement;                use Flow_Refinement;
+with Flow.Slice;                     use Flow.Slice;
 with Flow_Utility;                   use Flow_Utility;
 with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 
@@ -4791,23 +4792,23 @@ package body Flow.Analysis is
             --  Detect violations coming from subprogram calls
 
             else
-               for E of Atr.Subprograms_Called loop
+               for SC of Atr.Subprogram_Calls loop
 
                   --  Ignore elaboration of nested packages
 
-                  if Ekind (E) = E_Package then
+                  if Ekind (SC.E) = E_Package then
                      null;
 
                   --  Calls via access-to-subprogram are not potentially
                   --  blocking, because attribute Access is only allowed on
                   --  subprograms with null globals.
 
-                  elsif Ekind (E) = E_Subprogram_Type then
+                  elsif Ekind (SC.E) = E_Subprogram_Type then
                      null;
 
                   --  Calls to entries are trivially potentially blocking
 
-                  elsif Is_Entry (E) then
+                  elsif Is_Entry (SC.E) then
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      =>
@@ -4819,11 +4820,25 @@ package body Flow.Analysis is
                         Severity => High_Check_Kind,
                         Vertex   => V);
 
+                  elsif Nkind (SC.N) in N_Subprogram_Call
+                    and then Flow_Classwide.Is_Dispatching_Call (SC.N)
+                  then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      =>
+                          "potentially blocking dispatching call " &
+                          "in protected operation &",
+                        N        => Atr.Error_Location,
+                        F1       => Direct_Mapping_Id (Protected_Subp),
+                        Tag      => Potentially_Blocking_In_Protected,
+                        Severity => High_Check_Kind,
+                        Vertex   => V);
+
                   --  Predefined potentially blocking routines are identified
                   --  individually, because they are not analyzed in phase 1.
 
-                  elsif Lib.In_Predefined_Unit (E) then
-                     if Is_Predefined_Potentially_Blocking (E) then
+                  elsif Lib.In_Predefined_Unit (SC.E) then
+                     if Is_Predefined_Potentially_Blocking (SC.E) then
                         Error_Msg_Flow
                           (FA       => FA,
                            Msg      =>
@@ -4831,7 +4846,7 @@ package body Flow.Analysis is
                              "predefined subprogram & " &
                              "in protected operation &",
                            N        => Atr.Error_Location,
-                           F1       => Direct_Mapping_Id (E),
+                           F1       => Direct_Mapping_Id (SC.E),
                            F2       => Direct_Mapping_Id (Protected_Subp),
                            Tag      => Potentially_Blocking_In_Protected,
                            Severity => High_Check_Kind,
@@ -4840,14 +4855,14 @@ package body Flow.Analysis is
 
                   --  Direct calls to potentially blocking subprograms
 
-                  elsif Has_Potentially_Blocking_Statement (E) then
+                  elsif Has_Potentially_Blocking_Statement (SC.E) then
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      =>
                           "call to potentially blocking subprogram & " &
                           "in protected operation &",
                         N        => Atr.Error_Location,
-                        F1       => Direct_Mapping_Id (E),
+                        F1       => Direct_Mapping_Id (SC.E),
                         F2       => Direct_Mapping_Id (Protected_Subp),
                         Tag      => Potentially_Blocking_In_Protected,
                         Severity => High_Check_Kind,
@@ -4864,7 +4879,7 @@ package body Flow.Analysis is
 
                      --  Indirect calls to potentially blocking subprograms
 
-                     Blocking_Callee := Potentially_Blocking_Callee (E);
+                     Blocking_Callee := Potentially_Blocking_Callee (SC.E);
 
                      if Blocking_Callee /= Null_Entity_Name then
                         Error_Msg_Flow
@@ -4885,7 +4900,7 @@ package body Flow.Analysis is
                      else
                         Call_With_Same_Target :=
                           Potentially_Blocking_External_Call
-                            (E, Protected_Type);
+                            (SC.E, Protected_Type);
 
                         if Present (Call_With_Same_Target.Protected_Subprogram)
                         then
@@ -5158,9 +5173,9 @@ package body Flow.Analysis is
             declare
                Atr : V_Attributes renames FA.Atr (V);
             begin
-               for E of Atr.Subprograms_Called loop
-                  if Ekind (E) not in E_Package | E_Subprogram_Type then
-                     Check_Subprogram (E, Atr.Error_Location);
+               for SC of Atr.Subprogram_Calls loop
+                  if Ekind (SC.E) not in E_Package | E_Subprogram_Type then
+                     Check_Subprogram (SC.E, Atr.Error_Location);
                   end if;
                end loop;
             end;
@@ -5893,20 +5908,20 @@ package body Flow.Analysis is
                         Vertex   => V);
                   end if;
 
-                  for E of Atr.Subprograms_Called loop
+                  for SC of Atr.Subprogram_Calls loop
 
                      --  If elaboration of the nested package is nonterminating
                      --  then the current unit is nonterminating as well.
                      --  We will complain when analysing the nested package
                      --  itself.
 
-                     if Ekind (E) = E_Package then
+                     if Ekind (SC.E) = E_Package then
 
-                        if Is_Potentially_Nonreturning (E) then
+                        if Is_Potentially_Nonreturning (SC.E) then
                            Proved := False;
                         end if;
 
-                     elsif Ekind (E) = E_Subprogram_Type then
+                     elsif Ekind (SC.E) = E_Subprogram_Type then
 
                         Proved := False;
                         Error_Msg_Flow
@@ -5920,8 +5935,8 @@ package body Flow.Analysis is
                            Tag      => Subprogram_Termination,
                            Vertex   => V);
 
-                     elsif Is_Dispatching_Operation (E)
-                       and then Present (Find_Dispatching_Type (E))
+                     elsif Nkind (SC.N) in N_Subprogram_Call
+                       and then Flow_Classwide.Is_Dispatching_Call (SC.N)
                      then
 
                         Proved := False;
@@ -5940,9 +5955,9 @@ package body Flow.Analysis is
                      --  cannot be trusted. A message is emitted if the
                      --  subprogram has no Subprogram_Variant aspect.
 
-                     elsif E = FA.Spec_Entity then
+                     elsif SC.E = FA.Spec_Entity then
 
-                        if not Has_Subprogram_Variant (E) then
+                        if not Has_Subprogram_Variant (SC.E) then
                            Proved := False;
                            Error_Msg_Flow
                              (FA       => FA,
@@ -5950,7 +5965,7 @@ package body Flow.Analysis is
                                             ("subprogram is recursive"),
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
-                              F1       => Direct_Mapping_Id (E),
+                              F1       => Direct_Mapping_Id (SC.E),
                               Tag      => Subprogram_Termination,
                               Vertex   => V);
                         end if;
@@ -5966,9 +5981,9 @@ package body Flow.Analysis is
                         --  the Subprogram_Variant of its enclosing
                         --  subprogram.
 
-                        if Mutually_Recursive (FA.Spec_Entity, E)
+                        if Mutually_Recursive (FA.Spec_Entity, SC.E)
                           and then
-                            not Has_Subprogram_Variant (E)
+                            not Has_Subprogram_Variant (SC.E)
                           and then
                             not Has_Subprogram_Variant (Enclosing_Subp)
                         then
@@ -5981,9 +5996,8 @@ package body Flow.Analysis is
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
                               F1       => Spec_Entity_Id,
-                              F2       => Direct_Mapping_Id
-                                (FA.Spec_Entity),
-                              F3       => Direct_Mapping_Id (E),
+                              F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                              F3       => Direct_Mapping_Id (SC.E),
                               Tag      => Subprogram_Termination,
                               Vertex   => V);
                         end if;
@@ -5995,10 +6009,10 @@ package body Flow.Analysis is
                         --  Is_Potentially_Nonreturning is called in the first
                         --  place.
 
-                        if Is_Potentially_Nonreturning (E)
+                        if Is_Potentially_Nonreturning (SC.E)
                           and then
-                            (Calls_Potentially_Nonreturning_Subprogram (E)
-                             or else Is_Directly_Nonreturning (E))
+                            (Calls_Potentially_Nonreturning_Subprogram (SC.E)
+                             or else Is_Directly_Nonreturning (SC.E))
                         then
                            Proved := False;
                            Error_Msg_Flow
@@ -6008,7 +6022,7 @@ package body Flow.Analysis is
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
                               F1       => Spec_Entity_Id,
-                              F2       => Direct_Mapping_Id (E),
+                              F2       => Direct_Mapping_Id (SC.E),
                               Tag      => Subprogram_Termination,
                               Vertex   => V);
                         end if;

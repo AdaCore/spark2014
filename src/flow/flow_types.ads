@@ -571,6 +571,34 @@ package Flow_Types is
                                 Pretty_Print_Entry_Barrier,
                                 Pretty_Print_Borrow);
 
+   type Subprogram_Call is record
+      N : Node_Id;    --  node of the subprogram call
+      E : Entity_Id;  --  entity of the called subprogram
+   end record;
+   --  For subprogram calls (and other nodes that we handle similarly), we
+   --  store both the subprogram call node and the called entity, because the
+   --  node itself is needed to detect dispatching calls and entity cannot be
+   --  uniquely determined by the node itself, e.g. for implicit calls related
+   --  to iterator_specifications. Also, it is just convenient to have the
+   --  entity available as a record component.
+   --
+   --  Note: it is tempting to use the call node as a location of error
+   --  messages, but it would give confusing location for call occuring in type
+   --  predicates, which are traversed when they apply to membership tests.
+
+   function Hash (SC : Subprogram_Call) return Ada.Containers.Hash_Type;
+   --  Hash routine for subprogram calls
+
+   package Call_Sets is new
+     Ada.Containers.Hashed_Sets
+       (Element_Type        => Subprogram_Call,
+        Hash                => Hash,
+        Equivalent_Elements => "=");
+   --  Container for subprogram calls. Currently, it must allow efficient
+   --  adding of the same element (for calls occuring in predicate expressions)
+   --  and relatively efficient membership test for procedure and entries (for
+   --  determining whether they are called definitely).
+
    type V_Attributes is record
       Is_Null_Node                 : Boolean;
       --  Set for auxiliary nodes which can be removed, such as early returns
@@ -703,7 +731,7 @@ package Flow_Types is
       --  Again, for producing the DDG. These are implied updates due to reads
       --  of volatiles where reads are effective.
 
-      Subprograms_Called           : Node_Sets.Set;
+      Subprogram_Calls             : Call_Sets.Set;
       --  The set of all subprograms (functions and procedures) called; think
       --  of this as Variables_Used, but for subprogram calls.
 
@@ -771,7 +799,7 @@ package Flow_Types is
                    Variables_Explicitly_Used       => Flow_Id_Sets.Empty_Set,
                    Volatiles_Read                  => Flow_Id_Sets.Empty_Set,
                    Volatiles_Written               => Flow_Id_Sets.Empty_Set,
-                   Subprograms_Called              => Node_Sets.Empty_Set,
+                   Subprogram_Calls                => Call_Sets.Empty_Set,
                    Loops                           => Node_Sets.Empty_Set,
                    Record_RHS                      => Flow_Graphs.Null_Vertex,
                    Error_Location                  => Empty,

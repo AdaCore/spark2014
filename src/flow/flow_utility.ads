@@ -44,11 +44,11 @@ package Flow_Utility is
    procedure Collect_Functions_And_Read_Locked_POs
      (N                  : Node_Id;
       Scop               : Flow_Scope;
-      Functions_Called   : in out Node_Sets.Set;
+      Function_Calls     : in out Call_Sets.Set;
       Tasking            : in out Tasking_Info;
       Generating_Globals : Boolean)
    with Pre  => Present (N),
-        Post => Functions_Called'Old.Is_Subset (Of_Set => Functions_Called);
+        Post => Function_Calls'Old.Is_Subset (Of_Set => Function_Calls);
    --  For an expression N collect its called functions and update the set of
    --  protected objects that are read-locked when evaluating these functions.
    --
@@ -808,5 +808,8 @@ package Flow_Utility is
    --  qualified expressions, which cannot appear in the assignment target. In
    --  short, this routine can be used both for the LHS and RHS of assignments,
    --  while Get_Assignment_Target_Properties can be only used for the LHS.
+
+   function To_Subprograms (Calls : Call_Sets.Set) return Node_Sets.Set;
+   --  Convert calls to called entities
 
 end Flow_Utility;
