@@ -3858,7 +3858,7 @@ package body Gnat2Why.Subprograms is
       Pre_Prags  : Node_Lists.List;
       Post_Prags : Node_Lists.List;
 
-      procedure Get_Pre_Post_Pragmas (Decls : Node_Lists.List);
+      procedure Get_Pre_Post_Pragmas (Decls : List_Id);
       --  Retrieve pragmas Precondition and Postcondition from the list
       --  of body declarations, and add them to Pre_Prags and Post_Prags
       --  when they do not come from aspects.
@@ -4494,9 +4494,10 @@ package body Gnat2Why.Subprograms is
       -- Get_Pre_Post_Pragmas --
       --------------------------
 
-      procedure Get_Pre_Post_Pragmas (Decls : Node_Lists.List) is
+      procedure Get_Pre_Post_Pragmas (Decls : List_Id) is
+         Decl : Node_Id := First (Decls);
       begin
-         for Decl of Decls loop
+         while Present (Decl) loop
             if Is_Pragma (Decl, Pragma_Precondition) and then
               not From_Aspect_Specification (Decl)
             then
@@ -4507,6 +4508,7 @@ package body Gnat2Why.Subprograms is
             then
                Post_Prags.Append (Decl);
             end if;
+            Next (Decl);
          end loop;
       end Get_Pre_Post_Pragmas;
 
@@ -4990,9 +4992,7 @@ package body Gnat2Why.Subprograms is
                  Name     => M_Main.Return_Exc);
 
          begin
-            Get_Pre_Post_Pragmas
-              (Get_Flat_Statement_And_Declaration_List
-                 (Declarations (Body_N)));
+            Get_Pre_Post_Pragmas (Declarations (Body_N));
 
             Get_Borrows_From_Decls (Declarations (Body_N), Borrowers);
 
