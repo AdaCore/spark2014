@@ -19,7 +19,7 @@ procedure Test_Delta_Checks with SPARK_Mode is
    end Test2;
 
    procedure Test3 with Global => (Input => Y) is
-      C : constant positive := Y;
+      C : constant Positive := Y;
 
       type Matrice is array (1 .. 5, 1 .. 5) of Natural;
       Z : Matrice := (1 .. 5 => (1 .. 5 => 1));
