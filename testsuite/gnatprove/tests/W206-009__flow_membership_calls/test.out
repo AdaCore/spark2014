@@ -1,1 +1,3 @@
+main.adb:4:13: info: implicit terminating annotation on "Is_Zero" has been proved, subprogram will terminate
+main.adb:6:13: info: implicit terminating annotation on "Are_Zeros" has been proved, subprogram will terminate
 main.adb:7:07: info: no contextual analysis of "Are_Zeros" (subtype declaration with predicate)

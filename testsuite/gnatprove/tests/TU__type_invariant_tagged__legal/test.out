@@ -1,4 +1,4 @@
-external_7.adb:5:07: medium: implicit terminating annotation on "Read" could be incorrect, dispatching call might be nonterminating
+external_7.adb:5:07: medium: implicit terminating annotation on "Read" could be incorrect, "Read" and "Pub" are mutually recursive
 external_7.ads:5:13: info: implicit function contract might not be available on recursive calls
 external_7.ads:6:14: warning: subprogram "Read" has no effect
 external_7.ads:7:21: info: initialization of "X" proved

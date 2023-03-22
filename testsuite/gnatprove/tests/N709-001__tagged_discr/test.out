@@ -26,7 +26,7 @@ classwide.ads:77:08: medium: implicit terminating annotation on "C_U1_Is_Zero" c
 classwide.ads:79:06: info: data dependencies proved
 classwide.ads:81:13: info: implicit terminating annotation on "D_Is_Zero" has been proved, subprogram will terminate
 classwide.ads:84:06: info: data dependencies proved
-classwide.ads:96:19: medium: implicit terminating annotation on "Is_Zero" could be incorrect, dispatching call might be nonterminating
+classwide.ads:93:13: info: implicit terminating annotation on "Is_Zero" has been proved, subprogram will terminate
 classwide.ads:99:06: info: data dependencies proved
 classwide.ads:106:14: info: postcondition proved (CVC5: 4 VC)
 classwide.ads:107:06: info: data dependencies proved
@@ -49,7 +49,7 @@ tagged_discr.ads:37:29: info: discriminant check proved (CVC5: 1 VC)
 tagged_discr.ads:40:20: info: initialization of "V" proved
 tagged_discr.ads:41:14: info: postcondition proved (CVC5: 1 VC)
 tagged_discr.ads:44:14: info: postcondition proved (CVC5: 1 VC)
-tagged_discr.ads:55:17: medium: implicit terminating annotation on "Is_Zero" could be incorrect, dispatching call might be nonterminating
+tagged_discr.ads:52:13: info: implicit terminating annotation on "Is_Zero" has been proved, subprogram will terminate
 tagged_discr.ads:58:20: info: initialization of "V" proved
 tagged_discr.ads:59:14: info: postcondition proved (CVC5: 4 VC)
 tagged_discr.ads:62:14: info: postcondition proved (CVC5: 4 VC)

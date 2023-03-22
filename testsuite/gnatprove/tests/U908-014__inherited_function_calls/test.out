@@ -1,7 +1,7 @@
 inherited.adb:5:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
-inherited.adb:15:12: medium: implicit terminating annotation on "F" could be incorrect, dispatching call might be nonterminating
+inherited.adb:15:12: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 inherited.adb:23:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
-inherited.adb:33:12: medium: implicit terminating annotation on "F" could be incorrect, dispatching call might be nonterminating
+inherited.adb:33:12: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 inherited.adb:33:12: medium: in implicit overriding of primitive function with dispatching result "F" at inherited.adb:23
 inherited.adb:33:12: medium: predicate check might fail
 inherited.adb:34:26: info: predicate check proved (CVC5: 1 VC)

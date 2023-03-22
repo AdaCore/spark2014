@@ -1,10 +1,13 @@
 spark-big_intervals.ads:44:13: info: during checks for quantification at spark-big_intervals.ads:36
+spark-big_intervals.ads:44:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 spark-big_intervals.ads:44:13: info: precondition proved (Trivial: 1 VC)
 spark-big_intervals.ads:47:13: info: during checks for quantification at spark-big_intervals.ads:36
+spark-big_intervals.ads:47:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 spark-big_intervals.ads:47:13: info: precondition proved (Trivial: 1 VC)
 spark-big_intervals.ads:48:07: info: predicate check proved (Trivial: 1 VC)
 spark-big_intervals.ads:48:11: info: predicate check proved (Trivial: 1 VC)
 spark-big_intervals.ads:50:13: info: during checks for quantification at spark-big_intervals.ads:36
+spark-big_intervals.ads:50:13: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate
 spark-big_intervals.ads:50:13: info: precondition proved (Trivial: 1 VC)
 spark-big_intervals.ads:51:17: info: predicate check proved (Trivial: 1 VC)
 spark-conversions-float_conversions.ads:33:01: info: analyzing call to "Log2_Estimate" in context
@@ -206,36 +209,36 @@ spark-lemmas-floating_point_arithmetic.ads:175:36: info: division check proved (
 spark-lemmas-floating_point_arithmetic.ads:175:36: info: division check proved (CVC5: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:175:36: info: float overflow check proved (CVC5: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:175:36: info: float overflow check proved (colibri: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:228:13: info: terminating annotation on "Is_Integer_64" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:228:13: info: terminating annotation on "Is_Integer_64" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:228:13: info: implicit terminating annotation on "Is_Integer_64" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:228:13: info: implicit terminating annotation on "Is_Integer_64" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:232:21: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:232:21: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:232:33: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:232:33: info: range check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:236:13: info: terminating annotation on "Is_Integer_32" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:236:13: info: terminating annotation on "Is_Integer_32" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:236:13: info: implicit terminating annotation on "Is_Integer_32" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:236:13: info: implicit terminating annotation on "Is_Integer_32" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:240:21: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:240:21: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:240:33: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:240:33: info: range check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:245:13: info: terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:245:13: info: terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:245:13: info: implicit terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:245:13: info: implicit terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:247:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:247:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:249:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:249:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:249:33: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:249:33: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:254:13: info: terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:254:13: info: terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:254:13: info: implicit terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:254:13: info: implicit terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:256:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:256:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:258:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:258:29: info: range check proved (CVC5: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:258:33: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:258:33: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:262:13: info: terminating annotation on "Is_Integer" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:262:13: info: terminating annotation on "Is_Integer" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:262:13: info: implicit terminating annotation on "Is_Integer" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:262:13: info: implicit terminating annotation on "Is_Integer" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:269:19: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:269:19: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:269:31: info: range check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39

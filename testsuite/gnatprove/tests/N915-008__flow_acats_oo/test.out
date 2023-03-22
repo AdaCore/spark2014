@@ -7,11 +7,11 @@ c3900050.ads:84:13: info: implicit terminating annotation on "Get_Time" has been
 c3900050.ads:86:13: info: implicit terminating annotation on "Get_Display" has been proved, subprogram will terminate
 c3900050.ads:88:13: info: implicit terminating annotation on "Initial_Values_Okay" has been proved, subprogram will terminate
 c3900050.ads:91:13: info: implicit terminating annotation on "Bad_Final_Values" has been proved, subprogram will terminate
-c3900051.adb:40:07: medium: implicit terminating annotation on "Initial_Values_Okay" could be incorrect, dispatching call might be nonterminating
-c3900051.adb:48:07: medium: implicit terminating annotation on "Bad_Final_Values" could be incorrect, dispatching call might be nonterminating
 c3900051.ads:68:13: info: implicit terminating annotation on "Get_Level" has been proved, subprogram will terminate
-c3900052.adb:36:07: medium: implicit terminating annotation on "Initial_Values_Okay" could be incorrect, dispatching call might be nonterminating
-c3900052.adb:44:07: medium: implicit terminating annotation on "Bad_Final_Values" could be incorrect, dispatching call might be nonterminating
+c3900051.ads:70:13: info: implicit terminating annotation on "Initial_Values_Okay" has been proved, subprogram will terminate
+c3900051.ads:74:13: info: implicit terminating annotation on "Bad_Final_Values" has been proved, subprogram will terminate
+c3900052.ads:75:13: info: implicit terminating annotation on "Initial_Values_Okay" has been proved, subprogram will terminate
+c3900052.ads:79:13: info: implicit terminating annotation on "Bad_Final_Values" has been proved, subprogram will terminate
 c3900053.adb:98:10: warning: assuming "TEST" always returns
 c3900053.adb:98:10: warning: no returning annotation available for "TEST"
 c3900053.adb:106:10: info: initialization of "Alarm" proved
@@ -55,11 +55,11 @@ c3900060.ads:86:13: info: implicit terminating annotation on "Get_Time" has been
 c3900060.ads:88:13: info: implicit terminating annotation on "Get_Display" has been proved, subprogram will terminate
 c3900060.ads:90:13: info: implicit terminating annotation on "Initial_Values_Okay" has been proved, subprogram will terminate
 c3900060.ads:93:13: info: implicit terminating annotation on "Bad_Final_Values" has been proved, subprogram will terminate
-c3900061.adb:40:07: medium: implicit terminating annotation on "Initial_Values_Okay" could be incorrect, dispatching call might be nonterminating
-c3900061.adb:48:07: medium: implicit terminating annotation on "Bad_Final_Values" could be incorrect, dispatching call might be nonterminating
 c3900061.ads:69:13: info: implicit terminating annotation on "Get_Level" has been proved, subprogram will terminate
-c3900062.adb:37:07: medium: implicit terminating annotation on "Initial_Values_Okay" could be incorrect, dispatching call might be nonterminating
-c3900062.adb:45:07: medium: implicit terminating annotation on "Bad_Final_Values" could be incorrect, dispatching call might be nonterminating
+c3900061.ads:71:13: info: implicit terminating annotation on "Initial_Values_Okay" has been proved, subprogram will terminate
+c3900061.ads:75:13: info: implicit terminating annotation on "Bad_Final_Values" has been proved, subprogram will terminate
+c3900062.ads:78:13: info: implicit terminating annotation on "Initial_Values_Okay" has been proved, subprogram will terminate
+c3900062.ads:82:13: info: implicit terminating annotation on "Bad_Final_Values" has been proved, subprogram will terminate
 c3900063.adb:97:10: warning: assuming "TEST" always returns
 c3900063.adb:97:10: warning: no returning annotation available for "TEST"
 c3900063.adb:110:10: info: initialization of "Medium_Alarm" proved

@@ -243,14 +243,14 @@ example_recursive.adb:352:10: warning: no Global contract available for "Rand"
 example_recursive.adb:353:07: medium: in inlined expression function body at example_recursive.adb:197
 example_recursive.adb:353:07: medium: precondition might fail, cannot prove not Reachable (Address (L2.Values), L2.Length, A, Memory)
 example_tagged_obj.adb:11:16: info: implicit terminating annotation on "Witness" has been proved, subprogram will terminate
+example_tagged_obj.adb:12:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 example_tagged_obj.adb:14:26: info: postcondition proved (CVC5: 2 VC)
 example_tagged_obj.adb:14:26: info: postcondition proved (CVC5: 2 VC), in inherited contract at example_tagged_obj.adb:32
-example_tagged_obj.adb:14:37: medium: implicit terminating annotation on overriding operator "=" could be incorrect, dispatching call might be nonterminating
-example_tagged_obj.adb:14:37: medium: implicit terminating annotation on overriding operator "=" could be incorrect, dispatching call might be nonterminating, in inherited contract at example_tagged_obj.adb:32
 example_tagged_obj.adb:14:40: info: predicate check proved (Trivial: 1 VC)
 example_tagged_obj.adb:14:55: info: predicate check proved (Trivial: 1 VC)
 example_tagged_obj.adb:30:16: info: implicit terminating annotation on "Witness" has been proved, subprogram will terminate
 example_tagged_obj.adb:31:33: info: predicate check proved (Trivial: 1 VC)
+example_tagged_obj.adb:32:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 example_tagged_obj.adb:37:04: info: initialization of "X1" proved
 example_tagged_obj.adb:38:04: info: initialization of "X2" proved
 example_tagged_obj.adb:39:04: info: initialization of "X3" proved

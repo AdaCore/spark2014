@@ -34,6 +34,7 @@ package body RR_Type is
         and then Name (DomainNameStringTypeIndex'First) /= ' '
         and then Name (Index + 1) /= ' '
       loop
+         pragma Loop_Variant (Increases => Index);
          pragma Loop_Invariant
            (Index < MaxDomainNameLength and
             (for all Q in DomainNameStringTypeIndex range 1 .. Index + 1 =>
@@ -93,6 +94,7 @@ package body RR_Type is
    begin
       Index := WireStringTypeIndex'First;
       while Index<MaxDomainNameLength+1 and Name(Index)/=Character'Val(0) loop
+         pragma Loop_Variant (Increases => Index);
          pragma Loop_Invariant
            (Index < MaxDomainNameLength+1 and
             (for all Q in WireStringTypeIndex range 1 .. Index =>
@@ -137,6 +139,7 @@ package body RR_Type is
          while Result < DomainNameStringTypeIndex'Last
            and then Token(Result)/='.'
          loop
+            pragma Loop_Variant (Increases => Result);
    	    pragma Loop_Invariant
               (Result >= Position and Result < LineLengthIndex'Last);
             Result := Result + 1;

@@ -39,6 +39,7 @@ stable_marriage.adb:113:13: info: loop invariant initialization proved (CVC5: 1 
 stable_marriage.adb:113:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 stable_marriage.adb:114:29: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:115:35: info: index check proved (CVC5: 4 VC)
+stable_marriage.adb:124:13: info: implicit terminating annotation on "Invert" has been proved, subprogram will terminate
 stable_marriage.adb:129:08: info: postcondition proved (altergo: 1 VC)
 stable_marriage.adb:130:33: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:132:07: info: initialization of "Result" proved
@@ -50,10 +51,12 @@ stable_marriage.adb:141:32: info: precondition proved (CVC5: 2 VC)
 stable_marriage.adb:141:46: info: index check proved (CVC5: 4 VC)
 stable_marriage.adb:142:25: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:167:07: info: initialization of "Ranking_2_Inverted" proved
+stable_marriage.adb:183:16: info: implicit terminating annotation on "All_Unmatched_G1_Set_Elements_Distinct" has been proved, subprogram will terminate
 stable_marriage.adb:184:18: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:186:23: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:189:50: info: index check proved (CVC5: 2 VC)
 stable_marriage.adb:190:56: info: index check proved (CVC5: 2 VC)
+stable_marriage.adb:192:16: info: implicit terminating annotation on "Invariant_Holds" has been proved, subprogram will terminate
 stable_marriage.adb:204:29: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:206:51: info: index check proved (CVC5: 2 VC)
 stable_marriage.adb:223:26: info: range check proved (CVC5: 2 VC)
@@ -131,29 +134,38 @@ stable_marriage.adb:382:64: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:383:10: info: analyzing call to "Add_An_Unmatched" in context
 stable_marriage.adb:386:22: info: assertion proved (CVC5: 1 VC)
 stable_marriage.adb:388:22: info: assertion proved (CVC5: 2 VC)
+stable_marriage.adb:392:46: medium: implicit terminating annotation on "Matching" could be incorrect, loop might be nonterminating
 stable_marriage.adb:393:33: info: loop invariant initialization proved (CVC5: 9 VC; Trivial: 5 VC)
 stable_marriage.adb:393:33: info: loop invariant preservation proved (CVC5: 7 VC; Trivial: 5 VC; altergo: 2 VC)
 stable_marriage.adb:394:10: info: precondition proved (CVC5: 10 VC; Trivial: 5 VC; altergo: 2 VC)
+stable_marriage.ads:20:13: info: implicit terminating annotation on "Is_Permutation_1" has been proved, subprogram will terminate
 stable_marriage.ads:21:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:26:06: info: flow dependencies proved
 stable_marriage.ads:28:06: warning: postcondition does not check the outcome of calling "Invert_Permutation_1"
 stable_marriage.ads:30:49: medium: postcondition might fail, cannot prove R1 (Rank1) /= R1 (Rank2)
+stable_marriage.ads:32:13: info: implicit terminating annotation on "Is_Permutation_2" has been proved, subprogram will terminate
 stable_marriage.ads:33:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:38:06: info: flow dependencies proved
 stable_marriage.ads:40:06: warning: postcondition does not check the outcome of calling "Invert_Permutation_2"
 stable_marriage.ads:42:49: medium: postcondition might fail, cannot prove R2 (Rank1) /= R2 (Rank2)
+stable_marriage.ads:47:13: info: implicit terminating annotation on "Invert_1" has been proved, subprogram will terminate
 stable_marriage.ads:50:14: info: postcondition proved (altergo: 2 VC)
+stable_marriage.ads:53:13: info: implicit terminating annotation on "Invert_2" has been proved, subprogram will terminate
 stable_marriage.ads:56:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:60:06: info: flow dependencies proved
 stable_marriage.ads:63:06: warning: postcondition does not check the outcome of calling "Invert_Ranking_Of_Group_1"
 stable_marriage.ads:65:45: medium: postcondition might fail, cannot prove G2_To_G1 (G21) /= G2_To_G1 (G22)
+stable_marriage.ads:67:13: info: implicit terminating annotation on "Invert_Map" has been proved, subprogram will terminate
 stable_marriage.ads:71:07: info: postcondition proved (altergo: 2 VC)
+stable_marriage.ads:74:13: info: implicit terminating annotation on "Is_Preferred_1" has been proved, subprogram will terminate
 stable_marriage.ads:77:14: info: postcondition proved (CVC5: 2 VC)
 stable_marriage.ads:78:09: info: precondition proved (CVC5: 1 VC)
 stable_marriage.ads:78:33: info: precondition proved (CVC5: 1 VC)
+stable_marriage.ads:80:13: info: implicit terminating annotation on "Is_Preferred_2" has been proved, subprogram will terminate
 stable_marriage.ads:83:14: info: postcondition proved (CVC5: 2 VC)
 stable_marriage.ads:84:09: info: precondition proved (CVC5: 1 VC)
 stable_marriage.ads:84:33: info: precondition proved (CVC5: 1 VC)
+stable_marriage.ads:88:13: info: function contract might not be available on implicit recursive calls
 stable_marriage.ads:95:08: medium: postcondition might fail
 stable_marriage.ads:99:16: info: precondition proved (CVC5: 1 VC)
 stable_marriage.ads:100:17: info: precondition proved (CVC5: 1 VC)

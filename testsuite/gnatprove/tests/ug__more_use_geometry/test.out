@@ -1,7 +1,7 @@
 geometry.ads:9:13: info: implicit terminating annotation on "Valid" has been proved, subprogram will terminate
-geometry.ads:32:52: info: justified that implicit terminating annotation on "Valid" could be incorrect, dispatching call might be nonterminating
-geometry.ads:45:20: info: class-wide postcondition is stronger than overridden one
-geometry.ads:49:20: info: class-wide postcondition is stronger than overridden one
+geometry.ads:31:13: info: implicit terminating annotation on "Valid" has been proved, subprogram will terminate
+geometry.ads:43:20: info: class-wide postcondition is stronger than overridden one
+geometry.ads:47:20: info: class-wide postcondition is stronger than overridden one
 more_use_geometry.adb:8:06: info: precondition proved
 more_use_geometry.adb:11:09: info: precondition proved
 more_use_geometry.adb:15:06: info: precondition proved

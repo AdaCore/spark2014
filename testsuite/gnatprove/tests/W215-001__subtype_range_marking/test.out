@@ -8,13 +8,9 @@ d.adb:13:24: info: index check proved (CVC5: 2 VC)
 d.adb:13:42: info: range check proved (CVC5: 2 VC)
 d.adb:14:28: info: index check proved (CVC5: 2 VC)
 d.adb:14:46: medium: range check might fail
-d.adb:14:49: warning: assuming "Rand" always returns
 d.adb:14:49: warning: assuming "Rand" has no effect on global items
 d.adb:14:49: warning: no Global contract available for "Rand"
-d.adb:14:49: warning: no returning annotation available for "Rand"
 d.adb:15:24: info: index check proved (CVC5: 2 VC)
 d.adb:15:42: medium: range check might fail
-d.adb:15:45: warning: assuming "Rand" always returns
 d.adb:15:45: warning: assuming "Rand" has no effect on global items
 d.adb:15:45: warning: no Global contract available for "Rand"
-d.adb:15:45: warning: no returning annotation available for "Rand"

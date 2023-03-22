@@ -8,17 +8,14 @@ patris.adb:52:04: warning: initialization of "Cur_State" constituent of "Game_St
 patris.adb:53:04: info: initialization of "Action_Request_Nbr" constituent of "Game_State" proved
 patris.adb:54:04: info: initialization of "Speed_Up" constituent of "Game_State" proved
 patris.adb:59:13: info: add a contract to analyze it separately from calling contexts
+patris.adb:59:13: info: implicit terminating annotation on "Get_New_Piece" has been proved, subprogram will terminate
 patris.adb:59:13: info: local subprogram "Get_New_Piece" only analyzed in the context of calls
-patris.adb:67:49: warning: assuming "Rand" always returns
 patris.adb:67:49: warning: assuming "Rand" has no effect on global items
 patris.adb:67:49: warning: no Global contract available for "Rand"
-patris.adb:67:49: warning: no returning annotation available for "Rand"
 patris.adb:67:56: info: division check proved (CVC5: 1 VC), in call inlined at patris.adb:306
 patris.adb:67:56: info: division check proved (CVC5: 1 VC), in call inlined at patris.adb:323
-patris.adb:68:50: warning: assuming "Rand" always returns
 patris.adb:68:50: warning: assuming "Rand" has no effect on global items
 patris.adb:68:50: warning: no Global contract available for "Rand"
-patris.adb:68:50: warning: no returning annotation available for "Rand"
 patris.adb:68:57: info: division check proved (CVC5: 1 VC), in call inlined at patris.adb:306
 patris.adb:68:57: info: division check proved (CVC5: 1 VC), in call inlined at patris.adb:323
 patris.adb:105:33: info: index check proved (CVC5: 2 VC)
@@ -82,24 +79,39 @@ patris.adb:432:56: info: division check proved (CVC5: 1 VC)
 patris.adb:432:64: info: range check proved (CVC5: 2 VC)
 patris.adb:434:41: info: division check proved (CVC5: 1 VC)
 patris.ads:33:03: info: flow dependencies proved
+patris.ads:58:13: info: implicit terminating annotation on "Get_Board" has been proved, subprogram will terminate
 patris.ads:59:11: info: data dependencies proved
+patris.ads:79:13: info: implicit terminating annotation on "Get_Piece" has been proved, subprogram will terminate
 patris.ads:80:11: info: data dependencies proved
+patris.ads:82:13: info: implicit terminating annotation on "Get_Next_Piece" has been proved, subprogram will terminate
 patris.ads:83:11: info: data dependencies proved
 patris.ads:96:13: info: implicit function contract might not be available on calls from enclosing unit
+patris.ads:96:13: info: implicit terminating annotation on "Get_State" has been proved, subprogram will terminate
 patris.ads:97:11: info: data dependencies proved
 patris.ads:157:13: info: function contract might not be available on calls from enclosing unit
+patris.ads:157:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 patris.ads:158:54: info: index check proved (CVC5: 2 VC)
 patris.ads:158:57: info: index check proved (CVC5: 2 VC)
 patris.ads:159:17: info: postcondition proved (Trivial: 1 VC)
 patris.ads:161:13: info: function contract might not be available on calls from enclosing unit
+patris.ads:161:13: info: implicit terminating annotation on "Is_Complete_Line" has been proved, subprogram will terminate
 patris.ads:163:17: info: postcondition proved (Trivial: 1 VC)
 patris.ads:165:13: info: function contract might not be available on calls from enclosing unit
+patris.ads:165:13: info: implicit terminating annotation on "Is_Empty_Line" has been proved, subprogram will terminate
 patris.ads:167:17: info: postcondition proved (Trivial: 1 VC)
+patris.ads:169:13: info: implicit terminating annotation on "No_Complete_Lines" has been proved, subprogram will terminate
+patris.ads:172:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
+patris.ads:176:13: info: implicit terminating annotation on "No_Overlap" has been proved, subprogram will terminate
 patris.ads:187:46: info: index check proved (CVC5: 2 VC)
+patris.ads:189:13: info: implicit terminating annotation on "Valid_Configuration" has been proved, subprogram will terminate
+patris.ads:198:13: info: implicit terminating annotation on "Valid_Configuration" has been proved, subprogram will terminate
+patris.ads:215:13: info: implicit terminating annotation on "Turn_Direction" has been proved, subprogram will terminate
 patris.ads:218:77: info: range check proved (CVC5: 1 VC)
 patris.ads:220:77: info: range check proved (CVC5: 1 VC)
 patris.ads:221:17: info: postcondition proved (Trivial: 1 VC)
+patris.ads:223:13: info: implicit terminating annotation on "Move_Is_Possible" has been proved, subprogram will terminate
 patris.ads:229:17: info: postcondition proved (Trivial: 1 VC)
+patris.ads:231:13: info: implicit terminating annotation on "Move" has been proved, subprogram will terminate
 patris.ads:233:49: info: range check proved (CVC5: 2 VC)
 patris.ads:234:49: info: range check proved (CVC5: 2 VC)
 patris.ads:235:49: info: range check proved (CVC5: 2 VC)
@@ -119,13 +131,18 @@ patris.ads:276:21: info: initialization of "Redraw_Score" proved
 patris.ads:276:35: info: initialization of "Redraw_Current_Piece" proved
 patris.ads:278:14: info: postcondition proved (CVC5: 1 VC)
 patris.ads:282:14: info: postcondition proved (CVC5: 1 VC)
+patris.ads:284:13: info: implicit terminating annotation on "Get_Score" has been proved, subprogram will terminate
 patris.ads:285:11: info: data dependencies proved
 patris.ads:288:06: info: data dependencies proved
+patris.ads:290:13: info: implicit terminating annotation on "Get_Best_Score" has been proved, subprogram will terminate
 patris.ads:291:11: info: data dependencies proved
 patris.ads:293:14: info: initialization of "Best_Score_Nbr" constituent of "Best_Score_State" proved
 patris.ads:294:06: info: data dependencies proved
+patris.ads:296:13: info: implicit terminating annotation on "Get_Level" has been proved, subprogram will terminate
 patris.ads:297:11: info: data dependencies proved
 patris.ads:300:06: info: data dependencies proved
+patris.ads:302:13: info: implicit terminating annotation on "Get_Line_Counter" has been proved, subprogram will terminate
 patris.ads:303:11: info: data dependencies proved
 patris.ads:306:06: info: data dependencies proved
+patris.ads:308:13: info: implicit terminating annotation on "Get_Step_Interval" has been proved, subprogram will terminate
 patris.ads:309:11: info: data dependencies proved

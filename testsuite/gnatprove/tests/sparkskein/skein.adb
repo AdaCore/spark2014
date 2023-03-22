@@ -690,6 +690,7 @@ is
                --  The empty invariant is needed to force GNATprove to cut the
                --  loop just before the exit statement
                pragma Loop_Invariant (True);
+               pragma Loop_Variant (Increases => Dst);
 
                exit when Dst >= Final_Dst or Src >= Final_Src;
 

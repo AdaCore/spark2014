@@ -61,6 +61,10 @@ prefixsum.adb:126:16: info: index check proved (CVC5: 2 VC)
 prefixsum.adb:127:32: info: overflow check proved (altergo: 2 VC)
 prefixsum.adb:127:40: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
 prefixsum.adb:129:25: info: division check proved (CVC5: 1 VC)
+prefixsum.ads:7:13: info: implicit terminating annotation on "All_Elements_In" has been proved, subprogram will terminate
+prefixsum.ads:10:13: info: implicit terminating annotation on "All_Left_Elements_In" has been proved, subprogram will terminate
+prefixsum.ads:15:13: info: implicit terminating annotation on "All_Right_Elements_In" has been proved, subprogram will terminate
+prefixsum.ads:20:13: info: implicit terminating annotation on "Intermediate_Form" has been proved, subprogram will terminate
 prefixsum.ads:26:23: info: division check proved (CVC5: 1 VC)
 prefixsum.ads:27:28: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
 prefixsum.ads:27:36: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
@@ -139,6 +143,10 @@ prefixsum_expanded.adb:187:32: info: overflow check proved (CVC5: 1 VC; altergo:
 prefixsum_expanded.adb:187:40: info: overflow check proved (altergo: 2 VC)
 prefixsum_expanded.adb:189:25: info: division check proved (CVC5: 1 VC)
 prefixsum_expanded.adb:193:10: info: assertion proved (Z3: 8 VC)
+prefixsum_expanded.ads:7:13: info: implicit terminating annotation on "All_Elements_In" has been proved, subprogram will terminate
+prefixsum_expanded.ads:10:13: info: implicit terminating annotation on "All_Left_Elements_In" has been proved, subprogram will terminate
+prefixsum_expanded.ads:15:13: info: implicit terminating annotation on "All_Right_Elements_In" has been proved, subprogram will terminate
+prefixsum_expanded.ads:20:13: info: implicit terminating annotation on "Intermediate_Form" has been proved, subprogram will terminate
 prefixsum_expanded.ads:25:23: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
 prefixsum_expanded.ads:25:31: info: overflow check proved (altergo: 2 VC)
 prefixsum_expanded.ads:25:39: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
@@ -216,13 +224,17 @@ prefixsum_general.adb:97:40: info: overflow check proved (CVC5: 2 VC)
 prefixsum_general.adb:99:25: info: division check proved (altergo: 1 VC)
 prefixsum_general.adb:108:16: info: function contract might not be available on recursive calls or calls from enclosing unit
 prefixsum_general.adb:114:17: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
-prefixsum_general.adb:122:10: medium: terminating annotation on "Rec_Summation" could be incorrect, subprogram is recursive
+prefixsum_general.adb:116:07: warning: Always_Return annotation is useless
+prefixsum_general.adb:116:07: warning: function "Rec_Summation" has implicit Always_Return annotation
+prefixsum_general.adb:122:10: medium: implicit terminating annotation on "Rec_Summation" could be incorrect, subprogram is recursive
 prefixsum_general.adb:123:27: medium: overflow check might fail, cannot prove lower bound for A (End_Pos) + Rec_Summation (A, Start_Pos, End_Pos - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Rec_Summation (A, Start_Pos, End_Pos - 1) >= 0 then A (End_Pos) <= Integer'Last - Rec_Summation (A, Start_Pos, End_Pos - 1) else A (End_Pos) >= Integer'First - Rec_Summation (A, Start_Pos, End_Pos - 1)) to subprogram at line 108]
 prefixsum_general.adb:123:29: info: precondition proved (altergo: 1 VC)
 prefixsum_general.adb:123:66: info: range check proved (altergo: 2 VC)
 prefixsum_general.adb:126:14: info: precondition proved (altergo: 1 VC)
+prefixsum_general.ads:8:13: info: implicit terminating annotation on "Is_Even" has been proved, subprogram will terminate
 prefixsum_general.ads:8:56: info: division check proved (CVC5: 1 VC)
 prefixsum_general.ads:10:13: info: function contract might not be available on implicit recursive calls
+prefixsum_general.ads:10:13: info: implicit terminating annotation on "Summation" has been proved, subprogram will terminate
 prefixsum_general.ads:13:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 prefixsum_general.ads:15:41: info: initialization of "Output_Space" proved
 prefixsum_general.ads:18:17: medium: postcondition might fail, cannot prove A (A'Last) = Summation (A'Old, 0, A'Last)

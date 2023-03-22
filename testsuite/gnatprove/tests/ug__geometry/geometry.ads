@@ -25,8 +25,6 @@ is
 
    function Valid (S : Rectangle) return Boolean is
      (Valid (Shape (S)) and S.Len_X in 0.0 .. 10.0 and S.Len_Y in 0.0 .. 10.0);
-   pragma Annotate (GNATprove, False_Positive, "dispatching call",
-                    "this call will always return");
 
    procedure Operate (S : in out Rectangle);
 

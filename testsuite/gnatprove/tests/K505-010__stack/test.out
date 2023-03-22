@@ -2,13 +2,13 @@ error.ads:5:13: info: implicit terminating annotation on "Get_Current" has been 
 stacks.adb:10:22: medium: overflow check might fail, cannot prove upper bound for S.Top + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 stacks.adb:11:16: medium: array index check might fail [reason for check: value must be a valid index into the array]
 stacks.adb:21:22: info: range check proved (CVC5: 2 VC)
+stacks.ads:13:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
+stacks.ads:15:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
 stacks.ads:17:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate
 stacks.ads:21:20: info: postcondition proved (CVC5: 1 VC)
 stacks.ads:21:40: medium: overflow check might fail, cannot prove upper bound for S.Size'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-stacks.ads:28:19: medium: implicit terminating annotation on "Peer" could be incorrect, dispatching call might be nonterminating
+stacks.ads:27:13: info: implicit terminating annotation on "Peer" has been proved, subprogram will terminate
 stacks.ads:34:07: info: range check proved (CVC5: 2 VC)
 stacks.ads:34:37: info: in default value of private type at stacks.ads:11
 stacks.ads:34:37: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-stacks.ads:39:60: medium: implicit terminating annotation on "Is_Empty" could be incorrect, dispatching call might be nonterminating
-stacks.ads:41:59: medium: implicit terminating annotation on "Is_Full" could be incorrect, dispatching call might be nonterminating
 stacks.ads:43:58: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (S.Top in 1 .. Max) to subprogram at line 27]

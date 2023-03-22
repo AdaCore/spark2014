@@ -1,3 +1,4 @@
+binary_trees.adb:12:13: info: implicit terminating annotation on "All_Indexes" has been proved, subprogram will terminate
 binary_trees.adb:19:08: info: postcondition proved (CVC5: 2 VC)
 binary_trees.adb:20:20: info: predicate check proved (Trivial: 1 VC)
 binary_trees.adb:23:07: info: initialization of "S" proved
@@ -19,6 +20,7 @@ binary_trees.adb:77:36: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:80:36: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:95:14: info: range check proved (CVC5: 2 VC)
 binary_trees.adb:108:16: info: function contract might not be available on calls from enclosing unit
+binary_trees.adb:108:16: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 binary_trees.adb:110:11: info: postcondition proved (CVC5: 2 VC)
 binary_trees.adb:111:27: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:115:36: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -809,12 +811,17 @@ binary_trees.adb:1129:07: info: precondition proved (CVC5: 6 VC)
 binary_trees.adb:1129:07: medium: invariant check might fail
 binary_trees.ads:14:09: info: default initial condition proved (CVC5: 1 VC)
 binary_trees.ads:14:61: medium: invariant check might fail
+binary_trees.ads:17:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate
+binary_trees.ads:20:13: info: implicit terminating annotation on "Valid_Root" has been proved, subprogram will terminate
 binary_trees.ads:21:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_trees.ads:21:22: info: invariant check proved (CVC5: 1 VC)
+binary_trees.ads:24:13: info: implicit terminating annotation on "Parent" has been proved, subprogram will terminate
 binary_trees.ads:25:14: info: postcondition proved (CVC5: 2 VC; Trivial: 2 VC)
 binary_trees.ads:25:18: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:26:21: info: invariant check proved (CVC5: 1 VC)
+binary_trees.ads:29:13: info: implicit terminating annotation on "Position" has been proved, subprogram will terminate
 binary_trees.ads:30:13: info: invariant check proved (CVC5: 1 VC)
+binary_trees.ads:33:13: info: implicit terminating annotation on "Peek" has been proved, subprogram will terminate
 binary_trees.ads:35:17: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:35:17: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:35:34: info: range check proved (CVC5: 2 VC)
@@ -828,6 +835,7 @@ binary_trees.ads:41:23: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:41:50: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:41:50: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:45:13: info: function contract might not be available on implicit recursive calls
+binary_trees.ads:45:13: info: implicit terminating annotation on "Model" has been proved, subprogram will terminate
 binary_trees.ads:53:14: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:56:08: medium: postcondition might fail, cannot prove Model'Result (Root).K
 binary_trees.ads:64:25: info: invariant check proved (CVC5: 1 VC)
@@ -1079,8 +1087,11 @@ binary_trees.ads:405:65: medium: invariant check might fail
 binary_trees.ads:409:42: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:409:42: medium: invariant check might fail
 binary_trees.ads:418:09: medium: invariant check might fail on default value
+binary_trees.ads:426:13: info: implicit terminating annotation on "Tree_Structure" has been proved, subprogram will terminate
 binary_trees.ads:427:06: info: data dependencies proved
+red_black_trees.adb:16:13: info: implicit terminating annotation on "Eq" has been proved, subprogram will terminate
 red_black_trees.adb:18:17: info: postcondition proved (CVC5: 1 VC)
+red_black_trees.adb:23:13: info: implicit terminating annotation on "Nb_Blacks" has been proved, subprogram will terminate
 red_black_trees.adb:31:08: medium: postcondition might fail, cannot prove Nb_Blacks'Result (Empty) = (True, 0, 0)
 red_black_trees.adb:36:20: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:38:37: info: precondition proved (CVC5: 2 VC)
@@ -1510,8 +1521,11 @@ red_black_trees.adb:672:32: medium: array index check might fail [reason for che
 red_black_trees.adb:673:18: medium: assertion might fail, cannot prove T.Color (I) = Black
 red_black_trees.adb:678:16: medium: precondition might fail
 red_black_trees.adb:679:07: medium: precondition might fail, cannot prove Same_Nb_Blacks (T_Old) [possible fix: loop invariant at line 536 should mention T_Old]
+red_black_trees.ads:19:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate
+red_black_trees.ads:21:13: info: implicit terminating annotation on "Values" has been proved, subprogram will terminate
 red_black_trees.ads:22:18: info: invariant check proved (CVC5: 1 VC)
 red_black_trees.ads:22:36: medium: postcondition might fail, cannot prove Is_Empty (Values'Result)
+red_black_trees.ads:24:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 red_black_trees.ads:25:14: medium: postcondition might fail
 red_black_trees.ads:25:42: info: invariant check proved (CVC5: 1 VC)
 red_black_trees.ads:27:14: medium: invariant check might fail
@@ -1523,8 +1537,11 @@ red_black_trees.ads:29:56: info: invariant check proved (CVC5: 1 VC)
 red_black_trees.ads:30:28: info: invariant check proved (CVC5: 1 VC)
 red_black_trees.ads:30:47: info: invariant check proved (CVC5: 1 VC)
 red_black_trees.ads:36:09: medium: invariant check might fail on default value
+red_black_trees.ads:42:13: info: implicit terminating annotation on "Color" has been proved, subprogram will terminate
 red_black_trees.ads:43:46: info: index check proved (CVC5: 2 VC)
+red_black_trees.ads:45:13: info: implicit terminating annotation on "Same_Nb_Blacks" has been proved, subprogram will terminate
 red_black_trees.ads:46:14: info: postcondition proved (CVC5: 1 VC)
+red_black_trees.ads:48:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
 red_black_trees.ads:51:29: info: index check proved (CVC5: 2 VC)
 search_trees.adb:12:08: info: refined post proved (CVC5: 3 VC; Trivial: 2 VC)
 search_trees.adb:15:18: info: precondition proved (CVC5: 1 VC)
@@ -1548,6 +1565,7 @@ search_trees.adb:39:13: info: loop invariant initialization proved (CVC5: 1 VC; 
 search_trees.adb:39:13: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Contains or turning it into an expression function in its unit spec]
 search_trees.adb:42:25: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:42:43: info: range check proved (CVC5: 4 VC)
+search_trees.adb:53:13: info: implicit terminating annotation on "Ordered_Prefix" has been proved, subprogram will terminate
 search_trees.adb:54:10: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:54:49: info: overflow check proved (CVC5: 2 VC)
 search_trees.adb:58:14: info: postcondition proved (CVC5: 1 VC)
@@ -1557,8 +1575,11 @@ search_trees.adb:69:22: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:69:46: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:70:16: info: precondition proved (CVC5: 3 VC)
 search_trees.adb:70:32: info: precondition proved (CVC5: 1 VC)
+search_trees.adb:78:13: info: implicit terminating annotation on "All_Less_Than" has been proved, subprogram will terminate
 search_trees.adb:80:13: info: precondition proved (CVC5: 1 VC)
+search_trees.adb:82:13: info: implicit terminating annotation on "All_More_Than" has been proved, subprogram will terminate
 search_trees.adb:84:13: info: precondition proved (CVC5: 1 VC)
+search_trees.adb:87:13: info: implicit terminating annotation on "Correct_Place" has been proved, subprogram will terminate
 search_trees.adb:90:25: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:90:51: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:92:28: info: precondition proved (CVC5: 2 VC)
@@ -1566,6 +1587,7 @@ search_trees.adb:92:44: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:92:67: info: overflow check proved (CVC5: 2 VC)
 search_trees.adb:93:30: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:94:30: info: precondition proved (CVC5: 1 VC)
+search_trees.adb:104:13: info: implicit terminating annotation on "Find_Root" has been proved, subprogram will terminate
 search_trees.adb:111:17: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:114:17: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:117:08: info: precondition proved (CVC5: 1 VC)
@@ -2576,16 +2598,24 @@ search_trees.adb:1530:10: medium: precondition might fail, cannot prove D = Left
 search_trees.adb:1530:34: info: range check proved (CVC5: 2 VC)
 search_trees.ads:17:09: info: default initial condition proved (CVC5: 1 VC)
 search_trees.ads:18:06: info: invariant check proved (CVC5: 1 VC)
+search_trees.ads:20:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate
+search_trees.ads:22:13: info: implicit terminating annotation on "Root" has been proved, subprogram will terminate
 search_trees.ads:23:13: info: invariant check proved (CVC5: 1 VC)
+search_trees.ads:25:13: info: implicit terminating annotation on "Parent" has been proved, subprogram will terminate
 search_trees.ads:26:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 search_trees.ads:26:18: info: invariant check proved (CVC5: 1 VC)
+search_trees.ads:28:13: info: implicit terminating annotation on "Position" has been proved, subprogram will terminate
 search_trees.ads:29:13: info: invariant check proved (CVC5: 1 VC)
+search_trees.ads:31:13: info: implicit terminating annotation on "Model" has been proved, subprogram will terminate
 search_trees.ads:33:13: info: invariant check proved (CVC5: 1 VC)
+search_trees.ads:35:13: info: implicit terminating annotation on "Peek" has been proved, subprogram will terminate
 search_trees.ads:36:13: info: invariant check proved (CVC5: 1 VC)
 search_trees.ads:36:36: info: invariant check proved (CVC5: 1 VC)
 search_trees.ads:36:36: info: precondition proved (CVC5: 1 VC)
+search_trees.ads:38:13: info: implicit terminating annotation on "Values" has been proved, subprogram will terminate
 search_trees.ads:40:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 search_trees.ads:40:18: info: invariant check proved (CVC5: 1 VC)
+search_trees.ads:42:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 search_trees.ads:43:14: medium: postcondition might fail
 search_trees.ads:43:42: info: invariant check proved (CVC5: 1 VC)
 search_trees.ads:45:14: medium: invariant check might fail
@@ -2953,6 +2983,7 @@ search_trees.ads:313:09: info: invariant check proved on default value (CVC5: 1 
 search_trees.ads:321:40: info: range check proved (CVC5: 2 VC)
 search_trees.ads:322:20: info: precondition proved (CVC5: 1 VC)
 search_trees.ads:322:43: info: range check proved (CVC5: 2 VC)
+search_trees.ads:324:13: info: implicit terminating annotation on "Ordered_Leafs" has been proved, subprogram will terminate
 search_trees.ads:333:14: info: postcondition proved (CVC5: 1 VC)
 search_trees.ads:336:07: info: precondition proved (CVC5: 1 VC)
 search_trees.ads:336:25: info: range check proved (CVC5: 2 VC)
@@ -2984,8 +3015,8 @@ spark-containers-functional-sets.ads:349:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at tree_model.ads:78
 spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at binary_trees.adb:10
 spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at tree_model.ads:78
-spark-containers-functional-sets.ads:365:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at binary_trees.adb:10
-spark-containers-functional-sets.ads:365:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at tree_model.ads:78
+spark-containers-functional-sets.ads:365:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at binary_trees.adb:10
+spark-containers-functional-sets.ads:365:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at tree_model.ads:78
 spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at binary_trees.adb:10
 spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at tree_model.ads:78
 spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at binary_trees.adb:10
@@ -3010,11 +3041,11 @@ spark-containers-functional-vectors.ads:62:19: info: terminating annotation on "
 spark-containers-functional-vectors.ads:64:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:123:13: info: terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
+spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:312:13: info: terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
+spark-containers-functional-vectors.ads:312:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at tree_model.ads:22
 spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
@@ -3066,6 +3097,7 @@ spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1
 spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at tree_model.ads:22
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at tree_model.ads:22
 spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at tree_model.ads:22
+tree_model.ads:40:13: info: implicit terminating annotation on "Is_Concat" has been proved, subprogram will terminate
 tree_model.ads:41:18: info: overflow check proved (CVC5: 2 VC)
 tree_model.ads:42:49: info: precondition proved (CVC5: 2 VC)
 tree_model.ads:42:62: info: precondition proved (CVC5: 2 VC)
@@ -3078,6 +3110,8 @@ tree_model.ads:46:28: info: overflow check proved (CVC5: 2 VC)
 tree_model.ads:46:28: info: range check proved (CVC5: 2 VC)
 tree_model.ads:46:44: info: precondition proved (CVC5: 2 VC)
 tree_model.ads:46:52: info: range check proved (CVC5: 2 VC)
+tree_model.ads:53:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
+tree_model.ads:56:13: info: implicit terminating annotation on "Is_Add" has been proved, subprogram will terminate
 tree_model.ads:59:16: info: precondition proved (CVC5: 2 VC)
 tree_model.ads:63:06: info: data dependencies proved
 tree_model.ads:67:14: info: postcondition proved (CVC5: 1 VC)
@@ -3085,3 +3119,4 @@ tree_model.ads:71:06: info: data dependencies proved
 tree_model.ads:73:17: info: precondition proved (CVC5: 1 VC)
 tree_model.ads:76:14: info: postcondition proved (CVC5: 4 VC)
 tree_model.ads:76:14: info: precondition proved (CVC5: 1 VC)
+tree_model.ads:82:13: info: implicit terminating annotation on "Is_Add" has been proved, subprogram will terminate
