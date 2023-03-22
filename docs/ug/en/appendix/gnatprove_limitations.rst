@@ -3,14 +3,6 @@
 GNATprove Limitations
 =====================
 
-Tool Limitations that Impact Soundness
---------------------------------------
-
-As these limitations may lead to soundness issues, users should review them to
-ensure that their programs are not impacted.
-
-* Checks related to tasking do not take into account dispatching calls.
-
 Tool Limitations Leading to an Error Message
 --------------------------------------------
 
