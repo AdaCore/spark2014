@@ -924,15 +924,6 @@ package SPARK_Util is
    --  @return a string representing the character for humans to read, which is
    --     the character itself if it is a graphic one, otherwise its name.
 
-   function Get_Flat_Statement_And_Declaration_List
-     (Stmts : List_Id) return Node_Lists.List;
-   --  Given a list of statements and declarations Stmts, returns the flattened
-   --  list that includes these statements and declarations, and recursively
-   --  all inner declarations and statements that appear in block statements.
-   --  Block statements are kept to mark the end of the corresponding scope,
-   --  in order to apply some treatments at the end of local scopes, like
-   --  checking the absence of resource leaks at the end of scope.
-
    function Is_Null_Owning_Access (Expr : Node_Id) return Boolean is
      (Nkind (Expr) = N_Null
       and then

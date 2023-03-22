@@ -920,15 +920,14 @@ package body SPARK_Definition is
       procedure Check_Loop_Invariant_Placement
         (Stmts       : List_Id;
          Goto_Labels : in out Node_Sets.Set;
-         Nested      : Boolean);
+         Inv_Found   : in out Boolean);
       --  Checks that no non-scalar object declaration appears before the
       --  last loop-invariant or variant in a loop's list of statements. Also
       --  stores scalar objects declared before the last loop-invariant in
-      --  Loop_Entity_Set. Nested should be true when checking statements
-      --  coming from a nested construct of the loop (if, case, extended
-      --  return statements and nested loops). Goto_Labels contains the labels
-      --  encountered while traversing statements occurring after the loop
-      --  invariant in the initial loop.
+      --  Loop_Entity_Set. Inv_Found is set to True when loop invariants or
+      --  loop variants have been found after the current statement in the
+      --  program. Goto_Labels contains the labels encountered while traversing
+      --  statements occurring after the loop invariant in the initial loop.
 
       procedure Check_Loop_Invariant_Placement (Stmts : List_Id);
       --  Same as above with Nested set to False and Goto_Labels initialized to
@@ -974,27 +973,36 @@ package body SPARK_Definition is
 
       procedure Check_Loop_Invariant_Placement (Stmts : List_Id) is
          Goto_Labels : Node_Sets.Set;
+         Inv_Found   : Boolean := False;
       begin
-         Check_Loop_Invariant_Placement (Stmts, Goto_Labels, False);
+         Check_Loop_Invariant_Placement (Stmts, Goto_Labels, Inv_Found);
       end Check_Loop_Invariant_Placement;
 
       procedure Check_Loop_Invariant_Placement
         (Stmts       : List_Id;
          Goto_Labels : in out Node_Sets.Set;
-         Nested      : Boolean)
+         Inv_Found   : in out Boolean)
       is
-         use Node_Lists;
-
-         Loop_Stmts : constant Node_Lists.List :=
-           Get_Flat_Statement_And_Declaration_List (Stmts);
-         Inv_Found  : Boolean := Nested;
-         --  We only call Check_Loop_Invariant_Placement on nested list of
-         --  statements if an invariant has been found.
+         N : Node_Id := (if Present (Stmts) then Last (Stmts) else Empty);
 
       begin
-         for N of reverse Loop_Stmts loop
+         while Present (N) loop
 
-            if not Inv_Found then
+            --  Search for invariants inside nested block statements
+
+            if Nkind (N) = N_Block_Statement then
+               Check_Loop_Invariant_Placement
+                 (Statements (Handled_Statement_Sequence (N)),
+                  Goto_Labels, Inv_Found);
+
+               --  Only check declarations if the invariant has been found
+
+               if Inv_Found and then Present (Declarations (N)) then
+                  Check_Loop_Invariant_Placement
+                    (Declarations (N), Goto_Labels, Inv_Found);
+               end if;
+
+            elsif not Inv_Found then
 
                --  Find last loop invariant/variant from the loop
 
@@ -1035,18 +1043,18 @@ package body SPARK_Definition is
 
                   when N_If_Statement =>
                      Check_Loop_Invariant_Placement
-                       (Then_Statements (N), Goto_Labels, True);
+                       (Then_Statements (N), Goto_Labels, Inv_Found);
                      declare
                         Cur : Node_Id := First (Elsif_Parts (N));
                      begin
                         while Present (Cur) loop
                            Check_Loop_Invariant_Placement
-                             (Then_Statements (Cur), Goto_Labels, True);
+                             (Then_Statements (Cur), Goto_Labels, Inv_Found);
                            Next (Cur);
                         end loop;
                      end;
                      Check_Loop_Invariant_Placement
-                       (Else_Statements (N), Goto_Labels, True);
+                       (Else_Statements (N), Goto_Labels, Inv_Found);
 
                   when N_Case_Statement =>
                      declare
@@ -1055,21 +1063,25 @@ package body SPARK_Definition is
                      begin
                         while Present (Cur) loop
                            Check_Loop_Invariant_Placement
-                             (Statements (Cur), Goto_Labels, True);
+                             (Statements (Cur), Goto_Labels, Inv_Found);
                            Next_Non_Pragma (Cur);
                         end loop;
                      end;
 
                   when N_Extended_Return_Statement =>
                      Check_Loop_Invariant_Placement
-                       (Return_Object_Declarations (N), Goto_Labels, True);
+                       (Return_Object_Declarations (N),
+                        Goto_Labels, Inv_Found);
                      Check_Loop_Invariant_Placement
                        (Statements (Handled_Statement_Sequence (N)),
-                        Goto_Labels, True);
+                        Goto_Labels, Inv_Found);
+
+                  when N_Block_Statement =>
+                     raise Program_Error;
 
                   when N_Loop_Statement =>
                      Check_Loop_Invariant_Placement
-                       (Statements (N), Goto_Labels, True);
+                       (Statements (N), Goto_Labels, Inv_Found);
 
                   when N_Goto_Statement =>
 
@@ -1082,6 +1094,8 @@ package body SPARK_Definition is
                   when others => null;
                end case;
             end if;
+
+            Prev (N);
          end loop;
       end Check_Loop_Invariant_Placement;
 

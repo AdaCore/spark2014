@@ -217,6 +217,111 @@ package body Gnat2Why.Expr.Loops is
       return Prog;
    end Check_Loop_Variant;
 
+   ---------------------------------------------
+   -- Get_Flat_Statement_And_Declaration_List --
+   ---------------------------------------------
+
+   function Get_Flat_Statement_And_Declaration_List
+     (Stmts : List_Id) return Node_Lists.List
+   is
+
+      function Contains_Loop_Invariant (Block_Stmt : Node_Id) return Boolean;
+      --  Return True if Block_Stmt contains loop invariants or variants,
+      --  either directly or in a nested block statement.
+
+      ------------------------------
+      --  Contains_Loop_Invariant --
+      ------------------------------
+
+      Blocks : Node_To_Bool_Maps.Map;
+      --  Map to memoize the results on nested blocks so that the code is
+      --  traversed at most twice in Get_Flat_Statement_And_Declaration_List.
+
+      function Contains_Loop_Invariant (Block_Stmt : Node_Id) return Boolean is
+         Position : constant Node_To_Bool_Maps.Cursor :=
+           Blocks.Find (Block_Stmt);
+         Cur_Stmt : Node_Id :=
+           First (Statements (Handled_Statement_Sequence (Block_Stmt)));
+
+      begin
+         --  If Block_Stmt as already been traversed, return immediately
+
+         if Node_To_Bool_Maps.Has_Element (Position) then
+            return Node_To_Bool_Maps.Element (Position);
+         end if;
+
+         return Found : Boolean := False do
+            while Present (Cur_Stmt) loop
+               case Nkind (Cur_Stmt) is
+                  when N_Block_Statement =>
+                     if Contains_Loop_Invariant (Cur_Stmt) then
+                        Found := True;
+                        exit;
+                     end if;
+
+                  when N_Pragma =>
+                     if Is_Pragma_Check (Cur_Stmt, Name_Loop_Invariant)
+                       or else Is_Pragma (Cur_Stmt, Pragma_Loop_Variant)
+                     then
+                        Found := True;
+                        exit;
+                     end if;
+                  when others =>
+                     null;
+               end case;
+
+               Nlists.Next (Cur_Stmt);
+            end loop;
+
+            Blocks.Insert (Block_Stmt, Found);
+         end return;
+      end Contains_Loop_Invariant;
+
+      Cur_Stmt   : Node_Id := Nlists.First (Stmts);
+      Flat_Stmts : Node_Lists.List;
+
+   --  Start of processing for Get_Flat_Statement_And_Declaration_List
+
+   begin
+      while Present (Cur_Stmt) loop
+         case Nkind (Cur_Stmt) is
+            when N_Block_Statement =>
+               if Contains_Loop_Invariant (Cur_Stmt) then
+                  if Present (Declarations (Cur_Stmt)) then
+                     Append (Flat_Stmts,
+                             Get_Flat_Statement_And_Declaration_List
+                               (Declarations (Cur_Stmt)));
+                  end if;
+
+                  Append
+                    (Flat_Stmts,
+                     Get_Flat_Statement_And_Declaration_List
+                       (Statements (Handled_Statement_Sequence (Cur_Stmt))));
+               else
+                  Flat_Stmts.Append (Cur_Stmt);
+               end if;
+
+            --  We should never expand blocks which contain declarations
+            --  requiring a special handling at the end of the enclosing
+            --  scope (ie local borrowers and objects which need reclamation).
+
+            when N_Object_Declaration =>
+               pragma Assert
+                 (not Is_Local_Borrower (Defining_Identifier (Cur_Stmt))
+                  and then not Contains_Allocated_Parts
+                          (Etype (Defining_Identifier (Cur_Stmt))));
+               Flat_Stmts.Append (Cur_Stmt);
+
+            when others =>
+               Flat_Stmts.Append (Cur_Stmt);
+         end case;
+
+         Nlists.Next (Cur_Stmt);
+      end loop;
+
+      return Flat_Stmts;
+   end Get_Flat_Statement_And_Declaration_List;
+
    ------------------------
    -- Get_Loop_Invariant --
    ------------------------
@@ -441,22 +546,9 @@ package body Gnat2Why.Expr.Loops is
 
          pragma Assert (not Is_Pragma (Instr, Pragma_Loop_Variant));
 
-         --  Block statements were inserted as markers for the end of the
-         --  corresponding scopes. Check the absence of resource leaks and
-         --  havoc all entities borrowed in the block.
-
-         if Nkind (Instr) = N_Block_Statement then
-            if Present (Declarations (Instr)) then
-               Append (Body_Prog,
-                 Havoc_Borrowed_From_Block (Instr));
-               Append (Body_Prog,
-                 Check_No_Memory_Leaks_At_End_Of_Scope (Declarations (Instr)));
-            end if;
-         else
-            Transform_Statement_Or_Declaration_In_List
-              (Stmt_Or_Decl => Instr,
-               Seq          => Body_Prog);
-         end if;
+         Transform_Statement_Or_Declaration_In_List
+           (Stmt_Or_Decl => Instr,
+            Seq          => Body_Prog);
       end loop;
 
       return +Body_Prog;
