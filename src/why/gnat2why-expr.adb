@@ -20994,55 +20994,6 @@ package body Gnat2Why.Expr is
                   Specialization_Module => Specialization_Module),
                T);
          end if;
-
-      --  If -gnatd_f is used, and if for some reason we have not generated a
-      --  contract for Subp and Subp is called in the logic domain, notify the
-      --  user that the contract will not be available.
-
-      elsif Debug.Debug_Flag_Underscore_F
-        and then Domain in EW_Pred | EW_Term
-      then
-         declare
-            Has_Explicit_Contracts : constant Boolean :=
-              Has_Contracts (Subp, Pragma_Postcondition)
-              or else Present (Get_Pragma (Subp, Pragma_Contract_Cases));
-            Has_Implicit_Contracts : constant Boolean :=
-              Type_Needs_Dynamic_Invariant (Etype (Subp));
-            Is_Expression_Function : constant Boolean :=
-              Is_Expression_Function_Or_Completion (Subp)
-              and then Entity_Body_Compatible_With_SPARK (Subp);
-            Subp_Non_Returning     : constant Boolean :=
-              Ekind (Subp) /= E_Subprogram_Type
-              and then Is_Potentially_Nonreturning (Subp);
-            Subp_Recursive         : constant Boolean :=
-              Ekind (Subp) /= E_Subprogram_Type
-              and then Is_Recursive (Subp);
-         begin
-
-            if Subp_Non_Returning
-              and then (Has_Implicit_Contracts or else Has_Explicit_Contracts)
-            then
-               declare
-                  String_For_Implicit : constant String :=
-                    (if Has_Explicit_Contracts then ""
-                     else "implicit ");
-               begin
-                  Error_Msg_NE
-                    ("info: ?" & String_For_Implicit
-                     & "function contract not available for "
-                     & "proof (& might not return)", Expr, Subp);
-               end;
-            end if;
-
-            if Subp_Recursive
-              and then Subp_Non_Returning
-              and then Is_Expression_Function
-            then
-               Error_Msg_NE
-                 ("info: ?expression function body not available for "
-                  & "proof (& might not return)", Expr, Subp);
-            end if;
-         end;
       end if;
 
       --  We may need a context if we have introduced constants for expressions
