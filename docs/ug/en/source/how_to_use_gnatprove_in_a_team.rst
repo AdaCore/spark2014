@@ -684,11 +684,6 @@ of a program:
     ``Has_Element (Model (Container), M_Cursor)`` evaluates to True and ``E`` is
     the result of ``Element (Model (Container), M_Cursor)``.
 
-* [SPARK_TOOL_LIMITATIONS]
-  The list of :ref:`Tool Limitations that Impact Soundness` should be reviewed to
-  check that each is either not applicable to the project, or its effects are
-  understood and cannot lead to unsound analysis.
-
 * [SPARK_OVERRIDING_AND_TASKING]
   If there are overriding operations called using a dispatching call, then
   GNATprove assumes that the overriding operation does not have any adverse
