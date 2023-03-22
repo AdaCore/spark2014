@@ -1,5 +1,6 @@
 foo.ads:8:06: warning: Always_Return annotation is useless
 foo.ads:8:06: warning: function "Hash" has implicit Always_Return annotation
+tests.adb:14:13: info: implicit terminating annotation on "F_Get_Item" has been proved, subprogram will terminate
 tests.adb:16:13: info: implicit terminating annotation on "F_Get_Item_E" has been proved, subprogram will terminate
 tests.adb:19:28: info: initialization of "B" proved
 tests.adb:20:09: info: data dependencies proved
@@ -12,7 +13,6 @@ tests.adb:34:09: info: data dependencies proved
 tests.adb:37:09: info: data dependencies proved
 tests.adb:41:09: warning: assuming "Hash" has no effect on global items
 tests.adb:41:09: warning: no Global contract available for "Hash"
-tests.adb:41:15: medium: implicit terminating annotation on "F_Get_Item" could be incorrect, dispatching call might be nonterminating
 tests.adb:44:09: warning: assuming "Hash" has no effect on global items
 tests.adb:44:09: warning: no Global contract available for "Hash"
 tests.adb:44:15: medium: implicit terminating annotation on "F_Get_Item_C" could be incorrect, dispatching call might be nonterminating

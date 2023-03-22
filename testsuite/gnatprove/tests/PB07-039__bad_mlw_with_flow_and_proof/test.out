@@ -4,8 +4,8 @@ exprfun.adb:11:04: medium: assertion might fail
 foo.adb:5:17: warning: subprogram "Prim_Proc" has no effect
 foo.adb:6:17: info: implicit terminating annotation on "Prim_Func" has been proved, subprogram will terminate
 foo.adb:8:17: warning: subprogram "Cw_Operand" has no effect
-foo.adb:12:12: medium: implicit terminating annotation on "Prim_Func" could be incorrect, dispatching call might be nonterminating
+foo.adb:12:12: info: implicit terminating annotation on "Prim_Func" has been proved, subprogram will terminate
 foo.adb:14:17: warning: subprogram "Cw_Operand" has no effect
-foo.adb:18:12: medium: implicit terminating annotation on "Prim_Func" could be incorrect, dispatching call might be nonterminating
+foo.adb:18:12: info: implicit terminating annotation on "Prim_Func" has been proved, subprogram will terminate
 foo.adb:20:17: warning: subprogram "Cw_Operand" has no effect
 foo.adb:38:17: warning: subprogram "Proc" has no effect

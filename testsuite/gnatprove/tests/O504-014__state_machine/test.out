@@ -142,16 +142,15 @@ state_machine_with_oop.ads:9:28: warning: unused variable "Current"
 state_machine_with_oop.ads:10:13: info: implicit terminating annotation on "Can_Move_To_C" has been proved, subprogram will terminate
 state_machine_with_oop.ads:10:28: warning: unused variable "Current"
 state_machine_with_oop.ads:12:13: info: function contract feasibility proved (CVC5: 1 VC)
-state_machine_with_oop.ads:14:19: medium: implicit terminating annotation on "Move_To_A" could be incorrect, dispatching call might be nonterminating, in inherited contract at state_machine_with_oop.ads:68
 state_machine_with_oop.ads:16:13: info: function contract feasibility proved (CVC5: 1 VC)
-state_machine_with_oop.ads:18:19: medium: implicit terminating annotation on "Move_To_B" could be incorrect, dispatching call might be nonterminating, in inherited contract at state_machine_with_oop.ads:41
 state_machine_with_oop.ads:20:13: info: function contract feasibility proved (CVC5: 1 VC)
-state_machine_with_oop.ads:22:19: medium: implicit terminating annotation on "Move_To_C" could be incorrect, dispatching call might be nonterminating, in inherited contract at state_machine_with_oop.ads:42
 state_machine_with_oop.ads:34:13: info: implicit terminating annotation on "Can_Move_To_A" has been proved, subprogram will terminate
 state_machine_with_oop.ads:34:28: warning: unused variable "Current"
 state_machine_with_oop.ads:35:13: info: implicit terminating annotation on "Can_Move_To_B" has been proved, subprogram will terminate
 state_machine_with_oop.ads:37:13: info: implicit terminating annotation on "Can_Move_To_C" has been proved, subprogram will terminate
 state_machine_with_oop.ads:40:13: high: all paths in "Move_To_A" raise exceptions or do not terminate normally
+state_machine_with_oop.ads:41:13: info: implicit terminating annotation on "Move_To_B" has been proved, subprogram will terminate
+state_machine_with_oop.ads:42:13: info: implicit terminating annotation on "Move_To_C" has been proved, subprogram will terminate
 state_machine_with_oop.ads:43:14: high: all paths in "Stay_Here" raise exceptions or do not terminate normally
 state_machine_with_oop.ads:43:25: warning: "Current" is not modified, could be IN
 state_machine_with_oop.ads:47:13: info: implicit terminating annotation on "Can_Move_To_A" has been proved, subprogram will terminate
@@ -169,5 +168,6 @@ state_machine_with_oop.ads:65:13: info: implicit terminating annotation on "Can_
 state_machine_with_oop.ads:65:28: warning: unused variable "Current"
 state_machine_with_oop.ads:66:13: info: implicit terminating annotation on "Can_Move_To_C" has been proved, subprogram will terminate
 state_machine_with_oop.ads:66:28: warning: unused variable "Current"
+state_machine_with_oop.ads:68:13: info: implicit terminating annotation on "Move_To_A" has been proved, subprogram will terminate
 state_machine_with_oop.ads:69:13: high: all paths in "Move_To_B" raise exceptions or do not terminate normally
 state_machine_with_oop.ads:70:13: high: all paths in "Move_To_C" raise exceptions or do not terminate normally

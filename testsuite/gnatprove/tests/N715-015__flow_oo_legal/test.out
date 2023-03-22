@@ -27,19 +27,19 @@ people.ads:21:11: info: data dependencies proved
 people.ads:23:13: info: implicit terminating annotation on "Get_Name" has been proved, subprogram will terminate
 people.ads:27:13: info: implicit terminating annotation on "Get_DOB" has been proved, subprogram will terminate
 people.ads:31:13: info: implicit terminating annotation on "Is_Alive" has been proved, subprogram will terminate
-professionals.adb:21:07: medium: implicit terminating annotation on "New_Person" could be incorrect, dispatching call might be nonterminating
-professionals.adb:28:07: medium: implicit terminating annotation on "New_Person" could be incorrect, dispatching call might be nonterminating
 professionals.adb:62:07: info: initialization of "Tmp" proved
-professionals.adb:64:35: medium: implicit terminating annotation on "New_Professional" could be incorrect, dispatching call might be nonterminating
 professionals.adb:77:07: info: initialization of "Tmp" proved
 professionals.adb:94:40: info: initialization of "Skill_Of_The_Day" constituent of "State" proved
-professionals.adb:112:07: medium: implicit terminating annotation on "Has_Training" could be incorrect, dispatching call might be nonterminating
 professionals.adb:156:28: info: unrolling loop
 professionals.adb:206:72: medium: overflow check might fail, cannot prove upper bound for Killer.Number_Of_People_Killed + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+professionals.ads:24:13: info: implicit terminating annotation on "New_Person" has been proved, subprogram will terminate
+professionals.ads:30:13: info: implicit terminating annotation on "New_Person" has been proved, subprogram will terminate
+professionals.ads:35:13: info: implicit terminating annotation on "New_Professional" has been proved, subprogram will terminate
 professionals.ads:41:13: info: implicit terminating annotation on "New_Professional" has been proved, subprogram will terminate
 professionals.ads:50:11: info: data dependencies proved
 professionals.ads:52:13: info: implicit terminating annotation on "Has_Licence_To_Kill" has been proved, subprogram will terminate
 professionals.ads:54:13: info: implicit terminating annotation on "Have_Same_Profession" has been proved, subprogram will terminate
+professionals.ads:58:13: info: implicit terminating annotation on "Has_Training" has been proved, subprogram will terminate
 professionals.ads:59:11: info: data dependencies proved
 professionals.ads:63:11: info: data dependencies proved
 professionals.ads:65:13: info: implicit terminating annotation on "Is_Fully_Trained" has been proved, subprogram will terminate

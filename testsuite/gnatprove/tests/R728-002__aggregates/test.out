@@ -38,16 +38,14 @@ pragmarc-b_strings.adb:92:48: medium: range check might fail [reason for check: 
 pragmarc-b_strings.adb:92:78: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at pragmarc-b_strings.ads:49 should mention Right in a precondition]
 pragmarc-b_strings.adb:98:18: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at pragmarc-b_strings.ads:50 should mention Left in a precondition]
 pragmarc-b_strings.adb:98:48: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at pragmarc-b_strings.ads:50 should mention Right in a precondition]
-pragmarc-b_strings.adb:104:07: medium: implicit terminating annotation on overriding operator "<=" could be incorrect, dispatching call might be nonterminating
 pragmarc-b_strings.adb:110:18: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at pragmarc-b_strings.ads:52 should mention Left in a precondition]
 pragmarc-b_strings.adb:110:48: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at pragmarc-b_strings.ads:52 should mention Right in a precondition]
-pragmarc-b_strings.adb:116:07: medium: implicit terminating annotation on overriding operator ">=" could be incorrect, dispatching call might be nonterminating
 pragmarc-b_strings.ads:25:13: info: function contract might not be available on recursive calls
-pragmarc-b_strings.ads:26:36: medium: implicit terminating annotation on overriding operator "+" could be incorrect, dispatching call might be nonterminating
+pragmarc-b_strings.ads:26:36: medium: implicit terminating annotation on overriding operator "+" could be incorrect, overriding operator "+" and overriding operator "+" are mutually recursive
 pragmarc-b_strings.ads:26:40: medium: postcondition might fail, cannot prove +"+"'Result = Source
 pragmarc-b_strings.ads:28:13: info: function contract might not be available on recursive calls
 pragmarc-b_strings.ads:29:45: info: range check proved (CVC5: 2 VC)
-pragmarc-b_strings.ads:29:53: medium: implicit terminating annotation on overriding operator "+" could be incorrect, dispatching call might be nonterminating
+pragmarc-b_strings.ads:29:53: medium: implicit terminating annotation on overriding operator "+" could be incorrect, overriding operator "+" and overriding operator "+" are mutually recursive
 pragmarc-b_strings.ads:29:57: medium: postcondition might fail, cannot prove +"+"'Result = Source
 pragmarc-b_strings.ads:31:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 pragmarc-b_strings.ads:39:21: medium: postcondition might fail [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function]
@@ -55,7 +53,9 @@ pragmarc-b_strings.ads:45:76: info: range check proved (CVC5: 2 VC)
 pragmarc-b_strings.ads:46:21: medium: postcondition might fail [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function]
 pragmarc-b_strings.ads:49:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 pragmarc-b_strings.ads:50:13: info: implicit terminating annotation on overriding operator "<" has been proved, subprogram will terminate
+pragmarc-b_strings.ads:51:13: info: implicit terminating annotation on overriding operator "<=" has been proved, subprogram will terminate
 pragmarc-b_strings.ads:52:13: info: implicit terminating annotation on overriding operator ">" has been proved, subprogram will terminate
+pragmarc-b_strings.ads:53:13: info: implicit terminating annotation on overriding operator ">=" has been proved, subprogram will terminate
 pragmarc-b_strings.ads:57:07: info: range check proved (CVC5: 2 VC)
 pragmarc-b_strings.ads:57:43: info: in default value of private type at pragmarc-b_strings.ads:20
 pragmarc-b_strings.ads:57:43: info: in default value of private type at pragmarc-b_strings.ads:20

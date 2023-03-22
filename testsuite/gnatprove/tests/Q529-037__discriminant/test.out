@@ -24,7 +24,7 @@ bounded_stacks.ads:31:41: info: initialization of "Item" proved, in instantiatio
 bounded_stacks.ads:33:20: info: postcondition proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:35:06: info: data dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:36:06: info: flow dependencies proved, in instantiation at integer_stacks.ads:4
-bounded_stacks.ads:39:33: medium: implicit terminating annotation on "Peek" could be incorrect, dispatching call might be nonterminating, in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:38:13: info: implicit terminating annotation on "Peek" has been proved, subprogram will terminate, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:40:06: info: data dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:41:06: info: flow dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:48:07: info: range check proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4

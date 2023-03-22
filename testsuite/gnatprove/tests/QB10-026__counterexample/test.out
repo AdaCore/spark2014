@@ -78,8 +78,12 @@ cartesian.adb:72:72: info: overflow check proved (CVC5: 2 VC)
 cartesian.adb:72:88: info: index check proved (CVC5: 2 VC)
 cartesian.adb:72:88: info: overflow check proved (CVC5: 2 VC)
 cartesian.adb:72:105: info: index check proved (CVC5: 2 VC)
+cartesian.ads:21:13: info: implicit terminating annotation on "in_array" has been proved, subprogram will terminate
 cartesian.ads:25:15: info: index check proved (CVC5: 2 VC)
+cartesian.ads:28:13: info: implicit terminating annotation on "in_array" has been proved, subprogram will terminate
 cartesian.ads:32:15: info: index check proved (CVC5: 2 VC)
+cartesian.ads:35:13: info: implicit terminating annotation on "in_array" has been proved, subprogram will terminate
+cartesian.ads:43:13: info: implicit terminating annotation on "cartesian_product" has been proved, subprogram will terminate
 cartesian.ads:53:21: medium: postcondition might fail, cannot prove in_array(pair_type'(array1(i), array2(j)), cartesian_product'Result)
 cartesian.ads:53:48: info: index check proved (CVC5: 2 VC)
 cartesian.ads:53:59: info: index check proved (CVC5: 2 VC)

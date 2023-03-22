@@ -25,8 +25,8 @@ unit2.adb:14:20: medium: overflow check might fail, cannot prove upper bound for
 unit2.ads:11:22: info: initialization of "X" proved
 unit2.ads:12:14: info: postcondition is stronger than class-wide postcondition (CVC5: 2 VC)
 unit2.ads:12:14: info: postcondition proved (CVC5: 2 VC)
-unit2.ads:15:21: medium: implicit terminating annotation on "Is_Max" could be incorrect, dispatching call might be nonterminating
-unit2.ads:18:22: medium: implicit terminating annotation on "Is_Zero" could be incorrect, dispatching call might be nonterminating
+unit2.ads:14:13: info: implicit terminating annotation on "Is_Max" has been proved, subprogram will terminate
+unit2.ads:17:13: info: implicit terminating annotation on "Is_Zero" has been proved, subprogram will terminate
 unit2.ads:23:14: medium: postcondition might be weaker than class-wide postcondition
 unit2.ads:23:30: info: overflow check proved (CVC5: 2 VC)
 unit2.ads:23:43: medium: postcondition might fail, cannot prove X.C2 = X.C2'Old + 1
@@ -37,8 +37,8 @@ unit3.ads:11:22: info: initialization of "X" proved
 unit3.ads:12:20: info: class-wide postcondition is stronger than overridden one (CVC5: 2 VC)
 unit3.ads:13:20: info: postcondition is stronger than class-wide postcondition (CVC5: 3 VC)
 unit3.ads:13:20: info: postcondition proved (CVC5: 3 VC)
-unit3.ads:16:21: medium: implicit terminating annotation on "Is_Max" could be incorrect, dispatching call might be nonterminating
-unit3.ads:19:22: medium: implicit terminating annotation on "Is_Zero" could be incorrect, dispatching call might be nonterminating
+unit3.ads:15:13: info: implicit terminating annotation on "Is_Max" has been proved, subprogram will terminate
+unit3.ads:18:13: info: implicit terminating annotation on "Is_Zero" has been proved, subprogram will terminate
 unit3.ads:24:20: info: class-wide precondition is weaker than overridden one (CVC5: 1 VC)
 unit3.ads:25:20: medium: class-wide postcondition might be weaker than overridden one
 unit3.ads:25:36: medium: overflow check might fail, cannot prove upper bound for X.C1'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]

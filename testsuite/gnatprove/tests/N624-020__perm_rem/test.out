@@ -4,6 +4,7 @@ perm.adb:6:09: info: range check proved (CVC5: 4 VC)
 perm.adb:6:24: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 perm.adb:6:24: info: range check proved (CVC5: 2 VC)
 perm.adb:6:26: info: range check proved (CVC5: 4 VC)
+perm.adb:11:13: info: implicit terminating annotation on "Get_Witness" has been proved, subprogram will terminate
 perm.adb:13:36: info: index check proved (CVC5: 2 VC)
 perm.adb:13:45: info: index check proved (CVC5: 2 VC)
 perm.adb:14:11: info: precondition proved (CVC5: 2 VC)
@@ -32,6 +33,7 @@ perm.adb:31:40: info: precondition proved (CVC5: 6 VC)
 perm.adb:31:51: info: range check proved (CVC5: 4 VC)
 perm.adb:33:07: info: assertion proved (CVC5: 1 VC)
 perm.adb:34:07: warning: this statement is never reached
+perm.adb:41:13: info: implicit terminating annotation on "Get_Witnesses" has been proved, subprogram will terminate
 perm.adb:43:06: info: precondition proved (CVC5: 2 VC)
 perm.adb:44:14: info: postcondition proved (CVC5: 6 VC)
 perm.adb:46:29: info: index check proved (CVC5: 2 VC)
@@ -63,7 +65,9 @@ perm.adb:65:07: warning: this statement is never reached
 perm.adb:69:16: info: function contract might not be available on recursive calls or calls from enclosing unit
 perm.adb:71:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:71:54: info: precondition proved (CVC5: 2 VC)
-perm.adb:79:13: medium: terminating annotation on "Induction_Hypothesis" could be incorrect, subprogram is recursive
+perm.adb:72:07: warning: Always_Return annotation is useless
+perm.adb:72:07: warning: function "Induction_Hypothesis" has implicit Always_Return annotation
+perm.adb:79:13: medium: implicit terminating annotation on "Induction_Hypothesis" could be incorrect, subprogram is recursive
 perm.adb:80:15: info: precondition proved (CVC5: 3 VC)
 perm.adb:80:37: info: precondition proved (CVC5: 3 VC)
 perm.adb:80:49: info: range check proved (CVC5: 2 VC)
@@ -75,8 +79,10 @@ perm.adb:93:16: info: function contract might not be available on recursive call
 perm.adb:94:63: info: precondition proved (CVC5: 2 VC)
 perm.adb:95:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:95:54: info: precondition proved (CVC5: 2 VC)
+perm.adb:96:07: warning: Always_Return annotation is useless
+perm.adb:96:07: warning: function "Induction_Hypothesis" has implicit Always_Return annotation
 perm.adb:103:40: info: precondition proved (CVC5: 4 VC)
-perm.adb:104:13: medium: terminating annotation on "Induction_Hypothesis" could be incorrect, subprogram is recursive
+perm.adb:104:13: medium: implicit terminating annotation on "Induction_Hypothesis" could be incorrect, subprogram is recursive
 perm.adb:105:15: info: precondition proved (CVC5: 3 VC)
 perm.adb:105:37: info: precondition proved (CVC5: 3 VC)
 perm.adb:105:55: info: precondition proved (CVC5: 3 VC)
@@ -127,6 +133,7 @@ perm.adb:141:62: info: index check proved (CVC5: 2 VC)
 perm.adb:141:72: info: index check proved (CVC5: 2 VC)
 perm.adb:141:72: info: overflow check proved (CVC5: 2 VC)
 perm.adb:145:13: info: function contract might not be available on implicit recursive calls
+perm.adb:145:13: info: implicit terminating annotation on "Shift_Perm_L" has been proved, subprogram will terminate
 perm.adb:147:30: info: precondition proved (CVC5: 2 VC)
 perm.adb:148:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.adb:148:43: info: precondition proved (CVC5: 2 VC)
@@ -134,14 +141,17 @@ perm.adb:152:16: info: function contract might not be available on recursive cal
 perm.adb:154:33: info: precondition proved (CVC5: 2 VC)
 perm.adb:155:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:155:54: info: precondition proved (CVC5: 2 VC)
+perm.adb:156:07: warning: Always_Return annotation is useless
+perm.adb:156:07: warning: function "Induction_Hypothesis" has implicit Always_Return annotation
 perm.adb:164:39: info: precondition proved (CVC5: 4 VC)
-perm.adb:165:13: medium: terminating annotation on "Induction_Hypothesis" could be incorrect, subprogram is recursive
+perm.adb:165:13: medium: implicit terminating annotation on "Induction_Hypothesis" could be incorrect, subprogram is recursive
 perm.adb:166:15: info: precondition proved (CVC5: 4 VC; Z3: 1 VC)
 perm.adb:167:18: info: precondition proved (CVC5: 3 VC)
 perm.adb:167:36: info: precondition proved (CVC5: 3 VC)
 perm.adb:167:54: info: precondition proved (CVC5: 3 VC)
 perm.adb:169:28: info: assertion proved (CVC5: 1 VC)
 perm.adb:175:14: info: precondition proved (CVC5: 5 VC)
+perm.adb:178:13: info: implicit terminating annotation on "Shift_Perm_R" has been proved, subprogram will terminate
 perm.adb:180:30: info: precondition proved (CVC5: 2 VC)
 perm.adb:181:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.adb:181:43: info: precondition proved (CVC5: 2 VC)
@@ -151,6 +161,7 @@ perm.adb:186:22: info: assertion proved (CVC5: 1 VC)
 perm.adb:186:22: info: precondition proved (CVC5: 5 VC)
 perm.adb:187:22: info: assertion proved (Z3: 1 VC)
 perm.adb:187:22: info: precondition proved (CVC5: 3 VC)
+perm.adb:191:13: info: function contract might not be available on recursive calls
 perm.adb:192:60: info: precondition proved (CVC5: 2 VC)
 perm.adb:193:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.adb:195:52: info: index check proved (CVC5: 2 VC)
@@ -163,6 +174,7 @@ perm.adb:196:65: info: range check proved (CVC5: 2 VC)
 perm.adb:204:37: info: precondition proved (CVC5: 4 VC)
 perm.adb:205:37: info: precondition proved (CVC5: 3 VC)
 perm.adb:206:37: info: precondition proved (CVC5: 3 VC)
+perm.adb:207:10: medium: implicit terminating annotation on "Extended_Perm" could be incorrect, subprogram is recursive
 perm.adb:207:28: info: precondition proved (CVC5: 3 VC)
 perm.adb:209:25: info: assertion proved (CVC5: 1 VC)
 perm.adb:212:16: info: initialization of "Ib" proved
@@ -202,8 +214,8 @@ perm.adb:231:63: info: range check proved (CVC5: 4 VC)
 perm.adb:232:25: info: precondition proved (CVC5: 6 VC)
 perm.adb:232:33: info: precondition proved (CVC5: 6 VC)
 perm.adb:232:54: info: range check proved (CVC5: 4 VC)
+perm.adb:234:25: info: assertion proved (Z3: 2 VC)
 perm.adb:234:25: info: precondition proved (CVC5: 4 VC)
-perm.adb:234:25: medium: assertion might fail [possible fix: loop invariant at line 287 should mention Ib]
 perm.adb:234:34: info: precondition proved (CVC5: 6 VC)
 perm.adb:234:45: info: range check proved (CVC5: 4 VC)
 perm.adb:234:50: info: precondition proved (CVC5: 6 VC)
@@ -319,12 +331,12 @@ perm.adb:306:18: info: precondition proved (CVC5: 2 VC)
 perm.adb:306:42: info: precondition proved (CVC5: 2 VC)
 perm.adb:307:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:307:54: info: precondition proved (CVC5: 2 VC)
+perm.adb:308:07: warning: Always_Return annotation is useless
+perm.adb:308:07: warning: function "Induction_Hypothesis" has implicit Always_Return annotation
 perm.adb:315:41: info: precondition proved (CVC5: 4 VC)
-perm.adb:316:13: medium: terminating annotation on "Induction_Hypothesis" could be incorrect, call to "Extended_Perm" might be nonterminating
-perm.adb:316:41: info: function contract not available for proof ("Extended_Perm" might not return)
 perm.adb:316:41: info: precondition proved (CVC5: 3 VC)
 perm.adb:317:37: info: precondition proved (CVC5: 4 VC; Z3: 1 VC)
-perm.adb:319:13: medium: terminating annotation on "Induction_Hypothesis" could be incorrect, subprogram is recursive
+perm.adb:319:13: medium: implicit terminating annotation on "Induction_Hypothesis" could be incorrect, subprogram is recursive
 perm.adb:319:20: info: precondition proved (CVC5: 5 VC)
 perm.adb:320:16: info: precondition proved (CVC5: 3 VC)
 perm.adb:320:34: info: precondition proved (CVC5: 3 VC)
@@ -361,6 +373,8 @@ perm.adb:357:51: info: precondition proved (CVC5: 3 VC)
 perm.adb:358:29: info: precondition proved (CVC5: 3 VC)
 perm.adb:359:25: info: assertion proved (CVC5: 1 VC)
 perm.adb:361:12: medium: precondition might fail, cannot prove Is_Perm (A, B) (e.g. when AA'First = 1 and AA'Last = 0 and BB'First = 1 and BB'Last = 0)
+perm.ads:6:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
+perm.ads:9:13: info: implicit terminating annotation on "Remove" has been proved, subprogram will terminate
 perm.ads:11:14: info: postcondition proved (CVC5: 5 VC)
 perm.ads:12:34: info: overflow check proved (CVC5: 2 VC)
 perm.ads:13:37: info: index check proved (CVC5: 2 VC)
@@ -372,16 +386,20 @@ perm.ads:15:32: info: overflow check proved (CVC5: 2 VC)
 perm.ads:15:44: info: index check proved (CVC5: 2 VC)
 perm.ads:15:44: info: overflow check proved (CVC5: 2 VC)
 perm.ads:15:66: info: index check proved (CVC5: 2 VC)
+perm.ads:17:13: info: implicit terminating annotation on "Remove_Swap" has been proved, subprogram will terminate
 perm.ads:20:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.ads:21:17: info: precondition proved (CVC5: 3 VC)
 perm.ads:21:25: info: precondition proved (CVC5: 3 VC)
 perm.ads:21:44: info: range check proved (CVC5: 2 VC)
 perm.ads:22:19: info: precondition proved (CVC5: 3 VC)
 perm.ads:22:27: info: precondition proved (CVC5: 3 VC)
+perm.ads:24:13: info: implicit terminating annotation on "Remove_Eq" has been proved, subprogram will terminate
 perm.ads:27:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.ads:27:40: info: precondition proved (CVC5: 3 VC)
 perm.ads:27:56: info: precondition proved (CVC5: 3 VC)
-perm.ads:35:07: medium: terminating annotation on "Is_Perm" could be incorrect, subprogram is recursive
+perm.ads:31:04: warning: Always_Return annotation is useless
+perm.ads:31:04: warning: function "Is_Perm" has implicit Always_Return annotation
+perm.ads:35:07: medium: implicit terminating annotation on "Is_Perm" could be incorrect, subprogram is recursive
 perm.ads:36:50: info: index check proved (CVC5: 2 VC)
 perm.ads:36:59: info: index check proved (CVC5: 2 VC)
 perm.ads:37:21: info: precondition proved (CVC5: 2 VC)
@@ -390,21 +408,26 @@ perm.ads:37:41: info: range check proved (CVC5: 2 VC)
 perm.ads:37:46: info: precondition proved (CVC5: 3 VC)
 perm.ads:37:57: info: range check proved (CVC5: 2 VC)
 perm.ads:38:13: info: function contract might not be available on implicit recursive calls
+perm.ads:38:13: info: implicit terminating annotation on "Perm_Reflexive" has been proved, subprogram will terminate
 perm.ads:40:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.ads:40:45: info: precondition proved (CVC5: 2 VC)
 perm.ads:42:13: info: function contract might not be available on implicit recursive calls
+perm.ads:42:13: info: implicit terminating annotation on "Perm_Symmetric" has been proved, subprogram will terminate
 perm.ads:43:60: info: precondition proved (CVC5: 2 VC)
 perm.ads:44:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.ads:44:45: info: precondition proved (CVC5: 2 VC)
 perm.ads:46:13: info: function contract might not be available on implicit recursive calls
+perm.ads:46:13: info: implicit terminating annotation on "Perm_Transitive" has been proved, subprogram will terminate
 perm.ads:48:06: info: precondition proved (CVC5: 2 VC)
 perm.ads:48:30: info: precondition proved (CVC5: 2 VC)
 perm.ads:49:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.ads:49:46: info: precondition proved (CVC5: 2 VC)
+perm.ads:51:13: info: implicit terminating annotation on "Perm_Eq" has been proved, subprogram will terminate
 perm.ads:52:59: info: precondition proved (CVC5: 2 VC)
 perm.ads:53:14: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.ads:55:52: info: index check proved (CVC5: 2 VC)
 perm.ads:55:61: info: index check proved (CVC5: 2 VC)
+perm.ads:57:13: info: implicit terminating annotation on "Remove_Perm" has been proved, subprogram will terminate
 perm.ads:59:52: info: precondition proved (CVC5: 2 VC)
 perm.ads:60:18: info: index check proved (CVC5: 2 VC)
 perm.ads:60:27: info: index check proved (CVC5: 2 VC)
@@ -649,6 +672,7 @@ sort.adb:87:34: info: precondition proved (CVC5: 4 VC)
 sort.adb:87:48: info: range check proved (CVC5: 2 VC)
 sort.adb:87:52: info: precondition proved (CVC5: 4 VC)
 sort.adb:87:68: info: range check proved (CVC5: 2 VC)
+sort.adb:92:13: info: implicit terminating annotation on "Index_Of_Minimum" has been proved, subprogram will terminate
 sort.adb:97:16: info: postcondition proved (CVC5: 2 VC)
 sort.adb:99:07: info: initialization of "Min" proved
 sort.adb:103:33: info: loop invariant initialization proved (CVC5: 2 VC)

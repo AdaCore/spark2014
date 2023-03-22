@@ -1,2 +1,2 @@
-private_type.ads:8:45: medium: implicit terminating annotation on "G" could be incorrect, dispatching call might be nonterminating
+private_type.ads:8:13: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
 private_type.ads:8:45: medium: precondition might fail [possible fix: subprogram at line 8 should mention R in a precondition]

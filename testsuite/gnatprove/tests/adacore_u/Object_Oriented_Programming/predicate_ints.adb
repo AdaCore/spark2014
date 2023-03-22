@@ -77,13 +77,9 @@ is
    begin
       return (Int(Arg1) + Int(Arg2) with Precision =>
                 Integer'Max (Arg1.Precision, Arg2.Precision));
-      pragma Annotate (GNATprove, False_Positive, "dispatching call",
-                       "this call will always terminate");
    end "+";
 
    function Zero return Approx_Int is (Int'(Zero) with Precision => 0);
-   pragma Annotate (GNATprove, False_Positive, "dispatching call",
-                    "this call will always terminate");
 
    not overriding procedure Blur (Arg : in out Approx_Int) is
    begin
