@@ -22965,6 +22965,15 @@ package body Gnat2Why.Expr is
                         Return_Type,
                         Body_Params);
 
+      --  Returned objects have exactly the expected tag
+
+      if Is_Tagged_Type (Etype (Subp)) then
+         Result_Stmt := New_Tag_Update
+           (Ada_Node => Expr,
+            Name     => Result_Stmt,
+            Ty       => Etype (Subp));
+      end if;
+
       Insert_Move_Of_Deep_Parts (Rhs     => Expr,
                                  Lhs_Typ => Etype (Subp),
                                  Expr    => Result_Stmt);

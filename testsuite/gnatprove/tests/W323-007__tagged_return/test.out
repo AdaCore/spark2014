@@ -1,0 +1,9 @@
+main.adb:15:13: info: function contract might not be available on calls from enclosing unit
+main.adb:15:13: info: implicit terminating annotation on "Copy" has been proved, subprogram will terminate
+main.adb:16:14: medium: postcondition might fail
+main.adb:18:13: info: implicit terminating annotation on "Copy2" has been proved, subprogram will terminate
+main.adb:19:14: info: postcondition proved (CVC5: 1 VC)
+main.adb:20:06: medium: Inline_For_Proof or Logical_Equal annotation might be incorrect
+main.adb:27:13: info: implicit terminating annotation on "Copy3" has been proved, subprogram will terminate
+main.adb:28:14: info: postcondition proved (CVC5: 1 VC)
+main.adb:29:06: medium: Inline_For_Proof or Logical_Equal annotation might be incorrect
