@@ -22967,7 +22967,7 @@ package body Gnat2Why.Expr is
 
       --  Returned objects have exactly the expected tag
 
-      if Is_Tagged_Type (Etype (Subp)) then
+      if Is_Tagged_Type (Retysp (Etype (Subp))) then
          Result_Stmt := New_Tag_Update
            (Ada_Node => Expr,
             Name     => Result_Stmt,

@@ -2624,6 +2624,13 @@ package body Gnat2Why.Subprograms is
            (Expr          => Value,
             Expected_Type => W_Return_Type,
             Params        => Params);
+
+         if Is_Tagged_Type (Retysp (Etype (Function_Entity))) then
+            W_Def := New_Tag_Update
+              (Ada_Node => Value,
+               Name     => W_Def,
+               Ty       => Etype (Function_Entity));
+         end if;
       end if;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
