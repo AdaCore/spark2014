@@ -30,7 +30,6 @@ with Checked_Types;          use Checked_Types;
 with Common_Containers;
 with Flow_Refinement;        use Flow_Refinement;
 with Flow_Utility;           use Flow_Utility;
-with Nlists;                 use Nlists;
 with Gnat2Why.Tables;        use Gnat2Why.Tables;
 with Snames;                 use Snames;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
@@ -1683,6 +1682,16 @@ package body Gnat2Why.Expr.Loops.Inv is
             Process_Statement_List
               (Statements (N), Loop_Writes, Inv_Seen, In_Nested);
 
+            declare
+               Handler : Node_Id := First (Exception_Handlers (N));
+            begin
+               while Present (Handler) loop
+                  Process_Statement_List
+                    (Statements (Handler), Loop_Writes, Inv_Seen, In_Nested);
+                  Next (Handler);
+               end loop;
+            end;
+
          when N_Loop_Statement =>
 
             --  Discard the loop index of nested loops if any
@@ -1717,8 +1726,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                  (Declarations (N), Loop_Writes,
                   Inv_Seen, In_Nested => True);
             end if;
-            Process_Statement_List
-              (Statements (Handled_Statement_Sequence (N)), Loop_Writes,
+            Process_Statement
+              (Handled_Statement_Sequence (N), Loop_Writes,
                Inv_Seen, In_Nested => True);
 
          when N_Ignored_In_SPARK

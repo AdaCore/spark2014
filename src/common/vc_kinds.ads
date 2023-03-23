@@ -437,6 +437,7 @@ package VC_Kinds is
       Lim_Iterated_Element_Association,
       Lim_Iterator_In_Component_Assoc,
       Lim_Limited_Type_From_Limited_With,
+      Lim_Loop_Inv_And_Handler,
       Lim_Loop_With_Iterator_Filter,
       Lim_Max_Array_Dimension,
       Lim_Max_Modulus,
@@ -623,6 +624,8 @@ package VC_Kinds is
            "iterated element association",
          when Lim_Multidim_Iterator =>
            "iterator specification over multi-dimensional array",
+         when Lim_Loop_Inv_And_Handler =>
+           "loop invariant in a list of statements with an exception handler",
          when Lim_Loop_With_Iterator_Filter =>
            "loop on an iterator specification with an iterator filter",
          when Lim_Complex_Raise_Expr_In_Prec =>

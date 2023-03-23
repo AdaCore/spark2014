@@ -1,0 +1,44 @@
+test_move.adb:13:31: warning: "X" is not modified, could be IN
+test_move.adb:13:31: warning: unused variable "X"
+test_move.adb:13:34: warning: "Y" is not modified, could be IN
+test_move.adb:13:34: warning: unused variable "Y"
+test_move.adb:50:14: error: object was moved at line 64
+test_move.adb:50:14: error: return from "P2" with moved value for "X"
+test_move.adb:50:31: warning: "X" is not modified, could be IN
+test_move.adb:50:31: warning: unused variable "X"
+test_move.adb:50:34: warning: "Y" is not modified, could be IN
+test_move.adb:50:34: warning: unused variable "Y"
+test_move.adb:86:14: error: object was moved at line 100
+test_move.adb:86:14: error: return from "P3" with moved value for "X"
+test_move.adb:86:31: warning: "X" is not modified, could be IN
+test_move.adb:86:31: warning: unused variable "X"
+test_move.adb:86:34: warning: "Y" is not modified, could be IN
+test_move.adb:86:34: warning: unused variable "Y"
+test_move.adb:121:14: error: object was moved at line 134
+test_move.adb:121:14: error: return from "P4" with moved value for "Y"
+test_move.adb:121:31: warning: "X" is not modified, could be IN
+test_move.adb:121:31: warning: unused variable "X"
+test_move.adb:121:34: warning: "Y" is not modified, could be IN
+test_move.adb:121:34: warning: unused variable "Y"
+test_move.adb:157:14: warning: subprogram "Do_Not_Raise_E1" has no effect
+test_move.adb:167:14: high: all paths in "P5" raise exceptions or do not terminate normally
+test_move.adb:167:18: warning: "X" is not modified, could be IN
+test_move.adb:191:14: error: object was moved at line 192
+test_move.adb:191:14: error: return from "P6" with moved value for "X"
+test_move.adb:191:14: high: all paths in "P6" raise exceptions or do not terminate normally
+test_move.adb:191:18: warning: "X" is not modified, could be IN
+test_move.adb:214:14: error: object was moved at line 220
+test_move.adb:214:14: error: return from "P7" with moved value for "X"
+test_move.adb:214:14: high: all paths in "P7" raise exceptions or do not terminate normally
+test_move.adb:214:18: warning: "X" is not modified, could be IN
+test_move.adb:238:14: error: object was moved at line 244
+test_move.adb:238:14: error: return from "P8" with moved value for "X"
+test_move.adb:238:14: high: all paths in "P8" raise exceptions or do not terminate normally
+test_move.adb:238:18: warning: "X" is not modified, could be IN
+test_move.adb:262:14: error: object was moved at line 268
+test_move.adb:262:14: error: return from "P9" with moved value for "X"
+test_move.adb:262:14: high: all paths in "P9" raise exceptions or do not terminate normally
+test_move.adb:262:18: warning: "X" is not modified, could be IN
+test_move.adb:297:14: high: all paths in "P10" raise exceptions or do not terminate normally
+test_move.adb:297:19: warning: "X" is not modified, could be IN
+gnatprove: error during flow analysis and proof

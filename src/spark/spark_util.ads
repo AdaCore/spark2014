@@ -1054,37 +1054,21 @@ package SPARK_Util is
    function All_Exceptions return Node_Sets.Set;
    --  Get all the exceptions visible from analyzed code
 
-   function Might_Raise_Exceptions (E : Entity_Id) return Boolean is
-     (Present (Get_Pragma (E, Pragma_Exceptional_Cases)));
+   procedure Collect_Reachable_Handlers (Stmt : Node_Id) with
+     Pre => Nkind (Stmt) in N_Procedure_Call_Statement | N_Raise_Statement;
+   --  Stmt shall be a call which might raise exceptions or a raise
+   --  statement. Collect all the exception handlers which might be reached
+   --  when jumping from Stmt and store them in a map.
 
-   function Exception_Handled
-     (E    : E_Exception_Id;
-      Stmt : Node_Id)
-      return Boolean;
-   --  Return True is a raise of E is handled above Stmt. For now, this occurs
-   --  only if Stmt occurs in the body of a subprogram annotated with
-   --  Exceptional_Cases.
-
-   procedure Collect_Raised_Exceptions
-     (Subp    : Entity_Id;
-      All_Exc : out Boolean;
-      Exc_Set : out Node_Sets.Set)
-   with Post => (if All_Exc then Exc_Set.Is_Empty);
-   --  Retrieve all exceptions raise by Subp. If any exception can be raise,
-   --  then All_Exc is set to True. Otherwise raised exceptions are stored in
-   --  Exc_Set.
-
-   procedure Collect_Handled_Exceptions
-     (Call    : Node_Id;
-      All_Exc : out Boolean;
-      Exc_Set : out Node_Sets.Set)
-   with Post => (if All_Exc then Exc_Set.Is_Empty);
-   --  Retrieve all exceptions raise by Call handled above it. If all
-   --  exceptions are handled, All_Exc is set to True. Otherwise handled
-   --  exceptions are stored in Exc_Set.
-
-   function Call_Raises_Handled_Exceptions (Call : Node_Id) return Boolean;
-   --  Return True if a call needs handling for exceptional paths
+   function Reachable_Handlers (Stmt : Node_Id) return Node_Lists.List with
+     Pre  => Nkind (Stmt) in N_Procedure_Call_Statement | N_Raise_Statement,
+     Post => Might_Raise_Handled_Exceptions (Stmt) /=
+       Reachable_Handlers'Result.Is_Empty;
+   --  Stmt shall be a call which might raise exceptions or a raise
+   --  statement. Return all exception handlers which might be reached when
+   --  jumping from Stmt. If the enclosing body might be exited, it will be the
+   --  last elements of the list. If the statement does not raise any handled
+   --  exception, the list is empty.
 
    function By_Copy (Obj : Formal_Kind_Id) return Boolean;
    --  Return True if Obj is known to be passed by copy. In parameters of an
@@ -1093,5 +1077,84 @@ package SPARK_Util is
 
    function By_Reference (Obj : Formal_Kind_Id) return Boolean;
    --  Return True if Obj is known to be passed by reference. See above.
+
+   --  This package defines a type and operations for sets of exceptions. These
+   --  sets can either be constructed from the empty set by adding elements or
+   --  from the set containing all exceptions by removing them.
+
+   package Exception_Sets is
+
+      type Set is tagged private;
+
+      function Exactly (E : E_Exception_Id) return Set;
+      --  Return the set containing only the exception E
+
+      function All_Exceptions return Set;
+      --  Return the set containing all Ada exceptions
+
+      procedure Disclose
+        (S       : Set;
+         All_But : out Boolean;
+         Exc_Set : out Node_Sets.Set);
+      --  If All_But is True, then Exc_Set contains the exceptions which are
+      --  not in the set S. Otherwise, the exception set S contains exactly the
+      --  exceptions of Exc_Set.
+
+      --  Set operations
+
+      function Empty_Set return Set;
+
+      function Is_Empty (S : Set) return Boolean;
+
+      function Is_Subset (Left, Right : Set) return Boolean;
+
+      function Contains (S : Set; E : E_Exception_Id) return Boolean;
+
+      procedure Exclude (S : in out Set; E : E_Exception_Id);
+
+      procedure Include (S : in out Set; E : E_Exception_Id);
+
+      procedure Intersection (Left : in out Set; Right : Set);
+
+      procedure Union (Left : in out Set; Right : Set);
+
+   private
+      type Set is tagged record
+         All_But : Boolean;
+         Exc_Set : Node_Sets.Set;
+      end record;
+   end Exception_Sets;
+
+   function Has_Exceptional_Contract (E : Entity_Id) return Boolean;
+   --  Return True if E has an exceptional contract with cases which are not
+   --  all statically False.
+
+   function Get_Exceptions_For_Subp
+     (Subp : Entity_Id)
+      return Exception_Sets.Set;
+   --  Retrieve all exceptions potentially raised by Subp
+
+   function Get_Exceptions_From_Handler
+     (N : N_Handled_Sequence_Of_Statements_Id)
+      return Exception_Sets.Set;
+   --  Retrieve all exceptions handled by a handler
+
+   function Get_Handled_Exceptions (Stmt : Node_Id) return Exception_Sets.Set;
+   --  Retrieve all exceptions either handled by a handler above Stmt or
+   --  expected by the enclosing unit.
+
+   function Get_Raised_Exceptions
+     (Stmt         : Node_Id;
+      Only_Handled : Boolean)
+      return Exception_Sets.Set
+   with
+     Pre  => Nkind (Stmt) in N_Procedure_Call_Statement
+                           | N_Entry_Call_Statement
+                           | N_Raise_Statement;
+   --  Retrieve all exceptions raise by Stmt. If Only_Hanled is True, only
+   --  consider exception which are handled above Stmt.
+
+   function Might_Raise_Handled_Exceptions (Stmt : Node_Id) return Boolean is
+     (not Get_Raised_Exceptions (Stmt, True).Is_Empty);
 
 end SPARK_Util;

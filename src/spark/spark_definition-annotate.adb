@@ -444,7 +444,7 @@ package body SPARK_Definition.Annotate is
             Arg3_Exp);
          return;
       elsif Ekind (E) in E_Procedure | E_Generic_Procedure
-        and then Might_Raise_Exceptions (E)
+        and then Has_Exceptional_Contract (E)
       then
          Error_Msg_N
            ("subprogram annotated with the " & Aspect_Or_Pragma
@@ -1042,7 +1042,7 @@ package body SPARK_Definition.Annotate is
             & " Automatic_Instantiation must be ghost",
             E);
          return;
-      elsif Might_Raise_Exceptions (E) then
+      elsif Has_Exceptional_Contract (E) then
          Error_Msg_N
            ("procedure annotated with the " & Aspect_Or_Pragma
             & " Automatic_Instantiation shall not raise exceptions",

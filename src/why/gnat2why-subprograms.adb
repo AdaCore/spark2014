@@ -236,14 +236,6 @@ package body Gnat2Why.Subprograms is
    --  For every object in the binder array whose type matches the dispatching
    --  type of Subp, state that the tag of the object is equal to W_Tag.
 
-   function Compute_Guard_For_Exceptional_Case
-     (Exceptional_Case : Node_Id;
-      Exc_Id           : W_Identifier_Id;
-      Domain           : EW_Domain) return W_Expr_Id
-     with Pre =>
-       Nkind (First (Choice_List (Exceptional_Case))) /= N_Others_Choice;
-   --  Compute the guard corresponding to an exceptional case
-
    function Compute_Inlined_Expr
      (Function_Entity    : Entity_Id;
       Logic_Func_Binders : Item_Array;
@@ -1514,39 +1506,6 @@ package body Gnat2Why.Subprograms is
       return Pred;
    end Compute_Guard_For_Dispatch;
 
-   ----------------------------------------
-   -- Compute_Guard_For_Exceptional_Case --
-   ----------------------------------------
-
-   function Compute_Guard_For_Exceptional_Case
-     (Exceptional_Case : Node_Id;
-      Exc_Id           : W_Identifier_Id;
-      Domain           : EW_Domain) return W_Expr_Id
-   is
-      Exc  : Node_Id := First (Choice_List (Exceptional_Case));
-      Cond : W_Expr_Id := New_Literal (Value => EW_False, Domain => Domain);
-   begin
-      while Present (Exc) loop
-         case Nkind (Exc) is
-            when N_Identifier
-               | N_Expanded_Name
-               =>
-               Cond := New_Or_Expr
-                 (Cond,
-                  New_Comparison
-                    (Why_Eq,
-                     +Exc_Id,
-                     +To_Why_Id (Entity (Exc)),
-                     Domain),
-                  Domain);
-            when others =>
-               raise Program_Error;
-         end case;
-         Next (Exc);
-      end loop;
-      return Cond;
-   end Compute_Guard_For_Exceptional_Case;
-
    ---------------------------
    -- Compute_Guard_Formula --
    ---------------------------
@@ -2517,8 +2476,8 @@ package body Gnat2Why.Subprograms is
       if Elsif_Parts'Length > 0 then
          for Num in Elsif_Parts'Range loop
             Elsif_Parts (Num) := New_Elsif
-              (Condition => Compute_Guard_For_Exceptional_Case
-                 (Exceptional_Case, Exc_Id, EW_Pred),
+              (Condition => Compute_Guard_For_Exceptions
+                 (Choice_List (Exceptional_Case), Exc_Id, EW_Pred),
                Then_Part => +Transform_Pred
                  (Expression (Exceptional_Case), Params),
                Domain    => EW_Pred);
@@ -2542,8 +2501,8 @@ package body Gnat2Why.Subprograms is
         (Left  => Dynamic_Prop_Effects,
          Right => New_Conditional
            (Ada_Node    => Prag,
-            Condition   => +Compute_Guard_For_Exceptional_Case
-              (Exceptional_Case, Exc_Id, EW_Pred),
+            Condition   => +Compute_Guard_For_Exceptions
+              (Choice_List (Exceptional_Case), Exc_Id, EW_Pred),
             Then_Part   => Transform_Pred
               (Expression (Exceptional_Case), Params),
             Elsif_Parts => Elsif_Parts,
@@ -3368,8 +3327,8 @@ package body Gnat2Why.Subprograms is
            and then Body_Statements_In_SPARK (E)
          then
             Prepend
-              (Transform_Statements_And_Declarations
-                 (Statements (Handled_Statement_Sequence (Body_N))),
+              (Transform_Handled_Statements
+                 (Handled_Statement_Sequence (Body_N)),
                Why_Body);
          end if;
 
@@ -4111,8 +4070,8 @@ package body Gnat2Why.Subprograms is
          if Elsif_Parts'Length > 0 then
             for Num in Elsif_Parts'Range loop
                Elsif_Parts (Num) := New_Elsif
-                 (Condition => Compute_Guard_For_Exceptional_Case
-                    (Exceptional_Case, Exc_Id, EW_Prog),
+                 (Condition => Compute_Guard_For_Exceptions
+                    (Choice_List (Exceptional_Case), Exc_Id, EW_Prog),
                   Then_Part => +Check_Post_For_Case (Exceptional_Case, Params),
                   Domain    => EW_Prog);
                Next (Exceptional_Case);
@@ -4136,8 +4095,8 @@ package body Gnat2Why.Subprograms is
 
          return New_Conditional
            (Ada_Node    => Prag,
-            Condition   => +Compute_Guard_For_Exceptional_Case
-              (Exceptional_Case, Exc_Id, EW_Prog),
+            Condition   => +Compute_Guard_For_Exceptions
+              (Choice_List (Exceptional_Case), Exc_Id, EW_Prog),
             Then_Part   => Check_Post_For_Case (Exceptional_Case, Params),
             Elsif_Parts => Elsif_Parts,
             Else_Part   => Else_Part);
@@ -5009,9 +4968,8 @@ package body Gnat2Why.Subprograms is
                     (Pre_Prags, "checking of pragma precondition"),
                   2 => Check_Ceiling_Protocol (Body_Params, E),
                   3 => Transform_Declarations (Declarations (Body_N)),
-                  4 => Transform_Statements_And_Declarations
-                    (Statements
-                       (Handled_Statement_Sequence (Body_N))),
+                  4 => Transform_Handled_Statements
+                    (Handled_Statement_Sequence (Body_N)),
                   5 => Raise_Stmt));
 
             --  Enclose the subprogram body in a try-block, so that return
@@ -5047,7 +5005,7 @@ package body Gnat2Why.Subprograms is
 
          --  Handling of Ada exceptions
 
-         if Might_Raise_Exceptions (E) then
+         if Has_Exceptional_Contract (E) then
             declare
                Body_N     : constant Node_Id := Get_Body (E);
                Exc_Id     : constant W_Identifier_Id :=
@@ -5329,8 +5287,7 @@ package body Gnat2Why.Subprograms is
 
       if Entity_Body_In_SPARK (E) then
          Why_Body :=
-           Transform_Statements_And_Declarations
-             (Statements (Handled_Statement_Sequence (Body_N)));
+           Transform_Handled_Statements (Handled_Statement_Sequence (Body_N));
 
          Why_Body :=
            Transform_Declarations_Block (Declarations (Body_N), Why_Body);
@@ -6540,7 +6497,7 @@ package body Gnat2Why.Subprograms is
 
       --  Potentially add raised exceptions to the effects
 
-      if Might_Raise_Exceptions (E) then
+      if Has_Exceptional_Contract (E) then
          declare
             Exc_Id : constant W_Identifier_Id :=
               New_Temp_Identifier (Base_Name => "exc", Typ => EW_Int_Type);

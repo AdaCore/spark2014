@@ -297,6 +297,13 @@ package body Gnat2Why.Expr.Loops is
                     (Flat_Stmts,
                      Get_Flat_Statement_And_Declaration_List
                        (Statements (Handled_Statement_Sequence (Cur_Stmt))));
+
+                  --  We should never expand blocks which have exception
+                  --  handlers.
+
+                  pragma Assert
+                    (No (Exception_Handlers
+                     (Handled_Statement_Sequence (Cur_Stmt))));
                else
                   Flat_Stmts.Append (Cur_Stmt);
                end if;

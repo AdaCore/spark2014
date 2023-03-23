@@ -1,0 +1,29 @@
+test_handlers.adb:7:31: info: initialization of "Y" proved
+test_handlers.adb:8:14: info: postcondition proved (CVC5: 1 VC)
+test_handlers.adb:10:15: info: exceptional case proved (CVC5: 2 VC)
+test_handlers.adb:11:15: info: exceptional case proved (CVC5: 2 VC)
+test_handlers.adb:32:17: info: overflow check proved (CVC5: 2 VC)
+test_handlers.adb:38:31: info: initialization of "Y" proved
+test_handlers.adb:39:14: info: postcondition proved (CVC5: 1 VC)
+test_handlers.adb:41:15: info: exceptional case proved (CVC5: 2 VC)
+test_handlers.adb:54:10: medium: unexpected exception might be raised
+test_handlers.adb:62:17: info: overflow check proved (CVC5: 2 VC)
+test_handlers.adb:63:10: medium: unexpected exception might be raised
+test_handlers.adb:66:31: info: initialization of "Y" proved
+test_handlers.adb:67:14: info: postcondition proved (CVC5: 1 VC)
+test_handlers.adb:69:15: info: exceptional case proved (CVC5: 2 VC)
+test_handlers.adb:70:15: info: exceptional case proved (CVC5: 1 VC)
+test_handlers.adb:92:31: info: initialization of "Y" proved
+test_handlers.adb:93:14: info: postcondition proved (CVC5: 1 VC)
+test_handlers.adb:95:15: info: exceptional case proved (CVC5: 2 VC)
+test_handlers.adb:119:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+test_handlers.adb:120:14: info: postcondition proved (CVC5: 1 VC)
+test_handlers.adb:124:07: warning: this statement is never reached
+test_handlers.adb:124:14: info: initialization of "Y" proved
+test_handlers.adb:141:20: info: overflow check proved (CVC5: 2 VC)
+test_handlers.adb:143:20: info: overflow check proved (CVC5: 2 VC)
+test_handlers.adb:149:31: info: initialization of "Y" proved
+test_handlers.adb:150:14: info: postcondition proved (CVC5: 1 VC)
+test_handlers.adb:152:15: info: exceptional case proved (CVC5: 2 VC)
+test_handlers.adb:172:20: info: overflow check proved (CVC5: 2 VC)
+test_handlers.adb:175:20: info: overflow check proved (CVC5: 2 VC)

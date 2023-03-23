@@ -27,6 +27,7 @@ with Checked_Types;              use Checked_Types;
 with Common_Containers;          use Common_Containers;
 with Flow_Types;                 use Flow_Types;
 with Gnat2Why.Util;              use Gnat2Why.Util;
+with Nlists;                     use Nlists;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Util;                 use SPARK_Util;
@@ -326,6 +327,14 @@ package Gnat2Why.Expr is
    --  @param Initialized true term iff Expr is known to be initialized. If
    --     Expr has an initialization wrapper type, then should only be True if
    --     Expr is at least partially Initialized.
+
+   function Compute_Guard_For_Exceptions
+     (Choices : List_Id;
+      Exc_Id  : W_Identifier_Id;
+      Domain  : EW_Domain) return W_Expr_Id
+     with Pre =>
+       Nkind (First (Choices)) /= N_Others_Choice;
+   --  Compute the guard corresponding to an exceptional case
 
    function Compute_Is_Moved_Property
      (Expr     : W_Term_Id;
@@ -700,11 +709,8 @@ package Gnat2Why.Expr is
       return  W_Prog_Id;
    --  Transform a simple return statement returning the expression Expr
 
-   function Transform_Statements_And_Declarations
-     (Stmts_And_Decls : List_Id)
-      return W_Prog_Id;
-   --  Transforms a list of statements and declarations into a Why expression.
-   --  An empty list is transformed into the void expression.
+   function Transform_Handled_Statements (N : Node_Id) return W_Prog_Id;
+   --  Transforms an handled list of statements into a Why expression
 
    procedure Transform_Statement_Or_Declaration_In_List
      (Stmt_Or_Decl :        Node_Id;
