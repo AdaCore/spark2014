@@ -535,8 +535,6 @@ package body VC_Kinds is
           & " other non-volatile objects",
         when Warn_Function_Is_Valid =>
           "function Is_Valid is assumed to return True",
-        when Warn_Lemma_Procedure_No_Return =>
-          "non-returning lemma procedure cannot be instantiated automatically",
         when Warn_Pragma_Annotate_No_Check =>
           "no check message justified by this pragma",
         when Warn_Pragma_Annotate_Proved_Check =>
@@ -1396,8 +1394,6 @@ package body VC_Kinds is
           "initialization of alias",
         when Warn_Function_Is_Valid =>
           "function Is_Valid always return True",
-        when Warn_Lemma_Procedure_No_Return =>
-          "lemma not instantiated automatically",
         when Warn_Pragma_Annotate_No_Check =>
           "no check message justified",
         when Warn_Pragma_Annotate_Proved_Check =>

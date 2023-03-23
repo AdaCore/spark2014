@@ -5528,18 +5528,6 @@ package body Gnat2Why.Subprograms is
              else "")
            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      --  Do not generate an axiom for the postcondition of potentially
-      --  non-returning lemmas. Do not emit the warning for specializations to
-      --  avoid duplicates.
-
-      if Is_Potentially_Nonreturning (E) then
-         if Specialization_Module = No_Symbol then
-            Error_Msg_N (Warning_Message (Warn_Lemma_Procedure_No_Return), E);
-            Error_Msg_NE ("\\procedure & might not return", E, E);
-         end if;
-         return;
-      end if;
-
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
       Localize_Binders (Binders);
       Push_Binders_To_Symbol_Table (Binders);
@@ -5635,82 +5623,13 @@ package body Gnat2Why.Subprograms is
          Why_Type := Type_Of_Node (E);
       end if;
 
-      --  Do not generate an axiom for the postcondition of:
-      --    * potentially non-returning functions as the axiom could be
-      --      unsound,
-      --    * volatile functions and protected subprograms.
+      --  Do not generate an axiom for the postcondition of volatile functions
+      --  and protected subprograms.
 
       if not Is_Function_Or_Function_Type (E)
         or else Has_Pragma_Volatile_Function (E)
-        or else (Ekind (E) = E_Function
-                 and then Is_Potentially_Nonreturning (E)
-                 and then (not Is_Scalar_Type (Etype (E))
-                           or else not Use_Split_Form_For_Type (Etype (E))))
       then
          return;
-
-      --  We generate an axiom for the return type of a recursive or
-      --  non-terminating function if it is a (non empty) static scalar type as
-      --  their range property is always sound. For dynamic scalar types, we
-      --  assume the bounds of their first static ancestor.
-      --  For subprogram wrappers or subprogram types, the axiom gives the
-      --  definition of a predicate symbol, it cannot be unsound.
-
-      elsif not Is_Function_Type (E)
-        and then not Is_Access_Subp_Wrapper
-        and then Is_Potentially_Nonreturning (E)
-      then
-
-         --  Expression functions will have their own definition axiom which
-         --  may contradict the range axiom. Do not emit range axiom for them.
-
-         if Is_Expression_Function_Or_Completion (E)
-           and then Entity_Body_Compatible_With_SPARK (E)
-         then
-            return;
-         end if;
-
-         pragma Assert (Is_Scalar_Type (Etype (E))
-                        and then Use_Split_Form_For_Type (Etype (E)));
-         declare
-            Logic_Why_Binders   : constant Binder_Array :=
-             Spec_Binders & To_Binder_Array (Logic_Func_Binders);
-            Logic_Id            : constant W_Identifier_Id :=
-              Logic_Function_Name
-                (E, Specialization_Module => Specialization_Module);
-            Dynamic_Prop_Result : constant W_Pred_Id :=
-              +New_Dynamic_Property
-              (Domain => EW_Pred,
-               Ty     => (if Type_Is_Modeled_As_Base (Etype (E)) then
-                               Get_Base_Of_Type (Etype (E))
-                          else Retysp (Etype (E))),
-               Expr   => +New_Result_Ident (Why_Type),
-               Params => Params);
-            Call                : constant W_Term_Id := New_Call
-              (Name    => Logic_Id,
-               Binders => Logic_Why_Binders);
-            Def                 : constant W_Pred_Id := New_Typed_Binding
-              (Name     => +New_Result_Ident (Why_Type),
-               Def      => Call,
-               Context  => Dynamic_Prop_Result);
-
-         begin
-            pragma Assert (Is_True_Boolean (+Spec_Guard));
-            pragma Assert (Spec_Binders'Length = 0);
-
-            Emit
-              (My_Th,
-               New_Guarded_Axiom
-                 (Name     => NID (Short_Name (E) & "__" & Post_Axiom),
-
-                  Binders  => Logic_Why_Binders,
-                  Triggers =>
-                    New_Triggers
-                      (Triggers =>
-                           (1 => New_Trigger (Terms => (1 => +Call)))),
-                  Def      => Def));
-            return;
-         end;
       end if;
 
       pragma Assert (Is_Function_Type (E) or else Is_Access_Subp_Wrapper
@@ -7560,25 +7479,12 @@ package body Gnat2Why.Subprograms is
          Generate_Dispatch_Compatibility_Axioms (Dispatch_Th, E);
       end if;
 
-      --  If the entity's body is not in SPARK,
-      --  if it is inlined for proof
-      --  if it is recursive and may not terminate
-      --  or if the function does not return, do not generate axiom.
-
-      --  We do not generate axioms for body of expression function which do
-      --  not terminate because these axioms could be unsound.
-      --  If the function does not terminate but is not recursive, then it
-      --  must be because either it is itself not in part with SPARK_Mode On or
-      --  because it calls a non-terminating function. These reasons should not
-      --  make the axiom unsound.
-      --  If the function is recursive but has a terminating annotation, then
-      --  the axiom should not be incorrect, so that is not a problem that it
-      --  is used to prove itself.
+      --  If the entity's body is not in SPARK, if it is inlined for proof, or
+      --  if it is a volatile function, do not generate axiom.
 
       if not Entity_Body_Compatible_With_SPARK (E)
         or else Present (Retrieve_Inline_Annotation (E))
         or else Has_Pragma_Volatile_Function (E)
-        or else (Is_Recursive (E) and then Is_Potentially_Nonreturning (E))
       then
          Close_Theory (Th,
                        Kind => Definition_Theory);

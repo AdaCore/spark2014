@@ -367,7 +367,6 @@ package VC_Kinds is
       Warn_Attribute_Valid,
       Warn_Initialization_To_Alias,
       Warn_Function_Is_Valid,
-      Warn_Lemma_Procedure_No_Return,
       Warn_Pragma_Annotate_No_Check,
       Warn_Pragma_Annotate_Proved_Check,
       Warn_Pragma_Annotate_Terminating,
@@ -517,8 +516,6 @@ package VC_Kinds is
           & " other non-volatile objects",
         when Warn_Function_Is_Valid =>
           "?function Is_Valid is assumed to return True",
-        when Warn_Lemma_Procedure_No_Return =>
-          "?lemma procedure cannot be instantiated automatically",
         when Warn_Pragma_Annotate_No_Check =>
           "?no check message justified by this pragma",
         when Warn_Pragma_Annotate_Proved_Check =>
