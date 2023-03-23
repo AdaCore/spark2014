@@ -21651,7 +21651,7 @@ package body Gnat2Why.Expr is
                                  Typ  => EW_Bool_Type);
                            end if;
                         end;
-                     elsif Is_Tagged_Type (Ty) then
+                     elsif Is_Tagged_Type (Retysp (Ty)) then
 
                         --  If we are checking against a specific type, then
                         --  the tags of Var and Ty must match.
