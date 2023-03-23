@@ -672,13 +672,14 @@ package body Gnat2Why.Tables is
               Record_Extension_Part (Type_Def);
             Comp_Decl      : Node_Id :=
               (if Null_Present (Rec_Ext) then Types.Empty
-               else First (Component_Items (Component_List (Rec_Ext))));
+               else First_Non_Pragma
+                      (Component_Items (Component_List (Rec_Ext))));
             Root_Comps     : Node_Sets.Set renames Tagged_Comps (Root);
          begin
             while Present (Comp_Decl) loop
                Root_Comps.Insert
                  (Defining_Identifier (Comp_Decl));
-               Next (Comp_Decl);
+               Next_Non_Pragma (Comp_Decl);
             end loop;
          end;
       end if;
