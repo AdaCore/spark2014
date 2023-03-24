@@ -562,7 +562,8 @@ is
        M.Is_Singleton (Model (To_Set'Result), New_Item)
          and Length (To_Set'Result) = 1
          and Element_Logic_Equal
-               (E.Get (Elements (To_Set'Result), 1), New_Item);
+               (E.Get (Elements (To_Set'Result), 1),
+                E.Copy_Element (New_Item));
 
    function Is_Empty (Container : Set) return Boolean with
      Global => null,
@@ -625,7 +626,8 @@ is
 
           --  Position now maps to New_Item
 
-          and Element_Logic_Equal (Element (Container, Position), New_Item)
+          and Element_Logic_Equal
+                (Element (Container, Position), E.Copy_Element (New_Item))
 
           --  New_Item is contained in Container
 
@@ -711,7 +713,8 @@ is
 
             --  Position now maps to New_Item
 
-            and Element_Logic_Equal (Element (Container, Position), New_Item)
+            and Element_Logic_Equal
+                  (Element (Container, Position), E.Copy_Element (New_Item))
 
             --  Other elements are preserved
 
@@ -763,7 +766,7 @@ is
          and Element_Logic_Equal
                (E.Get (Elements (Container),
                        Find (Elements (Container), New_Item)),
-                New_Item)
+                E.Copy_Element (New_Item))
 
          --  Other mappings are preserved
 
@@ -826,7 +829,7 @@ is
             and Element_Logic_Equal
                   (E.Get (Elements (Container),
                           Find (Elements (Container), New_Item)),
-                   New_Item)
+                   E.Copy_Element (New_Item))
 
             and E.Equal_Except
                   (Elements (Container)'Old,
@@ -851,7 +854,7 @@ is
             and Element_Logic_Equal
                    (E.Get (Elements (Container),
                            Find (Elements (Container), New_Item)),
-                    New_Item)
+                    E.Copy_Element (New_Item))
 
             --  The Elements of Container located before New_Item are preserved
 
@@ -899,7 +902,7 @@ is
          and Element_Logic_Equal
               (E.Get (Elements (Container),
                       Find (Elements (Container), New_Item)),
-               New_Item)
+               E.Copy_Element (New_Item))
 
          and E.Equal_Except
               (Elements (Container)'Old,
@@ -1749,7 +1752,8 @@ is
              --  Key now maps to New_Item
 
              and Element_Logic_Equal
-                   (Element (Container, Find (Container, Key)'Old), New_Item)
+                   (Element (Container, Find (Container, Key)'Old),
+                    E.Copy_Element (New_Item))
 
              --  New_Item is contained in Container
 

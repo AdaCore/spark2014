@@ -313,7 +313,8 @@ is
 
          --  Container now has New_Item at index Index
 
-         and Element_Logic_Equal (Element (Model (Container), Index), New_Item)
+         and Element_Logic_Equal
+               (Element (Model (Container), Index), M.Copy_Element (New_Item))
 
          --  All other elements are preserved
 
@@ -430,7 +431,7 @@ is
          --  Container now has New_Item at index Before
 
          and Element_Logic_Equal
-               (Element (Model (Container), Before), New_Item)
+               (Element (Model (Container), Before), M.Copy_Element (New_Item))
 
          --  Elements located after Before in Container are shifted by 1
 
@@ -514,7 +515,8 @@ is
          --  Container now has New_Item at Index_Type'First
 
          and Element_Logic_Equal
-               (Element (Model (Container), Index_Type'First), New_Item)
+               (Element (Model (Container), Index_Type'First),
+                M.Copy_Element (New_Item))
 
          --  Elements of Container are shifted by 1
 
@@ -588,7 +590,7 @@ is
 
          and Element_Logic_Equal
                (Element (Model (Container), Last_Index (Container)'Old + 1),
-                New_Item);
+                M.Copy_Element (New_Item));
 
    procedure Append
      (Container : in out Vector;
