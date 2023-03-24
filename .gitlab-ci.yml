@@ -84,6 +84,7 @@ stages:
     - if [ ! -z ${FAILED+x} ]; then echo "There was at least one testcase failure" && exit 1; fi
 
   artifacts:
+     when: always
      paths:
         - xunit_output.xml
         - testsuite-results
