@@ -31,11 +31,9 @@ def parse_options():
 
 
 missing_package_msg = """
-Could not find the remote_artifacts package. Do the following at a convenient
-location and try again:
+Could not find the remote_artifacts package. Do the following and try again:
 
-    git clone git@ssh.gitlab.adacore-it.com:kanig/remote_artifacts.git
-    pip3 install <path to above checkout>
+    python -m pip install git+ssh://ssh.gitlab.adacore-it.com/kanig/remote_artifacts.git
 """
 
 
