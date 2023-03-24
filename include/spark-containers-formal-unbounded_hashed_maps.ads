@@ -462,7 +462,8 @@ is
          --  New_Item is now associated with the key at position Position in
          --  Container.
 
-         and Element_Logic_Equal (Element (Container, Position), New_Item)
+         and Element_Logic_Equal
+               (Element (Container, Position), M.Copy_Element (New_Item))
 
          --  Elements associated with other keys are preserved
 
@@ -613,9 +614,10 @@ is
             --  Key now maps to New_Item
 
             and Key_Logic_Equal
-                  (Unbounded_Hashed_Maps.Key (Container, Position), Key)
+                  (Unbounded_Hashed_Maps.Key (Container, Position),
+                   K.Copy_Element (Key))
             and Element_Logic_Equal
-                  (Element (Model (Container), Key), New_Item)
+                  (Element (Model (Container), Key), M.Copy_Element (New_Item))
 
             --  Other keys are preserved
 
@@ -654,8 +656,9 @@ is
 
          and Key_Logic_Equal
                (Unbounded_Hashed_Maps.Key (Container, Find (Container, Key)),
-                Key)
-         and Element_Logic_Equal (Element (Model (Container), Key), New_Item)
+                K.Copy_Element (Key))
+         and Element_Logic_Equal
+               (Element (Model (Container), Key), M.Copy_Element (New_Item))
 
          --  Other keys are preserved
 
@@ -687,7 +690,8 @@ is
        Length (Container) < Count_Type'Last or Contains (Container, Key),
      Post           =>
        Contains (Container, Key)
-         and Element_Logic_Equal (Element (Container, Key), New_Item),
+         and Element_Logic_Equal
+           (Element (Container, Key), M.Copy_Element (New_Item)),
      Contract_Cases =>
 
        --  If Key is already in Container, Key is mapped to New_Item
@@ -704,7 +708,7 @@ is
                   (K.Get
                      (Keys (Container),
                       P.Get (Positions (Container), Find (Container, Key))),
-                   Key)
+                   K.Copy_Element (Key))
             and K.Equal_Except
                   (Keys (Container)'Old,
                    Keys (Container),
@@ -737,7 +741,7 @@ is
                   (K.Get
                      (Keys (Container),
                       P.Get (Positions (Container), Find (Container, Key))),
-                   Key)
+                   K.Copy_Element (Key))
 
             --  Mapping from cursors to keys is preserved
 
@@ -770,7 +774,7 @@ is
                (K.Get
                   (Keys (Container),
                    P.Get (Positions (Container), Find (Container, Key))),
-                Key)
+                K.Copy_Element (Key))
          and K.Equal_Except
                (Keys (Container)'Old,
                 Keys (Container),
@@ -778,7 +782,8 @@ is
 
          --  New_Item is now associated with the Key in Container
 
-         and Element_Logic_Equal (Element (Model (Container), Key), New_Item)
+         and Element_Logic_Equal
+               (Element (Model (Container), Key), M.Copy_Element (New_Item))
 
          --  Elements associated with other keys are preserved
 

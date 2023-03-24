@@ -287,7 +287,8 @@ is
      Post   =>
        Length (Container) + 1 = Length (Add'Result)
          and Has_Key (Add'Result, New_Key)
-         and Element_Logic_Equal (Get (Add'Result, New_Key), New_Item)
+         and Element_Logic_Equal
+           (Get (Add'Result, New_Key), Copy_Element (New_Item))
          and Elements_Equal (Container, Add'Result)
          and Keys_Included_Except (Add'Result, Container, New_Key);
 
@@ -317,7 +318,8 @@ is
      Pre    => Has_Key (Container, Key),
      Post   =>
        Length (Container) = Length (Set'Result)
-         and Element_Logic_Equal (Get (Set'Result, Key), New_Item)
+         and Element_Logic_Equal
+           (Get (Set'Result, Key), Copy_Element (New_Item))
          and Same_Keys (Container, Set'Result)
          and Elements_Equal_Except (Container, Set'Result, Key);
 
@@ -465,12 +467,17 @@ is
    --  Check that the actual parameters follow the appropriate assumptions.
 
    function Copy_Key (Key : Key_Type) return Key_Type is (Key);
-   function Copy_Element (Item : Element_Type) return Element_Type is (Item);
+   function Copy_Element (Item : Element_Type) return Element_Type is (Item)
+     with Annotate => (GNATprove, Inline_For_Proof);
    --  Elements and Keys of maps are copied by numerous primitives in this
    --  package. This function causes GNATprove to verify that such a copy is
    --  valid (in particular, it does not break the ownership policy of SPARK,
    --  i.e. it does not contain pointers that could be used to alias mutable
    --  data).
+   --  Copy_Element is also used to model the value of new elements after
+   --  insertion inside the container. Indeed, a copy of an object might not
+   --  be logically equal to the object, in particular in case of view
+   --  conversions of tagged types.
 
    package Eq_Checks is new
      SPARK.Containers.Parameter_Checks.Equivalence_Checks

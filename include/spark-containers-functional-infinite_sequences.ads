@@ -219,7 +219,8 @@ is
      Global => null,
      Pre    => Position <= Last (Container),
      Post   =>
-       Element_Logic_Equal (Get (Set'Result, Position), New_Item)
+       Element_Logic_Equal
+           (Get (Set'Result, Position), Copy_Element (New_Item))
          and then Equal_Except (Container, Set'Result, Position);
 
    function Add (Container : Sequence; New_Item : Element_Type) return Sequence
@@ -231,7 +232,7 @@ is
      Post   =>
        Length (Add'Result) = Length (Container) + 1
          and then Element_Logic_Equal
-           (Get (Add'Result, Last (Add'Result)), New_Item)
+           (Get (Add'Result, Last (Add'Result)), Copy_Element (New_Item))
          and then Equal_Prefix (Container, Add'Result);
 
    function Add
@@ -246,7 +247,8 @@ is
      Pre    => Position <= Last (Container) + 1,
      Post   =>
        Length (Add'Result) = Length (Container) + 1
-         and then Element_Logic_Equal (Get (Add'Result, Position), New_Item)
+         and then Element_Logic_Equal
+           (Get (Add'Result, Position), Copy_Element (New_Item))
          and then Range_Equal
                     (Left  => Container,
                      Right => Add'Result,
@@ -288,12 +290,17 @@ is
 
    --  Check that the actual parameters follow the appropriate assumptions.
 
-   function Copy_Element (Item : Element_Type) return Element_Type is (Item);
+   function Copy_Element (Item : Element_Type) return Element_Type is (Item)
+     with Annotate => (GNATprove, Inline_For_Proof);
    --  Elements of containers are copied by numerous primitives in this
    --  package. This function causes GNATprove to verify that such a copy is
    --  valid (in particular, it does not break the ownership policy of SPARK,
    --  i.e. it does not contain pointers that could be used to alias mutable
    --  data).
+   --  This function is also used to model the value of new elements after
+   --  insertion inside the container. Indeed, a copy of an object might not
+   --  be logically equal to the object, in particular in case of view
+   --  conversions of tagged types.
 
    package Eq_Checks is new
      SPARK.Containers.Parameter_Checks.Equivalence_Checks
@@ -372,7 +379,8 @@ is
        Constant_Range'Result =
            (for all J in Container =>
               (if Fst <= J and J <= Lst
-               then Element_Logic_Equal (Get (Container, J), Item)));
+               then Element_Logic_Equal
+                 (Get (Container, J), Copy_Element (Item))));
    pragma Annotate (GNATprove, Inline_For_Proof, Constant_Range);
 
    function Equal_Prefix (Left : Sequence; Right : Sequence) return Boolean
