@@ -76,6 +76,29 @@ package body SPARK_Util is
         (if S.All_But then not S.Exc_Set.Contains (E)
          else S.Exc_Set.Contains (E));
 
+      ----------------
+      -- Difference --
+      ----------------
+
+      procedure Difference (Left : in out Set; Right : Set) is
+      begin
+         if Left.All_But and then Right.All_But then
+            declare
+               Left_Exc : constant Node_Sets.Set := Left.Exc_Set;
+            begin
+               Left.All_But := False;
+               Left.Exc_Set := Right.Exc_Set;
+               Left.Exc_Set.Difference (Left_Exc);
+            end;
+         elsif Right.All_But then
+            Left.Exc_Set.Intersection (Right.Exc_Set);
+         elsif Left.All_But then
+            Left.Exc_Set.Union (Right.Exc_Set);
+         else
+            Left.Exc_Set.Difference (Right.Exc_Set);
+         end if;
+      end Difference;
+
       --------------
       -- Disclose --
       --------------
@@ -261,6 +284,23 @@ package body SPARK_Util is
    Raise_To_Handlers_Map : Node_To_List_Maps.Map;
    --  Map from statements that might raise exceptions to a list of handlers
    --  that are reachable from this statement.
+
+   type Exceptions_And_Flag is record
+      Exceptions : Exception_Sets.Set;
+      Is_Blocked : Boolean;
+   end record;
+   --  Exception sets are associated to a flag which is used to make sure that
+   --  all exceptions have been collected before the set is used.
+
+   package Node_To_Exceptions is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Exceptions_And_Flag,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+
+   Raised_Exceptions : Node_To_Exceptions.Map;
+   --  Map from handlers to the set of exceptions that might end up in this
+   --  handler. It is used to handle reraise statements.
 
    ----------------------
    -- Set_Partial_View --
@@ -1062,51 +1102,49 @@ package body SPARK_Util is
                         Handler := First (L_Handlers);
                         loop
                            declare
-                              Choice : Node_Id :=
-                                First (Exception_Choices (Handler));
-                              Added  : Boolean := False;
-                              --  Flag to register whether the current handler
-                              --  was already appended to Handlers.
+                              Handler_Exc_Set : Exception_Sets.Set :=
+                                Get_Exceptions_From_Handler (Handler);
                            begin
-                              loop
-                                 case Nkind (Choice) is
+                              Handler_Exc_Set.Intersection (Exc_Set);
 
-                                       --  All exceptions are handled, collect
-                                       --  the handler and stop the search.
+                              --  Handler can be reached from exceptions of
+                              --  Exc_Set. Append it to the list of reachable
+                              --  handlers. Also store the set of reachable
+                              --  exceptions in the Raised_Exceptions map.
 
-                                    when N_Others_Choice =>
-                                       Handlers.Append (Handler);
-                                       exit Outer;
+                              if not Handler_Exc_Set.Is_Empty then
+                                 Handlers.Append (Handler);
+                                 Exc_Set.Difference (Handler_Exc_Set);
 
-                                    when N_Identifier | N_Expanded_Name =>
+                                 declare
+                                    Position : Node_To_Exceptions.Cursor;
+                                    Inserted : Boolean;
+                                 begin
+                                    Raised_Exceptions.Insert
+                                      (Handler,
+                                       (Handler_Exc_Set,
+                                        Is_Blocked => False),
+                                       Position, Inserted);
 
-                                       --  If Choice can be raised, remove it
-                                       --  from the set of exceptions and
-                                       --  append the handler to the list if
-                                       --  necessary.
+                                    if not Inserted then
 
-                                       if Exc_Set.Contains (Entity (Choice))
+                                       --  Sanity checking, the exception
+                                       --  set should not have been used
+                                       --  yet.
+
+                                       if Raised_Exceptions
+                                         (Position).Is_Blocked
                                        then
-                                          if not Added then
-                                             Handlers.Append (Handler);
-                                             Added := True;
-                                          end if;
-
-                                          Exc_Set.Exclude (Entity (Choice));
-
-                                          --  Stop the search if we have seen
-                                          --  all exceptions.
-
-                                          if Exc_Set.Is_Empty then
-                                             exit Outer;
-                                          end if;
+                                          raise Program_Error;
                                        end if;
-                                    when others =>
-                                       raise Program_Error;
-                                 end case;
-                                 Next (Choice);
-                                 exit when No (Choice);
-                              end loop;
+
+                                       Raised_Exceptions (Position).Exceptions.
+                                         Union (Handler_Exc_Set);
+                                    end if;
+                                 end;
+
+                                 exit when Exc_Set.Is_Empty;
+                              end if;
                            end;
                            Next (Handler);
                            exit when No (Handler);
@@ -1979,6 +2017,35 @@ package body SPARK_Util is
    ---------------------------------
 
    function Get_Exceptions_From_Handler
+     (N : N_Exception_Handler_Id)
+      return Exception_Sets.Set
+   is
+      Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
+      Exc    : Node_Id := First (Exception_Choices (N));
+   begin
+      while Present (Exc) loop
+         case Nkind (Exc) is
+            when N_Others_Choice =>
+               pragma Assert (Result.Is_Empty);
+               return Exception_Sets.All_Exceptions;
+            when N_Identifier
+               | N_Expanded_Name
+               =>
+               Result.Include (Entity (Exc));
+            when others =>
+               raise Program_Error;
+         end case;
+         Next (Exc);
+      end loop;
+
+      return Result;
+   end Get_Exceptions_From_Handler;
+
+   ----------------------------------
+   -- Get_Exceptions_From_Handlers --
+   ----------------------------------
+
+   function Get_Exceptions_From_Handlers
      (N : N_Handled_Sequence_Of_Statements_Id)
       return Exception_Sets.Set
    is
@@ -1994,30 +2061,13 @@ package body SPARK_Util is
 
       Handler := Last (Handlers);
       loop
-         declare
-            Exc : Node_Id := First (Exception_Choices (Handler));
-         begin
-            while Present (Exc) loop
-               case Nkind (Exc) is
-                  when N_Others_Choice =>
-                     pragma Assert (Result.Is_Empty);
-                     return Exception_Sets.All_Exceptions;
-                  when N_Identifier
-                     | N_Expanded_Name
-                     =>
-                     Result.Include (Entity (Exc));
-                  when others =>
-                     raise Program_Error;
-               end case;
-               Next (Exc);
-            end loop;
-         end;
+         Result.Union (Get_Exceptions_From_Handler (Handler));
          Prev (Handler);
          exit when No (Handler);
       end loop;
 
       return Result;
-   end Get_Exceptions_From_Handler;
+   end Get_Exceptions_From_Handlers;
 
    ----------------------------
    -- Get_Formal_From_Actual --
@@ -2069,7 +2119,7 @@ package body SPARK_Util is
          --  exceptions.
 
          if Nkind (Scop) = N_Handled_Sequence_Of_Statements then
-            Result.Union (Get_Exceptions_From_Handler (Scop));
+            Result.Union (Get_Exceptions_From_Handlers (Scop));
 
          --  On subprogram bodies, get the expected exceptions from the
          --  exceptional cases.
@@ -2226,6 +2276,13 @@ package body SPARK_Util is
       Only_Handled : Boolean)
       return  Exception_Sets.Set
    is
+
+      function Is_Handler (N : Node_Id) return Boolean is
+        (Nkind (N) = N_Exception_Handler);
+
+      function Enclosing_Handler is new
+        First_Parent_With_Property (Is_Handler);
+
       Result : Exception_Sets.Set;
 
    begin
@@ -2238,7 +2295,31 @@ package body SPARK_Util is
             end;
 
          when N_Raise_Statement =>
-            Result := Exception_Sets.Exactly (Entity (Name (Stmt)));
+            if Present (Name (Stmt)) then
+               Result := Exception_Sets.Exactly (Entity (Name (Stmt)));
+
+            --  For reraise statements, get the set of raised exceptions from
+            --  the Raised_Exceptions map. Also set the associated Is_Blocked
+            --  flag to True so we can make sure that no additional exception
+            --  is collected afterward.
+
+            else
+               declare
+                  Handler  : constant Node_Id := Enclosing_Handler (Stmt);
+                  Position : Node_To_Exceptions.Cursor;
+                  Inserted : Boolean;
+
+               begin
+                  Result := Exception_Sets.Empty_Set;
+                  Raised_Exceptions.Insert
+                    (Handler, (Result, True), Position, Inserted);
+
+                  if not Inserted then
+                     Raised_Exceptions (Position).Is_Blocked := True;
+                     Result := Raised_Exceptions (Position).Exceptions;
+                  end if;
+               end;
+            end if;
 
          when N_Entry_Call_Statement =>
             return Exception_Sets.Empty_Set;
@@ -3439,14 +3520,15 @@ package body SPARK_Util is
                | N_Simple_Return_Statement
                | N_Exit_Statement
                | N_Raise_xxx_Error
-               | N_Raise_Statement
             =>
                return True;
 
             --  A Goto statement could make us skip later updates on
             --  this path, return False.
 
-            when N_Goto_Statement =>
+            when N_Goto_Statement
+               | N_Raise_Statement
+            =>
                raise Goto_Found;
 
             when N_Case_Statement =>
@@ -5561,7 +5643,7 @@ package body SPARK_Util is
    exception
       when Goto_Found =>
          Explanation := To_Unbounded_String
-           ("a goto statement was found in the loop");
+           ("a goto or raise statement was found in the loop");
          Result := False;
    end Structurally_Decreases_In_Loop;
 

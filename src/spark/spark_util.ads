@@ -1058,7 +1058,8 @@ package SPARK_Util is
      Pre => Nkind (Stmt) in N_Procedure_Call_Statement | N_Raise_Statement;
    --  Stmt shall be a call which might raise exceptions or a raise
    --  statement. Collect all the exception handlers which might be reached
-   --  when jumping from Stmt and store them in a map.
+   --  when jumping from Stmt and store them in a map. Also collect exceptions
+   --  which might be raised by reraise statements.
 
    function Reachable_Handlers (Stmt : Node_Id) return Node_Lists.List with
      Pre  => Nkind (Stmt) in N_Procedure_Call_Statement | N_Raise_Statement,
@@ -1110,6 +1111,8 @@ package SPARK_Util is
 
       function Contains (S : Set; E : E_Exception_Id) return Boolean;
 
+      procedure Difference (Left : in out Set; Right : Set);
+
       procedure Exclude (S : in out Set; E : E_Exception_Id);
 
       procedure Include (S : in out Set; E : E_Exception_Id);
@@ -1135,9 +1138,14 @@ package SPARK_Util is
    --  Retrieve all exceptions potentially raised by Subp
 
    function Get_Exceptions_From_Handler
-     (N : N_Handled_Sequence_Of_Statements_Id)
+     (N : N_Exception_Handler_Id)
       return Exception_Sets.Set;
    --  Retrieve all exceptions handled by a handler
+
+   function Get_Exceptions_From_Handlers
+     (N : N_Handled_Sequence_Of_Statements_Id)
+      return Exception_Sets.Set;
+   --  Retrieve all exceptions handled in a sequence of statements
 
    function Get_Handled_Exceptions (Stmt : Node_Id) return Exception_Sets.Set;
    --  Retrieve all exceptions either handled by a handler above Stmt or
