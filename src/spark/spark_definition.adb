@@ -1889,17 +1889,13 @@ package body SPARK_Definition is
                Mark (Expression (N));
             end if;
 
-            --  For now, reject reraise statements
-
-            if No (Name (N)) then
-               Mark_Violation ("reraise statement", N);
-            else
+            if Present (Name (N)) then
                Register_Exception (Entity (Name (N)));
-
-               --  Collect handlers reachable from N
-
-               Collect_Reachable_Handlers (N);
             end if;
+
+            --  Collect handlers reachable from N
+
+            Collect_Reachable_Handlers (N);
 
          --  The frontend inserts explicit raise-statements/expressions during
          --  semantic analysis in some cases that are statically known to raise
@@ -7995,7 +7991,14 @@ package body SPARK_Definition is
      (N : N_Handled_Sequence_Of_Statements_Id)
    is
       Handlers : constant List_Id := Exception_Handlers (N);
+
    begin
+      --  The handled statements should be marked before the handler so that
+      --  the set of exceptions which can be raised by a reraise statement is
+      --  computed before the reraise is encountered.
+
+      Mark_Stmt_Or_Decl_List (Statements (N));
+
       if Present (Handlers) then
          declare
             Handler : Node_Id := First (Handlers);
@@ -8007,8 +8010,6 @@ package body SPARK_Definition is
             end loop;
          end;
       end if;
-
-      Mark_Stmt_Or_Decl_List (Statements (N));
    end Mark_Handled_Statements;
 
    --------------------------------------

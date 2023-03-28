@@ -11,7 +11,7 @@ main.adb:25:25: info: predicate check proved (Trivial: 1 VC)
 main.adb:26:22: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:32:13: info: implicit terminating annotation on "Length_2" has been proved, subprogram will terminate
 main.adb:35:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
-main.adb:37:13: medium: loop variant might fail [possible explanation: a goto statement was found in the loop]
+main.adb:37:13: medium: loop variant might fail [possible explanation: a goto or raise statement was found in the loop]
 main.adb:38:16: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:38:16: warning: assuming "Rand" has no effect on global items
 main.adb:38:16: warning: no Global contract available for "Rand"
@@ -213,7 +213,7 @@ main_bad.adb:22:22: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:23:20: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:28:13: info: implicit terminating annotation on "Length_2" has been proved, subprogram will terminate
 main_bad.adb:31:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
-main_bad.adb:33:13: medium: loop variant might fail [possible explanation: a goto statement was found in the loop]
+main_bad.adb:33:13: medium: loop variant might fail [possible explanation: a goto or raise statement was found in the loop]
 main_bad.adb:34:18: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:34:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:34:22: info: predicate check proved (Trivial: 1 VC)
@@ -279,7 +279,7 @@ main_bad.adb:119:18: warning: no Global contract available for "Rand"
 main_bad.adb:120:35: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:127:13: info: implicit terminating annotation on "Length_8" has been proved, subprogram will terminate
 main_bad.adb:130:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
-main_bad.adb:132:13: medium: loop variant might fail [possible explanation: a goto statement was found in the loop]
+main_bad.adb:132:13: medium: loop variant might fail [possible explanation: a goto or raise statement was found in the loop]
 main_bad.adb:133:18: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:133:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:133:22: info: predicate check proved (Trivial: 1 VC)

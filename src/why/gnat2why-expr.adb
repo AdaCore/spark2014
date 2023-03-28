@@ -557,6 +557,14 @@ package body Gnat2Why.Expr is
    --    default value for a type
    --  @return Why3 program that performs the check
 
+   function New_Raise_Or_Absurd
+     (Ada_Node    : Node_Id;
+      Ex_Name     : W_Identifier_Id;
+      Handled_Exc : Exception_Sets.Set)
+                     return W_Prog_Id;
+   --  Generate conditional raising an exception if Ex_Name is in Handled_Exc
+   --  and absurd statement otherwise.
+
    function One_Level_Access
      (N              : Node_Id;
       Expr           : W_Expr_Id;
@@ -988,14 +996,6 @@ package body Gnat2Why.Expr is
       return W_Expr_Id;
    --  Translate negation on boolean arrays into a Why expression
 
-   function Transform_Unhandled_Raise
-     (Stat : N_Raise_Kind_Id) return W_Prog_Id
-   is
-     (New_Absurd_Statement (Ada_Node => Stat,
-                            Reason   => VC_Raise));
-   --  Returns the Why program for raise statement Stat if the exception is not
-   --  handled.
-
    function Transform_Record_Equality
      (Expr   : Node_Id;
       Left   : Node_Id;
@@ -1019,6 +1019,14 @@ package body Gnat2Why.Expr is
    --  @param Domain the domain in which the translation happens
    --  @param Params the translation parameters
    --  @return the Why expression corresponding to the shift or rotate
+
+   function Transform_Unhandled_Raise
+     (Stat : N_Raise_Kind_Id) return W_Prog_Id
+   is
+     (New_Absurd_Statement (Ada_Node => Stat,
+                            Reason   => VC_Raise));
+   --  Returns the Why program for raise statement Stat if the exception is not
+   --  handled.
 
    function Has_Visibility_On_Refined
      (Expr : Node_Id;
@@ -10344,6 +10352,74 @@ package body Gnat2Why.Expr is
          return Checks;
       end if;
    end New_Predicate_Check;
+
+   -------------------------
+   -- New_Raise_Or_Absurd --
+   -------------------------
+
+   function New_Raise_Or_Absurd
+     (Ada_Node    : Node_Id;
+      Ex_Name     : W_Identifier_Id;
+      Handled_Exc : Exception_Sets.Set)
+                     return W_Prog_Id
+   is
+      Raise_Or_Absurd : W_Prog_Id;
+      All_But         : Boolean;
+      Exc_Set         : Node_Sets.Set;
+
+   begin
+
+      --  Check whether all raised exceptions are handled and if
+      --  not, use absurd to cut unhandled branches.
+
+      if Handled_Exc.Is_Empty then
+         Raise_Or_Absurd := New_Absurd_Statement
+           (Ada_Node, VC_Raise);
+      else
+         --  Check for absence of leaks and havoc borrowed on
+         --  enclosing scopes.
+
+         Raise_Or_Absurd :=
+           Sequence
+             (Havoc_Borrowed_And_Check_No_Leaks_On_Raise
+                (Ada_Node),
+              New_Raise
+                (Ada_Node => Ada_Node,
+                 Name     => M_Main.Ada_Exc,
+                 Arg      => +Ex_Name,
+                 Typ      => EW_Unit_Type));
+
+         --  Create a condition from the elements in Handled_Exc
+
+         Handled_Exc.Disclose (All_But, Exc_Set);
+
+         declare
+            Handled_Cond : W_Prog_Id := False_Prog;
+         begin
+            for Exc of Exc_Set loop
+               Handled_Cond := New_Or_Prog
+                 (Handled_Cond,
+                  New_Comparison
+                    (Why_Eq, +Ex_Name, +To_Why_Id (Exc)));
+            end loop;
+
+            if All_But then
+               Handled_Cond := New_Not (Right => Handled_Cond);
+            end if;
+
+            --  Raise the exception of handled exceptions and
+            --  cut the branch for others.
+
+            Raise_Or_Absurd := New_Conditional
+              (Condition => Handled_Cond,
+               Then_Part => Raise_Or_Absurd,
+               Else_Part => New_Absurd_Statement
+                 (Ada_Node, VC_Raise));
+         end;
+      end if;
+
+      return Raise_Or_Absurd;
+   end New_Raise_Or_Absurd;
 
    -----------------------------
    -- New_Type_Invariant_Call --
@@ -21109,24 +21185,31 @@ package body Gnat2Why.Expr is
    begin
       if Present (Handlers) then
          declare
-            Exc_Id         : constant W_Identifier_Id :=
+            Save_Exception_Name : constant W_Identifier_Id :=
+              Handled_Exception_Name;
+            Exc_Id              : constant W_Identifier_Id :=
               New_Temp_Identifier (Base_Name => "exc", Typ => EW_Int_Type);
-            Others_Present : constant Boolean :=
+            Others_Present      : constant Boolean :=
               Nkind (First (Exception_Choices (Last (Handlers)))) =
                 N_Others_Choice;
-            Nb_Cases       : constant Integer :=
+            Nb_Cases            : constant Integer :=
               Natural (List_Length (Handlers));
-            Elsif_Parts    : W_Expr_Array
+            Elsif_Parts         : W_Expr_Array
               (2 .. Nb_Cases - (if Others_Present then 1 else 0));
-            Else_Part      : W_Prog_Id;
-            Handler        : Node_Id := First (Handlers);
-            W_Handler      : W_Prog_Id;
-            Handled_Exc    : constant Exception_Sets.Set :=
-              Get_Exceptions_From_Handler (N);
-            Handled_Above  : constant Exception_Sets.Set :=
+            Else_Part           : W_Prog_Id;
+            Handler             : Node_Id := First (Handlers);
+            W_Handler           : W_Prog_Id;
+            Handled_Exc         : constant Exception_Sets.Set :=
+              Get_Exceptions_From_Handlers (N);
+            Handled_Above       : constant Exception_Sets.Set :=
               Get_Handled_Exceptions (N);
 
          begin
+            --  Store the name of the current exception, to be used in reraise
+            --  statements inside handlers.
+
+            Handled_Exception_Name := Exc_Id;
+
             if Nb_Cases = 1 and then Others_Present then
                W_Handler := Transform_Handler (Handler);
             else
@@ -21177,6 +21260,10 @@ package body Gnat2Why.Expr is
                      Elsif_Parts => Elsif_Parts,
                      Else_Part   => Else_Part);
             end if;
+
+            --  Reset the exception name
+
+            Handled_Exception_Name := Save_Exception_Name;
 
             return New_Try_Block
               (Ada_Node => N,
@@ -23675,62 +23762,10 @@ package body Gnat2Why.Expr is
                      Ex_Name         : constant W_Identifier_Id :=
                        New_Temp_Identifier
                          (Base_Name => "exn", Typ => EW_Int_Type);
-                     Raise_Or_Absurd : W_Prog_Id;
-                     All_But         : Boolean;
-                     Exc_Set         : Node_Sets.Set;
-
+                     Raise_Or_Absurd : constant W_Prog_Id :=
+                       New_Raise_Or_Absurd
+                         (Stmt_Or_Decl, Ex_Name, Handled_Exc);
                   begin
-
-                     --  Check whether all raised exceptions are handled and if
-                     --  not, use absurd to cut unhandled branches.
-
-                     if Handled_Exc.Is_Empty then
-                        Raise_Or_Absurd := New_Statement_Sequence
-                          (Statements =>
-                             (1 => New_Absurd_Statement
-                                  (Stmt_Or_Decl, VC_Raise)));
-                     else
-                        --  Check for absence of leaks and havoc borrowed on
-                        --  enclosing scopes.
-
-                        Raise_Or_Absurd :=
-                          Sequence
-                            (Havoc_Borrowed_And_Check_No_Leaks_On_Raise
-                               (Stmt_Or_Decl),
-                             New_Raise
-                               (Ada_Node => Stmt_Or_Decl,
-                                Name     => M_Main.Ada_Exc,
-                                Arg      => +Ex_Name,
-                                Typ      => EW_Unit_Type));
-
-                        --  Create a condition from the elements in Handled_Exc
-
-                        Handled_Exc.Disclose (All_But, Exc_Set);
-
-                        declare
-                           Handled_Cond : W_Prog_Id := False_Prog;
-                        begin
-                           for Exc of Exc_Set loop
-                              Handled_Cond := New_Or_Prog
-                                (Handled_Cond,
-                                 New_Comparison
-                                   (Why_Eq, +Ex_Name, +To_Why_Id (Exc)));
-                           end loop;
-
-                           if All_But then
-                              Handled_Cond := New_Not (Right => Handled_Cond);
-                           end if;
-
-                           --  Raise the exception of handled exceptions and
-                           --  cut the branch for others.
-
-                           Raise_Or_Absurd := New_Conditional
-                             (Condition => Handled_Cond,
-                              Then_Part => Raise_Or_Absurd,
-                              Else_Part => New_Absurd_Statement
-                                (Stmt_Or_Decl, VC_Raise));
-                        end;
-                     end if;
 
                      --  Put the raise at the end of the handler
 
@@ -24067,20 +24102,33 @@ package body Gnat2Why.Expr is
             --  For handled exceptions, raise the Why3 exception Ada_Exc.
             --  Otherwise, check that the path is dead.
 
-            if Might_Raise_Handled_Exceptions (Stmt_Or_Decl) then
+            if Present (Name (Stmt_Or_Decl)) then
+               if Might_Raise_Handled_Exceptions (Stmt_Or_Decl) then
 
-               --  Havoc borrowed objects and check for resource leaks on
-               --  scopes traversed by the raise statement.
+                  --  Havoc borrowed objects and check for resource leaks on
+                  --  scopes traversed by the raise statement.
 
-               return Sequence
-                 (Havoc_Borrowed_And_Check_No_Leaks_On_Raise (Stmt_Or_Decl),
-                  New_Raise
-                    (Ada_Node => Stmt_Or_Decl,
-                     Name     => M_Main.Ada_Exc,
-                     Arg      => +To_Why_Id (Entity (Name (Stmt_Or_Decl)))));
+                  return Sequence
+                    (Havoc_Borrowed_And_Check_No_Leaks_On_Raise (Stmt_Or_Decl),
+                     New_Raise
+                       (Ada_Node => Stmt_Or_Decl,
+                        Name     => M_Main.Ada_Exc,
+                        Arg      =>
+                          +To_Why_Id (Entity (Name (Stmt_Or_Decl)))));
+               else
+                  return Transform_Unhandled_Raise (Stmt_Or_Decl);
+               end if;
+
+            --  Reraise the exception of the enclosing exception handler
 
             else
-               return Transform_Unhandled_Raise (Stmt_Or_Decl);
+               pragma Assert (Handled_Exception_Name /= Why_Empty);
+
+               return New_Raise_Or_Absurd
+                 (Ada_Node    => Stmt_Or_Decl,
+                  Ex_Name     => Handled_Exception_Name,
+                  Handled_Exc => Get_Raised_Exceptions
+                    (Stmt_Or_Decl, Only_Handled => True));
             end if;
 
          --  Subprogram and package declarations are already taken care of
