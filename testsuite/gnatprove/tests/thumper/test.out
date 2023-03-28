@@ -40,7 +40,7 @@ hermes-der-decode.adb:135:16: info: loop invariant preservation proved (CVC5: 2 
 hermes-der-decode.adb:135:99: info: overflow check proved (CVC5: 3 VC; colibri: 1 VC)
 hermes-der-decode.adb:135:103: info: overflow check proved (CVC5: 3 VC; colibri: 1 VC)
 hermes-der-decode.adb:135:108: info: range check proved (CVC5: 4 VC)
-hermes-der-decode.adb:137:31: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC)
+hermes-der-decode.adb:137:31: info: overflow check proved (CVC5: 2 VC)
 hermes-der-decode.adb:137:38: info: overflow check proved (CVC5: 2 VC)
 hermes-der-decode.adb:137:65: info: index check proved (CVC5: 2 VC)
 hermes-der-decode.adb:137:65: info: overflow check proved (CVC5: 2 VC)
@@ -282,7 +282,7 @@ hermes-oid.adb:160:43: info: range check proved (CVC5: 2 VC)
 hermes-oid.adb:164:17: info: range check proved (CVC5: 2 VC)
 hermes-oid.adb:164:72: info: cannot unroll loop (too many loop iterations)
 hermes-oid.adb:165:23: info: index check proved (CVC5: 2 VC)
-hermes-oid.adb:165:40: info: index check proved (Z3: 2 VC)
+hermes-oid.adb:165:40: info: index check proved (CVC5: 2 VC)
 hermes-oid.ads:26:39: info: initialization of "Result" proved
 hermes-oid.ads:26:71: info: initialization of "Status" proved
 hermes-oid.ads:27:11: info: flow dependencies proved

@@ -36,7 +36,7 @@ nwa.adb:83:12: medium: overflow check might fail [reason for check: result of ne
 nwa.adb:90:15: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:93:14: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:94:14: info: overflow check proved (CVC5: 1 VC)
-nwa.adb:95:14: info: overflow check proved (colibri: 1 VC)
+nwa.adb:95:14: info: overflow check proved (Z3: 1 VC)
 nwa.adb:96:14: info: division check proved (CVC5: 1 VC)
 nwa.adb:103:14: medium: overflow check might fail [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible fix: add precondition (X * Y in NvU17) to subprogram at nwa.ads:34]
 nwa.adb:104:14: high: divide by zero might fail (e.g. when Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at nwa.ads:34]
@@ -84,7 +84,7 @@ nwa.adb:179:12: medium: overflow check might fail [reason for check: result of n
 nwa.adb:186:15: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:189:14: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:190:14: info: overflow check proved (CVC5: 1 VC)
-nwa.adb:191:14: info: overflow check proved (colibri: 1 VC)
+nwa.adb:191:14: info: overflow check proved (Z3: 1 VC)
 nwa.adb:192:14: info: division check proved (CVC5: 1 VC)
 nwa.ads:15:39: info: data dependencies proved
 nwa.ads:16:39: info: data dependencies proved

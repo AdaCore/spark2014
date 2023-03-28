@@ -1,7 +1,7 @@
 test_pack.adb:7:32: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
 test_pack.ads:10:06: info: flow dependencies proved
 test_pack.ads:12:43: info: float overflow check proved (CVC5: 1 VC)
-test_pack.ads:14:42: info: float overflow check proved (Z3: 1 VC)
+test_pack.ads:14:42: info: float overflow check proved (CVC5: 1 VC)
 wibble.adb:6:12: info: types in unchecked conversion have the same size (Trivial)
 wibble.adb:6:61: info: type is suitable as source for unchecked conversion (Trivial)
 wibble.adb:7:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]

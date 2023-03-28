@@ -588,11 +588,7 @@ package body Why.Gen.Records is
 
                      Emit
                        (Th, New_Axiom (Name => NID (Axiom_Name),
-                                       Def => Def,
-                                       Dep =>
-                                         New_Axiom_Dep (
-                                           Name => Compat_Tag_Symb,
-                                           Kind => EW_Axdep_Pred)));
+                                       Def => Def));
                   end;
                end if;
             end loop;

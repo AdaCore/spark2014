@@ -27,7 +27,7 @@ skein.adb:88:29: warning: unused assignment, in call inlined at skein.adb:111
 skein.adb:92:17: info: add a contract to analyze it separately from calling contexts
 skein.adb:92:17: info: local subprogram "Set_B_Counter" only analyzed in the context of calls
 skein.adb:95:26: warning: unused assignment, in call inlined at skein.adb:125
-skein.adb:95:43: medium: range check might fail, in call inlined at skein.adb:125 [reason for check: result of operation must be convertible to the target type of the conversion]
+skein.adb:95:43: info: range check proved (CVC5: 2 VC), in call inlined at skein.adb:125
 skein.adb:96:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:96:72: medium: range check might fail, in call inlined at skein.adb:125 [reason for check: result of operation must be convertible to the target type of the conversion]
 skein.adb:97:26: warning: unused assignment, in call inlined at skein.adb:125
@@ -69,17 +69,17 @@ Data Dependencies . . . . .
 Flow Dependencies . . . . .
 Initialization 7 7 . . .
 Non-Aliasing . . . . .
-Run-time Checks 21 . 7 . 14
+Run-time Checks 21 . 8 . 13
 Assertions . . . . .
 Functional Contracts . . . . .
 LSP Verification . . . . .
 Termination . . . . .
 Concurrency . . . . .
 -
-Total 28 7 (25%) 7 (25%) . 14 (50%)
+Total 28 7 (25%) 8 (29%) . 13 (46%)
 
 
-max steps used for successful proof: 355
+max steps used for successful proof: 373
 
 Analyzed 1 unit
 in unit skein, 8 subprograms and packages out of 8 analyzed
@@ -90,7 +90,7 @@ effects on parameters and Global variables of Skein.Put_64_LSB_First depends on
  effects on parameters and Global variables of Interfaces.Shift_Right
  Skein.Skein_512_Context at skein.ads:259 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 absence of run-time errors of Skein.Skein_512_Context fully established
- Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors, 0 checks, 15 warnings and 0 pragma Assume statements) and not proved, 6 checks out of 20 proved
+ Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors, 0 checks, 15 warnings and 0 pragma Assume statements) and not proved, 7 checks out of 20 proved
  Skein.Skein_512_Final.Set_B_Counter at skein.adb:92 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of Skein.Skein_512_Final.Set_B_Counter depends on
  effects on parameters and Global variables of Interfaces.Shift_Right
@@ -101,4 +101,3 @@ effects on parameters and Global variables of Skein.Skein_Start_New_Type fully e
  Skein.Zero_Pad at skein.adb:60 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (1 checks)
 effects on parameters and Global variables of Skein.Zero_Pad fully established
 absence of run-time errors of Skein.Zero_Pad fully established
-

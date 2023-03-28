@@ -288,7 +288,7 @@ simple_trajectory.adb:36:22: medium: assertion might fail
 simple_trajectory.adb:36:44: info: range check proved (Trivial)
 simple_trajectory.adb:36:47: info: float overflow check proved (Trivial)
 simple_trajectory.adb:36:58: info: float overflow check proved (Trivial)
-simple_trajectory.adb:37:22: info: assertion proved (colibri: 1 VC)
+simple_trajectory.adb:37:22: info: assertion proved (Z3: 1 VC)
 simple_trajectory.adb:37:46: info: range check proved (Trivial)
 simple_trajectory.adb:37:51: info: float overflow check proved (Trivial)
 simple_trajectory.adb:38:22: medium: assertion might fail

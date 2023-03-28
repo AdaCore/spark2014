@@ -59,8 +59,8 @@ diff3.adb:18:13: info: implicit terminating annotation on "U_Exp_Const_Trans" ha
 diff3.adb:21:35: info: overflow check proved (Z3: 1 VC)
 diff3.adb:23:22: info: assertion proved (CVC5: 1 VC)
 diff3.adb:23:32: info: overflow check proved (Z3: 1 VC)
-diff3.adb:24:22: info: assertion proved (Z3: 1 VC)
-diff3.adb:24:23: info: overflow check proved (Z3: 1 VC; colibri: 1 VC)
+diff3.adb:24:22: info: assertion proved (CVC5: 1 VC)
+diff3.adb:24:23: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC)
 diff3.adb:25:22: info: assertion proved (colibri: 1 VC)
 diff3.adb:33:13: info: implicit terminating annotation on "U_Exp_BI_Trans" has been proved, subprogram will terminate
 diff3.adb:36:35: info: overflow check proved (Z3: 1 VC)
