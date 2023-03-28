@@ -198,17 +198,16 @@ procedure Test_Bad with SPARK_Mode is
 
       procedure Lemma_Prove_P2 (X : Natural) with
         Ghost,
-        Post => P (X); -- @POSTCONDITION:FAIL
+        Post => P (X);
       --  A lemma using the function F to prove P (X).
-      --  It should not be provable as Lemma_Prove_P should not be available as
-      --  it might not return.
+      --  It is proved, but we have a termination check on Lemma_Prove_P.
    end Test_No_Return;
 
    package body Test_No_Return is
       procedure Lemma_Prove_P (X : Natural) is
       begin
          if not P (X) then
-            loop
+            loop  --  @TERMINATION:CHECK
                null;
             end loop;
          end if;

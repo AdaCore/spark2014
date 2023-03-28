@@ -1,4 +1,3 @@
-SOUNDNESS BUG at test_bad.adb:201: mark @POSTCONDITION:FAIL not found
 test_bad.adb:11:09: warning: Always_Return annotation is useless
 test_bad.adb:11:09: warning: function "P" has implicit Always_Return annotation
 test_bad.adb:16:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
@@ -33,4 +32,4 @@ test_bad.adb:185:09: warning: function "P" has implicit Always_Return annotation
 test_bad.adb:190:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test_bad.adb:196:17: info: postcondition proved (CVC5: 1 VC)
 test_bad.adb:201:17: info: postcondition proved (CVC5: 1 VC)
-test_bad.adb:211:13: medium: implicit terminating annotation on "Lemma_Prove_P" could be incorrect, loop might be nonterminating
+test_bad.adb:210:13: medium: implicit terminating annotation on "Lemma_Prove_P" could be incorrect, loop might be nonterminating
