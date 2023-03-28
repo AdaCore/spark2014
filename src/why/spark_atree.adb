@@ -816,6 +816,10 @@ package body SPARK_Atree is
       --  Reach through a non-private type in order to query its kind
 
       Check_Type := SPARK_Util.Types.Retysp (Check_Type);
+      pragma Annotate
+        (CodePeer, False_Positive,
+         "validity check",
+         "Check_Type initialized in every branch above");
 
       --  If the target type is a constrained array, we have a length check.
 

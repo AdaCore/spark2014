@@ -1859,7 +1859,6 @@ package body SPARK_Definition.Annotate is
          Ok           : out Boolean;
          Cont_Element : out Entity_Id)
       is
-
          C_Param        : constant Node_Id := First_Formal (E);
          E_Param        : constant Node_Id :=
            (if Present (C_Param) then Next_Formal (C_Param) else Empty);
@@ -1870,8 +1869,8 @@ package body SPARK_Definition.Annotate is
          --  Type of the second argument of the Contains function
 
       begin
-
          Ok := False;
+         Cont_Element := Empty;
 
          if No (E_Param) or else Present (Next_Formal (E_Param)) then
             Error_Msg_N
@@ -1923,7 +1922,6 @@ package body SPARK_Definition.Annotate is
          Ok           : out Boolean;
          Cont_Element : out Entity_Id)
       is
-
          Param          : constant Node_Id := First_Formal (E);
 
          Model_Type     : constant Entity_Id := Etype (E);
@@ -1935,8 +1933,8 @@ package body SPARK_Definition.Annotate is
          Model_Element  : Entity_Id;
 
       begin
-
          Ok := False;
+         Cont_Element := Empty;
 
          if No (Param) or else Present (Next_Formal (Param)) then
             Error_Msg_N
