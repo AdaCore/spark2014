@@ -627,21 +627,6 @@ of a program:
   GNAT Target Runtime Directory`) should be set, so that GNATprove correctly
   interprets the behavior of the program at runtime.
 
-* [SPARK_STANDARD_LIBRARY]
-  Preconditions on subprograms in most standard units are not
-  specified. That's the case in particular for:
-
-  * arithmetic and conversion operators (including Time_Of) in
-    Ada.Execution_Time and Ada.Real_Time packages described in |SPARK|
-    Reference Manual 9.19; and
-
-  * arithmetic and conversion operators (including Time_Of) in Ada.Calendar
-    package.
-
-  See :ref:`SPARK Libraries` for a list of standard units where preconditions
-  have been specified. For others, the correctness of calls to standard
-  subprograms should be checked separately, by review or testing.
-
 * [SPARK_FLOATING_POINT]
   When using floating-point numbers, GNATprove relies on the :ref:`Semantics of
   Floating Point Operations` as defined in IEEE-754. The compiler, OS, and
