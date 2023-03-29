@@ -669,6 +669,13 @@ of a program:
     ``Has_Element (Model (Container), M_Cursor)`` evaluates to True and ``E`` is
     the result of ``Element (Model (Container), M_Cursor)``.
 
+* [SPARK_INITIALIZED_ATTRIBUTE]
+  The ``Initialized`` attribute should never be used in code which is executed,
+  outside of testing. It should only be referenced from disabled ghost code.
+  Otherwise, proved ghost code referencing ``Initialized`` could still read
+  uninitialized data, as the execution of ``Initialized`` is based on
+  ``Valid_Scalars``, which sometimes evaluates to True on uninitialized data.
+
 * [SPARK_OVERRIDING_AND_TASKING]
   If there are overriding operations called using a dispatching call, then
   GNATprove assumes that the overriding operation does not have any adverse
