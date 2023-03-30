@@ -114,6 +114,8 @@ an *entire object*.
    callee except for those that have relaxed initialization shall be
    fully initialized.
 
+9.  A function shall always return normally.
+
 .. index:: precondition, postcondition
 
 Preconditions and Postconditions
@@ -1653,14 +1655,6 @@ Overloading of Operators
 1. [A user-defined equality operation on a record type shall have a Global
    aspect of ``null``; see :ref:`Global Aspects` for the statement of this
    rule.]
-
-
-.. container:: heading
-
-   Verification Rules
-
-2.  A user-defined equality operation on a record type shall always
-    terminate.
 
 
 Null Procedures

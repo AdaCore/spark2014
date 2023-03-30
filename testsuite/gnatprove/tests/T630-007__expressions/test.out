@@ -39,7 +39,6 @@ test_enum.adb:14:19: info: assertion proved (CVC5: 1 VC)
 test_enum.adb:14:39: info: range check proved (CVC5: 2 VC)
 test_membership.adb:11:40: info: pointer dereference check proved (CVC5: 1 VC)
 test_membership.adb:12:04: info: function contract feasibility proved (CVC5: 1 VC)
-test_membership.adb:14:29: high: cannot call potentially nonreturning subprogram "S6" for type "S6" in its own predicate (SPARK RM 3.2.4(4))
 test_membership.adb:14:66: info: pointer dereference check proved (CVC5: 1 VC)
 test_membership.adb:15:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_membership.adb:19:19: info: assertion proved (CVC5: 1 VC)
