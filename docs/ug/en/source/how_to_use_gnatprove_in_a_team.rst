@@ -670,11 +670,14 @@ of a program:
     the result of ``Element (Model (Container), M_Cursor)``.
 
 * [SPARK_INITIALIZED_ATTRIBUTE]
-  The ``Initialized`` attribute should never be used in code which is executed,
-  outside of testing. It should only be referenced from disabled ghost code.
-  Otherwise, proved ghost code referencing ``Initialized`` could still read
-  uninitialized data, as the execution of ``Initialized`` is based on
-  ``Valid_Scalars``, which sometimes evaluates to True on uninitialized data.
+  GNATprove assumes that the ``Initialized`` attribute is not referenced in any
+  SPARK code that is executed. This assumption is necessary because evaluation
+  of the ``Initialized`` attribute during execution is based on
+  ``Valid_Scalars``, and ``Valid_Scalars`` sometimes evaluates to True on
+  uninitialized data. Note that, despite this assumption, it can be valuable
+  during testing to execute contracts and other ghost code that references the
+  ``Initialized`` attribute, as long as the executable code of the product
+  itself does not reference the ``Initialized`` attribute.
 
 * [SPARK_OVERRIDING_AND_TASKING]
   If there are overriding operations called using a dispatching call, then
