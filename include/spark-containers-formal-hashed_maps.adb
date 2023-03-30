@@ -32,8 +32,7 @@ with Ada.Containers.Hash_Tables.Generic_Formal_Keys;
 
 with Ada.Containers.Prime_Numbers; use Ada.Containers.Prime_Numbers;
 
-with SPARK.Big_Integers;
-use SPARK.Big_Integers;
+with SPARK.Big_Integers; use SPARK.Big_Integers;
 
 with System; use type System.Address;
 
@@ -72,13 +71,6 @@ is
 
    function Vet (Container : Map; Position : Cursor) return Boolean
      with Inline;
-
-   --  Convert Count_Type to Big_Interger
-
-   package Conversions is new Signed_Conversions (Int => Count_Type);
-
-   function Big (J : Count_Type) return Big_Integer renames
-     Conversions.To_Big_Integer;
 
    --------------------------
    -- Local Instantiations --
@@ -428,7 +420,7 @@ is
          Key       : Key_Type) return Count_Type
       is
       begin
-         for I in 1 .. K.Length (Container) loop
+         for I in 1 .. K.Last (Container) loop
             if Equivalent_Keys (Key, K.Get (Container, I)) then
                return I;
             end if;
@@ -445,8 +437,8 @@ is
          Right : K.Sequence) return Boolean
       is
       begin
-         for I in 1 .. K.Length (Left) loop
-            if not K.Contains (Right, 1, K.Length (Right), K.Get (Left, I))
+         for I in 1 .. K.Last (Left) loop
+            if not K.Contains (Right, 1, K.Last (Right), K.Get (Left, I))
             then
                return False;
             end if;
@@ -504,8 +496,8 @@ is
       begin
          for C of P_Left loop
             if not P.Has_Key (P_Right, C)
-              or else P.Get (P_Left,  C) > K.Length (K_Left)
-              or else P.Get (P_Right, C) > K.Length (K_Right)
+              or else P.Get (P_Left,  C) > K.Last (K_Left)
+              or else P.Get (P_Right, C) > K.Last (K_Right)
               or else K.Get (K_Left,  P.Get (P_Left,  C)) /=
                       K.Get (K_Right, P.Get (P_Right, C))
             then
@@ -556,7 +548,7 @@ is
 
          while Position /= 0 loop
             R := P.Add (R, (Node => Position), I);
-            pragma Assert (P.Length (R) = Big (I));
+            pragma Assert (P.Length (R) = K.Big (I));
             Position := HT_Ops.Next (Container.Content, Position);
             I := I + 1;
          end loop;

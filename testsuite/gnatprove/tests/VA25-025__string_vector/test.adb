@@ -22,11 +22,12 @@ procedure Test with SPARK_Mode is
       pragma Assert (for all E of S => E'Last = 4);
    end Regular_String_Eq;
 
+   function My_Eq (L, R : String) return Boolean is
+     (L = R and L'First = R'First);
+
    procedure String_Eq_With_First with
      Global => null
    is
-      function My_Eq (L, R : String) return Boolean is
-        (L = R and L'First = R'First);
       package My_Seqs is new SPARK.Containers.Functional.Vectors (Positive, String, My_Eq);
 
       S : My_Seqs.Sequence;

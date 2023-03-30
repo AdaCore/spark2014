@@ -46,12 +46,6 @@ is
    with
      Global   => null,
      Annotate => (GNATprove, Higher_Order_Specialization),
-     Pre      =>
-       (if Index_Type'Pos (Extended_Index'First) >= 0
-        then Index_Type'Pos (New_Last) -
-            Index_Type'Pos (Extended_Index'First) <= Count_Type'Last
-        else Index_Type'Pos (New_Last) <= Count_Type'Last +
-            Index_Type'Pos (Extended_Index'First)),
      Post     => Last (Create'Result) = New_Last
        and then
           (for all I in Index_Type'First .. New_Last =>
@@ -77,7 +71,7 @@ is
    function Count
      (S    : Sequence;
       Test : not null access function (E : Element_Type) return Boolean)
-      return Count_Type
+      return Big_Natural
    --  Count the number of elements on which the input Test function returns
    --  True.
 
@@ -91,7 +85,7 @@ is
      (S    : Sequence;
       Last : Extended_Index;
       Test : not null access function (E : Element_Type) return Boolean)
-      return Count_Type
+      return Big_Natural
    --  Count the number of elements on which the input Test function returns
    --  True.
 
@@ -99,8 +93,7 @@ is
      Global   => null,
      Annotate => (GNATprove, Higher_Order_Specialization),
      Pre      => Last <= Vectors.Last (S),
-     Post     => Count'Result <=
-         Index_Type'Pos (Last) - Index_Type'Pos (Extended_Index'First);
+     Post     => Count'Result <= Big (Last) - Big (Extended_Index'First);
 
    procedure Lemma_Count_Eq
      (S1, S2 : Sequence;
@@ -131,7 +124,7 @@ is
      Pre      => Last <= Vectors.Last (S),
      Post     =>
        Count (S, Last, Test) = Count (S, Extended_Index'Pred (Last), Test) +
-          (if Test (Get (S, Last)) then 1 else 0);
+          (if Test (Get (S, Last)) then Big_Integer'(1) else Big_Integer'(0));
 
    procedure Lemma_Count_All
      (S    : Sequence;
@@ -146,7 +139,7 @@ is
      Pre      => Last <= Vectors.Last (S)
        and then (for all I in Index_Type'First .. Last => Test (Get (S, I))),
      Post     => Count (S, Last, Test) =
-       Index_Type'Pos (Last) - Index_Type'Pos (Extended_Index'First);
+       Big (Last) - Big (Extended_Index'First);
 
    procedure Lemma_Count_None
      (S    : Sequence;

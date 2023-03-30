@@ -31,8 +31,12 @@
 --  generics.
 
 pragma Ada_2012;
+with SPARK.Containers.Types; use SPARK.Containers.Types;
+
 package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
    use Containers;
+
+   package Count_Conversions is new Signed_Conversions (Int => Count_Type);
 
    ---------
    -- "<" --
@@ -173,7 +177,7 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
    -- Length --
    ------------
 
-   function Length (Container : Sequence) return Count_Type is
+   function Length (Container : Sequence) return Big_Natural is
      (raise Program_Error);
 
    -----------------
@@ -197,7 +201,7 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
       Right  : Sequence;
       Fst    : Index_Type;
       Lst    : Extended_Index;
-      Offset : Count_Type'Base) return Boolean
+      Offset : Big_Integer) return Boolean
    is
      (raise Program_Error);
 

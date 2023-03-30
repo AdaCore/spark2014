@@ -46,61 +46,60 @@ spark-containers-functional-sets.ads:397:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:397:13: info: precondition proved (CVC5: 1 VC), in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:404:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:404:13: info: precondition proved (CVC5: 1 VC), in instantiation at binary_trees.adb:20
-spark-containers-functional-vectors.ads:50:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:60:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:62:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:64:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:268:52: info: overflow check proved (CVC5: 1 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:314:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:351:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:351:13: info: precondition proved (Trivial: 1 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:354:13: info: precondition proved (Trivial: 1 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:364:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:364:13: info: precondition proved (CVC5: 1 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:492:54: info: overflow check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:497:63: info: range check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:498:59: info: overflow check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:498:76: info: overflow check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:499:30: info: range check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
+spark-containers-functional-vectors.ads:50:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:60:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:62:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:64:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:112:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:112:13: info: precondition proved (CVC5: 2 VC), in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:129:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:130:06: info: data dependencies proved, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:212:39: info: precondition proved (CVC5: 2 VC), in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:271:52: info: overflow check proved (CVC5: 1 VC), in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:317:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:354:13: info: precondition proved (Trivial: 1 VC), in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Trivial: 1 VC), in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:367:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:367:13: info: precondition proved (CVC5: 1 VC), in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:493:57: info: predicate check proved (Trivial: 1 VC), in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:494:31: info: predicate check proved (Trivial: 1 VC), in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+tree_model.ads:33:22: info: predicate check proved (Trivial: 1 VC)
+tree_model.ads:33:46: info: predicate check proved (Trivial: 1 VC)
 --------------------------------------
 binary_trees.adb:22:13: info: implicit terminating annotation on "All_Indexes" has been proved, subprogram will terminate
 binary_trees.adb:29:08: info: postcondition proved (CVC5: 2 VC)
@@ -150,58 +149,57 @@ spark-containers-functional-sets.ads:397:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:397:13: info: precondition proved (CVC5: 1 VC), in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:404:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at binary_trees.adb:20
 spark-containers-functional-sets.ads:404:13: info: precondition proved (CVC5: 1 VC), in instantiation at binary_trees.adb:20
-spark-containers-functional-vectors.ads:50:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:60:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:62:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:64:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:268:52: info: overflow check proved (CVC5: 1 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:314:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:351:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:351:13: info: precondition proved (Trivial: 1 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:354:13: info: precondition proved (Trivial: 1 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:364:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:364:13: info: precondition proved (CVC5: 1 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:492:54: info: overflow check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:497:63: info: range check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:498:59: info: overflow check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:498:76: info: overflow check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-functional-vectors.ads:499:30: info: range check proved (CVC5: 2 VC), in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
+spark-containers-functional-vectors.ads:50:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:60:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:62:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:64:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:112:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:112:13: info: precondition proved (CVC5: 2 VC), in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:129:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:130:06: info: data dependencies proved, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:212:39: info: precondition proved (CVC5: 2 VC), in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:271:52: info: overflow check proved (CVC5: 1 VC), in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:317:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:354:13: info: precondition proved (Trivial: 1 VC), in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Trivial: 1 VC), in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:367:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:367:13: info: precondition proved (CVC5: 1 VC), in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:493:57: info: predicate check proved (Trivial: 1 VC), in instantiation at tree_model.ads:23
+spark-containers-functional-vectors.ads:494:31: info: predicate check proved (Trivial: 1 VC), in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at binary_trees.adb:20
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at tree_model.ads:22
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at tree_model.ads:23
+tree_model.ads:33:22: info: predicate check proved (Trivial: 1 VC)
+tree_model.ads:33:46: info: predicate check proved (Trivial: 1 VC)

@@ -224,7 +224,7 @@ is
         Global => null,
         Post =>
           (if Find'Result > 0 then
-              Find'Result <= K.Length (Container)
+              Find'Result <= K.Last (Container)
                 and Equivalent_Keys (Key, K.Get (Container, Find'Result)));
 
       function K_Keys_Included
@@ -236,7 +236,7 @@ is
         Global => null,
         Post   =>
           K_Keys_Included'Result =
-            (for all I in 1 .. K.Length (Left) =>
+            (for all I in 1 .. K.Last (Left) =>
               Find (Right, K.Get (Left, I)) > 0
                 and then Key_Logic_Equal
                     (K.Get (Right, Find (Right, K.Get (Left, I))),
@@ -298,7 +298,7 @@ is
         Ghost,
         Global => null,
         Post   =>
-          K.Length (Keys'Result) = Length (Container)
+          K.Last (Keys'Result) = Length (Container)
 
             --  It only contains keys contained in Model
 
