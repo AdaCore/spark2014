@@ -548,15 +548,18 @@ This section discusses the pragmas Assert_And_Cut and Assume.
 
 Two |SPARK| pragmas are defined, Assert_And_Cut and Assume. Each is an
 assertion and has a single Boolean parameter (an assertion expression)
-and may be used wherever pragma Assert is allowed.
+and may be used wherever pragma Assert is allowed, with the additional
+restriction that pragma Assert_And_Cut must be part of a
+``sequence_of_statements``.
 
-Assert_And_Cut may be used within a subprogram when the given
-expression sums up all the work done so far in the subprogram, so that
-the rest of the subprogram can be verified (informally or formally)
-using only the entry preconditions, and the expression in this
-pragma. This allows dividing up a subprogram into sections for the
-purposes of testing or formal verification. The pragma also serves as
-useful documentation.
+Assert_And_Cut may be used when the given expression
+sums up all the work done so far in the enclosing ``sequence_of_statements``,
+so that the rest of the enclosing body can be verified (informally or formally)
+while treating the whole prefix preceding Assert_And_Cut as a single
+opaque (local) subprogram call, with post-condition provided by the
+Assert_And_Cut expression. This allows dividing up a subprogram into
+sections for the purposes of testing or formal verification. The pragma
+also serves as useful documentation.
 
 A Boolean expression which is an actual parameter of pragma Assume can
 be assumed to be True for the remainder of the subprogram. If the
