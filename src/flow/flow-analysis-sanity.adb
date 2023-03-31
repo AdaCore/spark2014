@@ -518,52 +518,14 @@ package body Flow.Analysis.Sanity is
          Find_Predicate_Item (Typ, Rep);
 
          if Present (Rep) then
-            declare
-               Expr : constant Node_Id :=
-                 Get_Expr_From_Return_Only_Func (Predicate_Function (Typ));
 
-               Funs : constant Node_Sets.Set :=
-                 Get_Functions (Expr,
-                                Include_Predicates => False);
-            begin
+            --  Check that the type predicate expression does not have
+            --  variable inputs.
 
-               --  Check that the type predicate expression does not have
-               --  variable inputs.
-
-               Detect_Variable_Inputs
-                 (N        => Expr,
-                  Err_Desc => "predicate");
-
-               --  Check that the type predicate expression does not reference
-               --  potentially nonreturning functions. If the type is an
-               --  access-to-subprogram that references itself in its
-               --  predicate, a check message is also raised.
-
-               for F of Funs loop
-                  if Ekind (F) = E_Subprogram_Type
-                    or else Is_Potentially_Nonreturning (F)
-                  then
-                     declare
-                        Subp : constant Flow_Id :=
-                          Direct_Mapping_Id
-                            (if Ekind (F) = E_Subprogram_Type then Typ else F);
-
-                     begin
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      =>
-                             "cannot call potentially nonreturning " &
-                             "subprogram & for type & in its own predicate",
-                           Severity => High_Check_Kind,
-                           Tag      => Subprogram_Termination,
-                           N        => Expr,
-                           F1       => Subp,
-                           F2       => Direct_Mapping_Id (Typ),
-                           SRM_Ref  => "3.2.4(4)");
-                     end;
-                  end if;
-               end loop;
-            end;
+            Detect_Variable_Inputs
+              (N        => Get_Expr_From_Return_Only_Func
+                             (Predicate_Function (Typ)),
+               Err_Desc => "predicate");
          end if;
 
          --  Check that the type invariant expression, if present, does not
@@ -606,32 +568,6 @@ package body Flow.Analysis.Sanity is
                         F1       => Direct_Mapping_Id (F),
                         F2       => Direct_Mapping_Id (Typ),
                         SRM_Ref  => "7.3.2(5)");
-                  end if;
-
-                  --  Check 7.3.2(11) (no calls to potentially nonreturning
-                  --  subprograms).
-
-                  if Ekind (F) = E_Subprogram_Type
-                    or else Is_Potentially_Nonreturning (F)
-                  then
-                     declare
-                        Subp : constant Flow_Id :=
-                          Direct_Mapping_Id
-                            (if Ekind (F) = E_Subprogram_Type then Typ else F);
-
-                     begin
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      =>
-                             "cannot call potentially nonreturning " &
-                             "subprogram & for type & in its own invariant",
-                           Severity => High_Check_Kind,
-                           Tag      => Subprogram_Termination,
-                           N        => Expr,
-                           F1       => Subp,
-                           F2       => Direct_Mapping_Id (Typ),
-                           SRM_Ref  => "7.3.2(11)");
-                     end;
                   end if;
                end loop;
             end;
@@ -1291,17 +1227,6 @@ package body Flow.Analysis.Sanity is
                                  SRM_Ref  => "6.6(1)",
                                  N        => FA.Spec_Entity,
                                  Severity => Error_Kind);
-                        end if;
-
-                        if Is_Potentially_Nonreturning (FA.Spec_Entity) then
-                           Error_Msg_Flow
-                                (FA       => FA,
-                                 Msg      => "user-defined equality might " &
-                                   "not terminate",
-                                 SRM_Ref  => "6.6(2)",
-                                 N        => FA.Spec_Entity,
-                                 Severity => Medium_Check_Kind,
-                                 Tag      => Subprogram_Termination);
                         end if;
                      end if;
                   end;

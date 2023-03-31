@@ -139,14 +139,6 @@ Static predicates and dynamic predicates are both in
 3. A Static_Predicate or Dynamic_Predicate shall not apply to a subtype of a
    type that is effectively volatile for reading.
 
-.. container:: heading
-
-   Verification Rules
-
-.. index:: termination; of Dynamic_Predicate
-
-4. A Dynamic_Predicate expression shall always terminate.
-
 
 Objects and Named Numbers
 -------------------------
