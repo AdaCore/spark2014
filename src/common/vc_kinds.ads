@@ -412,6 +412,7 @@ package VC_Kinds is
       Lim_Access_Sub_Traversal,
       Lim_Access_To_Dispatch_Op,
       Lim_Access_To_Relaxed_Init_Subp,
+      Lim_Access_To_Subp_With_Exc,
       Lim_Address_Attr_In_Unsupported_Context,
       Lim_Array_Conv_Different_Size_Modular_Index,
       Lim_Array_Conv_Signed_Modular_Index,
@@ -595,6 +596,8 @@ package VC_Kinds is
            "access to dispatching operation",
          when Lim_Access_To_Relaxed_Init_Subp =>
            "access to subprogram annotated with Relaxed_Initialization",
+         when Lim_Access_To_Subp_With_Exc =>
+           "access to procedure which might raise exceptions",
          when Lim_Address_Attr_In_Unsupported_Context =>
            "attribute ""Address"" in unsupported context",
          when Lim_Object_Before_Inv =>

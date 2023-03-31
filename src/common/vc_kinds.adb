@@ -626,6 +626,8 @@ package body VC_Kinds is
          when Lim_Access_To_Relaxed_Init_Subp =>
            "an access-to-subprogram type designating a subprogram annotated"
           & " with Relaxed_Initialization",
+         when Lim_Access_To_Subp_With_Exc =>
+           "access attribute on a procedure which might raise exceptions",
          when Lim_Address_Attr_In_Unsupported_Context =>
            "a reference to the ""Address"" attribute occuring within a "
           & "subtype indication, a range constraint, or a quantified"
