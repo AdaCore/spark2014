@@ -3,13 +3,13 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 
 procedure Main is
 
-   procedure Check_Pred_0 is
+   procedure Check_Pred_0 with Annotate => (GNATprove, Might_Not_Return) is
       A : Chars_Ptr := New_String ("hello");
    begin
       Update (A, 0, String'("hello!"), True); --@PRECONDITION:FAIL
    end Check_Pred_0;
 
-   procedure Check_Pred_Last is
+   procedure Check_Pred_Last with Annotate => (GNATprove, Might_Not_Return) is
       A : Chars_Ptr := New_String ("hello");
    begin
       Update (A, Size_T'Last, String'("hello!"), True); --@PRECONDITION:FAIL
@@ -22,7 +22,7 @@ procedure Main is
       pragma Assert (A = B); --@ASSERT:FAIL
    end Check_Volatility;
 
-   procedure Check_Update_Effect is
+   procedure Check_Update_Effect with Annotate => (GNATprove, Might_Not_Return) is
       A : Chars_Ptr := New_String ("hello");
       S : constant String := Value (A);
    begin
