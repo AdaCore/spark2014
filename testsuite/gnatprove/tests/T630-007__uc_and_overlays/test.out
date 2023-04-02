@@ -12,7 +12,7 @@ bad_alignment.adb:5:56: info: object is suitable for aliasing via address clause
 bad_alignment.adb:5:56: info: types of aliased objects have the same size (Trivial)
 bad_alignment.adb:7:04: warning: analyzing unreferenced procedure "P"
 bad_alignment.adb:7:14: warning: subprogram "P" has no effect
-bad_alignment.adb:8:07: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: Z must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+bad_alignment.adb:8:07: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 bad_alignment.adb:8:07: info: object is suitable for aliasing via address clause (Trivial)
 bad_alignment.adb:8:68: info: object is suitable for aliasing via address clause (Trivial)
 bad_alignment.adb:8:68: info: types of aliased objects have the same size (Trivial)

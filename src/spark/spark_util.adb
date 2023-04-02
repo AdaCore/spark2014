@@ -4540,7 +4540,7 @@ package body SPARK_Util is
             Result := False;
             Explanation :=
               To_Unbounded_String
-                (Source_Name (X) &
+                (Source_Name (Y) &
                  " must be aliased for its alignment to be known");
             return;
          end if;
