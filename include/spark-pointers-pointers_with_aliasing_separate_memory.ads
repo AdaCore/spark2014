@@ -66,6 +66,8 @@ is
       function Get (M : Memory_Map; A : Address_Type) return Object renames
         Address_To_Object_Maps.Get;
 
+      function Copy (O : Object) return Object is (O);
+
       function Object_Logic_Equal (Left, Right : Object) return Boolean with
         Ghost,
         Import,
@@ -141,7 +143,7 @@ is
                              Only (Address (P)))
          and then Deallocates (Memory_Map'(+Memory)'Old, +Memory, None)
          and then Writes (Memory_Map'(+Memory)'Old, +Memory, None)
-         and then Object_Logic_Equal (Deref (Memory, P), O);
+         and then Object_Logic_Equal (Deref (Memory, P), Copy (O));
 
    --  Primitives for classical pointer functionalities. Deref will copy the
    --  designated value.
@@ -156,7 +158,7 @@ is
      Global => null,
      Pre    => Valid (+Memory, Address (P)),
      Post   =>
-       Object_Logic_Equal (Get (+Memory, Address (P)), O)
+       Object_Logic_Equal (Get (+Memory, Address (P)), Copy (O))
          and then Allocates (Memory_Map'(+Memory)'Old, +Memory, None)
          and then Deallocates (Memory_Map'(+Memory)'Old, +Memory, None)
          and then Writes (Memory_Map'(+Memory)'Old,

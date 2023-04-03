@@ -377,42 +377,45 @@ spark-pointers-abstract_maps.ads:111:13: info: implicit terminating annotation o
 spark-pointers-pointers_with_aliasing.ads:47:13: info: implicit terminating annotation on "Check_No_Deep_Objects" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
 spark-pointers-pointers_with_aliasing.ads:47:13: info: implicit terminating annotation on "Check_No_Deep_Objects" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
 spark-pointers-pointers_with_aliasing.ads:47:13: info: implicit terminating annotation on "Check_No_Deep_Objects" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:79:16: info: implicit terminating annotation on "None" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:79:16: info: implicit terminating annotation on "None" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:79:16: info: implicit terminating annotation on "None" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:82:16: info: implicit terminating annotation on "Only" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:82:16: info: implicit terminating annotation on "Only" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:82:16: info: implicit terminating annotation on "Only" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:86:16: info: implicit terminating annotation on "Writes" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:86:16: info: implicit terminating annotation on "Writes" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:86:16: info: implicit terminating annotation on "Writes" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:91:38: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:91:38: info: precondition proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:91:38: info: precondition proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:91:51: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:91:51: info: precondition proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:91:51: info: precondition proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:94:16: info: implicit terminating annotation on "Allocates" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:94:16: info: implicit terminating annotation on "Allocates" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:94:16: info: implicit terminating annotation on "Allocates" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:103:16: info: implicit terminating annotation on "Deallocates" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:103:16: info: implicit terminating annotation on "Deallocates" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:103:16: info: implicit terminating annotation on "Deallocates" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:115:04: info: initialization of "Memory" proved, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:115:04: info: initialization of "Memory" proved, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:115:04: info: initialization of "Memory" proved, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:185:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:185:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:185:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:188:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:188:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:188:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:193:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:193:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:193:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:196:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:196:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:196:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_untagged_obj.adb:10
-spark-pointers-pointers_with_aliasing.ads:205:30: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
-spark-pointers-pointers_with_aliasing.ads:205:30: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
-spark-pointers-pointers_with_aliasing.ads:205:30: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:66:16: info: implicit terminating annotation on "Copy" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:66:16: info: implicit terminating annotation on "Copy" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:66:16: info: implicit terminating annotation on "Copy" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:81:16: info: implicit terminating annotation on "None" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:81:16: info: implicit terminating annotation on "None" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:81:16: info: implicit terminating annotation on "None" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:84:16: info: implicit terminating annotation on "Only" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:84:16: info: implicit terminating annotation on "Only" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:84:16: info: implicit terminating annotation on "Only" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:88:16: info: implicit terminating annotation on "Writes" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:88:16: info: implicit terminating annotation on "Writes" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:88:16: info: implicit terminating annotation on "Writes" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:93:38: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:93:38: info: precondition proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:93:38: info: precondition proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:93:51: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:93:51: info: precondition proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:93:51: info: precondition proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:96:16: info: implicit terminating annotation on "Allocates" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:96:16: info: implicit terminating annotation on "Allocates" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:96:16: info: implicit terminating annotation on "Allocates" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:105:16: info: implicit terminating annotation on "Deallocates" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:105:16: info: implicit terminating annotation on "Deallocates" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:105:16: info: implicit terminating annotation on "Deallocates" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:117:04: info: initialization of "Memory" proved, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:117:04: info: initialization of "Memory" proved, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:117:04: info: initialization of "Memory" proved, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:187:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:187:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:187:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:190:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:190:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:190:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:195:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:195:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:195:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:198:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:198:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:198:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_untagged_obj.adb:10
+spark-pointers-pointers_with_aliasing.ads:207:30: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_recursive.adb:10
+spark-pointers-pointers_with_aliasing.ads:207:30: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_tagged_obj.adb:18
+spark-pointers-pointers_with_aliasing.ads:207:30: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_untagged_obj.adb:10

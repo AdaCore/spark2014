@@ -131,20 +131,20 @@ example_recursive.adb:224:07: info: initialization of "New_P" proved
 example_recursive.adb:228:22: info: assertion proved (CVC5: 1 VC)
 example_recursive.adb:235:46: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:235:57: info: null exclusion check proved (CVC5: 1 VC)
-example_recursive.adb:237:10: medium: tag check might fail
+example_recursive.adb:237:10: info: tag check proved (Z3: 1 VC)
 example_recursive.adb:237:24: info: pointer dereference check proved (CVC5: 1 VC)
 example_recursive.adb:240:22: medium: assertion might fail, cannot prove Get (M, A) in L_Cell
 example_recursive.adb:240:22: medium: in inlined expression function body at example_recursive.adb:22
 example_recursive.adb:241:22: info: assertion proved (CVC5: 1 VC)
+example_recursive.adb:241:30: info: precondition proved (Z3: 1 VC)
 example_recursive.adb:241:30: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:241:30: medium: precondition might fail
 example_recursive.adb:242:22: info: assertion proved (CVC5: 1 VC)
 example_recursive.adb:242:30: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:242:30: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:245:10: medium: precondition might fail, cannot prove ( Get (M1, A2) = Get (M2, A2))
 example_recursive.adb:245:70: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:246:10: medium: in inlined expression function body at example_recursive.adb:34
-example_recursive.adb:246:10: medium: precondition might fail, cannot prove Valid (M, A)
+example_recursive.adb:246:10: medium: in inlined expression function body at example_recursive.adb:36
+example_recursive.adb:246:10: medium: precondition might fail, cannot prove Address (L_Cell (Get (M, A)).N) /= F
 example_recursive.adb:246:70: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:249:18: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:256:14: medium: in inlined expression function body at example_recursive.adb:62
@@ -192,7 +192,7 @@ example_recursive.adb:315:73: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:316:10: medium: in inlined expression function body at example_recursive.adb:35
 example_recursive.adb:316:10: medium: precondition might fail, cannot prove Address (L_Cell (Get (M, A)).N) = F
 example_recursive.adb:316:73: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:322:10: info: precondition proved (CVC5: 19 VC; Z3: 3 VC)
+example_recursive.adb:322:10: medium: precondition might fail, cannot prove Valid (M, F2)
 example_recursive.adb:322:70: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:323:10: info: precondition proved (CVC5: 20 VC; Z3: 2 VC)
 example_recursive.adb:323:70: info: range check proved (CVC5: 2 VC)
@@ -200,15 +200,15 @@ example_recursive.adb:330:12: medium: assertion might fail, cannot prove Reachab
 example_recursive.adb:330:12: medium: in inlined expression function body at example_recursive.adb:34
 example_recursive.adb:330:12: medium: precondition might fail, cannot prove Valid (M, F)
 example_recursive.adb:330:63: info: overflow check proved (CVC5: 2 VC)
-example_recursive.adb:341:45: info: precondition proved (Z3: 1 VC)
+example_recursive.adb:341:45: medium: precondition might fail
 example_recursive.adb:341:56: info: null exclusion check proved (CVC5: 1 VC)
 example_recursive.adb:343:10: info: tag check proved (Z3: 1 VC)
 example_recursive.adb:343:25: info: pointer dereference check proved (CVC5: 1 VC)
 example_recursive.adb:345:22: medium: assertion might fail, cannot prove Get (M, A) in L_Cell
 example_recursive.adb:345:22: medium: in inlined expression function body at example_recursive.adb:22
 example_recursive.adb:346:22: info: assertion proved (Z3: 1 VC)
+example_recursive.adb:346:30: info: precondition proved (Z3: 1 VC)
 example_recursive.adb:346:30: info: tag check proved (Z3: 1 VC)
-example_recursive.adb:346:30: medium: precondition might fail
 example_recursive.adb:348:07: medium: in inlined expression function body at example_recursive.adb:34
 example_recursive.adb:348:07: medium: precondition might fail, cannot prove F /= 0
 example_recursive.adb:348:70: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
@@ -216,8 +216,8 @@ example_recursive.adb:349:07: medium: in inlined expression function body at exa
 example_recursive.adb:349:07: medium: precondition might fail, cannot prove F /= 0
 example_recursive.adb:349:70: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:351:22: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:351:22: medium: assertion might fail, cannot prove Address (L_Cell (Get (M, A)).N) /= F
-example_recursive.adb:351:22: medium: in inlined expression function body at example_recursive.adb:36
+example_recursive.adb:351:22: medium: assertion might fail, cannot prove F /= 0
+example_recursive.adb:351:22: medium: in inlined expression function body at example_recursive.adb:34
 example_recursive.adb:351:71: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:353:20: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:356:04: warning: analyzing unreferenced procedure "Do_Test"
@@ -249,28 +249,29 @@ spark-pointers-abstract_maps.ads:92:13: info: implicit terminating annotation on
 spark-pointers-abstract_maps.ads:95:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:53, in instantiation at example_recursive.adb:11
 spark-pointers-abstract_maps.ads:109:13: info: implicit terminating annotation on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:53, in instantiation at example_recursive.adb:11
 spark-pointers-abstract_maps.ads:111:13: info: implicit terminating annotation on "Copy_Object" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:53, in instantiation at example_recursive.adb:11
-spark-pointers-abstract_sets.ads:48:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:41, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
-spark-pointers-abstract_sets.ads:48:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
-spark-pointers-abstract_sets.ads:51:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:41, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
-spark-pointers-abstract_sets.ads:51:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
-spark-pointers-abstract_sets.ads:55:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:41, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
-spark-pointers-abstract_sets.ads:55:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
-spark-pointers-abstract_sets.ads:66:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
-spark-pointers-abstract_sets.ads:69:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
-spark-pointers-abstract_sets.ads:92:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
-spark-pointers-abstract_sets.ads:96:20: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
-spark-pointers-abstract_sets.ads:101:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
-spark-pointers-abstract_sets.ads:106:22: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
-spark-pointers-abstract_sets.ads:106:46: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
-spark-pointers-abstract_sets.ads:117:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:80, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:48:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:41, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:82, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:48:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:82, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:51:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:41, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:82, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:51:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:82, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:55:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:41, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:82, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:55:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:82, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:66:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:82, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:69:06: info: data dependencies proved, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:82, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:93:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:82, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:97:20: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:82, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:102:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:82, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:107:22: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:82, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:107:46: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:82, in instantiation at example_recursive.adb:11
+spark-pointers-abstract_sets.ads:118:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-pointers-pointers_with_aliasing_separate_memory.ads:82, in instantiation at example_recursive.adb:11
 spark-pointers-pointers_with_aliasing_separate_memory.ads:45:13: info: implicit terminating annotation on "Check_No_Deep_Objects" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:11
-spark-pointers-pointers_with_aliasing_separate_memory.ads:90:16: info: implicit terminating annotation on "Writes" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:11
-spark-pointers-pointers_with_aliasing_separate_memory.ads:95:38: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:11
-spark-pointers-pointers_with_aliasing_separate_memory.ads:95:51: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:11
-spark-pointers-pointers_with_aliasing_separate_memory.ads:98:16: info: implicit terminating annotation on "Allocates" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:11
-spark-pointers-pointers_with_aliasing_separate_memory.ads:108:16: info: implicit terminating annotation on "Deallocates" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:11
-spark-pointers-pointers_with_aliasing_separate_memory.ads:211:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:11
-spark-pointers-pointers_with_aliasing_separate_memory.ads:213:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:11
-spark-pointers-pointers_with_aliasing_separate_memory.ads:218:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:11
-spark-pointers-pointers_with_aliasing_separate_memory.ads:222:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:11
-spark-pointers-pointers_with_aliasing_separate_memory.ads:233:31: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:69:16: info: implicit terminating annotation on "Copy" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:92:16: info: implicit terminating annotation on "Writes" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:97:38: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:97:51: info: precondition proved (CVC5: 1 VC), in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:100:16: info: implicit terminating annotation on "Allocates" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:110:16: info: implicit terminating annotation on "Deallocates" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:213:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:215:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:220:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:224:07: info: dynamic accessibility check proved (Trivial), in instantiation at example_recursive.adb:11
+spark-pointers-pointers_with_aliasing_separate_memory.ads:235:31: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at example_recursive.adb:11
