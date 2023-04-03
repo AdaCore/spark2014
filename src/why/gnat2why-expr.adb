@@ -3382,8 +3382,8 @@ package body Gnat2Why.Expr is
 
                --  Otherwise, we go through the expression if the actual is not
                --  an identifier, if aliasing can occur, if the formal has
-               --  asynchronous writers, or if it has a "by copy" type and
-               --  Subp might raise exceptions.
+               --  asynchronous writers, if it has a "by copy" type and Subp
+               --  might raise exceptions, or if the actual should be havoc'ed.
 
                else
                  (Present (Actual)
@@ -3391,6 +3391,7 @@ package body Gnat2Why.Expr is
                   and then not Aliasing
                   and then not
                     Has_Async_Writers (Direct_Mapping_Id (Formal))
+                  and then not Needs_Havoc
                   and then not (Exc_Exit and then By_Copy (Formal))));
 
             Subdomain     : constant EW_Domain :=
