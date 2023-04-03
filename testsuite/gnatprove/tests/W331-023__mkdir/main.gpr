@@ -1,0 +1,5 @@
+with "alib";
+
+project Main is
+
+end Main;
