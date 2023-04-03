@@ -689,6 +689,16 @@ of a program:
     ``Has_Element (Model (Container), M_Cursor)`` evaluates to True and ``E`` is
     the result of ``Element (Model (Container), M_Cursor)``.
 
+* [SPARK_INITIALIZED_ATTRIBUTE]
+  GNATprove assumes that the ``Initialized`` attribute is not referenced in any
+  SPARK code that is executed. This assumption is necessary because evaluation
+  of the ``Initialized`` attribute during execution is based on
+  ``Valid_Scalars``, and ``Valid_Scalars`` sometimes evaluates to True on
+  uninitialized data. Note that, despite this assumption, it can be valuable
+  during testing to execute contracts and other ghost code that references the
+  ``Initialized`` attribute, as long as the executable code of the product
+  itself does not reference the ``Initialized`` attribute.
+
 * [SPARK_TOOL_LIMITATIONS]
   The list of :ref:`Tool Limitations that Impact Soundness` should be reviewed to
   check that each is either not applicable to the project, or its effects are
