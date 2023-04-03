@@ -7073,9 +7073,7 @@ package body SPARK_Definition is
                   begin
                      --  We do not support access to protected subprograms yet
 
-                     if Ekind (Base_Type (E)) in
-                           E_Access_Protected_Subprogram_Type
-                         | E_Anonymous_Access_Protected_Subprogram_Type
+                     if Is_Access_Protected_Subprogram_Type (Base_Type (E))
                      then
                         Mark_Unsupported (Lim_Access_Sub_Protected, E);
 
