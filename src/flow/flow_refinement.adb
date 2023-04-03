@@ -301,8 +301,17 @@ package body Flow_Refinement is
                                            | Pragma_Postcondition
                then
                   if From_Aspect_Specification (Context) then
-                     return (Ent  => Entity (Corresponding_Aspect (Context)),
-                             Part => Body_Part);
+                     if Ekind (Entity (Corresponding_Aspect (Context))) in
+                          Access_Subprogram_Kind
+                     then
+                        pragma Assert
+                          (Get_Pragma_Id (Context) in Pragma_Precondition
+                                                    | Pragma_Postcondition);
+                     else
+                        return
+                          (Ent  => Entity (Corresponding_Aspect (Context)),
+                           Part => Body_Part);
+                     end if;
                   else
                      return (Ent  => Unique_Defining_Entity (Parent (Context)),
                              Part => Body_Part);
