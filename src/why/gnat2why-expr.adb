@@ -6014,33 +6014,14 @@ package body Gnat2Why.Expr is
                Do_Check => No_Checks));
       end;
 
-      --  Handle the initialization flag on the actual if any
+      --  We only have an initialization flag for scalars which are always
+      --  either by copy or by reference.
 
-      if Is_Simple_Actual (Actual) then
-         declare
-            Actual_Binder : constant Item_Type :=
-              Ada_Ent_To_Why.Element
-                (Symbol_Table, Entity (Actual));
-
-         begin
-            if Actual_Binder.Init.Present then
-
-               --  Assign the initialization flag if any. The parameter
-               --  might not be initialized.
-
-               Append
-                 (Store,
-                  New_Assignment
-                    (Ada_Node => Actual,
-                     Name     => Actual_Binder.Init.Id,
-                     Value    =>
-                       New_Any_Expr
-                         (Return_Type => EW_Bool_Type,
-                          Labels      => Symbol_Sets.Empty_Set),
-                     Typ      => EW_Bool_Type,
-                     Labels   => Symbol_Sets.Empty_Set));
-            end if;
-         end;
+      if Is_Simple_Actual (Actual)
+        and then Ada_Ent_To_Why.Element
+          (Symbol_Table, Entity (Actual)).Init.Present
+      then
+         raise Program_Error;
       end if;
 
       --  If discriminants are mutable we need to assume preservation
@@ -6051,9 +6032,9 @@ package body Gnat2Why.Expr is
         and then Pattern.Discrs.Binder.Mutable
       then
          declare
-            Discr_Name  : constant W_Identifier_Id :=
+            Discr_Name : constant W_Identifier_Id :=
               Pattern.Discrs.Binder.B_Name;
-            Assumption  : W_Pred_Id;
+            Assumption : W_Pred_Id;
          begin
             --  If the formal has mutable discriminants,
             --  store in Assumption that its discriminants
@@ -6479,7 +6460,9 @@ package body Gnat2Why.Expr is
                      New_Assignment
                        (Ada_Node => Actual,
                         Name     => Actual_Binder.Init.Id,
-                        Value    => +Pattern.Init.Id,
+                        Value    => New_Deref
+                          (Right => Pattern.Init.Id,
+                           Typ   => Get_Typ (Pattern.Init.Id)),
                         Typ      => EW_Bool_Type,
                         Labels   => Symbol_Sets.Empty_Set));
 
