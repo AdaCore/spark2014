@@ -1,0 +1,9 @@
+exc_prot.adb:16:20: info: overflow check proved (CVC5: 2 VC)
+exc_prot.adb:22:10: info: only expected exception raised (CVC5: 1 VC)
+exc_prot.adb:23:10: info: only expected exception raised (CVC5: 1 VC)
+exc_prot.ads:9:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+exc_prot.ads:11:17: info: postcondition proved (CVC5: 1 VC)
+exc_prot.ads:13:43: info: exceptional case proved (CVC5: 1 VC)
+exc_prot.ads:15:43: info: exceptional case proved (CVC5: 1 VC)
+use_exc_prot.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
+use_exc_prot.adb:5:11: medium: unexpected exception might be raised
