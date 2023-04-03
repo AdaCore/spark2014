@@ -6480,7 +6480,7 @@ package body Gnat2Why.Subprograms is
             --  If the Ada_Node is Empty, it's not an interesting binder (e.g.
             --  void_param).
 
-            if Present (A) and then not Is_Type (E) then
+            if Present (A) then
                Ada_Ent_To_Why.Insert (Symbol_Table, A, Binder);
             end if;
          end;
