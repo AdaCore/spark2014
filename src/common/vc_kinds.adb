@@ -1049,11 +1049,11 @@ package body VC_Kinds is
       case T is
          when Cnt_Integer   =>
             return (T => Cnt_Integer,
-                    I => Get (V, "val"));
+                    I => Get (Get (V, "val"), "int_verbatim"));
 
          when Cnt_Decimal   =>
             return (T => Cnt_Decimal,
-                    D => Get (V, "val"));
+                    D => Get (Get (V, "val"), "real_verbatim"));
 
          --  Float values are complex so they are sent as JSON records. Example
          --  of values are infinities, zeroes, etc
@@ -1092,11 +1092,17 @@ package body VC_Kinds is
                           F =>
                              new Float_Value'(F_Type        => Float_Val,
                                               F_Sign        =>
-                                                Get (Val, "sign"),
+                                                Get (
+                                                  Get (Val, "float_sign"),
+                                                  "bv_verbatim"),
                                               F_Exponent    =>
-                                                Get (Val, "exp"),
+                                                Get (
+                                                  Get (Val, "float_exp"),
+                                                  "bv_verbatim"),
                                               F_Significand =>
-                                                Get (Val, "mant")));
+                                                Get (
+                                                  Get (Val, "float_mant"),
+                                                  "bv_verbatim")));
                else
                   return (T => Cnt_Invalid,
                           S => Null_Unbounded_String);
@@ -1109,7 +1115,7 @@ package body VC_Kinds is
 
          when Cnt_Bitvector =>
             return (T => Cnt_Bitvector,
-                    B => Get (Get (V, "val"), "bv_int"));
+                    B => Get (Get (V, "val"), "bv_value_as_decimal"));
 
          when Cnt_Record    =>
             declare
@@ -1171,10 +1177,26 @@ package body VC_Kinds is
                                                (Get (Json_Element, "value")));
                      begin
                         case Indice_Type is
-                        when Cnt_Integer | Cnt_Decimal | Cnt_Boolean =>
+                        when Cnt_Boolean =>
                            Cntexmp_Value_Array.Insert
                              (Indice_Array,
                               Get (Get (Json_Element, "indice"), "val"),
+                              Elem_Ptr);
+
+                        when Cnt_Integer =>
+                           Cntexmp_Value_Array.Insert
+                             (Indice_Array,
+                              Get
+                                (Get (Get (Json_Element, "indice"), "val"),
+                                 "int_verbatim"),
+                              Elem_Ptr);
+
+                        when Cnt_Decimal =>
+                           Cntexmp_Value_Array.Insert
+                             (Indice_Array,
+                              Get
+                                (Get (Get (Json_Element, "indice"), "val"),
+                                 "real_verbatim"),
                               Elem_Ptr);
 
                         when Cnt_Bitvector =>
@@ -1182,7 +1204,7 @@ package body VC_Kinds is
                              (Indice_Array,
                               Get
                                 (Get (Get (Json_Element, "indice"), "val"),
-                                 "bv_int"),
+                                 "bv_value_as_decimal"),
                               Elem_Ptr);
 
                         when others =>

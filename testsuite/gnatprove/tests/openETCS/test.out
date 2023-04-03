@@ -330,8 +330,8 @@ sec_3_13_6_deceleration.ads:47:22: medium: range check might fail [reason for ch
 sec_3_13_6_deceleration.ads:47:30: medium: in inlined expression function body at units.ads:42
 sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at line 44 should mention V in a precondition]
 sec_3_13_6_deceleration.ads:51:13: info: implicit terminating annotation on "A_safe" has been proved, subprogram will terminate
+sec_3_13_6_deceleration.ads:52:26: info: float overflow check proved (Z3: 1 VC)
 sec_3_13_6_deceleration.ads:52:26: info: range check proved (Trivial)
-sec_3_13_6_deceleration.ads:52:26: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 51 should mention d and V in a precondition]
 sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail
 sec_3_13_8_targets_decel_curves.ads:48:13: info: implicit terminating annotation on "Is_Valid_Target" has been proved, subprogram will terminate
 sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve" proved
@@ -478,7 +478,7 @@ step_function.ads:74:50: info: index check proved (CVC5: 2 VC)
 step_function.ads:78:26: info: index check proved (CVC5: 2 VC)
 step_function.ads:80:53: info: index check proved (CVC5: 2 VC)
 step_function.ads:86:06: info: postcondition proved (CVC5: 6 VC)
-step_function.ads:101:04: medium: postcondition might fail
+step_function.ads:101:04: medium: postcondition might fail, cannot prove Is_Valid(Merge)
 step_function.ads:106:30: info: index check proved (CVC5: 2 VC)
 step_function.ads:106:56: info: index check proved (CVC5: 2 VC)
 step_function.ads:111:30: info: index check proved (CVC5: 2 VC)

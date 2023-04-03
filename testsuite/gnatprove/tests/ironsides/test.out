@@ -26,77 +26,77 @@ dns_table_pkg.adb:63:22: info: division check proved (CVC5: 1 VC)
 dns_table_pkg.adb:72:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:73:10: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:85:16: info: loop invariant initialization proved (CVC5: 4 VC)
-dns_table_pkg.adb:86:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany < Ctr
+dns_table_pkg.adb:85:16: info: loop invariant preservation proved (CVC5: 4 VC)
 dns_table_pkg.adb:91:35: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:92:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:102:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:103:10: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:113:16: info: loop invariant initialization proved (CVC5: 4 VC)
-dns_table_pkg.adb:113:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:113:16: info: loop invariant preservation proved (CVC5: 4 VC)
 dns_table_pkg.adb:122:35: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:131:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:132:10: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:142:16: info: loop invariant initialization proved (CVC5: 4 VC)
-dns_table_pkg.adb:142:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany >= 0
+dns_table_pkg.adb:142:16: info: loop invariant preservation proved (CVC5: 4 VC)
 dns_table_pkg.adb:151:34: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:161:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:162:10: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:174:16: info: loop invariant initialization proved (CVC5: 4 VC)
-dns_table_pkg.adb:175:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany < Ctr
+dns_table_pkg.adb:174:16: info: loop invariant preservation proved (CVC5: 4 VC)
 dns_table_pkg.adb:183:35: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:184:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:194:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:195:10: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:207:16: info: loop invariant initialization proved (CVC5: 4 VC)
-dns_table_pkg.adb:208:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany < Ctr
+dns_table_pkg.adb:207:16: info: loop invariant preservation proved (CVC5: 4 VC)
 dns_table_pkg.adb:213:35: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:214:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:224:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:225:10: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:237:16: info: loop invariant initialization proved (CVC5: 4 VC)
-dns_table_pkg.adb:238:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany < Ctr
+dns_table_pkg.adb:237:16: info: loop invariant preservation proved (CVC5: 4 VC)
 dns_table_pkg.adb:243:35: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:244:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:254:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:255:10: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:267:16: info: loop invariant initialization proved (CVC5: 4 VC)
-dns_table_pkg.adb:268:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany < Ctr
+dns_table_pkg.adb:267:16: info: loop invariant preservation proved (CVC5: 4 VC)
 dns_table_pkg.adb:273:35: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:274:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:284:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:285:10: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:294:16: info: loop invariant initialization proved (CVC5: 4 VC)
-dns_table_pkg.adb:295:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany < Ctr
+dns_table_pkg.adb:294:16: info: loop invariant preservation proved (CVC5: 4 VC)
 dns_table_pkg.adb:300:35: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:301:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:311:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:312:10: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:324:16: info: loop invariant initialization proved (CVC5: 4 VC)
-dns_table_pkg.adb:325:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany < Ctr
+dns_table_pkg.adb:324:16: info: loop invariant preservation proved (CVC5: 4 VC)
 dns_table_pkg.adb:330:35: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:331:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:341:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:342:10: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:350:16: info: loop invariant initialization proved (CVC5: 4 VC)
-dns_table_pkg.adb:351:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany < Ctr
+dns_table_pkg.adb:350:16: info: loop invariant preservation proved (CVC5: 4 VC)
 dns_table_pkg.adb:356:35: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:357:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:367:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:368:10: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:380:16: info: loop invariant initialization proved (CVC5: 4 VC)
-dns_table_pkg.adb:381:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany < Ctr
+dns_table_pkg.adb:380:16: info: loop invariant preservation proved (CVC5: 4 VC)
 dns_table_pkg.adb:386:35: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:387:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:397:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:398:10: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:409:16: info: loop invariant initialization proved (CVC5: 4 VC)
-dns_table_pkg.adb:410:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany < Ctr
+dns_table_pkg.adb:409:16: info: loop invariant preservation proved (CVC5: 4 VC)
 dns_table_pkg.adb:415:35: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:416:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:426:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:427:10: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:439:16: info: loop invariant initialization proved (CVC5: 4 VC)
-dns_table_pkg.adb:440:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove HowMany < Ctr
+dns_table_pkg.adb:439:16: info: loop invariant preservation proved (CVC5: 4 VC)
 dns_table_pkg.adb:445:35: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:446:33: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:457:10: info: initialization of "Bucket" proved
@@ -1053,7 +1053,7 @@ zone_file_parser.adb:737:80: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:737:86: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:737:90: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:748:16: info: loop invariant initialization proved (CVC5: 7 VC)
-zone_file_parser.adb:755:19: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove BlockLengthMap(J) >= Rr_Type.Nsec_Record_Type.blockLengthValue'first
+zone_file_parser.adb:748:16: info: loop invariant preservation proved (CVC5: 7 VC)
 zone_file_parser.adb:760:29: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:766:46: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:769:59: info: range check proved (CVC5: 2 VC)
@@ -1183,9 +1183,9 @@ zone_file_parser.adb:1333:72: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1348:44: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1352:46: info: loop invariant initialization proved (CVC5: 3 VC)
 zone_file_parser.adb:1352:46: info: loop invariant preservation proved (CVC5: 3 VC)
-zone_file_parser.adb:1356:61: medium: overflow check might fail, cannot prove lower bound for (I + 1) [reason for check: result of addition must fit in a 32-bits machine integer]
-zone_file_parser.adb:1356:66: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
-zone_file_parser.adb:1356:66: medium: overflow check might fail, cannot prove lower bound for (I + 1) - BegIdx [reason for check: result of subtraction must fit in a 32-bits machine integer]
+zone_file_parser.adb:1356:61: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1356:66: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:1356:66: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:1359:44: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1363:66: info: loop invariant initialization proved (CVC5: 1 VC)
 zone_file_parser.adb:1363:66: info: loop invariant preservation proved (CVC5: 1 VC)
