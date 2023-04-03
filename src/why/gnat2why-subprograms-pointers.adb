@@ -467,7 +467,7 @@ package body Gnat2Why.Subprograms.Pointers is
       Profile      : constant Entity_Id := Directly_Designated_Type (E);
 
    begin
-      if Is_Function_Or_Function_Type (Profile) then
+      if Is_Function_Type (Profile) then
          Result_Name := New_Result_Ident (Type_Of_Node (Etype (Profile)));
          Result_Is_Mutable := False;
       end if;
