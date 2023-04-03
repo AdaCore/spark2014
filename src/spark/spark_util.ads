@@ -755,13 +755,6 @@ package SPARK_Util is
    --  @param N is an object declaration
    --  @return if the given node N is an action
 
-   function Is_Additional_Param_Of_Access_Subp_Wrapper
-     (E : Formal_Kind_Id)
-      return Boolean;
-   --  Return True if E is the in parameter introduced for the
-   --  access-to-subprogram object in a wrapper generated for an
-   --  access-to-subprogram type with a contract.
-
    function Is_Converted_Actual_Output_Parameter
      (N : N_Subexpr_Id)
       return Boolean;

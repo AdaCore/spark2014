@@ -10,8 +10,8 @@ test_callback_bad.ads:13:09: error: access to protected subprogram is not yet su
 test_callback_bad.ads:16:09: error: access to borrowing traversal function is not yet supported
 test_callback_bad.ads:38:07: error: "T" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 test_callback_bad.ads:38:07: error: violation of aspect SPARK_Mode at line 4
-test_callback_bad.ads:40:04: error: "T" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
-test_callback_bad.ads:40:04: error: violation of aspect SPARK_Mode at line 4
+test_callback_bad.ads:41:07: error: "T" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+test_callback_bad.ads:41:07: error: violation of aspect SPARK_Mode at line 4
 test_callback_bad.ads:48:07: error: formal with type invariants in access-to-subprogram is not yet supported
 test_callback_bad.ads:49:04: error: access-to-subprogram returning a type with invariants is not yet supported
 gnatprove: error during flow analysis and proof
