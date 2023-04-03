@@ -1686,8 +1686,10 @@ package body Flow_Error_Messages is
             elsif Ekind (Subp) = E_Function then
                "function " & Source_Name (Subp)
             else
-               "type " & Source_Name (Subp))
-         with Pre => Ekind (Subp) in E_Function | Type_Kind;
+               "type " &
+                 Source_Name
+                   (Defining_Entity (Associated_Node_For_Itype (Subp))))
+         with Pre => Ekind (Subp) in E_Function | E_Subprogram_Type;
 
          function Callee_Names (Callees : Entity_Sets.Set) return String;
          --  Returns the and'ed names of callees in the set
@@ -1735,26 +1737,11 @@ package body Flow_Error_Messages is
       begin
          for Call of Calls loop
             declare
-               Subp     : Entity_Id := Get_Called_Entity (Call);
+               Subp     : constant Entity_Id := Get_Called_Entity (Call);
                Dispatch : constant Boolean :=
                  Present (Controlling_Argument (Call));
-               Wrapper  : constant Entity_Id :=
-                 (if Ekind (Subp) = E_Subprogram_Type
-                    and then Present (Access_Subprogram_Wrapper (Subp))
-                  then Access_Subprogram_Wrapper (Subp)
-                  else Subp);
 
             begin
-               --  Adjust to the source access type for Itypes
-
-               if Is_Itype (Subp)
-                 and then Nkind (Associated_Node_For_Itype (Subp))
-                   = N_Full_Type_Declaration
-               then
-                  Subp :=
-                    Defining_Identifier (Associated_Node_For_Itype (Subp));
-               end if;
-
                --  If function or type already seen, skip a redundant
                --  explanation.
 
@@ -1778,7 +1765,7 @@ package body Flow_Error_Messages is
                --  This is a dispatching call with Post'Class specified
 
                elsif Dispatch
-                 and then Has_Contracts (Wrapper, Pragma_Postcondition,
+                 and then Has_Contracts (Subp, Pragma_Postcondition,
                                          Classwide => True)
                then
                   null;
@@ -1788,9 +1775,9 @@ package body Flow_Error_Messages is
 
                elsif not Dispatch
                  and then
-                   (Has_Contracts (Wrapper, Pragma_Postcondition)
+                   (Has_Contracts (Subp, Pragma_Postcondition)
                      or else
-                    Present (Get_Pragma (Wrapper, Pragma_Contract_Cases)))
+                    Present (Get_Pragma (Subp, Pragma_Contract_Cases)))
                then
                   null;
 

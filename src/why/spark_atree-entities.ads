@@ -668,11 +668,6 @@ package SPARK_Atree.Entities is
    function Is_Access_Constant (E : Access_Kind_Id) return Boolean renames
      EE.Is_Access_Constant;
 
-   function Access_Subprogram_Wrapper
-     (E : E_Subprogram_Type_Id)
-      return Opt_Subprogram_Kind_Id
-   is (EE.Access_Subprogram_Wrapper (E));
-
    ------------------
    --  For Objects --
    ------------------

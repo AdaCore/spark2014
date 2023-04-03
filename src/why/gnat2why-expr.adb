@@ -25024,18 +25024,10 @@ package body Gnat2Why.Expr is
       Selector : Selection_Kind := Why.Inter.Standard)
       return Boolean
    is
-      Subp : constant Entity_Id :=
-        (if Ekind (E) = E_Subprogram_Type
-           and then Present (Access_Subprogram_Wrapper (E))
-         then Access_Subprogram_Wrapper (E)
-         else E);
-      --  To retrieve the contract associated to a subprogram type, we need
-      --  to go through the associated wrapper.
-
       Has_Precondition : constant Boolean :=
-        Has_Contracts (Subp, Pragma_Precondition);
+        Has_Contracts (E, Pragma_Precondition);
       Has_Classwide_Or_Inherited_Precondition : constant Boolean :=
-        Has_Contracts (Subp, Pragma_Precondition,
+        Has_Contracts (E, Pragma_Precondition,
                        Classwide => True,
                        Inherited => True);
    begin
