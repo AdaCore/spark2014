@@ -731,9 +731,10 @@ only part of a program:
 * [ADA_PRIVATE_TYPES]
   Private types whose full view is not analyzed, yet are used in
   SPARK code, need to comply with the implicit or explicit contracts used by
-  GNATprove to analyze references to these types. This concerns private types
-  and private type extensions declared in a package with a
-  ``pragma SPARK_Mode (Off);`` in its private type.
+  GNATprove to analyze references to these types. This concerns:
+  * private types and private type extensions declared in a package with a
+  ``pragma SPARK_Mode (Off);`` in its private part.
+  * type completions in a non-SPARK package body.
 
   The (explicit or implicit) type contract to check is made up of:
 
