@@ -1111,15 +1111,21 @@ package SPARK_Util is
 
       function Contains (S : Set; E : E_Exception_Id) return Boolean;
 
-      procedure Difference (Left : in out Set; Right : Set);
+      procedure Difference (Left : in out Set; Right : Set) with
+        Post => Is_Subset (Left, Left'Old);
 
-      procedure Exclude (S : in out Set; E : E_Exception_Id);
+      procedure Exclude (S : in out Set; E : E_Exception_Id) with
+        Post => not Contains (S, E);
 
-      procedure Include (S : in out Set; E : E_Exception_Id);
+      procedure Include (S : in out Set; E : E_Exception_Id) with
+        Post => Contains (S, E);
 
-      procedure Intersection (Left : in out Set; Right : Set);
+      procedure Intersection (Left : in out Set; Right : Set) with
+        Post => Is_Subset (Left, Left'Old) and Is_Subset (Left, Right);
 
-      procedure Union (Left : in out Set; Right : Set);
+      procedure Union (Left : in out Set; Right : Set) with
+        Post => Is_Subset (Left'Old, Left)
+        and Is_Subset (Right, Right => Left);
 
    private
       type Set is tagged record
