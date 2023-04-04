@@ -36,5 +36,5 @@ procedure Main with SPARK_Mode, Annotate => (GNATprove, Always_Return) is
    end Bar;
 
 begin
-   Bar;
+   Bar; -- @TERMINATION:CHECK
 end Main;

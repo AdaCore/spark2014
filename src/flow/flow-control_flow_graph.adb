@@ -3653,7 +3653,7 @@ package body Flow.Control_Flow_Graph is
       if Enclosing_Unit (Loop_Id) = FA.Spec_Entity
         and then not Ctx.Termination_Proved
       then
-         FA.Has_Potentially_Nonterminating_Loops := True;
+         FA.Has_Only_Terminating_Constructs := False;
          FA.Atr
            (Potentially_Neverending_Vertex).Is_Neverending := True;
 
@@ -7629,7 +7629,7 @@ package body Flow.Control_Flow_Graph is
                   --  subprograms make this entity potentially blocking.
                   --  We do this here, because otherwise we would
                   --  have to do it in both Do_Call_Statement and
-                  --  Callect_Functions_And_Read_Locked_POs.
+                  --  Collect_Functions_And_Read_Locked_POs.
 
                   if FA.Has_Only_Nonblocking_Statements then
                      for SC of Atr.Subprogram_Calls loop
@@ -7644,6 +7644,29 @@ package body Flow.Control_Flow_Graph is
                              Flow_Classwide.Is_Dispatching_Call (SC.N))
                         then
                            FA.Has_Only_Nonblocking_Statements := False;
+                           exit;
+                        end if;
+                     end loop;
+                  end if;
+
+                  --  Same for problematic calls that make the subprogram
+                  --  potentially nonterminating:
+                  --  * dispatching calls,
+                  --  * calls via access-to-subprogram,
+                  --  * procedures from the standard library with No_Return.
+
+                  if FA.Has_Only_Terminating_Constructs then
+                     for SC of Atr.Subprogram_Calls loop
+                        if (Nkind (SC.N) in N_Subprogram_Call
+                              and then
+                            Flow_Classwide.Is_Dispatching_Call (SC.N))
+                          or else
+                            Ekind (SC.E) = E_Subprogram_Type
+                          or else
+                            (Is_Ignored_Internal (SC.E)
+                               and then No_Return (SC.E))
+                        then
+                           FA.Has_Only_Terminating_Constructs := False;
                            exit;
                         end if;
                      end loop;

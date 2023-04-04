@@ -1290,21 +1290,21 @@ package body Flow is
    begin
       Current_Error_Node := E;
 
-      FA.Spec_Entity                          := E;
-      FA.Start_Vertex                         := Null_Vertex;
-      FA.Helper_End_Vertex                    := Null_Vertex;
-      FA.End_Vertex                           := Null_Vertex;
-      FA.CFG                                  := Create;
-      FA.DDG                                  := Create;
-      FA.CDG                                  := Create;
-      FA.TDG                                  := Create;
-      FA.PDG                                  := Create;
-      FA.Errors_Or_Warnings                   := False;
-      FA.Data_Dependency_Errors               := False;
-      FA.Flow_Dependency_Errors               := False;
-      FA.Has_Potentially_Nonterminating_Loops := False;
-      FA.Has_Only_Nonblocking_Statements      := True;
-      FA.Has_Only_Exceptional_Paths           := False;
+      FA.Spec_Entity                     := E;
+      FA.Start_Vertex                    := Null_Vertex;
+      FA.Helper_End_Vertex               := Null_Vertex;
+      FA.End_Vertex                      := Null_Vertex;
+      FA.CFG                             := Create;
+      FA.DDG                             := Create;
+      FA.CDG                             := Create;
+      FA.TDG                             := Create;
+      FA.PDG                             := Create;
+      FA.Errors_Or_Warnings              := False;
+      FA.Data_Dependency_Errors          := False;
+      FA.Flow_Dependency_Errors          := False;
+      FA.Has_Only_Terminating_Constructs := True;
+      FA.Has_Only_Nonblocking_Statements := True;
+      FA.Has_Only_Exceptional_Paths      := False;
 
       --  Generate Globals (gg) or Flow Analysis (fa)
       FA.Base_Filename := To_Unbounded_String (if Generating_Globals
