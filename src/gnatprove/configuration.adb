@@ -1031,6 +1031,7 @@ package body Configuration is
 
       Compile_Lib ("", "BuiltIn");
       Compile_Lib ("", "HighOrd");
+      Compile_Lib ("", "WellFounded");
       Compile_Lib ("int", "Int");
       Compile_Lib ("int", "Exponentiation");
       Compile_Lib ("int", "Abs");
