@@ -39,7 +39,7 @@ is
      (S    : Sequence;
       Last : Extended_Index;
       Test : not null access function (E : Element_Type) return Boolean)
-      return Count_Type
+      return Big_Natural
    --  Recursive version of Count
 
    with
@@ -47,7 +47,7 @@ is
      Subprogram_Variant => (Decreases => Last),
      Pre                => Last <= Vectors.Last (S),
      Post               => Count_Rec'Result <=
-         Index_Type'Pos (Last) - Index_Type'Pos (Extended_Index'First);
+         Big (Last) - Big (Extended_Index'First);
 
    function Filter_Rec
      (S    : Sequence;
@@ -83,7 +83,7 @@ is
    function Count
      (S    : Sequence;
       Test : not null access function (E : Element_Type) return Boolean)
-      return Count_Type
+      return Big_Natural
    is
      (Count (S, Last (S), Test));
 
@@ -91,11 +91,11 @@ is
      (S    : Sequence;
       Last : Extended_Index;
       Test : not null access function (E : Element_Type) return Boolean)
-      return Count_Type
+      return Big_Natural
    with Refined_Post => Count'Result = Count_Rec (S, Last, Test)
    is
    begin
-      return Res : Count_Type := 0 do
+      return Res : Big_Natural := 0 do
          for I in Index_Type'First .. Last loop
             if Test (Get (S, I)) then
                Res := Res + 1;
@@ -114,11 +114,11 @@ is
      (S    : Sequence;
       Last : Extended_Index;
       Test : not null access function (E : Element_Type) return Boolean)
-      return Count_Type
+      return Big_Natural
    is
      (if Last = Extended_Index'First then 0
       else Count_Rec (S, Extended_Index'Pred (Last), Test) +
-        (if Test (Get (S, Last)) then 1 else 0));
+        (if Test (Get (S, Last)) then Big_Integer'(1) else Big_Integer'(0)));
 
    ------------
    -- Create --
@@ -204,8 +204,7 @@ is
    begin
       for I in Index_Type'First .. Last loop
          pragma Loop_Invariant
-           (Count_Rec (S, I, Test) = Index_Type'Pos (I) -
-                Extended_Index'Pos (Extended_Index'First));
+           (Count_Rec (S, I, Test) = Big (I) - Big (Extended_Index'First));
       end loop;
    end Lemma_Count_All;
 

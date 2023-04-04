@@ -28,8 +28,8 @@ spark-containers-formal-ordered_maps.ads:507:13: info: implicit terminating anno
 spark-containers-formal-ordered_maps.ads:507:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_map.ads:6
 spark-containers-formal-ordered_maps.ads:509:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:20
 spark-containers-formal-ordered_maps.ads:509:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:6
-spark-containers-formal-ordered_maps.ads:509:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_map.ads:20
 spark-containers-formal-ordered_maps.ads:509:08: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-ordered_maps.ads:509:08: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_map.ads:20
 spark-containers-formal-ordered_maps.ads:513:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_map.ads:20
 spark-containers-formal-ordered_maps.ads:513:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at test_map.ads:6
 spark-containers-formal-ordered_maps.ads:515:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_map.ads:20
@@ -38,17 +38,17 @@ spark-containers-formal-ordered_maps.ads:535:39: info: pointer dereference check
 spark-containers-formal-ordered_maps.ads:535:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:6
 spark-containers-formal-ordered_maps.ads:575:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:20
 spark-containers-formal-ordered_maps.ads:575:36: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-ordered_maps.ads:960:39: info: precondition proved (altergo: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-ordered_maps.ads:960:39: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
 spark-containers-formal-ordered_maps.ads:960:39: info: precondition proved (altergo: 1 VC), in instantiation at test_map.ads:6
 spark-containers-formal-ordered_maps.ads:969:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
 spark-containers-formal-ordered_maps.ads:969:17: info: precondition proved (altergo: 1 VC), in instantiation at test_map.ads:20
 spark-containers-formal-ordered_maps.ads:1004:42: info: precondition proved (altergo: 1 VC), in instantiation at test_map.ads:20
 spark-containers-formal-ordered_maps.ads:1004:42: info: precondition proved (altergo: 1 VC), in instantiation at test_map.ads:6
 spark-containers-formal-ordered_maps.ads:1012:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-ordered_maps.ads:1012:21: info: precondition proved (altergo: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-ordered_maps.ads:1012:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
+spark-containers-formal-ordered_maps.ads:1039:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
 spark-containers-formal-ordered_maps.ads:1039:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:6
-spark-containers-formal-ordered_maps.ads:1039:42: info: precondition proved (altergo: 1 VC), in instantiation at test_map.ads:20
-spark-containers-formal-ordered_maps.ads:1047:20: info: precondition proved (CVC5: 1 VC), in instantiation at test_map.ads:20
+spark-containers-formal-ordered_maps.ads:1047:20: info: precondition proved (altergo: 1 VC), in instantiation at test_map.ads:20
 spark-containers-formal-ordered_maps.ads:1047:20: info: precondition proved (altergo: 1 VC), in instantiation at test_map.ads:6
 spark-containers-formal-ordered_maps.ads:1061:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_map.ads:20
 spark-containers-formal-ordered_maps.ads:1061:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:103, in instantiation at test_map.ads:6
@@ -111,8 +111,8 @@ spark-containers-functional-maps.ads:367:13: info: during checks for quantificat
 spark-containers-functional-maps.ads:367:13: info: during checks for quantification at spark-containers-functional-maps.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-functional-maps.ads:367:13: info: during checks for quantification at spark-containers-functional-maps.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
 spark-containers-functional-maps.ads:367:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
-spark-containers-functional-maps.ads:367:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
-spark-containers-functional-maps.ads:367:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
+spark-containers-functional-maps.ads:367:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
+spark-containers-functional-maps.ads:367:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-functional-maps.ads:367:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
 spark-containers-functional-maps.ads:376:13: info: during checks for quantification at spark-containers-functional-maps.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-functional-maps.ads:376:13: info: during checks for quantification at spark-containers-functional-maps.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
@@ -128,8 +128,8 @@ spark-containers-functional-maps.ads:382:13: info: during checks for quantificat
 spark-containers-functional-maps.ads:382:13: info: during checks for quantification at spark-containers-functional-maps.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
 spark-containers-functional-maps.ads:382:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-functional-maps.ads:382:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-functional-maps.ads:382:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-functional-maps.ads:382:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
+spark-containers-functional-maps.ads:382:13: info: precondition proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-functional-maps.ads:390:13: info: during checks for quantification at spark-containers-functional-maps.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-functional-maps.ads:390:13: info: during checks for quantification at spark-containers-functional-maps.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-functional-maps.ads:390:13: info: during checks for quantification at spark-containers-functional-maps.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
@@ -167,89 +167,83 @@ spark-containers-functional-maps.ads:533:13: info: during checks for quantificat
 spark-containers-functional-maps.ads:533:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-functional-maps.ads:533:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
 spark-containers-functional-maps.ads:533:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
-spark-containers-functional-maps.ads:533:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-functional-maps.ads:533:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
-spark-containers-functional-maps.ads:533:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
+spark-containers-functional-maps.ads:533:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
+spark-containers-functional-maps.ads:533:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
+spark-containers-functional-maps.ads:533:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
 spark-containers-functional-maps.ads:538:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-functional-maps.ads:538:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-functional-maps.ads:538:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-functional-maps.ads:538:13: info: during checks for quantification at spark-containers-functional-maps.ads:90, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-functional-maps.ads:538:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
-spark-containers-functional-maps.ads:538:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-functional-maps.ads:538:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
 spark-containers-functional-maps.ads:538:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
+spark-containers-functional-maps.ads:538:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
+spark-containers-functional-maps.ads:538:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-functional-vectors.ads:50:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
 spark-containers-functional-vectors.ads:50:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
 spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
 spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:268:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:268:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:314:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:314:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:351:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:351:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:351:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:351:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-functional-vectors.ads:112:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-functional-vectors.ads:112:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-functional-vectors.ads:112:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-functional-vectors.ads:112:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-functional-vectors.ads:129:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-functional-vectors.ads:129:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-functional-vectors.ads:130:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-functional-vectors.ads:130:06: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-functional-vectors.ads:212:39: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-functional-vectors.ads:212:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-functional-vectors.ads:271:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-functional-vectors.ads:271:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-functional-vectors.ads:317:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-functional-vectors.ads:317:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-functional-vectors.ads:354:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
 spark-containers-functional-vectors.ads:354:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:364:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:364:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:364:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:364:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:492:54: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:492:54: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:497:63: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:497:63: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:498:59: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:498:59: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:498:76: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-functional-vectors.ads:498:76: info: overflow check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:499:30: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-functional-vectors.ads:499:30: info: range check proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-functional-vectors.ads:367:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-functional-vectors.ads:367:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-functional-vectors.ads:367:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-functional-vectors.ads:367:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-functional-vectors.ads:493:57: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-functional-vectors.ads:493:57: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-functional-vectors.ads:494:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-functional-vectors.ads:494:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.adb:53:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.adb:53:10: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.adb:53:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.adb:62:10: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.adb:62:10: info: precondition proved (CVC5: 4 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.adb:62:10: info: precondition proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.adb:85:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.adb:85:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.adb:85:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.adb:85:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.adb:94:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.adb:85:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.adb:85:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.adb:94:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.adb:94:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.adb:94:10: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.adb:103:10: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.adb:103:10: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.adb:103:10: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.adb:103:10: info: precondition proved (CVC5: 4 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.adb:204:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.adb:94:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.adb:94:10: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.adb:94:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.adb:103:10: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.adb:103:10: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.adb:103:10: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.adb:103:10: info: precondition proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.adb:204:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.adb:204:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.adb:205:13: info: assertion proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.adb:205:13: info: assertion proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.adb:207:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.adb:207:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.adb:207:13: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.adb:208:13: info: assertion proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.adb:208:13: info: assertion proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.adb:208:13: info: assertion proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
@@ -260,8 +254,8 @@ spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq
 spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
@@ -272,8 +266,8 @@ spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in 
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
@@ -284,8 +278,8 @@ spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
@@ -296,8 +290,8 @@ spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq
 spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
@@ -308,20 +302,20 @@ spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in 
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
@@ -332,8 +326,8 @@ spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq
 spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
@@ -344,9 +338,10 @@ spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in 
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
@@ -354,82 +349,81 @@ spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:496, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:144, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:487, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:87:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:94:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:94:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:99:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:183, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-ordered_maps.ads:204, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-maps.ads:506, in instantiation at spark-containers-formal-ordered_maps.ads:282, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:121:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:153, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:121:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:153, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:121:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:170, in instantiation at test_map.ads:20
@@ -438,10 +432,10 @@ spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in
 spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:153, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:170, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:170, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:124:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:153, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:124:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:153, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:124:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:170, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:124:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:170, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:124:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:153, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:144:17: info: terminating annotation on "Lt_Irreflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:144:17: info: terminating annotation on "Lt_Irreflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:145:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
@@ -464,22 +458,22 @@ spark-containers-parameter_checks.ads:158:17: info: terminating annotation on "L
 spark-containers-parameter_checks.ads:158:17: info: terminating annotation on "Lt_Order" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:159:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:159:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:161:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
-spark-containers-parameter_checks.ads:161:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
+spark-containers-parameter_checks.ads:161:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:161:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:167:16: info: implicit terminating annotation on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:167:16: info: implicit terminating annotation on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:169:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:169:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:170:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:170:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:171:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:171:19: info: postcondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:171:19: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:171:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:173:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:173:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:174:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:174:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:176:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
-spark-containers-parameter_checks.ads:176:19: info: postcondition proved (altergo: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
+spark-containers-parameter_checks.ads:176:19: info: postcondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:178:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
 spark-containers-parameter_checks.ads:178:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:6
 spark-containers-parameter_checks.ads:179:09: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_maps.ads:160, in instantiation at test_map.ads:20
@@ -489,39 +483,40 @@ spark-containers-parameter_checks.ads:181:19: info: postcondition proved (alterg
 test_map.adb:5:14: warning: subprogram "Test_Map_Pos" has no effect
 test_map.adb:7:07: info: initialization of "L" proved
 test_map.adb:7:10: info: initialization of "K" proved
+test_map.adb:7:19: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_map.adb:7:19: info: range check proved (CVC5: 2 VC)
 test_map.adb:8:07: info: initialization of "C" proved
 test_map.adb:9:07: info: initialization of "B" proved
 test_map.adb:11:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:13:12: info: precondition proved (CVC5: 1 VC)
-test_map.adb:15:07: info: precondition proved (CVC5: 2 VC)
-test_map.adb:16:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_map.adb:17:07: info: precondition proved (altergo: 1 VC)
+test_map.adb:15:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_map.adb:16:07: info: precondition proved (CVC5: 2 VC)
+test_map.adb:17:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:18:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:19:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:19:22: info: precondition proved (CVC5: 1 VC)
-test_map.adb:21:07: info: precondition proved (altergo: 1 VC)
-test_map.adb:22:07: info: precondition proved (altergo: 1 VC)
-test_map.adb:25:07: info: precondition proved (altergo: 1 VC)
-test_map.adb:26:07: info: precondition proved (altergo: 1 VC)
-test_map.adb:28:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:29:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:21:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:22:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:25:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:26:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:28:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:29:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:30:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_map.adb:32:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:32:36: info: precondition proved (CVC5: 1 VC)
+test_map.adb:32:36: info: precondition proved (Z3: 1 VC)
 test_map.adb:33:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:33:36: info: precondition proved (Z3: 1 VC)
 test_map.adb:34:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:35:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:35:36: info: precondition proved (Z3: 1 VC)
 test_map.adb:36:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:36:36: info: precondition proved (CVC5: 1 VC)
+test_map.adb:36:36: info: precondition proved (altergo: 1 VC)
 test_map.adb:37:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:39:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:40:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:41:07: info: precondition proved (Z3: 2 VC)
-test_map.adb:42:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:47:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:40:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:41:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:42:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:47:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:49:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:50:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:53:22: info: assertion proved (Z3: 1 VC)
@@ -530,65 +525,63 @@ test_map.adb:58:07: medium: assertion might fail
 test_map.adb:61:14: warning: subprogram "Test_Map_Rec" has no effect
 test_map.adb:63:07: info: initialization of "L" proved
 test_map.adb:63:10: info: initialization of "K" proved
-test_map.adb:63:19: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_map.adb:63:19: info: range check proved (CVC5: 2 VC)
 test_map.adb:64:07: info: initialization of "C" proved
 test_map.adb:65:07: info: initialization of "B" proved
 test_map.adb:67:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:69:12: info: precondition proved (CVC5: 1 VC)
+test_map.adb:69:12: info: precondition proved (altergo: 1 VC)
 test_map.adb:71:07: info: precondition proved (CVC5: 2 VC)
 test_map.adb:72:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_map.adb:73:07: info: precondition proved (altergo: 1 VC)
-test_map.adb:74:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:75:22: info: assertion proved (altergo: 1 VC)
-test_map.adb:76:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:74:22: info: assertion proved (altergo: 1 VC)
+test_map.adb:75:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:76:22: info: assertion proved (altergo: 1 VC)
 test_map.adb:76:22: info: precondition proved (CVC5: 1 VC)
-test_map.adb:78:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:78:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:79:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:82:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:82:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:83:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:85:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:85:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:86:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:87:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:87:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:88:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:90:07: info: precondition proved (altergo: 1 VC)
+test_map.adb:90:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:92:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:93:07: info: precondition proved (altergo: 1 VC)
-test_map.adb:94:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:97:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:93:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:94:22: info: assertion proved (altergo: 1 VC)
+test_map.adb:97:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:99:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:100:07: medium: assertion might fail
 test_map.adb:103:14: warning: subprogram "Test_Map_Rec_2" has no effect
 test_map.adb:105:07: info: initialization of "L" proved
 test_map.adb:105:10: info: initialization of "K" proved
-test_map.adb:105:19: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_map.adb:105:19: info: range check proved (CVC5: 2 VC)
 test_map.adb:106:07: info: initialization of "C" proved
 test_map.adb:107:07: info: initialization of "B" proved
 test_map.adb:109:22: info: assertion proved (altergo: 1 VC)
-test_map.adb:111:12: info: precondition proved (altergo: 1 VC)
-test_map.adb:113:07: info: precondition proved (CVC5: 2 VC)
-test_map.adb:114:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
-test_map.adb:115:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:111:12: info: precondition proved (CVC5: 1 VC)
+test_map.adb:113:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:114:07: info: precondition proved (CVC5: 2 VC)
+test_map.adb:115:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:115:22: info: precondition proved (CVC5: 1 VC)
-test_map.adb:116:07: info: precondition proved (altergo: 1 VC)
-test_map.adb:117:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:116:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:117:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:118:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:119:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:119:22: info: assertion proved (altergo: 1 VC)
 test_map.adb:119:22: info: precondition proved (CVC5: 1 VC)
 test_map.adb:121:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:122:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:125:07: info: precondition proved (altergo: 1 VC)
-test_map.adb:126:07: info: precondition proved (altergo: 1 VC)
-test_map.adb:128:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:129:07: info: precondition proved (Z3: 1 VC)
+test_map.adb:125:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:126:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:128:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:129:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:130:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:131:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:133:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:131:07: info: precondition proved (altergo: 1 VC)
+test_map.adb:133:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:135:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:136:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:136:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:137:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:140:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:140:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:142:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:143:07: medium: assertion might fail
 test_map.adb:148:07: info: precondition proved (Trivial: 1 VC)
@@ -596,18 +589,18 @@ test_map.adb:149:07: info: precondition proved (Trivial: 1 VC)
 test_map.adb:150:07: info: precondition proved (Trivial: 1 VC)
 test_map.adb:156:07: info: initialization of "L" proved
 test_map.adb:156:10: info: initialization of "K" proved
-test_map.adb:156:19: info: range check proved (CVC5: 2 VC)
+test_map.adb:156:19: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 test_map.adb:157:07: info: initialization of "C" proved
-test_map.adb:163:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:165:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
-test_map.adb:166:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
-test_map.adb:168:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_map.adb:169:07: info: precondition proved (Z3: 2 VC)
+test_map.adb:163:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:165:07: info: precondition proved (CVC5: 2 VC)
+test_map.adb:166:07: info: precondition proved (CVC5: 2 VC)
+test_map.adb:168:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
+test_map.adb:169:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_map.adb:171:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:173:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
-test_map.adb:174:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:173:07: info: precondition proved (CVC5: 2 VC)
+test_map.adb:174:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:176:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_map.adb:177:22: info: assertion proved (altergo: 1 VC)
+test_map.adb:177:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:182:22: info: assertion proved (altergo: 1 VC)
 test_map.adb:193:25: info: assertion proved (Z3: 1 VC)
 test_map.adb:194:15: info: discriminant check proved (CVC5: 1 VC)
@@ -615,66 +608,66 @@ test_map.adb:194:15: info: precondition proved (altergo: 1 VC)
 test_map.adb:195:25: info: assertion proved (Z3: 1 VC)
 test_map.adb:196:25: info: assertion proved (Z3: 1 VC)
 test_map.adb:196:25: info: precondition proved (Z3: 1 VC)
-test_map.adb:196:43: info: precondition proved (CVC5: 1 VC)
-test_map.adb:197:25: info: assertion proved (Z3: 1 VC)
-test_map.adb:197:25: info: precondition proved (CVC5: 1 VC)
+test_map.adb:196:43: info: precondition proved (Z3: 1 VC)
+test_map.adb:197:25: info: assertion proved (CVC5: 1 VC)
+test_map.adb:197:25: info: precondition proved (Z3: 1 VC)
 test_map.adb:197:43: info: precondition proved (Z3: 1 VC)
 test_map.adb:198:25: info: assertion proved (Z3: 1 VC)
-test_map.adb:198:25: info: precondition proved (CVC5: 1 VC)
+test_map.adb:198:25: info: precondition proved (Z3: 1 VC)
 test_map.adb:198:43: info: precondition proved (Z3: 1 VC)
-test_map.adb:204:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:204:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:204:44: info: precondition proved (altergo: 1 VC)
-test_map.adb:208:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:208:07: info: precondition proved (Z3: 1 VC; altergo: 1 VC)
 test_map.adb:209:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:209:36: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_map.adb:210:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:210:22: info: precondition proved (CVC5: 1 VC)
-test_map.adb:214:22: info: assertion proved (Z3: 1 VC)
+test_map.adb:209:36: info: precondition proved (CVC5: 2 VC)
+test_map.adb:210:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:210:22: info: precondition proved (Z3: 1 VC)
+test_map.adb:214:22: info: assertion proved (altergo: 1 VC)
 test_map.adb:214:22: info: precondition proved (CVC5: 1 VC)
 test_map.adb:218:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:218:22: info: precondition proved (Z3: 1 VC)
 test_map.adb:222:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:222:22: info: precondition proved (CVC5: 1 VC)
+test_map.adb:222:22: info: precondition proved (Z3: 1 VC)
 test_map.adb:223:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:223:22: info: precondition proved (Z3: 1 VC)
 test_map.adb:224:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:224:36: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_map.adb:225:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:224:36: info: precondition proved (CVC5: 2 VC)
+test_map.adb:225:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:225:36: info: precondition proved (CVC5: 1 VC)
-test_map.adb:232:30: info: assertion proved (CVC5: 2 VC)
-test_map.adb:236:07: info: precondition proved (CVC5: 1 VC; altergo: 1 VC)
+test_map.adb:232:30: info: assertion proved (Z3: 2 VC)
+test_map.adb:236:07: info: precondition proved (CVC5: 2 VC)
 test_map.adb:237:07: info: precondition proved (CVC5: 2 VC)
-test_map.adb:240:22: info: assertion proved (CVC5: 1 VC)
+test_map.adb:240:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:240:22: info: precondition proved (CVC5: 1 VC)
-test_map.adb:241:07: info: precondition proved (CVC5: 1 VC)
+test_map.adb:241:07: info: precondition proved (altergo: 1 VC)
 test_map.adb:242:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:243:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:244:22: info: assertion proved (CVC5: 1 VC)
-test_map.adb:250:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-test_map.adb:250:39: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
-test_map.adb:257:10: info: precondition proved (Z3: 2 VC)
-test_map.adb:257:20: info: pointer dereference check proved (CVC5: 1 VC)
-test_map.adb:258:10: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_map.adb:258:20: info: pointer dereference check proved (CVC5: 1 VC)
-test_map.adb:261:38: info: precondition proved (CVC5: 1 VC)
+test_map.adb:243:07: info: precondition proved (altergo: 1 VC)
+test_map.adb:244:22: info: assertion proved (altergo: 1 VC)
+test_map.adb:250:10: info: absence of resource or memory leak at end of scope proved (altergo: 1 VC)
+test_map.adb:250:39: info: range check proved (CVC5: 2 VC)
+test_map.adb:257:10: info: precondition proved (CVC5: 2 VC)
+test_map.adb:257:20: info: pointer dereference check proved (altergo: 1 VC)
+test_map.adb:258:10: info: precondition proved (Z3: 2 VC)
+test_map.adb:258:20: info: pointer dereference check proved (altergo: 1 VC)
+test_map.adb:261:38: info: precondition proved (altergo: 1 VC)
 test_map.adb:261:49: info: null exclusion check proved (CVC5: 1 VC)
-test_map.adb:263:28: info: assertion proved (Z3: 1 VC)
+test_map.adb:263:28: info: assertion proved (altergo: 1 VC)
 test_map.adb:263:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_map.adb:265:17: info: pointer dereference check proved (CVC5: 1 VC)
 test_map.adb:267:25: info: assertion proved (altergo: 1 VC)
 test_map.adb:267:25: info: precondition proved (Z3: 1 VC)
-test_map.adb:267:36: info: pointer dereference check proved (Z3: 1 VC)
-test_map.adb:269:23: info: pointer dereference check proved (altergo: 1 VC)
+test_map.adb:267:36: info: pointer dereference check proved (CVC5: 1 VC)
+test_map.adb:269:23: info: pointer dereference check proved (CVC5: 1 VC)
 test_map.adb:272:37: info: precondition proved (Z3: 1 VC)
-test_map.adb:272:48: info: null exclusion check proved (CVC5: 1 VC)
+test_map.adb:272:48: info: null exclusion check proved (altergo: 1 VC)
 test_map.adb:274:28: info: assertion proved (Z3: 1 VC)
 test_map.adb:274:32: info: pointer dereference check proved (CVC5: 1 VC)
-test_map.adb:276:17: info: pointer dereference check proved (CVC5: 1 VC)
-test_map.adb:279:25: info: assertion proved (Z3: 1 VC)
-test_map.adb:279:25: info: precondition proved (Z3: 1 VC)
-test_map.adb:279:36: info: pointer dereference check proved (Z3: 1 VC)
+test_map.adb:276:17: info: pointer dereference check proved (altergo: 1 VC)
+test_map.adb:279:25: info: assertion proved (altergo: 1 VC)
+test_map.adb:279:25: info: precondition proved (CVC5: 1 VC)
+test_map.adb:279:36: info: pointer dereference check proved (CVC5: 1 VC)
 test_map.adb:283:07: medium: assertion might fail
 test_map.ads:16:13: info: implicit terminating annotation on "My_Lt" has been proved, subprogram will terminate
-test_map.ads:17:12: info: postcondition proved (CVC5: 2 VC)
+test_map.ads:17:12: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC)
 test_map.ads:25:14: warning: subprogram "Test_Ordered_Map" has no effect
 test_map.ads:27:14: warning: subprogram "Large_Test" has no effect

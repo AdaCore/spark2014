@@ -1,397 +1,430 @@
 spark-containers-functional-vectors-higher_order.adb:41:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:49:28: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:50:20: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:50:32: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:50:44: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:49:37: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:50:42: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:55:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:64:08: info: postcondition proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:64:37: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:64:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:64:37: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:64:37: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:64:57: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:65:08: medium: implicit terminating annotation on "Filter_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:65:52: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:70:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:65:52: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:70:24: info: function contract feasibility proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:88:07: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:88:27: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:95:25: info: refined post proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:95:40: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:95:30: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:95:40: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:95:40: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:95:60: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:98:35: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:100:13: medium: implicit terminating annotation on "Count" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:100:16: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:100:16: info: pointer dereference check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:100:22: info: precondition proved (CVC5: 4 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:100:30: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:101:27: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:101:23: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:101:27: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:101:29: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:103:36: info: loop invariant initialization proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:103:36: info: loop invariant preservation proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:104:36: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:104:36: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:104:36: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:104:42: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:104:36: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:104:42: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:104:42: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:104:56: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:104:59: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:119:07: medium: implicit terminating annotation on "Count_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:119:43: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:120:12: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:120:12: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:120:12: info: subprogram variant proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:120:40: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:120:47: info: overflow check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:120:60: info: overflow check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:120:60: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:121:13: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:121:19: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:120:40: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:120:47: info: overflow check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:120:60: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:121:13: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:121:19: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:121:50: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:121:71: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:134:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:136:17: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:136:20: info: precondition proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:136:30: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:136:20: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:136:30: info: pointer dereference check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:136:40: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:138:36: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:138:36: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:138:36: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:139:13: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:140:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:140:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:141:41: info: precondition proved (CVC5: 4 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:140:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:141:41: info: precondition proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:141:51: info: range check proved (CVC5: 1 VC; altergo: 3 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:141:55: info: pointer dereference check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:141:65: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:154:08: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:141:65: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:154:08: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:154:29: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:162:06: info: refined post proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:162:06: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:162:06: info: refined post proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:162:31: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:162:39: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:162:60: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:163:44: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:163:44: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:163:65: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:166:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:168:13: medium: implicit terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:168:16: info: pointer dereference check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:168:22: info: precondition proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:168:30: info: range check proved (CVC5: 1 VC; altergo: 3 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:169:23: info: precondition proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:169:33: info: precondition proved (CVC5: 1 VC; altergo: 3 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:168:16: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:168:22: info: precondition proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:168:30: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:169:23: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:169:33: info: precondition proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:169:41: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:172:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:172:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:172:39: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:172:54: info: range check proved (CVC5: 1 VC; altergo: 3 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:172:57: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:172:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:172:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:172:31: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:172:39: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:172:54: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:172:57: info: null exclusion check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:174:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:174:16: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:174:35: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:174:35: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:174:50: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:174:53: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:174:53: info: null exclusion check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:189:07: medium: implicit terminating annotation on "Filter_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:190:13: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:190:19: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:191:12: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:190:13: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:190:19: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:191:12: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:191:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:191:17: info: subprogram variant proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:191:46: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:191:53: info: overflow check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:192:17: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:193:12: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:193:12: info: subprogram variant proved (Z3: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:193:41: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:191:17: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:191:46: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:191:53: info: overflow check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:192:17: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:193:12: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:193:12: info: subprogram variant proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:193:41: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:193:48: info: overflow check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:207:13: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:207:13: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:207:13: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:207:27: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:207:30: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:207:48: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:207:57: info: overflow check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:208:31: info: range check proved (CVC5: 4 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:224:13: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:224:13: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:224:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:224:28: info: range check proved (CVC5: 1 VC; altergo: 3 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:224:31: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:224:39: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:224:54: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:224:57: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:249:33: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:249:33: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:249:33: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:249:47: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:249:50: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:207:13: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:207:13: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:207:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:207:13: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:207:27: info: range check proved (CVC5: 4 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:207:30: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:207:43: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:207:67: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:223:13: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:223:13: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:223:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:223:13: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:223:28: info: range check proved (CVC5: 4 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:223:31: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:223:39: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:223:39: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:223:54: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:223:57: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:248:33: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:248:33: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:248:33: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:248:33: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:248:47: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:248:50: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:248:58: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:263:33: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:263:33: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:263:47: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:263:62: info: range check proved (CVC5: 4 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:263:65: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:264:33: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:264:33: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:264:33: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:264:47: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:264:62: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:264:65: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:265:33: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:265:33: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:265:47: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:265:62: info: range check proved (CVC5: 4 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:265:65: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:281:13: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:281:13: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:281:21: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:281:37: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:281:40: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:282:23: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:282:39: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:282:42: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:284:13: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:284:13: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:284:27: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:284:43: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:284:46: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:284:53: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:284:69: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:284:72: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:310:13: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:310:13: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:310:13: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:310:13: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:310:26: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:310:29: info: null exclusion check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:310:38: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:310:38: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:310:51: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:310:54: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:332:08: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:332:26: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:339:25: info: refined post proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:339:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:339:38: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:339:38: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:339:56: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:344:17: medium: implicit terminating annotation on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:344:20: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:344:26: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:344:26: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:344:33: info: precondition proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:344:41: info: range check proved (CVC5: 4 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:345:36: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:345:36: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:345:36: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:345:42: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:345:42: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:345:54: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:345:57: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:360:07: medium: implicit terminating annotation on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:361:12: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:361:12: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:361:12: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:362:27: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:362:34: info: overflow check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:362:50: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:362:50: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:362:57: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:375:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:377:17: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:377:20: info: precondition proved (CVC5: 1 VC; altergo: 3 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:377:30: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:377:46: info: precondition proved (CVC5: 4 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:377:54: info: range check proved (CVC5: 4 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:378:36: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:378:36: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:379:13: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:380:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:380:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:382:22: info: precondition proved (CVC5: 4 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:382:32: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:382:36: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:382:52: info: precondition proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:382:60: info: range check proved (CVC5: 4 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:40:27: info: function contract feasibility proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:280:13: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:280:13: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:280:13: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:280:21: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:280:37: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:280:40: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:281:15: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:281:23: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:281:39: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:281:42: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:283:13: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:283:13: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:283:27: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:283:43: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:283:46: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:283:53: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:283:69: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:283:72: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:309:13: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:309:13: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:309:13: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:309:13: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:309:26: info: range check proved (CVC5: 4 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:309:29: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:309:38: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:309:38: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:309:51: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:309:54: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:331:08: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:331:26: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:338:25: info: refined post proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:338:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:338:38: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:338:38: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:338:56: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:343:17: medium: implicit terminating annotation on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:343:20: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:343:26: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:343:26: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:343:33: info: precondition proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:343:41: info: range check proved (CVC5: 3 VC; Z3: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:344:36: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:344:36: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:344:36: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:344:42: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:344:42: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:344:54: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:344:57: info: null exclusion check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:359:07: medium: implicit terminating annotation on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:360:12: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:360:12: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:360:12: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:361:27: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:361:34: info: overflow check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:361:50: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:361:50: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:361:57: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:374:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:376:17: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:376:20: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:376:30: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:376:46: info: precondition proved (CVC5: 4 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:376:54: info: range check proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:377:36: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:377:36: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:378:13: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:379:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:379:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:381:22: info: precondition proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:381:32: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:381:36: info: pointer dereference check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:381:52: info: precondition proved (CVC5: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:381:60: info: range check proved (CVC5: 3 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:40:27: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:47:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:51:24: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:51:40: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:52:23: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:53:24: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:53:59: info: overflow check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:54:23: info: range check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:55:18: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:56:08: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:58:35: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:58:55: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:58:59: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:58:69: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:62:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:69:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:71:18: info: postcondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:72:08: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:75:17: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:75:40: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:75:44: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:75:60: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:75:68: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:77:13: info: implicit terminating annotation on "Count" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:79:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:85:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:88:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:88:33: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:88:53: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:93:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:99:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:102:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:103:20: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:103:32: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:103:44: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:105:14: info: implicit terminating annotation on "Lemma_Count_Eq" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:108:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:113:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:117:17: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:117:48: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:118:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:118:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:118:35: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:118:43: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:118:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:123:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:128:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:133:08: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:133:08: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:133:18: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:133:24: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:133:30: medium: implicit terminating annotation on "Lemma_Count_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:133:32: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:133:56: info: range check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:133:63: info: overflow check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:133:70: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:133:76: info: overflow check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:134:15: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:134:21: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:134:29: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:139:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:144:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:147:08: medium: terminating annotation on "Lemma_Count_All" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:147:59: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:147:65: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:147:73: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:148:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:148:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:148:34: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:149:18: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:149:30: info: overflow check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:149:42: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:154:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:159:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:162:08: medium: terminating annotation on "Lemma_Count_None" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:163:56: info: pointer dereference check proved (colibri: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:163:62: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:163:70: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:164:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:164:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:164:34: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:166:13: info: implicit terminating annotation on "Filter" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:168:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:174:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:177:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:177:34: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:177:55: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:182:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:188:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:191:18: info: postcondition proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:191:43: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:191:59: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:192:08: medium: implicit terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:192:48: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:194:14: info: implicit terminating annotation on "Lemma_Filter_Eq" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:197:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:202:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:207:41: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:207:50: info: range check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:207:54: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:207:63: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:209:08: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:209:16: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:209:34: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:209:51: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:209:69: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:211:24: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:211:42: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:211:49: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:211:67: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:216:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:221:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:226:08: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:227:11: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:227:36: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:227:43: info: overflow check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:227:50: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:228:11: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:228:22: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:228:28: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:230:09: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:230:09: medium: implicit terminating annotation on "Lemma_Filter_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:230:15: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:230:23: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:230:30: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:231:19: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:231:30: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:49:18: info: postcondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:50:08: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:52:35: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:52:55: info: range check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:52:59: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:52:69: info: range check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:56:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:63:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:65:18: info: postcondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:65:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:65:46: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:66:08: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:69:17: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:69:40: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:69:44: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:69:60: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:69:68: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:71:13: info: implicit terminating annotation on "Count" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:73:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:79:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:82:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:82:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:82:33: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:82:33: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:82:53: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:87:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:93:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:96:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:96:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:96:66: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:98:14: info: implicit terminating annotation on "Lemma_Count_Eq" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:101:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:106:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:110:17: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:110:48: info: range check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:111:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:111:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:111:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:111:35: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:111:43: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:111:43: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:111:60: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:116:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:121:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:126:08: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:126:08: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:126:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:126:18: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:126:24: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:126:30: medium: implicit terminating annotation on "Lemma_Count_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:126:32: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:126:32: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:126:56: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:126:63: info: overflow check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:126:70: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:127:15: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:127:21: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:127:29: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:127:52: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:127:73: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:132:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:137:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:140:08: medium: terminating annotation on "Lemma_Count_All" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:140:59: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:140:65: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:140:73: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:141:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:141:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:141:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:141:34: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:142:40: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:147:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:152:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:155:08: medium: terminating annotation on "Lemma_Count_None" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:156:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:156:62: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:156:70: info: range check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:157:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:157:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:157:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:157:34: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:157:42: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:159:13: info: implicit terminating annotation on "Filter" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:161:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:167:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:170:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:170:34: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:170:55: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:175:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:181:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:184:18: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:184:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:184:43: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:184:43: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:184:59: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:185:08: medium: implicit terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:185:48: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:187:14: info: implicit terminating annotation on "Lemma_Filter_Eq" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:190:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:195:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:200:41: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:200:50: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:200:54: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:200:63: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:202:08: info: postcondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:202:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:202:16: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:202:34: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:202:43: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:202:51: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:202:69: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:204:24: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:204:42: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:204:49: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:204:67: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:209:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:214:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:219:08: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:220:11: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:220:36: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:220:43: info: overflow check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:220:50: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:221:11: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:221:22: info: range check proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:221:28: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:223:09: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:223:09: medium: implicit terminating annotation on "Lemma_Filter_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:223:15: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:223:23: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:223:30: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:224:11: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:224:19: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:224:30: info: range check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:224:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:224:45: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:225:13: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:225:21: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:225:46: info: range check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:225:53: info: overflow check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:225:60: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:227:14: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:227:22: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:228:14: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:228:19: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:228:30: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:228:36: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:229:33: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:229:44: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:229:50: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:230:30: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:231:11: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:231:19: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:231:30: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:231:36: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:232:21: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:232:13: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:232:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:232:46: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:232:53: info: overflow check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:232:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:234:14: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:234:22: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:235:14: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:235:19: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:235:30: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:235:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:236:33: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:236:44: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:236:50: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:237:30: info: contract case proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:238:19: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:238:30: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:238:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:239:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:239:46: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:239:53: info: overflow check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:239:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:244:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:250:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:253:08: medium: terminating annotation on "Lemma_Filter_All" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:253:59: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:253:65: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:253:73: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:254:18: info: postcondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:254:32: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:254:49: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:255:31: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:255:48: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:257:13: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:259:24: info: function contract feasibility proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:264:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:267:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:267:21: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:267:31: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:267:31: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:267:49: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:272:24: info: function contract feasibility proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:277:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:280:19: info: postcondition proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:280:58: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:280:68: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:282:14: info: implicit terminating annotation on "Lemma_Sum_Eq" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:285:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:290:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:294:17: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:294:48: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:295:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:295:18: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:295:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:295:33: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:295:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:295:42: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:295:57: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:300:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:305:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:309:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:309:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:309:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:309:26: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:309:32: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:309:39: medium: implicit terminating annotation on "Lemma_Sum_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:310:08: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:310:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:310:30: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:310:37: info: overflow check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:310:44: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:310:53: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:310:53: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:310:60: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:310:68: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:232:60: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:237:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:243:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:246:08: medium: terminating annotation on "Lemma_Filter_All" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:246:59: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:246:65: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:246:73: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:247:18: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:247:32: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:247:49: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:248:31: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:248:48: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:250:13: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:252:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:257:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:260:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:260:21: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:260:31: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:260:31: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:260:49: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:265:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:270:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:273:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:273:58: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:273:68: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:275:14: info: implicit terminating annotation on "Lemma_Sum_Eq" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:278:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:283:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:287:17: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:287:48: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:288:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:288:18: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:288:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:288:33: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:288:42: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:288:42: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:288:57: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:293:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:298:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:302:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:302:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:302:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:302:26: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:302:32: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:302:39: medium: implicit terminating annotation on "Lemma_Sum_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:303:08: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:303:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:303:30: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:303:37: info: overflow check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:303:44: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:303:53: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:303:53: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:303:60: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:303:68: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors.ads:50:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
@@ -400,52 +433,46 @@ spark-containers-functional-vectors.ads:62:19: info: terminating annotation on "
 spark-containers-functional-vectors.ads:64:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:73:12: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:74:33: info: overflow check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:123:55: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:268:52: info: overflow check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:314:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:351:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:351:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:112:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:112:13: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:129:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:129:55: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:130:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:212:39: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:271:52: info: overflow check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:317:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:354:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:364:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:364:13: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:492:54: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:493:25: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:497:27: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:497:51: info: overflow check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:497:63: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:498:30: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:498:54: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:498:59: info: overflow check proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:498:76: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:499:30: info: range check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:94:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:367:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:367:13: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:493:34: info: range check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:493:50: info: range check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:493:57: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:494:31: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at test_sequence_ho.adb:58
 test_sequence_ho.adb:57:09: info: range check proved (CVC5: 2 VC)
 test_sequence_ho.adb:61:04: info: function contract might not be available on recursive calls
 test_sequence_ho.adb:61:04: info: function contract might not be available on recursive calls

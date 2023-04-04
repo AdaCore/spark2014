@@ -1,5 +1,6 @@
 with SPARK.Containers.Functional.Vectors;
 with Ada.Containers; use Ada.Containers;
+with SPARK.Big_Integers;
 
 generic
    type Element_Type (<>) is private;
@@ -14,6 +15,15 @@ package Formal_Vectors with SPARK_Mode is
 
    function Length (V : Vector) return Natural;
 
+   package Natural_Conversions with Ghost is
+      use SPARK.Big_Integers;
+      package Natural_Conversions_Instance is
+        new Signed_Conversions (Int => Natural);
+      function Big (I : Natural) return Big_Integer
+                    renames Natural_Conversions_Instance.To_Big_Integer;
+   end Natural_Conversions;
+   use Natural_Conversions;
+
    procedure Append (V : in out Vector; E : Element_Type) with
      Pre  => Length (V) < Positive'Last,
      Post => Length (V) = Length (V)'Old + 1
@@ -24,7 +34,7 @@ package Formal_Vectors with SPARK_Mode is
      Post =>  Length (V) = Length (V)'Old + Length (E)'Old
          and then Length (E) = 0
          and then Model (V)'Old <= Model (V)
-         and then Range_Shifted (Model (E)'Old, Model (V), 1, Length (E)'Old, Count_Type (Length (V)'Old));
+         and then Range_Shifted (Model (E)'Old, Model (V), 1, Length (E)'Old, Big (Length (V)'Old));
    procedure Insert (V : in out Vector;  I : Positive; E : Element_Type) with
      Pre  => Length (V) < Positive'Last and then I in 1 .. Length (V) + 1;
   --   Post => Model (V) = Model (V)'Old (1 .. I - 1) & E & Model (V)'Old (I .. Length (V)'Old);

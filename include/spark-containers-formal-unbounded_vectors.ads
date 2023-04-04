@@ -27,6 +27,7 @@
 ------------------------------------------------------------------------------
 
 with SPARK.Containers.Types; use SPARK.Containers.Types;
+with SPARK.Big_Integers;     use SPARK.Big_Integers;
 with SPARK.Containers.Functional.Vectors;
 with SPARK.Containers.Parameter_Checks;
 
@@ -58,9 +59,8 @@ is
    pragma Assertion_Policy (Contract_Cases => Ignore);
    pragma Annotate (CodePeer, Skip_Analysis);
 
-   subtype Extended_Index is Index_Type'Base
-     range Index_Type'First - 1 ..
-           Index_Type'Min (Index_Type'Base'Last - 1, Index_Type'Last) + 1;
+   subtype Extended_Index is Index_Type'Base range
+     Index_Type'Pred (Index_Type'First) .. Index_Type'Last;
 
    No_Index : constant Extended_Index := Extended_Index'First;
 
@@ -87,12 +87,26 @@ is
                   Next        => Iter_Next,
                   Element     => Element);
 
-   function Length (Container : Vector) return Capacity_Range with
+   function First_Index (Container : Vector) return Index_Type with
+     Global => null,
+     Post   => First_Index'Result = Index_Type'First;
+   pragma Annotate (GNATprove, Inline_For_Proof, First_Index);
+
+   function Last_Index (Container : Vector) return Extended_Index with
      Global => null;
 
    pragma Unevaluated_Use_Of_Old (Allow);
 
    package Formal_Model with Ghost is
+
+      --  Convert Capacity_Range to Big_Integer
+
+      package Conversions is new Signed_Conversions (Int => Capacity_Range);
+
+      function Big (J : Capacity_Range) return Big_Integer renames
+        Conversions.To_Big_Integer;
+      function Of_Big (J : Big_Integer) return Capacity_Range renames
+        Conversions.From_Big_Integer;
 
       --  Logical equality cannot be safely executed on most element types.
       --  Thus, this package should only be instantiated with ghost code
@@ -229,7 +243,7 @@ is
 
         Ghost,
         Global => null,
-        Post   => M.Length (Model'Result) = Length (Container);
+        Post   => M.Last (Model'Result) = Last_Index (Container);
 
       function Element
         (S : M.Sequence;
@@ -239,6 +253,11 @@ is
 
    end Formal_Model;
    use Formal_Model;
+
+   function Length (Container : Vector) return Capacity_Range with
+     Global => null,
+     Post => Length'Result = Of_Big (M.Length (Model (Container)));
+   pragma Annotate (GNATprove, Inline_For_Proof, Length);
 
    function Empty_Vector return Vector with
      Global => null,
@@ -397,7 +416,7 @@ is
                     Right  => Model (Container),
                     Fst    => Index_Type'First,
                     Lst    => Last_Index (New_Item),
-                    Offset => Count_Type (Before - Index_Type'First)))
+                    Offset => M.Big (Before) - M.Big (Index_Type'First)))
 
          --  Elements located after Before in Container are shifted
 
@@ -406,7 +425,7 @@ is
                 Right  => Model (Container),
                 Fst    => Before,
                 Lst    => Last_Index (Container)'Old,
-                Offset => Length (New_Item));
+                Offset => Big (Length (New_Item)));
 
    procedure Insert
      (Container : in out Vector;
@@ -481,7 +500,7 @@ is
                 Right  => Model (Container),
                 Fst    => Before,
                 Lst    => Last_Index (Container)'Old,
-                Offset => Count);
+                Offset => Big (Count));
 
    procedure Prepend (Container : in out Vector; New_Item : Vector) with
      Global => null,
@@ -504,7 +523,7 @@ is
                 Right  => Model (Container),
                 Fst    => Index_Type'First,
                 Lst    => Last_Index (Container)'Old,
-                Offset => Length (New_Item));
+                Offset => Big (Length (New_Item)));
 
    procedure Prepend (Container : in out Vector; New_Item : Element_Type) with
      Global => null,
@@ -552,7 +571,7 @@ is
                 Right  => Model (Container),
                 Fst    => Index_Type'First,
                 Lst    => Last_Index (Container)'Old,
-                Offset => Count);
+                Offset => Big (Count));
 
    procedure Append (Container : in out Vector; New_Item : Vector) with
      Global => null,
@@ -572,9 +591,7 @@ is
                    Right  => Model (Container),
                    Fst    => Index_Type'First,
                    Lst    => Last_Index (New_Item),
-                   Offset =>
-                     Count_Type
-                       (Last_Index (Container)'Old - Index_Type'First + 1)));
+                   Offset => Big (Length (Container)'Old)));
 
    procedure Append (Container : in out Vector; New_Item : Element_Type) with
      Global => null,
@@ -676,7 +693,7 @@ is
                    Right  => Model (Container)'Old,
                    Fst    => Index,
                    Lst    => Last_Index (Container),
-                   Offset => Count));
+                   Offset => Big (Count)));
 
    procedure Delete_First (Container : in out Vector) with
      Global => null,
@@ -711,7 +728,7 @@ is
                    Right  => Model (Container)'Old,
                    Fst    => Index_Type'First,
                    Lst    => Last_Index (Container),
-                   Offset => Count));
+                   Offset => Big (Count)));
 
    procedure Delete_Last (Container : in out Vector) with
      Global => null,
@@ -754,22 +771,12 @@ is
      Post   =>
        M_Elements_Swapped (Model (Container)'Old, Model (Container), I, J);
 
-   function First_Index (Container : Vector) return Index_Type with
-     Global => null,
-     Post   => First_Index'Result = Index_Type'First;
-   pragma Annotate (GNATprove, Inline_For_Proof, First_Index);
-
    function First_Element (Container : Vector) return Element_Type with
      Global => null,
      Pre    => not Is_Empty (Container),
      Post   =>
        First_Element'Result = Element (Model (Container), Index_Type'First);
    pragma Annotate (GNATprove, Inline_For_Proof, First_Element);
-
-   function Last_Index (Container : Vector) return Extended_Index with
-     Global => null,
-     Post   => Last_Index'Result = M.Last (Model (Container));
-   pragma Annotate (GNATprove, Inline_For_Proof, Last_Index);
 
    function Last_Element (Container : Vector) return Element_Type with
      Global => null,

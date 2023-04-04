@@ -27,8 +27,12 @@
 ------------------------------------------------------------------------------
 
 pragma Ada_2012;
+with SPARK.Containers.Types; use SPARK.Containers.Types;
+
 package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
    use Containers;
+
+   package Count_Conversions is new Signed_Conversions (Int => Count_Type);
 
    ---------
    -- "<" --
@@ -249,15 +253,14 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
    ----------
 
    function Last (Container : Sequence) return Extended_Index is
-     (Index_Type'Val
-       ((Index_Type'Pos (Index_Type'First) - 1) + Length (Container)));
+     (Of_Big ((Big (Index_Type'First) - 1) + Length (Container)));
 
    ------------
    -- Length --
    ------------
 
-   function Length (Container : Sequence) return Count_Type is
-     (Length (Container.Content));
+   function Length (Container : Sequence) return Big_Natural is
+     (Count_Conversions.To_Big_Integer (Length (Container.Content)));
 
    -----------------
    -- Range_Equal --
@@ -292,13 +295,13 @@ package body SPARK.Containers.Functional.Vectors with SPARK_Mode => Off is
       Right  : Sequence;
       Fst    : Index_Type;
       Lst    : Extended_Index;
-      Offset : Count_Type'Base) return Boolean
+      Offset : Big_Integer) return Boolean
    is
    begin
       for I in Fst .. Lst loop
          if not Element_Logic_Equal
            (Get (Left, I),
-            Get (Right, Index_Type'Val (Index_Type'Pos (I) + Offset)))
+            Get (Right, Of_Big (Big (I) + Offset)))
          then
             return False;
          end if;

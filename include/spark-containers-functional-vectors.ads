@@ -28,13 +28,13 @@
 
 pragma Ada_2012;
 
-with SPARK.Containers.Parameter_Checks;
-with SPARK.Containers.Types; use SPARK.Containers.Types;
-
 private with SPARK.Containers.Functional.Base;
 
+with SPARK.Big_Integers; use SPARK.Big_Integers;
+with SPARK.Containers.Parameter_Checks;
+
 generic
-   type Index_Type is (<>);
+   type Index_Type is range <>;
    --  To avoid Constraint_Error being raised at run time, Index_Type'Base
    --  should have at least one more element at the low end than Index_Type.
 
@@ -76,6 +76,15 @@ is
    --  This type is never used but it forces GNATprove to check that there is
    --  room for one more element at the low end of Index_Type.
 
+   package Index_Conversions is
+     new Signed_Conversions (Int => Extended_Index);
+
+   function Big (J : Extended_Index) return Big_Integer renames
+     Index_Conversions.To_Big_Integer;
+   function Of_Big (J : Big_Integer) return Extended_Index renames
+     Index_Conversions.From_Big_Integer;
+
+
    type Sequence is private
      with Default_Initial_Condition => Length (Sequence) = 0,
      Iterable => (First       => Iter_First,
@@ -90,16 +99,15 @@ is
    --  Basic operations --
    -----------------------
 
-   --  Sequences are axiomatized using Length and Get, providing respectively
-   --  the length of a sequence and an accessor to its Nth element:
+   --  Sequences are axiomatized using Last and Get, providing respectively
+   --  the index of last element of a sequence and an accessor to its
+   --  Nth element:
 
-   function Length (Container : Sequence) return Count_Type with
-   --  Length of a sequence
+   function Last (Container : Sequence) return Extended_Index
+   --  Last index of a sequence. Index_Type'First - 1 if empty.
 
-     Global => null,
-     Post   =>
-       (Index_Type'Pos (Index_Type'First) - 1) + Length'Result <=
-         Index_Type'Pos (Index_Type'Last);
+   with
+     Global => null;
 
    function Get
      (Container : Sequence;
@@ -110,15 +118,13 @@ is
      Global => null,
      Pre    => Position in Index_Type'First .. Last (Container);
 
-   function Last (Container : Sequence) return Extended_Index with
-   --  Last index of a sequence
+   function Length (Container : Sequence) return Big_Natural with
+   --  Length of a sequence
 
      Global => null,
-     Post =>
-       Last'Result =
-         Index_Type'Val ((Index_Type'Pos (Index_Type'First) - 1) +
-           Length (Container));
-   pragma Annotate (GNATprove, Inline_For_Proof, Last);
+     Post   =>
+       Length'Result = (Big (Last (Container)) + 1) - Big (Index_Type'First);
+   pragma Annotate (GNATprove, Inline_For_Proof, Length);
 
    function First return Extended_Index is (Index_Type'First) with
      Global => null;
@@ -172,7 +178,7 @@ is
      Global => null,
      Post   =>
        Equivalent_Sequences'Result =
-         (Length (Left) = Length (Right)
+         (Last (Left) = Last (Right)
            and then
             (for all N in Index_Type'First .. Last (Left) =>
                Equivalent_Elements (Get (Left, N), Get (Right, N))));
@@ -244,11 +250,9 @@ is
 
    with
      Global => null,
-     Pre    =>
-       Length (Container) < Count_Type'Last
-         and then Last (Container) < Index_Type'Last,
+     Pre    => Last (Container) < Index_Type'Last,
      Post   =>
-       Length (Add'Result) = Length (Container) + 1
+       Last (Add'Result) = Last (Container) + 1
          and then Element_Logic_Equal
            (Get (Add'Result, Last (Add'Result)), Copy_Element (New_Item))
          and then Equal_Prefix (Container, Add'Result);
@@ -263,11 +267,10 @@ is
 
      Global => null,
      Pre    =>
-       Length (Container) < Count_Type'Last
-         and then Last (Container) < Index_Type'Last
+         Last (Container) < Index_Type'Last
          and then Position <= Extended_Index'Succ (Last (Container)),
      Post   =>
-       Length (Add'Result) = Length (Container) + 1
+       Last (Add'Result) = Last (Container) + 1
          and then Element_Logic_Equal
            (Get (Add'Result, Position), Copy_Element (New_Item))
          and then Range_Equal
@@ -292,7 +295,7 @@ is
      Global => null,
      Pre    => Position in Index_Type'First .. Last (Container),
      Post   =>
-       Length (Remove'Result) = Length (Container) - 1
+       Last (Remove'Result) = Last (Container) - 1
          and then Range_Equal
                     (Left  => Container,
                      Right => Remove'Result,
@@ -448,7 +451,7 @@ is
      Pre    => X <= Last (Left) and Y <= Last (Left),
      Post   =>
        Equal_Except'Result =
-         (Length (Left) = Length (Right)
+         (Last (Left) = Last (Right)
            and then
             (for all I in Index_Type'First .. Last (Left) =>
                (if I /= X and I /= Y
@@ -478,7 +481,7 @@ is
       Right  : Sequence;
       Fst    : Index_Type;
       Lst    : Extended_Index;
-      Offset : Count_Type'Base) return Boolean
+      Offset : Big_Integer) return Boolean
    --  Returns True if the range from Fst to Lst in Left contains the same
    --  elements as the range from Fst + Offset to Lst + Offset in Right.
 
@@ -487,28 +490,20 @@ is
      Global => null,
      Pre    =>
        Lst <= Last (Left)
-         and then
-           (if Offset < 0 then
-              Index_Type'Pos (Index_Type'Base'First) - Offset <=
-              Index_Type'Pos (Index_Type'First))
-         and then
-           (if Fst <= Lst then
-              Offset in
-                Index_Type'Pos (Index_Type'First) - Index_Type'Pos (Fst) ..
-                  (Index_Type'Pos (Index_Type'First) - 1) + Length (Right) -
-                   Index_Type'Pos (Lst)),
+         and then Big (Index_Type'First) <= Big (Fst) + Offset
+         and then Big (Lst) + Offset <= Big (Last (Right)),
      Post   =>
        Range_Shifted'Result =
          ((for all I in Fst .. Lst =>
             Element_Logic_Equal
               (Get (Left, I),
-               Get (Right, Index_Type'Val (Index_Type'Pos (I) + Offset))))
+               Get (Right, Of_Big (Big (I) + Offset))))
           and
-            (for all I in Index_Type'Val (Index_Type'Pos (Fst) + Offset) ..
-               Index_Type'Val (Index_Type'Pos (Lst) + Offset)
+            (for all I in Of_Big (Big (Fst) + Offset) ..
+               Of_Big (Big (Lst) + Offset)
              =>
                Element_Logic_Equal
-                 (Get (Left, Index_Type'Val (Index_Type'Pos (I) - Offset)),
+                 (Get (Left, Of_Big (Big (I) - Offset)),
                   Get (Right, I))));
    pragma Annotate (GNATprove, Inline_For_Proof, Range_Shifted);
 
@@ -540,8 +535,6 @@ private
      (Container : Sequence;
       Position  : Extended_Index) return Boolean
    is
-     (Position in Index_Type'First ..
-       (Index_Type'Val
-         ((Index_Type'Pos (Index_Type'First) - 1) + Length (Container))));
+     (Position in Index_Type'First .. Last (Container));
 
 end SPARK.Containers.Functional.Vectors;
