@@ -1929,7 +1929,8 @@ body (see Ada RM 7.2(4))].
     following cases:
 
     * the reference occurs within an assertion expression which is
-      not a predicate expression; or
+      not a predicate expression, unless the predicate is introduced
+      by aspect Ghost_Predicate; or
 
     * the specified aspect is either Global, Depends,
       Refined_Global, Refined_Depends, Initializes, or Refined_State.
