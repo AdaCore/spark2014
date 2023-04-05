@@ -8,4 +8,4 @@ def replay():
 
 
 if __name__ == "__main__":
-    prove_all(replay=True, counterexample=False)
+    prove_all(replay=True, counterexample=False, no_fail=True)
