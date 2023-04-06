@@ -170,12 +170,17 @@ package Flow is
       All_Vars : Flow_Id_Sets.Set;
       --  Flattened variables accessible in the body
 
-      Has_Potentially_Nonterminating_Loops : Boolean;
-      --  True for entities that contain loops that may not terminate, i.e. a:
-      --  * plain
-      --  * while
+      Has_Only_Terminating_Constructs : Boolean;
+      --  False for entities that contain constructs that may not terminate,
+      --  i.e. a:
+      --  * dispatching calls
+      --  * calls via access-to-subprogram
+      --  * call to subprograms from the standard library annotated with
+      --    No_Return
+      --  * plain loop
+      --  * while loop
       --  * for on an iterable container
-      --  without Loop_Variant.
+      --  without Loop_Variant (for loop constructs). True otherwise.
 
       Has_Only_Nonblocking_Statements : Boolean;
       --  True for entities that only contain nonblocking statements
