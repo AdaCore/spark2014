@@ -901,8 +901,9 @@ X.Link is poisoned by the assignment to Y.]
    global input of the callee, if the object is a markable expression, then its
    known extracted path shall be observable.
 
-10. At the point of a return statement, or at any other point where a call
-    completes normally (e.g., the end of a procedure body), there shall be
+10. At the point of a return or a raise statement, or at any other point where
+    a call completes normally or propagates an exception (e.g., the end of a
+    procedure body), there shall be
     no paths marked as Moved with any inputs or outputs of the callee being
     returned from as a root. In the case
     of an input of the callee which is not also an output, this rule may be

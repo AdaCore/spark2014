@@ -9,44 +9,51 @@ No additions or restrictions
 Exception Handlers
 ------------------
 
+Exception handlers are supported in SPARK, but the verification rules associated
+to language mandated checks and contracts make it so that only exceptions raised
+in actual raise statements can be handled.
+
 .. container:: heading
 
    Legality Rules
 
 
-1. Exception handlers are not permitted in |SPARK|.
+1. Exception handlers shall not have a choice parameter.
 
 
-Raise Statements
-----------------
+Raise Statements and Raise Expressions
+--------------------------------------
 
-Raise statements are in |SPARK|, but must (as described below) be
-provably never executed.
+Raise statements and raise expressions are in |SPARK|. An exception is said to
+be *expected* if it is covered by a choice of an exception handler in an
+enclosing handled sequence of statements, or if its enclosing entity is a
+procedure body and the exception is covered by a choice in its Exceptional_Cases
+aspect whose associated consequence is not statically False.
+
+As described below, all raise expressions must be provably never executed.
+The same holds true for raise statements if they raise unexpected exceptions.
 
 .. container:: heading
 
    Verification Rules
 
-
-1. A ``raise_statement`` introduces an obligation to prove that the statement
-   will not be executed, much like the verification condition associated with
+1. A ``raise_expression`` introduces an obligation to prove that the expression
+   will not be evaluated, much like the verification condition associated with
 
        ``pragma Assert (False);``
 
    [In other words, the verification conditions introduced for a raise
-   statement are the same as those introduced for a run-time check
+   expression are the same as those introduced for a run-time check
    which fails unconditionally.]
 
-.. commented out since raise expression are not part of the language yet
-   [A raise expression (see Ada AI12-0022
-   for details) introduces a similar obligation to prove that the
-   expression will not be evaluated.]
-
+2. A ``raise_statement`` introduces an obligation to prove that the exception
+   raised is expected. [For raise statements with an exception name which is
+   unexpected, this amounts to proving that the statement will not be executed.]
 
 Exception Handling
 ------------------
 
-No additions or restrictions but exception handlers are not permitted in |SPARK|.
+No additions or restrictions.
 
 The Package Exceptions
 ~~~~~~~~~~~~~~~~~~~~~~

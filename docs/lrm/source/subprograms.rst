@@ -36,7 +36,7 @@ an *entire object*.
    Static Semantics
 
 1. The *exit* value of a global item or parameter of a subprogram is its
-   value immediately following the successful call of the subprogram.
+   value immediately following the call of the subprogram.
 
 2. The *entry* value of a global item or parameter of a subprogram is its
    value at the call of the subprogram.
@@ -114,7 +114,12 @@ an *entire object*.
    callee except for those that have relaxed initialization shall be
    fully initialized.
 
-9.  A function shall always return normally.
+9. If a call propagates an exception, all global outputs of the callee and all
+   output parameters which either have a *by reference* type or are marked as
+   aliased shall be fully initialized when the exception is propagated
+   except for those that have relaxed initialization.
+
+10.  A function shall always return normally.
 
 .. index:: precondition, postcondition
 
@@ -1435,6 +1440,75 @@ Decreases) then the expression value obtained for the call is greater
     updated before the call. [This ensures that the rule is sufficient to
     prove recursion termination on acyclic data structures.]
 
+Exceptional Cases
+~~~~~~~~~~~~~~~~~
+
+The aspect Exceptional_Cases may be specified for procedures; it can be used
+to list exceptions that might be raised by the procedure in the context of its
+precondition, and associate them with a specific postcondition. The
+Exceptional_Cases aspect is specified with an aspect_specification where the
+aspect_mark is Exceptional_Cases and the aspect_definition must follow the
+grammar of exceptional_case_list given below.
+
+.. container:: heading
+
+   Syntax
+
+::
+
+ exceptional_case_list ::= ( exceptional_case   {,  exceptional_case  })
+ exceptional_case      ::= exception_choice {'|' exception_choice} => consequence
+
+where ``consequence`` is a boolean expression.
+
+.. container:: heading
+
+   Name Resolution Rules
+
+The boolean expression in the consequences should be resolved as regular
+postconditions. In particular, references to the Old attribute are allowed to
+occur in them.
+
+.. container:: heading
+
+   Static Semantics
+
+All prefixes of references to the Old attribute in exceptional cases are
+expected to be evaluated at the beginning of the call regardless of whether or
+not the particular exception is raised. This allows to introduce constants for
+these prefixes at the beginning of the subprogram together with the ones
+introduced for the regular postcondition.
+
+.. container:: heading
+
+   Dynamic Semantics
+
+Exceptional_Cases aspects are ignored for execution.
+
+.. container:: heading
+
+   Legality Rules
+
+1. Parameters of modes *out* or *in out* of the subprogram which are neither
+   of a *by-reference* type nor marked as aliased shall only occur in
+   the consequences of an exceptional case:
+
+   * directly or indirectly in the prefix of a reference to the Old
+     attribute, or
+   * directly as a prefix of the Constrained, Length, First, or Last
+     attributes.
+
+.. container:: heading
+
+   Verification Rules
+
+2. If an exception raised in a procedure annotated with Exceptional_Cases
+   is not handled and causes the procedure body to complete, then a verification
+   condition is introduced to make sure that the consequence associated to
+   the exceptional case covering the exception evaluates to True. [Because of
+   the verification conditions introduced when raising unexpected exceptions,
+   there is always an exceptional case covering the propagated exception.]
+
 Formal Parameter Modes
 ----------------------
 
@@ -1616,6 +1690,18 @@ or entry calls.
    :language: ada
    :linenos:
 
+
+Exception Propagation
+~~~~~~~~~~~~~~~~~~~~~
+
+.. container:: heading
+
+   Verification Rules
+
+1. A call to a procedure annotated with an aspect Exceptional_Cases
+   (see :ref:`Exceptional Cases`) introduces
+   an obligation to prove that potentially raised exceptions are expected as
+   defined in :ref:`Raise Statements and Raise Expressions`.
 
 Return Statements
 -----------------
