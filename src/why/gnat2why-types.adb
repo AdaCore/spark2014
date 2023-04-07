@@ -1252,21 +1252,14 @@ package body Gnat2Why.Types is
 
       if Check_Subp then
          declare
-            Name               : constant W_Identifier_Id :=
+            Name    : constant W_Identifier_Id :=
               New_Identifier
                 (Symb   => NID ("subp__def"),
                  Domain => EW_Term);
-            Profile            : constant Entity_Id :=
+            Profile : constant Entity_Id :=
               Directly_Designated_Type (E);
-            Has_Wrapper        : constant Boolean :=
-              Present (Access_Subprogram_Wrapper (Profile));
-            Profile_Or_Wrapper : constant Entity_Id :=
-              (if Has_Wrapper then Access_Subprogram_Wrapper (Profile)
-               else Profile);
          begin
-            Generate_VCs_For_Subprogram
-              (Profile_Or_Wrapper, Th, Name,
-               Is_Access_Subp_Wrapper => Has_Wrapper);
+            Generate_VCs_For_Subprogram (Profile, Th, Name);
          end;
       end if;
 

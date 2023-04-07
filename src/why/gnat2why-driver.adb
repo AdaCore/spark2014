@@ -441,9 +441,6 @@ package body Gnat2Why.Driver is
 
               --  Ignore invariant procedures and default initial conditions
               and then not Subprogram_Is_Ignored_For_Proof (E)
-
-              --  Ignore wrappers for access-to-subprogram types
-              and then not Is_Access_Subprogram_Wrapper (E)
             then
                declare
                   LSP_Applies : constant Boolean :=
@@ -1051,11 +1048,7 @@ package body Gnat2Why.Driver is
 
        --  Ignore hardcoded subprograms
 
-       and then not Is_Hardcoded_Entity (E)
-
-       --  Ignore wrappers for access-to-subprogram types
-
-       and then not Is_Access_Subprogram_Wrapper (E));
+       and then not Is_Hardcoded_Entity (E));
 
    --------------------------
    -- Print_GNAT_Json_File --

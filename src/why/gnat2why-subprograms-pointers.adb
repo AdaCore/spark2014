@@ -238,23 +238,14 @@ package body Gnat2Why.Subprograms.Pointers is
       From_Access            : constant Boolean := not Is_Subprogram (From);
       From_Profile           : constant Entity_Id :=
         (if From_Access then Directly_Designated_Type (From) else From);
-      From_Ent               : constant Entity_Id :=
-        (if From_Access
-         and then Present (Access_Subprogram_Wrapper (From_Profile))
-         then Access_Subprogram_Wrapper (From_Profile)
-         else From_Profile);
       To_Profile             : constant Entity_Id :=
         Directly_Designated_Type (To);
-      To_Ent                 : constant Entity_Id :=
-        (if Present (Access_Subprogram_Wrapper (To_Profile))
-         then Access_Subprogram_Wrapper (To_Profile)
-         else To_Profile);
       From_Formals           : constant Item_Array :=
-        Compute_Subprogram_Parameters (From_Ent, EW_Prog);
+        Compute_Subprogram_Parameters (From_Profile, EW_Prog);
       To_Formals             : constant Item_Array (From_Formals'Range) :=
-        Compute_Subprogram_Parameters (To_Ent, EW_Prog);
+        Compute_Subprogram_Parameters (To_Profile, EW_Prog);
       To_Effects             : Item_Array :=
-        Compute_Binders_For_Effects (To_Ent);
+        Compute_Binders_For_Effects (To_Profile);
       Checks                 : W_Prog_Id;
 
       --  As this check can occur anywhere during the translation, we need to
@@ -322,8 +313,8 @@ package body Gnat2Why.Subprograms.Pointers is
 
       Checks := Check_LSP_For_Subprogram_Access
         (Ada_Node => Ada_Node,
-         From     => From_Ent,
-         To       => To_Ent,
+         From     => From_Profile,
+         To       => To_Profile,
          Params   => Params);
 
       --  Bind the identifier for the result of the call. We could leave it
@@ -354,7 +345,7 @@ package body Gnat2Why.Subprograms.Pointers is
             --  by a conditional making sure that Expr is not null here.
 
             From_Effects : constant Item_Array :=
-              Compute_Binders_For_Effects (From_Ent);
+              Compute_Binders_For_Effects (From_Profile);
             Formal_Args  : constant W_Expr_Array :=
               (if From_Formals'Length = 0 and From_Effects'Length = 0
                then (1 => +Void)
@@ -363,13 +354,13 @@ package body Gnat2Why.Subprograms.Pointers is
                   Ref_Allowed => Params.Ref_Allowed));
             Call_Id      : constant W_Identifier_Id :=
               (if From_Access then Get_Logic_Function (To_Profile)
-               else To_Why_Id (From_Ent, Domain => EW_Pterm));
+               else To_Why_Id (From_Profile, Domain => EW_Pterm));
             Need_Guard   : constant Boolean :=
               (if From_Access then Use_Guard_For_Function (To_Profile)
-               else Use_Guard_For_Function (From_Ent));
+               else Use_Guard_For_Function (From_Profile));
             Guard_Id     : constant W_Identifier_Id :=
               (if From_Access then Get_Logic_Function_Guard (To_Profile)
-               else Guard_Predicate_Name (From_Ent));
+               else Guard_Predicate_Name (From_Profile));
 
          begin
             if Need_Guard then
@@ -471,35 +462,23 @@ package body Gnat2Why.Subprograms.Pointers is
      (Th : Theory_UC;
       E  : Access_Kind_Id)
    is
-      Spec_Binders       : constant Binder_Array :=
+      Spec_Binders : constant Binder_Array :=
         Binder_Array'(1 => Subp_Binder);
-      Profile            : constant Entity_Id := Directly_Designated_Type (E);
-      Has_Wrapper        : constant Boolean :=
-        Present (Access_Subprogram_Wrapper (Profile));
-      Profile_Or_Wrapper : constant Entity_Id :=
-        (if Has_Wrapper then Access_Subprogram_Wrapper (Profile)
-         else Profile);
-      --  Use the wrapper if any to get the contracts
-
-      Use_Result_Name    : constant Boolean := Is_Function_Type (Profile)
-        and then Has_Wrapper;
-      --  We need to set the result name only on functions which have a
-      --  contract.
+      Profile      : constant Entity_Id := Directly_Designated_Type (E);
 
    begin
-      if Use_Result_Name then
-         Result_Name := New_Result_Ident (Type_Of_Node (Profile));
+      if Is_Function_Type (Profile) then
+         Result_Name := New_Result_Ident (Type_Of_Node (Etype (Profile)));
          Result_Is_Mutable := False;
       end if;
 
       --  Generate a program function for calling the designated subprogram
 
       Generate_Subprogram_Program_Fun
-        (Th                     => Th,
-         E                      => Profile_Or_Wrapper,
-         Prog_Id                => To_Local (E_Symb (E, WNE_Pointer_Call)),
-         Spec_Binders           => Spec_Binders,
-         Is_Access_Subp_Wrapper => Has_Wrapper);
+        (Th           => Th,
+         E            => Profile,
+         Prog_Id      => To_Local (E_Symb (E, WNE_Pointer_Call)),
+         Spec_Binders => Spec_Binders);
 
       --  Generate an axiom for the contract of E if it is a function. As the
       --  logic function of access-to-subprogram types is shared between all
@@ -507,20 +486,17 @@ package body Gnat2Why.Subprograms.Pointers is
       --  predicate of the type.
 
       Generate_Axiom_For_Post
-        (Th                     => Th,
-         E                      => Profile_Or_Wrapper,
-         Spec_Binders           => Spec_Binders,
-         Spec_Guard             => +New_Call
+        (Th           => Th,
+         E            => Profile,
+         Spec_Binders => Spec_Binders,
+         Spec_Guard   => +New_Call
            (Domain  => EW_Pred,
             Name    => E_Symb (E, WNE_Range_Pred),
             Binders => Spec_Binders,
-            Typ     => EW_Bool_Type),
-         Is_Access_Subp_Wrapper => Has_Wrapper);
+            Typ     => EW_Bool_Type));
 
-      if Use_Result_Name then
-         Result_Name := Why_Empty;
-         Result_Is_Mutable := False;
-      end if;
+      Result_Name := Why_Empty;
+      Result_Is_Mutable := False;
    end Complete_Access_To_Subprogram_Type;
 
    ---------------------------------------------------

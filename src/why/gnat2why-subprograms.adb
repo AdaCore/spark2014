@@ -3766,10 +3766,9 @@ package body Gnat2Why.Subprograms is
    end Generate_VCs_For_Subprogram;
 
    procedure Generate_VCs_For_Subprogram
-     (E                      : Callable_Kind_Id;
-      Th                     : Theory_UC;
-      Prog_Name              : W_Identifier_Id;
-      Is_Access_Subp_Wrapper : Boolean := False)
+     (E          : Callable_Kind_Id;
+      Th         : Theory_UC;
+      Prog_Name  : W_Identifier_Id)
    is
 
       function Assume_For_Input return W_Prog_Id;
@@ -4772,7 +4771,6 @@ package body Gnat2Why.Subprograms is
 
       if Within_Protected_Type (E)
         and then Ekind (E) /= E_Subprogram_Type
-        and then not Is_Access_Subp_Wrapper
       then
          declare
             CPT : constant Entity_Id := Containing_Protected_Type (E);
@@ -4852,7 +4850,6 @@ package body Gnat2Why.Subprograms is
 
       if Within_Protected_Type (E)
         and then Ekind (E) /= E_Subprogram_Type
-        and then not Is_Access_Subp_Wrapper
       then
          Emit
            (Th,
@@ -5124,8 +5121,7 @@ package body Gnat2Why.Subprograms is
 
             if Is_Function_Type (E)
               or else (Ekind (E) = E_Function
-                       and then (Is_Abstract_Subprogram (E)
-                                 or else Is_Access_Subp_Wrapper))
+                       and then Is_Abstract_Subprogram (E))
             then
                Why_Body := Check_Feasibility;
             else
@@ -5554,14 +5550,13 @@ package body Gnat2Why.Subprograms is
    -----------------------------
 
    procedure Generate_Axiom_For_Post
-     (Th                     : Theory_UC;
-      Dispatch_Th            : Theory_UC := Empty_Theory;
-      E                      : Callable_Kind_Id;
-      Spec_Binders           : Binder_Array := (1 .. 0 => <>);
-      Spec_Guard             : W_Pred_Id := True_Pred;
-      Is_Access_Subp_Wrapper : Boolean := False;
-      Specialization_Module  : Symbol := No_Symbol;
-      More_Reads             : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
+     (Th                    : Theory_UC;
+      Dispatch_Th           : Theory_UC := Empty_Theory;
+      E                     : Callable_Kind_Id;
+      Spec_Binders          : Binder_Array := (1 .. 0 => <>);
+      Spec_Guard            : W_Pred_Id := True_Pred;
+      Specialization_Module : Symbol := No_Symbol;
+      More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
    is
       Logic_Func_Binders : constant Item_Array := Compute_Binders
         (E, EW_Term, More_Reads);
@@ -5598,8 +5593,7 @@ package body Gnat2Why.Subprograms is
          return;
       end if;
 
-      pragma Assert (Is_Function_Type (E) or else Is_Access_Subp_Wrapper
-                     or else Has_Post_Axiom (E));
+      pragma Assert (Is_Function_Type (E) or else Has_Post_Axiom (E));
 
       --  For recursive functions, we store the axiom in a different module,
       --  so that we can make sure that it cannot be used to prove the function
@@ -5775,9 +5769,8 @@ package body Gnat2Why.Subprograms is
             Id            : constant W_Identifier_Id :=
               Logic_Function_Name
                 (E,
-                 Selector_Name          => Selector,
-                 Is_Access_Subp_Wrapper => Is_Access_Subp_Wrapper,
-                 Specialization_Module  => Specialization_Module);
+                 Selector_Name         => Selector,
+                 Specialization_Module => Specialization_Module);
             Result_Id     : constant W_Identifier_Id :=
               New_Result_Ident (Why_Type);
             Tag_B         : constant Binder_Array :=
@@ -5834,9 +5827,8 @@ package body Gnat2Why.Subprograms is
                       (Domain  => EW_Pred,
                        Name    => Guard_Predicate_Name
                          (E,
-                          Selector_Name          => Selector,
-                          Is_Access_Subp_Wrapper => Is_Access_Subp_Wrapper,
-                          Specialization_Module  => Specialization_Module),
+                          Selector_Name         => Selector,
+                          Specialization_Module => Specialization_Module),
                        Binders => Pred_Binders),
                   Then_Part   => Complete_Post));
             Call            : constant W_Expr_Id := New_Call
@@ -6447,14 +6439,13 @@ package body Gnat2Why.Subprograms is
    -------------------------------------
 
    procedure Generate_Subprogram_Program_Fun
-     (Th                     : Theory_UC;
-      Dispatch_Th            : Theory_UC := Empty_Theory;
-      E                      : Callable_Kind_Id;
-      Prog_Id                : W_Identifier_Id;
-      Spec_Binders           : Binder_Array := Binder_Array'(1 .. 0 => <>);
-      Is_Access_Subp_Wrapper : Boolean := False;
-      Specialization_Module  : Symbol := No_Symbol;
-      More_Reads             : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
+     (Th                    : Theory_UC;
+      Dispatch_Th           : Theory_UC := Empty_Theory;
+      E                     : Callable_Kind_Id;
+      Prog_Id               : W_Identifier_Id;
+      Spec_Binders          : Binder_Array := Binder_Array'(1 .. 0 => <>);
+      Specialization_Module : Symbol := No_Symbol;
+      More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
    is
       Func_Binders     : constant Item_Array :=
         Compute_Binders (E, EW_Prog, More_Reads);
@@ -6489,7 +6480,7 @@ package body Gnat2Why.Subprograms is
             --  If the Ada_Node is Empty, it's not an interesting binder (e.g.
             --  void_param).
 
-            if Present (A) and then not Is_Type (E) then
+            if Present (A) then
                Ada_Ent_To_Why.Insert (Symbol_Table, A, Binder);
             end if;
          end;
@@ -6627,13 +6618,9 @@ package body Gnat2Why.Subprograms is
                Effects   : W_Effects_Id) return W_Declaration_Id
             is
                Logic_Id   : constant W_Identifier_Id :=
-                 Logic_Function_Name
-                   (E, Selector, Is_Access_Subp_Wrapper,
-                    Specialization_Module);
+                 Logic_Function_Name (E, Selector, Specialization_Module);
                Pred_Id    : constant W_Identifier_Id :=
-                 Guard_Predicate_Name
-                   (E, Selector, Is_Access_Subp_Wrapper,
-                    Specialization_Module);
+                 Guard_Predicate_Name (E, Selector, Specialization_Module);
                Need_Tag   : constant Boolean := Selector = Dispatch;
 
                --  Each function has in its postcondition that its result is

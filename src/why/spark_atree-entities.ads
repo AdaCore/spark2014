@@ -668,11 +668,6 @@ package SPARK_Atree.Entities is
    function Is_Access_Constant (E : Access_Kind_Id) return Boolean renames
      EE.Is_Access_Constant;
 
-   function Access_Subprogram_Wrapper
-     (E : E_Subprogram_Type_Id)
-      return Opt_Subprogram_Kind_Id
-   is (EE.Access_Subprogram_Wrapper (E));
-
    ------------------
    --  For Objects --
    ------------------
@@ -723,14 +718,8 @@ package SPARK_Atree.Entities is
    ----------------------
 
    function First_Formal (Subp : Callable_Kind_Id) return Opt_Formal_Kind_Id;
-   --  Same as Einfo.Utils.First_Formal except that it ignores the formal
-   --  introduced for the access-to-subprogram object in access subprogram
-   --  wrappers.
 
    function Number_Formals (Subp : Callable_Kind_Id) return Natural;
-   --  Same as Einfo.Utils.Number_Formals except that it ignores the formal
-   --  introduced for the access-to-subprogram object in access subprogram
-   --  wrappers.
 
    function Has_Controlling_Result (Subp : E_Function_Id) return Boolean;
 
@@ -752,14 +741,8 @@ package SPARK_Atree.Entities is
    function Is_Predicate_Function (Subp : Subprogram_Kind_Id) return Boolean;
 
    function Next_Formal (Formal : Formal_Kind_Id) return Opt_Formal_Kind_Id;
-   --  Same as Einfo.Utils.Next_Formal except that it ignores the formal
-   --  introduced for the access-to-subprogram object in access subprogram
-   --  wrappers.
 
    procedure Next_Formal (Formal : in out Opt_Formal_Kind_Id);
-   --  Same as Einfo.Utils.Next_Formal except that it ignores the formal
-   --  introduced for the access-to-subprogram object in access subprogram
-   --  wrappers.
 
    function No_Return (Subp : Callable_Kind_Id) return Boolean renames
      EE.No_Return;

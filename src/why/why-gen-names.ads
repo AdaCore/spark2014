@@ -173,7 +173,6 @@ package Why.Gen.Names is
    function Logic_Function_Name
      (E                      : Function_Kind_Id;
       Selector_Name          : Selection_Kind := Why.Inter.Standard;
-      Is_Access_Subp_Wrapper : Boolean := False;
       Specialization_Module  : Symbol := No_Symbol)
       return W_Identifier_Id;
    --  Compute the name to be used to call a function or a function profile in
@@ -183,7 +182,6 @@ package Why.Gen.Names is
    function Guard_Predicate_Name
      (E                      : Function_Kind_Id;
       Selector_Name          : Selection_Kind := Why.Inter.Standard;
-      Is_Access_Subp_Wrapper : Boolean := False;
       Specialization_Module  : Symbol := No_Symbol)
       return W_Identifier_Id;
    --  Compute the name to be used for the guard of a function or a function

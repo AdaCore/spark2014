@@ -181,18 +181,7 @@ package body SPARK_Atree.Entities is
    ------------------
 
    function First_Formal (Subp : Callable_Kind_Id) return Opt_Formal_Kind_Id is
-      First : Entity_Id := Einfo.Utils.First_Formal (Subp);
-
-   begin
-      --  There should never be more than one formal for subp wrappers
-
-      if Present (First)
-        and then SPARK_Util.Is_Additional_Param_Of_Access_Subp_Wrapper (First)
-      then
-         Einfo.Utils.Next_Formal (First);
-      end if;
-      return First;
-   end First_Formal;
+     (Einfo.Utils.First_Formal (Subp));
 
    ---------------
    -- Full_View --
@@ -637,24 +626,11 @@ package body SPARK_Atree.Entities is
    -----------------
 
    function Next_Formal (Formal : Formal_Kind_Id) return Opt_Formal_Kind_Id is
-      Next : Entity_Id := Formal;
-
-   begin
-      Next_Formal (Next);
-      return Next;
-   end Next_Formal;
+     (Einfo.Utils.Next_Formal (Formal));
 
    procedure Next_Formal (Formal : in out Opt_Formal_Kind_Id) is
    begin
       Einfo.Utils.Next_Formal (Formal);
-
-      --  There should never be more than one formal for subp wrappers
-
-      if Present (Formal)
-        and then SPARK_Util.Is_Additional_Param_Of_Access_Subp_Wrapper (Formal)
-      then
-         Einfo.Utils.Next_Formal (Formal);
-      end if;
    end Next_Formal;
 
    -----------------------
@@ -683,18 +659,14 @@ package body SPARK_Atree.Entities is
    --------------------
 
    function Number_Formals (Subp : Callable_Kind_Id) return Natural is
-      N      : Natural := 0;
-      Formal : Entity_Id := Einfo.Utils.First_Formal (Subp);
    begin
-      while Present (Formal) loop
-         if not SPARK_Util.Is_Additional_Param_Of_Access_Subp_Wrapper (Formal)
-         then
-            N := N + 1;
-         end if;
-         Einfo.Utils.Next_Formal (Formal);
-      end loop;
+      --  The frontend routine can only be called where there are some formals
 
-      return N;
+      if Present (Einfo.Utils.First_Formal (Subp)) then
+         return Natural (Einfo.Utils.Number_Formals (Subp));
+      else
+         return 0;
+      end if;
    end Number_Formals;
 
    -----------------
