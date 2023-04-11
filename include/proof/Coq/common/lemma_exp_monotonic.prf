@@ -1,9 +1,0 @@
-unfold in_range, in_range1.
-intros.
-
-(* apply theorem about monotonicity of power *)
-apply Z.pow_le_mono_l.
-
-(* remaining goals can be proved automatically *)
-intuition.
-Qed.
