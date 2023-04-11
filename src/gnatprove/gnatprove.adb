@@ -67,6 +67,7 @@ with Ada.Command_Line;
 with Ada.Directories;   use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Exceptions;    use Ada.Exceptions;
+with Ada.IO_Exceptions;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;       use Ada.Text_IO;
 with Call;              use Call;
@@ -107,7 +108,8 @@ procedure Gnatprove with SPARK_Mode is
 
    procedure Create_Dir_And_Parents (Dir : Virtual_File);
    --  Create the directory and necessary parent directories. Do nothing if the
-   --  directory already exists. Check if the directory exists.
+   --  directory already exists. Check if the directory exists. Abort in case
+   --  of failure.
 
    procedure Compute_ALI_Information
      (Project_File : String;
@@ -438,6 +440,13 @@ procedure Gnatprove with SPARK_Mode is
          end if;
       end;
       Create_Directory (Dir.Display_Full_Name);
+   exception
+      when Ada.IO_Exceptions.Use_Error =>
+         Ada.Text_IO.Put_Line
+           (Ada.Text_IO.Standard_Error,
+            "when creating directory " & Dir.Display_Full_Name & ": "
+            & GNAT.OS_Lib.Errno_Message);
+         GNAT.OS_Lib.OS_Exit (1);
    end Create_Dir_And_Parents;
 
    ------------------
@@ -1117,10 +1126,14 @@ begin
 
    declare
       Obj_Path : constant File_Array :=
-        Object_Path (Tree.Root_Project, Recursive => True);
+        Object_Path (Tree.Root_Project,
+                     Recursive          => True,
+                     Exclude_Externally => True);
    begin
       for Dir of Obj_Path loop
-         Create_Dir_And_Parents (Dir);
+         if Dir /= No_File then
+            Create_Dir_And_Parents (Dir);
+         end if;
       end loop;
    end;
 
@@ -1136,7 +1149,9 @@ begin
 
       procedure Generate_SPARK_Report is
          Obj_Path : constant File_Array :=
-           Object_Path (Tree.Root_Project, Recursive => True);
+           Object_Path (Tree.Root_Project,
+                        Recursive          => True,
+                        Exclude_Externally => True);
       begin
          Generate_SPARK_Report
            (Tree.Root_Project,
