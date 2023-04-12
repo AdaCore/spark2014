@@ -24,6 +24,7 @@ def replay():
             "-u",
             "test_higher_order3.ads",
         ],
+        filter_sparklib=False,
     )
 
 
@@ -44,6 +45,7 @@ if __name__ == "__main__":
             "-u",
             "test_higher_order3.ads",
         ],
+        filter_sparklib=False,
     )
 
     sys.stdout = sys.__stdout__
