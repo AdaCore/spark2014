@@ -17389,18 +17389,22 @@ package body Gnat2Why.Expr is
 
                if not Is_Partial_View (Obj) then
                   declare
-                     Obj_Expr : constant W_Term_Id :=
+                     Obj_Expr    : constant W_Term_Id :=
                        +Transform_Identifier (Expr   => Lvalue,
                                               Ent    => Lvalue,
                                               Domain => EW_Term,
                                               Params => Body_Params);
+                     Initialized : constant Boolean :=
+                       Present (Expression (Decl))
+                       or else Ekind (Obj) = E_Constant
+                       or else Is_Imported (Obj);
                   begin
                      Append
                        (R,
                         Assume_Dynamic_Invariant
                           (Expr        => Obj_Expr,
                            Ty          => Etype (Lvalue),
-                           Initialized => Present (Expression (Decl)),
+                           Initialized => Initialized,
                            Only_Var    => False));
 
                      --  Check the type invariant of constants with no
