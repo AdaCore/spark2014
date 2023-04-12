@@ -562,8 +562,8 @@ package SPARK_Util is
    --  @param N any node
    --  @return True iff N is a pragma Check (Name, ...);
 
-   function Is_Pragma_Assert_And_Cut (N : N_Pragma_Id) return Boolean;
-   --  @param N pragma
+   function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean;
+   --  @param N any node
    --  @return True iff N is a pragma Assert_And_Cut
 
    ---------------------------------
