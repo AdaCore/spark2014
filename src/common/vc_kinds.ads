@@ -416,6 +416,7 @@ package VC_Kinds is
       Lim_Address_Attr_In_Unsupported_Context,
       Lim_Array_Conv_Different_Size_Modular_Index,
       Lim_Array_Conv_Signed_Modular_Index,
+      Lim_Assert_And_Cut_Meet_Inv,
       Lim_Borrow_Traversal_First_Param,
       Lim_Borrow_Traversal_Volatile,
       Lim_Class_Attr_Of_Constrained_Type,
@@ -609,6 +610,9 @@ package VC_Kinds is
          when Lim_Goto_Cross_Inv =>
            "goto statement to label located inside the loop crossing the loop"
           & " invariant",
+         when Lim_Assert_And_Cut_Meet_Inv =>
+           "pragma Assert_And_Cut immediately within a sequence of statements"
+          & " containing a loop invariant",
          when Lim_Multidim_Update =>
            "attribute ""Update"" of unconstrained multidimensional array",
          when Lim_Uninit_Alloc_In_Expr_Fun =>

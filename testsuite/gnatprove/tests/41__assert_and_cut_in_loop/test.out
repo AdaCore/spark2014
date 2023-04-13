@@ -1,0 +1,4 @@
+main.adb:7:22: info: assertion proved (CVC5: 2 VC)
+main.adb:9:30: info: loop invariant initialization proved (CVC5: 2 VC)
+main.adb:9:41: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove C
+main.adb:12:30: info: assertion proved (CVC5: 1 VC)
