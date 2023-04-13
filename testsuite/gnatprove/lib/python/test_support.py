@@ -262,8 +262,10 @@ def is_flow_initialization_tag(tag):
     message"""
     return tag in ("INITIALIZED", "INITIALIZES")
 
+
 def is_termination_tag(tag):
     return tag in ("TERMINATION")
+
 
 def is_aliasing_tag(tag):
     """Returns True if the given tag corresponds to an aliasing flow message"""
@@ -685,6 +687,7 @@ def gnatprove(
     exit_status=None,
     ada=default_ada,
     sparklib=False,
+    filter_sparklib=True,
 ):
     """Invoke gnatprove, and in case of success return list of output lines
 
@@ -759,6 +762,9 @@ def gnatprove(
     else:
         failure = False
 
+    if filter_sparklib:
+        strlist = [line for line in strlist if not line.startswith("spark-")]
+
     if filter_output is not None:
         strlist = grep(filter_output, strlist, invert=True)
 
@@ -794,6 +800,7 @@ def prove_all(
     replay=False,
     warnings="continue",
     sparklib=False,
+    filter_sparklib=True,
 ):
     """Call gnatprove with standard options.
 
@@ -869,6 +876,7 @@ def prove_all(
         ada=ada,
         filter_output=filter_output,
         sparklib=sparklib,
+        filter_sparklib=filter_sparklib,
     )
 
 
