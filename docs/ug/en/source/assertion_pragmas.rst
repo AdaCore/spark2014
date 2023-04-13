@@ -369,8 +369,7 @@ the same assertion on line 12 holds:
 |GNATprove| *forgets* the exact value of ``X`` after line 9. All it knows is
 the information given in pragma ``Assert_And_Cut``, here that ``X > 0``. And
 indeed |GNATprove| proves that such an assertion holds on line 11. But it
-cannot prove the assertion on line 12, and the counterexample displayed
-mentions a possible value of 2 for ``X``, showing indeed that |GNATprove|
+cannot prove the assertion on line 12, showing indeed that |GNATprove|
 forgot its value of 1.
 
 Pragma ``Assert_And_Cut`` may be useful in two cases:
@@ -403,3 +402,48 @@ Pragma ``Assert_And_Cut`` may be useful in two cases:
       pragma Assert_And_Cut (X > 0);
       --  complex computation that uses X
    end P;
+
+|GNATprove| only forgets information from inside the enclosing sequence
+of statements, meaning information about
+
+1. variables modified since the start of the enclosing
+   sequence of statements
+
+2. Boolean tests (including checks) that must have evaluated to true
+   for control to reach the pragma from the start of the enclosing
+   sequence of statements.
+
+Procedure ``Partial_Knowledge`` below shows examples of informations
+that are remembered and forgotten.
+
+.. literalinclude:: /examples/ug__partial_forget_assert/partial_knowledge.adb
+   :language: ada
+   :linenos:
+
+Since variable ``Y`` is not modified in the inner block, the information
+that ``Y`` was zero is not forgotten, and the assertion at line 17 is proved.
+Similarly, |GNATprove| does not forget that ``X`` must have been positive
+to reach the inner block in the first place, and proves the assertion at line 18.
+However, it does not prove the following assertions at lines 20/21, and displays
+counter-examples with values of 2 for ``X,Z``, showing indeed
+that |GNATprove| forgot the value of ``Z``, as well as the fact that
+the program should have exited already when ``X`` is 2.
+
+.. literalinclude:: /examples/ug__partial_forget_assert/test.out
+   :language: none
+
+.. note::
+
+  Due to pragmas ``Assert_And_Cut`` and ``Loop_Invariant`` both acting as
+  cut points for verification, but in slightly different ways, |GNATprove|
+  does not support the full breadth of their potential interactions.
+  Pragma ``Assert_And_Cut`` is only supported within loops when the
+  immediately surrounding statement sequence does not contain the
+  loop invariants, including any occurring within nested blocks.
+  |GNATprove| also supports as a convenience the special case when the
+  loop invariants occurs at top level in the sequence prefix
+  preceding pragma ``Assert_And_Cut``, by implicitly assuming that a
+  new block starts immediately after the last pragma ``Loop_Invariant``.
+
+
+
