@@ -7960,6 +7960,24 @@ package body SPARK_Definition is
          when Pragma_Check =>
             if not Is_Ignored_Pragma_Check (N) then
                Mark (Get_Pragma_Arg (Arg2));
+
+               --  There are additional constructions whose
+               --  lists are sequence_of_statements in the AST,
+               --  but those are not in SPARK.
+               if Is_Pragma_Assert_And_Cut (N)
+                 and then
+                   (No (Parent (N))
+                    or else
+                    Nkind (Parent (N)) not in N_Handled_Sequence_Of_Statements
+                                            | N_If_Statement
+                                            | N_Case_Statement_Alternative
+                                            | N_Loop_Statement
+                                            | N_Exception_Handler)
+               then
+                  Mark_Violation
+                    ("pragma Assert_And_Cut outside a sequence of statements",
+                     N);
+               end if;
             end if;
 
          --  Syntax of this pragma:

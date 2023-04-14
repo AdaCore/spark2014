@@ -21127,16 +21127,6 @@ package body Gnat2Why.Expr is
 
       Transform_Pragma_Check (Prag, Force, Expr, Check_Expr, Pred);
 
-      --  Assert_And_Cut is not handled here, except for runtime errors
-
-      if Is_Pragma_Assert_And_Cut (Prag) then
-         if Check_Expr /= Why_Empty then
-            return New_Ignore (Prog => Check_Expr);
-         else
-            return +Void;
-         end if;
-      end if;
-
       --  Translate Compile_Time_Error as an assumption
 
       if Is_Pragma_Check (Prag, Name_Compile_Time_Error) then
@@ -22726,10 +22716,17 @@ package body Gnat2Why.Expr is
                                           Pred    => Pred);
                   Assert_And_Cut_Expr := Expr;
                   Assert_And_Cut := Pred;
+                  if Check_Expr /= Why_Empty then
+                     return New_Ignore (Prog => Check_Expr);
+                  else
+                     return +Void;
+                  end if;
                end;
-            end if;
+            else
 
-            return Transform_Pragma (Stmt_Or_Decl, Force => False);
+               return Transform_Pragma (Stmt_Or_Decl, Force => False);
+
+            end if;
 
          when N_Raise_xxx_Error
             | N_Raise_Statement
