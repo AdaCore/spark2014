@@ -1,12 +1,16 @@
-d.adb:1:11: warning: subprogram "D" has no effect
-d.adb:6:12: info: range check proved (CVC5: 2 VC)
-d.adb:13:27: info: index check proved (CVC5: 2 VC)
-d.adb:14:23: info: index check proved (CVC5: 2 VC)
-d.adb:15:28: info: index check proved (CVC5: 2 VC)
-d.adb:15:46: info: range check proved (CVC5: 2 VC)
-d.adb:16:24: info: index check proved (CVC5: 2 VC)
-d.adb:16:42: info: range check proved (CVC5: 2 VC)
-d.adb:17:28: info: index check proved (CVC5: 2 VC)
-d.adb:17:46: medium: range check might fail
-d.adb:18:24: info: index check proved (CVC5: 2 VC)
-d.adb:18:42: medium: range check might fail
+d.adb:2:11: warning: subprogram "D" has no effect
+d.adb:7:12: info: range check proved (CVC5: 2 VC)
+d.adb:10:27: info: index check proved (CVC5: 2 VC)
+d.adb:11:23: info: index check proved (CVC5: 2 VC)
+d.adb:12:28: info: index check proved (CVC5: 2 VC)
+d.adb:12:46: info: range check proved (CVC5: 2 VC)
+d.adb:13:24: info: index check proved (CVC5: 2 VC)
+d.adb:13:42: info: range check proved (CVC5: 2 VC)
+d.adb:14:28: info: index check proved (CVC5: 2 VC)
+d.adb:14:46: medium: range check might fail
+d.adb:14:49: warning: assuming "Rand" has no effect on global items
+d.adb:14:49: warning: no Global contract available for "Rand"
+d.adb:15:24: info: index check proved (CVC5: 2 VC)
+d.adb:15:42: medium: range check might fail
+d.adb:15:45: warning: assuming "Rand" has no effect on global items
+d.adb:15:45: warning: no Global contract available for "Rand"
