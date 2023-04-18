@@ -5444,19 +5444,12 @@ package body Gnat2Why.Subprograms is
             end case;
          end Is_Statically_False;
 
-         Pre_List : constant Node_Lists.List :=
-           Find_Contracts (E, Pragma_Precondition);
-
       begin
          --  Loop over the list of preconditions of E to see if one is
          --  statically false.
 
-         for Pre_N of Pre_List loop
-            if Is_Statically_False (Pre_N) then
-               return True;
-            end if;
-         end loop;
-         return False;
+         return (for some Pre_N of Find_Contracts (E, Pragma_Precondition) =>
+                   Is_Statically_False (Pre_N));
       end Is_Disabled;
 
    begin
