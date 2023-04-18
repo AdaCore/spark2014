@@ -1,0 +1,2 @@
+foo.ads:5:16: info: implicit terminating annotation on "Prim_Func" has been proved, subprogram will terminate
+foo.ads:9:12: info: implicit terminating annotation on "Prim_Func" has been proved, subprogram will terminate
