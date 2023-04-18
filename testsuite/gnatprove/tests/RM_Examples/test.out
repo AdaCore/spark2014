@@ -26,7 +26,7 @@ externals.adb:53:54: info: initialization of "Main_Display.State" constituent of
 externals.adb:54:59: info: initialization of "Secondary_Display.State" constituent of "Externals.Displays" proved
 externals.adb:74:41: medium: "Out_Reg" constituent of "Complex_Device" might not be written
 externals.adb:85:07: info: initialization of "Status" proved
-externals.adb:88:10: medium: terminating annotation on "Output_Value" could be incorrect, loop might be nonterminating
+externals.adb:88:10: medium: terminating annotation on "Output_Value" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 externals.adb:89:20: warning: unused assignment
 externals.adb:92:13: warning: statement has no effect
 externals.ads:8:08: info: flow dependencies proved

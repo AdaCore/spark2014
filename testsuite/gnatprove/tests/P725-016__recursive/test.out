@@ -1,2 +1,2 @@
-p.adb:4:35: medium: implicit terminating annotation on "F" could be incorrect, "F" and "S" are mutually recursive
-q.adb:6:07: medium: implicit terminating annotation on "S" could be incorrect, "S" and "F" are mutually recursive
+p.adb:4:35: medium: implicit terminating annotation on "F" could be incorrect, "F" and "S" are mutually recursive [possible fix: annotate "F" and "S" with Subprogram_Variant aspects]
+q.adb:6:07: medium: implicit terminating annotation on "S" could be incorrect, "S" and "F" are mutually recursive [possible fix: annotate "S" and "F" with Subprogram_Variant aspects]

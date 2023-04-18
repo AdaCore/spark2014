@@ -41,7 +41,7 @@ hw-gfx-dp_info.adb:192:07: info: initialization of "M" proved, in instantiation 
 hw-gfx-dp_info.adb:193:07: info: initialization of "N" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:200:10: info: flow dependencies proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:210:13: info: initialization of "RN" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:213:13: medium: implicit terminating annotation on "Round_N" could be incorrect, loop might be nonterminating, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:213:13: medium: implicit terminating annotation on "Round_N" could be incorrect, loop might be nonterminating, in instantiation at hw-gfx-gma-dp_info.ads:19 [possible fix: add loop variant in the loop body]
 hw-gfx-dp_info.adb:292:07: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:293:07: info: initialization of "Length" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.ads:82:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19

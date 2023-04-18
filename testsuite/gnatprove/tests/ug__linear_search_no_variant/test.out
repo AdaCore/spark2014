@@ -2,3 +2,4 @@
 linear_search.adb:12:27: medium: implicit terminating annotation on "Search" could be incorrect, loop might be nonterminating
    12 |      while Pos <= A'Last loop
       |                          ^~~~
+  possible fix: add loop variant in the loop body

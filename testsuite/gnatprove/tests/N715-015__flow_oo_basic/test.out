@@ -15,7 +15,7 @@ tests.adb:41:09: warning: assuming "Hash" has no effect on global items
 tests.adb:41:09: warning: no Global contract available for "Hash"
 tests.adb:44:09: warning: assuming "Hash" has no effect on global items
 tests.adb:44:09: warning: no Global contract available for "Hash"
-tests.adb:44:15: medium: implicit terminating annotation on "F_Get_Item_C" could be incorrect, dispatching call might be nonterminating
+tests.adb:44:15: medium: implicit terminating annotation on "F_Get_Item_C" could be incorrect, dispatching call might be nonterminating [possible explanation: call could hide recursive calls]
 tests.adb:81:15: warning: assuming "Hash" has no effect on global items
 tests.adb:81:15: warning: no Global contract available for "Hash"
 tests.adb:100:23: info: initialization of "N" proved

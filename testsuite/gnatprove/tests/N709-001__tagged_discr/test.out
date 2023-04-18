@@ -1,6 +1,6 @@
 classwide.ads:13:13: info: implicit terminating annotation on "Is_Zero" has been proved, subprogram will terminate
 classwide.ads:18:06: info: data dependencies proved
-classwide.ads:21:08: medium: implicit terminating annotation on "C_Is_Zero" could be incorrect, dispatching call might be nonterminating
+classwide.ads:21:08: medium: implicit terminating annotation on "C_Is_Zero" could be incorrect, dispatching call might be nonterminating [possible explanation: call could hide recursive calls]
 classwide.ads:23:06: info: data dependencies proved
 classwide.ads:25:13: info: implicit terminating annotation on "D_Is_Zero" has been proved, subprogram will terminate
 classwide.ads:28:06: info: data dependencies proved
@@ -22,7 +22,7 @@ classwide.ads:64:06: info: data dependencies proved
 classwide.ads:70:22: warning: unused initial value of "V"
 classwide.ads:71:14: info: postcondition proved (CVC5: 1 VC)
 classwide.ads:72:06: info: data dependencies proved
-classwide.ads:77:08: medium: implicit terminating annotation on "C_U1_Is_Zero" could be incorrect, dispatching call might be nonterminating
+classwide.ads:77:08: medium: implicit terminating annotation on "C_U1_Is_Zero" could be incorrect, dispatching call might be nonterminating [possible explanation: call could hide recursive calls]
 classwide.ads:79:06: info: data dependencies proved
 classwide.ads:81:13: info: implicit terminating annotation on "D_Is_Zero" has been proved, subprogram will terminate
 classwide.ads:84:06: info: data dependencies proved

@@ -129,15 +129,15 @@ multi_induction.adb:1:32: info: initialization of "X2" proved
 multi_induction.adb:6:16: medium: overflow check might fail [CWE 190], cannot prove upper bound for X1 + 2 (e.g. when X1 = Integer'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer]
 multi_induction.adb:7:16: medium: overflow check might fail [CWE 190], cannot prove upper bound for X2 + 6 (e.g. when X2 = 2147483642) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 5 should mention X2 in a loop invariant]
 rec_constant.adb:1:10: info: implicit function contract might not be available on recursive calls
-rec_constant.adb:6:07: medium: implicit terminating annotation on "Rec_Constant" could be incorrect, subprogram is recursive [CWE 674]
+rec_constant.adb:6:07: medium: implicit terminating annotation on "Rec_Constant" could be incorrect, subprogram is recursive [CWE 674] [possible fix: annotate "Rec_Constant" with a Subprogram_Variant aspect]
 search.adb:2:10: info: implicit terminating annotation on "Search" has been proved, subprogram will terminate
 search.adb:4:21: info: unrolling loop
-search_loop.adb:5:04: medium: implicit terminating annotation on "Search_Loop" could be incorrect, loop might be nonterminating [CWE 674]
+search_loop.adb:5:04: medium: implicit terminating annotation on "Search_Loop" could be incorrect, loop might be nonterminating [CWE 674] [possible fix: add loop variant in the loop body]
 search_loop.adb:9:13: medium: array index check might fail [CWE 119] (e.g. when J = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 5 should mention J in a loop invariant]
 search_loop.adb:12:14: info: overflow check proved (CVC5: 2 VC)
 search_unk.adb:2:10: info: implicit terminating annotation on "Search_Unk" has been proved, subprogram will terminate
 search_unk.adb:4:21: info: cannot unroll loop (too many loop iterations)
-search_while.adb:5:22: medium: implicit terminating annotation on "Search_While" could be incorrect, loop might be nonterminating [CWE 674]
+search_while.adb:5:22: medium: implicit terminating annotation on "Search_While" could be incorrect, loop might be nonterminating [CWE 674] [possible fix: add loop variant in the loop body]
 search_while.adb:6:13: medium: array index check might fail [CWE 119] (e.g. when J = 0) [reason for check: value must be a valid index into the array] [possible fix: add or complete related loop invariants or postconditions]
 search_while.adb:9:14: info: overflow check proved (CVC5: 2 VC)
 self_assign.adb:3:11: high: overflow check might fail [CWE 190], cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]

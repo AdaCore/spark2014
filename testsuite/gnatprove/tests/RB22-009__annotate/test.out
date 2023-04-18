@@ -5,7 +5,7 @@ test.ads:9:04: warning: Always_Return annotation is useless
 test.ads:9:04: warning: function "Bar" has implicit Always_Return annotation
 test.ads:11:13: info: implicit terminating annotation on "Test" has been proved, subprogram will terminate
 types.adb:9:23: info: range check proved (CVC5: 4 VC), in instantiation at test.ads:7
-types.adb:10:07: medium: implicit terminating annotation on "Bar" could be incorrect, loop might be nonterminating, in instantiation at test.ads:7
+types.adb:10:07: medium: implicit terminating annotation on "Bar" could be incorrect, loop might be nonterminating, in instantiation at test.ads:7 [possible fix: add loop variant in the loop body]
 types.adb:11:55: info: index check proved (CVC5: 2 VC), in instantiation at test.ads:7
 types.adb:11:55: info: overflow check proved (CVC5: 2 VC), in instantiation at test.ads:7
 types.adb:12:17: info: overflow check proved (CVC5: 2 VC), in instantiation at test.ads:7

@@ -1,5 +1,5 @@
-bad.adb:5:34: medium: implicit terminating annotation on "A" could be incorrect, "A" and "B" are mutually recursive
-bad.adb:6:34: medium: implicit terminating annotation on "B" could be incorrect, "B" and "A" are mutually recursive
+bad.adb:5:34: medium: implicit terminating annotation on "A" could be incorrect, "A" and "B" are mutually recursive [possible fix: annotate "A" and "B" with Subprogram_Variant aspects]
+bad.adb:6:34: medium: implicit terminating annotation on "B" could be incorrect, "B" and "A" are mutually recursive [possible fix: annotate "B" and "A" with Subprogram_Variant aspects]
 bad.adb:12:13: info: add a contract to analyze it separately from calling contexts
 bad.adb:12:13: info: implicit terminating annotation on "In_T" has been proved, subprogram will terminate
 bad.adb:12:13: info: local subprogram "In_T" only analyzed in the context of calls

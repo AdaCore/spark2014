@@ -9,28 +9,28 @@ test_callback.adb:20:14: warning: subprogram "Junk" has no effect
 test_callback.adb:25:13: info: implicit terminating annotation on "Increment" has been proved, subprogram will terminate
 test_callback.adb:25:58: info: overflow check proved (CVC5: 2 VC)
 test_callback.adb:34:14: info: postcondition proved (CVC5: 1 VC)
-test_callback.adb:37:07: medium: implicit terminating annotation on "Call_Incr_Fun" could be incorrect, call via access-to-subprogram might be nonterminating
+test_callback.adb:37:07: medium: implicit terminating annotation on "Call_Incr_Fun" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 test_callback.adb:37:48: info: pointer dereference check proved (CVC5: 1 VC)
 test_callback.adb:37:48: info: precondition proved (CVC5: 1 VC)
 test_callback.adb:42:14: medium: postcondition might fail
-test_callback.adb:45:07: medium: implicit terminating annotation on "Call_Incr_Bad" could be incorrect, call via access-to-subprogram might be nonterminating
+test_callback.adb:45:07: medium: implicit terminating annotation on "Call_Incr_Bad" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 test_callback.adb:45:14: info: pointer dereference check proved (CVC5: 1 VC)
 test_callback.adb:45:14: medium: precondition might fail
 test_callback.adb:50:14: medium: postcondition might fail
-test_callback.adb:53:07: medium: implicit terminating annotation on "Call_Incr_Bad2" could be incorrect, call via access-to-subprogram might be nonterminating
+test_callback.adb:53:07: medium: implicit terminating annotation on "Call_Incr_Bad2" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 test_callback.adb:53:14: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 48 should mention F]
 test_callback.adb:53:14: medium: precondition might fail
 test_callback.adb:58:14: info: postcondition proved (CVC5: 1 VC)
-test_callback.adb:61:07: medium: implicit terminating annotation on "Call_Incr_Fun_Conv" could be incorrect, call via access-to-subprogram might be nonterminating
+test_callback.adb:61:07: medium: implicit terminating annotation on "Call_Incr_Fun_Conv" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 test_callback.adb:61:26: info: precondition of target is strong enough to imply precondition of source (CVC5: 1 VC)
 test_callback.adb:61:29: info: pointer dereference check proved (CVC5: 1 VC)
 test_callback.adb:61:29: info: precondition proved (CVC5: 1 VC)
 test_callback.adb:66:14: info: postcondition proved (CVC5: 1 VC)
-test_callback.adb:69:07: medium: implicit terminating annotation on "Call_Incr_Fun_Conv_Bad" could be incorrect, call via access-to-subprogram might be nonterminating
+test_callback.adb:69:07: medium: implicit terminating annotation on "Call_Incr_Fun_Conv_Bad" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 test_callback.adb:69:26: info: precondition of target is strong enough to imply precondition of source (CVC5: 1 VC)
 test_callback.adb:69:29: info: pointer dereference check proved (CVC5: 1 VC)
 test_callback.adb:69:29: medium: precondition might fail
-test_callback.adb:76:07: medium: implicit terminating annotation on "Call_Incr_Fun_Conv_Bad2" could be incorrect, call via access-to-subprogram might be nonterminating
+test_callback.adb:76:07: medium: implicit terminating annotation on "Call_Incr_Fun_Conv_Bad2" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 test_callback.adb:76:24: info: null exclusion check proved (CVC5: 1 VC)
 test_callback.adb:76:24: medium: postcondition of source might not be strong enough to imply postcondition of target
 test_callback.adb:76:24: medium: precondition of target might not be strong enough to imply precondition of source

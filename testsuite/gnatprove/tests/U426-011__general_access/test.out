@@ -81,7 +81,7 @@ gen_access.adb:65:25: warning: assuming "Mk_List" has no effect on global items
 gen_access.adb:65:25: warning: no Global contract available for "Mk_List"
 gen_access.adb:67:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
 gen_access.adb:67:79: info: dynamic accessibility check proved (Trivial)
-gen_access.adb:71:18: medium: implicit terminating annotation on "All_Null" could be incorrect, subprogram is recursive
+gen_access.adb:71:18: medium: implicit terminating annotation on "All_Null" could be incorrect, subprogram is recursive [possible fix: annotate "All_Null" with a Subprogram_Variant aspect]
 gen_access.adb:71:62: info: pointer dereference check proved (CVC5: 1 VC)
 gen_access.adb:72:09: warning: Always_Return annotation is useless
 gen_access.adb:72:09: warning: function "All_Null" has implicit Always_Return annotation

@@ -11,11 +11,11 @@ p.adb:16:11: info: data dependencies proved
 p.adb:17:35: low: unused global "Low"
 p.adb:17:40: low: unused global "High"
 p.adb:21:16: medium: predicate check might fail
-termination.adb:7:07: medium: implicit terminating annotation on "Infinite_Loop" could be incorrect, loop might be nonterminating
+termination.adb:7:07: medium: implicit terminating annotation on "Infinite_Loop" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 termination.adb:10:07: warning: unreachable code
-termination.adb:18:07: medium: implicit terminating annotation on "Rec_Func" could be incorrect, subprogram is recursive
-termination.adb:19:10: medium: implicit terminating annotation on "Rec_Func" could be incorrect, subprogram is recursive
-termination.adb:21:10: medium: implicit terminating annotation on "Rec_Func" could be incorrect, subprogram is recursive
+termination.adb:18:07: medium: implicit terminating annotation on "Rec_Func" could be incorrect, subprogram is recursive [possible fix: annotate "Rec_Func" with a Subprogram_Variant aspect]
+termination.adb:19:10: medium: implicit terminating annotation on "Rec_Func" could be incorrect, subprogram is recursive [possible fix: annotate "Rec_Func" with a Subprogram_Variant aspect]
+termination.adb:21:10: medium: implicit terminating annotation on "Rec_Func" could be incorrect, subprogram is recursive [possible fix: annotate "Rec_Func" with a Subprogram_Variant aspect]
 termination.ads:7:13: info: implicit terminating annotation on "Another_Nonterminating_Func" has been proved, subprogram will terminate
 termination.ads:39:13: info: implicit terminating annotation on "Infinite_Loop2" has been proved, subprogram will terminate
 termination.ads:44:09: medium: invariant check might fail on default value

@@ -1,5 +1,5 @@
 in_out_pledge.adb:11:14: info: implicit function contract might not be available on recursive calls
-in_out_pledge.adb:12:08: medium: implicit terminating annotation on "Length_Aux" could be incorrect, subprogram is recursive
+in_out_pledge.adb:12:08: medium: implicit terminating annotation on "Length_Aux" could be incorrect, subprogram is recursive [possible fix: annotate "Length_Aux" with a Subprogram_Variant aspect]
 in_out_pledge.adb:13:27: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:15:15: info: overflow check proved (CVC5: 2 VC)
 in_out_pledge.adb:15:30: info: pointer dereference check proved (CVC5: 1 VC)
@@ -7,7 +7,7 @@ in_out_pledge.adb:16:05: warning: Always_Return annotation is useless
 in_out_pledge.adb:16:05: warning: function "Length_Aux" has implicit Always_Return annotation
 in_out_pledge.adb:18:14: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 in_out_pledge.adb:20:14: info: implicit function contract might not be available on recursive calls
-in_out_pledge.adb:21:08: medium: implicit terminating annotation on "Get_Nth_Val" could be incorrect, subprogram is recursive
+in_out_pledge.adb:21:08: medium: implicit terminating annotation on "Get_Nth_Val" could be incorrect, subprogram is recursive [possible fix: annotate "Get_Nth_Val" with a Subprogram_Variant aspect]
 in_out_pledge.adb:21:23: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:21:35: info: precondition proved (CVC5: 1 VC)
 in_out_pledge.adb:21:49: info: pointer dereference check proved (CVC5: 1 VC)

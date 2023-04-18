@@ -1,5 +1,5 @@
 test_list.adb:14:13: info: implicit function contract might not be available on recursive calls
-test_list.adb:15:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive
+test_list.adb:15:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
 test_list.adb:15:40: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_list.adb:15:48: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:15:60: info: pointer dereference check proved (CVC5: 1 VC)
@@ -8,7 +8,7 @@ test_list.adb:15:67: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:17:08: warning: Always_Return annotation is useless
 test_list.adb:17:08: warning: function "Length" has implicit Always_Return annotation
 test_list.adb:19:13: info: implicit function contract might not be available on recursive calls
-test_list.adb:20:07: medium: implicit terminating annotation on "Nth_Int" could be incorrect, subprogram is recursive
+test_list.adb:20:07: medium: implicit terminating annotation on "Nth_Int" could be incorrect, subprogram is recursive [possible fix: annotate "Nth_Int" with a Subprogram_Variant aspect]
 test_list.adb:20:10: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:20:14: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:20:30: info: precondition proved (CVC5: 1 VC)
@@ -58,7 +58,7 @@ test_list.adb:51:29: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:51:33: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:53:16: info: predicate check proved (Trivial: 2 VC)
 test_list.adb:53:20: info: predicate check proved (Trivial: 2 VC)
-test_list.adb:53:22: medium: implicit terminating annotation on "Reference" could be incorrect, loop might be nonterminating
+test_list.adb:53:22: medium: implicit terminating annotation on "Reference" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 test_list.adb:54:36: info: loop invariant initialization proved (CVC5: 1 VC)
 test_list.adb:54:36: info: loop invariant preservation proved (CVC5: 1 VC)
 test_list.adb:54:36: info: predicate check proved (Trivial: 2 VC)
@@ -150,7 +150,7 @@ test_list.adb:71:18: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:71:22: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:74:39: info: pointer dereference check proved (CVC5: 1 VC)
 test_list.adb:76:20: info: null exclusion check proved (CVC5: 1 VC)
-test_list.adb:82:15: medium: implicit terminating annotation on "All_Zeros" could be incorrect, subprogram is recursive
+test_list.adb:82:15: medium: implicit terminating annotation on "All_Zeros" could be incorrect, subprogram is recursive [possible fix: annotate "All_Zeros" with a Subprogram_Variant aspect]
 test_list.adb:82:59: info: pointer dereference check proved (CVC5: 1 VC)
 test_list.adb:84:08: warning: Always_Return annotation is useless
 test_list.adb:84:08: warning: function "All_Zeros" has implicit Always_Return annotation

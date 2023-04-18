@@ -2,11 +2,14 @@
 terminating_annotations.adb:8:10: medium: terminating annotation on "P_Rec" could be incorrect, subprogram is recursive
     8 |         P_Rec (X - 1);
       |         ^~~~~~~~~~~~
+  possible fix: annotate "P_Rec" with a Subprogram_Variant aspect
 
 terminating_annotations.adb:15:19: medium: terminating annotation on "P_While" could be incorrect, loop might be nonterminating
    15 |      while Y > 0 loop
       |                  ^~~~
+  possible fix: add loop variant in the loop body
 
 terminating_annotations.adb:35:07: medium: terminating annotation on "P_Call" could be incorrect, call to "Not_SPARK" might be nonterminating
    35 |      Not_SPARK (X);
       |      ^~~~~~~~~~~~
+  possible fix: annotate "Not_SPARK" with Always_Return

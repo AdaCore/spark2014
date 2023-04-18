@@ -1,4 +1,4 @@
-external_6.adb:5:07: medium: implicit terminating annotation on "Read" could be incorrect, "Read" and "Pub" are mutually recursive
+external_6.adb:5:07: medium: implicit terminating annotation on "Read" could be incorrect, "Read" and "Pub" are mutually recursive [possible fix: annotate "Read" and "Pub" with Subprogram_Variant aspects]
 external_6.ads:5:13: info: implicit function contract might not be available on recursive calls
 external_6.ads:6:14: warning: subprogram "Read" has no effect
 external_6.ads:7:21: info: initialization of "X" proved
@@ -198,7 +198,7 @@ type_invariant_legal_6.adb:5:13: info: implicit terminating annotation on "Priv"
 type_invariant_legal_6.adb:6:14: warning: subprogram "Priv_In" has no effect
 type_invariant_legal_6.adb:7:24: info: initialization of "X" proved
 type_invariant_legal_6.adb:8:27: warning: unused initial value of "X"
-type_invariant_legal_6.adb:12:07: medium: implicit terminating annotation on "Pub" could be incorrect, "Pub" and "Read" are mutually recursive
+type_invariant_legal_6.adb:12:07: medium: implicit terminating annotation on "Pub" could be incorrect, "Pub" and "Read" are mutually recursive [possible fix: annotate "Pub" and "Read" with Subprogram_Variant aspects]
 type_invariant_legal_6.adb:12:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_6.adb:17:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: precondition of subprogram at line 5 should mention X]
 type_invariant_legal_6.adb:22:07: info: invariant check proved (CVC5: 1 VC)

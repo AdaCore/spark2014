@@ -6,7 +6,7 @@ ghc_sort.adb:8:26: info: range check proved
 ghc_sort.adb:9:33: info: overflow check proved
 ghc_sort.adb:9:33: info: range check proved
 ghc_sort.adb:10:07: info: initialization of "Inc" proved
-ghc_sort.adb:13:26: medium: implicit terminating annotation on "Cut" could be incorrect, loop might be nonterminating
+ghc_sort.adb:13:26: medium: implicit terminating annotation on "Cut" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 ghc_sort.adb:14:33: info: loop invariant initialization proved
 ghc_sort.adb:14:33: info: loop invariant preservation proved
 ghc_sort.adb:15:33: info: loop invariant initialization proved

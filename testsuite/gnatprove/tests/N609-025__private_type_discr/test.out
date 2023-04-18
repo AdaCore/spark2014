@@ -9,7 +9,7 @@ record_discr.adb:24:28: medium: discriminant check might fail [possible fix: sub
 record_discr.adb:29:53: info: range check proved (CVC5: 2 VC)
 record_discr.adb:31:44: info: discriminant check proved (CVC5: 1 VC)
 record_discr.adb:34:43: info: index check proved (CVC5: 2 VC)
-record_discr.adb:37:10: medium: implicit terminating annotation on "Search_Upto" could be incorrect, subprogram is recursive
+record_discr.adb:37:10: medium: implicit terminating annotation on "Search_Upto" could be incorrect, subprogram is recursive [possible fix: annotate "Search_Upto" with a Subprogram_Variant aspect]
 record_discr.adb:38:39: info: range check proved (CVC5: 2 VC)
 record_discr.adb:39:33: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 record_discr.adb:39:33: info: range check proved (CVC5: 4 VC)

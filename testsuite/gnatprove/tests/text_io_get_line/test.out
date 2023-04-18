@@ -43,7 +43,7 @@ textio-get_line.adb:109:13: warning: no Global contract available for "ferror"
 textio-get_line.adb:152:35: warning: assuming "Find_Char_In_Slice" has no effect on global items
 textio-get_line.adb:152:35: warning: no Global contract available for "Find_Char_In_Slice"
 textio-get_line.adb:173:04: info: initialization of "Rest" proved
-textio-get_line.adb:192:26: medium: terminating annotation on "Get_Line" could be incorrect, loop might be nonterminating
+textio-get_line.adb:192:26: medium: terminating annotation on "Get_Line" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 textio.adb:10:14: info: terminating annotation on "Getc" has been proved, subprogram will terminate
 textio.adb:10:38: info: initialization of "Ch" proved
 textio.adb:11:40: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
@@ -59,7 +59,7 @@ textio.adb:145:09: info: data dependencies proved
 textio.adb:154:17: medium: "Result" might not be initialized
 textio.adb:173:10: info: initialization of "Buffer" proved
 textio.adb:174:10: info: initialization of "Last" proved
-textio.adb:210:07: medium: terminating annotation on "Get_Line_Function" could be incorrect, call to "Get_Rest" might be nonterminating
+textio.adb:210:07: medium: terminating annotation on "Get_Line_Function" could be incorrect, call to "Get_Rest" might be nonterminating [possible fix: annotate "Get_Rest" with Always_Return]
 textio.ads:6:21: warning: no procedure exists that can initialize abstract state "TextIO.Current_Input_File"
 textio.ads:13:07: warning: "File" is not modified, could be IN
 textio.ads:14:07: info: initialization of "Item" proved
