@@ -1158,7 +1158,7 @@ package SPARK_Util is
      Pre  => Nkind (Stmt) in N_Procedure_Call_Statement
                            | N_Entry_Call_Statement
                            | N_Raise_Statement;
-   --  Retrieve all exceptions raise by Stmt. If Only_Hanled is True, only
+   --  Retrieve all exceptions raised by Stmt. If Only_Handled is True, only
    --  consider exception which are handled above Stmt.
 
    function Might_Raise_Handled_Exceptions (Stmt : Node_Id) return Boolean is

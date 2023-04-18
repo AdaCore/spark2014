@@ -5437,8 +5437,8 @@ package body SPARK_Definition is
                                then Pre_Post_Conditions (Contract (E))
                                else Empty);
             Expr : Node_Id;
-         begin
 
+         begin
             while Present (Prag) loop
                Expr :=
                  Get_Pragma_Arg (First (Pragma_Argument_Associations (Prag)));
