@@ -1,48 +1,31 @@
-from subprocess import check_output
-import re
+from e3.auth.gitlab import gen_gitlab_token
+import gitlab
 import glob
 import os.path
+import re
 
-# script to be run on a server where bugtool is available
-
-status_re = re.compile(r"Status: (.*)")
-TN_re = re.compile(r"[0-9A-Z][0-9A-C][0-9][0-9]-[0-9][0-9][0-9]")
+issue_re = re.compile(r"[A-z0-9/]+#[0-9]+")
+numre = re.compile(r"[0-9]+")
 xfail_re = re.compile(r"XFAIL")
-assigned_to = re.compile("Assigned to: (.*)")
+
+gl = gitlab.Gitlab(
+    url="https://gitlab.adacore-it.com",
+    private_token=gen_gitlab_token()["token"],
+)
 
 
-def get_tn_info(tn):
-    """return the info text for a TN (a string)"""
-    return check_output(["bugtool", "info", tn]).decode("utf-8")
-
-
-def tn_status(tn):
-    """return the TN status as a string for a TN"""
-    info = get_tn_info(tn)
-    m = re.search(status_re, info)
-    if m:
-        return m.group(1)
-    else:
-        exit(1)
-
-
-def tn_assignee(tn):
-    info = get_tn_info(tn)
-    return re.search(assigned_to, info).group(1)
-
-
-def tn_is_open(tn):
-    """return true when the TN is open"""
-    status = tn_status(tn)
-    return status == "open"
+def get_issue(issue):
+    project_name, issue_id = issue.split("#")
+    project = gl.projects.get(project_name)
+    return project.issues.get(issue_id)
 
 
 def test_is_xfail(testdir):
-    """return the list of TNs mentioned in test.opt and test name if the test
-    contained in testdir is marked XFAIL on at least one platform. Return the
-    TN(s) mentioned in the test name first. Return empty list if the test is
-    XFAIL but there are no TNs in the name nor the test.opt. Return None if
-    test is not XFAIL.
+    """return the list of issues mentioned in test.opt and test name if the
+    test contained in testdir is marked XFAIL on at least one platform. Return
+    the issue(s) mentioned in the test name first. Return empty list if the
+    test is XFAIL but there are no issues in the name nor the test.opt. Return
+    None if test is not XFAIL.
     """
     test_opt = os.path.join(testdir, "test.opt")
     if os.path.exists(test_opt):
@@ -50,8 +33,11 @@ def test_is_xfail(testdir):
             text = f.read().decode("utf-8")
             m = re.search(xfail_re, text)
             if m:
-                my_list = re.findall(TN_re, text)
-                my_list = re.findall(TN_re, testdir) + my_list
+                my_list = re.findall(issue_re, text)
+                testname = os.path.basename(testdir)
+                m = re.match(numre, testname)
+                if m:
+                    my_list = [("eng/spark/spark2014#" + m.group(0))] + my_list
                 return my_list
             else:
                 return None
@@ -64,22 +50,26 @@ def check_xfail_tests():
     exists.
     """
     tests = glob.glob("tests/*")
+    tests += glob.glob("internal/*")
     for test in tests:
+        testname = os.path.basename(test)
         xfail_list = test_is_xfail(test)
         if xfail_list is None:
             pass
         elif xfail_list == []:
-            print("test %s is XFAIL, but there is no TN" % test)
+            print(f"test {testname} is XFAIL, but there is no TN")
         else:
+            issues = [get_issue(issue_id) for issue_id in xfail_list]
             all_closed = True
-            for tn in xfail_list:
-                if tn_is_open(tn):
+
+            for issue in issues:
+                if issue.state == "opened":
                     all_closed = False
             if all_closed:
-                assignee = tn_assignee(xfail_list[0])
+                assignee = issues[0].assignee
                 print(
                     (
-                        f"test {test} is XFAIL, all associated TNs"
+                        f"test {testname} is XFAIL, all associated issues"
                         f"{xfail_list} are not open ({assignee})"
                     )
                 )
