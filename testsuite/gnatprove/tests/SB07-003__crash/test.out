@@ -1,8 +1,8 @@
 database.adb:10:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 database.adb:15:04: error: "Item" is not writable
-database.adb:15:04: error: instantiation error at spark-containers-formal-doubly_linked_lists.ads:120
-database.adb:15:04: error: instantiation error at spark-containers-functional-vectors.ads:317
-database.adb:15:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:317, instance at spark-containers-formal-doubly_linked_lists.ads:120, instance at line 15
+database.adb:15:04: error: instantiation error at spark-containers-formal-doubly_linked_lists.ads:98
+database.adb:15:04: error: instantiation error at spark-containers-functional-vectors.ads:295
+database.adb:15:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:295, instance at spark-containers-formal-doubly_linked_lists.ads:98, instance at line 15
 database.adb:19:04: info: initialization of "Database" proved
 database.adb:28:18: medium: implicit terminating annotation on "Query_Email" could be incorrect, loop might be nonterminating
 gnatprove: error during flow analysis and proof
