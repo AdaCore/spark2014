@@ -1992,7 +1992,7 @@ package body SPARK_Util is
 
                      when N_Identifier
                         | N_Expanded_Name
-                        =>
+                     =>
                         if False_Post then
                            Result.Exclude (Entity (Exc));
                         else
@@ -2274,7 +2274,7 @@ package body SPARK_Util is
    function Get_Raised_Exceptions
      (Stmt         : Node_Id;
       Only_Handled : Boolean)
-      return  Exception_Sets.Set
+      return Exception_Sets.Set
    is
 
       function Is_Handler (N : Node_Id) return Boolean is
@@ -2329,7 +2329,7 @@ package body SPARK_Util is
       end case;
 
       if Only_Handled then
-            Result.Intersection (Get_Handled_Exceptions (Stmt));
+         Result.Intersection (Get_Handled_Exceptions (Stmt));
       end if;
 
       return Result;

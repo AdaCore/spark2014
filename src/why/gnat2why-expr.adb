@@ -23207,7 +23207,7 @@ package body Gnat2Why.Expr is
    function Transform_Simple_Return_Expression
      (Expr        : N_Subexpr_Id;
       Subp        : Entity_Id;
-      Return_Type : W_Type_Id) return  W_Prog_Id
+      Return_Type : W_Type_Id) return W_Prog_Id
    is
       Result_Stmt : W_Prog_Id;
    begin

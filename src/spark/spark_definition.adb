@@ -5437,8 +5437,8 @@ package body SPARK_Definition is
                                then Pre_Post_Conditions (Contract (E))
                                else Empty);
             Expr : Node_Id;
-         begin
 
+         begin
             while Present (Prag) loop
                Expr :=
                  Get_Pragma_Arg (First (Pragma_Argument_Associations (Prag)));
@@ -8022,7 +8022,7 @@ package body SPARK_Definition is
    procedure Mark_Handled_Statements
      (N : N_Handled_Sequence_Of_Statements_Id)
    is
-      Handlers : constant List_Id := Exception_Handlers (N);
+      Handler : Node_Id;
 
    begin
       --  The handled statements should be marked before the handler so that
@@ -8031,17 +8031,11 @@ package body SPARK_Definition is
 
       Mark_Stmt_Or_Decl_List (Statements (N));
 
-      if Present (Handlers) then
-         declare
-            Handler : Node_Id := First (Handlers);
-         begin
-            loop
-               Mark_Exception_Handler (Handler);
-               Next (Handler);
-               exit when No (Handler);
-            end loop;
-         end;
-      end if;
+      Handler := First (Exception_Handlers (N));
+      while Present (Handler) loop
+         Mark_Exception_Handler (Handler);
+         Next (Handler);
+      end loop;
    end Mark_Handled_Statements;
 
    --------------------------------------

@@ -706,7 +706,7 @@ package Gnat2Why.Expr is
      (Expr        : N_Subexpr_Id;
       Subp        : Entity_Id;
       Return_Type : W_Type_Id)
-      return  W_Prog_Id;
+      return W_Prog_Id;
    --  Transform a simple return statement returning the expression Expr
 
    function Transform_Handled_Statements (N : Node_Id) return W_Prog_Id;
