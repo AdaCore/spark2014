@@ -1,53 +1,53 @@
 spark-containers-functional-infinite_sequences-higher_order.adb:41:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:47:42: info: range check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:47:42: info: range check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:48:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:48:36: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:49:28: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:49:37: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:49:48: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:54:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:60:42: info: range check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:60:42: info: range check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:61:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:61:36: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:63:08: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:63:08: info: postcondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:63:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:63:37: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:63:37: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:63:37: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:63:57: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:63:57: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:64:08: medium: implicit terminating annotation on "Filter_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:64:52: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:69:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:75:42: info: range check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:75:42: info: range check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:76:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:76:36: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:87:07: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:87:29: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:87:07: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:87:29: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:94:25: info: refined post proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:94:30: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:94:40: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:94:40: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:94:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:97:35: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:94:60: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:97:35: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:98:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:98:27: medium: implicit terminating annotation on "Count" could be incorrect, loop might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:99:13: medium: implicit terminating annotation on "Count" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:99:16: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:99:22: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:99:16: info: pointer dereference check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:99:22: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:100:23: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:100:27: info: predicate check proved (Trivial: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:100:29: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:102:36: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:102:36: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:102:36: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:102:36: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:102:42: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:102:42: info: precondition proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:102:42: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:102:56: info: predicate check proved (Trivial: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:102:59: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:102:59: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:117:07: medium: implicit terminating annotation on "Count_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:117:10: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:117:17: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:117:24: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:118:12: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:117:24: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:118:12: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:118:12: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:118:12: info: subprogram variant proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:118:26: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
@@ -55,149 +55,149 @@ spark-containers-functional-infinite_sequences-higher_order.adb:118:31: info: pr
 spark-containers-functional-infinite_sequences-higher_order.adb:118:33: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:118:42: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:119:13: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:119:19: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:119:19: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:119:39: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:119:57: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:119:59: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:119:59: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:132:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:133:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:133:27: medium: implicit terminating annotation on "Create" could be incorrect, loop might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:134:17: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:134:30: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:134:30: info: pointer dereference check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:134:40: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:135:36: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:135:36: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:135:36: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:135:51: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:136:13: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:137:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:137:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:137:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:138:41: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:138:41: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:138:55: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:138:65: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:151:08: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:151:31: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:151:31: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:159:06: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:159:06: info: refined post proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:159:06: info: refined post proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:159:31: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:159:39: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:159:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:160:44: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:160:65: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:159:60: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:160:44: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:160:65: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:163:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:164:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:164:27: medium: implicit terminating annotation on "Filter" could be incorrect, loop might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:165:13: medium: implicit terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:165:16: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:165:16: info: pointer dereference check proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:165:22: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:166:33: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:169:16: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:166:33: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:169:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:169:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:169:16: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:169:31: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:169:39: info: precondition proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:169:54: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:169:39: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:169:54: info: predicate check proved (Trivial: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:169:57: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:171:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:171:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:171:35: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:171:50: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:171:53: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:171:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:171:35: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:171:50: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:171:53: info: null exclusion check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:186:07: medium: implicit terminating annotation on "Filter_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:186:10: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:186:17: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:187:13: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:187:19: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:188:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:188:17: info: subprogram variant proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:188:17: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:188:32: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:188:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:188:39: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:188:49: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:188:49: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:189:12: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:189:12: info: subprogram variant proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:189:12: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:189:27: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:189:32: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:189:32: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:189:34: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:201:11: info: precondition proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:201:24: medium: terminating annotation on "Lemma_Count_All" could be incorrect, loop might be nonterminating, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:202:33: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:202:33: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:202:33: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:202:33: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:202:33: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:202:33: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:202:33: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:202:47: info: predicate check proved (Trivial: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:202:50: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:202:50: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:202:58: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:216:11: info: precondition proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:216:24: medium: implicit terminating annotation on "Lemma_Count_Eq" could be incorrect, loop might be nonterminating, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:218:13: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:218:13: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:218:13: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:218:13: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:218:13: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:218:13: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:218:13: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:218:28: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:218:31: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:218:39: info: precondition proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:218:28: info: predicate check proved (Trivial: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:218:31: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:218:39: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:218:39: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:218:54: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:218:57: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:218:54: info: predicate check proved (Trivial: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:218:57: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:242:11: info: precondition proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:242:24: medium: terminating annotation on "Lemma_Count_None" could be incorrect, loop might be nonterminating, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:243:33: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:243:33: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:243:33: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:243:33: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:243:33: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:243:33: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:243:47: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:243:50: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:243:58: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:257:11: info: precondition proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:257:24: medium: terminating annotation on "Lemma_Filter_All" could be incorrect, loop might be nonterminating, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:258:33: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:258:33: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:258:33: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:258:33: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:258:33: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:258:41: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:258:56: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:258:59: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:258:56: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:258:59: info: null exclusion check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:258:68: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:259:33: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:259:33: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:259:47: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:259:62: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:259:65: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:259:65: info: null exclusion check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:273:11: info: precondition proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:273:24: medium: implicit terminating annotation on "Lemma_Filter_Eq" could be incorrect, loop might be nonterminating, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:275:13: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:275:13: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:275:13: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:275:13: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:275:21: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:275:37: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:275:40: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:275:37: info: predicate check proved (Trivial: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:275:40: info: null exclusion check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:276:15: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:276:23: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:276:23: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:276:39: info: predicate check proved (Trivial: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:276:42: info: null exclusion check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:278:13: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:278:13: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:278:27: info: precondition proved (Z3: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:278:43: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:278:46: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:278:53: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:278:69: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:278:72: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:276:42: info: null exclusion check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:278:13: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:278:13: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:278:27: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:278:43: info: predicate check proved (Trivial: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:278:46: info: null exclusion check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:278:53: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:278:69: info: predicate check proved (Trivial: 2 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:278:72: info: null exclusion check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:302:11: info: precondition proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:302:24: medium: implicit terminating annotation on "Lemma_Sum_Eq" could be incorrect, loop might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:304:13: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:304:13: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:304:13: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:304:13: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:304:13: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:304:26: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:304:29: info: null exclusion check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:304:38: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:304:26: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:304:29: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:304:38: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:304:38: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:304:51: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:304:51: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:304:54: info: null exclusion check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:326:08: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:326:28: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:333:25: info: refined post proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:326:28: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:333:25: info: refined post proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:333:28: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:333:38: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:333:38: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
@@ -206,21 +206,21 @@ spark-containers-functional-infinite_sequences-higher_order.adb:337:14: info: pr
 spark-containers-functional-infinite_sequences-higher_order.adb:337:27: medium: implicit terminating annotation on "Sum" could be incorrect, loop might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:338:17: medium: implicit terminating annotation on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:338:20: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:338:26: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:338:26: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:338:26: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:338:33: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:338:33: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:339:36: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:339:36: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:339:36: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:339:36: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:339:42: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:339:42: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:339:42: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:339:54: info: predicate check proved (CVC5: 1 VC; Trivial: 2 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:339:57: info: null exclusion check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:354:07: medium: implicit terminating annotation on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:354:10: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:354:17: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:354:37: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:355:12: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:354:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:355:12: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:355:12: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:355:12: info: subprogram variant proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:355:24: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
@@ -228,22 +228,22 @@ spark-containers-functional-infinite_sequences-higher_order.adb:355:29: info: pr
 spark-containers-functional-infinite_sequences-higher_order.adb:355:31: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:355:43: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:355:43: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:355:50: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:355:50: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:368:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:369:14: info: precondition proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:369:27: medium: implicit terminating annotation on "Transform" could be incorrect, loop might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:370:17: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:370:30: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:370:46: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:371:36: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:370:30: info: pointer dereference check proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:370:46: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:371:36: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:371:36: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:371:36: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:371:51: info: predicate check proved (Trivial: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:372:13: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:373:16: info: loop invariant initialization proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:373:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:375:22: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.adb:375:36: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:373:16: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:375:22: info: precondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:375:36: info: pointer dereference check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:375:52: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:40:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:47:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
@@ -253,20 +253,20 @@ spark-containers-functional-infinite_sequences-higher_order.ads:49:43: info: pre
 spark-containers-functional-infinite_sequences-higher_order.ads:50:08: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:52:35: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:52:59: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:52:69: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:52:69: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:56:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:63:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:65:18: info: postcondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:65:18: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:65:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:65:46: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:66:08: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:69:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:69:17: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:69:44: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:69:60: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:71:13: info: implicit terminating annotation on "Count" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:73:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:79:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:82:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:82:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:82:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:82:33: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:82:33: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
@@ -275,7 +275,7 @@ spark-containers-functional-infinite_sequences-higher_order.ads:87:23: info: fun
 spark-containers-functional-infinite_sequences-higher_order.ads:93:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:95:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:95:26: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:96:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:96:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:96:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:96:34: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:101:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
@@ -285,14 +285,14 @@ spark-containers-functional-infinite_sequences-higher_order.ads:109:26: info: pr
 spark-containers-functional-infinite_sequences-higher_order.ads:109:47: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:109:55: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:110:17: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:110:38: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:111:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:110:38: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:111:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:111:18: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:111:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:111:35: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:111:43: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:111:43: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:111:43: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:111:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:111:60: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:116:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:121:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:124:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
@@ -303,14 +303,14 @@ spark-containers-functional-infinite_sequences-higher_order.ads:126:08: info: pr
 spark-containers-functional-infinite_sequences-higher_order.ads:126:18: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:126:24: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:126:30: medium: implicit terminating annotation on "Lemma_Count_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:126:32: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:126:32: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:126:32: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:126:42: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:126:47: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:126:49: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:126:52: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:127:15: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:127:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:126:52: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:127:15: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:127:21: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:127:52: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:127:54: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:127:62: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
@@ -320,9 +320,9 @@ spark-containers-functional-infinite_sequences-higher_order.ads:139:18: info: pr
 spark-containers-functional-infinite_sequences-higher_order.ads:139:26: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:140:08: medium: terminating annotation on "Lemma_Count_All" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:140:53: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:140:59: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:140:59: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:141:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:141:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:141:18: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:141:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:141:34: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:141:42: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
@@ -332,8 +332,8 @@ spark-containers-functional-infinite_sequences-higher_order.ads:153:18: info: pr
 spark-containers-functional-infinite_sequences-higher_order.ads:153:26: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:154:08: medium: terminating annotation on "Lemma_Count_None" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:154:57: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:154:63: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:155:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:154:63: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:155:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:155:18: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:155:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:155:34: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
@@ -343,16 +343,16 @@ spark-containers-functional-infinite_sequences-higher_order.ads:159:23: info: fu
 spark-containers-functional-infinite_sequences-higher_order.ads:165:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:168:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:168:34: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:168:57: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:168:57: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:173:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:179:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:181:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:181:26: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:182:18: info: postcondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:182:18: info: postcondition proved (altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:182:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:182:43: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:182:43: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:182:59: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:182:59: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:183:08: medium: implicit terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:183:48: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:188:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
@@ -362,38 +362,38 @@ spark-containers-functional-infinite_sequences-higher_order.ads:196:26: info: pr
 spark-containers-functional-infinite_sequences-higher_order.ads:196:47: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:196:55: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:198:41: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:198:54: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:198:54: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:200:08: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:200:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:200:16: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:200:16: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:200:34: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:200:43: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:200:51: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:200:69: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:202:24: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:202:42: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:202:42: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:202:49: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:202:67: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:202:67: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:207:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:212:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:215:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:215:26: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:217:08: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:217:22: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:217:22: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:217:33: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:217:38: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:217:40: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:217:43: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:217:50: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:217:43: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:217:50: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:217:61: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:217:67: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:219:09: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:219:09: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:219:09: medium: implicit terminating annotation on "Lemma_Filter_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:219:15: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:219:30: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:219:30: info: contract case proved (Trivial: 1 VC; altergo: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:220:11: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:220:19: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:220:30: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:220:30: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:220:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:221:13: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:221:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
@@ -402,21 +402,21 @@ spark-containers-functional-infinite_sequences-higher_order.ads:221:37: info: pr
 spark-containers-functional-infinite_sequences-higher_order.ads:221:39: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:221:42: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:221:51: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:223:14: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:223:14: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:224:14: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:224:19: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:224:30: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:224:30: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:224:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:224:51: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:224:51: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:224:62: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:224:68: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:225:30: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:224:68: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:225:30: info: contract case proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:226:11: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:226:19: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:226:30: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:226:36: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:226:19: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:226:30: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:226:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:227:13: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:227:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:227:21: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:227:32: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:227:37: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:227:39: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
@@ -426,48 +426,48 @@ spark-containers-functional-infinite_sequences-higher_order.ads:238:06: info: da
 spark-containers-functional-infinite_sequences-higher_order.ads:240:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:240:26: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:241:08: medium: terminating annotation on "Lemma_Filter_All" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:241:53: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:241:53: info: pointer dereference check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:241:59: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:242:18: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:242:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:242:26: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:242:43: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:242:52: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:243:31: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:243:48: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:243:31: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:243:48: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:245:13: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:247:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:247:24: info: function contract feasibility proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:252:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:255:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:255:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:255:21: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:255:31: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:255:31: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:255:31: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:255:51: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:255:51: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:260:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:265:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:267:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:267:26: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:268:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:268:19: info: postcondition proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:268:22: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:268:29: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:268:39: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:268:49: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:273:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:273:25: info: function contract feasibility proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:278:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:281:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:281:26: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:281:47: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:281:55: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:282:17: info: precondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:282:17: info: precondition proved (CVC5: 2 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:282:38: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:283:18: info: postcondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:283:18: info: postcondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:283:18: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:283:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:283:33: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:283:33: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:283:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:283:42: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:283:57: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:288:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:283:57: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:288:24: info: function contract feasibility proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:293:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:296:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:296:26: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
@@ -475,14 +475,14 @@ spark-containers-functional-infinite_sequences-higher_order.ads:297:18: info: po
 spark-containers-functional-infinite_sequences-higher_order.ads:297:18: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:297:18: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:297:26: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:297:32: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:297:32: info: null exclusion check proved (colibri: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:297:39: medium: implicit terminating annotation on "Lemma_Sum_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:298:08: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:298:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:298:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:298:21: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:298:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:298:26: info: null exclusion check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:298:26: info: null exclusion check proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:298:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:298:35: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:298:42: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:47
@@ -495,7 +495,7 @@ spark-containers-functional-infinite_sequences.ads:60:19: info: terminating anno
 spark-containers-functional-infinite_sequences.ads:91:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:69, in instantiation at test_sequence_ho.adb:44
 spark-containers-functional-infinite_sequences.ads:91:13: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:44
 spark-containers-functional-infinite_sequences.ads:108:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:44
-spark-containers-functional-infinite_sequences.ads:108:43: info: predicate check proved (Trivial: 1 VC; altergo: 1 VC), in instantiation at test_sequence_ho.adb:44
+spark-containers-functional-infinite_sequences.ads:108:43: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at test_sequence_ho.adb:44
 spark-containers-functional-infinite_sequences.ads:111:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:44
 spark-containers-functional-infinite_sequences.ads:173:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:44
 spark-containers-functional-infinite_sequences.ads:173:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:44
@@ -513,7 +513,7 @@ spark-containers-functional-infinite_sequences.ads:330:13: info: precondition pr
 spark-containers-functional-infinite_sequences.ads:334:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:69, in instantiation at test_sequence_ho.adb:44
 spark-containers-functional-infinite_sequences.ads:334:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:44
 spark-containers-functional-infinite_sequences.ads:343:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:69, in instantiation at test_sequence_ho.adb:44
-spark-containers-functional-infinite_sequences.ads:343:13: info: precondition proved (CVC5: 1 VC), in instantiation at test_sequence_ho.adb:44
+spark-containers-functional-infinite_sequences.ads:343:13: info: precondition proved (altergo: 1 VC), in instantiation at test_sequence_ho.adb:44
 spark-containers-functional-infinite_sequences.ads:377:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:44
 spark-containers-functional-infinite_sequences.ads:377:23: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:44
 spark-containers-functional-infinite_sequences.ads:409:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:44
@@ -536,7 +536,7 @@ spark-containers-functional-infinite_sequences.ads:474:31: info: predicate check
 spark-containers-functional-infinite_sequences.ads:474:37: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:44
 spark-containers-functional-infinite_sequences.ads:474:46: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:44
 spark-containers-functional-infinite_sequences.ads:474:53: info: predicate check proved (Trivial: 1 VC), in instantiation at test_sequence_ho.adb:44
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:314, in instantiation at test_sequence_ho.adb:44
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:314, in instantiation at test_sequence_ho.adb:44
 spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:305, in instantiation at test_sequence_ho.adb:44
 spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:305, in instantiation at test_sequence_ho.adb:44
 spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:305, in instantiation at test_sequence_ho.adb:44
@@ -551,7 +551,7 @@ spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in 
 spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:314, in instantiation at test_sequence_ho.adb:44
 spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:314, in instantiation at test_sequence_ho.adb:44
 spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:314, in instantiation at test_sequence_ho.adb:44
-spark-containers-parameter_checks.ads:94:19: info: postcondition proved (altergo: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:314, in instantiation at test_sequence_ho.adb:44
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:314, in instantiation at test_sequence_ho.adb:44
 spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:314, in instantiation at test_sequence_ho.adb:44
 spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:314, in instantiation at test_sequence_ho.adb:44
 spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:314, in instantiation at test_sequence_ho.adb:44
