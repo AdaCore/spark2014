@@ -1,3 +1,2 @@
 NT SKIP too slow on windows
 assertions SKIP minor proof diff
-ALL XFAIL fails due to changes in sparklib (eng/spark/spark2014#135)

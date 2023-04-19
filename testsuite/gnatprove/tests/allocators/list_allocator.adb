@@ -5,11 +5,6 @@ package body List_Allocator with
   SPARK_Mode,
   Refined_State => (State => (Data, First_Available))
 is
-   package Big_From_Count is new Signed_Conversions
-     (Int => Ada.Containers.Count_Type);
-
-   function Big (C : Ada.Containers.Count_Type) return Big_Integer renames
-     Big_From_Count.To_Big_Integer;
 
    type Status is (Available, Allocated);
 
@@ -39,17 +34,17 @@ is
         begin
           Length (Avail) <= Capacity and then
           Length (Alloc) <= To_Big_Integer (Capacity) and then
-          Big (Length (Avail)) + Length (Alloc) = To_Big_Integer (Capacity) and then
+          Length (Avail) + Length (Alloc) = To_Big_Integer (Capacity) and then
           (if First_Available /= No_Resource then
              Length (Avail) > 0 and then Get (Avail, 1) = First_Available
            else
              Length (Avail) = 0)
              and then
-          (for all J in 1 .. Integer (Length (Avail)) =>
+          (for all J in 1 .. Last (Avail) =>
              Get (Avail, J) in Valid_Resource
                and then
              Data (Get (Avail, J)).Next =
-               (if J < Integer (Length (Avail)) then Get (Avail, J + 1) else No_Resource)
+               (if J < Last (Avail) then Get (Avail, J + 1) else No_Resource)
                and then
              (for all K in 1 .. J - 1 =>
                 Get (Avail, J) /= Get (Avail, K)))
@@ -67,7 +62,7 @@ is
          Model.Available := Add (Model.Available, R);
          pragma Loop_Invariant (Is_Empty (Model.Allocated));
          pragma Loop_Invariant (Length (Model.Allocated) = 0);
-         pragma Loop_Invariant (Integer (Length (Model.Available)) = Natural (R));
+         pragma Loop_Invariant (Last (Model.Available) = Natural (R));
          pragma Loop_Invariant (Get (Model.Available, 1) = 1);
          pragma Loop_Invariant
            (for all RR in 1 .. R => Get (Model.Available, Natural (RR)) = RR);
@@ -91,7 +86,7 @@ is
          Model.Allocated := Add (Model.Allocated, Res);
 
          pragma Assert
-           (for all J in 1 .. Integer (Length (Model.Available)) =>
+           (for all J in 1 .. Last (Model.Available) =>
               (for all K in 1 .. J - 1 =>
                    Get (Model.Available, J) /= Get (Model.Available, K)));
       else
