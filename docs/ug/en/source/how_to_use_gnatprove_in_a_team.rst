@@ -686,7 +686,7 @@ of a program:
   operation:
 
   * does not call protected entries,
-  * does not suspend on suspection objects,
+  * does not suspend on suspension objects,
   * does not lock protected objects with calls to protected subprograms,
   * does not call Ada.Task_Identification.Current_Task.
 
