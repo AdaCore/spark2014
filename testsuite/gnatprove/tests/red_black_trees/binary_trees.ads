@@ -56,7 +56,7 @@ package Binary_Trees with SPARK_Mode is
        Model'Result (Root).K
 
        --  The path from the root to itself is empty
-       and then Length (Model'Result (Root).A) = 0
+       and then Last (Model'Result (Root).A) = 0
 
        --  Non-root nodes are in the tree iff their parent is in the tree
        and then (for all I in Index_Type =>
@@ -74,7 +74,7 @@ package Binary_Trees with SPARK_Mode is
                    then Is_Add (Model'Result (Parent (F, I)).A,
                                 Position (F, I),
                                 Model'Result (I).A)
-                   else Length (Model'Result (I).A) = 0))
+                   else Last (Model'Result (I).A) = 0))
 
        --  Nodes in the tree all have different associated paths
        and then (for all I in Index_Type =>
@@ -104,7 +104,7 @@ package Binary_Trees with SPARK_Mode is
      Post => (for all J in Index_Type =>
                (if Model (F, Root) (J).K
                   and then (Model (F, Root) (I).A < Model (F, Root) (J).A)
-                then Get (Model (F, Root) (J).A, Length (Model (F, Root) (I).A) + 1) /= D));
+                then Get (Model (F, Root) (J).A, Last (Model (F, Root) (I).A) + 1) /= D));
 
    procedure Prove_Model_Distinct (F : Forest; T1, T2 : Index_Type) with
    --  Ghost function performing an induction to show that trees rooted at

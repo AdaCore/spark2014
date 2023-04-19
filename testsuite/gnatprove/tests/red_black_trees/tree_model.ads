@@ -1,6 +1,7 @@
 with SPARK.Containers.Functional.Vectors;
 with SPARK.Containers.Functional.Sets;
 with Ada.Containers; use Ada.Containers;
+with SPARK.Big_Integers; use SPARK.Big_Integers;
 
 package Tree_Model with SPARK_Mode is
 
@@ -29,7 +30,7 @@ package Tree_Model with SPARK_Mode is
       A : Sequence;
       K : Boolean := False;
    end record
-   with Predicate => Length (A) < Max;
+   with Predicate => Length (A) < Big_Integer'(Max);
    --  Type used to model the path from the root of a tree to a given node,
    --  which may or not be in the tree:
    --    - if a node is in the tree, the corresponding path will have K = True,
@@ -39,12 +40,12 @@ package Tree_Model with SPARK_Mode is
 
    function Is_Concat (Q, V, P : Sequence) return Boolean is
      (Length (P) - Length (V) = Length (Q)
-      and then (for all I in 1 .. Length (Q) => Get (P, I) = Get (Q, I))
-      and then (for all I in 1 .. Length (V) =>
-                 Get (P, I + Length (Q)) = Get (V, I))
-      and then (for all I in Length (Q) + 1 .. Length (P) =>
-                 Get (V, I - Length (Q)) = Get (P, I)))
-   with Pre => Length (Q) <= Max;
+      and then (for all I in 1 .. Last (Q) => Get (P, I) = Get (Q, I))
+      and then (for all I in 1 .. Last (V) =>
+                 Get (P, I + Last (Q)) = Get (V, I))
+      and then (for all I in Last (Q) + 1 .. Last (P) =>
+                 Get (V, I - Last (Q)) = Get (P, I)))
+   with Pre => Length (Q) <= Big_Integer'(Max);
 
    type Model_Type is array (Index_Type) of Path_Type;
    --  Type used to model the set of paths from the root of a tree to all nodes.
@@ -56,7 +57,7 @@ package Tree_Model with SPARK_Mode is
    function Is_Add (S1 : Sequence; D : Direction; S2 : Sequence) return Boolean
    is
      (Length (S2) - 1 = Length (S1) and then S1 < S2
-      and then Get (S2, Length (S2)) = D);
+      and then Get (S2, Last (S2)) = D);
 
    procedure Preserve_Equal (S1, S2, S3, S4 : Sequence; D : Direction) with
      Ghost,
