@@ -17433,7 +17433,7 @@ package body Gnat2Why.Expr is
                --  Otherwise, we emit a warning when the value read might not
                --  be valid. This addresses assumption SPARK_EXTERNAL_VALID.
 
-               if Present (Get_Address_Expr (Decl)) then
+               if Has_Address_Or_Name (Obj) then
                   declare
                      Address         : constant Node_Id :=
                        Get_Address_Expr (Decl);
@@ -17450,13 +17450,12 @@ package body Gnat2Why.Expr is
                        (Retysp (Etype (Obj)), True, Valid, Explanation);
 
                      --  A warning is emitted on imprecisely supported address
-                     --  specifications.
+                     --  specifications and external names.
 
                      if not Supported_Alias then
                         if not Valid then
                            Error_Msg_NE
-                             (Warning_Message (Warn_Address_Valid), Address,
-                              Obj);
+                             (Warning_Message (Warn_Address_Valid), Obj, Obj);
                         end if;
 
                      --  The check is needed only for overlays between two

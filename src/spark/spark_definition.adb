@@ -419,7 +419,7 @@ package body SPARK_Definition is
    procedure Mark_Call                        (N : Node_Id) with
      Pre => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement;
 
-   procedure Mark_Address                     (E : Entity_Id)
+   procedure Mark_Address_Or_Name             (E : Entity_Id)
      with Pre => Ekind (E) in Object_Kind | E_Function | E_Procedure;
 
    procedure Mark_Component_Association       (N : N_Component_Association_Id);
@@ -2829,167 +2829,167 @@ package body SPARK_Definition is
    -- Mark_Address --
    ------------------
 
-   procedure Mark_Address (E : Entity_Id) is
-      Address : constant Node_Id := Address_Clause (E);
+   procedure Mark_Address_Or_Name (E : Entity_Id) is
+      Address      : constant Node_Id := Address_Clause (E);
+      Address_Expr : constant Node_Id :=
+        (if Present (Address) then Expression (Address) else Empty);
+
    begin
       if Present (Address) then
-         declare
-            Address_Expr    : constant Node_Id := Expression (Address);
-            Aliased_Object  : constant Entity_Id :=
-              Supported_Alias (Address_Expr);
-            Supported_Alias : constant Boolean := Present (Aliased_Object);
-            E_Is_Constant   : constant Boolean :=
-              Is_Object (E) and then Is_Constant_In_SPARK (E);
+         Mark (Address_Expr);
+      end if;
 
-         begin
-            Mark (Address_Expr);
+      --  For objects, address clauses and external names can introduce
+      --  aliases. We need additional treatment here.
 
-            --  For objects, address clauses can introduce aliases. We need
-            --  additional treatment here.
+      if not Is_Object (E) or else not Has_Address_Or_Name (E) then
+         return;
+      end if;
 
-            if not Is_Object (E) then
-               return;
-            end if;
+      declare
+         Aliased_Object  : constant Entity_Id :=
+           Supported_Alias (Address_Expr);
+         Supported_Alias : constant Boolean := Present (Aliased_Object);
+         E_Is_Constant   : constant Boolean := Is_Constant_In_SPARK (E);
+      begin
+         --  If E has an external name or we cannot determine which object the
+         --  address of E references, the address clause will basically be
+         --  ignored. We emit some warnings to help users locate the cases
+         --  where review is needed.
 
-            --  If we cannot determine which object the address of E
-            --  references, the address clause will basically be ignored.
-            --  We emit some warnings to help users locate the cases where
-            --  review is needed.
+         if not Supported_Alias then
 
-            if not Supported_Alias then
+            --  Check whether E is annotated with some Volatile properties.
+            --  If it is not the case, issue a warning that we cannot
+            --  account for indirect writes. Otherwise, issue a warning that
+            --  we assume the stated volatile properties, if not all
+            --  properties are set. This partly addresses assumptions
+            --  SPARK_EXTERNAL and SPARK_ALIASING_ADDRESS.
 
-               --  Check whether E is annotated with some Volatile properties.
-               --  If it is not the case, issue a warning that we cannot
-               --  account for indirect writes. Otherwise, issue a warning that
-               --  we assume the stated volatile properties, if not all
-               --  properties are set. This partly addresses assumptions
-               --  SPARK_EXTERNAL and SPARK_ALIASING_ADDRESS.
-
-               if not Has_Volatile (E) then
-                  if not No_Caching_Enabled (E) then
-                     Error_Msg_NE
-                       (Warning_Message (Warn_Indirect_Writes_Through_Alias),
-                        Address, E);
-                     Error_Msg_NE
-                       ("\consider annotating & with Async_Writers",
-                        Address, E);
-                  else
-                     Error_Msg_NE
-                       (Warning_Message (Warn_Assumed_Volatile_Properties),
-                        Address, E);
-                  end if;
-
-               elsif not Has_Volatile_Property (E, Pragma_Async_Readers)
-                 or else not Has_Volatile_Property (E, Pragma_Async_Writers)
-                 or else not Has_Volatile_Property (E, Pragma_Effective_Reads)
-                 or else not Has_Volatile_Property (E, Pragma_Effective_Writes)
-               then
+            if not Has_Volatile (E) then
+               if not No_Caching_Enabled (E) then
+                  Error_Msg_NE
+                    (Warning_Message (Warn_Indirect_Writes_Through_Alias),
+                     E, E);
+                  Error_Msg_NE
+                    ("\consider annotating & with Async_Writers",
+                     E, E);
+               else
                   Error_Msg_NE
                     (Warning_Message (Warn_Assumed_Volatile_Properties),
-                     Address, E);
+                     E, E);
                end if;
 
-               --  If E is variable in SPARK, emit a warning stating that
-               --  effects to other objects induced by writing to E are
-               --  ignored. This partly addresses assumptions
-               --  SPARK_ALIASING_ADDRESS.
+            elsif not Has_Volatile_Property (E, Pragma_Async_Readers)
+              or else not Has_Volatile_Property (E, Pragma_Async_Writers)
+              or else not Has_Volatile_Property (E, Pragma_Effective_Reads)
+              or else not Has_Volatile_Property (E, Pragma_Effective_Writes)
+            then
+               Error_Msg_NE
+                 (Warning_Message (Warn_Assumed_Volatile_Properties),
+                  E, E);
+            end if;
 
-               if not E_Is_Constant then
+            --  If E is variable in SPARK, emit a warning stating that
+            --  effects to other objects induced by writing to E are
+            --  ignored. This partly addresses assumptions
+            --  SPARK_ALIASING_ADDRESS.
 
-                  --  If E has a volatile annotation with Async_Readers set to
-                  --  False, writing to E cannot have any effects on other
-                  --  variables. Do not emit the warning.
+            if not E_Is_Constant then
 
-                  if (if Has_Volatile (E)
-                      then Has_Volatile_Property (E, Pragma_Async_Readers)
-                      else not No_Caching_Enabled (E))
-                  then
-                     Error_Msg_NE
-                       (Warning_Message (Warn_Indirect_Writes_To_Alias),
-                        Address, E);
-                     Error_Msg_NE
-                       ("\make sure that all overlapping objects have"
-                        & " Async_Writers set to True",
-                        Address, E);
-                  end if;
-               end if;
+               --  If E has a volatile annotation with Async_Readers set to
+               --  False, writing to E cannot have any effects on other
+               --  variables. Do not emit the warning.
 
-               --  We assume no concurrent accesses in case the object is not
-               --  atomic. This partly addresses assumptions SPARK_EXTERNAL.
-
-               if not Is_Atomic (E) then
+               if (if Has_Volatile (E)
+                   then Has_Volatile_Property (E, Pragma_Async_Readers)
+                   else not No_Caching_Enabled (E))
+               then
                   Error_Msg_NE
-                    (Warning_Message (Warn_Address_Atomic),
-                     Address, E);
+                    (Warning_Message (Warn_Indirect_Writes_To_Alias),
+                     E, E);
+                  Error_Msg_NE
+                    ("\make sure that all overlapping objects have"
+                     & " Async_Writers set to True",
+                     E, E);
                end if;
+            end if;
 
-            --  The alias is supported by havocing aliased objects for each
-            --  update. Check that we only accept cases we can handle that way.
+            --  We assume no concurrent accesses in case the object is not
+            --  atomic. This partly addresses assumptions SPARK_EXTERNAL.
 
-            else
+            if not Is_Atomic (E) then
+               Error_Msg_NE
+                 (Warning_Message (Warn_Address_Atomic),
+                  E, E);
+            end if;
 
-               --  We do not handle yet overlays between (parts of) objects of
-               --  a deep type.
+         --  The alias is supported by havocing aliased objects for each
+         --  update. Check that we only accept cases we can handle that way.
 
-               if Is_Deep (Etype (E)) then
-                  Mark_Unsupported (Lim_Deep_Object_With_Addr, Address);
-               elsif Is_Deep (Etype (Aliased_Object)) then
-                  Mark_Unsupported (Lim_Overlay_With_Deep_Object, Address);
-               end if;
+         else
+            --  We do not handle yet overlays between (parts of) objects of
+            --  a deep type.
 
-               --  If the address expression is a reference to the address of
-               --  (a part of) another object, check that either both are
-               --  mutable or both are constant for SPARK.
+            if Is_Deep (Etype (E)) then
+               Mark_Unsupported (Lim_Deep_Object_With_Addr, Address);
+            elsif Is_Deep (Etype (Aliased_Object)) then
+               Mark_Unsupported (Lim_Overlay_With_Deep_Object, Address);
+            end if;
 
-               if E_Is_Constant /=
-                 (Is_Constant_In_SPARK (Aliased_Object)
-                  or else Traverse_Access_To_Constant (Prefix (Address_Expr)))
-               then
-                  declare
-                     E_Mod : constant String :=
-                       (if E_Is_Constant then "constant" else "mutable");
-                     R_Mod : constant String :=
-                       (if E_Is_Constant then "mutable" else "constant");
+            --  If the address expression is a reference to the address of
+            --  (a part of) another object, check that either both are
+            --  mutable or both are constant for SPARK.
+
+            if E_Is_Constant /=
+              (Is_Constant_In_SPARK (Aliased_Object)
+               or else Traverse_Access_To_Constant (Prefix (Address_Expr)))
+            then
+               declare
+                  E_Mod : constant String :=
+                    (if E_Is_Constant then "constant" else "mutable");
+                  R_Mod : constant String :=
+                    (if E_Is_Constant then "mutable" else "constant");
+               begin
+                  Mark_Violation
+                    ("address clause for a " & E_Mod
+                     & " object referencing a " & R_Mod
+                     & " part of an object",
+                     Address);
+               end;
+            end if;
+
+            --  If both objects are volatile, issue a warning if volatile
+            --  properties differ. We can only issue this warning in the
+            --  case of supported aliases, as there is no "other object"
+            --  otherwise.
+
+            if Has_Volatile (E)
+              and then Has_Volatile (Aliased_Object)
+            then
+               declare
+
+                  function Prop_Differs (P : Volatile_Pragma_Id)
+                                            return Boolean;
+                  function Prop_Name (X : Volatile_Pragma_Id) return String;
+
+                  -------------------
+                  -- Compare_Props --
+                  -------------------
+
+                  function Prop_Differs (P : Volatile_Pragma_Id)
+                                            return Boolean is
+                    (Has_Volatile_Property (E, P) /=
+                         Has_Volatile_Property (Aliased_Object, P));
+
+                  ---------------
+                  -- Prop_Name --
+                  ---------------
+
+                  function Prop_Name (X : Volatile_Pragma_Id) return String
+                  is
                   begin
-                     Mark_Violation
-                       ("address clause for a " & E_Mod
-                        & " object referencing a " & R_Mod
-                        & " part of an object",
-                        Address);
-                  end;
-               end if;
-
-               --  If both objects are volatile, issue a warning if volatile
-               --  properties differ. We can only issue this warning in the
-               --  case of supported aliases, as there is no "other object"
-               --  otherwise.
-
-               if Has_Volatile (E)
-                 and then Has_Volatile (Aliased_Object)
-               then
-                  declare
-
-                     function Prop_Differs (P : Volatile_Pragma_Id)
-                                         return Boolean;
-                     function Prop_Name (X : Volatile_Pragma_Id) return String;
-
-                     -------------------
-                     -- Compare_Props --
-                     -------------------
-
-                     function Prop_Differs (P : Volatile_Pragma_Id)
-                                         return Boolean is
-                       (Has_Volatile_Property (E, P) /=
-                            Has_Volatile_Property (Aliased_Object, P));
-
-                     ---------------
-                     -- Prop_Name --
-                     ---------------
-
-                     function Prop_Name (X : Volatile_Pragma_Id) return String
-                     is
-                     begin
-                        case X is
+                     case X is
                         when Pragma_Async_Readers    =>
                            return "Async_Readers";
                         when Pragma_Async_Writers    =>
@@ -2998,122 +2998,123 @@ package body SPARK_Definition is
                            return "Effective_Reads";
                         when Pragma_Effective_Writes =>
                            return "Effective_Writes";
-                        end case;
-                     end Prop_Name;
+                     end case;
+                  end Prop_Name;
 
-                     Buf   : Unbounded_String;
-                     First : Boolean := True;
+                  Buf   : Unbounded_String;
+                  First : Boolean := True;
 
-                  begin
-                     if (for some X in Volatile_Pragma_Id => Prop_Differs (X))
-                     then
-                        Error_Msg_NE
-                          (Warning_Message (Warn_Alias_Different_Volatility),
-                           Address, E);
-                        for Prop in Volatile_Pragma_Id loop
-                           if Prop_Differs (Prop) then
-                              if First then
-                                 Buf := Buf & Prop_Name (Prop);
-                                 First := False;
-                              else
-                                 Buf := Buf & ", " & Prop_Name (Prop);
-                              end if;
-                           end if;
-                        end loop;
-                        Error_Msg_NE
-                          ("\values for property "
-                           & To_String (Buf)
-                           & " are different",
-                           Address, E);
-                     end if;
-                  end;
-               end if;
-
-               --  Objects whose address is taken should have consistent
-               --  volatility and atomicity specifications, in the case of a
-               --  precisely supported address specification. Otherwise we
-               --  assume no concurrent accesses in case the object is not
-               --  atomic. This partly addresses assumptions SPARK_EXTERNAL.
-
-               if Has_Volatile (E) /= Has_Volatile (Aliased_Object)
-                 or else Is_Atomic (E) /= Is_Atomic (Aliased_Object)
-               then
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Alias_Atomic_Vol),
-                     Address, E);
-               end if;
-
-               --  We do not support overlays with Relaxed_Initialization yet
-
-               if Has_Relaxed_Initialization (E) or else
-                 (Ekind (Aliased_Object) /= E_Loop_Parameter
-                  and then Has_Relaxed_Initialization (Aliased_Object))
-               then
-                  Mark_Unsupported (Lim_Relaxed_Init_Aliasing, E);
-               end if;
-
-               --  Fill the map used to havoc overlaid objects
-
-               if not E_Is_Constant then
-                  Set_Overlay_Alias (E, Aliased_Object);
-               end if;
-            end if;
-
-            --  If E is not imported, its initialization writes to the supplied
-            --  address.
-
-            if not Is_Imported (E) then
-
-               --  If E has an unsupported address, the effect is ignored, emit
-               --  a warning.
-
-               if not Supported_Alias then
-
-                  --  Only emit the warning for constants, it is redundant for
-                  --  variables.
-
-                  if E_Is_Constant then
+               begin
+                  if (for some X in Volatile_Pragma_Id => Prop_Differs (X))
+                  then
                      Error_Msg_NE
-                       (Warning_Message (Warn_Initialization_To_Alias),
+                       (Warning_Message (Warn_Alias_Different_Volatility),
                         Address, E);
+                     for Prop in Volatile_Pragma_Id loop
+                        if Prop_Differs (Prop) then
+                           if First then
+                              Buf := Buf & Prop_Name (Prop);
+                              First := False;
+                           else
+                              Buf := Buf & ", " & Prop_Name (Prop);
+                           end if;
+                        end if;
+                     end loop;
                      Error_Msg_NE
-                       ("\consider annotating & with Import",
+                       ("\values for property "
+                        & To_String (Buf)
+                        & " are different",
                         Address, E);
                   end if;
+               end;
+            end if;
+
+            --  Objects whose address is taken should have consistent
+            --  volatility and atomicity specifications, in the case of a
+            --  precisely supported address specification. Otherwise we
+            --  assume no concurrent accesses in case the object is not
+            --  atomic. This partly addresses assumptions SPARK_EXTERNAL.
+
+            if Has_Volatile (E) /= Has_Volatile (Aliased_Object)
+              or else Is_Atomic (E) /= Is_Atomic (Aliased_Object)
+            then
+               Error_Msg_NE
+                 (Warning_Message (Warn_Alias_Atomic_Vol),
+                  Address, E);
+            end if;
+
+            --  We do not support overlays with Relaxed_Initialization yet
+
+            if Has_Relaxed_Initialization (E) or else
+              (Ekind (Aliased_Object) /= E_Loop_Parameter
+               and then Has_Relaxed_Initialization (Aliased_Object))
+            then
+               Mark_Unsupported (Lim_Relaxed_Init_Aliasing, E);
+            end if;
+
+            --  Fill the map used to havoc overlaid objects
+
+            if not E_Is_Constant then
+               Set_Overlay_Alias (E, Aliased_Object);
+            end if;
+         end if;
+
+         --  If E is not imported, its initialization writes to the supplied
+         --  address if any. Nothing special needs to be done for objects with
+         --  an external name as there should always be a single Export for the
+         --  name.
+
+         if Present (Address) and then not Is_Imported (E) then
+
+            --  If E has an unsupported address, the effect is ignored, emit
+            --  a warning.
+
+            if not Supported_Alias then
+
+               --  Only emit the warning for constants, it is redundant for
+               --  variables.
+
+               if E_Is_Constant then
+                  Error_Msg_NE
+                    (Warning_Message (Warn_Initialization_To_Alias),
+                     Address, E);
+                  Error_Msg_NE
+                    ("\consider annotating & with Import",
+                     Address, E);
+               end if;
 
                --  Constants are aliased with constants, they should always be
                --  imported.
 
-               elsif E_Is_Constant then
-                  Mark_Violation
-                    ("constant object with an address clause which is not"
-                     & " imported", E);
+            elsif E_Is_Constant then
+               Mark_Violation
+                 ("constant object with an address clause which is not"
+                  & " imported", E);
 
                --  To avoid introducing invalid values in aliases, E
                --  should be initialized at declaration.
 
-               else
-                  declare
-                     Decl    : constant Node_Id := Parent (E);
-                     Is_Init : constant Boolean :=
-                       Nkind (Decl) = N_Object_Declaration
-                       and then Present (Expression (Decl));
-                  begin
-                     if not Is_Init
-                       and then Default_Initialization (Etype (E)) /=
-                         Full_Default_Initialization
-                     then
-                        Mark_Violation
-                          ("object with an address clause which is not"
-                           & " fully initialized at declaration", E,
-                           Cont_Msg => "consider marking it as imported");
-                     end if;
-                  end;
-               end if;
+            else
+               declare
+                  Decl    : constant Node_Id := Parent (E);
+                  Is_Init : constant Boolean :=
+                    Nkind (Decl) = N_Object_Declaration
+                    and then Present (Expression (Decl));
+               begin
+                  if not Is_Init
+                    and then Default_Initialization (Etype (E)) /=
+                      Full_Default_Initialization
+                  then
+                     Mark_Violation
+                       ("object with an address clause which is not"
+                        & " fully initialized at declaration", E,
+                        Cont_Msg => "consider marking it as imported");
+                  end if;
+               end;
             end if;
-         end;
-      end if;
-   end Mark_Address;
+         end if;
+      end;
+   end Mark_Address_Or_Name;
 
    ---------------------------------------------
    -- Mark_Aspect_Clauses_And_Pragmas_In_List --
@@ -5130,9 +5131,9 @@ package body SPARK_Definition is
             end if;
          end if;
 
-         --  Also mark the Address clause if any
+         --  Also mark the Address clause or external name if any
 
-         Mark_Address (E);
+         Mark_Address_Or_Name (E);
       end Mark_Object_Entity;
 
       ---------------------------
@@ -9555,7 +9556,7 @@ package body SPARK_Definition is
          end;
 
          if Ekind (E) in E_Procedure | E_Function then
-            Mark_Address (E);
+            Mark_Address_Or_Name (E);
          end if;
       end if;
    end Mark_Subprogram_Declaration;
