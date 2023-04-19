@@ -23,7 +23,10 @@ def parse_options():
 
 def process(fn, rewrite):
     test_name = (
-        fn.replace("tests/", "").replace("internal/", "").replace("/test.py", "")
+        fn.replace("tests/", "")
+        .replace("internal/", "")
+        .replace("sparklib/", "")
+        .replace("/test.py", "")
     )
     with open(fn, "rU") as fd:
         tmp = fd.read()
@@ -43,7 +46,7 @@ def process(fn, rewrite):
 
 def main():
     args = parse_options()
-    for testsuite in ("tests", "internal"):
+    for testsuite in ("tests", "internal", "sparklib"):
         for path, _dirs, files in os.walk(testsuite):
             if "test.py" in files:
                 process(os.path.join(path, "test.py"), args.rewrite)

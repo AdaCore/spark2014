@@ -43,6 +43,8 @@ class BaselineRewriter(BaseBaselineRewriter):
         if not os.path.exists(testdir):
             testdir = os.path.join("internal", test_name)
         if not os.path.exists(testdir):
+            testdir = os.path.join("sparklib", test_name)
+        if not os.path.exists(testdir):
             raise RewritingError(f"cannot find test {test_name!r}")
         return os.path.join(testdir, "test.out")
 
