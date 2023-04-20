@@ -5685,11 +5685,8 @@ package body Flow.Control_Flow_Graph is
                Direct_Mapping_Id (N),
                Make_Sink_Vertex_Attributes
                  (Vars_Read,
-                  Is_Type_Decl  => True,
-                  Vertex_Ctx    =>
-                 (No_Vertex_Context with delta
-                    In_Nested_Package => True,
-                    Warnings_Off      => Ctx.Vertex_Ctx.Warnings_Off)),
+                  Is_Type_Decl => True,
+                  Vertex_Ctx   => Ctx.Vertex_Ctx),
                V);
             CM.Insert (Union_Id (N), Trivial_Connection (V));
          end;
