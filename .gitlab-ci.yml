@@ -29,7 +29,7 @@ stages:
     # Setup the 'anod vcs' for the other repos.
     # Get them from the default branch, or from the same
     # branch as this if it exists.
-    - for subproject in spark-internal-testsuite why3 ; do
+    - for subproject in sparklib spark-internal-testsuite why3 ; do
          cd /tmp ;
          git clone $GIT_CLONE_BASE/eng/spark/$subproject ;
          cd $subproject ;
