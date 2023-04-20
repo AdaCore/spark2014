@@ -2,7 +2,8 @@ pragma Unevaluated_Use_Of_Old (Allow);
 with SPARK.Containers.Functional.Vectors;
 with SPARK.Containers.Functional.Sets;
 with Ada.Containers;
-use type Ada.Containers.Count_Type;
+with SPARK.Big_Integers;
+use SPARK.Big_Integers;
 
 package List_Mod_Allocator with
   SPARK_Mode,
@@ -39,14 +40,14 @@ is
       end record;
 
       function Contains (S : Sequence; E : Resource) return Boolean is
-        (for some I in 1 .. Integer (Length (S)) => Get (S, I) = E);
+        (for some I in 1 .. Last (S) => Get (S, I) = E);
 
       function Is_Prepend
         (S : Sequence; E : Resource; Result : Sequence) return Boolean
       --  Returns True if Result is S prepended with E.
 
       is
-        (Length (S) < Ada.Containers.Count_Type'Last
+        (Last (S) < Positive'Last
          and then Length (Result) = Length (S) + 1
          and then Get (Result, 1) = E
          and then Range_Shifted (S, Result, 1, Last (S), Offset => 1));

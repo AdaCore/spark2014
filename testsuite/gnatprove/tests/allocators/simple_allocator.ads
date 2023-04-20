@@ -1,7 +1,6 @@
 pragma Unevaluated_Use_Of_Old (Allow);
 with SPARK.Containers.Functional.Sets;
 with Ada.Containers;
-use type Ada.Containers.Count_Type;
 
 package Simple_Allocator with
   SPARK_Mode,

@@ -11,12 +11,6 @@ is
    function Big (R : Resource) return Big_Integer renames
      Big_From_Resource.To_Big_Integer;
 
-   package Big_From_Count is new Signed_Conversions
-     (Int => Ada.Containers.Count_Type);
-
-   function Big (R : Ada.Containers.Count_Type) return Big_Integer renames
-     Big_From_Count.To_Big_Integer;
-
    type Status is (Available, Allocated);
 
    type Cell is record
@@ -60,23 +54,23 @@ is
                     Length (Avail) > 0 and then Get (Avail, 1) = First_Available
                else Length (Avail) = 0)
             and then
-              (for all J in 1 .. Integer (Length (Avail)) =>
+              (for all J in 1 .. Integer (Last (Avail)) =>
                     Get (Avail, J) in Valid_Resource
                and then
-                 (if J < Integer (Length (Avail)) then
+                 (if J < Integer (Last (Avail)) then
                        Data (Get (Avail, J)).Next = Get (Avail, J + 1)))
             and then
-              (for all J in 1 .. Integer (Length (Avail)) =>
+              (for all J in 1 .. Last (Avail) =>
                    (if J > 1 then
                          Get (Avail, J - 1) in Valid_Resource
                        and then  Get (Avail, J) = Data (Get (Avail, J - 1)).Next))
             and then
-              (for all J in 1 .. Integer (Length (Avail)) =>
-                   (for all K in 1 .. Integer (Length (Avail)) =>
+              (for all J in 1 .. Last (Avail) =>
+                   (for all K in 1 .. Last (Avail) =>
                         (if Get (Avail, J) = Get (Avail, K) then J = K)))
             and then (if First_Available /= No_Resource
-                      and then Data (Get (Avail, Integer (Length (Avail)))).Next in Valid_Resource
-                      then Contains (Avail, Data (Get (Avail, Integer (Length (Avail)))).Next))
+                      and then Data (Get (Avail, Last (Avail))).Next in Valid_Resource
+                      then Contains (Avail, Data (Get (Avail, Last (Avail))).Next))
             and then
               (for all E of Alloc => E in Valid_Resource)
             and then (for all R in Valid_Resource =>
@@ -126,9 +120,9 @@ is
                Avail := Add (Avail, R);
                R := Data (R).Next;
 
-               pragma Loop_Variant (Increases => Length (Avail));
+               pragma Loop_Variant (Increases => Last (Avail));
                pragma Loop_Invariant (Length (Unseen) <= To_Big_Integer (Capacity));
-               pragma Loop_Invariant (Big (Length (Avail)) <= To_Big_Integer (Capacity) - Length (Unseen));
+               pragma Loop_Invariant (Length (Avail) <= To_Big_Integer (Capacity) - Length (Unseen));
                pragma Loop_Invariant
                  (for all E in Valid_Resource =>
                     (if Data (E).Stat = Available and then not Contains (Avail, E)
@@ -136,19 +130,19 @@ is
                pragma Loop_Invariant
                  (Length (Avail) > 0 and then Get (Avail, 1) = First_Available);
                pragma Loop_Invariant
-                 (for all J in 1 .. Integer (Length (Avail)) =>
+                 (for all J in 1 .. Last (Avail) =>
                     Get (Avail, J) in Valid_Resource);
                pragma Loop_Invariant
-                 (R = Data (Get (Avail, Integer (Length (Avail)))).Next);
+                 (R = Data (Get (Avail, Last (Avail))).Next);
                pragma Loop_Invariant
-                 (for all J in 1 .. Integer (Length (Avail)) - 1 =>
+                 (for all J in 1 .. Last (Avail) - 1 =>
                           Data (Get (Avail, J)).Next = Get (Avail, J + 1));
                pragma Loop_Invariant
-                 (for all J in 2 .. Integer (Length (Avail)) =>
+                 (for all J in 2 .. Last (Avail) =>
                     Get (Avail, J) = Data (Get (Avail, J - 1)).Next);
                pragma Loop_Invariant
-                 (for all J in 1 .. Integer (Length (Avail)) =>
-                    (for all K in 1 .. Integer (Length (Avail)) =>
+                 (for all J in 1 .. Last (Avail) =>
+                    (for all K in 1 .. Last (Avail) =>
                          (if Get (Avail, J) = Get (Avail, K) then J = K)));
                pragma Loop_Invariant
                  (for all E in Valid_Resource =>
@@ -169,7 +163,7 @@ is
         (Is_Well_Formed
          and then
          (if First_Available /= No_Resource then
-            Data (Get (Model.Available, Integer (Length (Model.Available)))).Next = No_Resource)
+            Data (Get (Model.Available, Last (Model.Available))).Next = No_Resource)
          and then
            (for all R in Valid_Resource =>
                 (if Data (R).Stat = Available then Contains (Model.Available, R))));
@@ -185,18 +179,20 @@ is
 
    is
    begin
-      for I in 1 .. Integer (Length (S1)) loop
+      for I in 1 .. Last (S1) loop
          pragma Loop_Invariant
-           (Integer (Length (S2)) >= I + 1);
+           (Last (S2) >= I + 1);
          pragma Loop_Invariant
            (for all J in 1 .. I =>
               Get (S1, J) = Get (S2, J + 1));
          pragma Loop_Invariant
            (for all J in 2 .. I + 1 =>
               Get (S1, J - 1) = Get (S2, J));
-         pragma Assert (for all J in 1 .. I + 1 =>
-                          Get (S2, J) /= Data (Get (S1, I)).Next);
       end loop;
+      if 1 <= Last (S1) then
+         pragma Assert (for all J in 1 .. Last (S1) + 1 =>
+                          Get (S2, J) /= Data (Get (S1, Last (S1))).Next);
+      end if;
    end Prove_Is_Preprend;
 
    procedure Alloc (Res : out Resource) is
@@ -236,7 +232,7 @@ is
 
    is
    begin
-      for I in 1 .. Integer (Length (S)) loop
+      for I in 1 .. Last (S) loop
          pragma Loop_Invariant
            (for all J in 1 .. I => Get (S, J) = Valid_Resource (J));
       end loop;
@@ -254,7 +250,7 @@ begin
 
    Prove_Init (Model.Available);
    pragma Assert
-     (Data (Get (Model.Available, Integer (Length (Model.Available)))).Next = No_Resource);
+     (Data (Get (Model.Available, Last (Model.Available))).Next = No_Resource);
    pragma Assert
      (for all R in Valid_Resource => (Contains (Model.Available, R)));
 end List_Mod_Allocator;
