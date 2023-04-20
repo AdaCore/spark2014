@@ -81,7 +81,7 @@ package body Red_Black_Trees with SPARK_Mode is
          pragma Loop_Invariant
            (for all I in Index_Type =>
               (if M (I).K and Res (I).Depth > N then
-                    Length (M (I).A) < Max - N
+                    Last (M (I).A) < Max - N
                elsif M (I).K then
                     Res (I).Depth <= N
                and Res (I).Status =
@@ -127,11 +127,11 @@ package body Red_Black_Trees with SPARK_Mode is
             pragma Loop_Invariant
               (for all J in Index_Type =>
                  (if M (J).K and Res (J).Depth > N then
-                       Length (M (J).A) < Max - N));
+                       Last (M (J).A) < Max - N));
             pragma Loop_Invariant
               (for all J in 1 .. I - 1 =>
                  (if M (J).K and Res (J).Depth > N + 1 then
-                       Length (M (J).A) < Max - (N + 1)));
+                       Last (M (J).A) < Max - (N + 1)));
 
             --  For already handled nodes, the computed Black_Count have the
             --  expected property.

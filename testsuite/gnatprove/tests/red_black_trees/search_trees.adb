@@ -51,7 +51,7 @@ package body Search_Trees with SPARK_Mode is
    --  If Model (I).A is a prefix of Model (J).A, their values are ordered as expected
 
    function Ordered_Prefix (Model : Model_Type; Values : Value_Array; I, J : Index_Type) return Boolean is
-     (if Get (Model (J).A, Length (Model (I).A) + 1) = Left
+     (if Get (Model (J).A, Last (Model (I).A) + 1) = Left
       then Values (J) < Values (I)
       else Values (J) > Values (I))
    with Pre => Model (I).K and then Model (J).K and then Model (I).A < Model (J).A,
@@ -89,7 +89,7 @@ package body Search_Trees with SPARK_Mode is
       and then (for all I in Index_Type =>
                     (if Model (F, Root) (I).K and Model (F, Root) (I).A < A
                      then
-                       (if Get (A, Length (Model (F, Root) (I).A) + 1) = Left
+                       (if Get (A, Last (Model (F, Root) (I).A) + 1) = Left
                         then All_Less_Than (F, V, Values, Values (I))
                         else All_More_Than (F, V, Values, Values (I))))))
    with Ghost;
@@ -126,8 +126,8 @@ package body Search_Trees with SPARK_Mode is
        --  such that the paths of I and J diverge at this point.
        and then (I = Find_Root'Result
                    or else J = Find_Root'Result
-                   or else Get (Model (F, Root) (I).A, Length (Model (F, Root) (Find_Root'Result).A) + 1)
-                        /= Get (Model (F, Root) (J).A, Length (Model (F, Root) (Find_Root'Result).A) + 1));
+                   or else Get (Model (F, Root) (I).A, Last (Model (F, Root) (Find_Root'Result).A) + 1)
+                        /= Get (Model (F, Root) (J).A, Last (Model (F, Root) (Find_Root'Result).A) + 1));
 
    function Find_Root (F : Forest; Root, I, J : Index_Type) return Index_Type is
       M  : constant Model_Type := Model (F, Root);
@@ -162,7 +162,7 @@ package body Search_Trees with SPARK_Mode is
      Ghost,
      Pre => Valid_Root (F, Root) and then Model (F, Root) (V).K
      and then Peek (F, V, D) /= Empty,
-     Post => Get (Model (F, Root) (Peek (F, V, D)).A, Length (Model (F, Root) (V).A) + 1) = D
+     Post => Get (Model (F, Root) (Peek (F, V, D)).A, Last (Model (F, Root) (V).A) + 1) = D
    is
    begin
       null;
@@ -280,7 +280,7 @@ package body Search_Trees with SPARK_Mode is
                and Model (F, Root) (K).A < Model (F_Old, Root) (V).A
                then
                  (if Get (Model (F_Old, Root) (V).A,
-                  Length (Model (F, Root) (K).A) + 1) = Left
+                  Last (Model (F, Root) (K).A) + 1) = Left
                   then All_Less_Than (F, V, Values, Values (K))
                   else All_More_Than (F, V, Values, Values (K)))));
       end loop;
@@ -494,8 +494,8 @@ package body Search_Trees with SPARK_Mode is
                      Prove_Model_Distinct (F_Old, Root, V);
                      pragma Assert_And_Cut (Model (F_Old, Root) (I).A < Model (F, Root) (V).A);
                   end;
-                  pragma Assert (Get (Model (F, Root) (J).A, Length (Model (F, Root) (I).A) + 1) =
-                                   Get (Model (F, Root) (V).A, Length (Model (F, Root) (I).A) + 1));
+                  pragma Assert (Get (Model (F, Root) (J).A, Last (Model (F, Root) (I).A) + 1) =
+                                   Get (Model (F, Root) (V).A, Last (Model (F, Root) (I).A) + 1));
 
                   pragma Assert_And_Cut (Ordered_Prefix (Model (F, Root), Values, I, J));
                end;
@@ -553,12 +553,12 @@ package body Search_Trees with SPARK_Mode is
       for I in Index_Type loop
          if Model (F2, Root) (I).K and then Model (F2, Root) (I).A < A then
             pragma Assert (Model (F1, Root) (I).K and Model (F1, Root) (I).A < A);
-            if Get (A, Length (Model (F2, Root) (I).A) + 1) = Left then
-               pragma Assert (Get (A, Length (Model (F1, Root) (I).A) + 1) = Left);
+            if Get (A, Last (Model (F2, Root) (I).A) + 1) = Left then
+               pragma Assert (Get (A, Last (Model (F1, Root) (I).A) + 1) = Left);
                pragma Assert (All_Less_Than (F1, V1, Values, Values (I)));
                pragma Assert (All_Less_Than (F2, V2, Values, Values (I)));
             else
-               pragma Assert (Get (A, Length (Model (F1, Root) (I).A) + 1) = Right);
+               pragma Assert (Get (A, Last (Model (F1, Root) (I).A) + 1) = Right);
                pragma Assert (All_More_Than (F1, V1, Values, Values (I)));
                pragma Assert (All_More_Than (F2, V2, Values, Values (I)));
             end if;
@@ -567,7 +567,7 @@ package body Search_Trees with SPARK_Mode is
            (for all K in 1 .. I =>
               (if Model (F2, Root) (K).K and then Model (F2, Root) (K).A < A
                then
-                 (if Get (A, Length (Model (F2, Root) (K).A) + 1) = Left
+                 (if Get (A, Last (Model (F2, Root) (K).A) + 1) = Left
                   then All_Less_Than (F2, V2, Values, Values (K))
                   else All_More_Than (F2, V2, Values, Values (K)))));
       end loop;
@@ -609,8 +609,8 @@ package body Search_Trees with SPARK_Mode is
              then Model (F2, Root) (I).K
                and then Model (F2, Root) (J).K
                and then Model (F2, Root) (I).A < Model (F2, Root) (J).A
-               and then Get (Model (F1, Root) (J).A, Length (Model (F1, Root) (I).A) + 1)
-                      = Get (Model (F2, Root) (J).A, Length (Model (F2, Root) (I).A) + 1))));
+               and then Get (Model (F1, Root) (J).A, Last (Model (F1, Root) (I).A) + 1)
+                      = Get (Model (F2, Root) (J).A, Last (Model (F2, Root) (I).A) + 1))));
       pragma Assert
         (for all I in Index_Type =>
           (for all J in Index_Type =>
@@ -618,7 +618,7 @@ package body Search_Trees with SPARK_Mode is
                and then Model (F1, Root) (J).K
                and then Model (F1, Root) (I).A < Model (F1, Root) (J).A
              then (if Get (Model (F1, Root) (J).A,
-                           Length (Model (F1, Root) (I).A) + 1)
+                           Last (Model (F1, Root) (I).A) + 1)
                       = Left
                    then Values (J) < Values (I)
                    else Values (J) > Values (I)))));
@@ -689,7 +689,7 @@ package body Search_Trees with SPARK_Mode is
        and then (for all I in Index_Type =>
                   (if Model (T.Struct, T.Root) (I).K then
                     (if Model (T.Struct, T.Root) (I).A < Model (T.Struct, T.Root) (L).A
-                     then (if Get (Model (T.Struct, T.Root) (L).A, Length (Model (T.Struct, T.Root) (I).A) + 1) = Left
+                     then (if Get (Model (T.Struct, T.Root) (L).A, Last (Model (T.Struct, T.Root) (I).A) + 1) = Left
                            then V < T.Values (I)
                            else V > T.Values (I))))),
      Post =>
@@ -1287,7 +1287,7 @@ package body Search_Trees with SPARK_Mode is
       while Current /= Empty loop
          --  Current is in the tree
          pragma Loop_Invariant (Model (T.Struct, T.Root) (Current).K);
-         pragma Loop_Variant (Increases => Length (Model (T.Struct, T.Root) (Current).A));
+         pragma Loop_Variant (Increases => Last (Model (T.Struct, T.Root) (Current).A));
          --  Accumulate the knowledge that the V is less than all the left
          --  ancestors up to Current and greater than all the right ancestors
          --  up to Current.
@@ -1295,7 +1295,7 @@ package body Search_Trees with SPARK_Mode is
            (for all I in Index_Type =>
              (if Model (T.Struct, T.Root) (I).K then
                (if Model (T.Struct, T.Root) (I).A < Model (T.Struct, T.Root) (Current).A
-                then (if Get (Model (T.Struct, T.Root) (Current).A, Length (Model (T.Struct, T.Root) (I).A) + 1) = Left
+                then (if Get (Model (T.Struct, T.Root) (Current).A, Last (Model (T.Struct, T.Root) (I).A) + 1) = Left
                       then V < T.Values (I)
                       else V > T.Values (I)))));
 
@@ -1354,7 +1354,7 @@ package body Search_Trees with SPARK_Mode is
           and then (for all I in Index_Type =>
                      (if Model (T_Old.Struct, T_Old.Root) (I).K then
                        (if Model (T_Old.Struct, T_Old.Root) (I).A < Model (T_Old.Struct, T_Old.Root) (L).A
-                        then (if Get (Model (T_Old.Struct, T_Old.Root) (L).A, Length (Model (T_Old.Struct, T_Old.Root) (I).A) + 1) = Left
+                        then (if Get (Model (T_Old.Struct, T_Old.Root) (L).A, Last (Model (T_Old.Struct, T_Old.Root) (I).A) + 1) = Left
                               then V < T_Old.Values (I)
                               else V > T_Old.Values (I)))))
 
@@ -1408,7 +1408,7 @@ package body Search_Trees with SPARK_Mode is
                  (for all J in Index_Type =>
                    (if Model (T_Old.Struct, T.Root) (J).K
                       and then Model (T.Struct, T.Root) (L).A < Model (T.Struct, T.Root) (J).A
-                    then Get (Model (T.Struct, T.Root) (J).A, Length (Model (T.Struct, T.Root) (L).A) + 1) /= D));
+                    then Get (Model (T.Struct, T.Root) (J).A, Last (Model (T.Struct, T.Root) (L).A) + 1) /= D));
 
                --  The path of I is maximal wrt all other nodes in the tree
                pragma Assert
@@ -1499,7 +1499,7 @@ package body Search_Trees with SPARK_Mode is
               (for all I in Index_Type =>
                 (if Model (T.Struct, T.Root) (I).K then
                   (if Model (T.Struct, T.Root) (I).A < Model (T.Struct, T.Root) (Current).A
-                     then (if Get (Model (T.Struct, T.Root) (Current).A, Length (Model (T.Struct, T.Root) (I).A) + 1) = Left
+                     then (if Get (Model (T.Struct, T.Root) (Current).A, Last (Model (T.Struct, T.Root) (I).A) + 1) = Left
                            then V < T.Values (I)
                            else V > T.Values (I)))));
 

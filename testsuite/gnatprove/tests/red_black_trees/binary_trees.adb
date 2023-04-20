@@ -1,5 +1,5 @@
-with Ada.Numerics.Big_Numbers.Big_Integers;
-use  Ada.Numerics.Big_Numbers.Big_Integers;
+with SPARK.Big_Integers;
+use  SPARK.Big_Integers;
 with SPARK.Containers.Functional.Sets;
 
 package body Binary_Trees with SPARK_Mode is
@@ -207,7 +207,7 @@ package body Binary_Trees with SPARK_Mode is
          --  most.
          pragma Loop_Invariant
            (for all J in Index_Type =>
-              To_Big_Integer (Integer (Length (R (J).A)))
+              Length (R (J).A)
                  <= To_Big_Integer (Tree_Model.Max) - Length (Unseen));
 
          --  Nodes that have not been handled yet are either not in the tree or
@@ -285,7 +285,7 @@ package body Binary_Trees with SPARK_Mode is
       for N in Index_Type loop
          pragma Loop_Invariant
            (for all I in Index_Type =>
-             (if Model (F, T1) (I).K and Length (Model (F, T1) (I).A) < N
+             (if Model (F, T1) (I).K and Last (Model (F, T1) (I).A) < N
               then not Model (F, T2) (I).K));
       end loop;
    end Prove_Model_Distinct;
@@ -330,14 +330,14 @@ package body Binary_Trees with SPARK_Mode is
          --  also in the tree rooted at Root in F2.
          pragma Loop_Invariant
            (for all I in Index_Type =>
-             (if Model (F1, Root) (I).K and Length (Model (F1, Root) (I).A) < N then
+             (if Model (F1, Root) (I).K and Last (Model (F1, Root) (I).A) < N then
                 Model (F2, Root) (I).K));
 
          --  Nodes from F2 which are less than N links away from the root are
          --  also in the tree rooted at Root in F1.
          pragma Loop_Invariant
            (for all I in Index_Type =>
-             (if Model (F2, Root) (I).K and Length (Model (F2, Root) (I).A) < N then
+             (if Model (F2, Root) (I).K and Last (Model (F2, Root) (I).A) < N then
                 Model (F1, Root) (I).K));
       end loop;
 
@@ -346,7 +346,7 @@ package body Binary_Trees with SPARK_Mode is
          --  the same path in F1 and F2.
          pragma Loop_Invariant
            (for all I in Index_Type =>
-             (if Model (F1, Root) (I).K and Length (Model (F1, Root) (I).A) < N then
+             (if Model (F1, Root) (I).K and Last (Model (F1, Root) (I).A) < N then
                 Model (F2, Root) (I).A = Model (F1, Root) (I).A));
 
          --  Nodes that are exactly N links away from the root have the same
@@ -356,7 +356,7 @@ package body Binary_Trees with SPARK_Mode is
             --  Use Preserve_Equal to prove the property for node J, based on
             --  the knowledge that it holds for the parent of node J.
 
-            if Model (F1, Root) (J).K and Length (Model (F1, Root) (J).A) = N then
+            if Model (F1, Root) (J).K and Last (Model (F1, Root) (J).A) = N then
                Preserve_Equal (S1 => Model (F1, Root) (F1.C (J).Parent).A,
                                S2 => Model (F2, Root) (F1.C (J).Parent).A,
                                S3 => Model (F1, Root) (J).A,
@@ -368,7 +368,7 @@ package body Binary_Trees with SPARK_Mode is
 
             pragma Loop_Invariant
               (for all I in 1 .. J =>
-                (if Model (F1, Root) (I).K and Length (Model (F1, Root) (I).A) = N then
+                (if Model (F1, Root) (I).K and Last (Model (F1, Root) (I).A) = N then
                    Model (F2, Root) (I).A = Model (F1, Root) (I).A));
          end loop;
       end loop;
@@ -395,7 +395,7 @@ package body Binary_Trees with SPARK_Mode is
                (for all J in Index_Type =>
                  (if Model (F, Root) (J).K
                     and then (Model (F, Root) (I).A < Model (F, Root) (J).A)
-                  then Get (Model (F, Root) (J).A, Length (Model (F, Root) (I).A) + 1) /= D))))))
+                  then Get (Model (F, Root) (J).A, Last (Model (F, Root) (I).A) + 1) /= D))))))
    is
    begin
       for N in Index_Type loop
@@ -407,8 +407,8 @@ package body Binary_Trees with SPARK_Mode is
                    (for all J in Index_Type =>
                      (if Model (F, Root) (J).K
                         and then Model (F, Root) (I).A < Model (F, Root) (J).A
-                        and then Length (Model (F, Root) (J).A) <= Length (Model (F, Root) (I).A) + N
-                      then Get (Model (F, Root) (J).A, Length (Model (F, Root) (I).A) + 1) /= D))))));
+                        and then Last (Model (F, Root) (J).A) <= Last (Model (F, Root) (I).A) + N
+                      then Get (Model (F, Root) (J).A, Last (Model (F, Root) (I).A) + 1) /= D))))));
       end loop;
    end Prove_Model_Total;
 
@@ -517,7 +517,7 @@ package body Binary_Trees with SPARK_Mode is
             --  rooted at V.
             pragma Loop_Invariant
               (for all I in Index_Type =>
-                (if Model (F_Old, Root) (I).K and then Length (Model (F_Old, Root) (I).A) <= N - 1 then
+                (if Model (F_Old, Root) (I).K and then Last (Model (F_Old, Root) (I).A) <= N - 1 then
                   (if Model (F_Old, Root) (V).A <= Model (F_Old, Root) (I).A
                    then Model (F, V) (I).K
                    else Model (F, Root) (I).K)));
@@ -526,14 +526,14 @@ package body Binary_Trees with SPARK_Mode is
             --  previously in the tree rooted at Root.
             pragma Loop_Invariant
               (for all I in Index_Type =>
-                (if Model (F, Root) (I).K and then Length (Model (F, Root) (I).A) <= N - 1
+                (if Model (F, Root) (I).K and then Last (Model (F, Root) (I).A) <= N - 1
                  then Model (F_Old, Root) (I).K));
 
             --  Nodes which are less than N links away from the root V were
             --  previously in the tree rooted at Root.
             pragma Loop_Invariant
               (for all I in Index_Type =>
-                (if Model (F, V) (I).K and then Length (Model (F, V) (I).A) <= N - 1
+                (if Model (F, V) (I).K and then Last (Model (F, V) (I).A) <= N - 1
                  then Model (F_Old, Root) (I).K));
          end loop;
 
@@ -544,7 +544,7 @@ package body Binary_Trees with SPARK_Mode is
             --  and F.
             pragma Loop_Invariant
               (for all I in Index_Type =>
-                (if Model (F_Old, Root) (I).K and then Length (Model (F_Old, Root) (I).A) <= N - 1 then
+                (if Model (F_Old, Root) (I).K and then Last (Model (F_Old, Root) (I).A) <= N - 1 then
                   (if Model (F, Root) (I).K then Model (F, Root) (I).A = Model (F_Old, Root) (I).A)));
 
             --  Nodes from F_Old which are less than N links away from the
@@ -553,7 +553,7 @@ package body Binary_Trees with SPARK_Mode is
             --  to the node.
             pragma Loop_Invariant
               (for all I in Index_Type =>
-                (if Model (F_Old, Root) (I).K and then Length (Model (F_Old, Root) (I).A) <= N - 1 then
+                (if Model (F_Old, Root) (I).K and then Last (Model (F_Old, Root) (I).A) <= N - 1 then
                   (if Model (F, V) (I).K then
                      Is_Concat (Q => Model (F_Old, Root) (V).A,
                                 V => Model (F, V) (I).A,
@@ -570,7 +570,7 @@ package body Binary_Trees with SPARK_Mode is
                --  on the knowledge that it holds for the parent of node KI.
 
                if Model (F_Old, Root) (KI).K
-                 and then Length (Model (F_Old, Root) (KI).A) = N
+                 and then Last (Model (F_Old, Root) (KI).A) = N
                  and then Model (F, Root) (KI).K
                then
                   Preserve_Equal (S1 => Model (F, Root) (F.C (KI).Parent).A,
@@ -585,7 +585,7 @@ package body Binary_Trees with SPARK_Mode is
                --  on the knowledge that it holds for the parent of node KI.
 
                if Model (F_Old, Root) (KI).K
-                 and then Length (Model (F_Old, Root) (KI).A) = N
+                 and then Last (Model (F_Old, Root) (KI).A) = N
                  and then Model (F, V) (KI).K
                  and then KI /= V
                then
@@ -602,11 +602,11 @@ package body Binary_Trees with SPARK_Mode is
 
                pragma Loop_Invariant
                  (for all I in 1 .. KI =>
-                   (if Model (F_Old, Root) (I).K and then Length (Model (F_Old, Root) (I).A) <= N then
+                   (if Model (F_Old, Root) (I).K and then Last (Model (F_Old, Root) (I).A) <= N then
                      (if Model (F, Root) (I).K then Model (F, Root) (I).A = Model (F_Old, Root) (I).A)));
                pragma Loop_Invariant
                  (for all I in 1 .. KI =>
-                   (if Model (F_Old, Root) (I).K and then Length (Model (F_Old, Root) (I).A) <= N then
+                   (if Model (F_Old, Root) (I).K and then Last (Model (F_Old, Root) (I).A) <= N then
                      (if Model (F, V) (I).K then
                         Is_Concat (Q => Model (F_Old, Root) (V).A,
                                    V => Model (F, V) (I).A,
@@ -748,7 +748,7 @@ package body Binary_Trees with SPARK_Mode is
               (for all I in Index_Type =>
                 (if Length (Model (F, Root) (V).A) > 0
                    and then Model (F, Root) (I).K
-                   and then Length (Model (F, Root) (I).A) <= N - 1
+                   and then Last (Model (F, Root) (I).A) <= N - 1
                  then
                    (if Model (F, Root) (V).A <= Model (F, Root) (I).A
                     then Model (F_Old, V) (I).K
@@ -758,7 +758,7 @@ package body Binary_Trees with SPARK_Mode is
             --  are also in the tree rooted at Root in F.
             pragma Loop_Invariant
               (for all I in Index_Type =>
-                (if Model (F_Old, Root) (I).K and then Length (Model (F_Old, Root) (I).A) <= N - 1
+                (if Model (F_Old, Root) (I).K and then Last (Model (F_Old, Root) (I).A) <= N - 1
                  then Model (F, Root) (I).K));
 
             --  Nodes from F_Old which are less than N links away from V and
@@ -767,7 +767,7 @@ package body Binary_Trees with SPARK_Mode is
             pragma Loop_Invariant
               (for all I in Index_Type =>
                 (if Model (F_Old, V) (I).K
-                   and then Length (Model (F_Old, V) (I).A) <= N - 1
+                   and then Last (Model (F_Old, V) (I).A) <= N - 1
                    and then Model (F, Root) (F.C (V).Parent).K
                  then Model (F, Root) (I).K));
          end loop;
@@ -778,7 +778,7 @@ package body Binary_Trees with SPARK_Mode is
             --  in F_Old and F.
             pragma Loop_Invariant
               (for all I in Index_Type =>
-                (if Model (F, Root) (I).K and then Length (Model (F, Root) (I).A) <= N - 1 then
+                (if Model (F, Root) (I).K and then Last (Model (F, Root) (I).A) <= N - 1 then
                   (if Model (F_Old, Root) (I).K then Model (F, Root) (I).A = Model (F_Old, Root) (I).A)));
 
             --  Nodes from F which are less than N links away from the root
@@ -787,7 +787,7 @@ package body Binary_Trees with SPARK_Mode is
             --  from V to the node.
             pragma Loop_Invariant
               (for all I in Index_Type =>
-                (if Model (F, Root) (I).K and then Length (Model (F, Root) (I).A) <= N - 1 then
+                (if Model (F, Root) (I).K and then Last (Model (F, Root) (I).A) <= N - 1 then
                   (if Model (F_Old, V) (I).K then
                      Is_Concat (Q => Model (F, Root) (V).A,
                                 V => Model (F_Old, V) (I).A,
@@ -804,7 +804,7 @@ package body Binary_Trees with SPARK_Mode is
                --  the knowledge that it holds for the parent of node KI.
 
                if Model (F, Root) (KI).K
-                 and then Length (Model (F, Root) (KI).A) = N
+                 and then Last (Model (F, Root) (KI).A) = N
                  and then Model (F_Old, Root) (KI).K
                then
                   Preserve_Equal (S1 => Model (F, Root) (F.C (KI).Parent).A,
@@ -819,7 +819,7 @@ package body Binary_Trees with SPARK_Mode is
                --  on the knowledge that it holds for the parent of node KI.
 
                if Model (F, Root) (KI).K
-                 and then Length (Model (F, Root) (KI).A) = N
+                 and then Last (Model (F, Root) (KI).A) = N
                  and then Model (F_Old, V) (KI).K
                  and then KI /= V
                then
@@ -836,11 +836,11 @@ package body Binary_Trees with SPARK_Mode is
 
                pragma Loop_Invariant
                  (for all I in 1 .. KI =>
-                   (if Model (F, Root) (I).K and then Length (Model (F, Root) (I).A) <= N then
+                   (if Model (F, Root) (I).K and then Last (Model (F, Root) (I).A) <= N then
                      (if Model (F_Old, Root) (I).K then Model (F, Root) (I).A = Model (F_Old, Root) (I).A)));
                pragma Loop_Invariant
                  (for all I in 1 .. KI =>
-                   (if Model (F, Root) (I).K and then Length (Model (F, Root) (I).A) <= N then
+                   (if Model (F, Root) (I).K and then Last (Model (F, Root) (I).A) <= N then
                      (if Model (F_Old, V) (I).K then
                         Is_Concat (Q => Model (F, Root) (V).A,
                                    V => Model (F_Old, V) (I).A,
@@ -975,14 +975,14 @@ package body Binary_Trees with SPARK_Mode is
             --  are also in the tree rooted at Root in F.
             pragma Loop_Invariant
               (for all I in Index_Type =>
-                (if Model (F_Old, Root) (I).K and then Length (Model (F_Old, Root) (I).A) < N
+                (if Model (F_Old, Root) (I).K and then Last (Model (F_Old, Root) (I).A) < N
                  then Model (F, Root) (I).K));
 
             --  Nodes from F_Old which are less than N links away from the root
             --  have the same path in F_Old and F.
             pragma Loop_Invariant
               (for all I in Index_Type =>
-                (if Model (F_Old, Root) (I).K and then Length (Model (F_Old, Root) (I).A) < N
+                (if Model (F_Old, Root) (I).K and then Last (Model (F_Old, Root) (I).A) < N
                  then Model (F, Root) (I).A = Model (F_Old, Root) (I).A));
 
             --  Except from V, nodes from F which are less than N links away
@@ -990,7 +990,7 @@ package body Binary_Trees with SPARK_Mode is
             pragma Loop_Invariant
               (for all I in Index_Type =>
                  (if Model (F, Root) (I).K
-                    and then Length (Model (F, Root) (I).A) < N
+                    and then Last (Model (F, Root) (I).A) < N
                     and then I /= V
                   then Model (F_Old, Root) (I).K));
 
@@ -1001,7 +1001,7 @@ package body Binary_Trees with SPARK_Mode is
                --  Use Preserve_Equal to prove the property for node KI, based
                --  on the knowledge that it holds for the parent of node KI.
 
-               if Model (F_Old, Root) (KI).K and then Length (Model (F_Old, Root) (KI).A) = N then
+               if Model (F_Old, Root) (KI).K and then Last (Model (F_Old, Root) (KI).A) = N then
                   Preserve_Equal (S1 => Model (F, Root) (F.C (KI).Parent).A,
                                   S2 => Model (F_Old, Root) (F.C (KI).Parent).A,
                                   S3 => Model (F, Root) (KI).A,
@@ -1014,7 +1014,7 @@ package body Binary_Trees with SPARK_Mode is
 
                pragma Loop_Invariant
                  (for all I in 1 .. KI =>
-                   (if Model (F_Old, Root) (I).K and then Length (Model (F_Old, Root) (I).A) <= N then
+                   (if Model (F_Old, Root) (I).K and then Last (Model (F_Old, Root) (I).A) <= N then
                       Model (F, Root) (I).A = Model (F_Old, Root) (I).A));
             end loop;
          end loop;
@@ -1104,7 +1104,7 @@ package body Binary_Trees with SPARK_Mode is
             pragma Loop_Invariant
               (for all J in Index_Type =>
                 (if Model (F, Root) (J).K and then J /= Root
-                 then Length (Model (F, Root) (J).A) > N));
+                 then Last (Model (F, Root) (J).A) > N));
          end loop;
 
          --  All trees that were previously allocated are preserved
