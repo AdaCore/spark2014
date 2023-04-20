@@ -788,7 +788,7 @@ def prove_all(
     check_counterexamples=True,
     prover=default_provers,
     cache_allowed=True,
-    report="provers",
+    report=None,
     project=default_project,
     level=None,
     no_fail=False,
@@ -814,6 +814,8 @@ def prove_all(
     fullopt = ["--output=oneline"]
     if warnings is not None:
         fullopt += ["--warnings=%s" % (warnings)]
+    if report is None:
+        report = "all" if replay else "provers"
     fullopt += ["--report=%s" % (report)]
     fullopt += ["--assumptions"]
     fullopt += ["-P", project, "--quiet"]
