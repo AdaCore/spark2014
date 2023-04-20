@@ -22,6 +22,7 @@ default_provers = ["cvc5", "altergo", "z3", "colibri"]
 provers_output_regex = re.compile(
     r"\((Trivial|Interval|CVC4|CVC5|Z3|altergo|colibri).*\)"
 )
+sparklib_regex = re.compile(r"spark-.*\.ad[bs]:(\d*):\d*: info: .*")
 default_ada = 2022
 
 #  Change directory
@@ -763,7 +764,7 @@ def gnatprove(
         failure = False
 
     if filter_sparklib:
-        strlist = [line for line in strlist if not line.startswith("spark-")]
+        strlist = [line for line in strlist if sparklib_regex.match(line) is None]
 
     if filter_output is not None:
         strlist = grep(filter_output, strlist, invert=True)

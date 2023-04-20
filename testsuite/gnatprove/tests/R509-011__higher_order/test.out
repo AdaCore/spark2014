@@ -1,3 +1,6 @@
+spark-higher_order-fold.ads:514:17: medium: postcondition might fail, in instantiation at spark-higher_order-fold.ads:589, in instantiation at spark-higher_order-fold.ads:780, in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:522:17: medium: postcondition might fail, in instantiation at spark-higher_order-fold.ads:589, in instantiation at spark-higher_order-fold.ads:780, in instantiation at test_higher_order.ads:124
+spark-higher_order-fold.ads:529:17: medium: postcondition might fail, in instantiation at spark-higher_order-fold.ads:589, in instantiation at spark-higher_order-fold.ads:780, in instantiation at test_higher_order.ads:124
 test_higher_order.ads:9:13: info: implicit terminating annotation on "Small_Enough" has been proved, subprogram will terminate
 test_higher_order.ads:12:13: info: implicit terminating annotation on "Add_One" has been proved, subprogram will terminate
 test_higher_order.ads:12:56: info: overflow check proved (CVC5: 2 VC)
