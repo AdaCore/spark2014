@@ -17,7 +17,7 @@ pf.ads:7:13: info: implicit terminating annotation on "Prf_Hidden" has been prov
 pf.ads:9:36: info: initialization of "B" proved
 pf.ads:10:17: info: postcondition proved (CVC5: 2 VC)
 pfmain.adb:8:04: info: initialization of "B" proved
-sink.ads:6:65: warning: assuming correct volatile properties for "The_Sink"
-sink.ads:6:65: warning: assuming no concurrent accesses to non-atomic object "The_Sink"
-sink.ads:6:65: warning: make sure that all overlapping objects have Async_Writers set to True
-sink.ads:6:65: warning: writing to "The_Sink" is assumed to have no effects on other non-volatile objects
+sink.ads:5:09: warning: assuming correct volatile properties for "The_Sink"
+sink.ads:5:09: warning: assuming no concurrent accesses to non-atomic object "The_Sink"
+sink.ads:5:09: warning: make sure that all overlapping objects have Async_Writers set to True
+sink.ads:5:09: warning: writing to "The_Sink" is assumed to have no effects on other non-volatile objects

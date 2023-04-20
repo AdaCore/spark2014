@@ -1,7 +1,7 @@
-hw-dbc-transfer_rings.adb:38:07: warning: assuming correct volatile properties for "Rings"
-hw-dbc-transfer_rings.adb:38:07: warning: assuming no concurrent accesses to non-atomic object "Rings"
-hw-dbc-transfer_rings.adb:38:07: warning: make sure that all overlapping objects have Async_Writers set to True
-hw-dbc-transfer_rings.adb:38:07: warning: writing to "Rings" is assumed to have no effects on other non-volatile objects
+hw-dbc-transfer_rings.adb:33:04: warning: assuming correct volatile properties for "Rings"
+hw-dbc-transfer_rings.adb:33:04: warning: assuming no concurrent accesses to non-atomic object "Rings"
+hw-dbc-transfer_rings.adb:33:04: warning: make sure that all overlapping objects have Async_Writers set to True
+hw-dbc-transfer_rings.adb:33:04: warning: writing to "Rings" is assumed to have no effects on other non-volatile objects
 hw-dbc-transfer_rings.adb:54:13: error: function "Get_Ring_Address" with output global "Rings" is not allowed in SPARK
 hw-dbc-transfer_rings.adb:54:13: error: violation of pragma SPARK_Mode at test.adc:1
 hw-dbc-transfer_rings.adb:98:11: warning: assuming "Init_Cycle_Ring" always returns

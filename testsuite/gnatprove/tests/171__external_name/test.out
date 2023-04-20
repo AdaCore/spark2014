@@ -1,0 +1,18 @@
+main.adb:4:04: warning: assuming no concurrent accesses to non-atomic object "U"
+main.adb:4:04: warning: assuming valid reads from object "U"
+main.adb:4:04: warning: consider annotating "U" with Async_Writers
+main.adb:4:04: warning: indirect writes to "U" through a potential alias are ignored
+main.adb:4:04: warning: make sure that all overlapping objects have Async_Writers set to True
+main.adb:4:04: warning: writing to "U" is assumed to have no effects on other non-volatile objects
+main.adb:5:04: warning: assuming no concurrent accesses to non-atomic object "V"
+main.adb:5:04: warning: assuming valid reads from object "V"
+main.adb:5:04: warning: consider annotating "V" with Async_Writers
+main.adb:5:04: warning: indirect writes to "V" through a potential alias are ignored
+main.adb:5:04: warning: make sure that all overlapping objects have Async_Writers set to True
+main.adb:5:04: warning: writing to "V" is assumed to have no effects on other non-volatile objects
+main.adb:6:04: warning: assuming no concurrent accesses to non-atomic object "W"
+main.adb:6:04: warning: assuming valid reads from object "W"
+main.adb:6:04: warning: consider annotating "W" with Async_Writers
+main.adb:6:04: warning: indirect writes to "W" through a potential alias are ignored
+main.adb:6:04: warning: make sure that all overlapping objects have Async_Writers set to True
+main.adb:6:04: warning: writing to "W" is assumed to have no effects on other non-volatile objects

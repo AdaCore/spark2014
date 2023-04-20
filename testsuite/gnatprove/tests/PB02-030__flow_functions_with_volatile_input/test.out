@@ -1,17 +1,17 @@
-legal.adb:16:06: warning: assuming correct volatile properties for "V1"
-legal.adb:16:06: warning: assuming no concurrent accesses to non-atomic object "V1"
-legal.adb:16:06: warning: make sure that all overlapping objects have Async_Writers set to True
-legal.adb:16:06: warning: writing to "V1" is assumed to have no effects on other non-volatile objects
-legal.adb:21:06: warning: assuming no concurrent accesses to non-atomic object "V2"
-legal.adb:21:06: warning: make sure that all overlapping objects have Async_Writers set to True
-legal.adb:21:06: warning: writing to "V2" is assumed to have no effects on other non-volatile objects
-legal.adb:26:06: warning: assuming correct volatile properties for "V3"
-legal.adb:26:06: warning: assuming no concurrent accesses to non-atomic object "V3"
-legal.adb:26:06: warning: make sure that all overlapping objects have Async_Writers set to True
-legal.adb:26:06: warning: writing to "V3" is assumed to have no effects on other non-volatile objects
-legal.adb:32:06: warning: assuming no concurrent accesses to non-atomic object "V4"
-legal.adb:32:06: warning: make sure that all overlapping objects have Async_Writers set to True
-legal.adb:32:06: warning: writing to "V4" is assumed to have no effects on other non-volatile objects
+legal.adb:14:04: warning: assuming correct volatile properties for "V1"
+legal.adb:14:04: warning: assuming no concurrent accesses to non-atomic object "V1"
+legal.adb:14:04: warning: make sure that all overlapping objects have Async_Writers set to True
+legal.adb:14:04: warning: writing to "V1" is assumed to have no effects on other non-volatile objects
+legal.adb:19:04: warning: assuming no concurrent accesses to non-atomic object "V2"
+legal.adb:19:04: warning: make sure that all overlapping objects have Async_Writers set to True
+legal.adb:19:04: warning: writing to "V2" is assumed to have no effects on other non-volatile objects
+legal.adb:24:04: warning: assuming correct volatile properties for "V3"
+legal.adb:24:04: warning: assuming no concurrent accesses to non-atomic object "V3"
+legal.adb:24:04: warning: make sure that all overlapping objects have Async_Writers set to True
+legal.adb:24:04: warning: writing to "V3" is assumed to have no effects on other non-volatile objects
+legal.adb:30:04: warning: assuming no concurrent accesses to non-atomic object "V4"
+legal.adb:30:04: warning: make sure that all overlapping objects have Async_Writers set to True
+legal.adb:30:04: warning: writing to "V4" is assumed to have no effects on other non-volatile objects
 legal.adb:59:13: error: nonvolatile function "Test_01" with volatile input global "V1" is not allowed in SPARK
 legal.adb:59:13: error: violation of pragma SPARK_Mode at test.adc:1
 legal.adb:67:13: error: function "Test_02" with output global "V2" is not allowed in SPARK
@@ -27,13 +27,13 @@ legal.adb:120:13: error: violation of pragma SPARK_Mode at test.adc:1
 legal.adb:130:13: error: function "F_06" with output global "PO_V4" is not allowed in SPARK
 legal.adb:130:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
-illegal.adb:17:06: warning: assuming correct volatile properties for "V3"
-illegal.adb:17:06: warning: assuming no concurrent accesses to non-atomic object "V3"
-illegal.adb:17:06: warning: make sure that all overlapping objects have Async_Writers set to True
-illegal.adb:17:06: warning: writing to "V3" is assumed to have no effects on other non-volatile objects
-illegal.adb:23:06: warning: assuming no concurrent accesses to non-atomic object "V4"
-illegal.adb:23:06: warning: make sure that all overlapping objects have Async_Writers set to True
-illegal.adb:23:06: warning: writing to "V4" is assumed to have no effects on other non-volatile objects
+illegal.adb:15:04: warning: assuming correct volatile properties for "V3"
+illegal.adb:15:04: warning: assuming no concurrent accesses to non-atomic object "V3"
+illegal.adb:15:04: warning: make sure that all overlapping objects have Async_Writers set to True
+illegal.adb:15:04: warning: writing to "V3" is assumed to have no effects on other non-volatile objects
+illegal.adb:21:04: warning: assuming no concurrent accesses to non-atomic object "V4"
+illegal.adb:21:04: warning: make sure that all overlapping objects have Async_Writers set to True
+illegal.adb:21:04: warning: writing to "V4" is assumed to have no effects on other non-volatile objects
 illegal.adb:57:13: error: nonvolatile function "F2" with volatile input global "PO_V3" is not allowed in SPARK
 illegal.adb:57:13: error: violation of pragma SPARK_Mode at test.adc:1
 illegal.adb:57:35: error: call to a volatile function in interfering context is not allowed in SPARK
