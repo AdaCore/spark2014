@@ -115,13 +115,6 @@ package body Gnat2Why.Driver is
    --  The maximal number of gnatwhy3 processes spawned by a single gnat2why.
    --  This limits corresponds to MAXIMUM_WAIT_OBJECTS on Windows.
 
-   Skipped_Proofs : Node_Sets.Set;
-   --  This set contains all entities for which proof was skipped. It is
-   --  identical to the entities for which Has_Skip_Proof_Annotation returns
-   --  True, but it seems safer (and faster) to use an extra set for this,
-   --  to make sure this corresponds to the subprograms for which proof was
-   --  actually skipped.
-
    -----------------------
    -- Local Subprograms --
    -----------------------
@@ -172,8 +165,11 @@ package body Gnat2Why.Driver is
    --  describes the last analysis done. Stop_Reason indicates why the
    --  analysis did not progress to the next phase.
 
-   function Get_Skip_JSON return JSON_Array;
+   function Get_Skip_Proof_JSON return JSON_Array;
    --  Return a list of entities for which proof was skipped.
+
+   function Get_Skip_Flow_And_Proof_JSON return JSON_Array;
+   --  Return a list of entities for which flow and proof was skipped.
 
    procedure Generate_Assumptions;
    --  For all calls from a SPARK subprogram to another, register assumptions
@@ -347,7 +343,8 @@ package body Gnat2Why.Driver is
       Full : constant JSON_Value := Create_Object;
    begin
       Set_Field (Full, "spark", Get_SPARK_JSON);
-      Set_Field (Full, "skip_proofs", Get_Skip_JSON);
+      Set_Field (Full, "skip_flow_proof", Get_Skip_Flow_And_Proof_JSON);
+      Set_Field (Full, "skip_proof", Get_Skip_Proof_JSON);
       Set_Field
         (Full, "progress", Create (Analysis_Progress'Image (Progress)));
       Set_Field
@@ -425,7 +422,7 @@ package body Gnat2Why.Driver is
       Why_Sections (WF_Main).Clear;
 
       if Has_Skip_Proof_Annotation (E) then
-         Skipped_Proofs.Include (E);
+         Skipped_Proof.Insert (E);
          return;
       end if;
 
@@ -992,14 +989,27 @@ package body Gnat2Why.Driver is
    -- Get_Skip_JSON --
    -------------------
 
-   function Get_Skip_JSON return JSON_Array is
+   function Get_Skip_Flow_And_Proof_JSON return JSON_Array is
       Result : JSON_Array := Empty_Array;
    begin
-      for Elt of Skipped_Proofs loop
+      for Elt of Skipped_Flow_And_Proof loop
          Append (Result, To_JSON (Entity_To_Subp_Assumption (Elt)));
       end loop;
       return Result;
-   end Get_Skip_JSON;
+   end Get_Skip_Flow_And_Proof_JSON;
+
+   -------------------
+   -- Get_Skip_JSON --
+   -------------------
+
+   function Get_Skip_Proof_JSON return JSON_Array is
+      Result : JSON_Array := Empty_Array;
+   begin
+      for Elt of Skipped_Proof loop
+         Append (Result, To_JSON (Entity_To_Subp_Assumption (Elt)));
+      end loop;
+      return Result;
+   end Get_Skip_Proof_JSON;
 
    ------------------------
    -- Is_Back_End_Switch --

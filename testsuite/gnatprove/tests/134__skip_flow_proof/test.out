@@ -1,0 +1,41 @@
+pack.adb:5:07: high: "X" must be listed in the Global aspect of "Skip_Entirely" (SPARK RM 6.1.4(15))
+pack.adb:5:12: warning: assuming "F" has no effect on global items
+pack.adb:5:12: warning: no Global contract available for "F"
+pack.adb:11:07: high: "X" must be listed in the Global aspect of "Skip_Proof" (SPARK RM 6.1.4(15))
+pack.adb:11:12: warning: assuming "F" has no effect on global items
+pack.adb:11:12: warning: no Global contract available for "F"
+pack.adb:17:12: warning: assuming "F" has no effect on global items
+pack.adb:17:12: warning: no Global contract available for "F"
+pack.adb:18:22: medium: assertion might fail (e.g. when X = False)
+Summary of SPARK analysis
+=========================
+
+-
+SPARK Analysis results Total Flow Provers Justified Unproved
+-
+Data Dependencies 2 . . . 2
+Flow Dependencies . . . . .
+Initialization . . . . .
+Non-Aliasing . . . . .
+Run-time Checks . . . . .
+Assertions 1 . . . 1
+Functional Contracts . . . . .
+LSP Verification . . . . .
+Termination . . . . .
+Concurrency . . . . .
+-
+Total 3 . . . 3 (100%)
+
+
+max steps used for successful proof: 0
+
+Analyzed 1 unit
+in unit pack, 4 subprograms and packages out of 5 analyzed
+ Pack at pack.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+absence of run-time errors of Pack fully established
+ Pack.F at pack.ads:3 skipped; body is SPARK_Mode => Off
+ Pack.Process_Normally at pack.ads:15 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and not proved, 0 checks out of 1 proved
+effects on parameters and Global variables of Pack.Process_Normally depends on
+ effects on parameters and Global variables of Pack.F
+ Pack.Skip_Entirely at pack.ads:7 not analyzed (pragma Annotate Skip_Flow_And_Proof)
+ Pack.Skip_Proof at pack.ads:11 not analyzed (pragma Annotate Skip_Flow_And_Proof)

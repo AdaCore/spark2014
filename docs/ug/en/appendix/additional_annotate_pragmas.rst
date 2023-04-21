@@ -88,23 +88,36 @@ annotations.
 
 .. index:: Annotate; No_Wrap_Around
 
-Using Annotations to Request Skipping Proof for an Entity
----------------------------------------------------------
+Using Annotations to Request Skipping Parts of the Analysis for an Entity
+-------------------------------------------------------------------------
 
 Subprograms, packages, tasks, entries and protected subprograms can be
-annotated to skip generating proof obligations for their implementation, and
-the implementations of all such entities defined inside.
+annotated to skip flow analysis, and to skip generating proof obligations for
+their implementation, and the implementations of all such entities defined
+inside.
 
 .. code-block:: ada
 
    procedure P
      with Annotate => (GNATprove, Skip_Proof);
 
-If an entity is annotated in this way, no messages related to possible run-time
-errors and functional contracts are issued for this entity and any contained
-entities. This is similar to specifying `--mode=flow` on the command line (see
-:ref:`Effect of Mode on Output`), except that the effect is limited to this
-entity.
+   procedure P
+     with Annotate => (GNATprove, Skip_Flow_And_Proof);
+
+If an entity is annotated with ``Skip_Proof``, no messages related to possible
+run-time errors and functional contracts are issued for this entity and any
+contained entities. This is similar to specifying ``--mode=flow`` on the command
+line (see :ref:`Effect of Mode on Output`), except that the effect is limited
+to this entity (and enclosed entities).
+
+If an entity is annotated with ``Skip_Flow_And_Proof``, in addition, no messages
+related to global contracts, initialization and dependency relations are issues
+for this entity and any contained entities. This is similar to specifying
+``--mode=check-all`` on the command line, expect that the effect is limited to
+this entity (and enclosed entities).
+
+Note that the ``Skip_Proof`` annotation cannot be used if an enclosing
+subprogram already has the ``Skip_Flow_And_Proof`` annotation.
 
 Using Annotations to Request Overflow Checking on Modular Types
 ---------------------------------------------------------------

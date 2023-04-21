@@ -774,13 +774,19 @@ procedure SPARK_Report is
         Stop_Reason_Type'Value (String'(Get (Dict, "stop_reason")));
 
       SPARK_Status_Dict : constant JSON_Value := Get (Dict, "spark");
-      Skip_Proofs_List : constant JSON_Array := Get (Dict, "skip_proofs");
+      Skip_Flow_And_Proof_List : constant JSON_Array :=
+        Get (Dict, "skip_flow_proof");
+      Skip_Proof_List : constant JSON_Array := Get (Dict, "skip_proof");
    begin
       Parse_Entity_Table (Get (Dict, "entities"));
       Add_Analysis_Progress (Unit, Analysis, Stop_Reason);
       Map_JSON_Object (SPARK_Status_Dict, Handle_SPARK_Status'Access);
-      for Index in 1 .. Length (Skip_Proofs_List) loop
-         Add_Skip_Proof (From_JSON (Get (Skip_Proofs_List, Index)));
+      for Index in 1 .. Length (Skip_Flow_And_Proof_List) loop
+         Add_Skip_Flow_And_Proof
+           (From_JSON (Get (Skip_Flow_And_Proof_List, Index)));
+      end loop;
+      for Index in 1 .. Length (Skip_Proof_List) loop
+         Add_Skip_Proof (From_JSON (Get (Skip_Proof_List, Index)));
       end loop;
       Max_Progress := Analysis_Progress'Max (Max_Progress, Analysis);
       if Has_Flow then
@@ -862,6 +868,10 @@ procedure SPARK_Report is
             if Stat.SPARK = All_In_SPARK then
                if Analysis < Progress_Flow then
                   Put_Line (Handle, " not analyzed");
+               elsif Has_Skip_Flow_And_Proof (Subp) then
+                  Put_Line
+                    (Handle,
+                     " not analyzed (pragma Annotate Skip_Flow_And_Proof)");
                else
                   Put (Handle,
                        " flow analyzed ("
