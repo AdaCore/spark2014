@@ -4567,6 +4567,47 @@ package body SPARK_Util is
       Explanation := Null_Unbounded_String;
    end Objects_Have_Compatible_Alignments;
 
+   ----------------------------------
+   -- Path_Contains_Qualified_Expr --
+   ----------------------------------
+
+   function Path_Contains_Qualified_Expr (Expr : N_Subexpr_Id) return Boolean
+   is
+   begin
+      case Nkind (Expr) is
+         when N_Expanded_Name
+            | N_Identifier
+         =>
+            return False;
+
+         when N_Explicit_Dereference
+            | N_Indexed_Component
+            | N_Selected_Component
+            | N_Slice
+         =>
+            return Path_Contains_Qualified_Expr (Prefix (Expr));
+
+         when N_Function_Call =>
+            pragma Assert (Is_Traversal_Function_Call (Expr));
+            return Path_Contains_Qualified_Expr (First_Actual (Expr));
+
+         when N_Type_Conversion
+            | N_Unchecked_Type_Conversion
+         =>
+            return Path_Contains_Qualified_Expr (Expression (Expr));
+
+         when N_Qualified_Expression =>
+            return True;
+
+         when N_Attribute_Reference =>
+            pragma Assert (Attribute_Name (Expr) = Name_Access);
+            return Path_Contains_Qualified_Expr (Prefix (Expr));
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Path_Contains_Qualified_Expr;
+
    -----------------------------------
    -- Path_Contains_Traversal_Calls --
    -----------------------------------
