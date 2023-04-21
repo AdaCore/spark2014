@@ -887,6 +887,12 @@ package SPARK_Util is
    --  Store the link between a call to a function annotated with
    --  At_End_Borrow and the entity whose scope the at end refers to.
 
+   function Path_Contains_Qualified_Expr (Expr : N_Subexpr_Id) return Boolean
+   with
+     Pre => Is_Path_Expression (Expr)
+       and then Present (Get_Root_Object (Expr));
+   --  Return True if the path from Expr contains a qualified expression
+
    function Path_Contains_Traversal_Calls (Expr : N_Subexpr_Id) return Boolean
    with
      Pre => Is_Path_Expression (Expr);

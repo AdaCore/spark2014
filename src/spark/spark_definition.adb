@@ -635,6 +635,12 @@ package body SPARK_Definition is
          Mark_Violation
            ("borrow of an access-to-constant part of an object", Expr);
 
+      --  Qualified expressions are considered to provide a constant view of
+      --  the object.
+
+      elsif not In_Observe and then Path_Contains_Qualified_Expr (Expr) then
+         Mark_Violation ("borrow of a qualified expression", Expr);
+
       --  Borrows going through a slice are not supported, and are not
       --  necessary either since the slice is necessary followed by an
       --  indexed_component.
@@ -1575,6 +1581,13 @@ package body SPARK_Definition is
                elsif Traverse_Access_To_Constant (Var) then
                   Mark_Violation ("assignment into an access-to-constant part"
                                   & " of an object", Var);
+
+               --  Qualified expressions are considered to provide a constant
+               --  view of the object
+
+               elsif Path_Contains_Qualified_Expr (Var) then
+                  Mark_Violation
+                    ("assignment into a qualified expression", Var);
 
                --  SPARK RM 3.10(8): If the type of the target is an anonymous
                --  access-to-variable type (an owning access type), the source
@@ -3935,6 +3948,13 @@ package body SPARK_Definition is
                   Mark_Violation
                     ("access-to-constant part of an object as " & Mode,
                      Actual);
+
+               --  Qualified expressions are considered to provide a constant
+               --  view of the object
+
+               elsif Path_Contains_Qualified_Expr (Actual) then
+                  Mark_Violation
+                    ("qualified expression as " & Mode, Actual);
                end if;
             end;
          end if;
