@@ -13,10 +13,15 @@ gl = gitlab.Gitlab(
     private_token=gen_gitlab_token()["token"],
 )
 
+spark2014_project = gl.projects.get("eng/spark/spark2014")
+
 
 def get_issue(issue):
     project_name, issue_id = issue.split("#")
-    project = gl.projects.get(project_name)
+    if project_name == "eng/spark/spark2014":
+        project = spark2014_project
+    else:
+        project = gl.projects.get(project_name)
     return project.issues.get(issue_id)
 
 
@@ -51,6 +56,7 @@ def check_xfail_tests():
     """
     tests = glob.glob("tests/*")
     tests += glob.glob("internal/*")
+    tests += glob.glob("sparklib/*")
     for test in tests:
         testname = os.path.basename(test)
         xfail_list = test_is_xfail(test)
