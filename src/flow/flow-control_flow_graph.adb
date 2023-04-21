@@ -5490,20 +5490,17 @@ package body Flow.Control_Flow_Graph is
            (FA,
             Direct_Mapping_Id (N),
             Make_Basic_Attributes
-              (Var_Def       => Flatten_Variable (FA.Spec_Entity,
-                                                  FA.B_Scope),
-               Var_Ex_Use    => Get_Variables
+              (Var_Def    => Flatten_Variable (FA.Spec_Entity,
+                                               FA.B_Scope),
+               Var_Ex_Use => Get_Variables
                  (Expr,
                   Scope                => FA.B_Scope,
                   Target_Name          => Null_Flow_Id,
                   Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
-               Subp_Calls    => Funcalls,
-               Vertex_Ctx    =>
-                 (No_Vertex_Context with delta
-                    Current_Loops => Ctx.Vertex_Ctx.Current_Loops,
-                    Warnings_Off  => Ctx.Vertex_Ctx.Warnings_Off),
-               E_Loc         => N),
+               Subp_Calls => Funcalls,
+               Vertex_Ctx => Ctx.Vertex_Ctx,
+               E_Loc      => N),
             V);
          Ctx.Folded_Function_Checks.Append (Expr);
       end if;
@@ -5615,18 +5612,15 @@ package body Flow.Control_Flow_Graph is
               (FA,
                Direct_Mapping_Id (Cond),
                Make_Basic_Attributes
-                 (Var_Ex_Use    => Get_All_Variables
+                 (Var_Ex_Use => Get_All_Variables
                     (Cond,
                      Scope                => FA.B_Scope,
                      Target_Name          => Null_Flow_Id,
                      Use_Computed_Globals => not FA.Generating_Globals),
-                  Subp_Calls    => Funcalls,
-                  Vertex_Ctx    =>
-                    (No_Vertex_Context with delta
-                       Current_Loops => Ctx.Vertex_Ctx.Current_Loops,
-                       Warnings_Off  => Ctx.Vertex_Ctx.Warnings_Off),
-                  E_Loc         => Cond,
-                  Print_Hint    => Pretty_Print_Entry_Barrier),
+                  Subp_Calls => Funcalls,
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => Cond,
+                  Print_Hint => Pretty_Print_Entry_Barrier),
                V_C);
             --  Ctx.Folded_Function_Checks.Append (Cond);
             --  ??? O429-046 stitch actions?
@@ -5685,11 +5679,8 @@ package body Flow.Control_Flow_Graph is
                Direct_Mapping_Id (N),
                Make_Sink_Vertex_Attributes
                  (Vars_Read,
-                  Is_Type_Decl  => True,
-                  Vertex_Ctx    =>
-                 (No_Vertex_Context with delta
-                    In_Nested_Package => True,
-                    Warnings_Off      => Ctx.Vertex_Ctx.Warnings_Off)),
+                  Is_Type_Decl => True,
+                  Vertex_Ctx   => Ctx.Vertex_Ctx),
                V);
             CM.Insert (Union_Id (N), Trivial_Connection (V));
          end;
@@ -6248,11 +6239,11 @@ package body Flow.Control_Flow_Graph is
       Add_Vertex
         (FA,
          Make_Basic_Attributes
-           (Var_Def       => Flatten_Variable (Borrowed, FA.B_Scope),
-            Var_Ex_Use    => Flow_Id_Sets.To_Set (Borrower),
-            Vertex_Ctx    => No_Vertex_Context, --  ??? not sure about this
-            Print_Hint    => Pretty_Print_Borrow,
-            E_Loc         => Decl),
+           (Var_Def    => Flatten_Variable (Borrowed, FA.B_Scope),
+            Var_Ex_Use => Flow_Id_Sets.To_Set (Borrower),
+            Vertex_Ctx => No_Vertex_Context, --  ??? not sure about this
+            Print_Hint => Pretty_Print_Borrow,
+            E_Loc      => Decl),
          V);
       FA.Atr (V).Is_Program_Node := False;
 
@@ -7385,9 +7376,9 @@ package body Flow.Control_Flow_Graph is
 
                   A :=
                     Make_Basic_Attributes
-                      (Var_Def       => Split_Out,
-                       Var_Ex_Use    => Split_Ins,
-                       Vertex_Ctx    => No_Vertex_Context);
+                      (Var_Def    => Split_Out,
+                       Var_Ex_Use => Split_Ins,
+                       Vertex_Ctx => No_Vertex_Context);
 
                   Add_Vertex (FA, A, Curr);
                   FA.Atr (Curr).Is_Package_Initialization := True;
