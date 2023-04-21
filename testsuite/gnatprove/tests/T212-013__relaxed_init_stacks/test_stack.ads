@@ -33,7 +33,7 @@ private
       Top     : Natural := 0;
       Content : Content_Arr (1 .. Max);
    end record
-     with Predicate => Top <= Max
+     with Ghost_Predicate => Top <= Max
      and then (for all K in 1 .. Top => Content (K)'Initialized);
 
    function Size (S : My_Stack) return Natural is (S.Top);

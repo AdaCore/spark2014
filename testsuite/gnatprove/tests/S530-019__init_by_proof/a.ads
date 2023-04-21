@@ -4,7 +4,7 @@ package A
 with SPARK_Mode,
   Abstract_State => Global_AS
 is
-   function Global_A_Initalized return Boolean;
+   function Global_A_Initalized return Boolean with Ghost;
 
    type My_Natural is new Natural with
      Relaxed_Initialization;

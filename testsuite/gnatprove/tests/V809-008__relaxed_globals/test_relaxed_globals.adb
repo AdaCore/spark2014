@@ -77,7 +77,7 @@ is
    end record with
      Relaxed_Initialization;
    subtype S2 is T2 with
-     Predicate =>
+     Ghost_Predicate =>
        S2.F'Initialized and then S2.G'Initialized and then S2.F < S2.G;
 
    G2 : S2;

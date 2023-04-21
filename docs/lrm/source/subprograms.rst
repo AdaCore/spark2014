@@ -1920,6 +1920,8 @@ body (see Ada RM 7.2(4))].
     * within an actual parameter in a generic instantiation when the
       corresponding generic formal parameter is ghost.
 
+    A ghost attribute like ``Initialized`` shall only be referenced where a
+    ghost entity would be allowed.
 
 11. A ghost entity shall not be referenced within an aspect specification
     [(including an aspect-specifying pragma)]
@@ -2093,7 +2095,7 @@ Relaxed Initialization
 ----------------------
 
 |SPARK| defines the Boolean-valued aspect Relaxed_Initialization and the related
-Boolean-valued attribute, Initialized.
+Boolean-valued ghost attribute, Initialized.
 
 Without the Relaxed_Initialization aspect, the rules that statically prevent
 reading an uninitialized scalar object are defined with "whole object"
@@ -2250,11 +2252,15 @@ The prefix of an Initialized attribute reference shall denote an object.
     initialization; the result of a dispatching function shall not have
     relaxed initialization.
 
+11. [Ghost attribute ``Initialized`` shall only be referenced where a
+    ghost entity would be allowed;
+    see :ref:`Ghost Entities` for the statement of this rule.]
+
 .. container:: heading
 
    Verification Rules
 
-11. At the point of a read of a scalar object X that has relaxed initialization,
+12. At the point of a read of a scalar object X that has relaxed initialization,
     a verification condition is introduced to ensure that X is initialized.
     This includes the case where X is a subcomponent of a composite object
     that is passed as an argument in a call to a predefined relational
@@ -2292,7 +2298,7 @@ The prefix of an Initialized attribute reference shall denote an object.
     whole-object-granularity rules that govern that case will ensure that X is
     initialized whenever it is read.]
 
-12. For any object X, evaluation of X'Initialized includes the evaluation
+13. For any object X, evaluation of X'Initialized includes the evaluation
     of Y'Initialized for every scalar reachable part
     (see :ref:`Access Types`) Y of X (excluding
     "hidden" components of tagged objects - see :ref:`Type Invariants`).

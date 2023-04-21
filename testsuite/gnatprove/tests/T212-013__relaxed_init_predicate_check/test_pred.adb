@@ -46,7 +46,7 @@ procedure Test_Pred with SPARK_Mode is
    type Holder_N is record
       C : My_Rec_N;
    end record
-     with Predicate => (if C.X'Initialized then C.X > 0 and then Ignore (C.Y));
+     with Ghost_Predicate => (if C.X'Initialized then C.X > 0 and then Ignore (C.Y));
 
    type My_Rec_N_2 is new My_Rec_N with Relaxed_Initialization;
 
@@ -84,7 +84,7 @@ procedure Test_Pred with SPARK_Mode is
    type My_Rec_D_2 is new My_Rec_D with Relaxed_Initialization;
 
    subtype My_Rec_D_3 is My_Rec_D
-     with Predicate => (if My_Rec_D_3.X'Initialized then My_Rec_D_3.X > 0 and then Ignore (My_Rec_D_3.Y));
+     with Ghost_Predicate => (if My_Rec_D_3.X'Initialized then My_Rec_D_3.X > 0 and then Ignore (My_Rec_D_3.Y));
 
    procedure Test_5 with Global => null is
       X : My_Rec_D_2;

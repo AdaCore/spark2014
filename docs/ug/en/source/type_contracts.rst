@@ -8,8 +8,9 @@ Type Contracts
 * A *record discriminant* may be specified on a record type to distinguish
   between variants of the same record.
 * A *predicate* introduced by aspect ``Static_Predicate``,
-  ``Dynamic_Predicate`` or ``Predicate`` may be specified on a type or subtype
-  to express a property verified by objects of the (sub)type.
+  ``Dynamic_Predicate``, ``Ghost_Predicate`` or ``Predicate`` may be specified
+  on a type or subtype to express a property verified by objects of the
+  (sub)type.
 * A *type invariant* introduced by aspect ``Type_Invariant`` or ``Invariant``
   may be specified on the completion of a private type to express a property
   that is only guaranteed outside of the type scope.
@@ -106,7 +107,7 @@ bounds:
 .. literalinclude:: /examples/ug__logging_discr/test.out
    :language: none
 
-.. index:: predicate, Static_Predicate, Dynamic_Predicate
+.. index:: predicate, Static_Predicate, Dynamic_Predicate, Ghost_Predicate
 
 Predicates
 ----------
@@ -143,6 +144,11 @@ Aspect ``Predicate`` is specific to |GNAT Pro| and can be used instead of
 remaining cases, thus not restricting uses of variables of the subtype more than
 necessary.
 
+Aspect ``Ghost_Predicate`` is also specific to |GNAT Pro| and can be used
+instead of ``Dynamic_Predicate`` when the predicate expression needs to
+reference ghost entities or ghost attributes like ``Initialized``. In that
+case, the subtype cannot be used as subtype_mark in a membership test.
+
 Predicates are inherited by subtypes and derived types. If a subtype or a
 derived type inherits a predicate and defines its own predicate, both
 predicates are checked on values of the new (sub)type. Predicates are restricted in
@@ -151,8 +157,8 @@ predicate cannot mention a global variable in |SPARK|, although it can mention
 a global constant.
 
 |GNATprove| checks that all values assigned to a subtype with a predicate are
-allowed by its predicate (for all three forms of predicate: ``Predicate``,
-``Static_Predicate`` and ``Dynamic_Predicate``). |GNATprove| generates a
+allowed by its predicate (for all forms of predicate: ``Predicate``,
+``Static_Predicate``, ``Dynamic_Predicate`` and ``Ghost_Predicate``). |GNATprove| generates a
 predicate check even in cases where there is no corresponding run-time check,
 for example when assigning to a component of a record with a
 predicate. |GNATprove| also uses the predicate information for proving

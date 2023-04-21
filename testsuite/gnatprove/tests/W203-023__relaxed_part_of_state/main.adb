@@ -5,7 +5,7 @@ is
 
    package N1 with Abstract_State => S is
       function F return Integer;
-      function G return Integer;
+      function G return Integer with Ghost;
       function H return Integer;
    private
       X : Integer with Relaxed_Initialization, Part_Of => S; -- ok
@@ -19,7 +19,7 @@ is
 
    package N2 with Abstract_State => S, Initializes => S is
       function F return Integer;
-      function G return Integer;
+      function G return Integer with Ghost;
       function H return Integer;
    private
       X : Integer with Relaxed_Initialization, Part_Of => S; -- ok
