@@ -436,7 +436,9 @@ package body Flow_Error_Messages is
       Dummy    : String_Sets.Cursor;
       Inserted : Boolean;
 
-      Check_All_Mode : constant Boolean := Gnat2Why_Args.Mode = GPM_Check_All;
+      Check_All_Mode : constant Boolean :=
+        Gnat2Why_Args.Mode = GPM_Check_All
+          or else Has_Skip_Flow_And_Proof_Annotation (E);
       --  True when we are only reporting legiality errors that require flow
       --  analysis.
 
