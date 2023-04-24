@@ -610,7 +610,7 @@ package body VC_Kinds is
           & " an assignment statement, an object declaration, or a simple"
           & " return statement",
          when Lim_Access_Conv =>
-           "an implicit conversion between access types with different "
+           "a conversion between access types with different "
           & "designated types",
          when Lim_Access_Sub_Formal_With_Inv =>
            "a formal parameter of an access-to-subprogram type which is"
