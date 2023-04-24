@@ -11,7 +11,7 @@ procedure Test_2 with SPARK_Mode is
       F : Integer;
    end record with
      Relaxed_Initialization,
-     Predicate => F'Initialized
+     Ghost_Predicate => F'Initialized
      and then F < Integer'Last;
 
    subtype S_Rec is My_Rec with

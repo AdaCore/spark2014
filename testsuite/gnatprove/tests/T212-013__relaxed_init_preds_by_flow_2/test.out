@@ -1,5 +1,5 @@
-test_pred_on_array.adb:8:56: info: index check proved (CVC5: 2 VC)
-test_pred_on_array.adb:8:81: info: index check proved (CVC5: 2 VC)
+test_pred_on_array.adb:8:62: info: index check proved (CVC5: 2 VC)
+test_pred_on_array.adb:8:87: info: index check proved (CVC5: 2 VC)
 test_pred_on_array.adb:10:36: info: data dependencies proved
 test_pred_on_array.adb:12:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test_pred_on_array.adb:12:60: info: index check proved (CVC5: 2 VC)

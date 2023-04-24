@@ -6,7 +6,7 @@ procedure equals with SPARK_mode is
          I : Boolean;
          F : My_Int;
       end record with
-        Predicate => (if I then F'Initialized);
+        Ghost_Predicate => (if I then F'Initialized);
 
       type H is record
         C : R;
@@ -27,7 +27,7 @@ procedure equals with SPARK_mode is
          I : Boolean;
          F : My_Int;
       end record with
-        Predicate => (if I then F'Initialized);
+        Ghost_Predicate => (if I then F'Initialized);
 
       function "=" (X, Y : R) return Boolean is
         (X.I = Y.I and then (if X.I then X.F = Y.F));

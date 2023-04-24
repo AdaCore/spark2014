@@ -1,7 +1,7 @@
 procedure Test_Pred_On_Array with SPARK_Mode is
    type Element is new Integer with Relaxed_Initialization;
    type E_Arr is array (Positive range <>) of Element with
-     Predicate => (for some I in E_Arr'Range => E_Arr (I)'Initialized);
+     Ghost_Predicate => (for some I in E_Arr'Range => E_Arr (I)'Initialized);
 
    procedure Test (X : E_Arr) with Global => null is
    begin
@@ -50,7 +50,7 @@ procedure Test_Pred_On_Array with SPARK_Mode is
    type E_Rec is record
       X, Y, Z : Element;
    end record with
-   Predicate => X'Initialized or Y'Initialized or Z'Initialized;
+   Ghost_Predicate => X'Initialized or Y'Initialized or Z'Initialized;
 
    procedure Test (X : E_Rec) with Global => null is
    begin
@@ -95,7 +95,7 @@ procedure Test_Pred_On_Array with SPARK_Mode is
 
    type E_Scal is new Element with
      Relaxed_Initialization,
-     Predicate => E_Scal'Initialized;
+     Ghost_Predicate => E_Scal'Initialized;
 
    procedure Test (X : E_Scal) with Global => null is
    begin
