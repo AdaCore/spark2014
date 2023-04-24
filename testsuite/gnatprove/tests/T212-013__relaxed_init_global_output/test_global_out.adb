@@ -11,7 +11,7 @@ procedure Test_Global_Out with SPARK_Mode is
    G : Rec;
 
    function Safe_Get_G return Integer is
-     (if G.G'Initialized then G.G else 0);
+     (if G.G'Initialized then G.G else 0) with Ghost;
 
    procedure Init_F_1 with
      Post => G.F'Initialized
@@ -49,7 +49,7 @@ procedure Test_Global_Out with SPARK_Mode is
    I : My_Int;
 
    function Safe_Get_I return My_Int is
-     (if I'Initialized then I else 0);
+     (if I'Initialized then I else 0) with Ghost;
 
    procedure Init_Cond_1 with
      Post => (if B then I'Initialized

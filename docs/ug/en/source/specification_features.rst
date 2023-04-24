@@ -96,8 +96,8 @@ one cannot declare it inside a subprogram.
 
 .. _Aspect Relaxed_Initialization:
 
-Aspect ``Relaxed_Initialization`` and Attribute ``Initialized``
----------------------------------------------------------------
+Aspect ``Relaxed_Initialization`` and Ghost Attribute ``Initialized``
+---------------------------------------------------------------------
 
 [SPARK]
 
@@ -228,14 +228,14 @@ field.
 
 .. index:: Initialized
 
-Attribute ``Initialized``
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Ghost Attribute ``Initialized``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As explained above, the standard data initialization policy does not apply to
 objects annotated with the ``Relaxed_Initialization`` aspect. As a result, it
 becomes necessary to annotate which parts of accessed objects are initialized on
 entry and exit of subprograms in contracts. This can be done using the
-``Initialized`` attribute. This attribute can be applied to (parts of) objects
+``Initialized`` ghost attribute. This attribute can be applied to (parts of) objects
 annotated with the ``Relaxed_Initialization`` aspect. If the object is
 completely initialized, this attribute evaluates to ``True``.
 
@@ -341,8 +341,13 @@ following way:
       Top     : Natural := 0;
       Content : Content_Type;
    end record
-     with Predicate => Top in 0 .. 100
-     and then (for all I in 1 .. Top => Content (I)'Initialized);
+     with Ghost_Predicate => Top in 0 .. 100
+       and then (for all I in 1 .. Top => Content (I)'Initialized);
+
+.. note::
+
+   The predicate of type ``Stack`` is now introduced by aspect
+   ``Ghost_Predicate`` to allow the use of ghost attribute ``Initialized``.
 
 .. note::
 

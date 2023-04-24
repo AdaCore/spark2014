@@ -16,7 +16,7 @@ private
       Values : Content (1 .. Capacity);
       Top    : Natural := 0;
    end record  with
-     Predicate => Top in 0 .. Capacity and then
+     Ghost_Predicate => Top in 0 .. Capacity and then
        (for all K in 1 .. Top => Values (K)'Initialized);
 
    function Empty (This : Stack) return Boolean is (This.Top = 0);
