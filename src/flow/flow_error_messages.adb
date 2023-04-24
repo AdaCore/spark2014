@@ -198,7 +198,8 @@ package body Flow_Error_Messages is
       Span         : Source_Span;
       Severity     : Msg_Severity;
       Continuation : Boolean := False)
-      return Message_Id;
+      return Message_Id
+   with Post => Print_Regular_Msg'Result /= No_Message_Id;
    --  Print a regular error, warning or info message using the frontend
    --  mechanism. Return an Id which can be used to identify this message.
 
@@ -596,7 +597,7 @@ package body Flow_Error_Messages is
                      if Fix /= "" then
                         Ignore_Id := Print_Regular_Msg
                           (SGR_Note & "possible fix: " & SGR_Reset
-                              & Fix_Str,
+                           & Fix_Str,
                            Span, Severity, Continuation => True);
                      end if;
                   end;
