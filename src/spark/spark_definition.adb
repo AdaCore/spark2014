@@ -299,10 +299,9 @@ package body SPARK_Definition is
    procedure Check_Compatible_Access_Types
      (Expected_Type : Type_Kind_Id;
       Expression    : N_Has_Etype_Id);
-   --  If Expected_Type is an anonymous access type, check that the type of
-   --  Expression and Expected_Type have compatible designated types. This is
-   --  used to ensure that there can be no conversions between access types
-   --  with different representative types.
+   --  Check that the type of Expression and Expected_Type have compatible
+   --  designated types. This is used to ensure that there can be no
+   --  conversions between access types with different representative types.
 
    procedure Check_User_Defined_Eq
      (Ty  : Type_Kind_Id;
@@ -512,7 +511,7 @@ package body SPARK_Definition is
       Actual_Des_Ty   : Type_Kind_Id;
       Expected_Des_Ty : Type_Kind_Id;
    begin
-      if Is_Anonymous_Access_Object_Type (Expected_Type) then
+      if Is_Access_Object_Type (Root_Retysp (Expected_Type)) then
 
          --  Get the designated types of the root type of the actual and
          --  expected types.
