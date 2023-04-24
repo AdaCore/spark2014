@@ -464,7 +464,7 @@ def check_marks(strlist):
             return "DEFAULT_INITIAL_CONDITION"
         elif "initial condition" in text:
             return "INITIAL_CONDITION"
-        elif "precondition" in text or "nonreturning" in text:
+        elif "precondition" in text:
             if "of main program" in text:
                 return "PRECONDITION_MAIN"
             elif "True" in text:
@@ -512,7 +512,7 @@ def check_marks(strlist):
             return "ASSERT_STEP"
         elif "assertion" in text:
             return "ASSERT"
-        elif "raise statement" in text or "exception" in text:
+        elif "raise statement" in text or "expected exception" in text:
             return "RAISE"
         elif "aliasing via address clause" in text or "unchecked conversion" in text:
             if "size" in text:
@@ -544,7 +544,7 @@ def check_marks(strlist):
           is_flow_tag: True for flow messages, False for proof messages
         """
         if qualifier == "info":
-            if "proved" in text or "nonreturning" in text or "justified" in text:
+            if "proved" in text or "only expected" in text or "justified" in text:
                 return "PASS"
             else:
                 return None

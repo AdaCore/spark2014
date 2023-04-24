@@ -558,8 +558,7 @@ package body Why.Gen.Names is
       then E_Symb (E, (case Selector_Name is
                           when Why.Inter.Standard => WNE_Func_Guard,
                           when Dispatch           => WNE_Dispatch_Func_Guard,
-                          when Refine             => WNE_Refined_Func_Guard,
-                          when others             => raise Program_Error))
+                          when Refine             => WNE_Refined_Func_Guard))
       else Get_Logic_Function_Guard (E));
 
    ------------------
@@ -963,7 +962,6 @@ package body Why.Gen.Names is
          when WNE_Hidden_Extension           => "rec__hidden_ext__",
          when WNE_Hide_Extension             => "hide_ext__",
          when WNE_Init_Wrapper_Suffix        => "__init_wrapper",
-         when WNE_No_Return_Module           => "No_Return",
          when WNE_Param_Prefix               => "param__",
          when WNE_Rec_Rep                    => "__rep",
          when WNE_Rec_Comp_Prefix            => "rec__",

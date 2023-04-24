@@ -9,6 +9,7 @@ is
 
    procedure Non_Returning_Proc (Par : Integer)
      with No_Return,
+          Exceptional_Cases => (others => False),
           Global => (Output => G);
 
    procedure OK_1 (Par1 : in out Integer;

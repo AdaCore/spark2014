@@ -1,6 +1,7 @@
 with utility_test;
 
-procedure test_func( a : Integer ) with No_Return
+procedure test_func( a : Integer ) with No_Return,
+  Exceptional_Cases => (others => False)
 is
    b : Integer;
 begin

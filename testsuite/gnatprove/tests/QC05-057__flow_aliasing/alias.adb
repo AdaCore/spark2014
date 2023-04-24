@@ -16,7 +16,7 @@ package body Alias is
    end;
 
    procedure Test2 is
-      procedure Neverending with No_Return is
+      procedure Neverending with No_Return, Exceptional_Cases => (others => False) is
       begin
          loop
             null;

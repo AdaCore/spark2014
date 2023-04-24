@@ -14,6 +14,7 @@ is
 
    procedure Explode
      with Global => (Output => State),
-          No_Return;
+          No_Return,
+          Exceptional_Cases => (others => False);
 
 end Lights;

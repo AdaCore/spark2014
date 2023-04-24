@@ -1509,6 +1509,15 @@ package body Flow_Error_Messages is
          return "empty aggregates cannot be used if there is no element before"
            & " the first element of their index type";
 
+      elsif Tag = VC_Raise
+        and then Nkind (N) = N_Procedure_Call_Statement
+        and then Ekind (Get_Called_Entity (N)) = E_Procedure
+        and then No_Return (Get_Called_Entity (N))
+        and then No
+          (Get_Pragma (Get_Called_Entity (N), Pragma_Exceptional_Cases))
+      then
+         return "No_Return procedures have an implicit exceptional contract";
+
       --  If a run-time check fails inside the prefix of a an attribute
       --  reference with 'Old or 'Loop_Entry attribute, and this attribute
       --  reference is potentially unevaluated, it is likely that the user

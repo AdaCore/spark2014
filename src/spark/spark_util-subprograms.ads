@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;
-with Gnat2Why_Args;
 with Sem_Disp;
 with Sinfo.Utils;                        use Sinfo.Utils;
 with Stand;
@@ -445,16 +444,6 @@ package SPARK_Util.Subprograms is
 
    function Is_Borrowing_Traversal_Function (E : Entity_Id) return Boolean;
    --  Return true if E is a borrowing traversal function
-
-   function Is_Error_Signaling_Procedure (E : Entity_Id) return Boolean is
-     (No_Return (E)
-      and then
-      Get_Execution_Kind (E, After_GG => True) = Abnormal_Termination)
-    with Pre => not Gnat2Why_Args.Global_Gen_Mode;
-   --  @param E any entity
-   --  @return True iff E is a procedure annotated with No_Return
-   --     and is considered to always terminate abnormally.
-   --  Note: this routine is meant to be only used in phase 2
 
    function Is_Intrinsic (E : Entity_Id) return Boolean is
      (Ekind (E) in E_Function | E_Procedure

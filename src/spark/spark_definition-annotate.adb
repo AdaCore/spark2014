@@ -1042,12 +1042,6 @@ package body SPARK_Definition.Annotate is
             & " Automatic_Instantiation must be ghost",
             E);
          return;
-      elsif Has_Exceptional_Contract (E) then
-         Error_Msg_N
-           ("procedure annotated with the " & Aspect_Or_Pragma
-            & " Automatic_Instantiation shall not raise exceptions",
-            E);
-         return;
       end if;
 
       --  It shall not have mutable parameters

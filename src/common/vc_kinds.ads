@@ -411,6 +411,7 @@ package VC_Kinds is
       Lim_Access_Sub_Return_Type_With_Inv,
       Lim_Access_Sub_Traversal,
       Lim_Access_To_Dispatch_Op,
+      Lim_Access_To_No_Return_Subp,
       Lim_Access_To_Relaxed_Init_Subp,
       Lim_Access_To_Subp_With_Exc,
       Lim_Address_Attr_In_Unsupported_Context,
@@ -595,6 +596,8 @@ package VC_Kinds is
            "access to borrowing traversal function",
          when Lim_Access_To_Dispatch_Op =>
            "access to dispatching operation",
+         when Lim_Access_To_No_Return_Subp =>
+           "access to No_Return procedure",
          when Lim_Access_To_Relaxed_Init_Subp =>
            "access to subprogram annotated with Relaxed_Initialization",
          when Lim_Access_To_Subp_With_Exc =>

@@ -88,10 +88,10 @@ functions.adb:14:14: high: all paths in "G" raise exceptions or do not terminate
 functions.adb:14:14: info: add a contract to analyze it separately from calling contexts
 functions.adb:14:14: info: local subprogram "G" only analyzed in the context of calls
 functions.adb:14:14: warning: subprogram "G" has no effect
-functions.adb:16:07: medium: call to nonreturning subprogram might be executed, in call inlined at functions.adb:29
+functions.adb:16:07: medium: unexpected exception might be raised, in call inlined at functions.adb:29 [possible explanation: No_Return procedures have an implicit exceptional contract]
 functions.adb:16:07: warning: assuming "P" has no effect on global items
 functions.adb:16:07: warning: no Global contract available for "P"
-functions.adb:22:10: medium: call to nonreturning subprogram might be executed
+functions.adb:22:10: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 functions.adb:22:10: warning: assuming "P" has no effect on global items
 functions.adb:22:10: warning: no Global contract available for "P"
 functions.adb:29:04: info: analyzing call to "G" in context
@@ -192,6 +192,7 @@ r.adb:25:21: warning: statement has no effect
 r.adb:31:14: warning: subprogram "Proc1" has no effect
 r.adb:34:10: info: analyzing call to "Proc1" in context
 r.adb:34:10: info: no contextual analysis of call to recursive subprogram
+r.adb:40:07: info: only expected exception raised (CVC5: 1 VC)
 r.adb:40:07: warning: assuming "OS_Exit" has no effect on global items
 r.adb:40:07: warning: no Global contract available for "OS_Exit"
 r.adb:45:18: medium: implicit terminating annotation on "Proc3" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
@@ -199,13 +200,13 @@ r.adb:48:07: warning: unreachable code (CVC5: 1 VC)
 r.adb:51:04: warning: analyzing unreferenced procedure "Proc4"
 r.adb:51:14: high: all paths in "Proc4" raise exceptions or do not terminate normally
 r.adb:51:14: warning: subprogram "Proc4" has no effect
-r.adb:53:07: medium: call to nonreturning subprogram might be executed
+r.adb:53:07: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 r.adb:53:07: warning: assuming "OS_Exit" has no effect on global items
 r.adb:53:07: warning: no Global contract available for "OS_Exit"
-r.adb:58:04: medium: call to nonreturning subprogram might be executed
+r.adb:58:04: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
 r.adb:58:04: warning: no Global contract available for "OS_Exit"
-r.adb:59:04: info: call to nonreturning procedure never executed (CVC5: 1 VC)
+r.adb:59:04: info: only expected exception raised (CVC5: 1 VC)
 r.adb:59:04: warning: unreachable code
 spark-containers-parameter_checks.ads:32:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:350, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
 spark-containers-parameter_checks.ads:37:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:350, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
