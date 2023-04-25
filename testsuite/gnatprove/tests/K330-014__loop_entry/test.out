@@ -15,7 +15,7 @@ optional.adb:27:11: medium: array index check might fail [reason for check: valu
 optional.adb:29:48: info: unrolling loop
 optional.adb:31:36: info: loop invariant initialization proved (CVC5: 3 VC)
 optional.adb:31:36: medium: loop invariant might not be preserved by an arbitrary iteration
-utils.adb:10:10: medium: implicit terminating annotation on "Sum_Of" could be incorrect, subprogram is recursive
+utils.adb:10:10: medium: implicit terminating annotation on "Sum_Of" could be incorrect, subprogram is recursive [possible fix: annotate "Sum_Of" with a Subprogram_Variant aspect]
 utils.adb:10:29: info: range check proved (CVC5: 2 VC)
 utils.adb:10:34: medium: overflow check might fail, cannot prove upper bound for Sum_Of (Val - 1) + Val (e.g. when Val = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Sum_Of (Val - 1) <= Integer'Last - Val) to subprogram at utils.ads:2]
 utils.ads:2:13: info: implicit function contract might not be available on recursive calls

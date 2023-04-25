@@ -1,8 +1,8 @@
 incorrect_lemmas.adb:10:32: info: function contract feasibility proved (CVC5: 1 VC)
 incorrect_lemmas.adb:11:09: info: pointer dereference check proved (CVC5: 1 VC)
-incorrect_lemmas.adb:11:09: medium: implicit terminating annotation on "Call" could be incorrect, call via access-to-subprogram might be nonterminating
+incorrect_lemmas.adb:11:09: medium: implicit terminating annotation on "Call" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 incorrect_lemmas.adb:13:14: info: postcondition proved (CVC5: 1 VC)
-incorrect_lemmas.adb:13:26: medium: implicit terminating annotation on "Call" could be incorrect, call via access-to-subprogram might be nonterminating
+incorrect_lemmas.adb:13:26: medium: implicit terminating annotation on "Call" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 incorrect_lemmas.adb:13:30: info: pointer dereference check proved (CVC5: 1 VC)
 incorrect_lemmas.adb:15:06: warning: Always_Return annotation is useless
 incorrect_lemmas.adb:15:06: warning: function "Call" has implicit Always_Return annotation

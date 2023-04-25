@@ -50,7 +50,7 @@ test.adb:144:14: warning: subprogram "Ineffective_Statements_4" has no effect
 test.adb:147:07: info: no contextual analysis of "Factorial" (multiple returns)
 test.adb:147:07: info: no contextual analysis of "Ineffective_Statements_4" (nested subprogram)
 test.adb:147:16: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
-test.adb:150:13: medium: implicit terminating annotation on "Factorial" could be incorrect, subprogram is recursive
+test.adb:150:13: medium: implicit terminating annotation on "Factorial" could be incorrect, subprogram is recursive [possible fix: annotate "Factorial" with a Subprogram_Variant aspect]
 test.adb:150:24: medium: overflow check might fail, cannot prove upper bound for Val * Factorial (Val - 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Val * Factorial (Val - 1) in Integer) to subprogram at line 147]
 test.adb:150:41: info: range check proved (CVC5: 2 VC)
 test.adb:163:14: warning: subprogram "Unused_Variables_1" has no effect

@@ -55,13 +55,13 @@ test_goto.adb:90:19: medium: assertion might fail [possible fix: loop invariant 
 test_goto.adb:90:19: warning: assuming "B" has no effect on global items
 test_goto.adb:90:19: warning: no Global contract available for "B"
 test_goto_borrow.adb:9:12: info: implicit function contract might not be available on recursive calls
-test_goto_borrow.adb:10:05: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive
+test_goto_borrow.adb:10:05: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
 test_goto_borrow.adb:11:50: info: pointer dereference check proved (CVC5: 1 VC)
 test_goto_borrow.adb:11:58: info: overflow check proved (CVC5: 2 VC)
 test_goto_borrow.adb:12:08: warning: Always_Return annotation is useless
 test_goto_borrow.adb:12:08: warning: function "Length" has implicit Always_Return annotation
 test_goto_borrow.adb:14:12: info: implicit function contract might not be available on recursive calls
-test_goto_borrow.adb:15:05: medium: implicit terminating annotation on "Nth" could be incorrect, subprogram is recursive
+test_goto_borrow.adb:15:05: medium: implicit terminating annotation on "Nth" could be incorrect, subprogram is recursive [possible fix: annotate "Nth" with a Subprogram_Variant aspect]
 test_goto_borrow.adb:15:20: info: pointer dereference check proved (CVC5: 1 VC)
 test_goto_borrow.adb:15:31: info: precondition proved (CVC5: 1 VC)
 test_goto_borrow.adb:15:37: info: pointer dereference check proved (CVC5: 1 VC)

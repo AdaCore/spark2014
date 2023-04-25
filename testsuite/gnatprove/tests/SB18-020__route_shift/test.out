@@ -12,13 +12,13 @@ test_route.adb:17:08: info: pointer dereference check proved
 test_route.adb:17:15: info: pointer dereference check proved
 test_route.adb:17:18: info: overflow check proved
 test_route.adb:28:13: info: implicit function contract might not be available on recursive calls
-test_route.adb:29:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive
+test_route.adb:29:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
 test_route.adb:30:52: info: pointer dereference check proved
 test_route.adb:30:60: info: overflow check proved
 test_route.adb:31:09: warning: Always_Return annotation is useless
 test_route.adb:31:09: warning: function "Length" has implicit Always_Return annotation
 test_route.adb:33:13: info: implicit function contract might not be available on recursive calls
-test_route.adb:34:07: medium: implicit terminating annotation on "Nth_X" could be incorrect, subprogram is recursive
+test_route.adb:34:07: medium: implicit terminating annotation on "Nth_X" could be incorrect, subprogram is recursive [possible fix: annotate "Nth_X" with a Subprogram_Variant aspect]
 test_route.adb:34:22: info: pointer dereference check proved
 test_route.adb:34:30: info: pointer dereference check proved
 test_route.adb:34:38: info: precondition proved
@@ -51,7 +51,7 @@ test_route.adb:75:32: info: precondition proved
 test_route.adb:75:63: info: precondition proved
 test_route.adb:80:18: info: null exclusion check proved
 test_route.adb:80:18: info: pointer dereference check proved
-test_route.adb:82:10: medium: implicit terminating annotation on "Nth_Point" could be incorrect, subprogram is recursive
+test_route.adb:82:10: medium: implicit terminating annotation on "Nth_Point" could be incorrect, subprogram is recursive [possible fix: annotate "Nth_Point" with a Subprogram_Variant aspect]
 test_route.adb:82:17: info: precondition proved
 test_route.adb:82:29: info: pointer dereference check proved
 test_route.adb:82:38: info: range check proved

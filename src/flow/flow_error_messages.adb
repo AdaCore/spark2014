@@ -130,17 +130,18 @@ package body Flow_Error_Messages is
    --  "--limit-region" argument.
 
    function Compute_Message
-     (Msg  : String;
-      N    : Node_Id;
-      F1   : Flow_Id := Null_Flow_Id;
-      F2   : Flow_Id := Null_Flow_Id;
-      F3   : Flow_Id := Null_Flow_Id)
+     (Msg           : String;
+      N             : Node_Id;
+      F1            : Flow_Id := Null_Flow_Id;
+      F2            : Flow_Id := Null_Flow_Id;
+      F3            : Flow_Id := Null_Flow_Id;
+      With_Location : Boolean := True)
       return String with
       Pre => (if Present (F2) then Present (F1)) and then
              (if Present (F3) then Present (F2));
-   --  This function:
-   --    * adds more precise location for generics and inlining
-   --    * substitutes flow nodes
+   --  Substitute flow nodes
+   --  @param With_Location by default, add more precise location for
+   --                       instantiated and inlined code
 
    function Compute_Sloc
      (N           : Node_Id;
@@ -245,11 +246,12 @@ package body Flow_Error_Messages is
    ---------------------
 
    function Compute_Message
-     (Msg  : String;
-      N    : Node_Id;
-      F1   : Flow_Id := Null_Flow_Id;
-      F2   : Flow_Id := Null_Flow_Id;
-      F3   : Flow_Id := Null_Flow_Id)
+     (Msg           : String;
+      N             : Node_Id;
+      F1            : Flow_Id := Null_Flow_Id;
+      F2            : Flow_Id := Null_Flow_Id;
+      F3            : Flow_Id := Null_Flow_Id;
+      With_Location : Boolean := True)
       return String
    is
       M : Unbounded_String := To_Unbounded_String (Msg);
@@ -264,7 +266,9 @@ package body Flow_Error_Messages is
          end if;
       end if;
 
-      if Instantiation_Location (Sloc (N)) /= No_Location then
+      if With_Location
+        and then Instantiation_Location (Sloc (N)) /= No_Location
+      then
 
          --  If we are dealing with an instantiation of a generic we change the
          --  message to point at the implementation of the generic and we
@@ -377,6 +381,7 @@ package body Flow_Error_Messages is
      (E            : Entity_Id;
       Msg          : String;
       Details      : String        := "";
+      Explanation  : String        := "";
       Fix          : String        := "";
       Severity     : Msg_Severity;
       N            : Node_Id;
@@ -513,8 +518,8 @@ package body Flow_Error_Messages is
          --  Print the message except when it's suppressed. If command line
          --  argument "--limit-line" was given, only issue the warning if it is
          --  to be emitted on the specified line (errors are emitted anyway).
-         --  Additionally, if Details and/or Fix are not empty, print them,
-         --  either on the same line or as continuation messages.
+         --  Additionally, if Details, Explanation and/or Fix are not empty,
+         --  print them, either on the same line or as continuation messages.
 
          if not Suppressed and then Is_Specified_Line (Slc) then
 
@@ -540,14 +545,19 @@ package body Flow_Error_Messages is
                        (if Details /= ""
                         then " [reason for check: " & Details & "]"
                         else "");
+                     Explanation_Msg : constant String :=
+                       (if Explanation /= ""
+                        then " [possible explanation: " & Explanation & "]"
+                        else "");
                      Fix_Msg     : constant String :=
                        (if Fix /= ""
                         then " [possible fix: "
-                               & Compute_Message (Fix, Attach_Node, FF1, FF2)
+                               & Compute_Message (Fix, Attach_Node, FF1, FF2,
+                                                  With_Location => False)
                                & "]"
                         else "");
                      Msg4        : constant String :=
-                       Msg3 & Details_Msg & Fix_Msg;
+                       Msg3 & Details_Msg & Explanation_Msg & Fix_Msg;
                   begin
                      Msg_Id :=
                        Print_Regular_Msg (Msg4, Span, Severity, Continuation);
@@ -571,9 +581,17 @@ package body Flow_Error_Messages is
                         Span, Severity, Continuation => True);
                   end if;
 
+                  if Explanation /= "" then
+                     Ignore_Id := Print_Regular_Msg
+                       (SGR_Note & "possible explanation: " & SGR_Reset
+                        & Explanation,
+                        Span, Severity, Continuation => True);
+                  end if;
+
                   declare
                      Fix_Str : constant String :=
-                       Compute_Message (Fix, Attach_Node, FF1, FF2);
+                       Compute_Message (Fix, Attach_Node, FF1, FF2,
+                                        With_Location => False);
                   begin
                      if Fix /= "" then
                         Ignore_Id := Print_Regular_Msg
@@ -622,6 +640,7 @@ package body Flow_Error_Messages is
      (FA           : in out Flow_Analysis_Graphs;
       Msg          : String;
       Details      : String                := "";
+      Explanation  : String                := "";
       Fix          : String                := "";
       Severity     : Msg_Severity;
       N            : Node_Id;
@@ -690,6 +709,7 @@ package body Flow_Error_Messages is
       Error_Msg_Flow (E            => FA.Spec_Entity,
                       Msg          => Debug_Msg,
                       Details      => Details,
+                      Explanation  => Explanation,
                       Fix          => Fix,
                       Severity     => Severity,
                       N            => N,

@@ -52,7 +52,7 @@ simple_unc_arrays.adb:98:33: info: loop invariant initialization proved (CVC5: 1
 simple_unc_arrays.adb:98:33: info: loop invariant preservation proved (CVC5: 1 VC)
 simple_unc_arrays.adb:98:65: info: index check proved (CVC5: 4 VC)
 simple_unc_arrays.adb:100:18: info: index check proved (CVC5: 2 VC)
-simple_unc_arrays.adb:117:18: medium: implicit terminating annotation on "Bubble_Sort" could be incorrect, loop might be nonterminating
+simple_unc_arrays.adb:117:18: medium: implicit terminating annotation on "Bubble_Sort" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 simple_unc_arrays.adb:119:37: info: cannot unroll loop (too many loop iterations)
 simple_unc_arrays.adb:120:25: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:120:25: info: overflow check proved (CVC5: 2 VC)

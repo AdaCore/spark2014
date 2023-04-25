@@ -5909,6 +5909,7 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      => Check_Msg ("loop might be nonterminating"),
+                        Fix      => "add loop variant in the loop body",
                         Severity => Medium_Check_Kind,
                         N        => Atr.Error_Location,
                         F1       => Spec_Entity_Id,
@@ -5933,15 +5934,19 @@ package body Flow.Analysis is
 
                         Proved := False;
                         Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => Check_Msg
-                                         ("call via access-to-subprogram " &
-                                          "might be nonterminating"),
-                           Severity => Medium_Check_Kind,
-                           N        => Atr.Error_Location,
-                           F1       => Spec_Entity_Id,
-                           Tag      => Subprogram_Termination,
-                           Vertex   => V);
+                          (FA          => FA,
+                           Msg         => Check_Msg
+                                            ("call via access-to-subprogram " &
+                                             "might be nonterminating"),
+                           Explanation => (if Is_Function_Type (SC.E)
+                                           then "call could hide recursive " &
+                                                "calls"
+                                           else ""),
+                           Severity    => Medium_Check_Kind,
+                           N           => Atr.Error_Location,
+                           F1          => Spec_Entity_Id,
+                           Tag         => Subprogram_Termination,
+                           Vertex      => V);
 
                      elsif Nkind (SC.N) in N_Subprogram_Call
                        and then Flow_Classwide.Is_Dispatching_Call (SC.N)
@@ -5949,15 +5954,19 @@ package body Flow.Analysis is
 
                         Proved := False;
                         Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => Check_Msg
-                                         ("dispatching call might be " &
-                                          "nonterminating"),
-                           Severity => Medium_Check_Kind,
-                           N        => Atr.Error_Location,
-                           F1       => Spec_Entity_Id,
-                           Tag      => Subprogram_Termination,
-                           Vertex   => V);
+                          (FA          => FA,
+                           Msg         => Check_Msg
+                                            ("dispatching call might be " &
+                                             "nonterminating"),
+                           Explanation => (if Nkind (SC.N) = N_Function_Call
+                                           then "call could hide recursive " &
+                                                "calls"
+                                           else ""),
+                           Severity    => Medium_Check_Kind,
+                           N           => Atr.Error_Location,
+                           F1          => Spec_Entity_Id,
+                           Tag         => Subprogram_Termination,
+                           Vertex      => V);
 
                      --  If the analyzed subprogram, its terminating annotation
                      --  cannot be trusted. A message is emitted if the
@@ -5971,9 +5980,12 @@ package body Flow.Analysis is
                              (FA       => FA,
                               Msg      => Check_Msg
                                             ("subprogram is recursive"),
+                              Fix      => "annotate & with a " &
+                                          "Subprogram_Variant aspect",
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
                               F1       => Direct_Mapping_Id (SC.E),
+                              FF1      => Direct_Mapping_Id (SC.E),
                               Tag      => Subprogram_Termination,
                               Vertex   => V);
                         end if;
@@ -6001,11 +6013,15 @@ package body Flow.Analysis is
                              (FA       => FA,
                               Msg      => Check_Msg
                                            ("& and & are mutually recursive"),
+                              Fix      => "annotate & and & with " &
+                                          "Subprogram_Variant aspects",
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
                               F1       => Spec_Entity_Id,
                               F2       => Direct_Mapping_Id (FA.Spec_Entity),
                               F3       => Direct_Mapping_Id (SC.E),
+                              FF1      => Direct_Mapping_Id (FA.Spec_Entity),
+                              FF2      => Direct_Mapping_Id (SC.E),
                               Tag      => Subprogram_Termination,
                               Vertex   => V);
                         end if;
@@ -6027,10 +6043,13 @@ package body Flow.Analysis is
                              (FA       => FA,
                               Msg      => Check_Msg ("call to & might be " &
                                                      "nonterminating"),
+                              Fix      => "annotate & with " &
+                                          "Always_Return",
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
                               F1       => Spec_Entity_Id,
                               F2       => Direct_Mapping_Id (SC.E),
+                              FF1      => Direct_Mapping_Id (SC.E),
                               Tag      => Subprogram_Termination,
                               Vertex   => V);
                         end if;

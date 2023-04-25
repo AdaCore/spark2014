@@ -1,7 +1,7 @@
 p.adb:1:11: warning: file name does not match unit name, should be "test_eq.adb"
 p.adb:2:29: warning: unused variable "I"
 p.adb:2:32: warning: unused variable "J"
-p.adb:6:19: medium: implicit terminating annotation on "Non_Returning" could be incorrect, loop might be nonterminating
+p.adb:6:19: medium: implicit terminating annotation on "Non_Returning" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 p.adb:6:19: warning: statement has no effect
 p.adb:16:14: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 p.adb:17:08: info: precondition proved (Trivial: 1 VC)
@@ -14,7 +14,7 @@ p.adb:29:20: medium: assertion might fail
 q.adb:7:19: warning: unused variable "X"
 q.adb:7:22: warning: unused variable "Y"
 q.adb:8:15: info: postcondition proved (Trivial: 1 VC)
-q.adb:11:08: medium: implicit terminating annotation on overriding operator "=" could be incorrect, loop might be nonterminating
+q.adb:11:08: medium: implicit terminating annotation on overriding operator "=" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 q.adb:14:08: warning: unreachable code
 q.adb:16:05: warning: Always_Return annotation is useless
 q.adb:16:05: warning: function "=" has implicit Always_Return annotation

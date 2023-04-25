@@ -1,6 +1,6 @@
 for_loops_on_lists.adb:5:11: info: precondition proved (CVC5: 1 VC)
 for_loops_on_lists.adb:5:11: info: precondition proved (Trivial: 1 VC)
-for_loops_on_lists.adb:5:17: medium: implicit terminating annotation on "Search_0_For_In" could be incorrect, loop might be nonterminating
+for_loops_on_lists.adb:5:17: medium: implicit terminating annotation on "Search_0_For_In" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 for_loops_on_lists.adb:7:13: info: loop invariant initialization proved (CVC5: 1 VC)
 for_loops_on_lists.adb:7:13: info: loop invariant preservation proved (Z3: 1 VC)
 for_loops_on_lists.adb:7:32: info: precondition proved (CVC5: 2 VC)
@@ -8,7 +8,7 @@ for_loops_on_lists.adb:8:15: info: precondition proved (CVC5: 4 VC)
 for_loops_on_lists.adb:9:13: info: precondition proved (CVC5: 1 VC)
 for_loops_on_lists.adb:18:11: info: precondition proved (CVC5: 1 VC)
 for_loops_on_lists.adb:18:11: info: precondition proved (Trivial: 1 VC)
-for_loops_on_lists.adb:18:16: medium: implicit terminating annotation on "Contains_0_For_Of" could be incorrect, loop might be nonterminating
+for_loops_on_lists.adb:18:16: medium: implicit terminating annotation on "Contains_0_For_Of" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 for_loops_on_lists.adb:28:11: info: precondition proved (CVC5: 1 VC)
 for_loops_on_lists.adb:28:11: info: precondition proved (Trivial: 1 VC)
 for_loops_on_lists.adb:29:13: info: precondition proved (CVC5: 2 VC)
@@ -35,7 +35,7 @@ for_loops_on_lists.adb:46:34: info: precondition proved (CVC5: 1 VC)
 for_loops_on_lists.adb:46:50: info: range check proved (CVC5: 2 VC)
 for_loops_on_lists.adb:55:11: info: precondition proved (CVC5: 1 VC)
 for_loops_on_lists.adb:55:11: info: precondition proved (Trivial: 1 VC)
-for_loops_on_lists.adb:55:16: medium: implicit terminating annotation on "Count_For_Of" could be incorrect, loop might be nonterminating
+for_loops_on_lists.adb:55:16: medium: implicit terminating annotation on "Count_For_Of" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 for_loops_on_lists.adb:57:32: medium: overflow check might fail, cannot prove upper bound for Count_0 + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 for_loops_on_lists.adb:60:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 for_loops_on_lists.adb:60:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
