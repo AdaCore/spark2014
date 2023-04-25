@@ -18,7 +18,7 @@ predicates.ads:44:23: high: overflow check might fail, cannot prove upper bound 
       |                      ^~~~~~~
   e.g. when X = Integer'First
   reason for check: result of absolute value must fit in a 32-bits machine integer
-  possible fix: add precondition (abs (X) in Integer) to subprogram at line 42
+  possible fix: add precondition (abs (X) <= Integer'Last) to subprogram at line 42
    42 |   function Get_GCD (X, Y : Integer) return Natural is
       |            ^ here
 
@@ -27,7 +27,7 @@ predicates.ads:44:32: high: overflow check might fail, cannot prove upper bound 
       |                               ^~~~~~~
   e.g. when Y = Integer'First
   reason for check: result of absolute value must fit in a 32-bits machine integer
-  possible fix: add precondition (abs (Y) in Integer) to subprogram at line 42
+  possible fix: add precondition (abs (Y) <= Integer'Last) to subprogram at line 42
    42 |   function Get_GCD (X, Y : Integer) return Natural is
       |            ^ here
 predicates.ads:45:13: info: precondition proved

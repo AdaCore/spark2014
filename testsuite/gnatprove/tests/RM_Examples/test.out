@@ -126,7 +126,7 @@ intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved (CVC
 intra_unit_elaboration_order_examples.ads:24:11: info: data dependencies proved
 intra_unit_elaboration_order_examples.ads:26:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 intra_unit_elaboration_order_examples.ads:27:13: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
-intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail, cannot prove lower bound for 2 * F (J) (e.g. when J = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * F (J) in Integer) to subprogram at line 27]
+intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail, cannot prove lower bound for 2 * F (J) (e.g. when J = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * F (J) >= Integer'First) to subprogram at line 27]
 loop_var_loop_invar.adb:8:30: info: loop invariant initialization proved (CVC5: 1 VC)
 loop_var_loop_invar.adb:8:30: info: loop invariant preservation proved (CVC5: 1 VC)
 loop_var_loop_invar.adb:9:28: info: loop variant proved (CVC5: 1 VC)
@@ -268,7 +268,7 @@ stacks_2.ads:21:16: info: postcondition proved (CVC5: 1 VC)
 stacks_2.ads:23:13: info: implicit terminating annotation on "Top" has been proved, subprogram will terminate
 stacks_2.ads:24:11: info: data dependencies proved
 times_2.adb:1:10: info: implicit terminating annotation on "Times_2" has been proved, subprogram will terminate
-times_2.adb:3:13: high: overflow check might fail, cannot prove lower bound for 2 * X (e.g. when X = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * X in Integer) to subprogram at line 1]
+times_2.adb:3:13: high: overflow check might fail, cannot prove lower bound for 2 * X (e.g. when X = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * X >= Integer'First) to subprogram at line 1]
 up_timer.adb:14:36: info: overflow check proved (CVC5: 2 VC)
 up_timer.ads:10:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 update_examples.ads:20:19: info: postcondition proved (CVC5: 1 VC)

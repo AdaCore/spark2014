@@ -270,9 +270,9 @@ control_structures.adb:25:14: info: local subprogram "Calculate_Valve" only anal
 control_structures.adb:26:31: info: initialization of "New_Setting" proved
 control_structures.adb:28:24: medium: overflow check might fail, cannot prove lower bound for 2 * Current_Temp, in call inlined at control_structures.adb:186 [reason for check: result of multiplication must fit in a 32-bits machine integer]
 control_structures.adb:31:13: info: implicit terminating annotation on "Double" has been proved, subprogram will terminate
-control_structures.adb:33:08: high: overflow check might fail, cannot prove upper bound for abs Second (e.g. when Second = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs Second in Integer) to subprogram at line 31]
-control_structures.adb:33:23: high: overflow check might fail, cannot prove upper bound for 2 * abs First (e.g. when First = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * abs First in Integer) to subprogram at line 31]
-control_structures.adb:33:25: high: overflow check might fail, cannot prove upper bound for abs First (e.g. when First = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs First in Integer) to subprogram at line 31]
+control_structures.adb:33:08: high: overflow check might fail, cannot prove upper bound for abs Second (e.g. when Second = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs Second <= Integer'Last) to subprogram at line 31]
+control_structures.adb:33:23: high: overflow check might fail, cannot prove upper bound for 2 * abs First (e.g. when First = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * abs First <= Integer'Last) to subprogram at line 31]
+control_structures.adb:33:25: high: overflow check might fail, cannot prove upper bound for abs First (e.g. when First = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs First <= Integer'Last) to subprogram at line 31]
 control_structures.adb:37:06: warning: unused assignment
 control_structures.adb:38:06: warning: unused assignment
 control_structures.adb:39:06: warning: unused assignment

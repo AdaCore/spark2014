@@ -774,8 +774,6 @@ package body Gnat2Why.Error_Messages is
 
       Subp : Entity_Id;
 
-      type Bound_Info_Type is (No_Bound, Low_Bound, High_Bound);
-
       type Inline_Info (Inline : Boolean := False) is record
          case Inline is
             when False =>
@@ -1259,6 +1257,11 @@ package body Gnat2Why.Error_Messages is
                            else "expression function body"))));
             end;
          end if;
+
+         --  Update the information to get better fix messages with the bound
+         --  information retrieved from the proof attempt.
+
+         Check_Info.Fix_Info.Bound_Info := Rec.EI.Bound_Info;
 
          declare
             --  If the fuzzer found a counterexample for a VC associated to an

@@ -156,12 +156,12 @@ dynamic_preds_array.ads:36:13: info: implicit terminating annotation on "Get_Eve
 dynamic_preds_array.ads:40:19: info: postcondition proved (CVC5: 2 VC)
 dynamic_preds_array.ads:42:13: info: implicit terminating annotation on "Get_Even_Close_Pair" has been proved, subprogram will terminate
 dynamic_preds_rte.adb:6:14: medium: predicate check might fail (e.g. when X = (A => 0, B => 0) and Y = 50000) [possible fix: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
-dynamic_preds_rte.adb:6:14: medium: range check might fail, cannot prove lower bound for Y (e.g. when X = (A => 0, B => 0) and Y = -1) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Y in Small) to subprogram at dynamic_preds_rte.ads:21]
+dynamic_preds_rte.adb:6:14: medium: range check might fail, cannot prove lower bound for Y (e.g. when X = (A => 0, B => 0) and Y = -1) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Y >= Small'First) to subprogram at dynamic_preds_rte.ads:21]
 dynamic_preds_rte.adb:7:14: info: range check proved (CVC5: 2 VC)
 dynamic_preds_rte.adb:7:14: medium: predicate check might fail (e.g. when Y = 16668) [possible fix: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
 dynamic_preds_rte.adb:12:18: info: overflow check proved (CVC5: 2 VC)
 dynamic_preds_rte.adb:17:15: medium: predicate check might fail (e.g. when Y = 50000) [possible fix: subprogram at dynamic_preds_rte.ads:24 should mention Y in a precondition]
-dynamic_preds_rte.adb:17:15: medium: range check might fail, cannot prove lower bound for Y (e.g. when Y = -1) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Y in Small) to subprogram at dynamic_preds_rte.ads:24]
+dynamic_preds_rte.adb:17:15: medium: range check might fail, cannot prove lower bound for Y (e.g. when Y = -1) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Y >= Small'First) to subprogram at dynamic_preds_rte.ads:24]
 dynamic_preds_rte.adb:18:15: info: predicate check proved (CVC5: 1 VC)
 dynamic_preds_rte.adb:18:15: info: range check proved (CVC5: 2 VC)
 dynamic_preds_rte.adb:23:19: info: overflow check proved (CVC5: 2 VC)

@@ -2504,6 +2504,25 @@ package body Flow_Error_Messages is
             --  Return the corresponding formal parameter for an actual
             --  parameter N, or Empty otherwise.
 
+            type Larger_Type_Kind is
+              (Larger_Source, Larger_Target, Larger_None);
+
+            type Larger_Type (Kind : Larger_Type_Kind := Larger_None) is record
+               case Kind is
+                  when Larger_Source | Larger_Target =>
+                     Typ : Type_Kind_Id;
+                  when others =>
+                     null;
+               end case;
+            end record;
+
+            function Get_Larger_Type
+              (Source, Target : Type_Kind_Id;
+               Target_Value   : Uint) return Larger_Type;
+            --  Return a type larger than Source and Target for performing
+            --  the comparison of a value in type Source with Target_Value,
+            --  if possible.
+
             procedure Get_Subprogram_Inputs
               (Subp     : Runnable_Kind_Id;
                In_Vars  : out Flow_Id_Sets.Set;
@@ -2517,6 +2536,85 @@ package body Flow_Error_Messages is
             function Sign_Is_Known (Arg : N_Subexpr_Id) return Sign;
             --  Determine whether the sign of Arg is known from its value (for
             --  a literal) or type.
+
+            ---------------------
+            -- Get_Larger_Type --
+            ---------------------
+
+            function Get_Larger_Type
+              (Source, Target : Type_Kind_Id;
+               Target_Value   : Uint) return Larger_Type
+            is
+               --  Consider first subtypes as candidate larger types, instead
+               --  of base types which may be compiler-generated types. But
+               --  use base types to compute lower/upper bounds, as the first
+               --  subtype might be a private type instead of a scalar one.
+
+               Base_Source : constant Type_Kind_Id := First_Subtype (Source);
+               Base_Target : constant Type_Kind_Id := First_Subtype (Target);
+
+               Lo_Src : constant N_Subexpr_Id :=
+                 Type_Low_Bound (Etype (Source));
+               Hi_Src : constant N_Subexpr_Id :=
+                 Type_High_Bound (Etype (Source));
+
+               Lo_Src_Value : constant Uint :=
+                 (if Nkind (Lo_Src) = N_Integer_Literal then
+                    SPARK_Atree.Expr_Value (Lo_Src)
+                  else No_Uint);
+               Hi_Src_Value : constant Uint :=
+                 (if Nkind (Hi_Src) = N_Integer_Literal then
+                    SPARK_Atree.Expr_Value (Hi_Src)
+                  else No_Uint);
+
+               Lo_Tgt : constant N_Subexpr_Id :=
+                 Type_Low_Bound (Etype (Target));
+               Hi_Tgt : constant N_Subexpr_Id :=
+                 Type_High_Bound (Etype (Target));
+
+               Lo_Tgt_Value : constant Uint :=
+                 (if Nkind (Lo_Tgt) = N_Integer_Literal then
+                    SPARK_Atree.Expr_Value (Lo_Tgt)
+                  else No_Uint);
+               Hi_Tgt_Value : constant Uint :=
+                 (if Nkind (Hi_Tgt) = N_Integer_Literal then
+                    SPARK_Atree.Expr_Value (Hi_Tgt)
+                  else No_Uint);
+
+               Large : Larger_Type;
+
+            begin
+               if Base_Source /= Base_Target
+                 and then Present (Lo_Src_Value)
+                 and then Present (Hi_Src_Value)
+                 and then Present (Lo_Tgt_Value)
+                 and then Present (Hi_Tgt_Value)
+               then
+                  --  Detect the case where Base_Source type is larger, so that
+                  --  Target_Value could be converted to Base_Source.
+
+                  if Target_Value >= Lo_Src_Value
+                    and then Target_Value <= Hi_Src_Value
+                    and then not Is_Universal_Numeric_Type (Base_Source)
+                  then
+                     Large := Larger_Type'(Kind => Larger_Source,
+                                           Typ  => Base_Source);
+
+                  --  Detect the case where Base_Target type is larger, so
+                  --  that the value in type Source could be converted to
+                  --  Base_Target.
+
+                  elsif Lo_Tgt_Value <= Lo_Src_Value
+                    and then Lo_Tgt_Value >= Hi_Src_Value
+                    and then not Is_Universal_Numeric_Type (Base_Target)
+                  then
+                     Large := Larger_Type'(Kind => Larger_Target,
+                                           Typ  => Base_Target);
+                  end if;
+               end if;
+
+               return Large;
+            end Get_Larger_Type;
 
             ------------------------------
             -- Get_Corresponding_Formal --
@@ -2814,30 +2912,65 @@ package body Flow_Error_Messages is
                         Lo  : constant N_Subexpr_Id := Type_Low_Bound (Typ);
                         Hi  : constant N_Subexpr_Id := Type_High_Bound (Typ);
 
+                        Lo_Value : constant Uint :=
+                          (if Nkind (Lo) = N_Integer_Literal then
+                             SPARK_Atree.Expr_Value (Lo)
+                           else No_Uint);
+                        Hi_Value : constant Uint :=
+                          (if Nkind (Hi) = N_Integer_Literal then
+                             SPARK_Atree.Expr_Value (Hi)
+                           else No_Uint);
+
+                        Larger_Typ : constant Larger_Type :=
+                          (if Info.Bound_Info = Low_Bound
+                             and then Present (Lo_Value)
+                           then
+                              Get_Larger_Type (Source => Etype (N),
+                                               Target => Typ,
+                                               Target_Value => Lo_Value)
+                           elsif Info.Bound_Info = High_Bound
+                             and then Present (Hi_Value)
+                           then
+                              Get_Larger_Type (Source => Etype (N),
+                                               Target => Typ,
+                                               Target_Value => Hi_Value)
+                           else
+                              Larger_Type'(Kind => Larger_None));
+
                         Use_Typ    : constant Boolean :=
                           Comes_From_Source (Typ)
                             or else Is_Standard_Type (Typ);
                         Lo_Image   : constant String :=
                           (if Use_Typ then
                              Source_Name (Typ) & "'First"
-                           elsif Nkind (Lo) = N_Integer_Literal then
-                             UI_Image (SPARK_Atree.Expr_Value (Lo), Decimal)
+                           elsif Present (Lo_Value) then
+                              UI_Image (Lo_Value, Decimal)
                            else
                              String_Of_Node (Lo));
                         Hi_Image   : constant String :=
                           (if Use_Typ then
                              Source_Name (Typ) & "'Last"
-                           elsif Nkind (Hi) = N_Integer_Literal then
-                             UI_Image (SPARK_Atree.Expr_Value (Hi), Decimal)
+                           elsif Present (Hi_Value) then
+                              UI_Image (Hi_Value, Decimal)
                            else
                              String_Of_Node (Hi));
                         Constraint : constant String :=
-                          (if Comes_From_Source (Typ)
-                             or else Is_Standard_Type (Typ)
-                           then
-                             Source_Name (Typ)
+                          (if Info.Bound_Info = Low_Bound then
+                              " >= " &
+                              (if Larger_Typ.Kind = Larger_Source then
+                                 Source_Name (Larger_Typ.Typ)
+                                 & "(" & Lo_Image & ")"
+                               else Lo_Image)
+                           elsif Info.Bound_Info = High_Bound then
+                              " <= " &
+                              (if Larger_Typ.Kind = Larger_Source then
+                                 Source_Name (Larger_Typ.Typ)
+                                 & "(" & Hi_Image & ")"
+                               else Hi_Image)
+                           elsif Use_Typ then
+                              " in " & Source_Name (Typ)
                            else
-                             Lo_Image & " .. " & Hi_Image);
+                              " in " & Lo_Image & " .. " & Hi_Image);
 
                         --  When possible, put the suggested precondition in
                         --  a form that will avoid overflows. So we prefer
@@ -2904,8 +3037,12 @@ package body Flow_Error_Messages is
                                           "if " & Right_Str & " >= 0 then "
                                           & Pos_Right & " else " & Neg_Right)))
 
+                           elsif Larger_Typ.Kind = Larger_Target then
+                              Source_Name (Larger_Typ.Typ)
+                              & "(" & String_Of_Node (N) & ")"
+                              & Constraint
                            else
-                             String_Of_Node (N) & " in " & Constraint);
+                              String_Of_Node (N) & Constraint);
                      begin
                         return "add precondition (" & Pre
                           & ") to subprogram "

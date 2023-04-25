@@ -133,9 +133,12 @@ package SPARK_Util is
    package Continuation_Vectors is new Ada.Containers.Vectors
      (Positive, Continuation_Type);
 
+   type Bound_Info_Type is (No_Bound, Low_Bound, High_Bound);
+
    type Fix_Info_Type is record
       Range_Check_Ty : Opt_Type_Kind_Id;
       Divisor        : Node_Or_Entity_Id;
+      Bound_Info     : Bound_Info_Type;
    end record;
    --  Extra information to get better possible fix messages
 
