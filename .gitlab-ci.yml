@@ -1,3 +1,9 @@
+# In this CI, we should only work in reaction to a Merge Request
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+
 variables:
    # The common part of the URL for cloning from within a CI
    GIT_CLONE_BASE: https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}:${CI_SERVER_PORT}
