@@ -775,9 +775,7 @@ package body Gnat2Why.Expr.Loops is
            Generate_Frame_Condition
              (Stmt,
               Low_Id             => +Low_Id,
-              High_Id            => +High_Id,
-              Has_Loop_Invariant => not (Loop_Invariants.Is_Empty
-                and then Loop_Variants.Is_Empty));
+              High_Id            => +High_Id);
 
          --  Generate the loop invariants VCs
 
