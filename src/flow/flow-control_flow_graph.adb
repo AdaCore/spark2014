@@ -6262,7 +6262,7 @@ package body Flow.Control_Flow_Graph is
            (Var_Def    => Flatten_Variable (Borrowed, FA.B_Scope),
             Var_Ex_Use => Flow_Id_Sets.To_Set (Borrower),
             Vertex_Ctx => No_Vertex_Context, --  ??? not sure about this
-            Print_Hint => Pretty_Print_Borrow,
+            Print_Hint => Pretty_Print_Reclaim,
             E_Loc      => Decl),
          V);
       FA.Atr (V).Is_Program_Node := False;
