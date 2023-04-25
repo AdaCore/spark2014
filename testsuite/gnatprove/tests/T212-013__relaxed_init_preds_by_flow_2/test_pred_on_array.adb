@@ -5,7 +5,7 @@ procedure Test_Pred_On_Array with SPARK_Mode is
       G : Integer;
    end record;
    type E_Arr is array (Positive range <>) of Element with
-     Predicate => (for some I in E_Arr'Range => E_Arr (I).G = 15 or else E_Arr (I).F'Initialized);
+     Ghost_Predicate => (for some I in E_Arr'Range => E_Arr (I).G = 15 or else E_Arr (I).F'Initialized);
 
    procedure Test (X : E_Arr) with Global => null is
    begin
@@ -29,7 +29,7 @@ procedure Test_Pred_On_Array with SPARK_Mode is
    type E_Rec is record
       X, Y, Z : Element;
    end record with
-   Predicate => Y.G = 15 or X.F'Initialized or Y.F'Initialized or Z.F'Initialized;
+   Ghost_Predicate => Y.G = 15 or X.F'Initialized or Y.F'Initialized or Z.F'Initialized;
 
    procedure Test (X : E_Rec) with Global => null is
    begin

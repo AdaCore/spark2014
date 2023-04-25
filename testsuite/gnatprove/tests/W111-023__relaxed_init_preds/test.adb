@@ -29,7 +29,7 @@ procedure Test with SPARK_Mode is
       F : Integer;
    end record with
      Relaxed_Initialization,
-     Predicate => F'Initialized
+     Ghost_Predicate => F'Initialized
      and then
        (F < Integer'Last
         and F + 1 < Integer'Last); -- @OVERFLOW_CHECK:FAIL
@@ -38,7 +38,7 @@ procedure Test with SPARK_Mode is
       F : Integer;
    end record with
      Relaxed_Initialization,
-     Predicate => F'Initialized
+     Ghost_Predicate => F'Initialized
      and F < Integer'Last; -- @INIT_BY_PROOF:FAIL
 
 begin
