@@ -2,7 +2,7 @@ com_map.ads:27:13: info: implicit terminating annotation on "RBC_RIU_ID_Hash" ha
 com_map.ads:37:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 com_map.ads:39:22: info: precondition proved (CVC5: 1 VC)
 deceleration_curve.adb:33:07: info: initialization of "delta_speed" proved
-deceleration_curve.adb:36:65: medium: implicit terminating annotation on "Distance_To_Speed" could be incorrect, loop might be nonterminating
+deceleration_curve.adb:36:65: medium: implicit terminating annotation on "Distance_To_Speed" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 deceleration_curve.adb:37:25: info: assertion proved (CVC5: 4 VC)
 deceleration_curve.adb:40:13: info: loop invariant initialization proved (CVC5: 2 VC)
 deceleration_curve.adb:40:45: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove speed <= Initial_Speed

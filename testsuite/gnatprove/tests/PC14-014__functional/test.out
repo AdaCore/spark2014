@@ -1,5 +1,5 @@
 spark-containers-formal-unbounded_vectors.ads:661:57: medium: overflow check might fail, cannot prove upper bound for Index - Index_Type'First, in instantiation at use_vectors.ads:23 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-use_lists.adb:8:33: medium: implicit terminating annotation on "My_Find" could be incorrect, loop might be nonterminating
+use_lists.adb:8:33: medium: implicit terminating annotation on "My_Find" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_lists.adb:10:13: info: loop invariant initialization proved
 use_lists.adb:10:13: info: loop invariant preservation proved
 use_lists.adb:10:32: info: precondition proved
@@ -320,7 +320,7 @@ use_maps.adb:99:10: info: precondition proved
 use_maps.adb:99:22: info: precondition proved
 use_maps.adb:99:38: info: precondition proved
 use_maps.adb:100:16: info: precondition proved
-use_maps.adb:107:34: medium: implicit terminating annotation on "Are_Disjoint" could be incorrect, loop might be nonterminating
+use_maps.adb:107:34: medium: implicit terminating annotation on "Are_Disjoint" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_maps.adb:109:13: info: loop invariant initialization proved
 use_maps.adb:109:13: info: loop invariant preservation proved
 use_maps.adb:109:32: info: precondition proved
@@ -507,7 +507,7 @@ use_ordered_maps.adb:97:10: info: precondition proved
 use_ordered_maps.adb:97:22: info: precondition proved
 use_ordered_maps.adb:97:38: info: precondition proved
 use_ordered_maps.adb:98:16: info: precondition proved
-use_ordered_maps.adb:105:34: medium: implicit terminating annotation on "Are_Disjoint" could be incorrect, loop might be nonterminating
+use_ordered_maps.adb:105:34: medium: implicit terminating annotation on "Are_Disjoint" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_ordered_maps.adb:107:13: info: loop invariant initialization proved
 use_ordered_maps.adb:107:13: info: loop invariant preservation proved
 use_ordered_maps.adb:107:32: info: precondition proved
@@ -595,7 +595,7 @@ use_ordered_maps.ads:151:06: info: data dependencies proved
 use_ordered_maps.ads:152:39: info: precondition proved
 use_ordered_maps.ads:153:16: info: postcondition proved
 use_ordered_maps.ads:153:38: info: precondition proved
-use_ordered_sets.adb:7:33: medium: implicit terminating annotation on "My_Find" could be incorrect, loop might be nonterminating
+use_ordered_sets.adb:7:33: medium: implicit terminating annotation on "My_Find" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_ordered_sets.adb:9:13: info: loop invariant initialization proved
 use_ordered_sets.adb:9:13: info: loop invariant preservation proved
 use_ordered_sets.adb:9:32: info: precondition proved
@@ -616,14 +616,14 @@ use_ordered_sets.adb:31:28: info: precondition proved
 use_ordered_sets.adb:32:10: info: precondition proved
 use_ordered_sets.adb:32:25: info: precondition proved
 use_ordered_sets.adb:33:16: info: precondition proved
-use_ordered_sets.adb:40:34: medium: implicit terminating annotation on "Are_Disjoint" could be incorrect, loop might be nonterminating
+use_ordered_sets.adb:40:34: medium: implicit terminating annotation on "Are_Disjoint" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_ordered_sets.adb:42:13: info: loop invariant initialization proved
 use_ordered_sets.adb:42:13: info: loop invariant preservation proved
 use_ordered_sets.adb:42:32: info: precondition proved
 use_ordered_sets.adb:43:34: info: precondition proved
 use_ordered_sets.adb:44:27: info: precondition proved
 use_ordered_sets.adb:47:16: info: precondition proved
-use_ordered_sets.adb:55:34: medium: implicit terminating annotation on "Are_Disjoint_2" could be incorrect, loop might be nonterminating
+use_ordered_sets.adb:55:34: medium: implicit terminating annotation on "Are_Disjoint_2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_ordered_sets.adb:57:13: info: loop invariant initialization proved
 use_ordered_sets.adb:57:13: info: loop invariant preservation proved
 use_ordered_sets.adb:57:32: info: precondition proved
@@ -784,7 +784,7 @@ use_ordered_sets.ads:150:39: info: precondition proved
 use_ordered_sets.ads:156:06: info: data dependencies proved
 use_ordered_sets.ads:157:39: info: precondition proved
 use_ordered_sets.ads:158:16: info: postcondition proved
-use_sets.adb:7:33: medium: implicit terminating annotation on "My_Find" could be incorrect, loop might be nonterminating
+use_sets.adb:7:33: medium: implicit terminating annotation on "My_Find" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_sets.adb:9:13: info: loop invariant initialization proved
 use_sets.adb:9:13: info: loop invariant preservation proved
 use_sets.adb:9:32: info: precondition proved
@@ -805,14 +805,14 @@ use_sets.adb:31:28: info: precondition proved
 use_sets.adb:32:10: info: precondition proved
 use_sets.adb:32:25: info: precondition proved
 use_sets.adb:33:16: info: precondition proved
-use_sets.adb:40:34: medium: implicit terminating annotation on "Are_Disjoint" could be incorrect, loop might be nonterminating
+use_sets.adb:40:34: medium: implicit terminating annotation on "Are_Disjoint" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_sets.adb:42:13: info: loop invariant initialization proved
 use_sets.adb:42:13: info: loop invariant preservation proved
 use_sets.adb:42:32: info: precondition proved
 use_sets.adb:43:34: info: precondition proved
 use_sets.adb:44:27: info: precondition proved
 use_sets.adb:47:16: info: precondition proved
-use_sets.adb:55:34: medium: implicit terminating annotation on "Are_Disjoint_2" could be incorrect, loop might be nonterminating
+use_sets.adb:55:34: medium: implicit terminating annotation on "Are_Disjoint_2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_sets.adb:57:13: info: loop invariant initialization proved
 use_sets.adb:57:13: info: loop invariant preservation proved
 use_sets.adb:57:32: info: precondition proved

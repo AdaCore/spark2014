@@ -366,7 +366,7 @@ red_black_trees.adb:272:64: medium: precondition might fail, cannot prove Low <=
 red_black_trees.adb:272:73: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:272:73: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
 red_black_trees.adb:298:29: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
-red_black_trees.adb:303:23: medium: implicit terminating annotation on "Contains" could be incorrect, loop might be nonterminating
+red_black_trees.adb:303:23: medium: implicit terminating annotation on "Contains" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 red_black_trees.adb:304:33: info: loop invariant initialization proved (CVC5: 1 VC)
 red_black_trees.adb:304:33: info: predicate check proved (Trivial: 2 VC)
 red_black_trees.adb:304:33: medium: loop invariant might not be preserved by an arbitrary iteration
