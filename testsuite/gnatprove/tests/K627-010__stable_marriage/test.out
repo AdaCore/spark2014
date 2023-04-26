@@ -134,7 +134,7 @@ stable_marriage.adb:382:64: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:383:10: info: analyzing call to "Add_An_Unmatched" in context
 stable_marriage.adb:386:22: info: assertion proved (CVC5: 1 VC)
 stable_marriage.adb:388:22: info: assertion proved (CVC5: 2 VC)
-stable_marriage.adb:392:46: medium: implicit terminating annotation on "Matching" could be incorrect, loop might be nonterminating
+stable_marriage.adb:392:46: medium: implicit terminating annotation on "Matching" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 stable_marriage.adb:393:33: info: loop invariant initialization proved (CVC5: 9 VC; Trivial: 5 VC)
 stable_marriage.adb:393:33: info: loop invariant preservation proved (CVC5: 7 VC; Trivial: 5 VC; altergo: 2 VC)
 stable_marriage.adb:394:10: info: precondition proved (CVC5: 10 VC; Trivial: 5 VC; altergo: 2 VC)
