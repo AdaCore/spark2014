@@ -289,39 +289,48 @@ package body Gnat2Why.Expr.Loops.Inv is
    --         invariant if any.
 
    procedure Process_Call_Statement
-     (Call        :        Node_Id;
-      Loop_Writes : in out Write_Status_Maps.Map;
-      After_Inv   :        Boolean);
+     (Call          :        Node_Id;
+      Loop_Writes   : in out Write_Status_Maps.Map;
+      Relevant_Path :        Boolean;
+      After_Inv     :        Boolean);
    --  Update a status map for every variable written by a call statement.
    --  @param Call considered call statement.
    --  @param Loop_Writes a map between written entities and their write
    --         status.
+   --  @param Relevant_Path whether the call lies on an execution path
+   --         possibly leading back to the invariant.
    --  @param After_Inv True if the statement occurs after the loop invariant
    --         in the top level loop.
 
    procedure Process_Statement
-     (N           :        Node_Id;
-      Loop_Writes : in out Write_Status_Maps.Map;
-      After_Inv   :        Boolean;
-      In_Nested   :        Boolean);
+     (N                 :        Node_Id;
+      Loop_Writes       : in out Write_Status_Maps.Map;
+      Relevant_Vertices :        Local_CFG.Vertex_Sets.Set;
+      After_Inv         :        Boolean;
+      In_Nested         :        Boolean);
    --  Traverse a statement and update a status map for every variable
    --  potentially written by the statement.
    --  @param N considered statement.
    --  @param Loop_Writes a map between written entities and their write
    --         status.
+   --  @param Relevant_Vertices the set of the loop's local_CFG vertices
+   --         which lies on a path that can lead back to the loop invariant.
    --  @param After_Inv True if the statement occurs after the loop invariant
    --         in the top level loop.
    --  @param In_Nested True if the statement occurs inside a nested statement.
 
    procedure Process_Statement_List
-     (L           :        List_Id;
-      Loop_Writes : in out Write_Status_Maps.Map;
-      After_Inv   :        Boolean;
-      In_Nested   :        Boolean);
+     (L                 :        List_Id;
+      Loop_Writes       : in out Write_Status_Maps.Map;
+      Relevant_Vertices :        Local_CFG.Vertex_Sets.Set;
+      After_Inv         :        Boolean;
+      In_Nested         :        Boolean);
    --  Process every statement of a list.
    --  @param L considered list of statements.
    --  @param Loop_Writes a map between written entities and their write
    --         status.
+   --  @param Relevant_Vertices the set of the loop's local_CFG vertices
+   --         which lies on a path that can lead back to the loop invariant.
    --  @param After_Inv True if the statement occurs after the loop invariant
    --         in the top level loop.
    --  @param In_Nested True if the statement occurs inside a nested statement.
@@ -1255,6 +1264,17 @@ package body Gnat2Why.Expr.Loops.Inv is
       --  Otherwise, there is no meaningful use for these variables in the
       --  frame condition.
 
+      Flat_Body : constant Node_Lists.List :=
+        Get_Flat_Statement_And_Declaration_List (Stmts);
+      --  Flattened loop body.
+
+      Relevant_Vertices : Local_CFG.Vertex_Sets.Set;
+      --  To store vertices of loop's local CFG that can lead back to
+      --  invariant. This let us detect which writes can actually happen
+      --  before the invariant is reached (again). Other writes are
+      --  not actually relevant modifications of variables
+      --  for computing the frame condition.
+
    begin
       --  The loop index is completely written
 
@@ -1282,15 +1302,34 @@ package body Gnat2Why.Expr.Loops.Inv is
                               Loop_Writes    => Loop_Writes,
                               Discard_Writes => After_Inv,
                               Relevant_Path  => True);
+
          end;
       end if;
+
+      --  Find relevant vertices.
+      declare
+         Inv_Vertex : Local_CFG.Vertex;
+      begin
+         for N_Iter of reverse Flat_Body loop
+            if Is_Pragma_Check (N_Iter, Name_Loop_Invariant)
+               or else Is_Pragma (N_Iter, Pragma_Loop_Variant)
+            then
+               Inv_Vertex := Local_CFG.Starting_Vertex (N_Iter);
+               goto Found;
+            end if;
+         end loop;
+         Inv_Vertex := Local_CFG.Vertex'(Kind => Local_CFG.Loop_Cond,
+                                         Node => Loop_Stmt);
+         <<Found>>
+         Relevant_Vertices.Insert (Inv_Vertex);
+         Local_CFG.Collect_Vertices_Leading_To (Loop_Stmt, Relevant_Vertices);
+      end;
 
       --  Process the flattened statement list, when the invariant is found,
       --  fill Inv_Objects with scalar objects declared just before the
       --  invariant.
 
-      for C in reverse Get_Flat_Statement_And_Declaration_List (Stmts).Iterate
-      loop
+      for C in reverse Flat_Body.Iterate loop
          declare
             N : constant Node_Id := Node_Lists.Element (C);
          begin
@@ -1331,8 +1370,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                end;
             end if;
 
-            Process_Statement (N, Loop_Writes,
-                               After_Inv  => After_Inv,
+            Process_Statement (N, Loop_Writes, Relevant_Vertices,
+                               After_Inv => After_Inv,
                                In_Nested => False);
          end;
       end loop;
@@ -1409,7 +1448,7 @@ package body Gnat2Why.Expr.Loops.Inv is
    begin
       if C = No_Element then
 
-         --  New_Write does not exist in Loop_Writes; create it
+         --  New_Write does not exist in Loop_Writes; create it.
          --  If New_Write has asynchronous writers, it is discarded so that
          --  none of its parts can be considered preserved. This test is
          --  done at the insertion only, as Discard status never change.
@@ -1510,9 +1549,10 @@ package body Gnat2Why.Expr.Loops.Inv is
    ----------------------------
 
    procedure Process_Call_Statement
-     (Call        : Node_Id;
-      Loop_Writes : in out Write_Status_Maps.Map;
-      After_Inv   : Boolean)
+     (Call          : Node_Id;
+      Loop_Writes   : in out Write_Status_Maps.Map;
+      Relevant_Path : Boolean;
+      After_Inv     : Boolean)
    is
       procedure Process_Param (Formal : Formal_Kind_Id; Actual : N_Subexpr_Id);
       --  Update Loop_Writes with Actual if Formal is mutable
@@ -1534,13 +1574,13 @@ package body Gnat2Why.Expr.Loops.Inv is
             --  access itself.
 
             Update_Status
-               (Actual, Loop_Writes, After_Inv, Relevant_Path => True,
+               (Actual, Loop_Writes, After_Inv, Relevant_Path,
                 Deref_Only => Ekind (Formal) = E_In_Parameter);
 
             --  Aliases of the root of the actual are entirely written
 
             Update_Alias_Status
-              (Get_Root_Object (Actual), Loop_Writes, Relevant_Path => True);
+              (Get_Root_Object (Actual), Loop_Writes, Relevant_Path);
          end if;
       end Process_Param;
 
@@ -1587,7 +1627,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   then
                      One_Level_Update (Entity, Loop_Writes,
                                        Discard_Writes => False,
-                                       Relevant_Path => True);
+                                       Relevant_Path  => Relevant_Path);
                   end if;
                end;
             end if;
@@ -1600,7 +1640,8 @@ package body Gnat2Why.Expr.Loops.Inv is
         and then Is_External_Call (Call)
       then
          Update_Status (Prefix (SPARK_Atree.Name (Call)), Loop_Writes,
-                        After_Inv, Relevant_Path => True);
+                        After_Inv, Relevant_Path);
+
          --  ??? for internal calls we currently do not handle the implicit
          --  self reference.
       end if;
@@ -1611,24 +1652,26 @@ package body Gnat2Why.Expr.Loops.Inv is
    -----------------------
 
    procedure Process_Statement
-     (N           : Node_Id;
-      Loop_Writes : in out Write_Status_Maps.Map;
-      After_Inv   : Boolean;
-      In_Nested   : Boolean)
+     (N                 :        Node_Id;
+      Loop_Writes       : in out Write_Status_Maps.Map;
+      Relevant_Vertices :        Local_CFG.Vertex_Sets.Set;
+      After_Inv         :        Boolean;
+      In_Nested         :        Boolean)
    is
    begin
       case Nkind (N) is
          when N_Assignment_Statement =>
             declare
-               Lvalue : constant Entity_Id := SPARK_Atree.Name (N);
+               Lvalue   : constant Entity_Id := SPARK_Atree.Name (N);
+               Relevant : constant Boolean :=
+                 Relevant_Vertices.Contains (Local_CFG.Starting_Vertex (N));
             begin
-               Update_Status
-                 (Lvalue, Loop_Writes, After_Inv, Relevant_Path => True);
+               Update_Status (Lvalue, Loop_Writes, After_Inv, Relevant);
 
                --  Aliases of the left-hand side are entirely written
 
-               Update_Alias_Status (Get_Root_Object (Lvalue), Loop_Writes,
-                                    Relevant_Path => True);
+               Update_Alias_Status
+                 (Get_Root_Object (Lvalue), Loop_Writes, Relevant);
             end;
 
          --  Discard writes to variables local to a case statement
@@ -1640,7 +1683,7 @@ package body Gnat2Why.Expr.Loops.Inv is
             begin
                while Present (Alternative) loop
                   Process_Statement_List
-                    (Statements (Alternative), Loop_Writes,
+                    (Statements (Alternative), Loop_Writes, Relevant_Vertices,
                      After_Inv, In_Nested => True);
                   Next_Non_Pragma (Alternative);
                end loop;
@@ -1681,16 +1724,18 @@ package body Gnat2Why.Expr.Loops.Inv is
 
          when N_Object_Declaration =>
             declare
-               E : constant Constant_Or_Variable_Kind_Id :=
+               E        : constant Constant_Or_Variable_Kind_Id :=
                  Defining_Identifier (N);
+               Relevant : constant Boolean :=
+                 Relevant_Vertices.Contains (Local_CFG.Starting_Vertex (N));
 
             begin
                --  If a local borrower is declared inside the loop, consider
                --  the borrowed expression to be updated.
 
                if Is_Local_Borrower (E) then
-                  Update_Status (Get_Borrowed_Expr (E), Loop_Writes,
-                                 After_Inv, Relevant_Path => True);
+                  Update_Status
+                    (Get_Borrowed_Expr (E), Loop_Writes, After_Inv, Relevant);
                end if;
 
                if Is_Mutable_In_Why (E) then
@@ -1698,33 +1743,35 @@ package body Gnat2Why.Expr.Loops.Inv is
                                     Discard_Writes =>
                                       In_Nested
                                       or else After_Inv,
-                                    Relevant_Path => True);
+                                    Relevant_Path  => Relevant);
 
                   --  If E has an initial value, its aliases are entirely
                   --  written.
 
                   if not Is_Imported (E) then
-                     Update_Alias_Status (E, Loop_Writes,
-                                          Relevant_Path => True);
+                     Update_Alias_Status (E, Loop_Writes, Relevant);
                   end if;
                end if;
             end;
 
          when N_Elsif_Part =>
             Process_Statement_List
-              (Then_Statements (N), Loop_Writes, After_Inv,
-               In_Nested => True);
+              (Then_Statements (N), Loop_Writes, Relevant_Vertices,
+               After_Inv, In_Nested => True);
 
          when N_Entry_Call_Statement
             | N_Procedure_Call_Statement
          =>
-            Process_Call_Statement (N, Loop_Writes, After_Inv);
+            Process_Call_Statement (N, Loop_Writes,
+                                    Relevant_Vertices.Contains
+                                      (Local_CFG.Starting_Vertex (N)),
+                                    After_Inv);
 
          --  Discard writes to variables local to a return statement
 
          when N_Extended_Return_Statement =>
             Process_Statement_List
-              (Return_Object_Declarations (N), Loop_Writes,
+              (Return_Object_Declarations (N), Loop_Writes, Relevant_Vertices,
                After_Inv, In_Nested => True);
 
             --  These statements do not affect the loop frame condition.
@@ -1733,29 +1780,34 @@ package body Gnat2Why.Expr.Loops.Inv is
             --  the beginning of Generate_Frame_Condition.
 
             Process_Statement
-              (Handled_Statement_Sequence (N), Loop_Writes,
+              (Handled_Statement_Sequence (N), Loop_Writes, Relevant_Vertices,
                After_Inv, In_Nested => True);
 
          --  Discard writes to variables local to an if statement
 
          when N_If_Statement =>
-            Process_Statement_List (Then_Statements (N), Loop_Writes,
-                                    After_Inv, In_Nested => True);
-            Process_Statement_List (Else_Statements (N), Loop_Writes,
-                                    After_Inv, In_Nested => True);
-            Process_Statement_List (Elsif_Parts (N), Loop_Writes,
-                                    After_Inv, In_Nested => True);
+            Process_Statement_List
+              (Then_Statements (N), Loop_Writes, Relevant_Vertices,
+               After_Inv, In_Nested => True);
+            Process_Statement_List
+              (Else_Statements (N), Loop_Writes, Relevant_Vertices,
+               After_Inv, In_Nested => True);
+            Process_Statement_List
+              (Elsif_Parts (N), Loop_Writes, Relevant_Vertices,
+               After_Inv, In_Nested => True);
 
          when N_Handled_Sequence_Of_Statements =>
             Process_Statement_List
-              (Statements (N), Loop_Writes, After_Inv, In_Nested);
+              (Statements (N), Loop_Writes, Relevant_Vertices,
+               After_Inv, In_Nested);
 
             declare
                Handler : Node_Id := First (Exception_Handlers (N));
             begin
                while Present (Handler) loop
                   Process_Statement_List
-                    (Statements (Handler), Loop_Writes, After_Inv, In_Nested);
+                    (Statements (Handler), Loop_Writes, Relevant_Vertices,
+                     After_Inv, In_Nested);
                   Next (Handler);
                end loop;
             end;
@@ -1780,23 +1832,24 @@ package body Gnat2Why.Expr.Loops.Inv is
                     (New_Write      => Defining_Identifier (Spec),
                      Loop_Writes    => Loop_Writes,
                      Discard_Writes => True,
-                     Relevant_Path => True);
+                     Relevant_Path => True); --  Do not care since we discard.
                end if;
             end;
 
             Process_Statement_List
-              (Statements (N), Loop_Writes, After_Inv, In_Nested => True);
+              (Statements (N), Loop_Writes, Relevant_Vertices,
+               After_Inv, In_Nested => True);
 
          --  Discard writes to variables local to a block statement
 
          when N_Block_Statement =>
             if Present (Declarations (N)) then
                Process_Statement_List
-                 (Declarations (N), Loop_Writes,
+                 (Declarations (N), Loop_Writes, Relevant_Vertices,
                   After_Inv, In_Nested => True);
             end if;
             Process_Statement
-              (Handled_Statement_Sequence (N), Loop_Writes,
+              (Handled_Statement_Sequence (N), Loop_Writes, Relevant_Vertices,
                After_Inv, In_Nested => True);
 
          when N_Ignored_In_SPARK
@@ -1830,16 +1883,17 @@ package body Gnat2Why.Expr.Loops.Inv is
    ------------------------------
 
    procedure Process_Statement_List
-     (L           : List_Id;
-      Loop_Writes : in out Write_Status_Maps.Map;
-      After_Inv   : Boolean;
-      In_Nested   : Boolean)
+     (L                 :        List_Id;
+      Loop_Writes       : in out Write_Status_Maps.Map;
+      Relevant_Vertices :        Local_CFG.Vertex_Sets.Set;
+      After_Inv         :        Boolean;
+      In_Nested         :        Boolean)
    is
       N : Node_Id := First (L);
    begin
       while Present (N) loop
 
-         Process_Statement (N, Loop_Writes,
+         Process_Statement (N, Loop_Writes, Relevant_Vertices,
                             After_Inv  => After_Inv,
                             In_Nested => In_Nested);
          Next (N);
@@ -1859,7 +1913,7 @@ package body Gnat2Why.Expr.Loops.Inv is
       for Alias of Overlay_Alias (New_Write) loop
          One_Level_Update (Alias, Loop_Writes,
                            Discard_Writes => False,
-                           Relevant_Path => Relevant_Path);
+                           Relevant_Path  => Relevant_Path);
       end loop;
    end Update_Alias_Status;
 
@@ -2137,11 +2191,14 @@ package body Gnat2Why.Expr.Loops.Inv is
    is
       Updated_Status : Write_Status_Access;
       Expected_Type  : Opt_Type_Kind_Id;
+
+      --  If the write is not on a path relevant to the frame condition,
+      --  we only need to ensures that the root object is in the table,
+      --  so that we remember that the object is written within the
+      --  loop body.
+
    begin
       if not Relevant_Path then
-         --  If the write is not on a path relevant to the frame condition,
-         --  we only need to ensures that the root object is in the table,
-         --  so that we remember that object is written within the loop body.
 
          One_Level_Update (Get_Root_Object (New_Write), Loop_Writes,
                            Discard_Writes => False, Relevant_Path => False);
