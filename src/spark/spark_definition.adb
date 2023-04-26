@@ -1991,7 +1991,8 @@ package body SPARK_Definition is
                --  if A then B else C  raise expressions not allowed in A
                --  case A then is ...  raise expressions not allowed in A
 
-               --  No raise expressions are allowed in other expressions.
+               --  Raise expressions in other expressions are allowed but a VC
+               --  is generated to show that they are provably unreachable.
 
                --  We store encountered Raise_Expressions in the
                --  Raise_Exprs_From_Pre set for later use.
