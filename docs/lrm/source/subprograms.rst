@@ -52,9 +52,9 @@ an *entire object*.
    values are written during an execution leading to a successful call, is also
    an output even if the final state is the same as the initial state. (see
    :ref:`External State`). [On the contrary, a global item or parameter is not
-   an output of the subprogram if it is updated only on paths that lead to an
-   explicit ``raise_statement`` or to a ``pragma Assert (statically_False)`` or
-   to a call to a subprogram marked ``No_Return``.]
+   an output of the subprogram if it is updated only on paths that lead to a
+   statement raising an unexpected exception or to a
+   ``pragma Assert (statically_False)``.]
 
 .. index:: subprogram input
 
@@ -1713,21 +1713,10 @@ No extensions or restrictions.
 Nonreturning Procedures
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. container:: heading
-
-   Verification Rules
-
-
-1. A call to a nonreturning procedure introduces an obligation to prove that
-   the statement will not be executed, much like the verification condition
-   associated with
-
-       ``pragma Assert (False);``
-
-   [In other words, the verification conditions introduced for a call to a
-   nonreturning procedure are the same as those introduced for a runtime check
-   which fails unconditionally. See also section :ref:`Exceptions`, where a
-   similar verification rule is imposed on ``raise_statements``.]
+Procedures annotated with ``No_Return`` but without an explicit
+``Exceptional_Cases`` aspect are considered to have an implicit exceptional
+contract ``Exceptional_Cases => (others => True)``; see
+:ref:`Exceptional Cases`.
 
 
 Overloading of Operators
