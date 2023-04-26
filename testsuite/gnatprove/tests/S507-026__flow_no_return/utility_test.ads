@@ -4,6 +4,7 @@ package utility_test is
 
    procedure test_func_imported(a : Integer)
      with No_Return,
+     Exceptional_Cases => (others => False),
      Import => True,
      Convention => C,
      Global => null;
@@ -21,7 +22,8 @@ package utility_test is
      Global => null;
 
    procedure test_func_C(a : Integer)
-     with No_Return;
+     with No_Return,
+     Exceptional_Cases => (others => False);
 
    procedure test_read_C(a : out Integer);
 

@@ -1963,7 +1963,15 @@ package body SPARK_Util is
       Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
    begin
       if No (Prag) then
-         return Result;
+
+         --  By default, No_Return procedures are assumed to potentially raise
+         --  exceptions.
+
+         if No_Return (Subp) then
+            return Exception_Sets.All_Exceptions;
+         else
+            return Result;
+         end if;
       end if;
 
       declare
@@ -2913,28 +2921,6 @@ package body SPARK_Util is
                begin
                   return Compile_Time_Known_Value (Expr)
                     and then Expr_Value (Expr) = Uint_0;
-               end;
-            else
-               return False;
-            end if;
-
-         when N_Procedure_Call_Statement
-            | N_Entry_Call_Statement
-         =>
-            if Is_Error_Signaling_Procedure (Get_Called_Entity (N)) then
-               declare
-                  Caller : constant Entity_Id :=
-                    Unique_Entity
-                      (Lib.Xref.SPARK_Specific.
-                         Enclosing_Subprogram_Or_Library_Package (N));
-               begin
-                  --  A call to an error-signaling procedure is used to signal
-                  --  an error, and should be proved unreachable, unless the
-                  --  caller is a possibly nonreturning procedure.
-
-                  return not (Ekind (Caller) = E_Procedure
-                                and then
-                              Is_Possibly_Nonreturning_Procedure (Caller));
                end;
             else
                return False;

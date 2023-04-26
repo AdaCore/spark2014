@@ -1410,10 +1410,9 @@ package body Why.Inter is
                   E_Module (E));
             Namespace : constant Symbol :=
               (case Selector is
-                 when Dispatch  => No_Symbol,
-                 when No_Return => NID (To_String (WNE_No_Return_Module)),
-                 when Refine    => NID (To_String (WNE_Refine_Module)),
-                 when Standard  => No_Symbol);
+                 when Dispatch => No_Symbol,
+                 when Refine   => NID (To_String (WNE_Refine_Module)),
+                 when Standard => No_Symbol);
          begin
             return
               New_Identifier

@@ -827,8 +827,7 @@ package body Gnat2Why.Expr is
    function Why_Subp_Has_Precondition
      (E        : Callable_Kind_Id;
       Selector : Selection_Kind := Why.Inter.Standard)
-      return Boolean
-   with Pre => (if Selector = No_Return then Is_Error_Signaling_Procedure (E));
+      return Boolean;
    --  Return true whenever the Why declaration that corresponds to the given
    --  subprogram has a precondition.
 
@@ -23661,19 +23660,10 @@ package body Gnat2Why.Expr is
                --  duplicating checks.
 
                Selector    : constant Selection_Kind :=
-                  --  When calling an error-signaling procedure from an
-                  --  ordinary program unit, use the No_Return variant of the
-                  --  program function, which has a precondition of False. This
-                  --  ensures that a check is issued for each such call, to
-                  --  detect when they are reachable.
+               --  When the call is dispatching, use the Dispatch variant of
+               --  the program function, which has the appropriate contract.
 
-                 (if Is_Error_Signaling_Statement (Stmt_Or_Decl) then
-                     No_Return
-
-                  --  When the call is dispatching, use the Dispatch variant of
-                  --  the program function, which has the appropriate contract.
-
-                  elsif Nkind (Stmt_Or_Decl) = N_Procedure_Call_Statement
+                 (if Nkind (Stmt_Or_Decl) = N_Procedure_Call_Statement
                     and then Present (Controlling_Argument (Stmt_Or_Decl))
                   then
                      Dispatch
@@ -25036,13 +25026,7 @@ package body Gnat2Why.Expr is
                        Inherited => True);
    begin
       return (Selector /= Dispatch and then Has_Precondition)
-        or else Has_Classwide_Or_Inherited_Precondition
-
-        --  E is an error-signaling procedure called outside another
-        --  error-signaling procedure (this is what the No_Return variant
-        --  means) for which an implicit precondition of False is used.
-
-        or else Selector = No_Return;
+        or else Has_Classwide_Or_Inherited_Precondition;
    end Why_Subp_Has_Precondition;
 
 end Gnat2Why.Expr;

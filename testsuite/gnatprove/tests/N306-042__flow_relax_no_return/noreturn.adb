@@ -9,7 +9,7 @@ is
       return False;
    end Success;
 
-   procedure Stop with No_Return
+   procedure Stop with No_Return, Exceptional_Cases => (others => False)
    is
    begin
       loop

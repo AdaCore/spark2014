@@ -1,3 +1,4 @@
+nest_in_proc.adb:9:07: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 nest_in_proc.adb:9:07: warning: assuming "OS_Exit" has no effect on global items
 nest_in_proc.adb:9:07: warning: no Global contract available for "OS_Exit"
 nest_in_proc.adb:15:20: warning: subprogram "Dummy" has no effect

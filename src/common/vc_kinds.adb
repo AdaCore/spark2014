@@ -625,6 +625,8 @@ package body VC_Kinds is
           & " function",
          when Lim_Access_To_Dispatch_Op =>
            "an access-to-subprogram type designating a dispatching operation",
+         when Lim_Access_To_No_Return_Subp =>
+           "an access-to-subprogram type designating a No_Return procedure",
          when Lim_Access_To_Relaxed_Init_Subp =>
            "an access-to-subprogram type designating a subprogram annotated"
           & " with Relaxed_Initialization",

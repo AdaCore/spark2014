@@ -2,7 +2,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 
 procedure Nest_In_Proc is
 
-   procedure Proxy with No_Return;
+   procedure Proxy with No_Return, Exceptional_Cases => (others => False);
 
    procedure Proxy is
    begin

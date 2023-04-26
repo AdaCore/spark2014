@@ -2,6 +2,7 @@ package body P is
 
   procedure Never_Return
     with No_Return,
+         Exceptional_Cases => (others => False),
          Pre => True
   is
   begin

@@ -611,14 +611,7 @@ package body Gnat2Why.Error_Messages is
          when VC_Default_Initial_Condition =>
             return "default initial condition might fail";
          when VC_Precondition              =>
-            if Nkind (Node) in N_Procedure_Call_Statement
-                             | N_Entry_Call_Statement
-              and then Is_Error_Signaling_Statement (Node)
-            then
-               return "call to nonreturning subprogram might be executed";
-            else
-               return "precondition might fail";
-            end if;
+            return "precondition might fail";
          when VC_Precondition_Main         =>
             return "precondition of main program might fail";
          when VC_Postcondition             =>
@@ -1619,14 +1612,7 @@ package body Gnat2Why.Error_Messages is
          when VC_Default_Initial_Condition =>
             return "default initial condition " & Verb;
          when VC_Precondition              =>
-            if Nkind (Node) in N_Procedure_Call_Statement
-                             | N_Entry_Call_Statement
-              and then Is_Error_Signaling_Statement (Node)
-            then
-               return Prefix & "call to nonreturning procedure never executed";
-            else
-               return "precondition " & Verb;
-            end if;
+            return "precondition " & Verb;
          when VC_Precondition_Main         =>
             return "precondition of main program " & Verb;
          when VC_Postcondition             => return "postcondition " & Verb;

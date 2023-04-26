@@ -26,6 +26,7 @@
 with Ada.Strings.Fixed;             use Ada.Strings.Fixed;
 with Common_Iterators;               use Common_Iterators;
 with Debug;
+with Gnat2Why_Args;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;

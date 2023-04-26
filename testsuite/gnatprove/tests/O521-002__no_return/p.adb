@@ -2,7 +2,7 @@ pragma SPARK_Mode;
 
 package body P is
 
-  procedure Help_Doing_Nothing with No_Return;
+  procedure Help_Doing_Nothing with No_Return, Exceptional_Cases => (others => False);
 
   procedure Help_Doing_Nothing is
   begin

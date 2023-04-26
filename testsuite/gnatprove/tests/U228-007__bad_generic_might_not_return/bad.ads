@@ -6,7 +6,7 @@ package Bad with SPARK_Mode is
 
    generic
    procedure Call_Jump_Gen (B : Boolean) with
-     Annotate => (GNATprove, Might_Not_Return),
+     Exceptional_Cases => (others => B),
      Global => null,
      Post => not B;
 

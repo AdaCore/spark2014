@@ -1,7 +1,7 @@
 nest_in_proc.adb:3:11: info: terminating annotation on "Nest_In_Proc" has been proved, subprogram will terminate
 nest_in_proc.adb:5:14: high: all paths in "Proxy" raise exceptions or do not terminate normally
 nest_in_proc.adb:5:14: warning: subprogram "Proxy" has no effect
-nest_in_proc.adb:9:07: medium: call to nonreturning subprogram might be executed
+nest_in_proc.adb:9:07: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 nest_in_proc.adb:9:07: warning: assuming "OS_Exit" has no effect on global items
 nest_in_proc.adb:9:07: warning: no Global contract available for "OS_Exit"
 nest_in_proc.adb:13:17: info: terminating annotation on "Nothing" has been proved, subprogram will terminate

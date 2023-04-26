@@ -3474,15 +3474,19 @@ package body SPARK_Definition is
 
                      elsif Has_Aspect (Subp, Aspect_Relaxed_Initialization)
                      then
-                        Mark_Unsupported
-                          (Lim_Access_To_Relaxed_Init_Subp, N);
+                        Mark_Unsupported (Lim_Access_To_Relaxed_Init_Subp, N);
+
+                     --  No_Return procedures can not be stored inside access
+                     --  types.
+
+                     elsif No_Return (Subp) then
+                        Mark_Unsupported (Lim_Access_To_No_Return_Subp, N);
 
                      --  Subprograms which might raise exceptions can not be
                      --  stored inside access types.
 
                      elsif Has_Exceptional_Contract (Subp) then
-                        Mark_Unsupported
-                          (Lim_Access_To_Subp_With_Exc, N);
+                        Mark_Unsupported (Lim_Access_To_Subp_With_Exc, N);
 
                      --  Subprogram with non-null Global contract (either
                      --  explicit or generated). Global accesses are allowed
