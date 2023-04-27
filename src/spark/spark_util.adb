@@ -3900,6 +3900,600 @@ package body SPARK_Util is
         and then Is_Traversal_Function (Get_Called_Entity (Expr));
    end Is_Traversal_Function_Call;
 
+   ---------------
+   -- Local_CFG --
+   ---------------
+
+   package body Local_CFG is
+
+      ------------------------------
+      -- Internal Graph Structure --
+      ------------------------------
+
+      type Neighborhood is record
+         Depth_In_Enclosing : Natural;
+         Ctrl_Predecessors  : Vertex_Sets.Set;
+      end record;
+      --  Vertices in statements' CFG carry their depth within the
+      --  enclosing body, so that we can detect which neighbors remain inside
+      --  the local CFG. For a vertex of a local CFG, neighbors within
+      --  the wider enclosing-body's CFG are always either decendants or
+      --  siblings-of-ancestors of the Graph_Id's start vertex,
+      --  so we can efficiently filter those that remains in S's graph by
+      --  comparing depth, and at equal depth directly test equality with S.
+      --
+      --  The notion of 'depth' for the graph is purely intended for
+      --  internal use, nothing else should depend on it.
+
+      package Vertex_To_Neighborhood is new Ada.Containers.Hashed_Maps
+        (Key_Type        => Vertex,
+         Element_Type    => Neighborhood,
+         Hash            => Vertex_Hash,
+         Equivalent_Keys => "=");
+
+      All_Graphs : Vertex_To_Neighborhood.Map;
+      --  Caches the union of local CFGs, with local CFGs being
+      --  build on demand per-body.
+
+      package Node_To_Vertex is new Ada.Containers.Hashed_Maps
+        (Key_Type        => Node_Id,
+         Element_Type    => Vertex,
+         Hash            => Node_Hash,
+         Equivalent_Keys => "=");
+      --  For transfer-of-control tracking.
+
+      --------------------------------------------
+      -- Local subprograms of package Local_CFG --
+      --------------------------------------------
+
+      procedure Cache_Graph_If_Needed (G : Graph_Id);
+      --  Make sure control-flow graph of enclosing body is cached
+      --  in Local_CFGs, by building it if needed.
+
+      procedure Cache_Graph_Of_Body (Enclosing_Body : Node_Id);
+      --  Cache graph of body
+
+      function Predecessors (G : Graph_Id; V : Vertex) return Vertex_Sets.Set;
+      --  Return predecessors of V in G's control-flow graph.
+
+      ---------------------------------
+      -- Collect_Vertices_Leading_To --
+      ---------------------------------
+
+      procedure Collect_Vertices_Leading_To
+        (Graph       : Graph_Id;
+         Targets     : in out Vertex_Sets.Set;
+         Pred        : not null access function (V : Vertex) return Boolean
+                       := True_On_Every_Vertex'Access;
+         Empty_Paths : Boolean := True)
+      is
+         Exploration_Set : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+         --  Stores vertices that remain to be explored
+
+         Initial_Set     : constant Vertex_Sets.Set := Targets;
+         --  Copy Targets input value so that we can immediately use Targets
+         --  as accumulator (needed when Empty_Paths = False).
+
+         procedure Add_Predecessors (V : Vertex);
+         --  Add Pred-satisfying predecessors of N to exploration set,
+         --  excluding those already in Targets.
+
+         ----------------------
+         -- Add_Predecessors --
+         ----------------------
+
+         procedure Add_Predecessors (V : Vertex) is
+         begin
+            for V_Pred of Predecessors (Graph, V) loop
+               if not Targets.Contains (V_Pred) and then Pred (V_Pred)
+               then
+                  Exploration_Set.Include (V_Pred);
+               end if;
+            end loop;
+         end Add_Predecessors;
+
+      --  Start of processing for Collect_Vertices_Leading_To
+
+      begin
+         if not Empty_Paths then
+            Targets.Clear;
+         end if;
+         for T of Initial_Set loop
+            Add_Predecessors (T);
+         end loop;
+         while not Exploration_Set.Is_Empty loop
+            declare
+               V_Pos : Vertex_Sets.Cursor := Exploration_Set.First;
+               V_Top : constant Vertex := Exploration_Set.Element (V_Pos);
+            begin
+               Exploration_Set.Delete (V_Pos);
+               Targets.Insert (V_Top);
+               Add_Predecessors (V_Top);
+            end;
+         end loop;
+      end Collect_Vertices_Leading_To;
+
+      ---------------------------
+      -- Cache_Graph_If_Needed --
+      ---------------------------
+
+      procedure Cache_Graph_If_Needed (G : Graph_Id) is
+         function Is_Body (N : Node_Id) return Boolean is
+           (Nkind (N) in N_Entity_Body);
+         function Find_Enclosing_Body is
+           new First_Parent_With_Property (Is_Body);
+         Start : constant Vertex := Starting_Vertex (G);
+      begin
+         if not All_Graphs.Contains (Start) then
+            declare
+               Enclosing_Body : constant Node_Id :=
+                 (if G in N_Entity_Id
+                  then Get_Body (G)
+                  else Find_Enclosing_Body (G));
+            begin
+               Cache_Graph_Of_Body (Enclosing_Body);
+            end;
+            pragma Assert (All_Graphs.Contains (Start));
+         end if;
+      end Cache_Graph_If_Needed;
+
+      -------------------------
+      -- Cache_Graph_Of_Body --
+      -------------------------
+
+      procedure Cache_Graph_Of_Body (Enclosing_Body : Node_Id) is
+
+         --  Store targets for transfer-of-control statements.
+         --  Handlers are already managed globally by Reachable_Handlers.
+
+         Loop_Exit_Nodes  : Node_To_Vertex.Map;
+         --  Track exit vertices for loops keyed from loop entity,
+         --  to connect exit statements.
+
+         Goto_Targets     : Node_To_Vertex.Map;
+         --  Track label vertices keyed from label entity,
+         --  to connect goto statements.
+
+         Body_Entity      : constant Node_Id :=
+           Unique_Defining_Entity (Enclosing_Body);
+         Body_Exit_Vertex : constant Vertex :=
+           Vertex'(Kind => Body_Exit, Node => Body_Entity);
+         --  Target of return/exiting raises.
+
+         procedure Add_Edge (Src : Vertex; Tgt : Vertex);
+         --  Add control edge from Src to Tgt.
+
+         procedure Cache_For_Statement
+           (Stmt        :        Node_Id;
+            Depth       :        Natural;
+            Exit_Vertex : in out Vertex);
+         --  Cache vertex information, outgoing control edges,
+         --  and transfer-of-control information for
+         --  statements/declarative items.
+         --
+         --  Adds the following information to tables:
+         --  * Insert new neighborhoods (initializes depth) for every
+         --    vertex of Stmt's local CFG in All_Graphs.
+         --  * Add edges for all outgoing control of inserted vertices.
+         --  * Stores key-to-vertex relation for every transfer-of-control
+         --    target internal to Stmt (especially labels, other targets
+         --    do not need to persist after the call).
+         --  Additional requirements at entry
+         --  * Any key-to-vertex relation for externally reachable
+         --    transfer-of-control target must have been inserted in table
+         --    already. This includes normal exit.
+         --  * Neighborhoods for all transfer-of-control target must already
+         --    been inserted. This again includes normal exit.
+         --  * There is no pre-existing neighborhood for Stmt's vertices.
+         --  * Exit_Vertex must contain the target of the outgoing edge
+         --    for Stmt's normal return.
+         --  Additionally, at exit
+         --  * Exit_Vertex is set to Stmt's entry vertex
+         --  @param Stmt input statement.
+         --  @param Depth depth of Stmt relative to enclosing body.
+         --  @param Exit_Vertex target of outgoing control edge for completion
+         --         (normal end of execution) of Stmt's, set to entry vertex
+         --         of Stmt at output.
+
+         procedure Cache_For_Statement_List
+           (Stmts       :        List_Id;
+            Depth       :        Natural;
+            Exit_Vertex : in out Vertex);
+         --  Cache vertex information, outgoing control edges, and
+         --  transfer-of-control statements for Stmts. Same behavior
+         --  as Cache_For_Statement, but for a list. If the list is
+         --  empty, Exit_Vertex is left unchanged.
+         --  @param Stmts input statement list.
+         --         Can be No_List, treated as empty.
+         --  @param Depth depth of statements of Stmts relative to
+         --         enclosing body.
+         --  @param Exit_Vertex input value is target of outgoing control edge
+         --         for execution of the sequence, output value is the vertex
+         --         at the start of the sequence.
+
+         procedure Insert_Neighborhood (V : Vertex; Depth : Natural);
+         --  Insert new neighborhood for vertex V in All_Graphs,
+         --  at given depth.
+
+         ---------------
+         --  Add_Edge --
+         ---------------
+
+         procedure Add_Edge (Src : Vertex; Tgt : Vertex) is
+         begin
+            All_Graphs.Reference
+              (All_Graphs.Find (Tgt)).Ctrl_Predecessors.Include (Src);
+         end Add_Edge;
+
+         -------------------------
+         -- Cache_For_Statement --
+         -------------------------
+
+         procedure Cache_For_Statement
+           (Stmt        :        Node_Id;
+            Depth       :        Natural;
+            Exit_Vertex : in out Vertex)
+         is
+            Exit_Temp : Vertex;
+            --  Accumulator for sub-sequence processing.
+            --  It is possible to use Exit_Vertex when there is a unique
+            --  path, but for consistency we always use Exit_Temp.
+            --  We never mutate Exit_Vertex before the end of the procedure.
+
+            Start     : constant Vertex := Starting_Vertex (Stmt);
+            --  Starting/Entry vertex for Stmt.
+
+         begin
+            --  Add neighborhood of start vertex to the table
+
+            Insert_Neighborhood (Start, Depth);
+
+            if Is_Error_Signaling_Statement (Stmt) then
+               --  If the statement is an error signaling one,
+               --  then we will never reach any meaningful exit path
+               --  from it, so no edge needs to be added to the graph.
+
+               pragma Assert (Start.Kind = Plain);
+               goto Finish;
+            end if;
+
+            case Nkind (Stmt) is
+               when N_Block_Statement =>
+                  Exit_Temp := Exit_Vertex;
+                  Cache_For_Statement
+                    (Handled_Statement_Sequence (Stmt),
+                     Depth + 1, Exit_Temp);
+                  Cache_For_Statement_List
+                    (Declarations (Stmt), Depth + 1, Exit_Temp);
+                  Add_Edge (Start, Exit_Temp);
+
+               when N_Case_Statement =>
+                  declare
+                     Alternative : Opt_N_Case_Statement_Alternative_Id :=
+                       First_Non_Pragma (Alternatives (Stmt));
+                  begin
+                     --  Create a path per alternative.
+
+                     while Present (Alternative) loop
+                        Exit_Temp := Exit_Vertex;
+                        Cache_For_Statement_List
+                          (Statements (Alternative), Depth + 1, Exit_Temp);
+                        Add_Edge (Start, Exit_Temp);
+                        Next_Non_Pragma (Alternative);
+                     end loop;
+                  end;
+
+               when N_Entry_Call_Statement
+                  | N_Procedure_Call_Statement
+                  | N_Raise_Statement
+               =>
+                  if Nkind (Stmt) /= N_Entry_Call_Statement then
+                     --  Connect exceptional exits
+
+                     for Handler in Reachable_Handlers (Stmt).Iterate loop
+                        declare
+                           H_Node  : constant Node_Id :=
+                             Node_Lists.Element (Handler);
+                        begin
+                           Add_Edge (Start,
+                                     (if Nkind (H_Node) = N_Subprogram_Body
+                                      then Body_Exit_Vertex
+                                      else Starting_Vertex
+                                        (First (Statements (H_Node)))));
+                        end;
+                     end loop;
+                  end if;
+                  if Nkind (Stmt) /= N_Raise_Statement
+                    and then not No_Return (Get_Called_Entity (Stmt))
+                  then
+                     --  Connect normal return
+
+                     Add_Edge (Start, Exit_Vertex);
+                  end if;
+
+               when N_Exit_Statement =>
+                  Add_Edge (Start,
+                            Loop_Exit_Nodes.Element
+                              (Loop_Entity_Of_Exit_Statement (Stmt)));
+                  if Present (Condition (Stmt)) then
+                     Add_Edge (Start, Exit_Vertex);
+                  end if;
+
+               when N_Extended_Return_Statement =>
+                  --  Return transfers to body's exit,
+                  --  ignore Exit_Vertex and use Body_Exit instead
+
+                  Exit_Temp := Body_Exit_Vertex;
+                  Cache_For_Statement
+                    (Handled_Statement_Sequence (Stmt), Depth + 1, Exit_Temp);
+                  Cache_For_Statement_List
+                    (Return_Object_Declarations (Stmt),
+                     Depth + 1, Exit_Temp);
+                  Add_Edge (Start, Exit_Temp);
+
+               when N_Goto_Statement =>
+                  Add_Edge
+                    (Start, Goto_Targets.Element (Entity (Name (Stmt))));
+
+               when N_Handled_Sequence_Of_Statements =>
+                  declare
+                     Handler : Node_Id := First (Exception_Handlers (Stmt));
+                  begin
+                     --  Must process handlers first, so that
+                     --  vertices are inserted.
+
+                     while Present (Handler) loop
+                        Exit_Temp := Exit_Vertex;
+                        Cache_For_Statement_List
+                          (Statements (Handler), Depth + 1, Exit_Temp);
+                        Next (Handler);
+                     end loop;
+
+                     Exit_Temp := Exit_Vertex;
+                     Cache_For_Statement_List
+                       (Statements (Stmt), Depth + 1, Exit_Temp);
+                     Add_Edge (Start, Exit_Temp);
+                  end;
+
+               when N_If_Statement =>
+
+                  declare
+                     Elsif_Iter : Node_Id := First (Elsif_Parts (Stmt));
+                  begin
+                     --  Like case statements, create one path per alternative.
+
+                     Exit_Temp := Exit_Vertex;
+                     Cache_For_Statement_List
+                       (Then_Statements (Stmt), Depth + 1, Exit_Temp);
+                     Add_Edge (Start, Exit_Temp);
+                     Exit_Temp := Exit_Vertex;
+                     Cache_For_Statement_List
+                       (Else_Statements (Stmt), Depth + 1, Exit_Temp);
+                     Add_Edge (Start, Exit_Temp);
+                     while Present (Elsif_Iter) loop
+                        Exit_Temp := Exit_Vertex;
+                        Cache_For_Statement_List
+                          (Then_Statements (Elsif_Iter), Depth + 1, Exit_Temp);
+                        Add_Edge (Start, Exit_Temp);
+                        Next (Elsif_Iter);
+                     end loop;
+                  end;
+
+               when N_Loop_Statement =>
+                  declare
+                     Loop_Entity : constant Node_Id :=
+                       Entity (Identifier (Stmt));
+                     Vertex_Cond : constant Vertex :=
+                       Vertex'(Kind => Loop_Cond, Node => Stmt);
+                     Vertex_Iter : constant Vertex :=
+                       Vertex'(Kind => Loop_Iter, Node => Stmt);
+                  begin
+
+                     --  Register target for inner exit statements.
+
+                     Loop_Exit_Nodes.Insert (Loop_Entity, Exit_Vertex);
+
+                     --  Insert extra vertices.
+
+                     Insert_Neighborhood (Vertex_Cond, Depth + 1);
+                     Insert_Neighborhood (Vertex_Iter, Depth + 1);
+                     Add_Edge (Start, Vertex_Cond);
+                     Add_Edge (Vertex_Iter, Vertex_Cond);
+
+                     if Present (Iteration_Scheme (Stmt)) then
+                        --  Normal loop exit.
+                        --  Cannot directly exit simple loops.
+
+                        Add_Edge (Vertex_Cond, Exit_Vertex);
+                     end if;
+
+                     --  End of the loop performs the iteration and goes back
+                     --  to condition.
+
+                     Exit_Temp := Vertex_Iter;
+                     Cache_For_Statement_List
+                       (Statements (Stmt), Depth + 1, Exit_Temp);
+
+                     --  Condition may enter the loop
+
+                     Add_Edge (Vertex_Cond, Exit_Temp);
+                  end;
+
+               when N_Simple_Return_Statement =>
+                  --  Return directly connects to body exit
+
+                  Add_Edge (Start, Body_Exit_Vertex);
+
+               when N_Assignment_Statement
+                  | N_Object_Declaration
+                  | N_Ignored_In_SPARK
+                  | N_Itype_Reference
+                  | N_Object_Renaming_Declaration
+                  | N_Subtype_Declaration
+                  | N_Full_Type_Declaration
+                  | N_Pragma
+                  | N_Package_Body
+                  | N_Package_Declaration
+                  | N_Subprogram_Body
+                  | N_Subprogram_Declaration
+                  | N_Delay_Statement
+               =>
+                  --  Statements treated as plain instructions/no-ops
+
+                  Add_Edge (Start, Exit_Vertex);
+
+                  --  Key goto target for label nodes
+
+                  if Nkind (Stmt) = N_Label then
+                     Goto_Targets.Insert (Entity (Identifier (Stmt)), Start);
+                  end if;
+
+               when others =>
+                  Ada.Text_IO.Put_Line
+                    ("[Spark_Util.Local_CFG.Cache_Graph_Of_Body] kind ="
+                     & Node_Kind'Image (Nkind (Stmt)));
+               raise Program_Error;
+            end case;
+            <<Finish>>
+            Exit_Vertex := Start;
+         end Cache_For_Statement;
+
+         ------------------------------
+         -- Cache_For_Statement_List --
+         ------------------------------
+
+         procedure Cache_For_Statement_List
+           (Stmts       :        List_Id;
+            Depth       :        Natural;
+            Exit_Vertex : in out Vertex)
+         is
+            --  Process Stmts in reverse, as it is necessary both to register
+            --  targets for transfer of control, both normal return and
+            --  label exits (only forward gotos are allowed in SPARK).
+
+            Stmt : Node_Id := (if No (Stmts) then Empty else Last (Stmts));
+         begin
+            while Present (Stmt) loop
+               Cache_For_Statement (Stmt, Depth, Exit_Vertex);
+               Prev (Stmt);
+            end loop;
+         end Cache_For_Statement_List;
+
+         -------------------------
+         -- Insert_Neighborhood --
+         -------------------------
+
+         procedure Insert_Neighborhood (V : Vertex; Depth : Natural)
+         is
+         begin
+            All_Graphs.Insert
+              (V, Neighborhood'(Depth_In_Enclosing => Depth,
+                                Ctrl_Predecessors => Vertex_Sets.Empty_Set));
+         end Insert_Neighborhood;
+
+      --  Start of processing for Cache_Graph_Of_Body
+
+      begin
+         declare
+            Body_Stmt  : constant Node_Id :=
+              Handled_Statement_Sequence (Enclosing_Body);
+            Body_Start : constant Vertex := Vertex'(Kind => Body_Entry,
+                                                    Node => Body_Entity);
+            Exit_Temp  : Vertex := Body_Exit_Vertex;
+         begin
+            Insert_Neighborhood (Body_Exit_Vertex, 1);
+            Insert_Neighborhood (Body_Start, 0);
+
+            --  Package bodies might not have Body_Stmt
+
+            if Present (Body_Stmt) then
+               Cache_For_Statement (Body_Stmt, 1, Exit_Temp);
+            end if;
+
+            Cache_For_Statement_List
+              (Declarations (Enclosing_Body), 1, Exit_Temp);
+            Add_Edge (Body_Start, Exit_Temp);
+         end;
+      end Cache_Graph_Of_Body;
+
+      ------------------
+      -- Predecessors --
+      ------------------
+
+      function Predecessors (G : Graph_Id; V : Vertex)
+                             return Vertex_Sets.Set
+      is
+         function Depth (Neighbor : Vertex) return Natural is
+           (All_Graphs.Constant_Reference (Neighbor).Depth_In_Enclosing);
+         --  Short-hand to fetch vertex depth.
+
+      begin
+         Cache_Graph_If_Needed (G);
+         return Preds : Vertex_Sets.Set := Vertex_Sets.Empty_Set do
+            declare
+               Graph_Start : constant Vertex := Starting_Vertex (G);
+               Depth_Limit : constant Natural := Depth (Graph_Start);
+
+               function In_Local_CFG (Neighbor : Vertex) return Boolean
+               is (declare
+                     Neigh_Depth : constant Natural := Depth (Neighbor);
+                   begin
+                     Neigh_Depth > Depth_Limit
+                     or else (Neigh_Depth = Depth_Limit
+                       and then Neighbor = Graph_Start));
+               --  Test if vertex Neighbor is within G's CFG.
+               --  This only works correctly for vertices of G's CFG
+               --  and their neighbors, for other vertices in the graph,
+               --  there can be false positives.
+
+            begin
+               --  Must hold if V is in G's CFG.
+
+               pragma Assert (In_Local_CFG (V));
+
+               for Neighbor of
+                 All_Graphs.Constant_Reference (V).Ctrl_Predecessors
+               loop
+                  if In_Local_CFG (Neighbor) then
+                     Preds.Insert (Neighbor);
+                  end if;
+               end loop;
+            end;
+         end return;
+
+      end Predecessors;
+
+      ---------------------
+      -- Starting_Vertex --
+      ---------------------
+
+      function Starting_Vertex (N : Node_Id) return Vertex is
+        (Vertex'(Kind => (case Nkind (N) is
+                             when N_Entity         => Body_Entry,
+                             when N_Loop_Statement => Loop_Init,
+                             when others           => Plain),
+                 Node => N));
+
+      -----------------
+      -- Vertex_Hash --
+      -----------------
+
+      function Vertex_Hash (X : Vertex) return Ada.Containers.Hash_Type is
+         use type Ada.Containers.Hash_Type;
+         Hash : Ada.Containers.Hash_Type := 7 * Node_Hash (X.Node);
+      begin
+         Hash := Hash + (case X.Kind is
+                            when Plain      => 0,
+                            when Loop_Init  => 1,
+                            when Loop_Cond  => 2,
+                            when Loop_Iter  => 3,
+                            when Body_Entry => 4,
+                            when Body_Exit  => 5);
+         return Hash;
+      end Vertex_Hash;
+
+   end Local_CFG;
+
    ---------------------
    -- Location_String --
    ---------------------
