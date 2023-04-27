@@ -2684,6 +2684,13 @@ package body Flow.Control_Flow_Graph is
       --  This means the loop body may not be executed, so any initializations
       --  in the loop which subsequent code depends on will be flagged up.
 
+      function Termination_Proved (I_Scheme : Node_Id) return Boolean with
+        Pre => (if Present (I_Scheme)
+                then Nkind (I_Scheme) = N_Iteration_Scheme);
+      --  Analyzes the iteration scheme, if present, to determine whether
+      --  termination of the loop is guaranteed either by its syntax or by
+      --  the semantics of its iteration scheme.
+
       function Variables_Initialized_By_Loop (Loop_N : Node_Id)
                                               return Flow_Id_Sets.Set
       with Pre => Nkind (N) = N_Loop_Statement;
@@ -3050,6 +3057,52 @@ package body Flow.Control_Flow_Graph is
       begin
          return Do_Search (Loop_N) = Abandon;
       end Loop_Might_Exit_Early;
+
+      ------------------------
+      -- Termination_Proved --
+      ------------------------
+
+      function Termination_Proved (I_Scheme : Node_Id) return Boolean is
+      begin
+
+         --  Termination of plain or while loops is not automatically proved
+         if No (I_Scheme) or else Present (Condition (I_Scheme)) then
+            return False;
+
+         --  Termination of loops over a type or range is proved
+         elsif Present (Loop_Parameter_Specification (I_Scheme)) then
+            return True;
+
+         elsif Present (Iterator_Specification (I_Scheme)) then
+            declare
+               I_Name : constant Node_Id :=
+                 Name (Iterator_Specification (I_Scheme));
+            begin
+               --  Loops over array always terminate
+               if Is_Iterator_Over_Array (Iterator_Specification (I_Scheme))
+
+                 --  If the name is not a path, then we iterate over something
+                 --  constant.
+                 or else not Is_Path_Expression (I_Name)
+
+                 --  If we have no root object, then we iterate over an
+                 --  object created by an allocator, which we cannot modify
+                 --  during the loop.
+                 or else No (Get_Root_Object (I_Name))
+
+                 --  Otherwise, if the root object is a constant, it cannot be
+                 --  modified during the loop.
+                 or else Is_Constant_In_SPARK (Get_Root_Object (I_Name))
+               then
+                  return True;
+               end if;
+            end;
+         else
+            raise Program_Error;
+         end if;
+
+         return False;
+      end Termination_Proved;
 
       -----------------------------------
       -- Variables_Initialized_By_Loop --
@@ -3620,6 +3673,9 @@ package body Flow.Control_Flow_Graph is
          Ctx.Active_Loop := Outer_Loop;
       end;
 
+      Ctx.Termination_Proved :=
+        Ctx.Termination_Proved or else Termination_Proved (I_Scheme);
+
       if No (I_Scheme) then
          --  We have a general (possibly infinite) loop
          Do_Loop;
@@ -3630,14 +3686,10 @@ package body Flow.Control_Flow_Graph is
 
       elsif Present (Loop_Parameter_Specification (I_Scheme)) then
          --  This is a normal for loop over a type or range
-         Ctx.Termination_Proved := True;
          Do_For_Loop (Fully_Initialized);
 
       elsif Present (Iterator_Specification (I_Scheme)) then
          --  This is a `in' or `of' loop over some container
-         if Is_Iterator_Over_Array (Iterator_Specification (I_Scheme)) then
-            Ctx.Termination_Proved := True;
-         end if;
          Do_Iterator_Loop;
 
       else
