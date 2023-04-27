@@ -166,8 +166,14 @@ package Report_Database is
    procedure Add_Skip_Proof (S : Subp_Type);
    --  Register that proofs were skipped for S
 
+   procedure Add_Skip_Flow_And_Proof (S : Subp_Type);
+   --  Register that flow and proof was skipped for S
+
    function Has_Skip_Proof (S : Subp_Type) return Boolean;
    --  Check whether proofs were skipped for S
+
+   function Has_Skip_Flow_And_Proof (S : Subp_Type) return Boolean;
+   --  Check whether flow and proof was skipped for S
 
    procedure Reset_All_Results;
    --  Resets the results, removing all information on units and subprograms

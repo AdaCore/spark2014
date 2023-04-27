@@ -198,7 +198,8 @@ package body Flow_Error_Messages is
       Span         : Source_Span;
       Severity     : Msg_Severity;
       Continuation : Boolean := False)
-      return Message_Id;
+      return Message_Id
+   with Post => Print_Regular_Msg'Result /= No_Message_Id;
    --  Print a regular error, warning or info message using the frontend
    --  mechanism. Return an Id which can be used to identify this message.
 
@@ -435,6 +436,12 @@ package body Flow_Error_Messages is
       Dummy    : String_Sets.Cursor;
       Inserted : Boolean;
 
+      Check_All_Mode : constant Boolean :=
+        Gnat2Why_Args.Mode = GPM_Check_All
+          or else Has_Skip_Flow_And_Proof_Annotation (E);
+      --  True when we are only reporting legiality errors that require flow
+      --  analysis.
+
       Suppression : Suppressed_Message := No_Suppressed_Message;
 
    --  Start of processing for Error_Msg_Flow
@@ -461,7 +468,7 @@ package body Flow_Error_Messages is
          --  to marking (filtered by Error_Kind severity) and that is why we
          --  suppress all the others.
 
-         if Gnat2Why_Args.Mode = GPM_Check_All then
+         if Check_All_Mode then
             case Severity is
                when Error_Kind =>
                   Suppressed := False;
@@ -596,7 +603,7 @@ package body Flow_Error_Messages is
                      if Fix /= "" then
                         Ignore_Id := Print_Regular_Msg
                           (SGR_Note & "possible fix: " & SGR_Reset
-                              & Fix_Str,
+                           & Fix_Str,
                            Span, Severity, Continuation => True);
                      end if;
                   end;
@@ -606,12 +613,11 @@ package body Flow_Error_Messages is
             Msg_Id := No_Message_Id;
          end if;
 
-         --  In check_all mode, we don't want any messages to appear even in
-         --  the JSON output, unless they are error messages.
+         --  In general, we want suppressed messages to still appear in
+         --  statistics; in check_all mode suppressed messages will behave
+         --  as if they were never emitted.
 
-         if Gnat2Why_Args.Mode /= GPM_Check_All
-           or else Severity = Error_Kind
-         then
+         if not (Check_All_Mode and Suppressed) then
             Add_Json_Msg
               (Suppr      => Suppression,
                Tag        => Flow_Tag_Kind'Image (Tag),

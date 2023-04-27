@@ -58,6 +58,7 @@ with Sinfo.Nodes;                      use Sinfo.Nodes;
 with Sinput;                           use Sinput;
 with Snames;                           use Snames;
 with SPARK_Definition;                 use SPARK_Definition;
+with SPARK_Definition.Annotate;        use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;           use SPARK_Frame_Conditions;
 with SPARK_Util;                       use SPARK_Util;
 with SPARK_Util.Subprograms;           use SPARK_Util.Subprograms;
@@ -1769,6 +1770,14 @@ package body Flow is
                      Severity => Info_Kind);
                end if;
          end case;
+
+         --  Keep track of entities whose flow analysis has been "skipped",
+         --  i.e. which actually have been analysed, but we only emitted
+         --  error and not info/warning/check messages.
+
+         if Has_Skip_Flow_And_Proof_Annotation (FA.Spec_Entity) then
+            Skipped_Flow_And_Proof.Insert (FA.Spec_Entity);
+         end if;
       end loop;
 
       --  Finally check concurrent accesses. This check is done for the whole

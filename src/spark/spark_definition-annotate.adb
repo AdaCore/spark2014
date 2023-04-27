@@ -167,6 +167,11 @@ package body SPARK_Definition.Annotate is
      Common_Containers.Node_Sets.Empty_Set;
    --  Stores entities with pragma Annotate (GNATprove, Skip_Proof, E);
 
+   Skip_Flow_And_Proof_Annotations : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  Stores entities with
+   --    pragma Annotate (GNATprove, Skip_Flow_And_Proof, E);
+
    type Ownership_Annotation (Needs_Reclamation : Boolean := False) is record
       case Needs_Reclamation is
          when True =>
@@ -374,9 +379,13 @@ package body SPARK_Definition.Annotate is
    --  Check validity of a pragma Annotate (GNATprove, Ownership, ???, E)
    --  and update the Ownership_Annotations map.
 
-   procedure Check_Skip_Proof_Annotation
-     (Arg3_Exp : Node_Id;
-      Prag     : Node_Id);
+   procedure Check_Skip_Annotations
+     (Name     : String;
+      Arg3_Exp : Node_Id;
+      Prag     : Node_Id)
+   with Pre => Name = "skip_proof" or else Name = "skip_flow_and_proof";
+   --  Check validity of pragma Annotate (GNATprove, Skip_Proof, E) and
+   --  pragma Annotate (GNATprove, Skip_Flow_And_Proof, E)
 
    ---------
    -- "<" --
@@ -2825,6 +2834,24 @@ package body SPARK_Definition.Annotate is
    function Has_Ownership_Annotation (E : Entity_Id) return Boolean is
      (Ownership_Annotations.Contains (Root_Retysp (E)));
 
+   ----------------------------------------
+   -- Has_Skip_Flow_And_Proof_Annotation --
+   ----------------------------------------
+
+   function Has_Skip_Flow_And_Proof_Annotation (E : Entity_Id) return Boolean
+   is
+      Cur : Entity_Id := E;
+   begin
+      loop
+         if Skip_Flow_And_Proof_Annotations.Contains (Cur) then
+            return True;
+         end if;
+         Cur := Scope (Cur);
+         exit when No (Cur);
+      end loop;
+      return False;
+   end Has_Skip_Flow_And_Proof_Annotation;
+
    -------------------------------
    -- Has_Skip_Proof_Annotation --
    -------------------------------
@@ -2833,7 +2860,9 @@ package body SPARK_Definition.Annotate is
       Cur : Entity_Id := E;
    begin
       loop
-         if Skip_Proof_Annotations.Contains (Cur) then
+         if Skip_Proof_Annotations.Contains (Cur)
+           or else Skip_Flow_And_Proof_Annotations.Contains (Cur)
+         then
             return True;
          end if;
          Cur := Scope (Cur);
@@ -3249,6 +3278,7 @@ package body SPARK_Definition.Annotate is
         or else Name = "always_return"
         or else Name = "terminating"
         or else Name = "skip_proof"
+        or else Name = "skip_flow_and_proof"
       then
          Check_Argument_Number (Name, 3, Ok);
 
@@ -3333,8 +3363,8 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "iterable_for_proof" then
          Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp, Prag);
-      elsif Name = "skip_proof" then
-         Check_Skip_Proof_Annotation (Arg3_Exp, Prag);
+      elsif Name = "skip_proof" or else Name = "skip_flow_and_proof" then
+         Check_Skip_Annotations (Name, Arg3_Exp, Prag);
 
       --  Annotation for justifying check messages. This is where we set
       --  Result.Present to True and fill in values for components Kind,
@@ -3391,8 +3421,9 @@ package body SPARK_Definition.Annotate is
    -- Check_Skip_Proof_Annotation --
    ---------------------------------
 
-   procedure Check_Skip_Proof_Annotation
-     (Arg3_Exp : Node_Id;
+   procedure Check_Skip_Annotations
+     (Name     : String;
+      Arg3_Exp : Node_Id;
       Prag     : Node_Id)
    is
       From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
@@ -3400,9 +3431,12 @@ package body SPARK_Definition.Annotate is
         (if From_Aspect then "aspect" else "pragma");
       E                : Entity_Id;
       Ok               : Boolean;
+      Error_Msg_Name   : constant String :=
+        (if Name = "skip_proof" then "Skip_Proof" else "Skip_Flow_And_Proof");
    begin
       Check_Annotate_Entity_Argument
-        (Arg3_Exp, "third", Prag, "Skip_Proof", Ok);
+        (Arg3_Exp, "third", Prag, Error_Msg_Name, Ok);
+
       if not Ok then
          return;
       end if;
@@ -3426,15 +3460,33 @@ package body SPARK_Definition.Annotate is
          return;
       end if;
 
-      Check_Annotate_Placement (E, Prag, "Skip_Proof", Ok);
+      Check_Annotate_Placement (E, Prag, Error_Msg_Name, Ok);
+
       if not Ok then
          return;
       end if;
 
-      if Ekind (E) not in Generic_Subprogram_Kind | E_Generic_Package then
-         Skip_Proof_Annotations.Insert (E);
+      --  If we already are in the scope of a Skip_Flow_And_Proof pragma, it's
+      --  not allowed to use the Skip_Proof variant. Check for this case.
+
+      if Name = "skip_proof"
+        and then Has_Skip_Flow_And_Proof_Annotation (E)
+      then
+         Error_Msg_N
+           (Aspect_Or_Pragma
+            & " Skip_Proof cannot occur in the scope of a"
+            & " Skip_Flow_And_Proof aspect or pragma",
+            Prag);
       end if;
-   end Check_Skip_Proof_Annotation;
+
+      if not Is_Generic_Unit (E) then
+         if Name = "skip_proof" then
+            Skip_Proof_Annotations.Insert (E);
+         else
+            Skip_Flow_And_Proof_Annotations.Insert (E);
+         end if;
+      end if;
+   end Check_Skip_Annotations;
 
    ---------------------------------------
    -- Set_Has_No_Wrap_Around_Annotation --
