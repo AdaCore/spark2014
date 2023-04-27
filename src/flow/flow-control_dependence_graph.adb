@@ -40,13 +40,14 @@ package body Flow.Control_Dependence_Graph is
          --  Sanity check that we will not lose control dependence
          for P of FA.CDG.Get_Collection (V, Flow_Graphs.In_Neighbours) loop
             if P = V then
-               --  Self dependence is OK and we don't care if it disappears
-               null;
+               --  Self dependence does not appear for parameters, so it won't
+               --  disappear either.
+               raise Program_Error;
 
             elsif FA.CDG.Non_Trivial_Path_Exists (P, CV) then
-               --  The call vertex is ultimately control dependent on the in
-               --  neighbour we are eliminating from our parameter vertex, so
-               --  we don't really lose anything.
+               --  The call vertex is ultimately control dependent on the
+               --  in-neighbour we are eliminating from our parameter vertex,
+               --  so we don't really lose anything.
                null;
 
             else
@@ -55,23 +56,12 @@ package body Flow.Control_Dependence_Graph is
             end if;
          end loop;
 
-         --  Sanity check that we won't lose outwards control influence
-         for S of FA.CDG.Get_Collection (V, Flow_Graphs.Out_Neighbours) loop
-            if S = V then
-               --  Self dependence is OK and we don't care if it disappears
-               null;
+         --  Sanity check that we won't lose outwards control influence,
+         --  i.e. check that parameter itself doesn't influence control flow.
 
-            elsif S = CV
-              or else CV = FA.CDG.Get_Vertex (FA.Atr (S).Call_Vertex)
-            then
-               --  This can happen if we have infinite loops
-               null;
-
-            else
-               --  Panic!
-               raise Program_Error;
-            end if;
-         end loop;
+         if FA.CDG.Out_Neighbour_Count (V) > 0 then
+            raise Program_Error;
+         end if;
       end Sanity_Check;
       pragma Annotate (Xcov, Exempt_Off);
 
