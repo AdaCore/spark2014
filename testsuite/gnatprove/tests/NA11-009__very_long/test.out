@@ -254,7 +254,7 @@ very_longs.adb:544:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:544:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:545:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:545:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:548:12: medium: range check might fail, cannot prove upper bound for Number_Of_Digits(Divisor) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Number_Of_Digits(Divisor) in Divisor_Digits_Count_Type) to subprogram at very_longs.ads:65]
+very_longs.adb:548:12: medium: range check might fail, cannot prove upper bound for Number_Of_Digits(Divisor) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Number_Of_Digits(Divisor) <= Divisor_Digits_Count_Type'Last) to subprogram at very_longs.ads:65]
 very_longs.adb:549:28: info: range check proved (CVC5: 2 VC)
 very_longs.adb:552:25: info: precondition proved (CVC5: 1 VC)
 very_longs.adb:552:64: info: index check proved (CVC5: 2 VC)
