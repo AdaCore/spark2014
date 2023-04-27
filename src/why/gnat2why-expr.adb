@@ -1022,8 +1022,15 @@ package body Gnat2Why.Expr is
    function Transform_Unhandled_Raise
      (Stat : N_Raise_Kind_Id) return W_Prog_Id
    is
-     (New_Absurd_Statement (Ada_Node => Stat,
-                            Reason   => VC_Raise));
+     (Sequence
+        (Left  =>
+             (if Nkind (Stat) in N_Raise_xxx_Error
+              or else No (Expression (Stat))
+              then +Void
+              else New_Ignore
+                (Stat, Transform_Prog (Expression (Stat), Body_Params))),
+         Right => New_Absurd_Statement (Ada_Node => Stat,
+                                        Reason   => VC_Raise)));
    --  Returns the Why program for raise statement Stat if the exception is not
    --  handled.
 
@@ -24078,7 +24085,9 @@ package body Gnat2Why.Expr is
          when N_Raise_Statement =>
 
             --  For handled exceptions, raise the Why3 exception Ada_Exc.
-            --  Otherwise, check that the path is dead.
+            --  Otherwise, check that the path is dead. Also transform the
+            --  expression in the program domain if there is one to generate
+            --  checks.
 
             if Present (Name (Stmt_Or_Decl)) then
                if Might_Raise_Handled_Exceptions (Stmt_Or_Decl) then
@@ -24087,12 +24096,19 @@ package body Gnat2Why.Expr is
                   --  scopes traversed by the raise statement.
 
                   return Sequence
-                    (Havoc_Borrowed_And_Check_No_Leaks_On_Raise (Stmt_Or_Decl),
-                     New_Raise
-                       (Ada_Node => Stmt_Or_Decl,
-                        Name     => M_Main.Ada_Exc,
-                        Arg      =>
-                          +To_Why_Id (Entity (Name (Stmt_Or_Decl)))));
+                    ((1 =>
+                          (if No (Expression (Stmt_Or_Decl)) then +Void
+                           else New_Ignore
+                             (Stmt_Or_Decl,
+                              Transform_Prog
+                                (Expression (Stmt_Or_Decl), Body_Params))),
+                      2 => Havoc_Borrowed_And_Check_No_Leaks_On_Raise
+                        (Stmt_Or_Decl),
+                      3 => New_Raise
+                        (Ada_Node => Stmt_Or_Decl,
+                         Name     => M_Main.Ada_Exc,
+                         Arg      =>
+                           +To_Why_Id (Entity (Name (Stmt_Or_Decl))))));
                else
                   return Transform_Unhandled_Raise (Stmt_Or_Decl);
                end if;
