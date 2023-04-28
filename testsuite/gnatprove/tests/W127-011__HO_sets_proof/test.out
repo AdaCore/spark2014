@@ -565,33 +565,33 @@ spark-containers-functional-sets-higher_order.ads:307:64: info: predicate check 
 spark-containers-functional-sets.ads:30:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
 spark-containers-functional-sets.ads:32:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
 spark-containers-functional-sets.ads:34:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:67:13: info: during checks for quantification at spark-containers-functional-sets.ads:43, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:67:13: info: precondition proved, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:304:13: info: during checks for quantification at spark-containers-functional-sets.ads:274, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:304:13: info: precondition proved, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:313:13: info: during checks for quantification at spark-containers-functional-sets.ads:274, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:313:13: info: precondition proved, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:319:13: info: during checks for quantification at spark-containers-functional-sets.ads:274, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:82:13: info: during checks for quantification at spark-containers-functional-sets.ads:58, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:82:13: info: precondition proved, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:319:13: info: during checks for quantification at spark-containers-functional-sets.ads:289, in instantiation at test_set_ho.adb:46
 spark-containers-functional-sets.ads:319:13: info: precondition proved, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:327:13: info: during checks for quantification at spark-containers-functional-sets.ads:274, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:327:13: info: precondition proved, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:343:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:366:13: info: during checks for quantification at spark-containers-functional-sets.ads:43, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:366:13: info: precondition proved, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:369:13: info: during checks for quantification at spark-containers-functional-sets.ads:43, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:369:13: info: precondition proved, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:375:13: info: during checks for quantification at spark-containers-functional-sets.ads:43, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:375:13: info: precondition proved, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:382:13: info: during checks for quantification at spark-containers-functional-sets.ads:43, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:382:13: info: precondition proved, in instantiation at test_set_ho.adb:46
-spark-containers-parameter_checks.ads:30:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:350, in instantiation at test_set_ho.adb:46
-spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:350, in instantiation at test_set_ho.adb:46
-spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:350, in instantiation at test_set_ho.adb:46
-spark-containers-parameter_checks.ads:34:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:350, in instantiation at test_set_ho.adb:46
-spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:350, in instantiation at test_set_ho.adb:46
-spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:350, in instantiation at test_set_ho.adb:46
-spark-containers-parameter_checks.ads:39:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:350, in instantiation at test_set_ho.adb:46
-spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:350, in instantiation at test_set_ho.adb:46
-spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:350, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:328:13: info: during checks for quantification at spark-containers-functional-sets.ads:289, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:328:13: info: precondition proved, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:334:13: info: during checks for quantification at spark-containers-functional-sets.ads:289, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:334:13: info: precondition proved, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:342:13: info: during checks for quantification at spark-containers-functional-sets.ads:289, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:342:13: info: precondition proved, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:358:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:381:13: info: during checks for quantification at spark-containers-functional-sets.ads:58, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:381:13: info: precondition proved, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:384:13: info: during checks for quantification at spark-containers-functional-sets.ads:58, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:384:13: info: precondition proved, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:390:13: info: during checks for quantification at spark-containers-functional-sets.ads:58, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:390:13: info: precondition proved, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:397:13: info: during checks for quantification at spark-containers-functional-sets.ads:58, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:397:13: info: precondition proved, in instantiation at test_set_ho.adb:46
+spark-containers-parameter_checks.ads:30:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:365, in instantiation at test_set_ho.adb:46
+spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:365, in instantiation at test_set_ho.adb:46
+spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:365, in instantiation at test_set_ho.adb:46
+spark-containers-parameter_checks.ads:34:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:365, in instantiation at test_set_ho.adb:46
+spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:365, in instantiation at test_set_ho.adb:46
+spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:365, in instantiation at test_set_ho.adb:46
+spark-containers-parameter_checks.ads:39:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:365, in instantiation at test_set_ho.adb:46
+spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:365, in instantiation at test_set_ho.adb:46
+spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:365, in instantiation at test_set_ho.adb:46
 test_set_ho.adb:49:04: info: function contract might not be available on recursive calls
 test_set_ho.adb:49:04: info: in instantiation at spark-containers-functional-sets-higher_order.adb:49
