@@ -297,7 +297,7 @@ lsc-bignum.adb:403:29: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:407:21: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (A_First <= Big_Int_Range'Last - Natural (I / 32)) to subprogram at line 391]
 lsc-bignum.adb:407:21: medium: overflow check might fail, cannot prove upper bound for A_First + Natural (I / 32) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A_First <= Integer'Last - Natural (I / 32)) to subprogram at line 391]
 lsc-bignum.adb:407:34: info: division check proved (Z3: 1 VC)
-lsc-bignum.adb:407:34: medium: range check might fail, cannot prove upper bound for I / 32 [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition (I / 32 in Natural) to subprogram at line 391]
+lsc-bignum.adb:407:34: medium: range check might fail, cannot prove upper bound for I / 32 [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition (I / 32 <= Unsigned_64(Natural'Last)) to subprogram at line 391]
 lsc-bignum.adb:408:27: info: division check proved (Z3: 1 VC)
 lsc-bignum.adb:408:27: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:437:07: info: initialization of "J" proved
@@ -332,7 +332,7 @@ lsc-bignum.adb:474:40: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:475:21: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:476:40: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:478:11: medium: range check might fail
-lsc-bignum.adb:478:37: medium: overflow check might fail, cannot prove upper bound for 2 ** K [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (2 ** K in Integer) to subprogram at lsc-bignum.ads:176]
+lsc-bignum.adb:478:37: medium: overflow check might fail, cannot prove upper bound for 2 ** K [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (2 ** K <= Integer'Last) to subprogram at lsc-bignum.ads:176]
 lsc-bignum.adb:478:42: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:481:13: info: loop invariant preservation proved (Z3: 5 VC)
 lsc-bignum.adb:481:24: info: overflow check proved (Z3: 4 VC)

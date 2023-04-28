@@ -978,7 +978,7 @@ binary_trees.ads:265:54: medium: invariant check might fail
 binary_trees.ads:265:54: medium: precondition might fail
 binary_trees.ads:270:43: medium: invariant check might fail
 binary_trees.ads:270:43: medium: precondition might fail
-binary_trees.ads:270:57: medium: range check might fail, cannot prove lower bound for V [reason for check: input value must fit in parameter type] [possible fix: add precondition (V in Index_Type) to subprogram at line 209]
+binary_trees.ads:270:57: medium: range check might fail, cannot prove lower bound for V [reason for check: input value must fit in parameter type] [possible fix: add precondition (V >= Index_Type'First) to subprogram at line 209]
 binary_trees.ads:271:25: medium: invariant check might fail
 binary_trees.ads:271:25: medium: precondition might fail
 binary_trees.ads:277:23: medium: invariant check might fail
@@ -1001,7 +1001,7 @@ binary_trees.ads:285:49: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:285:49: medium: invariant check might fail
 binary_trees.ads:291:43: medium: invariant check might fail
 binary_trees.ads:291:43: medium: precondition might fail
-binary_trees.ads:291:57: medium: range check might fail, cannot prove lower bound for V [reason for check: input value must fit in parameter type] [possible fix: add precondition (V in Index_Type) to subprogram at line 209]
+binary_trees.ads:291:57: medium: range check might fail, cannot prove lower bound for V [reason for check: input value must fit in parameter type] [possible fix: add precondition (V >= Index_Type'First) to subprogram at line 209]
 binary_trees.ads:292:25: medium: precondition might fail
 binary_trees.ads:292:41: medium: invariant check might fail
 binary_trees.ads:292:41: medium: precondition might fail
@@ -2489,9 +2489,9 @@ search_trees.adb:1385:48: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1388:30: info: index check proved (CVC5: 2 VC)
 search_trees.adb:1390:11: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:1390:11: medium: postcondition might fail
-search_trees.adb:1390:37: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root in Index_Type) to subprogram at line 1335]
+search_trees.adb:1390:37: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root >= Index_Type'First) to subprogram at line 1335]
 search_trees.adb:1403:16: info: precondition proved (CVC5: 6 VC)
-search_trees.adb:1403:50: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root in Index_Type) to subprogram at line 1335]
+search_trees.adb:1403:50: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root >= Index_Type'First) to subprogram at line 1335]
 search_trees.adb:1409:24: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1409:46: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1410:32: info: precondition proved (CVC5: 2 VC)
@@ -2514,7 +2514,7 @@ search_trees.adb:1417:54: info: index check proved (CVC5: 4 VC)
 search_trees.adb:1417:61: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1417:79: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1427:24: info: precondition proved (CVC5: 2 VC)
-search_trees.adb:1427:42: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root in Index_Type) to subprogram at line 1335]
+search_trees.adb:1427:42: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root >= Index_Type'First) to subprogram at line 1335]
 search_trees.adb:1428:32: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1428:50: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1430:32: info: precondition proved (CVC5: 2 VC)
@@ -2526,7 +2526,7 @@ search_trees.adb:1431:26: medium: precondition might fail, cannot prove Model (I
 search_trees.adb:1431:42: medium: precondition might fail
 search_trees.adb:1431:68: medium: range check might fail, cannot prove lower bound for T_Old.Root [reason for check: input value must fit in parameter type]
 search_trees.adb:1436:22: info: precondition proved (CVC5: 2 VC)
-search_trees.adb:1436:40: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root in Index_Type) to subprogram at line 1335]
+search_trees.adb:1436:40: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root >= Index_Type'First) to subprogram at line 1335]
 search_trees.adb:1437:24: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1437:42: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1437:58: info: precondition proved (CVC5: 2 VC)
@@ -2538,7 +2538,7 @@ search_trees.adb:1438:54: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1438:70: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1438:88: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1447:24: info: precondition proved (CVC5: 2 VC)
-search_trees.adb:1447:42: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root in Index_Type) to subprogram at line 1335]
+search_trees.adb:1447:42: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root >= Index_Type'First) to subprogram at line 1335]
 search_trees.adb:1449:32: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1449:50: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1450:32: info: precondition proved (CVC5: 2 VC)
@@ -2550,7 +2550,7 @@ search_trees.adb:1451:26: medium: precondition might fail, cannot prove Model (I
 search_trees.adb:1451:42: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1451:60: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1458:23: info: precondition proved (CVC5: 2 VC)
-search_trees.adb:1458:41: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root in Index_Type) to subprogram at line 1335]
+search_trees.adb:1458:41: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root >= Index_Type'First) to subprogram at line 1335]
 search_trees.adb:1458:49: medium: array index check might fail [reason for check: value must be a valid index into the array]
 search_trees.adb:1459:31: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1459:49: info: range check proved (CVC5: 4 VC)
@@ -2567,7 +2567,7 @@ search_trees.adb:1461:59: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1461:77: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1466:13: info: assertion proved (CVC5: 1 VC; Trivial: 2 VC)
 search_trees.adb:1468:20: info: precondition proved (CVC5: 1 VC)
-search_trees.adb:1468:38: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root in Index_Type) to subprogram at line 1335]
+search_trees.adb:1468:38: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root >= Index_Type'First) to subprogram at line 1335]
 search_trees.adb:1469:22: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:1469:40: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1470:31: info: precondition proved (CVC5: 1 VC)
