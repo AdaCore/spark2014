@@ -546,7 +546,7 @@ parser_utilities.ads:144:13: info: implicit function contract might not be avail
 parser_utilities.ads:144:13: info: implicit terminating annotation on "ConvertIPV4" has been proved, subprogram will terminate
 parser_utilities.ads:150:13: info: implicit terminating annotation on "ConvertIPV6" has been proved, subprogram will terminate
 parser_utilities.ads:156:13: info: implicit terminating annotation on "GetRecordType" has been proved, subprogram will terminate
-process_dns_request.ads:130:50: medium: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength in Packet_Bytes_Range) to subprogram at line 121]
+process_dns_request.ads:130:50: medium: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength >= Integer(Packet_Bytes_Range'First)) to subprogram at line 121]
 process_dns_request.ads:223:50: info: range check proved (CVC5: 2 VC)
 process_first_line_of_record.adb:64:07: info: initialization of "CurrentIPV4" proved
 process_first_line_of_record.adb:65:07: info: initialization of "CurrentIPV6" proved
