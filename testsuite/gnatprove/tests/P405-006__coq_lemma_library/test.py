@@ -13,10 +13,11 @@ def copy_project_file():
 def copy_lemma_files():
     include_dir = os.path.join(spark_install_path(), "include", "spark")
     lemma_files = glob(os.path.join(include_dir, "*.ad?"))
+    os.mkdir("src")
+    curdir = os.getcwd()
     for f in lemma_files:
-        curdir = os.getcwd()
         for f in lemma_files:
-            new_f = os.path.join(curdir, os.path.basename(f))
+            new_f = os.path.join(curdir, "src", os.path.basename(f))
             shutil.copyfile(f, new_f)
 
 
