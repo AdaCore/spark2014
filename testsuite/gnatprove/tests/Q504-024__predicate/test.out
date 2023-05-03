@@ -6,7 +6,7 @@ bar.ads:4:55: medium: predicate check might fail (e.g. when X = False) [possible
 bar.ads:5:14: warning: subprogram "P" has no effect
 foo.ads:8:04: warning: assuming no concurrent accesses to non-atomic object "CPU_ID"
 foo.ads:8:04: warning: assuming valid reads from object "CPU_ID"
-foo.ads:8:04: warning: consider annotating "CPU_ID" with Async_Writers
+foo.ads:8:04: warning: consider making "CPU_ID" volatile and annotating it with Async_Writers
 foo.ads:8:04: warning: indirect writes to "CPU_ID" through a potential alias are ignored
 foo.ads:30:07: info: range check proved (CVC5: 2 VC)
 foo.ads:33:38: info: range check proved (CVC5: 2 VC)
