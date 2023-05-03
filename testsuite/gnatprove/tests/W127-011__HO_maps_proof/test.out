@@ -61,7 +61,6 @@ spark-containers-functional-maps-higher_order.adb:108:40: info: predicate check 
 spark-containers-functional-maps-higher_order.adb:108:54: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:111:35: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:112:14: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:112:24: medium: implicit terminating annotation on "Count" could be incorrect, loop might be nonterminating, in instantiation at test_map_ho.adb:67 [possible fix: add loop variant in the loop body]
 spark-containers-functional-maps-higher_order.adb:114:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:114:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:114:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
@@ -146,7 +145,6 @@ spark-containers-functional-maps-higher_order.adb:198:46: info: predicate check 
 spark-containers-functional-maps-higher_order.adb:198:57: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:211:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:212:14: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:212:24: medium: implicit terminating annotation on "Filter" could be incorrect, loop might be nonterminating, in instantiation at test_map_ho.adb:67 [possible fix: add loop variant in the loop body]
 spark-containers-functional-maps-higher_order.adb:214:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:214:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:214:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
@@ -177,7 +175,6 @@ spark-containers-functional-maps-higher_order.adb:227:28: info: precondition pro
 spark-containers-functional-maps-higher_order.adb:228:26: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:228:39: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:245:11: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:245:21: medium: terminating annotation on "Lemma_Count_All" could be incorrect, loop might be nonterminating, in instantiation at test_map_ho.adb:67 [possible fix: add loop variant in the loop body]
 spark-containers-functional-maps-higher_order.adb:247:13: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:247:13: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:247:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
@@ -189,7 +186,6 @@ spark-containers-functional-maps-higher_order.adb:248:40: info: predicate check 
 spark-containers-functional-maps-higher_order.adb:262:07: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:262:35: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:275:11: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:275:21: medium: terminating annotation on "Lemma_Count_None" could be incorrect, loop might be nonterminating, in instantiation at test_map_ho.adb:67 [possible fix: add loop variant in the loop body]
 spark-containers-functional-maps-higher_order.adb:277:13: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:277:13: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:277:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
@@ -267,7 +263,6 @@ spark-containers-functional-maps-higher_order.adb:415:28: info: predicate check 
 spark-containers-functional-maps-higher_order.adb:415:38: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:415:50: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:419:14: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:419:24: medium: implicit terminating annotation on "Sum" could be incorrect, loop might be nonterminating, in instantiation at test_map_ho.adb:67 [possible fix: add loop variant in the loop body]
 spark-containers-functional-maps-higher_order.adb:421:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:421:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:421:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
@@ -293,7 +288,6 @@ spark-containers-functional-maps-higher_order.adb:443:30: info: precondition pro
 spark-containers-functional-maps-higher_order.adb:443:38: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:457:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:458:14: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:458:24: medium: implicit terminating annotation on "Transform" could be incorrect, loop might be nonterminating, in instantiation at test_map_ho.adb:67 [possible fix: add loop variant in the loop body]
 spark-containers-functional-maps-higher_order.adb:460:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:460:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:460:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
@@ -322,7 +316,6 @@ spark-containers-functional-maps-higher_order.adb:478:43: info: pointer derefere
 spark-containers-functional-maps-higher_order.adb:478:59: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:495:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:496:14: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:496:24: medium: implicit terminating annotation on "Transform_Element" could be incorrect, loop might be nonterminating, in instantiation at test_map_ho.adb:67 [possible fix: add loop variant in the loop body]
 spark-containers-functional-maps-higher_order.adb:498:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:498:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:498:16: info: predicate check proved, in instantiation at test_map_ho.adb:67

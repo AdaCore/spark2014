@@ -69,7 +69,6 @@ spark-containers-functional-sets-higher_order.adb:125:40: info: predicate check 
 spark-containers-functional-sets-higher_order.adb:125:54: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:128:35: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:129:14: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:129:24: medium: implicit terminating annotation on "Count" could be incorrect, loop might be nonterminating, in instantiation at test_set_ho.adb:49 [possible fix: add loop variant in the loop body]
 spark-containers-functional-sets-higher_order.adb:131:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:131:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:131:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
@@ -193,7 +192,6 @@ spark-containers-functional-sets-higher_order.adb:251:33: info: pointer derefere
 spark-containers-functional-sets-higher_order.adb:251:33: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:263:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:264:14: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:264:24: medium: implicit terminating annotation on "Filter" could be incorrect, loop might be nonterminating, in instantiation at test_set_ho.adb:49 [possible fix: add loop variant in the loop body]
 spark-containers-functional-sets-higher_order.adb:266:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:266:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:266:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
@@ -220,7 +218,6 @@ spark-containers-functional-sets-higher_order.adb:279:16: medium: implicit termi
 spark-containers-functional-sets-higher_order.adb:279:19: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:280:26: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:296:11: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:296:21: medium: terminating annotation on "Lemma_Count_All" could be incorrect, loop might be nonterminating, in instantiation at test_set_ho.adb:49 [possible fix: add loop variant in the loop body]
 spark-containers-functional-sets-higher_order.adb:298:13: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:298:13: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:298:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
@@ -232,7 +229,6 @@ spark-containers-functional-sets-higher_order.adb:299:40: info: predicate check 
 spark-containers-functional-sets-higher_order.adb:312:07: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:312:35: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:324:11: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:324:21: medium: terminating annotation on "Lemma_Count_None" could be incorrect, loop might be nonterminating, in instantiation at test_set_ho.adb:49 [possible fix: add loop variant in the loop body]
 spark-containers-functional-sets-higher_order.adb:326:13: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:326:13: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:326:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
@@ -310,7 +306,6 @@ spark-containers-functional-sets-higher_order.adb:476:28: info: predicate check 
 spark-containers-functional-sets-higher_order.adb:476:38: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:476:50: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:480:14: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:480:24: medium: implicit terminating annotation on "Sum" could be incorrect, loop might be nonterminating, in instantiation at test_set_ho.adb:49 [possible fix: add loop variant in the loop body]
 spark-containers-functional-sets-higher_order.adb:482:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:482:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:482:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
@@ -342,7 +337,6 @@ spark-containers-functional-sets-higher_order.adb:515:08: medium: implicit termi
 spark-containers-functional-sets-higher_order.adb:518:42: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:521:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:522:14: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:522:24: medium: implicit terminating annotation on "Transform" could be incorrect, loop might be nonterminating, in instantiation at test_set_ho.adb:49 [possible fix: add loop variant in the loop body]
 spark-containers-functional-sets-higher_order.adb:524:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:524:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:524:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
@@ -368,7 +362,6 @@ spark-containers-functional-sets-higher_order.adb:538:61: info: precondition pro
 spark-containers-functional-sets-higher_order.adb:541:26: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:559:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:560:14: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:560:24: medium: implicit terminating annotation on "Transform_Distinct" could be incorrect, loop might be nonterminating, in instantiation at test_set_ho.adb:49 [possible fix: add loop variant in the loop body]
 spark-containers-functional-sets-higher_order.adb:562:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:562:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:562:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
