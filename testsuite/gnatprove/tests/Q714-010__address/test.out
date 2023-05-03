@@ -5,14 +5,12 @@ pixel.adb:10:43: medium: precondition might fail
 pixel.adb:14:44: medium: divide by zero might fail
 pixel.adb:14:44: medium: precondition might fail
 pixel.adb:16:04: warning: assuming no concurrent accesses to non-atomic object "Asp"
-pixel.adb:16:04: warning: consider annotating "Asp" with Async_Writers
 pixel.adb:16:04: warning: indirect writes to "Asp" through a potential alias are ignored
 pixel.adb:16:04: warning: make sure that all overlapping objects have Async_Writers set to True
 pixel.adb:16:04: warning: writing to "Asp" is assumed to have no effects on other non-volatile objects
 pixel.adb:17:43: medium: divide by zero might fail
 pixel.adb:17:43: medium: precondition might fail
 pixel.adb:19:04: warning: assuming no concurrent accesses to non-atomic object "Cla"
-pixel.adb:19:04: warning: consider annotating "Cla" with Async_Writers
 pixel.adb:19:04: warning: indirect writes to "Cla" through a potential alias are ignored
 pixel.adb:19:04: warning: make sure that all overlapping objects have Async_Writers set to True
 pixel.adb:19:04: warning: writing to "Cla" is assumed to have no effects on other non-volatile objects

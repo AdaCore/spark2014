@@ -6,7 +6,6 @@ main.adb:11:05: warning: analyzing unreferenced procedure "Nat_2"
 main.adb:12:08: info: initialization of "Y" proved
 main.adb:12:08: warning: assuming no concurrent accesses to non-atomic object "Y"
 main.adb:12:08: warning: assuming valid reads from object "Y"
-main.adb:12:08: warning: consider annotating "Y" with Async_Writers
 main.adb:12:08: warning: indirect writes to "Y" through a potential alias are ignored
 main.adb:12:08: warning: make sure that all overlapping objects have Async_Writers set to True
 main.adb:12:08: warning: writing to "Y" is assumed to have no effects on other non-volatile objects

@@ -2884,9 +2884,12 @@ package body SPARK_Definition is
                   Error_Msg_NE
                     (Warning_Message (Warn_Indirect_Writes_Through_Alias),
                      E, E);
-                  Error_Msg_NE
-                    ("\consider annotating & with Async_Writers",
-                     E, E);
+                  if Is_Library_Level_Entity (E) then
+                     Error_Msg_NE
+                       ("\consider making & volatile and"
+                        & " annotating it with Async_Writers",
+                        E, E);
+                  end if;
                else
                   Error_Msg_NE
                     (Warning_Message (Warn_Assumed_Volatile_Properties),
