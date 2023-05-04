@@ -191,9 +191,9 @@ test_parameter_passing.adb:36:07: info: only expected exception raised (CVC5: 1 
 test_parameter_passing.adb:36:07: warning: assuming "P" always terminates
 test_parameter_passing.adb:36:07: warning: no Always_Terminates aspect available for "P"
 test_parameter_passing.adb:36:16: info: null exclusion check proved (CVC5: 1 VC)
-test_parameter_passing.adb:48:28: medium: "X.F" might not be initialized in "Test_Unknown" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.F" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-test_parameter_passing.adb:49:33: high: "X.F" is not initialized
+test_parameter_passing.adb:48:28: medium: "X" might not be initialized in "Test_Unknown" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test_parameter_passing.adb:49:33: medium: exceptional case might fail
+test_parameter_passing.adb:49:37: high: "X" is not initialized
 test_parameter_passing.adb:54:07: info: only expected exception raised (CVC5: 1 VC)
 test_parameter_passing.adb:54:07: warning: assuming "P" always terminates
 test_parameter_passing.adb:54:07: warning: no Always_Terminates aspect available for "P"

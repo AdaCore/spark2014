@@ -1,7 +1,7 @@
 init_inline.adb:1:24: info: initialization of "Y" proved
 init_inline.adb:8:14: info: add a contract to analyze it separately from calling contexts
 init_inline.adb:8:14: info: local subprogram "Local" only analyzed in the context of calls
-init_inline.adb:13:04: high: "X.C" is not initialized
+init_inline.adb:13:04: high: "X" is not initialized
 init_inline.adb:13:04: info: analyzing call to "Local" in context
 test.adb:6:14: info: add a contract to analyze it separately from calling contexts
 test.adb:6:14: info: local subprogram "May_Fail" only analyzed in the context of calls

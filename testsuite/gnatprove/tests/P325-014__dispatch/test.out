@@ -1,4 +1,4 @@
-classwide.adb:6:09: high: "Var.J" is not initialized
+classwide.adb:6:09: high: "Var" is not initialized
 types.ads:4:13: info: implicit aspect Always_Terminates on "Check" has been proved, subprogram will terminate
 types.ads:4:20: warning: unused variable "X"
 types.ads:5:19: warning: "X" is not modified, could be IN

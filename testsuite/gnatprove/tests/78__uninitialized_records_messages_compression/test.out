@@ -1,0 +1,327 @@
+ext_part_classwide.adb:16:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:16:29: high: "R" is not initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+ext_part_classwide.adb:28:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:28:29: medium: "R" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+ext_part_classwide.adb:42:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:42:29: info: initialization of "R" proved
+ext_part_classwide.adb:59:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:61:10: high: "R" is not initialized
+ext_part_classwide.adb:61:25: medium: assertion might fail
+ext_part_classwide.adb:80:13: info: only expected exception raised (CVC5: 1 VC)
+ext_part_classwide.adb:80:31: medium: "R.A" might not be initialized
+ext_part_classwide.adb:80:31: warning: "R.A" is set by "Raise_Exception" but not used after the call
+ext_part_classwide.adb:82:13: info: no contextual analysis of "Initialize" (exception handler)
+ext_part_classwide.adb:83:16: medium: "R.A" might not be initialized
+ext_part_classwide.adb:83:31: medium: assertion might fail
+ext_part_classwide.adb:83:31: medium: extension of "R" might not be initialized
+ext_part_classwide.adb:102:13: info: only expected exception raised (CVC5: 1 VC)
+ext_part_classwide.adb:102:31: warning: "R.A" is set by "Raise_Exception" but not used after the call
+ext_part_classwide.adb:104:13: info: no contextual analysis of "Initialize" (exception handler)
+ext_part_classwide.adb:105:16: medium: "R.A" might not be initialized
+ext_part_classwide.adb:105:31: medium: assertion might fail [possible fix: call at line 99 should mention R (for argument R) in a postcondition]
+ext_part_classwide.adb:119:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:125:25: medium: assertion might fail
+ext_part_classwide.adb:125:29: high: extension of "R" is not initialized
+ext_part_classwide.adb:125:29: medium: "R.A" might not be initialized
+ext_part_classwide.adb:137:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:143:10: medium: "R" might not be initialized
+ext_part_classwide.adb:143:25: medium: assertion might fail
+ext_part_classwide.adb:160:13: info: only expected exception raised (CVC5: 1 VC)
+ext_part_classwide.adb:162:13: info: no contextual analysis of "Initialize" (exception handler)
+ext_part_classwide.adb:170:10: medium: "R.A" might not be initialized
+ext_part_classwide.adb:170:25: medium: assertion might fail [possible fix: call at line 157 should mention R (for argument R) in a postcondition]
+ext_part_classwide.adb:182:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:185:25: medium: assertion might fail [possible fix: call at line 184 should mention R (for argument R) in a postcondition]
+ext_part_classwide.adb:185:29: high: extension of "R" is not initialized
+ext_part_classwide.adb:197:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:204:25: medium: assertion might fail [possible fix: call at line 203 should mention R (for argument R) in a postcondition]
+ext_part_classwide.adb:204:29: medium: extension of "R" might not be initialized
+ext_part_classwide.adb:216:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:216:29: info: initialization of "R" proved
+ext_part_classwide.adb:219:25: medium: assertion might fail [possible fix: call at line 218 should mention R (for argument R) in a postcondition]
+ext_part_extensions_visible.adb:15:29: high: "R" is not initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+ext_part_extensions_visible.adb:27:29: medium: "R" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+ext_part_extensions_visible.adb:42:29: info: initialization of "R" proved
+ext_part_extensions_visible.adb:59:29: high: "R.A" is not initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+ext_part_extensions_visible.adb:59:29: high: extension of "R" is not initialized in "Initialize" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
+ext_part_extensions_visible.adb:59:29: warning: unused variable "R"
+ext_part_extensions_visible.adb:72:29: medium: "R.A" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+ext_part_extensions_visible.adb:72:29: medium: extension of "R" might not be initialized in "Initialize" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
+ext_part_extensions_visible.adb:79:13: info: only expected exception raised (CVC5: 1 VC)
+ext_part_extensions_visible.adb:79:31: medium: "R.A" might not be initialized
+ext_part_extensions_visible.adb:93:29: medium: "R.A" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+ext_part_extensions_visible.adb:98:13: info: only expected exception raised (CVC5: 1 VC)
+ext_part_extensions_visible.adb:113:29: high: extension of "R" is not initialized in "Initialize" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
+ext_part_extensions_visible.adb:113:29: medium: "R.A" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+ext_part_extensions_visible.adb:128:29: medium: "R.A" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+ext_part_extensions_visible.adb:128:29: medium: extension of "R" might not be initialized in "Initialize" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
+ext_part_extensions_visible.adb:143:29: medium: "R.A" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+ext_part_extensions_visible.adb:148:13: info: only expected exception raised (CVC5: 1 VC)
+ext_part_extensions_visible.adb:167:29: high: extension of "R" is not initialized in "Initialize" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
+ext_part_extensions_visible.adb:180:29: medium: extension of "R" might not be initialized in "Initialize" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
+ext_part_extensions_visible.adb:197:29: info: initialization of "R" proved
+normal_components.adb:15:07: high: "S" is not initialized
+normal_components.adb:15:22: medium: assertion might fail, cannot prove S.D.A = S.D.B
+normal_components.adb:17:07: high: "S.D" is not initialized
+normal_components.adb:17:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:19:22: high: "S.D.A" is not initialized
+normal_components.adb:19:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:19:30: high: "S.C" is not initialized
+normal_components.adb:21:22: high: "S.D.A" is not initialized
+normal_components.adb:21:22: medium: assertion might fail
+normal_components.adb:22:22: high: "S.D.B" is not initialized
+normal_components.adb:22:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:23:22: high: "S.C" is not initialized
+normal_components.adb:23:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:33:22: info: assertion proved (CVC5: 2 VC)
+normal_components.adb:33:22: medium: "S.D.A" might not be initialized
+normal_components.adb:33:30: high: "S.D.B" is not initialized
+normal_components.adb:33:48: high: "S.C" is not initialized
+normal_components.adb:35:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:35:22: medium: "S.D.A" might not be initialized
+normal_components.adb:35:30: high: "S.D.B" is not initialized
+normal_components.adb:37:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:37:22: medium: "S.D.A" might not be initialized
+normal_components.adb:37:30: high: "S.C" is not initialized
+normal_components.adb:39:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:39:22: medium: "S.D.A" might not be initialized
+normal_components.adb:40:22: high: "S.D.B" is not initialized
+normal_components.adb:40:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:41:22: high: "S.C" is not initialized
+normal_components.adb:41:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:51:07: medium: "S.D" might not be initialized
+normal_components.adb:51:22: info: assertion proved (CVC5: 2 VC)
+normal_components.adb:51:48: high: "S.C" is not initialized
+normal_components.adb:53:07: medium: "S.D" might not be initialized
+normal_components.adb:53:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:55:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:55:22: medium: "S.D.A" might not be initialized
+normal_components.adb:55:30: high: "S.C" is not initialized
+normal_components.adb:57:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:57:22: medium: "S.D.A" might not be initialized
+normal_components.adb:58:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:58:22: medium: "S.D.B" might not be initialized
+normal_components.adb:59:22: high: "S.C" is not initialized
+normal_components.adb:59:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:67:22: info: assertion proved (CVC5: 2 VC)
+normal_components.adb:67:30: medium: "S.D.B" might not be initialized
+normal_components.adb:67:48: high: "S.C" is not initialized
+normal_components.adb:69:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:69:30: medium: "S.D.B" might not be initialized
+normal_components.adb:71:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:71:30: high: "S.C" is not initialized
+normal_components.adb:73:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:74:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:74:22: medium: "S.D.B" might not be initialized
+normal_components.adb:75:22: high: "S.C" is not initialized
+normal_components.adb:75:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:83:22: medium: assertion might fail, cannot prove T.D.A = T.D.B
+normal_components.adb:83:30: high: "T.D.B" is not initialized
+normal_components.adb:83:48: high: "T.C" is not initialized
+normal_components.adb:85:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:85:30: high: "T.D.B" is not initialized
+normal_components.adb:87:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:87:30: high: "T.C" is not initialized
+normal_components.adb:89:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:90:22: high: "T.D.B" is not initialized
+normal_components.adb:90:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:91:22: high: "T.C" is not initialized
+normal_components.adb:91:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:106:07: high: "S.D" is not initialized
+normal_components.adb:106:22: medium: assertion might fail, cannot prove S.D.A = S.D.B
+normal_components.adb:106:48: medium: "S.C" might not be initialized
+normal_components.adb:108:07: high: "S.D" is not initialized
+normal_components.adb:108:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:110:22: high: "S.D.A" is not initialized
+normal_components.adb:110:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:110:30: medium: "S.C" might not be initialized
+normal_components.adb:112:22: high: "S.D.A" is not initialized
+normal_components.adb:112:22: medium: assertion might fail
+normal_components.adb:113:22: high: "S.D.B" is not initialized
+normal_components.adb:113:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:114:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:114:22: medium: "S.C" might not be initialized
+normal_components.adb:124:22: info: assertion proved (CVC5: 2 VC)
+normal_components.adb:124:22: medium: "S.D.A" might not be initialized
+normal_components.adb:124:30: high: "S.D.B" is not initialized
+normal_components.adb:124:48: medium: "S.C" might not be initialized
+normal_components.adb:126:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:126:22: medium: "S.D.A" might not be initialized
+normal_components.adb:126:30: high: "S.D.B" is not initialized
+normal_components.adb:128:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:128:22: medium: "S.D.A" might not be initialized
+normal_components.adb:128:30: medium: "S.C" might not be initialized
+normal_components.adb:130:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:130:22: medium: "S.D.A" might not be initialized
+normal_components.adb:131:22: high: "S.D.B" is not initialized
+normal_components.adb:131:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:132:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:132:22: medium: "S.C" might not be initialized
+normal_components.adb:142:07: medium: "S" might not be initialized
+normal_components.adb:142:22: info: assertion proved (CVC5: 2 VC)
+normal_components.adb:144:07: medium: "S.D" might not be initialized
+normal_components.adb:144:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:146:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:146:22: medium: "S.D.A" might not be initialized
+normal_components.adb:146:30: medium: "S.C" might not be initialized
+normal_components.adb:148:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:148:22: medium: "S.D.A" might not be initialized
+normal_components.adb:149:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:149:22: medium: "S.D.B" might not be initialized
+normal_components.adb:150:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:150:22: medium: "S.C" might not be initialized
+normal_components.adb:158:22: info: assertion proved (CVC5: 2 VC)
+normal_components.adb:158:30: medium: "S.D.B" might not be initialized
+normal_components.adb:158:48: medium: "S.C" might not be initialized
+normal_components.adb:160:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:160:30: medium: "S.D.B" might not be initialized
+normal_components.adb:162:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:162:30: medium: "S.C" might not be initialized
+normal_components.adb:164:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:165:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:165:22: medium: "S.D.B" might not be initialized
+normal_components.adb:166:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:166:22: medium: "S.C" might not be initialized
+normal_components.adb:174:23: medium: assertion might fail, cannot prove T.D.A = T.D.B
+normal_components.adb:174:31: high: "T.D.B" is not initialized
+normal_components.adb:174:49: medium: "T.C" might not be initialized
+normal_components.adb:176:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:176:30: high: "T.D.B" is not initialized
+normal_components.adb:178:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:178:30: medium: "T.C" might not be initialized
+normal_components.adb:180:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:181:22: high: "T.D.B" is not initialized
+normal_components.adb:181:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:182:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:182:22: medium: "T.C" might not be initialized
+normal_components.adb:195:07: high: "S.D" is not initialized
+normal_components.adb:195:22: medium: assertion might fail, cannot prove S.D.A = S.D.B
+normal_components.adb:197:07: high: "S.D" is not initialized
+normal_components.adb:197:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:199:22: high: "S.D.A" is not initialized
+normal_components.adb:199:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:201:22: high: "S.D.A" is not initialized
+normal_components.adb:201:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:202:22: high: "S.D.B" is not initialized
+normal_components.adb:202:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:203:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:213:22: info: assertion proved (CVC5: 2 VC)
+normal_components.adb:213:22: medium: "S.D.A" might not be initialized
+normal_components.adb:213:30: high: "S.D.B" is not initialized
+normal_components.adb:215:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:215:22: medium: "S.D.A" might not be initialized
+normal_components.adb:215:30: high: "S.D.B" is not initialized
+normal_components.adb:217:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:217:22: medium: "S.D.A" might not be initialized
+normal_components.adb:219:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:219:22: medium: "S.D.A" might not be initialized
+normal_components.adb:220:22: high: "S.D.B" is not initialized
+normal_components.adb:220:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:221:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:231:07: medium: "S.D" might not be initialized
+normal_components.adb:231:22: info: assertion proved (CVC5: 2 VC)
+normal_components.adb:233:07: medium: "S.D" might not be initialized
+normal_components.adb:233:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:235:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:235:22: medium: "S.D.A" might not be initialized
+normal_components.adb:237:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:237:22: medium: "S.D.A" might not be initialized
+normal_components.adb:238:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:238:22: medium: "S.D.B" might not be initialized
+normal_components.adb:239:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:247:22: info: assertion proved (CVC5: 2 VC)
+normal_components.adb:247:30: medium: "S.D.B" might not be initialized
+normal_components.adb:249:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:249:30: medium: "S.D.B" might not be initialized
+normal_components.adb:251:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:253:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:254:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:254:22: medium: "S.D.B" might not be initialized
+normal_components.adb:255:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:263:23: medium: assertion might fail, cannot prove T.D.A = T.D.B (e.g. when T = (C => 0, D => (A => 0, B => 1)))
+normal_components.adb:263:31: high: "T.D.B" is not initialized
+normal_components.adb:265:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:265:30: high: "T.D.B" is not initialized
+normal_components.adb:267:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:269:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:270:22: high: "T.D.B" is not initialized
+normal_components.adb:270:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:271:22: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:282:10: info: only expected exception raised (CVC5: 1 VC)
+normal_components.adb:285:13: high: "S" is not initialized
+normal_components.adb:285:28: medium: assertion might fail, cannot prove S.D.A = S.D.B
+normal_components.adb:287:13: high: "S.D" is not initialized
+normal_components.adb:287:28: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:289:28: high: "S.D.A" is not initialized
+normal_components.adb:289:28: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:289:36: high: "S.C" is not initialized
+normal_components.adb:291:28: high: "S.D.A" is not initialized
+normal_components.adb:291:28: medium: assertion might fail
+normal_components.adb:292:28: high: "S.D.B" is not initialized
+normal_components.adb:292:28: info: assertion proved (CVC5: 1 VC)
+normal_components.adb:293:28: high: "S.C" is not initialized
+normal_components.adb:293:28: info: assertion proved (CVC5: 1 VC)
+p.ads:43:14: info: aspect Always_Terminates on "Initialize_Empty_Class" has been proved, subprogram will terminate
+p.ads:43:38: high: "R" is not initialized in "Initialize_Empty_Class" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+p.ads:46:33: info: initialization of "R" proved
+p.ads:48:14: info: aspect Always_Terminates on "Initialize_Normal_Class" has been proved, subprogram will terminate
+p.ads:48:39: high: "R.A" is not initialized in "Initialize_Normal_Class" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+p.ads:48:39: high: extension of "R" is not initialized in "Initialize_Normal_Class" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
+p.ads:48:39: warning: unused variable "R"
+p.ads:51:49: info: initialization of "R" proved
+p.ads:53:41: info: initialization of "R" proved
+p.ads:55:34: info: initialization of "R" proved
+p.ads:57:14: info: aspect Always_Terminates on "Initialize_Rec_Class" has been proved, subprogram will terminate
+p.ads:57:36: high: "R.A" is not initialized in "Initialize_Rec_Class" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+p.ads:57:36: high: extension of "R" is not initialized in "Initialize_Rec_Class" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
+p.ads:57:36: warning: unused variable "R"
+p.ads:59:31: warning: unused initial value of "T"
+p.ads:60:52: info: exceptional case proved (Trivial: 1 VC)
+p.ads:62:31: warning: unused initial value of "T"
+p.ads:63:52: info: exceptional case proved (Trivial: 1 VC)
+private_part.adb:16:22: high: "R" is not initialized
+private_part.adb:16:22: info: assertion proved (CVC5: 1 VC)
+private_part.adb:26:22: info: assertion proved (CVC5: 1 VC)
+private_part.adb:26:22: medium: "R" might not be initialized
+private_part.adb:34:22: info: assertion proved (CVC5: 1 VC)
+private_part.adb:49:07: high: "R" is not initialized
+private_part.adb:49:22: info: assertion proved (CVC5: 1 VC)
+private_part.adb:64:10: info: only expected exception raised (CVC5: 1 VC)
+private_part.adb:64:28: medium: "R.A" might not be initialized
+private_part.adb:67:13: medium: "R.A" might not be initialized
+private_part.adb:67:28: info: assertion proved (CVC5: 1 VC)
+private_part.adb:67:28: medium: private part of "R" might not be initialized
+private_part.adb:81:10: info: only expected exception raised (CVC5: 1 VC)
+private_part.adb:84:13: medium: "R.A" might not be initialized
+private_part.adb:84:28: info: assertion proved (CVC5: 1 VC)
+private_part.adb:100:22: info: assertion proved (CVC5: 1 VC)
+private_part.adb:100:26: high: private part of "R" is not initialized
+private_part.adb:100:26: medium: "R.A" might not be initialized
+private_part.adb:110:07: medium: "R" might not be initialized
+private_part.adb:110:22: info: assertion proved (CVC5: 1 VC)
+private_part.adb:123:10: info: only expected exception raised (CVC5: 1 VC)
+private_part.adb:130:13: medium: "R.A" might not be initialized
+private_part.adb:130:28: info: assertion proved (CVC5: 1 VC)
+private_part.adb:142:22: info: assertion proved (CVC5: 1 VC)
+private_part.adb:142:26: high: private part of "R" is not initialized
+private_part.adb:157:22: info: assertion proved (CVC5: 1 VC)
+private_part.adb:157:26: medium: private part of "R" might not be initialized
+private_part.adb:165:22: info: assertion proved (CVC5: 1 VC)
+relax_init.adb:18:22: high: "R.A" is not initialized
+relax_init.adb:18:22: medium: assertion might fail, cannot prove R.A = 0
+relax_init.adb:18:35: medium: initialization check might fail
+relax_init.adb:32:22: high: "R.A" is not initialized
+relax_init.adb:32:22: medium: assertion might fail, cannot prove R.A = 0
+relax_init.adb:32:35: info: initialization check proved (CVC5: 1 VC)
+relax_init.adb:46:22: medium: "R.A" might not be initialized
+relax_init.adb:46:34: medium: assertion might fail, cannot prove R.B = 0
+relax_init.adb:46:35: medium: initialization check might fail
+relax_init.adb:60:22: info: assertion proved (CVC5: 2 VC)
+relax_init.adb:60:22: medium: "R.A" might not be initialized
+relax_init.adb:60:35: info: initialization check proved (CVC5: 1 VC)
+relax_init.adb:68:07: info: initialization of parts of "R" without Relaxed_Initialization proved
+relax_init.adb:72:34: medium: assertion might fail, cannot prove R.B = 0
+relax_init.adb:72:35: medium: initialization check might fail
+relax_init.adb:80:07: info: initialization of parts of "R" without Relaxed_Initialization proved
+relax_init.adb:88:22: info: assertion proved (CVC5: 2 VC)
+relax_init.adb:88:35: info: initialization check proved (CVC5: 1 VC)

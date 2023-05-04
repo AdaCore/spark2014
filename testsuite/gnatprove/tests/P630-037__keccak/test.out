@@ -444,6 +444,6 @@ keccak-types.ads:132:62: info: range check proved (CVC5: 2 VC)
 keccak-types.ads:136:08: info: precondition proved (CVC5: 1 VC)
 keccak-types.ads:136:39: info: precondition proved (CVC5: 1 VC)
 keccak-types.ads:136:62: info: range check proved (CVC5: 2 VC)
-p-duplex.ads:9:22: high: "Ctx.State" is not initialized in "Duplex", in instantiation at p-q.ads:9 [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Ctx.State" on all paths, make "Ctx" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+p-duplex.ads:9:22: high: "Ctx" is not initialized in "Duplex", in instantiation at p-q.ads:9 [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Ctx" on all paths, make "Ctx" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 p-duplex.ads:9:22: warning: unused variable "Ctx", in instantiation at p-q.ads:9
 p-duplex.ads:10:09: info: flow dependencies proved, in instantiation at p-q.ads:9
