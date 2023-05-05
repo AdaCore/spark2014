@@ -16,20 +16,18 @@ container.adb:19:67: info: overflow check proved (CVC5: 2 VC)
 container.adb:23:14: info: index check proved (CVC5: 2 VC)
 container.adb:26:14: info: add a contract to analyze it separately from calling contexts
 container.adb:26:14: info: local subprogram "Test3" only analyzed in the context of calls
+container.adb:26:14: info: terminating annotation on "Test3" has been proved, subprogram will terminate
 container.adb:30:11: info: precondition proved (CVC5: 1 VC), in call inlined at container.adb:45
 container.adb:30:11: info: precondition proved (Trivial: 1 VC), in call inlined at container.adb:45
-container.adb:30:16: medium: terminating annotation on "Test3" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-container.adb:30:16: medium: terminating annotation on "Test4" could be incorrect, loop might be nonterminating, in call inlined at container.adb:45 [possible fix: add loop variant in the loop body]
 container.adb:33:20: medium: range check might fail, cannot prove upper bound for X + 1, in call inlined at container.adb:45 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 32 should mention Int in a loop invariant]
 container.adb:34:34: info: loop variant proved (CVC5: 1 VC), in call inlined at container.adb:45
 container.adb:45:07: info: analyzing call to "Test3" in context
 container.adb:48:04: warning: analyzing unreferenced procedure "Test5"
+container.adb:48:14: info: terminating annotation on "Test5" has been proved, subprogram will terminate
 container.adb:51:11: info: precondition proved (CVC5: 1 VC)
 container.adb:51:11: info: precondition proved (Trivial: 1 VC)
-container.adb:51:16: medium: terminating annotation on "Test5" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 container.adb:56:11: info: precondition proved (CVC5: 1 VC)
 container.adb:56:11: info: precondition proved (Trivial: 1 VC)
-container.adb:56:16: medium: terminating annotation on "Test5" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 container.adb:60:23: info: range check proved (CVC5: 4 VC)
 container.adb:61:39: info: loop invariant initialization proved (CVC5: 1 VC)
 container.adb:61:39: info: loop invariant preservation proved (CVC5: 1 VC)
@@ -73,6 +71,7 @@ container.ads:20:13: info: precondition proved (CVC5: 1 VC)
 container.ads:23:13: info: during checks for quantification at container.ads:38
 container.ads:23:13: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
 container.ads:23:13: info: precondition proved (CVC5: 1 VC)
+container.ads:27:14: info: terminating annotation on "Test4" has been proved, subprogram will terminate
 formal_cont.adb:8:18: medium: implicit terminating annotation on "My_Equal_01" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 formal_cont.adb:11:14: warning: unreachable code (CVC5: 1 VC)
 formal_cont.adb:15:07: info: initialization of "L" proved
