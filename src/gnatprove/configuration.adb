@@ -1577,7 +1577,8 @@ package body Configuration is
          if CL_Switches.U and then CL_Switches.File_List.Is_Empty then
             Put_Line
               (Standard_Error,
-               "warning: switch -u does nothing without a filename");
+               "warning: switch -u without a file name is equivalent to "
+                 & "switch --no-subproject");
          end if;
 
          Process_Limit_Switches;
