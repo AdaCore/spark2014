@@ -874,6 +874,19 @@ only part of a program:
 
   * the API of the package.
 
+* [ADA_LOGICAL_EQUAL]
+  If the aspect or pragma ``Logical_Equal`` is used on a function whose
+  implementation is not analyzed, yet called from SPARK code, the
+  implementation of this function should correspond to the logical equality for
+  the corresponding type as used by |GNATprove|. See :ref:`Accessing the
+  Logical Equality for a Type` for information about the logical equality. Note
+  that this assumption does not apply to functions without any implementation.
+
+* [ADA_INLINE_FOR_PROOF]
+  If the aspect or pragma ``Inline_For_Proof`` is used on a function with a
+  postcondition whose implementation is not analyzed, yet called from SPARK
+  code, the equality used in the postcondition of the function should be equal
+  to the logical equality.
 
 In addition, the following assumptions need to be addressed when calling
 GNATprove on only part of a SPARK program at a time (either on an individual
