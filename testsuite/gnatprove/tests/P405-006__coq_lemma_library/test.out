@@ -1,4 +1,3 @@
-/tmp/tmpt6bzd1oc/P405-006__coq_lemma_library/src
 spark-big_intervals.ads:22:13: info: during checks for quantification at spark-big_intervals.ads:14
 spark-big_intervals.ads:22:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 spark-big_intervals.ads:22:13: info: precondition proved
