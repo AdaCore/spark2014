@@ -1641,11 +1641,12 @@ package body SPARK_Definition.Annotate is
          then
             Value := Right_Opnd (Value);
 
-         --  Or the equality operator has been rewritten into a function call
+         --  Or a call to a user defined equality function
 
          elsif Nkind (Value) = N_Function_Call
-           and then Nkind (Original_Node (Value)) = N_Op_Eq
-           and then Is_Attribute_Result (Left_Opnd (Original_Node (Value)))
+           and then (Is_User_Defined_Equality (Get_Called_Entity (Value))
+                     or else Nkind (Original_Node (Value)) = N_Op_Eq)
+           and then Is_Attribute_Result (First_Actual (Value))
          then
             Value := Next_Actual (First_Actual (Value));
 
