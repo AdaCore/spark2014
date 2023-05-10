@@ -74,12 +74,12 @@ keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lane
 keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lanes.adb:79
 keccak-keccak_1600.ads:55:04: info: unrolling loop
 keccak-keccak_1600.ads:55:04: info: unrolling loop
-keccak-keccak_1600.ads:57:04: warning: assuming "Pad101_Multi_Blocks" always returns
+keccak-keccak_1600.ads:57:04: warning: assuming "Pad101_Multi_Blocks" always terminates
 keccak-keccak_1600.ads:57:04: warning: in instantiation at keccak-sponge.adb:296
 keccak-keccak_1600.ads:57:04: warning: no returning annotation available for "Pad101_Multi_Blocks"
-keccak-keccak_1600.ads:66:04: warning: assuming "Pad101_Single_Block" always returns
-keccak-keccak_1600.ads:66:04: warning: assuming "Pad101_Single_Block" always returns
-keccak-keccak_1600.ads:66:04: warning: assuming "Pad101_Single_Block" always returns
+keccak-keccak_1600.ads:66:04: warning: assuming "Pad101_Single_Block" always terminates
+keccak-keccak_1600.ads:66:04: warning: assuming "Pad101_Single_Block" always terminates
+keccak-keccak_1600.ads:66:04: warning: assuming "Pad101_Single_Block" always terminates
 keccak-keccak_1600.ads:66:04: warning: in instantiation at keccak-duplex.adb:108
 keccak-keccak_1600.ads:66:04: warning: in instantiation at keccak-duplex.adb:60
 keccak-keccak_1600.ads:66:04: warning: in instantiation at keccak-duplex.adb:84

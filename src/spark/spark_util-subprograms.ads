@@ -367,6 +367,37 @@ package SPARK_Util.Subprograms is
    --  Note that if pragma Interrupt_Priority with no expression is present
    --  then Empty is returned but it really means Interrupt_Priority'Last.
 
+   type Termination_Condition_Kind is (Unspecified, Static, Dynamic);
+
+   type Termination_Condition (Kind : Termination_Condition_Kind) is record
+      case Kind is
+         when Unspecified =>
+            null;
+         when Static =>
+            Value     : Boolean;
+         when Dynamic =>
+            Condition : Node_Id;
+      end case;
+   end record;
+   --  The condition under which a subprogram shall terminate. It can be either
+   --  unspecified (if there are no Always_Terminates aspect, implicit of
+   --  explicit), static if the condition is a static expression, or dynamic.
+
+   function Get_Termination_Condition
+     (E       : Entity_Id;
+      Compute : Boolean := False)
+      return Termination_Condition
+   with
+     Pre  => Ekind (E) in
+         E_Function | E_Entry | E_Procedure | E_Package | E_Task_Type,
+     Post =>
+         (if Compute
+          then Get_Termination_Condition'Result.Kind /= Unspecified);
+   --  Return the termination condition for a subprogram / entry. It is either
+   --  retrieved form an Always_Terminates aspect, implicit (for functions and
+   --  lemma procedures), or computed by flow analysis if Compute is True. In
+   --  the last two cases, the condition is necessarily static.
+
    function Has_Contracts
      (E         : Entity_Id;
       Name      : Pragma_Id;

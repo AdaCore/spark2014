@@ -36,7 +36,7 @@ textio-get_line.adb:72:52: warning: no Global contract available for "Find_Char_
 textio-get_line.adb:85:07: info: initialization of "Buf" proved
 textio-get_line.adb:86:07: info: initialization of "P" proved
 textio-get_line.adb:87:07: info: initialization of "Success" proved
-textio-get_line.adb:106:07: warning: assuming "Fgets" always returns
+textio-get_line.adb:106:07: warning: assuming "Fgets" always terminates
 textio-get_line.adb:106:07: warning: no returning annotation available for "Fgets"
 textio-get_line.adb:109:13: warning: assuming "ferror" has no effect on global items
 textio-get_line.adb:109:13: warning: no Global contract available for "ferror"
@@ -47,7 +47,7 @@ textio-get_line.adb:192:26: medium: terminating annotation on "Get_Line" could b
 textio.adb:10:14: info: terminating annotation on "Getc" has been proved, subprogram will terminate
 textio.adb:10:38: info: initialization of "Ch" proved
 textio.adb:11:40: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
-textio.adb:32:07: warning: assuming "fgetc" always returns
+textio.adb:32:07: warning: assuming "fgetc" always terminates
 textio.adb:32:07: warning: no returning annotation available for "fgetc"
 textio.adb:34:28: warning: assuming "ferror" has no effect on global items
 textio.adb:34:28: warning: no Global contract available for "ferror"

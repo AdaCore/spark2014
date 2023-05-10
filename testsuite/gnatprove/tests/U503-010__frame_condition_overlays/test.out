@@ -12,7 +12,7 @@ test_alias.adb:15:10: warning: no Global contract available for "Rand"
 test_alias.adb:16:25: info: cannot unroll loop (too many loop iterations)
 test_alias.adb:17:25: medium: assertion might fail (e.g. when Y = 1) [possible fix: loop at line 16 should mention Z and Z and Z and X and Y in a loop invariant]
 test_alias.adb:18:10: info: no contextual analysis of "Set" (body not seen yet)
-test_alias.adb:18:10: warning: assuming "Set" always returns
+test_alias.adb:18:10: warning: assuming "Set" always terminates
 test_alias.adb:18:10: warning: assuming "Set" has no effect on global items
 test_alias.adb:18:10: warning: no Global contract available for "Set"
 test_alias.adb:18:10: warning: no returning annotation available for "Set"
@@ -20,7 +20,7 @@ test_alias.adb:20:10: warning: assuming "Rand" has no effect on global items
 test_alias.adb:20:10: warning: no Global contract available for "Rand"
 test_alias.adb:21:25: info: cannot unroll loop (too many loop iterations)
 test_alias.adb:22:25: medium: assertion might fail (e.g. when Y = 1) [possible fix: loop at line 21 should mention Z and Z and Z and X and Y in a loop invariant]
-test_alias.adb:23:10: warning: assuming "Set_X" always returns
+test_alias.adb:23:10: warning: assuming "Set_X" always terminates
 test_alias.adb:23:10: warning: no returning annotation available for "Set_X"
 test_alias.adb:25:10: warning: assuming "Rand" has no effect on global items
 test_alias.adb:25:10: warning: no Global contract available for "Rand"

@@ -17,6 +17,7 @@ nest_in_task.adb:32:04: high: task "nest_in_task.c" is queueing
 nest_in_task.ads:4:17: info: terminating annotation on "Proc" has been proved, subprogram will terminate
 nest_in_task.ads:9:14: info: ceiling priority protocol is respected (CVC5: 1 VC)
 nest_in_task.ads:9:14: info: nontermination of task proved (CVC5: 1 VC)
+recursion.adb:1:11: info: terminating annotation on "Recursion" has been proved, subprogram will terminate
 recursion.adb:3:17: warning: subprogram "P" has no effect
 recursion.adb:10:26: info: unrolling loop
 recursion.adb:11:13: medium: terminating annotation on "P" could be incorrect, "P" and "Recursion" are mutually recursive [possible fix: annotate "P" and "Recursion" with Subprogram_Variant aspects]

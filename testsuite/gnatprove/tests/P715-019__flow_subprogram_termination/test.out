@@ -1,10 +1,10 @@
 call_proc_no_body.adb:4:07: medium: precondition might fail
-call_proc_no_body.adb:4:07: warning: assuming "P_02" always returns
+call_proc_no_body.adb:4:07: warning: assuming "P_02" always terminates
 call_proc_no_body.adb:4:07: warning: assuming "P_02" has no effect on global items
 call_proc_no_body.adb:4:07: warning: no Global contract available for "P_02"
 call_proc_no_body.adb:4:07: warning: no returning annotation available for "P_02"
 call_proc_no_body.adb:9:07: info: precondition proved (CVC5: 1 VC)
-call_proc_no_body.adb:9:07: warning: assuming "P_03" always returns
+call_proc_no_body.adb:9:07: warning: assuming "P_03" always terminates
 call_proc_no_body.adb:9:07: warning: assuming "P_03" has no effect on global items
 call_proc_no_body.adb:9:07: warning: no Global contract available for "P_03"
 call_proc_no_body.adb:9:07: warning: no returning annotation available for "P_03"
@@ -98,12 +98,12 @@ functions.ads:4:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 functions.ads:6:13: info: implicit terminating annotation on "Expr_Func" has been proved, subprogram will terminate
 functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not terminate normally
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
-imported.adb:5:07: warning: assuming "P_01" always returns
+imported.adb:5:07: warning: assuming "P_01" always terminates
 imported.adb:5:07: warning: assuming "P_01" has no effect on global items
 imported.adb:5:07: warning: no Global contract available for "P_01"
 imported.adb:5:07: warning: no returning annotation available for "P_01"
 imported.adb:10:07: medium: precondition might fail
-imported.adb:10:07: warning: assuming "P_02" always returns
+imported.adb:10:07: warning: assuming "P_02" always terminates
 imported.adb:10:07: warning: assuming "P_02" has no effect on global items
 imported.adb:10:07: warning: no Global contract available for "P_02"
 imported.adb:10:07: warning: no returning annotation available for "P_02"
@@ -114,7 +114,7 @@ imported.ads:16:14: warning: subprogram "Q_02" has no effect
 modular_analysis.adb:5:04: warning: analyzing unreferenced procedure "Test_01"
 modular_analysis.adb:5:23: info: initialization of "F" proved
 modular_analysis.adb:8:14: medium: terminating annotation on "Test_01" could be incorrect, call to "Open_Read" might be nonterminating [possible fix: annotate "Open_Read" with Always_Return]
-modular_analysis.adb:8:14: warning: assuming "Open_Read" always returns
+modular_analysis.adb:8:14: warning: assuming "Open_Read" always terminates
 modular_analysis.adb:8:14: warning: assuming "Open_Read" has no effect on global items
 modular_analysis.adb:8:14: warning: no Global contract available for "Open_Read"
 modular_analysis.adb:8:14: warning: no returning annotation available for "Open_Read"
@@ -123,6 +123,7 @@ nest_in_proc.adb:5:17: warning: subprogram "Nothing" has no effect
 nest_in_proc.adb:7:20: warning: subprogram "Nothing2" has no effect
 nest_in_proc.adb:20:21: medium: terminating annotation on "Nest_In_Proc" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nest_in_proc.adb:20:21: warning: statement has no effect
+nest_in_proc.ads:1:11: info: terminating annotation on "Nest_In_Proc" has been proved, subprogram will terminate
 nested_blocks.adb:10:37: warning: statement has no effect
 nested_loops.adb:3:04: warning: analyzing unreferenced procedure "Proc"
 nested_loops.adb:3:14: info: terminating annotation on "Proc" has been proved, subprogram will terminate
@@ -151,6 +152,7 @@ nested_packages.adb:26:24: medium: terminating annotation on "Contains_Packages"
 nested_packages.adb:26:24: warning: statement has no effect
 nested_packages.adb:55:21: warning: statement has no effect
 nested_packages.adb:61:18: warning: statement has no effect
+nested_packages.ads:3:14: info: terminating annotation on "Contains_Packages" has been proved, subprogram will terminate
 nested_packages.ads:3:14: warning: subprogram "Contains_Packages" has no effect
 nested_packages.ads:6:17: info: terminating annotation on "Do_Nothing" has been proved, subprogram will terminate
 nested_packages.ads:6:17: warning: subprogram "Do_Nothing" has no effect
