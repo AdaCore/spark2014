@@ -30,6 +30,7 @@ with Common_Containers;           use Common_Containers;
 with Einfo.Entities;              use Einfo.Entities;
 with Einfo.Utils;                 use Einfo.Utils;
 with Errout;                      use Errout;
+with Flow_Error_Messages;         use Flow_Error_Messages;
 with Flow_Types;                  use Flow_Types;
 with Flow_Utility;                use Flow_Utility;
 with GNAT.Dynamic_HTables;        use GNAT.Dynamic_HTables;
@@ -3382,11 +3383,13 @@ package body Gnat2Why.Borrow_Checker is
              (if Expr.Is_Ent then Get_Root_Object (Moved) = Expr.Ent
               else Is_Prefix_Or_Almost (Expr.Expr, +Moved))
          then
+            Error_Msg_Code :=
+              Explain_Code'Enum_Rep (EC_Ownership_Moved_Object);
             Error_Msg_Sloc := Sloc (Moved);
             if Expr.Is_Ent then
-               Error_Msg_NE ("& was moved #", Expr.Loc, Expr.Ent);
+               Error_Msg_NE ("& was moved # '[[]']", Expr.Loc, Expr.Ent);
             else
-               Error_Msg_N ("object was moved #", Expr.Expr);
+               Error_Msg_N ("object was moved # '[[]']", Expr.Expr);
             end if;
             Permission_Error := True;
             return;
@@ -5319,16 +5322,17 @@ package body Gnat2Why.Borrow_Checker is
       Borrowed : constant Node_Id := Check_On_Borrowed (N);
       Observed : constant Node_Id := Check_On_Observed (N);
       Reason   : constant String :=
-        (if Present (Observed) then "observed"
-         elsif Present (Borrowed) then "borrowed"
-         else "moved");
+        (if Present (Observed) then "observed #"
+         elsif Present (Borrowed) then "borrowed #"
+         else "moved # '[[]']");
 
    begin
+      Error_Msg_Code := Explain_Code'Enum_Rep (EC_Ownership_Moved_Object);
       Error_Msg_Sloc := Sloc (Expl);
 
       if Forbidden_Perm then
          if Exp_Perm = No_Access then
-            Error_Msg_N ("\object was " & Reason & " #", Loc);
+            Error_Msg_N ("\object was " & Reason, Loc);
          else
             raise Program_Error;
          end if;
@@ -5339,11 +5343,11 @@ package body Gnat2Why.Borrow_Checker is
                   Error_Msg_N
                     ("\object was declared as not writable #", Loc);
                else
-                  Error_Msg_N ("\object was " & Reason & " #", Loc);
+                  Error_Msg_N ("\object was " & Reason, Loc);
                end if;
 
             when Read_Only =>
-               Error_Msg_N ("\object was " & Reason & " #", Loc);
+               Error_Msg_N ("\object was " & Reason, Loc);
 
             when No_Access =>
                raise Program_Error;

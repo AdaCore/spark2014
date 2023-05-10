@@ -34,6 +34,35 @@ with VC_Kinds;                  use VC_Kinds;
 
 package Flow_Error_Messages is
 
+   --  Explain codes are used in GNATprove to provide more information on
+   --  selected error/warning messages. The subset of those codes used in
+   --  the frontend are redefined in Errout.
+
+   type Explain_Code is
+     (EC_None,
+      EC_Volatile_At_Library_Level,
+      EC_Address_In_Expression,
+      EC_Type_Early_Call_Region,
+      EC_Volatile_Non_Interfering_Context,
+      EC_Function_Output_Global,
+      EC_Function_Volatile_Input_Global,
+      EC_Variable_Input_In_Expression,
+      EC_Write_In_Elaboration,
+      EC_Required_Part_Of,
+      EC_Ownership_Moved_Object);
+   for Explain_Code use
+     (EC_None                             => 0,
+      EC_Volatile_At_Library_Level        => 1,
+      EC_Address_In_Expression            => 2,
+      EC_Type_Early_Call_Region           => 3,
+      EC_Volatile_Non_Interfering_Context => 4,
+      EC_Function_Output_Global           => 5,
+      EC_Function_Volatile_Input_Global   => 6,
+      EC_Variable_Input_In_Expression     => 7,
+      EC_Write_In_Elaboration             => 8,
+      EC_Required_Part_Of                 => 9,
+      EC_Ownership_Moved_Object           => 10);
+
    type Msg_Severity is
      (Error_Kind,
       High_Check_Kind,
@@ -136,6 +165,7 @@ package Flow_Error_Messages is
       FF1          : Flow_Id       := Null_Flow_Id;
       FF2          : Flow_Id       := Null_Flow_Id;
       Tag          : Flow_Tag_Kind := Empty_Tag;
+      Explain_Code : Natural       := 0;
       SRM_Ref      : String        := "";
       Tracefile    : String        := "";
       Continuation : Boolean       := False)
@@ -168,6 +198,9 @@ package Flow_Error_Messages is
    --    reference.
    --  * Use @ to insert the sloc of the entity.
    --
+   --  Explain_Code is an explanation code, for which there should exist a
+   --  corresponding file in share/spark/explain_codes.
+   --
    --  SRM_Ref should be a pointer into the SPARK RM. For example:
    --     "1.2.3(4)"
 
@@ -185,6 +218,7 @@ package Flow_Error_Messages is
       FF1          : Flow_Id               := Null_Flow_Id;
       FF2          : Flow_Id               := Null_Flow_Id;
       Tag          : Flow_Tag_Kind         := Empty_Tag;
+      Explain_Code : Natural               := 0;
       SRM_Ref      : String                := "";
       Path         : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
       Vertex       : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;

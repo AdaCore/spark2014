@@ -37,6 +37,7 @@ with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
 with Flow_Dependency_Maps;            use Flow_Dependency_Maps;
+with Flow_Error_Messages;             use Flow_Error_Messages;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                    use Flow_Utility;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
@@ -3460,7 +3461,8 @@ package body SPARK_Definition is
                   else
                      Mark_Violation
                        ("attribute ""Address"" outside an attribute definition"
-                        & " clause", N);
+                        & " clause", N,
+                        Code => EC_Address_In_Expression);
                      exit;
                   end if;
                   M := Parent (M);
@@ -5446,6 +5448,7 @@ package body SPARK_Definition is
                            Mark_Violation
                              ("function & with output global " & G_Name,
                               Id,
+                              Code => EC_Function_Output_Global,
                               Root_Cause_Msg =>
                                 "function with global outputs");
                         end;
@@ -5499,6 +5502,7 @@ package body SPARK_Definition is
                                 ("nonvolatile function & with volatile input "
                                  & "global " & G_Name,
                                  Id,
+                                 Code => EC_Function_Volatile_Input_Global,
                                  Root_Cause_Msg => "nonvolatile function with "
                                  & " volatile global inputs");
                            end;
