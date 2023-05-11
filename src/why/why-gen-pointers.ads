@@ -196,7 +196,8 @@ package Why.Gen.Pointers is
 
    function Prepare_Args_For_Access_Subtype_Check
      (Check_Ty : Entity_Id;
-      Expr     : W_Expr_Id)
+      Expr     : W_Expr_Id;
+      Domain   : EW_Domain)
       return W_Expr_Array;
    --  Given a pointer type, compute the argument array that can be used
    --  together with its subtype check predicate of program function. The

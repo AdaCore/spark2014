@@ -1121,7 +1121,8 @@ package body Why.Gen.Pointers is
              (Ada_Node => Ada_Node,
               Name     => E_Symb (Check_Ty, WNE_Range_Check_Fun),
               Progs    =>
-                Prepare_Args_For_Access_Subtype_Check (Check_Ty, +Expr),
+                Prepare_Args_For_Access_Subtype_Check
+                  (Check_Ty, +Expr, EW_Pterm),
               Reason   => (if Has_Array_Type (Des_Ty) then VC_Range_Check
                            else VC_Discriminant_Check),
               Typ      => Get_Type (+Expr));
@@ -1456,7 +1457,8 @@ package body Why.Gen.Pointers is
 
    function Prepare_Args_For_Access_Subtype_Check
      (Check_Ty : Entity_Id;
-      Expr     : W_Expr_Id)
+      Expr     : W_Expr_Id;
+      Domain   : EW_Domain)
       return W_Expr_Array
    is
       Des_Ty : constant Entity_Id :=
@@ -1475,12 +1477,12 @@ package body Why.Gen.Pointers is
             Args (Dim * 2 + 1) := +Expr;
             for Count in 1 .. Dim loop
                Args (2 * Count - 1) :=
-                 +Get_Array_Attr (Domain => EW_Term,
+                 +Get_Array_Attr (Domain => Term_Domain (Domain),
                                   Ty     => Des_Ty,
                                   Attr   => Attribute_First,
                                   Dim    => Count);
                Args (2 * Count) :=
-                 +Get_Array_Attr (Domain => EW_Term,
+                 +Get_Array_Attr (Domain => Term_Domain (Domain),
                                   Ty     => Des_Ty,
                                   Attr   => Attribute_Last,
                                   Dim    => Count);
@@ -1492,7 +1494,8 @@ package body Why.Gen.Pointers is
 
       else
          pragma Assert (Has_Discriminants (Des_Ty));
-         return Get_Discriminants_Of_Subtype (Des_Ty) & Expr;
+         return Get_Discriminants_Of_Subtype
+           (Des_Ty, Term_Domain (Domain)) & Expr;
       end if;
    end Prepare_Args_For_Access_Subtype_Check;
 
