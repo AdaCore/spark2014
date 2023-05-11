@@ -388,8 +388,8 @@ package SPARK_Util.Subprograms is
       Compute : Boolean := False)
       return Termination_Condition
    with
-     Pre  => Ekind (E) in
-         E_Function | E_Entry | E_Procedure | E_Package | E_Task_Type,
+     Pre  => Ekind (E) in E_Function | E_Entry | E_Procedure | E_Package
+         | E_Task_Type | E_Subprogram_Type,
      Post =>
          (if Compute
           then Get_Termination_Condition'Result.Kind /= Unspecified);

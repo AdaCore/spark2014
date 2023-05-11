@@ -36,6 +36,7 @@ with Einfo.Entities;            use Einfo.Entities;
 with Einfo.Utils;               use Einfo.Utils;
 with Errout;                    use Errout;
 with Erroutc;                   use Erroutc;
+with Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;           use Flow_Refinement;
 with Flow_Utility;              use Flow_Utility;
 with Gnat2Why.Error_Messages;
@@ -79,20 +80,26 @@ package body Flow_Error_Messages is
    Session_File_Map : Session_File_Maps.Vector;
    --  The list of session files that belong to this gnat2why invocation
 
-   function Get_Details (N : Node_Id; Tag : VC_Kind) return String;
+   function Get_Details
+     (N   : Node_Id;
+      E   : Entity_Id;
+      Tag : VC_Kind) return String;
    --  Given the node N associated to an unproved check of kind Tag, return a
    --  detailed message explaining why this check is issued (typically in the
    --  case of a length/range/overflow/index check), or the empty string.
+   --  E should be the entity analyzed when the check is emitted.
 
    function Get_Explanation
      (N           : Node_Id;
+      E           : Entity_Id;
       Tag         : VC_Kind;
       Explanation : String) return String;
    --  @param N node associated to an unproved check
+   --  @param E the entity analyzed when the check is emitted
    --  @param Tag associated unproved check
    --  @param Explanation if non-empty, explanation passed on by the caller
    --  @result message part suggesting a possible explanation for why the check
-   --    was not unproved
+   --    was not proved
 
    function Get_Fix
      (N          : Node_Id;
@@ -956,7 +963,7 @@ package body Flow_Error_Messages is
 
                   Details : constant String :=
                     (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
-                     else Get_Details (N, Tag));
+                     else Get_Details (N, E, Tag));
 
                begin
                   --  Only display message details when outputting on one line,
@@ -986,7 +993,7 @@ package body Flow_Error_Messages is
 
                      declare
                         Expl : constant String :=
-                          Get_Explanation (N, Tag, Explanation);
+                          Get_Explanation (N, E, Tag, Explanation);
                      begin
                         if Expl /= "" then
                            Append
@@ -1035,7 +1042,7 @@ package body Flow_Error_Messages is
 
                      declare
                         Expl : constant String :=
-                          Get_Explanation (N, Tag, Explanation);
+                          Get_Explanation (N, E, Tag, Explanation);
                      begin
                         if Expl /= "" then
                            Ignore_Id := Print_Regular_Msg
@@ -1189,7 +1196,11 @@ package body Flow_Error_Messages is
    -- Get_Details --
    -----------------
 
-   function Get_Details (N : Node_Id; Tag : VC_Kind) return String is
+   function Get_Details
+     (N   : Node_Id;
+      E   : Entity_Id;
+      Tag : VC_Kind) return String
+   is
 
       Par : Node_Id := Atree.Parent (N);
       --  Enclosing expression to inform on context for the check
@@ -1250,6 +1261,45 @@ package body Flow_Error_Messages is
       end loop;
 
       case Tag is
+         when VC_Termination_Check =>
+            if Has_Implicit_Always_Return_Annotation (E) then
+               declare
+                  E_Name : constant String :=
+                    (if Ekind (E) = E_Package then "package elaboration"
+                     elsif Ekind (E) = E_Function then "functions"
+                     else "automatically instantiated lemmas");
+               begin
+                  return E_Name & " should always terminate in SPARK";
+               end;
+
+            elsif Present (Get_Pragma (E, Pragma_Always_Terminates)) then
+               return (if Ekind (E) = E_Entry then "entry" else "procedure")
+                 & " """ & Source_Name (E)
+                 & """ has an Always_Terminates aspect";
+
+            --  Search for an enclosing package with an Always_Terminates
+            --  aspect.
+
+            else
+               declare
+                  Scop : Entity_Id := Scope (E);
+               begin
+                  while Present (Scop) and then Ekind (Scop) = E_Package loop
+                     if Present (Get_Pragma (Scop, Pragma_Always_Terminates))
+                     then
+                        return (if Ekind (E) = E_Entry then "entry"
+                                else "procedure")
+                          & " """ & Source_Name (E) & """ has an implicit "
+                          & "Always_Terminates aspect inherited from """
+                          & Source_Name (Scop) & '"';
+                     end if;
+                     Scop := Scope (Scop);
+                  end loop;
+               end;
+
+               return "";
+            end if;
+
          when VC_Index_Check =>
             return Value & " must be a valid index into the array";
 
@@ -1496,6 +1546,7 @@ package body Flow_Error_Messages is
 
    function Get_Explanation
      (N           : Node_Id;
+      E           : Entity_Id;
       Tag         : VC_Kind;
       Explanation : String) return String
    is
@@ -1523,6 +1574,27 @@ package body Flow_Error_Messages is
           (Get_Pragma (Get_Called_Entity (N), Pragma_Exceptional_Cases))
       then
          return "No_Return procedures have an implicit exceptional contract";
+
+      elsif Tag = VC_Termination_Check
+        and then Nkind (N) in N_Function_Call
+                            | N_Procedure_Call_Statement
+                            | N_Entry_Call_Statement
+      then
+         declare
+            Subp : constant Entity_Id := Get_Called_Entity (N);
+         begin
+            if Is_Function_Type (Subp) then
+               return "calls through access-to-subprograms might hide "
+                 & "recursive calls";
+            elsif Present (Controlling_Argument (N)) then
+               return "dispatching calls might hide recursive calls";
+            elsif Flow_Generated_Globals.Phase_2.Mutually_Recursive (Subp, E)
+              and then No (Get_Pragma (Subp, Pragma_Subprogram_Variant))
+            then
+               return "termination of recursive calls requires a"
+                 & " Subprogram_Variant";
+            end if;
+         end;
 
       --  If a run-time check fails inside the prefix of a an attribute
       --  reference with 'Old or 'Loop_Entry attribute, and this attribute
@@ -2438,6 +2510,12 @@ package body Flow_Error_Messages is
             end if;
             return "";
          end;
+
+      --  Do not try to generate a fix message for termination checks. This
+      --  is not properly handled and leads to erroneous messages.
+
+      elsif Tag in VC_Termination_Check then
+         return "";
 
       --  Do not try to generate a fix message for static checks on validity of
       --  Unchecked_Conversion, as these already have a sufficient explanation

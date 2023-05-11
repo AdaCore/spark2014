@@ -3827,7 +3827,7 @@ package body Gnat2Why.Subprograms is
       --  Assume the dynamic property of modified variables after the call.
 
       function Post_As_Pred return W_Pred_Id;
-      --  compute the postcondition predicate based on the Ada postcondition
+      --  Compute the postcondition predicate based on the Ada postcondition
 
       function Try_Block (Prog : W_Prog_Id) return W_Prog_Id;
       --  adding try/catch block for the return exception on top of the program
@@ -3861,6 +3861,10 @@ package body Gnat2Why.Subprograms is
       --  Return verification of the exceptional cases
 
       function Declare_Old_Variables (P : W_Prog_Id) return W_Prog_Id;
+
+      function Declare_Termination_Condition (P : W_Prog_Id) return W_Prog_Id;
+      --  If E has a dynamic termination condition, introduce a declaration
+      --  for its value at the beginning of the subprogram.
 
       function Warn_On_Inconsistent_Pre return W_Prog_Id;
       --  Generate a VC to warn on inconsistent preconditions
@@ -4478,6 +4482,25 @@ package body Gnat2Why.Subprograms is
          return R;
       end Declare_Old_Variables;
 
+      -----------------------------------
+      -- Declare_Termination_Condition --
+      -----------------------------------
+
+      function Declare_Termination_Condition (P : W_Prog_Id) return W_Prog_Id
+      is
+         Cond : constant Termination_Condition :=
+           Get_Termination_Condition (E);
+      begin
+         if Cond.Kind = Dynamic then
+            return New_Binding
+              (Name    => Termination_Condition_Name,
+               Def     => Transform_Prog (Cond.Condition, Body_Params),
+               Context => P);
+         else
+            return P;
+         end if;
+      end Declare_Termination_Condition;
+
       --------------------------
       -- Get_Pre_Post_Pragmas --
       --------------------------
@@ -4802,6 +4825,11 @@ package body Gnat2Why.Subprograms is
             Self_Name := Concurrent_Self_Ident (CPT);
             Self_Is_Mutable := True;
          end;
+      end if;
+
+      if Get_Termination_Condition (E).Kind = Dynamic then
+         Termination_Condition_Name := New_Temp_Identifier
+           (Base_Name => "termination_condition", Typ => EW_Bool_Type);
       end if;
 
       --  If E is a wrapper introduced for an implicit overriding of an
@@ -5183,6 +5211,7 @@ package body Gnat2Why.Subprograms is
          Prog := Declare_Old_Variables (Prog);
          Prog := Wrap_Decls_For_CC_Guards (Prog);
          Prog := Insert_Bindings_For_Variants (E, Prog, EW_Prog, Body_Params);
+         Prog := Declare_Termination_Condition (Prog);
 
          Prog := Sequence
            ((Assume_For_Input,
@@ -5220,6 +5249,10 @@ package body Gnat2Why.Subprograms is
       if Ekind (E) = E_Function then
          Result_Name := Why_Empty;
          Result_Is_Mutable := False;
+      end if;
+
+      if Get_Termination_Condition (E).Kind = Dynamic then
+         Termination_Condition_Name := Why_Empty;
       end if;
 
       if Is_Wrapper_For_Dispatching_Result (E) then
@@ -7136,6 +7169,51 @@ package body Gnat2Why.Subprograms is
                   Pre         => Checks));
          end;
       end if;
+
+      --  Generate a check_termination_condition function. It has the same
+      --  parameters as E. Its precondition checks that E's termination
+      --  condition evaluates to True.
+      --
+      --  For a subprogram:
+      --
+      --    Y : Unsigned_8;
+      --    procedure Proc (X : in out Integer) with
+      --      Always_Terminates => X = Y;
+      --
+      --  we generate:
+      --
+      --    val proc__check_termination_condition (x : int ref) : unit
+      --      requires { x = y }
+
+      declare
+         Cond : constant Termination_Condition :=
+           Get_Termination_Condition (E);
+      begin
+         if Cond.Kind = Dynamic then
+
+            --  Procedures with a dynamic termination condition cannot be
+            --  specialized.
+
+            pragma Assert (Specialization_Module = No_Symbol);
+
+            declare
+               P_Name : constant W_Identifier_Id :=
+                 E_Symb (E, WNE_Check_Termination_Condition);
+
+            begin
+               Emit
+                 (Th,
+                  New_Function_Decl
+                    (Domain      => EW_Prog,
+                     Name        => To_Local (P_Name),
+                     Binders     => Spec_Binders & Func_Why_Binders,
+                     Location    => No_Location,
+                     Labels      => Symbol_Sets.Empty_Set,
+                     Return_Type => EW_Unit_Type,
+                     Pre         => Transform_Pred (Cond.Condition, Params)));
+            end;
+         end if;
+      end;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
    end Generate_Subprogram_Program_Fun;

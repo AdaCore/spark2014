@@ -1194,6 +1194,7 @@ procedure SPARK_Report is
 
          when VC_Loop_Variant
             | VC_Subprogram_Variant
+            | VC_Termination_Check
          =>
             return Termination;
 

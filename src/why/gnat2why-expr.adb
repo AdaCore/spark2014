@@ -145,6 +145,19 @@ package body Gnat2Why.Expr is
    --  in Expr. If As_Old is True, the expression should be evaluated in the
    --  pre state.
 
+   function Call_Never_Terminates
+     (Call  : Node_Id;
+      Scope : Entity_Id)
+      return Boolean;
+   --  Return True if Call should be considered potentially not terminate
+   --  indendently of the termination annotations on the called subprogram
+   --  Subp. Scope should be the entity in which Call occurs.
+   --  This might happen for several reasons:
+   --    * Subp is recursive with its enclosing subprogram and has no
+   --      variants,
+   --    * Call is dispatching, or
+   --    * Subp is a subprogram type.
+
    function Check_No_Memory_Leaks
      (Ada_Node           : Node_Id;
       N                  : Node_Or_Entity_Id;
@@ -2083,6 +2096,24 @@ package body Gnat2Why.Expr is
 
       return Result;
    end Bind_From_Mapping_In_Prog;
+
+   ---------------------------
+   -- Call_Never_Terminates --
+   ---------------------------
+
+   function Call_Never_Terminates
+     (Call  : Node_Id;
+      Scope : Entity_Id)
+      return Boolean
+   is
+      Subp : constant Entity_Id := Get_Called_Entity (Call);
+   begin
+      return Ekind (Subp) = E_Subprogram_Type
+        or else
+          (Mutually_Recursive (Scope, Subp)
+           and then No (Get_Pragma (Subp, Pragma_Subprogram_Variant)))
+        or else Present (Controlling_Argument (Call));
+   end Call_Never_Terminates;
 
    ---------------------------
    -- Check_No_Memory_Leaks --
@@ -21136,6 +21167,27 @@ package body Gnat2Why.Expr is
                   Specialization_Module => Specialization_Module),
                T);
          end if;
+
+         --  Insert termination check if the enclosing subprogram has a dynamic
+         --  termination condition.
+
+         if Present (Current_Subp)
+           and then Ekind (Current_Subp) in E_Procedure | E_Entry
+           and then Get_Termination_Condition (Current_Subp).Kind = Dynamic
+           and then Call_Never_Terminates (Expr, Current_Subp)
+         then
+            pragma Assert
+              (Termination_Condition_Name /= Why_Empty);
+
+            Prepend
+              (New_Located_Assert
+                 (Ada_Node   => Expr,
+                  Pred       => New_Not
+                    (Right => +Termination_Condition_Name),
+                  Reason     => VC_Termination_Check,
+                  Kind       => EW_Assert),
+               T);
+         end if;
       end if;
 
       --  We may need a context if we have introduced constants for expressions
@@ -23820,6 +23872,69 @@ package body Gnat2Why.Expr is
                            Call);
                end if;
 
+               --  Generate termination checks if necessary
+
+               declare
+                  Encl_Cond : constant Termination_Condition :=
+                    Get_Termination_Condition (Current_Subp, Compute => True);
+                  Subp_Cond : constant Termination_Condition :=
+                    Get_Termination_Condition (Subp, Compute => True);
+
+               begin
+                  --  If the enclosing subprogram has a dynamic termination
+                  --  condition, termination checks are entirely done by
+                  --  proof. Of the call might unconditionally not terminate,
+                  --  check that the termination condition of the enclosing
+                  --  subprogram evaluates to False.
+
+                  if Encl_Cond.Kind = Dynamic
+                    and then
+                      (Subp_Cond = (Static, False)
+                       or else
+                         Call_Never_Terminates (Stmt_Or_Decl, Current_Subp))
+                  then
+                     pragma Assert
+                       (Termination_Condition_Name /= Why_Empty);
+
+                     Prepend
+                       (New_Located_Assert
+                          (Ada_Node   => Stmt_Or_Decl,
+                           Pred       => New_Not
+                             (Right => +Termination_Condition_Name),
+                           Reason     => VC_Termination_Check,
+                           Kind       => EW_Assert),
+                        Call);
+
+                  --  Check calls to subprograms with a dynamic termination
+                  --  conditions. This shall also be done in subprograms which
+                  --  always terminate. Other checks are deferred to flow
+                  --  analysis.
+
+                  elsif Encl_Cond /= (Static, False)
+                    and then Subp_Cond.Kind = Dynamic
+                  then
+                     declare
+                        Term_Check : W_Prog_Id :=
+                          New_VC_Call
+                            (Ada_Node => Stmt_Or_Decl,
+                             Name     =>
+                               E_Symb
+                                 (Subp, WNE_Check_Termination_Condition),
+                             Progs    => Args,
+                             Reason   => VC_Termination_Check,
+                             Typ      => EW_Unit_Type);
+                     begin
+                        if Encl_Cond.Kind = Dynamic  then
+                           Term_Check := New_Conditional
+                             (Condition => +Termination_Condition_Name,
+                              Then_Part => Term_Check);
+                        end if;
+
+                        Prepend (Term_Check, Call);
+                     end;
+                  end if;
+               end;
+
                --  Check that the call does not cause a resource leak. Every
                --  output of the call which is not also an input should be
                --  moved prior to the call. Otherwise assigning it in the
@@ -24000,7 +24115,36 @@ package body Gnat2Why.Expr is
             return Transform_Declaration (Stmt_Or_Decl);
 
          when N_Loop_Statement =>
-            return Transform_Loop_Statement (Stmt_Or_Decl);
+            declare
+               Term_Checks : W_Prog_Id := +Void;
+
+            begin
+               --  If the enclosing subprogram has a dynamic termination
+               --  condition and the loop is not known to terminate, check that
+               --  the loop cannot be accessed when the condition evaluates to
+               --  True.
+
+               if Get_Termination_Condition (Current_Subp).Kind = Dynamic
+                 and then
+                   not Flow_Utility.Termination_Proved
+                     (Iteration_Scheme (Stmt_Or_Decl),
+                      Get_Loop_Writes (Entity (Identifier (Stmt_Or_Decl))))
+               then
+                  pragma Assert (Termination_Condition_Name /= Why_Empty);
+
+                  Term_Checks := New_Located_Assert
+                    (Ada_Node   => Stmt_Or_Decl,
+                     Pred       => New_Not
+                       (Right => +Termination_Condition_Name),
+                     Reason     => VC_Termination_Check,
+                     Kind       => EW_Assert);
+               end if;
+
+               return
+                 Sequence
+                   (Term_Checks,
+                    Transform_Loop_Statement (Stmt_Or_Decl));
+            end;
 
          when N_Exit_Statement =>
             return Transform_Exit_Statement (Stmt_Or_Decl);
