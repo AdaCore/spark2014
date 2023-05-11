@@ -34,6 +34,7 @@ with Flow_Types;                     use Flow_Types;
 with Flow_Utility;                   use Flow_Utility;
 with Rtsfind;                        use Rtsfind;
 with Sem_Ch12;                       use Sem_Ch12;
+with Sem_Eval;                       use Sem_Eval;
 with Sem_Prag;                       use Sem_Prag;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
@@ -764,6 +765,44 @@ package body SPARK_Util.Subprograms is
       end if;
    end Get_Priority_Or_Interrupt_Priority;
 
+   -------------------------------
+   -- Get_Termination_Condition --
+   -------------------------------
+
+   function Get_Termination_Condition
+     (E       : Entity_Id;
+      Compute : Boolean := False)
+      return Termination_Condition
+   is
+      Terminates_Pragma : constant Node_Id :=
+        Get_Pragma (E, Pragma_Always_Terminates);
+   begin
+      pragma Assert (if Compute then GG_Has_Been_Generated);
+
+      if Present (Terminates_Pragma) then
+         declare
+            Assocs : constant List_Id := Pragma_Argument_Associations
+              (Terminates_Pragma);
+            Cond   : constant Node_Id :=
+              (if No (Assocs) then Empty else Expression (First (Assocs)));
+         begin
+            if No (Cond) then
+               return (Static, True);
+            elsif Compile_Time_Known_Value (Cond) then
+               return (Static, Is_True (Expr_Value (Cond)));
+            else
+               return (Dynamic, Cond);
+            end if;
+         end;
+      elsif Has_Implicit_Always_Return_Annotation (E) then
+         return (Static, True);
+      elsif Compute then
+         return (Static, not Is_Potentially_Nonreturning (E));
+      else
+         return (Kind => Unspecified);
+      end if;
+   end Get_Termination_Condition;
+
    ---------------------------
    -- Includes_Current_Task --
    ---------------------------
@@ -778,7 +817,8 @@ package body SPARK_Util.Subprograms is
    function Has_Any_Returning_Annotation (E : Entity_Id) return Boolean is
      (Has_Always_Return_Annotation (E)
       or else Has_Might_Not_Return_Annotation (E)
-      or else No_Return (E));
+      or else No_Return (E)
+      or else Get_Termination_Condition (E).Kind /= Unspecified);
 
    -------------------
    -- Has_Contracts --
@@ -862,8 +902,9 @@ package body SPARK_Util.Subprograms is
    function Is_Possibly_Nonreturning_Procedure (E : Entity_Id) return Boolean
    is
      (No_Return (E)
-       or else
-      Has_Might_Not_Return_Annotation (E));
+      or else Has_Might_Not_Return_Annotation (E)
+      or else Get_Termination_Condition (E) not in
+          (Kind => Unspecified) | (Static, True));
 
    ----------------------------------------
    -- Is_Predefined_Potentially_Blocking --

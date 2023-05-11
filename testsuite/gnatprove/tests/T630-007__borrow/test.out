@@ -1,4 +1,4 @@
-borrow.adb:33:04: warning: assuming "Free" always returns
+borrow.adb:33:04: warning: assuming "Free" always terminates
 borrow.adb:33:04: warning: assuming "Free" has no effect on global items
 borrow.adb:33:04: warning: no Global contract available for "Free"
 borrow.adb:33:04: warning: no returning annotation available for "Free"

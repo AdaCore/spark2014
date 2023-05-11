@@ -1,4 +1,4 @@
-call.adb:5:04: warning: assuming "put" always returns
+call.adb:5:04: warning: assuming "put" always terminates
 call.adb:5:04: warning: assuming "put" has no effect on global items
 call.adb:5:04: warning: no Global contract available for "put"
 call.adb:5:04: warning: no returning annotation available for "put"

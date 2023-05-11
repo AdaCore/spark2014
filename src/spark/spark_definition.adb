@@ -4187,13 +4187,11 @@ package body SPARK_Definition is
                     ("\\assuming & has no effect on global items", N, E);
                end if;
 
-               if not Has_Any_Returning_Annotation (E)
-                 and then not Has_Implicit_Always_Return_Annotation (E)
-               then
+               if not Has_Any_Returning_Annotation (E) then
                   Error_Msg_NE
                     (Warning_Message (Warn_Assumed_Always_Return), N, E);
                   Error_Msg_NE
-                    ("\\assuming & always returns", N, E);
+                    ("\\assuming & always terminates", N, E);
                end if;
             end if;
          end;
@@ -5614,6 +5612,22 @@ package body SPARK_Definition is
 
                      Next (Variant);
                   end loop;
+               end;
+            end if;
+
+            Prag := Get_Pragma (E, Pragma_Always_Terminates);
+            if Present (Prag) then
+               declare
+                  Assoc : constant List_Id :=
+                    Pragma_Argument_Associations (Prag);
+                  pragma Assert (No (Assoc) or else List_Length (Assoc) = 1);
+                  Cond  : constant Node_Id :=
+                    (if No (Assoc) then Empty
+                     else Expression (First (Assoc)));
+               begin
+                  if Present (Cond) then
+                     Mark (Cond);
+                  end if;
                end;
             end if;
          end Mark_Subprogram_Contracts;
@@ -8784,6 +8798,7 @@ package body SPARK_Definition is
             | Pragma_Ada_2005
             | Pragma_Ada_2012
             | Pragma_Ada_2022
+            | Pragma_Always_Terminates
             | Pragma_Annotate
             | Pragma_Assume_No_Invalid_Values
             --  Pragma_Check is handled specially above

@@ -1,5 +1,5 @@
 p.adb:6:13: high: call to potentially blocking subprogram "Release" in protected operation "Proc"
-p.adb:6:13: warning: assuming "Release" always returns
+p.adb:6:13: warning: assuming "Release" always terminates
 p.adb:6:13: warning: assuming "Release" has no effect on global items
 p.adb:6:13: warning: no Global contract available for "Release"
 p.adb:6:13: warning: no returning annotation available for "Release"

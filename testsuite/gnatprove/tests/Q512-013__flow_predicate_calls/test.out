@@ -1,4 +1,4 @@
-p.adb:7:22: warning: assuming "Yield" always returns
+p.adb:7:22: warning: assuming "Yield" always terminates
 p.adb:7:22: warning: no returning annotation available for "Yield"
 p.adb:13:10: error: "T" is not allowed in SPARK
 p.adb:13:10: error: violation of pragma SPARK_Mode at test.adc:1

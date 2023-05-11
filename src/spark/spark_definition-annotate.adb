@@ -460,6 +460,14 @@ package body SPARK_Definition.Annotate is
             & " Always_Return shall not raise exceptions",
             E);
          return;
+      elsif Get_Termination_Condition (E) not in
+        (Kind => Unspecified) | (Static, True)
+      then
+         Error_Msg_N
+           ("subprogram annotated with the " & Aspect_Or_Pragma
+            & " Always_Return shall have an Always_Terminates aspect of True",
+            E);
+         return;
       else
          Check_Annotate_Placement (E, Prag, "Always_Return", Ok);
          if not Ok then
@@ -1304,6 +1312,21 @@ package body SPARK_Definition.Annotate is
             Error_Msg_N
               ("procedure annotated with the " & Aspect_Or_Pragma
                & " Higher_Order_Specialization shall be ghost",
+               E);
+            return;
+         elsif Has_Exceptional_Contract (E) then
+            Error_Msg_N
+              ("procedure annotated with the " & Aspect_Or_Pragma
+               & " Higher_Order_Specialization shall not raise exceptions",
+               E);
+            return;
+         elsif Get_Termination_Condition (E) not in
+           (Kind => Unspecified) | (Static, True)
+         then
+            Error_Msg_N
+              ("procedure annotated with the " & Aspect_Or_Pragma
+               & " Higher_Order_Specialization shall have an Always_Terminates"
+               & " aspect of True",
                E);
             return;
          end if;
@@ -2802,7 +2825,7 @@ package body SPARK_Definition.Annotate is
    function Has_Implicit_Always_Return_Annotation
      (E : Entity_Id) return Boolean
    is
-     (Ekind (E) = E_Function
+     (Ekind (E) in E_Function | E_Package
         or else Has_Automatic_Instantiation_Annotation (E));
 
    -------------------------------

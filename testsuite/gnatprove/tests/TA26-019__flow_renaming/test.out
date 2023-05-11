@@ -1,7 +1,7 @@
 c413005.adb:17:13: error: anonymous access type for result for non-traversal functions is not allowed in SPARK
 c413005.adb:17:13: error: violation of pragma SPARK_Mode at test.adc:1
 c413005.adb:25:04: warning: assuming "Class_Wide_Get" has no effect on global items
-c413005.adb:25:04: warning: assuming "Class_Wide_Set" always returns
+c413005.adb:25:04: warning: assuming "Class_Wide_Set" always terminates
 c413005.adb:25:04: warning: assuming "Class_Wide_Set" has no effect on global items
 c413005.adb:25:04: warning: in instantiation at line 5
 c413005.adb:25:04: warning: in instantiation at line 6
@@ -10,7 +10,7 @@ c413005.adb:25:04: warning: no Global contract available for "Class_Wide_Get"
 c413005.adb:25:04: warning: no Global contract available for "Class_Wide_Set"
 c413005.adb:25:04: warning: no returning annotation available for "Class_Wide_Set"
 c413005.adb:26:04: warning: assuming "Get" has no effect on global items
-c413005.adb:26:04: warning: assuming "Set" always returns
+c413005.adb:26:04: warning: assuming "Set" always terminates
 c413005.adb:26:04: warning: assuming "Set" has no effect on global items
 c413005.adb:26:04: warning: in instantiation at line 5
 c413005.adb:26:04: warning: in instantiation at line 6
