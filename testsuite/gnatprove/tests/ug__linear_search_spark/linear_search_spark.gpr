@@ -1,0 +1,7 @@
+project linear_search_spark is
+
+   package Compiler is
+      for Switches ("ada") use ("-gnata", "-g", "-O0");
+   end Compiler;
+
+end linear_search_spark;

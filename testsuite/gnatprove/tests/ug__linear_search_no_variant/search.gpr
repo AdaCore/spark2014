@@ -1,7 +1,0 @@
-project Search is
-
-   package Compiler is
-      for Switches ("ada") use ("-gnata", "-g", "-O0");
-   end Compiler;
-
-end Search;

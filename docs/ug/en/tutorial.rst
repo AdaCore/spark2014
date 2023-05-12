@@ -26,9 +26,9 @@ errors. The final version of the ``linear_search`` example is part of the
 examples in the distribution via the :menuselection:`Help --> SPARK -->
 Examples` menu item.
 
-We start with creating a GNAT project file in ``search.gpr``:
+We start with creating a GNAT project file:
 
-.. literalinclude:: /examples/ug__linear_search_ada/search.gpr
+.. literalinclude:: /examples/ug__linear_search_ada/linear_search_ada.gpr
    :language: ada
    :linenos:
 

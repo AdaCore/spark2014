@@ -1,0 +1,17 @@
+with "sparklib";
+
+project long_sort is
+
+   package Builder is
+      for Global_Configuration_Pragmas use "test.adc";
+   end Builder;
+
+   package Compiler is
+      for Switches ("Ada") use ("-gnat2020", "-gnateDSPARK_BODY_MODE=Off");
+   end Compiler;
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--report=all", "-u", "sort.adb");
+   end Prove;
+
+end long_sort;

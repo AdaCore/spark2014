@@ -1,0 +1,5 @@
+project binary_search_precise is
+   package Prove is
+      for Proof_Switches("Ada") use ("--proof=progressive");
+   end Prove;
+end binary_search_precise;
