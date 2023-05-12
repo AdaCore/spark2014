@@ -21699,7 +21699,7 @@ package body Gnat2Why.Expr is
                              (Root_Retysp (Spec_Ty), WNE_Range_Pred),
                            Args =>
                              Prepare_Args_For_Subtype_Check
-                               (Spec_Ty, +Conc_Var),
+                               (Spec_Ty, +Conc_Var, Term_Domain (Domain)),
                            Typ  => EW_Bool_Type);
                      end if;
 
@@ -21871,7 +21871,8 @@ package body Gnat2Why.Expr is
                        (Domain => Domain,
                         Name   => E_Symb (Ty, WNE_Range_Pred),
                         Args   =>
-                          Prepare_Args_For_Access_Subtype_Check (Ty, +Var_Tmp),
+                          Prepare_Args_For_Access_Subtype_Check
+                            (Ty, +Var_Tmp, Term_Domain (Domain)),
                         Typ    => EW_Bool_Type);
                   else
                      Result := True_Expr;
