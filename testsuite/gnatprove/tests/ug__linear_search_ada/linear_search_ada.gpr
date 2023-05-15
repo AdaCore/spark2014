@@ -1,0 +1,7 @@
+project linear_search_ada is
+   for Source_Dirs use (".");
+
+   package Compiler is
+      for Switches ("Ada") use ("-gnatwa");
+   end Compiler;
+end linear_search_ada;
