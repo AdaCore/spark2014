@@ -8,12 +8,16 @@ bad_spec_prag.ads:13:50: error: procedure with pragma Annotate Might_Not_Return 
 bad_spec_prag.ads:18:50: error: pragma Annotate Might_Not_Return must apply to a procedure
 bad_spec_prag.ads:22:50: error: procedure with pragma Annotate Might_Not_Return must not also be dispatching
 gnatprove: error during generation of Global contracts
-bad.adb:24:07: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
-bad.adb:30:07: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
-bad.adb:30:07: error: consider annotating caller "Proc" with pragma Annotate (GNATprove, Might_Not_Return)
-gnatprove: error during generation of Global contracts
-weird.adb:10:14: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
-weird.adb:10:14: error: consider annotating caller "P" with pragma Annotate (GNATprove, Might_Not_Return)
+bad.adb:10:07: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
+bad.adb:11:07: warning: this statement is never reached
+bad.adb:17:10: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
+bad.adb:19:07: medium: unexpected exception might be raised
+bad.ads:5:13: high: all paths in "Call_Jump" raise exceptions or do not terminate normally
+bad.ads:7:14: high: all paths in "Call_Jump" raise exceptions or do not terminate normally
+bad.ads:9:06: info: data dependencies proved
+bad.ads:10:06: warning: postcondition does not check the outcome of calling "Call_Jump"
+bad.ads:12:13: info: implicit terminating annotation on "Silent_Call_Jump" has been proved, subprogram will terminate
+bad.ads:17:06: info: data dependencies proved
 weird.ads:5:06: error: procedure with aspect Annotate Might_Not_Return must not also be marked with Always_Return
 weird.ads:10:06: error: procedure with aspect Annotate Always_Return must not also be marked with Might_Not_Return
 weird.ads:14:06: error: procedure with aspect Annotate Always_Return must not also be marked with No_Return

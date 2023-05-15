@@ -1,9 +1,11 @@
+main.adb:1:11: info: terminating annotation on "Main" has been proved, subprogram will terminate
 main.adb:12:07: info: conditional loop termination proved (CVC5: 1 VC)
 main.adb:24:07: medium: loop might not terminate (e.g. when B = False) [reason for check: procedure "Bad_Do_Loop" has an Always_Terminates aspect]
 main.adb:47:07: info: conditional call termination proved (CVC5: 1 VC)
 main.adb:54:07: info: conditional call termination proved (CVC5: 1 VC)
 main.adb:57:14: warning: subprogram "Call_3" has no effect
 main.adb:62:10: info: conditional call termination proved (CVC5: 1 VC)
+main.adb:62:10: medium: terminating annotation on "Call_3" could be incorrect, call to "Do_Loop" might be nonterminating [possible fix: annotate "Do_Loop" with Always_Return]
 main.adb:66:04: warning: analyzing unreferenced function "Call_4"
 main.adb:69:10: info: conditional call termination proved (CVC5: 1 VC)
 main.adb:69:10: medium: implicit terminating annotation on "Call_4" could be incorrect, call to "Do_Loop" might be nonterminating [possible fix: annotate "Do_Loop" with Always_Return]
@@ -11,16 +13,20 @@ main.adb:81:07: medium: call might not terminate (e.g. when B = False) [reason f
 main.adb:88:07: medium: call might not terminate (e.g. when B = False) [reason for check: procedure "Bad_Call_2" has an Always_Terminates aspect]
 main.adb:91:14: warning: subprogram "Bad_Call_3" has no effect
 main.adb:95:07: medium: call might not terminate [reason for check: procedure "Bad_Call_3" has an Always_Terminates aspect]
+main.adb:95:07: medium: terminating annotation on "Bad_Call_3" could be incorrect, call to "Do_Loop" might be nonterminating [possible fix: annotate "Do_Loop" with Always_Return]
 main.adb:98:04: warning: analyzing unreferenced function "Bad_Call_4"
-main.adb:100:07: medium: call might not terminate [reason for check: functions should always terminate in SPARK]
+main.adb:100:07: medium: call might not terminate (e.g. when B = True) [reason for check: functions should always terminate in SPARK]
 main.adb:100:07: medium: implicit terminating annotation on "Bad_Call_4" could be incorrect, call to "Do_Loop" might be nonterminating [possible fix: annotate "Do_Loop" with Always_Return]
 main.adb:107:17: warning: subprogram "Call" has no effect
 main.adb:108:17: warning: subprogram "Bad_Call" has no effect
 main.adb:115:13: info: conditional call termination proved (CVC5: 1 VC)
+main.adb:115:13: medium: terminating annotation on "Call" could be incorrect, call to "Do_Loop" might be nonterminating [possible fix: annotate "Do_Loop" with Always_Return]
 main.adb:121:10: medium: call might not terminate [reason for check: procedure "Bad_Call" has an implicit Always_Terminates aspect inherited from "Nested_1"]
+main.adb:121:10: medium: terminating annotation on "Bad_Call" could be incorrect, call to "Do_Loop" might be nonterminating [possible fix: annotate "Do_Loop" with Always_Return]
 main.adb:124:07: warning: analyzing unreferenced procedure "Bad_Call_2"
 main.adb:124:17: warning: subprogram "Bad_Call_2" has no effect
 main.adb:126:10: medium: call might not terminate [reason for check: procedure "Bad_Call_2" has an implicit Always_Terminates aspect inherited from "Nested_1"]
+main.adb:126:10: medium: terminating annotation on "Bad_Call_2" could be incorrect, call to "Do_Loop" might be nonterminating [possible fix: annotate "Do_Loop" with Always_Return]
 main.adb:135:29: medium: divide by zero might fail (e.g. when B = 0) [possible fix: add precondition (B /= 0) to subprogram at line 132]
 main.adb:135:29: medium: overflow check might fail, cannot prove lower bound for A / B (e.g. when A = 0 and B = 0) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (A / B >= Integer'First) to subprogram at line 132]
 main.adb:141:29: info: division check proved (CVC5: 1 VC)

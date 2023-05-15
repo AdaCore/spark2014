@@ -1409,13 +1409,6 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
 
-      --  For a possibly nonreturning procedure, add the special variable
-      --  no__return in the write effects.
-
-      if Has_Might_Not_Return_Annotation (E) then
-         Effects_Append_To_Writes (Eff, M_Main.No_Return);
-      end if;
-
       for Read_Id of Read_Ids loop
          case Read_Id.Kind is
             when Direct_Mapping =>
@@ -6877,23 +6870,6 @@ package body Gnat2Why.Subprograms is
             Post := +New_And_Expr (Left   => +Post,
                                    Right  => +Dynamic_Prop_Effects,
                                    Domain => EW_Pred);
-
-            --  If a procedure might not return, its postcondition is only
-            --  valid in those cases where it returns:
-            --
-            --    if no__return = false then post
-
-            if Has_Might_Not_Return_Annotation (E) then
-               Post := New_Conditional
-                 (Condition =>
-                    +New_Comparison
-                      (Symbol => M_Integer.Bool_Eq,
-                       Left   => New_Deref (Right => +M_Main.No_Return,
-                                            Typ   => EW_Bool_Type),
-                       Right  => +False_Term,
-                       Domain => EW_Pred),
-                  Then_Part => Post);
-            end if;
 
             Emit
               (Th,

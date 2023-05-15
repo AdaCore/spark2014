@@ -2790,7 +2790,14 @@ package body SPARK_Definition.Annotate is
                  and then Ekind (Unit) = E_Package
                  and then Has_Always_Return_Annotation (Unit))
         or else (Present (Gen_Unit)
-                 and then Has_Always_Return_Annotation (Gen_Unit));
+                 and then Has_Always_Return_Annotation (Gen_Unit))
+
+        --  Simulate Always_Return annotation for flow analysis
+
+        or else (Ekind (E) = E_Package
+                 and then Present (Get_Pragma (E, Pragma_Always_Terminates)))
+        or else (Ekind (E) in E_Entry | E_Procedure
+                 and then Get_Termination_Condition (E) = (Static, True));
    end Has_Always_Return_Annotation;
 
    ----------------------------------
@@ -2842,7 +2849,16 @@ package body SPARK_Definition.Annotate is
 
    function Has_Might_Not_Return_Annotation (E : Entity_Id) return Boolean is
      (Ekind (E) in E_Procedure | E_Generic_Procedure
-      and then Might_Not_Return_Annotations.Contains (E));
+      and then (Might_Not_Return_Annotations.Contains (E)
+
+      --  Simulate Might_Not_Return annotation for flow analysis
+
+      or else
+        (declare
+           Term : constant Termination_Condition :=
+              Get_Termination_Condition (E);
+         begin
+           Term.Kind /= Unspecified and then Term /= (Static, True))));
 
    -----------------------------------
    -- Has_No_Wrap_Around_Annotation --
