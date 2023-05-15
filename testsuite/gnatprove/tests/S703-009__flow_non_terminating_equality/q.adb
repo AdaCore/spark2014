@@ -13,7 +13,6 @@ procedure Q with SPARK_Mode is
        end loop;
        return True;
     end "=";
-    pragma Annotate (GNATprove, Always_Return, "=");
 
     type RR is record
        G : R;
@@ -21,7 +20,6 @@ procedure Q with SPARK_Mode is
 
     function Bad (X, Y : RR) return Boolean is
       (X = Y);
-    pragma Annotate (GNATprove, Always_Return, Bad);
 
     X, Y : RR;
 begin

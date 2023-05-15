@@ -6,13 +6,13 @@ is
      (A : Int_Array;
       A_First, Length : Natural)
      return Boolean
-     with Ghost, Import, Global => null, Annotate => (GNATprove, Always_Return);
+     with Ghost, Import, Global => null;
 
    function Perm
      (A, B : Int_Array;
       A_First, Length : Natural)
      return Boolean
-     with Ghost, Import, Global => null, Annotate => (GNATprove, Always_Return);
+     with Ghost, Import, Global => null;
 
   procedure Mergesort
     (A       : in out Int_Array;

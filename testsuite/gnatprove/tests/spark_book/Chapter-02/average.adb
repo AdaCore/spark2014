@@ -2,7 +2,7 @@ with Ada.Text_IO;
 with Ada.Integer_Text_IO;
 with Ada.Float_Text_IO;
 procedure Average with
-  Annotate => (GNATprove, Might_Not_Return)
+  Always_Terminates => False
 is
    -- Display the average of two integers entered by the user
    A : Integer;   -- The first integer

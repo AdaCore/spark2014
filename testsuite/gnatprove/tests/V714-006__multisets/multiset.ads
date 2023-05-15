@@ -9,7 +9,7 @@ use Ada.Containers;
 
 package Multiset with
   SPARK_Mode => On,
-  Annotate => (GNATprove, Always_Return)
+  Always_Terminates
 is
    type Element_Type is new Natural;
 

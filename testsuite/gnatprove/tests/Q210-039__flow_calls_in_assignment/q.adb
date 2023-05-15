@@ -1,5 +1,5 @@
 with P;
-procedure Q with Annotate => (GNATprove, Always_Return) is
+procedure Q with Always_Terminates is
    type T is array (Integer) of Positive;
 
    A : T := (others => 1);

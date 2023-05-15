@@ -8,7 +8,7 @@ is
 
    function Bad (F : access function return Integer) return Integer
    with
-     Annotate => (GNATprove, Always_Return),
+
      Annotate => (GNATprove, Higher_Order_Specialization);
 
    function Bad (F : access function return Integer) return Integer is

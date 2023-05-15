@@ -6,6 +6,6 @@ is
    procedure Read (V : out Boolean)
      with Global   => (Input => State),
           Depends  => (V => State),
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
 
 end Sensor;

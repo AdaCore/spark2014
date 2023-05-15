@@ -1,7 +1,5 @@
 spec_rec_call_with_variant.adb:7:13: info: function contract might not be available on recursive calls
 spec_rec_call_with_variant.adb:7:44: info: function contract feasibility proved (CVC5: 1 VC)
-spec_rec_call_with_variant.adb:8:06: warning: Always_Return annotation is useless
-spec_rec_call_with_variant.adb:8:06: warning: function "Add" has implicit Always_Return annotation
 spec_rec_call_with_variant.adb:10:58: info: range check proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:10:58: medium: implicit terminating annotation on "Add" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 spec_rec_call_with_variant.adb:10:63: info: predicate check proved (Trivial: 1 VC)
@@ -26,8 +24,6 @@ spec_rec_call_with_variant.adb:18:25: info: subprogram variant proved (CVC5: 1 V
 spec_rec_call_with_variant.adb:18:32: info: range check proved (CVC5: 2 VC)
 spec_rec_call_with_variant.adb:22:13: info: function contract might not be available on recursive calls
 spec_rec_call_with_variant.adb:22:46: info: function contract feasibility proved (CVC5: 1 VC)
-spec_rec_call_with_variant.adb:23:06: warning: Always_Return annotation is useless
-spec_rec_call_with_variant.adb:23:06: warning: function "Add_2" has implicit Always_Return annotation
 spec_rec_call_with_variant.adb:25:58: info: range check proved (CVC5: 1 VC)
 spec_rec_call_with_variant.adb:25:58: medium: implicit terminating annotation on "Add_2" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 spec_rec_call_with_variant.adb:25:63: info: predicate check proved (Trivial: 1 VC)

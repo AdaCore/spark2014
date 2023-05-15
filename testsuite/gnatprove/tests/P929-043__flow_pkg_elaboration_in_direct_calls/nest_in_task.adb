@@ -15,7 +15,7 @@ package body Nest_In_Task is
 
    task body TT is
       package Pkg is
-         procedure P with Annotate => (GNATprove, Always_Return);
+         procedure P with Always_Terminates;
       end Pkg;
 
       package body Pkg is

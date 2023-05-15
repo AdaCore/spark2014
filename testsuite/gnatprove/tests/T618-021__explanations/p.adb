@@ -1,6 +1,6 @@
 with Crash;
 
-procedure P with Annotate => (GNATprove, Always_Return) is
+procedure P with Always_Terminates is
 begin
    Crash;
 end;

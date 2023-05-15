@@ -1,4 +1,3 @@
-main.adb:1:11: info: terminating annotation on "Main" has been proved, subprogram will terminate
 main.adb:12:07: info: conditional loop termination proved (CVC5: 1 VC)
 main.adb:24:07: medium: loop might not terminate (e.g. when B = False) [reason for check: procedure "Bad_Do_Loop" has an Always_Terminates aspect]
 main.adb:47:07: info: conditional call termination proved (CVC5: 1 VC)

@@ -5,7 +5,7 @@ is
 
    function Call_2 (F, G : not null access function return Integer; B : Boolean) return Integer with
      Annotate => (GNATprove, Higher_Order_Specialization),
-     Annotate => (GNATprove, Always_Return),
+
      Depends => (Call_2'Result => (F, G, B)),
      Post => Call_2'Result = (if B then F.all else G.all);
 
@@ -60,8 +60,8 @@ is
 
    function Rand (X : Integer) return Boolean with
      Import,
-     Global => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
 
    I : Integer;
 begin

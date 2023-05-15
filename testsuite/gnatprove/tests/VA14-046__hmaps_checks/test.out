@@ -882,13 +882,3 @@ spark-containers-parameter_checks.ads:242:19: info: postcondition proved (Z3: 1 
 spark-containers-parameter_checks.ads:242:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:142, in instantiation at test_hmaps.ads:30
 spark-containers-parameter_checks.ads:242:19: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:154, in instantiation at test_hmaps.ads:8 [possible fix: you should consider adding a postcondition to function Hash or turning it into an expression function in its unit spec]
 spark-containers-parameter_checks.ads:242:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:142, in instantiation at test_hmaps.ads:25 [possible fix: you should consider adding a postcondition to function Hash or turning it into an expression function in its unit spec]
-types.ads:9:06: warning: Always_Return annotation is useless
-types.ads:9:06: warning: function "=" has implicit Always_Return annotation
-types.ads:14:06: warning: Always_Return annotation is useless
-types.ads:14:06: warning: function "Equivalent" has implicit Always_Return annotation
-types.ads:19:06: warning: Always_Return annotation is useless
-types.ads:19:06: warning: function "<" has implicit Always_Return annotation
-types.ads:24:06: warning: Always_Return annotation is useless
-types.ads:24:06: warning: function "Hash" has implicit Always_Return annotation
-types.ads:29:06: warning: Always_Return annotation is useless
-types.ads:29:06: warning: function "F" has implicit Always_Return annotation

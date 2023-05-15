@@ -3,7 +3,7 @@ procedure Exc_Cases_And_Annotations with SPARK_Mode is
    procedure Always_Return_P (X : in out Integer) with
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Exceptional_Cases => (Constraint_Error => True);
 
    function F return Integer with

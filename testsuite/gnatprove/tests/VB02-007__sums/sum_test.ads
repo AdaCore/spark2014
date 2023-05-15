@@ -2,7 +2,7 @@ with SPARK.Big_Integers; use SPARK.Big_Integers;
 with SPARK.Higher_Order.Fold;
 package Sum_Test with
     SPARK_Mode => On,
-    Annotate => (GNATprove, Always_Return)
+    Always_Terminates
 is
 
    Big_Int_First : constant Big_Integer := To_Big_Integer(Integer'First);

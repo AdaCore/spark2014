@@ -6,9 +6,8 @@ private package Initialization_And_Elaboration.Private_Child
 is
    procedure Do_Something (I : in Integer)
      with Global   => (In_Out => State),
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
 
    function Get_Something return Integer
-     with Global   => State,
-          Annotate => (GNATprove, Always_Return);
+     with Global => State;
 end Initialization_And_Elaboration.Private_Child;

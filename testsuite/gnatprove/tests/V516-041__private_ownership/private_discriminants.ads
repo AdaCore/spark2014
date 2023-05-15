@@ -1,6 +1,6 @@
 package Private_Discriminants with
   SPARK_Mode,
-  Annotate => (GNATprove, Always_Return)
+  Always_Terminates
 is
    type Pool_Specific_Access (B : Boolean := False) is private with
      Default_Initial_Condition => Is_Null (Pool_Specific_Access),

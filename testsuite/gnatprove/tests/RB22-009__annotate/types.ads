@@ -7,7 +7,6 @@ is
 
    generic
       type Int is mod <>;
-   function Foo (Buffer : Bytes) return Int
-     with Annotate => (GNATprove, Always_Return);
+   function Foo (Buffer : Bytes) return Int;
 
 end Types;

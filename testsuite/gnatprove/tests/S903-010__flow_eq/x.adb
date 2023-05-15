@@ -4,58 +4,40 @@ procedure X is
    type New_Bool is (My_True, My_False);
 
    function "abs" (Left : Y) return Integer with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "abs");
 
    function "and" (Left, Right : New_Bool) return Boolean with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "and");
 
    function "mod" (Left, Right : Y) return Integer with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "mod");
 
    function "not" (Left : New_Bool) return Boolean with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "not");
 
    function "or" (Left, Right : New_Bool) return Boolean with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "or");
 
    function "rem" (Left, Right : Y) return Integer with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "rem");
 
    function "xor" (Left, Right : New_Bool) return Boolean with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "xor");
 
    function "=" (Left, Right : Y) return Boolean with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "=");
 
    function "<" (Left, Right : Y) return Boolean with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "<");
 
    function "<=" (Left, Right : Y) return Boolean with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "<=");
 
    function ">" (Left, Right : Y) return Boolean with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, ">");
 
    function ">=" (Left, Right : Y) return Boolean with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, ">=");
 
    function "+" (Left, Right : Y) return Integer with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "+");
 
    function "-" (Left, Right : Y) return Integer with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "-");
 
    function "&" (Left, Right : Y) return Integer with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "&");
 
    function "*" (Left, Right : Y) return Integer with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "*");
 
    function "/" (Left, Right : Y) return Integer with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "/");
 
    function "**" (Left, Right : Y) return Integer with Pre => True;
-   pragma Annotate (GNATprove, Always_Return, "**");
 
    function "=" (Left, Right : Y) return Boolean is
    begin

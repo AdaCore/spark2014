@@ -2,12 +2,12 @@ package Types with SPARK_Mode => On is
    type Private_Type is private;
 
    function Eq (Left, Right : Private_Type) return Boolean with
-     Annotate => (GNATprove, Always_Return),
+
      Post => Eq'Result = (Witness (Left) = Witness (Right));
 
    function Witness (X : Private_Type) return Integer with
-     Ghost,
-     Annotate => (GNATprove, Always_Return);
+     Ghost;
+
    --  Witness function used to express that Eq is an equivalence relation
 
 private

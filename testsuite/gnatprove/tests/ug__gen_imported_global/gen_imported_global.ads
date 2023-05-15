@@ -10,7 +10,7 @@ is
      Import,
      Convention => C,
      Global => (Output => State),
-     Annotate => (GNATprove, Always_Return);
+     Always_Terminates;
 
    procedure Set_Global_Twice;
 

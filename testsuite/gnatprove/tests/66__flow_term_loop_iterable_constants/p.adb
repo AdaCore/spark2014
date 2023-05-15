@@ -2,7 +2,7 @@ with SPARK.Containers.Formal.Unbounded_Ordered_Maps;
 with SPARK.Containers.Functional.Sets;
 with SPARK.Big_Intervals; use SPARK.Big_Intervals;
 
-package body P with SPARK_Mode, Annotate => (GNATprove, Always_Return) is
+package body P with SPARK_Mode is
    procedure Formal_Maps is
       package Maps is new SPARK.Containers.Formal.Unbounded_Ordered_Maps
         (Key_Type       => Positive,

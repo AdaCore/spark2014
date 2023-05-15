@@ -4,7 +4,7 @@ package Test_Might_Not_Return is
     State : Ghost_State := Init with Ghost;
 
     procedure Die with No_Return;
-    procedure Entrance_Check with Annotate => (GNATprove, Might_Not_Return);
+    procedure Entrance_Check with Always_Terminates => False;
 
     procedure Init with
         Post => State = Init;
@@ -12,11 +12,11 @@ package Test_Might_Not_Return is
     procedure Set_Something with
         Pre => State = Init,
         Post => State = Config,
-        Annotate => (GNATprove, Might_Not_Return);
+        Always_Terminates => False;
 
     procedure Run with
         Pre => State = Config,
         Post => State = Run,
-        Annotate => (GNATprove, Might_Not_Return);
+        Always_Terminates => False;
 
 end Test_Might_Not_Return;

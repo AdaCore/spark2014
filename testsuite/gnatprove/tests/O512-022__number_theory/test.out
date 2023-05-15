@@ -20,8 +20,6 @@ number_theory.ads:23:43: info: float overflow check proved (CVC5: 1 VC)
 number_theory.ads:23:47: info: division check proved (CVC5: 1 VC)
 number_theory.ads:23:47: info: float overflow check proved (Trivial)
 number_theory.ads:23:55: info: float overflow check proved (Trivial)
-number_theory.ads:24:04: warning: Always_Return annotation is useless
-number_theory.ads:24:04: warning: function "Fib" has implicit Always_Return annotation
 number_theory.ads:27:13: info: implicit terminating annotation on "Fibonacci" has been proved, subprogram will terminate
 number_theory.ads:28:19: info: postcondition proved (CVC5: 1 VC)
 number_theory.ads:31:13: info: implicit terminating annotation on "Fibonacci2" has been proved, subprogram will terminate

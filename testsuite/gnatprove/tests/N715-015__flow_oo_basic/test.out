@@ -1,5 +1,3 @@
-foo.ads:8:06: warning: Always_Return annotation is useless
-foo.ads:8:06: warning: function "Hash" has implicit Always_Return annotation
 tests.adb:14:13: info: implicit terminating annotation on "F_Get_Item" has been proved, subprogram will terminate
 tests.adb:16:13: info: implicit terminating annotation on "F_Get_Item_E" has been proved, subprogram will terminate
 tests.adb:19:28: info: initialization of "B" proved

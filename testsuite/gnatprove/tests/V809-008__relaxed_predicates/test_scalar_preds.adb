@@ -1,13 +1,13 @@
 procedure Test_Scalar_Preds with SPARK_Mode is
    function Rand (X : Integer) return Boolean with
      Import,
-     Global => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
 
    function F (X : Integer) return Boolean with
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+
      Post => (if X = 0 then F'Result);
 
    type T1 is new Integer with

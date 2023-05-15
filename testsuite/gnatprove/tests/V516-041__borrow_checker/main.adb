@@ -24,13 +24,13 @@ procedure Main with SPARK_Mode is
 
    function Rand (X : Integer) return Boolean with
      Import,
-     Global => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
 
    function Read (X : T2) return Boolean with
      Import,
-     Global => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
 
    X : T2;
    Y : T2;

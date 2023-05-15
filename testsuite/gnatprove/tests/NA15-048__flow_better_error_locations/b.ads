@@ -3,6 +3,5 @@ package B
        Initializes    => State
 is
    function Return_State return Integer
-     with Global   => State,
-          Annotate => (GNATprove, Always_Return);
+     with Global => State;
 end B;

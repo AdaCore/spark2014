@@ -9,5 +9,5 @@
       procedure Op_1 (I : in Integer)
         with Global   => (In_Out => R1),
 	     Depends  => (R1 =>+ I),
-	     Annotate => (GNATprove, Always_Return);
+	     Always_Terminates;
    end R;

@@ -28,7 +28,7 @@ private with Ada.Streams.Stream_IO;
 
 package File_IO with
   SPARK_Mode,
-  Annotate => (GNATprove, Always_Return)
+  Always_Terminates
 is
 
    type File is limited private;

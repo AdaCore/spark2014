@@ -1,6 +1,6 @@
 package Text_IO with
   SPARK_Mode,
-  Annotate => (GNATprove, Always_Return)
+  Always_Terminates
 is
    type File_Descriptor is limited private with
      Default_Initial_Condition => not Is_Open (File_Descriptor),

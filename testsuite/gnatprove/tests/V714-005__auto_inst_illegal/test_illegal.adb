@@ -3,8 +3,8 @@ procedure Test_Illegal with SPARK_Mode is
    function P (X : Integer) return Boolean with
      Ghost,
      Import,
-     Global => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
 
    function F1 (X : Integer) return Integer is (X);
 
@@ -12,7 +12,7 @@ procedure Test_Illegal with SPARK_Mode is
      Ghost,
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+
      Annotate => (GNATprove, Automatic_Instantiation),
      Post => Lemma_F1'Result and then P (X);
 
@@ -21,7 +21,7 @@ procedure Test_Illegal with SPARK_Mode is
    procedure Lemma_F2 (X : Integer) with
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Post => P (X);
 
@@ -33,7 +33,7 @@ procedure Test_Illegal with SPARK_Mode is
      Ghost,
      Import,
      Global => (In_Out => G),
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Post => P (X);
 
@@ -43,7 +43,7 @@ procedure Test_Illegal with SPARK_Mode is
      Ghost,
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Post => P (X);
 
@@ -53,7 +53,7 @@ procedure Test_Illegal with SPARK_Mode is
      Ghost,
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Post => P (X);
 
@@ -63,7 +63,7 @@ procedure Test_Illegal with SPARK_Mode is
      Ghost,
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Post => P (X.all);
 
@@ -74,7 +74,7 @@ procedure Test_Illegal with SPARK_Mode is
         Ghost,
         Import,
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Annotate => (GNATprove, Automatic_Instantiation),
         Post => P (X);
    end Nested;
@@ -85,7 +85,7 @@ procedure Test_Illegal with SPARK_Mode is
      Ghost,
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Post => P (X);
 
@@ -95,14 +95,14 @@ procedure Test_Illegal with SPARK_Mode is
      Ghost,
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Post => P (X);
 
    procedure Lemma_F9 (X : Integer) with
      Ghost,
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Post => P (X);
 
@@ -111,14 +111,14 @@ procedure Test_Illegal with SPARK_Mode is
    procedure Not_Lemma_F10 (X : Integer) with
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Post => P (X);
 
    procedure Lemma_F10 (X : Integer) with
      Ghost,
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Post => P (X);
 
@@ -130,7 +130,7 @@ procedure Test_Illegal with SPARK_Mode is
      Ghost,
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Post => P (X);
 

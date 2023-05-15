@@ -9,7 +9,7 @@ procedure Polarity is
    Foo : constant Boolean := True;
    Bar : constant Boolean := False;
 
-   procedure Dummy with Import, Global => null, Annotate => (GNATprove, Always_Return);
+   procedure Dummy with Import, Global => null, Always_Terminates;
 begin
 
    --  else branch is dead

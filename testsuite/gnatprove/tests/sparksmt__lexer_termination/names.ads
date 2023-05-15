@@ -28,7 +28,7 @@
 
 package Names with
    SPARK_Mode,
-   Annotate          => (GNATprove, Always_Return),
+   Always_Terminates,
    Abstract_State    => Name_Table,
    Initializes       => Name_Table,
    Initial_Condition => Invariant

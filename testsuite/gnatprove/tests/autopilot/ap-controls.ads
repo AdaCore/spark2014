@@ -5,7 +5,7 @@ private package AP.Controls
                                                 External => Async_Writers),
                           (Heading_Switch with Part_Of  => AP.State,
                                                External => Async_Writers)),
-       Annotate       => (GNATprove, Always_Return)
+       Always_Terminates
 is
    type Switch is (On, Off);
 

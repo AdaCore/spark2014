@@ -3,27 +3,25 @@ traversals.adb:16:07: info: dynamic accessibility check proved (Trivial)
 traversals.adb:19:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
 traversals.adb:20:07: info: dynamic accessibility check proved (Trivial)
 traversals.adb:24:13: info: function contract might not be available on recursive calls
-traversals.adb:25:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
+traversals.adb:24:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 traversals.adb:26:14: info: pointer dereference check proved (CVC5: 1 VC)
+traversals.adb:27:43: info: subprogram variant proved (Trivial)
 traversals.adb:27:52: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:27:54: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:27:59: info: overflow check proved (CVC5: 2 VC)
-traversals.adb:29:06: warning: Always_Return annotation is useless
-traversals.adb:29:06: warning: function "Length" has implicit Always_Return annotation
 traversals.adb:30:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
-traversals.adb:30:15: medium: implicit terminating annotation on "Length" could be incorrect, "Length" and "Length" are mutually recursive [possible fix: annotate "Length" and "Length" with Subprogram_Variant aspects]
+traversals.adb:30:80: info: subprogram variant proved (Trivial)
 traversals.adb:30:89: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:30:94: info: overflow check proved (CVC5: 2 VC)
 traversals.adb:32:13: info: function contract might not be available on recursive calls
-traversals.adb:33:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
+traversals.adb:32:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 traversals.adb:34:14: info: pointer dereference check proved (CVC5: 1 VC)
+traversals.adb:35:43: info: subprogram variant proved (Trivial)
 traversals.adb:35:52: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:35:54: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:35:59: info: overflow check proved (CVC5: 2 VC)
-traversals.adb:37:06: warning: Always_Return annotation is useless
-traversals.adb:37:06: warning: function "Length" has implicit Always_Return annotation
 traversals.adb:38:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
-traversals.adb:38:15: medium: implicit terminating annotation on "Length" could be incorrect, "Length" and "Length" are mutually recursive [possible fix: annotate "Length" and "Length" with Subprogram_Variant aspects]
+traversals.adb:38:80: info: subprogram variant proved (Trivial)
 traversals.adb:38:89: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:38:94: info: overflow check proved (CVC5: 2 VC)
 traversals.adb:40:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate

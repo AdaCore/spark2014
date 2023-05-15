@@ -8,7 +8,7 @@ with SPARK.Containers.Functional.Maps.Higher_Order;
 
 procedure Test_Map_HO with SPARK_Mode is
    package Nested with
-      Annotate => (GNATprove, Always_Return)
+      Always_Terminates
    is
       type Key_Type is private;
       type Element_Type is private;

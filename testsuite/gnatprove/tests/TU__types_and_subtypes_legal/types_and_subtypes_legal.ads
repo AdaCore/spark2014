@@ -4,14 +4,14 @@ is
    type Node is private;
 
    function Get_Data (N : Node) return Integer
-     with Global   => null,
-          Annotate => (GNATprove, Always_Return);
+     with Global => null;
+
 
    function "=" (X, Y : Node) return Boolean is (Get_Data (X) = Get_Data (Y));
 
    function Get_Next (N : Node) return Node
-     with Global   => null,
-          Annotate => (GNATprove, Always_Return);
+     with Global => null;
+
 private
    pragma SPARK_Mode (Off);
 

@@ -4,6 +4,6 @@ package ADC is
    procedure Read (Value : out Integer)
      with
        Global => null,
-       Annotate => (GNATprove, Always_Return);
+       Always_Terminates;
 
 end ADC;

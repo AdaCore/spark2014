@@ -1,6 +1,6 @@
 procedure Main with SPARK_Mode is
 
-   package Nested with Annotate => (GNATprove, Always_Return)
+   package Nested with Always_Terminates
    is
       type Pool_Specific_Access is private with
         Default_Initial_Condition =>

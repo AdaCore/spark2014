@@ -1,3 +1,3 @@
 package P is
-   function Fun return Integer with Annotate => (GNATprove, Always_Return);
+   function Fun return Integer;
 end P;

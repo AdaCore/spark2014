@@ -1,4 +1,4 @@
-package Preconditions with Annotate => (GNATprove, Always_Return) is
+package Preconditions with Always_Terminates is
    function Returning_Precondition (A, B : Integer)
                                     return Boolean
    is (A = B);

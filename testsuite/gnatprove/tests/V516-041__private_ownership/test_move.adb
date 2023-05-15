@@ -2,8 +2,8 @@ procedure Test_Move with SPARK_Mode is
 
    function Rand (X : Integer) return Boolean with
      Import,
-     Global => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
 
    package Nested is
       type T is private with
@@ -35,8 +35,8 @@ procedure Test_Move with SPARK_Mode is
 
       function Read (X : Two_T) return Boolean with
         Import,
-        Global => null,
-        Annotate => (GNATprove, Always_Return);
+        Global => null;
+
 
       X : Two_T;
       Y : Two_T := X;
@@ -74,8 +74,8 @@ procedure Test_Move with SPARK_Mode is
 
       function Read (X : Two_U) return Boolean with
         Import,
-        Global => null,
-        Annotate => (GNATprove, Always_Return);
+        Global => null;
+
 
       X : Two_U;
       Y : Two_U := X;
@@ -113,13 +113,13 @@ procedure Test_Move with SPARK_Mode is
 
       function Read (X : Two_V) return Boolean with
         Import,
-        Global => null,
-        Annotate => (GNATprove, Always_Return);
+        Global => null;
+
 
       procedure Havoc (X : in out Two_V) with
         Import,
         Global => null,
-        Annotate => (GNATprove, Always_Return);
+        Always_Terminates;
 
       X : Two_V;
       Y : Two_V := X;

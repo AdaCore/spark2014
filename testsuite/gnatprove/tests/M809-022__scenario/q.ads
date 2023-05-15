@@ -3,5 +3,5 @@ package Q is
 
    procedure Tracing with
      Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Always_Terminates;
 end Q;

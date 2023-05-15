@@ -4,6 +4,6 @@ package DAC is
    procedure Write (Value : in Integer)
      with
        Global => null,
-       Annotate => (GNATprove, Always_Return);
+       Always_Terminates;
 
 end DAC;

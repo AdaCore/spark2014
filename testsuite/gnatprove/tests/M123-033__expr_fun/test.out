@@ -190,5 +190,3 @@ reorder_q.ads:4:13: info: implicit terminating annotation on "G3" has been prove
 reorder_q.ads:5:13: info: implicit terminating annotation on "G4" has been proved, subprogram will terminate
 reorder_q.ads:5:38: info: overflow check proved (CVC5: 2 VC)
 reorder_q.ads:5:43: info: overflow check proved (CVC5: 2 VC)
-unknown.ads:2:55: warning: Always_Return annotation is useless
-unknown.ads:2:55: warning: function "Value" has implicit Always_Return annotation

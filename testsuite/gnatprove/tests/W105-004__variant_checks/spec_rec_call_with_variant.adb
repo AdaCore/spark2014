@@ -5,7 +5,7 @@ procedure Spec_Rec_Call_With_Variant
 is
 
    function Add (C : Natural; F : not null access function (X : Integer) return Big_Integer) return Big_Integer with
-     Annotate => (GNATprove, Always_Return),
+
      Annotate => (GNATprove, Higher_Order_Specialization),
      Subprogram_Variant => (Decreases => C, Decreases => Max (0, F (0))),
      Post => Add'Result = F (C) + (if C = 0 then 0 else Add (C - 1, F));
@@ -20,7 +20,7 @@ is
    end Add;
 
    function Add_2 (C : Natural; F : not null access function (X : Integer) return Big_Integer) return Big_Integer with
-     Annotate => (GNATprove, Always_Return),
+
      Annotate => (GNATprove, Higher_Order_Specialization),
      Subprogram_Variant => (Decreases => C, Decreases => Max (0, F (0))),
      Post => Add_2'Result = F (C) + (if C = 0 then 0 else Add_2 (C - 1, F));

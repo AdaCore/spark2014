@@ -3,7 +3,7 @@ package Surfaces
                           (Ailerons  with External => Async_Readers),
                           (Rudder    with External => Async_Readers)),
        Initializes    => (Elevators, Ailerons, Rudder),
-       Annotate       => (GNATprove, Always_Return)
+       Always_Terminates
 is
    type Controlangle is new Short_Short_Integer range -45 .. 45;
 

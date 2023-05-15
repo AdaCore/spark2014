@@ -7,18 +7,18 @@ procedure Traverse_List with SPARK_Mode is
        Next : List_Acc;
     end record;
 
-   function Eq (X, Y : access constant List) return Boolean with
-     Annotate => (GNATprove, Always_Return);
+   function Eq (X, Y : access constant List) return Boolean;
+
    function "=" (X, Y : List) return Boolean is
-     (X.Val = Y.Val and then Eq (X.Next, Y.Next))
-   with
-     Annotate => (GNATprove, Always_Return);
+     (X.Val = Y.Val and then Eq (X.Next, Y.Next));
+
+
    function Eq (X, Y : access constant List) return Boolean is
      ((X = null) = (Y = null)
       and then (if X /= null then X.all = Y.all));
 
    procedure Prove_Eq_Refl (X : access constant List) with
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Ghost,
      Global => null,
      Post => Eq (X, X)

@@ -9,7 +9,7 @@ is
      Import,
      Convention => C,
      Global => (In_Out => Max_And_Snd),
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Pre  => X >= 0 and then   --  AoRTE
              Invariant,        --  invariant checking
      Post => Invariant,        --  invariant checking

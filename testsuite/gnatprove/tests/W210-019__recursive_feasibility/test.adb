@@ -1,7 +1,7 @@
 procedure Test with SPARK_Mode is
 
    function F (I : Integer) return Boolean with
-     Annotate => (GNATprove, Always_Return),
+
      Post => F'Result and then False;
 
    type T is not null access function return Integer with

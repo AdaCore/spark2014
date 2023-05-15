@@ -41,8 +41,6 @@ proves_false.adb:47:34: info: predicate check proved (Trivial: 1 VC)
 proves_false.adb:47:65: info: predicate check proved (Trivial: 1 VC)
 proves_false.adb:48:07: info: assertion proved (CVC5: 1 VC)
 statement.adb:12:16: info: implicit function contract might not be available on recursive calls
-statement.adb:13:12: warning: Always_Return annotation is useless
-statement.adb:13:12: warning: function "Length" has implicit Always_Return annotation
 statement.adb:15:16: info: during checks for quantification at statement.adb:21
 statement.adb:15:16: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 statement.adb:15:16: info: precondition proved (Trivial: 1 VC)

@@ -1,17 +1,11 @@
 inline.adb:12:14: warning: subprogram "A" has no effect
-inline.adb:14:14: info: add a contract to analyze it separately from calling contexts
-inline.adb:14:14: info: local subprogram "B" only analyzed in the context of calls
-inline.adb:14:14: info: terminating annotation on "B" has been proved, subprogram will terminate
 inline.adb:14:14: warning: subprogram "B" has no effect
-inline.adb:16:20: info: no contextual analysis of "A" (body not seen yet)
-inline.adb:16:20: medium: terminating annotation on "A" could be incorrect, subprogram is recursive, in call inlined at inline.adb:21 [possible fix: annotate "A" with a Subprogram_Variant aspect]
-inline.adb:21:20: info: analyzing call to "B" in context
+inline.adb:16:20: medium: terminating annotation on "B" could be incorrect, "B" and "A" are mutually recursive [possible fix: annotate "B" and "A" with Subprogram_Variant aspects]
+inline.adb:21:20: medium: terminating annotation on "A" could be incorrect, "A" and "B" are mutually recursive [possible fix: annotate "A" and "B" with Subprogram_Variant aspects]
 mutually_recursive_nested_package.adb:1:10: info: implicit function contract might not be available on recursive calls
 mutually_recursive_nested_package.adb:1:10: info: implicit terminating annotation on "Mutually_Recursive_Nested_Package" has been proved, subprogram will terminate
-mutually_recursive_nested_package.adb:2:03: warning: Always_Return annotation is useless
-mutually_recursive_nested_package.adb:2:03: warning: function "Mutually_Recursive_Nested_Package" has implicit Always_Return annotation
-mutually_recursive_nested_package.adb:3:17: medium: implicit terminating annotation on "Mutually_Recursive_Nested_Package" could be incorrect, "P" and "Mutually_Recursive_Nested_Package" are mutually recursive [possible fix: annotate "P" and "Mutually_Recursive_Nested_Package" with Subprogram_Variant aspects]
-mutually_recursive_nested_package.adb:3:17: warning: initialization of "X" has no effect
+mutually_recursive_nested_package.adb:2:17: medium: implicit terminating annotation on "Mutually_Recursive_Nested_Package" could be incorrect, "P" and "Mutually_Recursive_Nested_Package" are mutually recursive [possible fix: annotate "P" and "Mutually_Recursive_Nested_Package" with Subprogram_Variant aspects]
+mutually_recursive_nested_package.adb:2:17: warning: initialization of "X" has no effect
 nonterminating.adb:1:11: warning: subprogram "Nonterminating" has no effect
 nonterminating.adb:4:14: info: add a contract to analyze it separately from calling contexts
 nonterminating.adb:4:14: info: local subprogram "Infinite_Loop" only analyzed in the context of calls

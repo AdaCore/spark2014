@@ -4,14 +4,14 @@ package Bad_Spec with SPARK_Mode is
 
    generic
    function Call_Jump_Fun return Boolean with
-     Annotate => (GNATprove, Might_Not_Return);
+     Always_Terminates => False;
 
    function Call_Jump is new Call_Jump_Fun;
 
    generic
    procedure Call_Jump_Proc (B : Boolean) with
      No_Return,
-     Annotate => (GNATprove, Might_Not_Return),
+     Always_Terminates => False,
      Global => null,
      Post => not B;
 
@@ -23,7 +23,7 @@ package Bad_Spec with SPARK_Mode is
 
    generic
    procedure Proc_Gen (X : T) with
-     Annotate => (GNATprove, Might_Not_Return),
+     Always_Terminates => False,
      Global => null;
 
    procedure Proc is new Proc_Gen;
