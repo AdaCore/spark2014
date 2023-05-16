@@ -4219,27 +4219,6 @@ package body SPARK_Definition is
          end if;
       end if;
 
-      --  A possibly nonreturning procedure should only be called from
-      --  another (possibly) nonreturning procedure.
-
-      if Has_Might_Not_Return_Annotation (E) then
-         declare
-            Caller : constant Unit_Kind_Id :=
-              Unique_Defining_Entity (Enclosing_Declaration (N));
-         begin
-            if not Is_Possibly_Nonreturning_Procedure (Caller) then
-               Error_Msg_N ("call to possibly nonreturning procedure outside "
-                            & "a (possibly) nonreturning procedure", N);
-               if Ekind (Caller) = E_Procedure then
-                  Error_Msg_NE
-                    ("\consider annotating caller & with pragma Annotate "
-                     & "('G'N'A'Tprove, Might_Not_Return)",
-                     N, Caller);
-               end if;
-            end if;
-         end;
-      end if;
-
       --  Check that the parameter of a function annotated with At_End_Borrow
       --  is either the result of a traversal function or a path rooted at an
       --  entity. The fact that this entity references a borrower or borrowed

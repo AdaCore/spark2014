@@ -315,6 +315,10 @@ package Why.Gen.Names is
       --  Name of the program function for variant checks on subprogram calls
       WNE_Check_Subprogram_Variants,
 
+      --  Name of the program function for termination checks on subprogram
+      --  calls.
+      WNE_Check_Termination_Condition,
+
       --  Symbols to introduce a bijection between an abstract type and its
       --  completion.
       WNE_Open,

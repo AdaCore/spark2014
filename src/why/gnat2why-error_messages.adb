@@ -686,10 +686,23 @@ package body Gnat2Why.Error_Messages is
               & " incorrect";
          when VC_Subprogram_Variant        =>
             return "subprogram variant might fail";
-         when VC_UC_Source               =>
+         when VC_Termination_Check         =>
+            declare
+               Statement : constant String :=
+                 (case Nkind (Node) is
+                     when N_Procedure_Call_Statement
+                        | N_Entry_Call_Statement
+                        | N_Function_Call
+                     => "call",
+                     when N_Loop_Statement => "loop",
+                     when others => raise Program_Error);
+            begin
+               return Statement & " might not terminate";
+            end;
+         when VC_UC_Source                 =>
             return "type is unsuitable for unchecked conversion";
 
-         when VC_UC_Target               =>
+         when VC_UC_Target                 =>
             declare
                Common : constant String :=
                  " is unsuitable ";
@@ -1669,6 +1682,19 @@ package body Gnat2Why.Error_Messages is
             return "Inline_For_Proof or Logical_Equal annotation " & Verb;
          when VC_Subprogram_Variant        =>
             return "subprogram variant " & Verb;
+         when VC_Termination_Check         =>
+            declare
+               Statement : constant String :=
+                 (case Nkind (Node) is
+                     when N_Procedure_Call_Statement
+                        | N_Entry_Call_Statement
+                        | N_Function_Call
+                     => "call",
+                     when N_Loop_Statement => "loop",
+                     when others => raise Program_Error);
+            begin
+               return "conditional " & Statement & " termination " & Verb;
+            end;
          when VC_UC_Source                 =>
             return Prefix
               & "type is suitable as source for unchecked conversion";

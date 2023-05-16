@@ -760,6 +760,10 @@ package Gnat2Why.Util is
    --  Name to use for the current exception is exception handlers. It should
    --  be equal to Why_Empty when we are not translating an exception handler.
 
+   Termination_Condition_Name : W_Identifier_Id := Why_Empty;
+   --  Name to use for the evalution of the termination condition of the
+   --  current subprogram if any.
+
    Specialized_Call_Params : Node_Maps.Map;
    --  Mapping of formal parameters of specialized calls to their actuals
 

@@ -144,6 +144,7 @@ package body VC_Kinds is
             | VC_Loop_Invariant_Init
             | VC_Loop_Invariant_Preserv
             | VC_Subprogram_Variant
+            | VC_Termination_Check
             | VC_Assert
             | VC_Assert_Premise
             | VC_Assert_Step
@@ -309,6 +310,10 @@ package body VC_Kinds is
             return "Check that the given subprogram variant decreases/" &
               "increases as specified during each recursive call. This " &
               "implies there will be no infinite recursion.";
+         when VC_Termination_Check                =>
+            return "Check the termination of subprograms annotated with" &
+              " an Always_Terminates aspect whose value is not known at " &
+              "compile time and of calls to such subprograms.";
          when VC_Ceiling_Interrupt                =>
             return "Check that the ceiling priority specified for a " &
               "protected object containing a procedure with an aspect " &
@@ -1294,6 +1299,7 @@ package body VC_Kinds is
                "loop invariant after first iteration",
              when VC_Loop_Variant => "loop variant",
              when VC_Subprogram_Variant => "subprogram variant",
+             when VC_Termination_Check => "termination check",
              when VC_Assert => "assertion",
              when VC_Assert_Premise => "assertion premise",
              when VC_Assert_Step => "assertion step",

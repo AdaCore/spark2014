@@ -1,6 +1,10 @@
 
-possibly_nonreturning.adb:14:07: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
-   14 |      Conditional_Exit (True);
-      |      ^~~~~~~~~~~~~~~~~~~~~~
-  consider annotating caller "Regular" with pragma Annotate (GNATprove, Might_Not_Return)
-gnatprove: error during generation of Global contracts
+possibly_nonreturning.adb:8:10: warning: no Global contract available for "Always_Exit"
+    8 |         Always_Exit;
+      |         ^~~~~~~~~~~
+  assuming "Always_Exit" has no effect on global items
+
+possibly_nonreturning.adb:8:10: medium: unexpected exception might be raised
+    8 |         Always_Exit;
+      |         ^~~~~~~~~~~
+  possible explanation: No_Return procedures have an implicit exceptional contract

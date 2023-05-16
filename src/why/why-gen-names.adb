@@ -1017,6 +1017,7 @@ package body Why.Gen.Names is
             | WNE_Check_Not_First
             | WNE_Check_Not_Last
             | WNE_Check_Subprogram_Variants
+            | WNE_Check_Termination_Condition
             | WNE_Default_Init
             | WNE_Dispatch_Eq
             | WNE_Dispatch_Func_Guard

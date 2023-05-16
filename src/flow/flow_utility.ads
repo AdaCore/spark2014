@@ -809,6 +809,15 @@ package Flow_Utility is
    --  short, this routine can be used both for the LHS and RHS of assignments,
    --  while Get_Assignment_Target_Properties can be only used for the LHS.
 
+   function Termination_Proved
+     (I_Scheme           : Opt_N_Iteration_Scheme_Id;
+      Loop_Writes        : Flow_Id_Sets.Set;
+      Generating_Globals : Boolean := False)
+      return Boolean;
+   --  Analyzes an iteration scheme, if present, to determine whether
+   --  termination of the loop is guaranteed either by its syntax or by
+   --  the semantics of its iteration scheme.
+
    function To_Subprograms (Calls : Call_Sets.Set) return Node_Sets.Set;
    --  Convert calls to called entities
 

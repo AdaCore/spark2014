@@ -779,27 +779,69 @@ package body SPARK_Util.Subprograms is
    begin
       pragma Assert (if Compute then GG_Has_Been_Generated);
 
+      --  Look for an Always_Terminates aspect on E
+
       if Present (Terminates_Pragma) then
          declare
             Assocs : constant List_Id := Pragma_Argument_Associations
               (Terminates_Pragma);
             Cond   : constant Node_Id :=
               (if No (Assocs) then Empty else Expression (First (Assocs)));
+
          begin
+            --  If Always_Terminates does not have a condition, the default is
+            --  True.
+
             if No (Cond) then
                return (Static, True);
+
+            --  If the condition is known at compile time, get its value
+
             elsif Compile_Time_Known_Value (Cond) then
                return (Static, Is_True (Expr_Value (Cond)));
+
+            --  Otherwise, we keep the condition has is
+
             else
                return (Dynamic, Cond);
             end if;
          end;
+
+      --  The Always_Terminates annotation is implicit on packages, functions,
+      --  and lemmas.
+
       elsif Has_Implicit_Always_Return_Annotation (E) then
          return (Static, True);
-      elsif Compute then
-         return (Static, not Is_Potentially_Nonreturning (E));
+
+      --  If E is directly in a package specification, get the annotation from
+      --  there.
+
       else
-         return (Kind => Unspecified);
+         declare
+            Scop : Entity_Id := Scope (E);
+         begin
+            while Present (Scop) and then Ekind (Scop) = E_Package loop
+               if Present (Get_Pragma (Scop, Pragma_Always_Terminates)) then
+                  return (Static, True);
+               end if;
+               Scop := Scope (Scop);
+            end loop;
+         end;
+
+         --  No applicable annotation was found, compute it or return
+         --  unspecified.
+
+         if Compute then
+            declare
+               Value : constant Boolean :=
+                 (if Ekind (E) in E_Subprogram_Type | E_Task_Type then False
+                  else not Is_Potentially_Nonreturning (E));
+            begin
+               return (Static, Value);
+            end;
+         else
+            return (Kind => Unspecified);
+         end if;
       end if;
    end Get_Termination_Condition;
 
