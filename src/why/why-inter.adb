@@ -557,12 +557,20 @@ package body Why.Inter is
          end loop;
       end DFS;
 
-   --  Begining of processing for Check_Safe_Guard_Cycles
+      --  Begining of processing for Check_Safe_Guard_Cycles
 
+      Entry_Points : Node_Sets.Set;
    begin
 
+      --  We first collect the entry points in an ordered set. The reason to do
+      --  this is to avoid differences in output due to non-determinism.
+
       for Cu in Safe_Guard_Graph.Iterate loop
-         DFS (Node_Graphs.Key (Cu));
+         Entry_Points.Include (Node_Graphs.Key (Cu));
+      end loop;
+
+      for Elt of Entry_Points loop
+         DFS (Elt);
       end loop;
    end Check_Safe_Guard_Cycles;
 
