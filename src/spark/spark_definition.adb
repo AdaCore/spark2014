@@ -4962,7 +4962,6 @@ package body SPARK_Definition is
                              | Formal_Kind;
       --  E is a subprogram or a loop parameter, or a discriminant
 
-      procedure Mark_Number_Entity     (E : Named_Kind_Id);
       procedure Mark_Object_Entity     (E : Constant_Or_Variable_Kind_Id);
 
       procedure Mark_Subprogram_Entity (E : Callable_Kind_Id)
@@ -4986,24 +4985,6 @@ package body SPARK_Definition is
       --  Concurrent types must be inserted into Entity_List before operations
       --  defined in their scope, because these operations take the type as an
       --  implicit argument.
-
-      ------------------------
-      -- Mark_Number_Entity --
-      ------------------------
-
-      procedure Mark_Number_Entity (E : Named_Kind_Id) is
-         N    : constant N_Number_Declaration_Id := Parent (E);
-         Expr : constant N_Subexpr_Id            := Expression (N);
-         T    : constant Type_Kind_Id            := Etype (E);
-      begin
-         if not Retysp_In_SPARK (T) then
-            Mark_Violation (N, From => T);
-         end if;
-
-         if Present (Expr) then
-            Mark (Expr);
-         end if;
-      end Mark_Number_Entity;
 
       ------------------------
       -- Mark_Object_Entity --
@@ -7676,7 +7657,7 @@ package body SPARK_Definition is
               E_Loop_Parameter |
               Formal_Kind      => Mark_Parameter_Entity (E);
 
-         when Named_Kind       => Mark_Number_Entity (E);
+         when Named_Kind       => null;
 
          --  The identifier of a loop is used to generate the needed
          --  exception declarations in the translation phase.
