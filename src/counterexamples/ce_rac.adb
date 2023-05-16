@@ -934,26 +934,27 @@ package body CE_RAC is
 
    function Copy (V : Value_Type) return Value_Type is
    begin
+      case V.K is
       --  ??? gnatcov complains if this is an expression function (V330-044)
-      return
-        (case V.K is
-            when Record_K   =>
-               (V with delta Record_Fields => Copy (V.Record_Fields)),
-            when Array_K    =>
-               (V with delta
-                    Array_Values => Copy (V.Array_Values),
-                    Array_Others =>
-                      (if V.Array_Others = null then null
-                       else new Value_Type'(Copy (V.Array_Others.all)))),
-            when Scalar_K   =>
-               (V with delta Scalar_Content =>
-                   (if V.Scalar_Content = null then null
-                    else new Scalar_Value_Type'(V.Scalar_Content.all))),
-            when Access_K   =>
-               (V with delta Designated_Value =>
-                   (if V.Designated_Value = null then null
-                    else new Value_Type'(Copy (V.Designated_Value.all)))),
-           when Multidim_K => V);
+         when Record_K   =>
+            return (V with delta Record_Fields => Copy (V.Record_Fields));
+         when Array_K    =>
+            return (V with delta
+                      Array_Values => Copy (V.Array_Values),
+                      Array_Others =>
+                        (if V.Array_Others = null then null
+                         else new Value_Type'(Copy (V.Array_Others.all))));
+         when Scalar_K   =>
+            return (V with delta Scalar_Content =>
+                      (if V.Scalar_Content = null then null
+                       else new Scalar_Value_Type'(V.Scalar_Content.all)));
+         when Access_K   =>
+            return (V with delta Designated_Value =>
+                      (if V.Designated_Value = null then null
+                       else new Value_Type'(Copy (V.Designated_Value.all))));
+         when Multidim_K =>
+            return V;
+      end case;
    end Copy;
 
    -------------------------
