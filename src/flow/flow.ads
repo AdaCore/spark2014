@@ -210,6 +210,10 @@ package Flow is
       Direct_Calls : Node_Sets.Set;
       --  Contains subprograms called and package elaborations
 
+      Proof_Dependencies : Node_Sets.Set;
+      --  Contains additional subprograms and package elaborations whose
+      --  contract is pulled by proof to verify the entity.
+
       GG : Flow_Global_Generation_Info;
       --  Information for globals computation
 

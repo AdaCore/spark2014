@@ -7,8 +7,7 @@ contains_through_model.ads:16:16: info: precondition proved (CVC5: 1 VC)
 contains_through_model.ads:18:16: info: during checks for quantification at contains_through_model.ads:28
 contains_through_model.ads:18:16: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 contains_through_model.ads:18:16: info: precondition proved (Trivial: 1 VC)
-contains_through_model.ads:19:16: error: "Contains" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
-contains_through_model.ads:19:16: error: unsupported recursive subprogram
+contains_through_model.ads:19:16: error: iteration primitive shall not be recursive, (including implicitly so)
 contains_through_model.ads:19:16: info: during checks for quantification at contains_through_model.ads:28
 contains_through_model.ads:19:16: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 contains_through_model.ads:19:16: info: precondition proved (Trivial: 1 VC)
@@ -71,7 +70,9 @@ element_through_model.ads:16:16: info: precondition proved (CVC5: 1 VC)
 element_through_model.ads:18:16: info: during checks for quantification at element_through_model.ads:26
 element_through_model.ads:18:16: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 element_through_model.ads:18:16: info: precondition proved (Trivial: 1 VC)
+element_through_model.ads:19:16: error: iteration primitive shall not be recursive, (including implicitly so)
 element_through_model.ads:19:16: info: during checks for quantification at element_through_model.ads:26
+element_through_model.ads:19:16: info: implicit function contract might not be available on implicit recursive calls
 element_through_model.ads:19:16: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
 element_through_model.ads:19:16: info: precondition proved (CVC5: 1 VC)
 element_through_model.ads:21:16: info: implicit terminating annotation on "From_Array" has been proved, subprogram will terminate
@@ -121,16 +122,60 @@ element_through_model.ads:97:16: info: precondition proved (CVC5: 1 VC)
 element_through_model.ads:108:10: info: range check proved (CVC5: 2 VC)
 element_through_model.ads:112:51: info: overflow check proved (CVC5: 2 VC)
 element_through_model.ads:116:21: info: index check proved (CVC5: 2 VC)
+good.adb:4:11: info: terminating annotation on "Good" has been proved, subprogram will terminate
+good.adb:16:16: info: during checks for quantification at good.adb:27
+good.adb:16:16: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
+good.adb:16:16: info: precondition proved (Trivial: 1 VC)
+good.adb:17:16: info: during checks for quantification at good.adb:27
+good.adb:17:16: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
+good.adb:17:16: info: precondition proved (CVC5: 1 VC)
+good.adb:19:16: info: during checks for quantification at good.adb:27
+good.adb:19:16: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
+good.adb:19:16: info: precondition proved (Trivial: 1 VC)
+good.adb:20:16: info: during checks for quantification at good.adb:27
+good.adb:20:16: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
+good.adb:20:16: info: precondition proved (CVC5: 1 VC)
+good.adb:22:16: info: implicit terminating annotation on "From_Array" has been proved, subprogram will terminate
+good.adb:28:10: info: range check proved (CVC5: 2 VC)
+good.adb:32:51: info: overflow check proved (CVC5: 2 VC)
+good.adb:36:21: info: index check proved (CVC5: 2 VC)
+good.adb:40:22: info: range check proved (CVC5: 2 VC)
+good.adb:40:36: info: range check proved (CVC5: 2 VC)
+good.adb:40:54: info: length check proved (CVC5: 2 VC; Trivial: 2 VC)
+good.adb:52:16: info: during checks for quantification at good.adb:65
+good.adb:52:16: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
+good.adb:52:16: info: precondition proved (Trivial: 1 VC)
+good.adb:53:16: info: during checks for quantification at good.adb:65
+good.adb:53:16: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
+good.adb:53:16: info: precondition proved (CVC5: 1 VC)
+good.adb:55:16: info: during checks for quantification at good.adb:65
+good.adb:55:16: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
+good.adb:55:16: info: precondition proved (Trivial: 1 VC)
+good.adb:56:16: info: during checks for quantification at good.adb:65
+good.adb:56:16: info: implicit terminating annotation on "Model" has been proved, subprogram will terminate
+good.adb:56:16: info: precondition proved (Trivial: 1 VC)
+good.adb:57:16: info: during checks for quantification at good.adb:65
+good.adb:57:16: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
+good.adb:57:16: info: precondition proved (CVC5: 1 VC)
+good.adb:66:10: info: range check proved (CVC5: 2 VC)
+good.adb:70:51: info: overflow check proved (CVC5: 2 VC)
+good.adb:74:21: info: index check proved (CVC5: 2 VC)
+good.adb:81:13: info: precondition proved (CVC5: 1 VC)
+good.adb:81:13: info: precondition proved (Trivial: 1 VC)
+good.adb:81:18: warning: statement has no effect
 has_element_through_model.ads:15:16: info: during checks for quantification at has_element_through_model.ads:26
 has_element_through_model.ads:15:16: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 has_element_through_model.ads:15:16: info: precondition proved (Trivial: 1 VC)
 has_element_through_model.ads:16:16: info: during checks for quantification at has_element_through_model.ads:26
 has_element_through_model.ads:16:16: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 has_element_through_model.ads:16:16: info: precondition proved (CVC5: 1 VC)
+has_element_through_model.ads:18:16: error: iteration primitive shall not be recursive, (including implicitly so)
 has_element_through_model.ads:18:16: info: during checks for quantification at has_element_through_model.ads:26
 has_element_through_model.ads:18:16: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 has_element_through_model.ads:18:16: info: precondition proved (Trivial: 1 VC)
+has_element_through_model.ads:19:16: error: iteration primitive shall not be recursive, (including implicitly so)
 has_element_through_model.ads:19:16: info: during checks for quantification at has_element_through_model.ads:26
+has_element_through_model.ads:19:16: info: implicit function contract might not be available on implicit recursive calls
 has_element_through_model.ads:19:16: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
 has_element_through_model.ads:19:16: info: precondition proved (CVC5: 1 VC)
 has_element_through_model.ads:21:16: info: implicit terminating annotation on "From_Array" has been proved, subprogram will terminate
@@ -275,9 +320,9 @@ main.adb:181:16: info: precondition proved (CVC5: 1 VC)
 main.adb:183:16: info: during checks for quantification at main.adb:196
 main.adb:183:16: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 main.adb:183:16: info: precondition proved (Trivial: 1 VC)
-main.adb:184:16: error: "Contains" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
-main.adb:184:16: error: unsupported recursive subprogram
+main.adb:184:16: error: iteration primitive shall not be recursive, (including implicitly so)
 main.adb:184:16: info: during checks for quantification at main.adb:196
+main.adb:184:16: info: function contract might not be available on implicit recursive calls
 main.adb:184:16: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 main.adb:184:16: info: precondition proved (Trivial: 1 VC)
 main.adb:185:17: info: postcondition proved (CVC5: 2 VC)
@@ -296,9 +341,9 @@ main.adb:220:16: info: precondition proved (CVC5: 1 VC)
 main.adb:222:16: info: during checks for quantification at main.adb:235
 main.adb:222:16: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 main.adb:222:16: info: precondition proved (Trivial: 1 VC)
-main.adb:223:16: error: "Model" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
-main.adb:223:16: error: unsupported recursive subprogram
+main.adb:223:16: error: iteration primitive shall not be recursive, (including implicitly so)
 main.adb:223:16: info: during checks for quantification at main.adb:235
+main.adb:223:16: info: function contract might not be available on implicit recursive calls
 main.adb:223:16: info: implicit terminating annotation on "Model" has been proved, subprogram will terminate
 main.adb:223:16: info: precondition proved (Trivial: 1 VC)
 main.adb:224:17: info: postcondition proved (Z3: 1 VC)
@@ -314,10 +359,13 @@ p.ads:15:16: info: precondition proved (Trivial: 1 VC)
 p.ads:16:16: info: during checks for quantification at p.ads:26
 p.ads:16:16: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 p.ads:16:16: info: precondition proved (CVC5: 1 VC)
+p.ads:18:16: error: iteration primitive shall not be recursive, (including implicitly so)
 p.ads:18:16: info: during checks for quantification at p.ads:26
 p.ads:18:16: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 p.ads:18:16: info: precondition proved (Trivial: 1 VC)
+p.ads:19:16: error: iteration primitive shall not be recursive, (including implicitly so)
 p.ads:19:16: info: during checks for quantification at p.ads:26
+p.ads:19:16: info: implicit function contract might not be available on implicit recursive calls
 p.ads:19:16: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
 p.ads:19:16: info: precondition proved (CVC5: 1 VC)
 p.ads:21:16: info: implicit terminating annotation on "From_Array" has been proved, subprogram will terminate
@@ -357,16 +405,12 @@ rec_ids.adb:25:35: high: "C" is not initialized
 rec_ids.adb:32:22: info: assertion proved (Trivial: 1 VC)
 rec_ids.adb:32:30: warning: unused variable "F"
 rec_ids.adb:32:35: high: "C" is not initialized
-rec_ids.ads:3:13: error: "P_Rec_Id" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
-rec_ids.ads:3:13: error: unsupported recursive subprogram
+rec_ids.ads:3:13: info: implicit function contract might not be available on implicit recursive calls
 rec_ids.ads:3:13: info: implicit terminating annotation on "P_Rec_Id" has been proved, subprogram will terminate
-rec_ids.ads:4:13: error: "Contains_Through_Model_Id" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
-rec_ids.ads:4:13: error: unsupported recursive subprogram
+rec_ids.ads:4:13: info: implicit function contract might not be available on implicit recursive calls
 rec_ids.ads:4:13: info: implicit terminating annotation on "Contains_Through_Model_Id" has been proved, subprogram will terminate
-rec_ids.ads:5:13: error: "Element_Through_Model_Id" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
-rec_ids.ads:5:13: error: unsupported recursive subprogram
+rec_ids.ads:5:13: info: implicit function contract might not be available on implicit recursive calls
 rec_ids.ads:5:13: info: implicit terminating annotation on "Element_Through_Model_Id" has been proved, subprogram will terminate
-rec_ids.ads:6:13: error: "Has_Element_Through_Model_Id" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
-rec_ids.ads:6:13: error: unsupported recursive subprogram
+rec_ids.ads:6:13: info: implicit function contract might not be available on implicit recursive calls
 rec_ids.ads:6:13: info: implicit terminating annotation on "Has_Element_Through_Model_Id" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof

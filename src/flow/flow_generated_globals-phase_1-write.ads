@@ -21,9 +21,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Flow_Generated_Globals.ALI_Serialization;
-use Flow_Generated_Globals.ALI_Serialization;
-
 private package Flow_Generated_Globals.Phase_1.Write is
 
    procedure New_GG_Line (K : ALI_Entry_Kind);

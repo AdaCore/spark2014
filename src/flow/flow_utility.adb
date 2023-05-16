@@ -42,6 +42,7 @@ with Common_Iterators;                use Common_Iterators;
 with Gnat2Why_Args;
 with Gnat2Why.Util;
 with SPARK_Definition;                use SPARK_Definition;
+with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;          use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
@@ -206,6 +207,7 @@ package body Flow_Utility is
      (N                  : Node_Id;
       Scop               : Flow_Scope;
       Function_Calls     : in out Call_Sets.Set;
+      Proof_Dependencies : in out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
       Generating_Globals : Boolean)
    is
@@ -229,6 +231,7 @@ package body Flow_Utility is
               (N                  => Get_Expr_From_Return_Only_Func (P),
                Scop               => Scop,
                Function_Calls     => Function_Calls,
+               Proof_Dependencies => Proof_Dependencies,
                Tasking            => Tasking,
                Generating_Globals => Generating_Globals);
          end if;
@@ -320,7 +323,9 @@ package body Flow_Utility is
 
             when N_Iterator_Specification =>
                declare
-                  Typ : constant Entity_Id := Etype (Name (N));
+                  Typ           : Entity_Id := Etype (Name (N));
+                  Found         : Boolean;
+                  Iterable_Info : Iterable_Annotation;
 
                   procedure Process_Iterable_Primitive (Nam : Name_Id);
                   --  Process implicit call to iterable primitive function Nam
@@ -338,6 +343,11 @@ package body Flow_Utility is
                   end Process_Iterable_Primitive;
 
                begin
+
+                  --  At execution, Has_Element (optionally Element),
+                  --  First/Next or Last/Previous are called in the expansion
+                  --  of the loop.
+
                   if Has_Aspect (Typ, Aspect_Iterable) then
 
                      --  Has_Element is called always
@@ -359,6 +369,46 @@ package body Flow_Utility is
                      else
                         Process_Iterable_Primitive (Name_First);
                         Process_Iterable_Primitive (Name_Next);
+                     end if;
+
+                     --  Proof might transform the quantified expression using
+                     --  the chain of Model functions associated to the types
+                     --  using Iterable_For_Proof.
+                     if Nkind (Parent (Parent (N))) /= N_Loop_Statement then
+
+                        loop
+                           Retrieve_Iterable_Annotation (Typ,
+                                                         Found,
+                                                         Iterable_Info);
+
+                           if Found
+                             and then
+                               Iterable_Info.Kind
+                               = SPARK_Definition.Annotate.Model
+                           then
+                              Proof_Dependencies.Include
+                                (Iterable_Info.Entity);
+
+                              Typ := Etype (Iterable_Info.Entity);
+                           else
+                              exit;
+                           end if;
+                        end loop;
+
+                        --  Finally, proof transforms the quantification using
+                        --  either the Contains function on the type, if it
+                        --  exists, or the Has_Element and Element functions
+                        --  otherwise.
+                        if Found then
+                           Proof_Dependencies.Include (Iterable_Info.Entity);
+
+                        elsif Typ /= Etype (Name (N)) then
+                           Proof_Dependencies.Include
+                             (Get_Iterable_Type_Primitive
+                                (Typ, Name_Has_Element));
+                           Proof_Dependencies.Include
+                             (Get_Iterable_Type_Primitive (Typ, Name_Element));
+                        end if;
                      end if;
                   else
                      pragma Assert
@@ -1134,13 +1184,15 @@ package body Flow_Utility is
       Include_Predicates : Boolean)
       return Node_Sets.Set
    is
-      Funcalls : Call_Sets.Set;
-      Unused   : Tasking_Info;
+      Funcalls  : Call_Sets.Set;
+      Proofdeps : Node_Sets.Set;
+      Unused    : Tasking_Info;
    begin
       Collect_Functions_And_Read_Locked_POs
         (N,
          Scop               => Get_Flow_Scope (N), --  ??? could be parameter
          Function_Calls     => Funcalls,
+         Proof_Dependencies => Proofdeps,
          Tasking            => Unused,
          Generating_Globals => Include_Predicates);
       return To_Subprograms (Funcalls);

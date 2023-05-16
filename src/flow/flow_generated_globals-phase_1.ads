@@ -26,6 +26,9 @@ with Flow_Visibility;                use Flow_Visibility;
 with Sinfo.Nodes;                    use Sinfo.Nodes;
 with SPARK_Util;                     use SPARK_Util;
 
+with Flow_Generated_Globals.ALI_Serialization;
+use Flow_Generated_Globals.ALI_Serialization;
+
 package Flow_Generated_Globals.Phase_1 is
 
    -----------------
@@ -42,7 +45,10 @@ package Flow_Generated_Globals.Phase_1 is
                                and then not Is_In_Analyzed_Files (C)),
         Post => GG_Mode = GG_Write_Mode;
 
-   procedure GG_Register_Direct_Calls (E : Entity_Id; Calls : Node_Sets.Set)
+   procedure GG_Register_Calls
+     (E     : Entity_Id;
+      Calls : Node_Sets.Set;
+      Kind  : ALI_Entry_Kind)
    with Pre  => GG_Mode = GG_Write_Mode and then
                 Ekind (E) in Entry_Kind  |
                              E_Function  |
@@ -52,10 +58,11 @@ package Flow_Generated_Globals.Phase_1 is
                 (for all C of Calls => Ekind (C) in Entry_Kind
                                                   | E_Function
                                                   | E_Package
-                                                  | E_Procedure),
+                                                  | E_Procedure) and then
+                Kind in EK_Direct_Calls | EK_Proof_Dependencies,
         Post => GG_Mode = GG_Write_Mode;
-   --  Register direct calls without caring if they are proof-only, definite or
-   --  conditional.
+   --  Register Calls as direct calls or proof dependencies depending on Kind,
+   --  without caring if they are proof-only, definite or conditional.
 
    procedure GG_Register_Global_Info
      (E                : Entity_Id;

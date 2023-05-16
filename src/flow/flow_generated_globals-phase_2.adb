@@ -196,6 +196,11 @@ package body Flow_Generated_Globals.Phase_2 is
    --  but for now let's be consistent with Flow.Slice.Compute_Globals which
    --  returns a set.
 
+   Proof_Dependencies : Name_Graphs.Map;
+   --  Map from names of subprograms, entries, task types to subprograms
+   --  and package elaborations that proof might include as a dependency in the
+   --  modules.
+
    use type Entity_Name_Graphs.Vertex_Id;
 
    package Entity_Name_To_Priorities_Maps is
@@ -365,6 +370,13 @@ package body Flow_Generated_Globals.Phase_2 is
    function Generated_Calls (Caller : Entity_Name) return Name_Sets.Set;
    --  Returns callees of a Caller
 
+   function Generated_Proof_Dependencies
+     (Caller : Entity_Name)
+      return Name_Sets.Set;
+   --  Returns the proof dependencies of a Caller. Those correspond to the
+   --  subprograms and package elaboration whose contract will be pulled by
+   --  proof to verify Caller.
+
    function Is_Potentially_Nonreturning_Internal (EN : Entity_Name)
                                                   return Boolean;
    --  See comment for Is_Potentially_Nonreturning with Entity_Id as an input
@@ -474,6 +486,21 @@ package body Flow_Generated_Globals.Phase_2 is
       end loop;
       return Direct_Calls;
    end Generated_Calls;
+
+   ----------------------------------
+   -- Generated_Proof_Dependencies --
+   ----------------------------------
+
+   function Generated_Proof_Dependencies
+     (Caller : Entity_Name)
+      return Name_Sets.Set
+   is
+      C : constant Name_Graphs.Cursor := Proof_Dependencies.Find (Caller);
+   begin
+      return (if Name_Graphs.Has_Element (C)
+              then Proof_Dependencies (C)
+              else Name_Sets.Empty_Set);
+   end Generated_Proof_Dependencies;
 
    --------------------------
    -- GG_Is_Abstract_State --
@@ -905,8 +932,11 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  Call graph vertices for the caller and the callee
 
                begin
-                  --  Add callees of the caller into the graph
-                  for Callee of Generated_Calls (Caller) loop
+                  --  Add callees and proof dependencies of the caller into the
+                  --  graph.
+                  for Callee of Generated_Calls (Caller).Union
+                                  (Generated_Proof_Dependencies (Caller))
+                  loop
                      --  Get vertex for the callee
                      V_Callee := Call_Graph.Get_Vertex (Callee);
 
@@ -1680,12 +1710,30 @@ package body Flow_Generated_Globals.Phase_2 is
                                           Position => Caller_Pos,
                                           Inserted => Inserted);
 
-                     --  ??? this should be asserted and should never crash
-                     if not Inserted then
-                        raise Program_Error with "name clash";
-                     end if;
+                     pragma Assert (Inserted, "name clash");
 
                      Serialize (Direct_Calls (Caller_Pos));
+                  end;
+
+               when EK_Proof_Dependencies =>
+                  declare
+                     Caller : Entity_Name;
+
+                     Caller_Pos : Name_Graphs.Cursor;
+                     --  Position of the caller in the proof dependencies graph
+
+                     Inserted : Boolean;
+
+                  begin
+                     Serialize (Caller);
+
+                     Proof_Dependencies.Insert (Key      => Caller,
+                                                Position => Caller_Pos,
+                                                Inserted => Inserted);
+
+                     pragma Assert (Inserted, "name clash");
+
+                     Serialize (Proof_Dependencies (Caller_Pos));
                   end;
 
                when EK_Flow_Scope =>

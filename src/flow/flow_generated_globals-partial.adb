@@ -50,6 +50,8 @@ with SPARK_Util.Subprograms;           use SPARK_Util.Subprograms;
 with SPARK_Xrefs;                      use SPARK_Xrefs;
 with Why;
 
+with Flow_Generated_Globals.ALI_Serialization;
+use Flow_Generated_Globals.ALI_Serialization;
 package body Flow_Generated_Globals.Partial is
 
    use type Node_Sets.Set;
@@ -155,6 +157,10 @@ package body Flow_Generated_Globals.Partial is
       --  (except for a front-end bug w.r.t. calls in contracts)
       --
       --  ### What is the TN for this?
+
+      Proof_Dependencies : Node_Sets.Set;
+      --  Contains additional subprograms and package elaborations whose
+      --  contract is pulled by proof to verify the entity
 
       Local_Packages  : Callee_Set;
       Local_Variables : Global_Set;
@@ -506,6 +512,8 @@ package body Flow_Generated_Globals.Partial is
                Contr.Direct_Calls.Insert (Call);
             end if;
          end loop;
+
+         Contr.Proof_Dependencies := FA.Proof_Dependencies;
       end if;
 
       --  Register abstract state components for packages whose body has
@@ -2649,7 +2657,10 @@ package body Flow_Generated_Globals.Partial is
 
          Strip_Constants (Contr.Globals, Constant_Graph);
 
-         GG_Register_Direct_Calls (E, Contr.Direct_Calls);
+         GG_Register_Calls (E, Contr.Direct_Calls, EK_Direct_Calls);
+         GG_Register_Calls (E,
+                            Contr.Proof_Dependencies,
+                            EK_Proof_Dependencies);
 
          GG_Register_Global_Info
            (E                => E,

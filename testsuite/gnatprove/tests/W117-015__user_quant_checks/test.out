@@ -142,9 +142,9 @@ quant_late_errors.adb:17:16: info: during checks for quantification at quant_lat
 quant_late_errors.adb:17:16: info: function contract might not be available on recursive calls
 quant_late_errors.adb:17:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:18:22: info: postcondition proved (Trivial: 1 VC)
-quant_late_errors.adb:19:16: error: "Contains" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
-quant_late_errors.adb:19:16: error: unsupported recursive subprogram
+quant_late_errors.adb:19:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:19:16: info: during checks for quantification at quant_late_errors.adb:6
+quant_late_errors.adb:19:16: info: function contract might not be available on implicit recursive calls
 quant_late_errors.adb:19:16: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 quant_late_errors.adb:19:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:20:22: info: postcondition proved (Trivial: 1 VC)
@@ -199,9 +199,9 @@ quant_late_errors.adb:66:16: info: during checks for quantification at quant_lat
 quant_late_errors.adb:66:16: info: function contract might not be available on recursive calls
 quant_late_errors.adb:66:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:67:22: info: postcondition proved (Trivial: 1 VC)
-quant_late_errors.adb:68:16: error: "Get_Model" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
-quant_late_errors.adb:68:16: error: unsupported recursive subprogram
+quant_late_errors.adb:68:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:68:16: info: during checks for quantification at quant_late_errors.adb:55
+quant_late_errors.adb:68:16: info: function contract might not be available on implicit recursive calls
 quant_late_errors.adb:68:16: info: implicit terminating annotation on "Get_Model" has been proved, subprogram will terminate
 quant_late_errors.adb:68:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:69:22: info: postcondition proved (Trivial: 1 VC)
