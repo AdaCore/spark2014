@@ -2852,10 +2852,10 @@ package body SPARK_Definition is
          Mark (Address_Expr);
       end if;
 
-      --  For objects, address clauses and external names can introduce
-      --  aliases. We need additional treatment here.
+      --  For objects, address clauses can introduce aliases. We need
+      --  additional treatment here.
 
-      if not Is_Object (E) or else not Has_Address_Or_Name (E) then
+      if not Is_Object (E) or else not Present (Address) then
          return;
       end if;
 
@@ -2865,10 +2865,9 @@ package body SPARK_Definition is
          Supported_Alias : constant Boolean := Present (Aliased_Object);
          E_Is_Constant   : constant Boolean := Is_Constant_In_SPARK (E);
       begin
-         --  If E has an external name or we cannot determine which object the
-         --  address of E references, the address clause will basically be
-         --  ignored. We emit some warnings to help users locate the cases
-         --  where review is needed.
+         --  If we cannot determine which object the address of E references,
+         --  the address clause will basically be ignored. We emit some
+         --  warnings to help users locate the cases where review is needed.
 
          if not Supported_Alias then
 
