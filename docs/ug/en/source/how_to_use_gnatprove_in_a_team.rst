@@ -552,46 +552,45 @@ of a program:
   * They should be `effectively volatile` in SPARK (see SPARK RM 7.1.2), so
     that GNATprove takes into account possible concurrent changes in the
     object's value. The warning
-    `imprecise Address or external name and indirect writes through alias` is
+    `imprecise Address and indirect writes through alias` is
     guaranteed to be issued in cases where review is required.
 
   * They should be `synchronized` in SPARK (see SPARK RM 9) to prevent race
     conditions which could lead to reading invalid values. The warning
-    `imprecise Address or external name without Atomic` is guaranteed to be
+    `imprecise Address without Atomic` is guaranteed to be
     issued in cases where review is required.
 
   * They should have specified all necessary :ref:`Properties of Volatile
     Variables` corresponding to their usage. The warning
-    `imprecise Address or external name and volatile properties` is guaranteed
+    `imprecise Address and volatile properties` is guaranteed
     to be issued in cases where review is required.
 
 * [SPARK_ALIASING_ADDRESS]
   Aliases between objects with either an imprecisely supported address
-  specification or an aspect ``External_Name`` or ``Link_Name`` are ignored by
-  GNATprove. Reviews are necessary to ensure that:
+  specification are ignored by GNATprove. Reviews are necessary to ensure that:
 
   * The objects themselves are annotated with the ``Asynchronous_Writers``
     volatile property if they can be affected by the modification of another
     object. The warnings
-    `imprecise Address or external name and indirect writes through alias` or
-    `imprecise Address or external name and volatile properties` are guaranteed
+    `imprecise Address and indirect writes through alias` or
+    `imprecise Address and volatile properties` are guaranteed
     to be issued in cases where review is required.
 
   * Other objects visible from SPARK code which might be affected by a
     modification of such a variable have the ``Asynchronous_Writers`` volatile
     property set to True. A warning is guaranteed to be issued in cases where
     review is needed: the warning
-    `imprecise Address or external name and volatile properties`
+    `imprecise Address and volatile properties`
     if the object has ``Asynchronous_Readers`` set to False, the warning
-    `imprecise Address or external name and indirect writes to alias` otherwise.
+    `imprecise Address and indirect writes to alias` otherwise.
 
   * Other objects visible from SPARK code which might be affected by a
     modification of such a variable have valid values for their type when read.
     A warning is guaranteed to be issued in cases where
     review is needed: the warning
-    `imprecise Address or external name and volatile properties`
+    `imprecise Address and volatile properties`
     if the object has ``Asynchronous_Readers`` set to False, the warning
-    `imprecise Address or external name and indirect writes to alias` otherwise.
+    `imprecise Address and indirect writes to alias` otherwise.
 
 .. index:: Valid; limitation
 
@@ -608,12 +607,11 @@ of a program:
 * [SPARK_EXTERNAL_VALID]
   Values read from objects whose address is specified are assumed to be valid
   values. This assumption is limited to objects with an imprecisely
-  supported address or an aspect ``External_Name`` or ``Link_Name``
-  (because an explicit check is emitted
+  supported address (because an explicit check is emitted
   otherwise). Currently there is no model of invalidity or undefinedness. The
   onus is on the user to ensure that all values read from an external source
   are valid. The use of an invalid value invalidates any proofs associated with
-  the value. The warning `imprecise Address or external name and validity` is
+  the value. The warning `imprecise Address and validity` is
   guaranteed to be issued in cases where review is required.
 
 * [SPARK_STORAGE_ERROR]
@@ -730,6 +728,11 @@ only part of a program:
   for abstract states whose value may be modified concurrently, when their
   refinement is not in SPARK. These abstract states should comply with the
   assumptions described in [SPARK_EXTERNAL].
+
+* [ADA_EXTERNAL_NAME]
+  Objects annotated with an aspect ``External_Name`` or ``Link_Name`` should
+  comply with the assumptions described in [SPARK_EXTERNAL],
+  [SPARK_ALIASING_ADDRESS] and [SPARK_EXTERNAL_VALID].
 
 * [ADA_PRIVATE_TYPES]
   Private types whose full view is not analyzed, yet are used in

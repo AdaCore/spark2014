@@ -385,11 +385,6 @@ package SPARK_Util is
    --     concurrent type
    --  @return concurrent type
 
-   function Has_Address_Or_Name (O : Object_Kind_Id) return Boolean;
-   --  Return True if O either has an address clause or has an external or
-   --  link name. Such objects are recognized so warnings can be issued to let
-   --  users know that they might require specific reviews to detect aliases.
-
    function Has_Volatile (E : N_Entity_Id) return Boolean
    with Pre  => Ekind (E) in E_Abstract_State
                            | E_Protected_Type

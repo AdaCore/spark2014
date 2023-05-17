@@ -17470,7 +17470,7 @@ package body Gnat2Why.Expr is
                --  Otherwise, we emit a warning when the value read might not
                --  be valid. This addresses assumption SPARK_EXTERNAL_VALID.
 
-               if Has_Address_Or_Name (Obj) then
+               if Present (Get_Address_Expr (Decl)) then
                   declare
                      Address         : constant Node_Id :=
                        Get_Address_Expr (Decl);

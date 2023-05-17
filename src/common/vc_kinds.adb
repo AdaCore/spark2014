@@ -575,11 +575,11 @@ package body VC_Kinds is
         --  Warnings guaranteed to be issued
         when Warn_Address_Atomic =>
           "non-atomic object with an imprecisely supported address "
-          & "specification or external name should not be accessed"
+          & "specification should not be accessed"
           & " concurrently",
         when Warn_Address_Valid =>
           "reads of an object with an imprecisely supported address "
-          & "specification or external name should be valid",
+          & "specification should be valid",
         when Warn_Assumed_Always_Return =>
           "no returning annotation available for subprogram, "
           & "subprogram is assumed to always return",
@@ -590,11 +590,11 @@ package body VC_Kinds is
           & "address specification should be correct",
         when Warn_Indirect_Writes_Through_Alias =>
           "indirect writes to object through a potential alias with an object"
-          & " with an imprecisely supported address specification or external"
-          & " name are ignored",
+          & " with an imprecisely supported address specification"
+          & " are ignored",
         when Warn_Indirect_Writes_To_Alias =>
           "writing to an object with an imprecisely supported address"
-          & " specification or external name is assumed to have no effects on "
+          & " specification is assumed to have no effects on "
           & "other non-volatile objects",
 
         --  Warnings only issued when using switch --pedantic
@@ -1466,16 +1466,16 @@ package body VC_Kinds is
 
         --  Warnings guaranteed to be issued
         when Warn_Address_Atomic =>
-          "imprecise Address or external name without Atomic",
+          "imprecise Address without Atomic",
         when Warn_Address_Valid =>
-          "imprecise Address or external name and validity",
+          "imprecise Address and validity",
         when Warn_Assumed_Volatile_Properties =>
-          "imprecise Address or external name and volatile properties",
+          "imprecise Address and volatile properties",
         when Warn_Indirect_Writes_Through_Alias =>
-          "imprecise Address or external name and indirect writes through "
+          "imprecise Address and indirect writes through "
           & "alias",
         when Warn_Indirect_Writes_To_Alias =>
-          "imprecise Address or external name and indirect writes to alias",
+          "imprecise Address and indirect writes to alias",
         when Warn_Assumed_Always_Return =>
           "assumed Always_Return",
         when Warn_Assumed_Global_Null =>
