@@ -111,7 +111,6 @@ imported.ads:9:14: info: terminating annotation on "Q_01" has been proved, subpr
 imported.ads:9:14: warning: subprogram "Q_01" has no effect
 imported.ads:16:14: info: terminating annotation on "Q_02" has been proved, subprogram will terminate
 imported.ads:16:14: warning: subprogram "Q_02" has no effect
-modular_analysis.adb:5:04: warning: analyzing unreferenced procedure "Test_01"
 modular_analysis.adb:5:23: info: initialization of "F" proved
 modular_analysis.adb:8:14: medium: terminating annotation on "Test_01" could be incorrect, call to "Open_Read" might be nonterminating [possible fix: annotate "Open_Read" with Always_Return]
 modular_analysis.adb:8:14: warning: assuming "Open_Read" always terminates
@@ -125,7 +124,6 @@ nest_in_proc.adb:20:21: medium: terminating annotation on "Nest_In_Proc" could b
 nest_in_proc.adb:20:21: warning: statement has no effect
 nest_in_proc.ads:1:11: info: terminating annotation on "Nest_In_Proc" has been proved, subprogram will terminate
 nested_blocks.adb:10:37: warning: statement has no effect
-nested_loops.adb:3:04: warning: analyzing unreferenced procedure "Proc"
 nested_loops.adb:3:14: info: terminating annotation on "Proc" has been proved, subprogram will terminate
 nested_loops.adb:3:14: warning: subprogram "Proc" has no effect
 nested_loops.adb:5:07: info: initialization of "X" proved
@@ -134,13 +132,11 @@ nested_loops.adb:9:31: info: loop variant proved (CVC5: 1 VC)
 nested_loops.adb:11:34: info: loop variant proved (CVC5: 1 VC)
 nested_loops.adb:13:25: warning: loop condition is stable
 nested_loops.adb:14:37: medium: loop variant might fail
-nested_loops.adb:22:04: warning: analyzing unreferenced procedure "Proc2"
 nested_loops.adb:22:14: warning: subprogram "Proc2" has no effect
 nested_loops.adb:26:17: info: overflow check proved (CVC5: 4 VC)
 nested_loops.adb:27:31: info: loop variant proved (CVC5: 1 VC)
 nested_loops.adb:29:34: info: loop variant proved (CVC5: 1 VC)
 nested_loops.adb:30:24: medium: terminating annotation on "Proc2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-nested_loops.adb:38:04: warning: analyzing unreferenced procedure "Proc3"
 nested_loops.adb:38:14: warning: subprogram "Proc3" has no effect
 nested_loops.adb:41:19: medium: terminating annotation on "Proc3" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nested_loops.adb:42:17: info: overflow check proved (CVC5: 2 VC)
@@ -160,29 +156,19 @@ nested_packages.ads:8:20: info: terminating annotation on "Do_Nothing2" has been
 nested_packages.ads:8:20: warning: subprogram "Do_Nothing2" has no effect
 p.adb:6:14: warning: subprogram "Proc2" has no effect
 p.adb:7:14: warning: subprogram "Proc3" has no effect
-p.adb:9:14: info: add a contract to analyze it separately from calling contexts
-p.adb:9:14: info: local subprogram "Proc" only analyzed in the context of calls
 p.adb:9:14: warning: subprogram "Proc" has no effect
 p.adb:11:07: info: no contextual analysis of "Proc2" (body not seen yet)
 p.adb:11:07: medium: terminating annotation on "Proc" could be incorrect, call to "Proc2" might be nonterminating [possible fix: annotate "Proc2" with Always_Return]
 p.adb:16:07: info: no contextual analysis of "Proc3" (body not seen yet)
-p.adb:26:04: warning: analyzing unreferenced procedure "Proc4"
 p.adb:26:14: info: terminating annotation on "Proc4" has been proved, subprogram will terminate
 p.adb:26:14: warning: subprogram "Proc4" has no effect
 p.adb:32:14: warning: subprogram "Proc5" has no effect
-p.adb:35:10: info: analyzing call to "Proc5" in context
-p.adb:35:10: info: no contextual analysis of call to recursive subprogram
 p.adb:35:10: medium: terminating annotation on "Proc5" could be incorrect, subprogram is recursive [possible fix: annotate "Proc5" with a Subprogram_Variant aspect]
 p.adb:39:14: warning: subprogram "Proc7" has no effect
-p.adb:41:14: info: add a contract to analyze it separately from calling contexts
-p.adb:41:14: info: local subprogram "Proc6" only analyzed in the context of calls
-p.adb:41:14: info: terminating annotation on "Proc6" has been proved, subprogram will terminate
 p.adb:41:14: warning: subprogram "Proc6" has no effect
-p.adb:44:10: info: no contextual analysis of "Proc7" (body not seen yet)
-p.adb:44:10: medium: terminating annotation on "Proc7" could be incorrect, subprogram is recursive, in call inlined at p.adb:51 [possible fix: annotate "Proc7" with a Subprogram_Variant aspect]
-p.adb:51:10: info: analyzing call to "Proc6" in context
+p.adb:44:10: medium: terminating annotation on "Proc6" could be incorrect, "Proc6" and "Proc7" are mutually recursive [possible fix: annotate "Proc6" and "Proc7" with Subprogram_Variant aspects]
+p.adb:51:10: medium: terminating annotation on "Proc7" could be incorrect, "Proc7" and "Proc6" are mutually recursive [possible fix: annotate "Proc7" and "Proc6" with Subprogram_Variant aspects]
 p.adb:55:04: info: initialization of "B" proved
-p.adb:59:04: info: analyzing call to "Proc" in context
 preconditions.adb:6:18: medium: implicit terminating annotation on "Nonreturning_Precondition" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 preconditions.adb:9:14: warning: unreachable code (CVC5: 1 VC)
 preconditions.ads:2:13: info: implicit terminating annotation on "Returning_Precondition" has been proved, subprogram will terminate

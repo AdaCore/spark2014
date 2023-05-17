@@ -1,8 +1,4 @@
-traverse_list.adb:11:06: warning: Always_Return annotation is useless
-traverse_list.adb:11:06: warning: function "Eq" has implicit Always_Return annotation
 traverse_list.adb:13:21: medium: implicit terminating annotation on overriding operator "=" could be incorrect, overriding operator "=" and "Eq" are mutually recursive [possible fix: annotate overriding operator "=" and "Eq" with Subprogram_Variant aspects]
-traverse_list.adb:15:06: warning: Always_Return annotation is useless
-traverse_list.adb:15:06: warning: function "=" has implicit Always_Return annotation
 traverse_list.adb:18:07: medium: implicit terminating annotation on "Eq" could be incorrect, "Eq" and overriding operator "=" are mutually recursive [possible fix: annotate "Eq" and overriding operator "=" with Subprogram_Variant aspects]
 traverse_list.adb:18:37: info: pointer dereference check proved (CVC5: 1 VC)
 traverse_list.adb:18:45: info: pointer dereference check proved (CVC5: 1 VC)

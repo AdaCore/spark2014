@@ -28,11 +28,11 @@ procedure Test_Route with SPARK_Mode is
    function Length (R : access constant Route) return Natural is
      (if R = null then 0
       else Integer'Min (Integer'Last - 1, Length (R.Rest)) + 1)
-   with Annotate => (GNATprove, Always_Return);
+   with Subprogram_Variant => (Structural => R);
 
    function Nth_X (R : access constant Route; N : Positive) return Integer is
      (if N = 1 then R.Current.X else Nth_X (R.Rest, N - 1))
-   with Annotate => (GNATprove, Always_Return),
+   with Subprogram_Variant => (Structural => R),
      Pre => N <= Length (R);
 
    package Int_Seqs is new SPARK.Containers.Functional.Vectors

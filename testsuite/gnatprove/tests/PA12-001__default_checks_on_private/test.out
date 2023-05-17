@@ -31,8 +31,6 @@ private_types.ads:45:14: info: range check proved (CVC5: 1 VC)
 private_types.ads:56:32: medium: in default value at private_types.ads:62
 private_types.ads:56:32: medium: range check might fail, cannot prove lower bound for Id (0) [reason for check: default component value must fit in the type]
 private_types.ads:61:25: info: range check proved (CVC5: 1 VC)
-tagged_component_check.ads:4:07: warning: Always_Return annotation is useless
-tagged_component_check.ads:4:07: warning: function "Hide" has implicit Always_Return annotation
 tagged_component_check.ads:28:28: medium: in default value of private type at tagged_component_check.ads:25
 tagged_component_check.ads:28:28: medium: range check might fail, cannot prove lower bound for Hide (3) [reason for check: default component value must fit in the type]
 tagged_component_check.ads:34:28: medium: in default value of private type at tagged_component_check.ads:36

@@ -11,10 +11,10 @@ is
    with
      Post => Pulse.Coid'Initialized and then Pulse.Coid = Null_Connection,
      Global => null,
-     Annotate => (GNATprove, Always_Return);
+     Always_Terminates;
 
    procedure Init (Pulse : in out IO_Pulse_T)
    with
      Global => null,
-     Annotate => (GNATprove, Always_Return);
+     Always_Terminates;
 end;

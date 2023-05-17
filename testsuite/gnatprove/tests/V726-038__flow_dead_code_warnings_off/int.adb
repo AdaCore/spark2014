@@ -4,7 +4,7 @@ procedure Int is
 
    C : constant Float := 1.0 with Warnings => Off;
 
-   procedure Dummy with Import, Global => null, Annotate => (GNATprove, Always_Return);
+   procedure Dummy with Import, Global => null, Always_Terminates;
 
 begin
 

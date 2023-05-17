@@ -7,9 +7,9 @@ is
                   B : in Array_Type) return Boolean
    -- Returns True is A is a permuation of B
      with
-       Global   => null,
-       Annotate => (GNATprove, Always_Return),
-       Ghost, Import;
+       Global => null,
+       Ghost,
+       Import;
 
 
    -- Sorts the elements in the array Values in ascending order

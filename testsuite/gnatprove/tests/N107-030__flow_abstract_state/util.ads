@@ -3,10 +3,11 @@ package Util
        Initializes => S
 is
    function Get return Boolean
-     with Global   => S,
-          Annotate => (GNATprove, Always_Return);
+     with Global => S;
+
 
    procedure Toggle
-     with Global   => (In_Out => S),
-          Annotate => (GNATprove, Always_Return);
+     with Global => (In_Out => S),
+     Always_Terminates;
+
 end Util;

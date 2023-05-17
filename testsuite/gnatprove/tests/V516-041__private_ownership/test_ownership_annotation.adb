@@ -14,19 +14,19 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
       G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK:NONE
       procedure P1 (X : in out Pool_Specific_Access) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 (X : out Pool_Specific_Access) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P1 with
         Global => (In_Out => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 with
         Global => (Output => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       A : Pool_Specific_Access;
       B : Pool_Specific_Access;
@@ -53,19 +53,19 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
       G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK:FAIL
       procedure P1 (X : in out Pool_Specific_Access) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 (X : out Pool_Specific_Access) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P1 with
         Global => (In_Out => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 with
         Global => (Output => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       A : Pool_Specific_Access; --@RESOURCE_LEAK:FAIL A is deallocated but we cannot know that
       B : Pool_Specific_Access;
@@ -92,19 +92,19 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
       G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK:FAIL
       procedure P1 (X : in out Pool_Specific_Access) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 (X : out Pool_Specific_Access) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P1 with
         Global => (In_Out => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 with
         Global => (Output => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       A : Pool_Specific_Access;
       B : Pool_Specific_Access;
@@ -134,19 +134,19 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
       G : Holder := (A => Allocate (13)); --@RESOURCE_LEAK:FAIL
       procedure P1 (X : in out Holder) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 (X : out Holder) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P1 with
         Global => (In_Out => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 with
         Global => (Output => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       A : Holder;
       B : Holder;
@@ -173,19 +173,19 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
       G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK:FAIL
       procedure P1 (X : in out Pool_Specific_Access) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 (X : out Pool_Specific_Access) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P1 with
         Global => (In_Out => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 with
         Global => (Output => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       A : Pool_Specific_Access;
       B : Pool_Specific_Access;
@@ -212,19 +212,19 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
       G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK:FAIL
       procedure P1 (X : in out Pool_Specific_Access) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 (X : out Pool_Specific_Access) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P1 with
         Global => (In_Out => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 with
         Global => (Output => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       A : Pool_Specific_Access;
       B : Pool_Specific_Access;
@@ -256,19 +256,19 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
       G : Holder := (A => Allocate (13)); --@RESOURCE_LEAK:FAIL
       procedure P1 (X : in out Holder) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 (X : out Holder) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P1 with
         Global => (In_Out => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 with
         Global => (Output => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       A : Holder;
       B : Holder;
@@ -308,19 +308,19 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
       G : File_Descriptor := Open ("g.txt"); --@RESOURCE_LEAK:FAIL
       procedure P1 (X : in out File_Descriptor) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 (X : out File_Descriptor) with
         Global => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P1 with
         Global => (In_Out => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       procedure P2 with
         Global => (Output => G),
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Import;
       A : File_Descriptor;
       B : File_Descriptor;

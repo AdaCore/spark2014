@@ -6,5 +6,5 @@ is
 
    procedure Init_State
      with Global   => (Output => State),
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
 end Remote;

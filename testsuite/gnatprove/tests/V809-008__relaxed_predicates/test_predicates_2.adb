@@ -14,26 +14,26 @@ procedure Test_Predicates_2 (C : Integer) with SPARK_Mode is
 
    procedure P (X : T1) with
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Import,
      Relaxed_Initialization => X;
 
    procedure R (X : out T1) with
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Import,
      Post => X.F < X.G;
 
    procedure Q (X : in out T1) with
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Import,
      Relaxed_Initialization => X,
      Post => X'Initialized and then X.F < X.G;
 
    procedure S (X : in out T1) with
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Import,
      Relaxed_Initialization => X;
 

@@ -1,23 +1,21 @@
 test_list.adb:14:13: info: implicit function contract might not be available on recursive calls
-test_list.adb:15:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
+test_list.adb:14:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 test_list.adb:15:40: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_list.adb:15:48: info: predicate check proved (Trivial: 1 VC)
+test_list.adb:15:48: info: subprogram variant proved (Trivial)
 test_list.adb:15:60: info: pointer dereference check proved (CVC5: 1 VC)
 test_list.adb:15:65: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_list.adb:15:67: info: predicate check proved (Trivial: 1 VC)
-test_list.adb:17:08: warning: Always_Return annotation is useless
-test_list.adb:17:08: warning: function "Length" has implicit Always_Return annotation
 test_list.adb:19:13: info: implicit function contract might not be available on recursive calls
-test_list.adb:20:07: medium: implicit terminating annotation on "Nth_Int" could be incorrect, subprogram is recursive [possible fix: annotate "Nth_Int" with a Subprogram_Variant aspect]
+test_list.adb:19:13: info: implicit terminating annotation on "Nth_Int" has been proved, subprogram will terminate
 test_list.adb:20:10: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:20:14: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:20:30: info: precondition proved (CVC5: 1 VC)
+test_list.adb:20:30: info: subprogram variant proved (Trivial)
 test_list.adb:20:43: info: pointer dereference check proved (CVC5: 1 VC)
 test_list.adb:20:48: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:20:50: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_list.adb:20:52: info: predicate check proved (Trivial: 1 VC)
-test_list.adb:22:08: warning: Always_Return annotation is useless
-test_list.adb:22:08: warning: function "Nth_Int" has implicit Always_Return annotation
 test_list.adb:23:15: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:23:20: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:25:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
@@ -150,10 +148,9 @@ test_list.adb:71:18: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:71:22: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:74:39: info: pointer dereference check proved (CVC5: 1 VC)
 test_list.adb:76:20: info: null exclusion check proved (CVC5: 1 VC)
-test_list.adb:82:15: medium: implicit terminating annotation on "All_Zeros" could be incorrect, subprogram is recursive [possible fix: annotate "All_Zeros" with a Subprogram_Variant aspect]
+test_list.adb:81:13: info: implicit terminating annotation on "All_Zeros" has been proved, subprogram will terminate
+test_list.adb:82:44: info: subprogram variant proved (Trivial)
 test_list.adb:82:59: info: pointer dereference check proved (CVC5: 1 VC)
-test_list.adb:84:08: warning: Always_Return annotation is useless
-test_list.adb:84:08: warning: function "All_Zeros" has implicit Always_Return annotation
 test_list.adb:87:17: info: postcondition proved (CVC5: 3 VC)
 test_list.adb:87:17: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:87:40: info: predicate check proved (Trivial: 1 VC)

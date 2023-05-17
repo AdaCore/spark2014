@@ -3,7 +3,7 @@ with Degrees, Instruments;
 private package AP.Heading.Roll.Rate
   with Abstract_State => (Roll_History with Part_Of => AP.Heading.Roll.State),
        Initializes    => Roll_History,
-       Annotate       => (GNATprove, Always_Return)
+       Always_Terminates
 is
    procedure Calc_Rollrate(Roll             : in  Instruments.Bankangle;
    			   Present_Rollrate : out Degrees.Degreespersec)

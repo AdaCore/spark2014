@@ -4,10 +4,10 @@ generic
   type Element_Type is private;
 
 
-package Generic_Ring_Buffer
+package Generic_Ring_Buffer with
+  Always_Terminates
 is
 
-   pragma Annotate (GNATprove, Always_Return, Generic_Ring_Buffer);
 
    -- TYPES -------------------------------------------------------------------
 

@@ -26,7 +26,7 @@ with SPARK.Containers.Formal.Unbounded_Vectors;
 
 private package Names.Data with
    SPARK_Mode,
-   Annotate => (GNATprove, Always_Return)
+   Always_Terminates
 is
 
    -------------

@@ -1,7 +1,7 @@
 with Ada.Integer_Text_IO;
 with Ada.Text_IO;
 procedure Generic_Examples with
-  Annotate => (GNATprove, Might_Not_Return)
+  Always_Terminates => False
 is
 
    function Count (Source  : in String;

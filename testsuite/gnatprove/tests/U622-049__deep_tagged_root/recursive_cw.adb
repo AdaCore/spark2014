@@ -8,7 +8,7 @@ procedure Recursive_CW with SPARK_Mode is
 
    function All_Less_Than (X : access constant Root'Class; V : Integer) return Boolean is
      (if X = null then True else X.V < V and then All_Less_Than (X.Next, V))
-   with Annotate => (GNATprove, Always_Return);
+   with Subprogram_Variant => (Structural => X);
 
    X : aliased Root'Class := Root'(1, new Root'(2, new Root'(3, new Root'(4, null))));
 begin

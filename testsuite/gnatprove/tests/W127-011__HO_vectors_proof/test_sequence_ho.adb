@@ -12,7 +12,7 @@ procedure Test_Sequence_HO with SPARK_Mode is
    --  We do the verification for index types which are subtypes of Integer
 
    package Nested with
-      Annotate => (GNATprove, Always_Return)
+      Always_Terminates
    is
       type Element_Type is private;
 

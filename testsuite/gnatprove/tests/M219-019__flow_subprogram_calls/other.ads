@@ -2,7 +2,7 @@ package Other with SPARK_Mode is
 
    procedure Swap_With_Contract (X, Y : in out Integer)
    with Global   => null,
-        Annotate => (GNATprove, Always_Return),
+        Always_Terminates,
         Depends  => (X => Y,
                      Y => X);
 

@@ -1,5 +1,5 @@
-package Const is
-   pragma Annotate (GNATprove, Always_Return, Const);
+package Const with Always_Terminates Is
+
    type R is record
       D : Integer;
    end record;

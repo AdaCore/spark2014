@@ -1,6 +1,6 @@
 with Pulled; use Pulled;
 
-procedure Main with SPARK_Mode, Annotate => (GNATprove, Always_Return) is
+procedure Main with SPARK_Mode, Always_Terminates is
 begin
    Terminating_Generic_Instance;
    Terminating_Instance;

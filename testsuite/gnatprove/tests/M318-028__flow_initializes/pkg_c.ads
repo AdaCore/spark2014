@@ -6,10 +6,10 @@ is
 
    procedure Do_Stuff
      with Global   => (In_Out => State),
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
 
    procedure Init
      with Global   => (Output => State),
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
 
 end Pkg_C;

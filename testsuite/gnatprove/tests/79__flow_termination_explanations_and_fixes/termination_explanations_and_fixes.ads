@@ -1,7 +1,7 @@
 package termination_explanations_and_fixes with SPARK_Mode is
 
    procedure Nullify (X : in out Natural)
-     with Annotate => (GNATprove, Always_Return);
+     with Always_Terminates;
    --  Procedure containing a loop that might lack a loop variant in its body
 
    type Acc_To_F is access function return Natural;
@@ -9,14 +9,14 @@ package termination_explanations_and_fixes with SPARK_Mode is
    Y : Natural := 0;
 
    procedure Use_Acc_To_F
-     with Annotate => (GNATprove, Always_Return);
+     with Always_Terminates;
    --  Procedure dereferencing an access-to-function, which might hide
    --  recursive calls.
 
    type Acc_To_P is access procedure;
    procedure P;
    procedure Use_Acc_To_P
-     with Annotate => (GNATprove, Always_Return);
+     with Always_Terminates;
    --  Procedure dereferencing an access-to-procedure, in which case it is
    --  useless to report the possible presence of recursive calls.
 
@@ -28,12 +28,12 @@ package termination_explanations_and_fixes with SPARK_Mode is
    Z : Tagged_Natural'Class := Tagged_Natural'(E => 0);
 
    procedure Use_Dispatching_F
-     with Annotate => (GNATprove, Always_Return);
+     with Always_Terminates;
    --  Procedure making a dispatching call to a function, which might hide
    --  recursive calls.
 
    procedure Use_Dispatching_P
-     with Annotate => (GNATprove, Always_Return);
+     with Always_Terminates;
    --  Procedure making a dispatching call to a procedure, in which case it is
    --  useless to report the possible presence of recursive calls.
 

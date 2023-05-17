@@ -27,7 +27,7 @@ private with SPARK.Containers.Formal.Unbounded_Vectors;
 
 package Unbounded_Strings with
    SPARK_Mode,
-   Annotate => (GNATprove, Always_Return)
+   Always_Terminates
 is
 
    type Unbounded_String is limited private

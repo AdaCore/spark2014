@@ -5,8 +5,8 @@ is
 
    function Rand (X : Integer) return Boolean with
      Import,
-     Global => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
 
    --  Function with higher order specialization
 

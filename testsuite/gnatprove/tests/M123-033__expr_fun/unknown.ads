@@ -1,3 +1,3 @@
 package Unknown is
-   function Value return Integer with Global => null, Annotate => (GNATprove, Always_Return);
+   function Value return Integer with Global => null;
 end Unknown;

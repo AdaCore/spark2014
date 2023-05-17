@@ -6,7 +6,6 @@ is
 
    type My_Array_Type is array (My_Range_Type) of Boolean;
 
-   function Find_False (My_Array : My_Array_Type) return My_Range_Type with
-      Annotate => (GNATprove, Always_Return);
+   function Find_False (My_Array : My_Array_Type) return My_Range_Type;
 
 end Unsound;

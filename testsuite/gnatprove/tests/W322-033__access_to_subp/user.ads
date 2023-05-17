@@ -9,7 +9,7 @@ package User is
       Ghost,
       Import,
       Global   => null,
-      Annotate => (GNATprove, Always_Return);
+      Always_Terminates;
 
    type T is access function (P : Ptr) return Integer with
      Post => State (P.all);

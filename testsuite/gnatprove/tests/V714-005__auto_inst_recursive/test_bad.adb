@@ -8,7 +8,7 @@ procedure Test_Bad with SPARK_Mode is
    package Test_Rec_1 is
       function P (X : Natural) return Boolean with
         Ghost,
-        Annotate => (GNATprove, Always_Return),
+
         Global => null,
         Import;
       --  An unknown property
@@ -39,7 +39,7 @@ procedure Test_Bad with SPARK_Mode is
    package Test_Rec_2 is
       function P (X : Natural) return Boolean with
         Ghost,
-        Annotate => (GNATprove, Always_Return),
+
         Global => null,
         Import;
       --  An unknown property
@@ -75,7 +75,7 @@ procedure Test_Bad with SPARK_Mode is
    package Test_Rec_3 is
       function P (X : Natural) return Boolean with
         Ghost,
-        Annotate => (GNATprove, Always_Return),
+
         Global => null,
         Import;
       --  An unknown property
@@ -119,7 +119,7 @@ procedure Test_Bad with SPARK_Mode is
    package Test_Rec_4 is
       function P (X : Natural) return Boolean with
         Ghost,
-        Annotate => (GNATprove, Always_Return),
+
         Global => null,
         Import;
       --  An unknown property
@@ -182,7 +182,7 @@ procedure Test_Bad with SPARK_Mode is
    package Test_No_Return is
       function P (X : Natural) return Boolean with
         Ghost,
-        Annotate => (GNATprove, Always_Return),
+
         Global => null,
         Import;
       --  An unknown property

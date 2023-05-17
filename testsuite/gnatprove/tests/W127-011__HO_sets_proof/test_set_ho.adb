@@ -8,7 +8,7 @@ With SPARK.Containers.Functional.Sets.Higher_Order;
 
 procedure Test_Set_HO with SPARK_Mode is
    package Nested with
-      Annotate => (GNATprove, Always_Return)
+      Always_Terminates
    is
       type Element_Type is private;
 

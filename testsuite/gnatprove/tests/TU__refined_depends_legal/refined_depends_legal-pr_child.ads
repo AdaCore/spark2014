@@ -10,5 +10,5 @@ is
      with Global   => (Input  => Pr_Var,
                       In_Out => Pr_State),
           Depends  => (Pr_State =>+ Pr_Var),
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
 end Refined_Depends_Legal.Pr_Child;

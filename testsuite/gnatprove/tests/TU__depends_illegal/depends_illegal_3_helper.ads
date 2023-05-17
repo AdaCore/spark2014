@@ -9,7 +9,7 @@ is
      with Global   => (Input  => G_Var1,
                        Output => G_Var2,
                        In_Out => G_Var3),
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
    --  Since the body of Implicit_Depends will not be provided, callers of
    --  this function will access an implicit depends which will be as follows:
    --     Depends => ((Par2,

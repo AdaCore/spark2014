@@ -1,5 +1,5 @@
 procedure Neverending_Dispatching_3 with SPARK_Mode,
-  Annotate => (GNATprove, Always_Return) is
+  Always_Terminates is
 
    package ParentDecl is
       type T is tagged null record;
@@ -17,7 +17,7 @@ procedure Neverending_Dispatching_3 with SPARK_Mode,
    package ChildDecl is
       type U is new T with null record;
       function Init return U is (null record);
-      function Work(X:U) return Integer with Annotate => (GNATprove, Always_Return); -- This should not be trusted.
+      function Work(X:U) return Integer;
    end ChildDecl;
 
    package body ChildDecl is

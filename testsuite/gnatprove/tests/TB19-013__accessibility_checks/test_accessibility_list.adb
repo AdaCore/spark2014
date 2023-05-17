@@ -12,12 +12,12 @@ procedure Test_Accessibility_List with SPARK_Mode is
    function Length (L : List) return Big_Positive is
      (if L.N = null then Big_Positive'(1) else Length (L.N.all) + 1)
    with Ghost,
-       Annotate => (GNATprove, Always_Return);
+       Subprogram_Variant => (Structural => L);
 
    function Nth_Int (L : List; N : Big_Positive) return Integer is
      (if N = 1 then L.V else Nth_Int (L.N.all, N - 1))
    with Ghost,
-       Annotate => (GNATprove, Always_Return),
+       Subprogram_Variant => (Structural => L),
        Pre => N <= Length (L);
 
    function Nth (L : aliased List; N : Big_Positive) return not null access constant Integer

@@ -1,4 +1,4 @@
-package Stack with SPARK_Mode, Annotate => (GNATprove, Always_Return) is
+package Stack with SPARK_Mode, Always_Terminates is
 
    type Length_T is range 0 .. 100;
 

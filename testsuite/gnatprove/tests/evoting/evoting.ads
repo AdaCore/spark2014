@@ -57,7 +57,7 @@ package eVoting is
                 (for all i in last_candidate + 1 .. Candidate_Number_t'Last =>
                    (for all j in Candidate_Name_t'Range =>
                       candidates(i)(j) = ' ')),
-        Annotate => (GNATprove, Might_Not_Return);
+        Always_Terminates => False;
 
    procedure Print_A_Candidate
      (candidates   : Candidate_Name_Array_t;
@@ -72,7 +72,7 @@ package eVoting is
       candidates     : out Candidate_Name_Array_t;
       last_candidate : out Candidate_Number_t)
    with Pre      => program_phase = Setup_Phase,
-        Annotate => (GNATprove, Might_Not_Return);
+        Always_Terminates => False;
 
    procedure Get_Vote
      (program_phase  :     Program_Phase_t;
@@ -96,7 +96,7 @@ package eVoting is
           number_of_votes = 0,
         Post     => (for all i in last_candidate + 1 .. Candidate_Number_t'Last =>
                        counters(i) = 0),
-        Annotate => (GNATprove, Might_Not_Return);
+        Always_Terminates => False;
 
    procedure Compute_Winner
      (program_phase  :     Program_Phase_t;
@@ -123,5 +123,5 @@ package eVoting is
    with Pre => program_phase = Counting_Phase;
 
    procedure Do_Vote
-     with Annotate => (GNATprove, Might_Not_Return);
+     with Always_Terminates => False;
 end;

@@ -5,16 +5,16 @@ procedure Main with SPARK_Mode is
 
    function P (X : Integer) return Boolean with
      Import,
-     Global => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
    function Q (X : Integer) return Boolean with
      Import,
-     Global => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
    function R (X : Integer) return Boolean with
      Import,
-     Global => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
 
    --  The predicate is on the ancestor, check it before
 

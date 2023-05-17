@@ -4,13 +4,13 @@ procedure Main
 is
    function First return Integer with
      Import,
-     Global => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
 
    function Last return Integer with
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+
      Post => Last'Result >= First;
 
    subtype My_Int is Integer range First .. Last;

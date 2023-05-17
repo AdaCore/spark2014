@@ -11,18 +11,18 @@ is
 
    procedure Operate (S : in out Shape) with
      Pre'Class => Valid (S),
-     Annotate  => (GNATprove, Always_Return);
+     Always_Terminates;
 
    procedure Set_Default (S : in out Shape) with
      Post'Class => Valid (S),
-     Annotate   => (GNATprove, Always_Return);
+     Always_Terminates;
 
    procedure Set_Default_Repeat (S : in out Shape) with
      Post'Class => Valid (S),
-     Annotate   => (GNATprove, Always_Return);
+     Always_Terminates;
 
    procedure Set_Default_No_Post (S : in out Shape) with
-     Annotate => (GNATprove, Always_Return);
+     Always_Terminates;
 
    type Rectangle is new Shape with record
       Len_X, Len_Y : Float;
@@ -33,18 +33,18 @@ is
 
    procedure Operate (S : in out Rectangle) with
      Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Always_Terminates;
 
    procedure Set_Default (S : in out Rectangle) with
      Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Always_Terminates;
 
    procedure Set_Default_Repeat (S : in out Rectangle) with
      Post'Class => Valid (S),
-     Annotate   => (GNATprove, Always_Return);
+     Always_Terminates;
 
    procedure Set_Default_No_Post (S : in out Rectangle) with
      Post'Class => Valid (S),
-     Annotate   => (GNATprove, Always_Return);
+     Always_Terminates;
 
 end Geometry;

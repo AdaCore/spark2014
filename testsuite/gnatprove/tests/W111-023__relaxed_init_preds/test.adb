@@ -11,8 +11,8 @@ procedure Test with SPARK_Mode is
         Annotate => (GNATprove, Ownership, "Needs_Reclamation"),
         Relaxed_Initialization;
 
-      function To_Int (X : My_Priv) return Integer with
-        Annotate => (GNATprove, Always_Return);
+      function To_Int (X : My_Priv) return Integer;
+
 
       subtype S is My_Priv with
         Predicate => To_Int (S) < Integer'Last

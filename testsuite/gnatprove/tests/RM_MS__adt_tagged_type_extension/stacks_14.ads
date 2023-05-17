@@ -4,11 +4,11 @@ is
    type Stack is tagged private;
 
    function Is_Empty(S : Stack) return Boolean with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
    function Is_Full(S : Stack) return Boolean with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
 
    procedure Clear(S : out Stack)
      with Depends => (S    => null,
@@ -16,7 +16,7 @@ is
 
    procedure Push(S : in out Stack; X : in Integer)
      with Depends  => (S =>+ X),
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
    --  The =>+ symbolizes that any variable on the left side of =>+,
    --  depends on all variables that are on the right side of =>+
    --  plus itself. For example (X, Y) =>+ Z would mean that
@@ -24,7 +24,7 @@ is
 
    procedure Pop(S : in out Stack; X : out Integer)
      with Depends  => ((S,X) => S),
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
 
 private
    Stack_Size : constant := 100;

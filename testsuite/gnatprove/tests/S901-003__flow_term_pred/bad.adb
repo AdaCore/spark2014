@@ -10,7 +10,6 @@ procedure Bad is
    --  Call to a non-terminating function in predicate expression
 
    function In_T (X : Integer) return Boolean;
-   pragma Annotate (GNATprove, Always_Return, In_T);
    --  This terminating annotation is incorrect, because there is .
 
    function In_T (X : Integer) return Boolean is

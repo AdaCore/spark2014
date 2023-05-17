@@ -14,8 +14,6 @@ sum.ads:15:19: info: precondition proved
 sum.ads:15:29: info: range check proved
 sum.ads:18:12: info: overflow check proved
 sum.ads:18:12: info: postcondition proved
-sum.ads:25:04: warning: Always_Return annotation is useless
-sum.ads:25:04: warning: function "Sum" has implicit Always_Return annotation
-sum.ads:34:13: info: implicit terminating annotation on "Simple_Sum" has been proved, subprogram will terminate
-sum.ads:36:14: medium: postcondition might fail
-sum.ads:36:34: info: precondition proved
+sum.ads:33:13: info: implicit terminating annotation on "Simple_Sum" has been proved, subprogram will terminate
+sum.ads:35:14: medium: postcondition might fail
+sum.ads:35:34: info: precondition proved

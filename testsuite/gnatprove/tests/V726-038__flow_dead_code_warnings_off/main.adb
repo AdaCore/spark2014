@@ -9,7 +9,7 @@ procedure Main is
       procedure P (I : Integer) with
         Import,
         Global => (Input => Dummy),
-        Annotate => (GNATprove, Always_Return);
+        Always_Terminates;
    begin
       if A /= 30 then
          while C <= 3 loop
@@ -28,7 +28,7 @@ procedure Main is
       procedure P (I : Integer) with
         Import,
         Global => (Input => Dummy),
-        Annotate => (GNATprove, Always_Return);
+        Always_Terminates;
    begin
       if B /= 30 then
          while C <= 3 loop

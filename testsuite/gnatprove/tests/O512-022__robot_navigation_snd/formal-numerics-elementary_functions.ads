@@ -34,9 +34,9 @@
 ------------------------------------------------------------------------------
 
 package Formal.Numerics.Elementary_Functions with
-  SPARK_Mode
+  SPARK_Mode,
+  Always_Terminates
 is
-   pragma Annotate (GNATprove, Always_Return, Elementary_Functions);
    pragma Pure;
 
    function Sqrt (X : Float) return Float with

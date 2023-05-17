@@ -5,7 +5,7 @@ package Bad with SPARK_Mode is
    function Call_Jump return Boolean;
 
    procedure Call_Jump (B : Boolean) with
-     Annotate => (GNATprove, Might_Not_Return),
+     Always_Terminates => False,
      Global => null,
      Post => not B;
 

@@ -7,8 +7,8 @@ package Double_Shift is
    function Shift_Left (A : Double_Uns; B : Natural) return Double_Uns
       with Convention => Intrinsic,
            Import,
-           Global => null,
-           Annotate => (Gnatprove, Always_Return);
+           Global => null;
+
 
    procedure Lemma_Double_Shift_Left (X : Double_Uns; S, S1 : Double_Uns)
    with

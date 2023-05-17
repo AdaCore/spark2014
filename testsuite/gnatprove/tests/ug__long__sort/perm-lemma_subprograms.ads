@@ -1,7 +1,7 @@
 package Perm.Lemma_Subprograms with
   SPARK_Mode,
   Ghost,
-  Annotate => (GNATprove, Always_Return)
+  Always_Terminates
 is
 
    function Is_Set (A : Nat_Array; I : Index; V : Natural; R : Nat_Array)

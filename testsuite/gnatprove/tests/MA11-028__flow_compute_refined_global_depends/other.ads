@@ -3,6 +3,5 @@ package Other
        Initializes    => Other_State
 is
    function Wibble return Boolean
-     with Global   => Other_State,
-          Annotate => (GNATprove, Always_Return);
+     with Global => Other_State;
 end Other;

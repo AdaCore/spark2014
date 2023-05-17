@@ -12,8 +12,8 @@ is
    procedure Op (X : in T1'Class);
 
    function Foo return Integer
-     with Global   => null,
-          Annotate => (GNATprove, Always_Return);
+     with Global => null;
+
 
    subtype One_To_Ten is Integer range 1 .. 10
      with Dynamic_Predicate => Foo < 100;

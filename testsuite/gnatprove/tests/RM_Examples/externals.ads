@@ -6,7 +6,7 @@ package Externals
                                                             Effective_Writes,
                                                             Async_Writers))),
        Initializes    => Complex_Device,
-       Annotate       => (GNATprove, Always_Return)
+       Always_Terminates
 is
    procedure Read (Combined_Value : out Integer)
      with Global   => Combined_Inputs,  -- Combined_Inputs is an Input;

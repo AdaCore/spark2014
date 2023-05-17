@@ -1,9 +1,3 @@
-very_longs.adb:15:08: warning: Always_Return annotation is useless
-very_longs.adb:15:08: warning: function "Shift_Right" has implicit Always_Return annotation
-very_longs.adb:24:08: warning: Always_Return annotation is useless
-very_longs.adb:24:08: warning: function "Shift_Left" has implicit Always_Return annotation
-very_longs.adb:32:08: warning: Always_Return annotation is useless
-very_longs.adb:32:08: warning: function "Shift_Right" has implicit Always_Return annotation
 very_longs.adb:36:54: info: initialization of "Digit" proved
 very_longs.adb:36:73: info: initialization of "Valid" proved
 very_longs.adb:37:11: info: flow dependencies proved

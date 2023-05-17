@@ -111,12 +111,8 @@ quant_checks.adb:72:40: warning: unused variable "Y"
 quant_checks.adb:75:16: info: implicit terminating annotation on "Last" has been proved, subprogram will terminate
 quant_checks.adb:77:16: info: implicit terminating annotation on "Previous" has been proved, subprogram will terminate
 quant_checks.adb:77:41: warning: unused variable "Y"
-quant_checks.adb:88:38: warning: Always_Return annotation is useless
-quant_checks.adb:88:38: warning: function "Unknown" has implicit Always_Return annotation
 quant_checks.adb:89:16: info: during checks for quantification at quant_checks.adb:81
 quant_checks.adb:89:16: info: precondition proved (Trivial: 1 VC)
-quant_checks.adb:90:38: warning: Always_Return annotation is useless
-quant_checks.adb:90:38: warning: function "Has_Element" has implicit Always_Return annotation
 quant_checks.adb:91:16: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 quant_checks.adb:91:16: medium: during checks for quantification at quant_checks.adb:81
 quant_checks.adb:91:16: medium: precondition might fail

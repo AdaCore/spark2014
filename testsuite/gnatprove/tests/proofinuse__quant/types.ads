@@ -1,6 +1,6 @@
 package Types with
   SPARK_Mode,
-  Annotate => (GNATprove, Always_Return)
+  Always_Terminates
 is
    --  Same type definitions as in Ada.Interfaces
 

@@ -7,5 +7,5 @@ package Synchronous_Abstractions with SPARK_Mode,
 is
    procedure Do_Something with
      Global   => (In_Out => Synchronous_State),
-     Annotate => (GNATprove, Always_Return);
+     Always_Terminates;
 end Synchronous_Abstractions;

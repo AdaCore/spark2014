@@ -1,7 +1,7 @@
 procedure Assert_and_cut_in_loop with SPARK_Mode is
    X : Boolean := True;
    procedure Shutoff_Warnings
-     with Import, Global => (In_Out => X), Annotate => (GNATprove, Always_Return);
+     with Import, Global => (In_Out => X), Always_Terminates;
 begin
    while X loop
       pragma Loop_Invariant (True);

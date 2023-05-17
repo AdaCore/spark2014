@@ -8,7 +8,7 @@ with SPARK.Containers.Functional.Infinite_Sequences.Higher_Order;
 
 procedure Test_Sequence_HO with SPARK_Mode is
    package Nested with
-      Annotate => (GNATprove, Always_Return)
+      Always_Terminates
    is
       type Element_Type is private;
 

@@ -3,7 +3,7 @@ with Neverending_Loop;
 with SPARK.Containers.Formal.Unbounded_Vectors;
 with Ada.Unchecked_Conversion;
 
-package body Soundness_Tests with SPARK_Mode, Annotate => (GNATprove, Always_Return) is
+package body Soundness_Tests with SPARK_Mode is
 
    package My_Vect is new SPARK.Containers.Formal.Unbounded_Vectors
      (Index_Type    => Positive,

@@ -4,14 +4,13 @@ test_borrow.adb:18:13: info: implicit function contract might not be available o
 test_borrow.adb:18:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
 test_borrow.adb:18:86: info: dynamic accessibility check proved (Trivial)
 test_borrow.adb:22:13: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
-test_borrow.adb:23:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
+test_borrow.adb:22:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 test_borrow.adb:23:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_borrow.adb:23:45: info: predicate check proved (Trivial: 1 VC)
+test_borrow.adb:23:45: info: subprogram variant proved (Trivial)
 test_borrow.adb:23:54: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:23:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_borrow.adb:23:60: info: predicate check proved (Trivial: 1 VC)
-test_borrow.adb:25:08: warning: Always_Return annotation is useless
-test_borrow.adb:25:08: warning: function "Length" has implicit Always_Return annotation
 test_borrow.adb:27:13: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
 test_borrow.adb:27:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 test_borrow.adb:28:24: info: pointer dereference check proved (CVC5: 1 VC)

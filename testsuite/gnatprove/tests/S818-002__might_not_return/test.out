@@ -1,7 +1,5 @@
-bad_spec.ads:6:06: error: aspect Annotate Might_Not_Return must apply to a procedure
-bad_spec.ads:10:06: error: procedure with aspect Annotate Might_Not_Return must not also be marked with No_Return
-bad_spec.ads:19:06: error: procedure with aspect Annotate Might_Not_Return must not also be dispatching
-gnatprove: error during generation of Global contracts
+bad_spec.ads:12:06: warning: postcondition does not check the outcome of calling "Call_Jump"
+bad_spec.ads:12:14: warning: useless postcondition, "Call_Jump" is marked No_Return
 bad_spec_prag.ads:4:04: error: wrong number of arguments in pragma Annotate (GNATprove, Might_Not_Return, ...), expected 3
 bad_spec_prag.ads:7:50: error: pragma Annotate Might_Not_Return must apply to a procedure
 bad_spec_prag.ads:13:50: error: procedure with pragma Annotate Might_Not_Return must not also be marked with No_Return
@@ -18,10 +16,7 @@ bad.ads:9:06: info: data dependencies proved
 bad.ads:10:06: warning: postcondition does not check the outcome of calling "Call_Jump"
 bad.ads:12:13: info: implicit terminating annotation on "Silent_Call_Jump" has been proved, subprogram will terminate
 bad.ads:17:06: info: data dependencies proved
-weird.ads:5:06: error: procedure with aspect Annotate Might_Not_Return must not also be marked with Always_Return
-weird.ads:10:06: error: procedure with aspect Annotate Always_Return must not also be marked with Might_Not_Return
-weird.ads:14:06: error: procedure with aspect Annotate Always_Return must not also be marked with No_Return
-gnatprove: error during generation of Global contracts
+weird.ads:9:14: info: terminating annotation on "R" has been proved, subprogram will terminate
 pack.adb:11:10: high: precondition might fail
 pack.adb:11:10: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 pack.adb:20:22: info: assertion proved (CVC5: 1 VC)

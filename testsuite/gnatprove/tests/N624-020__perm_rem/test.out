@@ -65,8 +65,6 @@ perm.adb:65:07: warning: this statement is never reached
 perm.adb:69:16: info: function contract might not be available on recursive calls or calls from enclosing unit
 perm.adb:71:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:71:54: info: precondition proved (CVC5: 2 VC)
-perm.adb:72:07: warning: Always_Return annotation is useless
-perm.adb:72:07: warning: function "Induction_Hypothesis" has implicit Always_Return annotation
 perm.adb:79:13: medium: implicit terminating annotation on "Induction_Hypothesis" could be incorrect, subprogram is recursive [possible fix: annotate "Induction_Hypothesis" with a Subprogram_Variant aspect]
 perm.adb:80:15: info: precondition proved (CVC5: 3 VC)
 perm.adb:80:37: info: precondition proved (CVC5: 3 VC)
@@ -79,8 +77,6 @@ perm.adb:93:16: info: function contract might not be available on recursive call
 perm.adb:94:63: info: precondition proved (CVC5: 2 VC)
 perm.adb:95:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:95:54: info: precondition proved (CVC5: 2 VC)
-perm.adb:96:07: warning: Always_Return annotation is useless
-perm.adb:96:07: warning: function "Induction_Hypothesis" has implicit Always_Return annotation
 perm.adb:103:40: info: precondition proved (CVC5: 4 VC)
 perm.adb:104:13: medium: implicit terminating annotation on "Induction_Hypothesis" could be incorrect, subprogram is recursive [possible fix: annotate "Induction_Hypothesis" with a Subprogram_Variant aspect]
 perm.adb:105:15: info: precondition proved (CVC5: 3 VC)
@@ -141,8 +137,6 @@ perm.adb:152:16: info: function contract might not be available on recursive cal
 perm.adb:154:33: info: precondition proved (CVC5: 2 VC)
 perm.adb:155:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:155:54: info: precondition proved (CVC5: 2 VC)
-perm.adb:156:07: warning: Always_Return annotation is useless
-perm.adb:156:07: warning: function "Induction_Hypothesis" has implicit Always_Return annotation
 perm.adb:164:39: info: precondition proved (CVC5: 4 VC)
 perm.adb:165:13: medium: implicit terminating annotation on "Induction_Hypothesis" could be incorrect, subprogram is recursive [possible fix: annotate "Induction_Hypothesis" with a Subprogram_Variant aspect]
 perm.adb:166:15: info: precondition proved (CVC5: 4 VC; Z3: 1 VC)
@@ -331,8 +325,6 @@ perm.adb:306:18: info: precondition proved (CVC5: 2 VC)
 perm.adb:306:42: info: precondition proved (CVC5: 2 VC)
 perm.adb:307:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:307:54: info: precondition proved (CVC5: 2 VC)
-perm.adb:308:07: warning: Always_Return annotation is useless
-perm.adb:308:07: warning: function "Induction_Hypothesis" has implicit Always_Return annotation
 perm.adb:315:41: info: precondition proved (CVC5: 4 VC)
 perm.adb:316:41: info: precondition proved (CVC5: 3 VC)
 perm.adb:317:37: info: precondition proved (CVC5: 4 VC; Z3: 1 VC)
@@ -397,8 +389,6 @@ perm.ads:24:13: info: implicit terminating annotation on "Remove_Eq" has been pr
 perm.ads:27:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.ads:27:40: info: precondition proved (CVC5: 3 VC)
 perm.ads:27:56: info: precondition proved (CVC5: 3 VC)
-perm.ads:31:04: warning: Always_Return annotation is useless
-perm.ads:31:04: warning: function "Is_Perm" has implicit Always_Return annotation
 perm.ads:35:07: medium: implicit terminating annotation on "Is_Perm" could be incorrect, subprogram is recursive [possible fix: annotate "Is_Perm" with a Subprogram_Variant aspect]
 perm.ads:36:50: info: index check proved (CVC5: 2 VC)
 perm.ads:36:59: info: index check proved (CVC5: 2 VC)

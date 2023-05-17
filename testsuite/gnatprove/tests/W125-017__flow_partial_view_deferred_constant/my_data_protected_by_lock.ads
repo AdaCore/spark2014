@@ -14,7 +14,7 @@ package My_Data_Protected_By_Lock with SPARK_Mode,
      --  Shared state of the lock
   Initializes => (Lock_State, Data),
   Initial_Condition => Get_State_For_Calling_Task = Unknown,
-  Annotate => (GNATprove, Always_Return)
+  Always_Terminates
 is
 
    type Data_Holder (<>) is limited private;

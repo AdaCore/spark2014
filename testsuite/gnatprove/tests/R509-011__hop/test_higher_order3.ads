@@ -6,16 +6,16 @@ with Test_Types; use Test_Types;
 package Test_Higher_Order3 with SPARK_Mode is
 
    function Value (X : Integer) return My_Small
-     with Global   => null,
-          Import,
-          Annotate => (GNATprove, Always_Return);
+     with Global => null,
+          Import;
+
    --  Value cannot have a pre as it is called from Add_Value without any
    --  constraint.
 
    function Choose (X : Integer) return Boolean
-     with Global   => null,
-          Import,
-          Annotate => (GNATprove, Always_Return);
+     with Global => null,
+          Import;
+
    --  Value cannot have a pre as it is called from Add_One without any
    --  constraint.
 
@@ -52,27 +52,27 @@ package Test_Higher_Order3 with SPARK_Mode is
        My_Sum_Int.Big_Integer_Sum.Sum (A);
 
    function In_Range (X : Big_Integer) return Boolean
-     with Global   => null,
+     with Global => null,
           Import,
-          Ghost,
-          Annotate => (GNATprove, Always_Return);
+          Ghost;
+
 
    function To_Big (X : Integer) return Big_Integer
-     with Global   => null,
+     with Global => null,
           Import,
-          Ghost,
-          Annotate => (GNATprove, Always_Return);
+          Ghost;
+
 
    function Add_Pre (X, Y : Integer) return Boolean
-     with Global   => null,
-          Import,
-          Annotate => (GNATprove, Always_Return);
+     with Global => null,
+          Import;
+
 
    function Add (X, Y : Integer) return Integer
-     with Global   => null,
+     with Global => null,
           Import,
-          Pre      => Add_Pre (X, Y),
-          Annotate => (GNATprove, Always_Return);
+          Pre    => Add_Pre (X, Y);
+
 
    package My_Sum_2 is new SPARK.Higher_Order.Fold.Sum_2
      (Index_1     => Small_Index,

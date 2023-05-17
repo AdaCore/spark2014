@@ -413,13 +413,3 @@ spark-containers-parameter_checks.ads:82:19: info: postcondition proved (Z3: 1 V
 spark-containers-parameter_checks.ads:82:19: medium: postcondition might fail, in instantiation at spark-containers-functional-infinite_sequences.ads:292, in instantiation at test_functional.ads:10 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
 spark-containers-parameter_checks.ads:82:19: medium: postcondition might fail, in instantiation at spark-containers-functional-maps.ads:500, in instantiation at test_functional.ads:13 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
 spark-containers-parameter_checks.ads:82:19: medium: postcondition might fail, in instantiation at spark-containers-functional-vectors.ads:316, in instantiation at test_functional.ads:21 [possible fix: you should consider adding a postcondition to function Equivalent or turning it into an expression function in its unit spec]
-types.ads:9:06: warning: Always_Return annotation is useless
-types.ads:9:06: warning: function "=" has implicit Always_Return annotation
-types.ads:14:06: warning: Always_Return annotation is useless
-types.ads:14:06: warning: function "Equivalent" has implicit Always_Return annotation
-types.ads:19:06: warning: Always_Return annotation is useless
-types.ads:19:06: warning: function "<" has implicit Always_Return annotation
-types.ads:24:06: warning: Always_Return annotation is useless
-types.ads:24:06: warning: function "Hash" has implicit Always_Return annotation
-types.ads:29:06: warning: Always_Return annotation is useless
-types.ads:29:06: warning: function "F" has implicit Always_Return annotation

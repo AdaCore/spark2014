@@ -1,7 +1,7 @@
 with Private_Tagged; use Private_Tagged;
 package Private_Tagged_Ext with
   SPARK_Mode,
-  Annotate => (GNATprove, Always_Return)
+  Always_Terminates
 is
    type V is new Pool_Specific_Access with record
       F : Integer;

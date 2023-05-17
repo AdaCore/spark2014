@@ -3,7 +3,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Game
   with SPARK_Mode => On,
-       Annotate   => (GNATprove, Might_Not_Return)
+       Always_Terminates => False
 is
    Player_Turn : Boolean := True;
 begin

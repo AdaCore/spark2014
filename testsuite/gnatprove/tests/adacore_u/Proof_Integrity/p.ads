@@ -9,7 +9,7 @@ package P with SPARK_Mode is
    procedure Treat_Value (Value : in out Integer) with
      Import,
      Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Always_Terminates;
 
    procedure Read_Record (From : Integer);
 

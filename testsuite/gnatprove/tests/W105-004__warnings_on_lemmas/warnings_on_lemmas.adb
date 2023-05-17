@@ -8,7 +8,7 @@ procedure Warnings_On_Lemmas with SPARK_Mode is
    function Call_2 (B : Boolean; F, G : not null access function return Integer) return Integer is
       (if B then F.all else G.all)
    with Post => Call_2'Result = (if B then F.all else G.all),
-     Annotate => (GNATprove, Always_Return),
+
      Annotate => (GNATprove, Higher_Order_Specialization);
 
    --  These lemmas can be specialized, no warnings
@@ -29,7 +29,7 @@ procedure Warnings_On_Lemmas with SPARK_Mode is
      Post => Call_2 (B, G, F) = F.all;
 
    procedure Lemma_Ok_3 (B : Boolean; F, G : not null access function return Integer) with
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Annotate => (GNATprove, Higher_Order_Specialization),
      Ghost,
@@ -39,7 +39,7 @@ procedure Warnings_On_Lemmas with SPARK_Mode is
 
    --  This lemma has no Higher_Order_Specialization annotation, we have a warning
    procedure Lemma_No_Spec (B : Boolean; F, G : not null access function return Integer) with
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Ghost,
      Pre => B,
@@ -47,21 +47,21 @@ procedure Warnings_On_Lemmas with SPARK_Mode is
 
    --  These lemmas have no specializable calls to Call_2, we have warnings
    procedure Lemma_No_Call (B : not null access function return Boolean) with
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Annotate => (GNATprove, Higher_Order_Specialization),
      Ghost,
      Post => Call_2 (B.all, Read_V'Access, Read_V'Access) = V;
 
    procedure Lemma_No_Call_2 (B : not null access function return Boolean) with
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Annotate => (GNATprove, Higher_Order_Specialization),
      Ghost,
      Post => Call_2 (B.all, Cst_A, Cst_A) = Cst_A.all;
 
    procedure Lemma_No_Call_3 (B : not null access function return Boolean; F, G : Named_F) with
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Annotate => (GNATprove, Higher_Order_Specialization),
      Ghost,
@@ -70,7 +70,7 @@ procedure Warnings_On_Lemmas with SPARK_Mode is
 
    --  These lemmas have partially specializable calls to Call_2, we have warnings
    procedure Lemma_Partial_Call (B : Boolean; F : not null access function return Integer) with
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Annotate => (GNATprove, Higher_Order_Specialization),
      Ghost,
@@ -78,7 +78,7 @@ procedure Warnings_On_Lemmas with SPARK_Mode is
      Post => Call_2 (B, Read_V'Access, F) = V;
 
    procedure Lemma_Partial_Call_2 (B : Boolean; F : not null access function return Integer) with
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Annotate => (GNATprove, Higher_Order_Specialization),
      Ghost,
@@ -86,7 +86,7 @@ procedure Warnings_On_Lemmas with SPARK_Mode is
      Post => Call_2 (B, Cst_A, F) = Cst_A.all;
 
    procedure Lemma_Partial_Call_3 (B : Boolean; F : not null access function return Integer; G : Named_F) with
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Annotate => (GNATprove, Higher_Order_Specialization),
      Ghost,
@@ -95,14 +95,14 @@ procedure Warnings_On_Lemmas with SPARK_Mode is
 
    --  These lemmas contain two different specializable calls to Call_2, we have warnings
    procedure Lemma_Two_Calls (B : Boolean; F, G : not null access function return Integer) with
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Annotate => (GNATprove, Higher_Order_Specialization),
      Ghost,
      Post => Call_2 (B, F, G) = Call_2 (not B, G, F);
 
    procedure Lemma_Two_Calls_2 (B : Boolean; F, G, H : not null access function return Integer) with
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Annotate => (GNATprove, Automatic_Instantiation),
      Annotate => (GNATprove, Higher_Order_Specialization),
      Ghost,

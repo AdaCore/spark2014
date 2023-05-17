@@ -11,21 +11,21 @@ is
      (F.all)
    with
      Post => Call'Result = F.all,
-     Annotate => (GNATprove, Higher_Order_Specialization),
-     Annotate => (GNATprove, Always_Return);
+     Annotate => (GNATprove, Higher_Order_Specialization);
+
 
    procedure Bad_Lemma_1 (F : not null access function return Integer) with
      Ghost,
      Annotate => (GNATprove, Higher_Order_Specialization),
      Annotate => (GNATprove, Automatic_Instantiation),
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Post => Call (F) = 1; --@POSTCONDITION:FAIL
 
    procedure Bad_Lemma_2 (F : not null access function return Integer) with
      Ghost,
      Annotate => (GNATprove, Higher_Order_Specialization),
      Annotate => (GNATprove, Automatic_Instantiation),
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Post => Call (F) = 1; --@POSTCONDITION:FAIL
 
    procedure Bad_Lemma_1 (F : not null access function return Integer) is

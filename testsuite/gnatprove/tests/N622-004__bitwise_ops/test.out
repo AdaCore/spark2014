@@ -1,5 +1,3 @@
-aco-bit_operations.ads:45:08: warning: Always_Return annotation is useless
-aco-bit_operations.ads:45:08: warning: function "TakeLSB_From16" has implicit Always_Return annotation
 aco-math-very_longs.adb:21:54: info: initialization of "Digit" proved
 aco-math-very_longs.adb:21:77: info: initialization of "Valid" proved
 aco-math-very_longs.adb:23:08: info: flow dependencies proved
