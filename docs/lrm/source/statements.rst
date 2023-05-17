@@ -452,12 +452,15 @@ Attribute Loop_Entry
 
    this would introduce an exception in the case where Idx is not in X'Range.]
 
+8. The prefix of a Loop_Entry ``attribute_reference`` shall not contain a
+   Loop_Entry ``attribute_reference.``
+
 .. container:: heading
 
    Dynamic Semantics
 
 
-8. For each X'Loop_Entry other than one occurring within an Ignored
+9. For each X'Loop_Entry other than one occurring within an Ignored
    assertion expression, a constant is implicitly declared at the beginning of
    the associated loop statement. The constant is of the type of X and is
    initialized to the result of evaluating X (as an expression) at the point
@@ -466,53 +469,53 @@ Attribute Loop_Entry
    constant declarations occur in an arbitrary order.
 
 
-9. The previous paragraph notwithstanding, the implicit constant declaration
-   is not elaborated if the ``loop_statement`` has an ``iteration_scheme`` whose
-   evaluation yields the result that the ``sequence_of_statements`` of the
-   ``loop_statement`` will not be executed (loosely speaking, if the loop
-   completes after zero iterations).
+10. The previous paragraph notwithstanding, the implicit constant declaration
+    is not elaborated if the ``loop_statement`` has an ``iteration_scheme``
+    whose evaluation yields the result that the ``sequence_of_statements`` of
+    the ``loop_statement`` will not be executed (loosely speaking, if the loop
+    completes after zero iterations).
 
-   [Note: This means that the constant is not elaborated unless the
-   loop body will execute (or at least begin execution) at least once.
-   For example, a while loop
+    [Note: This means that the constant is not elaborated unless the loop body
+    will execute (or at least begin execution) at least once.  For example, a
+    while loop
 
-   .. code-block:: ada
+    .. code-block:: ada
 
-      while <condition> do
-         sequence_of_statements; -- contains Loop_Entry uses
-      end loop;
+       while <condition> do
+          sequence_of_statements; -- contains Loop_Entry uses
+       end loop;
 
-   may be thought of as being transformed into
+    may be thought of as being transformed into
 
-   .. code-block:: ada
+    .. code-block:: ada
 
-      if <condition> then
-         declare
-         ... implicitly declared Loop_Entry constants
-         begin
-            loop
-               sequence_of_statements;
-               exit when not <condition>;
-            end loop;
-         end;
-      end if;
+       if <condition> then
+          declare
+          ... implicitly declared Loop_Entry constants
+          begin
+             loop
+                sequence_of_statements;
+                exit when not <condition>;
+             end loop;
+          end;
+       end if;
 
-   The rule also prevents the following example from raising Constraint_Error:
+    The rule also prevents the following example from raising Constraint_Error:
 
-   .. code-block:: ada
+    .. code-block:: ada
 
-      declare
-         procedure P (X : in out String) is
-         begin
-            for I in X'Range loop
-               pragma Loop_Invariant (X(X'First)'Loop_Entry >= X(I));
-               X := F(X); -- modify X
-            end loop;
-         end P;
-         Length_Is_Zero : String := "";
-      begin
-         P (Length_Is_Zero);
-     end; -- ...]
+       declare
+          procedure P (X : in out String) is
+          begin
+             for I in X'Range loop
+                pragma Loop_Invariant (X(X'First)'Loop_Entry >= X(I));
+                X := F(X); -- modify X
+             end loop;
+          end P;
+          Length_Is_Zero : String := "";
+       begin
+          P (Length_Is_Zero);
+      end; -- ...]
 
 
 Block Statements
