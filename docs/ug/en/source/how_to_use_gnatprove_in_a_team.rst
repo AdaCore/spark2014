@@ -888,8 +888,13 @@ only part of a program:
 * [ADA_INLINE_FOR_PROOF]
   If the aspect or pragma ``Inline_For_Proof`` is used on a function with a
   postcondition whose implementation is not analyzed, yet called from SPARK
-  code, the equality used in the postcondition of the function should be equal
-  to the logical equality.
+  code, and the function has a postcondition whose expression is syntactically
+  a relation using the ‘=’ relational_operator (or an expression that
+  parenthesizes such a relation), where one side of the relation is
+  syntactically an attribute_reference to the Result attribute of the function,
+  then |GNATprove| assumes that the value of the postcondition expression is
+  true if and only if the function return value is logically equal to an Ada
+  copy of the value of the other side of the relation.
 
 In addition, the following assumptions need to be addressed when calling
 GNATprove on only part of a SPARK program at a time (either on an individual
