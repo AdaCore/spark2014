@@ -41,7 +41,7 @@
 	install-all why3 all setup all-nightly doc-nightly run-benchmark \
         create-benchmark
 
-ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+ROOT_DIR:=/it/wave/x86_64-linux/spark2014-core-cov/src/
 
 INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
