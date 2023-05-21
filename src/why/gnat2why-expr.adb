@@ -21606,11 +21606,18 @@ package body Gnat2Why.Expr is
       return W_Expr_Id
    is
 
+      function Initialization_Check_Needed (Alt : Node_Id) return Boolean is
+        (not Is_Entity_Name (Alt)
+         or else not Is_Type (Entity (Alt))
+         or else (Has_Predicates (Entity (Alt))
+           and then Predicate_Requires_Initialization (Entity (Alt))));
+      --  Return True if we need to initialize the lefthand side for a
+      --  membership test wrt Alt. It is not the case if Alt is a type, unless
+      --  this type has predicates.
+
       function Initialization_Check_Needed return Boolean;
-      --  As the expression of the membership test is evaluated, its top
-      --  level initialization flag is always checked. If the expression
-      --  is composite, we may also need to check that components are
-      --  initialized if the tests involve an equality.
+      --  Return True if we need to initialize the lefthand side for the
+      --  membership test.
 
       function Transform_Alternative
         (Var       : W_Expr_Id;
@@ -21637,14 +21644,14 @@ package body Gnat2Why.Expr is
             begin
                Alt := First (Alternatives (Expr));
                while Present (Alt) loop
-                  if not (Is_Entity_Name (Alt) and then Is_Type (Entity (Alt)))
-                    and then Nkind (Alt) /= N_Range
-                  then
+                  if Initialization_Check_Needed (Alt) then
                      return True;
                   end if;
                   Next (Alt);
                end loop;
             end;
+         elsif Initialization_Check_Needed (Right_Opnd (Expr)) then
+            return True;
          end if;
          return False;
       end Initialization_Check_Needed;
@@ -21968,28 +21975,12 @@ package body Gnat2Why.Expr is
                --  Possibly include a predicate in the type membership test
 
                if Has_Predicates (Ty) then
-                  declare
-                     Init_Var : constant W_Expr_Id := New_Temp_For_Expr
-                       (E =>
-                          (if Is_Init_Wrapper_Type (Get_Type (Var))
-                           then Insert_Checked_Conversion
-                             (Ada_Node => Left_Opnd (Expr),
-                              Domain   => Domain,
-                              Expr     => +Var_Tmp,
-                              To       => EW_Abstract (Ty))
-                           else +Var_Tmp));
-                  begin
-                     Result := New_And_Expr
-                       (Result,
-                        Boolean_Expr_Of_Pred
-                          (Compute_Dynamic_Predicate
-                               (+Init_Var, Ty, Params),
-                           Domain),
-                        Domain);
-                     Result := Binding_For_Temp (Domain  => Domain,
-                                                 Tmp     => Init_Var,
-                                                 Context => Result);
-                  end;
+                  Result := New_And_Expr
+                    (Result,
+                     Boolean_Expr_Of_Pred
+                       (Compute_Dynamic_Predicate (+Var_Tmp, Ty, Params),
+                        Domain),
+                     Domain);
                end if;
             end;
          else
