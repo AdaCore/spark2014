@@ -566,7 +566,7 @@ of a program:
     to be issued in cases where review is required.
 
 * [SPARK_ALIASING_ADDRESS]
-  Aliases between objects with either an imprecisely supported address
+  Aliases between objects with an imprecisely supported address
   specification are ignored by GNATprove. Reviews are necessary to ensure that:
 
   * The objects themselves are annotated with the ``Asynchronous_Writers``
