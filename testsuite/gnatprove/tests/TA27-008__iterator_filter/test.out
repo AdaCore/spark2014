@@ -6,8 +6,10 @@ test_fold.adb:14:36: info: index check proved (CVC5: 2 VC)
 test_fold.adb:14:50: warning: assuming "P" has no effect on global items
 test_fold.adb:14:50: warning: no Global contract available for "P"
 test_fold.adb:14:56: info: index check proved (CVC5: 2 VC)
+test_fold.adb:17:32: info: index check proved (CVC5: 4 VC)
 test_fold.adb:17:55: warning: assuming "P" has no effect on global items
 test_fold.adb:17:55: warning: no Global contract available for "P"
+test_fold.adb:17:61: info: index check proved (CVC5: 4 VC)
 test_fold.adb:20:13: info: loop invariant initialization proved (CVC5: 3 VC)
 test_fold.adb:20:13: info: loop invariant preservation proved (CVC5: 3 VC)
 test_fold.adb:21:18: info: index check proved (CVC5: 4 VC)
@@ -23,8 +25,10 @@ test_fold.adb:28:36: info: index check proved (CVC5: 2 VC)
 test_fold.adb:28:50: warning: assuming "P" has no effect on global items
 test_fold.adb:28:50: warning: no Global contract available for "P"
 test_fold.adb:28:56: info: index check proved (CVC5: 2 VC)
+test_fold.adb:31:40: info: index check proved (CVC5: 4 VC)
 test_fold.adb:31:63: warning: assuming "P" has no effect on global items
 test_fold.adb:31:63: warning: no Global contract available for "P"
+test_fold.adb:31:69: info: index check proved (CVC5: 4 VC)
 test_fold.adb:34:13: info: loop invariant initialization proved (CVC5: 3 VC)
 test_fold.adb:34:13: info: loop invariant preservation proved (CVC5: 3 VC)
 test_fold.adb:35:18: info: index check proved (CVC5: 4 VC)
