@@ -45,7 +45,6 @@ with GNATCOLL.Symbols;               use GNATCOLL.Symbols;
 with Gnat2Why_Args;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
-with Gnat2Why.Expr.Loops.Exits;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
 with Gnat2Why.Subprograms.Pointers;  use Gnat2Why.Subprograms.Pointers;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
@@ -24414,17 +24413,7 @@ package body Gnat2Why.Expr is
          Nlists.Next (Cur_Stmt_Or_Decl);
       end loop;
 
-      --  If inside a loop, with the last instruction being an unconditional
-      --  exit or return statement, and provided the loop is not unrolled,
-      --  we store the Why3 expression in a map, and return instead the raise
-      --  expression that will be linked to that treatment.
-
-      declare
-         Expr : W_Prog_Id := +Result;
-      begin
-         Loops.Exits.Record_And_Replace (Stmts_And_Decls, Expr);
-         return Expr;
-      end;
+      return +Result;
    end Transform_Statements_And_Declarations;
 
    ------------------------------

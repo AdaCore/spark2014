@@ -27,7 +27,6 @@ with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Debug;
 with Gnat2Why_Args;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
-with Gnat2Why.Expr.Loops.Exits;
 with Gnat2Why.Expr.Loops.Inv; use Gnat2Why.Expr.Loops.Inv;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why.Util;           use Gnat2Why.Util;
@@ -693,14 +692,6 @@ package body Gnat2Why.Expr.Loops is
    --  Start of processing for Transform_Loop_Statement
 
    begin
-      --  Push a scope for the exit statements of the loop. This scope is
-      --  popped later by calling Wrap_Loop which calls Exits.Wrap_Loop_Body,
-      --  in the cases where the loop is not unrolled.
-
-      if not Is_Selected_For_Loop_Unrolling (Stmt) then
-         Exits.Before_Start_Of_Loop;
-      end if;
-
       --  Add the loop index to the entity table
 
       if Present (Scheme)
@@ -2086,15 +2077,15 @@ package body Gnat2Why.Expr.Loops is
       Last_Inv           : Opt_N_Pragma_Id := Empty)
       return W_Prog_Id
    is
-      Loop_Ident : constant W_Name_Id := Loop_Exception_Name (Loop_Id);
-      Loop_Before : constant W_Prog_Id :=
+      Loop_Ident     : constant W_Name_Id := Loop_Exception_Name (Loop_Id);
+      Loop_Before    : constant W_Prog_Id :=
         Sequence ((1 => Loop_Start,
                    2 => New_Comment
                      (Comment => NID ("Check for absence of RTE in the loop"
                           & " invariant and variant")),
                    3 => Invariant_Check,
                    4 => Variant_Check));
-      Loop_After : constant W_Prog_Id :=
+      Loop_After     : constant W_Prog_Id :=
         Sequence ((1 => New_Comment
                    (Comment => NID ("Assume implicit invariants from the loop"
                     & (if Sloc (Loop_Id) > 0 then
@@ -2119,7 +2110,7 @@ package body Gnat2Why.Expr.Loops is
                          else
                             Update_Stmt)));
 
-      Loop_Stmt : constant W_Prog_Id :=
+      Loop_Stmt      : constant W_Prog_Id :=
         +Insert_Cnt_Loc_Label
         (Ada_Node     => (if Present (Last_Inv) then Last_Inv else Loop_Id),
          E            => New_Loop
@@ -2130,7 +2121,7 @@ package body Gnat2Why.Expr.Loops is
             Code_After  => Loop_After),
          Is_Loop_Head => True);
 
-      Try_Body : W_Prog_Id :=
+      Try_Body       : constant W_Prog_Id :=
         Bind_From_Mapping_In_Prog
           (Params => Body_Params,
            Map    => Map_For_Loop_Entry (Loop_Id),
@@ -2143,15 +2134,10 @@ package body Gnat2Why.Expr.Loops is
                       else ""))),
                2 => Loop_Stmt)));
 
-      Loop_Try : W_Prog_Id;
+      Loop_Try       : W_Prog_Id;
       Warn_Dead_Code : W_Prog_Id := +Void;
 
    begin
-      --  Possibly wrap the loop body in a first try-catch block to handle exit
-      --  paths from the loop.
-
-      Exits.Wrap_Loop_Body (Try_Body);
-
       --  Now wrap the resulting program in the main try-catch block for the
       --  loop, catching the exception corresponding to exiting the loop.
 
