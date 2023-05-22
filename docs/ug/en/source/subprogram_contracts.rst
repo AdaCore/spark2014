@@ -17,6 +17,9 @@ is made up of various optional parts:
   data read and written by the subprogram.
 * The `flow dependencies` introduced by aspect ``Depends`` specify how
   subprogram outputs depend on subprogram inputs.
+* The `termination contract` introduced by aspect ``Always_Terminates``
+  requires procedures and entries to terminate, possibly under a particular
+  condition.
 * The `subprogram variant` introduced by aspect ``Subprogram_Variant`` is
   used to ensure termination of recursive subprograms.
 
@@ -24,14 +27,15 @@ Which contracts to write for a given verification objective, and how
 |GNATprove| generates default contracts, is detailed in :ref:`How to Write
 Subprogram Contracts`.
 
-The contract on a subprogram describes the behavior of successful
-calls. Executions that end up by signalling an error, as described in
-:ref:`Raising Exceptions and Other Error Signaling Mechanisms`, are not covered
-by the subprogram's contract. A call to a subprogram is successful if execution
-terminates normally, or if execution loops without errors for a subprogram
-marked with aspect ``No_Return`` that has some outputs (this is typically the
-case of a non-terminating subprogram implementing the main loop of a
-controller).
+|GNATprove| formally verifies that each execution of each |SPARK| subprogram it
+analyzes will either:
+
+* return normally in a state that respects the subprogram’s postcondition,
+* raise an exception in a state that respects the subprogram's exceptional
+  contract,
+* terminate abnormally as a result of a primary stack, secondary stack, or heap
+  memory allocation failure, or
+* not terminate at all when it is allowed by its termination contract.
 
 .. index:: precondition
            see: Pre; precondition
@@ -653,6 +657,55 @@ postcondition of ``True`` is used implicitly on the subprogram declaration.
 ``Add_To_Total`` when analyzing calls outside package ``Account`` and the more
 precise refined contract (precondition and refined postcondition) of
 ``Add_To_Total`` when analyzing calls inside package ``Account``.
+
+.. index:: termination; Always_Terminates
+
+Contracts for Termination
+-------------------------
+
+[|SPARK|]
+
+By default, |GNATprove| verifies termination of all functions
+and automatically instantiated lemmas (procedures annotated with
+``Automatic_Instantiation``). For procedures or entries, |GNATprove| does not
+attempt to verify termination and is only concerned with their partial
+correctness. This means that |GNATprove| only verifies that the contract of
+each procedure or entry holds whenever it terminates (i.e., returns or raises
+an exception). It is still possible that the subprogram does not terminate
+in some or all cases (it can for example loop forever or exit the whole program
+using ``GNAT.OS_Lib.OS_Exit``).
+
+The ``Always_Terminates`` GNAT specific aspect allows users to request that
+|GNATprove| also verifies that a procedure or entry terminates. It is the case
+for example of the procedures ``Ok_Terminating`` and ``Bad_Terminating``
+below. The aspect can also be used to provide a boolean condition like for the
+``Conditionally_Loop`` procedure. If this condition is present, then the proof
+of termination is only attempted when the condition evaluates to True on
+subprogram entry. As an example, the procedure ``Conditionally_Loop`` might not
+terminate if its ``Cond`` parameter evaluates to True, and ``Loop_Forever``
+never needs to terminate (but it might):
+
+.. literalinclude:: /examples/ug__possibly_nonterminating/possibly_nonterminating.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__possibly_nonterminating/possibly_nonterminating.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| verifies the termination of ``OK_Terminating`` and the conditional
+termination of ``Conditionally_Loop`` but a failed check is emitted for
+``Bad_Terminating`` as it does not terminate.
+
+.. literalinclude:: /examples/ug__possibly_nonterminating/test.out
+   :language: none
+
+
+A package can also be annotated with the ``Always_Terminates`` aspect. It does
+not apply to the elaboration of the package, which should always terminate in
+|SPARK|, but serves as a default for all the procedures located inside: unless
+specified otherwise, a procedure declared inside a package annotated with
+``Always_Terminates`` should always terminate.
 
 .. index:: termination; subprogram variant
            recursion; subprogram variant

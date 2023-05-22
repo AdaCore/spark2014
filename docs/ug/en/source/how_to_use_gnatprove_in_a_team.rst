@@ -817,9 +817,9 @@ only part of a program:
 
   * :ref:`Subprogram Termination` (only explicit except for functions which
     should always return in SPARK) - subprograms annotated with
-    ``Always_Return`` should always return normally assuming that primary
-    stack, secondary stack, and heap memory allocations never fail, other
-    subprograms are not restricted
+    ``Always_Terminates`` should terminate (return normally or raise an
+    exception) whenever the associated boolean condition evaluates to True
+    on entry of the subprogram. Other subprograms are not restricted
 
   * the aliasing constraints of |SPARK| (implicit - the subprogram shall not
     introduce any visible aliases between its parameters, accessed global
@@ -911,13 +911,13 @@ being available:
   review is required.
 
 * [PARTIAL_TERMINATION]
-  Subprograms which are called across the boundary of those units analyzed
-  together should be annotated to specify that they will always return (with
-  annotation Always_Return), might not return (with annotation
-  Might_Not_Return) or never return (with aspect or pragma No_Return),
-  otherwise they will be assumed to always return. The warning
-  `assumed Always_Return` is guaranteed to be issued in cases where review is
-  required.
+  Procedures and entries which are called across the boundary of those units
+  analyzed together should be annotated to specify under which condition they
+  shall terminate using the ``Always_Terminates`` aspect. Otherwise, these
+  subprograms will be assumed to never terminate (if they are annotated with
+  ``No_Return``) or always terminate (otherwise). The warning
+  `assumed Always_Terminates` is guaranteed to be issued in cases where review
+  is required.
 
 * [PARTIAL_TASKING]
   If no single run of GNATprove analyzes all units that define tasks, then for

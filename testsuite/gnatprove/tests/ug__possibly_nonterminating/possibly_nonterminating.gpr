@@ -1,4 +1,4 @@
-project possibly_nonreturning is
+project possibly_nonterminating is
 
    package Builder is
       for Global_Configuration_Pragmas use "test.adc";
@@ -12,4 +12,4 @@ project possibly_nonreturning is
       for Proof_Switches ("Ada") use ("--report=all");
    end Prove;
 
-end possibly_nonreturning;
+end possibly_nonterminating;

@@ -56,13 +56,6 @@ These limitations in the proof part of GNATprove may result in a less precise
 
 .. index:: recursion; limitation
 
-* Postconditions of possibly non-returning functions called in contracts and
-  assertion pragmas are not available, which may lead to unproved
-  checks. Using the switch ``--info`` reveals where the information about
-  postcondition may be lost. The solution is to annotate the subprogram with
-  the ``Always_Return`` annotation (see :ref:`Subprogram Termination`) which
-  will be checked by GNATprove.
-
 * The following attributes are not yet supported in proof: Adjacent, Aft,
   Bit_Order, Body_Version, Copy_Sign, Definite, Denorm, First_Valid, Fore,
   Last_Valid, Machine, all Machine_* attributes, Model, all Model_* attributes,
