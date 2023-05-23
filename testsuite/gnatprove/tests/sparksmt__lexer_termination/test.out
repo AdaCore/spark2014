@@ -74,8 +74,8 @@ lexer.adb:402:18: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 lexer.adb:425:07: info: initialization of "State" proved
 lexer.adb:427:07: info: initialization of "C" proved
 lexer.adb:450:10: info: precondition proved (CVC5: 18 VC)
-lexer.adb:454:15: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-lexer.adb:456:41: info: overflow check proved (CVC5: 2 VC)
+lexer.adb:454:15: info: discriminant check proved (CVC5: 2 VC; Trivial: 2 VC)
+lexer.adb:456:41: info: overflow check proved (CVC5: 4 VC)
 lexer.adb:461:33: info: loop invariant initialization proved (CVC5: 10 VC)
 lexer.adb:461:33: info: loop invariant preservation proved (CVC5: 10 VC)
 lexer.adb:463:31: medium: loop variant might fail (e.g. when Current_Idx = 0)

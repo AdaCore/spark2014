@@ -92,7 +92,7 @@ evoting.ads:97:17: info: postcondition proved (CVC5: 1 VC)
 evoting.ads:98:33: info: index check proved (CVC5: 2 VC)
 evoting.ads:99:41: info: exceptional case proved (Trivial: 1 VC)
 evoting.ads:105:07: medium: "winners" might not be initialized in "Compute_Winner" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "winners" on all paths, make "winners" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-evoting.ads:107:17: info: postcondition proved (CVC5: 4 VC; Trivial: 2 VC)
+evoting.ads:107:17: info: postcondition proved (CVC5: 3 VC; Trivial: 2 VC; Z3: 1 VC)
 evoting.ads:108:29: info: range check proved (CVC5: 2 VC)
 evoting.ads:109:27: medium: "winners" might not be initialized
 evoting.ads:109:59: info: index check proved (CVC5: 2 VC)
