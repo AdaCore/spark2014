@@ -736,7 +736,7 @@ def gnatprove(
     if sparklib:
         cmd += ["--no-subprojects"]
     if benchmark_mode() is not None:
-        cmd += ["--benchmark", "--debug-save-vcs"]
+        cmd += ["--benchmark", "--debug-save-vcs", "--why3-debug", "gnat_ast"]
     if cache_allowed and cache_mode():
         cmd += ["--memcached-server=localhost:11211"]
     cmd += to_list(opt)
