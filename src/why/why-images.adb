@@ -46,8 +46,6 @@ package body Why.Images is
       return M = 1;
    end Can_Be_Printed_In_Decimal_Notation;
 
-   function Img (Node : Node_Id) return String;
-
    function Img (Name : Symbol) return String is
      (if Name = No_Symbol then "<>" else Get (Name).all);
 

@@ -97,10 +97,10 @@ spark-higher_order-fold.ads:530:17: info: subprogram "Prove_Ind_Col" will termin
 spark-higher_order-fold.ads:535:43: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:535:43: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:536:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:536:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:536:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:536:17: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:536:17: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
+spark-higher_order-fold.ads:536:17: medium: postcondition might fail, in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:536:30: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:536:30: info: precondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:536:36: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
@@ -121,10 +121,10 @@ spark-higher_order-fold.ads:543:63: info: range check proved (CVC5: 2 VC), in in
 spark-higher_order-fold.ads:543:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:543:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:544:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:544:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:544:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:544:17: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:544:17: info: precondition proved (CVC5: 4 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
+spark-higher_order-fold.ads:544:17: medium: postcondition might fail, in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:544:30: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:544:30: info: precondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:544:36: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
@@ -151,8 +151,8 @@ spark-higher_order-fold.ads:550:47: info: range check proved (CVC5: 2 VC), in in
 spark-higher_order-fold.ads:550:47: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:550:47: info: range check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:551:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:551:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:551:17: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
+spark-higher_order-fold.ads:551:17: medium: postcondition might fail, in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:551:32: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at test_higher_order.ads:67
 spark-higher_order-fold.ads:551:32: info: precondition proved (CVC5: 1 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:802, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:551:39: info: index check proved (CVC5: 2 VC), in instantiation at spark-higher_order-fold.ads:611, in instantiation at spark-higher_order-fold.ads:696, in instantiation at test_higher_order.ads:106
@@ -316,11 +316,59 @@ test_higher_order.ads:61:89: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:63:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 test_higher_order.ads:65:30: warning: unused variable "A"
 test_higher_order.ads:65:42: warning: unused variable "X"
+test_higher_order.ads:77:13: info: implicit function contract might not be available on calls from enclosing unit
 test_higher_order.ads:81:10: info: predicate check proved (Trivial: 1 VC)
-test_higher_order.ads:94:19: info: assertion proved (CVC5: 1 VC)
+test_higher_order.ads:83:04: info: function contract might not be available on implicit recursive calls
+test_higher_order.ads:83:04: info: function contract might not be available on implicit recursive calls
+test_higher_order.ads:83:04: info: function contract might not be available on implicit recursive calls
+test_higher_order.ads:83:04: info: implicit function contract might not be available on implicit recursive calls
+test_higher_order.ads:83:04: info: in instantiation at spark-higher_order-fold.ads:111
+test_higher_order.ads:83:04: info: in instantiation at spark-higher_order-fold.ads:120
+test_higher_order.ads:83:04: info: in instantiation at spark-higher_order-fold.ads:339
+test_higher_order.ads:83:04: info: in instantiation at spark-higher_order-fold.ads:381
+test_higher_order.ads:83:04: info: in instantiation at spark-higher_order-fold.ads:381
+test_higher_order.ads:83:04: info: in instantiation at spark-higher_order-fold.ads:432
+test_higher_order.ads:83:04: info: in instantiation at spark-higher_order-fold.ads:74
+test_higher_order.ads:94:19: medium: assertion might fail
 test_higher_order.ads:94:24: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
-test_higher_order.ads:104:19: info: assertion proved (CVC5: 1 VC)
+test_higher_order.ads:98:04: info: function contract might not be available on implicit recursive calls
+test_higher_order.ads:98:04: info: function contract might not be available on implicit recursive calls
+test_higher_order.ads:98:04: info: implicit function contract might not be available on implicit recursive calls
+test_higher_order.ads:98:04: info: implicit function contract might not be available on implicit recursive calls
+test_higher_order.ads:98:04: info: in instantiation at spark-higher_order-fold.ads:111
+test_higher_order.ads:98:04: info: in instantiation at spark-higher_order-fold.ads:120
+test_higher_order.ads:98:04: info: in instantiation at spark-higher_order-fold.ads:458
+test_higher_order.ads:98:04: info: in instantiation at spark-higher_order-fold.ads:463
+test_higher_order.ads:98:04: info: in instantiation at spark-higher_order-fold.ads:463
+test_higher_order.ads:98:04: info: in instantiation at spark-higher_order-fold.ads:472
+test_higher_order.ads:98:04: info: in instantiation at spark-higher_order-fold.ads:74
+test_higher_order.ads:104:19: medium: assertion might fail
+test_higher_order.ads:106:04: info: function contract might not be available on implicit recursive calls
+test_higher_order.ads:106:04: info: function contract might not be available on implicit recursive calls
+test_higher_order.ads:106:04: info: function contract might not be available on implicit recursive calls
+test_higher_order.ads:106:04: info: implicit function contract might not be available on implicit recursive calls
+test_higher_order.ads:106:04: info: in instantiation at spark-higher_order-fold.ads:558
+test_higher_order.ads:106:04: info: in instantiation at spark-higher_order-fold.ads:611
+test_higher_order.ads:106:04: info: in instantiation at spark-higher_order-fold.ads:621
+test_higher_order.ads:106:04: info: in instantiation at spark-higher_order-fold.ads:650
+test_higher_order.ads:106:04: info: in instantiation at spark-higher_order-fold.ads:696
+test_higher_order.ads:106:04: info: in instantiation at spark-higher_order-fold.ads:696
+test_higher_order.ads:106:04: info: in instantiation at spark-higher_order-fold.ads:765
 test_higher_order.ads:118:19: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
-test_higher_order.ads:121:19: info: assertion proved (altergo: 1 VC)
-test_higher_order.ads:121:25: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
-test_higher_order.ads:131:19: info: assertion proved (altergo: 1 VC)
+test_higher_order.ads:121:19: medium: assertion might fail
+test_higher_order.ads:121:25: info: precondition proved (Trivial: 1 VC; altergo: 1 VC)
+test_higher_order.ads:124:04: info: function cannot be inlined for proof
+test_higher_order.ads:124:04: info: function contract might not be available on implicit recursive calls
+test_higher_order.ads:124:04: info: function contract might not be available on implicit recursive calls
+test_higher_order.ads:124:04: info: function contract might not be available on implicit recursive calls
+test_higher_order.ads:124:04: info: implicit function contract might not be available on implicit recursive calls
+test_higher_order.ads:124:04: info: in instantiation at spark-higher_order-fold.ads:558
+test_higher_order.ads:124:04: info: in instantiation at spark-higher_order-fold.ads:611
+test_higher_order.ads:124:04: info: in instantiation at spark-higher_order-fold.ads:621
+test_higher_order.ads:124:04: info: in instantiation at spark-higher_order-fold.ads:792
+test_higher_order.ads:124:04: info: in instantiation at spark-higher_order-fold.ads:792
+test_higher_order.ads:124:04: info: in instantiation at spark-higher_order-fold.ads:802
+test_higher_order.ads:124:04: info: in instantiation at spark-higher_order-fold.ads:802
+test_higher_order.ads:124:04: info: in instantiation at spark-higher_order-fold.ads:812
+test_higher_order.ads:124:04: info: inlining might cause circularity in the verification process
+test_higher_order.ads:131:19: medium: assertion might fail

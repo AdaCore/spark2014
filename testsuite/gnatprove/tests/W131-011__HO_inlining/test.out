@@ -1,0 +1,3 @@
+test_bad.adb:11:13: error: function annotated with both Higher_Order_Specialization and Inline_For_Proof shall have a postcondition
+test_bad.adb:18:13: error: function annotated with both Higher_Order_Specialization and Inline_For_Proof shall have a postcondition
+gnatprove: error during generation of Global contracts

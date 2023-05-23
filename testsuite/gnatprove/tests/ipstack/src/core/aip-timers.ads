@@ -20,7 +20,7 @@ package AIP.Timers is
 
    function Timer_Fired
      (Now : Time_Types.Time;
-      TID : Timer_Id) return Boolean;
+      TID : Timer_Id) return Boolean with SPARK_Mode => Off;
 
    function Next_Deadline return Time_Types.Time;
 

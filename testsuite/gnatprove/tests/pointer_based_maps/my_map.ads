@@ -4,9 +4,10 @@ package My_Map with SPARK_Mode is
    type Map is private with
      Iterable =>
        (First       => First,
-        Next        => Next,
-        Has_Element => Has_Element,
-        Element     => Element);
+        Next        => Next_No_Rec_Wrapper,
+        Has_Element => Has_Element_No_Rec_Wrapper,
+        Element     => Element),
+     Default_Initial_Condition => False;
    type Map_Acc is access Map;
 
    function Model_Contains (M : access constant Map; K : Positive) return Boolean
@@ -71,10 +72,18 @@ package My_Map with SPARK_Mode is
    function Has_Element (M : Map; K : Natural) return Boolean with
      Ghost,
      Annotate => (GNATprove, Always_Return);
+   function Has_Element_No_Rec_Wrapper (M : Map; K : Natural) return Boolean is
+     (Has_Element (M,K))
+       with Ghost, Annotate => (GNATprove, Inline_For_Proof);
    function Next (M : Map; K : Natural) return Natural with
      Ghost,
      Annotate => (GNATprove, Always_Return),
      Pre => Has_Element (M, K);
+   function Next_No_Rec_Wrapper (M : Map; K : Natural) return Natural is
+     (Next (M,K))
+       with Ghost,
+       Annotate =>(GNATprove, Inline_For_Proof),
+       Pre => Has_Element (M, K);
    function Element (M : Map; K : Natural) return Integer with
      Ghost,
      Annotate => (GNATprove, Always_Return),
@@ -98,7 +107,7 @@ private
    type Nullable_Int_Acc is access Integer;
    subtype Int_Acc is not null Nullable_Int_Acc;
    type Map is record
-      Key   : Positive;
+      Key   : Positive := 1;
       Value : Int_Acc;
       Next  : Map_Acc;
    end record;

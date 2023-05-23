@@ -1,5 +1,5 @@
 
-integrity.adb:26:10: high: precondition might fail, cannot prove (Invariant)
+integrity.adb:26:10: high: precondition might fail, cannot prove Invariant
    26 |         Update (X);
       |         ^~~~~~~~~
   e.g. when Max1 = 0

@@ -119,6 +119,17 @@ package Why.Sinfo is
    --  Relaxed_Init is True for types introduced for expressions with relaxed
    --  initialization.
 
+   --  --------------------
+   --  -- W_Raise_Effect --
+   --  --------------------
+   --  Name    W_Name_Id
+   --  Arg_Id  W_Identifier_Id
+   --  Post    W_Pred_Id
+   --
+   --  Effects for raising exceptions include the name of the exception
+   --  possibly with an argument, plus optionally an exceptional postcondition.
+   --     raises { Ex1 => Post1 | Ex2 | Ex3 arg => Post3 ... }
+
    --  ---------------
    --  -- W_Effects --
    --  ---------------
@@ -525,11 +536,10 @@ package Why.Sinfo is
    --  -- W_Raise --
    --  -------------
    --  Name       W_Name_Id
-   --  Exn_Type   W_Type_Id
    --  Typ        W_Type_Id
+   --  Arg        W_Expr_Id
    --
-   --  An exception raising expression of the syntax "raise Name".
-   --  ??? What is Exn_Type used for?
+   --  An exception raising expression of the syntax "raise Name [Arg]"
    --
    --  -----------------
    --  -- W_Try_Block --
@@ -543,11 +553,11 @@ package Why.Sinfo is
    --  -- W_Handler --
    --  ---------------
    --  Name       W_Name_Id
-   --  Arg        W_Prog_Id
+   --  Arg_Id     W_Identifier_Id
    --  Def        W_Prog_Id
    --
    --  An exception handling expression. Syntax is
-   --    "try prog with | Ex1 => e1 | Ex2 => e2 | ... end"
+   --    "try prog with | Ex1 => e1 | Ex2 Arg_Id => e2 | ... end"
    --  If "prog" raises on of the handled exceptions, the corresponding
    --  expression is executed. Other exceptions "go through".
    --
@@ -689,6 +699,7 @@ package Why.Sinfo is
       --------------------
 
       W_Effects,
+      W_Raise_Effect,
       W_Binder,
       W_Transparent_Type_Definition,
       W_Record_Binder,

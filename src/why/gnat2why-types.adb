@@ -1149,72 +1149,131 @@ package body Gnat2Why.Types is
    ---------------------------
 
    procedure Generate_VCs_For_Type (E : Type_Kind_Id) is
-      Decl     : constant Node_Id := Enclosing_Declaration (E);
-      Name     : constant String := Full_Name (E);
-      Params   : constant Transformation_Params := Body_Params;
-      Why_Body : W_Prog_Id;
-      Th       : Theory_UC;
-
+      Priv_View     : constant Opt_Type_Kind_Id :=
+        Find_View_For_Default_Checks (E);
+      Check_Default : constant Boolean := Present (Priv_View);
+      Check_Subp    : constant Boolean := Is_Access_Subprogram_Type (E)
+        and then No (Parent_Retysp (E));
+      Check_Iter    : constant Boolean := Declares_Iterable_Aspect (E);
+      Need_Check    : constant Boolean :=
+        Check_Default or else Check_Iter or else Check_Subp;
+      Name          : constant String := Full_Name (E);
+      Params        : constant Transformation_Params := Body_Params;
+      Why_Body      : W_Prog_Id := +Void;
+      Th            : Theory_UC;
    begin
+      if not Need_Check then
+         return;
+      end if;
+
       Th :=
         Open_Theory (WF_Main,
-                   New_Module
-                     (Name => Name & "__default_checks",
-                      File => No_Symbol),
-                   Comment =>
-                     "Module for checking DIC of default value and absence"
-                   & " of runtime errors in the private part of "
-                   & """" & Get_Name_String (Chars (E)) & """"
-                   & (if Sloc (E) > 0 then
-                        " defined at " & Build_Location_String (Sloc (E))
-                     else "")
-                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                     New_Module
+                       (Name => Name & "__default_checks",
+                        File => No_Symbol),
+                     Comment =>
+                       "Module for checking DIC of default value and"
+                     & " absence of runtime errors in the private part of "
+                     & """" & Get_Name_String (Chars (E)) & """"
+                     & (if Sloc (E) > 0 then
+                          " defined at " & Build_Location_String (Sloc (E))
+                       else "")
+                     & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Current_Subp := E;
 
       Register_VC_Entity (E);
 
-      --  For private and private extension declaration, check the default
-      --  expression of newly declared fields.
+      if Check_Default then
 
-      Why_Body :=
-        Compute_Default_Check
-          (Ada_Node         => E,
-           Ty               => Retysp (E),
-           Params           => Params,
-           At_Declaration   => True,
-           Include_Subtypes => True,
-           Decl_Node        => Decl);
+         --  For private and private extension declaration,
+         --  check the default expression of newly declared fields.
 
-      --  If the type has a DIC and this DIC should be checked at
-      --  declaration, check that there can be no runtime error in the DIC
-      --  and that default values of the type and all its subtypes respect
-      --  the DIC.
+         Why_Body :=
+           Sequence
+             (Why_Body,
+              New_Ignore
+                (Prog => Compute_Default_Check
+                   (Ada_Node         => Priv_View,
+                    Ty               => Retysp (E),
+                    Params           => Params,
+                    At_Declaration   => True,
+                    Include_Subtypes => True,
+                    Decl_Node        =>
+                      Enclosing_Declaration (Priv_View))));
 
-      if Has_DIC (E) and then Needs_DIC_Check_At_Decl (E) then
+         --  If the type has a DIC and this DIC should be checked at
+         --  declaration, check that there can be no runtime error
+         --  in the DIC and that default values of the type and all
+         --  its subtypes respect the DIC.
+
+         if Has_DIC (Priv_View)
+           and then Needs_DIC_Check_At_Decl (Priv_View)
+         then
+            Why_Body := Sequence
+              (Why_Body,
+               Check_Type_With_DIC (Params => Params,
+                                    Ty     => Priv_View));
+         end if;
+
+      end if;
+
+      --  If the type has an iterable aspect, insert checks
+      --  that a quantified expression on the elements
+      --  of the type will always execute correctly
+      --  without run-time errors.
+
+      if Check_Iter then
          Why_Body := Sequence
            (New_Ignore (Ada_Node => E,
                         Prog     => Why_Body),
-            Check_Type_With_DIC (Params => Params,
-                                 Ty     => E));
+            Check_Type_With_Iterable (Params => Params,
+                                      Ty     => E));
       end if;
 
-      --  Assume values of constants
+      if Why_Body /= +Void then
+         --  Assume values of constants
 
-      Assume_Value_Of_Constants (Why_Body, E, Params);
+         Assume_Value_Of_Constants (Why_Body, E, Params);
 
-      Emit (Th,
-            Why.Gen.Binders.New_Function_Decl
-              (Domain   => EW_Prog,
-               Name     => Def_Name,
-               Binders  => (1 => Unit_Param),
-               Location => No_Location,
-               Labels   => Symbol_Sets.Empty_Set,
-               Def      => +Why_Body));
+         Emit (Th,
+               Why.Gen.Binders.New_Function_Decl
+                 (Domain   => EW_Prog,
+                  Name     => Def_Name,
+                  Binders  => (1 => Unit_Param),
+                  Location => No_Location,
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Def      => +Why_Body));
+      end if;
+
+      --  Introduce checks for access-to-subprogram types. This can include
+      --  checks for preconditions, and feasibility checks for
+      --  access-to-functions.
+
+      if Check_Subp then
+         declare
+            Name               : constant W_Identifier_Id :=
+              New_Identifier
+                (Symb   => NID ("subp__def"),
+                 Domain => EW_Term);
+            Profile            : constant Entity_Id :=
+              Directly_Designated_Type (E);
+            Has_Wrapper        : constant Boolean :=
+              Present (Access_Subprogram_Wrapper (Profile));
+            Profile_Or_Wrapper : constant Entity_Id :=
+              (if Has_Wrapper then Access_Subprogram_Wrapper (Profile)
+               else Profile);
+         begin
+            Generate_VCs_For_Subprogram
+              (Profile_Or_Wrapper, Th, Name,
+               Is_Access_Subp_Wrapper => Has_Wrapper);
+         end;
+      end if;
 
       Close_Theory (Th,
-                    Kind => VC_Generation_Theory,
+                    Kind           => VC_Generation_Theory,
                     Defined_Entity => E);
+
    end Generate_VCs_For_Type;
 
    -----------------------

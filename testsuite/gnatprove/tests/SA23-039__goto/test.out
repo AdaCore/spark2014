@@ -4,6 +4,7 @@ simple_flow.adb:2:43: info: data dependencies proved
 simple_flow.adb:14:28: info: raise statement or expression proved unreachable (CVC5: 1 VC)
 simple_flow.adb:20:06: warning: this statement is never reached
 simple_flow.adb:20:06: warning: unreachable code
+test_goto.adb:4:13: info: implicit function contract might not be available on calls from enclosing unit
 test_goto.adb:9:10: info: no contextual analysis of "B" (body not seen yet)
 test_goto.adb:9:10: warning: assuming "B" always returns
 test_goto.adb:9:10: warning: assuming "B" has no effect on global items
@@ -19,7 +20,7 @@ test_goto.adb:12:16: warning: assuming "B" has no effect on global items
 test_goto.adb:12:16: warning: no Global contract available for "B"
 test_goto.adb:12:16: warning: no returning annotation available for "B"
 test_goto.adb:16:35: info: cannot unroll loop (too many loop iterations)
-test_goto.adb:17:29: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 16 should mention X in a loop invariant]
+test_goto.adb:17:29: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 16 should mention X in a loop invariant]
 test_goto.adb:18:25: warning: assuming "B" always returns
 test_goto.adb:18:25: warning: assuming "B" has no effect on global items
 test_goto.adb:18:25: warning: no Global contract available for "B"
@@ -142,4 +143,4 @@ test_goto_borrow.adb:50:25: info: pointer dereference check proved (CVC5: 1 VC)
 test_goto_borrow.adb:51:17: info: pointer dereference check proved (CVC5: 1 VC)
 test_goto_borrow.adb:51:23: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_goto_borrow.adb:54:19: info: pointer dereference check proved (CVC5: 1 VC)
-test_goto_borrow.adb:57:22: info: assertion proved (Z3: 1 VC)
+test_goto_borrow.adb:57:22: info: assertion proved (CVC5: 1 VC)

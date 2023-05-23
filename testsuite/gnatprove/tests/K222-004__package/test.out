@@ -8,6 +8,8 @@ pack.adb:10:07: error: "B" is not allowed in SPARK (due to uninitialized object 
 pack.adb:10:07: error: violation of aspect SPARK_Mode at line 2
 pack.adb:11:14: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 pack.adb:11:14: error: violation of aspect SPARK_Mode at line 2
+pack.ads:2:13: error: function "F" with output global "memory accessed through objects of access type" is not allowed in SPARK
+pack.ads:2:13: error: violation of aspect SPARK_Mode at line 1
 pacq.adb:7:07: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(5))
 pacq.adb:7:07: error: violation of aspect SPARK_Mode at line 2
 pacq.adb:9:07: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
@@ -18,4 +20,6 @@ pacq.adb:10:07: error: "B" is not allowed in SPARK (due to uninitialized object 
 pacq.adb:10:07: error: violation of aspect SPARK_Mode at line 2
 pacq.adb:11:14: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 pacq.adb:11:14: error: violation of aspect SPARK_Mode at line 2
+pacq.ads:2:13: error: function "F" with output global "memory accessed through objects of access type" is not allowed in SPARK
+pacq.ads:2:13: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

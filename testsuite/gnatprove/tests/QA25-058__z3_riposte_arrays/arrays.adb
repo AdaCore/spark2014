@@ -59,7 +59,7 @@ is
                        return Boolean
      with Depends => (Contains_B'Result => S,
                       null => C),
-          Post    => Contains_B'Result = S (C)  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+          Post    => Contains_B'Result = S (C)  --  @POSTCONDITION:FAIL @ COUNTEREXAMPLE
    is
    begin
       return S ('a');
@@ -109,7 +109,7 @@ is
    is
    begin
       M ('a') := 'A';
-      pragma Assert (M ('a') = 'a');  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (M ('a') = 'a');  --  @ASSERT:FAIL @ COUNTEREXAMPLE
    end Test_A;
 
    procedure Test_B (M : in out Enum_Map)
@@ -117,7 +117,7 @@ is
    is
    begin
       M (Elem_0) := Elem_2;
-      pragma Assert (M (Elem_0) = Elem_0);  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (M (Elem_0) = Elem_0);  --  @ASSERT:FAIL @ COUNTEREXAMPLE
    end Test_B;
 
    procedure Test_C (MM : in out Multi_Array)
@@ -141,7 +141,7 @@ is
    is
    begin
       R.A (3) := 5;
-      pragma Assert (R.Exists);  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (R.Exists);  --  @ASSERT:FAIL @ COUNTEREXAMPLE
 
       pragma Assert (R.A(3) = 5);  --  @ASSERT:PASS
 

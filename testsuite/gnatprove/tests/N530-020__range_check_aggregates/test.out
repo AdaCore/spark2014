@@ -4,7 +4,7 @@ aggregate_checks.adb:16:15: info: range check proved (CVC5: 2 VC)
 aggregate_checks.adb:19:49: high: range check might fail, cannot prove lower bound for 0 [reason for check: value must fit in component type]
 aggregate_checks.adb:25:15: info: range check proved (CVC5: 2 VC)
 aggregate_checks.adb:28:50: info: range check proved (CVC5: 2 VC)
-aggregate_checks.adb:28:58: high: range check might fail, cannot prove lower bound for 0 [reason for check: value must fit in component type]
+aggregate_checks.adb:28:58: medium: range check might fail, cannot prove lower bound for 0 [reason for check: value must fit in component type]
 aggregate_checks.adb:34:15: info: range check proved (CVC5: 2 VC)
 aggregate_checks.adb:37:41: medium: range check might fail
 aggregate_checks.adb:37:44: info: range check proved (CVC5: 2 VC)

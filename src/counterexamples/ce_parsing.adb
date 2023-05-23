@@ -61,7 +61,9 @@ package body CE_Parsing is
    with Pre => Cnt_Value.T = Cnt_Float;
 
    function Parse_Cnt_Value
-     (Cnt_Value : Cntexmp_Value_Ptr; AST_Ty : Entity_Id) return Value_Type;
+     (Cnt_Labels : S_String_List.List;
+      Cnt_Value : Cntexmp_Value_Ptr;
+      AST_Ty : Entity_Id) return Value_Type;
    --  Parse the Why3 counterexample value Cnt_Value
 
    function New_Item (AST_Ty : Entity_Id) return Value_Type;
@@ -177,7 +179,9 @@ package body CE_Parsing is
    ---------------------
 
    function Parse_Cnt_Value
-     (Cnt_Value : Cntexmp_Value_Ptr; AST_Ty : Entity_Id) return Value_Type
+     (Cnt_Labels : S_String_List.List;
+      Cnt_Value : Cntexmp_Value_Ptr;
+      AST_Ty : Entity_Id) return Value_Type
    is
       use Cntexmp_Value_Array;
       Ty  : constant Entity_Id := Retysp (AST_Ty);
@@ -241,7 +245,7 @@ package body CE_Parsing is
                if Cnt_Value.Array_Others /= null then
                   begin
                      Comp := Parse_Cnt_Value
-                       (Cnt_Value.Array_Others, Comp_Ty);
+                       (Cnt_Labels, Cnt_Value.Array_Others, Comp_Ty);
                      Val.Array_Others := new Value_Type'(Comp);
                   exception
                      when Parse_Error =>
@@ -255,7 +259,8 @@ package body CE_Parsing is
                begin
                   while Has_Element (C) loop
                      begin
-                        Comp := Parse_Cnt_Value (Element (C), Comp_Ty);
+                        Comp := Parse_Cnt_Value
+                          (Cnt_Labels, Element (C), Comp_Ty);
                         Val.Array_Values.Insert
                           (From_String (Key (C)), new Value_Type'(Comp));
                      exception
@@ -277,55 +282,130 @@ package body CE_Parsing is
 
          when Record_K =>
 
-            --  Counterexample should be a record
-
-            if Cnt_Value.T /= Cnt_Record then
-               raise Parse_Error;
-            end if;
-
-            --  Go over the association in the Why3 counterexample to store the
-            --  fields inside Val.Record_Fields. If we fail to parse an
-            --  element, continue with the next.
+            --  Records with only one field might be simplified by Why3
+            --  transformations.
+            --  In those cases, a field:_:_ attribute is added to the element.
+            --  Here, we first search if this "field"_:_ attribute is present:
+            --  - if yes, we reconstruct the record by extracting the field
+            --  name from the attribute,
+            --  - if no, we expect the Why3 counterexample to be a record.
 
             declare
-               C : Cntexmp_Value_Array.Cursor := Cnt_Value.Fi.First;
+               Field_Attr_Present : Boolean := False;
             begin
-               while Has_Element (C) loop
+               for Label of Cnt_Labels loop
                   declare
-                     Comp_Name : String renames Key (C);
-                     Comp_E    : constant Entity_Id :=
-                       Get_Entity_Id (True, Comp_Name);
-
+                     Label_Name : constant String :=
+                       Ada.Strings.Unbounded.To_String (Label);
+                     Label_Parts : Slice_Set;
                   begin
-                     if Comp_E /= Types.Empty then
-                        declare
-                           Comp_Ty : constant Entity_Id :=
-                             Retysp (Etype (Comp_E));
-                           Comp    : Value_Type;
-                        begin
-                           Comp := Parse_Cnt_Value (Element (C), Comp_Ty);
-                           Val.Record_Fields.Insert
-                             (Comp_E, new Value_Type'(Comp));
-                        exception
-                           when Parse_Error =>
-                              null;
-                        end;
-                     elsif Comp_Name = "'" & Constrained_Label then
-                        Set_Boolean_Flag
-                          (Element (C), Val.Constrained_Attr);
-                     end if;
+                     --  Search for an attribute of the form field:_:S
+                     --  where S is the name of the field.
+                     Create (S          => Label_Parts,
+                             From       => Label_Name,
+                             Separators => ":",
+                             Mode       => Single);
+                     declare
+                        Nb_Slices : constant Slice_Number :=
+                          Slice_Count (Label_Parts);
+                     begin
+                        if Nb_Slices = 3 then
+                           declare
+                              First_Part : constant String :=
+                                Slice (Label_Parts, 1);
+                              Third_Part : constant String :=
+                                Slice (Label_Parts, 3);
+                           begin
+                              if First_Part = "field" then
+
+                                 --  We expect only one attribute of the form
+                                 --  field:_:_.
+                                 if Field_Attr_Present then
+                                    raise Parse_Error;
+                                 end if;
+
+                                 declare
+                                    Comp_E    : constant Entity_Id :=
+                                      Get_Entity_Id (True, Third_Part);
+                                 begin
+                                    if Comp_E /= Types.Empty then
+                                       declare
+                                          Comp_Ty : constant Entity_Id :=
+                                            Retysp (Etype (Comp_E));
+                                          Comp    : Value_Type;
+                                       begin
+                                          Field_Attr_Present := True;
+                                          --  Recursive call to Parse_Cnt_Value
+                                          --  with empty list of labels since
+                                          --  we have already used the field
+                                          --  attribute.
+                                          Comp := Parse_Cnt_Value
+                                            (S_String_List.Empty_List,
+                                             Cnt_Value, Comp_Ty);
+                                          Val.Record_Fields.Insert
+                                            (Comp_E, new Value_Type'(Comp));
+                                       end;
+                                    else
+                                       raise Parse_Error;
+                                    end if;
+                                 end;
+                              end if;
+                           end;
+                        end if;
+                     end;
                   end;
-                  Next (C);
                end loop;
+
+               if not Field_Attr_Present
+               --  Counterexample should be a record
+                 and then Cnt_Value.T = Cnt_Record
+               then
+                  --  Go over the association in the Why3 counterexample to
+                  --  store the fields inside Val.Record_Fields.
+                  --  If we fail to parse an element, continue with the next.
+
+                  declare
+                     C : Cntexmp_Value_Array.Cursor := Cnt_Value.Fi.First;
+                  begin
+                     while Has_Element (C) loop
+                        declare
+                           Comp_Name : String renames Key (C);
+                           Comp_E    : constant Entity_Id :=
+                             Get_Entity_Id (True, Comp_Name);
+
+                        begin
+                           if Comp_E /= Types.Empty then
+                              declare
+                                 Comp_Ty : constant Entity_Id :=
+                                   Retysp (Etype (Comp_E));
+                                 Comp    : Value_Type;
+                              begin
+                                 Comp := Parse_Cnt_Value
+                                   (Cnt_Labels, Element (C), Comp_Ty);
+                                 Val.Record_Fields.Insert
+                                   (Comp_E, new Value_Type'(Comp));
+                              exception
+                                 when Parse_Error =>
+                                    null;
+                              end;
+                           elsif Comp_Name = "'" & Constrained_Label then
+                              Set_Boolean_Flag
+                                (Element (C), Val.Constrained_Attr);
+                           end if;
+                        end;
+                        Next (C);
+                     end loop;
+                  end;
+               end if;
+
+               --  If the parsed value is empty, raise Parse_Error
+
+               if Val.Record_Fields.Length = 0
+                 and then not Val.Constrained_Attr.Present
+               then
+                  raise Parse_Error;
+               end if;
             end;
-
-            --  If the parsed value is empty, raise Parse_Error
-
-            if Val.Record_Fields.Length = 0
-              and then not Val.Constrained_Attr.Present
-            then
-               raise Parse_Error;
-            end if;
 
          when Access_K =>
 
@@ -355,7 +435,7 @@ package body CE_Parsing is
                         begin
                            Val.Designated_Value :=
                              new Value_Type'
-                               (Parse_Cnt_Value (Cnt_Elt, Des_Ty));
+                               (Parse_Cnt_Value (Cnt_Labels, Cnt_Elt, Des_Ty));
                         exception
                            when Parse_Error =>
                               null;
@@ -754,7 +834,7 @@ package body CE_Parsing is
                   declare
                      use Entity_To_Value_Maps;
                      New_Val : constant Value_Type :=
-                       Parse_Cnt_Value (Elt.Value, Current_Ty);
+                       Parse_Cnt_Value (Elt.Labels, Elt.Value, Current_Ty);
                   begin
                      pragma Assert (Current_Val.K = New_Val.K);
                      pragma Assert (Current_Val.AST_Ty = New_Val.AST_Ty);
@@ -1054,8 +1134,7 @@ package body CE_Parsing is
 
             return Parse_Float (Cnt_Value, AST_Type);
 
-         when Cnt_Unparsed
-            | Cnt_Invalid
+         when Cnt_Invalid
             | Cnt_Projection
             | Cnt_Record
             | Cnt_Array

@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
+import difflib
+import glob
 import os
 import shutil
-import difflib
 import sys
 
 
@@ -13,34 +14,20 @@ def run(cmd):
 
 
 def run_manual(check_to_prove, option=""):
-    cmd = "gnatprove -P sparklib.gpr -U --prover=coq"
+    cmd = "gnatprove -j0 -P sparklib.gpr -U --prover=coq"
     if ":" not in check_to_prove:
         run(cmd + " " + option + check_to_prove)
     else:
         run(cmd + " " + option + "--limit-line=" + check_to_prove)
 
 
-def run_automatic(prover, level=4):
+def run_automatic(prover, level=4, timeout=None):
     cmd = (
         "gnatprove -P sparklib.gpr --counterexamples=off -j0"
-        + " --prover="
-        + prover
-        + " --level="
-        + str(level)
+        + f" --prover={prover} --level={level}"
     )
-    run(cmd)
-
-
-def run_automatic_timeout(prover, level=4, timeout=100):
-    cmd = (
-        "gnatprove -P sparklib.gpr --counterexamples=off -j0"
-        + " --prover="
-        + prover
-        + " --level="
-        + str(level)
-        + " --timeout="
-        + str(timeout)
-    )
+    if timeout is not None:
+        cmd += f" --timeout={timeout}"
     run(cmd)
 
 
@@ -138,16 +125,16 @@ def kill_and_regenerate(check):
     print("--------------------------")
     print("Cleanup previous artifacts")
     print("--------------------------")
-    if os.path.isdir("./proof/sessions"):
-        print("The folder proof/sessions still exists.")
-        print("Please, move it to be able to regenerate session.")
-        exit(1)
-    if os.path.isdir("./temp"):
-        print("The folder temp will be used. Please move it.")
-        exit(1)
-    else:
-        os.makedirs("./temp")
+    for d in ["./proof/sessions", "./temp"]:
+        if os.path.isdir(d):
+            print(f"deleting {d}")
+            shutil.rmtree(d)
+    os.makedirs("./temp")
     os.system("make clean")
+    for envvar in ["SPARKLIB_OBJECT_DIR", "SPARKLIB_INSTALLED", "SPARKLIB_BODY_MODE"]:
+        if envvar not in os.environ:
+            print(f"{envvar} not set; make sure to run 'source setup.sh'")
+            exit(1)
     print("")
     print("----------------------------")
     print("Generate the Coq proof files")
@@ -180,30 +167,15 @@ def kill_and_regenerate(check):
     print("Prove remaining checks with automatic provers")
     print("---------------------------------------------")
     print("")
-    print("---------------")
-    print("Start with CVC5")
-    print("---------------")
-    run_automatic("cvc5", level=2)
-    print("")
-    print("------------")
-    print("Then with Z3")
-    print("------------")
-    run_automatic_timeout("z3", level=2, timeout=100)
-    print("")
-    print("-----------------")
-    print("Then Alt-Ergo")
-    print("-----------------")
-    run_automatic_timeout("altergo", level=2)
-    print("")
-    print("----------------")
-    print("End with Colibri")
-    print("----------------")
-    run_automatic("colibri", level=2)
+    run_automatic("cvc5,z3,alt-ergo,colibri", level=2, timeout=100)
     print("")
     print("---------------------------")
     print("Summarize all proved checks")
     print("---------------------------")
     run_options(opt="--output-msg-only --report=provers")
+    for shape_file in glob.glob("proof/sessions/*/why3shapes*"):
+        print("deleting shapes file ", shape_file)
+        os.remove(shape_file)
 
 
 def choose_mode():

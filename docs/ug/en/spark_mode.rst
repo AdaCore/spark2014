@@ -328,8 +328,23 @@ or
    is
 
 We say that a package or a subprogram is library-level if it is either
-top-level or defined in a library-level package. The ``SPARK_Mode`` pragma can
-be used in the following places in the code:
+top-level (i.e. it is a library unit; its declaration is the outermost program
+unit declared in a given compilation unit) or declared immediately within
+another library-level package (which excludes, for example, declarations inside
+subprogram bodies). For example, all the packages in the following code snippet
+are library-level packages:
+
+.. code-block:: ada
+
+   package P is
+      package Q is
+         package R is
+   ...
+   package body P is
+      package S is
+         package T is
+
+The ``SPARK_Mode`` pragma can be used in the following places in the code:
 
 * as a configuration pragma at unit level (even before with-clauses) in
   particular for unit-level generic instantiations

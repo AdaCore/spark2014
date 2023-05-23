@@ -29,5 +29,5 @@ global_access_in.adb:70:29: info: range check proved (CVC5: 2 VC)
 global_access_in.adb:70:41: info: pointer dereference check proved (CVC5: 1 VC)
 global_access_in.adb:74:04: info: precondition proved (CVC5: 1 VC)
 global_access_in.adb:74:29: high: formal parameter "X" and global "My_Global" are aliased (SPARK RM 6.4.2)
-global_access_in.adb:75:45: low: range check might fail, cannot prove upper bound for "Due to aliasing My_Global is " & My_Global.all'img [reason for check: input value must fit in parameter type] [possible fix: call at line 74 should mention My_Global in a postcondition]
+global_access_in.adb:75:45: low: range check might fail, cannot prove upper bound for "Due to aliasing My_Global is " & My_Global.all'Img [reason for check: input value must fit in parameter type] [possible fix: call at line 74 should mention My_Global in a postcondition]
 global_access_in.adb:75:57: info: pointer dereference check proved (CVC5: 1 VC)

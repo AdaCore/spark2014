@@ -95,7 +95,7 @@ is
    -- Move_Memory --
    -----------------
 
-   procedure Move_Memory (Source, Target : in out Memory_Type; P : Pointer)
+   procedure Move_Memory (Source, Target : in out Memory_Type; F : Footprint)
    is null;
 
    ------------------

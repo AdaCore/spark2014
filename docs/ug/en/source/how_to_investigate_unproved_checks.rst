@@ -320,7 +320,7 @@ The pragma Assume entries are of the form::
 * ("file", "line", "col") describe the source location of the pragma Assume
   statement.
 * "entity" contains the entity dictionary for the entity that this pragma
-   Assume belongs to.
+  Assume belongs to.
 
 .. index:: --proof; proof strategies
 

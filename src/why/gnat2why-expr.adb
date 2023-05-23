@@ -175,10 +175,10 @@ package body Gnat2Why.Expr is
    --  ignored. Generated checks and assumptions are prepended to Prog.
 
    function Check_Subprogram_Variants
-     (Call   : Node_Id;
-      Args   : W_Expr_Array;
-      Params : Transformation_Params)
-      return W_Prog_Id
+     (Call                  : Node_Id;
+      Args                  : W_Expr_Array;
+      Params                : Transformation_Params;
+      Specialization_Module : Symbol := No_Symbol) return W_Prog_Id
    with Pre => Nkind (Call) in N_Subprogram_Call
                              | N_Entry_Call_Statement
                              | N_Op
@@ -187,6 +187,9 @@ package body Gnat2Why.Expr is
    --  call Call. This check might be statically False if we do not support
    --  precise variant checks on Call (see Is_Valid_Recursive_Call). Args
    --  is the Why3 translation of the actual parameters of Call.
+   --  Specialization_Module is the name of the specialization module if Call
+   --  is a specialized call. It is used to get the specialized variant
+   --  check procedure.
 
    function Check_Type_With_Invariants
      (Params : Transformation_Params;
@@ -204,8 +207,9 @@ package body Gnat2Why.Expr is
    procedure Check_UU_Restrictions (Expr : Node_Id) with
      Pre => Nkind (Expr) in
          N_Op_Eq | N_Op_Ne | N_Function_Call | N_Membership_Test
-       and then (if Nkind (Expr) = N_Function_Call
-                 then Is_Tagged_Predefined_Eq (Get_Called_Entity (Expr)));
+       and then
+         (if Nkind (Expr) = N_Function_Call
+          then Is_Tagged_Predefined_Eq (Get_Called_Entity_For_Proof (Expr)));
    --  Check special restrictions for unchecked union types on membership tests
    --  and builtin equality. Emit statically failed proof results for these
    --  checks.
@@ -278,7 +282,8 @@ package body Gnat2Why.Expr is
    function Compute_Tag_Check
      (Call   : Node_Id;
       Params : Transformation_Params)
-      return W_Prog_Id;
+      return W_Prog_Id
+   with Pre => Nkind (Call) in N_Subprogram_Call;
    --  ???
 
    function DIC_Expression
@@ -971,8 +976,9 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params) return W_Expr_Id
    with
      Pre => Nkind (Expr) in N_Op_Eq | N_Op_Ne | N_Function_Call
-       and then (if Nkind (Expr) = N_Function_Call
-                 then Is_Tagged_Predefined_Eq (Get_Called_Entity (Expr)));
+       and then
+         (if Nkind (Expr) = N_Function_Call
+          then Is_Tagged_Predefined_Eq (Get_Called_Entity_For_Proof (Expr)));
 
    function Transform_Shift_Or_Rotate_Call
      (Expr   : N_Function_Call_Id;
@@ -1424,15 +1430,6 @@ package body Gnat2Why.Expr is
                               else Why_Expr),
                            Typ      => Why_Ty));
 
-                  elsif Is_Static_Expression (Rexpr) then
-
-                     --  We generate an ignore statement, to obtain all the
-                     --  checks
-                     --  ??? Is this necessary? after all, we would get a
-                     --  compiler warning anyway
-
-                     return New_Ignore (Prog => Why_Expr);
-
                   else
                      declare
                         Tmp_Var : constant W_Identifier_Id :=
@@ -1617,8 +1614,7 @@ package body Gnat2Why.Expr is
                   elsif Initialized then True_Term else False_Term),
                Params        => Body_Params,
                Only_Var      => False_Term,
-               Top_Predicate =>
-                 (if Top_Predicate then True_Term else False_Term)));
+               Top_Predicate => Top_Predicate));
       begin
          Append (Context, Dyn_Inv);
       end;
@@ -1757,15 +1753,13 @@ package body Gnat2Why.Expr is
         (if Initialized then True_Term else False_Term);
       O_Var    : constant W_Term_Id :=
         (if Only_Var then True_Term else False_Term);
-      Top_Pred : constant W_Term_Id :=
-        (if Top_Predicate then True_Term else False_Term);
       T        : constant W_Pred_Id :=
         Compute_Dynamic_Inv_And_Initialization
           (Expr          => Expr,
            Ty            => Ty,
            Initialized   => Init,
            Only_Var      => O_Var,
-           Top_Predicate => Top_Pred,
+           Top_Predicate => Top_Predicate,
            Params        => Body_Params);
    begin
       if T /= True_Pred then
@@ -2401,6 +2395,317 @@ package body Gnat2Why.Expr is
                             Context => Sequence (Inv_RTE, Inv_Check)));
    end Check_Type_With_Invariants;
 
+   ------------------------------
+   -- Check_Type_With_Iterable --
+   ------------------------------
+
+   function Check_Type_With_Iterable
+     (Params : Transformation_Params;
+      Ty     : Type_Kind_Id)
+      return W_Prog_Id
+   is
+      Check_Info  : Check_Info_Type := New_Check_Info;
+      Checks      : W_Prog_Id := +Void;
+      Cont_Ty_Spk : constant Entity_Id := Retysp (Ty);
+      Has_Tag_Arg : Boolean := False;
+      Tag_Arg     : W_Expr_Id := Why_Empty;
+
+      procedure Add_Check
+        (Fn   : Entity_Id;
+         Args : W_Expr_Array;
+         Typ  : W_Type_Id);
+      --  Add pre-condition check for Fn (Args) : Typ
+      --  at the beginning of Checks.
+
+      procedure Add_Unknown_Binding
+        (Ty_Spk : Entity_Id;
+         Ty_Why : W_Type_Id;
+         V_Name : W_Identifier_Id);
+      --  Add new extra unknown value of given type to beginning of checks,
+      --  using temporary name.
+
+      procedure Exclude_Recursive (Fn : Entity_Id);
+      --  Emit error if primitive is recursive.
+
+      function Fetch_Name
+        (Fn            : Entity_Id;
+         Container_Arg : W_Expr_Id;
+         Domain        : EW_Domain := EW_Prog)
+         return W_Identifier_Id;
+      --  Fetch the name of the Why entity representing Fn,
+      --  using the dispatching version if available.
+      --  Remember whether found in Has_Tag_Arg, and
+      --  if found, stores a correct Tag argument in Tag_Arg.
+
+      function O_Tag_Arg return W_Expr_Array is
+        (if Has_Tag_Arg then (1 => Tag_Arg) else []);
+      --  Get tag argument in argument list if necessary.
+
+      function Prim (Nam : Name_Id) return Entity_Id is
+        (Get_Iterable_Type_Primitive (Cont_Ty_Spk, Nam));
+      --  Short-hand to fetch iterable primitives of container.
+
+      function To_Why_Ty (Ty_Spk : Entity_Id) return W_Type_Id is
+        (if Has_Relaxed_Init (Ty_Spk)
+         then EW_Init_Wrapper (Type_Of_Node (Ty_Spk))
+         else Type_Of_Node (Ty_Spk));
+      --  Convert retysp to relevant why type.
+
+      ---------------
+      -- Add_Check --
+      ---------------
+
+      procedure Add_Check
+        (Fn   : Entity_Id;
+         Args : W_Expr_Array;
+         Typ  : W_Type_Id)
+      is
+         Name    : constant W_Identifier_Id := Fetch_Name (Fn, Args (1));
+
+         --  In some corner-cases, the first argument type
+         --  might be a non-trivial ancestor of the container type.
+
+         Arg_Ty  : constant W_Type_Id :=
+           To_Why_Ty (Retysp (Etype (First_Formal (Fn))));
+         Args_Cv : constant W_Expr_Array :=
+           (Args with delta 1 =>
+              Insert_Simple_Conversion (Domain => EW_Pterm,
+                                        Expr   => Args (1),
+                                        To     => Arg_Ty));
+      begin
+         Checks := Sequence
+           (New_Ignore
+              (Prog => New_VC_Call
+                   (Ada_Node   => Fn,
+                    Name       => Name,
+                    Progs      => O_Tag_Arg & Args_Cv,
+                    Reason     => VC_Precondition,
+                    Typ        => Typ,
+                    Check_Info => Check_Info)),
+            Checks);
+      end Add_Check;
+
+      -----------------
+      -- Add_Unknown --
+      -----------------
+
+      procedure Add_Unknown_Binding
+        (Ty_Spk : Entity_Id;
+         Ty_Why : W_Type_Id;
+         V_Name : W_Identifier_Id)
+      is
+         Res_Id : constant W_Identifier_Id :=
+           New_Result_Ident (Ty_Why);
+         Post   : W_Pred_Id :=
+           Compute_Dynamic_Invariant (+Res_Id, Ty_Spk, Params);
+      begin
+         if Has_Visible_Type_Invariants (Ty_Spk) then
+            Post := +New_And_Expr
+              (Left => +Post,
+               Right => +Compute_Type_Invariant
+                 (+Res_Id, Ty_Spk, Params, On_Internal  => True),
+               Domain => EW_Pred);
+         end if;
+         Checks := New_Typed_Binding
+           (Name    => V_Name,
+            Def     => New_Any_Expr
+              (Ada_Node    => Ty,
+               Post        => Post,
+               Labels      => Symbol_Sets.Empty_Set,
+               Return_Type => Ty_Why),
+            Context => Checks);
+      end Add_Unknown_Binding;
+
+      -----------------------
+      -- Exclude_Recursive --
+      -----------------------
+
+      procedure Exclude_Recursive (Fn : Entity_Id) is
+      begin
+         if Proof_Module_Cyclic (Fn) then
+            Error_Msg_N
+              ("iteration primitive shall not be recursive,"
+               & " (including implicitly so)", Fn);
+         end if;
+      end Exclude_Recursive;
+
+      ----------------
+      -- Fetch_Name --
+      ----------------
+
+      function Fetch_Name
+        (Fn            : Entity_Id;
+         Container_Arg : W_Expr_Id;
+         Domain        : EW_Domain := EW_Prog)
+         return W_Identifier_Id
+      is
+         Selector : Selection_Kind;
+      begin
+         if Is_Dispatching_Operation (Fn) then
+            Selector := Dispatch;
+            Has_Tag_Arg := True;
+
+            --  Due to restrictions, all iterable primitives
+            --  are necessarily primitives of container.
+            --  Furthermore, due to absence of controlling results,
+            --  cursor and elements cannot be defined as tagged types
+            --  in the same declarative scope as the primitives of the
+            --  container (they occur as results of Next/Element).
+            --  So if dispatching, dispatch occurs on container argument
+            --  alone.
+
+            Tag_Arg := New_Tag_Access
+              (Domain => Term_Domain (Domain),
+               Name   => Container_Arg,
+               Ty     => Get_Ada_Node (+Get_Type (Container_Arg)));
+         else
+            Selector := Why.Inter.Standard;
+            Has_Tag_Arg := False;
+         end if;
+
+         return To_Why_Id
+           (E      => Fn,
+            Domain => Domain,
+            Selector => Selector);
+      end Fetch_Name;
+
+   --  Start of processing for Check_Type_With_Iterable
+
+   begin
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+      --  Retrieve all relevant operations for quantifier
+      --  processing (last/previous are never relevant).
+      declare
+         Fn_Has_Elt  : constant Entity_Id := Prim (Name_Has_Element);
+         Fn_First    : constant Entity_Id := Prim (Name_First);
+         Fn_Next     : constant Entity_Id := Prim (Name_Next);
+         Fn_Element  : constant Entity_Id := Prim (Name_Element);
+
+         --  Retrieve types for container/cursor.
+         --  Element type is retrieved only if necessary.
+
+         Curs_Ty_Spk : constant Entity_Id := Retysp (Etype (Fn_First));
+         Cont_Ty_Why : constant W_Type_Id := To_Why_Ty (Cont_Ty_Spk);
+         Curs_Ty_Why : constant W_Type_Id := To_Why_Ty (Curs_Ty_Spk);
+
+         --  Identifiers for container/cursor
+
+         Cont_Id     : constant W_Identifier_Id :=
+           New_Temp_Identifier (Cont_Ty_Spk, Cont_Ty_Why);
+         Curs_Id     : constant W_Identifier_Id :=
+           New_Temp_Identifier (Curs_Ty_Spk, Curs_Ty_Why);
+
+         --  Needs an extra check when an
+         --  iterable_for_proof annotation is present
+         Annot         : Iterable_Annotation;
+         Annot_Present : Boolean;
+
+         --  Package arguments for Iterable primitives
+         Args_One      : constant W_Expr_Array :=
+           (1 => +Cont_Id);
+         Args_Both     : constant W_Expr_Array :=
+           (1 => +Cont_Id, 2 => +Curs_Id);
+
+      begin
+         Check_Info.Continuation.Append
+              (Continuation_Type'
+                 (Ty,
+                  To_Unbounded_String
+                    ("during checks for quantification")));
+         Retrieve_Iterable_Annotation (Cont_Ty_Spk, Annot_Present, Annot);
+
+         --  Emit errors for non-recursivity.
+
+         declare
+            type Entity_Array is array (Positive range <>) of Entity_Id;
+            Primitives : constant Entity_Array :=
+              [Fn_First, Fn_Next, Fn_Has_Elt]
+              & (if Present (Fn_Element) then [Fn_Element] else [])
+              & (if Annot_Present then [Annot.Entity] else []);
+         begin
+            for C of Primitives loop
+               Exclude_Recursive (C);
+            end loop;
+         end;
+
+         --  Code is in reverse order from generated check sequence
+         --    (because of typed bindings).
+         --  Shape of why statement:
+         --
+         --    let Cont = any in
+         --    ignore (First-Check (Cont));
+         --    (* vv  if Annotation "Model" present  vv *)
+         --    ignore (Model-Check (Cont));
+         --    (* vv  if Annotation "Contains" present  vv *)
+         --    ignore {
+         --      let Elt = any in
+         --      ignore (Contains-Check (Cont, Elt))
+         --    }
+         --    let Curs = any in
+         --    ignore (Has_Element-Check (Cont, Curs));
+         --    assume (Has_Element-Pred (Cons, Curs));
+         --    ignore (Next-Check (Cont, Curs));
+         --    (* vv  if "Element" specified  vv *)
+         --    ignore (Element-Check (Cont, Curs))
+
+         if Present (Fn_Element) then
+            Add_Check (Fn_Element,
+                       Args_Both,
+                       To_Why_Ty (Retysp (Etype (Fn_Element))));
+         end if;
+         Add_Check (Fn_Next, Args_Both, Curs_Ty_Why);
+         declare
+            Name : constant W_Identifier_Id :=
+              Fetch_Name (Fn_Has_Elt, +Cont_Id, EW_Pred);
+         begin
+            Checks := Sequence
+              (New_Assume_Statement
+                 (Pred => New_Call
+                      (Name     => Name,
+                       Args     => O_Tag_Arg & Args_Both)),
+               Checks);
+         end;
+         Add_Check (Fn_Has_Elt, Args_Both, EW_Bool_Type);
+         Add_Unknown_Binding (Curs_Ty_Spk, Curs_Ty_Why, Curs_Id);
+         if Annot_Present then
+            case Annot.Kind is
+               when Contains =>
+                  declare
+                     Checks_Branch : constant W_Prog_Id := Checks;
+                     Elt_Ty_Spk    : constant Entity_Id :=
+                       Retysp (Etype (Fn_Element));
+                     Elt_Ty_Why    : constant W_Type_Id :=
+                       To_Why_Ty (Elt_Ty_Spk);
+                     Elt_Id        : constant W_Identifier_Id :=
+                       New_Temp_Identifier (Elt_Ty_Spk, Elt_Ty_Why);
+                  begin
+                     Checks := +Void;
+                     Add_Check (Annot.Entity,
+                                (1 => +Cont_Id, 2 => +Elt_Id),
+                                EW_Bool_Type);
+                     Add_Unknown_Binding (Elt_Ty_Spk, Elt_Ty_Why, Elt_Id);
+                     Checks := Sequence (New_Ignore (Prog => Checks),
+                                         Checks_Branch);
+                  end;
+               when Model =>
+                  declare
+                     Model_Ty_Spk : constant Entity_Id :=
+                       Retysp (Etype (Annot.Entity));
+                     Model_Ty_Why : constant W_Type_Id :=
+                       To_Why_Ty (Model_Ty_Spk);
+                  begin
+                     Add_Check (Annot.Entity, Args_One, Model_Ty_Why);
+                  end;
+            end case;
+         end if;
+         Add_Check (Fn_First, Args_One, Curs_Ty_Why);
+         Add_Unknown_Binding (Cont_Ty_Spk, Cont_Ty_Why, Cont_Id);
+      end;
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+      return Checks;
+   end Check_Type_With_Iterable;
+
    ------------------------
    -- Check_Scalar_Range --
    ------------------------
@@ -2537,12 +2842,14 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Check_Subprogram_Variants
-     (Call   : Node_Id;
-      Args   : W_Expr_Array;
-      Params : Transformation_Params) return W_Prog_Id
+     (Call                  : Node_Id;
+      Args                  : W_Expr_Array;
+      Params                : Transformation_Params;
+      Specialization_Module : Symbol := No_Symbol) return W_Prog_Id
    is
+      Callee       : constant Entity_Id := Get_Called_Entity_For_Proof (Call);
       Call_Variant : constant Node_Id :=
-        Get_Pragma (Get_Called_Entity (Call), Pragma_Subprogram_Variant);
+        Get_Pragma (Callee, Pragma_Subprogram_Variant);
       Result       : Boolean;
       Explanation  : Unbounded_String;
    begin
@@ -2588,11 +2895,16 @@ package body Gnat2Why.Expr is
             --  Otherwise, we are in a package nested directly in a subprogram.
             --  In this case, we can use the expression of the variants, as
             --  it cannot have changed since the beginning of the subprogram.
+
+            Variant_Check      : constant W_Identifier_Id :=
+              (if Specialization_Module = No_Symbol
+               then E_Symb (Callee, WNE_Check_Subprogram_Variants)
+               else M_HO_Specializations (Callee)
+                 (Specialization_Module).Variant_Id);
          begin
             return New_VC_Call
               (Ada_Node => Call,
-               Name     => E_Symb
-                 (Get_Called_Entity (Call), WNE_Check_Subprogram_Variants),
+               Name     => Variant_Check,
                Progs    => Enclosing_Variants & Args,
                Reason   => VC_Subprogram_Variant,
                Typ      => EW_Unit_Type);
@@ -2842,7 +3154,7 @@ package body Gnat2Why.Expr is
          if Nkind (Path) = N_Function_Call then
             declare
                Subp         : constant Entity_Id :=
-                 Get_Called_Entity (Path);
+                 Get_Called_Entity_For_Proof (Path);
                Borrowed_End : constant W_Identifier_Id :=
                  Get_Borrowed_At_End (Subp);
                Context      : Ref_Context;
@@ -2910,9 +3222,13 @@ package body Gnat2Why.Expr is
       Params   : Transformation_Params;
       Use_Tmps : Boolean := False) return W_Expr_Array
    is
-      Subp                : constant Entity_Id := Get_Called_Entity (Call);
+      Subp                : constant Entity_Id :=
+        Get_Called_Entity_For_Proof (Call);
+      More_Reads          : constant Flow_Types.Flow_Id_Sets.Set :=
+        Get_Globals_From_Specialized_Parameters
+          (Get_Specialized_Parameters (Call, Specialized_Call_Params));
       Binders             : constant Item_Array :=
-        Compute_Subprogram_Parameters (Subp, Domain);
+        Compute_Subprogram_Parameters (Subp, Domain, More_Reads);
       Patterns            : Item_Array := Binders;
       Aliasing            : constant Boolean :=
         Nkind (Call) in N_Procedure_Call_Statement | N_Entry_Call_Statement
@@ -3025,6 +3341,28 @@ package body Gnat2Why.Expr is
                      No_Pred_Checks => True),
                   To       => Formal_T,
                   No_Init  => True)
+
+               --  No value is provided for specialized actuals, as the
+               --  parameter is hardcoded in the translation. Unit is provided
+               --  instead. We still emit LSP checks if we are in the program
+               --  domain.
+
+               elsif Is_Specialized_Actual (Actual, Specialized_Call_Params)
+               then
+                   (if Domain = EW_Prog
+                    then +Sequence
+                      (Ada_Node => Actual,
+                       Left     => Checks_For_Subp_Conversion
+                         (Ada_Node => Actual,
+                          From     =>
+                            (if Nkind (Actual) = N_Attribute_Reference
+                             then Entity (Prefix (Actual))
+                             else Specialized_Call_Params.Element
+                               (Entity (Actual))),
+                          To       => Etype (Formal),
+                          Params   => Params),
+                       Right    => +Void)
+                    else W_Expr_Id'(+Void))
 
                --  Otherwise, directly use the expected type for the conversion
 
@@ -3240,7 +3578,7 @@ package body Gnat2Why.Expr is
 
          if Arg_Cnt <= Why_Args'Last then
             Why_Args (Arg_Cnt .. Why_Args'Last) :=
-              Get_Logic_Args (Subp, Params.Ref_Allowed);
+              Get_Logic_Args (Subp, Params.Ref_Allowed, More_Reads);
          end if;
 
          return Why_Args;
@@ -3649,6 +3987,14 @@ package body Gnat2Why.Expr is
                   Append (Checks, +Checks_Seq);
                end;
             end if;
+         elsif Is_Access_Type (Ty_Ext) and then Can_Never_Be_Null (Ty_Ext) then
+            Append
+              (Checks,
+               New_Located_Assert
+                 (Ada_Node => Ada_Node,
+                  Pred     => False_Pred,
+                  Reason   => VC_Null_Exclusion,
+                  Kind     => EW_Assert));
          end if;
 
          --  If Ty has a DIC and this DIC should be checked at use (it does
@@ -4578,7 +4924,7 @@ package body Gnat2Why.Expr is
       Params           : Transformation_Params;
       Initialized      : W_Term_Id := True_Term;
       Only_Var         : W_Term_Id := True_Term;
-      Top_Predicate    : W_Term_Id := True_Term;
+      Top_Predicate    : Boolean := True;
       Include_Type_Inv : W_Term_Id := True_Term)
       return W_Pred_Id
    is
@@ -4588,7 +4934,7 @@ package body Gnat2Why.Expr is
          Initialized      => Initialized,
          Params           => Params,
          Only_Var         => Only_Var,
-         Top_Predicate    => Top_Predicate,
+         Top_Predicate    => (if Top_Predicate then True_Term else False_Term),
          Include_Type_Inv => Include_Type_Inv);
 
    begin
@@ -4601,11 +4947,17 @@ package body Gnat2Why.Expr is
             Init_Pred : W_Pred_Id := True_Pred;
          begin
             if Has_Scalar_Full_View (Ty) then
+
+               --  Inputs of scalar types do not use the init wrapper
+               pragma Assert (Top_Predicate);
+
                Init_Pred := +Compute_Is_Initialized
                  (Ty, +Expr, Params, EW_Pred);
             elsif Has_Predicates (Ty) then
                Init_Pred := Compute_Dynamic_Predicate
-                 (Expr => Expr, Ty  => Ty);
+                 (Expr => Expr, Ty => Ty,
+                  Top_Predicate =>
+                    (if Top_Predicate then True_Term else False_Term));
             end if;
 
             if not Is_True_Boolean (+Init_Pred) then
@@ -5081,12 +5433,7 @@ package body Gnat2Why.Expr is
             Init_Wrapper          : constant Boolean :=
               Is_Init_Wrapper_Type (Get_Type (+Expr));
             Typ_Pred              : constant W_Pred_Id :=
-              Compute_Dynamic_Predicate (Expr, Ty_Ext, Params);
-            Anc_Ty                : constant Entity_Id :=
-              Retysp (Etype (Ty_Ext));
-            Anc_Typ_Pred          : constant W_Pred_Id :=
-              (if Anc_Ty = Ty_Ext then True_Pred
-               else Compute_Dynamic_Predicate (Expr, Anc_Ty, Params));
+              Compute_Dynamic_Predicate (Expr, Ty_Ext, Params, Top_Predicate);
             Pred_Check_At_Default : constant Boolean :=
               Default_Initialization (Ty_Ext) /= No_Default_Initialization;
             Init_Flag             : constant W_Pred_Id :=
@@ -5095,21 +5442,11 @@ package body Gnat2Why.Expr is
                  then +New_Init_Attribute_Access (Ty_Ext, +Expr)
                  else Initialized);
             Check_Pred            : constant W_Pred_Id :=
-              New_Conditional
-                (Condition => Pred_Of_Boolean_Term (Top_Predicate),
-                 Then_Part =>
-                   (if Pred_Check_At_Default and then not Init_Wrapper
-                    then Typ_Pred
-                    else New_Conditional (Condition => Init_Flag,
-                                          Then_Part => Typ_Pred,
-                                          Typ       => EW_Bool_Type)),
-                 Else_Part =>
-                   (if Pred_Check_At_Default and then not Init_Wrapper
-                    then Anc_Typ_Pred
-                    else New_Conditional (Condition => Init_Flag,
-                                          Then_Part => Anc_Typ_Pred,
-                                          Typ       => EW_Bool_Type)),
-                 Typ       => EW_Bool_Type);
+              (if Pred_Check_At_Default and then not Init_Wrapper
+               then Typ_Pred
+               else New_Conditional (Condition => Init_Flag,
+                                     Then_Part => Typ_Pred,
+                                     Typ       => EW_Bool_Type));
 
          begin
             if not Is_True_Boolean (+Typ_Pred) then
@@ -5335,9 +5672,10 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Compute_Dynamic_Predicate
-     (Expr   : W_Term_Id;
-      Ty     : Type_Kind_Id;
-      Params : Transformation_Params := Body_Params)
+     (Expr          : W_Term_Id;
+      Ty            : Type_Kind_Id;
+      Params        : Transformation_Params := Body_Params;
+      Top_Predicate : W_Term_Id := True_Term)
       return W_Pred_Id
    is
       Res : W_Pred_Id := True_Pred;
@@ -5355,6 +5693,7 @@ package body Gnat2Why.Expr is
         (Type_Instance   : Formal_Kind_Id;
          Pred_Expression : Node_Id)
       is
+         Dyn_Pred  : W_Pred_Id;
          My_Params : Transformation_Params := Params;
       begin
          --  We set the Gen_Marker param to GM_Toplevel to instruct
@@ -5366,17 +5705,31 @@ package body Gnat2Why.Expr is
          --  which is not desired here).
 
          My_Params.Gen_Marker := GM_Toplevel;
+         Dyn_Pred := Dynamic_Predicate_Expression
+           (Expr       => Expr,
+            Pred_Param => Type_Instance,
+            Pred_Expr  => Pred_Expression,
+            Params     => My_Params);
+
+         --  Ignore the top-level predicate if needed
+
+         if Is_False_Boolean (+Top_Predicate)
+           and then Retysp (Etype (Type_Instance)) = Retysp (Ty)
+         then
+            return;
+         elsif not Is_True_Boolean (+Top_Predicate)
+           and then Retysp (Etype (Type_Instance)) = Retysp (Ty)
+         then
+            Dyn_Pred := New_Conditional
+              (Condition => Pred_Of_Boolean_Term (Top_Predicate),
+               Then_Part => Dyn_Pred);
+         end if;
+
          Res :=
            New_Label
              (Labels => Symbol_Sets.To_Set (NID (GP_Inlined_Marker)),
               Def    =>
-                New_And_Pred
-                  (Left  => Dynamic_Predicate_Expression
-                     (Expr       => Expr,
-                      Pred_Param => Type_Instance,
-                      Pred_Expr  => Pred_Expression,
-                      Params     => My_Params),
-                   Right => Res));
+                New_And_Pred (Left  => Dyn_Pred, Right => Res));
       end Add_One_Dynamic_Predicate;
 
       procedure Add_All_Dynamic_Predicates is new
@@ -5399,7 +5752,7 @@ package body Gnat2Why.Expr is
                Name                   => +Expr,
                Params                 => Params,
                Domain                 => EW_Pred,
-               Exclude_Always_Relaxed => True,
+               Excluded_Subcomponents => Relaxed,
                No_Predicate_Check     => True),
             Right => Res);
       end if;
@@ -5880,10 +6233,7 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params)
       return W_Prog_Id
    is
-      Controlling_Arg : constant Node_Id :=
-        (if Nkind (Call) = N_Entry_Call_Statement
-         then Empty
-         else Controlling_Argument (Call));
+      Controlling_Arg : constant Node_Id := Controlling_Argument (Call);
       Control_Tag     : W_Expr_Id := Why_Empty;
       Check           : W_Pred_Id := True_Pred;
       Needs_Check     : Boolean := False;
@@ -6429,7 +6779,9 @@ package body Gnat2Why.Expr is
                --  might have been deferred to the call site. We need to check
                --  that it is OK to call Actual'Access in this context.
 
-               if Is_Aliased (First_Formal (Get_Called_Entity (Path))) then
+               if Is_Aliased
+                 (First_Formal (Get_Called_Entity_For_Proof (Path)))
+               then
                   Access_Seen := True;
                end if;
 
@@ -6937,6 +7289,8 @@ package body Gnat2Why.Expr is
               Domain   => Domain,
               Expr     => +W_Index_Var,
               To       => Type_Of_Node (Curs_Type));
+         Subdomain  : constant EW_Domain :=
+           (if Domain = EW_Prog then EW_Pterm else Domain);
       begin
          return New_Function_Call
            (Ada_Node => Ada_Node,
@@ -6945,12 +7299,13 @@ package body Gnat2Why.Expr is
                 (Transform_Identifier (Params       => Params,
                                        Expr         => Element_E,
                                        Ent          => Element_E,
-                                       Domain       => Domain)),
+                                       Domain       => Subdomain)),
             Subp     => Element_E,
             Args     => (1 => Cont_Expr,
                          2 => Curs_Expr),
-            Domain   => Domain,
-            Check    => Domain = EW_Prog,
+            Domain   => Subdomain,
+            Check    => False,
+            --  Checks already done at level of Iterable aspect
             Typ      => Element_T);
       end Make_Binding_For_Iterable;
 
@@ -6998,8 +7353,7 @@ package body Gnat2Why.Expr is
          --  Call the function with the appropriate arguments
 
          declare
-            Subdomain   : constant EW_Domain :=
-              (if Domain = EW_Pred then EW_Term else Domain);
+            Subdomain   : constant EW_Domain := Term_Domain (Domain);
             Cont_Type   : constant Entity_Id :=
               Etype (First_Formal (Has_Element));
             Cont_Expr   : constant W_Expr_Id :=
@@ -7030,7 +7384,8 @@ package body Gnat2Why.Expr is
                Args     => (1 => Cont_Expr,
                             2 => Curs_Expr),
                Domain   => Subdomain,
-               Check    => Subdomain = EW_Prog,
+               Check    => False,
+               --  Checks have been done at Iterable annotation
                Typ      => Type_Of_Node (Etype (Has_Element)));
 
             return T;
@@ -7049,12 +7404,24 @@ package body Gnat2Why.Expr is
          Index_Type   :    out Entity_Id;
          Need_Tmp_Var :    out Boolean)
       is
-         Subdomain     : constant EW_Domain :=
-           (if Domain = EW_Pred then EW_Term else Domain);
+         Subdomain     : constant EW_Domain := Term_Domain (Domain);
          Found         : Boolean;
          Iterable_Info : Iterable_Annotation;
 
       begin
+
+         --  In case container type has visible invariants,
+         --  iteration primitives implicitly assume it during Iterable checks.
+         --  So for the early checks at Iterable to be valid, we need to
+         --  insert a check for the container invariants.
+
+         if Has_Visible_Type_Invariants (Over_Type)
+           and then Domain = EW_Prog
+         then
+            W_Over_E :=
+              +Insert_Invariant_Check (Ada_Node, Over_Type, +W_Over_E);
+         end if;
+
          --  for ... in quantification:
          --  Iteration is done on cursors, no need for a temporary variable.
 
@@ -7100,7 +7467,8 @@ package body Gnat2Why.Expr is
                      Subp     => Model,
                      Args     => (1 => Cont_Expr),
                      Domain   => Subdomain,
-                     Check    => Subdomain = EW_Prog,
+                     Check    => False,
+                     --  Checks have been done at Iterable annotation.
                      Typ      => Type_Of_Node (Over_Type));
                end;
 
@@ -8586,16 +8954,20 @@ package body Gnat2Why.Expr is
    ----------------------------
 
    function Insert_Predicate_Check
-     (Ada_Node : Node_Id;
-      Check_Ty : Type_Kind_Id;
-      W_Expr   : W_Prog_Id)
+     (Ada_Node      : Node_Id;
+      Check_Ty      : Type_Kind_Id;
+      W_Expr        : W_Prog_Id;
+      Top_Predicate : W_Term_Id := True_Term)
       return W_Prog_Id
    is
       W_Tmp : constant W_Identifier_Id :=
         New_Temp_Identifier (Typ => Get_Type (+W_Expr));
 
       W_Seq : constant W_Prog_Id :=
-        Sequence (New_Predicate_Check (Ada_Node, Check_Ty, +W_Tmp), +W_Tmp);
+        Sequence
+          (New_Predicate_Check
+             (Ada_Node, Check_Ty, +W_Tmp, Top_Predicate => Top_Predicate),
+           +W_Tmp);
    begin
       return New_Binding (Ada_Node => Ada_Node,
                           Name     => +W_Tmp,
@@ -8615,7 +8987,8 @@ package body Gnat2Why.Expr is
       Store    : in out W_Statement_Sequence_Id) return W_Prog_Id
    is
       Ref_Context : W_Prog_Id;
-      Subp        : constant Entity_Id := Get_Called_Entity (Ada_Call);
+      Subp        : constant Entity_Id :=
+        Get_Called_Entity_For_Proof (Ada_Call);
 
    begin
       --  In the case of a procedure or entry call, there is no value to return
@@ -9338,7 +9711,8 @@ package body Gnat2Why.Expr is
      (Ada_Node         : Node_Id;
       Ty               : Type_Kind_Id;
       W_Expr           : W_Expr_Id;
-      On_Default_Value : Boolean := False)
+      On_Default_Value : Boolean := False;
+      Top_Predicate    : W_Term_Id := True_Term)
       return W_Prog_Id
    is
       --  Here we recompute the predicate instead of calling
@@ -9361,7 +9735,7 @@ package body Gnat2Why.Expr is
             E                      => Ty,
             Name                   => +W_Expr,
             Domain                 => EW_Prog,
-            Exclude_Always_Relaxed => True,
+            Excluded_Subcomponents => Relaxed,
             No_Predicate_Check     => True)
          else W_Expr);
       --  Exclude the predicate from the initialization check to avoid
@@ -9406,6 +9780,20 @@ package body Gnat2Why.Expr is
             Pred_Param => Type_Instance,
             Pred_Expr  => Pred_Expression,
             Params     => My_Params);
+
+         --  Ignore the top-level predicate if needed
+
+         if Is_False_Boolean (+Top_Predicate)
+           and then Retysp (Etype (Type_Instance)) = Retysp (Ty)
+         then
+            return;
+         elsif not Is_True_Boolean (+Top_Predicate)
+           and then Retysp (Etype (Type_Instance)) = Retysp (Ty)
+         then
+            Check := New_Conditional
+              (Condition => Pred_Of_Boolean_Term (Top_Predicate),
+               Then_Part => Check);
+         end if;
 
          --  If the predicate was inherited, add a continuation
 
@@ -9921,7 +10309,7 @@ package body Gnat2Why.Expr is
               Get_Ada_Node (+Get_Type (Value)),
             Name                   => Value,
             Domain                 => EW_Prog,
-            Exclude_Always_Relaxed => True)
+            Excluded_Subcomponents => Relaxed)
          else Value);
       Prefix_Domain : constant EW_Domain :=
         (if not Check_Prefix and then Domain = EW_Prog then EW_Pterm
@@ -10610,7 +10998,7 @@ package body Gnat2Why.Expr is
             E                      => Etype (Actual),
             Name                   => +T,
             Domain                 => EW_Prog,
-            Exclude_Always_Relaxed => True);
+            Excluded_Subcomponents => Relaxed);
       end if;
 
       --  Convert to the expected type. All the necessary checks should have
@@ -13372,10 +13760,18 @@ package body Gnat2Why.Expr is
 
       Left_Expr  : constant W_Expr_Id := New_Temp_For_Expr
         (Insert_Initialization_Check
-           (Left_Opnd (Ada_Node), Left_Type, Left, Domain));
+           (Left_Opnd (Ada_Node),
+            Left_Type,
+            Left,
+            Domain,
+            Excluded_Subcomponents => With_User_Eq));
       Right_Expr : constant W_Expr_Id := New_Temp_For_Expr
         (Insert_Initialization_Check
-           (Right_Opnd (Ada_Node), Left_Type, Right, Domain));
+           (Right_Opnd (Ada_Node),
+            Left_Type,
+            Right,
+            Domain,
+            Excluded_Subcomponents => With_User_Eq));
       Arg_Ind    : Positive := 1;
    begin
       Add_Array_Arg (Subdomain, Args, Left_Expr, Arg_Ind);
@@ -16923,10 +17319,22 @@ package body Gnat2Why.Expr is
                         declare
                            Valid       : Boolean;
                            Explanation : Unbounded_String;
+
                         begin
-                           Suitable_For_UC_Target
-                             (Retysp (Etype (Prefix (Expr))),
-                              True, Valid, Explanation);
+                           --  If Aliased_Object is constant, it is OK if if
+                           --  its type permits invalid values as the alias
+                           --  cannot be used to modify it.
+
+                           if Is_Constant_In_SPARK (Aliased_Object) then
+                              Suitable_For_UC
+                                (Retysp (Etype (Prefix (Expr))),
+                                 True, Valid, Explanation);
+                           else
+                              Suitable_For_UC_Target
+                                (Retysp (Etype (Prefix (Expr))),
+                                 True, Valid, Explanation);
+                           end if;
+
                            Emit_Static_Proof_Result
                              (Expr, VC_UC_Target, Valid, Current_Subp,
                               Explanation => To_String (Explanation));
@@ -17444,22 +17852,25 @@ package body Gnat2Why.Expr is
 
         and then
           not (Nkind (Expr) = N_Function_Call
-             and then Ekind (Get_Called_Entity (Expr)) = E_Function
-             and then Is_Predicate_Function (Get_Called_Entity (Expr)))
+             and then Ekind (Get_Called_Entity_For_Proof (Expr)) = E_Function
+             and then Is_Predicate_Function
+                 (Get_Called_Entity_For_Proof (Expr)))
 
         --  Calls to hardcoded operators
 
         and then
           not (Nkind (Expr) = N_Function_Call
-             and then Ekind (Get_Called_Entity (Expr)) = E_Function
-             and then Is_Hardcoded_Comparison (Get_Called_Entity (Expr)))
+             and then Ekind (Get_Called_Entity_For_Proof (Expr)) = E_Function
+             and then Is_Hardcoded_Comparison
+                 (Get_Called_Entity_For_Proof (Expr)))
 
         --  Calls to logical equality
 
         and then
           not (Nkind (Expr) = N_Function_Call
-             and then Ekind (Get_Called_Entity (Expr)) = E_Function
-             and then Has_Logical_Eq_Annotation (Get_Called_Entity (Expr)))
+             and then Ekind (Get_Called_Entity_For_Proof (Expr)) = E_Function
+             and then Has_Logical_Eq_Annotation
+                 (Get_Called_Entity_For_Proof (Expr)))
       then
          T := +Pred_Of_Boolean_Term
                  (Transform_Term (Expr, EW_Bool_Type, Local_Params));
@@ -17914,22 +18325,28 @@ package body Gnat2Why.Expr is
                Left  : constant N_Subexpr_Id := Left_Opnd (Expr);
                Right : constant N_Subexpr_Id := Right_Opnd (Expr);
                Base  : constant W_Type_Id := Base_Why_Type (Left, Right);
+               Lty   : constant Type_Kind_Id := Etype (Left);
+               Rty   : constant Type_Kind_Id := Etype (Right);
+               LT    : constant W_Expr_Id :=
+                 Transform_Expr (Left, Base, Domain, Local_Params);
+               RT    : constant W_Expr_Id :=
+                 Transform_Expr (Right, Base, Domain, Local_Params);
             begin
-               T := New_Binary_Op_Expr
-                 (Op          => Nkind (Expr),
-                  Left        => Transform_Expr (Left,
-                    Base,
-                    Domain,
-                    Local_Params),
-                  Right       => Transform_Expr (Right,
-                    Base,
-                    Domain,
-                    Local_Params),
-                  Left_Type   => Etype (Left),
-                  Right_Type  => Etype (Right),
-                  Return_Type => Expr_Type,
-                  Domain      => Domain,
-                  Ada_Node    => Expr);
+               if Is_Hardcoded_Operation (Nkind (Expr), Lty, Rty)
+               then
+                  T := Transform_Hardcoded_Operation
+                    (Nkind (Expr), Lty, Rty, Expr_Type, LT, RT, Domain, Expr);
+               else
+                  T := New_Binary_Op_Expr
+                    (Op          => Nkind (Expr),
+                     Left        => LT,
+                     Right       => RT,
+                     Left_Type   => Lty,
+                     Right_Type  => Rty,
+                     Return_Type => Expr_Type,
+                     Domain      => Domain,
+                     Ada_Node    => Expr);
+               end if;
             end;
 
          when N_Op_Expon =>
@@ -18649,7 +19066,7 @@ package body Gnat2Why.Expr is
 
          when N_Function_Call =>
             declare
-               Subp : constant Entity_Id := Get_Called_Entity (Expr);
+               Subp : constant Entity_Id := Get_Called_Entity_For_Proof (Expr);
                Oper : constant N_Op_Shift_Option :=
                  Is_Simple_Shift_Or_Rotate (Subp);
             begin
@@ -19435,7 +19852,8 @@ package body Gnat2Why.Expr is
 
             when N_Function_Call =>
                declare
-                  Subp        : constant Entity_Id := Get_Called_Entity (Expr);
+                  Subp        : constant Entity_Id :=
+                    Get_Called_Entity_For_Proof (Expr);
                   Name_String : constant String :=
                     Get_Name_String (Chars (Subp));
                   Fst_Param   : constant Node_Id := First_Actual (Expr);
@@ -19574,7 +19992,8 @@ package body Gnat2Why.Expr is
 
             when N_Function_Call =>
                declare
-                  Subp        : constant Entity_Id := Get_Called_Entity (Expr);
+                  Subp        : constant Entity_Id :=
+                    Get_Called_Entity_For_Proof (Expr);
                   Name_String : constant String :=
                     Get_Name_String (Chars (Subp));
                   Fst_Param   : constant Node_Id := First_Actual (Expr);
@@ -19775,7 +20194,8 @@ package body Gnat2Why.Expr is
 
             when N_Function_Call =>
                declare
-                  Subp        : constant Entity_Id := Get_Called_Entity (Expr);
+                  Subp        : constant Entity_Id :=
+                    Get_Called_Entity_For_Proof (Expr);
                   Name_String : constant String :=
                     Get_Name_String (Chars (Subp));
                   Fst_Param   : constant Node_Id := First_Actual (Expr);
@@ -19874,7 +20294,7 @@ package body Gnat2Why.Expr is
       Context  : Ref_Context;
       Store    : W_Statement_Sequence_Id := Void_Sequence;
       T        : W_Expr_Id;
-      Subp     : constant Entity_Id := Get_Called_Entity (Expr);
+      Subp     : constant Entity_Id := Get_Called_Entity_For_Proof (Expr);
 
       Selector : constant Selection_Kind :=
          --  When the call is dispatching, use the Dispatch variant of
@@ -19932,7 +20352,10 @@ package body Gnat2Why.Expr is
         Tag_Arg &
         Compute_Call_Args (Expr, Subdomain, Context, Store, Params, Use_Tmps);
 
-      Why_Name : W_Identifier_Id;
+      Why_Name              : W_Identifier_Id;
+      Specialization_Module : Symbol := No_Symbol;
+      --  Name of the specialization module if Expr is a specialized call to
+      --  a function with higher order specialization.
 
    begin
       --  Hardcoded function calls are transformed in a specific function
@@ -19964,25 +20387,45 @@ package body Gnat2Why.Expr is
          return T;
       end if;
 
-      Why_Name :=
-        W_Identifier_Id
-          (Transform_Identifier (Params   => Params,
-                                 Expr     => Expr,
-                                 Ent      => Subp,
-                                 Domain   => Domain,
-                                 Selector => Selector));
+      --  For functions with higher order specialization, generate a
+      --  specialized version if needed and call it instead.
+
+      if Is_Specialized_Call (Expr, Specialized_Call_Params) then
+         Create_Theory_For_HO_Specialization_If_Needed (Expr);
+         Specialization_Module := Get_Specialization_Theory_Name (Expr);
+
+         declare
+            HO_Specialization : constant M_HO_Specialization_Type :=
+              M_HO_Specializations (Subp) (Specialization_Module);
+         begin
+            if Domain = EW_Prog then
+               Why_Name := HO_Specialization.Prog_Id;
+            else
+               Why_Name := HO_Specialization.Fun_Id;
+            end if;
+         end;
+      else
+         Why_Name :=
+           W_Identifier_Id
+             (Transform_Identifier (Params   => Params,
+                                    Expr     => Expr,
+                                    Ent      => Subp,
+                                    Domain   => Domain,
+                                    Selector => Selector));
+      end if;
 
       T := New_Function_Call
-        (Ada_Node => Expr,
-         Domain   => Domain,
-         Subp     => Subp,
-         Selector => Selector,
-         Name     => Why_Name,
-         Args     => Args,
-         Check    =>
+        (Ada_Node              => Expr,
+         Domain                => Domain,
+         Subp                  => Subp,
+         Selector              => Selector,
+         Name                  => Why_Name,
+         Args                  => Args,
+         Check                 =>
            Domain = EW_Prog
            and then Why_Subp_Has_Precondition (Subp, Selector),
-         Typ      => Get_Typ (Why_Name));
+         Typ                   => Get_Typ (Why_Name),
+         Specialization_Module => Specialization_Module);
 
       --  There are no tag checks on dispatching equality. Instead, the
       --  operator returns False. Take care of this special case by
@@ -20074,10 +20517,13 @@ package body Gnat2Why.Expr is
          --  Insert variant check
 
          if Call_Needs_Variant_Check (Expr, Current_Subp) then
-            Prepend (Check_Subprogram_Variants (Call   => Expr,
-                                                Args   => Args,
-                                                Params => Params),
-                     T);
+            Prepend
+              (Check_Subprogram_Variants
+                 (Call                  => Expr,
+                  Args                  => Args,
+                  Params                => Params,
+                  Specialization_Module => Specialization_Module),
+               T);
          end if;
 
       --  If -gnatd_f is used, and if for some reason we have not generated a
@@ -20230,15 +20676,33 @@ package body Gnat2Why.Expr is
                         end;
 
                      elsif Is_Init_Wrapper_Type (Get_Type (T)) then
+
+                        --  Skip the top level predicate for parameters of
+                        --  predicate functions.
+
                         declare
-                           Typ : constant Entity_Id :=
+                           Top_Predicate : constant Boolean :=
+                             Ekind (Ent) /= E_In_Parameter
+                             or else not Is_Predicate_Function
+                               (Enclosing_Unit (Ent));
+                           Typ           : constant Entity_Id :=
                              Get_Ada_Type_From_Item (E);
                         begin
                            if Has_Scalar_Full_View (Typ) then
+
+                              --  Inputs of scalar types do not use the init
+                              --  wrapper.
+
+                              pragma Assert (Top_Predicate);
+
                               T := Insert_Initialization_Check
                                 (Expr, Typ, T, Domain);
                            else
-                              T := +Insert_Predicate_Check (Expr, Typ, +T);
+                              T := +Insert_Predicate_Check
+                                (Expr, Typ, +T,
+                                 Top_Predicate =>
+                                   (if Top_Predicate then True_Term
+                                    else False_Term));
                            end if;
                         end;
                      end if;
@@ -20252,7 +20716,9 @@ package body Gnat2Why.Expr is
                   --  program domain. We can be sure that the relevant Ada code
                   --  will pass this point at least once in program domain.
 
-                  if Has_Async_Writers (Direct_Mapping_Id (Ent))
+                  if Is_Object (Ent)
+                    and then Has_Volatile (Ent)
+                    and then Has_Volatile_Property (Ent, Pragma_Async_Writers)
                     and then Domain in EW_Prog | EW_Pterm
                     and then Params.Ref_Allowed
                   then
@@ -20854,7 +21320,7 @@ package body Gnat2Why.Expr is
             E                      => Etype (Var),
             Name                   => Var_Expr,
             Domain                 => Subdomain,
-            Exclude_Always_Relaxed => False);
+            Excluded_Subcomponents => None);
       end if;
 
       if Present (Alternatives (Expr)) then
@@ -21862,10 +22328,18 @@ package body Gnat2Why.Expr is
 
       Left_Expr :=
         Insert_Initialization_Check
-          (Left, Get_Ada_Node (+BT), Left_Expr, Domain);
+          (Left,
+           Get_Ada_Node (+BT),
+           Left_Expr,
+           Domain,
+           Excluded_Subcomponents => With_User_Eq);
       Right_Expr :=
         Insert_Initialization_Check
-          (Right, Get_Ada_Node (+BT), Right_Expr, Domain);
+          (Right,
+           Get_Ada_Node (+BT),
+           Right_Expr,
+           Domain,
+           Excluded_Subcomponents => With_User_Eq);
 
       if Is_Class_Wide_Type (Left_Type) then
          T := New_Ada_Equality
@@ -22543,7 +23017,7 @@ package body Gnat2Why.Expr is
                Store    : W_Statement_Sequence_Id := Void_Sequence;
                Call     : W_Prog_Id;
                Subp     : constant Entity_Id :=
-                 Get_Called_Entity (Stmt_Or_Decl);
+                 Get_Called_Entity_For_Proof (Stmt_Or_Decl);
 
                Args     : constant W_Expr_Array :=
                  Compute_Call_Args
@@ -22591,14 +23065,33 @@ package body Gnat2Why.Expr is
 
                   else Why.Inter.Standard);
 
-               Why_Name : constant W_Identifier_Id :=
-                 W_Identifier_Id
-                   (Transform_Identifier (Params   => Body_Params,
-                                          Expr     => Stmt_Or_Decl,
-                                          Ent      => Subp,
-                                          Domain   => EW_Prog,
-                                          Selector => Selector));
+               Why_Name :  W_Identifier_Id;
+
             begin
+               --  For procedures with higher order specialization, generate a
+               --  specialized version if needed and call it instead.
+
+               if Is_Specialized_Call (Stmt_Or_Decl, Specialized_Call_Params)
+               then
+                  Create_Theory_For_HO_Specialization_If_Needed (Stmt_Or_Decl);
+
+                  declare
+                     HO_Specialization : constant M_HO_Specialization_Type :=
+                       M_HO_Specializations (Subp)
+                         (Get_Specialization_Theory_Name (Stmt_Or_Decl));
+                  begin
+                     Why_Name := HO_Specialization.Prog_Id;
+                  end;
+               else
+                  Why_Name :=
+                    W_Identifier_Id
+                      (Transform_Identifier (Params   => Body_Params,
+                                             Expr     => Stmt_Or_Decl,
+                                             Ent      => Subp,
+                                             Domain   => EW_Prog,
+                                             Selector => Selector));
+               end if;
+
                if Why_Subp_Has_Precondition (Subp, Selector) then
                   Call :=
                     New_VC_Call
@@ -22651,7 +23144,10 @@ package body Gnat2Why.Expr is
 
                --  Insert tag check if needed
 
-               Prepend (Compute_Tag_Check (Stmt_Or_Decl, Body_Params), Call);
+               if Nkind (Stmt_Or_Decl) /= N_Entry_Call_Statement then
+                  Prepend
+                    (Compute_Tag_Check (Stmt_Or_Decl, Body_Params), Call);
+               end if;
 
                --  Insert variant check if needed
 

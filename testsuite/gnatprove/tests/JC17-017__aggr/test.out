@@ -1,3 +1,5 @@
+p.adb:40:16: info: implicit function contract might not be available on calls from enclosing unit
+p.adb:47:16: info: implicit function contract might not be available on calls from enclosing unit
 p.ads:2:14: warning: subprogram "Proc" has no effect
 p.ads:3:14: warning: subprogram "Proc2" has no effect
 p.ads:4:14: warning: subprogram "Proc3" has no effect

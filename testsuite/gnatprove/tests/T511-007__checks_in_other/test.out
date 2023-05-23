@@ -1,3 +1,5 @@
+test_aggregates.adb:4:13: info: implicit function contract might not be available on calls from enclosing unit
+test_aggregates.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
 test_aggregates.adb:9:37: info: index check proved (CVC5: 2 VC)
 test_aggregates.adb:9:48: info: index check proved (CVC5: 2 VC)
 test_aggregates.adb:9:48: info: range check proved (CVC5: 2 VC)

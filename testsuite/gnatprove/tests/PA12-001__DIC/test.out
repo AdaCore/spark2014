@@ -1,6 +1,7 @@
 containers.ads:2:09: info: default initial condition proved (CVC5: 1 VC)
 containers.ads:11:04: medium: type "Container" is not fully initialized
 containers.ads:13:07: info: range check proved (CVC5: 2 VC)
+dic_pred.ads:2:13: info: implicit function contract might not be available on calls from enclosing unit
 dic_pred.ads:4:09: info: default initial condition proved (CVC5: 1 VC)
 dic_pred.ads:4:09: medium: predicate check might fail on default value
 dic_pred.ads:11:22: info: in default value of private type at dic_pred.ads:5

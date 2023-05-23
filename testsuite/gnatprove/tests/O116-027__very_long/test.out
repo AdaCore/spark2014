@@ -9,6 +9,7 @@ very_longs-divide.adb:30:04: info: initialization of "V" proved
 very_longs-divide.adb:30:39: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:31:04: info: initialization of "Q_Hat" proved
 very_longs-divide.adb:32:04: info: initialization of "Current_Borrow" proved
+very_longs-divide.adb:36:13: info: implicit function contract might not be available on calls from enclosing unit
 very_longs-divide.adb:42:27: info: unrolling loop
 very_longs-divide.adb:43:24: warning: assuming "Shift_Left" always returns
 very_longs-divide.adb:43:24: warning: no returning annotation available for "Shift_Left"
@@ -71,9 +72,9 @@ very_longs-divide.adb:119:44: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:119:44: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:119:81: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:119:85: info: index check proved (CVC5: 2 VC)
-very_longs-divide.adb:120:32: medium: divide by zero might fail (e.g. when N = 2 and V = (Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [possible fix: precondition of subprogram at line 109 should mention V]
+very_longs-divide.adb:120:32: medium: divide by zero might fail [possible fix: precondition of subprogram at line 109 should mention V]
 very_longs-divide.adb:120:61: info: index check proved (CVC5: 2 VC)
-very_longs-divide.adb:123:32: medium: divide by zero might fail (e.g. when N = 2 and V = (Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [possible fix: precondition of subprogram at line 109 should mention V]
+very_longs-divide.adb:123:32: medium: divide by zero might fail [possible fix: precondition of subprogram at line 109 should mention V]
 very_longs-divide.adb:123:63: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:127:47: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:128:56: info: overflow check proved (CVC5: 2 VC)
@@ -107,7 +108,7 @@ very_longs-divide.adb:180:23: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:180:23: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:181:46: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:181:46: info: overflow check proved (CVC5: 2 VC)
-very_longs-divide.adb:181:79: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+very_longs-divide.adb:181:79: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:187:08: info: data dependencies proved
 very_longs-divide.adb:188:08: info: flow dependencies proved
 very_longs-divide.adb:191:07: info: initialization of "Carry" proved
@@ -134,7 +135,7 @@ very_longs-divide.adb:211:29: info: length check proved (CVC5: 3 VC; Trivial: 1 
 very_longs-divide.adb:212:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs-divide.adb:212:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs-divide.adb:215:09: medium: range check might fail, cannot prove upper bound for Number_Of_Digits(Divisor) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Number_Of_Digits(Divisor) in Divisor_Digits_Count_Type) to subprogram at very_longs.ads:65]
-very_longs-divide.adb:216:25: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+very_longs-divide.adb:216:25: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:219:22: info: precondition proved (CVC5: 1 VC)
 very_longs-divide.adb:219:61: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:220:04: info: precondition proved (CVC5: 1 VC)
@@ -148,8 +149,8 @@ very_longs-divide.adb:230:10: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:233:10: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:239:08: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:239:55: info: cannot unroll loop (dynamic loop bounds)
-very_longs-divide.adb:240:29: info: index check proved (Z3: 2 VC)
-very_longs-divide.adb:240:61: info: index check proved (Z3: 2 VC)
+very_longs-divide.adb:240:29: info: index check proved (CVC5: 2 VC)
+very_longs-divide.adb:240:61: info: index check proved (CVC5: 2 VC)
 very_longs.adb:33:54: info: initialization of "Digit" proved
 very_longs.adb:33:73: info: initialization of "Valid" proved
 very_longs.adb:34:11: info: flow dependencies proved
@@ -286,7 +287,7 @@ very_longs.adb:319:41: info: index check proved (CVC5: 2 VC)
 very_longs.adb:320:27: warning: assuming "Shift_Right" always returns
 very_longs.adb:320:27: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:329:07: info: initialization of "Result" proved
-very_longs.adb:329:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length (e.g. when L = (Length => 1, Long_Digits => (others => 0)) and R = (Length => Digit_Index_Type'Last, Long_Digits => (others => 0))) [possible fix: add precondition (L.Length <= Digit_Index_Type'Last - R.Length) to subprogram at very_longs.ads:61]
+very_longs.adb:329:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length [possible fix: add precondition (L.Length <= Digit_Index_Type'Last - R.Length) to subprogram at very_longs.ads:61]
 very_longs.adb:330:07: info: initialization of "L_Digit" proved
 very_longs.adb:331:07: info: initialization of "R_Digit" proved
 very_longs.adb:332:07: info: initialization of "T_Digit" proved

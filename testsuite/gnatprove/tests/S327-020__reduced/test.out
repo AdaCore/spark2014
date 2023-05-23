@@ -1,1 +1,1 @@
-main.adb:9:42: medium: assertion might fail, cannot prove 2 ** K in U64'range
+main.adb:9:42: medium: assertion might fail, cannot prove 2 ** K in U64'Range

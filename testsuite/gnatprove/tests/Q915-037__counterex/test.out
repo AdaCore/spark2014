@@ -6,4 +6,3 @@ counterexample expected for check at counterex.adb:3
   trace at counterex.adb:3 --> V = 300
   trace at counterex.adb:8 --> V = 1
   trace at counterex.adb:9 --> V = 300
-  trace at counterex.adb:13 --> V = 300

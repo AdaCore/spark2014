@@ -448,14 +448,14 @@ from the Command Line` for more details on this command line option.
 
 .. index:: --memcached-server; speeding up
 
-Sharing Proof Results Via a Memcached Server
---------------------------------------------
+Sharing Proof Results Via a Cache
+---------------------------------
 
 |GNATprove| can cache and share results between distinct runs of the tool. This
 feature can be enabled using the ``--memcached-server`` switch. This switch
 accepts two arguments separated by a colon, and there are two different forms:
 
-  * The switch is of the form ``--memcached-server=file:<directory>,``, that
+  * The switch is of the form ``--memcached-server=file:<directory>``, that
     is, the part before the colon is the string ``file``, and the part after it
     is a directory that exists.
   * The switch is of the form ``--memcached-server=<hostname>:<portnumber>``,
@@ -527,8 +527,15 @@ Complete List of Assumptions
 For the sake of these assumptions, we define a *precisely supported address
 specification* to be an address clause or aspect whose expression is a
 reference to the Address attribute on a part of a standalone object or
-constant. Otherwise, the address clause or aspect is an *imprecisely supported
-address specification*.
+constant. We define an *imprecisely supported address specification* to be an
+address clause or aspect that is not a precisely supported address
+specification.
+
+For the sake of these assumptions, we define an *object with an imprecisely
+supported address* to be either a stand-alone object with an address clause or
+aspect that is an imprecisely supported address specification or an object that
+is a *reachable part* of an object with an imprecisely supported address (a
+component of a composite value or the designated object of an access value).
 
 The following assumptions need to be addressed when using SPARK on all or part
 of a program:
@@ -544,32 +551,45 @@ of a program:
 
   * They should be `effectively volatile` in SPARK (see SPARK RM 7.1.2), so
     that GNATprove takes into account possible concurrent changes in the
-    object's value.
+    object's value. The warning
+    `imprecise Address and indirect writes through alias` is guaranteed to be
+    issued in cases where review is required.
 
   * They should be `synchronized` in SPARK (see SPARK RM 9) to prevent race
-    conditions which could lead to reading invalid values.
+    conditions which could lead to reading invalid values. The warning
+    `imprecise Address without Atomic` is guaranteed to be issued in cases where
+    review is required.
 
   * They should have specified all necessary :ref:`Properties of Volatile
-    Variables` corresponding to their usage.
-
-  A warning is guaranteed to be issued in problematic cases.
+    Variables` corresponding to their usage. The warning
+    `imprecise Address and volatile properties` is guaranteed to be issued in
+    cases where review is required.
 
 * [SPARK_ALIASING_ADDRESS]
-  Aliases between objects annotated with an imprecisely supported address
+  Aliases between objects with an imprecisely supported address
   specification are ignored by GNATprove. Reviews are necessary
   to ensure that:
 
-  * Other objects visible from SPARK code which might be affected by a
-    modification of such a variable have the ``Asynchronous_Writers`` volatile
-    property set to True.
-
   * The objects themselves are annotated with the ``Asynchronous_Writers``
     volatile property if they can be affected by the modification of another
-    object.
+    object. The warnings
+    `imprecise Address and indirect writes through alias` or
+    `imprecise Address and volatile properties` are guaranteed to be
+    issued in cases where review is required.
 
-  * The objects themselves have valid values for their type when read.
+  * Other objects visible from SPARK code which might be affected by a
+    modification of such a variable have the ``Asynchronous_Writers`` volatile
+    property set to True. A warning is guaranteed to be issued in cases where
+    review is needed: the warning `imprecise Address and volatile properties`
+    if the object has ``Asynchronous_Readers`` set to False, the warning
+    `imprecise Address and indirect writes to alias` otherwise.
 
-  A warning is guaranteed to be issued in problematic cases.
+  * Other objects visible from SPARK code which might be affected by a
+    modification of such a variable have valid values for their type when read.
+    A warning is guaranteed to be issued in cases where
+    review is needed: the warning `imprecise Address and volatile properties`
+    if the object has ``Asynchronous_Readers`` set to False, the warning
+    `imprecise Address and indirect writes to alias` otherwise.
 
 .. index:: Valid; limitation
 
@@ -585,12 +605,13 @@ of a program:
 
 * [SPARK_EXTERNAL_VALID]
   Values read from objects whose address is specified are assumed to be valid
-  values. This assumption is limited to objects annotated with an imprecisely
-  supported address specification (because an explicit check is emitted
+  values. This assumption is limited to objects with an imprecisely
+  supported address (because an explicit check is emitted
   otherwise). Currently there is no model of invalidity or undefinedness. The
   onus is on the user to ensure that all values read from an external source
   are valid. The use of an invalid value invalidates any proofs associated with
-  the value. A warning is guaranteed to be issued in that case.
+  the value. The warning `imprecise Address and validity` is guaranteed to be
+  issued in cases where review is required.
 
 * [SPARK_STORAGE_ERROR]
   As explained in section :ref:`Dealing with Storage_Error`, GNATprove does not
@@ -674,13 +695,11 @@ of a program:
   tasking-related effects. In particular, GNATprove assumes that the overriding
   operation:
 
-  * is not potentially blocking,
   * does not call protected entries,
   * does not suspend on suspection objects,
   * does not access unsynchronised global objects,
   * does not lock protected objects with calls to protected subprograms,
   * does not call Ada.Task_Identification.Current_Task.
-
 
 In addition, the following assumptions need to be addressed when using SPARK on
 only part of a program:
@@ -699,13 +718,20 @@ only part of a program:
   object are said to conflict if both (1) they are not both synchronized
   and (2) at least one can be modified by the callee.
 
+  In addition, calls from SPARK units to subprograms which are not analyzed by
+  GNATprove should not have any adverse tasking-related effects. In particular,
+  GNATprove assumes that such calls do not cause tasks visible from SPARK to:
+
+  * call protected entries that they are not calling in a way which is visible
+    from SPARK,
+  * suspend on suspension objects on which they do not suspend in a way which
+    is visible from SPARK.
+
 * [ADA_EXTERNAL]
   Objects accessed outside of SPARK, either directly for statically allocated
   objects, or through their address or a pointer for all objects, should comply
-  with the assumptions described in [SPARK_EXTERNAL] and [SPARK_EXTERNAL_VALID].
-  In addition, if these objects have parts of an access-to-variable type which
-  are treated as constant in SPARK then their designated object should never be
-  modified.
+  with the assumptions described in [SPARK_EXTERNAL], [SPARK_ALIASING_ADDRESS]
+  and [SPARK_EXTERNAL_VALID].
 
 * [ADA_EXTERNAL_ABSTRACT_STATE]
   The modeling of :ref:`Interfaces to the Physical World` needs to be reviewed
@@ -775,13 +801,13 @@ only part of a program:
   * subprograms whose body is marked ``SPARK_Mode => Off``, either explicitly
     or implicitly (inherited from the enclosing scope).
 
+  Note that we consider here both non-generic subprograms and instantiations
+  of generic subprograms, never generic subprograms themselves.
+
   The (explicit or implicit) subprogram contract to check is made up of:
 
-  * :ref:`Type Contracts` of both parameters and global objects taken as input
-    of the subprogram
-
-  * :ref:`Preconditions` (explicit and implicit, no runtime error shall occur
-    in the body of the subprogram when the precondition evaluates to True)
+  * :ref:`Type Contracts` of parameters, result (for a function) and global
+    objects produced as outputs from the non-SPARK callee to the SPARK caller
 
   * :ref:`Postconditions` (only explicit)
 
@@ -789,12 +815,15 @@ only part of a program:
 
   * :ref:`Data Dependencies` (explicit or implicitly generated by GNATprove)
 
-  * :ref:`Flow Dependencies` (only explicit)
+  * :ref:`Flow Dependencies` (explicit or implicitly generated by GNATprove)
 
   * :ref:`Subprogram Termination` (only explicit except for functions which
-    should always return in SPARK)
+    should always return in SPARK) - subprograms annotated with
+    ``Always_Return`` should always return normally assuming that primary
+    stack, secondary stack, and heap memory allocations never fail, other
+    subprograms are not restricted
 
-  * the aliases constraints of |SPARK| (implicit - the subprogram shall not
+  * the aliasing constraints of |SPARK| (implicit - the subprogram shall not
     introduce any visible aliases between its parameters, accessed global
     objects, and return value if any, unless it is a traversal function, in
     which case its return value shall be a part of its traversed parameter, or
@@ -808,11 +837,24 @@ only part of a program:
   from SPARK code, either through a dispatching call or through a call to
   an access-to-subprogram, and to (predefined) operators like ``"="``.
 
-* [ADA_RECURSIVE_SUBPROGRAMS]
-  When the body of a subprogram is not analyzed by GNATprove, it shall not be
-  mutually recursive with a subprogram analyzed by GNATprove.
+* [ADA_CALLS]
+  Calls to SPARK subprograms from subprograms that are not analyzed need to
+  comply with the implicit or explicit preconditions used by GNATprove to
+  analyze the called SPARK subprograms. This concerns the same subprograms as
+  considered in [ADA_SUBPROGRAMS].
 
-* [ADA_VOLATILE_FUNCTIONS]
+  The (explicit or implicit) precondition to check is made up of:
+
+  * :ref:`Type Contracts` of both parameters and global objects taken as input
+    by the SPARK callee from the non-SPARK caller
+
+  * :ref:`Preconditions` (explicit)
+
+  * the aliasing constraints of |SPARK| (implicit - the context shall not
+    alias the callee's parameters and accessed global objects in ways that
+    are not allowed in SPARK)
+
+* [ADA_OBJECT_ADDRESSES]
   When the body of a function is not analyzed by GNATprove, its result should
   not depend on the address of parts of its parameters or global inputs unless
   it is annotated with ``Volatile_Function``.
@@ -845,25 +887,36 @@ being available:
   Subprograms which are called across the boundary of those units analyzed
   together should have a Global contract describing their effect on global
   data, otherwise they will be assumed to have no effect on global data.
-  A warning is guaranteed to be issued in that case.
+  The warning `assumed Global null` is guaranteed to be issued in cases where
+  review is required.
 
 * [PARTIAL_TERMINATION]
   Subprograms which are called across the boundary of those units analyzed
   together should be annotated to specify that they will always return (with
   annotation Always_Return), might not return (with annotation
   Might_Not_Return) or never return (with aspect or pragma No_Return),
-  otherwise they will be assumed to always return.  A warning is guaranteed to
-  be issued in that case.
-
-* [PARTIAL_RECURSIVE_SUBPROGRAMS]
-  Subprograms which are called across the boundary of those units analyzed
-  together should not be mutually recursive with a subprogram analyzed by
-  GNATprove. This is similar to [ADA_RECURSIVE_SUBPROGRAMS].
+  otherwise they will be assumed to always return. The warning
+  `assumed Always_Return` is guaranteed to be issued in cases where review is
+  required.
 
 * [PARTIAL_TASKING]
-  If tasks are used, one run of GNATprove should analyze all units that define
-  tasks, in order to detect all violations of SPARK rules regarding tasking.
+  If no single run of GNATprove analyzes all units that define tasks, then for
+  each run of GNATprove, all tasks `not` defined in units analyzed during that
+  run of GNATprove must comply with [ADA_TASKING] as if those tasks were not
+  SPARK tasks. Note: The environment task, which is present in every Ada
+  partition, is considered by GNATprove to be defined by the unit that defines
+  the main subprogram of that Ada partition. Note also: If an Ada partition
+  defines no tasks other than the environment task, then that Ada partition is
+  trivially in compliance with this assumption.
 
+* [PARTIAL_ACYCLIC_ANALYSIS]
+  Consider the directed graph where the nodes are the compilation units and
+  there is an edge from a unit A to a unit B if there is a with clause for B in
+  the specification or the body of A. All (bodies of) units of a strongly
+  connected component in this graph should be analyzed as part of a single
+  analysis of GNATprove. This is so GNATprove can detect that the analyses of
+  strongly connected units depend on each other and use its internal
+  mechanism to avoid unsoundness.
 
 In addition, the following assumptions need to be addressed when compiling the
 program with another compiler than GNAT:

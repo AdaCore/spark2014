@@ -184,6 +184,15 @@ package SPARK_Util.Types is
    --  @params E any type
    --  @returns True if E has a type invariant and the invariant is in SPARK.
 
+   function Has_Iterable_Aspect_In_SPARK (E : Type_Kind_Id) return Boolean;
+   --  @params E any type (already marked).
+   --  @returns True if E has a SPARK-visible Iterable aspect.
+
+   function Declares_Iterable_Aspect (E : Type_Kind_Id) return Boolean;
+   --  @params E any type
+   --  @returns True if one of E's partial view
+   --    (including E itself) declares an Iterable aspect.
+
    function Has_Unconstrained_UU_Component (Typ : Type_Kind_Id) return Boolean;
    --  Returns True iff Typ has a component visible in SPARK whose type is an
    --  unchecked union type which is unconstrained. Predefined equality on
@@ -258,10 +267,20 @@ package SPARK_Util.Types is
    function Is_System_Address_Type (E : Type_Kind_Id) return Boolean;
    --  Returns True iff type E is System.Address
 
-   function Needs_Default_Checks_At_Decl (E : Type_Kind_Id) return Boolean;
+   function Find_View_For_Default_Checks
+     (E : Type_Kind_Id)
+      return Opt_Type_Kind_Id;
+   --  @param E type in Spark.
+   --  @return Empty, or if E needs a specific module to check its default
+   --    expression at declaration,
+   --    the view that should be used for default checks of E
+   --    (the least private view among private views)
+
+   function Needs_Default_Checks_At_Decl (E : Type_Kind_Id) return Boolean is
+     (Present (Find_View_For_Default_Checks (E)));
    --  @param E type
    --  @return True if E needs a specific module to check its default
-   --     expression at declaration.
+   --     expression at declaration
 
    function Is_Deep (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if the type passed as argument is deep (ie. it has
@@ -276,6 +295,7 @@ package SPARK_Util.Types is
 
    procedure Suitable_For_UC
      (Typ         :     Type_Kind_Id;
+      Use_Esize   :     Boolean;
       Result      : out Boolean;
       Explanation : out Unbounded_String);
    --  This procedure implements the notion of "suitable for unchecked

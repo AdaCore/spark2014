@@ -11,6 +11,7 @@ stack.adb:52:69: info: index check proved (CVC5: 2 VC)
 stack.adb:53:36: info: index check proved (CVC5: 2 VC)
 stack.ads:4:08: info: flow dependencies proved
 stack.ads:5:08: info: initial condition proved (CVC5: 1 VC)
+stack.ads:22:13: info: implicit function contract might not be available on calls from enclosing unit
 stack.ads:23:11: info: data dependencies proved
 stack.ads:29:11: info: data dependencies proved
 stack.ads:36:11: info: data dependencies proved
@@ -41,7 +42,7 @@ stack_external_prover.adb:42:27: info: index check proved (CVC5: 2 VC)
 stack_external_prover.adb:42:69: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
 stack_external_prover.adb:43:36: info: index check proved (CVC5: 2 VC)
 stack_external_prover.ads:4:08: info: flow dependencies proved
-stack_external_prover.ads:5:08: medium: initial condition might fail (e.g. when My_Stack = (S => (others => 0), Pointer => 0)) [possible fix: add or complete related loop invariants or postconditions]
+stack_external_prover.ads:5:08: medium: initial condition might fail
 stack_external_prover.ads:44:14: info: subprogram "Push" will terminate, terminating annotation has been proved
 stack_external_prover.ads:45:11: info: data dependencies proved
 stack_external_prover.ads:48:23: medium: postcondition might fail, cannot prove Count = Count'Old + 1 [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
@@ -52,7 +53,7 @@ stack_external_prover.ads:52:11: info: data dependencies proved
 stack_external_prover.ads:55:23: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
 stack_external_prover.ads:57:14: info: subprogram "Swap2" will terminate, terminating annotation has been proved
 stack_external_prover.ads:58:11: info: data dependencies proved
-stack_external_prover.ads:61:23: medium: postcondition might fail, cannot prove Count = Count'old [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
+stack_external_prover.ads:61:23: medium: postcondition might fail, cannot prove Count = Count'Old [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
 stack_external_prover.ads:62:62: info: range check proved (CVC5: 2 VC)
 stack_external_prover.ads:63:40: medium: range check might fail, cannot prove lower bound for Count - 1 [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
 stack_functional_spec.adb:20:04: info: initialization of "My_Stack" constituent of "State" proved
@@ -69,6 +70,7 @@ stack_functional_spec.adb:57:36: info: index check proved (CVC5: 2 VC)
 stack_functional_spec.ads:5:08: info: flow dependencies proved
 stack_functional_spec.ads:6:08: info: initial condition proved (CVC5: 1 VC)
 stack_functional_spec.ads:20:11: info: data dependencies proved
+stack_functional_spec.ads:28:13: info: implicit function contract might not be available on calls from enclosing unit
 stack_functional_spec.ads:40:11: info: data dependencies proved
 stack_functional_spec.ads:44:11: info: data dependencies proved
 stack_functional_spec.ads:56:11: info: data dependencies proved

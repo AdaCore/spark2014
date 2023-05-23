@@ -39,5 +39,6 @@ wrapper.adb:1:46: info: data dependencies proved
 wrapper.adb:3:25: info: data dependencies proved
 wrapper.adb:3:49: low: unused global "Low"
 wrapper.adb:3:54: low: unused global "High"
+wrapper.adb:5:16: info: implicit function contract might not be available on calls from enclosing unit
 wrapper.adb:5:58: info: data dependencies proved
 wrapper.adb:6:26: medium: predicate check might fail

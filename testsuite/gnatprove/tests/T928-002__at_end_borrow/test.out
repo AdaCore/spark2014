@@ -4,12 +4,19 @@ spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" 
 spark-containers-functional-vectors.ads:60:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at test_borrow.adb:34
 spark-containers-functional-vectors.ads:62:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at test_borrow.adb:34
 spark-containers-functional-vectors.ads:64:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
 spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at test_borrow.adb:34
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at test_borrow.adb:34
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at test_borrow.adb:34
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at test_borrow.adb:34
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at test_borrow.adb:34
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (CVC5: 1 VC), in instantiation at test_borrow.adb:34
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
 spark-containers-functional-vectors.ads:490:63: info: range check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
 spark-containers-functional-vectors.ads:491:59: info: overflow check proved (CVC5: 2 VC), in instantiation at test_borrow.adb:34
@@ -38,15 +45,16 @@ spark-containers-parameter_checks.ads:101:17: info: subprogram "Eq_Transitive" w
 spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_borrow.adb:34
 spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:328, in instantiation at test_borrow.adb:34
 test_borrow.adb:15:92: info: dynamic accessibility check proved (Trivial)
+test_borrow.adb:18:13: info: implicit function contract might not be available on calls from enclosing unit
 test_borrow.adb:18:86: info: dynamic accessibility check proved (Trivial)
-test_borrow.adb:22:13: info: implicit function contract might not be available on recursive calls
+test_borrow.adb:22:13: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
 test_borrow.adb:23:07: medium: "Length" is recursive, terminating annotation could be incorrect
 test_borrow.adb:23:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_borrow.adb:23:45: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:23:54: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:23:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_borrow.adb:23:60: info: predicate check proved (Trivial: 1 VC)
-test_borrow.adb:27:13: info: implicit function contract might not be available on recursive calls
+test_borrow.adb:27:13: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
 test_borrow.adb:28:24: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:28:27: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:28:36: info: precondition proved (CVC5: 2 VC)
@@ -55,6 +63,7 @@ test_borrow.adb:28:42: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:28:50: info: range check proved (CVC5: 2 VC)
 test_borrow.adb:30:15: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:31:41: info: predicate check proved (Trivial: 1 VC)
+test_borrow.adb:38:13: info: function contract might not be available on calls from enclosing unit
 test_borrow.adb:42:09: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:50:16: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:51:41: info: predicate check proved (Trivial: 1 VC)
@@ -93,7 +102,7 @@ test_borrow.adb:69:33: info: loop invariant initialization proved (CVC5: 1 VC)
 test_borrow.adb:69:33: info: loop invariant preservation proved (Z3: 1 VC)
 test_borrow.adb:69:33: info: predicate check proved (Trivial: 2 VC)
 test_borrow.adb:69:83: info: predicate check proved (Trivial: 2 VC)
-test_borrow.adb:71:13: info: loop invariant initialization proved (Trivial: 1 VC; Z3: 1 VC)
+test_borrow.adb:71:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 test_borrow.adb:71:13: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC)
 test_borrow.adb:71:16: info: predicate check proved (Trivial: 2 VC)
 test_borrow.adb:72:41: info: precondition proved (CVC5: 3 VC; Z3: 1 VC)
@@ -145,54 +154,53 @@ test_borrow.adb:110:28: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:112:13: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:114:33: info: in reconstructed value at the end of the borrow at test_borrow.adb:114
 test_borrow.adb:114:33: info: in reconstructed value at the end of the borrow at test_borrow.adb:114
-test_borrow.adb:114:33: info: null exclusion check proved (Z3: 1 VC)
+test_borrow.adb:114:33: info: null exclusion check proved (CVC5: 1 VC)
 test_borrow.adb:114:33: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:114:33: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:116:25: info: assertion proved (Z3: 1 VC)
+test_borrow.adb:116:25: info: assertion proved (CVC5: 1 VC)
 test_borrow.adb:116:41: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:116:45: info: pointer dereference check proved (Z3: 1 VC)
+test_borrow.adb:116:45: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:116:69: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:117:25: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
-test_borrow.adb:117:44: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:117:77: info: pointer dereference check proved (Z3: 1 VC)
+test_borrow.adb:117:25: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+test_borrow.adb:117:44: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:117:77: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:117:80: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:117:83: info: pointer dereference check proved (Z3: 1 VC)
+test_borrow.adb:117:83: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:117:106: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:117:108: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:117:110: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:117:113: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:117:116: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:118:25: medium: assertion might fail (e.g. when X4.all = (V => new Integer'(4), N => ?))
-test_borrow.adb:118:43: info: pointer dereference check proved (Z3: 1 VC)
+test_borrow.adb:117:108: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:117:110: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:117:113: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:117:116: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:118:25: medium: assertion might fail
+test_borrow.adb:118:43: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:118:66: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:118:68: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:118:70: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:118:74: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:119:12: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:121:13: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:123:19: info: assertion proved (Z3: 1 VC)
+test_borrow.adb:118:68: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:118:70: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:118:74: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:119:12: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:121:13: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:123:19: info: assertion proved (CVC5: 1 VC)
 test_borrow.adb:123:21: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:123:24: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:124:19: info: assertion proved (Z3: 1 VC)
+test_borrow.adb:123:24: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:124:19: info: assertion proved (CVC5: 1 VC)
 test_borrow.adb:124:21: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:124:23: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:124:26: info: pointer dereference check proved (Z3: 1 VC)
+test_borrow.adb:124:23: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:124:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:125:19: info: assertion proved (CVC5: 1 VC)
 test_borrow.adb:125:21: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:125:23: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:125:25: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:125:28: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:126:19: info: assertion proved (Z3: 1 VC)
+test_borrow.adb:125:23: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:125:25: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:125:28: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:126:19: info: assertion proved (CVC5: 1 VC)
 test_borrow.adb:126:21: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:126:23: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:126:25: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:126:27: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:126:30: info: pointer dereference check proved (Z3: 1 VC)
+test_borrow.adb:126:23: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:126:25: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:126:27: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:126:30: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:127:19: info: assertion proved (Z3: 1 VC)
 test_borrow.adb:127:21: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:127:23: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:127:25: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:127:27: info: pointer dereference check proved (Z3: 1 VC)
+test_borrow.adb:127:23: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:127:25: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:127:27: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:133:31: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:135:11: info: postcondition proved (CVC5: 5 VC)
 test_borrow.adb:135:11: warning: assuming "Model" always returns
@@ -234,22 +242,22 @@ test_borrow.adb:152:13: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:154:19: info: assertion proved (Z3: 1 VC)
 test_borrow.adb:154:21: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:154:24: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:155:19: medium: assertion might fail (e.g. when X4.all = (V => new Integer'(0), N => null))
+test_borrow.adb:155:19: medium: assertion might fail
 test_borrow.adb:155:21: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:155:23: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:155:26: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:156:19: medium: assertion might fail (e.g. when X4.all = (V => new Integer'(0), N => null))
+test_borrow.adb:156:19: medium: assertion might fail
 test_borrow.adb:156:21: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:156:23: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:156:25: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:156:28: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:157:19: medium: assertion might fail (e.g. when X4.all = (V => new Integer'(0), N => null))
+test_borrow.adb:157:19: medium: assertion might fail
 test_borrow.adb:157:21: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:157:23: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:157:25: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:157:27: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:157:30: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:158:19: info: assertion proved (Z3: 1 VC)
+test_borrow.adb:158:19: medium: assertion might fail
 test_borrow.adb:158:21: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:158:23: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:158:25: info: pointer dereference check proved (Z3: 1 VC)

@@ -892,6 +892,15 @@ There are no dynamic semantics associated with the Initializes aspect.
     constant shall be a parameter or *constant with variable input*.
 
 
+13. Where the refinement of a state abstraction is not visible (see
+    :ref:`State Refinement`) and a package references one or more
+    of its constituents, the constituents may be represented by a
+    ``global_item`` that denotes the state abstraction in the
+    ``initialization_spec`` of the package. [The state abstraction
+    encapsulating a constituent is known from the Part_Of indicator on
+    the declaration of the constituent.]
+
+
 [Note: these rules allow a variable or state abstraction to be
 initialized by the elaboration of a package but not be denoted in an
 Initializes aspect.  In such a case the analysis tools will treat the

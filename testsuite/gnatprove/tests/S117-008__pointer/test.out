@@ -162,7 +162,7 @@ formal_vectors.adb:147:08: info: predicate check proved (CVC5: 1 VC), in instant
 formal_vectors.adb:147:22: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:152:08: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:152:08: info: predicate check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:152:18: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 (e.g. when I = 1 and V = (Top => 1, Content => new Element_Array'((others => new Element_Type'(new Integer'(2)))))) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in Positive) to subprogram at formal_vectors.ads:31]
+formal_vectors.adb:152:18: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in Positive) to subprogram at formal_vectors.ads:31]
 formal_vectors.adb:152:21: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:152:25: medium: resource or memory leak might occur, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:158:11: info: predicate check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
@@ -224,7 +224,7 @@ formal_vectors.adb:184:33: info: in value of subprogram parameter after the call
 formal_vectors.adb:184:33: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:184:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: result of addition must be a valid index into the array]
 formal_vectors.adb:189:14: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:189:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 (e.g. when I = 1 and V = (Top => 1, Content => new Element_Array'((others => new Element_Type'(new Integer'(2)))))) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in Positive) to subprogram at formal_vectors.ads:43]
+formal_vectors.adb:189:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in Positive) to subprogram at formal_vectors.ads:43]
 formal_vectors.adb:189:27: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:195:22: info: refined post proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:196:43: info: precondition proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
@@ -253,7 +253,7 @@ formal_vectors.ads:20:31: info: range check proved (CVC5: 2 VC), in instantiatio
 formal_vectors.ads:23:41: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:24:43: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:27:19: info: precondition proved (CVC5: 4 VC; Trivial: 2 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.ads:27:19: medium: postcondition might fail, cannot prove Range_Shifted (Model (E)'Old, Model (V), 1, Length (E)'Old, Count_Type (Length (V)'old)), in instantiation at use_formal_vectors.ads:11
+formal_vectors.ads:27:19: medium: postcondition might fail, cannot prove Range_Shifted (Model (E)'Old, Model (V), 1, Length (E)'Old, Count_Type (Length (V)'Old)), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:29:71: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:45:14: info: postcondition proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:45:39: info: precondition proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
@@ -267,12 +267,19 @@ spark-containers-functional-vectors.ads:54:19: info: subprogram "Eq_Transitive" 
 spark-containers-functional-vectors.ads:60:19: info: subprogram "Equivalent_Elements_Reflexive" will terminate, terminating annotation has been proved, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:62:19: info: subprogram "Equivalent_Elements_Symmetric" will terminate, terminating annotation has been proved, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:64:19: info: subprogram "Equivalent_Elements_Transitive" will terminate, terminating annotation has been proved, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
+spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
+spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:123:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
-spark-containers-functional-vectors.ads:205:12: info: precondition proved (Trivial: 1 VC), in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:267:52: info: overflow check proved (CVC5: 1 VC), in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:312:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
+spark-containers-functional-vectors.ads:344:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
+spark-containers-functional-vectors.ads:344:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
+spark-containers-functional-vectors.ads:347:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
+spark-containers-functional-vectors.ads:347:13: info: precondition proved (Trivial: 1 VC), in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (CVC5: 1 VC), in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:485:54: info: overflow check proved (CVC5: 2 VC), in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:490:63: info: range check proved (CVC5: 2 VC), in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11
 spark-containers-functional-vectors.ads:491:59: info: overflow check proved (CVC5: 2 VC), in instantiation at formal_vectors.ads:49, in instantiation at use_formal_vectors.ads:11

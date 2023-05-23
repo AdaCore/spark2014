@@ -406,10 +406,6 @@ package Flow_Types is
    function Is_Abstract_State (F : Flow_Id) return Boolean;
    --  Checks if F is an abstract state
 
-   function Is_Constant (F : Flow_Id) return Boolean
-   with Pre => Present (F);
-   --  Checks if F represents a constant object
-
    function Is_Constituent (F : Flow_Id) return Boolean;
    --  Checks if F is a constituent of an abstract state
 

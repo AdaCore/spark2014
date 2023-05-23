@@ -314,6 +314,37 @@ package body Gnat2Why.Util is
       end loop;
    end Get_Borrows_From_Decls;
 
+   ---------------------------------
+   -- Get_Called_Entity_For_Proof --
+   ---------------------------------
+
+   function Get_Called_Entity_For_Proof (N : Node_Id) return Entity_Id is
+      Subp                : constant Entity_Id := Get_Called_Entity (N);
+      Call_Through_Access : constant Boolean :=
+        Ekind (Subp) = E_Subprogram_Type;
+      pragma Assert (if Call_Through_Access
+                     then Nkind (Name (N)) = N_Explicit_Dereference);
+      Position            : Node_Maps.Cursor;
+      use type Node_Maps.Cursor;
+
+   begin
+      --  For calls to access-to-subprograms, check if the prefix is a
+      --  specialized parameter. If so, return its specialization.
+
+      if Call_Through_Access
+        and then Nkind (Prefix (Name (N))) in N_Identifier | N_Expanded_Name
+      then
+         Position := Specialized_Call_Params.Find (Entity (Prefix (Name (N))));
+         if Position /= Node_Maps.No_Element then
+            return Node_Maps.Element (Position);
+         end if;
+      end if;
+
+      --  Otherwise, return the result of Get_Called_Entity
+
+      return Subp;
+   end Get_Called_Entity_For_Proof;
+
    ---------------------------------------------
    -- Get_Container_In_Iterator_Specification --
    ---------------------------------------------

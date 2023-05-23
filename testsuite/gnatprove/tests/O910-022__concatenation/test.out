@@ -1,3 +1,4 @@
+badconcat.adb:8:13: info: implicit function contract might not be available on calls from enclosing unit
 badconcat.adb:8:31: warning: unused variable "Value"
 badconcat.adb:17:06: info: precondition proved (Trivial: 1 VC)
 badconcat.adb:17:27: medium: range check might fail, cannot prove lower bound for Put_Integer_Value(0) & Put_Integer_Value(0) [possible fix: you should consider adding a postcondition to function Put_Integer_Value or turning it into an expression function]

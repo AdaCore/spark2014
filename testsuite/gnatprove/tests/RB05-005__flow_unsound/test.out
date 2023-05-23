@@ -4,13 +4,13 @@ main.adb:8:14: info: local subprogram "Test" only analyzed in the context of cal
 main.adb:11:41: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:19
 main.adb:11:41: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:20
 main.adb:11:41: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:21
-main.adb:11:41: low: range check might fail, cannot prove lower bound for "Pass : " & Actual'image, in call inlined at main.adb:23 [reason for check: input value must fit in parameter type]
-main.adb:11:41: low: range check might fail, cannot prove upper bound for "Pass : " & Actual'image, in call inlined at main.adb:22 [reason for check: input value must fit in parameter type]
+main.adb:11:41: low: range check might fail, cannot prove lower bound for "Pass : " & Actual'Image, in call inlined at main.adb:23 [reason for check: input value must fit in parameter type]
+main.adb:11:41: low: range check might fail, cannot prove upper bound for "Pass : " & Actual'Image, in call inlined at main.adb:22 [reason for check: input value must fit in parameter type]
 main.adb:13:41: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:19
 main.adb:13:41: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:20
 main.adb:13:41: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:21
-main.adb:13:41: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'image, in call inlined at main.adb:23
-main.adb:13:41: low: range check might fail, cannot prove upper bound for "Fail : " & Actual'image, in call inlined at main.adb:22
+main.adb:13:41: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image, in call inlined at main.adb:23
+main.adb:13:41: low: range check might fail, cannot prove upper bound for "Fail : " & Actual'Image, in call inlined at main.adb:22
 main.adb:13:56: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:19
 main.adb:13:56: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:20
 main.adb:13:56: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:21
@@ -18,9 +18,9 @@ main.adb:13:56: low: range check might fail, cannot prove lower bound for "Fail 
 main.adb:13:56: low: range check might fail, cannot prove upper bound for "Fail : " & Actual'Image & ", Expected : ", in call inlined at main.adb:22
 main.adb:13:74: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:19
 main.adb:13:74: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:20
-main.adb:13:74: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : " & Expected'image, in call inlined at main.adb:21 [reason for check: input value must fit in parameter type]
-main.adb:13:74: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : " & Expected'image, in call inlined at main.adb:22 [reason for check: input value must fit in parameter type]
-main.adb:13:74: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : " & Expected'image, in call inlined at main.adb:23 [reason for check: input value must fit in parameter type]
+main.adb:13:74: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : " & Expected'Image, in call inlined at main.adb:21 [reason for check: input value must fit in parameter type]
+main.adb:13:74: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : " & Expected'Image, in call inlined at main.adb:22 [reason for check: input value must fit in parameter type]
+main.adb:13:74: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : " & Expected'Image, in call inlined at main.adb:23 [reason for check: input value must fit in parameter type]
 main.adb:19:04: info: analyzing call to "Test" in context
 main.adb:19:04: info: precondition proved (CVC5: 4 VC)
 main.adb:19:04: warning: assuming "LCP" always returns
@@ -46,13 +46,13 @@ main.adb:22:04: warning: assuming "LCP" has no effect on global items
 main.adb:22:04: warning: no Global contract available for "LCP"
 main.adb:22:04: warning: no returning annotation available for "LCP"
 main.adb:23:04: info: analyzing call to "Test" in context
-main.adb:23:04: medium: precondition might fail, cannot prove Y in A'range
+main.adb:23:04: medium: precondition might fail, cannot prove Y in A'Range
 main.adb:23:04: warning: assuming "LCP" always returns
 main.adb:23:04: warning: assuming "LCP" has no effect on global items
 main.adb:23:04: warning: no Global contract available for "LCP"
 main.adb:23:04: warning: no returning annotation available for "LCP"
 main.adb:25:11: warning: unused assignment
-main.adb:25:35: medium: precondition might fail, cannot prove Y in A'range
+main.adb:25:35: medium: precondition might fail, cannot prove Y in A'Range
 main.adb:25:35: warning: assuming "LCP" always returns
 main.adb:25:35: warning: assuming "LCP" has no effect on global items
 main.adb:25:35: warning: no Global contract available for "LCP"

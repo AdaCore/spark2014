@@ -205,6 +205,24 @@ package SPARK_Definition.Annotate is
    --  transformed into an axiom which will be included whenever the function
    --  is called.
 
+   --  A pragma Annotate for specialized handling of static access-to-function
+   --  parameters has the following form:
+   --    pragma Annotate (GNATprove, Higher_Order_Specialization, Entity => E);
+
+   --  where
+   --    GNATprove                   is a fixed identifier
+   --    Higher_Order_Specialization is a fixed identifier
+   --    E                           is a function or lemma procedure with
+   --                                parameters of an anonymous
+   --                                access-to-function type.
+
+   --  The subprogram E shall not be volatile, dispatching, nor a borrowing
+   --  traversal function. If it is a procedure, it shall be a lemma function -
+   --  ghost and no outputs. Its parameters shall only occur in contracts in
+   --  dereferences and as actuals in calls to functions annotated with
+   --  Higher_Order_Specialization (the actual pointer value shall not be
+   --  used).
+
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;
       Preceding     : Node_Id;
@@ -215,6 +233,11 @@ package SPARK_Definition.Annotate is
    --  is true, "Preceding" must be part of a list, and the pragma will
    --  be considered to also apply to all "Next" declarations following
    --  "Preceding" which are not from source.
+
+   procedure Do_Delayed_Checks_On_Pragma_Annotate;
+   --  Some checks for Annotate pragmas or aspects might have been delayed
+   --  because necessary entities were not marked yet. Finish the checking and
+   --  possibly raise some remaining errors.
 
    type Annotate_Kind is (Intentional, False_Positive);
 
@@ -359,5 +382,27 @@ package SPARK_Definition.Annotate is
    with Pre => Has_Automatic_Instantiation_Annotation (E);
    --  If a pragma Annotate Automatic_Instantiation applies to E then return
    --  the function to which E is associated.
+
+   function Has_Higher_Order_Specialization_Annotation
+     (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in E_Function | E_Procedure;
+   --  Return True if a pragma Annotate Higher_Order_Specialization applies to
+   --  the function E.
+
+   function Get_Lemmas_To_Specialize (E : Entity_Id) return Node_Sets.Set
+   with Pre => Ekind (E) = E_Function
+     and then Has_Higher_Order_Specialization_Annotation (E);
+   --  Return a set of lemmas that should be specialized along with the
+   --  function E.
+
+   function Retrieve_Parameter_Specialization
+     (E : Entity_Id) return Node_Maps.Map
+   with Pre => Ekind (E) = E_Procedure
+     and then Has_Automatic_Instantiation_Annotation (E)
+     and then Has_Higher_Order_Specialization_Annotation
+       (Retrieve_Automatic_Instantiation_Annotation (E));
+   --  Return a mapping from the formal parameters of the function associated
+   --  to a lemma procedure E to the formals of E. It should be used to
+   --  construct a specialization of E from a specialization of the function.
 
 end SPARK_Definition.Annotate;

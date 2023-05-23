@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Vectors;
 with GNATCOLL.Utils;
 with Hash_Cons;
 
@@ -34,11 +36,29 @@ package body Assumption_Types is
    function Hash (S : Base_Sloc) return Ada.Containers.Hash_Type;
    function Hash (S : My_Sloc) return Ada.Containers.Hash_Type;
 
+   function To_JSON_Internal (S : Subp_Type) return JSON_Value;
+   function From_JSON_Internal (V : JSON_Value) return Subp_Type;
+
    function From_JSON (V : JSON_Array) return My_Sloc;
 
    function "<" (Left, Right : Symbol) return Boolean;
    function "<" (Left, Right : Base_Sloc) return Boolean;
    function "<" (Left, Right : My_Sloc) return Boolean;
+
+   package Subp_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Subp_Type,
+      Element_Type    => Positive,
+      Hash            => Hash,
+      Equivalent_Keys => "=");
+
+   package Subp_Vectors is new Ada.Containers.Vectors
+     (Index_Type   => Positive,
+      Element_Type => Subp_Type,
+      "="          => "=");
+
+   Subp_Vector : Subp_Vectors.Vector;
+   Subp_Map    : Subp_Maps.Map;
+
    --------------------
    -- Base_Sloc_File --
    --------------------
@@ -49,6 +69,21 @@ package body Assumption_Types is
       return S.all;
    end Base_Sloc_File;
 
+   ------------------
+   -- Entity_Table --
+   ------------------
+
+   function Entity_Table return JSON_Value is
+      Table : constant JSON_Value := Create_Object;
+   begin
+      for Index in Subp_Vector.First_Index .. Subp_Vector.Last_Index loop
+         Set_Field (Table,
+                    Positive'Image (Index),
+                    To_JSON_Internal (Subp_Vector (Index)));
+      end loop;
+      return Table;
+   end Entity_Table;
+
    ---------------
    -- From_JSON --
    ---------------
@@ -57,10 +92,19 @@ package body Assumption_Types is
 
    function From_JSON (V : JSON_Value) return Subp_Type is
    begin
+      return Subp_Vector (Get (V));
+   end From_JSON;
+
+   ------------------------
+   -- From_JSON_Internal --
+   ------------------------
+
+   function From_JSON_Internal (V : JSON_Value) return Subp_Type is
+   begin
       return
         Mk_Subp (Get (Get (V, "name")),
                  From_JSON (Get (Get (V, "sloc"))));
-   end From_JSON;
+   end From_JSON_Internal;
 
    function From_JSON (V : JSON_Array) return My_Sloc is
       Sloc : My_Sloc;
@@ -75,6 +119,15 @@ package body Assumption_Types is
       end loop;
       return Sloc;
    end From_JSON;
+
+   --------------
+   -- From_Key --
+   --------------
+
+   function From_Key (V : String) return Subp_Type is
+   begin
+      return Subp_Vector (Positive'Value (V));
+   end From_Key;
 
    pragma Annotate (Xcov, Exempt_Off);
 
@@ -151,6 +204,38 @@ package body Assumption_Types is
    end Mk_Unit;
    pragma Annotate (Xcov, Exempt_Off);
 
+   ------------------------
+   -- Parse_Entity_Table --
+   ------------------------
+
+   procedure Parse_Entity_Table (Table : JSON_Value) is
+
+      procedure Parse_Entry (Name : UTF8_String; Value : JSON_Value);
+      --  parse a mapping of the entity table
+
+      -----------------
+      -- Parse_Entry --
+      -----------------
+
+      procedure Parse_Entry (Name : UTF8_String; Value : JSON_Value) is
+         Index : constant Positive := Positive'Value (Name);
+         Elt   : constant Subp_Type := From_JSON_Internal (Value);
+      begin
+         if Index > Subp_Vector.Last_Index then
+            Subp_Vector.Set_Length (Ada.Containers.Count_Type (Index));
+         end if;
+         Subp_Vector.Replace_Element (Index, Elt);
+         Subp_Map.Insert (Elt, Index);
+      end Parse_Entry;
+
+   --  Start of processing for Parse_Entity_Table
+
+   begin
+      Subp_Map.Clear;
+      Subp_Vector.Clear;
+      Map_JSON_Object (Table, Parse_Entry'Access);
+   end Parse_Entity_Table;
+
    ---------------
    -- Subp_Name --
    ---------------
@@ -170,6 +255,22 @@ package body Assumption_Types is
    -------------
 
    function To_JSON (S : Subp_Type) return JSON_Value is
+      C : constant Subp_Maps.Cursor := Subp_Map.Find (S);
+   begin
+      if Subp_Maps.Has_Element (C) then
+         return Create (Subp_Maps.Element (C));
+      else
+         Subp_Vector.Append (S);
+         Subp_Map.Insert (S, Subp_Vector.Last_Index);
+         return Create (Subp_Vector.Last_Index);
+      end if;
+   end To_JSON;
+
+   ----------------------
+   -- To_JSON_Internal --
+   ----------------------
+
+   function To_JSON_Internal (S : Subp_Type) return JSON_Value is
       Obj     : constant JSON_Value := Create_Object;
       JS_Sloc : JSON_Array := Empty_Array;
    begin
@@ -185,7 +286,23 @@ package body Assumption_Types is
       end loop;
       Set_Field (Obj, "sloc", JS_Sloc);
       return Obj;
-   end To_JSON;
+   end To_JSON_Internal;
+
+   ------------
+   -- To_Key --
+   ------------
+
+   function To_Key (S : Subp_Type) return String is
+      C : constant Subp_Maps.Cursor := Subp_Map.Find (S);
+   begin
+      if Subp_Maps.Has_Element (C) then
+         return Positive'Image (Subp_Maps.Element (C));
+      else
+         Subp_Vector.Append (S);
+         Subp_Map.Insert (S, Subp_Vector.Last_Index);
+         return Positive'Image (Subp_Vector.Last_Index);
+      end if;
+   end To_Key;
 
    ---------------
    -- Unit_Name --

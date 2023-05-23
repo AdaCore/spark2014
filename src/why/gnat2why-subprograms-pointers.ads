@@ -25,6 +25,7 @@
 
 with Namet;                           use Namet;
 with Snames;                          use Snames;
+with Why.Types;                       use Why.Types;
 
 package Gnat2Why.Subprograms.Pointers is
 
@@ -77,21 +78,22 @@ package Gnat2Why.Subprograms.Pointers is
 
    function Checks_For_Subp_Conversion
      (Ada_Node : Entity_Id;
-      Expr     : W_Expr_Id;
+      Expr     : W_Expr_Id := Why_Empty;
       From, To : Entity_Id;
       Params   : Transformation_Params)
       return W_Prog_Id
    with
      Pre => Is_Access_Subprogram_Type (To)
        and then (Is_Subprogram (From)
-                  or else Is_Access_Subprogram_Type (From));
+                  or else Is_Access_Subprogram_Type (From))
+       and then (Is_Subprogram (From) or else Expr /= Why_Empty);
    --  Perform LSP checks to ensure that contracts of To are compatible with
    --  contracts of From. Expr is the Why expression for the subprogram
    --  access. It is used to have a precise knowledge of the converted
    --  subprogram for functions.
    --  These checks are meant to be inlined at the point of conversion, as
    --  opposed to generated in a separate module like LSP checks for
-   --  tagged type. This is to
+   --  tagged type.
 
    function Transform_Access_Attribute_Of_Subprogram
      (Expr   : N_Attribute_Reference_Id;
@@ -106,5 +108,19 @@ package Gnat2Why.Subprograms.Pointers is
    --  subprogram so that it can be shared between occurrences.
    --  If Domain is EW_Prog, also perform LSP checks and possibly checks for
    --  specific type constraints of Etype (Expr).
+
+   procedure Create_Theory_For_HO_Specialization_If_Needed (Call : Node_Id);
+   --  Create a theory for a call to asubprogram annotated with higher order
+   --  specialization if no theory has been declared for the same
+   --  specialization.
+
+   function Get_Specialization_Theory_Name (Call : Node_Id) return Symbol;
+   --  Get the theory name for a subprogram call with higher order
+   --  specialization.
+
+   function Get_Globals_From_Specialized_Parameters
+     (Params : Node_Maps.Map) return Flow_Types.Flow_Id_Sets.Set;
+   --  Get the set of globals read from actual entities in the map of
+   --  specialized parameters Params.
 
 end Gnat2Why.Subprograms.Pointers;

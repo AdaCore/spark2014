@@ -10,19 +10,13 @@ counterexample expected for check at test.adb:5
   trace at test.adb:5 --> Test_If'Result = 5
   trace at test.adb:9 --> A = 4
   trace at test.adb:10 --> B = 5
-  trace at test.adb:11 --> A = 4
-  trace at test.adb:12 --> B = 5
-  trace at test.adb:14 --> B = 5
-  trace at test.adb:16 --> B = 5 and Test_If'Result = 5
+  trace at test.adb:16 --> Test_If'Result = 5
 counterexample expected for check at test.adb:20
   trace at test.adb:19 --> A = 3
   trace at test.adb:20 --> Test_Case'Result = 5
   trace at test.adb:25 --> A = 3
   trace at test.adb:26 --> B = 5
-  trace at test.adb:27 --> A = 3
-  trace at test.adb:28 --> B = 5
-  trace at test.adb:32 --> B = 5
-  trace at test.adb:34 --> B = 5 and Test_Case'Result = 5
+  trace at test.adb:34 --> Test_Case'Result = 5
 counterexample expected for check at test.adb:39
   trace at test.adb:38 --> A = 3
   trace at test.adb:39 --> Test_If_2'Result = -2

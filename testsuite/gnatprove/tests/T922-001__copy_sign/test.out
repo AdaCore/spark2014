@@ -1,5 +1,6 @@
 conv.adb:3:13: info: add a contract to analyze it separately from calling contexts
 conv.adb:3:13: info: local subprogram "Has_Neg_Sign" only analyzed in the context of calls
+conv.adb:8:13: info: implicit function contract might not be available on calls from enclosing unit
 conv.adb:13:34: info: analyzing call to "Has_Neg_Sign" in context
 conv.adb:14:34: info: analyzing call to "Has_Neg_Sign" in context
 conv.adb:16:19: medium: assertion might fail
@@ -7,4 +8,5 @@ conv2.adb:2:11: warning: file name does not match unit name, should be "conv.adb
 conv2.adb:11:13: info: types in unchecked conversion have the same size (Trivial)
 conv2.adb:11:51: info: type is suitable as source for unchecked conversion (Trivial)
 conv2.adb:11:58: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Bytes has 255 values but has Size 8]
+conv2.adb:13:13: info: implicit function contract might not be available on calls from enclosing unit
 conv2.adb:21:19: medium: assertion might fail

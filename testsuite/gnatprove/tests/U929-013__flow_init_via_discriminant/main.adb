@@ -25,8 +25,19 @@ is
         null;
       end return;
    end F;
+
+   procedure Local_Main with
+     Pre => W < Integer'Last and then A.C = X and then B.C = W + 1,
+     Global => (Proof_In => (W, X), Output => (Y, Z), Input => (A, B)),
+     Depends => (Y => A, Z => B),
+     Post => Y = X and Z = W + 1
+   is
+   begin
+      Y := A.C;
+      Z := B.C;
+      pragma Assert (F.C = W + 1);
+   end Local_Main;
+
 begin
-   Y := A.C;
-   Z := B.C;
-   pragma Assert (F.C = W + 1);
+   Local_Main;
 end;

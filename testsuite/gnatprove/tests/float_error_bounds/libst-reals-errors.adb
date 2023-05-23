@@ -11,6 +11,14 @@ package body Libst.Reals.Errors with SPARK_Mode is
        Floats_For_Div in Float'First .. - 1.0 / Float_Sqrt
                        | 1.0 / Float_Sqrt .. Float'Last;
 
+   procedure Abs_Lipschitz (X, Y : Big_Real)
+     with Ghost,
+     Global => null,
+     Post => abs (X) <= abs (Y) + abs (X - Y)
+     and abs (Y) <= abs (X) + abs (X - Y);
+   --  Help provers notice consequence of abs being Lipschitz.
+   procedure Abs_Lipschitz (X, Y : Big_Real) is null;
+
    --  Proofs of error bound lemmas on our specification
 
    procedure Error_For_SW_Rec
@@ -141,7 +149,17 @@ package body Libst.Reals.Errors with SPARK_Mode is
       procedure EB_For_Add
         (Sum_F        : Floats_For_Add;
          W, V         : Floats_For_Mul;
-         Sum_R, Sum_A : Big_Real) is null;
+         Sum_R, Sum_A : Big_Real)
+      is
+      begin
+         Abs_Lipschitz (To_Big_Real (Sum_F), Sum_R);
+         Abs_Lipschitz (To_Big_Real (W * V), To_Big_Real (W) * To_Big_Real (V));
+         pragma Assert
+           (abs (To_Big_Real (W) * To_Big_Real (V))
+              = To_Big_Real (W) * abs (To_Big_Real (V))
+           );
+      end;
+
 
       --  Lemma: Aggregate together error bounds coming from:
       --    * The computation of the summation up to I - 1
@@ -246,7 +264,7 @@ package body Libst.Reals.Errors with SPARK_Mode is
          Num_R, Den_R, Num_A : Big_Real)
       is
       begin
-         pragma Assert (Den_R / To_Big_Real (Den_F) <= 1.0 + 5.921E-06);
+         pragma Assert (abs (To_Big_Real (Den_F) - Den_R) <= 5.93E-06 * To_Big_Real (Den_F));
       end EB_For_Sum;
 
       --  Lemma: Lift the error bound on the computation of the denominator so
@@ -370,6 +388,12 @@ package body Libst.Reals.Errors with SPARK_Mode is
       Aggregate_Bounds (Num_F, Den_F, Res_F, Num_R, Den_R, Num_A, Res_R, Res_A);
    end Error_For_Average;
 
+   procedure Div_Monotonic (A, B, C : Big_Real)
+     with Ghost,
+     Pre => C > Big_Real'(0.0) and A <= B,
+     Post => A / C <= B / C;
+   procedure Div_Monotonic (A, B, C : Big_Real) is null;
+
    procedure Precise_Bounds_For_Average
      (Weights : Weight_Array;
       Values  : Value_Array)
@@ -391,6 +415,7 @@ package body Libst.Reals.Errors with SPARK_Mode is
    begin
       --  Sum_Weight (Weights) in floats is not 0.0
       Error_For_SW (Weights);
+      pragma Assert (Sum_Weight (Weights) /= Big_Real'(0.0));
       --  Compute the error for the computation of Weighted_Average
       Error_For_Average (Weights, Values);
       --  Bound Weighted_Sum_Rec and Weighted_Sum_Abs by Max_Value on real numbers
@@ -400,11 +425,23 @@ package body Libst.Reals.Errors with SPARK_Mode is
       --  Sum_Weight is more than Min_Weight on real numbers
       Min_For_SW (Max_Index);
       pragma Assert (Sum_Weight (Weights) >= To_Big_Real (Min_Weight));
-
+      pragma Assert
+        (abs (Big_Real'(Weighted_Average (Weights, Values)))
+         = abs (Weighted_Sum_Rec (Weights, Values, Max_Index))
+         / Sum_Weight (Weights));
+      Div_Monotonic
+        (abs (Weighted_Sum_Rec (Weights, Values, Max_Index)),
+         Weighted_Sum_Abs_Rec (Weights, Values, Max_Index),
+         Sum_Weight (Weights));
+      pragma Assert
+        (abs (Weighted_Average (Weights, Values))
+         <= Weighted_Average_Abs (Weights, Values));
+      Abs_Lipschitz (To_Big_Real (Weighted_Average (Weights, Values)),
+                     Weighted_Average (Weights, Values));
       --  Compute the most precise bound for Weighted_Average on floats given by
       --  the error bound on the computation and the bound on real numbers.
       pragma Assert
-        (abs (To_Big_Real (Float'(Weighted_Average (Weights, Values)))) <=
+        (abs (To_Big_Real (Weighted_Average (Weights, Values))) <=
            To_Big_Real (Max_Value) + 1.25E-45 + 2.52E-43 / To_Big_Real (Min_Weight)
          + 2.05E-5 * To_Big_Real (Max_Value));
    end Precise_Bounds_For_Average;

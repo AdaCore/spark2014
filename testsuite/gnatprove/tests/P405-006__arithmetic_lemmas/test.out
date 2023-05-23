@@ -1,3 +1,4 @@
+test_arith.adb:11:13: info: implicit function contract might not be available on calls from enclosing unit
 test_arith.adb:16:41: info: initialization of "R" proved
 test_arith.adb:18:14: info: postcondition proved (CVC5: 1 VC)
 test_arith.adb:21:14: info: overflow check proved (CVC5: 2 VC)

@@ -6,6 +6,7 @@ main.adb:14:48: info: default initial condition proved (Trivial: 1 VC)
 main.adb:17:38: info: data dependencies proved
 main.adb:18:54: medium: in default value of box association at main.adb:27
 main.adb:18:54: medium: range check might fail, cannot prove lower bound for -5 [reason for check: default value must fit in the type]
+main.adb:19:16: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:20:15: info: range check proved (CVC5: 2 VC)
 main.adb:27:22: info: assertion proved (CVC5: 1 VC)
 main.adb:30:38: info: data dependencies proved
@@ -57,6 +58,7 @@ main.adb:198:22: info: assertion proved (CVC5: 1 VC)
 main.adb:201:39: info: data dependencies proved
 main.adb:202:54: medium: in default value of box association at main.adb:209
 main.adb:202:54: medium: range check might fail, cannot prove lower bound for -5 [reason for check: default value must fit in the type]
+main.adb:203:16: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:204:15: info: range check proved (CVC5: 2 VC)
 main.adb:209:22: info: assertion proved (CVC5: 1 VC)
 main.adb:212:39: info: data dependencies proved
@@ -69,5 +71,6 @@ main.adb:218:22: info: assertion proved (CVC5: 1 VC)
 main.adb:221:39: info: data dependencies proved
 main.adb:222:54: medium: in default value of box association at main.adb:229
 main.adb:222:54: medium: range check might fail, cannot prove lower bound for -5 [reason for check: default value must fit in the type]
+main.adb:223:16: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:224:15: info: range check proved (CVC5: 2 VC)
 main.adb:229:22: info: assertion proved (CVC5: 1 VC)

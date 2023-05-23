@@ -11,8 +11,8 @@ package Assert_In_Declare with SPARK_Mode is
    function F_2 return Integer is
       ((declare
          Result : constant Integer := Rand (0);
-         pragma Assert (Result < 10); --@ASSERT:FAIL
-         pragma Assert (Result < 20); --@ASSERT:PASS
+         pragma Assert (Result < 10);
+         pragma Assert (Result < 20);
        begin Result));
 
    function F_3 return Integer is

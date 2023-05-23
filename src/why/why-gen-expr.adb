@@ -1044,7 +1044,7 @@ package body Why.Gen.Expr is
             E                      => From_Ent,
             Name                   => Arr_Init,
             Domain                 => Domain,
-            Exclude_Always_Relaxed => True);
+            Excluded_Subcomponents => Relaxed);
       end if;
 
       Arr_Expr := New_Temp_For_Expr (Arr_Init);
@@ -1569,7 +1569,7 @@ package body Why.Gen.Expr is
                E                      => L,
                Name                   => Result,
                Domain                 => Domain,
-               Exclude_Always_Relaxed => True);
+               Excluded_Subcomponents => Relaxed);
          end if;
          Result := New_Call
            (Ada_Node => Ada_Node,
@@ -4625,14 +4625,15 @@ package body Why.Gen.Expr is
    -----------------------
 
    function New_Function_Call
-     (Ada_Node : Node_Id := Empty;
-      Subp     : Node_Id;
-      Selector : Selection_Kind := Why.Inter.Standard;
-      Name     : W_Identifier_Id;
-      Args     : W_Expr_Array;
-      Check    : Boolean;
-      Domain   : EW_Domain;
-      Typ      : W_Type_Id)
+     (Ada_Node              : Node_Id := Empty;
+      Subp                  : Node_Id;
+      Selector              : Selection_Kind := Why.Inter.Standard;
+      Name                  : W_Identifier_Id;
+      Args                  : W_Expr_Array;
+      Check                 : Boolean;
+      Domain                : EW_Domain;
+      Typ                   : W_Type_Id;
+      Specialization_Module : Symbol := No_Symbol)
       return W_Expr_Id
    is
    begin
@@ -4688,7 +4689,9 @@ package body Why.Gen.Expr is
                Result := Sequence
                  (Left  => New_Assume_Statement
                     (Pred => New_Call
-                         (Name     => Guard_Predicate_Name (Subp, Selector),
+                         (Name     => Guard_Predicate_Name
+                              (Subp, Selector,
+                               Specialization_Module => Specialization_Module),
                           Args     => +Result_Id & Arg_Tmps,
                           Ada_Node => Ada_Node,
                           Typ      => EW_Bool_Type)),
@@ -4735,7 +4738,9 @@ package body Why.Gen.Expr is
                end loop;
 
                Pred_Call := New_Call
-                 (Name     => Guard_Predicate_Name (Subp, Selector),
+                 (Name     => Guard_Predicate_Name
+                    (Subp, Selector,
+                     Specialization_Module => Specialization_Module),
                   Args     => +Result_Id & Arg_Tmps,
                   Ada_Node => Ada_Node,
                   Typ      => EW_Bool_Type);

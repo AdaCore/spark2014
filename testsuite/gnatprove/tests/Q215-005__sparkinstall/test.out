@@ -33,6 +33,7 @@ why3realize.cmxs
 why3server
 why3session.cmxs
 z3
+z3.hash
 libexec/spark/share dir
 alt-ergo
 gpr

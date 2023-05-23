@@ -1,1 +1,2 @@
+foo.ads:3:04: info: function contract feasibility proved (Trivial: 1 VC)
 foo.ads:7:18: medium: pointer dereference check might fail

@@ -17,9 +17,13 @@ procedure Foo with SPARK_Mode is
      (N in IR.First ..IR.Last);
    function Element (IR : Int_Range; N : Integer) return Boolean is (True);
 
-   IR : Int_Range := (1, 3);
+   procedure Test is
+      IR : Int_Range := (1, 3);
+   begin
+      for I of IR loop
+         Put (I'Img);
+      end loop;
+   end;
 begin
-   for I of IR loop
-      Put (I'Img);
-   end loop;
+   null;
 end Foo;

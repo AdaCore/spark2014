@@ -1,4 +1,4 @@
-impure_package.adb:7:16: medium: overflow check might fail, cannot prove lower bound for X + State.y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at impure_package.ads:3 should mention X in a precondition]
+impure_package.adb:7:16: medium: overflow check might fail, cannot prove lower bound for X + State.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at impure_package.ads:3 should mention X in a precondition]
 impure_package.adb:7:23: high: "Y" must be listed in the Global aspect of "Pure_Function" (SPARK RM 6.1.4(15))
 call.adb:10:08: info: data dependencies proved
 call.adb:16:18: warning: assuming "Pure_Function" always returns

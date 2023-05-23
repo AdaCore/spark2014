@@ -13,7 +13,6 @@ trace_test.ads:12:06: info: data dependencies proved
 trace_test.ads:12:33: info: initialization of "Store.State" proved
 trace_test.ads:12:41: info: initialization of "Trace" proved
 trace_test.ads:13:06: info: flow dependencies proved
-trace_test.ads:15:09: info: precondition proved (Trivial: 1 VC)
 trace_test.ads:16:33: warning: assuming "Is_First" always returns
 trace_test.ads:16:33: warning: no returning annotation available for "Is_First"
 trace_test.ads:18:14: medium: postcondition might fail, cannot prove Integer_Traces.Element (Trace, C) = Integer_Traces.Element (Trace, Integer_Traces.Previous (Trace, C)) + 1 [possible fix: loop at trace_test.adb:11 should mention Trace in a loop invariant]
@@ -28,3 +27,11 @@ trace_test_main.adb:6:03: info: data dependencies proved
 trace_test_main.adb:6:30: info: initialization of "Store.State" proved
 trace_test_main.adb:6:48: info: initialization of "Trace" proved
 trace_test_main.adb:7:03: info: flow dependencies proved
+traces.ads:22:13: info: during checks for quantification at traces.ads:9, in instantiation at trace_test.ads:6
+traces.ads:22:13: info: precondition proved (Trivial: 1 VC), in instantiation at trace_test.ads:6
+traces.ads:25:13: info: during checks for quantification at traces.ads:9, in instantiation at trace_test.ads:6
+traces.ads:25:13: info: precondition proved (Trivial: 1 VC), in instantiation at trace_test.ads:6
+traces.ads:28:13: info: during checks for quantification at traces.ads:9, in instantiation at trace_test.ads:6
+traces.ads:28:13: info: precondition proved (Trivial: 1 VC), in instantiation at trace_test.ads:6
+traces.ads:31:13: info: during checks for quantification at traces.ads:9, in instantiation at trace_test.ads:6
+traces.ads:31:13: info: precondition proved (Trivial: 1 VC), in instantiation at trace_test.ads:6

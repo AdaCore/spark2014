@@ -7,18 +7,18 @@ procedure Pixel with SPARK_Mode is
    function Zero return Natural is (0);
 
    procedure Aspect with
-      Import, Address => Buffer + (Buffer mod Storage_Offset (1 / Zero)); --@DIVISION_CHECK:FAIL
+      Import, Address => Buffer + (Buffer mod Storage_Offset (1 / Zero)); --@DIVISION_CHECK:FAIL @PRECONDITION:FAIL
 
    procedure Clause with
       Import;
-   for Clause'Address use Buffer + (Buffer mod Storage_Offset (1 / Zero)); --@DIVISION_CHECK:FAIL
+   for Clause'Address use Buffer + (Buffer mod Storage_Offset (1 / Zero)); --@DIVISION_CHECK:FAIL @PRECONDITION:FAIL
 
    Asp : Integer with
-      Import, Address => Buffer + (Buffer mod Storage_Offset (1 / Zero)); --@DIVISION_CHECK:FAIL
+      Import, Address => Buffer + (Buffer mod Storage_Offset (1 / Zero)); --@DIVISION_CHECK:FAIL @PRECONDITION:FAIL
 
    Cla : Integer with
       Import;
-   for Cla'Address use Buffer + (Buffer mod Storage_Offset (1 / Zero)); --@DIVISION_CHECK:FAIL
+   for Cla'Address use Buffer + (Buffer mod Storage_Offset (1 / Zero)); --@DIVISION_CHECK:FAIL @PRECONDITION:FAIL
 
 begin
    Aspect;

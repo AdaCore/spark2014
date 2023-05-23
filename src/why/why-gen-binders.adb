@@ -1516,14 +1516,18 @@ package body Why.Gen.Binders is
    -- Unit_Param --
    ----------------
 
-   function Unit_Param return Binder_Type is
+   function Unit_Param
+     (Prefix   : String := "";
+      Ada_Node : Node_Id := Empty) return Binder_Type
+   is
    begin
       return
         (B_Name   =>
-           New_Identifier (Name => "__void_param", Typ => EW_Unit_Type),
+           New_Identifier
+             (Name => Prefix & "__void_param", Typ => EW_Unit_Type),
          B_Ent    => Null_Entity_Name,
          Mutable  => False,
-         Ada_Node => Empty,
+         Ada_Node => Ada_Node,
          Labels   => <>);
    end Unit_Param;
 

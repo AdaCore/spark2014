@@ -55,7 +55,7 @@ Post			      Yes
 Post'Class		      Yes
 Predicate_Failure	      Yes
 Preelaborate       	      Yes
-Priority  	  	      Yes
+Priority  	  	      Yes                    No variable input
 Pure               	      Yes
 Relative_Deadline	      Yes
 Remote_Call_Interface	      No

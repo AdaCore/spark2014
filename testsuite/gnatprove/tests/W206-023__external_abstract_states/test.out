@@ -1,0 +1,3 @@
+ext.ads:3:13: error: function "Read_G" with volatile input global "G" with effective reads is not allowed in SPARK
+ext.ads:3:13: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

@@ -1636,8 +1636,7 @@ package body Why.Gen.Records is
         (1 => (B_Name => R_Ident,
                others => <>));
    begin
-      pragma Assert (Is_Tagged_Type (E) or else
-                       (Num_E_All <= Num_Root_All));
+      pragma Assert (Is_Tagged_Type (E) or else Num_E_All <= Num_Root_All);
 
       --  The current type may have components that are not present in the
       --  root type, corresponding to extensions of a tagged type. The root

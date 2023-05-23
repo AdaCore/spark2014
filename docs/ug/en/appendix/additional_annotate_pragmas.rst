@@ -882,3 +882,168 @@ which should be instantiated automatically:
 Such lemmas should be declared directly after a function declaration, here the
 ``Equivalent`` function. The axiom will only be available when the associated
 function is used in the proof context.
+
+Using Annotations to Request Specialized Handling For Higher Order Functions
+----------------------------------------------------------------------------
+
+Functions for higher order programming can be expressed using parameters of an
+anonymous access-to-function type. As an example, here is a function ``Map``
+returning a new array whose elements are the result of the application a
+function ``F`` to the elements of its input array parameter:
+
+.. code-block:: ada
+
+   function Map
+     (A : Nat_Array;
+      F : not null access function (N : Natural) return Natural)
+      return Nat_Array
+   with
+     Post => Map'Result'First = A'First and Map'Result'Last = A'Last
+       and (for all I in A'Range => Map'Result (I) = F (A (I)));
+
+In a functional programming style, these functions are often called with an
+access to a local function as a parameter. Unfortunately, as |GNATprove|
+generally handles access-to-subprograms using refinement semantics, it is not
+possible to use a function accessing global data as an actual for an anonymous
+access-to-function parameter (see :ref:`Subprogram Pointers`). To workaround
+this limitation, it is possible to annotate the function ``Map`` with
+a pragma or aspect ``Annotate => (GNATprove, Higher_Order_Specialization)``.
+When such a function is called on a reference to the ``Access`` attribute
+of a function, it will benefit from a partial exemption from the checks
+usually performed on the creation of such an access. Namely, the function will
+be allowed to access data, and it might even have a precondition if it can
+be proved to always hold at the point of call. We say that such a call is
+`specialized` for a particular value of its access-to-function parameter.
+As an example, consider the function ``Divide_All`` defined below. As the
+function ``Map`` is annotated with ``Higher_Order_Specialization``, it can be
+called on the function ``Divide``, even though it accesses some global data
+(the parameter ``N``) and has a precondition.
+
+.. code-block:: ada
+
+   function Map
+     (A : Nat_Array;
+      F : not null access function (N : Natural) return Natural)
+      return Nat_Array
+   with
+     Annotate => (GNATprove, Higher_Order_Specialization),
+     Post => Map'Result'First = A'First and Map'Result'Last = A'Last
+       and (for all I in A'Range => Map'Result (I) = F (A (I)));
+
+   function Divide_All (A : Nat_Array; N : Natural) return Nat_Array with
+     Pre  => N /= 0,
+     Post => (for all I in A'Range => Divide_All'Result (I) = A (I) / N);
+
+   function Divide_All (A : Nat_Array; N : Natural) return Nat_Array is
+      function Divide (E : Natural) return Natural is
+        (E / N)
+      with Pre => N /= 0;
+   begin
+      return Map (A, Divide'Access);
+   end Divide_All;
+
+.. note::
+
+   It might not be possible to annotate a function with
+   ``Higher_Order_Specialization`` if the access value of its parameter
+   is used in the contract of the function, as opposed to only its dereference.
+   This happens in particular if the parameter is used in a call to a function
+   which does not have the ``Higher_Order_Specialization`` annotation.
+
+Because the analysis done by |GNATprove| stays modular, the
+precondition of the referenced function has to be provable on all possible
+parameters (but the specialized access-to-function parameters)
+and not only on the ones on which it is actually called. For
+example, even if we know that the precondition of ``Add`` holds for all the
+elements of the input array ``A``, there will still be a failed check on the
+call to ``Map`` in ``Add_All`` defined below. Indeed, |GNATprove| does not
+peek into the body of ``Map`` and therefore has no way to know that its
+parameter ``F`` is only called on elements of ``A``.
+
+.. code-block:: ada
+
+   function Add_All (A : Nat_Array; N : Natural) return Nat_Array with
+     Pre  => (for all E of A => E <= Natural'Last - N),
+     Post => (for all I in A'Range => Add_All'Result (I) = A (I) + N);
+
+   function Add_All (A : Nat_Array; N : Natural) return Nat_Array is
+      function Add (E : Natural) return Natural is
+        (E + N)
+      with Pre => E <= Natural'Last - N;
+   begin
+      return Map (A, Add'Access);
+   end Add_All;
+
+To avoid this kind of issue, it is possible to write a function with no
+preconditions and a fallback value as done below. Remark that this does not
+prevent the tool from proving the postcondition of ``Add_All``.
+
+.. code-block:: ada
+
+   function Add_All (A : Nat_Array; N : Natural) return Nat_Array is
+      function Add (E : Natural) return Natural is
+        (if E <= Natural'Last - N then E + N else 0);
+   begin
+      return Map (A, Add'Access);
+   end Add_All;
+
+.. note::
+
+   Only the regular contract of functions is available on specialized calls.
+   Bodies of expression functions and refined postconditions will be ignored.
+
+The ``Higher_Order_Specialization`` annotation can also be supplied on a lemma
+procedure (see :ref:`Manual Proof Using User Lemmas`). If this procedure
+has an ``Automatic_Instantiation`` annotation
+(see :ref:`Instantiating Lemma Procedures Automatically`) and its associated
+function also has an ``Higher_Order_Specialization`` annotation, the lemma
+will generally be instantiated automatically on specialized calls to the
+function. As an example, the function ``Count`` defined below returns the number
+of elements with a property in an array. The function ``Count`` is specified in
+a recursive way in its postcondition. The two lemmas ``Lemma_Count_All`` and
+``Lemma_Count_None`` give the value of ``Count`` when all the elements of ``A``
+or no elements of ``A`` fulfill the property. They will be automatically
+instantiated on all specializations of ``Count``.
+
+.. code-block:: ada
+
+   function Count
+     (A : Nat_Array;
+      F : not null access function (N : Natural) return Boolean)
+      return Natural
+   with
+     Annotate => (GNATprove, Higher_Order_Specialization),
+     Subprogram_Variant => (Decreases => A'Length),
+     Post =>
+       (if A'Length = 0 then Count'Result = 0
+        else Count'Result =
+            (if F (A (A'Last)) then 1 else 0) +
+              Count (A (A'First .. A'Last - 1), F))
+       and Count'Result <= A'Length;
+
+   procedure Lemma_Count_All
+     (A : Nat_Array;
+      F : not null access function (N : Natural) return Boolean)
+   with
+     Ghost,
+     Annotate => (GNATprove, Automatic_Instantiation),
+     Annotate => (GNATprove, Higher_Order_Specialization),
+     Pre  => (for all E of A => F (E)),
+     Post => Count (A, F) = A'Length;
+
+   procedure Lemma_Count_None
+     (A : Nat_Array;
+      F : not null access function (N : Natural) return Boolean)
+   with
+     Ghost,
+     Annotate => (GNATprove, Automatic_Instantiation),
+     Annotate => (GNATprove, Higher_Order_Specialization),
+     Pre  => (for all E of A => not F (E)),
+     Post => Count (A, F) = 0;
+
+.. note::
+
+   It can happen that some lemmas cannot be specialized with their
+   associated function. It is the case in particular if the lemma contains
+   several calls to the function with different access-to-function parameters.
+   In this case, a warning will be emitted on the lemma declaration.

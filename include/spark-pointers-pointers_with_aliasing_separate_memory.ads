@@ -28,6 +28,7 @@
 
 with Interfaces; use Interfaces;
 with SPARK.Pointers.Abstract_Maps;
+with SPARK.Pointers.Abstract_Sets;
 with Unchecked_Deallocation;
 
 generic
@@ -76,39 +77,42 @@ is
       --  Functions to make it easier to specify the frame of subprograms
       --  modifying a memory.
 
-      type Addresses is array (Address_Type) of Boolean with Ghost;
+      package Address_Sets is new SPARK.Pointers.Abstract_Sets
+        (Address_Type, 0);
+      --  Use an abstract set rather than a functional set to avoid taking up
+      --  memory space as the footprints cannot be ghost.
 
-      function None return Addresses is
-        ([others => False])
-      with Ghost;
-      function Only (A : Address_Type) return Addresses is
-        ([for Q in Address_Type => (Q = A)])
-      with Ghost;
+      type Footprint is new Address_Sets.Set;
+
+      function None return Footprint renames Empty_Set;
+      function Only (A : Address_Type) return Footprint renames Singleton;
 
       function Writes
-        (M1, M2 : Memory_Map; Target : Addresses) return Boolean
+        (M1, M2 : Memory_Map; Target : Footprint) return Boolean
       is
         (for all A in Address_Type =>
-           (if not Target (A) and Valid (M1, A) and Valid (M2, A)
+           (if not Contains (Target, A) and Valid (M1, A) and Valid (M2, A)
             then Object_Logic_Equal (Get (M1, A), Get (M2, A))))
       with Ghost;
 
       function Allocates
-        (M1, M2 : Memory_Map; Target : Addresses) return Boolean
+        (M1, M2 : Memory_Map; Target : Footprint) return Boolean
       is
         ((for all A in Address_Type =>
-            (if Valid (M2, A) then Target (A) or Valid (M1, A)))
+            (if Valid (M2, A) then Contains (Target, A) or Valid (M1, A)))
          and (for all A in Address_Type =>
-                  (if Target (A) then not Valid (M1, A) and Valid (M2, A))))
+                  (if Contains (Target, A)
+                   then not Valid (M1, A) and Valid (M2, A))))
       with Ghost;
 
       function Deallocates
-        (M1, M2 : Memory_Map; Target : Addresses) return Boolean
+        (M1, M2 : Memory_Map; Target : Footprint) return Boolean
       is
         ((for all A in Address_Type =>
-            (if Valid (M1, A) then Target (A) or Valid (M2, A)))
+            (if Valid (M1, A) then Contains (Target, A) or Valid (M2, A)))
          and (for all A in Address_Type =>
-                  (if Target (A) then not Valid (M2, A) and Valid (M1, A))))
+                  (if Contains (Target, A)
+                   then not Valid (M2, A) and Valid (M1, A))))
       with Ghost;
    end Memory_Model;
 
@@ -172,25 +176,23 @@ is
                    (Memory_Map'(+Memory)'Old, +Memory, Only (Address (P)'Old)))
          and then Writes (Memory_Map'(+Memory)'Old, +Memory, None);
 
-   procedure Move_Memory (Source, Target : in out Memory_Type; P : Pointer)
+   procedure Move_Memory (Source, Target : in out Memory_Type; F : Footprint)
    with
-   --  Move a pointer from a memory to another.
+   --  Move addresses from a memory to another.
    --  This is correct because of the implicit invariant that 2 different
    --  memory objects are necessarily disjoint.
      Inline,
      Global => null,
-     Pre    => Valid (+Source, Address (P)),
+     Pre    => (for all A in F => Valid (+Source, A)),
      Post   =>
        Allocates (Memory_Map'(+Source)'Old, +Source, None)
-         and then Deallocates
-                    (Memory_Map'(+Source)'Old, +Source, Only (Address (P)))
+         and then Deallocates (Memory_Map'(+Source)'Old, +Source, F)
          and then Writes (Memory_Map'(+Source)'Old, +Source, None)
-         and then Allocates (Memory_Map'(+Target)'Old,
-                             +Target,
-                             Only (Address (P)))
+         and then Allocates (Memory_Map'(+Target)'Old, +Target, F)
          and then Deallocates (Memory_Map'(+Target)'Old, +Target, None)
          and then Writes (Memory_Map'(+Target)'Old, +Target, None)
-         and then Deref (Target, P) = Deref (Source, P)'Old;
+         and then (for all A in F =>
+                     Get (+Target, A) = Get (Memory_Map'(+Source)'Old, A));
 
    --  Primitives to access the content of a memory cell directly. Ownership is
    --  used to preserve the link between the dereferenced value and the

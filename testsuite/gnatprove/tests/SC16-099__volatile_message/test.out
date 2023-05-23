@@ -1,5 +1,5 @@
-p.adb:32:07: error: volatile variable "X" cannot act as global item of nonvolatile function "F"
-p.adb:33:07: error: volatile variable "Y" cannot act as global item of nonvolatile function "F"
-p.adb:44:55: error: external state abstraction "P.State" of variable "Local_Value" constituent of "State" cannot act as global item of nonvolatile function "Get"
-p.ads:9:07: info: data dependencies proved
+p.ads:5:13: error: nonvolatile function "F" with volatile input global "X" is not allowed in SPARK
+p.ads:5:13: error: violation of pragma SPARK_Mode at test.adc:1
+p.ads:11:13: error: nonvolatile function "Get" with volatile input global "State" is not allowed in SPARK
+p.ads:11:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

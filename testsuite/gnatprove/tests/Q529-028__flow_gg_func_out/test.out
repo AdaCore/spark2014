@@ -1,3 +1,5 @@
-use_bads.adb:5:19: error: side effects of function "Bad" are not modeled in SPARK
-use_bads.adb:5:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention G in a precondition]
+bad_funcs.ads:3:13: error: function "Bad" with output global "G" is not allowed in SPARK
+bad_funcs.ads:3:13: error: violation of aspect SPARK_Mode at line 1
+use_bads.adb:5:19: error: "Bad" is not allowed in SPARK (due to function with global outputs)
+use_bads.adb:5:19: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof

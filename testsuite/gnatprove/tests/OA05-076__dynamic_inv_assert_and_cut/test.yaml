@@ -7,5 +7,7 @@ prove_all:
   steps: 1
   prover: ["z3"]
   opt: ["--function-sandboxing=off"]
+  counterexample: False
+  vc_timeout: 10
 large: True
 timeout: 1000

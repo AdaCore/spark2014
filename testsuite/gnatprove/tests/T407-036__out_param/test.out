@@ -1,3 +1,4 @@
+test_arr_out.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
 test_arr_out.adb:9:04: info: range check proved (CVC5: 2 VC)
 test_arr_out.adb:9:33: info: overflow check proved (CVC5: 2 VC)
 test_arr_out.adb:10:04: info: range check proved (CVC5: 2 VC)

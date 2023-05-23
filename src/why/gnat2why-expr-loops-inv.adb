@@ -1426,7 +1426,7 @@ package body Gnat2Why.Expr.Loops.Inv is
       procedure Store_Parameters is new
         Iterate_Call_Parameters (Process_Param);
 
-      Subp : constant Callable_Kind_Id := Get_Called_Entity (Call);
+      Subp : constant Callable_Kind_Id := Get_Called_Entity_For_Proof (Call);
 
    --  Start of processing for Process_Call_Statement
 

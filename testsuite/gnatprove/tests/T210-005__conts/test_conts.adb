@@ -19,67 +19,72 @@ procedure Test_Conts (X : out Integer) with SPARK_Mode is
    package My_HaSets is new SPARK.Containers.Formal.Hashed_Sets
      (Positive, Int_Hash);
 
+   procedure Do_Test is
+   begin
+      X := 0;
+      declare
+         use My_Lists;
+         L : List (100);
+         C : Cursor;
+      begin
+         Prepend (L, 1);
+         C := First (L);
+         Delete (L, C);
+         if Is_Empty (L) then
+            X := X + 1;
+         end if;
+      end;
+      declare
+         use My_OrMaps;
+         L : Map (100);
+         C : Cursor;
+      begin
+         Insert (L, 1, 1);
+         C := First (L);
+         Delete (L, C);
+         if Is_Empty (L) then
+            X := X + 1;
+         end if;
+      end;
+      declare
+         use My_HaMaps;
+         L : Map (100, Default_Modulus (100));
+         C : Cursor;
+      begin
+         Insert (L, 1, 1);
+         C := First (L);
+         Delete (L, C);
+         if Is_Empty (L) then
+            X := X + 1;
+         end if;
+      end;
+      declare
+         use My_OrSets;
+         L : Set (100);
+         C : Cursor;
+      begin
+         Insert (L, 1);
+         C := First (L);
+         Delete (L, C);
+         if Is_Empty (L) then
+            X := X + 1;
+         end if;
+      end;
+      declare
+         use My_HaSets;
+         L : Set (100, Default_Modulus (100));
+         C : Cursor;
+      begin
+         Insert (L, 1);
+         C := First (L);
+         Delete (L, C);
+         if Is_Empty (L) then
+            X := X + 1;
+         end if;
+      end;
+      pragma Assert (X = 5);
+   end;
+
 begin
    X := 0;
-   declare
-      use My_Lists;
-      L : List (100);
-      C : Cursor;
-   begin
-      Prepend (L, 1);
-      C := First (L);
-      Delete (L, C);
-      if Is_Empty (L) then
-         X := X + 1;
-      end if;
-   end;
-   declare
-      use My_OrMaps;
-      L : Map (100);
-      C : Cursor;
-   begin
-      Insert (L, 1, 1);
-      C := First (L);
-      Delete (L, C);
-      if Is_Empty (L) then
-         X := X + 1;
-      end if;
-   end;
-   declare
-      use My_HaMaps;
-      L : Map (100, Default_Modulus (100));
-      C : Cursor;
-   begin
-      Insert (L, 1, 1);
-      C := First (L);
-      Delete (L, C);
-      if Is_Empty (L) then
-         X := X + 1;
-      end if;
-   end;
-   declare
-      use My_OrSets;
-      L : Set (100);
-      C : Cursor;
-   begin
-      Insert (L, 1);
-      C := First (L);
-      Delete (L, C);
-      if Is_Empty (L) then
-         X := X + 1;
-      end if;
-   end;
-   declare
-      use My_HaSets;
-      L : Set (100, Default_Modulus (100));
-      C : Cursor;
-   begin
-      Insert (L, 1);
-      C := First (L);
-      Delete (L, C);
-      if Is_Empty (L) then
-         X := X + 1;
-      end if;
-   end;
-   pragma Assert (X = 5);
 end Test_Conts;

@@ -7105,7 +7105,7 @@ package body Flow.Control_Flow_Graph is
    begin
       if FA.Generating_Globals
         and then FA.Kind = Kind_Package
-        and then FA.Is_Generative
+        and then (FA.Is_Generative or else Is_Child_Unit (FA.Spec_Entity))
         and then Is_Package_State (E)
       then
          FA.GG.Local_Variables.Insert (E);

@@ -23,39 +23,40 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Latin_1;    use Ada.Characters.Latin_1;
-with Ada.Exceptions;            use Ada.Exceptions;
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Exceptions;         use Ada.Exceptions;
 with Ada.Strings;
-with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
+with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
 with Ada.Containers.Vectors;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Float_Text_IO;
-with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with Call;                      use Call;
-with CE_RAC;                    use CE_RAC;
-with Common_Containers;         use Common_Containers;
-with Comperr;                   use Comperr;
-with Debug;                     use Debug;
-with Flow_Refinement;           use Flow_Refinement;
-with Flow_Types;                use Flow_Types;
-with Flow_Utility;              use Flow_Utility;
-with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
-with Gnat2Why.Util;             use Gnat2Why.Util;
-with Gnat2Why_Args;             use Gnat2Why_Args;
-with Gnat2Why_Opts;             use Gnat2Why_Opts;
-with Osint;                     use Osint;
-with Output;                    use Output;
-with Sinput;                    use Sinput;
-with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
-with Uintp;                     use Uintp;
+with Ada.Unchecked_Deallocation;
+with Call;                   use Call;
+with CE_RAC;                 use CE_RAC;
+with Common_Containers;      use Common_Containers;
+with Comperr;                use Comperr;
+with Debug;                  use Debug;
+with Flow_Refinement;        use Flow_Refinement;
+with Flow_Types;             use Flow_Types;
+with Flow_Utility;           use Flow_Utility;
+with Gnat2Why.Assumptions;   use Gnat2Why.Assumptions;
+with Gnat2Why.Util;          use Gnat2Why.Util;
+with Gnat2Why_Args;          use Gnat2Why_Args;
+with Gnat2Why_Opts;          use Gnat2Why_Opts;
+with GNATCOLL.Utils;
+with Osint;                  use Osint;
+with Output;                 use Output;
+with Sinput;                 use Sinput;
+with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
+with Uintp;                  use Uintp;
 
 package body Gnat2Why.Error_Messages is
 
    type VC_Info is record
       Node       : Node_Id;
-      Entity     : Entity_Id;
       Kind       : VC_Kind;
       Check_Info : Check_Info_Type;
    end record;
@@ -108,10 +109,15 @@ package body Gnat2Why.Error_Messages is
    is
      (Not_Proved_Message (Node, Kind) &
         " at " & File_Name (Sloc (Node)) & ":" &
-        Physical_Line_Number'Image
-        (Get_Physical_Line_Number (Sloc (Node))) & ":" &
-        Types.Column_Number'Image (Get_Column_Number (Sloc (Node))) &
-        " (" & Kind'Image & " at " & Node'Image & ")");
+        GNATCOLL.Utils.Image
+          (Positive (Get_Physical_Line_Number (Sloc (Node))), Min_Width => 0) &
+        ":" &
+        GNATCOLL.Utils.Image
+          (Natural (Get_Column_Number (Sloc (Node))), Min_Width => 0) &
+        " (" & Kind'Image & " at " &
+        GNATCOLL.Utils.Image
+          (Natural (Node), Min_Width => 0) &
+        ")");
    --  Pretty print a VC and info for debugging
 
    function Decide_Cntexmp_Verdict
@@ -678,6 +684,8 @@ package body Gnat2Why.Error_Messages is
                end case;
             end if;
             return "exception might be raised";
+         when VC_Feasible_Post             =>
+            return "contract of function might not be feasible";
          when VC_Inline_Check              =>
             return "Inline_For_Proof or Logical_Equal annotation might be"
               & " incorrect";
@@ -768,6 +776,8 @@ package body Gnat2Why.Error_Messages is
       --  parse here.
 
       use GNATCOLL.JSON;
+
+      Subp : Entity_Id;
 
       type Bound_Info_Type is (No_Bound, Low_Bound, High_Bound);
 
@@ -906,6 +916,10 @@ package body Gnat2Why.Error_Messages is
          --  Call the small step RAC to check the counterexample and create
          --  the appropriate verdict.
 
+         procedure Free is new
+           Ada.Unchecked_Deallocation (Fuel_Type, Fuel_Access);
+         --  Release memory used by the fuel
+
          function To_Initialize_Present (E : Entity_Id) return Boolean;
          --  Determine if the subprogram has global variables that can be
          --  initialized or if the function has IN parameters.
@@ -935,7 +949,7 @@ package body Gnat2Why.Error_Messages is
          begin
             Small_Step_Res :=
               Small_Step_Rac
-                (VC.Entity, Cntexmp, VC.Node, Fuel, Use_Fuzzing);
+                (Subp, Cntexmp, VC.Node, Fuel, Use_Fuzzing);
 
             if Small_Step_Res.Res_Kind = CE_RAC.Res_Failure then
                begin
@@ -1086,7 +1100,7 @@ package body Gnat2Why.Error_Messages is
          Cntexmp            : constant Cntexample_File_Maps.Map :=
            From_JSON (Rec.Cntexmp);
          Check_Info         : Check_Info_Type := VC.Check_Info;
-         Fuel               : constant Fuel_Access := new Fuel_Type'(250_000);
+         Fuel               : Fuel_Access := new Fuel_Type'(250_000);
          Cntexmp_Present    : constant Boolean := not Cntexmp.Is_Empty;
          Fuzzing_Used       : Boolean := False;
          Print_Fuzzing      : Boolean := False;
@@ -1122,8 +1136,8 @@ package body Gnat2Why.Error_Messages is
 
             if VC.Kind not in VC_Warning_Kind
               and then Rec.Giant_Step_Res.Res_Kind not in Res_Failure
-              and then Ekind (VC.Entity) in E_Function | E_Procedure
-              and then To_Initialize_Present (VC.Entity)
+              and then Ekind (Subp) in E_Function | E_Procedure
+              and then To_Initialize_Present (Subp)
             then
                --  Begin fuzzing
 
@@ -1271,7 +1285,7 @@ package body Gnat2Why.Error_Messages is
                Id            => Rec.Id,
                Kind          => Rec.Kind,
                Proved        => Rec.Result,
-               E             => VC.Entity,
+               E             => Subp,
                SD_Id         => SD_Id,
                How_Proved    => PC_Prover,
                Cntexmp       => Rec.Cntexmp,
@@ -1286,6 +1300,8 @@ package body Gnat2Why.Error_Messages is
                Fuzzing_Used  => Fuzzing_Used,
                Print_Fuzzing => Print_Fuzzing);
          end;
+
+         Free (Fuel);
       end Handle_Result;
 
       --------------------
@@ -1302,7 +1318,8 @@ package body Gnat2Why.Error_Messages is
          procedure Timing_Entry (Name : UTF8_String; Value : JSON_Value) is
             Time : constant Float := Get (Value);
          begin
-            Register_Timing (Timing, Name, Duration (Time));
+            Register_Timing (Timing, Entity_To_Subp_Assumption (Subp),
+                             Name, Duration (Time));
          end Timing_Entry;
 
       --  Start of processing for Handle_Timings
@@ -1451,6 +1468,7 @@ package body Gnat2Why.Error_Messages is
                Handle_Error (Msg, Internal);
             end;
          end if;
+         Subp := Entity_Id (Integer'(Get (File, "entity")));
          if Has_Field (File, "session_dir") then
             SD_Id := Register_Session_Dir (Get (Get (File, "session_dir")));
          end if;
@@ -1521,7 +1539,7 @@ package body Gnat2Why.Error_Messages is
    is
       Registered_Id : VC_Id;
    begin
-      VC_Table.Append (VC_Info'(N, E, Reason, Check_Info));
+      VC_Table.Append (VC_Info'(N, Reason, Check_Info));
       Registered_Id := VC_Table.Last_Index;
 
       --  Do not consider warnings in the set of checks associated to an
@@ -1652,6 +1670,8 @@ package body Gnat2Why.Error_Messages is
                end case;
             end if;
             return "raise statement or expression " & Verb & " unreachable";
+         when VC_Feasible_Post             =>
+            return "function contract feasibility " & Verb;
          when VC_Inline_Check              =>
             return "Inline_For_Proof or Logical_Equal annotation " & Verb;
          when VC_Subprogram_Variant        =>

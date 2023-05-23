@@ -419,7 +419,6 @@ is
                           (E.Get (Elements'Result, I),
                            E.Get (Elements'Result, J))
                      then I = J)));
-      pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Elements);
 
       function Positions (Container : Set) return P.Map with
       --  The Positions map is used to model cursors. It only contains valid
@@ -591,6 +590,13 @@ is
    --  Default_Modulus with the capacity parameter determined as above;
    --  otherwise the modulus of the result is the specified value.
 
+   function Iter_Model (Container : Set) return E.Sequence is
+      (Elements (Container))
+   with
+     Ghost,
+     Global   => null,
+     Annotate => (GNATprove, Inline_For_Proof);
+
    function Element
      (Container : Set;
       Position  : Cursor) return Element_Type
@@ -601,6 +607,7 @@ is
        Element'Result =
          E.Get (Elements (Container), P.Get (Positions (Container), Position));
    pragma Annotate (GNATprove, Inline_For_Proof, Element);
+   pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Iter_Model);
 
    procedure Replace_Element
      (Container : in out Set;
@@ -739,7 +746,7 @@ is
    procedure Insert  (Container : in out Set; New_Item : Element_Type) with
      Global => null,
      Pre    => Length (Container) < Container.Capacity
-                 and then (not Contains (Container, New_Item)),
+                 and then not Contains (Container, New_Item),
      Post   =>
        Length (Container) = Length (Container)'Old + 1
          and Contains (Container, New_Item)

@@ -7,19 +7,18 @@ invariants.adb:11:19: info: index check proved
 invariants.adb:16:07: info: precondition proved
 invariants.adb:24:07: info: precondition proved
 invariants.adb:24:07: info: invariant check proved
+invariants.adb:27:04: info: invariant check proved
+  at the end of the elaboration of package at invariants.ads:1
 
 invariants.adb:33:14: medium: invariant check might fail
    33 |   procedure Push_Internal (E : Element) with
       |             ^~~~~~~~~~~~~
-  e.g. when E = 1
-        and The_Stack = (Content => (others => 1), Size => 1, Max => 0)
 invariants.adb:37:40: info: range check proved
 invariants.adb:38:35: info: index check proved
 invariants.adb:43:07: info: precondition proved
 invariants.adb:43:07: info: invariant check proved
 invariants.adb:51:07: info: precondition proved
 invariants.adb:51:07: info: invariant check proved
-invariants.ads:1:09: info: invariant check proved
 invariants.ads:13:14: info: invariant check proved
 invariants.ads:14:13: info: invariant check proved
 invariants.ads:16:14: info: invariant check proved
@@ -28,8 +27,6 @@ invariants.ads:17:13: info: invariant check proved
 invariants.ads:21:14: medium: invariant check might fail
    21 |   procedure Push (E : Element) with
       |             ^~~~
-  e.g. when E = 1
-        and The_Stack = (Content => (others => 1), Size => 0, Max => 1)
 invariants.ads:22:13: info: invariant check proved
 invariants.ads:24:14: info: invariant check proved
 invariants.ads:25:13: info: invariant check proved

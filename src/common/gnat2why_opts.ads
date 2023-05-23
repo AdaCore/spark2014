@@ -71,6 +71,16 @@ package Gnat2Why_Opts is
    --    GPR_Statistics in addition prints maximum steps and timings for proved
    --    checks.
 
+   type GP_Mode is (GPM_Check, GPM_Check_All, GPM_Flow, GPM_Prove, GPM_All);
+   --  The feature modes of GNATprove are:
+   --  * GPM_Check     : Check SPARK rules
+   --  * GPM_Check_All : Check all SPARK rules, including the ones checked
+   --                    during flow analysis.
+   --  * GPM_Prove     : Check validity of contracts, proof of subprogram
+   --                    bodies.
+   --  * GPM_Flow      : Check validity of Globals, Depends
+   --  * GPM_All       : Union of GPM_Prove and GPM_Flow
+
 private
 
    ------------------
@@ -86,15 +96,13 @@ private
    --  routines, respectively.
 
    CWE_Name                     : constant String := "cwe";
-   Check_All_Mode_Name          : constant String := "check_all_mode";
    Check_Counterexamples_Name   : constant String := "check_counterexamples";
    Debug_Exec_RAC_Name          : constant String := "debug_exec_rac";
-   Check_Mode_Name              : constant String := "check_mode";
+   GP_Mode_Name                 : constant String := "gp_mode";
    Debug_Mode_Name              : constant String := "debug";
    Exclude_Line_Name            : constant String := "exclude_line";
    File_Specific_Name           : constant String := "file_specific";
    Flow_Advanced_Debug_Name     : constant String := "flow_advanced_debug";
-   Flow_Analysis_Mode_Name      : constant String := "flow_analysis_mode";
    Flow_Generate_Contracts_Name : constant String := "flow_generate_contracts";
    Flow_Show_GG_Name            : constant String := "flow_show_gg";
    Global_Gen_Mode_Name         : constant String := "global_gen_mode";
@@ -112,7 +120,6 @@ private
    Proof_Generate_Guards_Name   : constant String :=
      "proof_generate_axiom_guards";
    Proof_Warnings_Name          : constant String := "proof_warnings";
-   Prove_Mode_Name              : constant String := "prove_mode";
    Report_Mode_Name             : constant String := "report_mode";
    Warning_Mode_Name            : constant String := "warning_mode";
    Why3_Args_Name               : constant String := "why3_args";

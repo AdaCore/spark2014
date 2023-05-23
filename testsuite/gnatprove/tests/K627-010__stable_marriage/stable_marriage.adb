@@ -119,13 +119,35 @@ package body Stable_Marriage with SPARK_Mode is
       return Result;
    end Invert_Map;
 
+   type Inverted_Ranking is array (Group2_Id) of Inverted_Ranking_Of_Group1;
+
+   function Invert (R2 : Ranking_Of_Group1_By_Group2)
+                    return Inverted_Ranking with
+     Pre => (for all G2 in Group2_Id =>
+               Is_Permutation_1 (R2 (G2))),
+     Post =>
+       (for all G2 in Group2_Id =>
+          (Invert'Result (G2) = Invert_1 (R2 (G2))))
+   is
+      Result : Inverted_Ranking;
+   begin
+      Result := Inverted_Ranking'(others =>
+                                    Inverted_Ranking_Of_Group1'(others => (Last_Id)));
+      -- dead assignment
+
+      for G2 in Group2_Id loop
+         pragma Loop_Invariant
+           (for all Prev in Group2_Id range 1 .. G2 - 1 =>
+              (Result (Prev) = Invert_1 (R2 (Prev))));
+         Result (G2) := Invert_1 (R2 (G2));
+      end loop;
+      return Result;
+   end Invert;
+
    function Matching
      (Ranking_1 : Ranking_Of_Group2_By_Group1;
       Ranking_2 : Ranking_Of_Group1_By_Group2)
       return G2_To_G1_Map is
-
-      type Inverted_Ranking
-      is array (Group2_Id) of Inverted_Ranking_Of_Group1;
 
       type Count is range 0 .. Last_Id;
       subtype Index is Count range 1 .. Last_Id;
@@ -142,7 +164,6 @@ package body Stable_Marriage with SPARK_Mode is
 
       type Group2_Set is array (Group2_Id) of Boolean;
 
-
       Ranking_2_Inverted : Inverted_Ranking;
       -- constant after initialization
 
@@ -158,29 +179,6 @@ package body Stable_Marriage with SPARK_Mode is
 
       Result : G2_To_G1_Map := G2_To_G1_Map'(others => Last_Id);
       -- initial value is dead
-
-      function Invert (R2 : Ranking_Of_Group1_By_Group2)
-                       return Inverted_Ranking with
-        Pre => (for all G2 in Group2_Id =>
-                  Is_Permutation_1 (R2 (G2))),
-        Post =>
-          (for all G2 in Group2_Id =>
-             (Invert'Result (G2) = Invert_1 (R2 (G2))))
-      is
-         Result : Inverted_Ranking;
-      begin
-         Result := Inverted_Ranking'(others =>
-                                       Inverted_Ranking_Of_Group1'(others => (Last_Id)));
-         -- dead assignment
-
-         for G2 in Group2_Id loop
-            pragma Loop_Invariant
-              (for all Prev in Group2_Id range 1 .. G2 - 1 =>
-                 (Result (Prev) = Invert_1 (R2 (Prev))));
-            Result (G2) := Invert_1 (R2 (G2));
-         end loop;
-         return Result;
-      end Invert;
 
       function All_Unmatched_G1_Set_Elements_Distinct return Boolean is
         (for all Idx_1 in Count range

@@ -1,4 +1,5 @@
-my_type_invariant_test.ads:1:09: info: invariant check proved (CVC5: 1 VC)
 my_type_invariant_test.ads:11:09: info: invariant check proved on default value (CVC5: 1 VC)
+my_type_invariant_test.ads:17:04: info: at the end of the elaboration of package at my_type_invariant_test.ads:1
+my_type_invariant_test.ads:17:04: info: invariant check proved (CVC5: 1 VC)
 my_type_invariant_test.ads:19:04: info: invariant check proved (CVC5: 1 VC)
 my_type_invariant_test.ads:21:04: info: invariant check proved (CVC5: 1 VC)

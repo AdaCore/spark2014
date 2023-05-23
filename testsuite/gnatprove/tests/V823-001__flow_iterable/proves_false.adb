@@ -42,7 +42,12 @@ procedure Proves_False with SPARK_Mode is
    package NaturalVector is new AbstractVector2(Unsigned_64);
    use NaturalVector;
 
+   procedure Test is
+   begin
+      pragma Assert(NaturalVector.Length(NaturalVector.Empty) = 1);
+      pragma Assert(False); --@ASSERT:FAIL
+   end;
+
 begin
-   pragma Assert(NaturalVector.Length(NaturalVector.Empty) = 1);
-   pragma Assert(False); --@ASSERT:FAIL
+   null;
 end Proves_False;

@@ -91,8 +91,10 @@ such as arrays and records, the value of these attributes is unknown, and e.g.
 assertions referring to them remain unproved.
 The user can indicate the values of these attributes to SPARK via confirming
 representation clauses, using ``for Type'Size use ...`` or the aspect syntax
-``with Size => ...``. Note that only static values can be used in these
-representation clauses.
+``with Size => ...``. Only static values can be used in these
+representation aspects or clauses, which can only be used on type declarations
+and not on subtype declarations.
+
 Note that for an object ``X`` of type ``T``, the value of ``X'Size`` is *not*
 necessarily equal to ``T'Size``, but equal to ``T'Object_Size``. So it is
 generally more useful to specify ``Object_Size`` on types to be able to know
@@ -101,6 +103,11 @@ size of ``T'Object_Size`` for composite types, the value of ``C'Size`` is
 generally used, ``C`` being the type of a component. The value of
 ``Object_Size`` must be 8, 16, 32 or a multiple of 64, while the ``Size`` of a
 type can be any value.
+
+Attributes ``Size`` and ``Object_Size`` are specific to a subtype. As such, it
+is not known if a subtype has the same value for these attributes as its base
+type, including when the subtype does not introduce any constraint as in
+``subtype S is T``.
 
 The following code example shows some simple representation clauses using the
 aspect syntax:

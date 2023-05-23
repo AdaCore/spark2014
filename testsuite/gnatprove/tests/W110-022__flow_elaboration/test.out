@@ -1,0 +1,3 @@
+p.ads:6:06: info: flow dependencies proved
+p.ads:11:06: info: flow dependencies proved
+p.ads:13:06: high: cannot write "Q2.Y" constituent of "P.State" during elaboration of "Q2" (SPARK RM 7.7.1(6))

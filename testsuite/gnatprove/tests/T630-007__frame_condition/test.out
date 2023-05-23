@@ -1,5 +1,5 @@
 test_frame.adb:9:10: info: loop invariant initialization proved (CVC5: 1 VC)
-test_frame.adb:9:10: info: loop invariant preservation proved (Z3: 1 VC)
+test_frame.adb:9:10: info: loop invariant preservation proved (CVC5: 1 VC)
 test_frame.adb:9:32: info: division check proved (CVC5: 2 VC)
 test_frame.adb:9:54: info: index check proved (CVC5: 4 VC)
 test_frame.adb:9:61: info: division check proved (CVC5: 2 VC)

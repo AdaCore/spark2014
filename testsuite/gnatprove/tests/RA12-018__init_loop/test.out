@@ -4,7 +4,7 @@ init_pred_in_loop.adb:11:07: info: initialization of "X" proved
 init_pred_in_loop.adb:13:12: info: predicate check proved (CVC5: 2 VC)
 init_pred_in_loop.adb:15:33: info: loop invariant initialization proved (Trivial: 1 VC)
 init_pred_in_loop.adb:15:33: info: loop invariant preservation proved (Trivial: 1 VC)
-init_pred_in_loop.adb:16:25: medium: assertion might fail (e.g. when X = (F1 => 0, F2 => 1)) [possible fix: loop invariant at line 15 should mention X]
+init_pred_in_loop.adb:16:25: medium: assertion might fail (e.g. when X = (F1 => 0, F2 => 0)) [possible fix: loop invariant at line 15 should mention X]
 init_pred_in_loop.adb:20:11: info: predicate check proved (CVC5: 2 VC)
 init_pred_in_loop.adb:24:04: warning: analyzing unreferenced procedure "Test_No_Init_2"
 init_pred_in_loop.adb:24:14: warning: subprogram "Test_No_Init_2" has no effect

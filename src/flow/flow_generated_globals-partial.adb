@@ -427,8 +427,6 @@ package body Flow_Generated_Globals.Partial is
             end loop;
          end if;
 
-         Contr.Local_Variables := FA.GG.Local_Variables;
-
       else
          case Ekind (E) is
             when Entry_Kind
@@ -490,6 +488,8 @@ package body Flow_Generated_Globals.Partial is
                raise Program_Error;
          end case;
       end if;
+
+      Contr.Local_Variables := FA.GG.Local_Variables;
 
       --  Register direct calls without splitting them into proof, definite
       --  and conditional; this is necessary because calls to subprograms with
@@ -2669,9 +2669,7 @@ package body Flow_Generated_Globals.Partial is
             Globals          => Contr.Globals,
 
             Local_Packages   => Contr.Local_Packages,
-            Local_Variables  => (if Ekind (E) = E_Package
-                                 then States_And_Objects (E)
-                                 else Node_Sets.Empty_Set),
+            Local_Variables  => Contr.Local_Variables,
 
             Has_Terminate    => Contr.Has_Terminate,
             Has_Subp_Variant => Contr.Has_Subp_Variant,

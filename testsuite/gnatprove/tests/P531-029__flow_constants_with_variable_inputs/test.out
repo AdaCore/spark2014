@@ -1,2 +1,3 @@
+p.adb:8:16: info: implicit function contract might not be available on calls from enclosing unit
 p.ads:4:35: info: initialization of "b" proved
 p.ads:4:57: info: flow dependencies proved

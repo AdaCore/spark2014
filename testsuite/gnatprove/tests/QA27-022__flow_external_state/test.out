@@ -1,4 +1,7 @@
-main.adb:5:12: info: postcondition proved (CVC5: 1 VC)
-state.adb:18:36: error: external state abstraction "State.State" of variable "Local_Value" constituent of "State" cannot act as global item of nonvolatile function "Get"
-state.ads:7:07: info: data dependencies proved
+main.adb:5:12: error: "Get" is not allowed in SPARK (due to nonvolatile function with  volatile global inputs)
+main.adb:5:12: error: violation of pragma SPARK_Mode at test.adc:1
+state.ads:9:13: error: nonvolatile function "Get" with volatile input global "State" is not allowed in SPARK
+state.ads:9:13: error: nonvolatile function "Get" with volatile input global "State" is not allowed in SPARK
+state.ads:9:13: error: violation of pragma SPARK_Mode at test.adc:1
+state.ads:9:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

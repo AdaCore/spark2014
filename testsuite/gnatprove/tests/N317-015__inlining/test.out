@@ -42,6 +42,7 @@ array_arith.adb:38:15: info: analyzing call to "Ident" in context
 array_arith.adb:39:15: info: analyzing call to "Ident" in context
 array_arith.adb:40:15: info: analyzing call to "Ident" in context
 array_arith.adb:41:16: info: analyzing call to "Ident" in context
+array_arith.adb:46:16: info: implicit function contract might not be available on calls from enclosing unit
 array_arith.adb:47:17: info: add a contract to analyze it separately from calling contexts
 array_arith.adb:47:17: info: local subprogram "Local" only analyzed in the context of calls
 array_arith.adb:50:18: info: no contextual analysis of "Ident" (body not seen yet)

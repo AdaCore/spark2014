@@ -140,7 +140,7 @@ scale.adb:19:20: info: overflow check proved (CVC5: 2 VC)
 scale.adb:19:32: info: division check proved (CVC5: 1 VC)
 scale.adb:19:32: info: overflow check proved (CVC5: 2 VC)
 scale.adb:19:44: info: overflow check proved (CVC5: 2 VC)
-scale.adb:20:15: info: range check proved (CVC5: 2 VC)
+scale.adb:20:15: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
 scale.adb:31:07: info: initialization of "Target_Angle" proved
 scale.adb:32:07: info: initialization of "K1" proved
 scale.adb:32:11: info: initialization of "K2" proved

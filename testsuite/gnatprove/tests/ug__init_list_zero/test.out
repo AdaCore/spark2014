@@ -1,5 +1,4 @@
 init_list_zero.adb:6:11: info: postcondition proved
-init_list_zero.adb:6:12: info: precondition proved
 init_list_zero.adb:11:30: info: loop invariant initialization proved
 init_list_zero.adb:11:30: info: loop invariant preservation proved
 init_list_zero.adb:11:49: info: precondition proved

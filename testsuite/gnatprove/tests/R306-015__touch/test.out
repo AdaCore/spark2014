@@ -1,2 +1,2 @@
-bitwise_swap.adb:4:11: high: postcondition might fail, cannot prove X = Y'old (e.g. when X = Unsigned_32'Last and Y'Old = Unsigned_32'Last-1)
-bitwise_swap.adb:4:11: high: postcondition might fail, cannot prove X = Y'old (e.g. when X = Unsigned_32'Last and Y'Old = Unsigned_32'Last-1)
+bitwise_swap.adb:4:11: high: postcondition might fail, cannot prove X = Y'Old (e.g. when X = Unsigned_32'Last and Y'Old = Unsigned_32'Last-1)
+bitwise_swap.adb:4:11: high: postcondition might fail, cannot prove X = Y'Old (e.g. when X = Unsigned_32'Last and Y'Old = Unsigned_32'Last-1)

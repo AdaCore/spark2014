@@ -1,3 +1,4 @@
+check_loop_inv.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
 check_loop_inv.adb:8:30: info: loop invariant initialization proved (Trivial: 1 VC)
 check_loop_inv.adb:8:30: info: loop invariant preservation proved (Trivial: 1 VC)
 check_loop_inv.adb:10:10: info: index check proved (CVC5: 2 VC)

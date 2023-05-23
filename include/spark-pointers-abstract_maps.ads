@@ -45,6 +45,11 @@ is
                                    Next        => Iter_Next,
                                    Has_Element => Has_Key);
 
+   function "=" (Left, Right : Map) return Boolean with
+     Import,
+     Global => null,
+     Annotate => (GNATprove, Logical_Equal);
+
    function Empty_Map return Map with
      Global => null,
      Post   => Is_Empty (Empty_Map'Result);
@@ -72,6 +77,7 @@ is
      (for all K in M => False)
    with
      Global => null;
+   pragma Warnings (On, "unused variable ""K""");
 
    type Ownership_Map is private with
      Annotate => (GNATprove, Ownership, "Needs_Reclamation");
@@ -79,16 +85,31 @@ is
    function "+" (M : Ownership_Map) return Map with
      Global => null;
 
+   function "=" (Left, Right : Ownership_Map) return Boolean is
+     (+Left = +Right);
+
    pragma Warnings (Off, "unused variable ""K""");
    function Is_Empty (M : Ownership_Map) return Boolean is
-     (for all K in +M => False)
+     (for all K in "+" (M) => False)
    with
      Global   => null,
      Annotate => (GNATprove, Ownership, "Is_Reclaimed");
+   pragma Warnings (On, "unused variable ""K""");
 
    function Empty_Map return Ownership_Map with
      Global => null,
      Post => Is_Empty (Empty_Map'Result);
+
+   --  Keys and elements of abstract maps are (implicitely) copied in this
+   --  package. These functions causes GNATprove to verify that such a copy
+   --  is valid (in particular, it does not break the ownership policy of
+   --  SPARK, i.e. it does not contain pointers that could be used to alias
+   --  mutable data).
+
+   function Copy_Key (K : Key_Type) return Key_Type is
+     (K);
+   function Copy_Object (O : Object_Type) return Object_Type is
+     (O);
 
 private
    pragma SPARK_Mode (Off);

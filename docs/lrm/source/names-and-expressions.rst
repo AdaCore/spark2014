@@ -210,6 +210,9 @@ free from side-effects only retrieves or computes a value.
     * a Type_Invariant aspect specification
       (see :ref:`Type Invariants`);
 
+    * the expression of a Priority aspect specification (see :ref:`Tasks and
+      Synchronization`);
+
     * an indexing expression of an indexed_component or the discrete_range of a
       slice in an object renaming declaration which renames part of that
       indexed_component or slice, or a prefix of a dereference (either

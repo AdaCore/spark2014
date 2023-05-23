@@ -15,8 +15,8 @@ decadriver.adb:105:10: info: initialization of "RX_FINFO_Reg" proved
 decadriver.adb:107:10: info: initialization of "Frame_Length" proved
 decadriver.adb:108:10: info: initialization of "Next_Idx" proved
 decadriver.adb:112:35: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Notify_Frame_Received"
-decadriver.adb:116:25: info: assertion proved (Z3: 1 VC)
-decadriver.adb:123:63: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+decadriver.adb:116:25: info: assertion proved (CVC5: 1 VC)
+decadriver.adb:123:63: info: range check proved (CVC5: 2 VC)
 decadriver.adb:125:37: info: overflow check proved (CVC5: 2 VC)
 decadriver.adb:127:38: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Notify_Frame_Received"
 decadriver.adb:127:38: info: precondition proved (CVC5: 1 VC)
@@ -24,7 +24,7 @@ decadriver.adb:131:43: info: in value of subprogram parameter after the call at 
 decadriver.adb:131:43: info: predicate check proved (Z3: 2 VC)
 decadriver.adb:131:43: info: range check proved (CVC5: 4 VC)
 decadriver.adb:133:38: medium: in inlined predicate at decadriver.ads:67
-decadriver.adb:133:38: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size = 0
+decadriver.adb:133:38: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size = 0 (e.g. when Frame_Length = 32895)
 decadriver.adb:133:50: info: range check proved (CVC5: 2 VC)
 decadriver.adb:134:38: info: predicate check proved (CVC5: 2 VC)
 decadriver.adb:135:38: info: predicate check proved (CVC5: 2 VC)
@@ -38,7 +38,7 @@ decadriver.adb:158:35: info: predicate check proved (CVC5: 2 VC)
 decadriver.adb:189:23: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Set_Tx_Data"
 decadriver.adb:189:23: info: precondition proved (CVC5: 4 VC)
 decadriver.adb:197:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Set_Tx_Frame_Length"
-decadriver.adb:197:23: high: precondition might fail, cannot prove Length < DW1000.Constants.tx_buffer_length (e.g. when Length = 1024)
+decadriver.adb:197:23: high: precondition might fail, cannot prove Length < DW1000.Constants.TX_BUFFER_Length (e.g. when Length = 1024)
 decadriver.adb:206:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Start_Tx"
 decadriver.adb:232:10: info: initialization of "Word" proved
 decadriver.adb:234:10: info: initialization of "PMSC_CTRL1_Reg" proved

@@ -1,0 +1,2 @@
+badvardecl.adb:10:16: medium: in default value at badvardecl.adb:16
+badvardecl.adb:10:16: medium: null exclusion check might fail

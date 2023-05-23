@@ -11,8 +11,6 @@ package My_Container_Contains with SPARK_Mode is
    type Cursor is private;
 
    function Mem (C : Container; E : Natural) return Boolean;
-   pragma Annotate
-     (GNATprove, Iterable_For_Proof, "Contains", Entity => Mem);
 
    function Valid (E : Natural) return Boolean;
 
@@ -26,6 +24,8 @@ package My_Container_Contains with SPARK_Mode is
    function Element (C : Container; P : Cursor) return Natural with
      Pre  => Has_Element (C, P),
      Post => Mem (C, Element'Result);
+   pragma Annotate
+     (GNATprove, Iterable_For_Proof, "Contains", Entity => Mem);
 private
    subtype My_Index is Natural range 1 .. Max;
 

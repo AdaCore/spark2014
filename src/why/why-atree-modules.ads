@@ -605,6 +605,50 @@ package Why.Atree.Modules is
 
    M_Subprogram_Profiles : Name_Id_Profile_Map.Map;
 
+   type M_HO_Specialization_Type is record
+      Module        : W_Module_Id;
+      Ax_Module     : W_Module_Id;
+      Rec_Ax_Module : W_Module_Id;
+      Prog_Id       : W_Identifier_Id;
+      Fun_Id        : W_Identifier_Id;
+      Guard_Id      : W_Identifier_Id;
+      Variant_Id    : W_Identifier_Id;
+   end record;
+
+   package Name_Id_HO_Specializations_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Symbol,
+      Element_Type    => M_HO_Specialization_Type,
+      Hash            => GNATCOLL.Symbols.Hash,
+      Equivalent_Keys => "=");
+
+   package Node_Id_HO_Specializations_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Name_Id_HO_Specializations_Map.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Name_Id_HO_Specializations_Map."=");
+
+   M_HO_Specializations : Node_Id_HO_Specializations_Map.Map;
+   --  M_HO_Specializations maps subprogram entities to a map containing all
+   --  their specializations.
+
+   package Name_Id_Module_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Symbol,
+      Element_Type    => W_Module_Id,
+      Hash            => GNATCOLL.Symbols.Hash,
+      Equivalent_Keys => "=");
+
+   package Node_Id_Modules_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Name_Id_Module_Map.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Name_Id_Module_Map."=");
+
+   M_Lemma_HO_Specializations : Node_Id_Modules_Map.Map;
+   --  M_Lemma_HO_Specializations maps lemma procedure entities to a map
+   --  containing all the axiom modules generated for their specializations.
+
    M_BV_Conv_128_256 : M_BV_Conv_Type;
    M_BV_Conv_64_128  : M_BV_Conv_Type;
    M_BV_Conv_32_128  : M_BV_Conv_Type;
@@ -756,7 +800,7 @@ package Why.Atree.Modules is
    --  with Automatic_Instantiation.
 
    function E_Rec_Axiom_Module (E : Entity_Id) return W_Module_Id with
-     Pre => Has_Post_Axiom (E) and then Is_Recursive (E);
+     Pre => Has_Post_Axiom (E) and then Proof_Module_Cyclic (E);
    --  Return the module where File = No_Name and Name = (Full_Name (E) &
    --  "__rec_axiom"). Memoization may be used. Returns Empty when it is called
    --  with a node which is not an entity, and no module is known for this
@@ -839,7 +883,7 @@ package Why.Atree.Modules is
 
    function Mutually_Recursive_Modules (E : Entity_Id) return Why_Node_Sets.Set
    with
-     Pre => Is_Subprogram_Or_Entry (E);
+     Pre => Ekind (E) in E_Function | E_Procedure | E_Entry | E_Package;
    --  Function returning the set of axiom modules mutually recursive with a
    --  given entity. Those are the modules which should not be included in the
    --  VC module for E.

@@ -588,6 +588,7 @@ ar.ads:731:11: info: flow dependencies proved
 ar.ads:733:22: info: postcondition proved (CVC5: 2 VC)
 ar.ads:737:11: info: flow dependencies proved
 ar.ads:739:22: info: postcondition proved (CVC5: 1 VC)
+ar.ads:739:60: info: range check proved (CVC5: 2 VC)
 ar.ads:742:14: info: initialization of "R" proved
 ar.ads:743:11: info: flow dependencies proved
 ar.ads:744:22: info: postcondition proved (CVC5: 1 VC)
@@ -624,8 +625,10 @@ ar.ads:812:11: info: flow dependencies proved
 ar.ads:814:22: info: postcondition proved (CVC5: 4 VC)
 ar.ads:818:11: info: flow dependencies proved
 ar.ads:820:22: info: postcondition proved (CVC5: 1 VC)
+ar.ads:820:86: info: range check proved (CVC5: 2 VC)
 ar.ads:824:11: info: flow dependencies proved
 ar.ads:826:22: info: postcondition proved (CVC5: 1 VC)
+ar.ads:826:96: info: range check proved (CVC5: 2 VC)
 ar.ads:830:11: info: flow dependencies proved
 ar.ads:831:22: info: postcondition proved (CVC5: 1 VC)
 ar.ads:835:11: info: flow dependencies proved
@@ -669,8 +672,10 @@ ar.ads:929:11: info: flow dependencies proved
 ar.ads:931:22: info: postcondition proved (CVC5: 5 VC)
 ar.ads:935:11: info: flow dependencies proved
 ar.ads:937:22: info: postcondition proved (CVC5: 1 VC)
+ar.ads:937:115: info: range check proved (CVC5: 2 VC)
 ar.ads:941:11: info: flow dependencies proved
 ar.ads:943:22: info: postcondition proved (CVC5: 1 VC)
+ar.ads:943:118: info: range check proved (CVC5: 2 VC)
 ar.ads:947:11: info: flow dependencies proved
 ar.ads:948:22: info: postcondition proved (CVC5: 1 VC)
 ar.ads:952:11: info: flow dependencies proved
@@ -722,8 +727,10 @@ ar.ads:1066:11: info: flow dependencies proved
 ar.ads:1068:22: info: postcondition proved (CVC5: 6 VC)
 ar.ads:1072:11: info: flow dependencies proved
 ar.ads:1074:22: info: postcondition proved (CVC5: 1 VC)
+ar.ads:1074:133: info: range check proved (CVC5: 2 VC)
 ar.ads:1078:11: info: flow dependencies proved
 ar.ads:1080:22: info: postcondition proved (CVC5: 1 VC)
+ar.ads:1080:159: info: range check proved (CVC5: 2 VC)
 ar.ads:1084:11: info: flow dependencies proved
 ar.ads:1086:22: info: postcondition proved (CVC5: 1 VC)
 ar.ads:1086:100: info: range check proved (CVC5: 2 VC)
@@ -731,8 +738,10 @@ ar.ads:1090:11: info: flow dependencies proved
 ar.ads:1092:22: info: postcondition proved (CVC5: 6 VC)
 ar.ads:1096:11: info: flow dependencies proved
 ar.ads:1098:22: info: postcondition proved (CVC5: 1 VC)
+ar.ads:1098:133: info: range check proved (CVC5: 2 VC)
 ar.ads:1102:11: info: flow dependencies proved
 ar.ads:1104:22: info: postcondition proved (CVC5: 1 VC)
+ar.ads:1104:159: info: range check proved (CVC5: 2 VC)
 ar.ads:1108:11: info: flow dependencies proved
 ar.ads:1109:22: info: postcondition proved (CVC5: 1 VC)
 ar.ads:1113:11: info: flow dependencies proved

@@ -8,6 +8,8 @@ API and most of the code). The submodule of spark2014 git repository called
 Why3 follows the changes of Why3 branch master asynchronously (we usually
 merge when a useful feature is available or a soundness issue appears).
 
+.. _gnatwhy3_debug:
+
 GNATWhy3 Debug
 ==============
 
@@ -446,6 +448,8 @@ called. Drivers are mainly composed of:
   ``eliminate_*``, etc)
 - Call a specific printer used to output a specific formalism (for example,
   smtv2)
+- Declare a specific parser function for counterexamples
+  (for example, ``model_parser "smtv2"``)
 - A part containing how to parse the result message of the prover (example:
   "unsat" means "proved" etc) which is prover dependant
 

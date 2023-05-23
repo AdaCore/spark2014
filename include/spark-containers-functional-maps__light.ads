@@ -150,7 +150,8 @@ is
        and then Equivalent_Keys (Key_1, Key_2)
        and then
          (Has_Key (Container, Key_1) or else Has_Key (Container, Key_2)),
-     Post => Get (Container, Key_1) = Get (Container, Key_2);
+     Post =>
+       Element_Logic_Equal (Get (Container, Key_1), Get (Container, Key_2));
 
    function Choose (Container : Map) return Key_Type with
    --  Return an arbitrary key in container

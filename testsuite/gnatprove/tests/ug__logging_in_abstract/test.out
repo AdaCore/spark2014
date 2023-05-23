@@ -1,9 +1,9 @@
 
-logging_in_abstract.adb:13:37: medium: missing dependency "Log_In constituent of State => Log_Size constituent of State"
+logging_in_abstract.adb:13:37: medium: missing dependency "Log_In constituent of State => Log constituent of State"
    13 |     Refined_Depends => ((Log_Size, Log_In) =>+ null, Log =>+ (Log_Size, Log_In))
       |                         ~~~~~~~~~~~^
 
-logging_in_abstract.adb:13:37: medium: missing dependency "Log_In constituent of State => Log constituent of State"
+logging_in_abstract.adb:13:37: medium: missing dependency "Log_In constituent of State => Log_Size constituent of State"
    13 |     Refined_Depends => ((Log_Size, Log_In) =>+ null, Log =>+ (Log_Size, Log_In))
       |                         ~~~~~~~~~~~^
 

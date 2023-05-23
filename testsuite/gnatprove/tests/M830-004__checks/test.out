@@ -6,7 +6,7 @@ do_checks.adb:23:24: info: range check proved (CVC5: 2 VC)
 do_checks.adb:23:57: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
 do_checks.adb:31:16: medium: range check might fail
 do_checks.adb:38:16: info: range check proved (CVC5: 2 VC)
-do_checks.adb:38:48: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
+do_checks.adb:38:48: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
 do_checks.adb:47:21: medium: range check might fail
 do_checks.adb:53:21: info: range check proved (CVC5: 2 VC)
 do_checks.adb:61:16: medium: range check might fail
@@ -28,8 +28,7 @@ do_checks.adb:118:30: medium: range check might fail [reason for check: slice bo
 do_checks.adb:118:52: medium: range check might fail [possible fix: add precondition (Zero .. 1 in Positive) to subprogram at line 5]
 do_checks.adb:125:30: info: range check proved (CVC5: 4 VC)
 do_checks.adb:125:52: info: range check proved (CVC5: 2 VC)
-do_checks.adb:125:60: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when B'Last = 0 and Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
-do_checks.adb:125:60: medium: overflow check might fail, cannot prove bounds for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
+do_checks.adb:125:60: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
 do_checks.adb:136:25: medium: range check might fail
 do_checks.adb:149:25: info: range check proved (CVC5: 2 VC)
 do_checks.adb:149:57: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
@@ -41,7 +40,6 @@ do_checks.adb:167:38: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 do_checks.adb:167:38: info: range check proved (CVC5: 2 VC)
 do_checks.adb:167:39: info: range check proved (CVC5: 2 VC)
 do_checks.adb:167:59: info: range check proved (CVC5: 2 VC)
-do_checks.adb:167:67: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
 do_checks.adb:167:67: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
 do_checks.adb:210:32: warning: "Y" is not modified, could be IN
 do_checks.adb:212:21: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
@@ -52,7 +50,7 @@ do_checks.adb:223:21: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 do_checks.adb:223:26: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: precondition of subprogram at line 221 should mention X and Y]
 do_checks.adb:228:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:234:37: info: initialization of "Y" proved
-do_checks.adb:236:24: medium: length check might fail (e.g. when X = (0 => False) and X'First = 0 and X'Last = 0) [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 234 should mention X]
+do_checks.adb:236:24: medium: length check might fail (e.g. when X'First = 0 and X'Last = 0) [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 234 should mention X]
 do_checks.adb:241:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:245:37: info: initialization of "Y" proved
 do_checks.adb:249:24: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
@@ -60,7 +58,7 @@ do_checks.adb:254:16: info: precondition proved (CVC5: 2 VC)
 do_checks.adb:260:30: warning: "X" is not modified, could be IN
 do_checks.adb:260:30: warning: unused variable "X"
 do_checks.adb:266:19: info: precondition proved (Trivial: 1 VC)
-do_checks.adb:266:22: medium: length check might fail [reason for check: argument array must have the same length as the parameter array type] [possible fix: precondition of subprogram at line 264 should mention X]
+do_checks.adb:266:22: medium: length check might fail (e.g. when X = (0 => False) and X'First = 0 and X'Last = 0) [reason for check: argument array must have the same length as the parameter array type] [possible fix: precondition of subprogram at line 264 should mention X]
 do_checks.adb:270:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:274:30: warning: "X" is not modified, could be IN
 do_checks.adb:274:30: warning: unused variable "X"
@@ -73,7 +71,7 @@ do_checks.adb:306:25: info: range check proved (CVC5: 2 VC)
 do_checks.adb:312:32: warning: "Y" is not modified, could be IN
 do_checks.adb:314:20: medium: discriminant check might fail [possible fix: precondition of subprogram at line 312 should mention X]
 do_checks.adb:314:25: medium: array index check might fail [reason for check: value must be a valid index into the array]
-do_checks.adb:314:32: high: discriminant check might fail (e.g. when Y = (J => 0) and Y.Arr'Last = 0) [possible fix: precondition of subprogram at line 312 should mention Y]
+do_checks.adb:314:32: high: discriminant check might fail (e.g. when Y = (J => 0)) [possible fix: precondition of subprogram at line 312 should mention Y]
 do_checks.adb:314:37: medium: array index check might fail [reason for check: value must be a valid index into the array]
 do_checks.adb:316:23: info: range check proved (CVC5: 2 VC)
 do_checks.adb:316:30: info: discriminant check proved (CVC5: 1 VC)

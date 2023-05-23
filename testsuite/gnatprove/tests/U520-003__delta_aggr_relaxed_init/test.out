@@ -14,11 +14,11 @@ main.adb:46:19: medium: initialization check might fail [possible fix: subprogra
 main.adb:46:28: info: index check proved (CVC5: 2 VC)
 main.adb:51:26: info: data dependencies proved
 main.adb:52:32: info: index check proved (CVC5: 2 VC)
-main.adb:53:18: info: initialization check proved (Trivial: 4 VC; altergo: 2 VC)
+main.adb:53:18: info: initialization check proved (CVC5: 2 VC; Trivial: 4 VC)
 main.adb:53:32: info: index check proved (CVC5: 2 VC)
 main.adb:58:26: info: data dependencies proved
 main.adb:59:28: info: index check proved (CVC5: 2 VC)
-main.adb:60:19: info: initialization check proved (Trivial: 4 VC; altergo: 2 VC)
+main.adb:60:19: info: initialization check proved (CVC5: 2 VC; Trivial: 4 VC)
 main.adb:60:28: info: index check proved (CVC5: 2 VC)
 main.adb:65:26: info: data dependencies proved
 main.adb:66:32: info: index check proved (CVC5: 2 VC)

@@ -8,7 +8,7 @@ test_delta_checks.adb:17:24: info: index check proved (CVC5: 2 VC)
 test_delta_checks.adb:18:22: info: assertion proved (CVC5: 1 VC)
 test_delta_checks.adb:21:25: info: data dependencies proved
 test_delta_checks.adb:24:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-test_delta_checks.adb:24:26: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 21 should mention Y in a precondition]
+test_delta_checks.adb:24:26: high: array index check might fail (e.g. when Z'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 21 should mention Y in a precondition]
 test_delta_checks.adb:24:34: info: index check proved (CVC5: 2 VC)
 test_delta_checks.adb:24:42: info: index check proved (CVC5: 2 VC)
 test_delta_checks.adb:24:50: info: index check proved (CVC5: 2 VC)
@@ -24,7 +24,7 @@ test_delta_checks.adb:31:63: info: index check proved (CVC5: 2 VC)
 test_delta_checks.adb:32:22: info: assertion proved (CVC5: 1 VC)
 test_delta_checks.adb:35:25: info: data dependencies proved
 test_delta_checks.adb:38:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-test_delta_checks.adb:38:26: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 35 should mention Y in a precondition]
+test_delta_checks.adb:38:26: high: array index check might fail (e.g. when Z'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 35 should mention Y in a precondition]
 test_delta_checks.adb:38:30: info: index check proved (CVC5: 2 VC)
 test_delta_checks.adb:38:38: info: index check proved (CVC5: 2 VC)
 test_delta_checks.adb:38:46: info: index check proved (CVC5: 2 VC)

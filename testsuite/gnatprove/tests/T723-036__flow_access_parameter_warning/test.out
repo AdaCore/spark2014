@@ -1,3 +1,5 @@
+a.adb:4:13: error: function "G" with output global "memory accessed through objects of access type" is not allowed in SPARK
+a.adb:4:13: error: violation of aspect SPARK_Mode at line 1
 a.adb:11:20: error: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK
 a.adb:11:20: error: violation of aspect SPARK_Mode at line 1
 a.adb:16:07: error: assignment into a constant object is not allowed in SPARK

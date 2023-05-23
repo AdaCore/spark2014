@@ -117,7 +117,7 @@ very_longs.adb:294:65: info: index check proved (CVC5: 2 VC)
 very_longs.adb:296:37: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:296:41: info: index check proved (CVC5: 2 VC)
 very_longs.adb:306:07: info: initialization of "Result" proved
-very_longs.adb:306:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length (e.g. when L = (Length => 1, Long_Digits => (others => 0)) and R = (Length => Digit_Index_Type'Last, Long_Digits => (others => 0))) [possible fix: add precondition (L.Length <= Digit_Index_Type'Last - R.Length) to subprogram at very_longs.ads:61]
+very_longs.adb:306:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length [possible fix: add precondition (L.Length <= Digit_Index_Type'Last - R.Length) to subprogram at very_longs.ads:61]
 very_longs.adb:307:07: info: initialization of "L_Digit" proved
 very_longs.adb:308:07: info: initialization of "R_Digit" proved
 very_longs.adb:309:07: info: initialization of "T_Digit" proved
@@ -146,6 +146,7 @@ very_longs.adb:361:07: info: initialization of "V" proved
 very_longs.adb:361:42: info: range check proved (CVC5: 2 VC)
 very_longs.adb:362:07: info: initialization of "Q_Hat" proved
 very_longs.adb:363:07: info: initialization of "Current_Borrow" proved
+very_longs.adb:367:16: info: implicit function contract might not be available on calls from enclosing unit
 very_longs.adb:373:30: info: unrolling loop
 very_longs.adb:383:33: info: initialization of "Result" proved
 very_longs.adb:385:11: info: flow dependencies proved
@@ -188,9 +189,9 @@ very_longs.adb:450:47: info: index check proved (CVC5: 2 VC)
 very_longs.adb:450:47: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:450:84: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:450:88: info: index check proved (CVC5: 2 VC)
-very_longs.adb:451:35: medium: divide by zero might fail (e.g. when N = 2 and V = (Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [possible fix: precondition of subprogram at line 440 should mention V]
+very_longs.adb:451:35: medium: divide by zero might fail [possible fix: precondition of subprogram at line 440 should mention V]
 very_longs.adb:451:64: info: index check proved (CVC5: 2 VC)
-very_longs.adb:454:35: medium: divide by zero might fail (e.g. when N = 2 and V = (Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [possible fix: precondition of subprogram at line 440 should mention V]
+very_longs.adb:454:35: medium: divide by zero might fail [possible fix: precondition of subprogram at line 440 should mention V]
 very_longs.adb:454:66: info: index check proved (CVC5: 2 VC)
 very_longs.adb:458:51: info: index check proved (CVC5: 2 VC)
 very_longs.adb:459:60: info: overflow check proved (CVC5: 2 VC)
@@ -222,7 +223,7 @@ very_longs.adb:512:26: info: index check proved (CVC5: 2 VC)
 very_longs.adb:512:26: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:514:45: info: index check proved (CVC5: 2 VC)
 very_longs.adb:514:45: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:514:78: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+very_longs.adb:514:78: info: range check proved (CVC5: 2 VC)
 very_longs.adb:520:11: info: data dependencies proved
 very_longs.adb:521:11: info: flow dependencies proved
 very_longs.adb:524:10: info: initialization of "Carry" proved
@@ -247,7 +248,7 @@ very_longs.adb:544:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:545:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:545:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:548:12: medium: range check might fail, cannot prove upper bound for Number_Of_Digits(Divisor) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Number_Of_Digits(Divisor) in Divisor_Digits_Count_Type) to subprogram at very_longs.ads:65]
-very_longs.adb:549:28: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+very_longs.adb:549:28: info: range check proved (CVC5: 2 VC)
 very_longs.adb:552:25: info: precondition proved (CVC5: 1 VC)
 very_longs.adb:552:64: info: index check proved (CVC5: 2 VC)
 very_longs.adb:553:07: info: precondition proved (CVC5: 1 VC)
@@ -261,8 +262,8 @@ very_longs.adb:563:13: info: range check proved (CVC5: 2 VC)
 very_longs.adb:566:13: info: range check proved (CVC5: 2 VC)
 very_longs.adb:572:11: info: range check proved (CVC5: 2 VC)
 very_longs.adb:572:58: info: cannot unroll loop (dynamic loop bounds)
-very_longs.adb:573:32: info: index check proved (Z3: 2 VC)
-very_longs.adb:573:64: info: index check proved (Z3: 2 VC)
+very_longs.adb:573:32: info: index check proved (CVC5: 2 VC)
+very_longs.adb:573:64: info: index check proved (CVC5: 2 VC)
 very_longs.ads:14:20: info: postcondition proved (CVC5: 1 VC)
 very_longs.ads:17:36: info: initialization of "Result" proved
 very_longs.ads:18:36: info: initialization of "Valid" proved

@@ -743,6 +743,17 @@ package Gnat2Why.Util is
    --  Name to use for occurrences of target names @ in assignments. It should
    --  be equal to Why_Empty when we are not translating an assignment.
 
+   Specialized_Call_Params : Node_Maps.Map;
+   --  Mapping of formal parameters of specialized calls to their actuals
+
+   function Get_Called_Entity_For_Proof (N : Node_Id) return Entity_Id with
+     Pre  => Nkind (N) in N_Subprogram_Call
+                        | N_Entry_Call_Statement
+                        | N_Op;
+   --  Call SPARK_Atree.Get_Called_Entity and use the Specialized_Call_Params
+   --  to inline specialized parameters of functions with higher order
+   --  specialization.
+
 private
 
    package Loop_Entry_Nodes is new Ada.Containers.Hashed_Maps

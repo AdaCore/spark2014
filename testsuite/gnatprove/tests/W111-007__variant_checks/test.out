@@ -1,0 +1,19 @@
+test.adb:10:13: info: function contract might not be available on recursive calls
+test.adb:11:06: warning: postcondition does not mention function result
+test.adb:11:38: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:12:20: medium: postcondition might fail, cannot prove Length (L) >  Length (L.all.Next)
+test.adb:12:20: medium: subprogram variant might fail [possible explanation: structural variant of "Length" might not be a strict subcomponent of "L"]
+test.adb:13:19: info: subprogram variant proved (Trivial)
+test.adb:13:29: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:16:13: info: function contract might not be available on recursive calls
+test.adb:18:14: info: postcondition proved (CVC5: 1 VC)
+test.adb:21:14: medium: postcondition might fail
+test.adb:21:14: medium: subprogram variant might fail [possible explanation: structural variant of "F" might not be a strict subcomponent of "L"]
+test.adb:25:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test.adb:27:25: medium: assertion might fail [possible fix: subprogram at line 20 should mention L in a precondition]
+test.adb:27:25: medium: subprogram variant might fail [possible explanation: structural variant of "F" might not be a strict subcomponent of "L"]
+test.adb:32:07: medium: resource or memory leak might occur at end of scope
+test.adb:32:07: warning: initialization of "V" has no effect
+test.adb:34:07: medium: subprogram variant might fail [possible explanation: structural variant of "P" might not be a part of "L"]
+test.adb:34:07: warning: statement has no effect
+test.adb:34:10: warning: "V" is set by "P" but not used after the call

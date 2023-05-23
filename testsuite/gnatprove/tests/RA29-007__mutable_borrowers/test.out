@@ -5,7 +5,7 @@ traversal.adb:17:04: info: absence of resource or memory leak at end of scope pr
 traversal.adb:18:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 traversal.adb:21:29: info: precondition proved (CVC5: 1 VC)
 traversal.adb:23:09: info: pointer dereference check proved (CVC5: 1 VC)
-traversal.adb:26:19: medium: assertion might fail (e.g. when X.all = (Fst => new Integer'(4), Snd => new Integer'(2)))
+traversal.adb:26:19: medium: assertion might fail
 traversal.adb:26:20: info: pointer dereference check proved (CVC5: 1 VC)
 traversal.adb:26:25: info: pointer dereference check proved (CVC5: 1 VC)
 walker.adb:9:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)

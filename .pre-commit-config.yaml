@@ -21,6 +21,11 @@ repos:
         entry: python scripts/check-empty-file.py
         language: python
         files: \.(opt|out)$
+    -   id: check-testsuite-markers
+        name: Check for undesired markers in the testsuite output
+        entry: python scripts/check-testsuite-markers.py
+        language: python
+        files: \.out
   - repo: https://github.com/pycqa/flake8
     rev: 4.0.1
     hooks:

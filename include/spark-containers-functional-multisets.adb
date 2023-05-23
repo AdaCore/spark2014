@@ -62,14 +62,14 @@ is
      Ghost,
      Pre                => M1 = M2,
      Post               => Cardinality_Rec (M1) = Cardinality_Rec (M2),
-     Subprogram_Variant => (Decreases => Length (M1));
+     Subprogram_Variant => (Decreases => Length (M1), Decreases => 1);
 
    procedure Lemma_Remove (M : Maps.Map; K : Element_Type) with
    --  States that if an element is removed from a multiset, then its number of
    --  occurences is removed from the cardinality of this multiset.
 
      Ghost,
-     Subprogram_Variant => (Decreases => Maps.Length (M) - 1),
+     Subprogram_Variant => (Decreases => Maps.Length (M), Decreases => 0),
      Pre                => Has_Key (M, K),
      Post               =>
        Cardinality_Rec (M) =
@@ -667,13 +667,8 @@ is
          Lemma_Remove (Remove (M, L), K);
          Lemma_Eq (Remove (Remove (M, L), K), Remove (Remove (M, K), L));
          Lemma_Remove (Remove (M, K), L);
-      elsif Length (Remove (M, L)) /= 0 then
-         declare
-            E : constant Element_Type := Choose (Remove (M, K));
-         begin
-            Lemma_Remove (Remove (M, L), E);
-            Lemma_Eq (Remove (Remove (M, L), E), Remove (Remove (M, K), E));
-         end;
+      else
+         Lemma_Eq (Remove (M, L), Remove (M, K));
       end if;
    end Lemma_Remove;
 

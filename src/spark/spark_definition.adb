@@ -36,6 +36,7 @@ with Einfo.Utils;                     use Einfo.Utils;
 with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
+with Flow_Dependency_Maps;            use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                    use Flow_Utility;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
@@ -49,7 +50,6 @@ with Opt;                             use Opt;
 with Rtsfind;                         use Rtsfind;
 with Sem_Aux;                         use Sem_Aux;
 with Sem_Disp;
-with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
 with Sinfo.Utils;                     use Sinfo.Utils;
 with Sinput;                          use Sinput;
@@ -190,10 +190,13 @@ package body SPARK_Definition is
    --  an entity.
 
    Delayed_Type_Aspects : Node_Maps.Map;
-   --  Stores subprograms from aspects of types whose analysis should be
+   --  Stores information from aspect of types whose analysis should be
    --  delayed until the end of the analysis and maps them either to their
    --  SPARK_Mode entity if there is one or to their type entity in discovery
    --  mode.
+   --  For Type_Invariant/Default_Initial_Condition, this store the raw
+   --    procedure from the aspect.
+   --  For Iterable aspect, this stores the aspect.
 
    Access_To_Incomplete_Types : Node_Lists.List;
    --  Stores access types designating incomplete types. We cannot mark
@@ -360,6 +363,12 @@ package body SPARK_Definition is
 
    procedure Mark (N : Node_Id);
    --  Generic procedure for marking code
+
+   procedure Mark_Constant_Globals (Globals : Node_Sets.Set);
+   --  Mark constant objects in the Initializes or Global/Depends contract (or
+   --  their refined variant). We want to detect constants not in SPARK, even
+   --  if they only appear in the flow contracts, to handle them as having no
+   --  variable input.
 
    function Most_Underlying_Type_In_SPARK (Id : Type_Kind_Id) return Boolean;
    --  Mark the Retysp of Id and check that it is not completely private
@@ -710,8 +719,8 @@ package body SPARK_Definition is
    -- Get_SPARK_JSON --
    --------------------
 
-   function Get_SPARK_JSON return JSON_Array is
-      SPARK_Status_JSON : JSON_Array := Empty_Array;
+   function Get_SPARK_JSON return JSON_Value is
+      SPARK_Status_JSON : constant JSON_Value := Create_Object;
 
    begin
       --  ??? Iterating over all entities is not efficient, but we do it only
@@ -735,46 +744,44 @@ package body SPARK_Definition is
            and then Analysis_Requested (E, With_Inlined => True)
          then
             declare
-               V : constant JSON_Value :=
-                 To_JSON (Entity_To_Subp_Assumption (E));
+               V            : constant Subp_Type :=
+                 Entity_To_Subp_Assumption (E);
 
-               SPARK_Status : constant String :=
+               SPARK_Status : constant SPARK_Mode_Status :=
                  (if Entity_Body_In_SPARK (E)
-                  then "all"
+                  then All_In_SPARK
                   elsif Entity_Spec_In_SPARK (E)
                   then
                     (if Ekind (E) = E_Package and then No (Package_Body (E))
-                     then "all"
-                     else "spec")
-                  else "no");
+                     then All_In_SPARK
+                     else Spec_Only_In_SPARK)
+                  else Not_In_SPARK);
             begin
-               Set_Field (V, "spark", SPARK_Status);
-               Append (SPARK_Status_JSON, V);
+               Set_Field (SPARK_Status_JSON, To_Key (V),
+                          To_JSON (SPARK_Status));
             end;
 
          elsif Is_Type (E)
-           and then Needs_Default_Checks_At_Decl (E)
+           and then Entity_In_SPARK (E)
+           and then E = Retysp (E)
            and then Analysis_Requested (E, With_Inlined => True)
+           and then
+             (Needs_Default_Checks_At_Decl (E)
+              or else (Is_Access_Subprogram_Type (E)
+                       and then No (Parent_Retysp (E)))
+              or else Declares_Iterable_Aspect (E))
          then
 
-            --  If the entity is a record or private type with fields hidden
-            --  from SPARK, then the default initialization was not verified.
-
-            pragma Assert (Entity_In_SPARK (E));
-
             declare
-               V            : constant JSON_Value :=
-                 To_JSON (Entity_To_Subp_Assumption (E));
-               SPARK_Status : constant String :=
-                 (if
-                    (Has_Record_Type (E)
-                     or else Has_Incomplete_Or_Private_Type (E))
-                    and then Has_Private_Fields (E)
-                  then "no"
-                  else "all");
+               V            : constant Subp_Type :=
+                 Entity_To_Subp_Assumption (E);
+               SPARK_Status : constant SPARK_Mode_Status :=
+                 (if Full_View_Not_In_SPARK (E)
+                  then Spec_Only_In_SPARK
+                  else All_In_SPARK);
             begin
-               Set_Field (V, "spark", SPARK_Status);
-               Append (SPARK_Status_JSON, V);
+               Set_Field (SPARK_Status_JSON, To_Key (V),
+                          To_JSON (SPARK_Status));
             end;
          end if;
       end loop;
@@ -1652,41 +1659,37 @@ package body SPARK_Definition is
                Mark (Iterator_Filter (N));
             end if;
 
-            --  Retrieve Iterable aspect specification if any
+            --  Mark the name first, since Has_Iterable_In_SPARK
+            --  requires type to be marked.
 
-            declare
-               Iterable_Aspect : constant Node_Id :=
-                 Find_Aspect (Id => Etype (Name (N)), A => Aspect_Iterable);
-            begin
+            Mark (Name (N));
 
-               if Present (Iterable_Aspect) then
-                  Mark_Iterable_Aspect (Iterable_Aspect);
-                  if Present (Subtype_Indication (N)) then
-                     Mark (Subtype_Indication (N));
-                  end if;
-                  Mark (Name (N));
+            --  Check presence of Iterable specification.
 
-               elsif Of_Present (N)
-                 and then Has_Array_Type (Etype (Name (N)))
-               then
-                  if Number_Dimensions (Etype (Name (N))) > 1 then
-                     Mark_Unsupported (Lim_Multidim_Iterator, N);
-                  end if;
-
-                  if Present (Subtype_Indication (N)) then
-                     Mark (Subtype_Indication (N));
-                  end if;
-                  Mark (Name (N));
-
-               else
-
-                  --  If no Iterable aspect is found, raise a violation
-                  --  other forms of iteration are not allowed in SPARK.
-
-                  Mark_Violation ("iterator specification", N,
-                                  SRM_Reference => "SPARK RM 5.5.2");
+            if Has_Iterable_Aspect_In_SPARK (Etype (Name (N))) then
+               if Present (Subtype_Indication (N)) then
+                  Mark (Subtype_Indication (N));
                end if;
-            end;
+
+            elsif Of_Present (N)
+              and then Has_Array_Type (Etype (Name (N)))
+            then
+               if Number_Dimensions (Etype (Name (N))) > 1 then
+                  Mark_Unsupported (Lim_Multidim_Iterator, N);
+               end if;
+
+               if Present (Subtype_Indication (N)) then
+                  Mark (Subtype_Indication (N));
+               end if;
+
+            else
+
+               --  If no Iterable aspect is found, raise a violation
+               --  other forms of iteration are not allowed in SPARK.
+
+               Mark_Violation ("iterator specification", N,
+                               SRM_Reference => "SPARK RM 5.5.2");
+            end if;
 
             --  Mark iterator's identifier
 
@@ -2448,7 +2451,7 @@ package body SPARK_Definition is
             | N_Raise_When_Statement
             | N_Return_When_Statement
          =>
-            Mark_Violation ("INOX", N);
+            Mark_Violation ("'I'N'O'X", N);
 
          --  The following kinds can be safely ignored by marking
 
@@ -2777,6 +2780,10 @@ package body SPARK_Definition is
                      Error_Msg_NE
                        ("\consider annotating & with Async_Writers",
                         Address, E);
+                  else
+                     Error_Msg_NE
+                       (Warning_Message (Warn_Assumed_Volatile_Properties),
+                        Address, E);
                   end if;
 
                elsif not Has_Volatile_Property (E, Pragma_Async_Readers)
@@ -2799,7 +2806,8 @@ package body SPARK_Definition is
 
                --  If E is a variable and the address clause do not link to a
                --  part of an object, we cannot handle the case, emit a
-               --  warning.
+               --  warning. This partly addresses assumptions
+               --  SPARK_ALIASING_ADDRESS.
 
                if not Supported_Alias then
 
@@ -3370,9 +3378,11 @@ package body SPARK_Definition is
                           (Lim_Access_To_Relaxed_Init_Subp, N);
 
                      --  Subprogram with non-null Global contract (either
-                     --  explicit or generated).
+                     --  explicit or generated). Global accesses are allowed
+                     --  for specialized actuals of functions annotated with
+                     --  higher order specialization.
 
-                     else
+                     elsif not Is_Specialized_Actual (N) then
                         declare
                            Globals : Global_Flow_Ids;
                         begin
@@ -3989,6 +3999,7 @@ package body SPARK_Definition is
          return;
       end if;
 
+      Mark_Entity (E);
       Mark_Actuals (N);
 
       --  Call is in SPARK only if the subprogram called is in SPARK
@@ -4458,10 +4469,11 @@ package body SPARK_Definition is
 
             declare
                --  The procedures generated by the frontend for
-               --  Default_Initial_Condition or Type_Invariant are stored
+               --  Default_Initial_Condition or Type_Invariant/
+               --  Iterable aspects are stored
                --  as keys in the Delayed_Type_Aspects map.
 
-               Subp                : constant E_Procedure_Id :=
+               N                   : constant Node_Id :=
                  Node_Maps.Key (Delayed_Type_Aspects.First);
                Delayed_Mapping     : constant Node_Or_Entity_Id :=
                  Delayed_Type_Aspects (Delayed_Type_Aspects.First);
@@ -4490,30 +4502,53 @@ package body SPARK_Definition is
                end if;
 
                if Mark_Delayed_Aspect then
-                  declare
-                     Expr  : constant Node_Id :=
-                       Get_Expr_From_Check_Only_Proc (Subp);
-                     Param : constant Formal_Kind_Id := First_Formal (Subp);
+                  if Nkind (N) in N_Aspect_Specification then
+                     declare
+                        Iterable_Aspect : constant N_Aspect_Specification_Id
+                          := N;
+                     begin
+                        --  Delayed type aspects can't be processed recursively
+                        pragma Assert (No (Current_Delayed_Aspect_Type));
 
-                  begin
-                     --  Delayed type aspects can't be processed recursively
-                     pragma Assert (No (Current_Delayed_Aspect_Type));
-                     Current_Delayed_Aspect_Type := Etype (Param);
-                     Mark_Entity (Param);
+                        --  The container type can be found in the type of
+                        --  first parameter, regardless of which primitive
+                        --  come first.
+                        Current_Delayed_Aspect_Type :=
+                          Etype (First_Formal (Entity (Expression
+                                 (First (Component_Associations
+                                    (Expression (Iterable_Aspect)))))));
 
-                     pragma Assert (not Violation_Detected);
-                     Mark (Expr);
-                     --  ??? Violations in the aspect expressions seem ignored
-                     Violation_Detected := False;
+                        Mark_Iterable_Aspect (Iterable_Aspect);
 
-                     --  Restore global variable to its initial value
-                     Current_Delayed_Aspect_Type := Empty;
-                  end;
+                     end;
+                  else
+                     declare
+                        Subp  : constant E_Procedure_Id := N;
+                        Expr  : constant Node_Id :=
+                          Get_Expr_From_Check_Only_Proc (Subp);
+                        Param : constant Formal_Kind_Id := First_Formal (Subp);
+                     begin
+                        --  Delayed type aspects can't be processed recursively
+                        pragma Assert (No (Current_Delayed_Aspect_Type));
+                        Current_Delayed_Aspect_Type := Etype (Param);
+                        Mark_Entity (Param);
+
+                        pragma Assert (not Violation_Detected);
+                        Mark (Expr);
+                     end;
+                  end if;
+
+                  --  Error messages have been emitted for the violations
+                  --  so the flag can be reset.
+                  Violation_Detected := False;
+
+                  --  Restore global variable to its initial value
+                  Current_Delayed_Aspect_Type := Empty;
 
                   Current_SPARK_Pragma := Save_SPARK_Pragma;
                end if;
 
-               Delayed_Type_Aspects.Delete (Subp);
+               Delayed_Type_Aspects.Delete (N);
             end;
 
          --  Mark full views of incomplete types and make sure that they
@@ -4608,6 +4643,11 @@ package body SPARK_Definition is
             exit;
          end if;
       end loop;
+
+      --  Everything has been marked, we can perform the left-over checks on
+      --  pragmas Annotate GNATprove if any.
+
+      Do_Delayed_Checks_On_Pragma_Annotate;
    end Mark_Compilation_Unit;
 
    --------------------------------
@@ -4769,6 +4809,19 @@ package body SPARK_Definition is
 
       Violation_Detected := Save_Violation_Detected;
    end Mark_Concurrent_Type_Declaration;
+
+   ---------------------------
+   -- Mark_Constant_Globals --
+   ---------------------------
+
+   procedure Mark_Constant_Globals (Globals : Node_Sets.Set) is
+   begin
+      for Global of Globals loop
+         if Ekind (Global) = E_Constant then
+            Mark_Entity (Global);
+         end if;
+      end loop;
+   end Mark_Constant_Globals;
 
    -----------------
    -- Mark_Entity --
@@ -5184,6 +5237,103 @@ package body SPARK_Definition is
             then
                Mark_Unsupported (Lim_Access_Sub_Return_Type_With_Inv, Id);
             end if;
+
+            --  Go over the global objects accessed by Id to make sure that
+            --  they are not written and that they are not volatile if Id
+            --  is not a volatile function. This check is done in the frontend
+            --  for explict global contracts, but we need it for the generated
+            --  ones.
+
+            if Ekind (Id) = E_Function
+              and then not Is_Predicate_Function (Id)
+            then
+               declare
+                  Globals : Global_Flow_Ids;
+               begin
+                  Get_Globals
+                    (Subprogram          => Id,
+                     Scope               => (Ent => Id, Part => Visible_Part),
+                     Classwide           => False,
+                     Globals             => Globals,
+                     Use_Deduced_Globals =>
+                        not Gnat2Why_Args.Global_Gen_Mode,
+                     Ignore_Depends      => False);
+
+                  if not Globals.Outputs.Is_Empty then
+                     for G of Globals.Outputs loop
+                        declare
+                           G_Name : constant String :=
+                             (if G.Kind in Direct_Mapping then "&"
+                              else '"' & Flow_Id_To_String (G, Pretty => True)
+                                & '"');
+                        begin
+                           if G.Kind in Direct_Mapping then
+                              Error_Msg_Node_2 := G.Node;
+                           end if;
+                           Mark_Violation
+                             ("function & with output global " & G_Name,
+                              Id,
+                              Root_Cause_Msg =>
+                                "function with global outputs");
+                        end;
+                     end loop;
+
+                  else
+                     for G of Globals.Inputs.Union (Globals.Proof_Ins) loop
+
+                        --  Volatile variable with effective reads are outputs.
+                        --  This case can only happen with abstract states
+                        --  annotated with External. Other cases are rejected
+                        --  in the frontend.
+
+                        if Has_Effective_Reads (G) then
+                           declare
+                              G_Name : constant String :=
+                                (if G.Kind in Direct_Mapping then "&"
+                                 else '"'
+                                 & Flow_Id_To_String (G, Pretty => True)
+                                 & '"');
+                           begin
+                              if G.Kind in Direct_Mapping then
+                                 Error_Msg_Node_2 := G.Node;
+                              end if;
+                              Mark_Violation
+                                ("function & with volatile input global "
+                                 & G_Name & " with effective reads",
+                                 Id,
+                                 Root_Cause_Msg => "function with global "
+                                 & "inputs with effective reads");
+                           end;
+                        end if;
+
+                        --  A nonvolatile function shall not have volatile
+                        --  global inputs (SPARK RM 7.1.3(8)).
+
+                        if not Is_Volatile_Function (Id)
+                          and then Has_Async_Writers (G)
+                        then
+                           declare
+                              G_Name : constant String :=
+                                (if G.Kind in Direct_Mapping then "&"
+                                 else '"'
+                                 & Flow_Id_To_String (G, Pretty => True)
+                                 & '"');
+                           begin
+                              if G.Kind in Direct_Mapping then
+                                 Error_Msg_Node_2 := G.Node;
+                              end if;
+                              Mark_Violation
+                                ("nonvolatile function & with volatile input "
+                                 & "global " & G_Name,
+                                 Id,
+                                 Root_Cause_Msg => "nonvolatile function with "
+                                 & " volatile global inputs");
+                           end;
+                        end if;
+                     end loop;
+                  end if;
+               end;
+            end if;
          end Mark_Function_Specification;
 
          -------------------------------
@@ -5297,27 +5447,6 @@ package body SPARK_Definition is
             Formal      : Opt_Formal_Kind_Id := First_Formal (Id);
             Contract    : Node_Id;
             Raw_Globals : Raw_Global_Nodes;
-
-            procedure Mark_Constant_Globals (Globals : Node_Sets.Set);
-            --  Mark constant objects in the Global/Depends contract (or their
-            --  refined variant). We want to detect constants not in SPARK,
-            --  even if they only appear in the flow contracts, to handle
-            --  them as having no variable input.
-
-            ---------------------------
-            -- Mark_Constant_Globals --
-            ---------------------------
-
-            procedure Mark_Constant_Globals (Globals : Node_Sets.Set) is
-            begin
-               for Global of Globals loop
-                  if Ekind (Global) = E_Constant then
-                     Mark_Entity (Global);
-                  end if;
-               end loop;
-            end Mark_Constant_Globals;
-
-         --  Start of processing for Mark_Subprogram_Specification
 
          begin
             case Ekind (Id) is
@@ -6284,6 +6413,46 @@ package body SPARK_Definition is
                E, SRM_Reference => "SPARK RM 3.2.4(3)");
          end if;
 
+         --  Iterable aspect must be declared on partial view
+         --    for private types.
+
+         declare
+            Decl : constant Node_Id := Parent (E);
+            Full : constant Node_Id := Full_View (E);
+         begin
+            if Present (Decl)
+              and then
+                Nkind (Decl) in N_Private_Type_Declaration
+                              | N_Private_Extension_Declaration
+              and then not Is_Class_Wide_Type (E)
+              and then Present (Full)
+              and then Entity_In_SPARK (Full)
+              and then Declares_Iterable_Aspect (Full)
+              and then not Declares_Iterable_Aspect (E)
+            then
+               Mark_Violation
+                 ("Iterable aspect declared on the full view "
+                  & "of a private type", Full);
+            end if;
+         end;
+
+         --  If the type declares an Iterable aspect,
+         --  stores the aspect in the Delayed_Type_Aspects map.
+
+         if not Violation_Detected and then Declares_Iterable_Aspect (E) then
+            declare
+               Iterable_Aspect : constant Node_Id :=
+                 Find_Aspect (E, Aspect_Iterable);
+               Delayed_Mapping : constant Node_Id :=
+                 (if Present (Current_SPARK_Pragma)
+                  then Current_SPARK_Pragma
+                  else E);
+            begin
+               Delayed_Type_Aspects.Include
+                 (Iterable_Aspect, Delayed_Mapping);
+            end;
+         end if;
+
          --  We currently do not support invariants on components of tagged
          --  types, if the invariant is visible. It is still allowed to include
          --  types with invariants in tagged types as long as the tagged type
@@ -6437,12 +6606,8 @@ package body SPARK_Definition is
                Low  : constant Node_Id := Type_Low_Bound (E);
                High : constant Node_Id := Type_High_Bound (E);
             begin
-               if not Compile_Time_Known_Value (Low) then
-                  Mark (Low);
-               end if;
-               if not Compile_Time_Known_Value (High) then
-                  Mark (High);
-               end if;
+               Mark (Low);
+               Mark (High);
             end;
 
             --  Inherit the annotation No_Wrap_Around when set on a parent
@@ -7370,7 +7535,9 @@ package body SPARK_Definition is
                   if Is_Pragma_Annotate_GNATprove (Cur) then
                      Mark_Pragma_Annotate (Cur, Decl_Node,
                                            Consider_Next => True);
-                  elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
+                  elsif Decl_Starts_Pragma_Annotate_Range (Cur)
+                    and then Nkind (Cur) not in N_Pragma | N_Null_Statement
+                  then
                      exit;
                   end if;
                   Next (Cur);
@@ -7762,12 +7929,61 @@ package body SPARK_Definition is
    procedure Mark_Iterable_Aspect
      (Iterable_Aspect : N_Aspect_Specification_Id)
    is
+
+      procedure Mark_Iterable_Aspect_Function (N : Node_Id);
+      --  Mark individual association of iterable aspect.
+
+      -----------------------------------
+      -- Mark_Iterable_Aspect_Function --
+      -----------------------------------
+
+      procedure Mark_Iterable_Aspect_Function (N : Node_Id) is
+         Ent     : constant Entity_Id :=
+           Ultimate_Alias (Entity (Expression (N)));
+         Globals : Global_Flow_Ids;
+      begin
+         if not In_SPARK (Ent)
+         then
+            Mark_Violation (N, From => Ent);
+            return;
+         end if;
+         if Has_Controlling_Result (Ent) then
+            Mark_Violation
+              ("function associated to aspect Iterable"
+               & " with controlling result", N);
+         end if;
+         if Is_Volatile_Function (Ent) then
+            Mark_Violation
+              ("volatile function associated with aspect Iterable", N);
+         end if;
+         Get_Globals
+           (Subprogram          => Ent,
+            Scope               =>
+              (Ent => Ent, Part => Visible_Part),
+            Classwide           => False,
+            Globals             => Globals,
+            Use_Deduced_Globals =>
+               not Gnat2Why_Args.Global_Gen_Mode,
+            Ignore_Depends      => False);
+         if not Globals.Proof_Ins.Is_Empty
+           or else not Globals.Inputs.Is_Empty
+           or else not Globals.Outputs.Is_Empty
+         then
+            Mark_Violation
+              ("function associated to aspect Iterable"
+               & " with dependency on globals", N);
+         end if;
+      end Mark_Iterable_Aspect_Function;
+
       Iterable_Component_Assoc : constant List_Id :=
         Component_Associations (Expression (Iterable_Aspect));
       Iterable_Field           : Node_Id := First (Iterable_Component_Assoc);
+
+      --  Start of processing for Mark_Iterable_Aspect
+
    begin
       while Present (Iterable_Field) loop
-         Mark_Entity (Entity (Expression (Iterable_Field)));
+         Mark_Iterable_Aspect_Function (Iterable_Field);
          Next (Iterable_Field);
       end loop;
    end Mark_Iterable_Aspect;
@@ -7962,8 +8178,7 @@ package body SPARK_Definition is
          if Present (Init_Cond) then
             declare
                Expr : constant Node_Id :=
-                 Expression (First (Pragma_Argument_Associations
-                             (Init_Cond)));
+                 Expression (First (Pragma_Argument_Associations (Init_Cond)));
             begin
                Mark (Expr);
             end;
@@ -7971,6 +8186,22 @@ package body SPARK_Definition is
       end;
 
       Mark_Stmt_Or_Decl_List (Vis_Decls);
+
+      --  Decide whether constants appearing in explicit Initializes are in
+      --  SPARK, because this affects whether they are considered to have
+      --  variable input. We need to do this after marking declarations of
+      --  generic actual parameters of mode IN, as otherwise we would memoize
+      --  them as having no variable inputs due to their not in SPARK status.
+      --  This memoization is a side-effect of erasing constants without
+      --  variable inputs while parsing the contract.
+
+      if Present (Get_Pragma (Id, Pragma_Initializes)) then
+         for Input_List of
+           Parse_Initializes (Id, Scop => (Ent => Id, Part => Visible_Part))
+         loop
+            Mark_Constant_Globals (To_Node_Set (Input_List));
+         end loop;
+      end if;
 
       Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
 

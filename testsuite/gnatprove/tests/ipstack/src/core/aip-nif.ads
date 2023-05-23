@@ -125,7 +125,7 @@ private
    pragma Export (C, Allocate_Netif, "AIP_allocate_netif");
    --  Allocate a new netif Id. Return IF_NOID if none is available
 
-   function Get_Netif (Nid : Netif_Id) return System.Address;
+   function Get_Netif (Nid : Netif_Id) return System.Address with SPARK_Mode => Off;
    pragma Export (C, Get_Netif, "AIP_get_netif");
    --  Return pointer to Netif record for the given netif
 

@@ -69,5 +69,6 @@ test.adb:126:04: info: no contextual analysis of "Basic_With_Exit" (multiple ret
 test.adb:130:17: medium: overflow check might fail, cannot prove upper bound for X * 2 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 129 should mention X in a loop invariant]
 test.adb:134:17: medium: range check might fail, cannot prove lower bound for X - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 129 should mention X in a loop invariant]
 test.adb:138:04: warning: analyzing unreferenced function "Loop_Stability"
+test.adb:140:16: info: implicit function contract might not be available on calls from enclosing unit
 test.adb:141:07: info: initialization of "A" proved
 test.adb:147:14: warning: unreachable code (CVC5: 1 VC)

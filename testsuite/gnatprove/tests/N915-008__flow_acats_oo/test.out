@@ -134,7 +134,7 @@ c392008_0.adb:11:46: medium: overflow check might fail, cannot prove lower bound
 c392008_0.adb:11:46: medium: range check might fail, cannot prove lower bound for A.Current_Balance + X [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at c392008_0.ads:152 should mention A and X in a precondition]
 c392008_0.adb:17:46: medium: overflow check might fail, cannot prove lower bound for A.Current_Balance - X [reason for check: result of subtraction must fit in a 16-bits machine integer] [possible fix: subprogram at c392008_0.ads:154 should mention A and X in a precondition]
 c392008_0.adb:17:46: medium: range check might fail, cannot prove lower bound for A.Current_Balance - X [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at c392008_0.ads:154 should mention A and X in a precondition]
-c392008_0.adb:27:46: medium: range check might fail, cannot prove lower bound for A.Current_Balance - 500 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at c392008_0.ads:157 should mention A in a precondition]
+c392008_0.adb:27:46: medium: range check might fail, cannot prove lower bound for A.Current_Balance - 5_00 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at c392008_0.ads:157 should mention A in a precondition]
 c392008_0.adb:33:46: info: overflow check proved (CVC5: 2 VC)
 c392008_0.adb:33:46: info: range check proved (CVC5: 2 VC)
 c392008_0.ads:159:30: warning: unused initial value of "A"

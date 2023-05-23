@@ -155,33 +155,37 @@ are in |SPARK|.
    synchronized object or a synchronized state abstraction.
 
 
+7. [The expression of a Priority aspect specification shall not have a variable
+   input; see :ref:`Expressions` for the statement of this rule.]
+
+
 .. container:: heading
 
    Verification Rules
 
 
-7. A ``global_item`` occurring in a Global aspect specification of a
+8. A ``global_item`` occurring in a Global aspect specification of a
    task unit or of a protected operation shall not denote an object
    or state abstraction which is not synchronized.
 
 
-8. A ``global_item`` occurring in the Global aspect specification of
+9. A ``global_item`` occurring in the Global aspect specification of
    the main subprogram shall not denote an object or state abstraction
    whose Part_Of aspect denotes a task or protected unit. [In other words,
    the environment task cannot reference objects which "belong" to other
    tasks.]
 
 
-9. A state abstraction whose Part_Of aspect specifies a task unit or
-   protected unit shall be named in the Initializes aspect of its
-   enclosing package.
+10. A state abstraction whose Part_Of aspect specifies a task unit or
+    protected unit shall be named in the Initializes aspect of its
+    enclosing package.
 
 
-10. The precondition of a protected operation shall not reference a global
+11. The precondition of a protected operation shall not reference a global
     variable, unless it is *constant after elaboration*.
 
 
-11. The Ravenscar profile includes "Max_Entry_Queue_Length => 1" and
+12. The Ravenscar profile includes "Max_Entry_Queue_Length => 1" and
     "Max_Protected_Entries => 1" restrictions.
     The Jorvik profile does not, but does allow use of
     pragma Max_Queue_Length to specify the maximum entry queue length
@@ -203,7 +207,7 @@ are in |SPARK|.
     suspension object (see Ada RM D.10(10)).]
 
 
-12. The verification condition associated with the Ada rule that it is a bounded
+13. The verification condition associated with the Ada rule that it is a bounded
     error to invoke an operation that is potentially blocking
     (including due to cyclic locking) during a
     protected action (see Ada RM 9.5.1(8)) is discharged via (potentially
@@ -232,11 +236,11 @@ are in |SPARK|.
     protected object.
 
 
-13. The end of a task body shall not be reachable. [This follows from
+14. The end of a task body shall not be reachable. [This follows from
     from Ravenscar's or Jorvik's No_Task_Termination restriction.]
 
 
-14. A nonvolatile function shall not be potentially blocking.
+15. A nonvolatile function shall not be potentially blocking.
     [Strictly speaking this rule is already implied by other rules of |SPARK|,
     notably the rule that a nonvolatile function cannot depend on a volatile
     input.]
@@ -246,7 +250,7 @@ are in |SPARK|.
     potentially blocking.]
 
 
-15. The package Ada.Task_Identification declares (and initializes)
+16. The package Ada.Task_Identification declares (and initializes)
     a synchronized external state abstraction named Tasking_State.
     The packages Ada.Real_Time and Ada.Calendar declare (and initialize)
     synchronized external state abstractions named Clock_Time.
@@ -307,7 +311,7 @@ are in |SPARK|.
   therefore also by the Ravenscar profile) are not on this list.]
 
 
-16. For each of the following language-defined procedures, the
+17. For each of the following language-defined procedures, the
     Global aspect of the procedure specifies that the
     state abstraction Ada.Task_Identification.Tasking_State
     is referenced as an In_Out global:
@@ -317,7 +321,7 @@ are in |SPARK|.
   * Ada.Dispatching.Yield.
 
 
-17. For purposes of determining global inputs and outputs, a delay
+18. For purposes of determining global inputs and outputs, a delay
     statement is considered to reference the state abstraction
     Ada.Real_Time.Clock_Time as an input.
     [In other words, a delay statement can be treated like a call to
@@ -325,7 +329,7 @@ are in |SPARK|.
     and references the Clock_Time state abstraction as an Input global.]
 
 
-18. For purposes of determining global inputs and outputs, a use of
+19. For purposes of determining global inputs and outputs, a use of
     any of the Callable, Caller, Count, or Terminated attributes is considered
     to reference the state abstraction
     Ada.Task_Identification.Tasking_State as an Input.
@@ -337,7 +341,7 @@ are in |SPARK|.
     attributes introduces no such dependency.]
 
 
-19. Preconditions are added to suprogram specifications as needed in order
+20. Preconditions are added to suprogram specifications as needed in order
     to avoid the failure of language-defined runtime checks for the
     following subprograms:
 
@@ -359,6 +363,6 @@ are in |SPARK|.
     result type.
 
 
-20. All procedures declared in the visible part of Ada.Synchronous_Task_Control
+21. All procedures declared in the visible part of Ada.Synchronous_Task_Control
     have a dependency "(S => null)" despite the fact that S has mode **in
     out**.

@@ -40,6 +40,7 @@ with Osint;
 with Output;
 with Pprint;                      use Pprint;
 with SPARK_Definition;            use SPARK_Definition;
+with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util.Hardcoded;        use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
@@ -1144,9 +1145,16 @@ package body SPARK_Util is
                        | E_Subprogram_Type
                        | E_Task_Type
          then
-            --  We have found the enclosing unit, return it
 
-            return S;
+            --  We have found the enclosing unit, unless it is a wrapper
+            --  package.
+
+            if Ekind (S) = E_Package and then Is_Wrapper_Package (S) then
+               S := Scope (S);
+            else
+               return S;
+            end if;
+
          else
             pragma Assert (not Is_Generic_Unit (S));
 
@@ -1218,12 +1226,8 @@ package body SPARK_Util is
            (if Nkind (Aggr) = N_Delta_Aggregate then No_List
             else Expressions (Aggr));
          Assocs : constant List_Id := Component_Associations (Aggr);
-         Expr   : Node_Id :=
-           (if Present (Exprs) then Nlists.First (Exprs)
-            else Empty);
-         Assoc  : Node_Id :=
-           (if Present (Assocs) then Nlists.First (Assocs)
-            else Empty);
+         Expr   : Node_Id := Nlists.First (Exprs);
+         Assoc  : Node_Id := Nlists.First (Assocs);
       begin
          while Present (Expr) loop
             pragma Assert (Is_Array_Type (Etype (Aggr)));
@@ -1941,6 +1945,56 @@ package body SPARK_Util is
       end case;
    end Get_Root_Object;
 
+   --------------------------------
+   -- Get_Specialized_Parameters --
+   --------------------------------
+
+   function Get_Specialized_Parameters
+     (Call                 : Node_Id;
+      Specialized_Entities : Node_Maps.Map := Node_Maps.Empty_Map)
+      return Node_Maps.Map
+   is
+      Subp   : constant Entity_Id :=
+        (if Nkind (Call) in N_Op then Entity (Call)
+         else Sem_Aux.Get_Called_Entity (Call));
+      Params : Node_Maps.Map;
+
+      procedure Store_Specialized_Param (Formal : Entity_Id; Actual : Node_Id);
+      --  Store in Params an association between the formal parameters
+      --  specialized in Call and the prefix of their actuals.
+
+      -----------------------------
+      -- Store_Specialized_Param --
+      -----------------------------
+
+      procedure Store_Specialized_Param (Formal : Entity_Id; Actual : Node_Id)
+      is
+      begin
+         if Is_Specializable_Formal (Formal) then
+            if Is_Access_Attribute_Of_Function (Actual) then
+               Params.Insert (Formal, Entity (Prefix (Actual)));
+            elsif Nkind (Actual) in N_Identifier | N_Expanded_Name
+              and then Specialized_Entities.Contains (Entity (Actual))
+            then
+               Params.Insert
+                 (Formal, Specialized_Entities.Element (Entity (Actual)));
+            end if;
+         end if;
+      end Store_Specialized_Param;
+
+      procedure Collect_Params is new Iterate_Call_Parameters
+        (Store_Specialized_Param);
+
+   begin
+      if Ekind (Subp) in E_Function | E_Procedure
+        and then Has_Higher_Order_Specialization_Annotation (Subp)
+      then
+         Collect_Params (Call);
+      end if;
+
+      return Params;
+   end Get_Specialized_Parameters;
+
    ------------------
    -- Has_Volatile --
    ------------------
@@ -2054,6 +2108,16 @@ package body SPARK_Util is
        and then Is_Access_Subprogram_Type (Etype (E))
        and then Scope (E) = Access_Subprogram_Wrapper
        (Directly_Designated_Type (Etype (E))));
+
+   -------------------------------------
+   -- Is_Access_Attribute_Of_Function --
+   -------------------------------------
+
+   function Is_Access_Attribute_Of_Function (Expr : Node_Id) return Boolean
+   is (Nkind (Expr) = N_Attribute_Reference
+       and then Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Access
+       and then Nkind (Prefix (Expr)) in N_Identifier | N_Expanded_Name
+       and then Ekind (Entity (Prefix (Expr))) = E_Function);
 
    ---------------
    -- Is_Action --
@@ -3103,6 +3167,88 @@ package body SPARK_Util is
            and then Is_Type (Entity (Choice)));
    end Is_Singleton_Choice;
 
+   -----------------------------
+   -- Is_Specializable_Formal --
+   -----------------------------
+
+   function Is_Specializable_Formal (Formal : Formal_Kind_Id) return Boolean is
+     (Ekind (Formal) = E_In_Parameter
+      and then Is_Anonymous_Access_Type (Etype (Formal))
+      and then Is_Access_Subprogram_Type (Etype (Formal))
+      and then Is_Function_Type
+        (Directly_Designated_Type (Etype (Formal))));
+
+   ---------------------------
+   -- Is_Specialized_Actual --
+   ---------------------------
+
+   function Is_Specialized_Actual
+     (Expr                 : Node_Id;
+      Specialized_Entities : Node_Maps.Map := Node_Maps.Empty_Map)
+      return Boolean
+   is
+   begin
+      --  If Expr is an identifier, it shall be in the Specialized_Entities map
+
+      if Nkind (Expr) in N_Identifier | N_Expanded_Name then
+         return Specialized_Entities.Contains (Entity (Expr));
+      end if;
+
+      --  Otherwise, Expr shall be an access attribute to a function
+
+      if not Is_Access_Attribute_Of_Function (Expr) then
+         return False;
+      end if;
+
+      --  Its parent shall be a function call annotated with higher order
+      --  specialization.
+
+      declare
+         Call : constant Node_Id := Parent (Expr);
+         Subp : constant Entity_Id :=
+           (if Nkind (Call) in N_Function_Call | N_Procedure_Call_Statement
+            then Get_Called_Entity (Call)
+            else Empty);
+      begin
+         if No (Subp)
+           or else Ekind (Subp) not in E_Function | E_Procedure
+           or else not Has_Higher_Order_Specialization_Annotation (Subp)
+         then
+            return False;
+         end if;
+
+         --  Expr shall be the actual parameter associated to an anonymous
+         --  access-to-function formal parameter.
+
+         declare
+            Formal : constant Entity_Id := Get_Formal_From_Actual (Expr);
+         begin
+            return Present (Formal)
+              and then Ekind (Formal) = E_In_Parameter
+              and then Is_Anonymous_Access_Type (Etype (Formal));
+         end;
+      end;
+   end Is_Specialized_Actual;
+
+   -------------------------
+   -- Is_Specialized_Call --
+   -------------------------
+
+   function Is_Specialized_Call
+     (Call                 : Node_Id;
+      Specialized_Entities : Node_Maps.Map := Node_Maps.Empty_Map)
+      return Boolean
+   is
+      Subp : constant Entity_Id :=
+        (if Nkind (Call) in N_Op then Entity (Call)
+         else Sem_Aux.Get_Called_Entity (Call));
+   begin
+      return Ekind (Subp) in E_Function | E_Procedure
+        and then Has_Higher_Order_Specialization_Annotation (Subp)
+        and then not
+          Get_Specialized_Parameters (Call, Specialized_Entities).Is_Empty;
+   end Is_Specialized_Call;
+
    -----------------------
    -- Is_Strict_Subpath --
    -----------------------
@@ -3190,7 +3336,13 @@ package body SPARK_Util is
          then Get_Root_Object (Prefix_Expr, Through_Traversal => False)
          else Empty);
    begin
-      if Present (Aliased_Object) and then Is_Object (Aliased_Object) then
+      if Present (Aliased_Object)
+        and then
+          Ekind (Aliased_Object) in E_Constant
+                                  | E_Loop_Parameter
+                                  | E_Variable
+                                  | Formal_Kind
+      then
          return Aliased_Object;
       else
          return Empty;
@@ -4442,19 +4594,6 @@ package body SPARK_Util is
       -- Local Subprograms --
       -----------------------
 
-      function Count_Parentheses (S : String; C : Character) return Natural
-        with Pre => C in '(' | ')';
-      --  Returns the number of times parenthesis character C should be added
-      --  to string S for getting a correctly parenthesized result. For C = '('
-      --  this means prepending the character, for C = ')' this means appending
-      --  the character.
-
-      function Fix_Parentheses (S : String) return String;
-      --  Counts the number of required opening and closing parentheses in S to
-      --  respectively prepend and append for getting correct parentheses. Then
-      --  returns S with opening parentheses prepended and closing parentheses
-      --  appended so that the result is correctly parenthesized.
-
       function Ident_Image (Expr        : Node_Id;
                             Orig_Expr   : Node_Id;
                             Expand_Type : Boolean)
@@ -4470,55 +4609,6 @@ package body SPARK_Util is
       function Node_To_String is new
         Expression_Image (Real_Image_10, String_Image, Ident_Image);
       --  The actual printing function
-
-      -----------------------
-      -- Count_Parentheses --
-      -----------------------
-
-      function Count_Parentheses (S : String; C : Character) return Natural is
-
-         procedure Next_Char (Count : in out Natural; C, D, Ch : Character);
-         --  Process next character Ch and update the number Count of C
-         --  characters to add for correct parenthesizing, where D is the
-         --  opposite parenthesis.
-
-         procedure Next_Char (Count : in out Natural; C, D, Ch : Character) is
-         begin
-            if Ch = D then
-               Count := Count + 1;
-            elsif Ch = C and then Count > 0 then
-               Count := Count - 1;
-            end if;
-         end Next_Char;
-
-         Count : Natural := 0;
-
-      --  Start of processing for Count_Parentheses
-
-      begin
-         if C = '(' then
-            for Ch of reverse S loop
-               Next_Char (Count, C, ')', Ch);
-            end loop;
-         else
-            for Ch of S loop
-               Next_Char (Count, C, '(', Ch);
-            end loop;
-         end if;
-
-         return Count;
-      end Count_Parentheses;
-
-      ---------------------
-      -- Fix_Parentheses --
-      ---------------------
-
-      function Fix_Parentheses (S : String) return String is
-         Count_Open  : constant Natural := Count_Parentheses (S, '(');
-         Count_Close : constant Natural := Count_Parentheses (S, ')');
-      begin
-         return (1 .. Count_Open => '(') & S & (1 .. Count_Close => ')');
-      end Fix_Parentheses;
 
       -----------------
       -- Ident_Image --
@@ -4546,14 +4636,14 @@ package body SPARK_Util is
          elsif Present (Entity (Expr)) then
             return Source_Name (Entity (Expr));
          else
-            return Get_Name_String (Chars (Expr));
+            return Source_Name (Expr);
          end if;
       end Ident_Image;
 
    --  Start of processing for String_Of_Node
 
    begin
-      return Fix_Parentheses (Node_To_String (N, ""));
+      return Node_To_String (N, "");
    end String_Of_Node;
 
    ------------------
@@ -4915,43 +5005,114 @@ package body SPARK_Util is
       end if;
 
       declare
-         function Is_In_Statement_List (N : Node_Id) return Boolean;
-         --  Return True if N occurs in a list of statements
+         function Is_In_Statement_List_Or_Post (N : Node_Id) return Boolean;
+         --  Return True if N occurs in a list of statements or in a pragma
+         --  postcondition.
 
          --------------------------
          -- Is_In_Statement_List --
          --------------------------
 
-         function Is_In_Statement_List (N : Node_Id) return Boolean is
+         function Is_In_Statement_List_Or_Post (N : Node_Id) return Boolean is
          begin
-            return Is_List_Member (N)
-              and then Nkind (Parent (N)) in N_Case_Statement_Alternative
-                                           | N_Elsif_Part
-                                           | N_If_Statement
-                                           | N_Handled_Sequence_Of_Statements
-                                           | N_Block_Statement
-                                           | N_Subprogram_Body
-                                           | N_Entry_Body
-                                           | N_Loop_Statement
-                                           | N_Extended_Return_Statement;
-         end Is_In_Statement_List;
+            return
+              (Nkind (N) = N_Pragma
+               and then
+                 Get_Pragma_Id (Pragma_Name (N)) in Pragma_Postcondition
+                                                  | Pragma_Post_Class
+                                                  | Pragma_Contract_Cases
+                                                  | Pragma_Refined_Post)
+              or else
+                (Is_List_Member (N)
+                 and then Nkind (Parent (N))
+                    in N_Case_Statement_Alternative
+                     | N_Elsif_Part
+                     | N_If_Statement
+                     | N_Handled_Sequence_Of_Statements
+                     | N_Block_Statement
+                     | N_Subprogram_Body
+                     | N_Entry_Body
+                     | N_Loop_Statement
+                     | N_Extended_Return_Statement);
+         end Is_In_Statement_List_Or_Post;
 
-         function First_Parent_In_Statement_List is new
-           First_Parent_With_Property (Is_In_Statement_List);
+         function First_Parent_In_Statement_List_Or_Post is new
+           First_Parent_With_Property (Is_In_Statement_List_Or_Post);
 
          Variable  : constant Entity_Id := Get_Root_Object (Call_Actual);
          Statement : constant Node_Id :=
            (if Nkind (Call) = N_Function_Call
-            then First_Parent_In_Statement_List (Call)
+            then First_Parent_In_Statement_List_Or_Post (Call)
             else Call);
+
       begin
-         Result :=
-           (Decreases
-            or else Is_Reborrowed_On_All_Path_To_Stmt (Variable, Statement))
-           and then
-             (Is_Constant_In_SPARK (Param)
+         --  Result is set to True if the variant at call site is a strict
+         --  subcomponent of the caller's variant and the caller's variant
+         --  is not modified in a deep way along the way.
+
+         --  If we are in a post condition, we must consider the whole body of
+         --  the caller.
+
+         if Nkind (Statement) = N_Pragma
+           and then Get_Pragma_Id (Pragma_Name (Statement)) in
+                Pragma_Postcondition
+              | Pragma_Post_Class
+              | Pragma_Contract_Cases
+              | Pragma_Refined_Post
+         then
+            pragma Assert (Variable = Param);
+
+            --  Expr is necessarily rooted at Param itself. We do not
+            --  consider the case of reborrowed parameters as they are unlikely
+            --  (as is done in Is_Reborrowed_On_All_Path_To_Stmt).
+
+            if not Decreases then
+               Explanation := To_Unbounded_String
+                 ("structural variant of """ & Source_Name (Subp)
+                  & """ might not be a strict subcomponent of """
+                  & Source_Name (Param) & '"');
+               Result := False;
+
+            elsif Is_Constant_In_SPARK (Param)
               or else not Is_Deep (Etype (Param))
-              or else No_Deep_Updates_Up_To_Stmt (Variable, Statement));
+            then
+               Result := True;
+
+            --  We check that the parameter is not updated in a deep way by
+            --  the subprogram.
+
+            else
+               declare
+                  Caller : constant Entity_Id := Scope (Param);
+                  pragma Assert
+                    (not Is_Expression_Function_Or_Completion (Caller)
+                     and then Entity_Body_In_SPARK (Caller));
+
+                  Body_N : constant Node_Id := Get_Body (Caller);
+                  Stmts  : constant List_Id :=
+                    Statements (Handled_Statement_Sequence (Body_N));
+                  Decls  : constant List_Id := Declarations (Body_N);
+               begin
+                  Result := No_Deep_Updates
+                      (Stmts       => Stmts,
+                       Variable    => Variable,
+                       Explanation => Explanation,
+                       Decls       => Decls);
+               end;
+            end if;
+
+         --  Otherwise, we only consider the paths leading to the statement
+         --  enclosing the call.
+
+         else
+            Result :=
+              (Decreases
+               or else Is_Reborrowed_On_All_Path_To_Stmt (Variable, Statement))
+              and then
+                (Is_Constant_In_SPARK (Param)
+                 or else not Is_Deep (Etype (Param))
+                 or else No_Deep_Updates_Up_To_Stmt (Variable, Statement));
+         end if;
       end;
    end Structurally_Decreases_In_Call;
 

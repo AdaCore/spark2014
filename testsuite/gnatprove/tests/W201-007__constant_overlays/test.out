@@ -1,0 +1,18 @@
+main.adb:7:04: info: alignment of overlaid objects is compatible (Trivial)
+main.adb:7:04: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:7:54: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:7:54: info: types of aliased objects have the same size (Trivial)
+main.adb:12:06: info: data dependencies proved
+main.adb:14:07: info: alignment of overlaid objects is compatible (Trivial)
+main.adb:14:07: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:14:53: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:14:53: info: types of aliased objects have the same size (Trivial)
+main.adb:21:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Positive has 16#7FFF_FFFF# values but has Object_Size 32]
+main.adb:21:04: info: alignment of overlaid objects is compatible (Trivial)
+main.adb:21:55: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:21:55: info: types of aliased objects have the same size (Trivial)
+main.adb:26:06: info: data dependencies proved
+main.adb:28:07: high: object is unsuitable for aliasing via address clause [possible explanation: type Positive has 16#7FFF_FFFF# values but has Object_Size 32]
+main.adb:28:07: info: alignment of overlaid objects is compatible (Trivial)
+main.adb:28:54: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:28:54: info: types of aliased objects have the same size (Trivial)

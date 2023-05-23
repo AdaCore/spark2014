@@ -342,7 +342,6 @@ is
             and (for all I in 1 .. Length (Container) =>
                   Find (Keys'Result, K.Get (Keys'Result, I)) = I
                     and K_Is_Find (Keys'Result, K.Get (Keys'Result, I), I));
-      pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Keys);
 
       function Positions (Container : Map) return P.Map with
       --  The Positions map is used to model cursors. It only contains valid
@@ -407,7 +406,7 @@ is
      Global => null,
      Post   =>
        Is_Empty'Result = M.Is_Empty (Model (Container))
-         and (Is_Empty'Result = (Length (Container) = 0));
+         and Is_Empty'Result = (Length (Container) = 0);
 
    procedure Clear (Container : in out Map) with
      Global => null,
@@ -427,6 +426,13 @@ is
          and Keys (Copy'Result) = Keys (Source)
          and Positions (Copy'Result) = Positions (Source);
 
+   function Iter_Model (Container : Map) return K.Sequence is
+      (Keys (Container))
+   with
+     Ghost,
+     Global   => null,
+     Annotate => (GNATprove, Inline_For_Proof);
+
    function Key (Container : Map; Position : Cursor) return Key_Type with
      Global => null,
      Pre    => Has_Element (Container, Position),
@@ -434,6 +440,7 @@ is
        Key'Result =
          K.Get (Keys (Container), P.Get (Positions (Container), Position));
    pragma Annotate (GNATprove, Inline_For_Proof, Key);
+   pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Iter_Model);
 
    function Element
      (Container : Map;
@@ -659,7 +666,7 @@ is
      Global => null,
      Pre    =>
        Length (Container) < Count_Type'Last
-         and then (not Contains (Container, Key)),
+         and then not Contains (Container, Key),
      Post   =>
        Length (Container) = Length (Container)'Old + 1
          and Contains (Container, Key)

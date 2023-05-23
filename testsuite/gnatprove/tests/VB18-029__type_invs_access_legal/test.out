@@ -1,4 +1,4 @@
-pred.ads:7:13: medium: invariant check might fail (e.g. when Bad_New_T'Result.all = (Content => -1))
+pred.ads:7:13: medium: invariant check might fail (e.g. when Bad_New_T'Result.all = (Content => 0))
 pred.ads:8:13: info: invariant check proved (CVC5: 1 VC; Trivial: 3 VC)
 pred.ads:10:09: info: invariant check proved on default value (CVC5: 1 VC)
 pred.ads:10:74: info: in default value of private type at pred.ads:3

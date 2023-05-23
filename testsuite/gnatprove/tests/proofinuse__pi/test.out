@@ -1,3 +1,4 @@
+pi_compute.adb:10:13: info: function contract might not be available on calls from enclosing unit
 pi_compute.adb:11:19: info: postcondition proved (CVC5: 1 VC)
 pi_compute.adb:23:07: info: initialization of "Res" proved
 pi_compute.adb:25:16: info: overflow check proved (CVC5: 2 VC)
@@ -12,6 +13,7 @@ pi_compute.adb:25:52: info: overflow check proved (CVC5: 2 VC)
 pi_compute.adb:25:57: info: overflow check proved (CVC5: 2 VC)
 pi_compute.adb:25:62: info: overflow check proved (CVC5: 2 VC)
 pi_compute.adb:26:22: info: assertion proved (CVC5: 1 VC)
+pi_compute.adb:30:13: info: function contract might not be available on calls from enclosing unit
 pi_compute.adb:31:19: info: postcondition proved (CVC5: 1 VC)
 pi_compute.adb:43:07: info: initialization of "Res" proved
 pi_compute.adb:45:18: info: float overflow check proved (CVC5: 1 VC)
@@ -25,6 +27,7 @@ pi_compute.adb:45:54: info: float overflow check proved (CVC5: 1 VC)
 pi_compute.adb:45:59: info: float overflow check proved (CVC5: 1 VC)
 pi_compute.adb:45:64: info: float overflow check proved (CVC5: 1 VC)
 pi_compute.adb:46:22: info: assertion proved (CVC5: 1 VC)
+pi_compute.adb:50:13: info: function contract might not be available on calls from enclosing unit
 pi_compute.adb:51:19: info: postcondition proved (CVC5: 1 VC)
 pi_compute.adb:65:25: info: overflow check proved (CVC5: 2 VC)
 pi_compute.adb:65:25: info: range check proved (CVC5: 2 VC)
@@ -58,6 +61,7 @@ pi_compute.adb:79:18: info: division check proved (CVC5: 1 VC)
 pi_compute.adb:79:18: info: overflow check proved (CVC5: 2 VC)
 pi_compute.adb:79:18: info: range check proved (CVC5: 2 VC)
 pi_compute.adb:80:22: medium: assertion might fail
+pi_compute.adb:84:13: info: function contract might not be available on calls from enclosing unit
 pi_compute.adb:85:19: info: postcondition proved (CVC5: 1 VC)
 pi_compute.adb:99:25: info: float overflow check proved (CVC5: 1 VC)
 pi_compute.adb:100:25: info: float overflow check proved (CVC5: 1 VC)

@@ -38,6 +38,7 @@ with Output;
 with Sem_Util;                       use Sem_Util;
 with Sinfo.Utils;                    use Sinfo.Utils;
 with Snames;                         use Snames;
+with SPARK_Xrefs;                    use SPARK_Xrefs;
 
 package body Flow_Types is
 
@@ -531,30 +532,6 @@ package body Flow_Types is
             when Magic_String   => GG_Is_Abstract_State (F.Name),
             when others         => False));
 
-   -----------------
-   -- Is_Constant --
-   -----------------
-
-   function Is_Constant (F : Flow_Id) return Boolean is
-   begin
-      case F.Kind is
-         when Direct_Mapping | Record_Field =>
-            return Is_Constant_Object (F.Node);
-
-         --  Constants (without variable input) are filtered in phase 1 and
-         --  never appear in the contracts written to the ALI file.
-
-         when Magic_String =>
-            return False;
-
-         when Synthetic_Null_Export =>
-            return False;
-
-         when Null_Value =>
-            raise Program_Error;
-      end case;
-   end Is_Constant;
-
    --------------------
    -- Is_Constituent --
    --------------------
@@ -796,7 +773,12 @@ package body Flow_Types is
       Capitalize : Boolean := True;
       --  Control variables for skipping a second consecutive underscore and
       --  capitalizing the first letter of a compound string.
+
    begin
+      if Original = Name_Of_Heap_Variable then
+         return "memory accessed through objects of access type";
+      end if;
+
       for J in Original'Range loop
          if Skip then
             Skip := False;
@@ -1059,7 +1041,9 @@ package body Flow_Types is
    begin
       for E of S loop
          pragma Assert
-           (Is_Global_Entity (E) or else Ekind (E) = E_Constant
+           (Ekind (E) = E_Constant  --  Avoid calling Has_Variable_Input
+              or else               --  by Is_Global_Entity during marking.
+            Is_Global_Entity (E)
               or else
             Is_Subprogram_Or_Entry (E) or else Ekind (E) = E_Package);
          --  Here we only process globals (including constants without

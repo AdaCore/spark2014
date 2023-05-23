@@ -111,6 +111,9 @@ package VC_Kinds is
       VC_Assert_Step,                --  Side condition for proof cut points
       VC_Assert_Premise,             --  Premise for proof with cut points
       VC_Raise,
+      VC_Feasible_Post,              --  Check that the postcondition of
+                                     --  abstract functions and
+                                     --  access-to-function types are feasible.
       VC_Inline_Check,               --  Check that the Inline_For_Proof or
                                      --  Logical_Equal annotation provided for
                                      --  a function is correct.
@@ -358,8 +361,9 @@ package VC_Kinds is
    --  analysis.
    type Misc_Warning_Kind is
      (Warn_Address_To_Access,
+      Warn_Alias_Atomic_Vol,
+      Warn_Alias_Different_Volatility,
       Warn_Attribute_Valid,
-      Warn_Indirect_Writes_To_Alias,
       Warn_Initialization_To_Alias,
       Warn_Function_Is_Valid,
       Warn_Lemma_Procedure_No_Return,
@@ -379,12 +383,11 @@ package VC_Kinds is
       --  Warnings guaranteed to be issued
       Warn_Address_Atomic,
       Warn_Address_Valid,
-      Warn_Alias_Atomic_Vol,
-      Warn_Alias_Different_Volatility,
       Warn_Assumed_Always_Return,
       Warn_Assumed_Global_Null,
       Warn_Assumed_Volatile_Properties,
       Warn_Indirect_Writes_Through_Alias,
+      Warn_Indirect_Writes_To_Alias,
 
       --  Warnings only issued when using switch --pedantic
       Warn_Image_Attribute_Length,
@@ -478,7 +481,7 @@ package VC_Kinds is
      Warn_Address_To_Access .. Warn_Variant_Not_Recursive;
 
    subtype Guaranteed_Warning_Kind is Misc_Warning_Kind range
-     Warn_Address_Atomic .. Warn_Indirect_Writes_Through_Alias;
+     Warn_Address_Atomic .. Warn_Indirect_Writes_To_Alias;
 
    subtype Pedantic_Warning_Kind is Misc_Warning_Kind range
      Warn_Image_Attribute_Length .. Warn_Representation_Attribute_Value;
@@ -495,6 +498,10 @@ package VC_Kinds is
         when Warn_Address_To_Access =>
           "?call to & is assumed to return a valid access"
           & " designating a valid value",
+        when Warn_Alias_Atomic_Vol =>
+          "?aliased objects must have the same volatility and atomic status",
+        when Warn_Alias_Different_Volatility =>
+          "?aliased objects have different volatile properties",
         when Warn_Attribute_Valid =>
           "?attribute Valid is assumed to return True",
         when Warn_Indirect_Writes_To_Alias =>
@@ -537,10 +544,6 @@ package VC_Kinds is
           "?assuming no concurrent accesses to non-atomic object &",
         when Warn_Address_Valid =>
           "?assuming valid reads from object &",
-        when Warn_Alias_Atomic_Vol =>
-          "?aliased objects must have the same volatility and atomic status",
-        when Warn_Alias_Different_Volatility =>
-          "?aliased objects have different volatile properties",
         when Warn_Assumed_Always_Return =>
           "?no returning annotation available for &",
         when Warn_Assumed_Global_Null =>
@@ -781,6 +784,7 @@ package VC_Kinds is
 
    type Stop_Reason_Type is
      (Stop_Reason_None,
+      Stop_Reason_Generic_Unit,    --  The unit is a generic unit
       Stop_Reason_Check_Mode,      --  Only check mode was requested
       Stop_Reason_Flow_Mode,       --  Only flow analysis was requested
       Stop_Reason_Error_Marking,   --  Error during marking
@@ -790,6 +794,11 @@ package VC_Kinds is
 
    SPARK_Suffix : constant String := "spark";
    --  Extension of the files where spark_report expects gnat2why results
+
+   type SPARK_Mode_Status is
+     (All_In_SPARK,       --  Spec (and if applicable, body) are in SPARK
+      Spec_Only_In_SPARK, --  Only spec is in SPARK, body is not in SPARK
+      Not_In_SPARK);      --  Not in SPARK
 
    ------------
    -- Labels --
@@ -870,7 +879,6 @@ package VC_Kinds is
       Cnt_Float,
       Cnt_Boolean,
       Cnt_Bitvector,
-      Cnt_Unparsed,
       Cnt_Array,
       Cnt_Record,
       Cnt_Projection,
@@ -923,7 +931,6 @@ package VC_Kinds is
          when Cnt_Float      => F  : Float_Value_Ptr;
          when Cnt_Boolean    => Bo : Boolean;
          when Cnt_Bitvector  => B  : Unbounded_String;
-         when Cnt_Unparsed   => U  : Unbounded_String;
          when Cnt_Record     =>
             Fi : Cntexmp_Value_Array.Map;
          when Cnt_Projection => Er : Unbounded_String;
@@ -1084,6 +1091,7 @@ package VC_Kinds is
    function From_JSON (V : JSON_Value) return Prover_Stat_Maps.Map;
    function From_JSON (V : JSON_Value) return Prover_Category;
    function From_JSON (V : JSON_Value) return Cntexample_File_Maps.Map;
+   function From_JSON (V : JSON_Value) return SPARK_Mode_Status;
 
    function From_JSON_Labels (Ar : JSON_Array) return S_String_List.List;
 
@@ -1091,4 +1099,5 @@ package VC_Kinds is
    function To_JSON (P : Prover_Category) return JSON_Value;
    function To_JSON (F : Cntexample_File_Maps.Map) return JSON_Value;
    function To_JSON (V : Cntexmp_Value) return JSON_Value;
+   function To_JSON (Status : SPARK_Mode_Status) return JSON_Value;
 end VC_Kinds;

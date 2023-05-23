@@ -104,6 +104,36 @@ package body SPARK_Definition.Annotate is
    --  Maps lemma procedures annotated with Automatic_Instantiation to their
    --  associated function.
 
+   Delayed_Checks_For_Lemmas : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  Set of lemmas with automatic instantiation that need to be checked
+
+   Delayed_HO_Specialization_Checks : Common_Containers.Node_Maps.Map :=
+     Common_Containers.Node_Maps.Empty_Map;
+   --  Maps calls to functions which were not marked yet but should be
+   --  annotated with Higher_Order_Specialization to the node on which the
+   --  checks shall be emited.
+
+   Higher_Order_Spec_Annotations : Common_Containers.Node_Graphs.Map :=
+     Common_Containers.Node_Graphs.Empty_Map;
+   --  Stores function entities with a pragma Annotate
+   --  (GNATprove, Higher_Order_Specialization, E). They are mapped to a
+   --  (possibly empty) set of  lemmas that should be automatically
+   --  instantiated when the function is specialized.
+
+   package Node_To_Node_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Node_Maps.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Node_Maps."=");
+   --  Maps of nodes to maps of nodes to nodes
+
+   Higher_Order_Lemma_Specializations : Node_To_Node_Maps.Map :=
+     Node_To_Node_Maps.Empty_Map;
+   --  Maps lemma procedures to the mapping that should be used to construct
+   --  their specialization from their associated function specialization.
+
    Inline_Annotations : Common_Containers.Node_Maps.Map :=
      Common_Containers.Node_Maps.Empty_Map;
    --  Maps all the function entities E with a pragma Annotate
@@ -208,6 +238,18 @@ package body SPARK_Definition.Annotate is
    --  has been detected, or if the pragma Annotate is not used for
    --  justification purposes.
 
+   procedure Check_Automatic_Inst_And_HO_Specialization_Compatibility
+     (Lemma : Subprogram_Kind_Id;
+      Fun   : Function_Kind_Id)
+   with Pre => Has_Automatic_Instantiation_Annotation (Lemma)
+     and then Retrieve_Automatic_Instantiation_Annotation (Lemma) = Fun
+     and then Has_Higher_Order_Specialization_Annotation (Fun);
+   --  Check that lemmas associated to a function with higher order
+   --  specialization can be specialized with the function. If it is not the
+   --  case, emit a warning. Store compatible lemmas in the
+   --  Higher_Order_Spec_Annotation map and their parameter associations in
+   --  Higher_Order_Lemma_Specializations.
+
    procedure Check_Automatic_Instantiation_Annotation
      (Arg3_Exp : Node_Id;
       Prag     : Node_Id)
@@ -227,13 +269,21 @@ package body SPARK_Definition.Annotate is
    --  Check validity of a pragma Annotate (GNATprove, At_End_Borrow, E) and
    --  insert it in the At_End_Borrow_Annotations map.
 
+   procedure Check_Higher_Order_Specialization_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id);
+   --  Check validity of a pragma Annotate
+   --  (GNATprove, Higher_Order_Specialization, E) and insert it in the
+   --  Higher_Order_Spec_Annotations map.
+
    procedure Check_Inline_Annotation (Arg3_Exp : Node_Id; Prag : Node_Id);
    --  Check validity of a pragma Annotate (GNATprove, Inline_For_Proof, E)
    --  and insert it in the Inline_Annotations map.
 
    procedure Check_Iterable_Annotation
      (Arg3_Exp : Node_Id;
-      Arg4_Exp : Node_Id);
+      Arg4_Exp : Node_Id;
+      Prag : Node_Id);
    --  Check validity of a pragma Annotate (GNATprove, Iterate_For_Proof, E)
    --  and insert it in the Iterable_Annotations map.
 
@@ -425,6 +475,223 @@ package body SPARK_Definition.Annotate is
       At_End_Borrow_Annotations.Include (Get_Renamed_Entity (E));
    end Check_At_End_Borrow_Annotation;
 
+   --------------------------------------------------------------
+   -- Check_Automatic_Inst_And_HO_Specialization_Compatibility --
+   --------------------------------------------------------------
+
+   procedure Check_Automatic_Inst_And_HO_Specialization_Compatibility
+     (Lemma : Subprogram_Kind_Id;
+      Fun   : Function_Kind_Id)
+   is
+   begin
+      --  Lemma shall to be annotated with higher order specialization
+
+      if not Has_Higher_Order_Specialization_Annotation (Lemma) then
+         Error_Msg_N
+           ("?automatically instantiated lemma is not annotated with"
+            & " Higher_Order_Specialization",
+            Lemma);
+         Error_Msg_NE
+           ("\it will not be automatically instantiated on specializations"
+            & " of &",
+            Lemma, Fun);
+         return;
+      end if;
+
+      --  Go over the contracts of Lemma to make sure that:
+      --   * they contain at least one specializable call to Fun,
+      --   * they do not contain partially specializable calls to Fun, and
+      --   * all specializable calls to Fun in the contracts of Lemma have
+      --     the same specialization.
+
+      declare
+         Lemma_Params  : Node_Maps.Map;
+         --  Map used to simulate a specialized call to Lemma. It will map
+         --  its specializable formals to themselves.
+
+         Nb_Fun_Params : Integer := 0;
+         --  Number of the specializable parameters of Fun
+
+         Spec_Params   : Node_Maps.Map;
+         Violation     : Boolean := False;
+
+         function Check_Calls_To_Fun (N : Node_Id) return Traverse_Result;
+         --  Return Abandon if N is a non conforming call to Fun. A warning
+         --  will have been emitted in this case and Violation will be set to
+         --  True. Otherwise, if N is a call to Fun, the Spec_Params map will
+         --  be filled with the mapping for the parameters of Fun and OK is
+         --  returned.
+
+         function Check_Calls_To_Fun (N : Node_Id) return Traverse_Result is
+            Call_Params : Node_Maps.Map;
+         begin
+            if Nkind (N) = N_Function_Call
+              and then Get_Called_Entity (N) = Fun
+            then
+               Call_Params := Get_Specialized_Parameters (N, Lemma_Params);
+
+               declare
+                  use type Node_Maps.Map;
+                  Statically_Specialized_Call : constant Boolean :=
+                    (for all E of Call_Params =>
+                        not Lemma_Params.Contains (E));
+                  --  No specialized parameter of N depends of the parameters
+                  --  of Lemma.
+                  Totally_Specialized_Call   : constant Boolean :=
+                    not Statically_Specialized_Call
+                    and then Integer (Call_Params.Length) = Nb_Fun_Params
+                    and then
+                      (for all E of Call_Params => Lemma_Params.Contains (E));
+                  --  All specializable parameters of Fun are associated to
+                  --  parameters of Lemma.
+
+               begin
+                  --  If N does not take as parameters any of Lemma's
+                  --  specializable parameters, then it is irrelevant for the
+                  --  specialization of Lemma.
+
+                  if Statically_Specialized_Call then
+                     return OK;
+
+                  --  If N takes both parameters of Lemma and other parameters,
+                  --  it will be hard to generate the specialized lemma
+                  --  instance. We reject it here.
+
+                  elsif not Totally_Specialized_Call then
+                     Error_Msg_NE
+                       ("?automatically instantiated lemma contains calls to "
+                        & "& which cannot be arbitrarily specialized",
+                        Lemma, Fun);
+                     Error_Msg_NE
+                       ("\it will not be automatically instantiated on"
+                        & " specializations of &",
+                        Lemma, Fun);
+                     Violation := True;
+                     return Abandon;
+
+                  --  N is the first relevant call to Fun found so far. Store
+                  --  the association into Spec_Params.
+
+                  elsif Spec_Params.Is_Empty then
+                     Spec_Params := Call_Params;
+                     return OK;
+
+                  --  N is consistant with the calls seen so far, continue the
+                  --  search.
+
+                  elsif Spec_Params = Call_Params then
+                     return OK;
+
+                  --  N is not consistant with the calls seen so far. The
+                  --  specialization is ambiguous. We reject it here.
+
+                  else
+                     Error_Msg_NE
+                       ("?automatically instantiated lemma contains several "
+                        & "calls to & with different specializations",
+                        Lemma, Fun);
+                     Error_Msg_NE
+                       ("\it will not be automatically instantiated on"
+                        & " specializations of &",
+                        Lemma, Fun);
+
+                     Violation := True;
+                     return Abandon;
+                  end if;
+               end;
+            else
+               return OK;
+            end if;
+         end Check_Calls_To_Fun;
+
+         procedure Check_Contract_Of_Lemma is new
+           Traverse_More_Proc (Check_Calls_To_Fun);
+
+      begin
+         --  Fill the Lemma_Params map and compute Nb_Fun_Params
+
+         declare
+            Lemma_Formal : Entity_Id := First_Formal (Lemma);
+         begin
+            loop
+               if Is_Specializable_Formal (Lemma_Formal) then
+                  Lemma_Params.Insert (Lemma_Formal, Lemma_Formal);
+               end if;
+               Next_Formal (Lemma_Formal);
+               exit when No (Lemma_Formal);
+            end loop;
+         end;
+
+         declare
+            Fun_Formal : Entity_Id := First_Formal (Fun);
+         begin
+            loop
+               if Is_Specializable_Formal (Fun_Formal) then
+                  Nb_Fun_Params := Nb_Fun_Params + 1;
+               end if;
+               Next_Formal (Fun_Formal);
+               exit when No (Fun_Formal);
+            end loop;
+         end;
+
+         --  Go over the contracts of Lemma and check its calls to Fun. No
+         --  need to check the variants here, there is no variant check on
+         --  automatic instantiation.
+
+         declare
+            Pre      : constant Node_Lists.List := Find_Contracts
+              (Lemma, Pragma_Precondition, False, False);
+            Post     : constant Node_Lists.List := Find_Contracts
+              (Lemma, Pragma_Postcondition, False, False);
+            CC       : constant Node_Id :=
+              Get_Pragma (Lemma, Pragma_Contract_Cases);
+         begin
+            for N of Pre loop
+               Check_Contract_Of_Lemma (N);
+               if Violation then
+                  goto Violation_Found;
+               end if;
+            end loop;
+            for N of Post loop
+               Check_Contract_Of_Lemma (N);
+               if Violation then
+                  goto Violation_Found;
+               end if;
+            end loop;
+            Check_Contract_Of_Lemma (CC);
+         end;
+
+         <<Violation_Found>>
+
+         --  If Violation is True, a warning has been emitted already. Exit
+         --  the function.
+
+         if Violation then
+            return;
+
+         --  Check that the lemma contains at least a call to Fun
+
+         elsif Spec_Params.Is_Empty then
+            Error_Msg_NE
+              ("?automatically instantiated lemma does not contain any "
+               & "specializable calls to &",
+               Lemma, Fun);
+            Error_Msg_NE
+              ("\it will not be automatically instantiated on"
+               & " specializations of &",
+               Lemma, Fun);
+            return;
+         end if;
+
+         --  Insert Lemma in the set of lemmas to be considered for
+         --  specializations of Fun and store its associated parameter mapping
+         --  in Higher_Order_Lemma_Specializations.
+
+         Higher_Order_Spec_Annotations (Fun).Insert (Lemma);
+         Higher_Order_Lemma_Specializations.Insert (Lemma, Spec_Params);
+      end;
+   end Check_Automatic_Inst_And_HO_Specialization_Compatibility;
+
    ----------------------------------------------
    -- Check_Automatic_Instantiation_Annotation --
    ----------------------------------------------
@@ -590,6 +857,14 @@ package body SPARK_Definition.Annotate is
 
                   elsif Ekind (Prec) = E_Function then
                      Automatic_Instantiation_Annotations.Insert (E, Prec);
+
+                     --  If Prec has higher order specialization, then checks
+                     --  need to be done to ensure that E can be specialized.
+                     --  This checks is delayed as we do not know in which
+                     --  order the higher order specialization and
+                     --  automatic instantiation annotations will be analyzed.
+
+                     Delayed_Checks_For_Lemmas.Insert (E);
                      exit;
 
                   --  Ignore ghost procedures annotated with automatic
@@ -626,6 +901,333 @@ package body SPARK_Definition.Annotate is
          end loop;
       end;
    end Check_Automatic_Instantiation_Annotation;
+
+   --------------------------------------------------
+   -- Check_Higher_Order_Specialization_Annotation --
+   --------------------------------------------------
+
+   procedure Check_Higher_Order_Specialization_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id)
+   is
+      From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
+      Aspect_Or_Pragma : constant String :=
+        (if From_Aspect then "aspect" else "pragma");
+      E                : Entity_Id;
+   begin
+      --  The third argument must be an entity
+
+      if Nkind (Arg3_Exp) not in N_Has_Entity then
+         Error_Msg_N
+           ("third argument of pragma Annotate Higher_Order_Specialization "
+            & "must be an entity",
+            Arg3_Exp);
+         return;
+      end if;
+
+      E := Entity (Arg3_Exp);
+
+      --  This entity must be a function
+
+      if Ekind (E) not in E_Procedure | E_Function then
+         Error_Msg_N
+           (Aspect_Or_Pragma & " Higher_Order_Specialization must be applied"
+            & " to a function or a lemma procedure",
+            Arg3_Exp);
+         return;
+
+      --  For now reject volatile functions, dispatching operations, and
+      --  borrowing traversal functions.
+
+      elsif Ekind (E) = E_Function and then Is_Volatile_Function (E) then
+         Error_Msg_N
+           ("function annotated with Higher_Order_Specialization shall not be"
+            & " a volatile function",
+            Arg3_Exp);
+         return;
+      elsif Einfo.Entities.Is_Dispatching_Operation (E)
+        and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
+      then
+         Error_Msg_N
+           ("subprogram annotated with Higher_Order_Specialization shall not"
+            & " be a dispatching operation",
+            Arg3_Exp);
+         return;
+      elsif Is_Borrowing_Traversal_Function (E) then
+         Error_Msg_N
+           ("function annotated with Higher_Order_Specialization shall not be"
+            & " a borrowing traversal function",
+            Arg3_Exp);
+         return;
+
+      --  For procedures, check that we have a lemma
+
+      elsif Ekind (E) = E_Procedure then
+
+         --  It should be ghost
+
+         if not Is_Ghost_Entity (E) then
+            Error_Msg_N
+              ("procedure annotated with the " & Aspect_Or_Pragma
+               & " Higher_Order_Specialization shall be ghost",
+               E);
+            return;
+         end if;
+
+         --  It shall not have mutable parameters
+
+         declare
+            Formal : Entity_Id := First_Formal (E);
+         begin
+            while Present (Formal) loop
+               if Ekind (Formal) /= E_In_Parameter
+                 or else (Is_Access_Object_Type (Etype (Formal))
+                          and then not Is_Access_Constant (Etype (Formal)))
+               then
+                  declare
+                     Param_String : constant String :=
+                       (case Ekind (Formal) is
+                           when E_In_Out_Parameter =>
+                             """in out"" parameters",
+                           when E_Out_Parameter    =>
+                             """out"" parameters",
+                           when E_In_Parameter     =>
+                             "parameters of an access-to-variable type",
+                           when others             =>
+                              raise Program_Error);
+                  begin
+                     Error_Msg_N
+                       ("procedure annotated with the " & Aspect_Or_Pragma
+                        & "Higher_Order_Specialization shall not have "
+                        & Param_String,
+                        Formal);
+                     return;
+                  end;
+               end if;
+               Next_Formal (Formal);
+            end loop;
+         end;
+
+         --  It shall not update any global data
+
+         declare
+            Globals : Global_Flow_Ids;
+         begin
+            Get_Globals
+              (Subprogram          => E,
+               Scope               => (Ent => E, Part => Visible_Part),
+               Classwide           => False,
+               Globals             => Globals,
+               Use_Deduced_Globals =>
+                  not Gnat2Why_Args.Global_Gen_Mode,
+               Ignore_Depends      => False);
+
+            if not Globals.Outputs.Is_Empty then
+               Error_Msg_N
+                 ("procedure annotated with the " & Aspect_Or_Pragma
+                  & " Higher_Order_Specialization shall not have global"
+                  & " outputs", E);
+               return;
+            end if;
+         end;
+      end if;
+
+      --  The body of expression functions is ignored for higher order
+      --  specialization. If E should be inline, require a postcondition.
+
+      if Present (Retrieve_Inline_Annotation (E))
+        and then
+          Find_Contracts (E, Pragma_Postcondition, False, False).Is_Empty
+      then
+         Error_Msg_N
+           ("function annotated with both Higher_Order_Specialization and"
+            & " Inline_For_Proof shall have a postcondition",
+            E);
+         return;
+      end if;
+
+      declare
+         F         : Opt_Formal_Kind_Id := First_Formal (E);
+         Formals   : Entity_Sets.Set;
+         Violation : Node_Id := Empty;
+
+         function Is_Use_Of_Formal (N : Node_Id) return Traverse_Result is
+           (if Nkind (N) in N_Expanded_Name | N_Identifier
+              and then Formals.Contains (Unique_Entity (Entity (N)))
+            then Abandon else OK);
+
+         function Contains_Use_Of_Formal is new
+           Traverse_More_Func (Is_Use_Of_Formal);
+
+         function Is_Unsupported_Use_Of_Formal
+           (N : Node_Id) return Traverse_Result;
+         --  Return Abandon on references to objects of Formals if they are not
+         --  directly under a dereference or as actual parameters to call to
+         --  functions annotated with Higher_Order_Specialization. In this
+         --  case, store the offending node in Violation for error reporting.
+
+         ----------------------------------
+         -- Is_Unsupported_Use_Of_Formal --
+         ----------------------------------
+
+         function Is_Unsupported_Use_Of_Formal
+           (N : Node_Id) return Traverse_Result
+         is
+         begin
+            --  Uses are allowed under dereferences
+
+            if Nkind (N) = N_Explicit_Dereference
+              and then Nkind (Prefix (N)) in
+                N_Expanded_Name | N_Identifier
+            then
+               return Skip;
+            elsif Nkind (N) in N_Expanded_Name | N_Identifier
+              and then Present (Entity (N))
+              and then Formals.Contains (Unique_Entity (Entity (N)))
+            then
+
+               --  Check whether N is a call actual
+
+               declare
+                  Formal : Entity_Id;
+                  Call   : Node_Id;
+                  Callee : Entity_Id;
+               begin
+                  Find_Actual (N, Formal, Call);
+
+                  --  If so, check that Call is a call to a function annotated
+                  --  with Higher_Order_Specialization and Formal is an
+                  --  anonymous access-to-function type.
+
+                  if No (Call)
+                    or else Nkind (Call) not in N_Function_Call
+                                              | N_Procedure_Call_Statement
+                  then
+
+                     --  Here we probably can only have comparison to null
+
+                     Violation := N;
+                     return Abandon;
+                  else
+                     Callee := Get_Called_Entity (Call);
+
+                     if Ekind (Callee) not in E_Function | E_Procedure
+                       or else not Is_Anonymous_Access_Type (Etype (Formal))
+                     then
+                        Violation := N;
+                        return Abandon;
+
+                     --  Callee might not have been marked yet. Store Call in
+                     --  Delayed_HO_Specialization_Checks, it will be checked
+                     --  later. We use Include and not Insert as a call might
+                     --  have several specialized parameters.
+
+                     elsif not
+                       Has_Higher_Order_Specialization_Annotation (Callee)
+                     then
+                        Delayed_HO_Specialization_Checks.Include (Call, N);
+                        return OK;
+                     else
+                        return OK;
+                     end if;
+                  end if;
+               end;
+
+            --  Inside iterated component associations, we cannot support any
+            --  references to the formals. This is because expressions in
+            --  iterated associations are translated directly inside the
+            --  aggregate module, so the aggregate module itself would have to
+            --  be specialized.
+
+            elsif Nkind (N) = N_Iterated_Component_Association
+              and then Contains_Use_Of_Formal (N) = Abandon
+            then
+               Violation := N;
+               return Abandon;
+            else
+               return OK;
+            end if;
+         end Is_Unsupported_Use_Of_Formal;
+
+         procedure Find_Unsupported_Use_Of_Formal is new
+           Traverse_More_Proc (Is_Unsupported_Use_Of_Formal);
+      begin
+         --  Check that E has at least a parameter of an anonymous
+         --  access-to-function type. Store such parameters in a set.
+
+         while Present (F) loop
+            if Is_Anonymous_Access_Type (Etype (F))
+              and then Is_Access_Subprogram_Type (Etype (F))
+              and then Is_Function_Type (Directly_Designated_Type (Etype (F)))
+            then
+               Formals.Include (Unique_Entity (F));
+            end if;
+            Next_Formal (F);
+         end loop;
+
+         if Formals.Is_Empty then
+            Error_Msg_N
+              ("subprogram annotated with Higher_Order_Specialization shall"
+               & " have at least a parameter of an anonymous"
+               & " access-to-function type",
+               Arg3_Exp);
+            return;
+         end if;
+
+         --  Go over the contracts of E to make sure that the value of its
+         --  anonymous access-to-function parameters is not referenced.
+         --  We don't check refined postconditions and expression function
+         --  bodies which are never specialized.
+
+         declare
+            Pre      : constant Node_Lists.List := Find_Contracts
+              (E, Pragma_Precondition, False, False);
+            Post     : constant Node_Lists.List := Find_Contracts
+              (E, Pragma_Postcondition, False, False);
+            CC       : constant Node_Id :=
+              Get_Pragma (E, Pragma_Contract_Cases);
+            Variants : constant Node_Id :=
+              Get_Pragma (E, Pragma_Subprogram_Variant);
+         begin
+            for N of Pre loop
+               Find_Unsupported_Use_Of_Formal (N);
+               if Present (Violation) then
+                  goto Violation_Found;
+               end if;
+            end loop;
+            for N of Post loop
+               Find_Unsupported_Use_Of_Formal (N);
+               if Present (Violation) then
+                  goto Violation_Found;
+               end if;
+            end loop;
+            Find_Unsupported_Use_Of_Formal (CC);
+            Find_Unsupported_Use_Of_Formal (Variants);
+         end;
+
+         <<Violation_Found>>
+         if Present (Violation) then
+            if Nkind (Violation) = N_Iterated_Component_Association then
+               Error_Msg_N
+                 ("subprogram annotated with Higher_Order_Specialization"
+                  & " shall not reference its access-to-function"
+                  & " parameters inside an iterated component association",
+                  Violation);
+            else
+               Error_Msg_N
+                 ("subprogram annotated with Higher_Order_Specialization"
+                  & " shall only reference its access-to-function"
+                  & " parameters in dereferences and as actual parameters in"
+                  & " calls to functions annotated with"
+                  & " Higher_Order_Specialization",
+                  Violation);
+            end if;
+            return;
+         end if;
+      end;
+
+      Higher_Order_Spec_Annotations.Include (E, Node_Sets.Empty_Set);
+   end Check_Higher_Order_Specialization_Annotation;
 
    -----------------------------
    -- Check_Inline_Annotation --
@@ -726,6 +1328,18 @@ package body SPARK_Definition.Annotate is
          return;
       end if;
 
+      --  The body of expression functions is ignored for higher order
+      --  specialization. Require a postcondition.
+
+      if Has_Higher_Order_Specialization_Annotation (E) and then Nodes.Is_Empty
+      then
+         Error_Msg_N
+           ("function annotated with both Higher_Order_Specialization and"
+            & " Inline_For_Proof shall have a postcondition",
+            E);
+         return;
+      end if;
+
       Inline_Annotations.Include (E, Value);
       Inline_Pragmas.Include (E, Prag);
    end Check_Inline_Annotation;
@@ -809,16 +1423,36 @@ package body SPARK_Definition.Annotate is
 
    procedure Check_Iterable_Annotation
      (Arg3_Exp : Node_Id;
-      Arg4_Exp : Node_Id)
+      Arg4_Exp : Node_Id;
+      Prag     : Node_Id)
    is
 
-      procedure Check_Contains_Entity (E : Entity_Id; Ok : in out Boolean);
-      --  Checks that E is a valid Contains function for a type with an
-      --  Iterable aspect.
+      procedure Check_Common_Properties
+        (Container_Ty   : Type_Kind_Id;
+         E              : Entity_Id;
+         Ok             : in out Boolean;
+         Name_For_Error : String);
+      --  Checks that are common for Model/Contains function:
+      --  No Globals, not volatile, primitive.
 
-      procedure Check_Model_Entity (E : Entity_Id; Ok : in out Boolean);
+      procedure Check_Contains_Entity
+        (E            : Entity_Id;
+         Ok           : in out Boolean;
+         Cont_Element : out Entity_Id);
+      --  Checks that E is a valid Contains function for a type with an
+      --  Iterable aspect. Initializes Cont_Element correctly if succeeding.
+
+      procedure Check_Model_Entity
+        (E            : Entity_Id;
+         Ok           : in out Boolean;
+         Cont_Element : out Entity_Id);
       --  Checks that E is a valid Model function for a type with an
-      --  Iterable aspect.
+      --  Iterable aspect. Initializes Cont_Element correctly if succeeding.
+
+      function Find_Model_Root (Container_Type : Entity_Id) return Entity_Id;
+      --  Computes the final container type at the end of the
+      --  model chain for the currently known Iterable_For_Proof(...,"Model")
+      --  annotations.
 
       procedure Process_Iterable_Annotation
         (Kind   : Iterable_Kind;
@@ -826,15 +1460,65 @@ package body SPARK_Definition.Annotate is
       --  Insert an iterable annotation into the Iterable_Annotations map and
       --  mark the iterable functions.
 
+      -----------------------------
+      -- Check_Common_Properties --
+      -----------------------------
+
+      procedure Check_Common_Properties
+        (Container_Ty   : Type_Kind_Id;
+         E              : Entity_Id;
+         Ok             : in out Boolean;
+         Name_For_Error : String)
+      is
+         Globals : Global_Flow_Ids;
+      begin
+         Ok := False;
+         if Scope (E) /= Scope (Container_Ty) then
+            Error_Msg_N
+              (Name_For_Error
+               & " function must be primitive for container type", E);
+            return;
+         end if;
+         if Is_Volatile_Function (E) then
+            Error_Msg_N
+              (Name_For_Error & " function must not be volatile", E);
+            return;
+         end if;
+         Get_Globals
+           (Subprogram          => E,
+            Scope               =>
+              (Ent => E, Part => Visible_Part),
+            Classwide           => False,
+            Globals             => Globals,
+            Use_Deduced_Globals =>
+               not Gnat2Why_Args.Global_Gen_Mode,
+            Ignore_Depends      => False);
+         if not Globals.Proof_Ins.Is_Empty
+           or else not Globals.Inputs.Is_Empty
+           or else not Globals.Outputs.Is_Empty
+         then
+            Error_Msg_N
+              (Name_For_Error
+               & " function shall not access global data", E);
+            return;
+         else
+            Ok := True;
+         end if;
+      end Check_Common_Properties;
+
       ---------------------------
       -- Check_Contains_Entity --
       ---------------------------
 
-      procedure Check_Contains_Entity (E : Entity_Id; Ok : in out Boolean) is
-         Params : constant List_Id :=
-           Parameter_Specifications (Subprogram_Specification (E));
+      procedure Check_Contains_Entity
+        (E            : Entity_Id;
+         Ok           : in out Boolean;
+         Cont_Element : out Entity_Id) is
+         C_Param : constant Node_Id := First_Formal (E);
+         E_Param : constant Node_Id :=
+           (if Present (C_Param) then Next_Formal (C_Param) else Empty);
       begin
-         if List_Length (Params) /= 2 then
+         if No (E_Param) or else Present (Next_Formal (E_Param)) then
             Error_Msg_N
               ("Contains function must have exactly two parameters", E);
          elsif not Is_Standard_Boolean_Type (Etype (E)) then
@@ -842,31 +1526,31 @@ package body SPARK_Definition.Annotate is
               ("Contains function must return Booleans", E);
          else
             declare
-               C_Param        : constant Node_Id := First (Params);
-               E_Param        : constant Node_Id := Next (C_Param);
-               Container_Type : constant Entity_Id :=
-                 Entity (Parameter_Type (C_Param));
-               --  Type of the first Argument of the Contains function
+               Container_Type : constant Entity_Id := Etype (C_Param);
+               --  Type of the first argument of the Contains function
 
-               Element_Type   : constant Entity_Id :=
-                 Entity (Parameter_Type (E_Param));
+               Element_Type   : constant Entity_Id := Etype (E_Param);
                --  Type of the second argument of the Contains function
 
-               Cont_Element   : constant Entity_Id :=
+            begin
+               Cont_Element :=
                  Get_Iterable_Type_Primitive (Container_Type, Name_Element);
                --  Element primitive of Container_Type
-
-            begin
                if No (Cont_Element) then
                   Error_Msg_N
                     ("first parameter of Contains function must allow for of "
                      & "iteration", C_Param);
-               elsif Etype (Cont_Element) /= Element_Type then
+               elsif not In_SPARK (Cont_Element) then
+                  Error_Msg_N
+                    ("first parameter of Contains functions must allow for of "
+                     & "iteration in SPARK", C_Param);
+               elsif Retysp (Etype (Cont_Element)) /= Retysp (Element_Type)
+               then
                   Error_Msg_N
                     ("second parameter of Contains must have the type of "
                      & "elements", E_Param);
                else
-                  Ok := True;
+                  Check_Common_Properties (Container_Type, E, Ok, "Contains");
                end if;
             end;
          end if;
@@ -876,46 +1560,94 @@ package body SPARK_Definition.Annotate is
       -- Check_Model_Entity --
       ------------------------
 
-      procedure Check_Model_Entity (E : Entity_Id; Ok : in out Boolean) is
-         Params : constant List_Id :=
-           Parameter_Specifications (Subprogram_Specification (E));
+      procedure Check_Model_Entity
+        (E            : Entity_Id;
+         Ok           : in out Boolean;
+         Cont_Element : out Entity_Id) is
+         Param : constant Node_Id := First_Formal (E);
       begin
-         if List_Length (Params) /= 1 then
+         if No (Param) or else Present (Next_Formal (Param)) then
             Error_Msg_N
               ("Model function must have exactly one parameter", E);
          else
             declare
-               Param          : constant Node_Id := First (Params);
-               Container_Type : constant Entity_Id :=
-                 Entity (Parameter_Type (Param));
-               --  Type of the first Argument of the model function
+               Container_Type : constant Entity_Id := Etype (Param);
+               --  Type of first argument of the model function
 
                Model_Type     : constant Entity_Id := Etype (E);
                --  Return type of the model function
-
-               Cont_Element   : constant Entity_Id :=
-                 Get_Iterable_Type_Primitive (Container_Type, Name_Element);
-               --  Element primitive of Container_Type
 
                Model_Element  : constant Entity_Id :=
                  Get_Iterable_Type_Primitive (Model_Type, Name_Element);
                --  Element primitive of Model_Type
 
             begin
+               Cont_Element :=
+                 Get_Iterable_Type_Primitive (Container_Type, Name_Element);
                if No (Cont_Element) then
                   Error_Msg_N
                     ("parameter of Model function must allow for of iteration",
                      Param);
+               elsif not In_SPARK (Cont_Element) then
+                  Error_Msg_N
+                    ("parameter of Model function must allow for of iteration "
+                       & "in SPARK", Param);
                elsif No (Model_Element) then
                   Error_Msg_N
-                    ("return type of Model function must allow for of " &
-                       "iteration", E);
+                    ("return type of Model function must allow for of "
+                     & "iteration", E);
+               elsif not In_SPARK (Model_Element) then
+                  Error_Msg_N
+                    ("return type of Model function must allow for of "
+                     & "iteration in SPARK", E);
+               elsif Retysp (Etype (Cont_Element))
+                 /= Retysp (Etype (Model_Element))
+               then
+                  Error_Msg_N
+                    ("parameter and return type of Model function must "
+                     & "allow for of iteration with the same element type",
+                     E);
+               elsif Has_Controlling_Result (E) then
+                  Error_Msg_N
+                    ("Model function must not have a controlling result", E);
                else
-                  Ok := True;
+                  Check_Common_Properties (Container_Type, E, Ok, "Model");
+                  if Ok and then
+                    Unchecked_Full_Type (Find_Model_Root (Model_Type)) =
+                      Unchecked_Full_Type (Container_Type)
+                  then
+                     Ok := False;
+                     Error_Msg_N
+                       ("adding this Model function would produce a circular "
+                        & "definition for container model", E);
+                  end if;
                end if;
             end;
          end if;
       end Check_Model_Entity;
+
+      ---------------------
+      -- Find_Model_Root --
+      ---------------------
+
+      function Find_Model_Root (Container_Type : Entity_Id) return Entity_Id is
+         Cursor : Entity_Id := Container_Type;
+         Found  : Boolean := True;
+         Annot  : Iterable_Annotation;
+      begin
+         while Found loop
+            Retrieve_Iterable_Annotation (Cursor, Found, Annot);
+            if Found then
+               case Annot.Kind is
+                  when Contains =>
+                     Found := False;
+                  when Model =>
+                     Cursor := Etype (Annot.Entity);
+               end case;
+            end if;
+         end loop;
+         return Cursor;
+      end Find_Model_Root;
 
       ---------------------------------
       -- Process_Iterable_Annotation --
@@ -929,8 +1661,6 @@ package body SPARK_Definition.Annotate is
            Etype (First_Entity (Entity));
          Iterable_Node         : constant Node_Id :=
            Find_Value_Of_Aspect (Container_Type, Aspect_Iterable);
-         Model_Iterable_Aspect : constant Node_Id :=
-           Find_Aspect (Etype (Entity), Aspect_Iterable);
          Position              : Iterable_Maps.Cursor;
          Inserted              : Boolean;
       begin
@@ -949,15 +1679,15 @@ package body SPARK_Definition.Annotate is
             return;
          end if;
 
-         if Present (Model_Iterable_Aspect) then
-            SPARK_Definition.Mark_Iterable_Aspect (Model_Iterable_Aspect);
-         end if;
       end Process_Iterable_Annotation;
 
-      Args_Str : constant String_Id := Strval (Arg3_Exp);
-      Kind     : Iterable_Kind;
-      New_Prim : Entity_Id;
-      Ok       : Boolean := False;
+      Args_Str     : constant String_Id := Strval (Arg3_Exp);
+      Kind         : Iterable_Kind;
+      New_Prim     : Entity_Id;
+      Ok           : Boolean := False;
+      Cont_Element : Entity_Id;
+      --  "Element" primitive for relevant container.
+      --  Set at most once.
 
    --  Start of processing for Check_Iterable_Annotation
 
@@ -972,6 +1702,7 @@ package body SPARK_Definition.Annotate is
            ("the entity of a Gnatprove Annotate Iterable_For_Proof "
             & "pragma must be a function",
             New_Prim);
+         return;
       end if;
 
       --  Pull function specified by the annotation for translation (and report
@@ -984,10 +1715,10 @@ package body SPARK_Definition.Annotate is
 
       if To_Lower (To_String (Args_Str)) = "model" then
          Kind := Model;
-         Check_Model_Entity (New_Prim, Ok);
+         Check_Model_Entity (New_Prim, Ok, Cont_Element);
       elsif To_Lower (To_String (Args_Str)) = "contains" then
          Kind := Contains;
-         Check_Contains_Entity (New_Prim, Ok);
+         Check_Contains_Entity (New_Prim, Ok, Cont_Element);
       else
          Error_Msg_N
            ("the third argument of a Gnatprove Annotate Iterable_For_Proof "
@@ -996,9 +1727,43 @@ package body SPARK_Definition.Annotate is
          return;
       end if;
 
-      if Ok then
-         Process_Iterable_Annotation (Kind, New_Prim);
+      if not Ok then
+         return;
       end if;
+
+      --  Check that pragma is placed immediately after declaration
+      --  of 'Element' primitive
+      declare
+         Cursor : Node_Id := Parent (Declaration_Node (Cont_Element));
+      begin
+         if Is_List_Member (Cursor)
+           and then Decl_Starts_Pragma_Annotate_Range (Cursor)
+         then
+            Next (Cursor);
+            while Present (Cursor) loop
+               if Is_Pragma_Annotate_GNATprove (Cursor)
+               then
+                  if Cursor = Prag
+                  then
+                     goto Found;
+                  end if;
+               elsif Decl_Starts_Pragma_Annotate_Range (Cursor)
+                 and then
+                   Nkind (Cursor) not in N_Pragma | N_Null_Statement
+               then
+                  exit;
+               end if;
+               Next (Cursor);
+            end loop;
+         end if;
+         Error_Msg_N ("pragma Iterable_For_Proof must immediately follow"
+                      & " the declaration of the Element", Prag);
+         return;
+         <<Found>>
+      end;
+
+      Process_Iterable_Annotation (Kind, New_Prim);
+
    end Check_Iterable_Annotation;
 
    ------------------------------
@@ -1432,6 +2197,54 @@ package body SPARK_Definition.Annotate is
       end;
    end Check_Ownership_Annotation;
 
+   ------------------------------------------
+   -- Do_Delayed_Checks_On_Pragma_Annotate --
+   ------------------------------------------
+
+   procedure Do_Delayed_Checks_On_Pragma_Annotate is
+   begin
+      --  Go over the delayed checks for calls in contracts of subprograms
+      --  with higher order specialization and do them.
+
+      for Position in Delayed_HO_Specialization_Checks.Iterate loop
+         declare
+            Call : Node_Id renames Node_Maps.Key (Position);
+            N    : Node_Id renames Node_Maps.Element (Position);
+            Subp : constant Entity_Id := Get_Called_Entity (Call);
+         begin
+            pragma Assert (Entity_Marked (Subp));
+            if not Has_Higher_Order_Specialization_Annotation (Subp) then
+               Error_Msg_N
+                 ("subprogram annotated with Higher_Order_Specialization"
+                  & " shall only reference its access-to-function"
+                  & " parameters in dereferences and as actual parameters in"
+                  & " calls to functions annotated with"
+                  & " Higher_Order_Specialization",
+                  N);
+            end if;
+         end;
+      end loop;
+      Delayed_HO_Specialization_Checks.Clear;
+
+      --  Go over the set of lemmas with automatic instantiation. For those
+      --  associated to functions with higher order specializations, check that
+      --  the lemma can be specialized and fill the mapping in
+      --  Higher_Order_Spec_Annotations.
+
+      for Lemma of Delayed_Checks_For_Lemmas loop
+         declare
+            Fun : Entity_Id renames
+              Automatic_Instantiation_Annotations.Element (Lemma);
+         begin
+            if Has_Higher_Order_Specialization_Annotation (Fun) then
+               Check_Automatic_Inst_And_HO_Specialization_Compatibility
+                 (Lemma, Fun);
+            end if;
+         end;
+      end loop;
+      Delayed_Checks_For_Lemmas.Clear;
+   end Do_Delayed_Checks_On_Pragma_Annotate;
+
    ------------------------
    -- Find_Inline_Pragma --
    ------------------------
@@ -1463,6 +2276,13 @@ package body SPARK_Definition.Annotate is
          end if;
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
+
+   ------------------------------
+   -- Get_Lemmas_To_Specialize --
+   ------------------------------
+
+   function Get_Lemmas_To_Specialize (E : Entity_Id) return Node_Sets.Set is
+      (Higher_Order_Spec_Annotations.Element (E));
 
    ------------------------------------
    -- Get_Reclamation_Check_Function --
@@ -1525,6 +2345,15 @@ package body SPARK_Definition.Annotate is
    function Has_Automatic_Instantiation_Annotation
      (E : Entity_Id) return Boolean
    is (Automatic_Instantiation_Annotations.Contains (E));
+
+   ------------------------------------------------
+   -- Has_Higher_Order_Specialization_Annotation --
+   ------------------------------------------------
+
+   function Has_Higher_Order_Specialization_Annotation
+     (E : Entity_Id) return Boolean
+   is
+     (Higher_Order_Spec_Annotations.Contains (E));
 
    -------------------------------
    -- Has_Logical_Eq_Annotation --
@@ -1614,9 +2443,14 @@ package body SPARK_Definition.Annotate is
       elsif not SPARK_Definition.Entity_Body_Compatible_With_SPARK (E) then
          return;
 
-      --  ...and not a traversal function.
+      --  ...it is not a traversal function
 
       elsif Is_Traversal_Function (E) then
+         return;
+
+      --  ...and it cannot be specialized
+
+      elsif Has_Higher_Order_Specialization_Annotation (E) then
          return;
 
       else
@@ -1836,6 +2670,15 @@ package body SPARK_Definition.Annotate is
       end if;
    end Retrieve_Iterable_Annotation;
 
+   ---------------------------------------
+   -- Retrieve_Parameter_Specialization --
+   ---------------------------------------
+
+   function Retrieve_Parameter_Specialization
+     (E : Entity_Id) return Node_Maps.Map
+   is
+     (Higher_Order_Lemma_Specializations (E));
+
    -------------------------------------
    -- Check_Pragma_Annotate_GNATprove --
    -------------------------------------
@@ -1940,6 +2783,7 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "at_end_borrow"
         or else Name = "automatic_instantiation"
+        or else Name = "higher_order_specialization"
         or else Name = "init_by_proof"
         or else Name = "inline_for_proof"
         or else Name = "logical_equal"
@@ -2002,6 +2846,9 @@ package body SPARK_Definition.Annotate is
       elsif Name = "inline_for_proof" then
          Check_Inline_Annotation (Arg3_Exp, Prag);
 
+      elsif Name = "higher_order_specialization" then
+         Check_Higher_Order_Specialization_Annotation (Arg3_Exp, Prag);
+
       elsif Name = "logical_equal" then
          Check_Logical_Equal_Annotation (Arg3_Exp, Prag);
 
@@ -2026,7 +2873,7 @@ package body SPARK_Definition.Annotate is
          Check_Ownership_Annotation (Aspect_Or_Pragma, Arg3_Exp, Arg4_Exp);
 
       elsif Name = "iterable_for_proof" then
-         Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp);
+         Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp, Prag);
 
       --  Annotation for justifying check messages. This is where we set
       --  Result.Present to True and fill in values for components Kind,
@@ -2046,7 +2893,12 @@ package body SPARK_Definition.Annotate is
                raise Program_Error;
             end if;
 
-            if Nkind (Arg3_Exp) = N_String_Literal then
+            --  We check for operator symbols as well as string literals,
+            --  as things such as "*" are parsed as the operator symbol
+            --  "multiply".
+
+            if Nkind (Arg3_Exp) in N_String_Literal | N_Operator_Symbol
+            then
                Pattern := Strval (Arg3_Exp);
             else
                Error_Msg_N

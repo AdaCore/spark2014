@@ -1,4 +1,4 @@
-base-ext.ads:10:48: medium: overflow check might fail, cannot prove lower bound for X.C + X.D [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if X.D >= 0 then X.C <= Integer'Last - X.D else X.C >= Integer'First - X.D) to subprogram at line 10]
+base-ext.ads:10:48: high: overflow check might fail, cannot prove bounds for X.C + X.D (e.g. when X = (C => Integer'First, D => -1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if X.D >= 0 then X.C <= Integer'Last - X.D else X.C >= Integer'First - X.D) to subprogram at line 10]
 base.ads:9:14: info: postcondition proved (CVC5: 1 VC)
 ext.adb:8:22: medium: assertion might fail
 ext.ads:13:53: medium: overflow check might fail, cannot prove lower bound for T(X).Sum + X.D [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if X.D >= 0 then T(X).Sum <= Integer'Last - X.D else T(X).Sum >= Integer'First - X.D) to subprogram at line 13]

@@ -2,15 +2,15 @@ constant_access.adb:24:17: medium: resource or memory leak might occur [possible
 constant_access.adb:24:35: info: pointer dereference check proved (CVC5: 1 VC)
 constant_access.adb:24:38: info: pointer dereference check proved (CVC5: 1 VC)
 constant_access.adb:25:46: info: pointer dereference check proved (CVC5: 1 VC)
-constant_access.adb:34:16: info: function contract might not be available on recursive calls
-constant_access.adb:36:17: info: postcondition proved (CVC5: 2 VC)
-constant_access.adb:42:13: medium: "Deep_Copy_Ann" is recursive, terminating annotation could be incorrect
-constant_access.adb:42:35: info: null exclusion check proved (CVC5: 1 VC)
-constant_access.adb:42:49: info: pointer dereference check proved (CVC5: 1 VC)
-constant_access.adb:42:52: info: pointer dereference check proved (CVC5: 1 VC)
-constant_access.adb:43:51: info: pointer dereference check proved (CVC5: 1 VC)
-constant_access.adb:47:22: info: assertion proved (CVC5: 2 VC)
-constant_access.adb:47:23: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
+constant_access.adb:33:13: info: function contract might not be available on recursive calls
+constant_access.adb:35:14: info: postcondition proved (CVC5: 2 VC)
+constant_access.adb:41:10: medium: "Deep_Copy_Ann" is recursive, terminating annotation could be incorrect
+constant_access.adb:41:32: info: null exclusion check proved (CVC5: 1 VC)
+constant_access.adb:41:46: info: pointer dereference check proved (CVC5: 1 VC)
+constant_access.adb:41:49: info: pointer dereference check proved (CVC5: 1 VC)
+constant_access.adb:42:48: info: pointer dereference check proved (CVC5: 1 VC)
 constant_access.adb:48:22: info: assertion proved (CVC5: 2 VC)
-constant_access.adb:48:37: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
-constant_access.adb:49:14: medium: resource or memory leak might occur [possible explanation: conversion to access-to-constant type leaks memory]
+constant_access.adb:48:23: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
+constant_access.adb:49:22: info: assertion proved (CVC5: 2 VC)
+constant_access.adb:49:37: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
+constant_access.adb:50:14: medium: resource or memory leak might occur [possible explanation: conversion to access-to-constant type leaks memory]

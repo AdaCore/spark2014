@@ -87,7 +87,7 @@ is
         (Status in Efault | Eintr | Esrch | Etimedout)
           or else
         (Status = Eok and then
-         Pulse'Initialized);
+         True); --  Pulse'Initialized is not allowed for unchecked union
 
    procedure Msg_Receive_Pulse_R
      (Pulse  : out Pulse_T;

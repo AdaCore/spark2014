@@ -339,6 +339,7 @@ def is_other_proof_tag(tag):
         "ASSERT_PREMISE",
         "ASSERT_STEP",
         "INLINE_ANNOTATION",
+        "FEASIBLE_POST",
     )
 
 
@@ -512,6 +513,8 @@ def check_marks(strlist):
                 return "UNCHECKED_CONVERSION"
         elif "Inline_For_Proof or Logical_Equal annotation" in text:
             return "INLINE_ANNOTATION"
+        elif "feasible" in text or "feasibility" in text:
+            return "FEASIBLE_POST"
 
         # no tag recognized
         return None
@@ -823,7 +826,8 @@ def prove_all(
     if vc_timeout is not None:
         fullopt += ["--timeout=%d" % vc_timeout]
 
-    fullopt += ["--mode=%s" % (mode)]
+    if mode is not None:
+        fullopt += ["--mode=%s" % (mode)]
     fullopt += ["-j%d" % (procs)]
     if prover:
         prover_arg = build_prover_switch(prover)
@@ -990,8 +994,8 @@ def check_all_spark(result_file, expected_len):
         result = json.load(f)
         spark_result = result["spark"]
         assert len(spark_result) == expected_len
-        for entry in spark_result:
-            assert entry["spark"] == "all"
+        for entry in spark_result.values():
+            assert entry == "all"
 
 
 def check_spec_spark(result_file, expected_len):
@@ -1008,8 +1012,8 @@ def check_spec_spark(result_file, expected_len):
         result = json.load(f)
         spark_result = result["spark"]
         assert len(spark_result) == expected_len
-        for entry in spark_result:
-            assert entry["spark"] == "spec"
+        for entry in spark_result.values():
+            assert entry == "spec"
 
 
 def check_trace_files(only_flow=False):

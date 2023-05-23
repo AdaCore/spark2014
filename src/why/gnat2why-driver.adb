@@ -31,6 +31,7 @@ with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
 with Ada.Text_IO;                     use Ada.Text_IO;
 with ALI.Util;                        use ALI.Util;
 with ALI;                             use ALI;
+with Assumption_Types;                use Assumption_Types;
 with Atree;                           use Atree;
 with Binderr;
 with Call;
@@ -44,6 +45,7 @@ with Errout;                          use Errout;
 with Flow;                            use Flow;
 with Flow.Analysis.Assumptions;       use Flow.Analysis.Assumptions;
 with Flow_Error_Messages;             use Flow_Error_Messages;
+with Flow_Generated_Globals.Phase_1;
 with Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Types;                      use Flow_Types;
@@ -58,6 +60,7 @@ with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
 with Gnat2Why.Borrow_Checker;         use Gnat2Why.Borrow_Checker;
 with Gnat2Why.Decls;                  use Gnat2Why.Decls;
 with Gnat2Why.Error_Messages;         use Gnat2Why.Error_Messages;
+with Gnat2Why_Opts;                   use Gnat2Why_Opts;
 with Gnat2Why.Subprograms;            use Gnat2Why.Subprograms;
 with Gnat2Why.Tables;                 use Gnat2Why.Tables;
 with Gnat2Why.Types;                  use Gnat2Why.Types;
@@ -97,6 +100,7 @@ with Why.Gen.Binders;                 use Why.Gen.Binders;
 with Why.Gen.Expr;                    use Why.Gen.Expr;
 with Why.Gen.Names;
 with Why.Inter;                       use Why.Inter;
+with Why.Images;                      use Why.Images;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
@@ -201,8 +205,8 @@ package body Gnat2Why.Driver is
      with Post => Output_File_Map.Is_Empty;
    --  Wait until all child gnatwhy3 processes finish and collect their results
 
-   procedure Run_Gnatwhy3 (Filename : String)
-   with Pre => Output_File_Map.Length <= Max_Subprocesses;
+   procedure Run_Gnatwhy3 (E : Entity_Id; Filename : String)
+   with Pre => Output_File_Map.Length <= Max_Subprocesses and then Present (E);
    --  After generating the Why file, run the proof tool. Wait for existing
    --  gnatwhy3 processes to finish if Max_Subprocesses is already reached.
 
@@ -332,7 +336,7 @@ package body Gnat2Why.Driver is
            Extension => VC_Kinds.SPARK_Suffix);
       Full : constant JSON_Value := Create_Object;
    begin
-      Set_Field (Full, "spark", Create (Get_SPARK_JSON));
+      Set_Field (Full, "spark", Get_SPARK_JSON);
       Set_Field
         (Full, "progress", Create (Analysis_Progress'Image (Progress)));
       Set_Field
@@ -348,6 +352,7 @@ package body Gnat2Why.Driver is
       Set_Field (Full, "assumptions", Get_Assume_JSON);
 
       Set_Field (Full, "timings", Timing_History (Timing));
+      Set_Field (Full, "entities", Entity_Table);
 
       Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, File_Name);
       Ada.Text_IO.Put (FD, GNATCOLL.JSON.Write (Full, Compact => False));
@@ -415,11 +420,14 @@ package body Gnat2Why.Driver is
          =>
             if Entity_Spec_In_SPARK (E)
 
-              -- Ignore hardcoded subprograms
+              --  Ignore hardcoded subprograms
               and then not Is_Hardcoded_Entity (E)
 
               --  Ignore invariant procedures and default initial conditions
               and then not Subprogram_Is_Ignored_For_Proof (E)
+
+              --  Ignore wrappers for access-to-subprogram types
+              and then not Is_Access_Subprogram_Wrapper (E)
             then
                declare
                   LSP_Applies : constant Boolean :=
@@ -445,16 +453,14 @@ package body Gnat2Why.Driver is
                   end if;
                end;
             end if;
+            Timing_Phase_Completed (Timing,
+                                    Entity_To_Subp_Assumption (E),
+                                    "gnat2why.vc_generation");
 
          when E_Package =>
             Generate_VCs_For_Package_Elaboration (E);
 
          when Type_Kind =>
-            if Entity_Spec_In_SPARK (Enclosing_Unit (E))
-              and then Needs_Default_Checks_At_Decl (E)
-            then
-               Generate_VCs_For_Type (E);
-            end if;
 
             if Ekind (E) in E_Protected_Type | E_Task_Type
               and then Entity_Spec_In_SPARK (E)
@@ -470,6 +476,10 @@ package body Gnat2Why.Driver is
                   when others =>
                      raise Program_Error;
                end case;
+            elsif Entity_Spec_In_SPARK (Enclosing_Unit (E))
+              and then E = Retysp (E)
+            then
+               Generate_VCs_For_Type (E);
             end if;
 
          when others =>
@@ -481,7 +491,7 @@ package body Gnat2Why.Driver is
               Compute_Why3_File_Name (E, ".gnat-json");
          begin
             Print_GNAT_Json_File (File_Name);
-            Run_Gnatwhy3 (File_Name);
+            Run_Gnatwhy3 (E, File_Name);
          end;
       end if;
 
@@ -622,7 +632,16 @@ package body Gnat2Why.Driver is
             end if;
          end if;
 
-         goto Leave;
+         --  Generate dummy GG section in the ALI file, because GPRbuild
+         --  machinery uses it to detect corrupted dependencies.
+
+         if Gnat2Why_Args.Global_Gen_Mode then
+            Flow_Generated_Globals.Phase_1.GG_Write_Initialize (GNAT_Root);
+            Flow_Generated_Globals.Phase_1.GG_Write_Finalize;
+         end if;
+
+         Stop_Reason := Stop_Reason_Generic_Unit;
+         goto Leave_With_JSON;
       end if;
 
       --  Allow the generation of new nodes and lists, which might happen when
@@ -661,13 +680,13 @@ package body Gnat2Why.Driver is
          Mark_Standard_Package;
          Mark_Current_Unit;
 
-         Timing_Phase_Completed (Timing, "marking");
+         Timing_Phase_Completed (Timing, Null_Subp, "marking");
 
          --  Finalize has to be called before we call Compilation_Errors
          Finalize (Last_Call => False);
 
          if Compilation_Errors
-           or else Gnat2Why_Args.Check_Mode
+           or else Gnat2Why_Args.Mode = GPM_Check
          then
             goto Leave;
          end if;
@@ -682,7 +701,7 @@ package body Gnat2Why.Driver is
          Build_Flow_Tree;
 
          Generate_Globals (GNAT_Root);
-         Timing_Phase_Completed (Timing, "globals (partial)");
+         Timing_Phase_Completed (Timing, Null_Subp, "globals (partial)");
 
       else
          --  Issue warning if analyzing specific units with -u switch, but the
@@ -724,7 +743,7 @@ package body Gnat2Why.Driver is
          --
          --  This functionality should be moved out of Compute_Global_Effects
          Prescan_ALI_Files;
-         Timing_Phase_Completed (Timing, "globals (basic)");
+         Timing_Phase_Completed (Timing, Null_Subp, "globals (basic)");
 
          --  Build hierarchical representation of scopes in the current
          --  compilation unit.
@@ -734,20 +753,20 @@ package body Gnat2Why.Driver is
          --  Read the generated globals from the ALI files
 
          GG_Resolve;
-         Timing_Phase_Completed (Timing, "globals (advanced)");
+         Timing_Phase_Completed (Timing, Null_Subp, "globals (advanced)");
 
          --  Mark the current compilation unit as "in SPARK / not in SPARK"
          Mark_Standard_Package;
          Mark_Current_Unit;
 
-         Timing_Phase_Completed (Timing, "marking");
+         Timing_Phase_Completed (Timing, Null_Subp, "marking");
          Progress := Progress_Marking;
 
          --  Finalize has to be called before we call Compilation_Errors
          Finalize (Last_Call => False);
 
          if Compilation_Errors
-           or else Gnat2Why_Args.Check_Mode
+           or else Gnat2Why_Args.Mode = GPM_Check
          then
             Stop_Reason :=
               (if Compilation_Errors then Stop_Reason_Error_Marking
@@ -756,7 +775,7 @@ package body Gnat2Why.Driver is
          end if;
 
          GG_Complete (GNAT_Root);
-         Timing_Phase_Completed (Timing, "properties (advanced)");
+         Timing_Phase_Completed (Timing, Null_Subp, "properties (advanced)");
 
          --  Do some flow analysis
 
@@ -772,7 +791,7 @@ package body Gnat2Why.Driver is
          end;
 
          Generate_Assumptions;
-         Timing_Phase_Completed (Timing, "flow analysis");
+         Timing_Phase_Completed (Timing, Null_Subp, "flow analysis");
 
          --  Check SPARK rules for pointer aliasing. This is only activated on
          --  SPARK code.
@@ -845,16 +864,15 @@ package body Gnat2Why.Driver is
 
          --  Start the translation to Why
 
-         if not Gnat2Why_Args.Check_All_Mode
-           and then not Gnat2Why_Args.Flow_Analysis_Mode
-         then
+         if Gnat2Why_Args.Mode not in GPM_Check_All | GPM_Flow then
             Why.Gen.Names.Initialize;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;
-            Timing_Phase_Completed (Timing, "init_why_sections");
+            Timing_Phase_Completed (Timing, Null_Subp, "init_why_sections");
 
             Translate_Standard_Package;
-            Timing_Phase_Completed (Timing, "translation of standard");
+            Timing_Phase_Completed (Timing, Null_Subp,
+                                    "translation of standard");
 
             Translate_CUnit;
 
@@ -873,7 +891,7 @@ package body Gnat2Why.Driver is
             Progress := Progress_Proof;
 
          else
-            Stop_Reason := (if Gnat2Why_Args.Check_All_Mode
+            Stop_Reason := (if Gnat2Why_Args.Mode = GPM_Check_All
                             then Stop_Reason_Check_Mode
                             else Stop_Reason_Flow_Mode);
          end if;
@@ -885,7 +903,9 @@ package body Gnat2Why.Driver is
       --  as complete. So we downgrade the progress here in this case.
 
       if not Gnat2Why_Args.Global_Gen_Mode then
-         if Gnat2Why_Args.Check_All_Mode and then Progress = Progress_Flow then
+         if Gnat2Why_Args.Mode = GPM_Check_All
+           and then Progress = Progress_Flow
+         then
             Progress := Progress_Marking;
          end if;
          Create_JSON_File (Progress, Stop_Reason);
@@ -1002,7 +1022,11 @@ package body Gnat2Why.Driver is
 
        --  Ignore hardcoded subprograms
 
-       and then not Is_Hardcoded_Entity (E));
+       and then not Is_Hardcoded_Entity (E)
+
+       --  Ignore wrappers for access-to-subprogram types
+
+       and then not Is_Access_Subprogram_Wrapper (E));
 
    --------------------------
    -- Print_GNAT_Json_File --
@@ -1026,7 +1050,7 @@ package body Gnat2Why.Driver is
    -- Run_Gnatwhy3 --
    ------------------
 
-   procedure Run_Gnatwhy3 (Filename : String) is
+   procedure Run_Gnatwhy3 (E : Entity_Id; Filename : String) is
       use Ada.Directories;
       use Ada.Containers;
       Fn        : constant String := Compose (Current_Directory, Filename);
@@ -1045,6 +1069,8 @@ package body Gnat2Why.Driver is
          Collect_One_Result;
       end if;
 
+      Why3_Args.Append ("--entity");
+      Why3_Args.Append (Img (E));
       --  Modifying the command line and printing it for debug purposes. We
       --  need to append the file first, then print the debug output, because
       --  this corresponds to the actual command line run, and finally remove
@@ -1238,6 +1264,7 @@ package body Gnat2Why.Driver is
       --  and expression functions are defined.
 
       For_All_Entities (Generate_VCs'Access);
+      Check_Safe_Guard_Cycles;
 
       --  Clear global data that is no longer be needed to leave more memory
       --  for solvers.

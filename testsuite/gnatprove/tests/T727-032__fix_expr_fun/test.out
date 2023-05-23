@@ -1,5 +1,6 @@
 exprfun.ads:5:17: info: initialization of "X" proved
 exprfun.ads:6:14: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function]
+exprfun.ads:8:04: info: function contract feasibility proved (Trivial: 1 VC)
 exprfun.ads:12:30: info: initialization of "X" proved
 exprfun.ads:13:14: medium: pointer dereference check might fail
 exprfun.ads:13:14: medium: postcondition might fail [possible fix: you should consider adding a postcondition to type Ptr]

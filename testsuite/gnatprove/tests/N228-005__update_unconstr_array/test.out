@@ -14,7 +14,7 @@ update_checks_1.adb:33:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 update_checks_1.adb:33:27: medium: array index check might fail [reason for check: value must be a valid index into the array]
 update_checks_1.adb:51:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 update_checks_1.adb:51:21: info: index check proved (CVC5: 2 VC)
-update_checks_1.adb:62:10: high: array index check might fail (e.g. when A'First = 2 and I = 1) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in A'First .. A'Last) to subprogram at update_checks_1.ads:23]
+update_checks_1.adb:62:10: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in A'First .. A'Last) to subprogram at update_checks_1.ads:23]
 update_checks_1.adb:69:07: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at update_checks_1.ads:26 should mention A and I in a precondition]
 update_checks_1.adb:69:10: info: index check proved (CVC5: 2 VC)
 update_checks_1.adb:69:15: info: index check proved (CVC5: 2 VC)
@@ -22,8 +22,8 @@ update_checks_1.adb:69:18: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 update_checks_1.adb:69:21: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 update_checks_1.adb:69:21: info: range check proved (CVC5: 2 VC)
 update_checks_1.adb:69:24: info: range check proved (CVC5: 2 VC)
-update_checks_1.adb:76:21: medium: array index check might fail (e.g. when I = 6) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in 1 .. 5) to subprogram at update_checks_1.ads:29]
-update_checks_1.adb:76:21: medium: range check might fail, cannot prove upper bound for I (e.g. when I = 6) [reason for check: value must fit in component type] [possible fix: add precondition (I in 1 .. 5) to subprogram at update_checks_1.ads:29]
+update_checks_1.adb:76:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in 1 .. 5) to subprogram at update_checks_1.ads:29]
+update_checks_1.adb:76:21: medium: range check might fail, cannot prove upper bound for I [reason for check: value must fit in component type] [possible fix: add precondition (I in 1 .. 5) to subprogram at update_checks_1.ads:29]
 update_checks_1.adb:83:21: info: index check proved (CVC5: 2 VC)
 update_checks_1.ads:6:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 update_checks_1.ads:9:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -33,7 +33,7 @@ update_checks_1.ads:15:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC
 update_checks_1.ads:19:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 update_checks_1.ads:24:19: info: postcondition proved (CVC5: 1 VC)
 update_checks_1.ads:24:22: info: index check proved (CVC5: 2 VC)
-update_checks_1.ads:27:19: high: postcondition might fail (e.g. when A = (2 => -1, others => -1) and I = 1 and New_Val = 0)
+update_checks_1.ads:27:19: medium: postcondition might fail
 update_checks_1.ads:27:19: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
 update_checks_1.ads:27:32: info: range check proved (CVC5: 2 VC)
 update_checks_1.ads:27:35: info: range check proved (CVC5: 2 VC)

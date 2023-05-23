@@ -98,6 +98,17 @@ package body Xtree_Sinfo is
                  "Relaxed_Init", "Boolean", "False");
       Set_Domain (W_Type, EW_Term);
 
+      --------------------
+      -- W_Raise_Effect --
+      --------------------
+
+      New_Field (W_Raise_Effect,
+                 "Name", "W_Name", Id_One);
+      New_Field (W_Raise_Effect,
+                 "Arg_Id", "W_Identifier", Id_Lone);
+      New_Field (W_Raise_Effect,
+                 "Post", "W_Pred", Id_Lone);
+
       ---------------
       -- W_Effects --
       ---------------
@@ -108,7 +119,7 @@ package body Xtree_Sinfo is
       New_Field (W_Effects,
                  "Writes", "W_Identifier", Id_Set);
       New_Field (W_Effects,
-                 "Raises", "W_Identifier", Id_Set);
+                 "Raises", "W_Raise_Effect", Id_Set);
       Set_Domain (W_Effects, EW_Prog);
 
       --------------
@@ -190,7 +201,7 @@ package body Xtree_Sinfo is
       New_Field (W_Handler,
                  "Name", "W_Name", Id_One);
       New_Field (W_Handler,
-                 "Arg", "W_Prog", Id_Lone);
+                 "Arg_Id", "W_Identifier", Id_Lone);
       New_Field (W_Handler,
                  "Def", "W_Prog", Id_One);
       Set_Domain (W_Handler, EW_Prog);
@@ -554,7 +565,7 @@ package body Xtree_Sinfo is
       New_Field (W_Raise,
                  "Name", "W_Name", Id_One);
       New_Field (W_Raise,
-                 "Exn_Type", "W_Type", Id_Lone);
+                 "Arg", "W_Expr", Id_Lone);
       New_Field (W_Raise,
                  "Typ", "W_Type", Id_Lone);
 

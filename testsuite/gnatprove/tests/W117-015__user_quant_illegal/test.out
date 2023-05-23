@@ -1,0 +1,41 @@
+illegal.adb:13:39: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK
+illegal.adb:13:39: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:14:39: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK
+illegal.adb:14:39: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:15:39: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK
+illegal.adb:15:39: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:16:39: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK
+illegal.adb:16:39: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:17:39: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK
+illegal.adb:17:39: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:18:39: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK
+illegal.adb:18:39: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:39:15: error: Iterable aspect declared on the full view of a private type is not allowed in SPARK
+illegal.adb:39:15: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:40:42: error: "First" is not allowed in SPARK (due to Iterable aspect declared on the full view of a private type)
+illegal.adb:40:42: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:41:42: error: "Next" is not allowed in SPARK (due to Iterable aspect declared on the full view of a private type)
+illegal.adb:41:42: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:42:42: error: "Has_Element" is not allowed in SPARK (due to Iterable aspect declared on the full view of a private type)
+illegal.adb:42:42: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:44:26: error: "T" is not allowed in SPARK (due to Iterable aspect declared on the full view of a private type)
+illegal.adb:44:26: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:45:25: error: "T" is not allowed in SPARK (due to Iterable aspect declared on the full view of a private type)
+illegal.adb:45:25: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:46:32: error: "T" is not allowed in SPARK (due to Iterable aspect declared on the full view of a private type)
+illegal.adb:46:32: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:92:42: error: function associated to aspect Iterable with controlling result is not allowed in SPARK
+illegal.adb:92:42: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:108:42: error: function associated to aspect Iterable with controlling result is not allowed in SPARK
+illegal.adb:108:42: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:109:42: error: function associated to aspect Iterable with controlling result is not allowed in SPARK
+illegal.adb:109:42: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:111:42: error: function associated to aspect Iterable with controlling result is not allowed in SPARK
+illegal.adb:111:42: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:112:42: error: function associated to aspect Iterable with controlling result is not allowed in SPARK
+illegal.adb:112:42: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:113:42: error: function associated to aspect Iterable with controlling result is not allowed in SPARK
+illegal.adb:113:42: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:160:16: error: Contains function shall not access global data
+illegal.adb:188:16: error: Model function shall not access global data
+gnatprove: error during flow analysis and proof

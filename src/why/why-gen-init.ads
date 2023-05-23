@@ -29,7 +29,6 @@ with Types;                    use Types;
 with Why.Atree.Accessors;      use Why.Atree.Accessors;
 with Why.Atree.Modules;        use Why.Atree.Modules;
 with Why.Conversions;          use Why.Conversions;
-with Why.Gen.Terms;            use Why.Gen.Terms;
 with Why.Ids;                  use Why.Ids;
 with Why.Sinfo;                use Why.Sinfo;
 
@@ -62,35 +61,43 @@ package Why.Gen.Init is
               and then Has_Init_Wrapper (Get_Ada_Node (+Ty)));
    --  Return the init wrapper type with the same Ada node and kind as Ty
 
+   type Exclude_Init_Check_Flag is
+     (None,
+      With_User_Eq,
+      Relaxed);
+   --  Flags for Compute_Is_Initialized function, to exclude
+   --  selected subcomponents from initialization checks.
+
    function Compute_Is_Initialized
      (E                      : Entity_Id;
       Name                   : W_Expr_Id;
       Params                 : Transformation_Params;
       Domain                 : EW_Domain;
-      Exclude_Always_Relaxed : Boolean := False;
-      No_Predicate_Check     : Boolean := False;
-      Top_Predicate          : W_Term_Id := True_Term)
+      Excluded_Subcomponents : Exclude_Init_Check_Flag := None;
+      No_Predicate_Check     : Boolean := False)
       return W_Expr_Id;
    --  Whether Name is initialized. This does not only include the top level
    --  initialization flag of E but also the flags of nested components for
    --  composite types.
-   --  If Exclude_Always_Relaxed is True, do not include initialization of
-   --  subcomponents whose type is annotated with relaxed initialization. A
-   --  part of an expression which has relaxed initialization may not be of a
-   --  type with relaxed initialization, for example, if it comes from an
-   --  object which has relaxed initialization, or if it is a part of a
-   --  composite expression which itself has a type with relaxed
+
+   --  Excluded_Subcomponents allows exclusion of selected subcomponents from
+   --  the initialization check. If it is Relaxed, do not include
+   --  initialization of subcomponents whose type is annotated with relaxed
+   --  initialization. A part of an expression which has relaxed initialization
+   --  may not be of a type with relaxed initialization, for example, if it
+   --  comes from an object which has relaxed initialization, or if it is a
+   --  part of a composite expression which itself has a type with relaxed
    --  initialization. Some initialization checks are only interested with
    --  these parts which do not have a type with relaxed initialization. This
    --  happens for example when storing the expression in an object of its
    --  type, or when giving it as a parameter to a function call.
+   --  If Excluded_Subcomponents is With_User_Eq, components of a type with
+   --  a user-defined equality will be excluded.
+
    --  For init wrappers of composite types, Is_Initialized will include a
    --  predicate check if any. If No_Predicate_Check is True, then the
    --  predicate of the type itself will not be included. Predicates of
    --  subcomponents are still considered.
-   --  Top_Predicate is used to only assume the inherited predicates on
-   --  the parameter of the predicate function of a type annotated with
-   --  Relaxed_Initialization.
 
    function New_Init_Attribute_Access
      (E    : Entity_Id;
@@ -111,7 +118,7 @@ package Why.Gen.Init is
       E                      : Entity_Id;
       Name                   : W_Expr_Id;
       Domain                 : EW_Domain;
-      Exclude_Always_Relaxed : Boolean := False;
+      Excluded_Subcomponents : Exclude_Init_Check_Flag := None;
       No_Predicate_Check     : Boolean := False)
       return W_Expr_Id;
    --  If Domain = EW_Prog, insert a check that Name is initialized

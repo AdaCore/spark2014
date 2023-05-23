@@ -92,6 +92,7 @@ frame_condition.adb:106:28: info: overflow check proved (CVC5: 2 VC), in call in
 frame_condition.adb:109:20: info: add a contract to analyze it separately from calling contexts
 frame_condition.adb:109:20: info: local subprogram "Set_Max_Left" only analyzed in the context of calls
 frame_condition.adb:111:16: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:85, in instantiation at frame_condition.adb:122
+frame_condition.adb:114:19: info: implicit function contract might not be available on calls from enclosing unit
 frame_condition.adb:115:16: info: index check proved (CVC5: 2 VC)
 frame_condition.adb:119:40: info: index check proved (CVC5: 2 VC)
 frame_condition.adb:119:58: info: index check proved (CVC5: 2 VC)
@@ -105,6 +106,7 @@ frame_condition.adb:132:28: info: range check proved (CVC5: 2 VC), in call inlin
 frame_condition.adb:135:20: info: add a contract to analyze it separately from calling contexts
 frame_condition.adb:135:20: info: local subprogram "Set_Max_Right" only analyzed in the context of calls
 frame_condition.adb:137:16: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:85, in instantiation at frame_condition.adb:150
+frame_condition.adb:140:19: info: implicit function contract might not be available on calls from enclosing unit
 frame_condition.adb:141:16: info: index check proved (CVC5: 2 VC)
 frame_condition.adb:146:19: info: index check proved (CVC5: 2 VC)
 frame_condition.adb:146:37: info: index check proved (CVC5: 2 VC)
@@ -149,8 +151,8 @@ frame_condition.adb:205:36: info: loop invariant preservation proved (CVC5: 2 VC
 frame_condition.adb:205:36: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:207:17: info: loop invariant initialization proved (CVC5: 2 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:207:17: info: loop invariant initialization proved (CVC5: 2 VC), in call inlined at frame_condition.adb:234
+frame_condition.adb:207:17: info: loop invariant preservation proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:207:17: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at frame_condition.adb:233
-frame_condition.adb:207:17: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:207:47: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:207:47: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:208:51: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:233
@@ -189,14 +191,14 @@ frame_condition.ads:14:27: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:14:42: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:15:27: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:15:42: info: index check proved (CVC5: 2 VC)
-frame_condition.ads:18:14: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC)
 frame_condition.ads:19:20: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:19:38: info: index check proved (CVC5: 2 VC)
+frame_condition.ads:21:24: medium: postcondition might fail, cannot prove A (I).Value <= A (J).Max_Left
 frame_condition.ads:21:27: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:21:42: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:22:27: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:22:42: info: index check proved (CVC5: 2 VC)
-frame_condition.ads:25:14: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC)
+frame_condition.ads:25:14: info: postcondition proved (CVC5: 1 VC; Z3: 2 VC)
 frame_condition.ads:26:20: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:26:38: info: index check proved (CVC5: 2 VC)
 frame_condition.ads:28:27: info: index check proved (CVC5: 2 VC)

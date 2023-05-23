@@ -2,7 +2,7 @@ alpha_launch_examples.adb:17:19: info: postcondition proved (CVC5: 1 VC)
 alpha_launch_examples.adb:17:38: info: overflow check proved (CVC5: 2 VC)
 alpha_launch_examples.adb:20:14: high: overflow check might fail, cannot prove upper bound for abs (X) (e.g. when X = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs (X) in Integer) to subprogram at line 16]
 alpha_launch_examples.adb:24:11: info: flow dependencies proved
-alpha_launch_examples.adb:27:28: high: postcondition might fail, cannot prove R /= R'old (e.g. when R = (A => 0, B => 0, C => 0) and R'Old = (A => 0, B => 0, C => 0))
+alpha_launch_examples.adb:27:28: high: postcondition might fail, cannot prove R /= R'Old (e.g. when R = (A => 0, B => 0, C => 0) and R'Old = (A => 0, B => 0, C => 0))
 alpha_launch_examples.adb:29:07: info: initialization of "Tmp" proved
 alpha_launch_examples.adb:40:19: high: postcondition might fail (e.g. when Example_3'Result = 0)
 alpha_launch_examples.adb:49:11: info: flow dependencies proved

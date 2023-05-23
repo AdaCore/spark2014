@@ -147,9 +147,22 @@ package Gnat2Why.Expr is
    --  condition. It also checks that the DIC holds for default values of the
    --  type.
    --  @param Params transformation parameters
-   --  @param N a type with a defult initial condition that needs to be checked
+   --  @param Ty a type with a default initial condition
+   --            that needs to be checked
    --  @return a program that checks that no error can appear in N's DIC
    --          and it holds for default values of type N.
+
+   function Check_Type_With_Iterable
+     (Params : Transformation_Params;
+      Ty     : Type_Kind_Id)
+      return W_Prog_Id;
+   --  Generate checks for absence of runtime errors for
+   --  executing a quantified expression over the elements of
+   --  a value of (Ty) in any context.
+   --  @param Params transformation parameters
+   --  @param Ty a type with Iterable aspect
+   --  @return a program that checks that no error can occur
+   --          when executing a quantified expression in any context.
 
    procedure Compute_Borrow_At_End_Value
      (Check_Node    : Entity_Id := Empty;
@@ -234,14 +247,16 @@ package Gnat2Why.Expr is
    --  @result The default initial assumption of type Ty over Expr
 
    function Compute_Dynamic_Predicate
-     (Expr   : W_Term_Id;
-      Ty     : Type_Kind_Id;
-      Params : Transformation_Params := Body_Params)
+     (Expr          : W_Term_Id;
+      Ty            : Type_Kind_Id;
+      Params        : Transformation_Params := Body_Params;
+      Top_Predicate : W_Term_Id := True_Term)
       return W_Pred_Id;
    --  @param Expr Why3 term expression on which to express the dynamic
    --     predicate.
    --  @param Ty type with the dynamic invariant
    --  @param Params transformation parameters
+   --  @param Top_Predicate True to ignore the top-level predicate of Ty
    --  @result Why3 predicate expressing the dynamic predicate of type [Ty]
    --     over [Expr].
 
@@ -303,7 +318,7 @@ package Gnat2Why.Expr is
       Params           : Transformation_Params;
       Initialized      : W_Term_Id := True_Term;
       Only_Var         : W_Term_Id := True_Term;
-      Top_Predicate    : W_Term_Id := True_Term;
+      Top_Predicate    : Boolean := True;
       Include_Type_Inv : W_Term_Id := True_Term)
       return W_Pred_Id;
    --  Same as Compute_Dynamic_Invariant but also add the initialization if
@@ -423,13 +438,15 @@ package Gnat2Why.Expr is
    --  Havoc all entities borrowed in the block
 
    function Insert_Predicate_Check
-     (Ada_Node : Node_Id;
-      Check_Ty : Type_Kind_Id;
-      W_Expr   : W_Prog_Id)
+     (Ada_Node      : Node_Id;
+      Check_Ty      : Type_Kind_Id;
+      W_Expr        : W_Prog_Id;
+      Top_Predicate : W_Term_Id := True_Term)
       return W_Prog_Id;
    --  @param Ada_Node node to which the check is attached
    --  @param Check_Ty type whose predicate needs to be checked
    --  @param W_Expr Why3 expression on which to check the predicate
+   --  @param Top_Predicate True to ignore the top-level predicate of Check_Ty
    --  @result Why3 program that performs the check and returns [W_Expr]
 
    function Insert_Invariant_Check
@@ -460,13 +477,15 @@ package Gnat2Why.Expr is
      (Ada_Node         : Node_Id;
       Ty               : Type_Kind_Id;
       W_Expr           : W_Expr_Id;
-      On_Default_Value : Boolean := False)
+      On_Default_Value : Boolean := False;
+      Top_Predicate    : W_Term_Id := True_Term)
       return W_Prog_Id;
    --  @param Ada_Node node to which the check is attached
    --  @param Ty type whose predicate needs to be checked
    --  @param W_Expr Why3 expression on which to check the predicate
    --  @param On_Default_Value True iff this predicate check applies to the
    --    default value for a type
+   --  @param Top_Predicate True to ignore the top-level predicate of Ty
    --  @return Why3 program that performs the check
 
    function Range_Expr

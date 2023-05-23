@@ -1,7 +1,7 @@
 counterexamples.adb:1:11: warning: subprogram "Counterexamples" has no effect
 counterexamples.adb:17:14: warning: subprogram "Bad_1" has no effect
-counterexamples.adb:21:22: medium: assertion might fail (e.g. when X = (First => null, Second => new Integer'(0)))
-counterexamples.adb:21:30: medium: pointer dereference check might fail (e.g. when X = (First => null, Second => new Integer'(0)))
+counterexamples.adb:21:22: medium: assertion might fail (e.g. when X = (First => new Integer'(0), Second => new Integer'(0)))
+counterexamples.adb:21:30: medium: pointer dereference check might fail (e.g. when X = (First => new Integer'(0), Second => new Integer'(0)))
 counterexamples.adb:22:22: medium: assertion might fail (e.g. when X = (First => null, Second => new Integer'(0)))
 counterexamples.adb:22:31: info: pointer dereference check proved (CVC5: 1 VC)
 counterexamples.adb:25:14: warning: subprogram "Bad_2" has no effect
@@ -39,4 +39,4 @@ counterexamples.adb:55:22: medium: assertion might fail
 counterexamples.adb:55:25: info: index check proved (CVC5: 2 VC)
 counterexamples.adb:58:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 counterexamples.adb:58:04: info: initialization of "X" proved
-counterexamples.adb:61:04: medium: precondition might fail (e.g. when X = (First => null, Second => null))
+counterexamples.adb:61:04: medium: precondition might fail

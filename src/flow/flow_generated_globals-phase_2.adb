@@ -21,28 +21,30 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Regpat;                use GNAT.Regpat;
+with GNAT.Regpat;                      use GNAT.Regpat;
 with Ada.Strings.Fixed;
-with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
-with Ada.Text_IO;                use Ada.Text_IO;
+with Ada.Strings.Unbounded;            use Ada.Strings.Unbounded;
+with Ada.Text_IO;                      use Ada.Text_IO;
 
-with ALI;                        use ALI;
-with Namet;                      use Namet;
-with Osint;                      use Osint;
-with Output;                     use Output;
-with Sem_Util;                   use Sem_Util;
+with Assumption_Types;                 use Assumption_Types;
 
-with Call;                       use Call;
-with Debug.Timing;               use Debug.Timing;
+with ALI;                              use ALI;
+with Namet;                            use Namet;
+with Osint;                            use Osint;
+with Output;                           use Output;
+with Sem_Util;                         use Sem_Util;
+
+with Call;                             use Call;
+with Debug.Timing;                     use Debug.Timing;
 with Gnat2Why_Args;
-with SPARK2014VSN;               use SPARK2014VSN;
-with SPARK_Definition.Annotate;  use SPARK_Definition.Annotate;
-with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
-with SPARK_Xrefs;                use SPARK_Xrefs;
+with SPARK2014VSN;                     use SPARK2014VSN;
+with SPARK_Definition.Annotate;        use SPARK_Definition.Annotate;
+with SPARK_Frame_Conditions;           use SPARK_Frame_Conditions;
+with SPARK_Xrefs;                      use SPARK_Xrefs;
 
-with Common_Iterators;           use Common_Iterators;
-with Flow_Refinement;            use Flow_Refinement;
-with Flow_Utility;               use Flow_Utility;
+with Common_Iterators;                 use Common_Iterators;
+with Flow_Refinement;                  use Flow_Refinement;
+with Flow_Utility;                     use Flow_Utility;
 with Graphs;
 with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
 
@@ -150,7 +152,16 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Call graph rooted at analyzed subprograms for detecting if a subprogram
    --  is recursive.
 
-   Lemma_Call_Graph : Entity_Name_Graphs.Graph :=
+   Proof_Module_Dependency_Graph : Entity_Name_Graphs.Graph :=
+     Entity_Name_Graphs.Create;
+   --  Same as Subprogram_Call_Graph but with a phantom link between functions
+   --  and their enclosing unit if any. This map is used by proof to avoid
+   --  recursivity between the proofs of different entities.
+   --  ??? We could also search for actual uses of scoped constants. Note that
+   --  globals as computed by flow analysis are inadequate as qe also need
+   --  constants without variable inputs.
+
+   Lemma_Module_Dependency_Graph : Entity_Name_Graphs.Graph :=
      Entity_Name_Graphs.Create;
    --  Same as above but with a phantom link between functions and their lemmas
    --  if they are instantiated automatically. This map is used by proof to
@@ -854,15 +865,111 @@ package body Flow_Generated_Globals.Phase_2 is
             Call_Graph.Close;
          end Add_Subprogram_Edges;
 
-         --  The Lemma_Call_Graph is similar to the Subprogram_Call_Graph
-         --  except that edges are added between a function and its potential
-         --  associated lemmas. We go over the list of entities to be
-         --  translated to add this link and redo the closure.
-         --  We ensure in marking that, when a lemma entity is marked, the
-         --  associated function is marked too.
+         --  To detect if proof modules are inter-dependent, we create a call
+         --  graph where vertices correspond to subprograms and packages and
+         --  edges to subprogram calls.
+
+         Add_Proof_Dependencies : declare
+            Remaining : Name_Sets.Set;
+            --  We collect called subprograms and use them as seeds to grow the
+            --  graph.
+
+            Call_Graph : Entity_Name_Graphs.Graph renames
+              Proof_Module_Dependency_Graph;
+            --  A short alias for a long name
+
+         begin
+            for E of Entities_To_Translate loop
+               if Is_Subprogram_Or_Entry (E) or else Ekind (E) = E_Package then
+                  declare
+                     E_Name : constant Entity_Name := To_Entity_Name (E);
+                  begin
+                     Remaining.Insert (E_Name);
+                     Call_Graph.Add_Vertex (E_Name);
+                  end;
+               end if;
+            end loop;
+
+            --  Then create a call graph for them
+            while not Remaining.Is_Empty loop
+
+               declare
+                  Caller   : constant Entity_Name :=
+                    Remaining (Remaining.First);
+                  --  Name of the caller
+
+                  V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
+                    Call_Graph.Get_Vertex (Caller);
+
+                  V_Callee : Entity_Name_Graphs.Vertex_Id;
+                  --  Call graph vertices for the caller and the callee
+
+               begin
+                  --  Add callees of the caller into the graph
+                  for Callee of Generated_Calls (Caller) loop
+                     --  Get vertex for the callee
+                     V_Callee := Call_Graph.Get_Vertex (Callee);
+
+                     --  If there is no vertex for the callee then create
+                     --  one and put the callee on the stack.
+                     if V_Callee = Entity_Name_Graphs.Null_Vertex then
+                        Call_Graph.Add_Vertex (Callee, V_Callee);
+                        Remaining.Insert (Callee);
+                     end if;
+
+                     Call_Graph.Add_Edge (V_Caller, V_Callee);
+                  end loop;
+
+                  --  Pop the caller from the stack
+                  Remaining.Delete (Caller);
+               end;
+            end loop;
+
+            --  For nested subprograms, add a link to the enclosing
+            --  unit if any.
+
+            for E of Entities_To_Translate loop
+               if Is_Subprogram_Or_Entry (E) then
+                  declare
+                     V_E     : constant Entity_Name_Graphs.Vertex_Id :=
+                       Call_Graph.Get_Vertex (To_Entity_Name (E));
+                     Scope   : constant Entity_Id := Enclosing_Unit (E);
+                     V_Scope : Entity_Name_Graphs.Vertex_Id :=
+                       Entity_Name_Graphs.Null_Vertex;
+
+                  begin
+
+                     --  Get vertex for the scope
+
+                     if Present (Scope)
+                       and then
+                         (Is_Subprogram_Or_Entry (Scope)
+                          or else Ekind (Scope) = E_Package)
+                     then
+                        V_Scope := Call_Graph.Get_Vertex
+                          (To_Entity_Name (Scope));
+                     end if;
+
+                     if V_Scope /= Entity_Name_Graphs.Null_Vertex then
+                        Call_Graph.Add_Edge (V_E, V_Scope);
+                     end if;
+                  end;
+               end if;
+            end loop;
+
+            --  Close the call graph
+            Call_Graph.Close;
+         end Add_Proof_Dependencies;
+
+         --  The Lemma_Module_Dependency_Graph is similar to the
+         --  Proof_Module_Dependency_Graph except that edges are added between
+         --  a function and its potential associated lemmas. We go over the
+         --  list of entities to be translated to add this link and redo the
+         --  closure. We ensure in marking that, when a lemma entity is marked,
+         --  the associated function is marked too.
 
          Add_Lemma_Subprogram_Edges : begin
-            Lemma_Call_Graph := Subprogram_Call_Graph;
+            Lemma_Module_Dependency_Graph := Proof_Module_Dependency_Graph;
 
             --  Add vertex for phantom calls to lemma procedure from their
             --  associated function.
@@ -875,11 +982,11 @@ package body Flow_Generated_Globals.Phase_2 is
                      E_Name : constant Entity_Name := To_Entity_Name (E);
                      F_Name : constant Entity_Name := To_Entity_Name (F);
                      V_E    : constant Entity_Name_Graphs.Vertex_Id :=
-                       Lemma_Call_Graph.Get_Vertex (E_Name);
+                       Lemma_Module_Dependency_Graph.Get_Vertex (E_Name);
                      V_F    : constant Entity_Name_Graphs.Vertex_Id :=
-                       Lemma_Call_Graph.Get_Vertex (F_Name);
+                       Lemma_Module_Dependency_Graph.Get_Vertex (F_Name);
                   begin
-                     Lemma_Call_Graph.Add_Edge (V_F, V_E);
+                     Lemma_Module_Dependency_Graph.Add_Edge (V_F, V_E);
                   end;
 
                end if;
@@ -887,7 +994,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
             --  Close the call graph
 
-            Lemma_Call_Graph.Close;
+            Lemma_Module_Dependency_Graph.Close;
          end Add_Lemma_Subprogram_Edges;
 
          Add_Ceiling_Priority_Edges : declare
@@ -1689,7 +1796,7 @@ package body Flow_Generated_Globals.Phase_2 is
       procedure Note_Time (Message : String) is
       begin
          if Debug_GG_Read_Timing then
-            Timing_Phase_Completed (Timing, Message);
+            Timing_Phase_Completed (Timing, Null_Subp, Message);
          end if;
       end Note_Time;
       pragma Annotate (Xcov, Exempt_Off);
@@ -2234,7 +2341,9 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  when elaborating the current package.
 
                   Update.Refined_Initializes.Union
-                    (Update.Refined.Outputs - Update.Refined.Inputs);
+                    ((Update.Refined.Outputs - Update.Refined.Inputs)
+                       and
+                     States_And_Objects (Folded));
 
                   --  Pull objects initialized in child packages into own
                   --  refined outputs, so that Part_Of constituents declared
@@ -2282,13 +2391,6 @@ package body Flow_Generated_Globals.Phase_2 is
                         Projected.Include (State);
                      end if;
                   end loop;
-
-                  --  ??? the intersection below should be only necessary for
-                  --  pure outputs added the Refined_Initializes, but actually
-                  --  in the ALI file we only record objects allowed to appear
-                  --  in the up-projected Initializes. To be fixed.
-
-                  Projected.Intersection (States_And_Objects (Folded));
 
                   Name_Sets.Move (Target => Update.Initializes,
                                   Source => Projected);
@@ -2609,7 +2711,16 @@ package body Flow_Generated_Globals.Phase_2 is
                if Phase_1_Info.Contains (Child)
                  and then Phase_1_Info (Child).Kind = E_Package
                then
-                  Local_Variables.Union (States_And_Objects (Child));
+                  declare
+                     Projected, Partial : Name_Sets.Set;
+                  begin
+                     Up_Project
+                       (States_And_Objects (Child),
+                        Name_Scope'(E, Visible_Part),
+                        Projected, Partial);
+                     Local_Variables.Union (Projected);
+                     Local_Variables.Union (Partial);
+                  end;
                end if;
             end loop;
 
@@ -3322,18 +3433,34 @@ package body Flow_Generated_Globals.Phase_2 is
    function Mutually_Recursive (E1, E2 : Entity_Id) return Boolean is
      (Mutually_Recursive (To_Entity_Name (E1), To_Entity_Name (E2)));
 
-   ------------------------------
-   -- Lemma_Mutually_Recursive --
-   ------------------------------
+   ----------------------------
+   -- Lemma_Module_Cyclicity --
+   ----------------------------
 
-   function Lemma_Mutually_Recursive (EN1, EN2 : Entity_Name) return Boolean is
-     (Lemma_Call_Graph.Contains (EN1)
-      and then Lemma_Call_Graph.Contains (EN2)
-      and then Lemma_Call_Graph.Edge_Exists (EN1, EN2)
-      and then Lemma_Call_Graph.Edge_Exists (EN2, EN1));
+   function Lemma_Module_Cyclic (EN1, EN2 : Entity_Name) return Boolean is
+     (Lemma_Module_Dependency_Graph.Contains (EN1)
+      and then Lemma_Module_Dependency_Graph.Contains (EN2)
+      and then Lemma_Module_Dependency_Graph.Edge_Exists (EN1, EN2)
+      and then Lemma_Module_Dependency_Graph.Edge_Exists (EN2, EN1));
 
-   function Lemma_Mutually_Recursive (E1, E2 : Entity_Id) return Boolean is
-     (Lemma_Mutually_Recursive (To_Entity_Name (E1), To_Entity_Name (E2)));
+   function Lemma_Module_Cyclic (E1, E2 : Entity_Id) return Boolean is
+     (Lemma_Module_Cyclic (To_Entity_Name (E1), To_Entity_Name (E2)));
+
+   ----------------------------
+   -- Proof_Module_Cyclicity --
+   ----------------------------
+
+   function Proof_Module_Cyclic (EN1, EN2 : Entity_Name) return Boolean is
+     (Proof_Module_Dependency_Graph.Contains (EN1)
+      and then Proof_Module_Dependency_Graph.Contains (EN2)
+      and then Proof_Module_Dependency_Graph.Edge_Exists (EN1, EN2)
+      and then Proof_Module_Dependency_Graph.Edge_Exists (EN2, EN1));
+
+   function Proof_Module_Cyclic (E1, E2 : Entity_Id) return Boolean is
+     (Proof_Module_Cyclic (To_Entity_Name (E1), To_Entity_Name (E2)));
+
+   function Proof_Module_Cyclic (E : Entity_Id) return Boolean is
+     (Proof_Module_Cyclic (To_Entity_Name (E), To_Entity_Name (E)));
 
    ------------------------
    -- Calls_Current_Task --
@@ -4173,9 +4300,18 @@ package body Flow_Generated_Globals.Phase_2 is
                      end loop;
                   end if;
 
+                  --  Proof expects objects that are not in SPARK to be
+                  --  represented as Magic_Strings. Deferred constants which
+                  --  only have partial view in SPARK will be represented by
+                  --  this partial view.
+
                   Aliases.Insert
                     (if Entity_In_SPARK (E)
                      then Change_Variant (F, Normal_Use)
+                     elsif Present (Partial_View (E))
+                       and then Entity_In_SPARK (Partial_View (E))
+                     then Change_Variant (Direct_Mapping_Id (Partial_View (E)),
+                                          Normal_Use)
                      else Magic_String_Id (To_Entity_Name (E)));
 
                   return Aliases;

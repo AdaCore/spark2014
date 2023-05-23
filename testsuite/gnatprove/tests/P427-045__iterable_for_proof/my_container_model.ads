@@ -17,8 +17,6 @@ package My_Container_Model with SPARK_Mode is
    type Cursor is private;
 
    function Get_Model (C : Container) return Model;
-   pragma Annotate
-     (GNATprove, Iterable_For_Proof, "Model", Entity => Get_Model);
 
    function Valid (E : Natural) return Boolean;
 
@@ -31,6 +29,8 @@ package My_Container_Model with SPARK_Mode is
    function Has_Element (C : Container; P : Cursor) return Boolean;
    function Element (C : Container; P : Cursor) return Natural with
      Pre => Has_Element (C, P);
+   pragma Annotate
+     (GNATprove, Iterable_For_Proof, "Model", Entity => Get_Model);
 
    function M_First (C : Model) return Natural;
    function M_Next (C : Model; P : Natural) return Natural with

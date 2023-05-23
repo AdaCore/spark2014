@@ -3,7 +3,7 @@ relaxed_private.adb:5:14: warning: subprogram "Test_Private_Scalar" has no effec
 relaxed_private.adb:6:07: info: no contextual analysis of "Test_Private_Scalar" (nested package declaration)
 relaxed_private.adb:9:36: warning: "X" cannot be partially initialized
 relaxed_private.adb:9:36: warning: Relaxed_Initialization annotation is useless
-relaxed_private.adb:27:23: medium: initialization check might fail
+relaxed_private.adb:27:23: medium: initialization check might fail (e.g. when R = -1)
 relaxed_private.adb:27:50: warning: "Init" cannot be partially initialized
 relaxed_private.adb:27:50: warning: Relaxed_Initialization annotation is useless
 relaxed_private.adb:29:09: info: data dependencies proved
@@ -34,7 +34,7 @@ relaxed_private.adb:169:14: warning: subprogram "Test_Private_Scalar_Ownership" 
 relaxed_private.adb:170:07: info: no contextual analysis of "Test_Private_Scalar_Ownership" (nested package declaration)
 relaxed_private.adb:177:36: warning: "X" cannot be partially initialized
 relaxed_private.adb:177:36: warning: Relaxed_Initialization annotation is useless
-relaxed_private.adb:194:23: medium: initialization check might fail
+relaxed_private.adb:194:23: medium: initialization check might fail (e.g. when R = -1)
 relaxed_private.adb:194:50: warning: "Init" cannot be partially initialized
 relaxed_private.adb:194:50: warning: Relaxed_Initialization annotation is useless
 relaxed_private.adb:196:09: info: data dependencies proved
@@ -65,7 +65,7 @@ relaxed_private.adb:335:14: warning: subprogram "Test_Private_Predicate" has no 
 relaxed_private.adb:336:07: info: no contextual analysis of "Test_Private_Predicate" (nested package declaration)
 relaxed_private.adb:339:36: warning: "X" cannot be partially initialized
 relaxed_private.adb:339:36: warning: Relaxed_Initialization annotation is useless
-relaxed_private.adb:360:23: medium: initialization check might fail
+relaxed_private.adb:360:23: medium: initialization check might fail (e.g. when R = -1)
 relaxed_private.adb:360:53: warning: "Init" cannot be partially initialized
 relaxed_private.adb:360:53: warning: Relaxed_Initialization annotation is useless
 relaxed_private.adb:362:09: info: data dependencies proved

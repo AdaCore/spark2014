@@ -2,6 +2,8 @@ pack.ads:4:04: error: object of anonymous access not declared immediately within
 pack.ads:4:04: error: violation of aspect SPARK_Mode at line 2
 pack.ads:4:26: error: uninitialized allocator without default initialization is not allowed in SPARK
 pack.ads:4:26: error: violation of aspect SPARK_Mode at line 2
+pack.ads:6:13: error: function "F" with output global "memory accessed through objects of access type" is not allowed in SPARK
+pack.ads:6:13: error: violation of aspect SPARK_Mode at line 2
 pack.ads:7:18: error: "G" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
 pack.ads:7:18: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

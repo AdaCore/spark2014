@@ -1,1 +1,2 @@
+array_component.ads:2:13: info: implicit function contract might not be available on calls from enclosing unit
 array_component.ads:4:04: medium: range check might fail

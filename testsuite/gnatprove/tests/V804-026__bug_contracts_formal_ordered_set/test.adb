@@ -1,13 +1,10 @@
-with SPARK.Containers.Formal.Ordered_Sets;
+with Sets; use Sets;
+with Keys; use Keys;
 
 procedure Test with SPARK_Mode is
-   function Key (X : Natural) return Natural is
-      (X);
 
-   package Sets is new SPARK.Containers.Formal.Ordered_Sets (Natural);
-   use Sets;
-   package Keys is new Sets.Generic_Keys (Natural, Key);
-   use Keys;
+   use Sets_Pack;
+   use Keys_Pack;
 
    S : Set (10);
 begin

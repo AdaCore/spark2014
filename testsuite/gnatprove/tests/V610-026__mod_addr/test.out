@@ -1,3 +1,6 @@
 main.adb:6:35: info: division check proved (CVC5: 1 VC)
-main.adb:6:35: medium: modulus operation on addresses requires positive modulus at s-stoele.ads:95
+main.adb:6:35: info: range check proved (CVC5: 2 VC)
 main.adb:6:35: medium: precondition might fail
+main2.adb:7:28: info: division check proved (CVC5: 1 VC)
+main2.adb:7:28: info: range check proved (CVC5: 2 VC)
+main2.adb:7:28: medium: precondition might fail

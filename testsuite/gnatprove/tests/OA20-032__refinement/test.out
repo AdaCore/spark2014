@@ -79,17 +79,21 @@ patris.adb:408:07: info: initialization of "Success" proved
 patris.adb:419:13: info: precondition proved (CVC5: 2 VC)
 patris.adb:421:57: info: overflow check proved (CVC5: 2 VC)
 patris.adb:432:56: info: division check proved (CVC5: 1 VC)
-patris.adb:432:64: info: range check proved (altergo: 2 VC)
+patris.adb:432:64: info: range check proved (CVC5: 2 VC)
 patris.adb:434:41: info: division check proved (CVC5: 1 VC)
 patris.ads:33:03: info: flow dependencies proved
 patris.ads:59:11: info: data dependencies proved
 patris.ads:80:11: info: data dependencies proved
 patris.ads:83:11: info: data dependencies proved
+patris.ads:96:13: info: implicit function contract might not be available on calls from enclosing unit
 patris.ads:97:11: info: data dependencies proved
+patris.ads:157:13: info: function contract might not be available on calls from enclosing unit
 patris.ads:158:54: info: index check proved (CVC5: 2 VC)
 patris.ads:158:57: info: index check proved (CVC5: 2 VC)
 patris.ads:159:17: info: postcondition proved (Trivial: 1 VC)
+patris.ads:161:13: info: function contract might not be available on calls from enclosing unit
 patris.ads:163:17: info: postcondition proved (Trivial: 1 VC)
+patris.ads:165:13: info: function contract might not be available on calls from enclosing unit
 patris.ads:167:17: info: postcondition proved (Trivial: 1 VC)
 patris.ads:187:46: info: index check proved (CVC5: 2 VC)
 patris.ads:218:77: info: range check proved (CVC5: 1 VC)

@@ -38,7 +38,7 @@ original_sample.ads:37:59: info: float overflow check proved (Trivial)
 original_sample.ads:38:35: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: use "and then" instead of "and" in precondition]
 original_sample.ads:38:53: info: range check proved (Trivial)
 original_sample.ads:38:65: info: float overflow check proved (Trivial)
-original_sample.ads:39:39: medium: postcondition might fail, cannot prove Time >= Time'old
+original_sample.ads:39:39: medium: postcondition might fail, cannot prove Time >= Time'Old
 original_sample.ads:57:06: info: data dependencies proved
 original_sample.ads:59:17: info: postcondition proved (CVC5: 1 VC)
 sample.adb:9:07: info: initialization of "D" proved
@@ -73,6 +73,6 @@ sample.ads:33:06: info: flow dependencies proved
 sample.ads:35:29: info: float overflow check proved (Trivial)
 sample.ads:35:47: info: range check proved (Trivial)
 sample.ads:35:59: info: float overflow check proved (Trivial)
-sample.ads:37:39: medium: postcondition might fail, cannot prove Time >= Time'old
+sample.ads:37:39: medium: postcondition might fail, cannot prove Time >= Time'Old
 sample.ads:55:06: info: data dependencies proved
 sample.ads:57:17: info: postcondition proved (CVC5: 1 VC)

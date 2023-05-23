@@ -178,7 +178,8 @@ package body Gnat2Why.Decls is
                     Kind           => Axiom_Theory,
                     Defined_Entity =>
                       (if Is_Full_View (E) then Partial_View (E) else E));
-
+      Register_Dependency_For_Soundness
+        (E_Axiom_Module (E), Enclosing_Unit (E));
    end Translate_Constant_Value;
 
    -------------------------------

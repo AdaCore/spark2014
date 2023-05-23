@@ -2,6 +2,7 @@ c74402a.adb:40:06: warning: assuming "TEST" always returns
 c74402a.adb:40:06: warning: assuming "TEST" has no effect on global items
 c74402a.adb:40:06: warning: no Global contract available for "TEST"
 c74402a.adb:40:06: warning: no returning annotation available for "TEST"
+c74402a.adb:56:25: info: implicit function contract might not be available on calls from enclosing unit
 c74402a.adb:60:26: warning: subprogram "G1" has no effect
 c74402a.adb:61:26: warning: subprogram "G2" has no effect
 c74402a.adb:62:26: warning: subprogram "G3" has no effect

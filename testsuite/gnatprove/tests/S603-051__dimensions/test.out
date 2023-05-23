@@ -10,7 +10,7 @@ image_golf_hole.adb:14:17: warning: subprogram "Set_Position" has no effect
 image_golf_hole.adb:16:10: info: initialization of "Blob" proved
 image_golf_hole.adb:16:10: info: initialization of "Blob" proved, in call inlined at image_golf_hole.adb:32
 image_golf_hole.adb:16:10: info: predicate check proved on default value (CVC5: 4 VC), in call inlined at image_golf_hole.adb:32
-image_golf_hole.adb:19:18: info: predicate check proved (Z3: 4 VC), in call inlined at image_golf_hole.adb:32
+image_golf_hole.adb:19:18: info: predicate check proved (CVC5: 4 VC), in call inlined at image_golf_hole.adb:32
 image_golf_hole.adb:24:43: warning: assuming "Distance_To_Object" always returns
 image_golf_hole.adb:24:43: warning: assuming "Distance_To_Object" has no effect on global items
 image_golf_hole.adb:24:43: warning: no Global contract available for "Distance_To_Object"

@@ -53,7 +53,11 @@ package body Hash_Cons is
 
    function Hash (A : Access_Type) return Ada.Containers.Hash_Type is
    begin
-      return Hash (A.all);
+      if A /= null then
+         return Hash (A.all);
+      else
+         return 0;
+      end if;
    end Hash;
 
    ---------------

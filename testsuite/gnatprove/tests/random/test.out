@@ -15,6 +15,7 @@ random.adb:87:46: info: index check proved (CVC5: 4 VC)
 random.adb:93:33: info: range check proved (CVC5: 4 VC)
 random.adb:95:36: info: loop invariant initialization proved (CVC5: 1 VC)
 random.adb:95:36: info: loop invariant preservation proved (CVC5: 1 VC)
+random.adb:109:16: info: implicit function contract might not be available on calls from enclosing unit
 random.adb:112:18: info: range check proved (CVC5: 2 VC)
 random.adb:126:68: info: range check proved (CVC5: 2 VC)
 random.adb:127:68: info: range check proved (CVC5: 2 VC)

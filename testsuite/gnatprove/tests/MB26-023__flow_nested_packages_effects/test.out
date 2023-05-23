@@ -18,5 +18,5 @@ outer.adb:67:17: info: data dependencies proved
 outer.adb:70:07: info: initialization of "Y" constituent of "Inner_State" proved
 outer.adb:71:07: info: initialization of "Z" constituent of "Inner_State_2" proved
 outer.adb:85:14: info: overflow check proved (CVC5: 2 VC)
-outer.adb:86:36: medium: overflow check might fail, cannot prove lower bound for Nested_In_Body.Deep_Var + Nested_In_Body(Nested_In_Body.get_deep_state) [reason for check: result of addition must fit in a 32-bits machine integer]
+outer.adb:86:36: medium: overflow check might fail, cannot prove lower bound for Nested_In_Body.Deep_Var + Nested_In_Body.Get_Deep_State [reason for check: result of addition must fit in a 32-bits machine integer]
 outer.ads:6:08: info: flow dependencies proved

@@ -44,8 +44,12 @@ n07.adb:25:04: error: "A" is not allowed in SPARK (due to uninitialized object o
 n07.adb:25:04: error: violation of pragma SPARK_Mode at test.adc:3
 n07.adb:25:09: error: "Get_Local_Pointer" is not allowed in SPARK (due to anonymous access type for result for non-traversal functions)
 n07.adb:25:09: error: violation of pragma SPARK_Mode at test.adc:3
+n08.adb:16:16: error: function "Inc_and_get" with output global "memory accessed through objects of access type" is not allowed in SPARK
+n08.adb:16:16: error: violation of pragma SPARK_Mode at test.adc:3
 n08.adb:21:10: error: assignment into a constant object is not allowed in SPARK
 n08.adb:21:10: error: violation of pragma SPARK_Mode at test.adc:3
+n08.adb:36:09: error: "Inc_and_get" is not allowed in SPARK (due to function with global outputs)
+n08.adb:36:09: error: violation of pragma SPARK_Mode at test.adc:3
 n09.adb:16:19: error: dereference from "A" is not writable
 n09.adb:16:19: error: object was declared as not writable at line 11
 n09b.adb:11:17: error: object was moved at line 20

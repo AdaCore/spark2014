@@ -35,7 +35,7 @@ package AIP.Config is
    MAX_NETIF : constant := 20;
    --  Maximum number of Network Interfaces in use at a time (including down)
 
-   function Interface_Parameters return System.Address;
+   function Interface_Parameters return System.Address with SPARK_Mode => Off;
    --  Return the address of interface-specific parameters passed to the
    --  driver's initialization routine.
 

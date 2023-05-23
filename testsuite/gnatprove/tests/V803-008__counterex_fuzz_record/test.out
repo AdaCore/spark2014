@@ -10,5 +10,5 @@ main.adb:32:14: medium: overflow check might fail, cannot prove lower bound for 
 main.adb:37:26: high: overflow check might fail, cannot prove lower bound for Left.A.A * Right.A.A (e.g. when Left = (A => (A => -1073741825)) and Right = (A => (A => 2))) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Left.A.A * Right.A.A in Integer) to subprogram at line 36]
 main.adb:42:20: high: assertion might fail (e.g. when Res = (A => 0))
 main.adb:49:20: high: assertion might fail (e.g. when Res.A = 0 and Res.B = 0 and Res.C = 0 and Res.D = 0 and Res.E = 0)
-main.adb:56:20: medium: assertion might fail
+main.adb:56:20: high: assertion might fail (e.g. when Res = (A => 1, B => 0, C => (A => 0), D => (A => 1)))
 main.adb:63:20: high: assertion might fail (e.g. when Res = (A => (A => 0)))

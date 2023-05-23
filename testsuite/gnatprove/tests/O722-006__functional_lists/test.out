@@ -1,265 +1,124 @@
-conts-lists.ads:285:29: warning: unused variable "Self", in instantiation at conts-lists-indefinite_unbounded_spark.ads:16, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
-conts-lists.ads:384:15: info: data dependencies proved, in instantiation at conts-lists-indefinite_unbounded_spark.ads:19, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
-conts-lists.ads:438:18: info: precondition proved (CVC5: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:19, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
-conts-lists.ads:440:15: info: data dependencies proved, in instantiation at conts-lists-indefinite_unbounded_spark.ads:19, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
-conts-lists.ads:452:14: medium: precondition might fail, in instantiation at conts-lists-indefinite_unbounded_spark.ads:19, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5 [possible fix: subprogram at line 450 should mention Position and Self in a precondition]
-conts-lists.ads:458:14: medium: precondition might fail, in instantiation at conts-lists-indefinite_unbounded_spark.ads:19, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5 [possible fix: subprogram at line 456 should mention Position and Self in a precondition]
-conts-lists.ads:507:19: info: precondition proved (CVC5: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
-conts-lists.ads:511:19: info: precondition proved (CVC5: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
-conts-lists.ads:515:19: info: precondition proved (CVC5: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
-conts-lists.ads:522:19: info: precondition proved (CVC5: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
-conts-lists.ads:526:19: info: precondition proved (CVC5: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
-conts.ads:145:31: warning: unused variable "E", in instantiation at conts-lists-indefinite_unbounded_spark.ads:15, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
-functional_sequences.ads:14:13: medium: user-defined equality might not terminate (SPARK RM 6.6(2)), in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5
-functional_sequences.ads:14:13: medium: user-defined equality might not terminate (SPARK RM 6.6(2)), in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5
-functional_sequences.ads:16:66: medium: range check might fail, cannot prove lower bound for Length (S1) - 1, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5 [reason for check: result of subtraction must be convertible to the target type of the conversion] [possible fix: add precondition (Length (S1) >= Natural'First + 1) to subprogram at line 14]
-functional_sequences.ads:16:66: medium: range check might fail, cannot prove lower bound for Length (S1) - 1, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5 [reason for check: result of subtraction must be convertible to the target type of the conversion] [possible fix: add precondition (Length (S1) >= Natural'First + 1) to subprogram at line 14]
-functional_sequences.ads:18:09: info: data dependencies proved, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5
-functional_sequences.ads:18:09: info: data dependencies proved, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5
-use_lists.adb:3:22: error: side effects of function "First" are not modeled in SPARK
-use_lists.adb:5:14: medium: "L2" is not set
-use_lists.adb:5:14: medium: private part of "L2" is not set
-use_lists.adb:6:13: error: side effects of function "Has_Element" are not modeled in SPARK
-use_lists.adb:8:13: medium: loop invariant might fail in first iteration
-use_lists.adb:8:13: medium: loop invariant might not be preserved by an arbitrary iteration
-use_lists.adb:8:35: error: side effects of function "Get_Cursor_Model" are not modeled in SPARK
-use_lists.adb:8:64: info: function contract not available for proof ("Length" might not return)
-use_lists.adb:10:13: info: loop invariant initialization proved (CVC5: 1 VC)
-use_lists.adb:10:40: info: function contract not available for proof ("Length" might not return)
-use_lists.adb:11:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Is_Incr (Get (Get_Element_Model (L1), N), Get (Get_Element_Model (L2), N))
-use_lists.adb:11:32: error: side effects of function "Get_Element_Model" are not modeled in SPARK
-use_lists.adb:12:32: error: side effects of function "Get_Element_Model" are not modeled in SPARK
-use_lists.adb:13:13: error: side effects of function "Element" are not modeled in SPARK
-use_lists.adb:13:13: info: precondition proved (CVC5: 1 VC)
-use_lists.adb:14:13: medium: precondition might fail
-use_lists.adb:14:25: error: side effects of function "Element" are not modeled in SPARK
-use_lists.adb:14:25: medium: precondition might fail
-use_lists.adb:14:42: medium: overflow check might fail, cannot prove upper bound for Element (L1, Cu) + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
-use_lists.adb:16:13: medium: precondition might fail
-use_lists.adb:16:25: error: side effects of function "Element" are not modeled in SPARK
-use_lists.adb:16:25: medium: precondition might fail
-use_lists.adb:18:16: medium: assertion might fail
-use_lists.adb:18:21: error: side effects of function "Get_Element_Model" are not modeled in SPARK
-use_lists.adb:18:45: info: function contract not available for proof ("Length" might not return)
-use_lists.adb:18:57: info: range check proved (CVC5: 2 VC)
-use_lists.adb:19:18: error: side effects of function "Element" are not modeled in SPARK
-use_lists.adb:19:18: medium: precondition might fail
-use_lists.adb:21:25: medium: assertion might fail
-use_lists.adb:21:34: error: side effects of function "Element" are not modeled in SPARK
-use_lists.adb:21:34: medium: precondition might fail
-use_lists.adb:22:30: error: side effects of function "Get_Element_Model" are not modeled in SPARK
-use_lists.adb:22:54: info: function contract not available for proof ("Length" might not return)
-use_lists.adb:22:66: info: range check proved (CVC5: 2 VC)
-use_lists.adb:23:10: medium: precondition might fail
+use_lists.adb:3:22: error: "First" is not allowed in SPARK (due to function with global outputs)
+use_lists.adb:3:22: error: violation of aspect SPARK_Mode at line 1
+use_lists.adb:6:30: error: "Cu" is not allowed in SPARK (due to function with global outputs)
+use_lists.adb:6:30: error: violation of aspect SPARK_Mode at line 1
+use_lists.adb:8:35: error: "Get_Cursor_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.adb:8:35: error: violation of aspect SPARK_Mode at line 1
+use_lists.adb:8:58: error: "Cu" is not allowed in SPARK (due to function with global outputs)
+use_lists.adb:8:58: error: violation of aspect SPARK_Mode at line 1
+use_lists.adb:11:32: error: "Get_Element_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.adb:11:32: error: violation of aspect SPARK_Mode at line 1
+use_lists.adb:12:32: error: "Get_Element_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.adb:12:32: error: violation of aspect SPARK_Mode at line 1
+use_lists.adb:13:26: error: "Cu" is not allowed in SPARK (due to function with global outputs)
+use_lists.adb:13:26: error: violation of aspect SPARK_Mode at line 1
+use_lists.adb:14:38: error: "Cu" is not allowed in SPARK (due to function with global outputs)
+use_lists.adb:14:38: error: violation of aspect SPARK_Mode at line 1
+use_lists.adb:16:38: error: "Cu" is not allowed in SPARK (due to function with global outputs)
+use_lists.adb:16:38: error: violation of aspect SPARK_Mode at line 1
+use_lists.adb:18:21: error: "Get_Element_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.adb:18:21: error: violation of aspect SPARK_Mode at line 1
+use_lists.adb:19:31: error: "Cu" is not allowed in SPARK (due to function with global outputs)
+use_lists.adb:19:31: error: violation of aspect SPARK_Mode at line 1
+use_lists.adb:21:47: error: "Cu" is not allowed in SPARK (due to function with global outputs)
+use_lists.adb:21:47: error: violation of aspect SPARK_Mode at line 1
+use_lists.adb:22:30: error: "Get_Element_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.adb:22:30: error: violation of aspect SPARK_Mode at line 1
+use_lists.adb:23:20: error: "Cu" is not allowed in SPARK (due to function with global outputs)
+use_lists.adb:23:20: error: violation of aspect SPARK_Mode at line 1
+use_lists.ads:5:04: error: "Get_Cursor_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Cursor_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Cursor_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Cursor_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Cursor_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Cursor_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Cursor_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Cursor_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Cursor_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Cursor_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Cursor_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Cursor_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Cursor_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Element_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Element_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: "Get_Element_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:5:04: error: function "Copy" with output global "memory accessed through objects of access type" is not allowed in SPARK
+use_lists.ads:5:04: error: function "Element" with output global "memory accessed through objects of access type" is not allowed in SPARK
+use_lists.ads:5:04: error: function "First" with output global "memory accessed through objects of access type" is not allowed in SPARK
+use_lists.ads:5:04: error: function "Get_Cursor_Model" with output global "memory accessed through objects of access type" is not allowed in SPARK
+use_lists.ads:5:04: error: function "Get_Element_Model" with output global "memory accessed through objects of access type" is not allowed in SPARK
+use_lists.ads:5:04: error: function "Has_Element" with output global "memory accessed through objects of access type" is not allowed in SPARK
+use_lists.ads:5:04: error: function "Set" with output global "memory accessed through objects of access type" is not allowed in SPARK
+use_lists.ads:5:04: error: function "Set" with output global "memory accessed through objects of access type" is not allowed in SPARK
+use_lists.ads:5:04: error: function "Snoc" with output global "memory accessed through objects of access type" is not allowed in SPARK
+use_lists.ads:5:04: error: function "Snoc" with output global "memory accessed through objects of access type" is not allowed in SPARK
+use_lists.ads:5:04: error: function "Sub" with output global "memory accessed through objects of access type" is not allowed in SPARK
+use_lists.ads:5:04: error: function "Sub" with output global "memory accessed through objects of access type" is not allowed in SPARK
+use_lists.ads:5:04: error: instantiation error at conts-lists-indefinite_unbounded_spark.ads:30
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:10
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:23
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:23
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:23
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:26
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:26
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:26
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:32
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:41
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:50
 use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:51
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:53
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:54
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:56
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:59
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:61
 use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:64
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:66
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:67
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:68
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:69
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:71
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:73
 use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:80
 use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:81
 use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:83
 use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:84
 use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:85
-use_lists.ads:5:04: error: side effects of function "Get_Cursor_Model" are not modeled in SPARK
-use_lists.ads:5:04: error: side effects of function "Get_Cursor_Model" are not modeled in SPARK
-use_lists.ads:5:04: error: side effects of function "Get_Cursor_Model" are not modeled in SPARK
-use_lists.ads:5:04: error: side effects of function "Get_Cursor_Model" are not modeled in SPARK
-use_lists.ads:5:04: error: side effects of function "Get_Cursor_Model" are not modeled in SPARK
-use_lists.ads:5:04: error: side effects of function "Get_Element_Model" are not modeled in SPARK
-use_lists.ads:5:04: error: side effects of function "Get_Element_Model" are not modeled in SPARK
-use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Get_Cursor_Model" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Get_Cursor_Model" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Get_Cursor_Model" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Get_Cursor_Model" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Get_Cursor_Model" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Get_Cursor_Model" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Get_Cursor_Model" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Get_Cursor_Model" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Get_Cursor_Model" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Get_Cursor_Model" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Get_Cursor_Model" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Get_Cursor_Model" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Get_Element_Model" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Get_Element_Model" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Capacity" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Capacity" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Capacity" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Capacity" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Element" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Element" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Get" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Get" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Get" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Get" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Get" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Get" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Get" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Get" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Get" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: implicit function contract not available for proof ("Length" might not return)
-use_lists.ads:5:04: info: in instantiation at conts-lists-indefinite_unbounded_spark.ads:19
-use_lists.ads:5:04: info: in instantiation at conts-lists-indefinite_unbounded_spark.ads:19
-use_lists.ads:5:04: info: in instantiation at conts-lists-indefinite_unbounded_spark.ads:34
-use_lists.ads:5:04: info: in instantiation at conts-lists.ads:369
-use_lists.ads:5:04: info: in instantiation at conts-lists.ads:452
-use_lists.ads:5:04: info: in instantiation at conts-lists.ads:507
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:10
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:10
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:10
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:15
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:20
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:23
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:23
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:23
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:23
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:23
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:23
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:23
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:23
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:23
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:23
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:23
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:23
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:26
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:34
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:35
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:36
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:37
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:43
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:44
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:51
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:51
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:53
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:53
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:54
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:54
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:57
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:58
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:59
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:61
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:64
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:64
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:65
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:66
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:66
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:67
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:67
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:68
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:68
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:69
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:69
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:73
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:73
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:77
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:77
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:78
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:79
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:80
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:83
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:83
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:84
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:89
-use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:90
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:15
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:15
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:16
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:16
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:17
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:21
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:21
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:22
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:22
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:23
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:24
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:24
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:25
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:27
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:27
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:30
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:30
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:31
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:31
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:33
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:35
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:36
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:36
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:36
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:38
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:38
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:39
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:39
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:39
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:40
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:40
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:41
-use_lists.ads:14:65: info: overflow check proved (CVC5: 2 VC)
-use_lists.ads:17:14: info: function contract not available for proof ("Length" might not return)
-use_lists.ads:17:14: medium: postcondition might fail, cannot prove Length (L2) = Length (L1)
-use_lists.ads:17:28: info: function contract not available for proof ("Length" might not return)
-use_lists.ads:18:43: info: function contract not available for proof ("Length" might not return)
-use_lists.ads:19:32: error: side effects of function "Get_Element_Model" are not modeled in SPARK
-use_lists.ads:20:32: error: side effects of function "Get_Element_Model" are not modeled in SPARK
+use_lists.ads:5:04: error: instantiation error at functional_sequences.ads:19
+use_lists.ads:5:04: error: instantiation error at functional_sequences.ads:19
+use_lists.ads:5:04: error: instantiation error at functional_sequences.ads:28
+use_lists.ads:5:04: error: instantiation error at functional_sequences.ads:28
+use_lists.ads:5:04: error: instantiation error at functional_sequences.ads:37
+use_lists.ads:5:04: error: instantiation error at functional_sequences.ads:37
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at conts-lists-indefinite_unbounded_spark.ads:13, instance at formal_doubly_linked_lists.ads:10, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at formal_doubly_linked_lists.ads:7, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at functional_sequences.ads:7, instance at formal_doubly_linked_lists.ads:23, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at functional_sequences.ads:7, instance at formal_doubly_linked_lists.ads:23, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at functional_sequences.ads:7, instance at formal_doubly_linked_lists.ads:23, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at functional_sequences.ads:7, instance at formal_doubly_linked_lists.ads:26, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at functional_sequences.ads:7, instance at formal_doubly_linked_lists.ads:26, instance at line 5
+use_lists.ads:5:04: error: violation of aspect SPARK_Mode at functional_sequences.ads:7, instance at formal_doubly_linked_lists.ads:26, instance at line 5
+use_lists.ads:19:32: error: "Get_Element_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:19:32: error: violation of aspect SPARK_Mode at line 4
+use_lists.ads:20:32: error: "Get_Element_Model" is not allowed in SPARK (due to function with global outputs)
+use_lists.ads:20:32: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof
