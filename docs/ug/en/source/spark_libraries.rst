@@ -9,8 +9,8 @@ Subprograms in these units fall into one of the following categories:
 - Subprograms which should always return without error or exception if their
   precondition is respected.
 
-- Procedures marked with the annotation ``Might_Not_Return``. In most cases,
-  this corresponds to the possibility of error or exception in the procedure,
+- Procedures marked with the annotation ``Exceptional_Cases``.
+  This corresponds to the possibility of exception in the procedure,
   even when its precondition is respected.
 
 - Functions marked with ``SPARK_Mode => Off`` which cannot be called from SPARK

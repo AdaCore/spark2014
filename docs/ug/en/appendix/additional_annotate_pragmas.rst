@@ -54,38 +54,6 @@ to justify an unproved check message that cannot be proved by other means. See
 the section :ref:`Direct Justification with Pragma Annotate` for more details
 about this use of pragma ``Annotate``.
 
-.. index:: Annotate; Might_Not_Return
-
-Using Annotations to Specify Possibly Nonreturning Procedures
--------------------------------------------------------------
-
-You can use annotations of the form
-
-.. code-block:: ada
-
-    procedure Proc
-      with Annotate => (GNATprove, Might_Not_Return);
-
-to specify that a procedure might not return. See the section
-:ref:`Nonreturning Procedures` for more details about this use of
-annotations.
-
-.. index:: Annotate; Always_Return
-
-Using Annotations to Request Proof of Termination
--------------------------------------------------
-
-By default, |GNATprove| does not prove termination of subprograms. You can
-instruct it to do so using annotations of the form:
-
-.. code-block:: ada
-
-   procedure Proc
-     with Annotate => (GNATprove, Always_Return);
-
-See the section :ref:`Subprogram Termination` about details of this use of
-annotations.
-
 .. index:: Annotate; No_Wrap_Around
 
 Using Annotations to Request Skipping Parts of the Analysis for an Entity

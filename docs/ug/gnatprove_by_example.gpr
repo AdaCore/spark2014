@@ -125,7 +125,7 @@ aggregate project GNATprove_By_Example is
      "ug__ownership_transfer_at_call/ownership_transfer_at_call.gpr",
      "ug__ownership_transfer/ownership_transfer.gpr",
      "ug__partial_forget_assert/partial_forget_assert.gpr",
-     "ug__possibly_nonreturning/possibly_nonreturning.gpr",
+     "ug__possibly_nonterminating/possibly_nonterminating.gpr",
      "ug__predicates/predicates.gpr",
      "ug__preserved_components/preserved_components.gpr",
      "ug__preserved_fields/preserved_fields.gpr",
