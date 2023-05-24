@@ -1,7 +1,7 @@
 linear_search.adb:10:07: info: initialization of "Res" proved
 linear_search.adb:13:15: info: index check proved (CVC5: 4 VC)
-linear_search.adb:14:17: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-linear_search.adb:15:33: info: range check proved (CVC5: 2 VC)
+linear_search.adb:14:17: info: discriminant check proved (CVC5: 2 VC; Trivial: 2 VC)
+linear_search.adb:15:33: info: range check proved (CVC5: 4 VC)
 linear_search.adb:20:13: info: loop invariant initialization proved (CVC5: 3 VC)
 linear_search.adb:20:13: info: loop invariant preservation proved (CVC5: 3 VC)
 linear_search.adb:22:56: info: range check proved (CVC5: 4 VC)

@@ -248,7 +248,7 @@ step_function.ads:48:13: info: implicit terminating annotation on "Has_Same_Deli
 step_function.ads:52:23: info: index check proved (CVC5: 2 VC)
 step_function.ads:52:49: info: index check proved (CVC5: 2 VC)
 step_function.ads:54:13: info: implicit terminating annotation on "Get_Value" has been proved, subprogram will terminate
-step_function.ads:56:12: info: postcondition proved (Z3: 1 VC)
+step_function.ads:56:12: info: postcondition proved (CVC5: 1 VC)
 step_function.ads:58:27: info: index check proved (CVC5: 2 VC)
 step_function.ads:59:36: info: index check proved (CVC5: 2 VC)
 step_function.ads:60:50: info: index check proved (CVC5: 2 VC)
@@ -259,7 +259,7 @@ step_function.ads:74:50: info: index check proved (CVC5: 2 VC)
 step_function.ads:78:26: info: index check proved (CVC5: 2 VC)
 step_function.ads:80:53: info: index check proved (CVC5: 2 VC)
 step_function.ads:86:06: info: postcondition proved (CVC5: 6 VC)
-step_function.ads:101:04: medium: postcondition might fail, cannot prove Is_Valid(Merge)
+step_function.ads:101:04: medium: postcondition might fail
 step_function.ads:106:30: info: index check proved (CVC5: 2 VC)
 step_function.ads:106:56: info: index check proved (CVC5: 2 VC)
 step_function.ads:111:30: info: index check proved (CVC5: 2 VC)

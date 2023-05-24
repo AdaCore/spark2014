@@ -34,7 +34,7 @@ test.adb:68:07: medium: precondition might fail
 test.adb:71:09: info: precondition proved
 test.adb:76:04: info: precondition proved
 test.adb:77:04: info: precondition proved
-test.adb:79:19: medium: assertion might fail
+test.adb:79:19: info: assertion proved
 test.adb:81:19: medium: assertion might fail
 test.adb:83:25: info: precondition proved
 test.adb:83:43: info: precondition proved
@@ -135,7 +135,7 @@ test_list.adb:66:65: info: overflow check proved
 test_list.adb:67:07: info: precondition proved
 test_list.adb:68:12: medium: precondition might fail [possible fix: call at line 51 should mention Position (for argument C) in a postcondition]
 test_list.adb:70:10: info: assertion proved
-test_list.adb:70:26: info: precondition proved
+test_list.adb:70:26: medium: precondition might fail
 test_list.adb:70:65: medium: overflow check might fail, cannot prove upper bound for M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 test_list.adb:71:07: info: precondition proved
 test_list.adb:76:30: info: assertion proved

@@ -1,15 +1,14 @@
 
+account1.adb:15:39: medium: overflow check might fail, cannot prove upper bound for Num_Accounts + 1
+   15 |         Num_Accounts := Num_Accounts + 1;
+      |                         ~~~~~~~~~~~~~^~~
+  reason for check: result of addition must fit in a 32-bits machine integer
+  possible fix: loop at line 13 should mention Num_Accounts in a loop invariant
+   13 |      loop
+      |      ^ here
+
 bank1.ads:5:04: high: possible data race when accessing variable "account1.num_accounts"
     5 |   Special_Accounts : Account_Management;
       |   ^~~~~~~~~~~~~~~~
   task "bank1.special_accounts" accesses "account1.num_accounts"
   task "bank1.all_accounts" accesses "account1.num_accounts"
-
-account1.adb:15:39: medium: overflow check might fail, cannot prove upper bound for Num_Accounts + 1
-   15 |         Num_Accounts := Num_Accounts + 1;
-      |                         ~~~~~~~~~~~~~^~~
-  e.g. when Num_Accounts = Natural'Last
-  reason for check: result of addition must fit in a 32-bits machine integer
-  possible fix: loop at line 13 should mention Num_Accounts in a loop invariant
-   13 |      loop
-      |      ^ here

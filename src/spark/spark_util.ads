@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Directories;
@@ -1172,5 +1173,115 @@ package SPARK_Util is
 
    function Might_Raise_Handled_Exceptions (Stmt : Node_Id) return Boolean is
      (not Get_Raised_Exceptions (Stmt, True).Is_Empty);
+
+   -----------------------------------------------
+   --  Control-flow graph of statements/bodies  --
+   -----------------------------------------------
+
+   package Local_CFG is
+
+      --  For each statement/subprogram body B,
+      --  there is an implicit control-flow graph (CFG) maintained for B,
+      --  the local graph of B, corresponding to control paths that
+      --  remain within B. The vertices of the local graph of B represent the
+      --  basic 'instructions' of B (possibly no-ops), and the edges represent
+      --  the potential transfer-of-control between them. Edges are unlabelled.
+      --
+      --  The locals graph are only available after marking.
+      --
+      --  Local graphs share their vertices and edges, in the sense that
+      --  * Vertices of a statement's local graph are vertices of local graphs
+      --    of enclosing statements/the enclosing body (not skipping
+      --    across bodies)
+      --  * If two vertices have an edge between them in some local CFG,
+      --    then they have the same edge in any local CFG for which they
+      --    are vertices.
+      --  In other words, each local graph is simply the restriction of
+      --  the enclosing body's CFG to the vertices of the enclosed
+      --  construct.
+      --
+      --  The local CFG do not go through the bodies of nested packages,
+      --  relying on Ada+SPARK assumptions that make them side-effect free.
+
+      subtype Graph_Id is Node_Id
+        with Predicate =>
+          Nkind (Graph_Id) in N_Statement_Other_Than_Procedure_Call
+                            | N_Procedure_Call_Statement
+                            | N_Entity;
+      --  Local Graphs are indexed by nodes which are either statements
+      --  or entities that have body.
+
+      type Vertex_Kind is
+        (Plain, Loop_Init, Loop_Cond, Loop_Iter, Body_Entry, Body_Exit);
+      --  Vertex kinds that can occur in the graph.
+      --  * Plain vertices: either local declarations or non-loop statements.
+      --    Those correspond to the execution from the start of the
+      --    local declaration/statements, and the outgoing edges
+      --    corresponds to all potential exit cases.
+      --  * Loop vertices: those correspond to the three distinguished
+      --    parts of a loop statement.
+      --    + Loop_Init: the initialization, before the loop starts.
+      --      Performs declaration of (implicit) loop variable if any
+      --      and initialization of any (implicit) constant values
+      --      needed for iteration (example: evaluation of loop bounds,
+      --      or of Loop_Entry references).
+      --    + Loop_Cond: the condition, the first vertex of the actual loop,
+      --      right after initialization. Corresponds to declaring
+      --      the loop index if any (a constant) and testing the exit
+      --      condition.
+      --    + Loop_Iter: the iteration, the last vertex of the actual loop,
+      --      right before returning to initialization. Corresponds to
+      --      'incrementation' of (implicit) loop variable (if any).
+      --    The loop body is made up by vertices of internal statements.
+      --  * Source vertices (Body_Entry):
+      --    those corresponds to the entry point of bodies.
+      --  * Sink vertices (Body_Exit):
+      --    those corresponds to the exit paths of a body.
+      --    All exit paths (regular and exceptionals) are merged together.
+
+      type Vertex is record
+         Kind : Vertex_Kind;
+         Node : Node_Id;
+      end record
+        with Predicate =>
+          (case Vertex.Kind is
+             when Plain =>
+                Nkind (Vertex.Node) not in N_Loop_Statement | N_Entity,
+             when Loop_Init .. Loop_Iter =>
+                Vertex.Node in N_Loop_Statement_Id,
+             when Body_Entry .. Body_Exit =>
+                Nkind (Vertex.Node) in N_Entity);
+
+      function Starting_Vertex (N : Node_Id) return Vertex
+        with Post =>
+          Starting_Vertex'Result.Kind in Plain | Loop_Init | Body_Entry;
+      --  Get starting vertex of construct/entity.
+      --  For nodes which are not Graph_Id (e.g local declarations),
+      --  this is the (plain) individual vertex corresponding to the node.
+
+      function Vertex_Hash (X : Vertex) return Ada.Containers.Hash_Type;
+
+      package Vertex_Sets is new Ada.Containers.Hashed_Sets
+        (Element_Type    => Vertex,
+         Hash            => Vertex_Hash,
+         Equivalent_Elements => "=");
+
+      function True_On_Every_Vertex (Dummy : Vertex) return Boolean is (True);
+
+      procedure Collect_Vertices_Leading_To
+        (Graph       : Graph_Id;
+         Targets     : in out Vertex_Sets.Set;
+         Pred        : not null access function (V : Vertex) return Boolean
+                       := True_On_Every_Vertex'Access;
+         Empty_Paths : Boolean := True);
+      --  For a set of targets within Graph's local CFG,
+      --  the initial content of Targets, replace Targets with the set of
+      --  vertices such that there is a path within Graph's local CFG that
+      --  reaches a target, and such that the source vertex of every edge in
+      --  the path satisfies Pred. Empty paths (paths with no edges) are
+      --  allowed iff Empty_Paths is True (in which case all targets
+      --  must necessarily be kept in Targets).
+
+   end Local_CFG;
 
 end SPARK_Util;

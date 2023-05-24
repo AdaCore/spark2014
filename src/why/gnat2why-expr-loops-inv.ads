@@ -28,8 +28,7 @@ package Gnat2Why.Expr.Loops.Inv is
    function Generate_Frame_Condition
      (Loop_Stmt          : N_Loop_Statement_Id;
       Low_Id             : W_Expr_Id;
-      High_Id            : W_Expr_Id;
-      Has_Loop_Invariant : Boolean)
+      High_Id            : W_Expr_Id)
       return W_Pred_Id;
    --  Compute the frame condition of a loop statement. For now, only consider
    --  dynamic invariants of modified variables, and the part of the frame
@@ -40,7 +39,6 @@ package Gnat2Why.Expr.Loops.Inv is
    --  @param Loop_Stmt considered loop statement.
    --  @param Low_Id identifier for the lower bound of the loop if any.
    --  @param High_Id identifier for the higher bound of the loop if any.
-   --  @param Has_Loop_Invariant True iff the loop has a loop invariant.
    --  @return a predicate expression for the loop's frame condition.
 
 end Gnat2Why.Expr.Loops.Inv;
