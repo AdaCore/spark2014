@@ -4320,6 +4320,14 @@ package body SPARK_Definition is
                            In_Old_Attribute := True;
                            return False;
                         end if;
+                     when N_Object_Declaration =>
+                        --  Declarations of declare expressions are valid
+                        --  contexts.
+
+                        P := Parent (P);
+                        if Nkind (P) /= N_Expression_With_Actions then
+                           return False;
+                        end if;
                      when others =>
                         return False;
                   end case;
