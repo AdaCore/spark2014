@@ -1,7 +1,7 @@
 with Ada.Integer_Text_IO;
 with Ada.Text_IO;
 procedure Generic_Examples with
-  Always_Terminates => False
+  Exceptional_Cases => (others => True)
 is
 
    function Count (Source  : in String;

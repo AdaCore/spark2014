@@ -1,6 +1,6 @@
 with Ada.Text_IO;
 procedure Good_Types with
-  Always_Terminates => False
+  Exceptional_Cases => (others => True)
 is
    -- Declarations of two floating point types
    type Feet   is digits 4 range 0.0 .. 100.0;
