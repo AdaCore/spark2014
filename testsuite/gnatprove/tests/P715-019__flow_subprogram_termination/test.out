@@ -111,8 +111,8 @@ imported.ads:9:14: info: terminating annotation on "Q_01" has been proved, subpr
 imported.ads:9:14: warning: subprogram "Q_01" has no effect
 imported.ads:16:14: info: terminating annotation on "Q_02" has been proved, subprogram will terminate
 imported.ads:16:14: warning: subprogram "Q_02" has no effect
+modular_analysis.adb:5:14: info: terminating annotation on "Test_01" has been proved, subprogram will terminate
 modular_analysis.adb:5:23: info: initialization of "F" proved
-modular_analysis.adb:8:14: medium: terminating annotation on "Test_01" could be incorrect, call to "Open_Read" might be nonterminating [possible fix: annotate "Open_Read" with Always_Return]
 modular_analysis.adb:8:14: warning: assuming "Open_Read" always terminates
 modular_analysis.adb:8:14: warning: assuming "Open_Read" has no effect on global items
 modular_analysis.adb:8:14: warning: no Global contract available for "Open_Read"
