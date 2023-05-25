@@ -7,4 +7,4 @@ bad_logical_equal.adb:21:13: error: Entity parameter of a pragma Logical_Equal s
 bad_logical_equal.adb:28:50: error: Entity parameter of a pragma Inline_For_Proof shall not have a Logical_Equal annotation
 bad_logical_equal.adb:33:47: error: Entity parameter of a pragma Logical_Equal shall not have an Inline_For_Proof annotation
 bad_logical_equal.adb:35:13: error: Entity parameter of a pragma Logical_Equal shall not access any global data
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof

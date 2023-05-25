@@ -1,2 +1,4 @@
 private_ownership.ads:17:13: error: ownership function shall be declared in same declaration list as input type
-gnatprove: error during generation of Global contracts
+private_ownership.ads:23:07: warning: assuming "Is_D" has no effect on global items
+private_ownership.ads:23:07: warning: no Global contract available for "Is_D"
+gnatprove: error during flow analysis and proof

@@ -9,4 +9,4 @@ test_illegal.adb:84:14: error: procedure annotated with the aspect Automatic_Ins
 test_illegal.adb:101:14: error: procedure annotated with the aspect Automatic_Instantiation shall not be declared after a procedure
 test_illegal.adb:117:14: error: procedure annotated with the aspect Automatic_Instantiation shall not be declared after a procedure
 test_illegal.adb:129:14: error: procedure annotated with the aspect Automatic_Instantiation shall be declared directly after a function
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
