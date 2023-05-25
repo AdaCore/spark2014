@@ -228,6 +228,7 @@ package body SPARK_Rewrite is
 
       procedure Rewrite_Aspect (E : Entity_Id; A : Aspect_Id);
       --  Apply expansion operations on the expression of aspect A of E if any
+      --  and to its corresponding representation item, if any.
 
       function Rewrite_Node (N : Node_Id) return Traverse_Result;
       --  Apply expansion operations on a node
@@ -244,6 +245,9 @@ package body SPARK_Rewrite is
       begin
          if Present (Aspect_Node) then
             Rewrite_Nodes (Expression (Aspect_Node));
+            if Present (Aspect_Rep_Item (Aspect_Node)) then
+               Rewrite_Nodes (Expression (Aspect_Rep_Item (Aspect_Node)));
+            end if;
          end if;
       end Rewrite_Aspect;
 
