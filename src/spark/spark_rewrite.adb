@@ -242,11 +242,13 @@ package body SPARK_Rewrite is
 
       procedure Rewrite_Aspect (E : Entity_Id; A : Aspect_Id) is
          Aspect_Node : constant Node_Id := Find_Aspect (E, A);
+         Rep_Item    : Node_Id;
       begin
          if Present (Aspect_Node) then
             Rewrite_Nodes (Expression (Aspect_Node));
-            if Present (Aspect_Rep_Item (Aspect_Node)) then
-               Rewrite_Nodes (Expression (Aspect_Rep_Item (Aspect_Node)));
+            Rep_Item := Aspect_Rep_Item (Aspect_Node);
+            if Nkind (Rep_Item) = N_Attribute_Definition_Clause then
+               Rewrite_Nodes (Expression (Rep_Item));
             end if;
          end if;
       end Rewrite_Aspect;
