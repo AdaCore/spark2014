@@ -38,7 +38,7 @@ is
    procedure Player_Play
      with Pre => not Is_Full and Won = Empty,
      Post => Num_Free_Slots = Num_Free_Slots'Old - 1,
-     Always_Terminates => False;
+     Exceptional_Cases => (others => True);
 
    procedure Computer_Play
      with Pre => not Is_Full and Won = Empty,

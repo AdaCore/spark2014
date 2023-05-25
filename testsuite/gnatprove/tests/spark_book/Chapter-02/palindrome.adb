@@ -1,6 +1,6 @@
 with Ada.Text_IO;
 procedure Palindrome with
-  Always_Terminates => False
+  Exceptional_Cases => (others => True)
 is
 
    function Is_Palindrome (Item : in String) return Boolean is
