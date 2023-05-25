@@ -4,10 +4,11 @@ bad_spec.ads:9:04: error: instantiation error at line 7
 gnatprove: error during generation of Global contracts
 bad_spec_prag.ads:5:04: error: wrong number of arguments in pragma Annotate (GNATprove, Might_Not_Return, ...), expected 3
 bad_spec_prag.ads:9:04: error: pragma Annotate Might_Not_Return must be in aspect form for generic subprogram
+bad_spec_prag.ads:15:06: warning: postcondition does not check the outcome of calling "Call_Jump"
 bad_spec_prag.ads:16:04: error: pragma Annotate Might_Not_Return must be in aspect form for generic subprogram
 bad_spec_prag.ads:21:50: error: pragma Annotate Might_Not_Return must apply to a procedure
 bad_spec_prag.ads:26:04: error: pragma Annotate Might_Not_Return must be in aspect form for generic subprogram
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
 bad.adb:10:07: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 bad.adb:11:07: warning: this statement is never reached
 bad.adb:17:10: info: only expected exception raised (CVC5: 1 VC), in instantiation at bad.adb:22

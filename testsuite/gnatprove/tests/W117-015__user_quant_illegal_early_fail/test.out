@@ -1,3 +1,4 @@
+illegal_early_fail.adb:1:11: warning: file name does not match unit name, should be "illegal_errors.adb"
 illegal_early_fail.adb:52:07: error: pragma Annotate Iterable_For_Proof must immediately follow the declaration of Iterable primitive Element
 illegal_early_fail.adb:77:19: error: adding this Model function would produce a circular definition for container model
 illegal_early_fail.adb:124:19: error: adding this Model function would produce a circular definition for container model
@@ -9,4 +10,12 @@ illegal_early_fail.adb:337:22: error: Contains function must be primitive for co
 illegal_early_fail.adb:371:22: error: Model function must be primitive for container type
 illegal_early_fail.adb:401:19: error: Model function must not be volatile
 illegal_early_fail.adb:426:19: error: Contains function must not be volatile
-gnatprove: error during generation of Global contracts
+illegal_early_fail.adb:441:42: error: violation of aspect SPARK_Mode at line 1
+illegal_early_fail.adb:441:42: error: volatile function associated with aspect Iterable is not allowed in SPARK
+illegal_early_fail.adb:442:42: error: violation of aspect SPARK_Mode at line 1
+illegal_early_fail.adb:442:42: error: volatile function associated with aspect Iterable is not allowed in SPARK
+illegal_early_fail.adb:443:42: error: violation of aspect SPARK_Mode at line 1
+illegal_early_fail.adb:443:42: error: volatile function associated with aspect Iterable is not allowed in SPARK
+illegal_early_fail.adb:444:42: error: violation of aspect SPARK_Mode at line 1
+illegal_early_fail.adb:444:42: error: volatile function associated with aspect Iterable is not allowed in SPARK
+gnatprove: error during flow analysis and proof

@@ -1,3 +1,3 @@
 main.adb:20:13: error: ownership function shall be declared in same declaration list as input type
 main_indirect.adb:31:13: error: ownership function shall be declared in same declaration list as input type
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof

@@ -387,6 +387,17 @@ package body SPARK_Definition.Annotate is
    --  Check validity of pragma Annotate (GNATprove, Skip_Proof, E) and
    --  pragma Annotate (GNATprove, Skip_Flow_And_Proof, E)
 
+   procedure Error_Msg_N_If (Msg : String; N : Node_Or_Entity_Id);
+   --  Wrapper for Error_Msg_N that conditionally emit message depending
+   --  on phase.
+
+   procedure Error_Msg_NE_If
+     (Msg : String;
+      N   : Node_Or_Entity_Id;
+      E   : Node_Or_Entity_Id);
+   --  Wrapper for Error_Msg_NE that conditionally emit message depending
+   --  on phase.
+
    ---------
    -- "<" --
    ---------
@@ -427,7 +438,7 @@ package body SPARK_Definition.Annotate is
       if Ekind (E) not in
         Subprogram_Kind | E_Package | Generic_Unit_Kind
       then
-         Error_Msg_N
+         Error_Msg_N_If
            ("Entity parameter of a pragma Always_Return must be a subprogram "
             & "or a package",
             Arg3_Exp);
@@ -436,7 +447,7 @@ package body SPARK_Definition.Annotate is
       --  It must not be a procedure with No_Return
 
       elsif No_Return (E) then
-         Error_Msg_N
+         Error_Msg_N_If
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Always_Return must not also be marked with No_Return",
             Arg3_Exp);
@@ -447,7 +458,7 @@ package body SPARK_Definition.Annotate is
       elsif Ekind (E) in E_Procedure | E_Generic_Procedure
         and then Has_Might_Not_Return_Annotation (E)
       then
-         Error_Msg_N
+         Error_Msg_N_If
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Always_Return must not also be marked with Might_Not_Return",
             Arg3_Exp);
@@ -455,7 +466,7 @@ package body SPARK_Definition.Annotate is
       elsif Ekind (E) in E_Procedure | E_Generic_Procedure
         and then Has_Exceptional_Contract (E)
       then
-         Error_Msg_N
+         Error_Msg_N_If
            ("subprogram annotated with the " & Aspect_Or_Pragma
             & " Always_Return shall not raise exceptions",
             E);
@@ -463,7 +474,7 @@ package body SPARK_Definition.Annotate is
       elsif Get_Termination_Condition (E) not in
         (Kind => Unspecified) | (Static, True)
       then
-         Error_Msg_N
+         Error_Msg_N_If
            ("subprogram annotated with the " & Aspect_Or_Pragma
             & " Always_Return shall have an Always_Terminates aspect of True",
             E);
@@ -482,12 +493,12 @@ package body SPARK_Definition.Annotate is
       if Ekind (E) = E_Function
         or else Has_Automatic_Instantiation_Annotation (E)
       then
-         Error_Msg_NE
+         Error_Msg_NE_If
            (Warning_Message
               (if Ekind (E) = E_Function
                then Warn_Useless_Always_Return_Fun
                else Warn_Useless_Always_Return_Lemma), Prag, E);
-         Error_Msg_N ("\Always_Return annotation is useless", Prag);
+         Error_Msg_N_If ("\Always_Return annotation is useless", Prag);
       end if;
 
       --  Go through renamings to find the appropriate entity
@@ -510,7 +521,7 @@ package body SPARK_Definition.Annotate is
       E : Entity_Id;
    begin
       if Nkind (Arg) not in N_Has_Entity then
-         Error_Msg_N
+         Error_Msg_N_If
            (Nth & " argument of pragma Annotate "
             & Prag_Name & " must be an entity",
             Arg);
@@ -532,7 +543,7 @@ package body SPARK_Definition.Annotate is
             Check_Annotate_Placement (E, Prag, Prag_Name, Continue);
             Continue := False;
          when others =>
-            Error_Msg_N
+            Error_Msg_N_If
               ("Entity argument of pragma Annotate G'N'A'Tprove "
                & " shall be a subprogram, a type or a package",
                Arg);
@@ -567,7 +578,7 @@ package body SPARK_Definition.Annotate is
                      --  For generic subprograms, only aspect form of
                      --  annotate will be duplicated as instances.
                      Ok := False;
-                     Error_Msg_N
+                     Error_Msg_N_If
                        ("pragma Annotate " & Prag_Name
                         & " must be in aspect form for generic subprogram",
                         Prag);
@@ -639,7 +650,7 @@ package body SPARK_Definition.Annotate is
          <<Not_Found>>
       end if;
       if not Ok then
-         Error_Msg_N
+         Error_Msg_N_If
            ("pragma Annotate " & Prag_Name & " must immediately follow the "
             & Decl_Name,
             Prag);
@@ -721,31 +732,31 @@ package body SPARK_Definition.Annotate is
          if No (Path)
            or else Present (Next_Formal (Path))
          then
-            Error_Msg_N
+            Error_Msg_N_If
               ("At_End_Borrow function must have exactly one parameter", E);
          elsif not Is_Anonymous_Access_Type (Etype (Path))
            or else not Is_Access_Constant (Etype (Path))
          then
-            Error_Msg_N
+            Error_Msg_N_If
               ("the parameter of an At_End_Borrow function must have an"
                & " anonymous access-to-constant type", E);
          elsif not Is_Anonymous_Access_Type (Etype (E))
            or else not Is_Access_Constant (Etype (E))
          then
-            Error_Msg_N
+            Error_Msg_N_If
               ("At_End_Borrow function must return an"
                & " anonymous access-to-constant type", E);
          elsif not Is_Ghost_Entity (E) then
-            Error_Msg_N
+            Error_Msg_N_If
               ("At_End_Borrow function must be a ghost function", E);
          elsif Present (Contracts)
            and then (Present (Pre_Post_Conditions (Contracts)) or else
                      Present (Contract_Test_Cases (Contracts)))
          then
-            Error_Msg_N
+            Error_Msg_N_If
               ("At_End_Borrow function should not have a contract", E);
          elsif not Is_Expression_Function_Or_Completion (E) then
-            Error_Msg_N
+            Error_Msg_N_If
               ("At_End_Borrow function must be an expression function", E);
          else
             declare
@@ -756,7 +767,7 @@ package body SPARK_Definition.Annotate is
                    N_Expanded_Name | N_Identifier
                  or else Entity (Original_Node (Expr)) /= Path
                then
-                  Error_Msg_N
+                  Error_Msg_N_If
                     ("At_End_Borrow function must be the identity function",
                      E);
                else
@@ -783,7 +794,7 @@ package body SPARK_Definition.Annotate is
       --  This entity must be a function
 
       if Ekind (E) /= E_Function then
-         Error_Msg_N
+         Error_Msg_N_If
            ("entity parameter of a pragma At_End_Borrow must be a function",
             Arg3_Exp);
          return;
@@ -815,11 +826,11 @@ package body SPARK_Definition.Annotate is
       --  Lemma shall to be annotated with higher order specialization
 
       if not Has_Higher_Order_Specialization_Annotation (Lemma) then
-         Error_Msg_N
+         Error_Msg_N_If
            ("?automatically instantiated lemma is not annotated with"
             & " Higher_Order_Specialization",
             Lemma);
-         Error_Msg_NE
+         Error_Msg_NE_If
            ("\it will not be automatically instantiated on specializations"
             & " of &",
             Lemma, Fun);
@@ -886,11 +897,11 @@ package body SPARK_Definition.Annotate is
                   --  instance. We reject it here.
 
                   elsif not Totally_Specialized_Call then
-                     Error_Msg_NE
+                     Error_Msg_NE_If
                        ("?automatically instantiated lemma contains calls to "
                         & "& which cannot be arbitrarily specialized",
                         Lemma, Fun);
-                     Error_Msg_NE
+                     Error_Msg_NE_If
                        ("\it will not be automatically instantiated on"
                         & " specializations of &",
                         Lemma, Fun);
@@ -914,11 +925,11 @@ package body SPARK_Definition.Annotate is
                   --  specialization is ambiguous. We reject it here.
 
                   else
-                     Error_Msg_NE
+                     Error_Msg_NE_If
                        ("?automatically instantiated lemma contains several "
                         & "calls to & with different specializations",
                         Lemma, Fun);
-                     Error_Msg_NE
+                     Error_Msg_NE_If
                        ("\it will not be automatically instantiated on"
                         & " specializations of &",
                         Lemma, Fun);
@@ -1000,11 +1011,11 @@ package body SPARK_Definition.Annotate is
          --  Check that the lemma contains at least a call to Fun
 
          elsif Spec_Params.Is_Empty then
-            Error_Msg_NE
+            Error_Msg_NE_If
               ("?automatically instantiated lemma does not contain any "
                & "specializable calls to &",
                Lemma, Fun);
-            Error_Msg_NE
+            Error_Msg_NE_If
               ("\it will not be automatically instantiated on"
                & " specializations of &",
                Lemma, Fun);
@@ -1048,13 +1059,13 @@ package body SPARK_Definition.Annotate is
       --  This entity must be a ghost procedure
 
       if Ekind (E) /= E_Procedure then
-         Error_Msg_N
+         Error_Msg_N_If
            ("entity annotated with the " & Aspect_Or_Pragma
             & " Automatic_Instantiation must be a procedure",
             Arg3_Exp);
          return;
       elsif not Is_Ghost_Entity (E) then
-         Error_Msg_N
+         Error_Msg_N_If
            ("procedure annotated with the " & Aspect_Or_Pragma
             & " Automatic_Instantiation must be ghost",
             E);
@@ -1083,7 +1094,7 @@ package body SPARK_Definition.Annotate is
                         when others =>
                            raise Program_Error);
                begin
-                  Error_Msg_N
+                  Error_Msg_N_If
                     ("procedure annotated with the " & Aspect_Or_Pragma
                      & " Automatic_Instantiation shall not have "
                      & Param_String,
@@ -1110,7 +1121,7 @@ package body SPARK_Definition.Annotate is
             Ignore_Depends      => False);
 
          if not Globals.Outputs.Is_Empty then
-            Error_Msg_N
+            Error_Msg_N_If
               ("procedure annotated with the " & Aspect_Or_Pragma
                & " Automatic_Instantiation shall not have global"
                & " outputs", E);
@@ -1137,7 +1148,7 @@ package body SPARK_Definition.Annotate is
             --  No functions were found before E
 
             if No (Cur) then
-               Error_Msg_N
+               Error_Msg_N_If
                  ("procedure annotated with the " & Aspect_Or_Pragma
                   & " Automatic_Instantiation shall be declared directly"
                   & " after a function", E);
@@ -1177,7 +1188,7 @@ package body SPARK_Definition.Annotate is
                   if Ekind (Prec) = E_Function
                     and then Is_Volatile_Function (Prec)
                   then
-                     Error_Msg_N
+                     Error_Msg_N_If
                        ("procedure annotated with the " & Aspect_Or_Pragma
                         & " Automatic_Instantiation shall not be declared"
                         & " after a volatile function", E);
@@ -1213,7 +1224,7 @@ package body SPARK_Definition.Annotate is
                   --  Lemmas cannot be associated to procedures
 
                   else
-                     Error_Msg_N
+                     Error_Msg_N_If
                        ("procedure annotated with the " & Aspect_Or_Pragma
                         & " Automatic_Instantiation shall not be declared"
                         & " after a procedure", E);
@@ -1224,7 +1235,7 @@ package body SPARK_Definition.Annotate is
             --  The declaration before E is not a function declaration
 
             else
-               Error_Msg_N
+               Error_Msg_N_If
                  ("procedure annotated with the " & Aspect_Or_Pragma
                   & " Automatic_Instantiation shall be declared directly"
                   & " after a function", E);
@@ -1238,9 +1249,9 @@ package body SPARK_Definition.Annotate is
       --  lemmas is checked when possible, and assumed otherwise.
 
       if Always_Return_Annotations.Contains (E) then
-         Error_Msg_NE
+         Error_Msg_NE_If
            (Warning_Message (Warn_Useless_Always_Return_Lemma), Prag, E);
-         Error_Msg_N ("\Always_Return annotation is useless", Prag);
+         Error_Msg_N_If ("\Always_Return annotation is useless", Prag);
       end if;
    end Check_Automatic_Instantiation_Annotation;
 
@@ -1272,7 +1283,7 @@ package body SPARK_Definition.Annotate is
       --  This entity must be a function
 
       if Ekind (E) not in E_Procedure | E_Function then
-         Error_Msg_N
+         Error_Msg_N_If
            (Aspect_Or_Pragma & " Higher_Order_Specialization must be applied"
             & " to a function or a lemma procedure",
             Arg3_Exp);
@@ -1282,7 +1293,7 @@ package body SPARK_Definition.Annotate is
       --  borrowing traversal functions.
 
       elsif Ekind (E) = E_Function and then Is_Volatile_Function (E) then
-         Error_Msg_N
+         Error_Msg_N_If
            ("function annotated with Higher_Order_Specialization shall not be"
             & " a volatile function",
             Arg3_Exp);
@@ -1290,13 +1301,13 @@ package body SPARK_Definition.Annotate is
       elsif Einfo.Entities.Is_Dispatching_Operation (E)
         and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
       then
-         Error_Msg_N
+         Error_Msg_N_If
            ("subprogram annotated with Higher_Order_Specialization shall not"
             & " be a dispatching operation",
             Arg3_Exp);
          return;
       elsif Is_Borrowing_Traversal_Function (E) then
-         Error_Msg_N
+         Error_Msg_N_If
            ("function annotated with Higher_Order_Specialization shall not be"
             & " a borrowing traversal function",
             Arg3_Exp);
@@ -1309,13 +1320,13 @@ package body SPARK_Definition.Annotate is
          --  It should be ghost
 
          if not Is_Ghost_Entity (E) then
-            Error_Msg_N
+            Error_Msg_N_If
               ("procedure annotated with the " & Aspect_Or_Pragma
                & " Higher_Order_Specialization shall be ghost",
                E);
             return;
          elsif Has_Exceptional_Contract (E) then
-            Error_Msg_N
+            Error_Msg_N_If
               ("procedure annotated with the " & Aspect_Or_Pragma
                & " Higher_Order_Specialization shall not raise exceptions",
                E);
@@ -1323,7 +1334,7 @@ package body SPARK_Definition.Annotate is
          elsif Get_Termination_Condition (E) not in
            (Kind => Unspecified) | (Static, True)
          then
-            Error_Msg_N
+            Error_Msg_N_If
               ("procedure annotated with the " & Aspect_Or_Pragma
                & " Higher_Order_Specialization shall have an Always_Terminates"
                & " aspect of True",
@@ -1353,7 +1364,7 @@ package body SPARK_Definition.Annotate is
                            when others             =>
                               raise Program_Error);
                   begin
-                     Error_Msg_N
+                     Error_Msg_N_If
                        ("procedure annotated with the " & Aspect_Or_Pragma
                         & "Higher_Order_Specialization shall not have "
                         & Param_String,
@@ -1380,7 +1391,7 @@ package body SPARK_Definition.Annotate is
                Ignore_Depends      => False);
 
             if not Globals.Outputs.Is_Empty then
-               Error_Msg_N
+               Error_Msg_N_If
                  ("procedure annotated with the " & Aspect_Or_Pragma
                   & " Higher_Order_Specialization shall not have global"
                   & " outputs", E);
@@ -1396,7 +1407,7 @@ package body SPARK_Definition.Annotate is
         and then
           Find_Contracts (E, Pragma_Postcondition, False, False).Is_Empty
       then
-         Error_Msg_N
+         Error_Msg_N_If
            ("function annotated with both Higher_Order_Specialization and"
             & " Inline_For_Proof shall have a postcondition",
             E);
@@ -1523,7 +1534,7 @@ package body SPARK_Definition.Annotate is
          end loop;
 
          if Formals.Is_Empty then
-            Error_Msg_N
+            Error_Msg_N_If
               ("subprogram annotated with Higher_Order_Specialization shall"
                & " have at least a parameter of an anonymous"
                & " access-to-function type",
@@ -1565,13 +1576,13 @@ package body SPARK_Definition.Annotate is
          <<Violation_Found>>
          if Present (Violation) then
             if Nkind (Violation) = N_Iterated_Component_Association then
-               Error_Msg_N
+               Error_Msg_N_If
                  ("subprogram annotated with Higher_Order_Specialization"
                   & " shall not reference its access-to-function"
                   & " parameters inside an iterated component association",
                   Violation);
             else
-               Error_Msg_N
+               Error_Msg_N_If
                  ("subprogram annotated with Higher_Order_Specialization"
                   & " shall only reference its access-to-function"
                   & " parameters in dereferences and as actual parameters in"
@@ -1619,7 +1630,7 @@ package body SPARK_Definition.Annotate is
       --  This entity must be a function
 
       if Ekind (E) /= E_Function then
-         Error_Msg_N
+         Error_Msg_N_If
            ("Entity parameter of a pragma Inline_For_Proof must be a function",
             Arg3_Exp);
          return;
@@ -1633,7 +1644,7 @@ package body SPARK_Definition.Annotate is
 
       if Nodes.Is_Empty then
          if not Is_Expression_Function_Or_Completion (E) then
-            Error_Msg_N
+            Error_Msg_N_If
               ("function with Inline_For_Proof and no postconditions must "
                & "be an expression function", E);
             return;
@@ -1647,7 +1658,7 @@ package body SPARK_Definition.Annotate is
          end if;
 
       elsif Nodes.Length > 1 then
-         Error_Msg_N
+         Error_Msg_N_If
            ("function with Inline_For_Proof must be an expression function"
             & " or have exactly one postcondition",
             NL.Element (NL.Next (Nodes.First)));
@@ -1674,7 +1685,7 @@ package body SPARK_Definition.Annotate is
             Value := Next_Actual (First_Actual (Value));
 
          else
-            Error_Msg_NE
+            Error_Msg_NE_If
               ("function with Inline_For_Proof must"
                & " have a postcondition of the form `&''Result = Expr`", E, E);
             return;
@@ -1684,7 +1695,7 @@ package body SPARK_Definition.Annotate is
       --  Inline_For_Proof and Logical_Equal are incompatible
 
       if Has_Logical_Eq_Annotation (E) then
-         Error_Msg_N
+         Error_Msg_N_If
            ("Entity parameter of a pragma Inline_For_Proof shall not have a"
             & " Logical_Equal annotation", Arg3_Exp);
          return;
@@ -1695,7 +1706,7 @@ package body SPARK_Definition.Annotate is
 
       if Has_Higher_Order_Specialization_Annotation (E) and then Nodes.Is_Empty
       then
-         Error_Msg_N
+         Error_Msg_N_If
            ("function annotated with both Higher_Order_Specialization and"
             & " Inline_For_Proof shall have a postcondition",
             E);
@@ -1845,13 +1856,13 @@ package body SPARK_Definition.Annotate is
             return;
          end if;
          if Scope (E) /= Scope (Container_Ty) then
-            Error_Msg_N
+            Error_Msg_N_If
               (Name_For_Error
                & " function must be primitive for container type", E);
             return;
          end if;
          if Is_Volatile_Function (E) then
-            Error_Msg_N
+            Error_Msg_N_If
               (Name_For_Error & " function must not be volatile", E);
             return;
          end if;
@@ -1868,7 +1879,7 @@ package body SPARK_Definition.Annotate is
            or else not Globals.Inputs.Is_Empty
            or else not Globals.Outputs.Is_Empty
          then
-            Error_Msg_N
+            Error_Msg_N_If
               (Name_For_Error
                & " function shall not access global data", E);
             return;
@@ -1900,7 +1911,7 @@ package body SPARK_Definition.Annotate is
          Cont_Element := Empty;
 
          if No (E_Param) or else Present (Next_Formal (E_Param)) then
-            Error_Msg_N
+            Error_Msg_N_If
               ("Contains function must have exactly two parameters", E);
             return;
          end if;
@@ -1915,23 +1926,23 @@ package body SPARK_Definition.Annotate is
          end if;
 
          if not Is_Standard_Boolean_Type (Etype (E)) then
-            Error_Msg_N
+            Error_Msg_N_If
               ("Contains function must return Booleans", E);
          else
             Cont_Element :=
               Get_Iterable_Type_Primitive (Container_Type, Name_Element);
             --  Element primitive of Container_Type
             if No (Cont_Element) then
-               Error_Msg_N
+               Error_Msg_N_If
                  ("first parameter of Contains function must allow for of "
                   & "iteration", C_Param);
             elsif not In_SPARK (Cont_Element) then
-               Error_Msg_N
+               Error_Msg_N_If
                  ("first parameter of Contains functions must allow for of "
                   & "iteration in SPARK", C_Param);
             elsif Retysp (Etype (Cont_Element)) /= Retysp (Element_Type)
             then
-               Error_Msg_N
+               Error_Msg_N_If
                  ("second parameter of Contains must have the type of "
                   & "elements", E_Param);
             else
@@ -1964,7 +1975,7 @@ package body SPARK_Definition.Annotate is
          Cont_Element := Empty;
 
          if No (Param) or else Present (Next_Formal (Param)) then
-            Error_Msg_N
+            Error_Msg_N_If
               ("Model function must have exactly one parameter", E);
             return;
          end if;
@@ -1983,30 +1994,30 @@ package body SPARK_Definition.Annotate is
            Get_Iterable_Type_Primitive (Model_Type, Name_Element);
 
          if No (Cont_Element) then
-            Error_Msg_N
+            Error_Msg_N_If
               ("parameter of Model function must allow for of iteration",
                Param);
          elsif not In_SPARK (Cont_Element) then
-            Error_Msg_N
+            Error_Msg_N_If
               ("parameter of Model function must allow for of iteration "
                & "in SPARK", Param);
          elsif No (Model_Element) then
-            Error_Msg_N
+            Error_Msg_N_If
               ("return type of Model function must allow for of "
                & "iteration", E);
          elsif not In_SPARK (Model_Element) then
-            Error_Msg_N
+            Error_Msg_N_If
               ("return type of Model function must allow for of "
                & "iteration in SPARK", E);
          elsif Retysp (Etype (Cont_Element))
            /= Retysp (Etype (Model_Element))
          then
-            Error_Msg_N
+            Error_Msg_N_If
               ("parameter and return type of Model function must "
                & "allow for of iteration with the same element type",
                E);
          elsif Has_Controlling_Result (E) then
-            Error_Msg_N
+            Error_Msg_N_If
               ("Model function must not have a controlling result", E);
          else
             Check_Common_Properties (Container_Type, E, Ok, "Model");
@@ -2015,7 +2026,7 @@ package body SPARK_Definition.Annotate is
                 Unchecked_Full_Type (Container_Type)
             then
                Ok := False;
-               Error_Msg_N
+               Error_Msg_N_If
                  ("adding this Model function would produce a circular "
                   & "definition for container model", E);
             end if;
@@ -2069,7 +2080,7 @@ package body SPARK_Definition.Annotate is
             Inserted);
 
          if not Inserted then
-            Error_Msg_NE
+            Error_Msg_NE_If
               ("two Iterable_For_Proof annotations for container type &",
                Entity, Container_Type);
             return;
@@ -2100,7 +2111,7 @@ package body SPARK_Definition.Annotate is
       New_Prim := Entity (Arg4_Exp);
 
       if Ekind (New_Prim) /= E_Function then
-         Error_Msg_N
+         Error_Msg_N_If
            ("the entity of a Gnatprove Annotate Iterable_For_Proof "
             & "pragma must be a function",
             New_Prim);
@@ -2114,7 +2125,7 @@ package body SPARK_Definition.Annotate is
          Kind := Contains;
          Check_Contains_Entity (New_Prim, Ok, Cont_Element);
       else
-         Error_Msg_N
+         Error_Msg_N_If
            ("the third argument of a Gnatprove Annotate Iterable_For_Proof "
             & "pragma must be Model or Contains",
             Arg3_Exp);
@@ -2165,7 +2176,7 @@ package body SPARK_Definition.Annotate is
       --  This entity must be a function
 
       if Ekind (E) /= E_Function then
-         Error_Msg_N
+         Error_Msg_N_If
            ("Entity parameter of a pragma Logical_Equal must be a function",
             Arg3_Exp);
          return;
@@ -2174,12 +2185,12 @@ package body SPARK_Definition.Annotate is
       --  The function shall have the signature of an equality
 
       if No (First_Formal (E)) or else Number_Formals (E) /= 2 then
-         Error_Msg_N
+         Error_Msg_N_If
            ("Entity parameter of a pragma Logical_Equal shall have exactly"
             & " two parameters", E);
          return;
       elsif not Is_Standard_Boolean_Type (Etype (E)) then
-         Error_Msg_N
+         Error_Msg_N_If
            ("Entity parameter of a pragma Logical_Equal shall return a"
             & " Boolean", E);
          return;
@@ -2190,7 +2201,7 @@ package body SPARK_Definition.Annotate is
 
          begin
             if Etype (First_Param) /= Etype (Snd_Param) then
-               Error_Msg_N
+               Error_Msg_N_If
                  ("both parameters of an equality function shall have the"
                   & " same subtype", E);
                return;
@@ -2216,7 +2227,7 @@ package body SPARK_Definition.Annotate is
            or else not Globals.Inputs.Is_Empty
            or else not Globals.Outputs.Is_Empty
          then
-            Error_Msg_N
+            Error_Msg_N_If
               ("Entity parameter of a pragma Logical_Equal shall not access"
                & " any global data", E);
             return;
@@ -2226,7 +2237,7 @@ package body SPARK_Definition.Annotate is
       --  Inline_For_Proof and Logical_Equal are incompatible
 
       if Present (Retrieve_Inline_Annotation (E)) then
-         Error_Msg_N
+         Error_Msg_N_If
            ("Entity parameter of a pragma Logical_Equal shall not have an"
             & " Inline_For_Proof annotation",
             Arg3_Exp);
@@ -2271,7 +2282,7 @@ package body SPARK_Definition.Annotate is
       --  This entity must be a (generic) procedure
 
       if Ekind (E) not in E_Procedure | E_Generic_Procedure then
-         Error_Msg_N
+         Error_Msg_N_If
            (Aspect_Or_Pragma
             & " Annotate Might_Not_Return must apply to a procedure",
             Arg3_Exp);
@@ -2280,7 +2291,7 @@ package body SPARK_Definition.Annotate is
       --  The procedure should not be marked No_Return
 
       elsif No_Return (E) then
-         Error_Msg_N
+         Error_Msg_N_If
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Might_Not_Return must not also be marked with No_Return",
             Arg3_Exp);
@@ -2288,7 +2299,7 @@ package body SPARK_Definition.Annotate is
       --  The procedure should not be annotated as Always_Return
 
       elsif Has_Always_Return_Annotation (E) then
-         Error_Msg_N
+         Error_Msg_N_If
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Might_Not_Return must not also be marked with Always_Return",
             Arg3_Exp);
@@ -2296,7 +2307,7 @@ package body SPARK_Definition.Annotate is
       --  The procedure should not be dispatching
 
       elsif Is_Dispatching_Operation (E) then
-         Error_Msg_N
+         Error_Msg_N_If
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Might_Not_Return must not also be dispatching",
             Arg3_Exp);
@@ -2337,7 +2348,7 @@ package body SPARK_Definition.Annotate is
       --  Annotation should apply to type declaration (not subtype)
 
       if Nkind (Decl) /= N_Full_Type_Declaration then
-         Error_Msg_N
+         Error_Msg_N_If
            ("Annotation No_Wrap_Around must apply to a type declaration",
             Arg3_Exp);
          return;
@@ -2345,7 +2356,7 @@ package body SPARK_Definition.Annotate is
       --  This entity must be a modular type
 
       elsif not Is_Modular_Integer_Type (E) then
-         Error_Msg_N
+         Error_Msg_N_If
            ("Entity parameter of annotation No_Wrap_Around must be a modular "
             & "type",
             Arg3_Exp);
@@ -2405,7 +2416,7 @@ package body SPARK_Definition.Annotate is
 
       if Present (Extra_Exp) and then Nkind (Extra_Exp) not in N_String_Literal
       then
-         Error_Msg_N
+         Error_Msg_N_If
            ("third argument of " & Aspect_Or_Pragma
             & " Annotate Ownership must be a string",
             Extra_Exp);
@@ -2435,7 +2446,7 @@ package body SPARK_Definition.Annotate is
               or else Retysp (Ent) /= Ent
               or else Parent_Type (Ent) /= Ent
             then
-               Error_Msg_N
+               Error_Msg_N_If
                  ("a type annotated with Ownership must be"
                   & " a private type whose full view is not in SPARK",
                   Ent);
@@ -2467,7 +2478,7 @@ package body SPARK_Definition.Annotate is
                      Ok
                     );
                   if not Ok then
-                     Error_Msg_N ("type shall not have multiple ownership "
+                     Error_Msg_N_If ("type shall not have multiple ownership "
                                   & "annotations", Ent);
                   end if;
                end;
@@ -2475,7 +2486,7 @@ package body SPARK_Definition.Annotate is
             --  Nothing else is allowed
 
             else
-               Error_Msg_N
+               Error_Msg_N_If
                  ("third argument of " & Aspect_Or_Pragma
                   & " Annotate Ownership on a type must be"
                   & " ""Needs_Reclamation""",
@@ -2487,7 +2498,7 @@ package body SPARK_Definition.Annotate is
             --  Check that an extra parameter is provided
 
             if No (Extra_Exp) then
-               Error_Msg_N
+               Error_Msg_N_If
                  ("third argument of " & Aspect_Or_Pragma
                   & " Annotate Ownership on a"
                   & " function must be either ""Needs_Reclamation"""
@@ -2497,7 +2508,7 @@ package body SPARK_Definition.Annotate is
             --  Check that the function returns a boolean
 
             elsif Etype (Ent) /= Standard_Boolean then
-               Error_Msg_N
+               Error_Msg_N_If
                  ("a function annotated with Ownership must return a boolean",
                   Ent);
 
@@ -2506,7 +2517,7 @@ package body SPARK_Definition.Annotate is
             elsif No (First_Formal (Ent))
               or else Number_Formals (Ent) /= 1
             then
-               Error_Msg_N
+               Error_Msg_N_If
                  ("a function annotated with Ownership must "
                   & "have exactly one formal parameter",
                   Ent);
@@ -2551,36 +2562,36 @@ package body SPARK_Definition.Annotate is
                     or else not Globals.Inputs.Is_Empty
                     or else not Globals.Outputs.Is_Empty
                   then
-                     Error_Msg_N
+                     Error_Msg_N_If
                        ("a function annotated with Ownership shall"
                         & " not access any global data", Ent);
 
                   elsif Is_Tagged_Type (Typ)
                     and then not Is_Class_Wide_Type (G_Typ)
                   then
-                     Error_Msg_N
+                     Error_Msg_N_If
                        ("function annotated with Ownership on a tagged type "
                         & "expects a classwide type", Ent);
 
                   elsif not Ownership_Annotations.Contains (Typ)
                   then
-                     Error_Msg_N
+                     Error_Msg_N_If
                        ("the type of the first parameter of a function "
                         & "annotated with Ownership must be annotated with"
                         & " Ownership",
                         Ent);
-                     Error_Msg_N
+                     Error_Msg_N_If
                        ("\consider annotating it with a pragma Annotate "
                         & "('G'N'A'Tprove, Ownership, ""Needs_Reclamation"""
                         & ", ...)",
                         Ent);
 
                   elsif not Ownership_Annotations (Typ).Needs_Reclamation then
-                     Error_Msg_N
+                     Error_Msg_N_If
                        ("the type of the first parameter of a function "
                         & "annotated with Ownership shall need reclamation",
                         Ent);
-                     Error_Msg_N
+                     Error_Msg_N_If
                        ("\consider annotating it with a pragma Annotate "
                         & "('G'N'A'Tprove, Ownership, ""Needs_Reclamation"""
                         & ", ...)",
@@ -2588,17 +2599,17 @@ package body SPARK_Definition.Annotate is
 
                   elsif Present (Ownership_Annotations (Typ).Check_Function)
                   then
-                     Error_Msg_N
+                     Error_Msg_N_If
                        ("a single ownership function shall be supplied for a "
                         & "given type annotated with Ownership",
                         Ent);
-                     Error_Msg_NE
+                     Error_Msg_NE_If
                        ("\the function & conflicts with the current"
                         & " annotation",
                         Ent, Ownership_Annotations (Typ).Check_Function);
 
                   elsif Scope (Typ) /= Scope (Ent) then
-                     Error_Msg_N
+                     Error_Msg_N_If
                        ("ownership function shall be declared in same "
                         & "declaration list as input type",
                         Ent);
@@ -2628,7 +2639,7 @@ package body SPARK_Definition.Annotate is
                   --  Nothing else is allowed
 
                   else
-                     Error_Msg_N
+                     Error_Msg_N_If
                        ("third argument of " & Aspect_Or_Pragma
                         & " Annotate Ownership on a"
                         & " function must be either ""Needs_Reclamation"""
@@ -2638,7 +2649,7 @@ package body SPARK_Definition.Annotate is
                end;
             end if;
          else
-            Error_Msg_N
+            Error_Msg_N_If
               ("the entity of a pragma Annotate Ownership "
                & "shall be either a type or a function",
                Ent);
@@ -2677,7 +2688,7 @@ package body SPARK_Definition.Annotate is
          begin
             pragma Assert (Entity_Marked (Subp));
             if not Has_Higher_Order_Specialization_Annotation (Subp) then
-               Error_Msg_N
+               Error_Msg_N_If
                  ("subprogram annotated with Higher_Order_Specialization"
                   & " shall only reference its access-to-function"
                   & " parameters in dereferences and as actual parameters in"
@@ -2727,14 +2738,14 @@ package body SPARK_Definition.Annotate is
          if May_Issue_Warning_On_Node (Prag)
            and then not Is_In_Statically_Dead_Branch (Prag)
          then
-            Error_Msg_N
+            Error_Msg_N_If
               (Warning_Message (Warn_Pragma_Annotate_No_Check), Prag);
          end if;
       end loop;
 
       for Prag of Proved_Pragma loop
          if Instantiation_Location (Sloc (Prag)) = No_Location then
-            Error_Msg_N
+            Error_Msg_N_If
               (Warning_Message (Warn_Pragma_Annotate_Proved_Check), Prag);
          end if;
       end loop;
@@ -3246,7 +3257,7 @@ package body SPARK_Definition.Annotate is
          Ok := (Num = Number_Of_Pragma_Args);
 
          if not Ok then
-            Error_Msg_N
+            Error_Msg_N_If
               ("wrong number of arguments in " & Aspect_Or_Pragma
                & " Annotate ('G'N'A'Tprove, " & Standard_Ada_Case (Name)
                & (if Num > 2 then ", ...)" else ")")
@@ -3261,7 +3272,7 @@ package body SPARK_Definition.Annotate is
       function Get_Annotation_Name (Arg : Node_Id) return String is
       begin
          if No (Arg) then
-            Error_Msg_N
+            Error_Msg_N_If
               ("missing name in Annotate " & Aspect_Or_Pragma
                & " for 'G'N'A'Tprove", Prag);
             return "";
@@ -3303,7 +3314,7 @@ package body SPARK_Definition.Annotate is
       --  Check the name and number of arguments
 
       if Name = "external_axiomatization" then
-         Error_Msg_N (Warning_Message (Warn_Pragma_External_Axiomatization),
+         Error_Msg_N_If (Warning_Message (Warn_Pragma_External_Axiomatization),
                       Prag);
          return;
 
@@ -3349,7 +3360,7 @@ package body SPARK_Definition.Annotate is
          Check_Argument_Number (Name, 5, Ok);
 
       else
-         Error_Msg_N
+         Error_Msg_N_If
            ("invalid name """ & Standard_Ada_Case (Name) & """ in "
             & Aspect_Or_Pragma & " Annotate ('G'N'A'Tprove, name)", Arg2);
          Ok := False;
@@ -3388,9 +3399,9 @@ package body SPARK_Definition.Annotate is
 
       elsif Name in "always_return" | "terminating" then
          if Name = "terminating" then
-            Error_Msg_N
+            Error_Msg_N_If
               (Warning_Message (Warn_Pragma_Annotate_Terminating), Prag);
-            Error_Msg_N ("\\use Always_Return instead", Prag);
+            Error_Msg_N_If ("\\use Always_Return instead", Prag);
          end if;
 
          Check_Always_Return_Annotation (Arg3_Exp, Prag);
@@ -3432,7 +3443,7 @@ package body SPARK_Definition.Annotate is
             then
                Pattern := Strval (Arg3_Exp);
             else
-               Error_Msg_N
+               Error_Msg_N_If
                  ("third argument PATTERN for 'G'N'A'Tprove Annotate "
                   & Aspect_Or_Pragma & " must be a string literal",
                   Prag);
@@ -3442,7 +3453,7 @@ package body SPARK_Definition.Annotate is
             if Nkind (Arg4_Exp) = N_String_Literal then
                Reason := Strval (Arg4_Exp);
             else
-               Error_Msg_N
+               Error_Msg_N_If
                  ("fourth argument REASON for 'G'N'A'Tprove Annotate "
                   & Aspect_Or_Pragma & " must be a string literal",
                   Prag);
@@ -3492,7 +3503,7 @@ package body SPARK_Definition.Annotate is
                         | E_Package
                         | E_Generic_Package
       then
-         Error_Msg_N
+         Error_Msg_N_If
            (Aspect_Or_Pragma
             & " Annotate Skip_Proof must apply to a"
             & " subprogram, task, entry or package",
@@ -3512,7 +3523,7 @@ package body SPARK_Definition.Annotate is
       if Name = "skip_proof"
         and then Has_Skip_Flow_And_Proof_Annotation (E)
       then
-         Error_Msg_N
+         Error_Msg_N_If
            (Aspect_Or_Pragma
             & " Skip_Proof cannot occur in the scope of a"
             & " Skip_Flow_And_Proof aspect or pragma",
@@ -3527,6 +3538,32 @@ package body SPARK_Definition.Annotate is
          end if;
       end if;
    end Check_Skip_Annotations;
+
+   --------------------
+   -- Error_Msg_N_If --
+   --------------------
+
+   procedure Error_Msg_N_If (Msg : String; N : Node_Or_Entity_Id) is
+   begin
+      if Emit_Messages then
+         Error_Msg_N (Msg, N);
+      end if;
+   end Error_Msg_N_If;
+
+   ---------------------
+   -- Error_Msg_NE_If --
+   ---------------------
+
+   procedure Error_Msg_NE_If
+     (Msg : String;
+      N   : Node_Or_Entity_Id;
+      E   : Node_Or_Entity_Id)
+   is
+   begin
+      if Emit_Messages then
+         Error_Msg_NE (Msg, N, E);
+      end if;
+   end Error_Msg_NE_If;
 
    ---------------------------------------
    -- Set_Has_No_Wrap_Around_Annotation --
