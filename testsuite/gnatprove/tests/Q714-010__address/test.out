@@ -19,10 +19,10 @@ pixel.adb:21:41: medium: precondition might fail
 pixel.adb:24:04: info: no contextual analysis of "Aspect" (body not seen yet)
 pixel.adb:24:04: warning: assuming "Aspect" always terminates
 pixel.adb:24:04: warning: assuming "Aspect" has no effect on global items
+pixel.adb:24:04: warning: no Always_Terminates aspect available for "Aspect"
 pixel.adb:24:04: warning: no Global contract available for "Aspect"
-pixel.adb:24:04: warning: no returning annotation available for "Aspect"
 pixel.adb:25:04: info: no contextual analysis of "Clause" (body not seen yet)
 pixel.adb:25:04: warning: assuming "Clause" always terminates
 pixel.adb:25:04: warning: assuming "Clause" has no effect on global items
+pixel.adb:25:04: warning: no Always_Terminates aspect available for "Clause"
 pixel.adb:25:04: warning: no Global contract available for "Clause"
-pixel.adb:25:04: warning: no returning annotation available for "Clause"

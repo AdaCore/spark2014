@@ -545,7 +545,8 @@ package body VC_Kinds is
         when Warn_Pragma_Annotate_Proved_Check =>
           "only proved check messages justified by this pragma",
         when Warn_Pragma_Annotate_Terminating =>
-          "Terminating annotations are deprecated",
+          "Terminating, Always_Return, and Might_Not_Return annotations are "
+          & "ignored",
         when Warn_Pragma_External_Axiomatization =>
           "External Axiomatizations are not supported anymore, ignored",
         when Warn_Pragma_Ignored =>
@@ -564,11 +565,6 @@ package body VC_Kinds is
         when Warn_Useless_Relaxed_Init_Obj =>
           "object annotated with Relaxed_Initialization cannot be"
           & " partially initialized",
-        when Warn_Useless_Always_Return_Fun =>
-          "functions are implicitly annotated with Always_Return",
-        when Warn_Useless_Always_Return_Lemma =>
-          "automatically instantiated lemmas are implicitly annotated with"
-           & " Always_Return",
         when Warn_Variant_Not_Recursive =>
           "no recursive call visible on subprogram with Subprogram_Variant",
 
@@ -581,8 +577,8 @@ package body VC_Kinds is
           "reads of an object with an imprecisely supported address "
           & "specification should be valid",
         when Warn_Assumed_Always_Return =>
-          "no returning annotation available for subprogram, "
-          & "subprogram is assumed to always return",
+          "no Always_Terminates aspect available for subprogram, "
+          & "subprogram is assumed to always terminate",
         when Warn_Assumed_Global_Null =>
           "no Global contract available for subprogram, null is assumed",
         when Warn_Assumed_Volatile_Properties =>
@@ -1456,11 +1452,6 @@ package body VC_Kinds is
           "useless Relaxed_Initialization aspect on function result",
         when Warn_Useless_Relaxed_Init_Obj =>
           "useless Relaxed_Initialization aspect on object",
-        when Warn_Useless_Always_Return_Fun =>
-          "useless Always_Return annotation on function",
-        when Warn_Useless_Always_Return_Lemma =>
-          "useless Always_Return annotation on automatically instantiated"
-           & " lemma",
         when Warn_Variant_Not_Recursive =>
           "variant not recursive",
 
@@ -1477,7 +1468,7 @@ package body VC_Kinds is
         when Warn_Indirect_Writes_To_Alias =>
           "imprecise Address and indirect writes to alias",
         when Warn_Assumed_Always_Return =>
-          "assumed Always_Return",
+          "assumed Always_Terminates",
         when Warn_Assumed_Global_Null =>
           "assumed Global null",
 

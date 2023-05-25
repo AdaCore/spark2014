@@ -9,14 +9,14 @@ various_no_optim.adb:18:13: warning: no Global contract available for "Error_Det
 various_no_optim.adb:32:22: info: assertion proved (CVC5: 1 VC)
 various_no_optim.adb:40:07: warning: assuming "Execute_Step_1" always terminates
 various_no_optim.adb:40:07: warning: assuming "Execute_Step_1" has no effect on global items
+various_no_optim.adb:40:07: warning: no Always_Terminates aspect available for "Execute_Step_1"
 various_no_optim.adb:40:07: warning: no Global contract available for "Execute_Step_1"
-various_no_optim.adb:40:07: warning: no returning annotation available for "Execute_Step_1"
 various_no_optim.adb:43:07: warning: assuming "Execute_Step_2" always terminates
 various_no_optim.adb:43:07: warning: assuming "Execute_Step_2" has no effect on global items
+various_no_optim.adb:43:07: warning: no Always_Terminates aspect available for "Execute_Step_2"
 various_no_optim.adb:43:07: warning: no Global contract available for "Execute_Step_2"
-various_no_optim.adb:43:07: warning: no returning annotation available for "Execute_Step_2"
 various_no_optim.adb:46:07: warning: assuming "Execute_Step_N" always terminates
 various_no_optim.adb:46:07: warning: assuming "Execute_Step_N" has no effect on global items
+various_no_optim.adb:46:07: warning: no Always_Terminates aspect available for "Execute_Step_N"
 various_no_optim.adb:46:07: warning: no Global contract available for "Execute_Step_N"
-various_no_optim.adb:46:07: warning: no returning annotation available for "Execute_Step_N"
 various_no_optim.adb:48:22: info: assertion proved (CVC5: 1 VC)

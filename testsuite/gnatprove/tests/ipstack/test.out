@@ -1,20 +1,46 @@
+aip-arp.adb:30:10: medium: implicit terminating annotation on "Get_MAC_Address" could be incorrect, call to "Get_LL_Address" might be nonterminating
 aip-arp.adb:324:10: warning: assuming no concurrent accesses to non-atomic object "Result"
 aip-arp.adb:324:10: warning: indirect writes to "Result" through a potential alias are ignored
 aip-arp.adb:324:10: warning: make sure that all overlapping objects have Async_Writers set to True
 aip-arp.adb:324:10: warning: writing to "Result" is assumed to have no effects on other non-volatile objects
 aip-arp.adb:396:25: warning: statement has no effect
 aip-arp.adb:61:13: warning: statement has no effect
+aip-buffers-common.adb:19:14: medium: implicit terminating annotation on "Is_Data_Buffer" could be incorrect, call to "Verify" might be nonterminating
 aip-buffers.adb:477:25: warning: "N_Deallocs" is set by "Buffer_Free" but not used after the call
 aip-ip.adb:187:10: warning: statement has no effect
 aip-ip.adb:188:19: warning: this statement is never reached
-aip-pcbs.adb:235:48: medium: terminating annotation on "Find_PCB_In_List" could be incorrect, loop might be nonterminating
+aip-nif.ads:100:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
+aip-nif.ads:100:06: warning: use Always_Terminates instead
 aip-pcbs.adb:51:20: medium: implicit terminating annotation on "Available_Port" could be incorrect, loop might be nonterminating
+aip-pcbs.adb:52:10: medium: implicit terminating annotation on "Available_Port" could be incorrect, call to "Find_PCB" might be nonterminating
+aip-pcbs.ads:116:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
+aip-pcbs.ads:116:06: warning: use Always_Terminates instead
+aip-pcbs.ads:131:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
+aip-pcbs.ads:131:06: warning: use Always_Terminates instead
+aip-support.ads:11:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
+aip-support.ads:11:06: warning: use Always_Terminates instead
+aip-tcp.adb:1851:13: warning: assuming "TCP_Event" always terminates
+aip-tcp.adb:1851:13: warning: no Always_Terminates aspect available for "TCP_Event"
 aip-tcp.adb:1863:24: warning: "Err" is set by "TCP_Event" but not used after the call
 aip-tcp.adb:1895:32: warning: "Err" is set by "TCP_Send_Control" but not used after the call
 aip-tcp.adb:2153:22: warning: "Err" is set by "TCP_Send_Rst" but not used after the call
+aip-tcp.adb:2241:13: warning: assuming "TCP_Event" always terminates
+aip-tcp.adb:2241:13: warning: no Always_Terminates aspect available for "TCP_Event"
 aip-tcp.adb:2250:24: warning: "Err" is set by "TCP_Event" but not used after the call
+aip-tcp.adb:2333:22: warning: assuming "TCP_Event" always terminates
+aip-tcp.adb:2333:22: warning: no Always_Terminates aspect available for "TCP_Event"
+aip-tcp.adb:2409:22: warning: assuming "TCP_Event" always terminates
+aip-tcp.adb:2409:22: warning: no Always_Terminates aspect available for "TCP_Event"
+aip-tcp.adb:2637:25: warning: assuming "TCP_Event" always terminates
+aip-tcp.adb:2637:25: warning: no Always_Terminates aspect available for "TCP_Event"
 aip-tcp.adb:2739:10: warning: assuming no concurrent accesses to non-atomic object "Result"
 aip-tcp.adb:2739:10: warning: indirect writes to "Result" through a potential alias are ignored
 aip-tcp.adb:2739:10: warning: make sure that all overlapping objects have Async_Writers set to True
 aip-tcp.adb:2739:10: warning: writing to "Result" is assumed to have no effects on other non-volatile objects
+aip-tcp.adb:3195:13: warning: assuming "TCP_Event" always terminates
+aip-tcp.adb:3195:13: warning: no Always_Terminates aspect available for "TCP_Event"
 aip-tcp.adb:3204:24: warning: "Err" is set by "TCP_Event" but not used after the call
+aip-tcp.adb:848:13: warning: assuming "TCP_Event" always terminates
+aip-tcp.adb:848:13: warning: no Always_Terminates aspect available for "TCP_Event"
+aip-tcp.ads:70:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
+aip-tcp.ads:70:06: warning: use Always_Terminates instead

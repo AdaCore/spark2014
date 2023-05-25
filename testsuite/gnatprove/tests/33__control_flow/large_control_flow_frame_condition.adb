@@ -7,7 +7,7 @@ procedure Large_Control_Flow_Frame_Condition with SPARK_Mode is
       Seed : Integer := 0;
       procedure Twist
         with Import, Global => (In_Out => Seed),
-        Annotate => (GNATprove, Always_Return);
+        Always_Terminates;
       function Random (I : Integer := 0) return Boolean
         with Import, Global => (Input => Seed);
       function RandInt (I : Integer := 0) return Integer
@@ -67,7 +67,7 @@ procedure Large_Control_Flow_Frame_Condition with SPARK_Mode is
          Twist;
 
          MD10 := MD10 + 1; --@OVERFLOW_CHECK:FAIL
-         
+
          begin
             pragma Loop_Invariant (True);
          end;
@@ -99,7 +99,7 @@ procedure Large_Control_Flow_Frame_Condition with SPARK_Mode is
                      Twist;
                   end if;
                   Twist;
-                  
+
                   if Random then
                      Twist;
                      goto LM;
@@ -137,7 +137,7 @@ procedure Large_Control_Flow_Frame_Condition with SPARK_Mode is
                      end;
                   end if;
                   Twist;
-                  
+
                   begin
                      case RandInt is
                         when 0 =>
@@ -225,7 +225,7 @@ procedure Large_Control_Flow_Frame_Condition with SPARK_Mode is
                            raise E;
                            Twist;
                      end case;
-                     
+
                   exception
                      when F | G =>
                         MD16 := MD16 + 1; --@OVERFLOW_CHECK:FAIL

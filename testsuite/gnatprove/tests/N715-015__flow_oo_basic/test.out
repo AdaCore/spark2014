@@ -61,8 +61,8 @@ tests.adb:198:09: info: flow dependencies proved
 tests.adb:202:07: warning: initialization of "Obj" has no effect
 tests.adb:208:07: warning: assuming "Zero_Widget" always terminates
 tests.adb:208:07: warning: assuming "Zero_Widget" has no effect on global items
+tests.adb:208:07: warning: no Always_Terminates aspect available for "Zero_Widget"
 tests.adb:208:07: warning: no Global contract available for "Zero_Widget"
-tests.adb:208:07: warning: no returning annotation available for "Zero_Widget"
 tests.adb:209:15: warning: assuming "Hash" has no effect on global items
 tests.adb:209:15: warning: no Global contract available for "Hash"
 tests.adb:215:23: info: initialization of "N" proved
@@ -123,8 +123,8 @@ tests.adb:370:07: info: initialization of "Tmp" proved
 tests.adb:371:07: info: initialization of "Tmp2" proved
 tests.adb:373:07: warning: assuming "Zero_Widget" always terminates
 tests.adb:373:07: warning: assuming "Zero_Widget" has no effect on global items
+tests.adb:373:07: warning: no Always_Terminates aspect available for "Zero_Widget"
 tests.adb:373:07: warning: no Global contract available for "Zero_Widget"
-tests.adb:373:07: warning: no returning annotation available for "Zero_Widget"
 tests.adb:376:18: warning: assuming "Hash" has no effect on global items
 tests.adb:376:18: warning: no Global contract available for "Hash"
 tests.adb:377:29: warning: assuming "Hash" has no effect on global items

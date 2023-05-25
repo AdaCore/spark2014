@@ -135,19 +135,6 @@ package SPARK_Definition.Annotate is
    --  When such an annotation is provided for a function E, is is assumed to
    --  be an application of the logical "=" operator of Why3.
 
-   --  A pragma Annotate for termination has the following form:
-   --    pragma Annotate (GNATprove, Always_Return, Entity => E);
-
-   --  where
-   --    GNATprove           is a fixed identifier
-   --    Always_Return       is a fixed identifier
-   --    E                   is a subprogram or a package entity
-
-   --  When such an annotation is provided for a subprogram E, it is assumed to
-   --  terminate as far as proof is concerned. If it is provided for a package,
-   --  then all the subprograms declared in this package are assumed to
-   --  terminate.
-
    --  A pragma Annotate for ownership can be applied either on a type or a
    --  function. On a type, it has the following form:
    --    pragma Annotate

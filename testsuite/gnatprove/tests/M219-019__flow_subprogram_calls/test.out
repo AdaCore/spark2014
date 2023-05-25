@@ -21,8 +21,8 @@ test.adb:70:07: info: initialization of "Tmp" proved
 test.adb:79:07: info: initialization of "Tmp" proved
 test.adb:95:12: warning: assuming "Swap_Without_Contract" always terminates
 test.adb:95:12: warning: assuming "Swap_Without_Contract" has no effect on global items
+test.adb:95:12: warning: no Always_Terminates aspect available for "Swap_Without_Contract"
 test.adb:95:12: warning: no Global contract available for "Swap_Without_Contract"
-test.adb:95:12: warning: no returning annotation available for "Swap_Without_Contract"
 test.adb:114:04: info: no contextual analysis of "Factorial" (multiple returns)
 test.adb:114:13: info: implicit function contract might not be available on recursive calls
 test.adb:119:10: medium: implicit terminating annotation on "Factorial" could be incorrect, subprogram is recursive [possible fix: annotate "Factorial" with a Subprogram_Variant aspect]

@@ -378,8 +378,6 @@ package VC_Kinds is
       Warn_Precondition_Statically_False,
       Warn_Unreferenced_Function,
       Warn_Unreferenced_Procedure,
-      Warn_Useless_Always_Return_Fun,
-      Warn_Useless_Always_Return_Lemma,
       Warn_Useless_Relaxed_Init_Fun,
       Warn_Useless_Relaxed_Init_Obj,
       Warn_Variant_Not_Recursive,
@@ -527,7 +525,8 @@ package VC_Kinds is
         when Warn_Pragma_Annotate_Proved_Check =>
           "?only proved check messages justified by this pragma",
         when Warn_Pragma_Annotate_Terminating =>
-          "?Terminating annotations are deprecated",
+          "?Terminating, Always_Return, and Might_Not_Return annotations are"
+          & " deprecated, ignored",
         when Warn_Pragma_External_Axiomatization =>
           "?External Axiomatizations are not supported anymore, ignored",
         when Warn_Pragma_Ignored =>
@@ -540,11 +539,6 @@ package VC_Kinds is
           "?analyzing unreferenced function &",
         when Warn_Unreferenced_Procedure =>
           "?analyzing unreferenced procedure &",
-        when Warn_Useless_Always_Return_Fun =>
-          "?function & has implicit Always_Return annotation",
-        when Warn_Useless_Always_Return_Lemma =>
-          "?automatically instantiated lemma & has implicit Always_Return"
-           & " annotation",
         when Warn_Useless_Relaxed_Init_Fun =>
           "?the result of & cannot be partially initialized",
         when Warn_Useless_Relaxed_Init_Obj =>
@@ -558,7 +552,7 @@ package VC_Kinds is
         when Warn_Address_Valid =>
           "?assuming valid reads from object &",
         when Warn_Assumed_Always_Return =>
-          "?no returning annotation available for &",
+          "?no Always_Terminates aspect available for &",
         when Warn_Assumed_Global_Null =>
           "?no Global contract available for &",
         when Warn_Assumed_Volatile_Properties =>

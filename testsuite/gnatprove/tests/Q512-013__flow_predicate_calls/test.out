@@ -1,5 +1,5 @@
 p.adb:7:22: warning: assuming "Yield" always terminates
-p.adb:7:22: warning: no returning annotation available for "Yield"
+p.adb:7:22: warning: no Always_Terminates aspect available for "Yield"
 p.adb:13:10: error: "T" is not allowed in SPARK
 p.adb:13:10: error: violation of pragma SPARK_Mode at test.adc:1
 p.ads:3:44: error: "Blocking" is not allowed in SPARK (due to function with global outputs)

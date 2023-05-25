@@ -146,8 +146,8 @@ is
    --  Process UDP event EV, aimed at bound PCB, for which Cbid was registered.
    --  Expected to be provided by the applicative code.
    with
-     Global   => (In_Out => Buffers.State),
-     Annotate => (GNATprove, Always_Return);
+     Global => (In_Out => Buffers.State),
+     Always_Terminates;
    pragma Import (Ada, UDP_Event, "AIP_udp_event");
    pragma Weak_External (UDP_Event);
 

@@ -5,8 +5,8 @@ ext.ads:9:38: warning: value not in range of type "Small_Enum" defined at line 7
 test_access_conv.adb:11:04: medium: resource or memory leak might occur at end of scope
 test_access_conv.adb:13:04: warning: assuming "Incr" always terminates
 test_access_conv.adb:13:04: warning: assuming "Incr" has no effect on global items
+test_access_conv.adb:13:04: warning: no Always_Terminates aspect available for "Incr"
 test_access_conv.adb:13:04: warning: no Global contract available for "Incr"
-test_access_conv.adb:13:04: warning: no returning annotation available for "Incr"
 test_access_conv.adb:13:10: info: discriminant check proved (CVC5: 1 VC)
 test_attributes.adb:14:13: info: implicit function contract might not be available on calls from enclosing unit
 test_attributes.adb:14:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate

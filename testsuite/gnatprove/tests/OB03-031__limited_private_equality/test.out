@@ -1,7 +1,7 @@
 c74402a.adb:40:06: warning: assuming "TEST" always terminates
 c74402a.adb:40:06: warning: assuming "TEST" has no effect on global items
+c74402a.adb:40:06: warning: no Always_Terminates aspect available for "TEST"
 c74402a.adb:40:06: warning: no Global contract available for "TEST"
-c74402a.adb:40:06: warning: no returning annotation available for "TEST"
 c74402a.adb:56:25: info: implicit function contract might not be available on calls from enclosing unit
 c74402a.adb:56:25: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
 c74402a.adb:57:25: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
@@ -11,16 +11,16 @@ c74402a.adb:61:26: warning: subprogram "G2" has no effect
 c74402a.adb:62:26: warning: subprogram "G3" has no effect
 c74402a.adb:90:26: warning: assuming "FAILED" always terminates
 c74402a.adb:90:26: warning: assuming "FAILED" has no effect on global items
+c74402a.adb:90:26: warning: no Always_Terminates aspect available for "FAILED"
 c74402a.adb:90:26: warning: no Global contract available for "FAILED"
-c74402a.adb:90:26: warning: no returning annotation available for "FAILED"
 c74402a.adb:97:26: warning: assuming "FAILED" always terminates
 c74402a.adb:97:26: warning: assuming "FAILED" has no effect on global items
+c74402a.adb:97:26: warning: no Always_Terminates aspect available for "FAILED"
 c74402a.adb:97:26: warning: no Global contract available for "FAILED"
-c74402a.adb:97:26: warning: no returning annotation available for "FAILED"
 c74402a.adb:104:26: warning: assuming "FAILED" always terminates
 c74402a.adb:104:26: warning: assuming "FAILED" has no effect on global items
+c74402a.adb:104:26: warning: no Always_Terminates aspect available for "FAILED"
 c74402a.adb:104:26: warning: no Global contract available for "FAILED"
-c74402a.adb:104:26: warning: no returning annotation available for "FAILED"
 c74402a.adb:122:21: info: add a contract to analyze it separately from calling contexts
 c74402a.adb:122:21: info: local subprogram "G4" only analyzed in the context of calls
 c74402a.adb:122:21: warning: subprogram "G4" has no effect
@@ -38,5 +38,5 @@ c74402a.adb:147:11: info: analyzing call to "G5" in context
 c74402a.adb:148:11: info: analyzing call to "G6" in context
 c74402a.adb:152:06: warning: assuming "RESULT" always terminates
 c74402a.adb:152:06: warning: assuming "RESULT" has no effect on global items
+c74402a.adb:152:06: warning: no Always_Terminates aspect available for "RESULT"
 c74402a.adb:152:06: warning: no Global contract available for "RESULT"
-c74402a.adb:152:06: warning: no returning annotation available for "RESULT"
