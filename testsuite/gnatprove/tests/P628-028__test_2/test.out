@@ -2,11 +2,11 @@ hello.ads:36:14: warning: subprogram "Hello_Spg_1" has no effect
 hello.ads:37:14: warning: subprogram "Hello_Spg_2" has no effect
 node_a.adb:21:20: info: range check proved (CVC5: 2 VC)
 node_a.adb:24:24: warning: assuming "Unblock_All_Tasks" always terminates
-node_a.adb:24:24: warning: no returning annotation available for "Unblock_All_Tasks"
+node_a.adb:24:24: warning: no Always_Terminates aspect available for "Unblock_All_Tasks"
 node_a.adb:27:24: warning: assuming "Suspend_Forever" always terminates
 node_a.adb:27:24: warning: assuming "Suspend_Forever" has no effect on global items
+node_a.adb:27:24: warning: no Always_Terminates aspect available for "Suspend_Forever"
 node_a.adb:27:24: warning: no Global contract available for "Suspend_Forever"
-node_a.adb:27:24: warning: no returning annotation available for "Suspend_Forever"
 polyorb_hi-epoch.adb:46:16: info: implicit terminating annotation on "System_Startup_Time" has been proved, subprogram will terminate
 polyorb_hi-epoch.ads:40:08: info: flow dependencies proved
 polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved
@@ -31,14 +31,14 @@ polyorb_hi_generated-activity.ads:22:03: warning: assuming "Block_Task" always t
 polyorb_hi_generated-activity.ads:22:03: warning: assuming "Block_Task" has no effect on global items
 polyorb_hi_generated-activity.ads:22:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70
 polyorb_hi_generated-activity.ads:22:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70
+polyorb_hi_generated-activity.ads:22:03: warning: no Always_Terminates aspect available for "Block_Task"
 polyorb_hi_generated-activity.ads:22:03: warning: no Global contract available for "Block_Task"
-polyorb_hi_generated-activity.ads:22:03: warning: no returning annotation available for "Block_Task"
 polyorb_hi_generated-activity.ads:35:12: info: implicit terminating annotation on "RMAAadl_Task2_Job" has been proved, subprogram will terminate
 polyorb_hi_generated-activity.ads:37:03: warning: assuming "Block_Task" always terminates
 polyorb_hi_generated-activity.ads:37:03: warning: assuming "Block_Task" has no effect on global items
 polyorb_hi_generated-activity.ads:37:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70
 polyorb_hi_generated-activity.ads:37:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70
+polyorb_hi_generated-activity.ads:37:03: warning: no Always_Terminates aspect available for "Block_Task"
 polyorb_hi_generated-activity.ads:37:03: warning: no Global contract available for "Block_Task"
-polyorb_hi_generated-activity.ads:37:03: warning: no returning annotation available for "Block_Task"
 polyorb_hi_generated-subprograms.ads:12:13: warning: subprogram "RMAAadl_Hello_Spg_1" has no effect
 polyorb_hi_generated-subprograms.ads:14:13: warning: subprogram "RMAAadl_Hello_Spg_2" has no effect

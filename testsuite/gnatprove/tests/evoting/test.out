@@ -3,7 +3,7 @@ evoting.adb:43:07: info: initialization of "last" proved
 evoting.adb:44:07: info: initialization of "item" proved
 evoting.adb:46:07: info: precondition proved (CVC5: 1 VC)
 evoting.adb:46:07: warning: assuming "Assert" always terminates
-evoting.adb:46:07: warning: no returning annotation available for "Assert"
+evoting.adb:46:07: warning: no Always_Terminates aspect available for "Assert"
 evoting.adb:53:07: info: only expected exception raised (CVC5: 1 VC)
 evoting.adb:53:07: info: precondition proved (CVC5: 1 VC)
 evoting.adb:55:17: info: precondition proved (CVC5: 4 VC)
@@ -41,7 +41,7 @@ evoting.adb:205:16: info: range check proved (CVC5: 4 VC)
 evoting.adb:217:07: info: initialization of "latest_highest_score" proved
 evoting.adb:219:07: info: precondition proved (CVC5: 1 VC)
 evoting.adb:219:07: warning: assuming "Assert" always terminates
-evoting.adb:219:07: warning: no returning annotation available for "Assert"
+evoting.adb:219:07: warning: no Always_Terminates aspect available for "Assert"
 evoting.adb:229:13: info: loop invariant initialization proved (CVC5: 7 VC; Trivial: 1 VC)
 evoting.adb:229:13: info: loop invariant preservation proved (CVC5: 7 VC; Trivial: 1 VC)
 evoting.adb:229:13: medium: "winners" might not be initialized

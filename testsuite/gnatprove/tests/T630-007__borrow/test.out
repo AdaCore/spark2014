@@ -1,7 +1,7 @@
 borrow.adb:33:04: warning: assuming "Free" always terminates
 borrow.adb:33:04: warning: assuming "Free" has no effect on global items
+borrow.adb:33:04: warning: no Always_Terminates aspect available for "Free"
 borrow.adb:33:04: warning: no Global contract available for "Free"
-borrow.adb:33:04: warning: no returning annotation available for "Free"
 borrow.adb:43:36: error: object was moved at line 42
 borrow.adb:43:36: error: part of "U" is not readable
 borrow.adb:44:20: error: object was moved at line 42

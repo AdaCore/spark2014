@@ -21,36 +21,36 @@ memcpy.adb:28:36: info: range check proved (CVC5: 1 VC)
 memcpy.adb:29:36: info: range check proved (CVC5: 1 VC)
 memcpy.adb:30:36: info: range check proved (CVC5: 1 VC)
 memcpy.adb:35:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:35:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:35:10: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:42:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:42:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:42:10: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:45:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:45:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:45:10: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:48:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:48:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:48:10: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:54:10: warning: assuming "Write_EAX" always terminates
-memcpy.adb:54:10: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:54:10: warning: no Always_Terminates aspect available for "Write_EAX"
 memcpy.adb:69:13: warning: assuming "Write_EAX" always terminates
-memcpy.adb:69:13: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:69:13: warning: no Always_Terminates aspect available for "Write_EAX"
 memcpy.adb:84:16: warning: assuming "Write_EAX" always terminates
-memcpy.adb:84:16: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:84:16: warning: no Always_Terminates aspect available for "Write_EAX"
 memcpy.adb:88:26: warning: unused assignment
 memcpy.adb:89:27: warning: unused assignment
 memcpy.adb:90:30: warning: unused assignment
 memcpy.adb:99:19: warning: assuming "WriteMem64" always terminates
-memcpy.adb:99:19: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:99:19: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:105:19: warning: assuming "WriteMem64" always terminates
-memcpy.adb:105:19: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:105:19: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:108:19: warning: assuming "WriteMem64" always terminates
-memcpy.adb:108:19: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:108:19: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:110:16: medium: precondition might fail, cannot prove (X86.ReadMem64(X86.RBP - 8) = 0) [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:110:16: warning: "RAX" is set by "ZSTLoopProc_400605" but not used after the call
 memcpy.adb:119:19: warning: assuming "WriteMem64" always terminates
-memcpy.adb:119:19: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:119:19: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:125:19: warning: assuming "WriteMem64" always terminates
-memcpy.adb:125:19: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:125:19: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:128:19: warning: assuming "WriteMem64" always terminates
-memcpy.adb:128:19: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:128:19: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:131:16: medium: precondition might fail, cannot prove (X86.ReadMem64(X86.RBP - 8) = 0) [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:131:16: warning: "RAX" is set by "ZSTLoopProc_40064f" but not used after the call
 memcpy.adb:151:21: info: assertion proved (CVC5: 1 VC)
@@ -129,9 +129,9 @@ memcpy.adb:292:24: medium: assertion might fail [possible fix: loop invariant at
 memcpy.adb:292:27: warning: assuming "InRange64" has no effect on global items
 memcpy.adb:292:27: warning: no Global contract available for "InRange64"
 memcpy.adb:297:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:297:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:297:13: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:307:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:307:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:307:10: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:310:43: warning: assuming "InRange64" has no effect on global items
 memcpy.adb:310:43: warning: no Global contract available for "InRange64"
 memcpy.adb:311:42: warning: assuming "InRange64" has no effect on global items
@@ -173,7 +173,7 @@ memcpy.adb:386:23: warning: unused assignment
 memcpy.adb:401:23: warning: unused assignment
 memcpy.adb:402:23: warning: unused assignment
 memcpy.adb:407:13: warning: assuming "Write_EAX" always terminates
-memcpy.adb:407:13: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:407:13: warning: no Always_Terminates aspect available for "Write_EAX"
 memcpy.adb:411:24: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:412:29: warning: assuming "InSafeRegion64" has no effect on global items
 memcpy.adb:412:29: warning: no Global contract available for "InSafeRegion64"
@@ -189,9 +189,9 @@ memcpy.adb:426:24: medium: assertion might fail [possible fix: loop invariant at
 memcpy.adb:426:27: warning: assuming "InRange64" has no effect on global items
 memcpy.adb:426:27: warning: no Global contract available for "InRange64"
 memcpy.adb:430:13: warning: assuming "WriteMem8" always terminates
-memcpy.adb:430:13: warning: no returning annotation available for "WriteMem8"
+memcpy.adb:430:13: warning: no Always_Terminates aspect available for "WriteMem8"
 memcpy.adb:441:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:441:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:441:10: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:445:43: warning: assuming "InRange64" has no effect on global items
 memcpy.adb:445:43: warning: no Global contract available for "InRange64"
 memcpy.adb:446:42: warning: assuming "InRange64" has no effect on global items
@@ -224,35 +224,35 @@ memcpy.adb:471:32: info: range check proved (CVC5: 1 VC)
 memcpy.adb:472:10: warning: initialization of "ra7" has no effect
 memcpy.adb:472:32: info: range check proved (CVC5: 1 VC)
 memcpy.adb:478:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:478:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:478:13: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:485:23: warning: unused assignment
 memcpy.adb:486:23: warning: unused assignment
 memcpy.adb:490:13: warning: assuming "WriteMem32" always terminates
-memcpy.adb:490:13: warning: no returning annotation available for "WriteMem32"
+memcpy.adb:490:13: warning: no Always_Terminates aspect available for "WriteMem32"
 memcpy.adb:493:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:493:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:493:13: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:496:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:496:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:496:13: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:502:13: warning: assuming "Write_EAX" always terminates
-memcpy.adb:502:13: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:502:13: warning: no Always_Terminates aspect available for "Write_EAX"
 memcpy.adb:505:13: warning: "RCX" is set by "Write_ECX" but not used after the call
 memcpy.adb:505:13: warning: assuming "Write_ECX" always terminates
-memcpy.adb:505:13: warning: no returning annotation available for "Write_ECX"
+memcpy.adb:505:13: warning: no Always_Terminates aspect available for "Write_ECX"
 memcpy.adb:505:13: warning: statement has no effect
 memcpy.adb:511:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:511:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:511:13: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:518:13: warning: assuming "WriteMem16" always terminates
-memcpy.adb:518:13: warning: no returning annotation available for "WriteMem16"
+memcpy.adb:518:13: warning: no Always_Terminates aspect available for "WriteMem16"
 memcpy.adb:523:18: warning: unused assignment
 memcpy.adb:526:18: warning: unused assignment
 memcpy.adb:529:18: warning: unused assignment
 memcpy.adb:532:13: warning: "RDI" is set by "Write_EDI" but not used after the call
 memcpy.adb:532:13: warning: assuming "Write_EDI" always terminates
-memcpy.adb:532:13: warning: no returning annotation available for "Write_EDI"
+memcpy.adb:532:13: warning: no Always_Terminates aspect available for "Write_EDI"
 memcpy.adb:532:13: warning: statement has no effect
 memcpy.adb:535:13: warning: "RAX" is set by "Write_EAX" but not used after the call
 memcpy.adb:535:13: warning: assuming "Write_EAX" always terminates
-memcpy.adb:535:13: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:535:13: warning: no Always_Terminates aspect available for "Write_EAX"
 memcpy.adb:535:13: warning: statement has no effect
 memcpy.adb:543:18: warning: unused assignment
 memcpy.adb:546:18: warning: unused assignment
@@ -261,14 +261,14 @@ memcpy.adb:574:10: warning: "RAX" is set by "memcpy2" but not used after the cal
 memcpy.adb:574:10: warning: "RSI" is set by "memcpy2" but not used after the call
 memcpy.adb:574:10: warning: "RSP" is set by "memcpy2" but not used after the call
 memcpy.adb:583:13: warning: assuming "Write_EDI" always terminates
-memcpy.adb:583:13: warning: no returning annotation available for "Write_EDI"
+memcpy.adb:583:13: warning: no Always_Terminates aspect available for "Write_EDI"
 memcpy.adb:586:13: warning: assuming "Write_EAX" always terminates
-memcpy.adb:586:13: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:586:13: warning: no Always_Terminates aspect available for "Write_EAX"
 memcpy.adb:590:18: warning: unused assignment
 memcpy.adb:591:10: warning: "RSP" is set by "printf" but not used after the call
 memcpy.adb:591:10: warning: statement has no effect
 memcpy.adb:594:13: warning: assuming "Write_EAX" always terminates
-memcpy.adb:594:13: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:594:13: warning: no Always_Terminates aspect available for "Write_EAX"
 memcpy.ads:17:06: info: data dependencies proved
 memcpy.ads:18:14: info: postcondition proved (CVC5: 1 VC)
 memcpy.ads:21:06: info: data dependencies proved

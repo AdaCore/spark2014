@@ -4,11 +4,11 @@ procedure Nested_Loops_Frame_Condition with SPARK_Mode is
    Seed : Integer := 0;
    procedure Twist
      with Import, Global => (In_Out => Seed),
-     Annotate => (GNATprove, Always_Return);
+     Always_Terminates;
    function Random (I : Integer := 0) return Boolean
      with Import, Global => (Input => Seed);
 begin
-   
+
    while Random loop
       Twist;
       pragma Loop_Invariant (True);

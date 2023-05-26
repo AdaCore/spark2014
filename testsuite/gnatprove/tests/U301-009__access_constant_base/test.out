@@ -52,5 +52,5 @@ test_annotate.adb:94:04: info: initialization of "X" proved
 test_annotate.adb:94:04: medium: resource or memory leak might occur at end of scope
 test_annotate.adb:97:04: warning: assuming "Do_Something" always terminates
 test_annotate.adb:97:04: warning: assuming "Do_Something" has no effect on global items
+test_annotate.adb:97:04: warning: no Always_Terminates aspect available for "Do_Something"
 test_annotate.adb:97:04: warning: no Global contract available for "Do_Something"
-test_annotate.adb:97:04: warning: no returning annotation available for "Do_Something"

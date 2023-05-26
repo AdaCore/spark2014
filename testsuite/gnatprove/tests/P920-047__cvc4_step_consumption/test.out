@@ -3,27 +3,27 @@ memcpy.adb:8:37: info: range check proved (CVC5: 1 VC)
 memcpy.adb:9:07: warning: initialization of "RDI_400586" has no effect
 memcpy.adb:9:37: info: range check proved (CVC5: 1 VC)
 memcpy.adb:15:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:15:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:15:10: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:22:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:22:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:22:10: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:25:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:25:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:25:10: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:28:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:28:10: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:28:10: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:34:10: warning: assuming "Write_EAX" always terminates
-memcpy.adb:34:10: warning: no returning annotation available for "Write_EAX"
+memcpy.adb:34:10: warning: no Always_Terminates aspect available for "Write_EAX"
 memcpy.adb:49:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:49:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:49:13: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:55:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:55:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:55:13: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:58:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:58:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:58:13: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:69:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:69:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:69:13: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:75:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:75:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:75:13: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.adb:78:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:78:13: warning: no returning annotation available for "WriteMem64"
+memcpy.adb:78:13: warning: no Always_Terminates aspect available for "WriteMem64"
 memcpy.ads:16:06: info: data dependencies proved
 memcpy.ads:16:43: low: unused global "Exit_Called"
 memcpy.ads:16:43: warning: "Exit_Called" is not modified, could be INPUT

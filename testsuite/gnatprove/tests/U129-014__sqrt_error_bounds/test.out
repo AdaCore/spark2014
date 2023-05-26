@@ -143,8 +143,8 @@ norm-reals-errors.adb:211:15: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:212:07: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" always terminates
 norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" has no effect on global items
+norm-reals-errors.adb:212:07: warning: no Always_Terminates aspect available for "Bound_Error_Sqrt"
 norm-reals-errors.adb:212:07: warning: no Global contract available for "Bound_Error_Sqrt"
-norm-reals-errors.adb:212:07: warning: no returning annotation available for "Bound_Error_Sqrt"
 norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0
 norm-reals-errors.adb:214:33: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:215:20: info: precondition proved (colibri: 1 VC)
@@ -236,13 +236,13 @@ norm.adb:69:34: info: precondition proved (CVC5: 1 VC)
 norm.adb:71:16: info: precondition proved (CVC5: 2 VC)
 norm.adb:71:16: warning: assuming "Sqrt_Is_Monotonic" always terminates
 norm.adb:71:16: warning: assuming "Sqrt_Is_Monotonic" has no effect on global items
+norm.adb:71:16: warning: no Always_Terminates aspect available for "Sqrt_Is_Monotonic"
 norm.adb:71:16: warning: no Global contract available for "Sqrt_Is_Monotonic"
-norm.adb:71:16: warning: no returning annotation available for "Sqrt_Is_Monotonic"
 norm.adb:74:16: info: precondition proved (CVC5: 2 VC)
 norm.adb:74:16: warning: assuming "Sqrt_Exact_Integer" always terminates
 norm.adb:74:16: warning: assuming "Sqrt_Exact_Integer" has no effect on global items
+norm.adb:74:16: warning: no Always_Terminates aspect available for "Sqrt_Exact_Integer"
 norm.adb:74:16: warning: no Global contract available for "Sqrt_Exact_Integer"
-norm.adb:74:16: warning: no returning annotation available for "Sqrt_Exact_Integer"
 norm.adb:75:14: medium: range check might fail [reason for check: returned value must fit in the result type of the function]
 norm.ads:17:07: info: assertion proved (Trivial)
 norm.ads:19:07: info: assertion proved (Trivial)

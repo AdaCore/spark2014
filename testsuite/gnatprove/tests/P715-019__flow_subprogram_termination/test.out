@@ -1,13 +1,13 @@
 call_proc_no_body.adb:4:07: medium: precondition might fail
 call_proc_no_body.adb:4:07: warning: assuming "P_02" always terminates
 call_proc_no_body.adb:4:07: warning: assuming "P_02" has no effect on global items
+call_proc_no_body.adb:4:07: warning: no Always_Terminates aspect available for "P_02"
 call_proc_no_body.adb:4:07: warning: no Global contract available for "P_02"
-call_proc_no_body.adb:4:07: warning: no returning annotation available for "P_02"
 call_proc_no_body.adb:9:07: info: precondition proved (CVC5: 1 VC)
 call_proc_no_body.adb:9:07: warning: assuming "P_03" always terminates
 call_proc_no_body.adb:9:07: warning: assuming "P_03" has no effect on global items
+call_proc_no_body.adb:9:07: warning: no Always_Terminates aspect available for "P_03"
 call_proc_no_body.adb:9:07: warning: no Global contract available for "P_03"
-call_proc_no_body.adb:9:07: warning: no returning annotation available for "P_03"
 call_proc_no_body.ads:4:14: info: terminating annotation on "Returning" has been proved, subprogram will terminate
 call_proc_no_body.ads:4:14: warning: subprogram "Returning" has no effect
 call_proc_no_body.ads:6:14: info: terminating annotation on "Nonreturning" has been proved, subprogram will terminate
@@ -100,13 +100,13 @@ functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not 
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
 imported.adb:5:07: warning: assuming "P_01" always terminates
 imported.adb:5:07: warning: assuming "P_01" has no effect on global items
+imported.adb:5:07: warning: no Always_Terminates aspect available for "P_01"
 imported.adb:5:07: warning: no Global contract available for "P_01"
-imported.adb:5:07: warning: no returning annotation available for "P_01"
 imported.adb:10:07: medium: precondition might fail
 imported.adb:10:07: warning: assuming "P_02" always terminates
 imported.adb:10:07: warning: assuming "P_02" has no effect on global items
+imported.adb:10:07: warning: no Always_Terminates aspect available for "P_02"
 imported.adb:10:07: warning: no Global contract available for "P_02"
-imported.adb:10:07: warning: no returning annotation available for "P_02"
 imported.ads:9:14: info: terminating annotation on "Q_01" has been proved, subprogram will terminate
 imported.ads:9:14: warning: subprogram "Q_01" has no effect
 imported.ads:16:14: info: terminating annotation on "Q_02" has been proved, subprogram will terminate
@@ -115,8 +115,8 @@ modular_analysis.adb:5:14: info: terminating annotation on "Test_01" has been pr
 modular_analysis.adb:5:23: info: initialization of "F" proved
 modular_analysis.adb:8:14: warning: assuming "Open_Read" always terminates
 modular_analysis.adb:8:14: warning: assuming "Open_Read" has no effect on global items
+modular_analysis.adb:8:14: warning: no Always_Terminates aspect available for "Open_Read"
 modular_analysis.adb:8:14: warning: no Global contract available for "Open_Read"
-modular_analysis.adb:8:14: warning: no returning annotation available for "Open_Read"
 nest_in_proc.adb:5:17: info: terminating annotation on "Nothing" has been proved, subprogram will terminate
 nest_in_proc.adb:5:17: warning: subprogram "Nothing" has no effect
 nest_in_proc.adb:7:20: warning: subprogram "Nothing2" has no effect

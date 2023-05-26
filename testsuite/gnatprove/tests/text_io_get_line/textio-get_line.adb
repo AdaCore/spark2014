@@ -195,7 +195,7 @@ begin
       pragma Loop_Invariant (for all Idx in Item'First .. Last =>
                                Item (Idx) = The_File (Idx - Item'First + Cur_Position'Loop_Entry));
       pragma Loop_Invariant (Cur_Position = Cur_Position'Loop_Entry + Last - Item'First + 1);
-
+      pragma Loop_Variant (Decreases => N);
       --  Arbitrary bounding of Cur_Position model to avoid overflows
       pragma Assume (Cur_Position <= 10_000);
       Get_Chunk (Chunk_Size, Rest);

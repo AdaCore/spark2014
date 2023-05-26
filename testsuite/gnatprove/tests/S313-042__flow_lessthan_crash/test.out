@@ -17,20 +17,20 @@ moth-mailbox.adb:269:13: info: implicit terminating annotation on "is_waiting_mb
 moth-mailbox.adb:354:07: info: initialization of "mbx_index" proved
 moth-scheduler.adb:304:24: info: initialization of "task_id" proved
 moth-scheduler.adb:324:17: warning: assuming "idle" always terminates
-moth-scheduler.adb:324:17: warning: no returning annotation available for "idle"
+moth-scheduler.adb:324:17: warning: no Always_Terminates aspect available for "idle"
 moth-scheduler.adb:368:07: info: initialization of "tmp_mask" proved
 moth-scheduler.adb:442:14: warning: assuming "space_init" always terminates
-moth-scheduler.adb:442:14: warning: no returning annotation available for "space_init"
+moth-scheduler.adb:442:14: warning: no Always_Terminates aspect available for "space_init"
 moth-scheduler.adb:456:17: warning: assuming "space_switch" always terminates
-moth-scheduler.adb:456:17: warning: no returning annotation available for "space_switch"
+moth-scheduler.adb:456:17: warning: no Always_Terminates aspect available for "space_switch"
 moth-scheduler.adb:459:17: warning: assuming "context_create" always terminates
-moth-scheduler.adb:459:17: warning: no returning annotation available for "context_create"
+moth-scheduler.adb:459:17: warning: no Always_Terminates aspect available for "context_create"
 moth-scheduler.adb:471:14: warning: assuming "context_set" always terminates
-moth-scheduler.adb:471:14: warning: no returning annotation available for "context_set"
+moth-scheduler.adb:471:14: warning: no Always_Terminates aspect available for "context_set"
 moth-scheduler.adb:474:14: warning: assuming "space_switch" always terminates
-moth-scheduler.adb:474:14: warning: no returning annotation available for "space_switch"
+moth-scheduler.adb:474:14: warning: no Always_Terminates aspect available for "space_switch"
 moth.adb:54:14: warning: assuming "cons_init" always terminates
-moth.adb:54:14: warning: no returning annotation available for "cons_init"
+moth.adb:54:14: warning: no Always_Terminates aspect available for "cons_init"
 moth.ads:87:13: info: implicit terminating annotation on "os_ghost_mbx_are_well_formed" has been proved, subprogram will terminate
 moth.ads:91:13: info: implicit terminating annotation on "os_ghost_task_list_is_well_formed" has been proved, subprogram will terminate
 moth.ads:95:13: info: implicit terminating annotation on "os_ghost_current_task_is_ready" has been proved, subprogram will terminate
