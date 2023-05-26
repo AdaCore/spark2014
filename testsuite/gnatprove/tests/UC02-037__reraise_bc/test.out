@@ -6,5 +6,7 @@ test_reraise.adb:79:14: error: object was moved at line 88
 test_reraise.adb:79:14: error: return from "P3" with moved value for "X"
 test_reraise.adb:80:07: info: initialization of "Tmp" proved
 test_reraise.adb:115:07: info: initialization of "Tmp" proved
+test_reraise.adb:143:12: warning: this statement is never reached
 test_reraise.adb:151:07: info: initialization of "Tmp" proved
+test_reraise.adb:179:12: warning: this statement is never reached
 gnatprove: error during flow analysis and proof
