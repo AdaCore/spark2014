@@ -5335,7 +5335,10 @@ package body Flow.Control_Flow_Graph is
            (E_Loc     => N,
             Execution => Abnormal_Termination),
          V);
-      CM.Insert (Union_Id (N), Trivial_Connection (V));
+      CM.Insert (Union_Id (N),
+                 Graph_Connections'
+                   (Standard_Entry => V,
+                    Standard_Exits => Vertex_Sets.Empty_Set));
    end Do_Raise_xxx_Error;
 
    -----------------------
