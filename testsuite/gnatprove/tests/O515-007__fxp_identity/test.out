@@ -1,6 +1,11 @@
+duration_div.adb:5:13: info: implicit terminating annotation on "ID" has been proved, subprogram will terminate
+duration_div.adb:9:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
 duration_div.adb:13:34: info: division check proved (CVC5: 1 VC)
 duration_div.adb:13:34: info: overflow check proved (CVC5: 2 VC)
+duration_div.adb:18:13: info: implicit terminating annotation on "Bar" has been proved, subprogram will terminate
 duration_div.adb:22:34: info: division check proved (CVC5: 1 VC)
 duration_div.adb:22:34: info: overflow check proved (CVC5: 2 VC)
+integer_div.adb:5:13: info: implicit terminating annotation on "ID" has been proved, subprogram will terminate
+integer_div.adb:9:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
 integer_div.adb:13:33: info: division check proved (CVC5: 1 VC)
 integer_div.adb:13:33: info: overflow check proved (CVC5: 2 VC)

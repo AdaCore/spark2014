@@ -1,0 +1,3 @@
+exc_cases_and_annotations.adb:3:14: error: subprogram annotated with the aspect Always_Return shall not raise exceptions
+exc_cases_and_annotations.adb:13:14: error: procedure annotated with the aspect Automatic_Instantiation shall not raise exceptions
+gnatprove: error during generation of Global contracts

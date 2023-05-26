@@ -1,5 +1,6 @@
 proc.adb:7:07: info: range check proved (CVC5: 2 VC)
 proc.adb:10:04: info: no contextual analysis of "F" (multiple returns)
+proc.adb:10:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 proc.adb:19:14: warning: subprogram "P" has no effect
 proc.adb:20:19: info: no contextual analysis of "P" (call returns unconstrained type)
 proc.adb:21:24: medium: range check might fail, cannot prove lower bound for Item'Length (e.g. when Item'First = 1 and Item'Last = 0) [reason for check: value must fit in component type]

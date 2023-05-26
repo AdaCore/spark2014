@@ -1,0 +1,5 @@
+force_termination.adb:5:04: error: pragma Annotate Always_Return must immediately follow the specification of subprogram Loop_Indefinitely
+test.adb:5:04: error: pragma Annotate Always_Return must immediately follow the specification of subprogram A
+test.adb:11:04: error: pragma Annotate Always_Return must immediately follow the specification of subprogram C
+test.adb:13:04: error: pragma Annotate Always_Return must immediately follow the beginning or end of package specification D
+gnatprove: error during generation of Global contracts

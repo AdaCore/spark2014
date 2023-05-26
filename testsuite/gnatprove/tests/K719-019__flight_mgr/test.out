@@ -10,6 +10,7 @@ flight_manager.adb:36:53: medium: float overflow check might fail [reason for ch
 flight_manager.adb:37:21: medium: "Result.Y_Speed" might not be initialized
 flight_manager.adb:37:53: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at flight_manager.ads:7 should mention Position_Y and Target_Y in a precondition]
 flight_manager.ads:7:13: info: function contract might not be available on implicit recursive calls
+flight_manager.ads:7:13: info: implicit terminating annotation on "Set_Engine_Speed" has been proved, subprogram will terminate
 flight_manager.ads:10:17: medium: postcondition might fail, cannot prove ((Position_X + Set_Engine_Speed'Result.X_Speed) - Target_X) < (Position_X + Set_Engine_Speed'Result.X_Speed)
 flight_manager.ads:10:30: info: float overflow check proved (Z3: 1 VC)
 flight_manager.ads:10:65: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]

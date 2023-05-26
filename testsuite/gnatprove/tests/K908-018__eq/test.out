@@ -1,2 +1,4 @@
+pack.ads:10:13: info: implicit terminating annotation on "Equal" has been proved, subprogram will terminate
 pack.ads:11:19: info: postcondition proved (CVC5: 2 VC)
+pack.ads:13:13: info: implicit terminating annotation on "Equal" has been proved, subprogram will terminate
 pack.ads:14:19: info: postcondition proved (CVC5: 2 VC)

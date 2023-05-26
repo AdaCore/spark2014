@@ -1,7 +1,7 @@
 foo-repro.adb:3:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention Index in a precondition]
 foo.ads:4:04: info: flow dependencies proved
 foo.ads:5:04: medium: initial condition might fail
-foo.ads:5:25: warning: assuming "Is_Valid" always returns
 foo.ads:5:25: warning: assuming "Is_Valid" has no effect on global items
 foo.ads:5:25: warning: no Global contract available for "Is_Valid"
-foo.ads:5:25: warning: no returning annotation available for "Is_Valid"
+foo.ads:8:13: info: implicit terminating annotation on "Get_Index" has been proved, subprogram will terminate
+foo.ads:15:13: info: implicit terminating annotation on "Check" has been proved, subprogram will terminate

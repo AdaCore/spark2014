@@ -1,10 +1,15 @@
+equals.adb:19:16: info: implicit terminating annotation on "Use_Eq" has been proved, subprogram will terminate
 equals.adb:19:53: medium: initialization check might fail (e.g. when X = (C => (I => False, F => ?)) and X.C.F'Initialized = False and Y = (C => (I => False, F => ?)) and Y.C.F'Initialized = False) [possible fix: subprogram at line 19 should mention X in a precondition]
 equals.adb:19:57: medium: initialization check might fail (e.g. when X = (C => (I => False, F => ?)) and X.C.F'Initialized = False and Y = (C => (I => False, F => ?)) and Y.C.F'Initialized = False) [possible fix: subprogram at line 19 should mention Y in a precondition]
+equals.adb:20:16: info: implicit terminating annotation on "Use_Eq" has been proved, subprogram will terminate
 equals.adb:20:53: medium: initialization check might fail [possible fix: subprogram at line 20 should mention X in a precondition]
 equals.adb:20:57: medium: initialization check might fail [possible fix: subprogram at line 20 should mention Y in a precondition]
+equals.adb:32:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 equals.adb:33:43: info: initialization check proved (CVC5: 1 VC)
 equals.adb:33:49: info: initialization check proved (CVC5: 1 VC)
+equals.adb:42:16: info: implicit terminating annotation on "Use_Eq" has been proved, subprogram will terminate
 equals.adb:42:53: info: initialization check proved (Trivial: 1 VC)
 equals.adb:42:57: info: initialization check proved (Trivial: 1 VC)
+equals.adb:43:16: info: implicit terminating annotation on "Use_Eq" has been proved, subprogram will terminate
 equals.adb:43:53: info: initialization check proved (Trivial: 1 VC)
 equals.adb:43:57: info: initialization check proved (Trivial: 1 VC)

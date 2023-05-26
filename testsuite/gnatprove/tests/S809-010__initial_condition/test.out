@@ -1,1 +1,2 @@
 foo-bar.ads:5:03: info: initial condition proved (CVC5: 1 VC)
+foo-types.ads:4:13: info: implicit terminating annotation on "Foobar" has been proved, subprogram will terminate

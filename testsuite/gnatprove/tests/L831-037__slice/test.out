@@ -19,6 +19,7 @@ lcp.adb:15:47: info: range check proved (CVC5: 8 VC)
 lcp.adb:15:57: info: overflow check proved (CVC5: 4 VC)
 lcp.adb:16:28: info: loop variant proved (CVC5: 1 VC)
 lcp.adb:18:14: info: overflow check proved (CVC5: 2 VC)
+lcp.ads:3:10: info: implicit terminating annotation on "LCP" has been proved, subprogram will terminate
 lcp.ads:7:06: info: postcondition proved (CVC5: 2 VC)
 lcp.ads:7:06: info: range check proved (CVC5: 4 VC)
 lcp.ads:7:16: info: overflow check proved (CVC5: 2 VC)

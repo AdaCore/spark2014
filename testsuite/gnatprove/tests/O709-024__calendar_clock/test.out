@@ -1,5 +1,1 @@
-calendar_clock.adb:6:17: warning: assuming "Clock" always returns
-calendar_clock.adb:6:17: warning: no returning annotation available for "Clock"
-calendar_clock.adb:7:17: warning: assuming "Clock" always returns
-calendar_clock.adb:7:17: warning: no returning annotation available for "Clock"
 calendar_clock.adb:9:19: medium: assertion might fail

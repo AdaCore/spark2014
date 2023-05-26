@@ -1,4 +1,6 @@
 casing.adb:4:07: info: initialization of "Res" proved
 casing.adb:14:07: info: initialization of "Res" proved
+casing.ads:4:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 casing.ads:6:10: info: postcondition proved (CVC5: 1 VC)
+casing.ads:15:13: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
 casing.ads:17:10: info: postcondition proved (CVC5: 1 VC)

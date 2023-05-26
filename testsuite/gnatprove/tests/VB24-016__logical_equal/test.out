@@ -1,5 +1,10 @@
+test.adb:19:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
 test.adb:21:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 2 VC)
+test.adb:24:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
 test.adb:26:06: medium: Inline_For_Proof or Logical_Equal annotation might be incorrect
+test.adb:29:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
 test.adb:31:06: medium: Inline_For_Proof or Logical_Equal annotation might be incorrect
+test.adb:34:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
 test.adb:36:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 2 VC)
+test.adb:39:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
 test.adb:41:06: medium: Inline_For_Proof or Logical_Equal annotation might be incorrect

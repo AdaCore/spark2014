@@ -49,6 +49,7 @@ with Nmake;
 with Opt;                             use Opt;
 with Rtsfind;                         use Rtsfind;
 with Sem_Aux;                         use Sem_Aux;
+with Sem_Ch12;
 with Sem_Disp;
 with Sem_Prag;                        use Sem_Prag;
 with Sinfo.Utils;                     use Sinfo.Utils;
@@ -449,6 +450,9 @@ package body SPARK_Definition is
    --  Mark a possibly null list of actions L from node N. It should be
    --  called before the node to which the actions apply is marked, so
    --  that declarations of constants in actions are possibly marked in SPARK.
+
+   procedure Mark_Exception_Handler (N : N_Exception_Handler_Id);
+   --  Mark an exception handler
 
    procedure Mark_List (L : List_Id);
    --  Call Mark on all nodes in list L
@@ -918,16 +922,18 @@ package body SPARK_Definition is
 
       procedure Check_Loop_Invariant_Placement
         (Stmts       : List_Id;
+         In_Handled  : Boolean;
          Goto_Labels : in out Node_Sets.Set;
-         Nested      : Boolean);
+         Inv_Found   : in out Boolean);
       --  Checks that no non-scalar object declaration appears before the
       --  last loop-invariant or variant in a loop's list of statements. Also
       --  stores scalar objects declared before the last loop-invariant in
-      --  Loop_Entity_Set. Nested should be true when checking statements
-      --  coming from a nested construct of the loop (if, case, extended
-      --  return statements and nested loops). Goto_Labels contains the labels
-      --  encountered while traversing statements occurring after the loop
-      --  invariant in the initial loop.
+      --  Loop_Entity_Set. Inv_Found is set to True when loop invariants or
+      --  loop variants have been found after the current statement in the
+      --  program. Goto_Labels contains the labels encountered while traversing
+      --  statements occurring after the loop invariant in the initial loop.
+      --  In_Handled is True if we are inside a handled sequence of statements
+      --  with handlers. Reject loop invariants in this case.
 
       procedure Check_Loop_Invariant_Placement (Stmts : List_Id);
       --  Same as above with Nested set to False and Goto_Labels initialized to
@@ -973,27 +979,42 @@ package body SPARK_Definition is
 
       procedure Check_Loop_Invariant_Placement (Stmts : List_Id) is
          Goto_Labels : Node_Sets.Set;
+         Inv_Found   : Boolean := False;
       begin
-         Check_Loop_Invariant_Placement (Stmts, Goto_Labels, False);
+         Check_Loop_Invariant_Placement (Stmts, False, Goto_Labels, Inv_Found);
       end Check_Loop_Invariant_Placement;
 
       procedure Check_Loop_Invariant_Placement
         (Stmts       : List_Id;
+         In_Handled  : Boolean;
          Goto_Labels : in out Node_Sets.Set;
-         Nested      : Boolean)
+         Inv_Found   : in out Boolean)
       is
-         use Node_Lists;
-
-         Loop_Stmts : constant Node_Lists.List :=
-           Get_Flat_Statement_And_Declaration_List (Stmts);
-         Inv_Found  : Boolean := Nested;
-         --  We only call Check_Loop_Invariant_Placement on nested list of
-         --  statements if an invariant has been found.
+         N : Node_Id := (if Present (Stmts) then Last (Stmts) else Empty);
 
       begin
-         for N of reverse Loop_Stmts loop
+         while Present (N) loop
 
-            if not Inv_Found then
+            --  Search for invariants inside nested block statements
+
+            if Nkind (N) = N_Block_Statement then
+               Check_Loop_Invariant_Placement
+                 (Statements (Handled_Statement_Sequence (N)),
+                  In_Handled
+                  or else Present
+                    (Exception_Handlers (Handled_Statement_Sequence (N))),
+                  Goto_Labels, Inv_Found);
+
+               --  Only check declarations if the invariant has been found.
+               --  Never look into handlers, loop invariants cannot occur
+               --  there.
+
+               if Inv_Found and then Present (Declarations (N)) then
+                  Check_Loop_Invariant_Placement
+                    (Declarations (N), In_Handled, Goto_Labels, Inv_Found);
+               end if;
+
+            elsif not Inv_Found then
 
                --  Find last loop invariant/variant from the loop
 
@@ -1001,6 +1022,13 @@ package body SPARK_Definition is
                  or else Is_Pragma (N, Pragma_Loop_Variant)
                then
                   Inv_Found := True;
+
+                  --  Check whether N is inside a sequence of statements with
+                  --  an exception handler.
+
+                  if In_Handled then
+                     Mark_Unsupported (Lim_Loop_Inv_And_Handler, N);
+                  end if;
                elsif Nkind (N) = N_Label then
                   Goto_Labels.Insert (Entity (Identifier (N)));
                end if;
@@ -1034,18 +1062,21 @@ package body SPARK_Definition is
 
                   when N_If_Statement =>
                      Check_Loop_Invariant_Placement
-                       (Then_Statements (N), Goto_Labels, True);
+                       (Then_Statements (N),
+                        In_Handled, Goto_Labels, Inv_Found);
                      declare
                         Cur : Node_Id := First (Elsif_Parts (N));
                      begin
                         while Present (Cur) loop
                            Check_Loop_Invariant_Placement
-                             (Then_Statements (Cur), Goto_Labels, True);
+                             (Then_Statements (Cur),
+                              In_Handled, Goto_Labels, Inv_Found);
                            Next (Cur);
                         end loop;
                      end;
                      Check_Loop_Invariant_Placement
-                       (Else_Statements (N), Goto_Labels, True);
+                       (Else_Statements (N),
+                        In_Handled, Goto_Labels, Inv_Found);
 
                   when N_Case_Statement =>
                      declare
@@ -1054,21 +1085,26 @@ package body SPARK_Definition is
                      begin
                         while Present (Cur) loop
                            Check_Loop_Invariant_Placement
-                             (Statements (Cur), Goto_Labels, True);
+                             (Statements (Cur),
+                              In_Handled, Goto_Labels, Inv_Found);
                            Next_Non_Pragma (Cur);
                         end loop;
                      end;
 
                   when N_Extended_Return_Statement =>
                      Check_Loop_Invariant_Placement
-                       (Return_Object_Declarations (N), Goto_Labels, True);
+                       (Return_Object_Declarations (N),
+                        In_Handled, Goto_Labels, Inv_Found);
                      Check_Loop_Invariant_Placement
                        (Statements (Handled_Statement_Sequence (N)),
-                        Goto_Labels, True);
+                        In_Handled, Goto_Labels, Inv_Found);
+
+                  when N_Block_Statement =>
+                     raise Program_Error;
 
                   when N_Loop_Statement =>
                      Check_Loop_Invariant_Placement
-                       (Statements (N), Goto_Labels, True);
+                       (Statements (N), In_Handled, Goto_Labels, Inv_Found);
 
                   when N_Goto_Statement =>
 
@@ -1081,6 +1117,8 @@ package body SPARK_Definition is
                   when others => null;
                end case;
             end if;
+
+            Prev (N);
          end loop;
       end Check_Loop_Invariant_Placement;
 
@@ -1820,6 +1858,10 @@ package body SPARK_Definition is
          when N_Procedure_Call_Statement =>
             Mark_Call (N);
 
+            --  Collect handlers reachable from N if it might raise exceptions
+
+            Collect_Reachable_Handlers (N);
+
          when N_Qualified_Expression =>
             Mark (Subtype_Mark (N));
             Mark (Expression (N));
@@ -1846,6 +1888,14 @@ package body SPARK_Definition is
             if Present (Expression (N)) then
                Mark (Expression (N));
             end if;
+
+            if Present (Name (N)) then
+               Register_Exception (Entity (Name (N)));
+            end if;
+
+            --  Collect handlers reachable from N
+
+            Collect_Reachable_Handlers (N);
 
          --  The frontend inserts explicit raise-statements/expressions during
          --  semantic analysis in some cases that are statically known to raise
@@ -2185,8 +2235,8 @@ package body SPARK_Definition is
                         exit;
                      end if;
 
-                     Target_Index := Next_Index (Target_Index);
-                     Source_Index := Next_Index (Source_Index);
+                     Next_Index (Target_Index);
+                     Next_Index (Source_Index);
                   end loop;
                end;
 
@@ -2676,8 +2726,9 @@ package body SPARK_Definition is
                         if In_Declare_Expr then
                            Mark_Violation
                              ("move in declare expression", N);
+                        else
+                           return False;
                         end if;
-                        return In_Declare_Expr;
                      end if;
                   else
                      return False;
@@ -2693,25 +2744,13 @@ package body SPARK_Definition is
                   null;
 
                when N_Pragma =>
-                  if Is_Ignored_Pragma_Check (N) then
-                     null;
-
-                  --  Pragma Check might occur inside declare expressions.
-                  --  We currently reject pragma Assume in this context on the
-                  --  ground that assumptions nested inside expressions are
-                  --  bad practice, but we could easily support them.
-
-                  elsif Is_Pragma_Check (N, Name_Assume) then
-                     Mark_Violation
-                       ("pragma Assume in declare expression", N);
-                     return In_Declare_Expr;
-
-                  elsif Is_Pragma (N, Pragma_Check) then
-                     return In_Declare_Expr;
-
-                  --  Other pragmas are unexpected
-
-                  else
+                  --  With exceptions of ignored pragmas,
+                  --  only pragma allowed are pragma checks in declare
+                  --  expressions.
+                  if not Is_Ignored_Pragma_Check (N)
+                    and then not (In_Declare_Expr
+                                  and then Is_Pragma (N, Pragma_Check))
+                  then
                      return False;
                   end if;
 
@@ -4065,7 +4104,9 @@ package body SPARK_Definition is
                     ("\\assuming & has no effect on global items", N, E);
                end if;
 
-               if not Has_Any_Returning_Annotation (E) then
+               if not Has_Any_Returning_Annotation (E)
+                 and then not Has_Implicit_Always_Return_Annotation (E)
+               then
                   Error_Msg_NE
                     (Warning_Message (Warn_Assumed_Always_Return), N, E);
                   Error_Msg_NE
@@ -5399,6 +5440,61 @@ package body SPARK_Definition is
                end;
             end if;
 
+            Prag := Get_Pragma (E, Pragma_Exceptional_Cases);
+            if Present (Prag) then
+
+               --  Functions shall never raise exceptions
+
+               if Ekind (E) = E_Function then
+                  Mark_Violation
+                    (Msg => "aspect ""Exceptional_Cases"" on function",
+                     N   => Prag);
+
+               --  The frontend does not allow Exceptional_Cases on entries
+
+               elsif Ekind (E) = E_Entry then
+                  raise Program_Error;
+
+               --  Reject dispatching operations for now. Supporting them would
+               --  require handling Liskov on exceptional contracts.
+
+               elsif Is_Dispatching_Operation (E)
+                 and then Present (Find_Dispatching_Type (E))
+               then
+                  Mark_Unsupported (Lim_Exceptional_Cases_Dispatch, Prag);
+               end if;
+
+               declare
+                  Aggr             : constant Node_Id :=
+                    Expression (First (Pragma_Argument_Associations (Prag)));
+                  Exceptional_Case : Node_Id :=
+                    First (Component_Associations (Aggr));
+               begin
+                  while Present (Exceptional_Case) loop
+                     declare
+                        Exc : Node_Id := First (Choices (Exceptional_Case));
+                     begin
+                        while Present (Exc) loop
+                           case Nkind (Exc) is
+                              when N_Others_Choice =>
+                                 null;
+                              when N_Identifier
+                                 | N_Expanded_Name
+                              =>
+                                 Register_Exception (Entity (Exc));
+                              when others =>
+                                 raise Program_Error;
+                           end case;
+                           Next (Exc);
+                        end loop;
+                     end;
+
+                     Mark (Expression (Exceptional_Case));
+                     Next (Exceptional_Case);
+                  end loop;
+               end;
+            end if;
+
             Prag := Get_Pragma (E, Pragma_Subprogram_Variant);
             if Present (Prag) then
                declare
@@ -5447,6 +5543,7 @@ package body SPARK_Definition is
             Formal      : Opt_Formal_Kind_Id := First_Formal (Id);
             Contract    : Node_Id;
             Raw_Globals : Raw_Global_Nodes;
+            Exceptions  : constant Boolean := Has_Exceptional_Contract (Id);
 
          begin
             case Ekind (Id) is
@@ -5478,6 +5575,24 @@ package body SPARK_Definition is
                  and then Invariant_Check_Needed (Etype (Formal))
                then
                   Mark_Unsupported (Lim_Access_Sub_Formal_With_Inv, Formal);
+
+               --  Parameters of mode IN OUT or OUT subjected to ownerhsip are
+               --  not supported on procedures with exceptional contracts
+               --  unless they are either aliased or have a "by reference"
+               --  type. This is to simplify ownership checking, especially
+               --  when the parameter is not "by copy" either.
+
+               elsif Exceptions
+                 and then Ekind (Formal) /= E_In_Parameter
+                 and then Is_Deep (Etype (Formal))
+                 and then not By_Reference (Formal)
+               then
+                  Mark_Unsupported
+                    (Lim_Exceptional_Cases_Ownership,
+                     Formal,
+                     Root_Cause_Msg =>
+                       "exceptional contracts and parameters with ownership",
+                     Cont_Msg       => "& should be marked as aliased");
                end if;
 
                Next_Formal (Formal);
@@ -7519,21 +7634,45 @@ package body SPARK_Definition is
 
       if not Violation_Detected then
          declare
+            Is_Subp       : constant Boolean := Is_Subprogram (E);
             --  See the documentation of Declaration_Node for the exception for
             --  subprograms.
-            Decl_Node : constant Node_Id :=
-              (if Is_Subprogram (E) then
-                    Parent (Declaration_Node (E))
+            Decl_Node     : constant Node_Id :=
+              (if Is_Subp then Parent (Declaration_Node (E))
                else Declaration_Node (E));
-            Cur       : Node_Id;
-         begin
-            if Is_List_Member (Decl_Node)
-              and then Decl_Starts_Pragma_Annotate_Range (Decl_Node)
-            then
-               Cur := Next (Decl_Node);
+            Is_Subp_Cunit : constant Boolean :=
+              Is_Subp and then Is_Compilation_Unit (E);
+
+            procedure Scan_For_Pragma_Annotate
+              (Preceding_Node, Start_Node : Node_Id);
+            --  Mark pragma Annotate occurring from Start_Node (inclusive).
+            --  Preceding_Node is used as node immediately before
+            --  the scanning range in source code, for later purpose
+            --  of inserting annotation ranges for pragmas Annotate
+            --  justifying checks.
+            --  It can happen that Preceding_Node is not the immediately
+            --  preceding node of Start_Node in the syntax tree
+            --  (case of compilation units)
+
+            procedure Scan_For_Pragma_Annotate (Start_Node : Node_Id);
+            --  Shortcut for the 'normal' case where Preceding_Node
+            --  would be right before the search range.
+            --  If Start_Node is in a list, scan the pragmas immediately
+            --  following Start_Node (exclusive), using Start_Node
+            --  as preceding node.
+            --  (we cannot use this in case of compilation units)
+
+            ------------------------------
+            -- Scan_For_Pragma_Annotate --
+            ------------------------------
+
+            procedure Scan_For_Pragma_Annotate
+              (Preceding_Node, Start_Node : Node_Id) is
+               Cur : Node_Id := Start_Node;
+            begin
                while Present (Cur) loop
                   if Is_Pragma_Annotate_GNATprove (Cur) then
-                     Mark_Pragma_Annotate (Cur, Decl_Node,
+                     Mark_Pragma_Annotate (Cur, Preceding_Node,
                                            Consider_Next => True);
                   elsif Decl_Starts_Pragma_Annotate_Range (Cur)
                     and then Nkind (Cur) not in N_Pragma | N_Null_Statement
@@ -7542,19 +7681,68 @@ package body SPARK_Definition is
                   end if;
                   Next (Cur);
                end loop;
+            end Scan_For_Pragma_Annotate;
 
-               --  If we are in a package, we also need to scan the beginning
-               --  of the declaration list, in case there is a pragma Annotate
-               --  that governs our declaration.
+            procedure Scan_For_Pragma_Annotate (Start_Node : Node_Id) is
+            begin
+               if Is_List_Member (Start_Node) then
+                  Scan_For_Pragma_Annotate (Start_Node, Next (Start_Node));
+               end if;
+            end Scan_For_Pragma_Annotate;
 
-               declare
-                  Spec : constant Node_Id :=
-                    Parent (List_Containing (Decl_Node));
-               begin
-                  if Nkind (Spec) = N_Package_Specification then
-                     Mark_Pragma_Annot_In_Pkg (Defining_Entity (Spec));
-                  end if;
-               end;
+         begin
+            if Decl_Starts_Pragma_Annotate_Range (Decl_Node)
+            then
+               Scan_For_Pragma_Annotate (Decl_Node);
+
+               --  specific cases for subprograms that are
+               --  instances/compilation units.
+
+               if Is_Subp then
+                  declare
+                     Is_Gen : constant Boolean := Is_Generic_Instance (E);
+                     Prec   : constant Node_Id :=
+                       (if Is_Gen
+                        then Sem_Ch12.Get_Unit_Instantiation_Node
+                          (Defining_Entity (Parent (Decl_Node)))
+                        else Decl_Node);
+                     Cunit  : Node_Id := Decl_Node;
+                  begin
+                     if Is_Subp_Cunit then
+                        --  Compilation units: need to scan
+                        --  the additional pragma after declaration.
+                        while Nkind (Cunit) /= N_Compilation_Unit loop
+                           Cunit := Atree.Parent (Cunit);
+                        end loop;
+                        Scan_For_Pragma_Annotate
+                          (Prec,
+                           First (Pragmas_After (Aux_Decls_Node (Cunit))));
+                     elsif Is_Gen then
+                        --  Other generic instances: need to scan
+                        --  the additional pragma after instantiation node
+                        --  in source.
+                        Scan_For_Pragma_Annotate (Prec);
+                     end if;
+                  end;
+               end if;
+
+               --  If we are in a package (excluding for compilation units)
+               --  we also need to scan the pragma annotate applying to
+               --  the package
+               --  For compilation units, generic instances have a wrapper
+               --  package that could mis-appropriate annotation pragmas
+               --  for the instance if scanned.
+
+               if not Is_Subp_Cunit and then Is_List_Member (Decl_Node) then
+                  declare
+                     Spec : constant Node_Id :=
+                       Parent (List_Containing (Decl_Node));
+                  begin
+                     if Nkind (Spec) = N_Package_Specification then
+                        Mark_Pragma_Annot_In_Pkg (Defining_Entity (Spec));
+                     end if;
+                  end;
+               end if;
             end if;
          end;
       end if;
@@ -7727,6 +7915,41 @@ package body SPARK_Definition is
       Current_Incomplete_Type := Save_Current_Incomplete_Type;
    end Mark_Entity;
 
+   -----------------------------
+   -- Mark_Exception_Handler --
+   -----------------------------
+
+   procedure Mark_Exception_Handler (N : N_Exception_Handler_Id) is
+   begin
+      --  Do not allow to name exceptions. If such a name is encountered, do
+      --  not mark the handler to avoid stumbling upon references to this
+      --  name.
+
+      if Present (Choice_Parameter (N)) then
+         Mark_Violation ("choice parameter in handler", Choice_Parameter (N));
+
+      else
+         declare
+            Choice : Node_Id := First (Exception_Choices (N));
+         begin
+            loop
+               case Nkind (Choice) is
+                  when N_Others_Choice =>
+                     null;
+                  when N_Identifier | N_Expanded_Name =>
+                     Register_Exception (Entity (Choice));
+                  when others =>
+                     raise Program_Error;
+               end case;
+               Next (Choice);
+               exit when No (Choice);
+            end loop;
+         end;
+
+         Mark_Stmt_Or_Decl_List (Statements (N));
+      end if;
+   end Mark_Exception_Handler;
+
    ------------------------------------
    -- Mark_Extended_Return_Statement --
    ------------------------------------
@@ -7768,12 +7991,25 @@ package body SPARK_Definition is
      (N : N_Handled_Sequence_Of_Statements_Id)
    is
       Handlers : constant List_Id := Exception_Handlers (N);
+
    begin
-      if Present (Handlers) then
-         Mark_Violation ("handler", First (Handlers));
-      end if;
+      --  The handled statements should be marked before the handler so that
+      --  the set of exceptions which can be raised by a reraise statement is
+      --  computed before the reraise is encountered.
 
       Mark_Stmt_Or_Decl_List (Statements (N));
+
+      if Present (Handlers) then
+         declare
+            Handler : Node_Id := First (Handlers);
+         begin
+            loop
+               Mark_Exception_Handler (Handler);
+               Next (Handler);
+               exit when No (Handler);
+            end loop;
+         end;
+      end if;
    end Mark_Handled_Statements;
 
    --------------------------------------
@@ -8293,6 +8529,24 @@ package body SPARK_Definition is
          when Pragma_Check =>
             if not Is_Ignored_Pragma_Check (N) then
                Mark (Get_Pragma_Arg (Arg2));
+
+               --  There are additional constructions whose
+               --  lists are sequence_of_statements in the AST,
+               --  but those are not in SPARK.
+               if Is_Pragma_Assert_And_Cut (N)
+                 and then
+                   (No (Parent (N))
+                    or else
+                    Nkind (Parent (N)) not in N_Handled_Sequence_Of_Statements
+                                            | N_If_Statement
+                                            | N_Case_Statement_Alternative
+                                            | N_Loop_Statement
+                                            | N_Exception_Handler)
+               then
+                  Mark_Violation
+                    ("pragma Assert_And_Cut outside a sequence of statements",
+                     N);
+               end if;
             end if;
 
          --  Syntax of this pragma:
@@ -8443,6 +8697,7 @@ package body SPARK_Definition is
             | Pragma_Depends
             | Pragma_Effective_Reads
             | Pragma_Effective_Writes
+            | Pragma_Exceptional_Cases
             | Pragma_Extensions_Visible
             | Pragma_Ghost
             | Pragma_Global
@@ -8734,6 +8989,20 @@ package body SPARK_Definition is
                end if;
                Next (Cur);
             end loop;
+
+            --  For nested packages, we need to mark annotations
+            --    of parent packages as well.
+
+            if Is_List_Member (Decl) and then not Is_Child_Unit (E) then
+               declare
+                  Outer_Spec : constant Node_Id :=
+                    Parent (List_Containing (Decl));
+               begin
+                  if Nkind (Outer_Spec) = N_Package_Specification then
+                     Mark_Pragma_Annot_In_Pkg (Defining_Entity (Outer_Spec));
+                  end if;
+               end;
+            end if;
          end;
       end if;
    end Mark_Pragma_Annot_In_Pkg;
@@ -9267,6 +9536,7 @@ package body SPARK_Definition is
 
    procedure Mark_Subtype_Indication (N : N_Subtype_Indication_Id) is
       T : constant Type_Kind_Id := Etype (Subtype_Mark (N));
+      C : constant Node_Id := Constraint (N);
 
    begin
       --  Check that the base type is in SPARK
@@ -9276,11 +9546,11 @@ package body SPARK_Definition is
       end if;
 
       --  Floating- and fixed-point constraints are static in Ada, so do
-      --  not require marking. Violations in range constraints render the
-      --  (implicit) type of the subtype indication as not-in-SPARK anyway,
-      --  so they also do not require explicit marking here.
-      --  ??? error messages for this would be better if located at the
-      --  exact subexpression of the range constraint that causes problem
+      --  not require marking.
+      --  Range constraints are static for type definitions, so would not
+      --  require marking here, but dynamic constraints are allowed for
+      --  range used in some expressions, like aggregates. So we mark the
+      --  constraint systematically to deal with that case.
       --
       --  Note: in general, constraints can also be an N_Range and
       --  N_Index_Or_Discriminant_Constraint. We would see them when marking
@@ -9291,11 +9561,18 @@ package body SPARK_Definition is
       --  as part of an allocator in an interfering context, which will get
       --  rejected.
 
-      pragma Assert
-        (Nkind (Constraint (N)) in N_Delta_Constraint
-                                 | N_Digits_Constraint
-                                 | N_Range_Constraint
-                                 | N_Index_Or_Discriminant_Constraint);
+      case Nkind (C) is
+         when N_Delta_Constraint
+            | N_Digits_Constraint
+            | N_Index_Or_Discriminant_Constraint
+         =>
+            null;
+         when N_Range_Constraint =>
+            Mark (Range_Expression (C));
+         when others =>
+            raise Program_Error;
+      end case;
+
    end Mark_Subtype_Indication;
 
    ---------------------------------

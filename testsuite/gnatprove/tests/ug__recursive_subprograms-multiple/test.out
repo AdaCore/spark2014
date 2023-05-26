@@ -1,3 +1,4 @@
+recursive_subprograms-multiple.ads:4:13: info: implicit terminating annotation on "Max" has been proved, subprogram will terminate
 recursive_subprograms-multiple.ads:6:16: info: index check proved
 recursive_subprograms-multiple.ads:6:24: info: index check proved
 recursive_subprograms-multiple.ads:6:32: info: precondition proved

@@ -10,6 +10,7 @@ names.adb:57:51: info: range check proved (CVC5: 2 VC)
 names.adb:61:51: info: range check proved (CVC5: 2 VC)
 names.adb:66:51: info: range check proved (CVC5: 2 VC)
 names.adb:71:51: info: range check proved (CVC5: 2 VC)
+names.ads:12:13: info: implicit terminating annotation on "Is_Domain_Name" has been proved, subprogram will terminate
 names.ads:16:14: medium: postcondition might fail, cannot prove Is_Letter(Name(I)) or Is_Digit(Name(I)) or Name(I) = '-'
 names.ads:16:29: info: index check proved (CVC5: 2 VC)
 names.ads:16:50: info: index check proved (CVC5: 2 VC)

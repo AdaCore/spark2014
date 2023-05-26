@@ -5,6 +5,7 @@ discr_checks.adb:23:30: info: range check proved (CVC5: 2 VC)
 discr_checks.adb:23:30: medium: range check might fail, cannot prove upper bound for Bad
 discr_checks.adb:29:29: medium: range check might fail, cannot prove upper bound for Bad
 discr_checks.adb:43:26: medium: range check might fail, cannot prove upper bound for Bad
+discr_checks.ads:6:13: info: implicit terminating annotation on "Bad" has been proved, subprogram will terminate
 discr_checks.ads:8:14: warning: subprogram "Check_Subtype_Rec" has no effect
 discr_checks.ads:10:14: warning: subprogram "Check_Derived_Rec" has no effect
 discr_checks.ads:12:14: warning: subprogram "Check_Subtype_Priv" has no effect

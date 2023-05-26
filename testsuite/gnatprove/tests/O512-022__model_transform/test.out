@@ -8,12 +8,23 @@ model.adb:73:62: info: index check proved (CVC5: 4 VC)
 model.adb:74:56: info: range check proved (CVC5: 4 VC)
 model.adb:76:60: info: index check proved (CVC5: 4 VC)
 model.adb:77:54: info: range check proved (CVC5: 4 VC)
+model.ads:15:13: info: implicit terminating annotation on "Name" has been proved, subprogram will terminate
+model.ads:30:13: info: implicit terminating annotation on "From" has been proved, subprogram will terminate
+model.ads:32:13: info: implicit terminating annotation on "To" has been proved, subprogram will terminate
 model.ads:37:14: info: postcondition proved (CVC5: 1 VC)
 model.ads:41:14: info: postcondition proved (CVC5: 1 VC)
+model.ads:55:13: info: implicit terminating annotation on "Owned_State" has been proved, subprogram will terminate
+model.ads:57:13: info: implicit terminating annotation on "Owned_Transition" has been proved, subprogram will terminate
 model.ads:64:14: info: postcondition proved (CVC5: 1 VC)
 model.ads:69:14: info: postcondition proved (CVC5: 1 VC)
+model.ads:85:13: info: implicit terminating annotation on "Name" has been proved, subprogram will terminate
+model.ads:104:13: info: implicit terminating annotation on "From" has been proved, subprogram will terminate
+model.ads:106:13: info: implicit terminating annotation on "To" has been proved, subprogram will terminate
 model.ads:111:14: info: postcondition proved (CVC5: 2 VC)
 model.ads:115:14: info: postcondition proved (CVC5: 2 VC)
+model.ads:132:13: info: implicit terminating annotation on "Owned_Action" has been proved, subprogram will terminate
+model.ads:134:13: info: implicit terminating annotation on "Owned_Flow" has been proved, subprogram will terminate
 model.ads:141:14: info: postcondition proved (CVC5: 2 VC)
 model.ads:147:14: info: postcondition proved (CVC5: 2 VC)
+model.ads:160:13: info: implicit terminating annotation on "Transform" has been proved, subprogram will terminate
 model.ads:163:06: info: postcondition proved (CVC5: 2 VC)

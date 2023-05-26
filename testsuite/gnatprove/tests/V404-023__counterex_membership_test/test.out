@@ -7,6 +7,16 @@ discrete.adb:119:22: high: assertion might fail (e.g. when K = Secondary)
 discrete.adb:136:22: high: assertion might fail (e.g. when Work = False)
 discrete.adb:153:22: high: assertion might fail (e.g. when Sleep = False)
 discrete.adb:171:22: high: assertion might fail (e.g. when B = False)
+discrete.ads:11:13: info: implicit terminating annotation on "Get_Color_Of_Thing" has been proved, subprogram will terminate
+discrete.ads:25:13: info: implicit terminating annotation on "In_Choice_List" has been proved, subprogram will terminate
+discrete.ads:27:13: info: implicit terminating annotation on "Not_In_Choice_List" has been proved, subprogram will terminate
+discrete.ads:29:13: info: implicit terminating annotation on "In_Choice_List_Left_Not_Static" has been proved, subprogram will terminate
+discrete.ads:31:13: info: implicit terminating annotation on "In_Choice_List_Right_Not_Static" has been proved, subprogram will terminate
+discrete.ads:35:13: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate
+discrete.ads:37:13: info: implicit terminating annotation on "Not_In_Range" has been proved, subprogram will terminate
+discrete.ads:41:13: info: implicit terminating annotation on "In_Subtype" has been proved, subprogram will terminate
+discrete.ads:43:13: info: implicit terminating annotation on "Not_In_Subtype" has been proved, subprogram will terminate
+discrete.ads:47:13: info: implicit terminating annotation on "Mix" has been proved, subprogram will terminate
 not_discrete.adb:15:22: high: assertion might fail (e.g. when Is_Sub = True)
 not_discrete.adb:32:22: high: assertion might fail (e.g. when Is_Sub = True)
 not_discrete.adb:49:22: high: assertion might fail (e.g. when Is_Rec = True)
@@ -27,8 +37,29 @@ not_discrete.adb:299:22: high: assertion might fail (e.g. when Is_Up = True)
 not_discrete.adb:317:22: high: assertion might fail (e.g. when Is_Up = True)
 not_discrete.adb:335:22: high: assertion might fail (e.g. when Is_Diff = True)
 not_discrete.adb:352:22: medium: assertion might fail
+not_discrete.ads:13:13: info: implicit terminating annotation on "Record_Subtype" has been proved, subprogram will terminate
+not_discrete.ads:15:13: info: implicit terminating annotation on "Record_Subtypes" has been proved, subprogram will terminate
 not_discrete.ads:24:52: info: range check proved (CVC5: 2 VC)
 not_discrete.ads:26:52: info: range check proved (CVC5: 2 VC)
+not_discrete.ads:28:13: info: implicit terminating annotation on "Record_Discr_Same" has been proved, subprogram will terminate
+not_discrete.ads:30:13: info: implicit terminating annotation on "Record_Discr_Down" has been proved, subprogram will terminate
+not_discrete.ads:32:13: info: implicit terminating annotation on "Record_Discr_Up" has been proved, subprogram will terminate
+not_discrete.ads:34:13: info: implicit terminating annotation on "Record_Discr_Different" has been proved, subprogram will terminate
+not_discrete.ads:36:13: info: implicit terminating annotation on "Record_Discr_Parameter_Good" has been proved, subprogram will terminate
+not_discrete.ads:39:13: info: implicit terminating annotation on "Aux_Record_Discr_Parameter_Bad" has been proved, subprogram will terminate
+not_discrete.ads:41:13: info: implicit terminating annotation on "Record_Discr_Parameter_Bad" has been proved, subprogram will terminate
 not_discrete.ads:48:07: info: range check proved (CVC5: 2 VC)
 not_discrete.ads:51:43: info: range check proved (CVC5: 2 VC)
 not_discrete.ads:51:59: info: range check proved (CVC5: 2 VC)
+not_discrete.ads:53:13: info: implicit terminating annotation on "Record_Discr_Constraint_Same" has been proved, subprogram will terminate
+not_discrete.ads:55:13: info: implicit terminating annotation on "Record_Discr_Constraint_Down" has been proved, subprogram will terminate
+not_discrete.ads:57:13: info: implicit terminating annotation on "Record_Discr_Constraint_Up" has been proved, subprogram will terminate
+not_discrete.ads:75:13: info: implicit terminating annotation on "Record_Tagged" has been proved, subprogram will terminate
+not_discrete.ads:88:13: info: implicit terminating annotation on "Array_Constrained_Same" has been proved, subprogram will terminate
+not_discrete.ads:90:13: info: implicit terminating annotation on "Array_Constrained_Up" has been proved, subprogram will terminate
+not_discrete.ads:92:13: info: implicit terminating annotation on "Array_Constrained_Down" has been proved, subprogram will terminate
+not_discrete.ads:94:13: info: implicit terminating annotation on "Array_Unconstrained_Same" has been proved, subprogram will terminate
+not_discrete.ads:96:13: info: implicit terminating annotation on "Array_Unconstrained_Up" has been proved, subprogram will terminate
+not_discrete.ads:99:13: info: implicit terminating annotation on "Array_Unconstrained_Down" has been proved, subprogram will terminate
+not_discrete.ads:101:13: info: implicit terminating annotation on "Array_Unconstrained_Diff" has been proved, subprogram will terminate
+not_discrete.ads:106:13: info: implicit terminating annotation on "In_Range_Float" has been proved, subprogram will terminate

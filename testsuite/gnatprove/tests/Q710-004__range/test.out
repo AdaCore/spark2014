@@ -1,6 +1,8 @@
+essai05.adb:9:13: info: implicit terminating annotation on "Conv2" has been proved, subprogram will terminate
 essai05.adb:10:11: info: data dependencies proved
 essai05.adb:13:04: info: no contextual analysis of "Conv" (unconstrained return type)
 essai05.adb:13:13: info: implicit function contract might not be available on calls from enclosing unit
+essai05.adb:13:13: info: implicit terminating annotation on "Conv" has been proved, subprogram will terminate
 essai05.adb:14:07: medium: range check might fail
 essai05.adb:14:07: warning: initialization of "R" has no effect
 essai05.adb:14:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)

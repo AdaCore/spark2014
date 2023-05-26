@@ -13,9 +13,11 @@ semantics.adb:35:14: warning: unused assignment, in call inlined at semantics.ad
 semantics.adb:35:21: medium: overflow check might fail, cannot prove lower bound for Var + Ghost_Func, in call inlined at semantics.adb:41 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Ghost_Func or turning it into an expression function]
 semantics.adb:35:34: medium: overflow check might fail, cannot prove lower bound for Var + Ghost_Func + Ren_Ghost_Func, in call inlined at semantics.adb:41 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Ghost_Func or turning it into an expression function]
 semantics.adb:41:07: info: analyzing call to "Nested_Non_Ghost" in context
+semantics.ads:3:13: info: implicit terminating annotation on "Ghost_Func" has been proved, subprogram will terminate
 semantics.ads:12:19: info: postcondition proved (CVC5: 1 VC)
 semantics.ads:12:43: info: overflow check proved (CVC5: 2 VC)
 semantics.ads:13:41: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 semantics.ads:13:44: warning: unreachable branch (CVC5: 1 VC)
 semantics.ads:14:41: medium: contract case might fail
 semantics.ads:14:68: info: overflow check proved (CVC5: 2 VC)
+semantics.ads:17:13: info: implicit terminating annotation on "Check_Within_Ghost_Function" has been proved, subprogram will terminate

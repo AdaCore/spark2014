@@ -1,3 +1,5 @@
+common.ads:5:13: info: implicit terminating annotation on "Bad_Priority" has been proved, subprogram will terminate
+common.ads:6:13: info: implicit terminating annotation on "Bad_Interrupt_Priority" has been proved, subprogram will terminate
 p.ads:6:30: info: range check proved (CVC5: 2 VC)
 p.ads:10:40: medium: range check might fail
 t.adb:6:07: info: initialization of "Wakeup" proved

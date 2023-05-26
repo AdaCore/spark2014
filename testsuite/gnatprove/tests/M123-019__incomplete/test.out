@@ -1,3 +1,5 @@
+nobody.ads:4:06: warning: Always_Return annotation is useless
+nobody.ads:4:06: warning: function "Divide" has implicit Always_Return annotation
 somebody.adb:6:12: info: precondition proved (CVC5: 1 VC)
 somebody.ads:3:14: info: postcondition proved (CVC5: 1 VC)
 somebody.ads:3:24: info: division check proved (CVC5: 1 VC)

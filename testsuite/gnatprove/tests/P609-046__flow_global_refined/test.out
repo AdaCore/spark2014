@@ -1,3 +1,4 @@
+globs.ads:5:13: info: implicit terminating annotation on "Pub" has been proved, subprogram will terminate
 globs.ads:5:37: info: data dependencies proved
 globs.ads:6:14: info: initialization of "X" constituent of "State" proved
 globs.ads:6:27: info: data dependencies proved

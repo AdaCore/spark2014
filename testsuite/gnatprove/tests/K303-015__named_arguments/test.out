@@ -1,11 +1,17 @@
 substract.adb:4:20: high: overflow check might fail, cannot prove lower bound for First - Second (e.g. when First = Integer'First and Second = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Second >= 0 then First >= Integer'First + Second else First <= Integer'Last + Second) to subprogram at substract.ads:2]
 substract.adb:10:20: high: overflow check might fail, cannot prove lower bound for First + Second (e.g. when First = Integer'First and Second = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Second >= 0 then First <= Integer'Last - Second else First >= Integer'First - Second) to subprogram at substract.ads:14]
 substract.adb:10:29: high: overflow check might fail, cannot prove lower bound for First + Second + Third (e.g. when First = -1 and Second = 0 and Third = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Third >= 0 then First + Second <= Integer'Last - Third else First + Second >= Integer'First - Third) to subprogram at substract.ads:14]
+substract.ads:2:13: info: implicit terminating annotation on "Sub" has been proved, subprogram will terminate
 substract.ads:3:20: info: postcondition proved (CVC5: 1 VC)
 substract.ads:3:40: info: overflow check proved (CVC5: 2 VC)
+substract.ads:5:13: info: implicit terminating annotation on "SubSimp" has been proved, subprogram will terminate
 substract.ads:6:20: info: postcondition proved (CVC5: 1 VC)
 substract.ads:6:44: info: overflow check proved (CVC5: 2 VC)
+substract.ads:8:13: info: implicit terminating annotation on "OppSub" has been proved, subprogram will terminate
 substract.ads:9:20: info: postcondition proved (CVC5: 1 VC)
 substract.ads:9:44: info: overflow check proved (CVC5: 2 VC)
+substract.ads:11:13: info: implicit terminating annotation on "SubInv" has been proved, subprogram will terminate
 substract.ads:12:20: info: postcondition proved (CVC5: 1 VC)
 substract.ads:12:43: info: overflow check proved (CVC5: 2 VC)
+substract.ads:14:13: info: implicit terminating annotation on "Add3" has been proved, subprogram will terminate
+substract.ads:16:13: info: implicit terminating annotation on "AddPart" has been proved, subprogram will terminate

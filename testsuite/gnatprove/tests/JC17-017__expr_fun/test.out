@@ -1,15 +1,27 @@
+p.adb:3:13: info: implicit terminating annotation on "G_True" has been proved, subprogram will terminate
+p.adb:4:13: info: implicit terminating annotation on "G_X" has been proved, subprogram will terminate
+p.adb:6:13: info: implicit terminating annotation on "G_False" has been proved, subprogram will terminate
 p.adb:7:19: info: postcondition proved (CVC5: 1 VC)
+p.adb:11:13: info: implicit terminating annotation on "G_Y" has been proved, subprogram will terminate
 p.adb:12:19: info: postcondition proved (CVC5: 2 VC)
 p.adb:16:04: warning: analyzing unreferenced procedure "Sub"
 p.adb:16:14: warning: subprogram "Sub" has no effect
 p.adb:17:07: info: initialization of "Z" proved
+p.adb:18:16: info: implicit terminating annotation on "H_True" has been proved, subprogram will terminate
+p.adb:19:16: info: implicit terminating annotation on "H_X" has been proved, subprogram will terminate
 p.adb:21:16: info: function contract might not be available on calls from enclosing unit
+p.adb:21:16: info: implicit terminating annotation on "H_False" has been proved, subprogram will terminate
 p.adb:22:22: info: postcondition proved (CVC5: 1 VC)
 p.adb:26:16: info: function contract might not be available on calls from enclosing unit
+p.adb:26:16: info: implicit terminating annotation on "H_Y" has been proved, subprogram will terminate
 p.adb:27:22: info: postcondition proved (CVC5: 2 VC)
 p.adb:32:22: info: assertion proved (CVC5: 1 VC)
 p.adb:34:22: info: assertion proved (CVC5: 1 VC)
 p.adb:36:22: info: assertion proved (CVC5: 1 VC)
 p.adb:38:22: info: assertion proved (CVC5: 1 VC)
+p.ads:5:13: info: implicit terminating annotation on "F_True" has been proved, subprogram will terminate
+p.ads:6:13: info: implicit terminating annotation on "F_X" has been proved, subprogram will terminate
+p.ads:8:13: info: implicit terminating annotation on "F_False" has been proved, subprogram will terminate
 p.ads:9:19: info: postcondition proved (CVC5: 1 VC)
+p.ads:13:13: info: implicit terminating annotation on "F_Y" has been proved, subprogram will terminate
 p.ads:14:19: info: postcondition proved (CVC5: 2 VC)

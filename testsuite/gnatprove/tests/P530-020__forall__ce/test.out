@@ -10,4 +10,5 @@ counterex_forall.adb:21:28: high: overflow check might fail, cannot prove upper 
 counterex_forall.adb:22:36: info: loop invariant preservation proved (CVC5: 1 VC)
 counterex_forall.adb:24:41: high: loop invariant might fail in first iteration, cannot prove I + J < X + Y + 1 (e.g. when I = 0 and Y = 1)
 counterex_forall.adb:24:43: info: overflow check proved (CVC5: 4 VC)
+counterex_forall.ads:10:13: info: implicit terminating annotation on "Single_Char_Set_Broken" has been proved, subprogram will terminate
 counterex_forall.ads:12:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C)

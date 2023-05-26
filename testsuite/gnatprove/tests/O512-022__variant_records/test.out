@@ -1,11 +1,18 @@
+tristates.ads:5:13: info: implicit terminating annotation on "T_Not" has been proved, subprogram will terminate
+tristates.ads:8:13: info: implicit terminating annotation on "T_Or" has been proved, subprogram will terminate
+tristates.ads:14:13: info: implicit terminating annotation on "T_And" has been proved, subprogram will terminate
+var_test.adb:16:13: medium: implicit terminating annotation on "Decision_Eval" could be incorrect, subprogram is recursive
 var_test.adb:16:27: info: precondition proved (CVC5: 1 VC)
 var_test.adb:16:43: info: discriminant check proved (CVC5: 1 VC)
+var_test.adb:18:13: medium: implicit terminating annotation on "Decision_Eval" could be incorrect, subprogram is recursive
 var_test.adb:18:26: info: precondition proved (CVC5: 1 VC)
 var_test.adb:18:42: info: discriminant check proved (CVC5: 1 VC)
 var_test.adb:18:50: info: precondition proved (CVC5: 1 VC)
 var_test.adb:18:66: info: discriminant check proved (CVC5: 1 VC)
+var_test.adb:20:13: medium: implicit terminating annotation on "Decision_Eval" could be incorrect, subprogram is recursive
 var_test.adb:20:27: info: precondition proved (CVC5: 1 VC)
 var_test.adb:20:43: info: discriminant check proved (CVC5: 1 VC)
 var_test.adb:20:51: info: precondition proved (CVC5: 1 VC)
 var_test.adb:20:67: info: discriminant check proved (CVC5: 1 VC)
+var_test.ads:9:13: info: function contract might not be available on recursive calls
 var_test.ads:14:19: info: postcondition proved (CVC5: 1 VC)

@@ -14,8 +14,11 @@ ring_buf.adb:15:36: medium: divide by zero might fail
 ring_buf.adb:16:28: medium: range check might fail, cannot prove lower bound for R.Length + 1 [reason for check: result of addition must fit in the target type of the assignment]
 ring_buf.adb:23:32: medium: divide by zero might fail
 ring_buf.adb:24:28: medium: range check might fail, cannot prove lower bound for R.Length - 1 [reason for check: result of subtraction must fit in the target type of the assignment]
+ring_buf.ads:35:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
+ring_buf.ads:37:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 ring_buf.ads:39:21: info: initialization of "R" proved
 ring_buf.ads:40:19: medium: postcondition might fail
+ring_buf.ads:42:13: info: implicit terminating annotation on "Head" has been proved, subprogram will terminate
 ring_buf.ads:47:19: medium: postcondition might fail
 ring_buf.ads:49:43: info: initialization of "Element" proved
 ring_buf.ads:52:15: medium: postcondition might fail, cannot prove R.Length = R.Length'Old - 1
@@ -36,8 +39,11 @@ ring_buf.adb:15:36: info: division check proved (CVC5: 1 VC)
 ring_buf.adb:16:28: info: range check proved (CVC5: 2 VC)
 ring_buf.adb:23:32: info: division check proved (CVC5: 1 VC)
 ring_buf.adb:24:28: info: range check proved (CVC5: 2 VC)
+ring_buf.ads:35:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
+ring_buf.ads:37:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 ring_buf.ads:39:21: info: initialization of "R" proved
 ring_buf.ads:40:19: info: postcondition proved (CVC5: 1 VC)
+ring_buf.ads:42:13: info: implicit terminating annotation on "Head" has been proved, subprogram will terminate
 ring_buf.ads:47:19: info: postcondition proved (CVC5: 1 VC)
 ring_buf.ads:49:43: info: initialization of "Element" proved
 ring_buf.ads:52:14: info: postcondition proved (CVC5: 2 VC)
@@ -58,8 +64,11 @@ ring_buf.adb:15:36: info: division check proved (CVC5: 1 VC)
 ring_buf.adb:16:28: info: range check proved (CVC5: 2 VC)
 ring_buf.adb:23:32: info: division check proved (CVC5: 1 VC)
 ring_buf.adb:24:28: info: range check proved (CVC5: 2 VC)
+ring_buf.ads:35:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
+ring_buf.ads:37:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 ring_buf.ads:39:21: info: initialization of "R" proved
 ring_buf.ads:40:19: info: postcondition proved (CVC5: 1 VC)
+ring_buf.ads:42:13: info: implicit terminating annotation on "Head" has been proved, subprogram will terminate
 ring_buf.ads:47:19: info: postcondition proved (CVC5: 1 VC)
 ring_buf.ads:49:43: info: initialization of "Element" proved
 ring_buf.ads:52:14: info: postcondition proved (CVC5: 2 VC)

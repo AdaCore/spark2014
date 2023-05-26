@@ -3,8 +3,12 @@ p.ads:11:38: high: "P.State" must be listed in the Global aspect of "Read1" (SPA
 p.ads:11:56: error: "P.State" is referenced in expression function but missing from the Global
 p.ads:12:38: high: "P.State" must be listed in the Global aspect of "Read2" (SPARK RM 6.1.4(15))
 p.ads:12:56: error: "P.State" is referenced in expression function but missing from the Global
+p.ads:13:13: info: implicit terminating annotation on "Read3" has been proved, subprogram will terminate
 p.ads:13:56: info: data dependencies proved
+p.ads:15:13: info: implicit terminating annotation on "Read4" has been proved, subprogram will terminate
 p.ads:15:56: info: data dependencies proved
+p.ads:16:13: info: implicit terminating annotation on "Read5" has been proved, subprogram will terminate
 p.ads:16:56: info: data dependencies proved
+p.ads:17:13: info: implicit terminating annotation on "Read6" has been proved, subprogram will terminate
 p.ads:17:56: info: data dependencies proved
 gnatprove: error during flow analysis and proof

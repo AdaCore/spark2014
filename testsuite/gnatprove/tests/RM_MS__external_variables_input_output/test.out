@@ -16,3 +16,7 @@ output_port_14.adb:10:11: warning: writing to "Output_S" is assumed to have no e
 output_port_14.adb:13:41: info: initialization of "Output_S" constituent of "Output_State" proved
 output_port_14.ads:6:11: info: data dependencies proved
 output_port_14.ads:7:11: info: flow dependencies proved
+stacks_14.ads:8:06: warning: Always_Return annotation is useless
+stacks_14.ads:8:06: warning: function "Is_Empty" has implicit Always_Return annotation
+stacks_14.ads:11:06: warning: Always_Return annotation is useless
+stacks_14.ads:11:06: warning: function "Is_Full" has implicit Always_Return annotation

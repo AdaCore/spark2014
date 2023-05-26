@@ -3,6 +3,9 @@ dispatch_in_contract.adb:10:20: info: overflow check proved (CVC5: 2 VC)
 dispatch_in_contract.adb:11:20: info: overflow check proved (CVC5: 2 VC)
 dispatch_in_contract.adb:16:20: info: overflow check proved (CVC5: 2 VC)
 dispatch_in_contract.adb:17:20: info: overflow check proved (CVC5: 2 VC)
+dispatch_in_contract.ads:6:13: info: implicit terminating annotation on "Less_Than_Max" has been proved, subprogram will terminate
+dispatch_in_contract.ads:16:13: info: implicit terminating annotation on "Less_Than_Max" has been proved, subprogram will terminate
 dispatch_in_contract.ads:20:19: info: class-wide precondition is weaker than overridden one (CVC5: 2 VC)
+dispatch_in_contract.ads:24:13: info: implicit terminating annotation on "Less_Than_Max" has been proved, subprogram will terminate
 dispatch_in_contract.ads:28:19: info: class-wide precondition is weaker than overridden one (CVC5: 2 VC)
 main.adb:5:04: info: precondition proved (CVC5: 1 VC)

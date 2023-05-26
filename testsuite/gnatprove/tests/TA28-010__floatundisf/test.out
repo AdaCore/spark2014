@@ -28,6 +28,7 @@ convert.adb:48:45: info: float overflow check proved (Z3: 1 VC)
 convert.adb:49:18: info: float overflow check proved (colibri: 1 VC)
 convert.adb:49:42: info: float overflow check proved (Z3: 1 VC)
 convert.adb:50:18: info: float overflow check proved (colibri: 1 VC)
+convert.ads:37:13: info: implicit terminating annotation on "Correct_Rounding" has been proved, subprogram will terminate
 convert.ads:42:65: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 convert.ads:45:45: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 convert.ads:47:29: info: float overflow check proved (Z3: 1 VC)
@@ -43,6 +44,7 @@ convert.ads:52:35: info: predicate check proved (Trivial: 1 VC)
 convert.ads:52:40: info: predicate check proved (Trivial: 1 VC)
 convert.ads:52:48: info: predicate check proved (Trivial: 1 VC)
 convert.ads:52:54: info: predicate check proved (Trivial: 1 VC)
+convert.ads:59:13: info: implicit terminating annotation on "Floatundisf" has been proved, subprogram will terminate
 convert.ads:65:17: medium: postcondition might fail, cannot prove Unsigned_64 (Res) = V
 convert.ads:65:30: info: range check proved (colibri: 2 VC)
 convert.ads:67:17: info: precondition proved (Z3: 2 VC)

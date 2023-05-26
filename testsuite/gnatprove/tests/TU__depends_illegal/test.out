@@ -78,6 +78,7 @@ depends_illegal_3.adb:77:23: medium: missing dependency "G_Var2 => P3"
 depends_illegal_3.adb:78:23: medium: missing dependency "G_Var3 => G_Var1"
 depends_illegal_3.adb:78:23: medium: missing dependency "G_Var3 => P1"
 depends_illegal_3.adb:78:23: medium: missing dependency "G_Var3 => P3"
+depends_illegal_3.adb:93:13: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
 depends_illegal_3.adb:98:23: medium: missing dependency "F1'Result => Par1"
 depends_illegal_3.adb:99:36: medium: incorrect dependency "null => Par1"
 depends_illegal_4.adb:7:14: warning: "Y" is not modified, could be INPUT

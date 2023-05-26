@@ -205,7 +205,7 @@ package body Flow_Utility is
    procedure Collect_Functions_And_Read_Locked_POs
      (N                  : Node_Id;
       Scop               : Flow_Scope;
-      Functions_Called   : in out Node_Sets.Set;
+      Function_Calls     : in out Call_Sets.Set;
       Tasking            : in out Tasking_Info;
       Generating_Globals : Boolean)
    is
@@ -228,7 +228,7 @@ package body Flow_Utility is
             Collect_Functions_And_Read_Locked_POs
               (N                  => Get_Expr_From_Return_Only_Func (P),
                Scop               => Scop,
-               Functions_Called   => Functions_Called,
+               Function_Calls     => Function_Calls,
                Tasking            => Tasking,
                Generating_Globals => Generating_Globals);
          end if;
@@ -271,7 +271,8 @@ package body Flow_Utility is
                      return OK;
                   end if;
 
-                  Functions_Called.Include (Called_Func);
+                  Function_Calls.Include
+                    (Subprogram_Call'(N => N, E => Called_Func));
 
                   --  Only external calls to protected functions trigger
                   --  priority ceiling protocol checks; internal calls do not.
@@ -320,34 +321,44 @@ package body Flow_Utility is
             when N_Iterator_Specification =>
                declare
                   Typ : constant Entity_Id := Etype (Name (N));
+
+                  procedure Process_Iterable_Primitive (Nam : Name_Id);
+                  --  Process implicit call to iterable primitive function Nam
+
+                  --------------------------------
+                  -- Process_Iterable_Primitive --
+                  --------------------------------
+
+                  procedure Process_Iterable_Primitive (Nam : Name_Id) is
+                  begin
+                     Function_Calls.Include
+                       (Subprogram_Call'
+                          (N => N,
+                           E => Get_Iterable_Type_Primitive (Typ, Nam)));
+                  end Process_Iterable_Primitive;
+
                begin
                   if Has_Aspect (Typ, Aspect_Iterable) then
 
                      --  Has_Element is called always
 
-                     Functions_Called.Include
-                       (Get_Iterable_Type_Primitive (Typ, Name_Has_Element));
+                     Process_Iterable_Primitive (Name_Has_Element);
 
                      --  Element is called when OF keyword is present
 
                      if Of_Present (N) then
-                        Functions_Called.Include
-                          (Get_Iterable_Type_Primitive (Typ, Name_Element));
+                        Process_Iterable_Primitive (Name_Element);
                      end if;
 
                      --  First/Next and Last/Previous are called depening on
                      --  the REVERSE keyword.
 
                      if Reverse_Present (N) then
-                        Functions_Called.Include
-                          (Get_Iterable_Type_Primitive (Typ, Name_Last));
-                        Functions_Called.Include
-                          (Get_Iterable_Type_Primitive (Typ, Name_Previous));
+                        Process_Iterable_Primitive (Name_Last);
+                        Process_Iterable_Primitive (Name_Previous);
                      else
-                        Functions_Called.Include
-                          (Get_Iterable_Type_Primitive (Typ, Name_First));
-                        Functions_Called.Include
-                          (Get_Iterable_Type_Primitive (Typ, Name_Next));
+                        Process_Iterable_Primitive (Name_First);
+                        Process_Iterable_Primitive (Name_Next);
                      end if;
                   else
                      pragma Assert
@@ -1123,16 +1134,16 @@ package body Flow_Utility is
       Include_Predicates : Boolean)
       return Node_Sets.Set
    is
-      Funcs  : Node_Sets.Set := Node_Sets.Empty_Set;
-      Unused : Tasking_Info;
+      Funcalls : Call_Sets.Set;
+      Unused   : Tasking_Info;
    begin
       Collect_Functions_And_Read_Locked_POs
         (N,
          Scop               => Get_Flow_Scope (N), --  ??? could be parameter
-         Functions_Called   => Funcs,
+         Function_Calls     => Funcalls,
          Tasking            => Unused,
          Generating_Globals => Include_Predicates);
-      return Funcs;
+      return To_Subprograms (Funcalls);
    end Get_Functions;
 
    ---------------------------
@@ -2885,20 +2896,167 @@ package body Flow_Utility is
 
             when Attribute_Update =>
                declare
+                  --  There is exactly one attribute expression, which is an
+                  --  aggregate with component associations only.
+
+                  Expr : constant Node_Id := First (Expressions (N));
+                  pragma Assert
+                    (No (Next (Expr))
+                       and then
+                     Nkind (Expr) = N_Aggregate
+                       and then
+                     No (Expressions (Expr))
+                       and then
+                     not Null_Record_Present (Expr));
+
+                  Assoc  : Node_Id;
+                  Choice : Node_Id;
+                  Index  : Node_Id;
+
                   T : constant Entity_Id := Get_Type (N, Ctx.Scope);
+
                begin
+                  Variables.Union (Recurse (Prefix (N)));
+
                   if Is_Record_Type (T) then
                      if Is_Tagged_Type (T) then
-                        --  ??? Precise analysis is disabled for tagged types,
-                        --      so we just do the usual instead.
-                        null;
+                        --  ??? Precise analysis is disabled for tagged types
+
+                        --  The syntax is:
+                        --
+                        --  PREFIX'Update
+                        --    ( Comp1a | Comp1b | ... => Expr1, ...)
+                        --
+                        --  so we sanity check component names CompXY and
+                        --  recurse into expresions ExprX.
+                        Assoc := First (Component_Associations (Expr));
+                        loop
+                           Choice := First (Choices (Assoc));
+                           loop
+                              pragma Assert (Nkind (Choice) = N_Identifier);
+                              Next (Choice);
+                              exit when No (Choice);
+                           end loop;
+                           Variables.Union (Recurse (Expression (Assoc)));
+                           Next (Assoc);
+                           exit when No (Assoc);
+                        end loop;
+
+                        return Variables;
                      else
                         return Untangle_With_Context (N);
                      end if;
                   else
                      pragma Assert (Is_Array_Type (T));
+
+                     --  The syntax differs between single and multiple
+                     --  dimensional array updates:
+                     --
+                     --  PREFIX'Update
+                     --    ( ARRAY_COMPONENT_ASSOCIATION
+                     --   {, ARRAY_COMPONENT_ASSOCIATION } )
+                     --
+                     --  PREFIX'Update
+                     --    ( MULTIDIMENSIONAL_ARRAY_COMPONENT_ASSOCIATION
+                     --   {, MULTIDIMENSIONAL_ARRAY_COMPONENT_ASSOCIATION } )
+                     --
+                     --  MULTIDIMENSIONAL_ARRAY_COMPONENT_ASSOCIATION ::=
+                     --    INDEX_EXPRESSION_LIST_LIST => EXPRESSION
+                     --
+                     --  INDEX_EXPRESSION_LIST_LIST ::=
+                     --    INDEX_EXPRESSION_LIST {| INDEX_EXPRESSION_LIST }
+                     --
+                     --  INDEX_EXPRESSION_LIST ::=
+                     --    ( EXPRESSION {, EXPRESSION } )
+
+                     Assoc := First (Component_Associations (Expr));
+                     loop
+                        Choice := First (Choices (Assoc));
+                        loop
+                           --  For multi-dimensional array update the n-dim
+                           --  indices appear as nested aggregates whose
+                           --  expressions stand for the indices within the
+                           --  individual dimensions.
+
+                           if Nkind (Choice) = N_Aggregate then
+                              pragma Assert (Number_Dimensions (T) > 1);
+                              pragma Assert
+                                (No (Component_Associations (Choice))
+                                   and then
+                                 not Null_Record_Present (Choice));
+
+                              Index := First (Expressions (Choice));
+                              loop
+                                 Variables.Union (Recurse (Index));
+                                 Next (Index);
+                                 exit when No (Index);
+                              end loop;
+
+                           --  For one-dimentionsal array update the indices
+                           --  appear as aggregate choices.
+
+                           else
+                              pragma Assert (Number_Dimensions (T) = 1);
+
+                              --  Array component choice appears in a
+                              --  subset of forms allowed for aggregates,
+                              --  which are handled when processing
+                              --  N_Component_Association nodes.
+
+                              --  "(Low .. High => ...)"
+
+                              if Nkind (Choice) = N_Range then
+                                 Variables.Union
+                                   (Recurse (Low_Bound (Choice)));
+                                 Variables.Union
+                                   (Recurse (High_Bound (Choice)));
+
+                              --  "(A_Subtype range Low .. High => ...)"
+
+                              elsif Nkind (Choice) = N_Subtype_Indication then
+                                 declare
+                                    R : constant Node_Id :=
+                                      Range_Expression (Constraint (Choice));
+                                 begin
+                                    Variables.Union (Recurse (Low_Bound (R)));
+                                    Variables.Union (Recurse (High_Bound (R)));
+                                 end;
+
+                              --  "(A_Subtype => ...)"
+
+                              elsif Is_Entity_Name (Choice)
+                                and then Is_Type (Entity (Choice))
+                              then
+                                 Variables.Union
+                                   (Recurse
+                                      (Type_Low_Bound (Entity (Choice))));
+                                 Variables.Union
+                                   (Recurse
+                                      (Type_High_Bound (Entity (Choice))));
+
+                              --  "(1 => ...)" or "(X + Y => ...)", etc.
+
+                              elsif Nkind (Choice) in N_Subexpr then
+                                 Variables.Union (Recurse (Choice));
+
+                              else
+                                 raise Program_Error;
+                              end if;
+                           end if;
+
+                           Next (Choice);
+                           exit when No (Choice);
+                        end loop;
+
+                        Variables.Union (Recurse (Expression (Assoc)));
+
+                        Next (Assoc);
+                        exit when No (Assoc);
+                     end loop;
                   end if;
                end;
+
+               return Variables;
 
             when Attribute_Constrained =>
                for F of Recurse (Prefix (N)) loop
@@ -3747,57 +3905,55 @@ package body Flow_Utility is
                      Variables.Union (Recurse (High_Bound (Array_Bounds)));
                   end if;
                end;
-               --  If this aggregate has a type (not always the case despite
-               --  N_Aggregate being in N_Has_Etype) pull dependencies arising
-               --  from the aggregate type's components' default initialization
-               --  when the box notation is used.
-               if Present (Etype (N)) then
-                  declare
-                     P         : Node_Id :=
-                       First (Component_Associations (N));
-                     Aggr_Type : constant Entity_Id := Get_Type (N, Ctx.Scope);
-                     Comp_Type : Entity_Id;
-                     Any_Boxes : Boolean := False;
-                     Def_Expr  : Node_Id;
-                  begin
-                     while Present (P) loop
-                        --  Each component must be associated with either a
-                        --  box or an expression. Expressions are detected and
-                        --  handled elsewhere.
-                        pragma Assert
-                          (Box_Present (P) xor Present (Expression (P)));
 
-                        if Box_Present (P) then
-                           Any_Boxes := True;
-                           exit;
-                        end if;
-                        Next (P);
-                     end loop;
-                     --  ??? Record components are handled properly by the
-                     --  Untangle_... machinery. Consider similar machinery
-                     --  for array types.
-                     if Any_Boxes and then Is_Array_Type (Aggr_Type) then
-                        Comp_Type := Component_Type (Aggr_Type);
-                        if Has_Discriminants (Comp_Type) then
-                           for C of Iter (Discriminant_Constraint (Comp_Type))
-                           loop
-                              Variables.Union (Recurse (C));
-                           end loop;
-                        end if;
+               --  Include variables from the default values that correspond to
+               --  boxes in aggregate expressions.
 
-                        for F of Flatten_Variable (Comp_Type, Ctx.Scope) loop
-                           Def_Expr := Get_Default_Initialization (F);
-                           if Present (Def_Expr) then
-                              --  Discriminant dependencies from default
-                              --  expressions are managed above.
-                              Variables.Union
-                                (Ignore_Record_Type_Discriminants
-                                   (Recurse (Def_Expr)));
-                           end if;
+               declare
+                  Assoc     : Node_Id;
+                  Aggr_Type : constant Entity_Id := Get_Type (N, Ctx.Scope);
+                  Any_Boxes : Boolean := False;
+                  Comp_Type : Entity_Id;
+                  Def_Expr  : Node_Id;
+               begin
+                  Assoc := First (Component_Associations (N));
+                  while Present (Assoc) loop
+                     --  Each component must be associated with either a box
+                     --  or an expression. Expressions are detected and handled
+                     --  elsewhere.
+                     pragma Assert
+                       (Box_Present (Assoc) xor Present (Expression (Assoc)));
+
+                     if Box_Present (Assoc) then
+                        Any_Boxes := True;
+                        exit;
+                     end if;
+                     Next (Assoc);
+                  end loop;
+                  --  ??? Record components are handled properly by the
+                  --  Untangle_... machinery. Consider similar machinery
+                  --  for array types.
+                  if Any_Boxes and then Is_Array_Type (Aggr_Type) then
+                     Comp_Type := Component_Type (Aggr_Type);
+                     if Has_Discriminants (Comp_Type) then
+                        for C of Iter (Discriminant_Constraint (Comp_Type))
+                        loop
+                           Variables.Union (Recurse (C));
                         end loop;
                      end if;
-                  end;
-               end if;
+
+                     for F of Flatten_Variable (Comp_Type, Ctx.Scope) loop
+                        Def_Expr := Get_Default_Initialization (F);
+                        if Present (Def_Expr) then
+                           --  Discriminant dependencies from default
+                           --  expressions are managed above.
+                           Variables.Union
+                             (Ignore_Record_Type_Discriminants
+                                (Recurse (Def_Expr)));
+                        end if;
+                     end loop;
+                  end if;
+               end;
 
             when N_Delta_Aggregate =>
                declare
@@ -6664,5 +6820,19 @@ package body Flow_Utility is
 
       return Obj;
    end Path_To_Flow_Id;
+
+   --------------------
+   -- To_Subprograms --
+   --------------------
+
+   function To_Subprograms (Calls : Call_Sets.Set) return Node_Sets.Set is
+      Subps : Node_Sets.Set;
+   begin
+      for SC of Calls loop
+         Subps.Include (SC.E);
+      end loop;
+
+      return Subps;
+   end To_Subprograms;
 
 end Flow_Utility;

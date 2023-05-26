@@ -1,2 +1,3 @@
 main.adb:5:22: medium: assertion might fail [possible fix: call at line 4 should mention My_Int in a postcondition]
 main2.adb:5:19: medium: assertion might fail [possible fix: call at line 4 should mention My_Package.G in a postcondition]
+my_package.ads:7:13: info: implicit terminating annotation on "Get_G" has been proved, subprogram will terminate

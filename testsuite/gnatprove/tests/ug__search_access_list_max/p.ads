@@ -8,7 +8,6 @@ is
    is (L = null or else
          (L.Value <= Max and then All_Smaller_Than_Max (L.Next, Max)))
    with
-     Annotate => (GNATprove, Always_Return),
      Subprogram_Variant => (Structural => L);
 
    function Search_List_Max

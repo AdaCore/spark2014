@@ -1,23 +1,31 @@
 composite_cursors.ads:17:13: info: during checks for quantification at composite_cursors.ads:6
+composite_cursors.ads:17:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 composite_cursors.ads:17:13: info: precondition proved (Trivial: 1 VC)
 composite_cursors.ads:17:20: warning: unused variable "C"
 composite_cursors.ads:20:13: info: during checks for quantification at composite_cursors.ads:6
+composite_cursors.ads:20:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 composite_cursors.ads:20:13: info: precondition proved (CVC5: 1 VC)
 composite_cursors.ads:21:18: info: overflow check proved (CVC5: 2 VC)
 composite_cursors.ads:24:13: info: during checks for quantification at composite_cursors.ads:6
+composite_cursors.ads:24:13: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 composite_cursors.ads:24:13: info: precondition proved (Trivial: 1 VC)
 composite_cursors.ads:27:13: info: during checks for quantification at composite_cursors.ads:6
+composite_cursors.ads:27:13: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
 composite_cursors.ads:27:13: info: precondition proved (CVC5: 1 VC)
 composite_cursors.ads:28:19: info: index check proved (CVC5: 2 VC)
 composite_cursors.ads:46:13: info: during checks for quantification at composite_cursors.ads:35
+composite_cursors.ads:46:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 composite_cursors.ads:46:13: info: precondition proved (Trivial: 1 VC)
 composite_cursors.ads:46:20: warning: unused variable "C"
 composite_cursors.ads:49:13: info: during checks for quantification at composite_cursors.ads:35
+composite_cursors.ads:49:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 composite_cursors.ads:49:13: info: precondition proved (CVC5: 1 VC)
 composite_cursors.ads:50:28: info: overflow check proved (CVC5: 2 VC)
 composite_cursors.ads:53:13: info: during checks for quantification at composite_cursors.ads:35
+composite_cursors.ads:53:13: info: implicit terminating annotation on "Has_Element" has been proved, subprogram will terminate
 composite_cursors.ads:53:13: info: precondition proved (Trivial: 1 VC)
 composite_cursors.ads:56:13: info: during checks for quantification at composite_cursors.ads:35
+composite_cursors.ads:56:13: info: implicit terminating annotation on "Element" has been proved, subprogram will terminate
 composite_cursors.ads:56:13: info: precondition proved (CVC5: 1 VC)
 composite_cursors.ads:57:20: info: index check proved (CVC5: 2 VC)
 loop_iterable.adb:3:18: info: predicate check proved (CVC5: 1 VC)

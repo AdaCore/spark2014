@@ -1,4 +1,5 @@
 no_inlining.adb:8:10: info: initialization of "Tmp" proved
+no_inlining.adb:13:17: medium: implicit terminating annotation on "Recurse" could be incorrect, subprogram is recursive
 no_inlining.adb:13:20: info: analyzing call to "Recurse" in context
 no_inlining.adb:13:20: info: no contextual analysis of call to recursive subprogram
 no_inlining.ads:5:30: info: initialization of "Res" proved

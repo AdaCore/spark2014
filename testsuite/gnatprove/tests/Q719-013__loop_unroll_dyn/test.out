@@ -67,6 +67,7 @@ loops_static.adb:155:42: medium: assertion might fail, cannot prove A (J) = 0 [p
 loops_static.adb:155:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:157:07: medium: assertion might fail
 loops_static.adb:160:04: info: no contextual analysis of "Loop9" (multiple returns)
+loops_static.adb:160:13: info: implicit terminating annotation on "Loop9" has been proved, subprogram will terminate
 loops_static.adb:163:23: info: unrolling loop
 loops_static.adb:164:13: high: array index check might fail (e.g. when I = 1 and R'First = 0) [reason for check: value must be a valid index into the array]
 loops_static.adb:166:20: info: initialization of "Bad" proved
@@ -102,3 +103,4 @@ loops_static.ads:16:14: high: all paths in "Loop7" raise exceptions or do not te
 loops_static.ads:16:21: warning: "A" is not modified, could be IN
 loops_static.ads:18:14: high: all paths in "Loop8" raise exceptions or do not terminate normally
 loops_static.ads:18:21: warning: "A" is not modified, could be IN
+loops_static.ads:22:13: info: implicit terminating annotation on "Loop10" has been proved, subprogram will terminate

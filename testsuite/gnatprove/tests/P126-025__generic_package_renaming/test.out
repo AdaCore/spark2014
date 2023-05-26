@@ -1,1 +1,2 @@
 c.adb:9:19: info: assertion proved (CVC5: 1 VC)
+s.ads:6:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate, in instantiation at c.adb:5

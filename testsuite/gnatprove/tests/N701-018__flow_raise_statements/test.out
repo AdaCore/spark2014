@@ -3,7 +3,7 @@ raise_statements.adb:23:10: warning: unreachable code (CVC5: 1 VC)
 raise_statements.adb:24:10: info: assertion proved (CVC5: 1 VC)
 raise_statements.adb:25:10: warning: this statement is never reached
 raise_statements.adb:28:10: warning: unreachable code (CVC5: 1 VC)
-raise_statements.adb:29:10: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+raise_statements.adb:29:10: info: only expected exception raised (CVC5: 1 VC)
 raise_statements.adb:30:10: warning: this statement is never reached
 raise_statements.adb:30:10: warning: unreachable code
 raise_statements.adb:32:23: medium: overflow check might fail, cannot prove upper bound for Par1 + Par2 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at raise_statements.ads:14 should mention Par1]
@@ -15,7 +15,7 @@ raise_statements.adb:59:13: warning: this statement is never reached
 raise_statements.adb:64:19: info: initialization of "O" proved
 raise_statements.adb:65:09: medium: missing dependency "null => A"
 raise_statements.adb:65:26: medium: incorrect dependency "O => A"
-raise_statements.adb:71:10: medium: exception might be raised
+raise_statements.adb:71:10: medium: unexpected exception might be raised
 raise_statements.ads:5:04: low: initialization of "G2" must be mentioned in the Initializes contract of "Raise_Statements" (SPARK RM 7.1.5(9))
 raise_statements.ads:8:11: info: data dependencies proved
 raise_statements.ads:12:11: info: data dependencies proved

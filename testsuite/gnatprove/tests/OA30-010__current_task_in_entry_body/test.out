@@ -1,10 +1,6 @@
 interrupt_handler.adb:6:10: warning: statement has no effect
-interrupt_handler.adb:7:18: warning: assuming "Current_Task" always returns
-interrupt_handler.adb:7:18: warning: no returning annotation available for "Current_Task"
 interrupt_handler.ads:11:17: high: Current_Task should not be called from an interrupt handler "P" (RM C.7.1(17))
 interrupt_handler.ads:12:33: medium: this interrupt might be reserved
 main_package.ads:6:13: high: Current_Task should not be called from an entry body "E" (RM C.7.1(17))
 p.ads:2:14: warning: subprogram "S1" has no effect
-q.adb:4:12: warning: assuming "Current_Task" always returns
-q.adb:4:12: warning: no returning annotation available for "Current_Task"
 q.ads:3:18: info: initialization of "T" proved

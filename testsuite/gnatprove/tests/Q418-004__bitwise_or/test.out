@@ -1,5 +1,8 @@
 bitset.adb:11:07: info: initialization of "Mask" proved
 bitset.adb:37:07: info: initialization of "Mask" proved
+bitset.ads:10:13: info: implicit terminating annotation on "Bit_Test" has been proved, subprogram will terminate
 bitset.ads:15:15: info: postcondition proved (Z3: 2 VC)
+bitset.ads:18:13: info: implicit terminating annotation on "Bit_Set" has been proved, subprogram will terminate
 bitset.ads:23:15: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
+bitset.ads:26:13: info: implicit terminating annotation on "Bit_Clear" has been proved, subprogram will terminate
 bitset.ads:31:15: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)

@@ -1,6 +1,21 @@
 SPARK Libraries
 ===============
 
+The units described here have their spec in SPARK (with ``SPARK_Mode => On``
+specified on the spec), more rarely their body in SPARK as well.
+
+Subprograms in these units fall into one of the following categories:
+
+- Subprograms which should always return without error or exception if their
+  precondition is respected.
+
+- Procedures marked with the annotation ``Might_Not_Return``. In most cases,
+  this corresponds to the possibility of error or exception in the procedure,
+  even when its precondition is respected.
+
+- Functions marked with ``SPARK_Mode => Off`` which cannot be called from SPARK
+  code.
+
 .. index:: SPARK Library
 
 SPARK Library

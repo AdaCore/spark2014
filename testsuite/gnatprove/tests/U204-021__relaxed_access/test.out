@@ -1,6 +1,7 @@
 access_to_relaxed.adb:13:07: info: range check proved (CVC5: 2 VC)
 access_to_relaxed.adb:18:40: info: index check proved (CVC5: 2 VC)
 access_to_relaxed.adb:19:28: info: index check proved (CVC5: 2 VC)
+access_to_relaxed.adb:23:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate
 access_to_relaxed.adb:24:32: info: pointer dereference check proved (CVC5: 1 VC)
 access_to_relaxed.adb:27:14: info: postcondition proved (CVC5: 1 VC)
 access_to_relaxed.adb:34:22: info: pointer dereference check proved (CVC5: 1 VC)

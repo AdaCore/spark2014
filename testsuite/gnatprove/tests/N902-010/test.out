@@ -3,6 +3,9 @@ a_stack_no_spark_contracts_with_body.adb:19:16: info: range check proved (CVC5: 
 a_stack_no_spark_contracts_with_body.adb:20:12: info: index check proved (CVC5: 2 VC)
 a_stack_no_spark_contracts_with_body.adb:25:18: info: index check proved (CVC5: 2 VC)
 a_stack_no_spark_contracts_with_body.adb:26:16: info: range check proved (CVC5: 2 VC)
+a_stack_no_spark_contracts_with_body.ads:6:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
+a_stack_no_spark_contracts_with_body.ads:7:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
+a_stack_no_spark_contracts_with_body.ads:8:13: info: implicit terminating annotation on "Top" has been proved, subprogram will terminate
 a_stack_no_spark_contracts_with_body.ads:14:19: info: initialization of "It" proved
 main.adb:7:04: info: precondition proved (CVC5: 2 VC)
 main.adb:7:04: medium: "a_stack_no_spark_contracts_with_body.sp" might not be initialized after elaboration of main program "Main"

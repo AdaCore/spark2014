@@ -1,1 +1,2 @@
+f.adb:1:10: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 p.adb:6:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function]

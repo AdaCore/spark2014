@@ -93,7 +93,9 @@ frame_condition.adb:109:20: info: add a contract to analyze it separately from c
 frame_condition.adb:109:20: info: local subprogram "Set_Max_Left" only analyzed in the context of calls
 frame_condition.adb:111:16: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:85, in instantiation at frame_condition.adb:122
 frame_condition.adb:114:19: info: implicit function contract might not be available on calls from enclosing unit
+frame_condition.adb:114:19: info: implicit terminating annotation on "Get_Max_Left" has been proved, subprogram will terminate
 frame_condition.adb:115:16: info: index check proved (CVC5: 2 VC)
+frame_condition.adb:118:19: info: implicit terminating annotation on "Frame_Left" has been proved, subprogram will terminate
 frame_condition.adb:119:40: info: index check proved (CVC5: 2 VC)
 frame_condition.adb:119:58: info: index check proved (CVC5: 2 VC)
 frame_condition.adb:122:10: info: analyzing call to "Increment_Left" in context
@@ -107,7 +109,9 @@ frame_condition.adb:135:20: info: add a contract to analyze it separately from c
 frame_condition.adb:135:20: info: local subprogram "Set_Max_Right" only analyzed in the context of calls
 frame_condition.adb:137:16: info: index check proved (CVC5: 4 VC), in call inlined at frame_condition.adb:85, in instantiation at frame_condition.adb:150
 frame_condition.adb:140:19: info: implicit function contract might not be available on calls from enclosing unit
+frame_condition.adb:140:19: info: implicit terminating annotation on "Get_Max_Right" has been proved, subprogram will terminate
 frame_condition.adb:141:16: info: index check proved (CVC5: 2 VC)
+frame_condition.adb:144:19: info: implicit terminating annotation on "Frame_Right" has been proved, subprogram will terminate
 frame_condition.adb:146:19: info: index check proved (CVC5: 2 VC)
 frame_condition.adb:146:37: info: index check proved (CVC5: 2 VC)
 frame_condition.adb:147:19: info: index check proved (CVC5: 2 VC)

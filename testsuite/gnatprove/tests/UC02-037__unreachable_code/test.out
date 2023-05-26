@@ -1,0 +1,7 @@
+test_unreachable.adb:7:30: info: initialization of "Y" proved
+test_unreachable.adb:8:14: info: postcondition proved (CVC5: 1 VC)
+test_unreachable.adb:10:15: info: exceptional case proved (CVC5: 2 VC)
+test_unreachable.adb:11:15: info: exceptional case proved (CVC5: 2 VC)
+test_unreachable.adb:11:15: warning: unreachable branch (CVC5: 1 VC)
+test_unreachable.adb:31:17: info: overflow check proved (CVC5: 2 VC)
+test_unreachable.adb:33:10: warning: unreachable code (CVC5: 1 VC)

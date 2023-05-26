@@ -4,4 +4,8 @@ bad.adb:5:19: info: assertion proved (CVC5: 1 VC)
 bad.adb:6:19: info: assertion proved (CVC5: 1 VC)
 bad.adb:7:04: medium: assertion might fail
 p1.ads:5:38: warning: conjunct in postcondition does not check the outcome of calling "Always_True"
+p1.ads:6:04: warning: Always_Return annotation is useless
+p1.ads:6:04: warning: function "Always_True" has implicit Always_Return annotation
 p2.ads:5:40: warning: conjunct in postcondition does not check the outcome of calling "Always_True"
+p2.ads:6:04: warning: Always_Return annotation is useless
+p2.ads:6:04: warning: function "Always_True" has implicit Always_Return annotation

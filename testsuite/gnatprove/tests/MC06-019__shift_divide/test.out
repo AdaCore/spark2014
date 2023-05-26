@@ -1,7 +1,3 @@
-p.adb:8:13: warning: assuming "Shift_Right" always returns
-p.adb:8:13: warning: no returning annotation available for "Shift_Right"
-p.adb:14:13: warning: assuming "Shift_Right" always returns
-p.adb:14:13: warning: no returning annotation available for "Shift_Right"
 p.ads:10:19: info: postcondition proved (CVC5: 1 VC)
 p.ads:10:29: info: division check proved (CVC5: 1 VC)
 p.ads:13:19: info: postcondition proved (CVC5: 1 VC)

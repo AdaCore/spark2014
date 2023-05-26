@@ -8,8 +8,11 @@ the_stack_with_conditions_14.adb:59:26: info: range check proved (CVC5: 2 VC)
 the_stack_with_conditions_14.adb:67:10: info: index check proved (CVC5: 2 VC)
 the_stack_with_conditions_14.ads:22:08: info: flow dependencies proved
 the_stack_with_conditions_14.ads:23:08: info: initial condition proved (CVC5: 1 VC)
+the_stack_with_conditions_14.ads:25:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 the_stack_with_conditions_14.ads:26:11: info: data dependencies proved
+the_stack_with_conditions_14.ads:28:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
 the_stack_with_conditions_14.ads:29:11: info: data dependencies proved
+the_stack_with_conditions_14.ads:31:13: info: implicit terminating annotation on "Top" has been proved, subprogram will terminate
 the_stack_with_conditions_14.ads:32:11: info: data dependencies proved
 the_stack_with_conditions_14.ads:38:11: info: data dependencies proved
 the_stack_with_conditions_14.ads:41:18: info: initialization of "X" proved

@@ -3,6 +3,7 @@ account8.adb:16:14: info: add a contract to analyze it separately from calling c
 account8.adb:16:14: info: local subprogram "Get_Next_Account_Created" only analyzed in the context of calls
 account8.adb:16:14: warning: subprogram "Get_Next_Account_Created" has no effect
 account8.adb:25:10: info: analyzing call to "Get_Next_Account_Created" in context
+account8.ads:6:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 account8.ads:15:14: info: nontermination of task proved (CVC5: 1 VC)
 account8.ads:15:14: medium: ceiling priority protocol might not be respected
 account8.ads:17:06: info: data dependencies proved

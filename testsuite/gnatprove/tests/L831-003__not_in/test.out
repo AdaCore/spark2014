@@ -6,6 +6,7 @@ lcp.adb:13:15: info: overflow check proved (CVC5: 2 VC)
 lcp.adb:13:28: info: index check proved (CVC5: 2 VC)
 lcp.adb:13:28: info: overflow check proved (CVC5: 2 VC)
 lcp.adb:17:14: info: overflow check proved (CVC5: 2 VC)
+lcp.ads:3:10: info: implicit terminating annotation on "LCP" has been proved, subprogram will terminate
 lcp.ads:6:38: medium: postcondition might fail, cannot prove A (X + K) = A (Y + K)
 lcp.ads:6:43: info: overflow check proved (CVC5: 2 VC)
 lcp.ads:6:43: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]

@@ -67,10 +67,17 @@ dynamic_preds.ads:26:70: medium: overflow check might fail, cannot prove upper b
 dynamic_preds.ads:28:30: info: initialization of "X" proved
 dynamic_preds.ads:29:39: info: initialization of "X" proved
 dynamic_preds.ads:30:36: info: initialization of "X" proved
+dynamic_preds.ads:32:13: info: implicit terminating annotation on "Get_Even_Pair" has been proved, subprogram will terminate
+dynamic_preds.ads:34:13: info: implicit terminating annotation on "Get_OK_Even_Pair" has been proved, subprogram will terminate
+dynamic_preds.ads:35:13: info: implicit terminating annotation on "Get_Constant_Even_Pair" has been proved, subprogram will terminate
 dynamic_preds.ads:36:19: info: postcondition proved (CVC5: 2 VC)
+dynamic_preds.ads:39:13: info: implicit terminating annotation on "Get_Even_Close_Pair" has been proved, subprogram will terminate
+dynamic_preds.ads:40:13: info: implicit terminating annotation on "Get_Even_Close_Pair_Error" has been proved, subprogram will terminate
+dynamic_preds.ads:41:13: info: implicit terminating annotation on "Get_Even_Close_Pair_Wrong" has been proved, subprogram will terminate
 dynamic_preds.ads:43:32: warning: unused initial value of "X"
 dynamic_preds.ads:44:41: warning: unused initial value of "X"
 dynamic_preds.ads:45:19: info: postcondition proved (CVC5: 2 VC)
+dynamic_preds.ads:47:13: info: implicit terminating annotation on "Get_Even_Close_Pair" has been proved, subprogram will terminate
 dynamic_preds_array.adb:16:18: medium: predicate check might fail [possible fix: subprogram at dynamic_preds_array.ads:14 should mention X in a precondition]
 dynamic_preds_array.adb:17:21: info: predicate check proved (CVC5: 1 VC)
 dynamic_preds_array.adb:22:23: info: predicate check proved (CVC5: 1 VC)
@@ -139,8 +146,15 @@ dynamic_preds_array.ads:21:72: medium: overflow check might fail, cannot prove u
 dynamic_preds_array.ads:23:30: info: initialization of "X" proved
 dynamic_preds_array.ads:24:39: info: initialization of "X" proved
 dynamic_preds_array.ads:25:36: info: initialization of "X" proved
+dynamic_preds_array.ads:27:13: info: implicit terminating annotation on "Get_Even_Pair" has been proved, subprogram will terminate
+dynamic_preds_array.ads:29:13: info: implicit terminating annotation on "Get_OK_Even_Pair" has been proved, subprogram will terminate
+dynamic_preds_array.ads:30:13: info: implicit terminating annotation on "Get_Constant_Even_Pair" has been proved, subprogram will terminate
 dynamic_preds_array.ads:31:19: info: postcondition proved (CVC5: 2 VC)
+dynamic_preds_array.ads:34:13: info: implicit terminating annotation on "Get_Even_Close_Pair" has been proved, subprogram will terminate
+dynamic_preds_array.ads:35:13: info: implicit terminating annotation on "Get_Even_Close_Pair_Error" has been proved, subprogram will terminate
+dynamic_preds_array.ads:36:13: info: implicit terminating annotation on "Get_Even_Close_Pair_Wrong" has been proved, subprogram will terminate
 dynamic_preds_array.ads:40:19: info: postcondition proved (CVC5: 2 VC)
+dynamic_preds_array.ads:42:13: info: implicit terminating annotation on "Get_Even_Close_Pair" has been proved, subprogram will terminate
 dynamic_preds_rte.adb:6:14: medium: predicate check might fail (e.g. when X = (A => 0, B => 0) and Y = 50000) [possible fix: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
 dynamic_preds_rte.adb:6:14: medium: range check might fail, cannot prove lower bound for Y (e.g. when X = (A => 0, B => 0) and Y = -1) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Y in Small) to subprogram at dynamic_preds_rte.ads:21]
 dynamic_preds_rte.adb:7:14: info: range check proved (CVC5: 2 VC)
@@ -162,6 +176,8 @@ dynamic_preds_rte.ads:5:71: medium: overflow check might fail, cannot prove uppe
 dynamic_preds_rte.ads:16:29: medium: divide by zero might fail
 dynamic_preds_rte.ads:19:31: medium: divide by zero might fail
 dynamic_preds_rte.ads:21:33: info: initialization of "X" proved
+dynamic_preds_rte.ads:22:13: info: implicit terminating annotation on "Add_Small_Pair" has been proved, subprogram will terminate
 dynamic_preds_rte.ads:24:34: medium: "X" might not be initialized in "Create_Small_Array" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+dynamic_preds_rte.ads:25:13: info: implicit terminating annotation on "Add_Small_Array" has been proved, subprogram will terminate
 dynamic_preds_rte.ads:27:41: info: initialization of "X" proved
 dynamic_preds_rte.ads:28:42: info: initialization of "X" proved

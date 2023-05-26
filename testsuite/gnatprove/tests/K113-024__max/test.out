@@ -1,3 +1,4 @@
 max.adb:6:33: info: loop invariant initialization proved (CVC5: 1 VC)
 max.adb:6:33: info: loop invariant preservation proved (CVC5: 1 VC)
+max.ads:3:13: info: implicit terminating annotation on "Max" has been proved, subprogram will terminate
 max.ads:4:20: info: postcondition proved (CVC5: 1 VC)

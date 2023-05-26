@@ -1,3 +1,4 @@
+arith.adb:1:10: info: implicit terminating annotation on "Arith" has been proved, subprogram will terminate
 arith.adb:3:04: info: initialization of "Tmp1" proved
 arith.adb:3:10: info: initialization of "Tmp2" proved
 arith.adb:7:12: warning: possible reassociation due to missing parentheses

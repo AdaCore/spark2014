@@ -250,10 +250,7 @@ package SPARK_Definition.Annotate is
       Prgma   : Node_Id;             --  the pragma which this range belongs to
    end record;
 
-   function Decl_Starts_Pragma_Annotate_Range (N : Node_Id) return Boolean is
-     (Comes_From_Source (N)
-      or else (Is_Rewrite_Substitution (N)
-               and then Comes_From_Source (Original_Node (N))));
+   function Decl_Starts_Pragma_Annotate_Range (N : Node_Id) return Boolean;
    --  When scanning a list of statements or declarations to decide the range
    --  of application of a pragma Annotate, some statements starts a new range
    --  for pragma to apply. If the declaration does not come from source, we
@@ -342,6 +339,13 @@ package SPARK_Definition.Annotate is
    --  Return True if a pragma Annotate Always_Return applies to the subprogram
    --  E.
 
+   function Has_Implicit_Always_Return_Annotation
+     (E : Entity_Id) return Boolean;
+   --  Return True if E has an implicit Always_Return annotation. The two
+   --  cases currently are:
+   --  - E is a function.
+   --  - E is an automatically instantiated lemma.
+
    function Has_At_End_Borrow_Annotation (E : Entity_Id) return Boolean;
    --  Return True if the function E is a function annotated with at_end_borrow
 
@@ -358,6 +362,10 @@ package SPARK_Definition.Annotate is
    function Has_Ownership_Annotation (E : Entity_Id) return Boolean
      with Pre => Is_Type (E);
    --  Return True if E is annotated with ownership
+
+   function Has_Skip_Proof_Annotation (E : Entity_Id) return Boolean;
+   --  True if E or an enclosing entity has pragma Annotate(GNATProve,
+   --  Skip_Proof).
 
    function Needs_Reclamation (E : Entity_Id) return Boolean
      with Pre => Is_Type (E) and then Has_Ownership_Annotation (E);

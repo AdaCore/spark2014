@@ -2,6 +2,7 @@ pre_post_exercise.adb:16:38: high: range check might fail, cannot prove upper bo
 pre_post_exercise.adb:17:14: info: index check proved (CVC5: 2 VC)
 pre_post_exercise.adb:22:19: high: array index check might fail (e.g. when Stack_Pointer = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at pre_post_exercise.ads:28 should mention Stack_Pointer in a precondition]
 pre_post_exercise.adb:23:38: info: range check proved (CVC5: 2 VC)
+pre_post_exercise.ads:10:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
 pre_post_exercise.ads:11:11: info: data dependencies proved
 pre_post_exercise.ads:19:11: info: data dependencies proved
 pre_post_exercise.ads:19:34: info: initialization of "Stack" proved

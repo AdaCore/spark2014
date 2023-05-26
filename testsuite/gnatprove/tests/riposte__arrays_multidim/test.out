@@ -12,6 +12,7 @@ arrays_multidim.adb:59:11: info: flow dependencies proved
 arrays_multidim.adb:60:22: info: postcondition proved (CVC5: 1 VC)
 arrays_multidim.adb:67:11: info: flow dependencies proved
 arrays_multidim.adb:68:22: info: postcondition proved (CVC5: 2 VC)
+arrays_multidim.adb:76:13: info: implicit terminating annotation on "Tuple_Test" has been proved, subprogram will terminate
 arrays_multidim.adb:80:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 arrays_multidim.adb:93:11: info: flow dependencies proved
 arrays_multidim.adb:94:11: warning: postcondition does not check the outcome of calling "D2_Element_Access"

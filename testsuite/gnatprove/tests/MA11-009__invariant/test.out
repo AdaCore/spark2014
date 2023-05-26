@@ -3,6 +3,7 @@ kmp.adb:6:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 kmp.adb:8:07: info: initialization of "J" proved
 kmp.adb:11:23: info: overflow check proved (CVC5: 2 VC)
 kmp.adb:12:39: info: overflow check proved (CVC5: 4 VC)
+kmp.adb:12:43: medium: implicit terminating annotation on "Init_Next" could be incorrect, loop might be nonterminating
 kmp.adb:14:17: info: loop invariant initialization proved (CVC5: 3 VC)
 kmp.adb:14:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove J in P'Range
 kmp.adb:16:17: medium: loop invariant might fail in first iteration

@@ -1,7 +1,10 @@
 main.adb:10:19: medium: assertion might fail [possible fix: subprogram at line 4 should mention Parent.Privchild.X in a precondition]
 parent-privchild.adb:6:53: info: initialization of "X" constituent of "Child_State" proved
+parent-privchild.ads:4:13: info: implicit terminating annotation on "Read" has been proved, subprogram will terminate
 parent-privchild.ads:4:38: info: data dependencies proved
 parent-privchild.ads:6:38: info: data dependencies proved
 parent.adb:6:56: info: initialization of "Privchild.Child_State" constituent of "Parent.State" proved
+parent.ads:2:13: info: implicit terminating annotation on "Read" has been proved, subprogram will terminate
 parent.ads:2:38: info: data dependencies proved
 parent.ads:4:38: info: data dependencies proved
+proxy.ads:1:10: info: implicit terminating annotation on "Proxy" has been proved, subprogram will terminate

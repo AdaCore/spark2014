@@ -1,4 +1,12 @@
+switch-val1.ads:9:11: warning: Always_Return annotation is useless
+switch-val1.ads:9:11: warning: function "Read" has implicit Always_Return annotation
+switch-val2.ads:9:11: warning: Always_Return annotation is useless
+switch-val2.ads:9:11: warning: function "Read" has implicit Always_Return annotation
+switch-val3.ads:9:11: warning: Always_Return annotation is useless
+switch-val3.ads:9:11: warning: function "Read" has implicit Always_Return annotation
 switch.adb:19:07: info: initialization of "A" proved
 switch.adb:19:10: info: initialization of "B" proved
 switch.adb:19:13: info: initialization of "C" proved
+switch.adb:24:19: info: implicit terminating annotation on "Convert_To_Reading" has been proved, subprogram will terminate
+switch.ads:7:13: info: implicit terminating annotation on "ReadValue" has been proved, subprogram will terminate
 switch.ads:9:11: info: data dependencies proved

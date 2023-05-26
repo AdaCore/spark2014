@@ -1,5 +1,6 @@
 synchronous_abstractions.adb:6:09: info: ceiling priority protocol is respected
 synchronous_abstractions.adb:6:09: info: nontermination of task proved
+synchronous_abstractions.adb:8:16: info: implicit terminating annotation on "Read" has been proved, subprogram will terminate
 
 synchronous_abstractions.adb:22:07: warning: no returning annotation available for "Suspend_Until_True"
    22 |      Suspend_Until_True (S);

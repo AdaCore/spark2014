@@ -1,1 +1,4 @@
-(no output)
+range_logging_no_dispatch.ads:8:13: info: implicit terminating annotation on "Log_Size" has been proved, subprogram will terminate
+range_logging_no_dispatch.ads:10:13: info: implicit terminating annotation on "Log_Min" has been proved, subprogram will terminate
+range_logging_no_dispatch.ads:12:13: info: implicit terminating annotation on "Log_Max" has been proved, subprogram will terminate
+logging_no_dispatch.ads:10:13: info: implicit terminating annotation on "Log_Size" has been proved, subprogram will terminate

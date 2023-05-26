@@ -1,2 +1,0 @@
-delay_cal.adb:4:52: warning: assuming "Clock" always returns
-delay_cal.adb:4:52: warning: no returning annotation available for "Clock"

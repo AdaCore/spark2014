@@ -1,2 +1,3 @@
 my_pack.ads:3:04: info: flow dependencies proved
 my_pack.ads:8:04: info: initialization of "X" proved
+my_pack.ads:9:13: info: implicit terminating annotation on "X_True" has been proved, subprogram will terminate

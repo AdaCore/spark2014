@@ -17,9 +17,11 @@ a.adb:29:18: info: overflow check proved (CVC5: 2 VC)
 a.adb:29:23: info: division check proved (CVC5: 1 VC)
 a.adb:29:23: info: overflow check proved (CVC5: 2 VC)
 a.adb:32:14: info: overflow check proved (CVC5: 2 VC)
+a.ads:3:13: info: implicit terminating annotation on "Pgcd" has been proved, subprogram will terminate
 a.ads:7:07: info: postcondition proved (CVC5: 1 VC)
 a.ads:8:34: info: overflow check proved (CVC5: 2 VC)
 a.ads:9:34: info: overflow check proved (CVC5: 2 VC)
+a.ads:11:13: info: implicit terminating annotation on "Ppcm" has been proved, subprogram will terminate
 a.ads:17:07: medium: postcondition might fail
 a.ads:18:29: info: overflow check proved (CVC5: 2 VC)
 a.ads:18:38: info: overflow check proved (CVC5: 2 VC)

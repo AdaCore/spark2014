@@ -1,4 +1,5 @@
 main.adb:12:13: info: implicit function contract might not be available on recursive calls
+main.adb:12:13: info: implicit terminating annotation on "Length_1" has been proved, subprogram will terminate
 main.adb:16:38: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:16:46: info: predicate check proved (Trivial: 1 VC)
 main.adb:16:48: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -44,6 +45,7 @@ main.adb:114:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:115:16: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:122:16: info: subprogram variant proved (Trivial)
 main_bad.adb:12:13: info: implicit function contract might not be available on recursive calls
+main_bad.adb:12:13: info: implicit terminating annotation on "Length_1" has been proved, subprogram will terminate
 main_bad.adb:16:25: medium: subprogram variant might fail [possible explanation: structural variant of "Length_1" might not be a part of "L"]
 main_bad.adb:16:46: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:16:48: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -51,12 +53,14 @@ main_bad.adb:16:50: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:16:50: info: subprogram variant proved (Trivial)
 main_bad.adb:16:61: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:18:13: info: implicit function contract might not be available on recursive calls
+main_bad.adb:18:13: info: implicit terminating annotation on "Length_2" has been proved, subprogram will terminate
 main_bad.adb:22:38: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:22:46: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:22:48: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:22:50: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:22:50: medium: subprogram variant might fail [possible explanation: structural variant of "Length_2" might not be a strict subcomponent of "L"]
 main_bad.adb:24:13: info: implicit function contract might not be available on recursive calls
+main_bad.adb:24:13: info: implicit terminating annotation on "Length_3" has been proved, subprogram will terminate
 main_bad.adb:28:25: medium: subprogram variant might fail [possible explanation: structural variant of "Length_3" might not be a part of "L"]
 main_bad.adb:28:46: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:28:48: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -64,7 +68,9 @@ main_bad.adb:28:50: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:28:50: info: subprogram variant proved (Trivial)
 main_bad.adb:28:61: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:30:13: info: implicit function contract might not be available on recursive calls
+main_bad.adb:30:13: info: implicit terminating annotation on "Length_4" has been proved, subprogram will terminate
 main_bad.adb:33:13: info: implicit function contract might not be available on recursive calls
+main_bad.adb:33:13: info: implicit terminating annotation on "Length_4_Ann" has been proved, subprogram will terminate
 main_bad.adb:37:38: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:37:46: medium: subprogram variant might fail [possible explanation: structural variant of "Length_4_Ann" might not be a part of "L"]
 main_bad.adb:37:60: info: predicate check proved (Trivial: 1 VC)

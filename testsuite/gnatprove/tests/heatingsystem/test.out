@@ -27,6 +27,7 @@ advancebutton.adb:86:34: info: range check proved (altergo: 2 VC)
 advancebutton.adb:98:41: info: initialization of "AdvPressed" constituent of "State" proved
 advancebutton.adb:102:07: info: initialization of "Pressed" proved
 advancebutton.ads:20:08: info: flow dependencies proved
+advancebutton.ads:25:13: info: implicit terminating annotation on "CurrentMode" has been proved, subprogram will terminate
 advancebutton.ads:27:11: info: data dependencies proved
 advancebutton.ads:30:11: info: data dependencies proved
 advancebutton.ads:31:11: info: flow dependencies proved
@@ -107,6 +108,7 @@ heatingsystem_dfa.adb:211:14: info: data dependencies proved
 heatingsystem_dfa.adb:212:14: info: flow dependencies proved
 heatingsystem_dfa.adb:223:14: info: data dependencies proved
 heatingsystem_dfa.adb:224:14: info: flow dependencies proved
+heatingsystem_dfa.adb:235:16: info: implicit terminating annotation on "IsBetween" has been proved, subprogram will terminate
 heatingsystem_dfa.adb:243:14: info: data dependencies proved
 heatingsystem_dfa.adb:245:45: info: initialization of "Indicator.Outputs" proved
 heatingsystem_dfa.adb:248:14: info: flow dependencies proved

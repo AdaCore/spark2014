@@ -1,8 +1,12 @@
+x86.ads:19:13: info: implicit terminating annotation on "ReadMem8" has been proved, subprogram will terminate
 x86.ads:20:06: info: data dependencies proved
 x86.ads:21:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:23:13: info: implicit terminating annotation on "ReadMem16" has been proved, subprogram will terminate
 x86.ads:24:06: info: data dependencies proved
 x86.ads:25:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:28:13: info: implicit terminating annotation on "ReadMem32" has been proved, subprogram will terminate
 x86.ads:29:06: info: data dependencies proved
 x86.ads:30:14: info: postcondition proved (CVC5: 1 VC)
+x86.ads:34:13: info: implicit terminating annotation on "ReadMem32_v2" has been proved, subprogram will terminate
 x86.ads:35:06: info: data dependencies proved
 x86.ads:36:14: info: postcondition proved (CVC5: 1 VC)

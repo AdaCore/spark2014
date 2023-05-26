@@ -1,3 +1,4 @@
 p1.ads:3:08: info: flow dependencies proved
+p1.ads:5:13: info: implicit terminating annotation on "Read_From_State" has been proved, subprogram will terminate
 p2.adb:4:04: info: initialization of "Hidden_Var" constituent of "State" proved
 p2.ads:5:08: info: flow dependencies proved

@@ -1,16 +1,21 @@
 ext.ads:6:13: error: object was moved at line 10
 ext.ads:6:13: error: return from "F" with moved value for "C"
+ext.ads:6:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test_access.adb:11:19: info: assertion proved (CVC5: 1 VC)
 test_access.adb:11:21: info: pointer dereference check proved (CVC5: 1 VC)
 test_access.adb:14:31: info: pointer dereference check proved (CVC5: 1 VC)
 test_access.adb:16:29: info: data dependencies proved
 test_access.adb:17:30: medium: predicate check might fail
 test_access.adb:26:13: info: function contract might not be available on calls from enclosing unit
+test_access.adb:26:13: info: implicit terminating annotation on "F_Obs" has been proved, subprogram will terminate
 test_access.adb:27:14: info: postcondition proved (CVC5: 1 VC)
 test_access.adb:27:27: info: pointer dereference check proved (CVC5: 1 VC)
+test_access.adb:33:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
 test_access.adb:33:77: info: dynamic accessibility check proved (Trivial)
+test_access.adb:38:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
 test_access.adb:38:85: info: dynamic accessibility check proved (Trivial)
 test_access.adb:43:13: info: function contract might not be available on calls from enclosing unit
+test_access.adb:43:13: info: implicit terminating annotation on "F_Bor" has been proved, subprogram will terminate
 test_access.adb:44:14: info: postcondition proved (CVC5: 1 VC)
 test_access.adb:44:36: info: pointer dereference check proved (CVC5: 1 VC)
 test_access.adb:44:52: info: pointer dereference check proved (CVC5: 1 VC)
@@ -59,17 +64,13 @@ test_access_constraints.adb:42:16: info: length check proved (CVC5: 3 VC; Trivia
 test_access_constraints.adb:42:19: medium: length check might fail [reason for check: array must be of the appropriate length]
 test_access_constraints.adb:42:19: medium: range check might fail
 test_access_ownership_error.adb:19:08: error: object was observed at line 17
-test_access_ownership_error.adb:23:42: warning: assuming "F_Obs" always returns
 test_access_ownership_error.adb:23:42: warning: assuming "F_Obs" has no effect on global items
 test_access_ownership_error.adb:23:42: warning: no Global contract available for "F_Obs"
-test_access_ownership_error.adb:23:42: warning: no returning annotation available for "F_Obs"
 test_access_ownership_error.adb:25:08: error: object was observed at line 23
 test_access_ownership_error.adb:26:08: error: object was observed at line 23
 test_access_ownership_error.adb:34:08: error: object was borrowed at line 32
-test_access_ownership_error.adb:40:31: warning: assuming "F_Bor" always returns
 test_access_ownership_error.adb:40:31: warning: assuming "F_Bor" has no effect on global items
 test_access_ownership_error.adb:40:31: warning: no Global contract available for "F_Bor"
-test_access_ownership_error.adb:40:31: warning: no returning annotation available for "F_Bor"
 test_access_ownership_error.adb:42:08: error: object was borrowed at line 39
 test_access_ownership_error.adb:43:10: error: object was borrowed at line 40
 test_access_ownership_error.adb:44:08: error: object was borrowed at line 39
@@ -82,10 +83,8 @@ test_access_violation.adb:29:21: info: no contextual analysis of "F" (body not s
 test_access_violation.adb:30:26: error: "Access" attribute of a type with ownership not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
 test_access_violation.adb:31:21: error: Access attribute of a named access-to-constant type whose prefix is not a constant part of an object is not allowed in SPARK
 test_access_violation.adb:31:21: error: violation of aspect SPARK_Mode at line 1
-test_access_violation.adb:32:18: warning: assuming "F" always returns
 test_access_violation.adb:32:18: warning: assuming "F" has no effect on global items
 test_access_violation.adb:32:18: warning: no Global contract available for "F"
-test_access_violation.adb:32:18: warning: no returning annotation available for "F"
 test_access_violation.adb:38:24: error: Access attribute of a named access-to-constant type whose prefix is not a constant part of an object is not allowed in SPARK
 test_access_violation.adb:38:24: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

@@ -16,7 +16,7 @@ is
 
    function Is_Null (A : Pool_Specific_Access) return Boolean with
      Global => null,
-     Post => False, --@POSTCONDITION:FAIL
+     Post => False, --POSTCONDITION:FAIL
      Annotate => (GNATprove, Ownership, "Is_Reclaimed");
 
    function Is_Null (A : Pool_Specific_Access) return Boolean is

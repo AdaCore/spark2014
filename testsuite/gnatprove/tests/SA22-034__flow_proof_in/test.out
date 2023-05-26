@@ -1,1 +1,2 @@
+test.ads:12:13: info: implicit terminating annotation on "Root" has been proved, subprogram will terminate, in instantiation at instance.ads:7
 test.ads:21:15: info: postcondition proved (Trivial: 1 VC), in instantiation at instance.ads:7

@@ -2,5 +2,6 @@ foo.adb:2:16: info: initialization of "C" proved
 foo.adb:4:04: info: data dependencies proved
 foo.adb:5:04: info: flow dependencies proved
 foo.adb:8:13: info: implicit function contract might not be available on calls from enclosing unit
+foo.adb:8:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 foo.adb:9:07: info: data dependencies proved
 foo.adb:13:09: medium: precondition might fail [possible fix: subprogram at line 1 should mention B in a precondition]

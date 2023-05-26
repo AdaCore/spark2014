@@ -125,26 +125,74 @@ event_processing.ads:52:08: info: initialization of "If_LAPPR_Capture_Cond_Met_S
 event_processing.ads:53:08: info: initialization of "If_ALTSEL_Capture_Cond_Met_Seen" proved
 event_processing.ads:54:08: info: initialization of "If_ALTSEL_Track_Cond_Met_Seen" proved
 event_processing.ads:55:08: info: initialization of "If_VAPPR_Capture_Cond_Met_Seen" proved
+flight_modes.adb:149:13: info: implicit terminating annotation on "FD_Turn_FD_On" has been proved, subprogram will terminate
+flight_modes.adb:151:13: info: implicit terminating annotation on "FD_Turn_FD_Off" has been proved, subprogram will terminate
+flight_modes.adb:153:13: info: implicit terminating annotation on "FD_Lateral_Mode_Manually_Selected" has been proved, subprogram will terminate
+flight_modes.adb:155:13: info: implicit terminating annotation on "FD_Vertical_Mode_Manually_Selected" has been proved, subprogram will terminate
+flight_modes.adb:157:13: info: implicit terminating annotation on "ANNUNCIATIONS_Turn_Annunciations_On" has been proved, subprogram will terminate
+flight_modes.adb:159:13: info: implicit terminating annotation on "ANNUNCIATIONS_Turn_Annunciations_Off" has been proved, subprogram will terminate
+flight_modes.adb:161:13: info: implicit terminating annotation on "INDEPENDENT_In_Independent_Mode" has been proved, subprogram will terminate
+flight_modes.adb:163:13: info: implicit terminating annotation on "ACTIVE_In_Active_Mode" has been proved, subprogram will terminate
+flight_modes.adb:165:13: info: implicit terminating annotation on "LATERAL_HDG_Select" has been proved, subprogram will terminate
+flight_modes.adb:167:13: info: implicit terminating annotation on "LATERAL_HDG_Clear" has been proved, subprogram will terminate
 flight_modes.adb:169:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:169:13: info: implicit terminating annotation on "LATERAL_HDG_Will_Be_Activated" has been proved, subprogram will terminate
 flight_modes.adb:169:13: info: local subprogram "LATERAL_HDG_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:171:13: info: implicit terminating annotation on "LATERAL_NAV_Select" has been proved, subprogram will terminate
+flight_modes.adb:173:13: info: implicit terminating annotation on "LATERAL_NAV_Capture" has been proved, subprogram will terminate
+flight_modes.adb:175:13: info: implicit terminating annotation on "LATERAL_NAV_Clear" has been proved, subprogram will terminate
 flight_modes.adb:177:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:177:13: info: implicit terminating annotation on "LATERAL_NAV_Will_Be_Activated" has been proved, subprogram will terminate
 flight_modes.adb:177:13: info: local subprogram "LATERAL_NAV_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:179:13: info: implicit terminating annotation on "LATERAL_LAPPR_Select" has been proved, subprogram will terminate
+flight_modes.adb:181:13: info: implicit terminating annotation on "LATERAL_LAPPR_Capture" has been proved, subprogram will terminate
+flight_modes.adb:183:13: info: implicit terminating annotation on "LATERAL_LAPPR_Clear" has been proved, subprogram will terminate
 flight_modes.adb:185:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:185:13: info: implicit terminating annotation on "LATERAL_LAPPR_Will_Be_Activated" has been proved, subprogram will terminate
 flight_modes.adb:185:13: info: local subprogram "LATERAL_LAPPR_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:187:13: info: implicit terminating annotation on "LATERAL_LGA_Select" has been proved, subprogram will terminate
+flight_modes.adb:189:13: info: implicit terminating annotation on "LATERAL_LGA_Clear" has been proved, subprogram will terminate
 flight_modes.adb:191:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:191:13: info: implicit terminating annotation on "LATERAL_LGA_Will_Be_Activated" has been proved, subprogram will terminate
 flight_modes.adb:191:13: info: local subprogram "LATERAL_LGA_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:195:13: info: implicit terminating annotation on "LATERAL_Lateral_Mode_Active" has been proved, subprogram will terminate
+flight_modes.adb:197:13: info: implicit terminating annotation on "LATERAL_New_Lateral_Mode_Activated" has been proved, subprogram will terminate
+flight_modes.adb:199:13: info: implicit terminating annotation on "VERTICAL_VS_Select" has been proved, subprogram will terminate
+flight_modes.adb:201:13: info: implicit terminating annotation on "VERTICAL_VS_Clear" has been proved, subprogram will terminate
 flight_modes.adb:203:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:203:13: info: implicit terminating annotation on "VERTICAL_VS_Will_Be_Activated" has been proved, subprogram will terminate
 flight_modes.adb:203:13: info: local subprogram "VERTICAL_VS_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:205:13: info: implicit terminating annotation on "VERTICAL_FLC_Select" has been proved, subprogram will terminate
+flight_modes.adb:207:13: info: implicit terminating annotation on "VERTICAL_FLC_Clear" has been proved, subprogram will terminate
 flight_modes.adb:209:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:209:13: info: implicit terminating annotation on "VERTICAL_FLC_Will_Be_Activated" has been proved, subprogram will terminate
 flight_modes.adb:209:13: info: local subprogram "VERTICAL_FLC_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:211:13: info: implicit terminating annotation on "VERTICAL_ALT_Select" has been proved, subprogram will terminate
+flight_modes.adb:213:13: info: implicit terminating annotation on "VERTICAL_ALT_Clear" has been proved, subprogram will terminate
 flight_modes.adb:215:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:215:13: info: implicit terminating annotation on "VERTICAL_ALT_Will_Be_Activated" has been proved, subprogram will terminate
 flight_modes.adb:215:13: info: local subprogram "VERTICAL_ALT_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:217:13: info: implicit terminating annotation on "VERTICAL_VAPPR_Select" has been proved, subprogram will terminate
+flight_modes.adb:219:13: info: implicit terminating annotation on "VERTICAL_VAPPR_Capture" has been proved, subprogram will terminate
+flight_modes.adb:221:13: info: implicit terminating annotation on "VERTICAL_VAPPR_Clear" has been proved, subprogram will terminate
 flight_modes.adb:223:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:223:13: info: implicit terminating annotation on "VERTICAL_VAPPR_Will_Be_Activated" has been proved, subprogram will terminate
 flight_modes.adb:223:13: info: local subprogram "VERTICAL_VAPPR_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:225:13: info: implicit terminating annotation on "VERTICAL_VGA_Select" has been proved, subprogram will terminate
+flight_modes.adb:227:13: info: implicit terminating annotation on "VERTICAL_VGA_Clear" has been proved, subprogram will terminate
 flight_modes.adb:229:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:229:13: info: implicit terminating annotation on "VERTICAL_VGA_Will_Be_Activated" has been proved, subprogram will terminate
 flight_modes.adb:229:13: info: local subprogram "VERTICAL_VGA_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:231:13: info: implicit terminating annotation on "VERTICAL_ALTSEL_Select" has been proved, subprogram will terminate
+flight_modes.adb:233:13: info: implicit terminating annotation on "VERTICAL_ALTSEL_Capture" has been proved, subprogram will terminate
+flight_modes.adb:235:13: info: implicit terminating annotation on "VERTICAL_ALTSEL_Track" has been proved, subprogram will terminate
+flight_modes.adb:237:13: info: implicit terminating annotation on "VERTICAL_ALTSEL_Deactivate" has been proved, subprogram will terminate
+flight_modes.adb:239:13: info: implicit terminating annotation on "VERTICAL_ALTSEL_Clear" has been proved, subprogram will terminate
 flight_modes.adb:241:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:241:13: info: implicit terminating annotation on "VERTICAL_ALTSEL_Will_Be_Activated" has been proved, subprogram will terminate
 flight_modes.adb:241:13: info: local subprogram "VERTICAL_ALTSEL_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:245:13: info: implicit terminating annotation on "VERTICAL_New_Vertical_Mode_Activated" has been proved, subprogram will terminate
+flight_modes.adb:247:13: info: implicit terminating annotation on "VERTICAL_Vertical_Mode_Active" has been proved, subprogram will terminate
 flight_modes.adb:535:43: warning: unused assignment
 flight_modes.adb:536:43: warning: unused assignment
 flight_modes.adb:537:45: warning: unused assignment

@@ -829,6 +829,9 @@ the postcondition of ``Search_List_Max``:
 .. literalinclude:: /examples/ug__search_access_list_max/test.out
    :language: none
 
+The loop variants state that the length of ``B`` is strictly
+decreasing. This is used to prove that the loop terminates.
+
 For more complex
 examples of search loops, see the :ref:`SPARK Tutorial` as well as the section
 on :ref:`How to Write Loop Invariants`.

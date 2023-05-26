@@ -1,1 +1,3 @@
+repr.adb:7:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
+repr.adb:8:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 repr.adb:21:19: medium: assertion might fail

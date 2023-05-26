@@ -1,6 +1,7 @@
 caller.ads:4:09: error: type aspect on type derived from a private type is not yet supported
 callers_caller.adb:6:07: info: initialization of "R" proved
 callers_caller.adb:8:22: medium: assertion might fail
+callers_caller.ads:6:13: info: implicit terminating annotation on "Add3" has been proved, subprogram will terminate
 callers_caller.ads:8:14: warning: subprogram "Test2" has no effect
 dic.adb:3:04: high: "G" is not initialized
 dic.adb:3:04: info: initialization of "B" proved
@@ -8,6 +9,10 @@ dic.adb:11:58: medium: overflow check might fail, cannot prove lower bound for R
 dic.adb:13:63: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Par.Y >= 0 then Par.X <= Integer'Last - Par.Y else Par.X >= Integer'First - Par.Y) to subprogram at dic.ads:24]
 dic.adb:17:14: medium: overflow check might fail, cannot prove lower bound for A.X + A.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dic.ads:26 should mention A in a precondition]
 dic.ads:9:09: medium: default initial condition might fail
+dic.ads:18:13: info: implicit terminating annotation on "Gimme_A_Pr_T" has been proved, subprogram will terminate
+dic.ads:20:13: info: implicit terminating annotation on "Evaluate" has been proved, subprogram will terminate
+dic.ads:22:13: info: implicit terminating annotation on "Add" has been proved, subprogram will terminate
+dic.ads:24:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
 dic.ads:45:04: medium: type "Pr_Liar_T" is not fully initialized
 dic2.adb:7:07: info: initialization of "T_Var" proved
 dic2.adb:8:07: info: initialization of "U_Var" proved
@@ -15,6 +20,8 @@ dic2.adb:9:07: info: initialization of "R_Var" proved
 dic2.adb:11:22: info: assertion proved (CVC5: 2 VC)
 dic2.ads:2:09: info: default initial condition proved (CVC5: 1 VC)
 dic2.ads:5:09: info: default initial condition proved (CVC5: 1 VC)
+dic2.ads:13:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
+dic2.ads:15:13: info: implicit terminating annotation on "Bar" has been proved, subprogram will terminate
 dic2.ads:17:14: warning: subprogram "Test" has no effect
 dic2.ads:20:28: info: in default value of private type at dic2.ads:2
 dic2.ads:20:28: info: range check proved (CVC5: 2 VC)
@@ -25,6 +32,8 @@ dic3.adb:8:07: info: initialization of "Y" proved
 dic3.adb:10:22: info: assertion proved (CVC5: 1 VC)
 dic3.ads:2:09: info: default initial condition proved (CVC5: 1 VC)
 dic3.ads:5:09: info: default initial condition proved (CVC5: 2 VC)
+dic3.ads:8:13: info: implicit terminating annotation on "To_Int" has been proved, subprogram will terminate
+dic3.ads:10:13: info: implicit terminating annotation on "To_Int" has been proved, subprogram will terminate
 dic3.ads:12:14: warning: subprogram "Test" has no effect
 dic3.ads:15:28: info: in default value of private type at dic3.ads:2
 dic3.ads:15:28: info: in default value of private type at dic3.ads:5

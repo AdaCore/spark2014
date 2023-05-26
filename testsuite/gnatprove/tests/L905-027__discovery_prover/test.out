@@ -4,5 +4,6 @@ segway.adb:38:33: info: loop invariant initialization proved (altergo: 1 VC)
 segway.adb:38:33: info: loop invariant preservation proved (altergo: 1 VC)
 segway.adb:40:13: info: precondition proved (altergo: 1 VC)
 segway.adb:42:13: info: precondition proved (altergo: 1 VC)
+segway.ads:16:13: info: implicit terminating annotation on "Speed_Is_Valid" has been proved, subprogram will terminate
 segway.ads:24:17: medium: postcondition might fail
 segway.ads:28:17: info: postcondition proved (altergo: 2 VC)

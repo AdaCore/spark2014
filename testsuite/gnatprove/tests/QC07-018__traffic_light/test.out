@@ -1,4 +1,5 @@
 traffic_lights.adb:46:20: info: predicate check proved (CVC5: 1 VC)
+traffic_lights.ads:28:13: info: implicit terminating annotation on "Valid_Combination" has been proved, subprogram will terminate
 traffic_lights.ads:46:07: info: predicate check proved on default value (CVC5: 1 VC)
 traffic_lights.ads:50:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 traffic_lights.ads:50:09: info: nontermination of task proved (CVC5: 1 VC)

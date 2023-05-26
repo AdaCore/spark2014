@@ -1,0 +1,1 @@
+gen.ads:8:13: info: implicit terminating annotation on "Ident" has been proved, subprogram will terminate, in instantiation at pack.ads:3

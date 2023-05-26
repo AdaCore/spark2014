@@ -145,7 +145,8 @@ package Why.Inter is
                           | Entry_Kind
                           | Named_Kind
                           | Type_Kind
-                          | Object_Kind;
+                          | Object_Kind
+                          | E_Exception;
    --  The one and only way to transform an Ada Entity to a Why identifier.
    --  However, sometimes the exact way differs between program and logic
    --  worlds. There is also a local and a global name of each identifier. The

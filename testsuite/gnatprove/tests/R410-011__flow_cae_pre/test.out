@@ -1,1 +1,2 @@
+other.ads:2:13: info: implicit terminating annotation on "Read_Hidden_CAE" has been proved, subprogram will terminate
 p.adb:3:20: warning: statement has no effect

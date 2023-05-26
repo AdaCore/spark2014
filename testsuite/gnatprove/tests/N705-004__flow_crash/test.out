@@ -13,8 +13,6 @@ very_longs.adb:61:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:63:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:64:48: info: index check proved (CVC5: 2 VC)
 very_longs.adb:65:48: info: index check proved (CVC5: 2 VC)
-very_longs.adb:67:21: warning: assuming "Shift_Right" always returns
-very_longs.adb:67:21: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:68:29: medium: array index check might fail [reason for check: value must be a valid index into the array]
 very_longs.adb:74:58: info: initialization of "Result" proved
 very_longs.adb:74:82: info: initialization of "Borrow" proved
@@ -80,8 +78,6 @@ very_longs.adb:204:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:206:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:207:48: info: index check proved (CVC5: 2 VC)
 very_longs.adb:208:48: info: index check proved (CVC5: 2 VC)
-very_longs.adb:210:21: warning: assuming "Shift_Right" always returns
-very_longs.adb:210:21: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:211:29: info: index check proved (CVC5: 2 VC)
 very_longs.adb:218:07: info: initialization of "Result" proved
 very_longs.adb:218:31: info: range check proved (CVC5: 2 VC)
@@ -113,8 +109,6 @@ very_longs.adb:262:61: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:262:65: info: index check proved (CVC5: 2 VC)
 very_longs.adb:264:37: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:264:41: info: index check proved (CVC5: 2 VC)
-very_longs.adb:265:27: warning: assuming "Shift_Right" always returns
-very_longs.adb:265:27: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:274:07: info: initialization of "Result" proved
 very_longs.adb:274:42: info: in default value at very_longs.adb:274
 very_longs.adb:274:42: info: overflow check proved (CVC5: 2 VC)
@@ -135,8 +129,6 @@ very_longs.adb:290:59: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:290:63: info: index check proved (CVC5: 2 VC)
 very_longs.adb:292:34: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:292:38: info: index check proved (CVC5: 2 VC)
-very_longs.adb:293:25: warning: assuming "Shift_Right" always returns
-very_longs.adb:293:25: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:295:44: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:295:44: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at very_longs.ads:59 should mention L in a precondition]
 very_longs.adb:307:15: info: range check proved (CVC5: 2 VC)
@@ -157,6 +149,7 @@ very_longs.adb:321:07: info: initialization of "J" proved
 very_longs.adb:322:07: info: initialization of "Q_Hat" proved
 very_longs.adb:323:07: info: initialization of "Current_Borrow" proved
 very_longs.adb:326:16: info: function contract might not be available on calls from enclosing unit
+very_longs.adb:326:16: info: implicit terminating annotation on "Get_MSD" has been proved, subprogram will terminate
 very_longs.adb:329:19: info: postcondition proved (CVC5: 2 VC)
 very_longs.adb:329:45: medium: array index check might fail [reason for check: value must be a valid index into the array]
 very_longs.adb:330:47: medium: overflow check might fail, cannot prove upper bound for Get_MSD'Result + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
@@ -172,9 +165,8 @@ very_longs.adb:340:35: info: loop invariant preservation proved (CVC5: 1 VC; Tri
 very_longs.adb:340:85: info: overflow check proved (CVC5: 4 VC)
 very_longs.adb:340:116: info: index check proved (CVC5: 4 VC)
 very_longs.adb:346:16: info: implicit function contract might not be available on calls from enclosing unit
+very_longs.adb:346:16: info: implicit terminating annotation on "Get_Shift_Distance" has been proved, subprogram will terminate
 very_longs.adb:353:30: info: unrolling loop
-very_longs.adb:354:27: warning: assuming "Shift_Left" always returns
-very_longs.adb:354:27: warning: no returning annotation available for "Shift_Left"
 very_longs.adb:362:56: info: initialization of "Result" proved
 very_longs.adb:364:11: info: flow dependencies proved
 very_longs.adb:365:60: medium: overflow check might fail, cannot prove upper bound for Number.Octet_Length + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
@@ -182,15 +174,9 @@ very_longs.adb:368:10: info: initialization of "New_Overflow" proved
 very_longs.adb:369:10: info: initialization of "Overflow_Mask" proved
 very_longs.adb:371:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:371:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:372:27: warning: assuming "Shift_Left" always returns
-very_longs.adb:372:27: warning: no returning annotation available for "Shift_Left"
 very_longs.adb:373:44: info: cannot unroll loop (too many loop iterations)
-very_longs.adb:374:29: warning: assuming "Shift_Right" always returns
-very_longs.adb:374:29: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:374:60: info: index check proved (CVC5: 2 VC)
 very_longs.adb:375:32: info: index check proved (CVC5: 2 VC)
-very_longs.adb:375:38: warning: assuming "Shift_Left" always returns
-very_longs.adb:375:38: warning: no returning annotation available for "Shift_Left"
 very_longs.adb:375:68: info: index check proved (CVC5: 2 VC)
 very_longs.adb:376:32: info: index check proved (CVC5: 2 VC)
 very_longs.adb:376:57: info: index check proved (CVC5: 2 VC)
@@ -198,33 +184,21 @@ very_longs.adb:379:47: info: index check proved (CVC5: 2 VC)
 very_longs.adb:385:11: info: flow dependencies proved
 very_longs.adb:388:10: info: initialization of "New_Overflow" proved
 very_longs.adb:389:10: info: initialization of "Overflow_Mask" proved
-very_longs.adb:391:27: warning: assuming "Shift_Left" always returns
-very_longs.adb:391:27: warning: no returning annotation available for "Shift_Left"
 very_longs.adb:392:44: info: cannot unroll loop (too many loop iterations)
-very_longs.adb:393:29: warning: assuming "Shift_Right" always returns
-very_longs.adb:393:29: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:393:60: info: index check proved (CVC5: 2 VC)
 very_longs.adb:394:32: info: index check proved (CVC5: 2 VC)
-very_longs.adb:394:38: warning: assuming "Shift_Left" always returns
-very_longs.adb:394:38: warning: no returning annotation available for "Shift_Left"
 very_longs.adb:394:68: info: index check proved (CVC5: 2 VC)
 very_longs.adb:395:32: info: index check proved (CVC5: 2 VC)
 very_longs.adb:395:57: info: index check proved (CVC5: 2 VC)
 very_longs.adb:403:11: info: flow dependencies proved
 very_longs.adb:406:10: info: initialization of "New_Overflow" proved
 very_longs.adb:407:10: info: initialization of "Overflow_Mask" proved
-very_longs.adb:409:27: warning: assuming "Shift_Right" always returns
-very_longs.adb:409:27: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:410:52: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:411:48: info: index check proved (CVC5: 2 VC)
 very_longs.adb:412:32: info: index check proved (CVC5: 2 VC)
-very_longs.adb:412:38: warning: assuming "Shift_Right" always returns
-very_longs.adb:412:38: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:412:69: info: index check proved (CVC5: 2 VC)
 very_longs.adb:413:32: info: index check proved (CVC5: 2 VC)
 very_longs.adb:413:57: info: index check proved (CVC5: 2 VC)
-very_longs.adb:413:63: warning: assuming "Shift_Left" always returns
-very_longs.adb:413:63: warning: no returning annotation available for "Shift_Left"
 very_longs.adb:420:11: info: data dependencies proved
 very_longs.adb:420:55: info: initialization of "Q_Hat" proved
 very_longs.adb:421:11: info: flow dependencies proved
@@ -255,8 +229,6 @@ very_longs.adb:455:10: info: initialization of "Future_Borrow" proved
 very_longs.adb:459:14: info: range check proved (CVC5: 2 VC)
 very_longs.adb:459:61: info: cannot unroll loop (dynamic loop bounds)
 very_longs.adb:460:59: info: index check proved (CVC5: 2 VC)
-very_longs.adb:461:22: warning: assuming "Shift_Right" always returns
-very_longs.adb:461:22: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:464:45: medium: overflow check might fail, cannot prove upper bound for J + Divisor_Index [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 447 should mention J in a precondition]
 very_longs.adb:464:61: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 447 should mention J in a precondition]
 very_longs.adb:469:29: info: overflow check proved (CVC5: 2 VC)
@@ -286,8 +258,6 @@ very_longs.adb:499:68: medium: array index check might fail [reason for check: r
 very_longs.adb:499:103: info: index check proved (CVC5: 2 VC)
 very_longs.adb:500:32: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:500:48: info: index check proved (CVC5: 2 VC)
-very_longs.adb:501:25: warning: assuming "Shift_Right" always returns
-very_longs.adb:501:25: warning: no returning annotation available for "Shift_Right"
 very_longs.adb:503:29: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:503:33: info: index check proved (CVC5: 2 VC)
 very_longs.adb:503:57: info: overflow check proved (CVC5: 2 VC)
@@ -316,8 +286,6 @@ very_longs.adb:555:07: info: initialization of "Digit" proved
 very_longs.adb:556:07: info: initialization of "Result" proved
 very_longs.adb:558:55: info: division check proved (CVC5: 1 VC)
 very_longs.adb:559:34: info: division check proved (CVC5: 1 VC)
-very_longs.adb:560:23: warning: assuming "Shift_Left" always returns
-very_longs.adb:560:23: warning: no returning annotation available for "Shift_Left"
 very_longs.adb:561:42: medium: array index check might fail [reason for check: value must be a valid index into the array]
 very_longs.adb:573:07: info: initialization of "Digit_Number" proved
 very_longs.adb:574:07: info: initialization of "Bit_Position" proved
@@ -325,24 +293,31 @@ very_longs.adb:575:07: info: initialization of "Digit" proved
 very_longs.adb:577:55: info: division check proved (CVC5: 1 VC)
 very_longs.adb:578:34: info: division check proved (CVC5: 1 VC)
 very_longs.adb:579:42: medium: array index check might fail [reason for check: value must be a valid index into the array]
-very_longs.adb:582:28: warning: assuming "Shift_Left" always returns
-very_longs.adb:582:28: warning: no returning annotation available for "Shift_Left"
-very_longs.adb:584:33: warning: assuming "Shift_Left" always returns
-very_longs.adb:584:33: warning: no returning annotation available for "Shift_Left"
 very_longs.adb:586:26: info: index check proved (CVC5: 2 VC)
+very_longs.ads:11:13: info: implicit terminating annotation on "Make_From_Natural" has been proved, subprogram will terminate
 very_longs.ads:13:16: info: postcondition proved (CVC5: 1 VC)
 very_longs.ads:15:55: info: initialization of "Result" proved
 very_longs.ads:15:79: info: initialization of "Valid" proved
 very_longs.ads:18:21: info: range check proved (CVC5: 2 VC)
 very_longs.ads:18:32: medium: overflow check might fail, cannot prove upper bound for 2*Result.Octet_Length [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+very_longs.ads:21:13: info: implicit terminating annotation on overriding operator "<" has been proved, subprogram will terminate
+very_longs.ads:25:13: info: implicit terminating annotation on overriding operator "<=" has been proved, subprogram will terminate
+very_longs.ads:29:13: info: implicit terminating annotation on overriding operator ">" has been proved, subprogram will terminate
+very_longs.ads:33:13: info: implicit terminating annotation on overriding operator ">=" has been proved, subprogram will terminate
+very_longs.ads:38:13: info: implicit terminating annotation on "Is_Zero" has been proved, subprogram will terminate
+very_longs.ads:41:13: info: implicit terminating annotation on "ModAdd" has been proved, subprogram will terminate
 very_longs.ads:44:16: info: postcondition proved (CVC5: 1 VC)
+very_longs.ads:47:13: info: implicit terminating annotation on "ModSubtract" has been proved, subprogram will terminate
 very_longs.ads:50:16: info: postcondition proved (CVC5: 1 VC)
+very_longs.ads:53:13: info: implicit terminating annotation on "ModMultiply" has been proved, subprogram will terminate
 very_longs.ads:56:16: info: postcondition proved (CVC5: 1 VC)
+very_longs.ads:59:13: info: implicit terminating annotation on overriding operator "*" has been proved, subprogram will terminate
 very_longs.ads:61:16: info: postcondition proved (CVC5: 1 VC)
 very_longs.ads:61:57: info: overflow check proved (CVC5: 2 VC)
 very_longs.ads:64:70: info: initialization of "Quotient" proved
 very_longs.ads:64:96: info: initialization of "Remainder" proved
 very_longs.ads:70:45: medium: overflow check might fail, cannot prove upper bound for 2*Divisor.Octet_Length [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+very_longs.ads:73:14: info: implicit terminating annotation on "Get_Bit" has been proved, subprogram will terminate
 very_longs.ads:76:08: info: flow dependencies proved
 very_longs.ads:87:10: info: range check proved (CVC5: 2 VC)
 very_longs.ads:91:67: info: index check proved (CVC5: 2 VC)

@@ -1,25 +1,33 @@
+p.adb:8:13: info: implicit terminating annotation on "CF1" has been proved, subprogram will terminate
+p.adb:9:13: info: implicit terminating annotation on "CF2" has been proved, subprogram will terminate
+p.adb:10:13: info: implicit terminating annotation on "CF3" has been proved, subprogram will terminate
+p.adb:11:13: info: implicit terminating annotation on "CF4" has been proved, subprogram will terminate
 p.adb:13:14: warning: subprogram "P1" has no effect
 p.adb:21:14: warning: subprogram "P2" has no effect
 p.adb:29:14: warning: subprogram "P3" has no effect
 p.adb:37:14: warning: subprogram "P4" has no effect
+p.ads:2:13: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
+p.ads:3:13: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
+p.ads:4:13: info: implicit terminating annotation on "F3" has been proved, subprogram will terminate
+p.ads:5:13: info: implicit terminating annotation on "F4" has been proved, subprogram will terminate
 Summary of SPARK analysis
 =========================
 
-------------------------------------------------------------------------------
-SPARK Analysis results        Total      Flow   Provers   Justified   Unproved
-------------------------------------------------------------------------------
-Data Dependencies                 .         .         .           .          .
-Flow Dependencies                 .         .         .           .          .
-Initialization                    .         .         .           .          .
-Non-Aliasing                      .         .         .           .          .
-Run-time Checks                   .         .         .           .          .
-Assertions                        .         .         .           .          .
-Functional Contracts              .         .         .           .          .
-LSP Verification                  .         .         .           .          .
-Termination                       .         .         .           .          .
-Concurrency                       .         .         .           .          .
-------------------------------------------------------------------------------
-Total                             .         .         .           .          .
+--------------------------------------------------------------------------------
+SPARK Analysis results        Total        Flow   Provers   Justified   Unproved
+--------------------------------------------------------------------------------
+Data Dependencies                 .           .         .           .          .
+Flow Dependencies                 .           .         .           .          .
+Initialization                    .           .         .           .          .
+Non-Aliasing                      .           .         .           .          .
+Run-time Checks                   .           .         .           .          .
+Assertions                        .           .         .           .          .
+Functional Contracts              .           .         .           .          .
+LSP Verification                  .           .         .           .          .
+Termination                       8           8         .           .          .
+Concurrency                       .           .         .           .          .
+--------------------------------------------------------------------------------
+Total                             8    8 (100%)         .           .          .
 
 
 max steps used for successful proof: 0
@@ -28,22 +36,15 @@ Analyzed 1 unit
 in unit p, 13 subprograms and packages out of 13 analyzed
   P at p.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
   P.CF1 at p.adb:8 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-effects on parameters and Global variables of P.CF1 fully established
   P.CF2 at p.adb:9 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-effects on parameters and Global variables of P.CF2 fully established
   P.CF3 at p.adb:10 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-effects on parameters and Global variables of P.CF3 fully established
   P.CF4 at p.adb:11 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-effects on parameters and Global variables of P.CF4 fully established
   P.F1 at p.ads:2 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-effects on parameters and Global variables of P.F1 fully established
   P.F2 at p.ads:3 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-effects on parameters and Global variables of P.F2 fully established
   P.F3 at p.ads:4 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-effects on parameters and Global variables of P.F3 fully established
   P.F4 at p.ads:5 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-effects on parameters and Global variables of P.F4 fully established
   P.P1 at p.adb:13 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
   P.P2 at p.adb:21 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
   P.P3 at p.adb:29 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
   P.P4 at p.adb:37 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
+

@@ -5,3 +5,6 @@ functional_imported.ads:6:03: info: flow dependencies proved
 functional_imported.ads:16:06: info: disjoint contract cases proved
 functional_imported.ads:16:06: info: complete contract cases proved
 functional_imported.ads:35:14: info: postcondition proved
+functional_imported.ads:39:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
+functional_imported.ads:41:13: info: implicit terminating annotation on "Max_Value_Seen" has been proved, subprogram will terminate
+functional_imported.ads:43:13: info: implicit terminating annotation on "Second_Max_Value_Seen" has been proved, subprogram will terminate

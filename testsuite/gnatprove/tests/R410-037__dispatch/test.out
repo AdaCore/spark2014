@@ -1,2 +1,4 @@
+priv_disp.ads:8:13: info: implicit terminating annotation on "Get_F" has been proved, subprogram will terminate
 priv_disp.ads:9:20: info: postcondition proved (CVC5: 1 VC)
 priv_disp.ads:9:20: medium: postcondition might fail, in inherited contract at priv_disp.ads:16
+priv_disp.ads:16:13: info: implicit terminating annotation on "Get_F" has been proved, subprogram will terminate

@@ -1,6 +1,7 @@
 initial_condition_illegal_2.ads:8:29: low: initialization of "Initial_Condition_Illegal_2.State" must be mentioned in the Initializes contract of "Initial_Condition_Illegal_2" (SPARK RM 7.1.5(9))
 initial_condition_illegal_2.ads:8:29: warning: no procedure exists that can initialize abstract state "Initial_Condition_Illegal_2.State"
 initial_condition_illegal_2.ads:10:08: info: initial condition proved (CVC5: 2 VC)
+initial_condition_illegal_2.ads:14:13: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
 initial_condition_illegal_2.ads:15:11: info: data dependencies proved
 initial_condition_illegal_3.adb:6:11: error:   body of unit "Initial_Condition_Illegal_3" elaborated
 initial_condition_illegal_3.adb:6:11: error:   procedure "Init" called at line 9

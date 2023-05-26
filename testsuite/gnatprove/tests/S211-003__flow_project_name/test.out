@@ -1,4 +1,5 @@
 os_arch.ads:8:07: error: "os_task_list.os_task_list_rw" is referenced in Post but missing from the Global
+os_task_list.ads:6:13: info: implicit terminating annotation on "os_ghost_task_list_is_well_formed" has been proved, subprogram will terminate
 os_task_list.ads:7:07: info: data dependencies proved
 os_task_list.ads:8:07: info: flow dependencies proved
 gnatprove: error during flow analysis and proof

@@ -1,5 +1,7 @@
 test_expon.adb:2:13: info: implicit function contract might not be available on calls from enclosing unit
+test_expon.adb:2:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_expon.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
+test_expon.adb:3:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_expon.adb:5:19: info: assertion proved (CVC5: 1 VC)
 test_expon.adb:6:19: info: assertion proved (Trivial: 1 VC)
 test_expon.adb:6:26: info: overflow check proved (CVC5: 2 VC)

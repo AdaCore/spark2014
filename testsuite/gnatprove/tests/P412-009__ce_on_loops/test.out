@@ -8,6 +8,7 @@ counter_example_loop_index.adb:25:33: high: loop invariant might not be preserve
 counter_example_loop_index.adb:25:33: info: loop invariant initialization proved (CVC5: 1 VC)
 counter_example_loop_index.adb:26:33: info: loop invariant initialization proved (Trivial: 1 VC)
 counter_example_loop_index.adb:26:33: info: loop invariant preservation proved (Trivial: 1 VC)
+counter_example_loop_index.adb:32:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 counter_example_loop_index.adb:41:04: warning: analyzing unreferenced procedure "P2"
 counter_example_loop_index.adb:41:14: warning: subprogram "P2" has no effect
 counter_example_loop_index.adb:46:33: info: loop invariant initialization proved (Trivial: 1 VC)

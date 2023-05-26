@@ -3,6 +3,7 @@ complex_trajectory.adb:14:46: info: range check proved (Trivial)
 complex_trajectory.adb:14:55: info: float overflow check proved (Trivial)
 complex_trajectory.adb:14:59: info: float overflow check proved (Trivial)
 complex_trajectory.adb:15:16: info: implicit function contract might not be available on calls from enclosing unit
+complex_trajectory.adb:15:16: info: implicit terminating annotation on "T" has been proved, subprogram will terminate
 complex_trajectory.adb:15:60: info: range check proved (Trivial)
 complex_trajectory.adb:18:22: info: float overflow check proved (colibri: 1 VC)
 complex_trajectory.adb:22:22: info: assertion proved (colibri: 2 VC)
@@ -149,10 +150,14 @@ complex_trajectory.adb:72:50: info: float overflow check proved (Trivial)
 complex_trajectory.adb:72:63: info: range check proved (Trivial)
 complex_trajectory.adb:72:68: info: float overflow check proved (Trivial)
 complex_trajectory.adb:72:76: info: float overflow check proved (Trivial)
+complex_trajectory.ads:19:13: info: implicit terminating annotation on "Low_Bound" has been proved, subprogram will terminate
 complex_trajectory.ads:19:63: info: range check proved (Trivial)
 complex_trajectory.ads:19:66: info: float overflow check proved (Trivial)
+complex_trajectory.ads:22:13: info: implicit terminating annotation on "High_Bound" has been proved, subprogram will terminate
 complex_trajectory.ads:22:64: info: range check proved (Trivial)
 complex_trajectory.ads:22:67: info: float overflow check proved (Trivial)
+complex_trajectory.ads:25:13: info: implicit terminating annotation on "In_Bounds" has been proved, subprogram will terminate
+complex_trajectory.ads:29:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
 complex_trajectory.ads:35:29: info: range check proved (Trivial)
 complex_trajectory.ads:35:32: info: float overflow check proved (Trivial)
 complex_trajectory.ads:35:45: info: range check proved (Trivial)
@@ -173,6 +178,7 @@ complex_trajectory_overflow.adb:14:46: info: range check proved (Trivial)
 complex_trajectory_overflow.adb:14:55: info: float overflow check proved (Trivial)
 complex_trajectory_overflow.adb:14:59: info: float overflow check proved (Trivial)
 complex_trajectory_overflow.adb:15:16: info: implicit function contract might not be available on calls from enclosing unit
+complex_trajectory_overflow.adb:15:16: info: implicit terminating annotation on "T" has been proved, subprogram will terminate
 complex_trajectory_overflow.adb:15:60: info: range check proved (Trivial)
 complex_trajectory_overflow.adb:18:22: info: float overflow check proved (colibri: 1 VC)
 complex_trajectory_overflow.adb:22:22: info: assertion proved (colibri: 2 VC)
@@ -229,10 +235,14 @@ complex_trajectory_overflow.adb:48:38: info: division check proved (CVC5: 1 VC)
 complex_trajectory_overflow.adb:48:38: info: float overflow check proved (Trivial)
 complex_trajectory_overflow.adb:49:28: info: float overflow check proved (colibri: 1 VC)
 complex_trajectory_overflow.adb:49:39: info: float overflow check proved (Trivial)
+complex_trajectory_overflow.ads:19:13: info: implicit terminating annotation on "Low_Bound" has been proved, subprogram will terminate
 complex_trajectory_overflow.ads:19:63: info: range check proved (Trivial)
 complex_trajectory_overflow.ads:19:66: info: float overflow check proved (Trivial)
+complex_trajectory_overflow.ads:22:13: info: implicit terminating annotation on "High_Bound" has been proved, subprogram will terminate
 complex_trajectory_overflow.ads:22:64: info: range check proved (Trivial)
 complex_trajectory_overflow.ads:22:67: info: float overflow check proved (Trivial)
+complex_trajectory_overflow.ads:25:13: info: implicit terminating annotation on "In_Bounds" has been proved, subprogram will terminate
+complex_trajectory_overflow.ads:29:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
 complex_trajectory_overflow.ads:38:32: info: initialization of "Average" proved
 complex_trajectory_overflow.ads:39:09: info: data dependencies proved
 complex_trajectory_overflow.ads:42:19: info: postcondition proved (CVC5: 1 VC)
@@ -242,6 +252,7 @@ simple_trajectory.adb:13:46: info: range check proved (Trivial)
 simple_trajectory.adb:13:55: info: float overflow check proved (Trivial)
 simple_trajectory.adb:13:59: info: float overflow check proved (Trivial)
 simple_trajectory.adb:14:16: info: implicit function contract might not be available on calls from enclosing unit
+simple_trajectory.adb:14:16: info: implicit terminating annotation on "T" has been proved, subprogram will terminate
 simple_trajectory.adb:14:60: info: range check proved (Trivial)
 simple_trajectory.adb:17:30: info: float overflow check proved (colibri: 1 VC)
 simple_trajectory.adb:21:22: info: assertion proved (colibri: 2 VC)
@@ -287,10 +298,14 @@ simple_trajectory.adb:38:55: info: float overflow check proved (Trivial)
 simple_trajectory.adb:39:22: info: assertion proved (Z3: 1 VC)
 simple_trajectory.adb:39:46: info: range check proved (Trivial)
 simple_trajectory.adb:39:51: info: float overflow check proved (Trivial)
+simple_trajectory.ads:19:13: info: implicit terminating annotation on "Low_Bound" has been proved, subprogram will terminate
 simple_trajectory.ads:19:63: info: range check proved (Trivial)
 simple_trajectory.ads:19:66: info: float overflow check proved (Trivial)
+simple_trajectory.ads:22:13: info: implicit terminating annotation on "High_Bound" has been proved, subprogram will terminate
 simple_trajectory.ads:22:64: info: range check proved (Trivial)
 simple_trajectory.ads:22:67: info: float overflow check proved (Trivial)
+simple_trajectory.ads:25:13: info: implicit terminating annotation on "In_Bounds" has been proved, subprogram will terminate
+simple_trajectory.ads:29:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
 simple_trajectory.ads:37:29: info: initialization of "New_Speed" proved
 simple_trajectory.ads:38:09: info: data dependencies proved
 simple_trajectory.ads:41:19: info: postcondition proved (altergo: 1 VC)

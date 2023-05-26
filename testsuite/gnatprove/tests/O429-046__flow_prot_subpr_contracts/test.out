@@ -3,6 +3,7 @@ prot.adb:15:33: medium: overflow check might fail, cannot prove lower bound for 
 prot.adb:15:37: medium: overflow check might fail, cannot prove lower bound for X + D - Visible [reason for check: result of subtraction must fit in a 32-bits machine integer]
 prot.adb:25:29: medium: overflow check might fail, cannot prove lower bound for Visible + Hidden [reason for check: result of addition must fit in a 32-bits machine integer]
 prot.adb:35:27: medium: overflow check might fail, cannot prove upper bound for Hidden + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+prot.ads:7:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 prot.ads:8:14: info: data dependencies proved
 prot.ads:11:14: info: data dependencies proved
 prot.ads:17:09: medium: the task might terminate, which is not allowed in SPARK

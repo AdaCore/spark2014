@@ -1,3 +1,4 @@
+finnuc.adb:25:13: info: implicit terminating annotation on "Boolean_To_Unsigned_8" has been proved, subprogram will terminate
 finnuc.adb:51:07: info: initialization of "Demux_out1" proved
 finnuc.adb:53:07: info: initialization of "Demux_out1_1" proved
 finnuc.adb:55:07: info: initialization of "Logical_Operator1_out1" proved
@@ -7,6 +8,11 @@ finnuc.adb:109:58: info: index check proved (CVC5: 2 VC)
 finnuc.adb:110:58: info: index check proved (CVC5: 2 VC)
 finnuc.adb:140:64: info: index check proved (CVC5: 2 VC)
 finnuc.adb:141:64: info: index check proved (CVC5: 2 VC)
+finnuc.ads:15:13: info: implicit terminating annotation on "R_1" has been proved, subprogram will terminate
+finnuc.ads:20:13: info: implicit terminating annotation on "R_2" has been proved, subprogram will terminate
+finnuc.ads:26:13: info: implicit terminating annotation on "R_3" has been proved, subprogram will terminate
+finnuc.ads:33:13: info: implicit terminating annotation on "R_4" has been proved, subprogram will terminate
+finnuc.ads:38:13: info: implicit terminating annotation on "R_5" has been proved, subprogram will terminate
 finnuc.ads:49:07: info: initialization of "A" proved
 finnuc.ads:50:07: info: initialization of "B" proved
 finnuc.ads:51:07: info: initialization of "OldA" proved

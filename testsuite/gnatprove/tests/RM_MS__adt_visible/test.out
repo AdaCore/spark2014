@@ -2,5 +2,7 @@ stacks_14.adb:17:42: high: range check might fail, cannot prove upper bound for 
 stacks_14.adb:18:23: info: index check proved (CVC5: 2 VC)
 stacks_14.adb:23:28: high: array index check might fail (e.g. when S = (Stack_Vector => (others => 0), Stack_Pointer => 0)) [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks_14.ads:19 should mention S in a precondition]
 stacks_14.adb:24:42: info: range check proved (CVC5: 2 VC)
+stacks_14.ads:14:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
+stacks_14.ads:15:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
 stacks_14.ads:17:20: info: initialization of "S" proved
 stacks_14.ads:19:36: info: initialization of "X" proved

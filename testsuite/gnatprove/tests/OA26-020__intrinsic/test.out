@@ -1,2 +1,3 @@
+import_intrinsic.ads:4:13: info: implicit terminating annotation on "Create" has been proved, subprogram will terminate
 use_intrinsic.adb:6:19: info: assertion proved (CVC5: 1 VC)
 use_intrinsic.adb:7:19: medium: assertion might fail

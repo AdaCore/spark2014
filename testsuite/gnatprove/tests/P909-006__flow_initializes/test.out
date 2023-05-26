@@ -1,2 +1,3 @@
 main.adb:5:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention State.V in a precondition]
+proxy.ads:1:10: info: implicit terminating annotation on "Proxy" has been proved, subprogram will terminate
 state.ads:1:20: info: flow dependencies proved

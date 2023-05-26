@@ -26,15 +26,18 @@ concurrency_example.ads:9:09: high: task "concurrency_example.writer" accesses "
 concurrency_example.ads:9:09: info: nontermination of task proved (CVC5: 1 VC)
 concurrency_example_fixed.adb:32:07: info: initialization of "Value" proved
 concurrency_example_fixed.adb:41:25: medium: assertion might fail [possible fix: loop at line 35 should mention Value in a loop invariant]
+concurrency_example_fixed.ads:8:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 concurrency_example_fixed.ads:14:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 concurrency_example_fixed.ads:14:09: info: nontermination of task proved (CVC5: 1 VC)
 concurrency_example_fixed.ads:15:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 concurrency_example_fixed.ads:15:09: info: nontermination of task proved (CVC5: 1 VC)
+counter_example.adb:3:13: info: implicit terminating annotation on "Pick_Last" has been proved, subprogram will terminate
 counter_example.adb:3:82: info: index check proved (CVC5: 2 VC)
 counter_example.adb:13:10: warning: unreachable code (CVC5: 1 VC)
 counter_example.adb:13:22: info: predicate check proved (CVC5: 1 VC)
 counter_example.adb:15:22: medium: predicate check might fail [possible fix: subprogram at counter_example.ads:14 should mention Cat1 in a precondition]
 counter_example.ads:12:72: info: index check proved (CVC5: 2 VC)
+counter_example.ads:14:13: info: implicit terminating annotation on "Get_Best_Item" has been proved, subprogram will terminate
 ghost_example.adb:11:10: warning: unreachable code (CVC5: 1 VC)
 ghost_example.adb:20:10: warning: unreachable code (CVC5: 1 VC)
 ghost_example.adb:32:10: warning: unreachable code (CVC5: 1 VC)
@@ -48,3 +51,4 @@ ghost_example.ads:11:32: info: initialization of "Done" proved
 ghost_example.ads:13:14: info: postcondition proved (CVC5: 1 VC)
 ghost_example.ads:13:40: warning: unreachable branch (CVC5: 1 VC)
 ghost_example.ads:16:14: info: postcondition proved (CVC5: 1 VC)
+ghost_example.ads:19:13: info: implicit terminating annotation on "Cur_State" has been proved, subprogram will terminate

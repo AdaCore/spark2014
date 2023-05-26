@@ -1,1 +1,2 @@
+p.adb:5:14: info: implicit terminating annotation on "Blah" has been proved, subprogram will terminate
 p.adb:7:19: info: assertion proved (CVC5: 1 VC)

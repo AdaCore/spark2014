@@ -28,9 +28,7 @@ ext3.ads:19:09: error: limited view of type "T1" coming from limited with is not
 ext3.ads:21:57: error: "T1_Acc" is not allowed in SPARK
 ext3.ads:21:57: error: violation of aspect SPARK_Mode at line 2
 ext3.ads:23:32: warning: Program_Error will be raised at run time
-ext3.ads:23:32: warning: assuming "Create" always returns
 ext3.ads:23:32: warning: assuming "Create" has no effect on global items
 ext3.ads:23:32: warning: cannot call "Create" before body seen
 ext3.ads:23:32: warning: no Global contract available for "Create"
-ext3.ads:23:32: warning: no returning annotation available for "Create"
 gnatprove: error during flow analysis and proof

@@ -112,7 +112,8 @@ package AIP.PCBs is
    --  PCB_Heads denotes the heads of each PCB list to be considered
    --  PCB_Pool is the set of all PCBs, indexed by PCB Id.
    with
-     Global => null;
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
 
    procedure Find_PCB_In_List
      (Local_IP    : IPaddrs.IPaddr;
@@ -126,7 +127,8 @@ package AIP.PCBs is
    --  Same as above but search a single list whose head is PCB_Head. Wildcard
    --  counts how many items (0, 1 or 2) were a wildcard match.
    with
-     Global => null;
+     Global   => null,
+     Annotate => (GNATprove, Always_Return);
 
    procedure Prepend
      (PCB      : PCB_Id;

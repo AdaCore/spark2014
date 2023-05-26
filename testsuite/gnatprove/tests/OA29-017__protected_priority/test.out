@@ -1,4 +1,5 @@
 bad.ads:5:13: info: implicit function contract might not be available on calls from enclosing unit
+bad.ads:5:13: info: implicit terminating annotation on "Too_Big" has been proved, subprogram will terminate
 bad.ads:6:32: medium: range check might fail, cannot prove upper bound for Too_Big
 interrupt_priority.adb:6:20: info: overflow check proved (CVC5: 2 VC)
 interrupt_priority.ads:7:24: info: range check proved (CVC5: 2 VC)

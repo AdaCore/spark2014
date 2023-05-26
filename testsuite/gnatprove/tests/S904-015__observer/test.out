@@ -1,5 +1,7 @@
+traversal_funcs.adb:9:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 traversal_funcs.adb:13:16: info: pointer dereference check proved (CVC5: 1 VC)
 traversal_funcs.adb:15:14: info: dynamic accessibility check proved (Trivial)
+traversal_funcs.adb:18:13: info: implicit terminating annotation on "Next_2" has been proved, subprogram will terminate
 traversal_funcs.adb:19:35: info: precondition proved (Trivial: 1 VC)
 traversal_funcs.adb:21:29: info: precondition proved (Trivial: 1 VC)
 traversal_funcs.adb:21:36: info: pointer dereference check proved (CVC5: 1 VC)

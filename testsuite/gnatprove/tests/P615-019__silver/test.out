@@ -17,6 +17,7 @@ contracts.adb:33:07: info: precondition proved (CVC5: 1 VC)
 contracts.adb:34:14: info: overflow check proved (CVC5: 2 VC)
 contracts.adb:34:14: info: range check proved (CVC5: 2 VC)
 discriminant_check.adb:12:04: warning: analyzing unreferenced function "Get_X"
+discriminant_check.adb:12:13: info: implicit terminating annotation on "Get_X" has been proved, subprogram will terminate
 discriminant_check.adb:14:15: medium: discriminant check might fail [possible fix: subprogram at line 12 should mention R in a precondition]
 discriminant_check.adb:17:04: warning: analyzing unreferenced procedure "Set_X"
 discriminant_check.adb:19:08: medium: discriminant check might fail [possible fix: subprogram at line 17 should mention R in a precondition]
@@ -44,6 +45,7 @@ division_by_zero.adb:37:49: info: initialization of "U" proved
 division_by_zero.adb:39:14: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 37]
 division_by_zero.adb:39:14: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at line 37 should mention X and Y in a precondition]
 index_check.adb:3:04: warning: analyzing unreferenced function "Get"
+index_check.adb:3:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 index_check.adb:5:16: high: array index check might fail (e.g. when J = 1 and S'First = 2 and S'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in Positive) to subprogram at line 3]
 index_check.adb:8:04: warning: analyzing unreferenced procedure "Set"
 index_check.adb:10:09: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in S'First .. S'Last) to subprogram at line 8]

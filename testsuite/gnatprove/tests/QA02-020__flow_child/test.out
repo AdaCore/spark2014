@@ -1,3 +1,4 @@
 p-child.adb:4:16: high: "P.State" must be listed in the Refined_Global aspect of "Flip" (SPARK RM 6.1.4(15))
 p.ads:3:08: info: flow dependencies proved
+p.ads:6:13: info: implicit terminating annotation on "Read_Secret" has been proved, subprogram will terminate
 p.ads:6:45: info: data dependencies proved

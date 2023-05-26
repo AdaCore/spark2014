@@ -631,6 +631,8 @@ package body Gnat2Why.Error_Messages is
             return "contract cases might not be disjoint";
          when VC_Complete_Contract_Cases   =>
             return "contract cases might not be complete";
+         when VC_Exceptional_Case             =>
+            return "exceptional case might fail";
          when VC_Loop_Invariant            =>
             return "loop invariant might fail";
          when VC_Loop_Invariant_Init       =>
@@ -683,7 +685,7 @@ package body Gnat2Why.Error_Messages is
                      pragma Assert (False);
                end case;
             end if;
-            return "exception might be raised";
+            return "unexpected exception might be raised";
          when VC_Feasible_Post             =>
             return "contract of function might not be feasible";
          when VC_Inline_Check              =>
@@ -1634,6 +1636,8 @@ package body Gnat2Why.Error_Messages is
             return "disjoint contract cases " & Verb;
          when VC_Complete_Contract_Cases   =>
             return "complete contract cases " & Verb;
+         when VC_Exceptional_Case          =>
+            return "exceptional case " & Verb;
          when VC_Loop_Invariant            =>
             return "loop invariant " & Verb;
          when VC_Loop_Invariant_Init       =>
@@ -1669,7 +1673,7 @@ package body Gnat2Why.Error_Messages is
                      pragma Assert (False);
                end case;
             end if;
-            return "raise statement or expression " & Verb & " unreachable";
+            return Prefix & "only expected exception raised";
          when VC_Feasible_Post             =>
             return "function contract feasibility " & Verb;
          when VC_Inline_Check              =>

@@ -24,8 +24,10 @@ skp-subjects.adb:422:22: info: assertion proved (Z3: 1 VC)
 skp-subjects.adb:422:53: info: division check proved (Z3: 1 VC)
 skp-subjects.adb:427:10: info: assertion proved (Z3: 1 VC)
 skp-subjects.adb:428:50: info: division check proved (Z3: 1 VC)
+skp-subjects.ads:44:13: info: implicit terminating annotation on "Get_PML4_Address" has been proved, subprogram will terminate
 skp-subjects.ads:48:07: info: data dependencies proved
 skp-subjects.ads:49:17: info: postcondition proved (Z3: 1 VC)
 skp-subjects.ads:49:42: info: division check proved (Z3: 1 VC)
+skp-subjects.ads:51:13: info: implicit terminating annotation on "Get_Event" has been proved, subprogram will terminate
 skp-subjects.ads:56:07: info: data dependencies proved
 skp-subjects.ads:57:17: info: postcondition proved (Z3: 1 VC)

@@ -1,1 +1,2 @@
 prot.adb:10:24: medium: overflow check might fail, cannot prove lower bound for Val + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at prot.ads:7 should mention X in a precondition]
+prot.ads:8:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate

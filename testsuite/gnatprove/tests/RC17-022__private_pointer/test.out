@@ -6,7 +6,11 @@ private_pointer.adb:13:29: info: precondition proved (CVC5: 1 VC)
 private_pointer.adb:14:14: info: precondition proved (CVC5: 1 VC)
 private_pointer.adb:15:22: info: assertion proved (CVC5: 1 VC)
 private_pointer.adb:15:29: info: precondition proved (CVC5: 1 VC)
+private_pointer.ads:5:16: info: implicit terminating annotation on "Is_Null" has been proved, subprogram will terminate
+private_pointer.ads:6:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+private_pointer.ads:8:16: info: implicit terminating annotation on "Uninit_Alloc" has been proved, subprogram will terminate
 private_pointer.ads:9:17: info: postcondition proved (altergo: 1 VC)
+private_pointer.ads:10:16: info: implicit terminating annotation on "Init_Alloc" has been proved, subprogram will terminate
 private_pointer.ads:11:17: info: postcondition proved (CVC5: 2 VC)
 private_pointer.ads:11:53: info: precondition proved (CVC5: 1 VC)
 private_pointer.ads:14:17: info: postcondition proved (CVC5: 2 VC)

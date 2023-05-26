@@ -1,1 +1,2 @@
+saturate.adb:2:10: info: implicit terminating annotation on "Saturate" has been proved, subprogram will terminate
 saturate.adb:4:16: high: postcondition might fail (e.g. when Saturate'Result = 3840)

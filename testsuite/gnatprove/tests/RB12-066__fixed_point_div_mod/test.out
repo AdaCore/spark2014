@@ -1,14 +1,18 @@
+types.ads:5:13: info: implicit terminating annotation on "Div_OK" has been proved, subprogram will terminate
 types.ads:6:12: info: division check proved (CVC5: 1 VC)
 types.ads:6:12: info: overflow check proved (CVC5: 1 VC)
 types.ads:6:12: info: range check proved (CVC5: 1 VC)
+types.ads:9:13: info: implicit terminating annotation on "Div_KO1" has been proved, subprogram will terminate
 types.ads:10:12: info: division check proved (CVC5: 1 VC)
 types.ads:10:12: info: overflow check proved (CVC5: 1 VC)
 types.ads:10:12: info: range check proved (CVC5: 1 VC)
 types.ads:10:12: medium: range check might fail (e.g. when X = 2 and Y = 1/128) [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition (X / Y in M) to subprogram at line 9]
+types.ads:15:13: info: implicit terminating annotation on "Div_KO2" has been proved, subprogram will terminate
 types.ads:16:13: info: division check proved (CVC5: 1 VC)
 types.ads:16:13: info: overflow check proved (CVC5: 1 VC)
 types.ads:16:13: info: range check proved (CVC5: 2 VC)
 types.ads:16:13: medium: range check might fail, cannot prove upper bound for X / Y (e.g. when X = 101/128 and Y = 1/128) [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition (X / Y in M2) to subprogram at line 15]
+types.ads:21:13: info: implicit terminating annotation on "Div_KO3" has been proved, subprogram will terminate
 types.ads:22:13: info: division check proved (CVC5: 1 VC)
 types.ads:22:13: info: overflow check proved (CVC5: 2 VC)
 types.ads:22:13: info: range check proved (CVC5: 2 VC)

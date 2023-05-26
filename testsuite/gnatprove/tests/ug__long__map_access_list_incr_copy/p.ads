@@ -15,7 +15,6 @@ is
      Ghost,
      Import,
      Global   => null,
-     Annotate => (GNATprove, Always_Return),
      Post     => For_All_List (L, Copy'Result, Equal'Access);
 
    procedure Map_List_Incr (L : access List_Cell) with

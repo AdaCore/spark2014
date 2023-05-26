@@ -21,6 +21,7 @@ s.adb:53:42: info: index check proved (CVC5: 4 VC)
 s.adb:53:63: info: index check proved (CVC5: 4 VC)
 s.adb:55:43: info: index check proved (CVC5: 4 VC)
 s.adb:55:64: info: index check proved (CVC5: 4 VC)
+s.ads:7:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 s.ads:8:14: info: postcondition proved (CVC5: 2 VC)
 s.ads:11:14: warning: subprogram "Test_Index" has no effect
 s.ads:13:20: medium: "Dest" might not be initialized in "Move" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Dest" on all paths, make "Dest" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]

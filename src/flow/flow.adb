@@ -545,7 +545,7 @@ package body Flow is
       Print_Node_Set (A.Variables_Used);
 
       Write_Str ("Subprograms_Called: ");
-      Print_Node_Set (A.Subprograms_Called);
+      Print_Node_Set (To_Subprograms (A.Subprogram_Calls));
 
       Write_Str ("Variables_Explicitly_Used: ");
       Print_Node_Set (A.Variables_Explicitly_Used);
@@ -1044,12 +1044,12 @@ package body Flow is
             Write_Str ("}");
          end if;
 
-         if not A.Subprograms_Called.Is_Empty then
+         if not A.Subprogram_Calls.Is_Empty then
             Write_Str ("\nSC: {");
             declare
                First : Boolean := True;
             begin
-               for E of A.Subprograms_Called loop
+               for E of To_Subprograms (A.Subprogram_Calls) loop
                   if First then
                      First := False;
                   else

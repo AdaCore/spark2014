@@ -1,7 +1,9 @@
 foo.adb:5:13: info: add a contract to analyze it separately from calling contexts
+foo.adb:5:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
 foo.adb:5:13: info: local subprogram "Foo" only analyzed in the context of calls
 foo.adb:9:22: info: division check proved (CVC5: 1 VC), in call inlined at foo.adb:26
 foo.adb:9:22: info: division check proved (CVC5: 1 VC), in call inlined at foo.adb:44
+foo.adb:13:13: info: implicit terminating annotation on "Bar" has been proved, subprogram will terminate
 foo.adb:14:09: info: data dependencies proved
 foo.adb:18:22: info: division check proved (CVC5: 1 VC)
 foo.adb:23:23: info: initialization of "B" proved

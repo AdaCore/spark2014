@@ -1,3 +1,4 @@
 subtype_check.ads:2:13: info: implicit function contract might not be available on calls from enclosing unit
+subtype_check.ads:2:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 subtype_check.ads:6:12: info: range check proved (CVC5: 2 VC)
 subtype_check.ads:14:24: medium: range check might fail, cannot prove lower bound for -1

@@ -1,8 +1,12 @@
 p.adb:16:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:4 should mention X in a precondition]
 p.adb:24:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:6 should mention X in a precondition]
 p.adb:31:07: info: initialization of "L" proved
+p.adb:34:07: medium: implicit terminating annotation on "F1" could be incorrect, call to "Op1" might be nonterminating
 p.adb:40:07: info: initialization of "L" proved
+p.ads:10:13: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
 p2.adb:9:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p2.ads:4 should mention X in a precondition]
 p2.adb:17:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p2.ads:6 should mention X in a precondition]
 p2.adb:24:07: info: initialization of "L" proved
+p2.adb:27:07: medium: implicit terminating annotation on "F1" could be incorrect, call to "Op1" might be nonterminating
 p2.adb:33:07: info: initialization of "L" proved
+p2.ads:10:13: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate

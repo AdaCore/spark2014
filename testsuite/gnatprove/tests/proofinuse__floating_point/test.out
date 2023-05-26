@@ -194,6 +194,8 @@ floating_point.ads:19:59: info: initialization of "Res" proved
 floating_point.ads:22:56: info: initialization of "Res" proved
 floating_point.ads:27:36: info: initialization of "Res" proved
 floating_point.ads:30:52: info: initialization of "Res" proved
+floating_point.ads:33:13: info: implicit terminating annotation on "Float_To_Long_Float" has been proved, subprogram will terminate
+floating_point.ads:48:13: info: implicit terminating annotation on "Approximate_Inverse_Square_Root" has been proved, subprogram will terminate
 floating_point.ads:55:29: info: initialization of "Res" proved
 floating_point.ads:64:27: info: initialization of "Res" proved
 floating_point.ads:67:27: info: initialization of "Res" proved

@@ -1,2 +1,3 @@
 generic_instance.adb:11:22: info: assertion proved (CVC5: 1 VC)
+generic_instance.ads:15:13: info: implicit terminating annotation on "P" has been proved, subprogram will terminate
 generic_instance.ads:17:14: warning: subprogram "Test" has no effect

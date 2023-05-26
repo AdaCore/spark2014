@@ -3,3 +3,8 @@ func_return.adb:17:16: high: range check might fail, cannot prove lower bound fo
 func_return.adb:22:17: high: range check might fail, cannot prove lower bound for G (e.g. when G = -1) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at func_return.ads:10 should mention G in a precondition]
 func_return.adb:27:14: high: range check might fail, cannot prove lower bound for T(G) (e.g. when G = -1) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at func_return.ads:11 should mention G in a precondition]
 func_return.adb:27:16: high: range check might fail, cannot prove lower bound for G (e.g. when G = -21) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at func_return.ads:11 should mention G in a precondition]
+func_return.ads:7:13: info: implicit terminating annotation on "FI" has been proved, subprogram will terminate
+func_return.ads:8:13: info: implicit terminating annotation on "FN" has been proved, subprogram will terminate
+func_return.ads:9:13: info: implicit terminating annotation on "FT" has been proved, subprogram will terminate
+func_return.ads:10:13: info: implicit terminating annotation on "FNT" has been proved, subprogram will terminate
+func_return.ads:11:13: info: implicit terminating annotation on "FS" has been proved, subprogram will terminate

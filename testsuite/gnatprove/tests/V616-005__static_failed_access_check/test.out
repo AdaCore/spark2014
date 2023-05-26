@@ -1,6 +1,8 @@
+carver.ads:19:14: info: implicit terminating annotation on "Make_Carved_Array" has been proved, subprogram will terminate, in instantiation at carver_test.adb:9
 carver.ads:20:38: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at carver_test.adb:9
 carver.ads:20:55: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at carver_test.adb:9
 carver.ads:20:71: info: range check proved (CVC5: 1 VC), in instantiation at carver_test.adb:9
+carver.ads:22:14: info: implicit terminating annotation on "Make_Carved_Array" has been proved, subprogram will terminate, in instantiation at carver_test.adb:9
 carver.ads:24:55: high: null exclusion check might fail, in instantiation at carver_test.adb:9
 carver.ads:24:55: warning: (Ada 2005) "null" not allowed in null-excluding component
 carver.ads:24:55: warning: Constraint_Error will be raised at run time

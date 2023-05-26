@@ -10,6 +10,7 @@ is
       Left_Index  := Item'First;
       Right_Index := Item'Last;
       loop
+         pragma Loop_Variant (Increases => Left_Index);
          exit when Left_Index >= Right_Index or else
                    Item (Right_Index) /= Item (Left_Index);
          Left_Index  := Left_Index + 1;

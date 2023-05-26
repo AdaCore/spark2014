@@ -1,3 +1,4 @@
+repro.ads:9:13: info: implicit terminating annotation on "Contrainte1" has been proved, subprogram will terminate
 repro.ads:14:24: warning: unused initial value of "sortie1"
 repro.ads:15:24: warning: unused initial value of "sortie2"
 repro.ads:17:13: info: postcondition proved (CVC5: 1 VC)

@@ -8,7 +8,9 @@ processing.ads:13:22: error: violation of aspect SPARK_Mode at line 4
 processing.ads:13:22: error: violation of aspect SPARK_Mode at line 4
 raw_data.adb:30:40: info: initialization of "Last_Read" constituent of "State" proved
 raw_data.ads:4:08: info: flow dependencies proved
+raw_data.ads:6:13: info: implicit terminating annotation on "Data_Is_Valid" has been proved, subprogram will terminate
 raw_data.ads:8:11: info: data dependencies proved
+raw_data.ads:10:13: info: implicit terminating annotation on "Get_Value" has been proved, subprogram will terminate
 raw_data.ads:12:11: info: data dependencies proved
 raw_data.ads:15:11: info: data dependencies proved
 raw_data.ads:16:11: info: flow dependencies proved

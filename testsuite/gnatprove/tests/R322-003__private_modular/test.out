@@ -1,8 +1,11 @@
+mod_subtypes.ads:7:13: info: implicit terminating annotation on "Even" has been proved, subprogram will terminate
 mod_subtypes.ads:7:52: info: division check proved (CVC5: 1 VC)
 mod_subtypes.ads:15:13: info: implicit function contract might not be available on calls from enclosing unit
+mod_subtypes.ads:15:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 mod_subtypes.ads:17:31: info: predicate check proved (CVC5: 1 VC)
 mod_subtypes.ads:18:38: info: predicate check proved (CVC5: 1 VC)
 mod_subtypes.ads:19:29: info: range check proved (CVC5: 2 VC)
 mod_subtypes.ads:19:29: medium: predicate check might fail (e.g. when A = 2 and B = My_Sub'Last and C = 0)
 mod_types.ads:15:13: info: implicit function contract might not be available on calls from enclosing unit
+mod_types.ads:15:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 mod_types.ads:21:19: medium: assertion might fail (e.g. when A = 2 and B = My_Mod'Last and C = 0)

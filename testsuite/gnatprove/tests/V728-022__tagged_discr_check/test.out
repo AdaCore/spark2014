@@ -1,1 +1,2 @@
+main.adb:7:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:24:11: medium: discriminant check might fail [possible fix: subprogram at line 7 should mention R in a precondition]

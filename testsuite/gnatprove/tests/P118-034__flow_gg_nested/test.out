@@ -80,7 +80,9 @@ Generated contracts for Nested
       Nested.State_A
 nested.adb:15:28: info: initialization of "Helper_1.H_1" proved
 nested.adb:16:10: info: flow dependencies proved
+nested.adb:18:19: info: implicit terminating annotation on "Check" has been proved, subprogram will terminate
 nested.adb:37:47: info: initialization of "Helper_2.H_2" proved
+nested.adb:40:19: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 nested.adb:61:47: warning: no procedure exists that can initialize abstract state "Helper_3.H_3"
 nested.adb:65:25: info: initialization of "X" proved
 nested.adb:65:28: info: initialization of "Y" proved

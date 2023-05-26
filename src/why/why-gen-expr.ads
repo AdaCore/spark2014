@@ -174,6 +174,9 @@ package Why.Gen.Expr is
    function New_Or_Pred (Left, Right : W_Pred_Id) return W_Pred_Id is
      (+New_Or_Expr (+Left, +Right, EW_Pred));
 
+   function New_Or_Prog (Left, Right : W_Prog_Id) return W_Prog_Id is
+     (+New_Or_Expr (+Left, +Right, EW_Prog));
+
    function New_Or_Expr
      (Left, Right : W_Expr_Id;
       Domain      : EW_Domain;

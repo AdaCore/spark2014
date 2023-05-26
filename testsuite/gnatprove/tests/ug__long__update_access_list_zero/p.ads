@@ -9,7 +9,6 @@ is
      Ghost,
      Import,
      Global   => null,
-     Annotate => (GNATprove, Always_Return),
      Post     => For_All_List (L, Copy'Result, Equal'Access);
 
    function Updated_If_Less_Than_Threshold
@@ -23,7 +22,6 @@ is
               else L2.Value = L1.Value)
          and then Updated_If_Less_Than_Threshold (L1.Next, L2.Next, Threshold)))
    with
-     Annotate => (GNATprove, Always_Return),
      Subprogram_Variant => (Structural => L1);
 
    procedure Update_List_Zero (L : access List_Cell; Threshold : Component_T) with

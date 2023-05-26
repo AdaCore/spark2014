@@ -1,10 +1,14 @@
+ho_lemmas.adb:9:06: warning: Always_Return annotation is useless
+ho_lemmas.adb:9:06: warning: function "Rand" has implicit Always_Return annotation
+ho_lemmas.adb:13:13: info: implicit function contract might not be available on calls from enclosing unit
 ho_lemmas.adb:13:32: info: function contract feasibility proved (CVC5: 1 VC)
 ho_lemmas.adb:14:09: info: pointer dereference check proved (CVC5: 1 VC)
+ho_lemmas.adb:14:09: medium: implicit terminating annotation on "Call" could be incorrect, call via access-to-subprogram might be nonterminating
 ho_lemmas.adb:19:37: info: function contract feasibility proved (CVC5: 1 VC)
-ho_lemmas.adb:22:14: info: implicit function contract not available for proof ("Call" might not return)
 ho_lemmas.adb:22:14: info: postcondition proved (CVC5: 1 VC)
 ho_lemmas.adb:22:20: info: null exclusion check proved (CVC5: 1 VC)
 ho_lemmas.adb:22:27: info: pointer dereference check proved (CVC5: 1 VC)
+ho_lemmas.adb:27:13: info: implicit terminating annotation on "Read_V" has been proved, subprogram will terminate
 ho_lemmas.adb:29:04: info: initialization of "I" proved
 ho_lemmas.adb:38:22: medium: assertion might fail (e.g. when I = -1)
 ho_lemmas.adb:46:22: info: assertion proved (CVC5: 1 VC)

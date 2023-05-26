@@ -1,4 +1,6 @@
 over.adb:18:22: info: assertion proved (CVC5: 1 VC)
+over.ads:3:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 over.ads:4:20: info: postcondition proved (CVC5: 1 VC)
+over.ads:5:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 over.ads:5:16: warning: unused variable "Z"
 over.ads:7:14: warning: subprogram "G" has no effect

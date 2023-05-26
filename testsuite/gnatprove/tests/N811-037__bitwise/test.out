@@ -1,4 +1,5 @@
 x86.adb:6:29: info: range check proved (CVC5: 2 VC)
+x86.ads:11:13: info: implicit terminating annotation on "DL" has been proved, subprogram will terminate
 x86.ads:12:06: info: data dependencies proved
 x86.ads:13:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:13:42: info: range check proved (CVC5: 2 VC)

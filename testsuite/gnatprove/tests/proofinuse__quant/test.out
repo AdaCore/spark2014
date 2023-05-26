@@ -1,3 +1,4 @@
+quantifiers.adb:6:13: info: implicit terminating annotation on "All_Zero" has been proved, subprogram will terminate
 quantifiers.adb:7:14: info: postcondition proved (CVC5: 1 VC)
 quantifiers.adb:17:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 quantifiers.adb:25:22: info: assertion proved (altergo: 1 VC)

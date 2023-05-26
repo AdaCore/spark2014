@@ -1,5 +1,7 @@
+ext.ads:4:16: info: implicit terminating annotation on "Same_Discrs" has been proved, subprogram will terminate
 mutable_discrs.adb:7:25: info: range check proved (CVC5: 1 VC)
 mutable_discrs.adb:9:13: info: implicit function contract might not be available on calls from enclosing unit
+mutable_discrs.adb:9:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 mutable_discrs.adb:14:04: info: range check proved (CVC5: 2 VC)
 mutable_discrs.adb:21:04: warning: initialization of "Y" has no effect
 mutable_discrs.adb:21:13: info: discriminant check proved (CVC5: 1 VC)
@@ -28,4 +30,6 @@ mutable_discrs.adb:30:04: warning: statement has no effect
 mutable_discrs.adb:30:20: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 mutable_discrs.adb:30:20: warning: "A" is set by "Do_Something_3" but not used after the call
 mutable_discrs.adb:31:19: medium: assertion might fail
+tagged_type.adb:7:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
+tagged_type.adb:13:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 tagged_type.adb:20:19: info: assertion proved (CVC5: 1 VC)

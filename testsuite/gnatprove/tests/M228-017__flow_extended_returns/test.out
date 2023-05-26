@@ -6,3 +6,6 @@ extended_returns.adb:10:19: info: discriminant check proved (CVC5: 1 VC)
 extended_returns.adb:12:19: info: discriminant check proved (CVC5: 1 VC)
 extended_returns.adb:13:19: info: discriminant check proved (CVC5: 1 VC)
 extended_returns.adb:22:14: info: initialization of "X" proved
+extended_returns.ads:17:13: info: implicit terminating annotation on "Init_Record" has been proved, subprogram will terminate
+extended_returns.ads:21:13: info: implicit terminating annotation on "Ret_Int" has been proved, subprogram will terminate
+extended_returns.ads:24:13: info: implicit terminating annotation on "Simple_Extended" has been proved, subprogram will terminate

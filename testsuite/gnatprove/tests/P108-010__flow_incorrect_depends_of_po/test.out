@@ -1,5 +1,6 @@
 p.ads:4:14: medium: missing dependency "null => PO_Type"
 p.ads:4:26: medium: incorrect dependency "PO_Type => PO_Type"
+p.ads:6:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 user.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
 user.adb:4:04: info: initialization of "Tmp" proved
 user.adb:9:19: medium: assertion might fail

@@ -1,6 +1,9 @@
+foo.ads:9:13: info: implicit terminating annotation on "Get_State" has been proved, subprogram will terminate
 foo.ads:11:07: info: data dependencies proved
+foo.ads:14:13: info: implicit terminating annotation on "Check" has been proved, subprogram will terminate
 foo.ads:14:20: warning: unused variable "S"
 foo.ads:16:07: info: data dependencies proved
 foo.ads:16:27: low: unused global "Foo.State"
+foo.ads:19:13: info: implicit terminating annotation on "Valid" has been proved, subprogram will terminate
 main.adb:5:14: warning: subprogram "Run" has no effect
 main.adb:8:15: info: postcondition proved (CVC5: 1 VC)

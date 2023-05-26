@@ -1,9 +1,13 @@
 test_iterable.ads:6:07: info: range check proved (CVC5: 2 VC)
 test_iterable.ads:11:13: info: during checks for quantification at test_iterable.ads:5
+test_iterable.ads:11:13: info: implicit terminating annotation on "My_First" has been proved, subprogram will terminate
 test_iterable.ads:11:13: info: precondition proved (Trivial: 1 VC)
 test_iterable.ads:13:13: info: during checks for quantification at test_iterable.ads:5
+test_iterable.ads:13:13: info: implicit terminating annotation on "My_Has_Element" has been proved, subprogram will terminate
 test_iterable.ads:13:13: info: precondition proved (Trivial: 1 VC)
 test_iterable.ads:15:13: info: during checks for quantification at test_iterable.ads:5
+test_iterable.ads:15:13: info: implicit terminating annotation on "My_Next" has been proved, subprogram will terminate
 test_iterable.ads:15:13: info: precondition proved (Trivial: 1 VC)
 test_iterable.ads:16:52: info: overflow check proved (CVC5: 2 VC)
+test_iterable.ads:17:13: info: implicit terminating annotation on "All_Zeros" has been proved, subprogram will terminate
 test_iterable.ads:18:42: info: index check proved (CVC5: 2 VC)

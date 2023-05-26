@@ -1,6 +1,9 @@
+test.adb:3:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test.adb:8:10: medium: postcondition might fail, cannot prove Res = X + 1 (e.g. when F'Result = 0 and X = 0)
 test.adb:8:18: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 test.adb:9:18: info: overflow check proved (CVC5: 2 VC)
+test.adb:11:13: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
 test.adb:17:10: medium: postcondition might fail, cannot prove Res = X + 2 (e.g. when G'Result = 0 and X = 0)
 test.adb:17:18: medium: overflow check might fail, cannot prove upper bound for X + 2 (e.g. when X = Integer'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+test.adb:19:13: info: implicit terminating annotation on "H" has been proved, subprogram will terminate
 test.adb:21:07: info: postcondition proved (CVC5: 1 VC)

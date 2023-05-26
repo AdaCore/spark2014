@@ -1,3 +1,4 @@
+p.adb:3:10: info: implicit terminating annotation on "P" has been proved, subprogram will terminate
 p.adb:5:04: warning: pragma Overflow_Mode in code is ignored
 p.adb:8:30: info: loop invariant initialization proved (CVC5: 1 VC)
 p.adb:8:30: info: loop invariant preservation proved (CVC5: 1 VC)

@@ -1,3 +1,9 @@
+very_longs.adb:15:08: warning: Always_Return annotation is useless
+very_longs.adb:15:08: warning: function "Shift_Right" has implicit Always_Return annotation
+very_longs.adb:24:08: warning: Always_Return annotation is useless
+very_longs.adb:24:08: warning: function "Shift_Left" has implicit Always_Return annotation
+very_longs.adb:32:08: warning: Always_Return annotation is useless
+very_longs.adb:32:08: warning: function "Shift_Right" has implicit Always_Return annotation
 very_longs.adb:36:54: info: initialization of "Digit" proved
 very_longs.adb:36:73: info: initialization of "Valid" proved
 very_longs.adb:37:11: info: flow dependencies proved
@@ -147,6 +153,7 @@ very_longs.adb:361:42: info: range check proved (CVC5: 2 VC)
 very_longs.adb:362:07: info: initialization of "Q_Hat" proved
 very_longs.adb:363:07: info: initialization of "Current_Borrow" proved
 very_longs.adb:367:16: info: implicit function contract might not be available on calls from enclosing unit
+very_longs.adb:367:16: info: implicit terminating annotation on "Get_Shift_Distance" has been proved, subprogram will terminate
 very_longs.adb:373:30: info: unrolling loop
 very_longs.adb:383:33: info: initialization of "Result" proved
 very_longs.adb:385:11: info: flow dependencies proved
@@ -264,14 +271,25 @@ very_longs.adb:572:11: info: range check proved (CVC5: 2 VC)
 very_longs.adb:572:58: info: cannot unroll loop (dynamic loop bounds)
 very_longs.adb:573:32: info: index check proved (CVC5: 2 VC)
 very_longs.adb:573:64: info: index check proved (CVC5: 2 VC)
+very_longs.ads:12:13: info: implicit terminating annotation on "Make_From_Natural" has been proved, subprogram will terminate
 very_longs.ads:14:20: info: postcondition proved (CVC5: 1 VC)
 very_longs.ads:17:36: info: initialization of "Result" proved
 very_longs.ads:18:36: info: initialization of "Valid" proved
 very_longs.ads:20:10: info: flow dependencies proved
 very_longs.ads:21:23: info: range check proved (CVC5: 2 VC)
+very_longs.ads:24:13: info: implicit terminating annotation on overriding operator "<" has been proved, subprogram will terminate
+very_longs.ads:27:13: info: implicit terminating annotation on overriding operator "<=" has been proved, subprogram will terminate
+very_longs.ads:30:13: info: implicit terminating annotation on overriding operator ">" has been proved, subprogram will terminate
+very_longs.ads:33:13: info: implicit terminating annotation on overriding operator ">=" has been proved, subprogram will terminate
+very_longs.ads:37:13: info: implicit terminating annotation on "Is_Zero" has been proved, subprogram will terminate
+very_longs.ads:40:13: info: implicit terminating annotation on "Number_Of_Digits" has been proved, subprogram will terminate
+very_longs.ads:43:13: info: implicit terminating annotation on "ModAdd" has been proved, subprogram will terminate
 very_longs.ads:46:18: info: postcondition proved (CVC5: 1 VC)
+very_longs.ads:49:13: info: implicit terminating annotation on "ModSubtract" has been proved, subprogram will terminate
 very_longs.ads:52:18: info: postcondition proved (CVC5: 1 VC)
+very_longs.ads:55:13: info: implicit terminating annotation on "ModMultiply" has been proved, subprogram will terminate
 very_longs.ads:58:18: info: postcondition proved (CVC5: 1 VC)
+very_longs.ads:61:13: info: implicit terminating annotation on overriding operator "*" has been proved, subprogram will terminate
 very_longs.ads:62:19: info: postcondition proved (CVC5: 1 VC)
 very_longs.ads:67:22: info: initialization of "Quotient" proved
 very_longs.ads:68:22: info: initialization of "Remainder" proved

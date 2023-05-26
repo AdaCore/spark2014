@@ -1,0 +1,27 @@
+test_leaks.adb:12:31: info: initialization of "Y" proved
+test_leaks.adb:13:14: info: postcondition proved (CVC5: 1 VC)
+test_leaks.adb:19:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_leaks.adb:23:19: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_leaks.adb:23:19: info: when an exception is raised at test_leaks.adb:28
+test_leaks.adb:30:30: info: pointer dereference check proved (CVC5: 1 VC)
+test_leaks.adb:36:24: info: pointer dereference check proved (CVC5: 1 VC)
+test_leaks.adb:48:31: info: initialization of "Y" proved
+test_leaks.adb:49:14: info: postcondition proved (CVC5: 1 VC)
+test_leaks.adb:55:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_leaks.adb:55:13: medium: resource or memory leak might occur at end of scope
+test_leaks.adb:55:13: medium: when an exception is raised at test_leaks.adb:57
+test_leaks.adb:59:19: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_leaks.adb:59:19: info: when an exception is raised at test_leaks.adb:64
+test_leaks.adb:66:30: info: pointer dereference check proved (CVC5: 1 VC)
+test_leaks.adb:72:24: info: pointer dereference check proved (CVC5: 1 VC)
+test_leaks.adb:87:31: info: initialization of "Y" proved
+test_leaks.adb:88:14: info: postcondition proved (CVC5: 1 VC)
+test_leaks.adb:94:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_leaks.adb:94:13: medium: resource or memory leak might occur at end of scope
+test_leaks.adb:94:13: medium: when an exception is raised at test_leaks.adb:96
+test_leaks.adb:98:19: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_leaks.adb:98:19: info: when an exception is raised at test_leaks.adb:103
+test_leaks.adb:98:19: medium: resource or memory leak might occur at end of scope
+test_leaks.adb:98:19: medium: when an exception is raised at test_leaks.adb:106
+test_leaks.adb:108:30: info: pointer dereference check proved (CVC5: 1 VC)
+test_leaks.adb:114:24: info: pointer dereference check proved (CVC5: 1 VC)

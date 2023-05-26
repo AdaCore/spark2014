@@ -1,2 +1,3 @@
 refi.adb:7:07: info: no contextual analysis of "Recurse" (multiple returns)
 refi.adb:7:17: warning: subprogram "Recurse" has no effect
+refi.ads:3:13: info: implicit terminating annotation on "Arguments_From" has been proved, subprogram will terminate

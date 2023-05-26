@@ -1,4 +1,4 @@
 p.adb:1:11: warning: file name does not match unit name, should be "test.adb"
 p.adb:1:11: warning: subprogram "Test" has no effect
 p.adb:5:07: info: pointer dereference check proved (CVC5: 1 VC)
-p.adb:5:07: medium: call via access-to-subprogram, terminating annotation could be incorrect
+p.adb:5:07: medium: terminating annotation on "Test" could be incorrect, call via access-to-subprogram might be nonterminating

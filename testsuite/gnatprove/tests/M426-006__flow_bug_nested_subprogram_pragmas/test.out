@@ -1,5 +1,6 @@
 t3q5.adb:4:07: info: initialization of "Key" proved
 t3q5.adb:6:16: info: function contract might not be available on calls from enclosing unit
+t3q5.adb:6:16: info: implicit terminating annotation on "Find_Smallest" has been proved, subprogram will terminate
 t3q5.adb:10:23: info: postcondition proved (CVC5: 3 VC)
 t3q5.adb:11:82: info: index check proved (CVC5: 2 VC)
 t3q5.adb:17:10: info: initialization of "K" proved
@@ -18,8 +19,11 @@ t3q5.adb:59:66: info: index check proved (CVC5: 4 VC)
 t3q5.adb:59:81: info: index check proved (CVC5: 4 VC)
 t3q5.adb:59:81: info: overflow check proved (CVC5: 4 VC)
 t3q5.adb:60:94: info: index check proved (CVC5: 4 VC)
+t3q5.ads:11:13: info: implicit terminating annotation on "Ordered" has been proved, subprogram will terminate
 t3q5.ads:12:16: info: range check proved (CVC5: 2 VC)
 t3q5.ads:12:51: info: index check proved (CVC5: 2 VC)
 t3q5.ads:12:60: info: index check proved (CVC5: 2 VC)
 t3q5.ads:12:60: info: overflow check proved (CVC5: 2 VC)
+t3q5.ads:22:12: warning: Always_Return annotation is useless
+t3q5.ads:22:12: warning: function "Perm" has implicit Always_Return annotation
 t3q5.ads:49:20: info: postcondition proved (CVC5: 2 VC)

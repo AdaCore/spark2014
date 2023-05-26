@@ -1,4 +1,5 @@
 test.adb:4:13: info: add a contract to analyze it separately from calling contexts
+test.adb:4:13: info: implicit terminating annotation on "Double" has been proved, subprogram will terminate
 test.adb:4:13: info: local subprogram "Double" only analyzed in the context of calls
 test.adb:10:14: warning: subprogram "Tons_Of_Types" has no effect
 test.adb:14:43: info: analyzing call to "Double" in context

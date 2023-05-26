@@ -1,4 +1,5 @@
 ex.adb:4:13: info: add a contract to analyze it separately from calling contexts
+ex.adb:4:13: info: implicit terminating annotation on "Count" has been proved, subprogram will terminate
 ex.adb:4:13: info: local subprogram "Count" only analyzed in the context of calls
 ex.adb:11:30: info: overflow check proved (CVC5: 12 VC; Z3: 22 VC), in call inlined at ex.adb:20
 ex.adb:20:17: info: analyzing call to "Count" in context

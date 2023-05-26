@@ -1,3 +1,4 @@
+illegal_assign.adb:9:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
 illegal_assign.adb:28:13: error: object was borrowed at line 23
 illegal_assign.adb:29:08: error: object was borrowed at line 23
 illegal_assign.adb:37:08: error: object was observed at line 33

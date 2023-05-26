@@ -84,34 +84,45 @@ main.adb:65:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:77:06: info: data dependencies proved
 main.adb:83:59: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:92:54: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:93:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:94:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:95:16: info: implicit terminating annotation on "Bad_F" has been proved, subprogram will terminate
 main.adb:96:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:96:11: medium: in possible reconstructed values at the end of the borrow at main.adb:95
 main.adb:96:11: medium: predicate check might fail [possible fix: subprogram at line 95 should mention X in a precondition]
+main.adb:97:16: info: implicit terminating annotation on "Bad_F" has been proved, subprogram will terminate
 main.adb:98:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:98:11: medium: in possible reconstructed values at the end of the borrow at main.adb:97
 main.adb:98:11: medium: predicate check might fail [possible fix: subprogram at line 97 should mention X in a precondition]
 main.adb:107:30: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:107:55: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:107:58: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:116:16: info: implicit terminating annotation on "Bad_F" has been proved, subprogram will terminate
 main.adb:117:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:117:11: medium: in possible reconstructed values at the end of the borrow at main.adb:116
 main.adb:117:11: medium: predicate check might fail [possible fix: subprogram at line 116 should mention X in a precondition]
+main.adb:118:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:119:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:120:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:121:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:122:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:123:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:124:16: info: implicit terminating annotation on "Bad_F" has been proved, subprogram will terminate
 main.adb:125:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:125:11: medium: in possible reconstructed values at the end of the borrow at main.adb:124
 main.adb:125:11: medium: predicate check might fail [possible fix: subprogram at line 124 should mention X in a precondition]
 main.adb:125:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:126:16: info: implicit terminating annotation on "Bad_F" has been proved, subprogram will terminate
 main.adb:127:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:127:13: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:127:13: medium: in possible reconstructed values at the end of the borrow at main.adb:126
 main.adb:127:13: medium: predicate check might fail [possible fix: subprogram at line 126 should mention X in a precondition]
+main.adb:128:16: info: implicit terminating annotation on "Bad_F" has been proved, subprogram will terminate
 main.adb:129:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:129:13: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:129:13: medium: in possible reconstructed values at the end of the borrow at main.adb:128
 main.adb:129:13: medium: predicate check might fail [possible fix: subprogram at line 128 should mention X in a precondition]
+main.adb:130:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:131:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:131:13: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:141:30: info: pointer dereference check proved (CVC5: 1 VC)
@@ -119,68 +130,88 @@ main.adb:141:32: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:141:57: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:141:59: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:141:62: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:154:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:155:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:156:16: info: implicit terminating annotation on "Bad_F" has been proved, subprogram will terminate
 main.adb:157:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:157:11: medium: in possible reconstructed values at the end of the borrow at main.adb:156
 main.adb:157:11: medium: predicate check might fail [possible fix: subprogram at line 156 should mention X in a precondition]
+main.adb:158:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:159:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:160:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:161:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:162:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:163:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:164:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:165:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:165:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:166:16: info: implicit terminating annotation on "Bad_F" has been proved, subprogram will terminate
 main.adb:167:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:167:11: medium: in possible reconstructed values at the end of the borrow at main.adb:166
 main.adb:167:11: medium: predicate check might fail [possible fix: subprogram at line 166 should mention X in a precondition]
 main.adb:167:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:168:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:169:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:169:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:170:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:171:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:171:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:172:16: info: implicit terminating annotation on "Bad_F" has been proved, subprogram will terminate
 main.adb:173:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:173:13: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:173:13: medium: in possible reconstructed values at the end of the borrow at main.adb:172
 main.adb:173:13: medium: predicate check might fail [possible fix: subprogram at line 172 should mention X in a precondition]
+main.adb:174:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:175:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:175:13: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:175:15: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:176:16: info: implicit terminating annotation on "Bad_F" has been proved, subprogram will terminate
 main.adb:177:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:177:11: medium: in possible reconstructed values at the end of the borrow at main.adb:176
 main.adb:177:11: medium: predicate check might fail [possible fix: subprogram at line 176 should mention X in a precondition]
 main.adb:177:13: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:177:15: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:178:16: info: implicit terminating annotation on "Bad_F" has been proved, subprogram will terminate
 main.adb:179:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:179:13: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:179:15: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:179:15: medium: in possible reconstructed values at the end of the borrow at main.adb:178
 main.adb:179:15: medium: predicate check might fail [possible fix: subprogram at line 178 should mention X in a precondition]
+main.adb:180:16: info: implicit terminating annotation on "Bad_F" has been proved, subprogram will terminate
 main.adb:181:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:181:13: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:181:15: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:181:15: medium: in possible reconstructed values at the end of the borrow at main.adb:180
 main.adb:181:15: medium: predicate check might fail [possible fix: subprogram at line 180 should mention X in a precondition]
+main.adb:182:16: info: implicit terminating annotation on "Bad_F" has been proved, subprogram will terminate
 main.adb:183:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:183:13: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:183:13: medium: in possible reconstructed values at the end of the borrow at main.adb:182
 main.adb:183:13: medium: predicate check might fail [possible fix: subprogram at line 182 should mention X in a precondition]
 main.adb:183:15: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:184:16: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
 main.adb:185:29: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:188:33: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:190:22: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:193:16: info: implicit terminating annotation on "Bad_F2" has been proved, subprogram will terminate
 main.adb:194:32: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:197:36: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:199:22: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:199:22: medium: in possible reconstructed values at the end of the borrow at main.adb:193
 main.adb:199:22: medium: predicate check might fail
+main.adb:202:16: info: implicit terminating annotation on "Bad_F2" has been proved, subprogram will terminate
 main.adb:203:32: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:206:36: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:208:22: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:208:22: medium: in possible reconstructed values at the end of the borrow at main.adb:202
 main.adb:208:22: medium: predicate check might fail
+main.adb:211:16: info: implicit terminating annotation on "Bad_F2" has been proved, subprogram will terminate
 main.adb:212:32: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:215:33: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:215:33: medium: in possible reconstructed values at the end of the borrow at main.adb:215
 main.adb:215:33: medium: predicate check might fail
 main.adb:217:22: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:220:16: info: implicit terminating annotation on "Bad_F2" has been proved, subprogram will terminate
 main.adb:221:29: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:221:29: medium: in possible reconstructed values at the end of the borrow at main.adb:221
 main.adb:221:29: medium: predicate check might fail [possible fix: subprogram at line 220 should mention X in a precondition]
@@ -188,12 +219,16 @@ main.adb:224:33: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:226:22: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:240:06: info: data dependencies proved
 main.adb:247:54: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:248:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:249:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:257:30: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:257:55: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:257:58: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:262:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:263:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:264:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:265:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:266:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:267:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:267:13: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:276:30: info: pointer dereference check proved (CVC5: 1 VC)
@@ -201,13 +236,19 @@ main.adb:276:32: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:276:57: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:276:59: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:276:62: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:285:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:286:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:287:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:288:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:289:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:290:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:291:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:292:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:292:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:293:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:294:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:294:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:295:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main.adb:296:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:296:13: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:296:15: info: pointer dereference check proved (CVC5: 1 VC)

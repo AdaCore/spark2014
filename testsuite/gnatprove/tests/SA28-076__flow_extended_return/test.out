@@ -1,3 +1,4 @@
+id.adb:1:10: info: implicit terminating annotation on "Identity" has been proved, subprogram will terminate
 id.adb:1:10: warning: file name does not match unit name, should be "identity.adb"
 id.adb:2:12: info: postcondition proved (CVC5: 2 VC)
 nest_return.adb:13:07: info: initialization of "Temp" proved
@@ -6,6 +7,8 @@ nest_return.adb:38:19: info: no contextual analysis of "Return_Proc" (multiple r
 nest_return.adb:38:55: info: initialization of "B" proved
 nest_return.ads:4:43: info: initialization of "Y" proved
 nest_return.ads:5:15: info: postcondition proved (CVC5: 2 VC)
+nest_return.ads:9:13: info: implicit terminating annotation on "Nesting_Func" has been proved, subprogram will terminate
 nest_return.ads:10:15: info: postcondition proved (CVC5: 2 VC)
 nest_return.ads:14:13: info: function contract might not be available on implicit recursive calls
+nest_return.ads:14:13: info: implicit terminating annotation on "Declare_Block_Func" has been proved, subprogram will terminate
 nest_return.ads:15:15: info: postcondition proved (CVC5: 2 VC)

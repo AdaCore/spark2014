@@ -1,1 +1,2 @@
+p.ads:3:13: info: implicit terminating annotation on "No_Change" has been proved, subprogram will terminate
 p.ads:6:06: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)

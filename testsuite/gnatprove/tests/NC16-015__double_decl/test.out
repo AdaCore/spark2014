@@ -2,5 +2,9 @@ controller.adb:28:40: high: range check might fail, cannot prove upper bound for
 tetris.adb:42:28: info: range check proved (CVC5: 2 VC)
 tetris.adb:46:28: info: range check proved (CVC5: 2 VC)
 tetris.adb:48:36: info: range check proved (CVC5: 2 VC)
+tetris.ads:45:13: info: implicit terminating annotation on "New_Board" has been proved, subprogram will terminate
+tetris.ads:47:13: info: implicit terminating annotation on "New_Piece" has been proved, subprogram will terminate
 tetris.ads:53:31: warning: "P" is not modified, could be IN
 tetris.ads:53:31: warning: unused variable "P"
+tetris.ads:59:13: info: implicit terminating annotation on "is_valid_move" has been proved, subprogram will terminate
+tetris.ads:63:13: info: implicit terminating annotation on "is_empty_cell" has been proved, subprogram will terminate

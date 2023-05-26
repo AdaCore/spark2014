@@ -14,11 +14,18 @@ tetris_flow.adb:59:63: medium: array index check might fail [reason for check: r
 tetris_flow.adb:96:35: medium: range check might fail, cannot prove lower bound for To_Line - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 92 should mention To_Line in a loop invariant]
 tetris_flow.adb:97:43: medium: overflow check might fail, cannot prove upper bound for Num_Deleted + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 92 should mention Num_Deleted in a loop invariant]
 tetris_flow.adb:108:07: info: initialization of "Candidate" proved
+tetris_flow.ads:132:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 tetris_flow.ads:133:54: info: index check proved (CVC5: 2 VC)
 tetris_flow.ads:133:57: info: index check proved (CVC5: 2 VC)
+tetris_flow.ads:135:13: info: implicit terminating annotation on "Is_Complete_Line" has been proved, subprogram will terminate
+tetris_flow.ads:138:13: info: implicit terminating annotation on "Is_Empty_Line" has been proved, subprogram will terminate
+tetris_flow.ads:141:13: info: implicit terminating annotation on "No_Complete_Lines" has been proved, subprogram will terminate
+tetris_flow.ads:144:13: info: implicit terminating annotation on "No_Overlap" has been proved, subprogram will terminate
 tetris_flow.ads:155:46: info: index check proved (CVC5: 2 VC)
+tetris_flow.ads:164:13: info: implicit terminating annotation on "Turn_Direction" has been proved, subprogram will terminate
 tetris_flow.ads:167:77: info: range check proved (CVC5: 1 VC)
 tetris_flow.ads:169:77: info: range check proved (CVC5: 1 VC)
+tetris_flow.ads:171:13: info: implicit terminating annotation on "Move" has been proved, subprogram will terminate
 tetris_flow.ads:173:49: medium: range check might fail, cannot prove lower bound for P.X - 1 (e.g. when P = (S => Empty, D => North, X => -1, Y => PY_Coord'First+1)) [reason for check: result of subtraction must fit in component type] [possible fix: add precondition (P.X >= PX_Coord'First + 1) to subprogram at line 171]
 tetris_flow.ads:174:49: medium: range check might fail, cannot prove upper bound for P.X + 1 (e.g. when P = (S => Empty, D => North, X => 9, Y => PY_Coord'First+1)) [reason for check: result of addition must fit in component type] [possible fix: add precondition (P.X <= PX_Coord'Last - 1) to subprogram at line 171]
 tetris_flow.ads:175:49: medium: range check might fail, cannot prove upper bound for P.Y + 1 (e.g. when P = (S => Empty, D => North, X => 0, Y => PY_Coord'Last)) [reason for check: result of addition must fit in component type] [possible fix: add precondition (P.Y <= PY_Coord'Last - 1) to subprogram at line 171]
@@ -62,11 +69,20 @@ tetris_functional.adb:113:31: info: assertion proved (CVC5: 1 VC)
 tetris_functional.adb:114:31: info: assertion proved (CVC5: 1 VC)
 tetris_functional.adb:129:07: info: initialization of "Candidate" proved
 tetris_functional.adb:132:23: info: precondition proved (CVC5: 1 VC)
+tetris_functional.ads:144:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 tetris_functional.ads:145:54: info: index check proved (CVC5: 2 VC)
 tetris_functional.ads:145:57: info: index check proved (CVC5: 2 VC)
+tetris_functional.ads:147:13: info: implicit terminating annotation on "Is_Complete_Line" has been proved, subprogram will terminate
+tetris_functional.ads:150:13: info: implicit terminating annotation on "Is_Empty_Line" has been proved, subprogram will terminate
+tetris_functional.ads:153:13: info: implicit terminating annotation on "No_Complete_Lines" has been proved, subprogram will terminate
+tetris_functional.ads:157:13: info: implicit terminating annotation on "No_Overlap" has been proved, subprogram will terminate
 tetris_functional.ads:168:46: info: index check proved (CVC5: 2 VC)
+tetris_functional.ads:170:13: info: implicit terminating annotation on "Valid_Configuration" has been proved, subprogram will terminate
+tetris_functional.ads:184:13: info: implicit terminating annotation on "Turn_Direction" has been proved, subprogram will terminate
 tetris_functional.ads:187:77: info: range check proved (CVC5: 1 VC)
 tetris_functional.ads:189:77: info: range check proved (CVC5: 1 VC)
+tetris_functional.ads:191:13: info: implicit terminating annotation on "Move_Is_Possible" has been proved, subprogram will terminate
+tetris_functional.ads:198:13: info: implicit terminating annotation on "Move" has been proved, subprogram will terminate
 tetris_functional.ads:200:49: info: range check proved (CVC5: 2 VC)
 tetris_functional.ads:201:49: info: range check proved (CVC5: 2 VC)
 tetris_functional.ads:202:49: info: range check proved (CVC5: 2 VC)
@@ -94,11 +110,17 @@ tetris_initial.adb:59:63: medium: array index check might fail [reason for check
 tetris_initial.adb:96:35: medium: range check might fail, cannot prove lower bound for To_Line - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 92 should mention To_Line in a loop invariant]
 tetris_initial.adb:97:43: medium: overflow check might fail, cannot prove upper bound for Num_Deleted + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 92 should mention Num_Deleted in a loop invariant]
 tetris_initial.adb:108:07: info: initialization of "Candidate" proved
+tetris_initial.ads:132:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 tetris_initial.ads:133:54: info: index check proved (CVC5: 2 VC)
 tetris_initial.ads:133:57: info: index check proved (CVC5: 2 VC)
+tetris_initial.ads:135:13: info: implicit terminating annotation on "Is_Complete_Line" has been proved, subprogram will terminate
+tetris_initial.ads:138:13: info: implicit terminating annotation on "Is_Empty_Line" has been proved, subprogram will terminate
+tetris_initial.ads:141:13: info: implicit terminating annotation on "No_Overlap" has been proved, subprogram will terminate
 tetris_initial.ads:152:46: info: index check proved (CVC5: 2 VC)
+tetris_initial.ads:161:13: info: implicit terminating annotation on "Turn_Direction" has been proved, subprogram will terminate
 tetris_initial.ads:164:77: info: range check proved (CVC5: 1 VC)
 tetris_initial.ads:166:77: info: range check proved (CVC5: 1 VC)
+tetris_initial.ads:168:13: info: implicit terminating annotation on "Move" has been proved, subprogram will terminate
 tetris_initial.ads:170:49: medium: range check might fail, cannot prove lower bound for P.X - 1 (e.g. when P = (S => Empty, D => North, X => -1, Y => PY_Coord'First+1)) [reason for check: result of subtraction must fit in component type] [possible fix: add precondition (P.X >= PX_Coord'First + 1) to subprogram at line 168]
 tetris_initial.ads:171:49: medium: range check might fail, cannot prove upper bound for P.X + 1 (e.g. when P = (S => Empty, D => North, X => 9, Y => PY_Coord'First+1)) [reason for check: result of addition must fit in component type] [possible fix: add precondition (P.X <= PX_Coord'Last - 1) to subprogram at line 168]
 tetris_initial.ads:172:49: medium: range check might fail, cannot prove upper bound for P.Y + 1 (e.g. when P = (S => Empty, D => North, X => 0, Y => PY_Coord'Last)) [reason for check: result of addition must fit in component type] [possible fix: add precondition (P.Y <= PY_Coord'Last - 1) to subprogram at line 168]
@@ -128,12 +150,21 @@ tetris_integrity.adb:98:35: info: range check proved (CVC5: 2 VC)
 tetris_integrity.adb:99:43: info: overflow check proved (CVC5: 2 VC)
 tetris_integrity.adb:110:07: info: initialization of "Candidate" proved
 tetris_integrity.adb:113:23: info: precondition proved (CVC5: 1 VC)
+tetris_integrity.ads:132:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
 tetris_integrity.ads:133:54: info: index check proved (CVC5: 2 VC)
 tetris_integrity.ads:133:57: info: index check proved (CVC5: 2 VC)
+tetris_integrity.ads:135:13: info: implicit terminating annotation on "Is_Complete_Line" has been proved, subprogram will terminate
+tetris_integrity.ads:138:13: info: implicit terminating annotation on "Is_Empty_Line" has been proved, subprogram will terminate
+tetris_integrity.ads:141:13: info: implicit terminating annotation on "No_Overlap" has been proved, subprogram will terminate
 tetris_integrity.ads:152:46: info: index check proved (CVC5: 2 VC)
+tetris_integrity.ads:154:13: info: implicit terminating annotation on "Within_Bounds" has been proved, subprogram will terminate
+tetris_integrity.ads:157:13: info: implicit terminating annotation on "Within_Bounds" has been proved, subprogram will terminate
 tetris_integrity.ads:168:46: info: index check proved (CVC5: 2 VC)
+tetris_integrity.ads:177:13: info: implicit terminating annotation on "Turn_Direction" has been proved, subprogram will terminate
 tetris_integrity.ads:180:77: info: range check proved (CVC5: 1 VC)
 tetris_integrity.ads:182:77: info: range check proved (CVC5: 1 VC)
+tetris_integrity.ads:184:13: info: implicit terminating annotation on "Move_Is_Possible" has been proved, subprogram will terminate
+tetris_integrity.ads:191:13: info: implicit terminating annotation on "Move" has been proved, subprogram will terminate
 tetris_integrity.ads:193:49: info: range check proved (CVC5: 2 VC)
 tetris_integrity.ads:194:49: info: range check proved (CVC5: 2 VC)
 tetris_integrity.ads:195:49: info: range check proved (CVC5: 2 VC)

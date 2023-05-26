@@ -1,12 +1,14 @@
 math.adb:6:18: info: overflow check proved (CVC5: 4 VC)
 math.adb:6:23: medium: overflow check might fail, cannot prove upper bound for (Res + 1) * (Res + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer]
 math.adb:6:30: info: overflow check proved (CVC5: 4 VC)
+math.adb:6:40: medium: implicit terminating annotation on "Sqrt" could be incorrect, loop might be nonterminating
 math.adb:7:21: info: overflow check proved (CVC5: 2 VC)
 math.ads:5:14: info: postcondition proved (CVC5: 1 VC)
 math.ads:6:06: info: complete contract cases proved (CVC5: 1 VC)
 math.ads:6:06: info: disjoint contract cases proved (CVC5: 1 VC)
 math.ads:6:31: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 math.ads:7:31: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+math.ads:9:13: info: implicit terminating annotation on "Bad" has been proved, subprogram will terminate
 math.ads:11:14: info: postcondition proved (CVC5: 1 VC)
 math.ads:12:06: info: complete contract cases proved (CVC5: 1 VC)
 math.ads:12:06: info: disjoint contract cases proved (CVC5: 1 VC)

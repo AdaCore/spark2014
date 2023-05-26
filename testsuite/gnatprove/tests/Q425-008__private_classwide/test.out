@@ -3,5 +3,6 @@ child.ads:6:14: warning: subprogram "P" has no effect
 child.ads:6:36: medium: precondition might be stronger than class-wide precondition
 child.ads:7:14: warning: subprogram "Q" has no effect
 child.ads:7:36: medium: precondition is stronger than the default class-wide precondition of True
+child.ads:8:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 parent.ads:5:14: warning: subprogram "P" has no effect
 parent.ads:6:14: warning: subprogram "Q" has no effect

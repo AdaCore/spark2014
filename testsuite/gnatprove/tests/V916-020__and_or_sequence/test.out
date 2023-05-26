@@ -1,3 +1,5 @@
+flags.ads:7:13: info: implicit terminating annotation on overriding operator "and" has been proved, subprogram will terminate
+flags.ads:11:13: info: implicit terminating annotation on overriding operator "or" has been proved, subprogram will terminate
 use_flags.adb:3:11: warning: subprogram "Use_Flags" has no effect
 use_flags.adb:7:14: warning: subprogram "Local" has no effect
 use_flags.adb:42:04: medium: precondition might fail (e.g. when Base = 67108863) [possible fix: subprogram at line 3 should mention Base in a precondition]

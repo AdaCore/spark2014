@@ -1,10 +1,8 @@
 no_optim.adb:9:25: info: assertion proved (CVC5: 1 VC)
 no_optim.adb:12:25: info: assertion proved (CVC5: 1 VC)
 various_no_optim.adb:9:07: info: initialization of "Cond" proved
-various_no_optim.adb:12:15: warning: assuming "Get_Value" always returns
 various_no_optim.adb:12:15: warning: assuming "Get_Value" has no effect on global items
 various_no_optim.adb:12:15: warning: no Global contract available for "Get_Value"
-various_no_optim.adb:12:15: warning: no returning annotation available for "Get_Value"
 various_no_optim.adb:18:13: info: call to nonreturning procedure never executed (CVC5: 1 VC)
 various_no_optim.adb:18:13: warning: assuming "Error_Detected" has no effect on global items
 various_no_optim.adb:18:13: warning: no Global contract available for "Error_Detected"

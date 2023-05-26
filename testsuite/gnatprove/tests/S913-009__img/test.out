@@ -1,2 +1,3 @@
+test_img.ads:2:10: info: implicit terminating annotation on "S" has been proved, subprogram will terminate
 test_img.ads:2:45: info: range check proved (CVC5: 4 VC)
 test_img.ads:2:63: info: overflow check proved (CVC5: 2 VC)

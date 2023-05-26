@@ -17,6 +17,8 @@ queen.adb:43:46: info: index check proved (CVC5: 4 VC)
 queen.adb:43:65: info: index check proved (CVC5: 4 VC)
 queen.adb:49:13: info: precondition proved (CVC5: 2 VC; Trivial: 1 VC; Z3: 1 VC)
 queen.adb:51:13: info: precondition proved (CVC5: 2 VC; Trivial: 1 VC; Z3: 1 VC)
+queen.ads:21:13: info: implicit terminating annotation on "Consistent_Index" has been proved, subprogram will terminate
+queen.ads:27:13: info: implicit terminating annotation on "Consistent" has been proved, subprogram will terminate
 queen.ads:30:18: info: index check proved (CVC5: 2 VC)
 queen.ads:30:27: info: index check proved (CVC5: 2 VC)
 queen.ads:31:27: info: index check proved (CVC5: 2 VC)
@@ -29,6 +31,7 @@ queen.ads:39:38: info: range check proved (CVC5: 2 VC)
 queen.ads:40:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC; altergo: 1 VC)
 queen.ads:41:42: info: index check proved (CVC5: 2 VC)
 queen.ads:41:54: info: index check proved (CVC5: 2 VC)
+queen.ads:44:12: info: implicit terminating annotation on "Copy_Until" has been proved, subprogram will terminate
 queen.ads:45:16: info: postcondition proved (CVC5: 1 VC)
 queen.ads:45:69: info: index check proved (CVC5: 2 VC)
 queen.ads:45:76: info: index check proved (CVC5: 2 VC)

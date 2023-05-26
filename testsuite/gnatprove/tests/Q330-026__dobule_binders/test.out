@@ -1,4 +1,7 @@
+p.adb:5:19: info: implicit terminating annotation on "Identity1" has been proved, subprogram will terminate
 p.adb:6:30: info: data dependencies proved
+p.adb:12:19: info: implicit terminating annotation on "Identity2" has been proved, subprogram will terminate
 p.adb:13:30: info: data dependencies proved
 p.adb:22:17: info: precondition proved (Trivial: 1 VC)
 p.adb:22:39: info: precondition proved (Trivial: 1 VC)
+p.ads:4:16: info: implicit terminating annotation on "Prot" has been proved, subprogram will terminate

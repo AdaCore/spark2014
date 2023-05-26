@@ -4,6 +4,7 @@ split_pointers.adb:25:14: error: object was moved at line 31
 split_pointers.adb:25:14: error: return from "Test_In_Out" with moved value for "X"
 split_pointers.adb:38:06: info: data dependencies proved
 split_pointers.adb:40:27: info: initialization of "Z" proved
+split_pointers.adb:49:13: info: implicit terminating annotation on "Test_Fun" has been proved, subprogram will terminate
 split_pointers.adb:50:06: info: data dependencies proved
 split_pointers.adb:67:04: info: initialization of "H1" proved
 gnatprove: error during flow analysis and proof

@@ -1,10 +1,10 @@
 with Ada.Text_IO;
 with Bounded_Table;
 
-procedure Repro_Main
+procedure Repro_Main with Annotate => (GNATprove, Always_Return)
 is
 
-   pragma Annotate (GNATprove, Always_Return, Repro_Main);
+
 
    package Int_Table is new Bounded_Table
      (Elem_Type => Integer,

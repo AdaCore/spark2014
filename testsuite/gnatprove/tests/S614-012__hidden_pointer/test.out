@@ -2,3 +2,5 @@ bar.adb:3:11: warning: subprogram "Bar" has no effect
 bar.adb:6:07: info: assertion proved (CVC5: 1 VC)
 bar.adb:6:13: info: range check proved (CVC5: 4 VC)
 bar.adb:6:29: low: range check might fail, cannot prove upper bound for To_String (A) & To_String (B) [reason for check: result of concatenation must fit in the type of the qualification] [possible fix: subprogram at line 3 should mention A and B in a precondition]
+foo.ads:8:13: info: implicit terminating annotation on "To_String" has been proved, subprogram will terminate
+foo.ads:10:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate

@@ -4,6 +4,8 @@ main_access_2.adb:6:04: error: owning or observing object should occur in the gl
 main_access_2.adb:7:04: error: owning or observing object should occur in the global contract of "Acc_3"
 main_access_2.adb:8:04: error: owning or observing object should occur in the global contract of "Acc_4"
 main_access_2.adb:11:36: high: "V_2" must be listed in the Global aspect of "Acc_2" (SPARK RM 6.1.4(15))
+main_access_2.adb:18:19: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main_access_2.adb:21:32: high: "V_3" must be listed in the Global aspect of "Acc_3" (SPARK RM 6.1.4(15))
+main_access_2.adb:29:19: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 main_access_2.adb:35:26: high: "V_4" must be listed in the Global aspect of "Acc_4" (SPARK RM 6.1.4(15))
 gnatprove: error during flow analysis and proof

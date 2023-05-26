@@ -3,3 +3,4 @@ pkg_a.adb:9:06: warning: unused assignment
 pkg_a.adb:9:09: medium: precondition might fail [possible fix: add or complete related loop invariants or postconditions]
 pkg_a.ads:7:04: low: initialization of "Y" must be mentioned in the Initializes contract of "Pkg_A" (SPARK RM 7.1.5(9))
 pkg_a.ads:9:13: info: implicit function contract might not be available on calls from enclosing unit
+pkg_a.ads:9:13: info: implicit terminating annotation on "Do_Something" has been proved, subprogram will terminate

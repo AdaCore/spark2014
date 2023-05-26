@@ -1,5 +1,7 @@
 test-child-user.adb:7:20: info: discriminant check proved (CVC5: 1 VC), in instantiation at instance.ads:11
 test-child-user.adb:7:20: info: discriminant check proved (CVC5: 1 VC), in instantiation at test-child.adb:7, in instantiation at instance.ads:10
 test-child.ads:5:03: info: flow dependencies proved, in instantiation at instance.ads:10
+test-child.ads:13:13: info: implicit terminating annotation on "Used" has been proved, subprogram will terminate, in instantiation at instance.ads:10
 test-child.ads:15:07: info: data dependencies proved, in instantiation at instance.ads:10
+test-child.ads:17:13: info: implicit terminating annotation on "Kind" has been proved, subprogram will terminate, in instantiation at instance.ads:10
 test-child.ads:19:07: info: data dependencies proved, in instantiation at instance.ads:10

@@ -13,6 +13,7 @@ package body Ghost_Legal is
 
       Temp := 2;
       while Temp < X loop
+         pragma Loop_Variant (Increases => Temp);
          pragma Loop_Invariant (Temp >= 2);
 
          if (X mod Temp) = 0 then

@@ -145,6 +145,7 @@ generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
 generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
 generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
 generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:750
+generic_matrix_thing.ads:27:14: info: implicit terminating annotation on "Manipulate" has been proved, subprogram will terminate, in instantiation at main_test.adb:10
 main_test.adb:10:05: info: analyzing call to "Lt" in context
 main_test.adb:10:05: info: analyzing call to "Lt" in context
 main_test.adb:10:05: info: analyzing call to "Lt" in context
@@ -326,24 +327,12 @@ main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
 main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
 main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
 main_test.adb:10:05: info: in instantiation at generic_matrix_thing.ads:15
-main_test.adb:10:05: warning: assuming "*" always returns
 main_test.adb:10:05: warning: assuming "*" has no effect on global items
-main_test.adb:10:05: warning: assuming "Transpose" always returns
 main_test.adb:10:05: warning: assuming "Transpose" has no effect on global items
-main_test.adb:10:05: warning: in instantiation at generic_matrix_thing.adb:13
-main_test.adb:10:05: warning: in instantiation at generic_matrix_thing.adb:13
 main_test.adb:10:05: warning: in instantiation at generic_matrix_thing.adb:13
 main_test.adb:10:05: warning: in instantiation at generic_matrix_thing.adb:13
 main_test.adb:10:05: warning: no Global contract available for "*"
 main_test.adb:10:05: warning: no Global contract available for "Transpose"
-main_test.adb:10:05: warning: no returning annotation available for "*"
-main_test.adb:10:05: warning: no returning annotation available for "Transpose"
-specific_matrix_other.adb:13:21: warning: assuming "Transpose" always returns
-specific_matrix_other.adb:13:21: warning: no returning annotation available for "Transpose"
-specific_matrix_other.adb:13:39: warning: assuming "*" always returns
-specific_matrix_other.adb:13:39: warning: no returning annotation available for "*"
-specific_matrix_other.adb:13:50: warning: assuming "*" always returns
-specific_matrix_other.adb:13:50: warning: no returning annotation available for "*"
 specific_matrix_other.ads:11:05: info: analyzing call to "Lt" in context
 specific_matrix_other.ads:11:05: info: analyzing call to "Lt" in context
 specific_matrix_other.ads:11:05: info: analyzing call to "Lt" in context
@@ -491,3 +480,4 @@ specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
 specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
 specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
 specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:750
+specific_matrix_other.ads:23:14: info: implicit terminating annotation on "Manipulate" has been proved, subprogram will terminate

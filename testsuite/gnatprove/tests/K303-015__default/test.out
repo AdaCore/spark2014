@@ -1,8 +1,12 @@
 default.adb:2:13: info: add a contract to analyze it separately from calling contexts
+default.adb:2:13: info: implicit terminating annotation on "Sub" has been proved, subprogram will terminate
 default.adb:2:13: info: local subprogram "Sub" only analyzed in the context of calls
 default.adb:11:16: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at default.ads:2]
 default.adb:14:04: warning: analyzing unreferenced function "Use_Sub"
+default.adb:14:13: info: implicit terminating annotation on "Use_Sub" has been proved, subprogram will terminate
 default.adb:16:15: info: analyzing call to "Sub" in context
 default.adb:16:27: info: analyzing call to "Sub" in context
 default.adb:19:04: warning: analyzing unreferenced function "Use_Add"
+default.adb:19:13: info: implicit terminating annotation on "Use_Add" has been proved, subprogram will terminate
 default.adb:21:25: medium: overflow check might fail, cannot prove lower bound for (Add (1,2) + Add (2)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Add or turning it into an expression function]
+default.ads:2:13: info: implicit terminating annotation on "Add" has been proved, subprogram will terminate

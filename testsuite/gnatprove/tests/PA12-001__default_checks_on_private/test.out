@@ -1,15 +1,20 @@
+dic_and_predicate_checks.ads:7:13: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
 dic_and_predicate_checks.ads:10:12: info: default initial condition proved (CVC5: 1 VC)
 dic_and_predicate_checks.ads:10:12: medium: predicate check might fail on default value
+dic_and_predicate_checks.ads:12:16: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
 dic_and_predicate_checks.ads:14:07: medium: type "T" is not fully initialized
 dic_and_predicate_checks.ads:24:12: info: default initial condition proved (CVC5: 1 VC)
 dic_and_predicate_checks.ads:24:12: medium: predicate check might fail on default value
+dic_and_predicate_checks.ads:26:16: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
 dic_and_predicate_checks.ads:28:07: medium: type "T" is not fully initialized
 dic_and_predicate_checks.ads:33:12: medium: default initial condition might fail
+dic_and_predicate_checks.ads:35:16: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
 dic_and_predicate_checks.ads:37:07: medium: type "P" is not fully initialized
 dic_and_predicate_checks.ads:53:04: info: initialization of "X1" proved
 dic_and_predicate_checks.ads:54:04: info: initialization of "X2" proved
 dic_and_predicate_checks.ads:55:04: info: initialization of "X3" proved
 dic_and_predicate_checks.ads:55:04: info: predicate check proved on default value (CVC5: 1 VC)
+private_types.ads:2:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 private_types.ads:10:32: medium: in default value of private type at private_types.ads:5
 private_types.ads:10:32: medium: range check might fail, cannot prove lower bound for Id (0) [reason for check: default component value must fit in the type]
 private_types.ads:24:32: medium: in default value at private_types.ads:29
@@ -26,6 +31,8 @@ private_types.ads:45:14: info: range check proved (CVC5: 1 VC)
 private_types.ads:56:32: medium: in default value at private_types.ads:62
 private_types.ads:56:32: medium: range check might fail, cannot prove lower bound for Id (0) [reason for check: default component value must fit in the type]
 private_types.ads:61:25: info: range check proved (CVC5: 1 VC)
+tagged_component_check.ads:4:07: warning: Always_Return annotation is useless
+tagged_component_check.ads:4:07: warning: function "Hide" has implicit Always_Return annotation
 tagged_component_check.ads:28:28: medium: in default value of private type at tagged_component_check.ads:25
 tagged_component_check.ads:28:28: medium: range check might fail, cannot prove lower bound for Hide (3) [reason for check: default component value must fit in the type]
 tagged_component_check.ads:34:28: medium: in default value of private type at tagged_component_check.ads:36

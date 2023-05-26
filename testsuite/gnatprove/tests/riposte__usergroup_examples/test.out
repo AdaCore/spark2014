@@ -1,16 +1,18 @@
-usergroup_examples.adb:36:11: info: flow dependencies proved
-usergroup_examples.adb:40:32: high: range check might fail, cannot prove lower bound for (Current + 1) mod Index_T'Last (e.g. when Current = Index_T'Last-1) [reason for check: result of operation must fit in the target type of the assignment] [possible fix: subprogram at line 34 should mention Current in a precondition]
-usergroup_examples.adb:40:32: info: division check proved (CVC5: 1 VC)
-usergroup_examples.adb:44:04: warning: analyzing unreferenced function "Example_3"
-usergroup_examples.adb:49:07: info: initialization of "Tmp" proved
-usergroup_examples.adb:53:27: high: range check might fail, cannot prove upper bound for Tmp (e.g. when Tmp = U64'Last) [reason for check: value must be convertible to the target type of the conversion]
-usergroup_examples.adb:53:32: high: array index check might fail (e.g. when Tmp = 0) [reason for check: result of operation must be a valid index into the array]
-usergroup_examples.adb:53:32: info: division check proved (CVC5: 1 VC)
-usergroup_examples.adb:61:19: high: postcondition might fail (e.g. when Example_5'Result = 0)
-usergroup_examples.adb:70:25: info: initialization of "V" proved
-usergroup_examples.adb:71:11: info: flow dependencies proved
-usergroup_examples.adb:75:22: info: postcondition proved (CVC5: 1 VC)
-usergroup_examples.adb:90:31: info: initialization of "V" proved
-usergroup_examples.adb:91:11: info: flow dependencies proved
-usergroup_examples.adb:95:22: info: postcondition proved (CVC5: 1 VC)
-usergroup_examples.adb:106:22: info: assertion proved (CVC5: 1 VC)
+usergroup_examples.adb:35:11: info: flow dependencies proved
+usergroup_examples.adb:39:32: high: range check might fail, cannot prove lower bound for (Current + 1) mod Index_T'Last (e.g. when Current = Index_T'Last-1) [reason for check: result of operation must fit in the target type of the assignment] [possible fix: subprogram at line 33 should mention Current in a precondition]
+usergroup_examples.adb:39:32: info: division check proved (CVC5: 1 VC)
+usergroup_examples.adb:43:04: warning: analyzing unreferenced function "Example_3"
+usergroup_examples.adb:43:13: info: implicit terminating annotation on "Example_3" has been proved, subprogram will terminate
+usergroup_examples.adb:48:07: info: initialization of "Tmp" proved
+usergroup_examples.adb:52:27: high: range check might fail, cannot prove upper bound for Tmp (e.g. when Tmp = U64'Last) [reason for check: value must be convertible to the target type of the conversion]
+usergroup_examples.adb:52:32: high: array index check might fail (e.g. when Tmp = 0) [reason for check: result of operation must be a valid index into the array]
+usergroup_examples.adb:52:32: info: division check proved (CVC5: 1 VC)
+usergroup_examples.adb:56:13: info: implicit terminating annotation on "Example_5" has been proved, subprogram will terminate
+usergroup_examples.adb:60:19: high: postcondition might fail (e.g. when Example_5'Result = 0)
+usergroup_examples.adb:69:25: info: initialization of "V" proved
+usergroup_examples.adb:70:11: info: flow dependencies proved
+usergroup_examples.adb:74:22: info: postcondition proved (CVC5: 1 VC)
+usergroup_examples.adb:89:31: info: initialization of "V" proved
+usergroup_examples.adb:90:11: info: flow dependencies proved
+usergroup_examples.adb:94:22: info: postcondition proved (CVC5: 1 VC)
+usergroup_examples.adb:105:22: info: assertion proved (CVC5: 1 VC)

@@ -1,3 +1,4 @@
+loop_tutorial.adb:9:12: info: implicit terminating annotation on "ISQRT" has been proved, subprogram will terminate
 loop_tutorial.adb:10:19: info: postcondition proved (CVC5: 2 VC)
 loop_tutorial.adb:10:32: info: overflow check proved (CVC5: 2 VC)
 loop_tutorial.adb:11:35: info: overflow check proved (CVC5: 2 VC)

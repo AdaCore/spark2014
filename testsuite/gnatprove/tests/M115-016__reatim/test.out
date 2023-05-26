@@ -23,3 +23,4 @@ pck.adb:58:51: info: division check proved (CVC5: 1 VC)
 pck.adb:58:56: info: division check proved (CVC5: 1 VC)
 pck.adb:61:11: medium: assertion might fail
 pck.adb:70:24: info: overflow check proved (CVC5: 2 VC)
+pck.ads:4:13: info: implicit terminating annotation on "Mul_Div" has been proved, subprogram will terminate

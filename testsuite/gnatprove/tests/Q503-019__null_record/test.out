@@ -1,2 +1,4 @@
+eq_null_record.ads:5:12: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
+eq_null_record.ads:13:13: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate
 eq_null_record.ads:14:12: info: postcondition proved (CVC5: 2 VC)
 eq_null_record.ads:14:37: warning: conjunct in postcondition does not check the outcome of calling "Always_True"

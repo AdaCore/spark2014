@@ -13,6 +13,7 @@ test_pred_on_array.adb:14:13: medium: predicate check might fail
 test_pred_on_array.adb:17:18: medium: predicate check might fail
 test_pred_on_array.adb:17:18: warning: unused variable "X"
 test_pred_on_array.adb:17:38: info: data dependencies proved
+test_pred_on_array.adb:22:13: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
 test_pred_on_array.adb:22:17: warning: unused variable "A"
 test_pred_on_array.adb:22:49: info: data dependencies proved
 test_pred_on_array.adb:23:07: info: range check proved (CVC5: 2 VC)
@@ -23,6 +24,7 @@ test_pred_on_array.adb:29:07: info: range check proved (CVC5: 2 VC)
 test_pred_on_array.adb:31:07: info: predicate check proved (Z3: 1 VC)
 test_pred_on_array.adb:31:10: info: index check proved (CVC5: 2 VC)
 test_pred_on_array.adb:32:13: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:35:13: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
 test_pred_on_array.adb:35:17: warning: unused variable "A"
 test_pred_on_array.adb:35:49: info: data dependencies proved
 test_pred_on_array.adb:36:07: info: range check proved (CVC5: 2 VC)
@@ -44,6 +46,7 @@ test_pred_on_array.adb:63:13: medium: predicate check might fail (e.g. when X.X'
 test_pred_on_array.adb:66:18: medium: predicate check might fail
 test_pred_on_array.adb:66:18: warning: unused variable "X"
 test_pred_on_array.adb:66:38: info: data dependencies proved
+test_pred_on_array.adb:71:13: info: implicit terminating annotation on "F3" has been proved, subprogram will terminate
 test_pred_on_array.adb:71:34: info: data dependencies proved
 test_pred_on_array.adb:74:14: medium: predicate check might fail (e.g. when X.X'Initialized = False and X.Y'Initialized = False and X.Z'Initialized = False)
 test_pred_on_array.adb:77:22: info: data dependencies proved
@@ -52,6 +55,7 @@ test_pred_on_array.adb:81:13: info: predicate check proved (CVC5: 1 VC)
 test_pred_on_array.adb:84:18: info: predicate check proved (CVC5: 1 VC)
 test_pred_on_array.adb:84:38: info: data dependencies proved
 test_pred_on_array.adb:86:08: info: predicate check proved (CVC5: 1 VC)
+test_pred_on_array.adb:89:13: info: implicit terminating annotation on "F4" has been proved, subprogram will terminate
 test_pred_on_array.adb:89:34: info: data dependencies proved
 test_pred_on_array.adb:92:08: info: predicate check proved (CVC5: 1 VC)
 test_pred_on_array.adb:93:14: info: predicate check proved (CVC5: 1 VC)
@@ -62,6 +66,7 @@ test_pred_on_array.adb:108:13: medium: initialization check might fail (e.g. whe
 test_pred_on_array.adb:111:18: medium: initialization check might fail [possible fix: add or complete related loop invariants or postconditions]
 test_pred_on_array.adb:111:18: warning: unused variable "X"
 test_pred_on_array.adb:111:39: info: data dependencies proved
+test_pred_on_array.adb:116:13: info: implicit terminating annotation on "F5" has been proved, subprogram will terminate
 test_pred_on_array.adb:116:35: info: data dependencies proved
 test_pred_on_array.adb:119:14: medium: initialization check might fail (e.g. when X'Initialized = False)
 test_pred_on_array.adb:122:22: info: data dependencies proved
@@ -70,6 +75,7 @@ test_pred_on_array.adb:126:13: info: initialization check proved (CVC5: 1 VC)
 test_pred_on_array.adb:129:18: info: initialization check proved (CVC5: 1 VC)
 test_pred_on_array.adb:129:39: info: data dependencies proved
 test_pred_on_array.adb:131:12: info: predicate check proved (Trivial: 1 VC)
+test_pred_on_array.adb:134:13: info: implicit terminating annotation on "F6" has been proved, subprogram will terminate
 test_pred_on_array.adb:134:35: info: data dependencies proved
 test_pred_on_array.adb:137:12: info: predicate check proved (Trivial: 1 VC)
 test_pred_on_array.adb:138:14: info: initialization check proved (CVC5: 1 VC)

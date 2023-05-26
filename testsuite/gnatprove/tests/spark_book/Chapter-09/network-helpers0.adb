@@ -6,8 +6,7 @@ is
                          Count : in Natural) return Double_Octet
       with Import     => True,
            Convention => Intrinsic,
-           Global     => null,
-           Annotate   => (GNATprove, Always_Return);
+           Global     => null;
 
    procedure Split16 (Value : in  Double_Octet;
                       MSB   : out Octet;

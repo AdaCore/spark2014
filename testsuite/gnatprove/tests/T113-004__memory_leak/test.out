@@ -206,6 +206,7 @@ pointers.adb:116:25: info: initialization of "U" proved
 pointers.adb:117:22: info: postcondition proved (Trivial: 1 VC)
 pointers.adb:120:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:121:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
+pointers.adb:125:16: info: implicit terminating annotation on "Alloc" has been proved, subprogram will terminate
 pointers.adb:126:10: info: absence of resource or memory leak at end of scope proved (altergo: 1 VC)
 pointers.adb:132:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:133:11: info: absence of resource or memory leak proved (CVC5: 1 VC)

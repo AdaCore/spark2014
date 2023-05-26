@@ -1,9 +1,13 @@
+dir.adb:3:13: info: implicit terminating annotation on "Normalize_Pathname" has been proved, subprogram will terminate
 dir.adb:5:07: warning: unused variable "Directory"
 dir.adb:6:07: warning: unused variable "Resolve_Links"
 dir.adb:8:04: info: no contextual analysis of "Normalize_Pathname" (unconstrained return type)
 dir.adb:16:04: info: no contextual analysis of "Test" (unconstrained return type)
+dir.adb:16:13: info: implicit terminating annotation on "Test" has been proved, subprogram will terminate
 dir.adb:18:07: warning: unused variable "Directory"
+dir.adb:23:13: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
 dir.adb:23:23: warning: unused variable "Name"
 dir.adb:33:13: info: range check proved (CVC5: 2 VC)
 dir.adb:33:49: info: range check proved (CVC5: 2 VC)
 dir.adb:36:28: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+dir.ads:3:13: info: implicit terminating annotation on "Full_Name" has been proved, subprogram will terminate

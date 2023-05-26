@@ -10,6 +10,7 @@ is
       Pred := -1;
       I := 0;
       while I < S.NumStacks loop
+         pragma Loop_Variant (Increases => I);
          pragma Loop_Invariant (I in 0 .. S.NumStacks);
          pragma Loop_Invariant
            (

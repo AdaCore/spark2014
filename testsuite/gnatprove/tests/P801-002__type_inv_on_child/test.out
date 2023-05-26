@@ -1,3 +1,4 @@
+my_pack-child.ads:4:13: info: implicit terminating annotation on "Incr" has been proved, subprogram will terminate
 my_pack-child.ads:4:13: medium: invariant check might fail (e.g. when Incr'Result = 0 and X = -1)
 my_pack-child.ads:6:09: medium: invariant check might fail on default value
 my_pack-child.ads:8:41: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = T'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= 2147483647 - 1) to subprogram at line 4]

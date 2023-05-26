@@ -6,6 +6,7 @@ arrays.adb:16:20: medium: overflow check might fail, cannot prove upper bound fo
 arrays.adb:23:09: info: range check proved (CVC5: 2 VC)
 arrays.adb:23:17: info: overflow check proved (CVC5: 2 VC)
 arrays.adb:23:17: info: range check proved (CVC5: 2 VC)
+arrays.ads:4:13: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate
 arrays.ads:5:14: medium: postcondition might fail
 arrays.ads:5:29: info: range check proved (CVC5: 2 VC)
 arrays.ads:6:06: medium: contract cases might not be complete
@@ -13,7 +14,9 @@ arrays.ads:6:06: medium: contract cases might not be disjoint
 arrays.ads:6:38: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 arrays.ads:7:52: info: index check proved (CVC5: 2 VC)
 arrays.ads:7:60: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+arrays.ads:19:13: info: implicit terminating annotation on "Count_Even" has been proved, subprogram will terminate
 arrays.ads:20:14: medium: postcondition might fail
 arrays.ads:20:36: info: range check proved (CVC5: 2 VC)
 arrays.ads:21:06: medium: contract cases might not be complete
 arrays.ads:21:38: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+arrays.ads:31:13: info: implicit terminating annotation on "Count_Odd" has been proved, subprogram will terminate

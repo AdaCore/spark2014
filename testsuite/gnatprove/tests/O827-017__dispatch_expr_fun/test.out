@@ -1,1 +1,4 @@
+tagged_types.ads:6:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+tagged_types.ads:8:45: medium: implicit terminating annotation on "G" could be incorrect, dispatching call might be nonterminating
+tagged_types.ads:15:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test_redispatch.adb:5:19: info: assertion proved (CVC5: 1 VC)

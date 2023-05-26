@@ -1,5 +1,19 @@
-recursive_subprograms.ads:4:23: info: overflow check proved
-recursive_subprograms.ads:9:12: info: subprogram variant proved
-recursive_subprograms.ads:9:25: info: range check proved
-recursive_subprograms.ads:9:32: info: subprogram variant proved
+recursive_subprograms.ads:5:13: info: implicit terminating annotation on "Fibonacci" has been proved, subprogram will terminate
+recursive_subprograms.ads:6:10: info: predicate check proved
+recursive_subprograms.ads:6:14: info: predicate check proved
+recursive_subprograms.ads:6:21: info: predicate check proved
+recursive_subprograms.ads:7:13: info: predicate check proved
+recursive_subprograms.ads:7:17: info: predicate check proved
+recursive_subprograms.ads:7:24: info: predicate check proved
+recursive_subprograms.ads:8:12: info: subprogram variant proved
+recursive_subprograms.ads:8:12: info: predicate check proved
+recursive_subprograms.ads:8:23: info: predicate check proved
+recursive_subprograms.ads:8:25: info: predicate check proved
+recursive_subprograms.ads:8:27: info: predicate check proved
+recursive_subprograms.ads:8:30: info: predicate check proved
+recursive_subprograms.ads:8:32: info: subprogram variant proved
+recursive_subprograms.ads:8:32: info: predicate check proved
+recursive_subprograms.ads:8:43: info: predicate check proved
+recursive_subprograms.ads:8:45: info: predicate check proved
+recursive_subprograms.ads:8:47: info: predicate check proved
 recursive_subprograms.ads:9:45: info: range check proved

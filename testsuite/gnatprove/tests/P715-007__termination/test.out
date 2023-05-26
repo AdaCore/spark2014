@@ -1,5 +1,7 @@
+term.adb:7:21: medium: implicit terminating annotation on "Loop_Except_On_Zero" could be incorrect, loop might be nonterminating
 term.adb:7:21: warning: statement has no effect
 term.adb:10:10: warning: unreachable code (CVC5: 1 VC)
+term.adb:24:10: medium: implicit terminating annotation on "Loop_If_C_Is_Neg" could be incorrect, loop might be nonterminating
 term.adb:28:17: info: range check proved (CVC5: 2 VC)
 term.ads:2:09: high: C must be initialized at elaboration
 term.ads:4:14: info: postcondition proved (CVC5: 2 VC)

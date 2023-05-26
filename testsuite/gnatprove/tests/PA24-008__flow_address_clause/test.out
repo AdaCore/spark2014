@@ -4,3 +4,4 @@ utils.adb:15:10: warning: consider annotating "Reg" with Async_Writers
 utils.adb:15:10: warning: indirect writes to "Reg" through a potential alias are ignored
 utils.adb:15:10: warning: make sure that all overlapping objects have Async_Writers set to True
 utils.adb:15:10: warning: writing to "Reg" is assumed to have no effects on other non-volatile objects
+utils.ads:8:13: info: implicit terminating annotation on "Read_Register" has been proved, subprogram will terminate

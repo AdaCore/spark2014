@@ -27,6 +27,7 @@ test.adb:52:16: info: initialization of "R" proved
 test.adb:52:19: info: initialization of "W" proved
 test.adb:52:22: info: initialization of "X" proved
 test.adb:52:25: info: initialization of "Y" proved
+test.adb:56:20: medium: implicit terminating annotation on "Bergeretti_Fig9_Correct" could be incorrect, loop might be nonterminating
 test.adb:57:17: medium: divide by zero might fail [possible fix: loop at line 56 should mention C in a loop invariant]
 test.adb:57:17: medium: overflow check might fail, cannot prove lower bound for C / D [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention C in a loop invariant]
 test.adb:57:29: medium: divide by zero might fail [possible fix: loop at line 56 should mention C in a loop invariant]
@@ -40,6 +41,7 @@ test.adb:70:13: info: initialization of "Q" proved
 test.adb:70:19: info: initialization of "W" proved
 test.adb:70:22: info: initialization of "X" proved
 test.adb:70:25: info: initialization of "Y" proved
+test.adb:74:20: medium: implicit terminating annotation on "Bergeretti_Fig9_Incorrect" could be incorrect, loop might be nonterminating
 test.adb:75:17: medium: divide by zero might fail [possible fix: loop at line 74 should mention C in a loop invariant]
 test.adb:75:17: medium: overflow check might fail, cannot prove lower bound for C / D [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: loop at line 74 should mention C in a loop invariant]
 test.adb:76:17: medium: overflow check might fail, cannot prove lower bound for X - Q * Y [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: loop at line 74 should mention Q and X and Y in a loop invariant]
@@ -70,5 +72,7 @@ test.adb:130:17: medium: overflow check might fail, cannot prove upper bound for
 test.adb:134:17: medium: range check might fail, cannot prove lower bound for X - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 129 should mention X in a loop invariant]
 test.adb:138:04: warning: analyzing unreferenced function "Loop_Stability"
 test.adb:140:16: info: implicit function contract might not be available on calls from enclosing unit
+test.adb:140:16: info: implicit terminating annotation on "Return_5" has been proved, subprogram will terminate
 test.adb:141:07: info: initialization of "A" proved
+test.adb:143:07: medium: implicit terminating annotation on "Loop_Stability" could be incorrect, loop might be nonterminating
 test.adb:147:14: warning: unreachable code (CVC5: 1 VC)

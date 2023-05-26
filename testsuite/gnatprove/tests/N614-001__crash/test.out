@@ -19,14 +19,22 @@ part.adb:22:27: info: index check proved (CVC5: 2 VC)
 part.adb:24:10: info: index check proved (CVC5: 2 VC)
 part.adb:24:19: info: index check proved (CVC5: 2 VC)
 part.adb:25:10: info: index check proved (CVC5: 2 VC)
+part.ads:5:13: info: implicit terminating annotation on "Mem" has been proved, subprogram will terminate
 part.ads:6:41: info: index check proved (CVC5: 2 VC)
+part.ads:8:13: info: implicit terminating annotation on "Subset" has been proved, subprogram will terminate
 part.ads:9:42: info: index check proved (CVC5: 2 VC)
+part.ads:11:13: info: implicit terminating annotation on "Same_Set" has been proved, subprogram will terminate
+part.ads:14:13: info: implicit terminating annotation on "Disjoint" has been proved, subprogram will terminate
 part.ads:15:47: info: index check proved (CVC5: 2 VC)
+part.ads:19:13: info: implicit terminating annotation on "Ascending" has been proved, subprogram will terminate
 part.ads:21:41: info: overflow check proved (CVC5: 2 VC)
 part.ads:21:51: info: index check proved (CVC5: 2 VC)
 part.ads:21:61: info: index check proved (CVC5: 2 VC)
 part.ads:21:61: info: overflow check proved (CVC5: 2 VC)
+part.ads:23:13: info: implicit terminating annotation on "Is_Partition" has been proved, subprogram will terminate
 part.ads:27:44: info: index check proved (CVC5: 2 VC)
+part.ads:29:13: info: implicit terminating annotation on "Disjoint_Or_Subset" has been proved, subprogram will terminate
+part.ads:32:13: info: implicit terminating annotation on "Get_Part" has been proved, subprogram will terminate
 part.ads:36:27: info: range check proved (CVC5: 4 VC)
 part.ads:36:44: info: index check proved (CVC5: 2 VC)
 part.ads:37:12: info: range check proved (CVC5: 4 VC)

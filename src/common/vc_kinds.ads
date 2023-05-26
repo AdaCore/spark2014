@@ -98,6 +98,7 @@ package VC_Kinds is
       VC_Contract_Case,
       VC_Disjoint_Contract_Cases,
       VC_Complete_Contract_Cases,
+      VC_Exceptional_Case,
       VC_Loop_Invariant,             --  internal check kind, transformed
                                      --  by gnatwhy3 into
                                      --    VC_Loop_Invariant_Init
@@ -366,7 +367,6 @@ package VC_Kinds is
       Warn_Attribute_Valid,
       Warn_Initialization_To_Alias,
       Warn_Function_Is_Valid,
-      Warn_Lemma_Procedure_No_Return,
       Warn_Pragma_Annotate_No_Check,
       Warn_Pragma_Annotate_Proved_Check,
       Warn_Pragma_Annotate_Terminating,
@@ -376,6 +376,8 @@ package VC_Kinds is
       Warn_Precondition_Statically_False,
       Warn_Unreferenced_Function,
       Warn_Unreferenced_Procedure,
+      Warn_Useless_Always_Return_Fun,
+      Warn_Useless_Always_Return_Lemma,
       Warn_Useless_Relaxed_Init_Fun,
       Warn_Useless_Relaxed_Init_Obj,
       Warn_Variant_Not_Recursive,
@@ -426,6 +428,8 @@ package VC_Kinds is
       Lim_Conv_Incompatible_Fixed,
       Lim_Deep_Object_With_Addr,
       Lim_Entry_Family,
+      Lim_Exceptional_Cases_Dispatch,
+      Lim_Exceptional_Cases_Ownership,
       Lim_Ext_Aggregate_With_Type_Ancestor,
       Lim_Goto_Cross_Inv,
       Lim_Img_On_Non_Scalar,
@@ -433,6 +437,7 @@ package VC_Kinds is
       Lim_Iterated_Element_Association,
       Lim_Iterator_In_Component_Assoc,
       Lim_Limited_Type_From_Limited_With,
+      Lim_Loop_Inv_And_Handler,
       Lim_Loop_With_Iterator_Filter,
       Lim_Max_Array_Dimension,
       Lim_Max_Modulus,
@@ -512,8 +517,6 @@ package VC_Kinds is
           & " other non-volatile objects",
         when Warn_Function_Is_Valid =>
           "?function Is_Valid is assumed to return True",
-        when Warn_Lemma_Procedure_No_Return =>
-          "?lemma procedure cannot be instantiated automatically",
         when Warn_Pragma_Annotate_No_Check =>
           "?no check message justified by this pragma",
         when Warn_Pragma_Annotate_Proved_Check =>
@@ -532,6 +535,11 @@ package VC_Kinds is
           "?analyzing unreferenced function &",
         when Warn_Unreferenced_Procedure =>
           "?analyzing unreferenced procedure &",
+        when Warn_Useless_Always_Return_Fun =>
+          "?function & has implicit Always_Return annotation",
+        when Warn_Useless_Always_Return_Lemma =>
+          "?automatically instantiated lemma & has implicit Always_Return"
+           & " annotation",
         when Warn_Useless_Relaxed_Init_Fun =>
           "?the result of & cannot be partially initialized",
         when Warn_Useless_Relaxed_Init_Obj =>
@@ -604,12 +612,20 @@ package VC_Kinds is
            "uninitialized allocator inside expression function",
          when Lim_Iterator_In_Component_Assoc =>
            "iterated component association with iterator specification",
+         when Lim_Exceptional_Cases_Dispatch =>
+           "aspect ""Exceptional_Cases"" on dispatching operation",
+         when Lim_Exceptional_Cases_Ownership =>
+           "procedures with exceptional contracts and parameters of mode"
+          & " ""in out"" or ""out"" subjected to ownerhsip which might not be "
+          & "passed by reference",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "extension aggregate with subtype ancestor part",
          when Lim_Iterated_Element_Association =>
            "iterated element association",
          when Lim_Multidim_Iterator =>
            "iterator specification over multi-dimensional array",
+         when Lim_Loop_Inv_And_Handler =>
+           "loop invariant in a list of statements with an exception handler",
          when Lim_Loop_With_Iterator_Filter =>
            "loop on an iterator specification with an iterator filter",
          when Lim_Complex_Raise_Expr_In_Prec =>

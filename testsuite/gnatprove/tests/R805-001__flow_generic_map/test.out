@@ -1,2 +1,4 @@
+p.ads:8:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate, in instantiation at p.ads:12
 p.ads:8:45: info: data dependencies proved, in instantiation at p.ads:12
+p.ads:14:13: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
 p.ads:14:47: info: data dependencies proved

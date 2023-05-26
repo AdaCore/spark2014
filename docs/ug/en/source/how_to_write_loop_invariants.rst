@@ -190,7 +190,7 @@ The implementation of ``Linear_Search`` is given in file ``linear_search.adb``.
 The loop invariant of ``Search`` expresses that, at the end of each iteration,
 if the loop has not been exited before, then the value searched is not in the
 range of indexes between the start of the array ``A'First`` and the current
-index ``Pos``.
+index ``Pos``. The loop variant is used to prove termination of the loop.
 
 .. literalinclude:: /examples/ug__linear_search_final/linear_search.adb
    :language: ada
@@ -259,7 +259,8 @@ The implementation of ``Binary_Search`` is given in file ``binary_search.adb``:
 
 Note that, although function ``Search`` has a loop, we have not given an
 explicit loop invariant yet, so the default loop invariant of ``True`` will be
-used by |GNATprove|. We are running |GNATprove| with a prover timeout of 60 seconds
+used by |GNATprove|. We have added a loop variant to prove termination of the
+function. We are running |GNATprove| with a prover timeout of 60 seconds
 (switch ``--timeout=60``) to get the results presented in the rest of this
 section.
 

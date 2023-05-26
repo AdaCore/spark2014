@@ -1,4 +1,5 @@
 pixel.adb:7:13: info: implicit function contract might not be available on calls from enclosing unit
+pixel.adb:7:13: info: implicit terminating annotation on "Zero" has been proved, subprogram will terminate
 pixel.adb:10:43: medium: divide by zero might fail
 pixel.adb:10:43: medium: precondition might fail
 pixel.adb:14:44: medium: divide by zero might fail

@@ -3,6 +3,7 @@ replace_prefix.adb:7:86: info: range check proved (CVC5: 2 VC)
 replace_prefix.adb:7:94: info: overflow check proved (CVC5: 2 VC)
 replace_prefix.adb:7:94: info: range check proved (CVC5: 2 VC)
 replace_prefix.adb:7:102: info: range check proved (CVC5: 2 VC)
+replace_prefix.ads:3:10: info: implicit terminating annotation on "Replace_Prefix" has been proved, subprogram will terminate
 replace_prefix.ads:9:70: info: range check proved (CVC5: 2 VC)
 replace_prefix.ads:10:66: info: range check proved (CVC5: 2 VC)
 replace_prefix.ads:15:39: info: range check proved (CVC5: 2 VC)

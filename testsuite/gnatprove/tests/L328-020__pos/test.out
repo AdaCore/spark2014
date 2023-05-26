@@ -1,1 +1,2 @@
 p.adb:8:21: medium: range check might fail, cannot prove lower bound for Integer'Pos (A) (e.g. when A = -129) [possible fix: add precondition (Integer'Pos (A) in -128 .. 127) to subprogram at p.ads:3]
+p.ads:3:13: info: implicit terminating annotation on "Bar_05" has been proved, subprogram will terminate

@@ -1,3 +1,4 @@
 nested.adb:15:28: info: initialization of "Helper_1.H_1" proved
+nested.adb:18:19: info: implicit terminating annotation on "Check" has been proved, subprogram will terminate
 nested.ads:3:23: warning: no procedure exists that can initialize abstract state "Nested.State_B"
 nested.ads:6:26: info: initialization of "X" proved

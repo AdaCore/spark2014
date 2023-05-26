@@ -1,1 +1,2 @@
+simple.adb:5:16: info: implicit terminating annotation on "Is_Set" has been proved, subprogram will terminate
 simple.adb:7:20: info: postcondition proved (CVC5: 2 VC)

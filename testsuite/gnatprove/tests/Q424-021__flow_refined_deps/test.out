@@ -1,7 +1,5 @@
 main.adb:7:03: info: data dependencies proved
 state.adb:14:14: medium: overflow check might fail, cannot prove lower bound for S + Foo.Get [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at state.ads:11 should mention S and Foo.F in a precondition]
-state.adb:14:19: warning: assuming "Get" always returns
-state.adb:14:19: warning: no returning annotation available for "Get"
 state.ads:8:03: info: flow dependencies proved
 state.ads:13:06: info: data dependencies proved
 state.ads:15:06: info: flow dependencies proved

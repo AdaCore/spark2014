@@ -1,15 +1,23 @@
 --- Messages on foo and bar should appear
+bar.adb:3:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 bar.adb:7:22: info: assertion proved
+foo.adb:5:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 foo.adb:7:19: info: assertion proved
 ------------------------------------------------------------
 --- Messages on foo only should appear
+foo.adb:5:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 foo.adb:7:19: info: assertion proved
 ------------------------------------------------------------
 --- Messages on foo and bar should appear
+bar.adb:3:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 bar.adb:7:22: info: assertion proved
+foo.adb:5:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 foo.adb:7:19: info: assertion proved
 ------------------------------------------------------------
 --- Messages on foo, bar, baz should appear
+bar.adb:3:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 bar.adb:7:22: info: assertion proved
+baz.adb:3:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 baz.adb:7:22: info: assertion proved
+foo.adb:5:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 foo.adb:7:19: info: assertion proved

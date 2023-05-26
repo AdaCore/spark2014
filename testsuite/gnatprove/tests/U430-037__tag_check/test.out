@@ -1,33 +1,21 @@
 test_tagged_records.adb:19:04: medium: resource or memory leak might occur at end of scope
 test_tagged_records.adb:21:07: info: no contextual analysis of "Rand" (body not seen yet)
-test_tagged_records.adb:21:07: warning: assuming "Rand" always returns
 test_tagged_records.adb:21:07: warning: assuming "Rand" has no effect on global items
 test_tagged_records.adb:21:07: warning: no Global contract available for "Rand"
-test_tagged_records.adb:21:07: warning: no returning annotation available for "Rand"
 test_tagged_records.adb:22:07: medium: tag check might fail
-test_tagged_records.adb:23:10: warning: assuming "Rand" always returns
 test_tagged_records.adb:23:10: warning: assuming "Rand" has no effect on global items
 test_tagged_records.adb:23:10: warning: no Global contract available for "Rand"
-test_tagged_records.adb:23:10: warning: no returning annotation available for "Rand"
 test_tagged_records.adb:24:07: medium: tag check might fail
 test_tagged_records.adb:24:17: info: pointer dereference check proved (CVC5: 1 VC)
-test_tagged_records.adb:25:10: warning: assuming "Rand" always returns
 test_tagged_records.adb:25:10: warning: assuming "Rand" has no effect on global items
 test_tagged_records.adb:25:10: warning: no Global contract available for "Rand"
-test_tagged_records.adb:25:10: warning: no returning annotation available for "Rand"
 test_tagged_records.adb:26:07: medium: tag check might fail
-test_tagged_records.adb:27:10: warning: assuming "Rand" always returns
 test_tagged_records.adb:27:10: warning: assuming "Rand" has no effect on global items
 test_tagged_records.adb:27:10: warning: no Global contract available for "Rand"
-test_tagged_records.adb:27:10: warning: no returning annotation available for "Rand"
 test_tagged_records.adb:28:07: info: tag check proved (CVC5: 1 VC)
-test_tagged_records.adb:29:10: warning: assuming "Rand" always returns
 test_tagged_records.adb:29:10: warning: assuming "Rand" has no effect on global items
 test_tagged_records.adb:29:10: warning: no Global contract available for "Rand"
-test_tagged_records.adb:29:10: warning: no returning annotation available for "Rand"
 test_tagged_records.adb:30:12: info: tag check proved (CVC5: 1 VC)
-test_tagged_records.adb:31:10: warning: assuming "Rand" always returns
 test_tagged_records.adb:31:10: warning: assuming "Rand" has no effect on global items
 test_tagged_records.adb:31:10: warning: no Global contract available for "Rand"
-test_tagged_records.adb:31:10: warning: no returning annotation available for "Rand"
 test_tagged_records.adb:32:17: info: tag check proved (CVC5: 1 VC)

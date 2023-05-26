@@ -1,3 +1,5 @@
+sorters.adb:6:11: warning: Always_Return annotation is useless
+sorters.adb:6:11: warning: function "Perm_Transitive" has implicit Always_Return annotation
 sorters.adb:17:11: info: flow dependencies proved
 sorters.adb:21:19: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
 sorters.adb:22:28: info: index check proved (CVC5: 2 VC)
@@ -11,6 +13,7 @@ sorters.adb:31:29: info: index check proved (CVC5: 2 VC)
 sorters.adb:32:15: info: index check proved (CVC5: 2 VC)
 sorters.adb:32:29: info: index check proved (CVC5: 2 VC)
 sorters.adb:33:15: info: index check proved (CVC5: 2 VC)
+sorters.adb:39:13: info: implicit terminating annotation on "Index_Of_Minimum" has been proved, subprogram will terminate
 sorters.adb:41:19: info: postcondition proved (CVC5: 3 VC)
 sorters.adb:43:45: info: index check proved (CVC5: 2 VC)
 sorters.adb:43:67: info: index check proved (CVC5: 2 VC)
@@ -44,6 +47,8 @@ sorters.adb:86:16: medium: loop invariant might not be preserved by an arbitrary
 sorters.adb:86:24: medium: array index check might fail [reason for check: value must be a valid index into the array]
 sorters.adb:86:40: info: index check proved (CVC5: 4 VC)
 sorters.adb:86:40: info: overflow check proved (CVC5: 4 VC)
+sorters.ads:10:11: warning: Always_Return annotation is useless
+sorters.ads:10:11: warning: function "Perm" has implicit Always_Return annotation
 sorters.ads:16:11: info: flow dependencies proved
 sorters.ads:19:22: info: postcondition proved (CVC5: 2 VC)
 sorters.ads:20:64: info: overflow check proved (CVC5: 2 VC)

@@ -1,7 +1,10 @@
+test.adb:4:13: info: implicit terminating annotation on "Test_If" has been proved, subprogram will terminate
 test.adb:5:19: high: postcondition might fail (e.g. when Test_If'Result = 5)
 test.adb:7:07: info: initialization of "B" proved
+test.adb:19:13: info: implicit terminating annotation on "Test_Case" has been proved, subprogram will terminate
 test.adb:20:19: high: postcondition might fail (e.g. when Test_Case'Result = 5)
 test.adb:22:07: info: initialization of "B" proved
+test.adb:38:13: info: implicit terminating annotation on "Test_If_2" has been proved, subprogram will terminate
 test.adb:39:19: high: postcondition might fail (e.g. when Test_If_2'Result = -2)
 test.adb:44:18: info: overflow check proved (CVC5: 2 VC)
 test.adb:46:18: info: overflow check proved (CVC5: 2 VC)

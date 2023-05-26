@@ -1,0 +1,2 @@
+super.ads:9:13: info: implicit terminating annotation on "Super_Length" has been proved, subprogram will terminate
+toto.ads:6:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate

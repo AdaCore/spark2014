@@ -4,6 +4,4 @@ p.ads:7:46: error: "X" is referenced in expression function but missing from the
 p.ads:10:35: warning: postcondition does not mention function result
 p.ads:10:50: error: "X" is referenced in Post but missing from the Global
 p.ads:10:50: error: "X" is referenced in Post but missing from the Global
-r.ads:4:20: warning: assuming "B" always returns
-r.ads:4:20: warning: no returning annotation available for "B"
 gnatprove: error during flow analysis and proof

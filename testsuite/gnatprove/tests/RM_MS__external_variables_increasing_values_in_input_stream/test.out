@@ -5,6 +5,10 @@ inc.adb:30:21: info: postcondition proved (Trivial: 2 VC)
 inc.adb:32:07: info: initialization of "Tmp" proved
 inc.adb:51:19: info: non-aliasing of formal parameters "V" and "Valid" proved
 inc.adb:53:22: info: non-aliasing of formal parameters "V" and "Valid" proved
+inc.ads:11:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
+inc.ads:14:13: info: implicit terminating annotation on "Second" has been proved, subprogram will terminate
+inc.ads:19:13: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
+inc.ads:24:13: info: implicit terminating annotation on "Is_Increasing" has been proved, subprogram will terminate
 inc.ads:27:25: info: initialization of "Result" proved
 inc.ads:28:11: info: data dependencies proved
 inc.ads:29:21: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)

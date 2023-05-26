@@ -1,4 +1,6 @@
+sorted.ads:4:13: info: implicit terminating annotation on "Is_Sorted" has been proved, subprogram will terminate
 sorted.ads:6:39: info: index check proved (CVC5: 2 VC)
+sorted.ads:12:13: info: implicit terminating annotation on "Open" has been proved, subprogram will terminate
 sorted.ads:13:14: info: postcondition proved (CVC5: 1 VC)
 sorted.ads:15:09: medium: invariant check might fail on default value
 sorted.ads:16:24: high: cannot call boundary subprogram "Is_Sorted" for type "Sorted_Nat_Array" in its own invariant (SPARK RM 7.3.2(5))

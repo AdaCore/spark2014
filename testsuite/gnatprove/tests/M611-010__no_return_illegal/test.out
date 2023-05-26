@@ -1,4 +1,4 @@
-no_return_illegal.adb:11:07: medium: exception might be raised
+no_return_illegal.adb:11:07: medium: unexpected exception might be raised
 no_return_illegal.adb:17:10: medium: call to nonreturning subprogram might be executed
 no_return_illegal.adb:18:12: warning: this statement is never reached
 no_return_illegal.adb:18:12: warning: unreachable code

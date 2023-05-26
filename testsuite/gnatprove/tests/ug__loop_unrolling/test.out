@@ -1,4 +1,5 @@
 loop_unrolling.adb:15:27: info: overflow check proved
 loop_unrolling.ads:7:20: info: initialization of "A" proved
 loop_unrolling.ads:8:14: info: postcondition proved
+loop_unrolling.ads:10:13: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate
 loop_unrolling.ads:12:14: info: postcondition proved

@@ -18,5 +18,6 @@ dynamic.adb:20:19: medium: range check might fail, cannot prove lower bound for 
 dynamic.adb:21:17: info: range check proved (CVC5: 2 VC)
 dynamic.adb:24:09: warning: unused assignment
 dynamic.adb:24:14: info: overflow check proved (CVC5: 2 VC)
+dynamic.ads:5:13: info: implicit terminating annotation on "P" has been proved, subprogram will terminate
 dynamic.ads:7:21: medium: postcondition might fail, cannot prove X + 2 <= P'Result (e.g. when P'Result = 10)
 dynamic.ads:7:23: info: overflow check proved (CVC5: 2 VC)

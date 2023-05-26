@@ -4,16 +4,20 @@ pricing.adb:19:13: info: loop invariant preservation proved (altergo: 1 VC)
 pricing.adb:19:21: info: range check proved (altergo: 4 VC)
 pricing.adb:19:56: info: overflow check proved (altergo: 4 VC)
 pricing.adb:20:44: info: index check proved (altergo: 4 VC)
+pricing.ads:19:13: info: implicit terminating annotation on "Price_Of_Item" has been proved, subprogram will terminate
 pricing.ads:20:14: info: postcondition proved (altergo: 1 VC)
+pricing.ads:27:13: info: implicit terminating annotation on "Price_Of_Basket" has been proved, subprogram will terminate
 pricing.ads:28:14: info: postcondition proved (altergo: 1 VC)
 pricing.ads:28:23: info: range check proved (altergo: 2 VC)
 pricing.ads:29:62: info: index check proved (altergo: 2 VC)
 sat.adb:14:12: info: range check proved (altergo: 2 VC)
 sat.adb:20:12: info: range check proved (altergo: 2 VC)
+sat.ads:14:13: info: implicit terminating annotation on "Add" has been proved, subprogram will terminate
 sat.ads:15:06: info: complete contract cases proved (altergo: 1 VC)
 sat.ads:15:06: info: disjoint contract cases proved (altergo: 1 VC)
 sat.ads:15:41: info: contract case proved (Trivial: 1 VC; altergo: 1 VC)
 sat.ads:16:41: info: contract case proved (Trivial: 1 VC; altergo: 1 VC)
+sat.ads:18:13: info: implicit terminating annotation on "Mult" has been proved, subprogram will terminate
 sat.ads:19:06: info: complete contract cases proved (altergo: 1 VC)
 sat.ads:19:06: info: disjoint contract cases proved (altergo: 1 VC)
 sat.ads:19:41: info: contract case proved (Trivial: 1 VC; altergo: 1 VC)

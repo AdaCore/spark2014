@@ -1,7 +1,4 @@
 stm32_gpio.ads:9:13: info: function contract feasibility proved (Trivial: 1 VC)
-stm32_gpio.ads:26:04: warning: assuming "Mode" always returns
 stm32_gpio.ads:26:04: warning: assuming "Mode" has no effect on global items
 stm32_gpio.ads:26:04: warning: in instantiation at line 12
-stm32_gpio.ads:26:04: warning: in instantiation at line 12
 stm32_gpio.ads:26:04: warning: no Global contract available for "Mode"
-stm32_gpio.ads:26:04: warning: no returning annotation available for "Mode"

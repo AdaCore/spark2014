@@ -5,6 +5,7 @@ sort.adb:16:29: info: index check proved (CVC5: 2 VC)
 sort.adb:17:15: info: index check proved (CVC5: 2 VC)
 sort.adb:17:29: info: index check proved (CVC5: 2 VC)
 sort.adb:18:15: info: index check proved (CVC5: 2 VC)
+sort.adb:22:13: info: implicit terminating annotation on "Index_Of_Minimum" has been proved, subprogram will terminate
 sort.adb:25:16: info: postcondition proved (CVC5: 2 VC)
 sort.adb:27:07: info: initialization of "Min" proved
 sort.adb:29:20: info: range check proved (CVC5: 2 VC)

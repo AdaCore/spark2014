@@ -29,11 +29,13 @@ longest_common_prefix.adb:30:77: info: overflow check proved (CVC5: 4 VC)
 longest_common_prefix.adb:31:31: info: loop variant proved (CVC5: 1 VC)
 longest_common_prefix.adb:32:17: info: overflow check proved (CVC5: 2 VC)
 longest_common_prefix.ads:3:08: info: flow dependencies proved
+longest_common_prefix.ads:8:13: info: implicit terminating annotation on "LCP" has been proved, subprogram will terminate
 longest_common_prefix.ads:10:19: info: postcondition proved (Z3: 1 VC)
 longest_common_prefix.ads:10:61: info: index check proved (CVC5: 2 VC)
 longest_common_prefix.ads:10:61: info: overflow check proved (CVC5: 2 VC)
 longest_common_prefix.ads:10:71: info: index check proved (CVC5: 2 VC)
 longest_common_prefix.ads:10:71: info: overflow check proved (CVC5: 2 VC)
+longest_common_prefix.ads:12:13: info: implicit terminating annotation on "LCP2" has been proved, subprogram will terminate
 longest_common_prefix.ads:14:19: info: postcondition proved (Z3: 1 VC)
 longest_common_prefix.ads:14:61: info: index check proved (CVC5: 2 VC)
 longest_common_prefix.ads:14:61: info: overflow check proved (CVC5: 2 VC)

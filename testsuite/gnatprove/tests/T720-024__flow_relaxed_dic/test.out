@@ -1,5 +1,6 @@
 stacks.ads:5:09: info: default initial condition proved (CVC5: 1 VC)
 stacks.ads:5:09: info: predicate check proved on default value (CVC5: 3 VC)
+stacks.ads:8:13: info: implicit terminating annotation on "Empty" has been proved, subprogram will terminate
 stacks.ads:15:04: medium: type "Stack" is not fully initialized
 stacks.ads:16:07: info: range check proved (CVC5: 2 VC)
 stacks.ads:20:42: info: index check proved (CVC5: 2 VC)

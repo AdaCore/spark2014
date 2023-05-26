@@ -2,6 +2,9 @@ p.adb:6:23: info: range check proved (CVC5: 1 VC)
 p.adb:6:30: info: range check proved (CVC5: 1 VC)
 p.adb:12:23: info: range check proved (CVC5: 1 VC)
 p.adb:12:30: info: range check proved (CVC5: 1 VC)
+p.ads:4:13: info: implicit terminating annotation on "Id_Not_A" has been proved, subprogram will terminate
 p.ads:6:20: info: postcondition proved (CVC5: 1 VC)
+p.ads:8:13: info: implicit terminating annotation on "Id_Not_D" has been proved, subprogram will terminate
 p.ads:10:20: info: postcondition proved (CVC5: 1 VC)
+p.ads:12:13: info: implicit terminating annotation on "Id_Gen" has been proved, subprogram will terminate
 p.ads:13:20: info: postcondition proved (CVC5: 1 VC)

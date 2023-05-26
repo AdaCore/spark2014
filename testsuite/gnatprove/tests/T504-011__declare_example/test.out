@@ -1,5 +1,8 @@
+test_declare.adb:5:13: info: implicit terminating annotation on "Has_Zero" has been proved, subprogram will terminate
+test_declare.adb:8:13: info: implicit terminating annotation on "Has_Two_Zeros" has been proved, subprogram will terminate
 test_declare.adb:9:35: info: index check proved (CVC5: 2 VC)
 test_declare.adb:10:38: info: index check proved (CVC5: 2 VC)
+test_declare.adb:12:13: info: implicit terminating annotation on "Find_First_Zero" has been proved, subprogram will terminate
 test_declare.adb:14:14: info: postcondition proved (CVC5: 4 VC)
 test_declare.adb:15:28: info: index check proved (CVC5: 2 VC)
 test_declare.adb:16:24: info: range check proved (CVC5: 4 VC)
@@ -7,7 +10,7 @@ test_declare.adb:21:20: info: range check proved (CVC5: 4 VC)
 test_declare.adb:24:33: info: loop invariant initialization proved (CVC5: 1 VC)
 test_declare.adb:24:33: info: loop invariant preservation proved (CVC5: 1 VC)
 test_declare.adb:24:47: info: range check proved (CVC5: 8 VC)
-test_declare.adb:27:07: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+test_declare.adb:27:07: info: only expected exception raised (CVC5: 1 VC)
 test_declare.adb:33:08: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 test_declare.adb:34:43: info: precondition proved (CVC5: 1 VC)
 test_declare.adb:34:43: info: range check proved (CVC5: 2 VC)

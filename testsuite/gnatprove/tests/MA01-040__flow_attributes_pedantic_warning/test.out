@@ -17,3 +17,11 @@ pedantic.adb:49:15: medium: range check might fail, cannot prove upper bound for
 pedantic.adb:49:15: warning: attribute "Size" has an implementation-defined value
 pedantic.ads:12:29: medium: range check might fail, cannot prove upper bound for R'Alignment [reason for check: default component value must fit in the type]
 pedantic.ads:12:29: warning: attribute "Alignment" has an implementation-defined value
+pedantic.ads:17:13: info: implicit terminating annotation on "Alignment_Of_R" has been proved, subprogram will terminate
+pedantic.ads:19:13: info: implicit terminating annotation on "Order_Of_R" has been proved, subprogram will terminate
+pedantic.ads:21:13: info: implicit terminating annotation on "CS_Of_A" has been proved, subprogram will terminate
+pedantic.ads:23:13: info: implicit terminating annotation on "First_Bit_Of_F1" has been proved, subprogram will terminate
+pedantic.ads:25:13: info: implicit terminating annotation on "Last_Bit_Of_F1" has been proved, subprogram will terminate
+pedantic.ads:27:13: info: implicit terminating annotation on "Position_Of_F1" has been proved, subprogram will terminate
+pedantic.ads:29:13: info: implicit terminating annotation on "Size_Of_A" has been proved, subprogram will terminate
+pedantic.ads:31:13: info: implicit terminating annotation on "Size_Of_V" has been proved, subprogram will terminate

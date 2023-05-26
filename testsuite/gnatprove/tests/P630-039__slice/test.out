@@ -1,9 +1,11 @@
+bug.ads:8:13: info: implicit terminating annotation on "Is_Equal" has been proved, subprogram will terminate
 bug.ads:12:48: info: index check proved (CVC5: 2 VC)
 bug.ads:12:48: info: overflow check proved (CVC5: 2 VC)
 bug.ads:12:66: info: index check proved (CVC5: 2 VC)
 bug.ads:12:66: info: overflow check proved (CVC5: 2 VC)
 bug.ads:13:23: info: range check proved (CVC5: 2 VC)
 bug.ads:13:44: info: range check proved (CVC5: 2 VC)
+bug.ads:16:13: info: implicit terminating annotation on "Has_Sub_Range" has been proved, subprogram will terminate
 bug.ads:21:33: info: overflow check proved (CVC5: 2 VC)
 bug.ads:21:45: info: precondition proved (CVC5: 2 VC)
 bug.ads:21:54: info: range check proved (CVC5: 4 VC)

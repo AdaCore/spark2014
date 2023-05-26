@@ -59,48 +59,68 @@ procedure Test_Ownership_Illegal with SPARK_Mode is
       type T6 is new T2 with null record;
    end Nested3;
 
-   function F1 (X : T1) return Boolean with
+   function F_out (X : T1) return Boolean with
      Import,
-     Annotate => (GNATprove, Ownership); --  << KO, third parameter required
+     Annotate => (GNATprove, Ownership, "Needs_Reclamation"); -- << KO, needs to be in same list of declaration as type
 
-   function F2 (X : T1) return Boolean with
-     Import,
-     Annotate => (GNATprove, Ownership, "U"); --  << KO, third parameter should be Needs_Reclamation or Is_Reclaimed
+   package Nested4 is
 
-   function F3 (X : T1) return Boolean with
-     Import,
-     Annotate => (GNATprove, Ownership, "Needs_Reclamation"); --  << OK
+      type T7 is private with
+        Annotate => (GNATprove, Ownership, "Needs_Reclamation"); --  << OK
 
-   function F4 (X : T1) return Boolean with
-     Import,
-     Annotate => (GNATprove, Ownership, "Is_Reclaimed"); --  << KO, not 2 ownership functions with same type
+      package Inner is
+         function F0 (X : T7) return Boolean with
+           Import,
+           Annotate => (GNATprove, Ownership, "Needs_Reclamation"); --  << KO, not in same list of declarations as type
+      end Inner;
 
-   function F5 (X : T1) return Integer with
-     Import,
-     Annotate => (GNATprove, Ownership, "Is_Reclaimed"); --  << KO, ownership function should return boolean
+      function F1 (X : T7) return Boolean with
+        Import,
+        Annotate => (GNATprove, Ownership); --  << KO, third parameter required
 
-   function F6 return Boolean with
-     Import,
-     Annotate => (GNATprove, Ownership, "Is_Reclaimed"); --  << KO, ownership function should have 1 parameter
+      function F2 (X : T7) return Boolean with
+        Import,
+        Annotate => (GNATprove, Ownership, "U"); --  << KO, third parameter should be Needs_Reclamation or Is_Reclaimed
 
-   function F7 (X, Y : T1) return Boolean with
-     Import,
-     Annotate => (GNATprove, Ownership, "Is_Reclaimed"); --  << KO, ownership function should have 1 parameter
+      function F3 (X : T7) return Boolean with
+        Import,
+        Annotate => (GNATprove, Ownership, "Needs_Reclamation"); --  << OK
 
-   function F8 (X : Integer) return Boolean with
-     Import,
-     Annotate => (GNATprove, Ownership, "Is_Reclaimed"); --  << KO, parameter of ownership function shall have ownership
+      function F4 (X : T7) return Boolean with
+        Import,
+        Annotate => (GNATprove, Ownership, "Is_Reclaimed"); --  << KO, not 2 ownership functions with same type
 
-   function F9 (X : T3) return Boolean with
-     Import,
-     Annotate => (GNATprove, Ownership, "Is_Reclaimed"); --  << KO, parameter of ownership function shall need reclamation
+      function F5 (X : T7) return Integer with
+        Import,
+        Annotate => (GNATprove, Ownership, "Is_Reclaimed"); --  << KO, ownership function should return boolean
 
-   G : Boolean := True;
+      function F6 return Boolean with
+        Import,
+        Annotate => (GNATprove, Ownership, "Is_Reclaimed"); --  << KO, ownership function should have 1 parameter
 
-   function F10 (X : T1) return Boolean with
-     Import,
-     Global => (Input => G),
-     Annotate => (GNATprove, Ownership, "Is_Reclaimed"); --  << KO, ownership function shall not access global data
+      function F7 (X, Y : T7) return Boolean with
+        Import,
+        Annotate => (GNATprove, Ownership, "Is_Reclaimed"); --  << KO, ownership function should have 1 parameter
+
+      function F8 (X : Integer) return Boolean with
+        Import,
+        Annotate => (GNATprove, Ownership, "Is_Reclaimed"); --  << KO, parameter of ownership function shall have ownership
+
+      function F9 (X : T3) return Boolean with
+        Import,
+        Annotate => (GNATprove, Ownership, "Is_Reclaimed"); --  << KO, parameter of ownership function shall need reclamation
+
+      G : Boolean := True;
+
+      function F10 (X : T7) return Boolean with
+        Import,
+        Global => (Input => G),
+        Annotate => (GNATprove, Ownership, "Is_Reclaimed"); --  << KO, ownership function shall not access global data
+   private
+      pragma SPARK_Mode (Off);
+      type T7 is null record;
+   end Nested4;
+
 begin
    null;
 end;

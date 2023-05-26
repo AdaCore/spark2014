@@ -1,6 +1,7 @@
 camera_motion.adb:8:54: medium: overflow check might fail, cannot prove upper bound for -Filter_Type'Last (1) [reason for check: result of negation must fit in a 32-bits machine integer]
 camera_motion.adb:9:54: medium: overflow check might fail, cannot prove upper bound for -Filter_Type'Last (2) [reason for check: result of negation must fit in a 32-bits machine integer]
 camera_motion.adb:20:13: info: add a contract to analyze it separately from calling contexts
+camera_motion.adb:20:13: info: implicit terminating annotation on "Sqrt" has been proved, subprogram will terminate
 camera_motion.adb:20:13: info: local subprogram "Sqrt" only analyzed in the context of calls
 camera_motion.adb:22:07: info: initialization of "s_new" proved
 camera_motion.adb:22:07: info: initialization of "s_new" proved, in call inlined at camera_motion.adb:151
@@ -20,6 +21,7 @@ camera_motion.adb:29:14: medium: range check might fail, cannot prove lower boun
 camera_motion.adb:29:14: medium: range check might fail, cannot prove lower bound for s_new, in call inlined at camera_motion.adb:287 [reason for check: value must fit in the target type of the assignment]
 camera_motion.adb:29:14: medium: range check might fail, cannot prove lower bound for s_new, in call inlined at camera_motion.adb:288 [reason for check: value must fit in the target type of the assignment]
 camera_motion.adb:33:13: info: add a contract to analyze it separately from calling contexts
+camera_motion.adb:33:13: info: implicit terminating annotation on "Product_Sum" has been proved, subprogram will terminate
 camera_motion.adb:33:13: info: local subprogram "Product_Sum" only analyzed in the context of calls
 camera_motion.adb:38:07: info: initialization of "x" proved
 camera_motion.adb:38:07: info: initialization of "x" proved, in call inlined at camera_motion.adb:184
@@ -32,7 +34,9 @@ camera_motion.adb:54:58: medium: overflow check might fail, cannot prove lower b
 camera_motion.adb:54:76: info: index check proved (CVC5: 2 VC), in call inlined at camera_motion.adb:184
 camera_motion.adb:54:79: info: index check proved (CVC5: 2 VC), in call inlined at camera_motion.adb:184
 camera_motion.adb:76:27: info: range check proved (CVC5: 2 VC), in instantiation at camera_motion.adb:80
+camera_motion.adb:80:13: info: implicit terminating annotation on "Clamp_Pixel" has been proved, subprogram will terminate
 camera_motion.adb:83:04: info: no contextual analysis of "Difference_Image" (unconstrained return type)
+camera_motion.adb:83:13: info: implicit terminating annotation on "Difference_Image" has been proved, subprogram will terminate
 camera_motion.adb:85:07: info: initialization of "v1" proved
 camera_motion.adb:85:11: info: initialization of "v2" proved
 camera_motion.adb:87:07: medium: "Result" might not be initialized
@@ -44,6 +48,7 @@ camera_motion.adb:91:44: medium: array index check might fail [reason for check:
 camera_motion.adb:92:50: info: overflow check proved (CVC5: 2 VC)
 camera_motion.adb:92:58: info: overflow check proved (CVC5: 2 VC)
 camera_motion.adb:99:04: info: no contextual analysis of "Square_Image" (unconstrained return type)
+camera_motion.adb:99:13: info: implicit terminating annotation on "Square_Image" has been proved, subprogram will terminate
 camera_motion.adb:100:07: info: initialization of "v" proved
 camera_motion.adb:102:07: medium: "Result" might not be initialized
 camera_motion.adb:102:14: info: range check proved (CVC5: 2 VC)
@@ -51,6 +56,7 @@ camera_motion.adb:103:37: info: cannot unroll loop (too many loop iterations)
 camera_motion.adb:104:40: info: cannot unroll loop (too many loop iterations)
 camera_motion.adb:106:52: info: overflow check proved (CVC5: 2 VC)
 camera_motion.adb:113:13: info: add a contract to analyze it separately from calling contexts
+camera_motion.adb:113:13: info: implicit terminating annotation on "Get_Image_Statistics" has been proved, subprogram will terminate
 camera_motion.adb:113:13: info: local subprogram "Get_Image_Statistics" only analyzed in the context of calls
 camera_motion.adb:114:07: info: initialization of "v" proved
 camera_motion.adb:114:07: info: initialization of "v" proved, in call inlined at camera_motion.adb:240
@@ -76,12 +82,14 @@ camera_motion.adb:151:37: info: analyzing call to "Sqrt" in context
 camera_motion.adb:151:37: medium: range check might fail, cannot prove upper bound for Sqrt (Var_Sum / Count), in call inlined at camera_motion.adb:240 [reason for check: value must be convertible to the target type of the conversion]
 camera_motion.adb:151:51: medium: divide by zero might fail, in call inlined at camera_motion.adb:240
 camera_motion.adb:156:04: info: no contextual analysis of "Clip_Image" (unconstrained return type)
+camera_motion.adb:156:13: info: implicit terminating annotation on "Clip_Image" has been proved, subprogram will terminate
 camera_motion.adb:158:07: info: initialization of "v" proved
 camera_motion.adb:160:07: medium: "Result" might not be initialized
 camera_motion.adb:160:14: info: range check proved (CVC5: 2 VC)
 camera_motion.adb:161:37: info: cannot unroll loop (too many loop iterations)
 camera_motion.adb:162:40: info: cannot unroll loop (too many loop iterations)
 camera_motion.adb:174:04: info: no contextual analysis of "Filter_Image" (unconstrained return type)
+camera_motion.adb:174:13: info: implicit terminating annotation on "Filter_Image" has been proved, subprogram will terminate
 camera_motion.adb:179:07: info: initialization of "Sum" proved
 camera_motion.adb:181:07: medium: "Result" might not be initialized
 camera_motion.adb:181:14: info: range check proved (CVC5: 2 VC)
@@ -188,3 +196,4 @@ camera_motion.adb:293:31: medium: range check might fail, cannot prove lower bou
 camera_motion.adb:294:31: medium: range check might fail, cannot prove lower bound for Weighted_Mean_Y [reason for check: value must fit in the target type of the assignment]
 camera_motion.adb:295:31: medium: range check might fail, cannot prove upper bound for Weighted_Stddev_X [reason for check: value must fit in the target type of the assignment]
 camera_motion.adb:296:31: medium: range check might fail, cannot prove upper bound for Weighted_Stddev_Y [reason for check: value must fit in the target type of the assignment]
+camera_motion.ads:15:13: info: implicit terminating annotation on "Measure_Motion" has been proved, subprogram will terminate

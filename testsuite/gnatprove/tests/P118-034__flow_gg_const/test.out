@@ -12,6 +12,7 @@ Generated contracts for Main
    Refined_Global =>
       Input =>
          p__var
+main.adb:8:13: info: implicit terminating annotation on "Both_Are_True" has been proved, subprogram will terminate
 main.adb:20:19: info: precondition proved (Trivial: 1 VC)
 main.adb:20:19: medium: assertion might fail
 Generated contracts for P.Read_Variable
@@ -27,3 +28,5 @@ Generated contracts for P.Simply_True
 Generated contracts for P
    Initializes =>
       Var
+p.ads:3:13: info: implicit terminating annotation on "Read_Variable" has been proved, subprogram will terminate
+p.ads:4:13: info: implicit terminating annotation on "Simply_True" has been proved, subprogram will terminate

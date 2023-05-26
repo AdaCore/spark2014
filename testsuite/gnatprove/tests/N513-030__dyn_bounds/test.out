@@ -1,9 +1,13 @@
 dyn_bounds.adb:1:11: warning: subprogram "Dyn_Bounds" has no effect
 dyn_bounds.adb:2:12: info: range check proved (CVC5: 2 VC)
 dyn_bounds.adb:3:12: info: range check proved (CVC5: 2 VC)
+dyn_bounds.adb:5:13: info: implicit terminating annotation on "F_Simple_1" has been proved, subprogram will terminate
+dyn_bounds.adb:8:13: info: implicit terminating annotation on "F_Simple_2" has been proved, subprogram will terminate
 dyn_bounds.adb:10:14: info: postcondition proved (CVC5: 1 VC)
 dyn_bounds.adb:13:10: info: overflow check proved (CVC5: 2 VC)
 dyn_bounds.adb:13:10: info: range check proved (CVC5: 2 VC)
+dyn_bounds.adb:15:13: info: implicit terminating annotation on "F_With_Expr_1" has been proved, subprogram will terminate
+dyn_bounds.adb:18:13: info: implicit terminating annotation on "F_With_Expr_2" has been proved, subprogram will terminate
 dyn_bounds.adb:20:14: info: postcondition proved (CVC5: 1 VC)
 dyn_bounds.adb:23:10: info: overflow check proved (CVC5: 2 VC)
 dyn_bounds.adb:23:10: info: range check proved (CVC5: 2 VC)

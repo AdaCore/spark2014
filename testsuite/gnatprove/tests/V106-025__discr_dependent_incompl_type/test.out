@@ -12,10 +12,10 @@ main.adb:43:31: info: range check proved (CVC5: 2 VC)
 main.adb:43:34: info: range check proved (CVC5: 2 VC)
 main.adb:45:46: info: discriminant check proved (CVC5: 1 VC)
 main.adb:46:57: info: range check proved (CVC5: 1 VC)
-main.adb:48:19: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
-main.adb:48:38: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:48:34: medium: assertion might fail, cannot prove V.C4.C2 (2).C4.C2'Length = 0
 main.adb:48:38: info: pointer dereference check proved (Z3: 1 VC)
+main.adb:48:38: medium: pointer dereference check might fail
 main.adb:48:43: info: index check proved (CVC5: 2 VC)
-main.adb:48:43: info: index check proved (Z3: 2 VC)
-main.adb:48:45: info: pointer dereference check proved (Z3: 1 VC)
-main.adb:48:48: info: pointer dereference check proved (Z3: 1 VC)
+main.adb:48:43: medium: array index check might fail [reason for check: value must be a valid index into the array]
+main.adb:48:45: medium: pointer dereference check might fail
+main.adb:48:48: medium: pointer dereference check might fail

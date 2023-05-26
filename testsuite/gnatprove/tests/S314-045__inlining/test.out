@@ -27,11 +27,7 @@ compiler.adb:57:05: warning: no returning annotation available for "New_Line"
 compiler.adb:118:15: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
 compiler.adb:164:07: warning: assuming "New_Line" always returns
 compiler.adb:164:07: warning: no returning annotation available for "New_Line"
-compiler.adb:308:08: warning: assuming "End_Of_File" always returns
-compiler.adb:308:08: warning: no returning annotation available for "End_Of_File"
 compiler.adb:308:25: info: analyzing call to "Error" in context
-compiler.adb:310:33: warning: assuming "Get_Line" always returns
-compiler.adb:310:33: warning: no returning annotation available for "Get_Line"
 compiler.adb:314:32: warning: assuming "New_Line" always returns
 compiler.adb:314:32: warning: no returning annotation available for "New_Line"
 compiler.adb:315:14: warning: assuming "Put" always returns

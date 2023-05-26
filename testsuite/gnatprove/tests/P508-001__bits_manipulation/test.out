@@ -16,6 +16,10 @@ bits_manipulation-functions.adb:15:64: info: range check proved (CVC5: 2 VC), in
 bits_manipulation-functions.adb:16:65: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:16:65: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:17:65: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:23:13: info: implicit terminating annotation on "Extract_Bits_Inline_Always" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:23:13: info: implicit terminating annotation on "Extract_Bits_Inline_Always" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:23:13: info: implicit terminating annotation on "Extract_Bits_Inline_Always" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:23:13: info: implicit terminating annotation on "Extract_Bits_Inline_Always" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:27:20: info: postcondition proved (CVC5: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:27:20: info: postcondition proved (CVC5: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:27:20: info: postcondition proved (CVC5: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -48,6 +52,10 @@ bits_manipulation-functions.adb:38:22: info: assertion proved (CVC5: 1 VC), in i
 bits_manipulation-functions.adb:38:22: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:38:22: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:38:22: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:42:13: info: implicit terminating annotation on "Extract_Bits_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:42:13: info: implicit terminating annotation on "Extract_Bits_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:42:13: info: implicit terminating annotation on "Extract_Bits_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:42:13: info: implicit terminating annotation on "Extract_Bits_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:44:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:44:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:44:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -68,6 +76,10 @@ bits_manipulation-functions.adb:51:74: info: range check proved (CVC5: 2 VC), in
 bits_manipulation-functions.adb:51:74: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:51:74: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:51:74: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:53:13: info: implicit terminating annotation on "Extract_Bits_Not_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:53:13: info: implicit terminating annotation on "Extract_Bits_Not_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:53:13: info: implicit terminating annotation on "Extract_Bits_Not_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:53:13: info: implicit terminating annotation on "Extract_Bits_Not_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:55:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:55:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:55:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -112,6 +124,10 @@ bits_manipulation-functions.adb:87:07: info: initialization of "New_V" proved, i
 bits_manipulation-functions.adb:87:07: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:87:07: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:87:07: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:89:42: medium: implicit terminating annotation on "MSB_Index_Fast_Inline_Always" could be incorrect, loop might be nonterminating, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:89:42: medium: implicit terminating annotation on "MSB_Index_Fast_Inline_Always" could be incorrect, loop might be nonterminating, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:89:42: medium: implicit terminating annotation on "MSB_Index_Fast_Inline_Always" could be incorrect, loop might be nonterminating, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:89:42: medium: implicit terminating annotation on "MSB_Index_Fast_Inline_Always" could be incorrect, loop might be nonterminating, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:93:30: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:93:30: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:93:30: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -120,6 +136,10 @@ bits_manipulation-functions.adb:98:45: info: division check proved (CVC5: 1 VC),
 bits_manipulation-functions.adb:98:45: info: division check proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:98:45: info: division check proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:98:45: info: division check proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:103:13: info: implicit terminating annotation on "MSB_Index_Fast_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:103:13: info: implicit terminating annotation on "MSB_Index_Fast_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:103:13: info: implicit terminating annotation on "MSB_Index_Fast_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:103:13: info: implicit terminating annotation on "MSB_Index_Fast_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:104:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:104:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:104:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -128,6 +148,10 @@ bits_manipulation-functions.adb:107:12: info: postcondition proved (CVC5: 1 VC),
 bits_manipulation-functions.adb:107:12: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:107:12: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:107:12: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:109:13: info: implicit terminating annotation on "MSB_Index_Fast_Not_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:109:13: info: implicit terminating annotation on "MSB_Index_Fast_Not_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:109:13: info: implicit terminating annotation on "MSB_Index_Fast_Not_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:109:13: info: implicit terminating annotation on "MSB_Index_Fast_Not_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:110:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:110:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:110:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -136,6 +160,10 @@ bits_manipulation-functions.adb:113:12: info: postcondition proved (CVC5: 1 VC),
 bits_manipulation-functions.adb:113:12: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:113:12: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:113:12: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:115:13: info: implicit terminating annotation on "MSB_Index_Slow_Inline_Always" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:115:13: info: implicit terminating annotation on "MSB_Index_Slow_Inline_Always" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:115:13: info: implicit terminating annotation on "MSB_Index_Slow_Inline_Always" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:115:13: info: implicit terminating annotation on "MSB_Index_Slow_Inline_Always" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:118:14: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:118:14: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:118:14: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -152,6 +180,10 @@ bits_manipulation-functions.adb:126:33: info: loop invariant preservation proved
 bits_manipulation-functions.adb:126:33: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:126:33: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:126:33: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:131:13: info: implicit terminating annotation on "MSB_Index_Slow_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:131:13: info: implicit terminating annotation on "MSB_Index_Slow_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:131:13: info: implicit terminating annotation on "MSB_Index_Slow_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:131:13: info: implicit terminating annotation on "MSB_Index_Slow_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:132:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:132:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:132:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -160,6 +192,10 @@ bits_manipulation-functions.adb:135:12: info: postcondition proved (CVC5: 1 VC),
 bits_manipulation-functions.adb:135:12: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:135:12: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:135:12: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:137:13: info: implicit terminating annotation on "MSB_Index_Slow_Not_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:137:13: info: implicit terminating annotation on "MSB_Index_Slow_Not_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:137:13: info: implicit terminating annotation on "MSB_Index_Slow_Not_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:137:13: info: implicit terminating annotation on "MSB_Index_Slow_Not_Inline" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:138:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:138:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:138:08: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -204,6 +240,10 @@ bits_manipulation-functions.adb:182:20: info: precondition proved (CVC5: 1 VC), 
 bits_manipulation-functions.adb:182:20: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:182:20: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:182:20: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:198:22: info: implicit terminating annotation on "Ones" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:198:22: info: implicit terminating annotation on "Ones" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:198:22: info: implicit terminating annotation on "Ones" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:198:22: info: implicit terminating annotation on "Ones" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:200:32: medium: postcondition might fail, cannot prove (Ones'Result and 2 ** (i - 1)) = 2 ** (i - 1), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:200:32: medium: postcondition might fail, cannot prove (Ones'Result and 2 ** (i - 1)) = 2 ** (i - 1), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:200:32: medium: postcondition might fail, cannot prove (Ones'Result and 2 ** (i - 1)) = 2 ** (i - 1), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -244,6 +284,22 @@ bits_manipulation-functions.adb:222:20: info: precondition proved (CVC5: 1 VC), 
 bits_manipulation-functions.adb:222:20: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:222:20: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:222:20: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:4:13: info: implicit terminating annotation on "Shift_Right" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:4:13: info: implicit terminating annotation on "Shift_Right" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:4:13: info: implicit terminating annotation on "Shift_Right" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:4:13: info: implicit terminating annotation on "Shift_Right" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:7:13: info: implicit terminating annotation on "Shift_Left" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:7:13: info: implicit terminating annotation on "Shift_Left" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:7:13: info: implicit terminating annotation on "Shift_Left" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:7:13: info: implicit terminating annotation on "Shift_Left" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:10:13: info: implicit terminating annotation on "Make_Mask" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:10:13: info: implicit terminating annotation on "Make_Mask" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:10:13: info: implicit terminating annotation on "Make_Mask" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:10:13: info: implicit terminating annotation on "Make_Mask" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:13:13: info: implicit terminating annotation on "Extract_Bits" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:13:13: info: implicit terminating annotation on "Extract_Bits" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:13:13: info: implicit terminating annotation on "Extract_Bits" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:13:13: info: implicit terminating annotation on "Extract_Bits" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.ads:17:20: info: postcondition proved (CVC5: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.ads:17:20: info: postcondition proved (CVC5: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.ads:17:20: info: postcondition proved (CVC5: 3 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -260,76 +316,108 @@ bits_manipulation-functions.ads:21:75: info: range check proved (CVC5: 2 VC), in
 bits_manipulation-functions.ads:21:75: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.ads:21:75: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.ads:21:75: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:23:13: info: implicit terminating annotation on "MSB_Index" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:23:13: info: implicit terminating annotation on "MSB_Index" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:23:13: info: implicit terminating annotation on "MSB_Index" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:23:13: info: implicit terminating annotation on "MSB_Index" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.ads:27:16: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.ads:27:16: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.ads:27:16: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.ads:27:16: info: postcondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:35:22: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:35:22: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:35:22: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:35:22: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.ads:39:56: info: division check proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.ads:39:56: info: division check proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.ads:39:56: info: division check proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.ads:39:56: info: division check proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:44:22: info: implicit terminating annotation on "Lemma2" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:44:22: info: implicit terminating annotation on "Lemma2" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:44:22: info: implicit terminating annotation on "Lemma2" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:44:22: info: implicit terminating annotation on "Lemma2" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:51:22: info: implicit terminating annotation on "Lemma3" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:51:22: info: implicit terminating annotation on "Lemma3" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:51:22: info: implicit terminating annotation on "Lemma3" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:51:22: info: implicit terminating annotation on "Lemma3" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.ads:58:67: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.ads:58:67: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.ads:58:67: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.ads:58:67: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:69:22: info: implicit terminating annotation on "Lemma4" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:69:22: info: implicit terminating annotation on "Lemma4" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:69:22: info: implicit terminating annotation on "Lemma4" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:69:22: info: implicit terminating annotation on "Lemma4" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:79:22: info: implicit terminating annotation on "Lemma5" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:79:22: info: implicit terminating annotation on "Lemma5" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:79:22: info: implicit terminating annotation on "Lemma5" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:79:22: info: implicit terminating annotation on "Lemma5" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:93:22: info: implicit terminating annotation on "Lemma6" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:93:22: info: implicit terminating annotation on "Lemma6" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:93:22: info: implicit terminating annotation on "Lemma6" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:93:22: info: implicit terminating annotation on "Lemma6" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.ads:105:66: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.ads:105:66: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.ads:105:66: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.ads:105:66: info: range check proved (CVC5: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:115:22: info: implicit terminating annotation on "Lemma7" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:115:22: info: implicit terminating annotation on "Lemma7" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:115:22: info: implicit terminating annotation on "Lemma7" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:115:22: info: implicit terminating annotation on "Lemma7" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.ads:122:92: medium: range check might fail, cannot prove lower bound for Bit_Position'Last - N, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42 [reason for check: result of subtraction must be convertible to the target type of the conversion]
 bits_manipulation-functions.ads:122:92: medium: range check might fail, cannot prove lower bound for Bit_Position'Last - N, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43 [reason for check: result of subtraction must be convertible to the target type of the conversion]
 bits_manipulation-functions.ads:122:92: medium: range check might fail, cannot prove lower bound for Bit_Position'Last - N, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44 [reason for check: result of subtraction must be convertible to the target type of the conversion]
 bits_manipulation-functions.ads:122:92: medium: range check might fail, cannot prove lower bound for Bit_Position'Last - N, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45 [reason for check: result of subtraction must be convertible to the target type of the conversion]
+bits_manipulation-functions.ads:131:22: info: implicit terminating annotation on "Lemma8" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:131:22: info: implicit terminating annotation on "Lemma8" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:131:22: info: implicit terminating annotation on "Lemma8" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:131:22: info: implicit terminating annotation on "Lemma8" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:243:22: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:243:22: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:243:22: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:243:22: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:274:22: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:274:22: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:274:22: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:274:22: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:278:22: info: implicit terminating annotation on "Lemma2" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:278:22: info: implicit terminating annotation on "Lemma2" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:278:22: info: implicit terminating annotation on "Lemma2" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:278:22: info: implicit terminating annotation on "Lemma2" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:299:19: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:299:19: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:299:19: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:299:19: info: implicit terminating annotation on "Lemma1" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.ads:300:26: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.ads:300:26: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.ads:300:26: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.ads:300:26: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:302:19: info: implicit terminating annotation on "Lemma2" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:302:19: info: implicit terminating annotation on "Lemma2" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:302:19: info: implicit terminating annotation on "Lemma2" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:302:19: info: implicit terminating annotation on "Lemma2" has been proved, subprogram will terminate, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.ads:303:26: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.ads:303:26: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.ads:303:26: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.ads:303:26: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation_unsigned.ads:42:04: info: function contract might not be available on implicit recursive calls
 bits_manipulation_unsigned.ads:42:04: info: function contract might not be available on implicit recursive calls
-bits_manipulation_unsigned.ads:42:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
-bits_manipulation_unsigned.ads:42:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
-bits_manipulation_unsigned.ads:42:04: info: in instantiation at bits_manipulation-functions.adb:104
-bits_manipulation_unsigned.ads:42:04: info: in instantiation at bits_manipulation-functions.adb:110
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at bits_manipulation-functions.ads:299
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at bits_manipulation-functions.ads:302
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:42:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:42:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:42:04: warning: assuming "Axiom" always returns
 bits_manipulation_unsigned.ads:42:04: warning: assuming "Axiom" has no effect on global items
-bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma1_Goal" always returns
 bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma1_Goal" has no effect on global items
-bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma2_Goal" always returns
 bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma2_Goal" has no effect on global items
-bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma6" always returns
 bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma6" has no effect on global items
-bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma8" always returns
-bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma8" always returns
 bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma8" has no effect on global items
 bits_manipulation_unsigned.ads:42:04: warning: assuming "Lemma8" has no effect on global items
 bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:122
-bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:122
-bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:179
 bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:179
 bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:182
-bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:182
-bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:204
 bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:204
 bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:213
-bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:213
 bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:222
-bits_manipulation_unsigned.ads:42:04: warning: in instantiation at bits_manipulation-functions.adb:222
-bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
@@ -342,54 +430,24 @@ bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for 
 bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma6"
 bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma8"
 bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma8"
-bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Axiom"
-bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Lemma1_Goal"
-bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Lemma2_Goal"
-bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Lemma6"
-bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Lemma8"
-bits_manipulation_unsigned.ads:42:04: warning: no returning annotation available for "Lemma8"
 bits_manipulation_unsigned.ads:43:04: info: function contract might not be available on implicit recursive calls
 bits_manipulation_unsigned.ads:43:04: info: function contract might not be available on implicit recursive calls
-bits_manipulation_unsigned.ads:43:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
-bits_manipulation_unsigned.ads:43:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
-bits_manipulation_unsigned.ads:43:04: info: in instantiation at bits_manipulation-functions.adb:104
-bits_manipulation_unsigned.ads:43:04: info: in instantiation at bits_manipulation-functions.adb:110
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at bits_manipulation-functions.ads:299
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at bits_manipulation-functions.ads:302
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:43:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:43:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:43:04: warning: assuming "Axiom" always returns
 bits_manipulation_unsigned.ads:43:04: warning: assuming "Axiom" has no effect on global items
-bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma1_Goal" always returns
 bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma1_Goal" has no effect on global items
-bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma2_Goal" always returns
 bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma2_Goal" has no effect on global items
-bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma6" always returns
 bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma6" has no effect on global items
-bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma8" always returns
-bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma8" always returns
 bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma8" has no effect on global items
 bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma8" has no effect on global items
 bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:122
-bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:122
-bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:179
 bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:179
 bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:182
-bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:182
-bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:204
 bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:204
 bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:213
-bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:213
 bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:222
-bits_manipulation_unsigned.ads:43:04: warning: in instantiation at bits_manipulation-functions.adb:222
-bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
@@ -402,54 +460,24 @@ bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for 
 bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma6"
 bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma8"
 bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma8"
-bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Axiom"
-bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Lemma1_Goal"
-bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Lemma2_Goal"
-bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Lemma6"
-bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Lemma8"
-bits_manipulation_unsigned.ads:43:04: warning: no returning annotation available for "Lemma8"
 bits_manipulation_unsigned.ads:44:04: info: function contract might not be available on implicit recursive calls
 bits_manipulation_unsigned.ads:44:04: info: function contract might not be available on implicit recursive calls
-bits_manipulation_unsigned.ads:44:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
-bits_manipulation_unsigned.ads:44:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
-bits_manipulation_unsigned.ads:44:04: info: in instantiation at bits_manipulation-functions.adb:104
-bits_manipulation_unsigned.ads:44:04: info: in instantiation at bits_manipulation-functions.adb:110
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at bits_manipulation-functions.ads:299
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at bits_manipulation-functions.ads:302
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:44:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:44:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:44:04: warning: assuming "Axiom" always returns
 bits_manipulation_unsigned.ads:44:04: warning: assuming "Axiom" has no effect on global items
-bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma1_Goal" always returns
 bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma1_Goal" has no effect on global items
-bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma2_Goal" always returns
 bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma2_Goal" has no effect on global items
-bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma6" always returns
 bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma6" has no effect on global items
-bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma8" always returns
-bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma8" always returns
 bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma8" has no effect on global items
 bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma8" has no effect on global items
 bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:122
-bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:122
-bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:179
 bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:179
 bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:182
-bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:182
-bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:204
 bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:204
 bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:213
-bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:213
 bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:222
-bits_manipulation_unsigned.ads:44:04: warning: in instantiation at bits_manipulation-functions.adb:222
-bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
@@ -462,54 +490,24 @@ bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for 
 bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma6"
 bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma8"
 bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma8"
-bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Axiom"
-bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Lemma1_Goal"
-bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Lemma2_Goal"
-bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Lemma6"
-bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Lemma8"
-bits_manipulation_unsigned.ads:44:04: warning: no returning annotation available for "Lemma8"
 bits_manipulation_unsigned.ads:45:04: info: function contract might not be available on implicit recursive calls
 bits_manipulation_unsigned.ads:45:04: info: function contract might not be available on implicit recursive calls
-bits_manipulation_unsigned.ads:45:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
-bits_manipulation_unsigned.ads:45:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
-bits_manipulation_unsigned.ads:45:04: info: in instantiation at bits_manipulation-functions.adb:104
-bits_manipulation_unsigned.ads:45:04: info: in instantiation at bits_manipulation-functions.adb:110
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at bits_manipulation-functions.ads:299
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at bits_manipulation-functions.ads:302
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:45:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:45:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:45:04: warning: assuming "Axiom" always returns
 bits_manipulation_unsigned.ads:45:04: warning: assuming "Axiom" has no effect on global items
-bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma1_Goal" always returns
 bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma1_Goal" has no effect on global items
-bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma2_Goal" always returns
 bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma2_Goal" has no effect on global items
-bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma6" always returns
 bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma6" has no effect on global items
-bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma8" always returns
-bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma8" always returns
 bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma8" has no effect on global items
 bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma8" has no effect on global items
 bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:122
-bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:122
-bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:179
 bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:179
 bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:182
-bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:182
-bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:204
 bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:204
 bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:213
-bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:213
 bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:222
-bits_manipulation_unsigned.ads:45:04: warning: in instantiation at bits_manipulation-functions.adb:222
-bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
@@ -522,9 +520,3 @@ bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for 
 bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma6"
 bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma8"
 bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma8"
-bits_manipulation_unsigned.ads:45:04: warning: no returning annotation available for "Axiom"
-bits_manipulation_unsigned.ads:45:04: warning: no returning annotation available for "Lemma1_Goal"
-bits_manipulation_unsigned.ads:45:04: warning: no returning annotation available for "Lemma2_Goal"
-bits_manipulation_unsigned.ads:45:04: warning: no returning annotation available for "Lemma6"
-bits_manipulation_unsigned.ads:45:04: warning: no returning annotation available for "Lemma8"
-bits_manipulation_unsigned.ads:45:04: warning: no returning annotation available for "Lemma8"

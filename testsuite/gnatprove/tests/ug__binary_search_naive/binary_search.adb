@@ -21,6 +21,7 @@ is
       end if;
 
       while Left <= Right loop
+         pragma Loop_Variant (Increases => Left, Decreases => Right);
          pragma Loop_Invariant (Left in A'Range and Right in A'Range);
          pragma Loop_Invariant (Left = A'First or else A (Left - 1) < I);
          pragma Loop_Invariant (Right = A'Last or else I < A (Right + 1));

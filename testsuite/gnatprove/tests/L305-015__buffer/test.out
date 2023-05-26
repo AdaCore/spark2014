@@ -1,5 +1,6 @@
 buf_read.adb:26:29: info: index check proved (CVC5: 2 VC)
 buf_read.adb:47:24: info: range check proved (CVC5: 2 VC)
 buf_read.adb:50:29: info: range check proved (CVC5: 2 VC)
+buf_read.ads:5:13: info: implicit terminating annotation on "Valid_State" has been proved, subprogram will terminate
 buf_read.ads:7:25: info: initialization of "C" proved
 buf_read.ads:9:20: info: postcondition proved (CVC5: 3 VC)

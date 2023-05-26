@@ -4,6 +4,7 @@ triangle.adb:8:33: info: loop invariant preservation proved (CVC5: 1 VC)
 triangle.adb:8:41: info: overflow check proved (CVC5: 4 VC)
 triangle.adb:8:46: info: overflow check proved (CVC5: 4 VC)
 triangle.adb:8:51: info: division check proved (CVC5: 2 VC)
+triangle.ads:3:13: info: implicit terminating annotation on "Sum_Up_To" has been proved, subprogram will terminate
 triangle.ads:6:10: info: postcondition proved (CVC5: 1 VC)
 triangle.ads:6:31: info: overflow check proved (CVC5: 2 VC)
 triangle.ads:6:36: info: overflow check proved (CVC5: 2 VC)

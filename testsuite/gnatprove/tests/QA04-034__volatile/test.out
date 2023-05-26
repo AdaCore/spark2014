@@ -14,19 +14,15 @@ hw-dbc-transfer_rings.adb:120:14: warning: no Global contract available for "Set
 hw-dbc-transfer_rings.adb:120:14: warning: no returning annotation available for "Set_Cycle"
 hw-dbc-transfer_rings.adb:151:32: info: analyzing call to "Next" in context
 hw-dbc-transfer_rings.adb:163:32: info: analyzing call to "Next" in context
-hw-dbc-transfer_rings.adb:208:25: warning: assuming "Get_Parameter" always returns
 hw-dbc-transfer_rings.adb:208:25: warning: assuming "Get_Parameter" has no effect on global items
 hw-dbc-transfer_rings.adb:208:25: warning: no Global contract available for "Get_Parameter"
-hw-dbc-transfer_rings.adb:208:25: warning: no returning annotation available for "Get_Parameter"
 hw-dbc-transfer_rings.adb:210:29: warning: assuming "Finish" always returns
 hw-dbc-transfer_rings.adb:210:29: warning: assuming "Finish" has no effect on global items
 hw-dbc-transfer_rings.adb:210:29: warning: no Global contract available for "Finish"
 hw-dbc-transfer_rings.adb:210:29: warning: no returning annotation available for "Finish"
 hw-dbc-transfer_rings.adb:215:13: info: analyzing call to "Dequeue_TRB" in context
-hw-dbc-transfer_rings.adb:219:22: warning: assuming "Get_Parameter" always returns
 hw-dbc-transfer_rings.adb:219:22: warning: assuming "Get_Parameter" has no effect on global items
 hw-dbc-transfer_rings.adb:219:22: warning: no Global contract available for "Get_Parameter"
-hw-dbc-transfer_rings.adb:219:22: warning: no returning annotation available for "Get_Parameter"
 hw-dbc-transfer_rings.adb:221:26: warning: assuming "Finish" always returns
 hw-dbc-transfer_rings.adb:221:26: warning: assuming "Finish" has no effect on global items
 hw-dbc-transfer_rings.adb:221:26: warning: no Global contract available for "Finish"

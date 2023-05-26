@@ -11,6 +11,7 @@ sorters.adb:23:29: info: index check proved (CVC5: 2 VC)
 sorters.adb:24:15: info: index check proved (CVC5: 2 VC)
 sorters.adb:24:29: info: index check proved (CVC5: 2 VC)
 sorters.adb:25:15: info: index check proved (CVC5: 2 VC)
+sorters.adb:48:13: info: implicit terminating annotation on "Index_Of_Minimum" has been proved, subprogram will terminate
 sorters.adb:53:10: info: postcondition proved (CVC5: 3 VC)
 sorters.adb:55:39: info: index check proved (CVC5: 2 VC)
 sorters.adb:55:61: info: index check proved (CVC5: 2 VC)

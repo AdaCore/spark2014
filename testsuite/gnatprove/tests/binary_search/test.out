@@ -10,6 +10,7 @@ binary_search.adb:31:22: info: range check proved (altergo: 2 VC)
 binary_search.adb:31:39: info: division check proved (altergo: 1 VC)
 binary_search.adb:34:25: info: range check proved (altergo: 2 VC)
 binary_search.adb:36:26: info: range check proved (altergo: 2 VC)
+binary_search.ads:17:13: info: implicit terminating annotation on "Search" has been proved, subprogram will terminate
 binary_search.ads:21:33: info: index check proved (altergo: 2 VC)
 binary_search.ads:23:14: info: postcondition proved (altergo: 2 VC)
 binary_search.ads:23:57: info: index check proved (altergo: 2 VC)

@@ -7,5 +7,6 @@ refined_post_legal.adb:20:18: high: overflow check might fail, cannot prove uppe
 refined_post_legal.ads:6:20: info: initialization of "Par2" proved
 refined_post_legal.ads:7:11: info: data dependencies proved
 refined_post_legal.ads:8:21: info: postcondition proved (CVC5: 1 VC)
+refined_post_legal.ads:10:13: info: implicit terminating annotation on "Func" has been proved, subprogram will terminate
 refined_post_legal.ads:11:11: info: data dependencies proved
 refined_post_legal.ads:12:21: info: postcondition proved (CVC5: 1 VC)

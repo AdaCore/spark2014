@@ -2,6 +2,8 @@ dispatch_in_contract.adb:5:20: info: overflow check proved (CVC5: 2 VC)
 dispatch_in_contract.adb:10:20: info: overflow check proved (CVC5: 2 VC)
 dispatch_in_contract.adb:15:20: high: overflow check might fail, cannot prove bounds for O.F1 + 1 (e.g. when O = (F1 => Integer'Last, F2 => -1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dispatch_in_contract.ads:22 should mention O in a precondition]
 dispatch_in_contract.adb:20:20: high: overflow check might fail, cannot prove bounds for O.F1 + 1 (e.g. when O = (F1 => Integer'Last, F2 => Integer'First)) [reason for check: result of addition must fit in a 32-bits machine integer]
+dispatch_in_contract.ads:6:13: info: implicit terminating annotation on "Less_Than_Max" has been proved, subprogram will terminate
+dispatch_in_contract.ads:19:13: info: implicit terminating annotation on "Less_Than_Max" has been proved, subprogram will terminate
 dispatch_in_contract.ads:25:19: info: class-wide precondition is weaker than overridden one (CVC5: 1 VC)
 main.adb:2:11: warning: subprogram "Main" has no effect
 main.adb:7:09: medium: precondition might fail

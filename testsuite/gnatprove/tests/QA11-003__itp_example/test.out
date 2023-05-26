@@ -1,14 +1,21 @@
+test.adb:6:13: info: implicit terminating annotation on "Test_1" has been proved, subprogram will terminate
 test.adb:9:08: warning: postcondition does not check the outcome of calling "Test_1"
 test.adb:9:08: warning: postcondition does not mention function result
 test.adb:9:16: info: postcondition proved (CVC5: 1 VC)
+test.adb:16:13: info: implicit terminating annotation on "Test_2" has been proved, subprogram will terminate
 test.adb:17:17: medium: postcondition might fail
 test.adb:20:17: high: array index check might fail (e.g. when A'First = 2 and A'Last = 0) [reason for check: value must be a valid index into the array]
+test.adb:28:13: info: implicit terminating annotation on "Test_3" has been proved, subprogram will terminate
 test.adb:29:17: high: postcondition might fail (e.g. when Test_3'Result = 0)
+test.adb:35:13: info: implicit terminating annotation on "Test_4" has been proved, subprogram will terminate
 test.adb:36:17: high: postcondition might fail (e.g. when Test_4'Result = 0)
 test.adb:40:14: high: overflow check might fail, cannot prove upper bound for B + 1 (e.g. when B = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
+test.adb:46:13: info: implicit terminating annotation on "Test_5" has been proved, subprogram will terminate
 test.adb:47:17: high: postcondition might fail (e.g. when Test_5'Result = 0)
+test.adb:55:13: info: implicit terminating annotation on "Test_6" has been proved, subprogram will terminate
 test.adb:56:17: medium: postcondition might fail
 test.adb:60:14: info: float overflow check proved (CVC5: 1 VC)
+test.adb:68:13: info: implicit terminating annotation on "Test_7" has been proved, subprogram will terminate
 test.adb:69:17: medium: postcondition might fail
 test.adb:81:16: medium: postcondition might fail
 test.adb:81:19: info: overflow check proved (CVC5: 2 VC)

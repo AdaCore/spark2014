@@ -89,12 +89,16 @@ package TcpIp is
    --    This procedure appends the sequence to the Outgoing string, and
    --    removes it from the Incoming string.
    --
+   --    The Always_Return annotation is incorrect, but it needs SPARK support
+   --    for exceptions and handlers to prove.
+   --
    --------------------------------------------------------------------
    procedure SendAndReceive (IsAdmin  : in     Boolean;
                              Outgoing : in     MessageT;
                              Incoming :    out MessageT;
                              Success  :    out Boolean)
-     with Global => null;
+     with Global   => null,
+          Annotate => (GNATprove, Always_Return);
 
    --------------------------------------------------------------------
    -- Init

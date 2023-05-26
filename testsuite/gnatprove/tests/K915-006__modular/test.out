@@ -1,5 +1,11 @@
 pack.adb:27:22: info: division check proved (CVC5: 1 VC)
+pack.ads:5:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 pack.ads:6:19: info: postcondition proved (CVC5: 1 VC)
+pack.ads:8:13: info: implicit terminating annotation on "Next1" has been proved, subprogram will terminate
 pack.ads:10:19: info: postcondition proved (CVC5: 1 VC)
+pack.ads:12:13: info: implicit terminating annotation on "Next255" has been proved, subprogram will terminate
 pack.ads:14:19: info: postcondition proved (CVC5: 1 VC)
+pack.ads:16:13: info: implicit terminating annotation on "Minus" has been proved, subprogram will terminate
 pack.ads:18:19: info: postcondition proved (CVC5: 1 VC)
+pack.ads:20:13: info: implicit terminating annotation on "Subst" has been proved, subprogram will terminate
+pack.ads:21:13: info: implicit terminating annotation on "Test_Div" has been proved, subprogram will terminate

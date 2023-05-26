@@ -53,6 +53,7 @@ is
          B := Right;
 
          loop
+            pragma Loop_Variant (Decreases => A, Decreases => B);
             pragma Loop_Invariant (A > 0 and B > 0);
             pragma Loop_Invariant (not (A = 1 and B = 1));
             pragma Loop_Invariant
@@ -120,6 +121,7 @@ is
             pragma Loop_Invariant (Right in Value + 1 .. Number_List'Last);
             pragma Loop_Invariant
               (for all V in Value .. Right => Number_List (V) = False);
+            pragma Loop_Variant (Increases => Right);
 
             Right := Value_Type'Succ (Right);
          end loop;
@@ -143,6 +145,7 @@ is
             pragma Loop_Invariant (Left in Number_List'First .. Value - 1);
             pragma Loop_Invariant
               (for all V in Left .. Value => Number_List (V) = False);
+            pragma Loop_Variant (Decreases => Left);
 
             Left := Value_Type'Pred (Left);
          end loop;

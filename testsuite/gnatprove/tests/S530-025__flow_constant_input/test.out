@@ -1,3 +1,4 @@
 p.ads:3:12: info: range check proved (CVC5: 2 VC)
 q.adb:5:12: info: range check proved (CVC5: 2 VC)
 q.ads:2:13: info: implicit function contract might not be available on calls from enclosing unit
+q.ads:2:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate

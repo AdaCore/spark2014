@@ -1,1 +1,2 @@
+type_conversion.ads:5:13: info: implicit terminating annotation on "Float_to_Long_Float" has been proved, subprogram will terminate
 type_conversion.ads:9:20: info: postcondition proved (CVC5: 2 VC)

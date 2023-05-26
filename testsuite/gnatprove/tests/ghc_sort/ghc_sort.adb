@@ -30,6 +30,7 @@ package body GHC_Sort with SPARK_Mode is
 
          Inc := S (X) < S (Y); -- currently in increasing segment?
          while Y in S'Range and then (S (Y - 1) < S (Y)) = Inc loop
+            pragma Loop_Variant (Increases => Y);
             pragma Loop_Invariant (Y'Loop_Entry <= Y);
             pragma Loop_Invariant
               (for all K in Y'Loop_Entry .. Y => (S (K - 1) < S (K)) = Inc);
@@ -63,6 +64,7 @@ package body GHC_Sort with SPARK_Mode is
       return R : Int_Array (1 .. S1'Length + S2'Length) do
          R := (others => 0);
          while J1 in S1'Range and then J2 in S2'Range loop
+            pragma Loop_Variant (Increases => J1, Increases => J2);
             pragma Loop_Invariant (J = J1 + J2 - 1);
             pragma Loop_Invariant (if J > 1 then R (J - 1) <= S1 (J1));
             pragma Loop_Invariant (if J > 1 then R (J - 1) <= S2 (J2));
@@ -79,6 +81,7 @@ package body GHC_Sort with SPARK_Mode is
          end loop;
          -- append any remaining tail of S1 or S2
          while J1 in S1'Range loop
+            pragma Loop_Variant (Increases => J1);
             pragma Loop_Invariant (J = J1 + J2 - 1);
             pragma Loop_Invariant
               (for all L in 2 .. J - 1 => R (L - 1) <= R (L));
@@ -88,6 +91,7 @@ package body GHC_Sort with SPARK_Mode is
             J1 := J1 + 1;
          end loop;
          while J2 in S2'Range loop
+            pragma Loop_Variant (Increases => J2);
             pragma Loop_Invariant (J = J1 + J2 - 1);
             pragma Loop_Invariant
               (for all L in 2 .. J - 1 => R (L - 1) <= R (L));
@@ -130,8 +134,8 @@ package body GHC_Sort with SPARK_Mode is
    function All_Sorted (L : Int_Array_List) return Boolean is
      (if L = null then True
       else (for all K in 2 .. L.L => L.Value (K - 1) <= L.Value (K))
-      and then All_Sorted (L.Next));
-   pragma Annotate (GNATprove, Always_Return, All_Sorted);
+        and then All_Sorted (L.Next))
+   with Subprogram_Variant => (Structural => L);
 
    --  Length of the concatenation of all subsequences in the list, saturated
    --  at Integer'Last if necessary.
@@ -140,8 +144,8 @@ package body GHC_Sort with SPARK_Mode is
      (if L = null then 0
       elsif L.L <= Integer'Last - Sum_Length_Aux (L.Next) then
            L.L + Sum_Length_Aux (L.Next)
-      else Integer'Last);
-   pragma Annotate (GNATprove, Always_Return, Sum_Length_Aux);
+      else Integer'Last)
+   with Subprogram_Variant => (Structural => L);
 
    function Sum_Length (L : Int_Array_List) return Natural is
      (Sum_Length_Aux (L));

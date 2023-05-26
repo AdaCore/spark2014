@@ -1,2 +1,3 @@
+bbool.ads:2:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 bbool.ads:2:16: warning: unused variable "B"
 bbool.ads:3:12: info: range check proved (CVC5: 2 VC)

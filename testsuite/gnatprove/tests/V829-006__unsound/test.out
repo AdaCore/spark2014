@@ -1,5 +1,7 @@
 nonbinary.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
+nonbinary.adb:5:13: info: implicit terminating annotation on "One" has been proved, subprogram will terminate
 nonbinary.adb:10:19: info: assertion proved (CVC5: 1 VC)
 nonbinary.adb:11:19: medium: assertion might fail (e.g. when X = 2)
 test.adb:7:16: info: implicit function contract might not be available on calls from enclosing unit
+test.adb:7:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 test.ads:7:19: medium: postcondition might fail

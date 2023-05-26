@@ -1713,13 +1713,18 @@ package body Why.Gen.Expr is
               E_Symb (L, WNE_To_Base);
             Of_Base : constant W_Identifier_Id :=
               E_Symb (R, WNE_Of_Base);
+            Root    : constant Entity_Id := Root_Pointer_Type (L);
+            pragma Assert (Root = Root_Pointer_Type (R));
+
          begin
-            Result := New_Call
-              (Ada_Node => Ada_Node,
-               Domain   => Domain,
-               Name     => To_Base,
-               Args     => (1 => Result),
-               Typ      => Get_Typ (To_Base));
+            if L /= Root then
+               Result := New_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => To_Base,
+                  Args     => (1 => Result),
+                  Typ      => Get_Typ (To_Base));
+            end if;
 
             --  Insert subtype check on root type if needed
 
@@ -1729,12 +1734,14 @@ package body Why.Gen.Expr is
                                                         +Result);
             end if;
 
-            Result := New_Call
-              (Ada_Node => Ada_Node,
-               Domain   => Domain,
-               Name     => Of_Base,
-               Args     => (1 => Result),
-               Typ      => To);
+            if R /= Root then
+               Result := New_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => Of_Base,
+                  Args     => (1 => Result),
+                  Typ      => To);
+            end if;
          end;
       else
          Result := New_Label

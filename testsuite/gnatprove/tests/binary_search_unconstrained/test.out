@@ -33,8 +33,11 @@ binary_search.adb:43:28: info: assertion proved (altergo: 2 VC)
 binary_search.adb:44:28: info: assertion proved (altergo: 1 VC)
 binary_search.adb:44:62: info: index check proved (altergo: 2 VC)
 binary_search.adb:44:73: info: index check proved (altergo: 2 VC)
+binary_search.ads:24:13: info: implicit terminating annotation on "Empty" has been proved, subprogram will terminate
+binary_search.ads:26:13: info: implicit terminating annotation on "Sorted" has been proved, subprogram will terminate
 binary_search.ads:28:44: info: index check proved (altergo: 2 VC)
 binary_search.ads:28:54: info: index check proved (altergo: 2 VC)
+binary_search.ads:30:13: info: implicit terminating annotation on "Search" has been proved, subprogram will terminate
 binary_search.ads:32:14: info: postcondition proved (altergo: 2 VC)
 binary_search.ads:32:57: info: index check proved (altergo: 2 VC)
 binary_search.ads:33:52: info: index check proved (altergo: 2 VC)

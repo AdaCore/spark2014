@@ -2,5 +2,7 @@ p.adb:4:22: info: unrolling loop
 p.ads:10:06: warning: postcondition does not check the outcome of calling "Shadow_Effect"
 p.ads:10:23: warning: unused variable "C"
 p.ads:10:37: high: postcondition might fail, cannot prove False (e.g. when C = Red)
+p.ads:12:13: info: implicit terminating annotation on "P" has been proved, subprogram will terminate
 p.ads:15:20: medium: postcondition might fail (e.g. when P'Result = 2)
+p.ads:17:13: info: implicit terminating annotation on "Q" has been proved, subprogram will terminate
 p.ads:20:20: info: postcondition proved (CVC5: 1 VC)

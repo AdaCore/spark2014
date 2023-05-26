@@ -30,5 +30,7 @@ loopentry.adb:102:38: info: index check proved (CVC5: 4 VC)
 loopentry.adb:102:58: info: index check proved (CVC5: 4 VC)
 loopentry.adb:112:23: info: unrolling loop
 loopentry.adb:113:25: medium: assertion might fail [possible fix: subprogram at loopentry.ads:40 should mention I in a precondition]
+loopentry.ads:11:13: info: implicit terminating annotation on "Same" has been proved, subprogram will terminate
+loopentry.ads:13:13: info: implicit terminating annotation on "Same" has been proved, subprogram will terminate
 loopentry.ads:14:20: info: postcondition proved (CVC5: 1 VC)
 loopentry.ads:40:14: warning: subprogram "Loop_Entry_In_Call_Param" has no effect

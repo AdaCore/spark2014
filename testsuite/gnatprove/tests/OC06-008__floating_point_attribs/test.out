@@ -1,12 +1,31 @@
 adjacent.adb:3:16: error: non-static attribute "Adjacent" is not yet supported
+ceiling.ads:1:10: info: implicit terminating annotation on "Ceiling" has been proved, subprogram will terminate
 compose.adb:3:16: error: non-static attribute "Compose" is not yet supported
+copy_sign.ads:1:10: info: implicit terminating annotation on "Copy_Sign" has been proved, subprogram will terminate
+denorm.ads:1:10: info: implicit terminating annotation on "Denorm" has been proved, subprogram will terminate
 exponent.adb:3:16: error: non-static attribute "Exponent" is not yet supported
+floor.ads:1:10: info: implicit terminating annotation on "Floor" has been proved, subprogram will terminate
 fraction.adb:3:16: error: non-static attribute "Fraction" is not yet supported
 leading_part.adb:3:16: error: non-static attribute "Leading_Part" is not yet supported
 machine.adb:3:16: error: non-static attribute "Machine" is not yet supported
+machine_emax.ads:1:10: info: implicit terminating annotation on "Machine_Emax" has been proved, subprogram will terminate
+machine_emin.ads:1:10: info: implicit terminating annotation on "Machine_Emin" has been proved, subprogram will terminate
+machine_mantissa.ads:1:10: info: implicit terminating annotation on "Machine_Mantissa" has been proved, subprogram will terminate
+machine_overflows.ads:1:10: info: implicit terminating annotation on "Machine_Overflows" has been proved, subprogram will terminate
 machine_rounding.adb:3:16: error: non-static attribute "Machine_Rounding" is not yet supported
+machine_rounds.ads:1:10: info: implicit terminating annotation on "Machine_Rounds" has been proved, subprogram will terminate
 model.adb:3:16: error: non-static attribute "Model" is not yet supported
+model_emin.ads:1:10: info: implicit terminating annotation on "Model_Emin" has been proved, subprogram will terminate
+model_epsilon.ads:1:10: info: implicit terminating annotation on "Model_Epsilon" has been proved, subprogram will terminate
+model_mantissa.ads:1:10: info: implicit terminating annotation on "Model_Mantissa" has been proved, subprogram will terminate
+model_small.ads:1:10: info: implicit terminating annotation on "Model_Small" has been proved, subprogram will terminate
 remainder.adb:3:16: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at remainder.ads:1]
+remainder.ads:1:10: info: implicit terminating annotation on "Remainder" has been proved, subprogram will terminate
+rounding.ads:1:10: info: implicit terminating annotation on "Rounding" has been proved, subprogram will terminate
+safe_first.ads:1:10: info: implicit terminating annotation on "Safe_First" has been proved, subprogram will terminate
+safe_last.ads:1:10: info: implicit terminating annotation on "Safe_Last" has been proved, subprogram will terminate
 scaling.adb:3:16: error: non-static attribute "Scaling" is not yet supported
+signed_zeros.ads:1:10: info: implicit terminating annotation on "Signed_Zeros" has been proved, subprogram will terminate
+truncation.ads:1:10: info: implicit terminating annotation on "Truncation" has been proved, subprogram will terminate
 unbiased_rounding.adb:3:16: error: non-static attribute "Unbiased_Rounding" is not yet supported
 gnatprove: error during flow analysis and proof

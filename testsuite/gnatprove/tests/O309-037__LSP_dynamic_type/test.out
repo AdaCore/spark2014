@@ -1,5 +1,11 @@
 lsp_checks.adb:1:11: warning: subprogram "LSP_Checks" has no effect
+lsp_checks.adb:10:16: info: implicit terminating annotation on "Root_Pre_Class" has been proved, subprogram will terminate
+lsp_checks.adb:12:16: info: implicit terminating annotation on "Root_Post_Class" has been proved, subprogram will terminate
+lsp_checks.adb:25:16: info: implicit terminating annotation on "Child_Pre_Class" has been proved, subprogram will terminate
+lsp_checks.adb:27:16: info: implicit terminating annotation on "Child_Pre" has been proved, subprogram will terminate
 lsp_checks.adb:27:27: warning: unused variable "R"
 lsp_checks.adb:27:44: warning: unused variable "G"
+lsp_checks.adb:30:16: info: implicit terminating annotation on "Child_Post_Class" has been proved, subprogram will terminate
+lsp_checks.adb:33:16: info: implicit terminating annotation on "Child_Post" has been proved, subprogram will terminate
 lsp_checks.adb:38:17: error: "C" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Do_Something" at line 17 (SPARK RM 6.1.6)
 gnatprove: error during flow analysis and proof

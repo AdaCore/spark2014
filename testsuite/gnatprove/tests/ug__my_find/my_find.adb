@@ -5,6 +5,7 @@ is
 
 begin
    while Has_Element (L, Cu) loop
+      pragma Loop_Variant (Increases => P.Get (Positions (L), Cu));
       pragma Loop_Invariant (for all I in 1 .. P.Get (Positions (L), Cu) - 1 =>
                                 Element (Model (L), I) /= E);
 

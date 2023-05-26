@@ -1,7 +1,11 @@
+weapon_class.adb:19:07: medium: implicit terminating annotation on "Select_Bullet2" could be incorrect, dispatching call might be nonterminating
 weapon_class.adb:19:22: info: assertion proved (CVC5: 2 VC)
 weapon_class.ads:15:13: info: function contract feasibility proved (CVC5: 1 VC)
+weapon_class.ads:22:13: info: implicit terminating annotation on "Hit" has been proved, subprogram will terminate
 weapon_class.ads:22:18: warning: unused variable "Self"
 weapon_class.ads:23:25: info: class-wide postcondition is stronger than overridden one (CVC5: 1 VC)
 weapon_class.ads:23:25: info: postcondition proved (CVC5: 2 VC)
 weapon_class.ads:30:14: info: postcondition proved (CVC5: 2 VC)
+weapon_class.ads:30:41: medium: implicit terminating annotation on "Select_Bullet" could be incorrect, dispatching call might be nonterminating
 weapon_class.ads:33:14: info: postcondition proved (CVC5: 2 VC)
+weapon_class.ads:33:42: medium: implicit terminating annotation on "Select_Bullet2" could be incorrect, dispatching call might be nonterminating

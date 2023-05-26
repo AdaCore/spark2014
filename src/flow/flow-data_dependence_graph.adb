@@ -98,7 +98,8 @@ package body Flow.Data_Dependence_Graph is
 
          Combined_Defined : constant Flow_Id_Sets.Set :=
            Atr_Def.Variables_Defined or Atr_Def.Volatiles_Read or
-           Potential_Definite_Calls (Atr_Def.Subprograms_Called);
+           Potential_Definite_Calls
+             (To_Subprograms (Atr_Def.Subprogram_Calls));
 
          use type Flow_Graphs.Vertex_Id;
 
@@ -159,17 +160,23 @@ package body Flow.Data_Dependence_Graph is
                         TV_U := Flow_Graphs.Skip_Children;
                      end if;
 
-                     --  Deal with calls to potentially definite calls, which
-                     --  is only needed in phase 1 and only if generating
-                     --  globals for the currently analysed subprogram.
+                  --  Deal with calls to potentially definite calls, which is
+                  --  only needed in phase 1 and only if generating globals for
+                  --  the currently analysed subprogram.
+                  --
+                  --  Note: the linear search below is theoretically
+                  --  inefficient, but in practice we don't expect many
+                  --  function calls appearing toghether with a procedure or
+                  --  entry call, i.e. inside its actual parameters.
 
                   elsif FA.Generating_Globals
                     and then FA.Is_Generative
                     and then Var.Kind = Direct_Mapping
+                    and then Ekind (Get_Direct_Mapping_Id (Var)) in
+                               E_Procedure | E_Entry
                     and then
-                      Is_Subprogram_Or_Entry (Get_Direct_Mapping_Id (Var))
-                      and then Atr.Subprograms_Called.Contains
-                        (Get_Direct_Mapping_Id (Var))
+                      (for some SC of Atr.Subprogram_Calls =>
+                         SC.E = Get_Direct_Mapping_Id (Var))
                   then
                      TV_U := Flow_Graphs.Skip_Children;
 

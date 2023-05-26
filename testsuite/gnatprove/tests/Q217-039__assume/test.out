@@ -3,6 +3,7 @@ assume_call.adb:7:14: warning: subprogram "Wrong_Pre" has no effect
 assume_call.adb:14:04: warning: analyzing unreferenced procedure "Caller"
 assume_call.adb:14:14: warning: subprogram "Caller" has no effect
 assume_call.adb:17:07: info: precondition proved (CVC5: 1 VC)
+assume_call.ads:3:13: info: implicit terminating annotation on "f1" has been proved, subprogram will terminate
 assume_call.ads:4:19: info: postcondition proved (CVC5: 1 VC)
 assume_call.ads:4:33: info: overflow check proved (CVC5: 2 VC)
 max steps used for successful proof: 1
@@ -16,6 +17,7 @@ max steps used for successful proof: 1
  Assume_Call.f1 at assume_call.ads:3 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and not proved, 2 checks out of 3 proved
  absence of run-time errors of Assume_Call.f1
  effects on parameters and Global variables of Assume_Call.Wrong_Pre
+ effects on parameters and Global variables of Assume_Call.f1
  the postcondition of Assume_Call.f1
 -
 -
@@ -33,10 +35,9 @@ Non-Aliasing . . . . .
 Run-time Checks 2 . 1 . 1
 SPARK Analysis results Total Flow Provers Justified Unproved
 Summary of SPARK analysis
-Termination . . . . .
-Total 4 . 3 (75%) . 1 (25%)
+Termination 1 1 . . .
+Total 5 1 (20%) 3 (60%) . 1 (20%)
 absence of run-time errors of Assume_Call fully established
 absence of run-time errors of Assume_Call.Caller depends on
 absence of run-time errors of Assume_Call.Wrong_Pre fully established
-effects on parameters and Global variables of Assume_Call.f1 fully established
 in unit assume_call, 4 subprograms and packages out of 4 analyzed

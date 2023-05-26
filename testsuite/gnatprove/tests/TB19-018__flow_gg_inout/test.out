@@ -1,3 +1,4 @@
+main.adb:13:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 main.adb:19:28: info: data dependencies proved
 main.adb:19:49: warning: unused initial value of "X"
 main.adb:21:07: info: precondition proved (Trivial: 1 VC)

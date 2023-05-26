@@ -1,7 +1,13 @@
+loop_exit.adb:4:13: info: implicit terminating annotation on "Cond1" has been proved, subprogram will terminate
+loop_exit.adb:5:13: info: implicit terminating annotation on "Cond2" has been proved, subprogram will terminate
+loop_exit.adb:6:13: info: implicit terminating annotation on "Cond3" has been proved, subprogram will terminate
 loop_exit.adb:15:13: info: precondition proved (Trivial: 1 VC)
 loop_exit.adb:17:16: info: precondition proved (Trivial: 1 VC)
 loop_exit.adb:18:16: info: precondition proved (Trivial: 1 VC)
 loop_exit.ads:5:14: warning: subprogram "P" has no effect
+loop_exit2.adb:4:13: info: implicit terminating annotation on "Cond1" has been proved, subprogram will terminate
+loop_exit2.adb:5:13: info: implicit terminating annotation on "Cond2" has been proved, subprogram will terminate
+loop_exit2.adb:6:13: info: implicit terminating annotation on "Cond3" has been proved, subprogram will terminate
 loop_exit2.adb:15:13: info: precondition proved (Trivial: 1 VC)
 loop_exit2.adb:17:16: info: precondition proved (Trivial: 1 VC)
 loop_exit2.adb:18:16: info: precondition proved (Trivial: 1 VC)

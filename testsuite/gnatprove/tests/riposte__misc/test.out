@@ -1,4 +1,5 @@
 misc.adb:5:11: info: flow dependencies proved
 misc.adb:9:16: info: implicit function contract might not be available on calls from enclosing unit
+misc.adb:9:16: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
 misc.adb:9:39: info: data dependencies proved
 misc.adb:15:25: high: range check might fail [reason for check: value cannot be maximum value of the type] [possible fix: you should consider adding a postcondition to function Foo or turning it into an expression function]

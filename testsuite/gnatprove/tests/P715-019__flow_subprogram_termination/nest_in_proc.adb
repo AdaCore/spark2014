@@ -1,8 +1,8 @@
 with GNAT.OS_Lib;            use GNAT.OS_Lib;
-procedure Nest_In_Proc is
-   pragma Annotate (GNATprove, Always_Return, Nest_In_Proc);
+procedure Nest_In_Proc with SPARK_Mode is
+
    package Pkg is
-      procedure Nothing;
+      procedure Nothing with Annotate => (GNATprove, Always_Return);
       package Pkg2 is
          procedure Nothing2;
       end Pkg2;
@@ -10,7 +10,7 @@ procedure Nest_In_Proc is
 
    package body Pkg is
       procedure Nothing is
-         pragma Annotate (GNATprove, Always_Return, Nothing);
+
       begin
          null;
       end Nothing;

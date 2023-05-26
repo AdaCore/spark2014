@@ -4,6 +4,7 @@ factorial.adb:13:36: info: loop invariant initialization proved (CVC5: 1 VC)
 factorial.adb:13:36: info: loop invariant preservation proved (CVC5: 1 VC)
 factorial.adb:13:45: info: precondition proved (CVC5: 4 VC)
 factorial.ads:7:13: info: implicit function contract might not be available on recursive calls
+factorial.ads:7:13: info: implicit terminating annotation on "Mathematical_Factorial" has been proved, subprogram will terminate
 factorial.ads:9:27: info: overflow check proved (CVC5: 2 VC)
 factorial.ads:9:29: info: precondition proved (CVC5: 2 VC)
 factorial.ads:9:29: info: subprogram variant proved (CVC5: 1 VC)
@@ -11,5 +12,6 @@ factorial.ads:10:14: info: overflow check proved (Z3: 2 VC)
 factorial.ads:10:16: info: precondition proved (CVC5: 2 VC)
 factorial.ads:10:16: info: subprogram variant proved (CVC5: 1 VC)
 factorial.ads:10:41: info: overflow check proved (CVC5: 2 VC)
+factorial.ads:16:13: info: implicit terminating annotation on "Fact" has been proved, subprogram will terminate
 factorial.ads:19:14: info: postcondition proved (CVC5: 1 VC)
 factorial.ads:19:28: info: precondition proved (CVC5: 2 VC)

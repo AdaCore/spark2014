@@ -440,7 +440,7 @@ is
                (Element
                   (Model (Container),
                    P.Get (Positions (Container), Position)),
-                New_Item)
+                M.Copy_Element (New_Item))
 
          --  Other elements are preserved
 
@@ -536,7 +536,8 @@ is
             --  Model contains a new element New_Item at the end
 
             and Element_Logic_Equal
-                  (Element (Model (Container), Length (Container)), New_Item)
+                  (Element (Model (Container), Length (Container)),
+                   M.Copy_Element (New_Item))
 
             --  Elements of Container'Old are preserved
 
@@ -568,7 +569,7 @@ is
                   (Element
                      (Model (Container),
                       P.Get (Positions (Container)'Old, Before)),
-                   New_Item)
+                   M.Copy_Element (New_Item))
 
             --  A new cursor has been inserted at position Before in Container
 
@@ -702,7 +703,7 @@ is
                 (Element
                    (Model (Container),
                     P.Get (Positions (Container), Position)),
-                 New_Item)
+                 M.Copy_Element (New_Item))
 
           --  A new cursor has been inserted at position Position in Container
 
@@ -795,7 +796,8 @@ is
 
          --  New_Item is the first element of Container
 
-         and Element_Logic_Equal (Element (Model (Container), 1), New_Item)
+         and Element_Logic_Equal
+               (Element (Model (Container), 1), M.Copy_Element (New_Item))
 
          --  A new cursor has been inserted at the beginning of Container
 
@@ -865,7 +867,8 @@ is
          --  Model contains a new element New_Item at the end
 
          and Element_Logic_Equal
-               (Element (Model (Container), Length (Container)), New_Item)
+               (Element (Model (Container), Length (Container)),
+                M.Copy_Element (New_Item))
 
          --  Elements of Container'Old are preserved
 

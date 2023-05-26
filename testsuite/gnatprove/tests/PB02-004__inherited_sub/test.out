@@ -1,12 +1,15 @@
 main.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:5:13: info: implicit terminating annotation on "Build_Rec" has been proved, subprogram will terminate
 main.adb:9:24: info: range check proved (CVC5: 2 VC)
 main.adb:11:14: high: "Z.Plop.X" is not initialized
 main.adb:11:14: high: "Z.Plop.Y" is not initialized
 main.adb:14:13: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:14:13: info: implicit terminating annotation on "Build_Rec_OK" has been proved, subprogram will terminate
 main.adb:18:27: info: range check proved (CVC5: 2 VC)
 main.adb:20:14: high: "Z.Plop.X" is not initialized
 main.adb:20:14: high: "Z.Plop.Y" is not initialized
 main.adb:23:13: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:23:13: info: implicit terminating annotation on "Build_Arr" has been proved, subprogram will terminate
 main.adb:27:24: info: range check proved (CVC5: 2 VC)
 main.adb:27:27: info: range check proved (CVC5: 2 VC)
 main.adb:29:14: high: "Z.Content" is not initialized

@@ -6,7 +6,6 @@ bad_pledges.adb:10:13: error: At_End_Borrow function must be a ghost function
 bad_pledges.adb:12:13: error: At_End_Borrow function must be an expression function
 bad_pledges.adb:18:13: error: At_End_Borrow function must be the identity function
 bad_pledges.adb:20:13: error: At_End_Borrow function should not have a contract
-bad_pledges.adb:23:13: error: At_End_Borrow function should not have a contract
 bad_pledges.adb:26:13: error: At_End_Borrow function should not have a contract
-bad_pledges.adb:31:47: error: third parameter of a pragma At_End_Borrow must be an entity
+bad_pledges.adb:31:47: error: third argument of pragma Annotate At_End_Borrow must be an entity
 gnatprove: error during generation of Global contracts

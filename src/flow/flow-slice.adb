@@ -488,54 +488,54 @@ package body Flow.Slice is
                  (To_Node_Set (To_Entire_Variables (A.Variables_Used)));
             end if;
 
-            for E of A.Subprograms_Called loop
+            for SC of A.Subprogram_Calls loop
 
-               pragma Assert (Ekind (E) in Entry_Kind
-                                         | E_Function
-                                         | E_Procedure
-                                         | E_Package
-                                         | E_Subprogram_Type);
+               pragma Assert (Ekind (SC.E) in Entry_Kind
+                                            | E_Function
+                                            | E_Procedure
+                                            | E_Package
+                                            | E_Subprogram_Type);
 
                --  We don't expect calls to predicate functions in the CFG
 
-               pragma Assert (if Ekind (E) = E_Function
-                              then not Is_Predicate_Function (E));
+               pragma Assert (if Ekind (SC.E) = E_Function
+                              then not Is_Predicate_Function (SC.E));
 
-               if Ekind (E) = E_Package then
+               if Ekind (SC.E) = E_Package then
 
                   --  Packages with an Initializes contract have their reads
                   --  and writes already inlined in the CFG.
 
-                  if Present (Get_Pragma (E, Pragma_Initializes)) then
+                  if Present (Get_Pragma (SC.E, Pragma_Initializes)) then
                      null;
 
                   --  If a package is nested within another and none of them
                   --  has an Initializes contract, then special GG circuity
                   --  combines inner into outer Initializes.
 
-                  elsif Scope (E) = FA.Spec_Entity
+                  elsif Scope (SC.E) = FA.Spec_Entity
                     and then Ekind (FA.Spec_Entity) = E_Package
                   then
-                     Local_Packages.Insert (E);
+                     Local_Packages.Insert (SC.E);
 
                   --  Other packages are processed by the GG just like
                   --  subprogram calls.
 
                   else
-                     Unresolved.Insert (E);
+                     Unresolved.Insert (SC.E);
                   end if;
 
                --  Ignore calls via access-to-subprogram, because we assume
                --  them to be pure.
 
-               elsif Ekind (E) = E_Subprogram_Type then
+               elsif Ekind (SC.E) = E_Subprogram_Type then
                   null;
 
                --  Ignore calls to abstract subprograms, because we also assume
                --  them to be pure.
 
-               elsif Is_Overloadable (E)
-                 and then Is_Abstract_Subprogram (E)
+               elsif Is_Overloadable (SC.E)
+                 and then Is_Abstract_Subprogram (SC.E)
                then
                   null;
 
@@ -545,13 +545,13 @@ package body Flow.Slice is
                --  ??? refactor those to using a common routine
 
                else
-                  if not Has_User_Supplied_Globals (E)
-                    or else Rely_On_Generated_Global (E, FA.B_Scope)
+                  if not Has_User_Supplied_Globals (SC.E)
+                    or else Rely_On_Generated_Global (SC.E, FA.B_Scope)
                   then
                      if A.Is_Assertion then
-                        Proof_Calls.Include (E);
+                        Proof_Calls.Include (SC.E);
                      else
-                        Unresolved.Include (E);
+                        Unresolved.Include (SC.E);
                      end if;
                   end if;
                end if;

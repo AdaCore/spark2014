@@ -1,0 +1,2 @@
+p.ads:4:16: info: implicit terminating annotation on "Dummy" has been proved, subprogram will terminate
+p.ads:9:13: info: implicit terminating annotation on "Wrapper" has been proved, subprogram will terminate

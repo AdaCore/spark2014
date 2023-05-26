@@ -5,8 +5,10 @@ Generated contracts for P1.P2.F
    Refined_Global =>
       Input =>
          X2
+p1-p2.adb:6:13: info: implicit terminating annotation on "Test" has been proved, subprogram will terminate
 p1-p2.adb:6:45: info: data dependencies proved
 p1-p2.ads:3:03: info: flow dependencies proved
+p1-p2.ads:5:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 p1-p2.ads:5:35: info: data dependencies proved
 p1.ads:3:03: info: flow dependencies proved
 p1.ads:5:25: info: data dependencies proved

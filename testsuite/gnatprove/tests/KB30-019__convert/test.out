@@ -1,1 +1,2 @@
 c46042a.adb:9:06: warning: analyzing unreferenced function "IDENT"
+c46042a.adb:9:15: info: implicit terminating annotation on "IDENT" has been proved, subprogram will terminate

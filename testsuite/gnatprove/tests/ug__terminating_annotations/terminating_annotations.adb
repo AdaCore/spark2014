@@ -1,50 +1,47 @@
 package body Terminating_Annotations with SPARK_Mode is
 
-   function F_Rec (X : Natural) return Natural is
+   procedure P_Rec (X : Natural) is
    begin
       if X = 0 then
-         return 0;
+         return;
       else
-         return F_Rec (X - 1);
+         P_Rec (X - 1);
       end if;
-   end F_Rec;
+   end P_Rec;
 
-   function F_While (X : Natural) return Natural is
+   procedure P_While (X : Natural) is
       Y : Natural := X;
    begin
       while Y > 0 loop
          Y := Y - 1;
       end loop;
-      return Y;
-   end F_While;
+   end P_While;
 
-   function F_Not_SPARK (X : Natural) return Natural with SPARK_Mode => Off is
+   procedure P_Not_SPARK (X : Natural) with SPARK_Mode => Off is
       Y : Natural := X;
    begin
       while Y > 0 loop
          Y := Y - 1;
       end loop;
-      return Y;
-   end F_Not_SPARK;
+   end P_Not_SPARK;
 
    procedure Not_SPARK (X : Natural) with SPARK_Mode => Off is
    begin
       null;
    end Not_SPARK;
 
-   function F_Call (X : Natural) return Natural is
+   procedure P_Call (X : Natural) is
    begin
       Not_SPARK (X);
-      return 0;
-   end F_Call;
+   end P_Call;
 
-   function F_Term (X : Natural) return Natural is
+   procedure P_Term (X : Natural) is
       Y : Natural := X;
    begin
-      Y := F_Rec (Y);
-      Y := F_While (Y);
-      Y := F_Not_SPARK (Y);
-      Y := F_Call (Y);
+      P_Rec (Y);
+      P_While (Y);
+      P_Not_SPARK (Y);
+      P_Call (Y);
 
       while Y > 0 loop
          pragma Loop_Variant (Decreases => Y);
@@ -52,9 +49,9 @@ package body Terminating_Annotations with SPARK_Mode is
       end loop;
 
       if X = 0 then
-         return Y;
+         return;
       else
-         return F_Term (X - 1);
+         P_Term (X - 1);
       end if;
-   end F_Term;
+   end P_Term;
 end Terminating_Annotations;

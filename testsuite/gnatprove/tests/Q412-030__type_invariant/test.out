@@ -10,6 +10,9 @@ package_instance.ads:2:47: error: actual for formal object with mode in cannot d
 package_instance.ads:2:47: error: use instead a constant initialized to the expression with variable input
 varinput.adb:13:40: error: actual for formal object with mode in cannot depend on variable input "G2" (SPARK RM 4.4(2))
 varinput.adb:13:40: error: use instead a constant initialized to the expression with variable input
+varinput.ads:9:13: info: implicit terminating annotation on "F3" has been proved, subprogram will terminate
+varinput.ads:24:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+varinput.ads:25:13: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
 varinput.ads:28:24: error: invariant cannot depend on variable input "G" (SPARK RM 4.4(2))
 varinput.ads:28:24: error: use instead a constant initialized to the expression with variable input
 varinput.ads:30:19: error: predicate cannot depend on variable input "G" (SPARK RM 4.4(2))

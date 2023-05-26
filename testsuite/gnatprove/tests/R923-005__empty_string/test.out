@@ -1,1 +1,2 @@
+concat.ads:2:13: info: implicit terminating annotation on "Char_To_String" has been proved, subprogram will terminate
 concat.ads:2:65: info: range check proved (CVC5: 2 VC)

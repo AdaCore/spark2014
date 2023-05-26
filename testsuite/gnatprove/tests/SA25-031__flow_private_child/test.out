@@ -5,10 +5,12 @@ spin-tunnel.ads:10:08: info: initialization of "Result" proved
 spin-tunnel.ads:13:15: medium: postcondition might fail
 spin-tunnel.ads:16:08: info: initialization of "Result" proved
 spin-tunnel.ads:19:15: medium: postcondition might fail
+spin-tunnel.ads:21:13: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
 spin.adb:3:14: info: Initial_Condition of package "Tunnel" is ignored
 spin.adb:3:14: info: the elaboration of "Tunnel" is not known to precede the elaboration of the current unit
 spin.adb:3:14: info: use pragma Elaborate_Body in "Tunnel" or pragma Elaborate in the current unit
 spin.ads:4:04: info: flow dependencies proved
+spin.ads:11:13: info: implicit terminating annotation on "State_Invariant" has been proved, subprogram will terminate
 spin.ads:16:08: info: initialization of "State" proved
 spin_main.adb:7:04: info: initialization of "State" proved
 spin_main.adb:12:30: medium: loop invariant might fail in first iteration [possible fix: you should consider adding a postcondition to function State_Invariant or turning it into an expression function in its unit spec]

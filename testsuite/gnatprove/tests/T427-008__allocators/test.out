@@ -1,5 +1,7 @@
 p1.adb:5:12: info: implicit function contract might not be available on calls from enclosing unit
+p1.adb:5:12: info: implicit terminating annotation on "Three" has been proved, subprogram will terminate
 p1.adb:6:12: info: implicit function contract might not be available on calls from enclosing unit
+p1.adb:6:12: info: implicit terminating annotation on "One" has been proved, subprogram will terminate
 p1.adb:8:03: info: range check proved (CVC5: 2 VC)
 p1.adb:12:14: warning: subprogram "T1" has no effect
 p1.adb:13:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
@@ -11,6 +13,7 @@ p1.adb:19:31: info: index check proved (CVC5: 2 VC)
 p1.adb:19:31: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 p1.adb:19:31: medium: range check might fail [reason for check: value must fit in the designated type of the allocator]
 p2.adb:5:12: info: implicit function contract might not be available on calls from enclosing unit
+p2.adb:5:12: info: implicit terminating annotation on "Seven" has been proved, subprogram will terminate
 p2.adb:7:03: info: range check proved (CVC5: 2 VC)
 p2.adb:11:14: warning: subprogram "T1" has no effect
 p2.adb:12:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
@@ -24,6 +27,7 @@ p2.adb:24:03: info: precondition proved (Trivial: 1 VC)
 p3.adb:4:52: info: in default value at p3.adb:16
 p3.adb:4:52: info: range check proved (CVC5: 2 VC)
 p3.adb:14:12: info: implicit function contract might not be available on calls from enclosing unit
+p3.adb:14:12: info: implicit terminating annotation on "Seven" has been proved, subprogram will terminate
 p3.adb:16:03: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 p3.adb:16:21: info: range check proved (CVC5: 2 VC)
 p3.adb:18:03: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)

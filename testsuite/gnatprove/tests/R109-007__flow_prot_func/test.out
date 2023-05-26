@@ -1,6 +1,4 @@
 q.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
 q.adb:4:20: high: "PO" must be listed in the Global aspect of "Q" (SPARK RM 6.1.4(15))
-q.adb:4:23: warning: assuming "F" always returns
 q.adb:4:23: warning: assuming "F" has no effect on global items
 q.adb:4:23: warning: no Global contract available for "F"
-q.adb:4:23: warning: no returning annotation available for "F"

@@ -14,6 +14,9 @@ test_stack.adb:18:08: info: predicate check proved (CVC5: 2 VC)
 test_stack.adb:18:22: info: range check proved (CVC5: 2 VC)
 test_stack.ads:4:09: info: default initial condition proved (CVC5: 1 VC)
 test_stack.ads:4:09: info: predicate check proved on default value (CVC5: 2 VC)
+test_stack.ads:7:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate
+test_stack.ads:8:13: info: implicit terminating annotation on "Peek" has been proved, subprogram will terminate
+test_stack.ads:11:13: info: implicit terminating annotation on "Bad_Peek" has been proved, subprogram will terminate
 test_stack.ads:17:14: info: postcondition proved (CVC5: 3 VC)
 test_stack.ads:17:38: info: overflow check proved (CVC5: 2 VC)
 test_stack.ads:18:15: info: precondition proved (CVC5: 2 VC)

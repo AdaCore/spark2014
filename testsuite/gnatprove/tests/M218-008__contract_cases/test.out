@@ -2,20 +2,26 @@ subprograms.adb:17:21: info: division check proved (CVC5: 1 VC)
 subprograms.adb:17:21: info: overflow check proved (CVC5: 2 VC)
 subprograms.adb:33:16: info: overflow check proved (CVC5: 2 VC)
 subprograms.adb:38:18: info: overflow check proved (CVC5: 2 VC)
+subprograms.ads:2:13: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
 subprograms.ads:3:11: medium: contract cases might not be complete
 subprograms.ads:3:38: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+subprograms.ads:6:13: info: implicit terminating annotation on "F1bis" has been proved, subprogram will terminate
 subprograms.ads:8:11: info: complete contract cases proved (CVC5: 1 VC)
 subprograms.ads:8:38: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+subprograms.ads:10:13: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
 subprograms.ads:11:11: medium: contract cases might not be complete
 subprograms.ads:11:38: medium: contract case might fail (e.g. when F2'Result = 1)
+subprograms.ads:14:13: info: implicit terminating annotation on "F2bis" has been proved, subprogram will terminate
 subprograms.ads:16:11: info: complete contract cases proved (CVC5: 1 VC)
 subprograms.ads:16:38: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+subprograms.ads:18:13: info: implicit terminating annotation on "F3" has been proved, subprogram will terminate
 subprograms.ads:19:11: info: complete contract cases proved (CVC5: 1 VC)
 subprograms.ads:19:11: medium: contract cases might not be disjoint (e.g. when Val = 0)
 subprograms.ads:19:39: medium: contract case might fail (e.g. when F3'Result = 2)
 subprograms.ads:20:39: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 subprograms.ads:20:42: warning: unreachable branch (CVC5: 1 VC)
 subprograms.ads:21:39: medium: contract case might fail (e.g. when F3'Result = -1)
+subprograms.ads:24:13: info: implicit terminating annotation on "F3bis" has been proved, subprogram will terminate
 subprograms.ads:26:11: info: complete contract cases proved (CVC5: 1 VC)
 subprograms.ads:26:11: info: disjoint contract cases proved (CVC5: 1 VC)
 subprograms.ads:26:38: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)

@@ -45,6 +45,7 @@ package body My_Map with SPARK_Mode is
       C : access constant Map := M;
    begin
       while C /= null loop
+         pragma Loop_Variant (Structural => C);
          pragma Loop_Invariant (Model_Contains (C, K) = Model_Contains (M, K));
          if C.Key = K then
             return True;
@@ -58,6 +59,7 @@ package body My_Map with SPARK_Mode is
       X : access Map := M;
    begin
       while X /= null loop
+         pragma Loop_Variant (Structural => X);
          pragma Loop_Invariant (Model_Contains (X, K));
          pragma Loop_Invariant
            (if Model_Contains (At_End_Borrow (X), K)
@@ -156,6 +158,7 @@ package body My_Map with SPARK_Mode is
       C : access constant Map := M;
    begin
       while C /= null loop
+         pragma Loop_Variant (Structural => C);
          pragma Loop_Invariant (Model_Contains (C, K) = Model_Contains (M, K));
          pragma Loop_Invariant (Model_Value (C, K) = Model_Value (M, K));
          if C.Key = K then
@@ -170,6 +173,7 @@ package body My_Map with SPARK_Mode is
       X : access Map := M;
    begin
       while X /= null loop
+         pragma Loop_Variant (Structural => X);
          pragma Loop_Invariant (Model_Contains (X, K));
          pragma Loop_Invariant (Model_Value (X, K) = Model_Value (M, K));
          pragma Loop_Invariant

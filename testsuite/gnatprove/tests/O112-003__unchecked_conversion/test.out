@@ -1,3 +1,4 @@
 unchecked.adb:8:13: info: types in unchecked conversion have the same size (Trivial)
 unchecked.adb:8:53: info: type is suitable as source for unchecked conversion (Trivial)
 unchecked.adb:8:61: info: type is suitable for unchecked conversion (Trivial)
+unchecked.ads:17:13: info: implicit terminating annotation on "Convert_To_A" has been proved, subprogram will terminate

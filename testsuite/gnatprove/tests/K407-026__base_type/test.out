@@ -6,3 +6,11 @@ base_type.adb:25:28: info: range check proved (CVC5: 2 VC)
 base_type.adb:30:22: info: range check proved (CVC5: 2 VC)
 base_type.adb:35:22: info: range check proved (CVC5: 2 VC)
 base_type.adb:40:22: info: range check proved (CVC5: 2 VC)
+base_type.ads:4:13: info: implicit terminating annotation on "Add1" has been proved, subprogram will terminate
+base_type.ads:7:13: info: implicit terminating annotation on "Add2" has been proved, subprogram will terminate
+base_type.ads:12:13: info: implicit terminating annotation on "Add3" has been proved, subprogram will terminate
+base_type.ads:15:13: info: implicit terminating annotation on "Add4" has been proved, subprogram will terminate
+base_type.ads:20:13: info: implicit terminating annotation on "Add5" has been proved, subprogram will terminate
+base_type.ads:23:13: info: implicit terminating annotation on "Add6" has been proved, subprogram will terminate
+base_type.ads:28:13: info: implicit terminating annotation on "Add7" has been proved, subprogram will terminate
+base_type.ads:31:13: info: implicit terminating annotation on "Add8" has been proved, subprogram will terminate

@@ -1,0 +1,3 @@
+concurrent.ads:11:04: error: pragma Annotate Skip_Proof must immediately follow the declaration of task Some_Task
+concurrent.ads:21:07: error: pragma Annotate Skip_Proof must immediately follow the declaration of entry Other_Fake_Entry
+gnatprove: error during generation of Global contracts

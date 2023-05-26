@@ -3,4 +3,5 @@ competition.adb:10:38: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 competition.adb:12:43: info: overflow check proved (CVC5: 2 VC)
 competition.adb:12:43: medium: range check might fail, cannot prove lower bound for Result'First - 1 [reason for check: default component value must fit in the type]
 competition.adb:14:14: info: range check proved (CVC5: 4 VC)
+competition.ads:11:13: info: implicit terminating annotation on "Unique" has been proved, subprogram will terminate
 competition.ads:12:15: info: postcondition proved (Trivial: 1 VC)

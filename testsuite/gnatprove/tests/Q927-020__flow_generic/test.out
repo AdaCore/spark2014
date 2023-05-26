@@ -1,8 +1,12 @@
 id.adb:1:10: info: implicit function contract might not be available on implicit recursive calls
+id.adb:1:10: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 id.adb:3:03: info: flow dependencies proved
 id.adb:8:39: info: flow dependencies proved, in instantiation at id.adb:15
 id.adb:8:39: info: flow dependencies proved, in instantiation at id.adb:16
+id.adb:15:13: info: implicit terminating annotation on "Dummy" has been proved, subprogram will terminate
 id.adb:16:13: info: implicit function contract might not be available on calls from enclosing unit
+id.adb:16:13: info: implicit terminating annotation on "Indirect" has been proved, subprogram will terminate
+id2.adb:1:10: info: implicit terminating annotation on "Id2" has been proved, subprogram will terminate
 id2.adb:3:03: info: flow dependencies proved
 id2.adb:8:23: info: flow dependencies proved, in instantiation at id2.adb:13
 id2.adb:8:39: medium: constant without variable input "X" cannot appear in Initializes, in instantiation at id2.adb:12

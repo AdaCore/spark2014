@@ -12,5 +12,6 @@ device.ads:9:10: info: flow dependencies proved
 device.ads:11:23: info: initialization of "OK" proved
 device.ads:12:11: info: data dependencies proved
 device.ads:13:11: info: flow dependencies proved
+device.ads:15:13: info: implicit terminating annotation on "Last_Written" has been proved, subprogram will terminate
 device.ads:17:11: info: data dependencies proved
 gnatprove: error during flow analysis and proof

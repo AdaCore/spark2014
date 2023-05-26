@@ -3,6 +3,7 @@ exprold.adb:12:18: info: range check proved (CVC5: 2 VC)
 exprold.adb:17:20: info: range check proved (CVC5: 2 VC)
 exprold.adb:22:24: info: range check proved (CVC5: 2 VC)
 exprold.adb:27:14: info: overflow check proved (CVC5: 2 VC)
+exprold.ads:18:13: info: implicit terminating annotation on "Same" has been proved, subprogram will terminate
 exprold.ads:23:16: high: postcondition might fail (e.g. when I = 1 and I'Old = 0)
 exprold.ads:28:16: medium: postcondition might fail
 exprold.ads:33:16: medium: postcondition might fail

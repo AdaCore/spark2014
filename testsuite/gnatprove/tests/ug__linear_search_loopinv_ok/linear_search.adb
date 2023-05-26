@@ -20,7 +20,7 @@ Is
            (Pos in A'Range
               and then
             not Value_Found_In_Range (A, Val, A'First, Pos));
-
+         pragma Loop_Variant (Increases => Pos);
          Pos := Pos + 1;
       end loop;
 

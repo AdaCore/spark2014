@@ -32,5 +32,8 @@ shapes5.adb:54:29: info: float overflow check proved (Trivial)
 shapes5.adb:55:29: info: float overflow check proved (Trivial)
 shapes5.adb:56:29: info: float overflow check proved (Trivial)
 shapes5.adb:57:29: info: float overflow check proved (Trivial)
+shapes5.ads:10:13: info: implicit terminating annotation on "Make_Circle" has been proved, subprogram will terminate
 shapes5.ads:13:18: medium: postcondition might fail
+shapes5.ads:16:13: info: implicit terminating annotation on "Inside_Circle" has been proved, subprogram will terminate
+shapes5.ads:23:13: info: implicit terminating annotation on "In_Bounds" has been proved, subprogram will terminate
 shapes5.ads:24:11: info: data dependencies proved

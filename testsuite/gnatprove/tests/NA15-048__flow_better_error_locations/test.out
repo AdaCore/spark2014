@@ -1,5 +1,9 @@
 a.ads:3:08: info: flow dependencies proved
+a.ads:7:11: warning: Always_Return annotation is useless
+a.ads:7:11: warning: function "Return_State" has implicit Always_Return annotation
 b.ads:3:08: info: flow dependencies proved
+b.ads:7:11: warning: Always_Return annotation is useless
+b.ads:7:11: warning: function "Return_State" has implicit Always_Return annotation
 better_error_locations.adb:4:27: medium: overflow check might fail, cannot prove lower bound for A.Return_State + B.Return_State [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at better_error_locations.ads:4 should mention A.State and B.State in a precondition]
 better_error_locations.ads:4:17: info: initialization of "X" proved
 better_error_locations.ads:5:11: info: data dependencies proved

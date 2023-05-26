@@ -1,4 +1,5 @@
 fxp_div_int_res.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
+fxp_div_int_res.adb:3:13: info: implicit terminating annotation on "Div" has been proved, subprogram will terminate
 fxp_div_int_res.adb:4:20: info: division check proved (CVC5: 1 VC)
 fxp_div_int_res.adb:4:20: info: range check proved (CVC5: 2 VC)
 fxp_div_int_res.adb:4:20: medium: overflow check might fail, cannot prove lower bound for D1 / D2 (e.g. when D1 = -2147483649/1000000000 and D2 = 1/1000000000) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (D1 / D2 in Integer) to subprogram at line 3]

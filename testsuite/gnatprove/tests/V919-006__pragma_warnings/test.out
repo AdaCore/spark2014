@@ -1,1 +1,2 @@
 foo.adb:9:07: warning: initialization of "X" has no effect
+foo.ads:4:13: info: implicit terminating annotation on "Foobar" has been proved, subprogram will terminate

@@ -14,6 +14,7 @@ longest_common_prefix.adb:14:40: info: overflow check proved (CVC5: 4 VC)
 longest_common_prefix.adb:17:31: info: loop variant proved (CVC5: 1 VC)
 longest_common_prefix.adb:18:17: info: overflow check proved (CVC5: 2 VC)
 longest_common_prefix.ads:3:03: info: flow dependencies proved
+longest_common_prefix.ads:8:13: info: implicit terminating annotation on "LCP" has been proved, subprogram will terminate
 longest_common_prefix.ads:11:06: info: disjoint contract cases proved (CVC5: 1 VC)
 longest_common_prefix.ads:11:28: info: index check proved (CVC5: 2 VC)
 longest_common_prefix.ads:11:37: info: index check proved (CVC5: 2 VC)

@@ -10,6 +10,7 @@ p.adb:59:11: info: initialization of "M" proved
 p.adb:59:14: info: initialization of "Y" proved
 p.adb:59:17: info: initialization of "B" proved
 p.adb:67:22: info: assertion proved (colibri: 1 VC)
+p.adb:71:22: medium: implicit terminating annotation on "Sqrt_Von_Neumann" could be incorrect, loop might be nonterminating
 p.adb:74:17: info: division check proved (CVC5: 2 VC)
 p.adb:81:33: info: range check proved (CVC5: 2 VC)
 p.adb:82:30: info: range check proved (CVC5: 2 VC)
@@ -41,6 +42,7 @@ p.adb:93:36: info: loop invariant initialization proved (Z3: 1 VC)
 p.adb:93:36: medium: loop invariant might not be preserved by an arbitrary iteration
 p.adb:95:17: info: division check proved (CVC5: 1 VC)
 p.adb:98:26: medium: range check might fail, cannot prove upper bound for Y [reason for check: value must be convertible to the target type of the conversion]
+p.ads:9:13: info: implicit terminating annotation on "Sqrt_Binary" has been proved, subprogram will terminate
 p.ads:10:19: info: postcondition proved (CVC5: 2 VC)
 p.ads:15:19: medium: postcondition might fail, cannot prove Sqrt_Von_Neumann'Result * Sqrt_Von_Neumann'Result <= X
 test_sqrt.adb:7:25: info: cannot unroll loop (too many loop iterations)

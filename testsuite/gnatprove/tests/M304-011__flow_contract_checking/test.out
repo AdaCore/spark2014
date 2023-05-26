@@ -9,6 +9,7 @@ test.adb:95:22: high: "Z" must be listed in the Global aspect of "Check_Contract
 test.adb:105:14: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at test.ads:40 should mention X and Y in a precondition]
 test.adb:105:18: medium: overflow check might fail, cannot prove lower bound for X + Y - Z [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at test.ads:40 should mention X and Y in a precondition]
 test.adb:105:20: high: "Z" must be listed in the Global aspect of "Check_Contract_8" (SPARK RM 6.1.4(15))
+test.ads:5:13: info: implicit terminating annotation on "Check_Contract_1" has been proved, subprogram will terminate
 test.ads:10:12: info: flow dependencies proved
 test.ads:12:54: info: initialization of "Z" proved
 test.ads:15:24: medium: missing self-dependency "Y => Y"

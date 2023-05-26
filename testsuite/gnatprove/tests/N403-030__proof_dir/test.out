@@ -1,6 +1,7 @@
 simple_test.adb:4:07: info: initialization of "B" proved
 simple_test.adb:13:14: info: overflow check proved (CVC5: 2 VC)
 simple_test.adb:15:22: info: assertion proved (CVC5: 1 VC)
+simple_test.ads:3:14: info: implicit terminating annotation on "Test" has been proved, subprogram will terminate
 simple_test.ads:5:14: info: postcondition proved (CVC5: 1 VC)
 simple_test.ads:5:31: info: overflow check proved (CVC5: 2 VC)
 simple_test.ads:5:37: info: overflow check proved (CVC5: 2 VC)

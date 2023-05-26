@@ -71,26 +71,20 @@ test_init_by_proof_mem.adb:21:16: info: range check proved (CVC5: 2 VC)
 test_init_by_proof_mem.adb:22:16: info: range check proved (CVC5: 2 VC)
 test_init_by_proof_mem.adb:22:23: info: discriminant check proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:28:07: info: no contextual analysis of "Branch" (body not seen yet)
-test_init_by_proof_mem.adb:28:07: warning: assuming "Branch" always returns
 test_init_by_proof_mem.adb:28:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_mem.adb:28:07: warning: no Global contract available for "Branch"
-test_init_by_proof_mem.adb:28:07: warning: no returning annotation available for "Branch"
 test_init_by_proof_mem.adb:29:22: info: assertion proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:30:22: info: assertion proved (Trivial)
 test_init_by_proof_mem.adb:31:22: medium: assertion might fail, cannot prove lower bound for Y1 in My_Nat
 test_init_by_proof_mem.adb:31:22: medium: initialization check might fail
-test_init_by_proof_mem.adb:32:10: warning: assuming "Branch" always returns
 test_init_by_proof_mem.adb:32:10: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_mem.adb:32:10: warning: no Global contract available for "Branch"
-test_init_by_proof_mem.adb:32:10: warning: no returning annotation available for "Branch"
 test_init_by_proof_mem.adb:33:22: info: assertion proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:34:22: info: assertion proved (Trivial)
 test_init_by_proof_mem.adb:35:22: info: assertion proved (CVC5: 2 VC)
 test_init_by_proof_mem.adb:35:22: info: initialization check proved (CVC5: 1 VC)
-test_init_by_proof_mem.adb:36:10: warning: assuming "Branch" always returns
 test_init_by_proof_mem.adb:36:10: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_mem.adb:36:10: warning: no Global contract available for "Branch"
-test_init_by_proof_mem.adb:36:10: warning: no returning annotation available for "Branch"
 test_init_by_proof_mem.adb:37:22: info: assertion proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:37:22: medium: initialization check might fail
 test_init_by_proof_mem.adb:37:36: info: initialization check proved (CVC5: 2 VC; Trivial: 3 VC)
@@ -132,69 +126,47 @@ test_init_by_proof_out_params.adb:146:17: high: "X.C.Z" is not initialized in "P
 test_init_by_proof_out_params.adb:153:17: warning: "X" is not modified, could be IN
 test_init_by_proof_out_params.adb:167:17: warning: "X" is not modified, could be IN
 test_init_by_proof_out_params.adb:186:07: info: no contextual analysis of "Branch" (body not seen yet)
-test_init_by_proof_out_params.adb:186:07: warning: assuming "Branch" always returns
 test_init_by_proof_out_params.adb:186:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:186:07: warning: no Global contract available for "Branch"
-test_init_by_proof_out_params.adb:186:07: warning: no returning annotation available for "Branch"
 test_init_by_proof_out_params.adb:187:07: medium: precondition might fail
 test_init_by_proof_out_params.adb:189:07: info: precondition proved (CVC5: 1 VC)
-test_init_by_proof_out_params.adb:191:07: warning: assuming "Branch" always returns
 test_init_by_proof_out_params.adb:191:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:191:07: warning: no Global contract available for "Branch"
-test_init_by_proof_out_params.adb:191:07: warning: no returning annotation available for "Branch"
 test_init_by_proof_out_params.adb:192:07: medium: precondition might fail
 test_init_by_proof_out_params.adb:194:07: info: precondition proved (CVC5: 1 VC)
-test_init_by_proof_out_params.adb:196:07: warning: assuming "Branch" always returns
 test_init_by_proof_out_params.adb:196:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:196:07: warning: no Global contract available for "Branch"
-test_init_by_proof_out_params.adb:196:07: warning: no returning annotation available for "Branch"
 test_init_by_proof_out_params.adb:197:07: medium: precondition might fail, cannot prove X (X'First)'Initialized
 test_init_by_proof_out_params.adb:199:07: info: precondition proved (CVC5: 2 VC)
-test_init_by_proof_out_params.adb:201:07: warning: assuming "Branch" always returns
 test_init_by_proof_out_params.adb:201:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:201:07: warning: no Global contract available for "Branch"
-test_init_by_proof_out_params.adb:201:07: warning: no returning annotation available for "Branch"
 test_init_by_proof_out_params.adb:202:07: medium: precondition might fail, cannot prove X (X'First)'Initialized
 test_init_by_proof_out_params.adb:204:07: info: precondition proved (CVC5: 2 VC)
-test_init_by_proof_out_params.adb:206:07: warning: assuming "Branch" always returns
 test_init_by_proof_out_params.adb:206:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:206:07: warning: no Global contract available for "Branch"
-test_init_by_proof_out_params.adb:206:07: warning: no returning annotation available for "Branch"
 test_init_by_proof_out_params.adb:207:07: medium: precondition might fail
 test_init_by_proof_out_params.adb:209:07: info: precondition proved (CVC5: 1 VC)
-test_init_by_proof_out_params.adb:211:07: warning: assuming "Branch" always returns
 test_init_by_proof_out_params.adb:211:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:211:07: warning: no Global contract available for "Branch"
-test_init_by_proof_out_params.adb:211:07: warning: no returning annotation available for "Branch"
 test_init_by_proof_out_params.adb:212:07: medium: precondition might fail
 test_init_by_proof_out_params.adb:214:07: info: precondition proved (CVC5: 1 VC)
-test_init_by_proof_out_params.adb:216:07: warning: assuming "Branch" always returns
 test_init_by_proof_out_params.adb:216:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:216:07: warning: no Global contract available for "Branch"
-test_init_by_proof_out_params.adb:216:07: warning: no returning annotation available for "Branch"
 test_init_by_proof_out_params.adb:217:07: medium: precondition might fail, cannot prove X (X'First).Y'Initialized
 test_init_by_proof_out_params.adb:219:07: info: precondition proved (CVC5: 2 VC)
-test_init_by_proof_out_params.adb:221:07: warning: assuming "Branch" always returns
 test_init_by_proof_out_params.adb:221:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:221:07: warning: no Global contract available for "Branch"
-test_init_by_proof_out_params.adb:221:07: warning: no returning annotation available for "Branch"
 test_init_by_proof_out_params.adb:222:07: medium: precondition might fail, cannot prove X (X'First).Y'Initialized
 test_init_by_proof_out_params.adb:224:07: info: precondition proved (CVC5: 2 VC)
-test_init_by_proof_out_params.adb:226:07: warning: assuming "Branch" always returns
 test_init_by_proof_out_params.adb:226:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:226:07: warning: no Global contract available for "Branch"
-test_init_by_proof_out_params.adb:226:07: warning: no returning annotation available for "Branch"
 test_init_by_proof_out_params.adb:227:07: medium: precondition might fail, cannot prove X.C (1).Y'Initialized
 test_init_by_proof_out_params.adb:229:07: info: precondition proved (CVC5: 2 VC)
-test_init_by_proof_out_params.adb:231:07: warning: assuming "Branch" always returns
 test_init_by_proof_out_params.adb:231:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:231:07: warning: no Global contract available for "Branch"
-test_init_by_proof_out_params.adb:231:07: warning: no returning annotation available for "Branch"
 test_init_by_proof_out_params.adb:232:07: medium: precondition might fail
 test_init_by_proof_out_params.adb:234:07: info: precondition proved (CVC5: 1 VC)
-test_init_by_proof_out_params.adb:236:07: warning: assuming "Branch" always returns
 test_init_by_proof_out_params.adb:236:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:236:07: warning: no Global contract available for "Branch"
-test_init_by_proof_out_params.adb:236:07: warning: no returning annotation available for "Branch"
 test_init_by_proof_out_params.adb:237:07: medium: precondition might fail
 test_init_by_proof_out_params.adb:239:07: info: precondition proved (CVC5: 1 VC)

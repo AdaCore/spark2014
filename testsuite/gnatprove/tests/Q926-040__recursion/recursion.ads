@@ -14,6 +14,7 @@ package recursion with SPARK_Mode is
    -- examined thus far.
    function count_true_recursive(arr: example_array;
                                  index: Positive) return Natural with
+     Subprogram_Variant => (Decreases => index),
      Pre => (arr'First < arr'Last and arr'First <= index and index <= arr'Last),
      Post => (count_true_recursive'Result <= (index - arr'First + 1));
 --   pragma Annotate (GNATprove, Always_Return, count_true_recursive);

@@ -1,3 +1,5 @@
 po_t.adb:9:34: info: overflow check proved (CVC5: 2 VC)
 po_t.adb:21:34: info: overflow check proved (CVC5: 2 VC)
 po_t.adb:36:22: medium: assertion might fail (e.g. when X = 0 and Y = 1)
+po_t.ads:44:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+po_t.ads:59:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate

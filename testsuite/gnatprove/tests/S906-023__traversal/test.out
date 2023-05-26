@@ -1,1 +1,2 @@
+traversal_funcs.adb:9:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 traversal_funcs.adb:12:18: info: pointer dereference check proved (CVC5: 1 VC)

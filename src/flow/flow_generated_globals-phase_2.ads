@@ -396,7 +396,8 @@ package Flow_Generated_Globals.Phase_2 is
    --  Note: if a subprogram is annotated as terminating then we trust that it
    --  indeed terminates when called from other subprograms. If our analysis
    --  thinks otherwise, we will issue a message but still trust the
-   --  user-provided annotation.
+   --  user-provided annotation. This also counts for implicit terminating
+   --  annotations, such as on functions or automatically instantiated lemmas.
 
    function Tasking_Objects
      (Kind : Tasking_Owning_Kind;

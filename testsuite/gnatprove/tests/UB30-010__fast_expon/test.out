@@ -28,9 +28,11 @@ fast_exponentiation.adb:40:32: info: predicate check proved (Trivial: 1 VC)
 fast_exponentiation.adb:40:41: info: predicate check proved (Trivial: 1 VC)
 fast_exponentiation.adb:43:22: info: assertion proved (CVC5: 1 VC)
 fast_exponentiation.ads:8:13: info: function contract might not be available on recursive calls
+fast_exponentiation.ads:8:13: info: implicit terminating annotation on "Fast_Exp" has been proved, subprogram will terminate
 fast_exponentiation.ads:11:14: medium: postcondition might fail
 fast_exponentiation.ads:11:22: info: predicate check proved (Trivial: 1 VC)
 fast_exponentiation.ads:11:32: info: predicate check proved (Trivial: 1 VC)
+fast_exponentiation.ads:13:13: info: implicit terminating annotation on "Fast_Exp_Imperative" has been proved, subprogram will terminate
 fast_exponentiation.ads:15:14: info: postcondition proved (altergo: 1 VC)
 fast_exponentiation.ads:15:33: info: predicate check proved (Trivial: 1 VC)
 fast_exponentiation.ads:15:43: info: predicate check proved (Trivial: 1 VC)

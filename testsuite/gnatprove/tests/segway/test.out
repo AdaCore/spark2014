@@ -7,8 +7,11 @@ segway.adb:89:33: info: loop invariant initialization proved (CVC5: 3 VC)
 segway.adb:89:33: info: loop invariant preservation proved (CVC5: 3 VC)
 segway.adb:91:13: info: precondition proved (CVC5: 3 VC)
 segway.adb:93:13: info: precondition proved (CVC5: 3 VC)
+segway.ads:16:13: info: implicit terminating annotation on "Current_Status" has been proved, subprogram will terminate
 segway.ads:17:11: info: data dependencies proved
+segway.ads:19:13: info: implicit terminating annotation on "Current_Speed" has been proved, subprogram will terminate
 segway.ads:20:11: info: data dependencies proved
+segway.ads:22:13: info: implicit terminating annotation on "Speed_Is_Valid" has been proved, subprogram will terminate
 segway.ads:30:11: info: data dependencies proved
 segway.ads:33:11: info: data dependencies proved
 segway.ads:34:11: info: flow dependencies proved

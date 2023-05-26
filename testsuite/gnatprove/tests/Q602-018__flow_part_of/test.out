@@ -1,2 +1,4 @@
+state.ads:6:13: info: implicit terminating annotation on "State" has been proved, subprogram will terminate
 state.ads:7:11: info: data dependencies proved
+state.ads:9:13: info: implicit terminating annotation on "Test" has been proved, subprogram will terminate
 state.ads:11:09: info: data dependencies proved

@@ -7,6 +7,7 @@ is
       B : access List_Cell := L;
    begin
       while B /= null and then B.Value /= 0 loop
+         pragma Loop_Variant (Structural => B);
          pragma Loop_Invariant
            (For_All_List (L, Is_Non_Zero'Access) =
                 For_All_List (B, Is_Non_Zero'Access));

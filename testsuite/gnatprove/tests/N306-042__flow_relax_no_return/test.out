@@ -1,5 +1,6 @@
 noreturn.adb:3:11: high: all paths in "NoReturn" raise exceptions or do not terminate normally
 noreturn.adb:6:13: info: add a contract to analyze it separately from calling contexts
+noreturn.adb:6:13: info: implicit terminating annotation on "Success" has been proved, subprogram will terminate
 noreturn.adb:6:13: info: local subprogram "Success" only analyzed in the context of calls
 noreturn.adb:20:07: info: analyzing call to "Success" in context
 noreturn.adb:23:07: medium: call to nonreturning subprogram might be executed

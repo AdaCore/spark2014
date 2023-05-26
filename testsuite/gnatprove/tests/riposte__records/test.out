@@ -1,29 +1,40 @@
+records.adb:5:13: info: implicit terminating annotation on "Init_A" has been proved, subprogram will terminate
 records.adb:6:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:8:07: info: initialization of "R" proved
+records.adb:15:13: info: implicit terminating annotation on "Init_B" has been proved, subprogram will terminate
 records.adb:16:19: info: postcondition proved (CVC5: 2 VC)
 records.adb:18:07: info: initialization of "R" proved
+records.adb:25:13: info: implicit terminating annotation on "Init_C" has been proved, subprogram will terminate
 records.adb:26:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:28:07: info: initialization of "R" proved
+records.adb:35:13: info: implicit terminating annotation on "Init_D" has been proved, subprogram will terminate
 records.adb:36:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:38:07: info: initialization of "R" proved
+records.adb:44:13: info: implicit terminating annotation on "Init_E" has been proved, subprogram will terminate
 records.adb:45:19: info: postcondition proved (CVC5: 1 VC)
+records.adb:53:13: info: implicit terminating annotation on "Add_Pair_A" has been proved, subprogram will terminate
 records.adb:56:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:56:54: info: range check proved (CVC5: 2 VC)
 records.adb:57:54: info: range check proved (CVC5: 2 VC)
 records.adb:60:29: info: range check proved (CVC5: 2 VC)
 records.adb:61:29: info: range check proved (CVC5: 2 VC)
+records.adb:64:13: info: implicit terminating annotation on "Safe_Add_Pair_A" has been proved, subprogram will terminate
 records.adb:65:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 records.adb:67:60: info: range check proved (CVC5: 2 VC)
 records.adb:68:60: info: range check proved (CVC5: 2 VC)
 records.adb:70:07: info: initialization of "R" proved
 records.adb:75:15: info: precondition proved (CVC5: 4 VC)
+records.adb:83:13: info: implicit terminating annotation on "Safe_Add_Pair_B" has been proved, subprogram will terminate
 records.adb:86:25: high: postcondition might fail, cannot prove Safe_Add_Pair_B'Result = Pair'(A.A + B.A,  A.B + B.B) (e.g. when A = (A => Unsigned_Byte'Last, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0))
 records.adb:86:60: info: range check proved (CVC5: 2 VC)
 records.adb:87:60: info: range check proved (CVC5: 2 VC)
 records.adb:89:07: info: initialization of "R" proved
 records.adb:94:15: info: precondition proved (CVC5: 4 VC)
+records.adb:102:13: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
 records.adb:103:19: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+records.adb:110:13: info: implicit terminating annotation on "Is_Valid_B" has been proved, subprogram will terminate
 records.adb:111:19: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+records.adb:118:13: info: implicit terminating annotation on "Is_Valid_C" has been proved, subprogram will terminate
 records.adb:119:19: high: postcondition might fail (e.g. when A = (Exists => False, The_Pair => (A => 0, B => 0)) and Is_Valid_C'Result = True)
 records.adb:129:25: info: initialization of "Dst" proved
 records.adb:130:11: info: flow dependencies proved
@@ -70,8 +81,10 @@ records.adb:285:11: info: flow dependencies proved
 records.adb:286:22: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
 records.adb:296:11: info: flow dependencies proved
 records.adb:300:44: high: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 0, B => 0)))
+records.adb:306:13: info: implicit terminating annotation on "Update_A" has been proved, subprogram will terminate
 records.adb:309:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:312:07: info: initialization of "Tmp" proved
+records.adb:319:13: info: implicit terminating annotation on "Update_B" has been proved, subprogram will terminate
 records.adb:323:19: high: postcondition might fail (e.g. when N = 0 and Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 1)) and X = (Exists => False, The_Pair => (A => 1, B => 1)))
 records.adb:326:07: info: initialization of "Tmp" proved
 records.adb:329:27: info: range check proved (CVC5: 2 VC)
@@ -79,12 +92,17 @@ records.adb:334:11: info: flow dependencies proved
 records.adb:335:22: info: postcondition proved (CVC5: 1 VC)
 records.adb:344:11: info: flow dependencies proved
 records.adb:345:22: info: postcondition proved (CVC5: 1 VC)
+records.adb:351:13: info: implicit terminating annotation on "Is_Null_A" has been proved, subprogram will terminate
 records.adb:352:19: info: postcondition proved (CVC5: 2 VC)
+records.adb:358:13: info: implicit terminating annotation on "Is_Null_B" has been proved, subprogram will terminate
 records.adb:359:19: info: postcondition proved (CVC5: 2 VC)
+records.adb:365:13: info: implicit terminating annotation on "Make_Optional_Pair_A_1" has been proved, subprogram will terminate
 records.adb:366:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:370:07: info: initialization of "R" proved
+records.adb:379:13: info: implicit terminating annotation on "Make_Optional_Pair_A_2" has been proved, subprogram will terminate
 records.adb:380:19: high: postcondition might fail (e.g. when Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0))
 records.adb:384:07: info: initialization of "R" proved
+records.adb:393:13: info: implicit terminating annotation on "Make_Optional_Pair_B" has been proved, subprogram will terminate
 records.adb:394:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:398:07: info: initialization of "R" proved
 records.adb:406:11: info: flow dependencies proved
@@ -97,8 +115,10 @@ records.adb:429:22: info: initialization of "X" proved
 records.adb:430:11: info: flow dependencies proved
 records.adb:436:22: high: assertion might fail (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 0)))
 records.adb:439:13: info: add a contract to analyze it separately from calling contexts
+records.adb:439:13: info: implicit terminating annotation on "Swap_Fields" has been proved, subprogram will terminate
 records.adb:439:13: info: local subprogram "Swap_Fields" only analyzed in the context of calls
 records.adb:446:04: warning: analyzing unreferenced function "Apply_Command"
+records.adb:446:13: info: implicit terminating annotation on "Apply_Command" has been proved, subprogram will terminate
 records.adb:448:07: info: initialization of "R" proved
 records.adb:453:24: high: range check might fail, cannot prove upper bound for R.A + 1 (e.g. when R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last)) [reason for check: result of addition must fit in the target type of the assignment]
 records.adb:458:18: info: analyzing call to "Swap_Fields" in context
@@ -108,10 +128,12 @@ records.adb:474:30: info: assertion proved (CVC5: 1 VC)
 records.adb:482:11: info: flow dependencies proved
 records.adb:483:22: medium: postcondition might fail
 records.adb:491:30: info: assertion proved (CVC5: 1 VC)
+records.adb:498:13: info: implicit terminating annotation on "Field_Suppression_On_Computation_Is_Insufficient" has been proved, subprogram will terminate
 records.adb:501:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 records.adb:504:22: high: assertion might fail (e.g. when R = (Exists => False, The_Pair => (A => 0, B => 0))) [possible fix: subprogram at line 498 should mention R in a precondition]
 records.adb:513:11: info: flow dependencies proved
 records.adb:514:22: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+records.adb:520:13: info: implicit terminating annotation on "Test_Record_Subtype" has been proved, subprogram will terminate
 records.adb:523:19: info: postcondition proved (CVC5: 2 VC)
 records.adb:530:11: info: flow dependencies proved
 records.adb:534:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F_Of_Pair or turning it into an expression function in its unit spec]

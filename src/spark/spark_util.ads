@@ -924,15 +924,6 @@ package SPARK_Util is
    --  @return a string representing the character for humans to read, which is
    --     the character itself if it is a graphic one, otherwise its name.
 
-   function Get_Flat_Statement_And_Declaration_List
-     (Stmts : List_Id) return Node_Lists.List;
-   --  Given a list of statements and declarations Stmts, returns the flattened
-   --  list that includes these statements and declarations, and recursively
-   --  all inner declarations and statements that appear in block statements.
-   --  Block statements are kept to mark the end of the corresponding scope,
-   --  in order to apply some treatments at the end of local scopes, like
-   --  checking the absence of resource leaks at the end of scope.
-
    function Is_Null_Owning_Access (Expr : Node_Id) return Boolean is
      (Nkind (Expr) = N_Null
       and then
@@ -1056,5 +1047,122 @@ package SPARK_Util is
       Result      : out Boolean;
       Explanation : out Unbounded_String);
    --  Return True if Brower is a structural variant for Loop_Stmt
+
+   procedure Register_Exception (E : E_Exception_Id);
+   --  Register an exception
+
+   function All_Exceptions return Node_Sets.Set;
+   --  Get all the exceptions visible from analyzed code
+
+   procedure Collect_Reachable_Handlers (Stmt : Node_Id) with
+     Pre => Nkind (Stmt) in N_Procedure_Call_Statement | N_Raise_Statement;
+   --  Stmt shall be a call which might raise exceptions or a raise
+   --  statement. Collect all the exception handlers which might be reached
+   --  when jumping from Stmt and store them in a map. Also collect exceptions
+   --  which might be raised by reraise statements.
+
+   function Reachable_Handlers (Stmt : Node_Id) return Node_Lists.List with
+     Pre  => Nkind (Stmt) in N_Procedure_Call_Statement | N_Raise_Statement,
+     Post => Might_Raise_Handled_Exceptions (Stmt) /=
+       Reachable_Handlers'Result.Is_Empty;
+   --  Stmt shall be a call which might raise exceptions or a raise
+   --  statement. Return all exception handlers which might be reached when
+   --  jumping from Stmt. If the enclosing body might be exited, it will be the
+   --  last elements of the list. If the statement does not raise any handled
+   --  exception, the list is empty.
+
+   function By_Copy (Obj : Formal_Kind_Id) return Boolean;
+   --  Return True if Obj is known to be passed by copy. In parameters of an
+   --  access-to-variable type are considered to be passed by reference in
+   --  accordance to ownership principles.
+
+   function By_Reference (Obj : Formal_Kind_Id) return Boolean;
+   --  Return True if Obj is known to be passed by reference. See above.
+
+   --  This package defines a type and operations for sets of exceptions. These
+   --  sets can either be constructed from the empty set by adding elements or
+   --  from the set containing all exceptions by removing them.
+
+   package Exception_Sets is
+
+      type Set is tagged private;
+
+      function Exactly (E : E_Exception_Id) return Set;
+      --  Return the set containing only the exception E
+
+      function All_Exceptions return Set;
+      --  Return the set containing all Ada exceptions
+
+      procedure Disclose
+        (S       : Set;
+         All_But : out Boolean;
+         Exc_Set : out Node_Sets.Set);
+      --  If All_But is True, then Exc_Set contains the exceptions which are
+      --  not in the set S. Otherwise, the exception set S contains exactly the
+      --  exceptions of Exc_Set.
+
+      --  Set operations
+
+      function Empty_Set return Set;
+
+      function Is_Empty (S : Set) return Boolean;
+
+      function Is_Subset (Left, Right : Set) return Boolean;
+
+      function Contains (S : Set; E : E_Exception_Id) return Boolean;
+
+      procedure Difference (Left : in out Set; Right : Set);
+
+      procedure Exclude (S : in out Set; E : E_Exception_Id);
+
+      procedure Include (S : in out Set; E : E_Exception_Id);
+
+      procedure Intersection (Left : in out Set; Right : Set);
+
+      procedure Union (Left : in out Set; Right : Set);
+
+   private
+      type Set is tagged record
+         All_But : Boolean;
+         Exc_Set : Node_Sets.Set;
+      end record;
+   end Exception_Sets;
+
+   function Has_Exceptional_Contract (E : Entity_Id) return Boolean;
+   --  Return True if E has an exceptional contract with cases which are not
+   --  all statically False.
+
+   function Get_Exceptions_For_Subp
+     (Subp : Entity_Id)
+      return Exception_Sets.Set;
+   --  Retrieve all exceptions potentially raised by Subp
+
+   function Get_Exceptions_From_Handler
+     (N : N_Exception_Handler_Id)
+      return Exception_Sets.Set;
+   --  Retrieve all exceptions handled by a handler
+
+   function Get_Exceptions_From_Handlers
+     (N : N_Handled_Sequence_Of_Statements_Id)
+      return Exception_Sets.Set;
+   --  Retrieve all exceptions handled in a sequence of statements
+
+   function Get_Handled_Exceptions (Stmt : Node_Id) return Exception_Sets.Set;
+   --  Retrieve all exceptions either handled by a handler above Stmt or
+   --  expected by the enclosing unit.
+
+   function Get_Raised_Exceptions
+     (Stmt         : Node_Id;
+      Only_Handled : Boolean)
+      return Exception_Sets.Set
+   with
+     Pre  => Nkind (Stmt) in N_Procedure_Call_Statement
+                           | N_Entry_Call_Statement
+                           | N_Raise_Statement;
+   --  Retrieve all exceptions raise by Stmt. If Only_Hanled is True, only
+   --  consider exception which are handled above Stmt.
+
+   function Might_Raise_Handled_Exceptions (Stmt : Node_Id) return Boolean is
+     (not Get_Raised_Exceptions (Stmt, True).Is_Empty);
 
 end SPARK_Util;

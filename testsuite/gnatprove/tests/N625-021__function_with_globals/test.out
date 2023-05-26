@@ -9,6 +9,7 @@ test_globals.adb:13:25: info: range check proved (CVC5: 2 VC)
 test_globals.adb:13:28: info: range check proved (CVC5: 2 VC)
 test_globals.adb:15:24: info: discriminant check proved (CVC5: 1 VC)
 test_globals.adb:16:23: info: discriminant check proved (CVC5: 1 VC)
+test_globals.adb:18:13: info: implicit terminating annotation on "Nested_With_Globals" has been proved, subprogram will terminate
 test_globals.adb:19:25: info: index check proved (CVC5: 2 VC)
 test_globals.adb:19:65: info: index check proved (CVC5: 2 VC)
 test_globals.adb:24:19: info: assertion proved (CVC5: 1 VC)

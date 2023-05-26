@@ -42,8 +42,7 @@ is
 
    function Random_Array (N: Integer) return Int_Array
      with Ghost,
-          Import,
-          Annotate => (GNATprove, Always_Return);
+          Import;
 
 
    function Contains_A (S : in Char_Set;

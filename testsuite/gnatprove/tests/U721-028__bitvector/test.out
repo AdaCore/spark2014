@@ -1,11 +1,15 @@
 conv.adb:3:11: warning: subprogram "Conv" has no effect
 conv.adb:5:36: info: range check proved (CVC5: 2 VC)
 conv.adb:7:19: info: assertion proved (CVC5: 1 VC)
+ipv4bitspec.ads:9:12: info: implicit terminating annotation on "IpV4BitsWellFormed" has been proved, subprogram will terminate
+ipv4bitspec.ads:15:12: info: implicit terminating annotation on "Truncate8" has been proved, subprogram will terminate
+ipv4bitspec.ads:18:12: info: implicit terminating annotation on "IpV4BitsToBytes" has been proved, subprogram will terminate
 ipv4bitspec.ads:20:48: info: range check proved (CVC5: 2 VC)
 ipv4bitspec.ads:21:48: info: range check proved (CVC5: 2 VC)
 ipv4bitspec.ads:22:48: info: range check proved (CVC5: 2 VC)
 ipv4bitspec.ads:23:48: info: range check proved (CVC5: 2 VC)
 ipv4bitspec.ads:24:12: info: predicate check proved (CVC5: 1 VC)
+ipv4bitspec.ads:26:12: info: implicit terminating annotation on "IpV4BytesToBits" has been proved, subprogram will terminate
 ipv4bitspec.ads:28:71: info: index check proved (CVC5: 2 VC)
 ipv4bitspec.ads:29:71: info: index check proved (CVC5: 2 VC)
 ipv4bitspec.ads:30:71: info: index check proved (CVC5: 2 VC)

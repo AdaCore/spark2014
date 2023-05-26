@@ -6,10 +6,9 @@ package Sorters is
    function Perm (A : in Array_Type;
                   B : in Array_Type) return Boolean
    -- Returns True if A is a permuation of B
-     with Global   => null,
-          Annotate => (GNATprove, Always_Return),
-          Ghost    => True,
-          Import   => True;
+     with Global => null,
+          Ghost  => True,
+          Import => True;
 
    procedure Selection_Sort (Values : in out Array_Type)
    -- Sorts the elements in the array Values in ascending order

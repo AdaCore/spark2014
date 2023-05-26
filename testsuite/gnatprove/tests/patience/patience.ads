@@ -121,8 +121,9 @@ is
 
    procedure PlayCard (C : in Card; S : in out State)
    with
-     Pre => Inv(S) and S.NumElts < MaxNumCards,
-     Post => Inv(S) and S.Values(S.NumElts'Old) = C and S.NumElts = S.NumElts'Old + 1;
+     Pre      => Inv(S) and S.NumElts < MaxNumCards,
+     Post     => Inv(S) and S.Values(S.NumElts'Old) = C and S.NumElts = S.NumElts'Old + 1,
+     Annotate => (GNATprove, Always_Return);
 
    function PlayGame (Cards: CardStack) return State
    with

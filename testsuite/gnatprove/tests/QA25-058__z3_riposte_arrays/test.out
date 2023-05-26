@@ -1,7 +1,11 @@
+arrays.adb:48:13: info: implicit terminating annotation on "Contains_A" has been proved, subprogram will terminate
 arrays.adb:51:18: info: postcondition proved (CVC5: 2 VC)
+arrays.adb:57:13: info: implicit terminating annotation on "Contains_B" has been proved, subprogram will terminate
 arrays.adb:60:11: info: flow dependencies proved
 arrays.adb:62:22: medium: postcondition might fail
+arrays.adb:68:13: info: implicit terminating annotation on "Is_Id_1" has been proved, subprogram will terminate
 arrays.adb:71:19: info: postcondition proved (CVC5: 2 VC)
+arrays.adb:77:13: info: implicit terminating annotation on "Is_Id_2" has been proved, subprogram will terminate
 arrays.adb:80:19: medium: postcondition might fail
 arrays.adb:88:11: info: flow dependencies proved
 arrays.adb:94:22: info: assertion proved (CVC5: 1 VC)
@@ -33,12 +37,14 @@ arrays.adb:170:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:170:31: info: index check proved (CVC5: 2 VC)
 arrays.adb:175:11: info: flow dependencies proved
 arrays.adb:178:22: medium: assertion might fail [possible fix: subprogram at line 174 should mention A in a precondition]
+arrays.adb:182:13: info: implicit terminating annotation on "Single_Char_Set" has been proved, subprogram will terminate
 arrays.adb:183:19: info: postcondition proved (CVC5: 2 VC)
 arrays.adb:191:33: info: loop invariant initialization proved (CVC5: 2 VC)
 arrays.adb:191:33: info: loop invariant preservation proved (CVC5: 2 VC)
 arrays.adb:191:41: info: range check proved (CVC5: 4 VC)
 arrays.adb:192:57: medium: "R" might not be initialized
 arrays.adb:194:14: medium: "R" might not be initialized
+arrays.adb:197:13: info: implicit terminating annotation on "Single_Char_Set_Broken" has been proved, subprogram will terminate
 arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C)
 arrays.adb:206:33: info: loop invariant initialization proved (CVC5: 2 VC)
 arrays.adb:206:33: info: loop invariant preservation proved (CVC5: 2 VC)
@@ -60,5 +66,3 @@ arrays.adb:245:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:249:11: info: flow dependencies proved
 arrays.adb:251:07: info: initialization of "A" proved
 arrays.adb:254:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Random_Array or turning it into an expression function in its unit spec]
-arrays.adb:254:26: warning: assuming "Random_Array" always returns
-arrays.adb:254:26: warning: no returning annotation available for "Random_Array"

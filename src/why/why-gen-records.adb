@@ -29,7 +29,6 @@ with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNAT.Source_Info;
 with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
 with Gnat2Why.Expr;               use Gnat2Why.Expr;
-with Gnat2Why.Tables;             use Gnat2Why.Tables;
 with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Sinput;                      use Sinput;
@@ -3733,13 +3732,14 @@ package body Why.Gen.Records is
    -----------------------------------------
 
    procedure Generate_Associations_From_Ancestor
-     (Ada_Node     : Node_Id := Empty;
-      Domain       : EW_Domain;
-      Expr         : W_Expr_Id;
-      Anc_Ty       : Entity_Id;
-      Ty           : Entity_Id;
-      Discr_Expr   : out W_Expr_Id;
-      Field_Assocs : out W_Field_Association_Array)
+     (Ada_Node       : Node_Id := Empty;
+      Domain         : EW_Domain;
+      Expr           : W_Expr_Id;
+      Anc_Ty         : Entity_Id;
+      Ty             : Entity_Id;
+      Discr_Expr     : out W_Expr_Id;
+      Field_Assocs   : out W_Field_Association_Array;
+      Missing_Fields : in out Component_Sets.Set)
    is
       Component   : Entity_Id;
       Index       : Natural := 0;
@@ -3763,6 +3763,7 @@ package body Why.Gen.Records is
          Component := Search_Component_In_Type (Ty, Anc_Comp);
 
          pragma Assert (Present (Component));
+         Missing_Fields.Exclude (Component);
 
          Assoc := New_Field_Association
            (Domain => Domain,
@@ -4054,13 +4055,13 @@ package body Why.Gen.Records is
    ------------------------------
 
    function New_Ada_Record_Aggregate
-     (Ada_Node     : Node_Id := Empty;
-      Domain       : EW_Domain;
-      Discr_Expr   : W_Expr_Id;
-      Field_Assocs : W_Field_Association_Array;
-      Ty           : Entity_Id;
-      Init_Wrapper : Boolean := False;
-      Anc_Ty       : Entity_Id := Empty)
+     (Ada_Node       : Node_Id := Empty;
+      Domain         : EW_Domain;
+      Discr_Expr     : W_Expr_Id;
+      Field_Assocs   : W_Field_Association_Array;
+      Ty             : Entity_Id;
+      Init_Wrapper   : Boolean := False;
+      Missing_Fields : Component_Sets.Set := Component_Sets.Empty_Set)
       return W_Expr_Id
    is
       Num_All    : constant Natural := Count_Why_Top_Level_Fields (Ty);
@@ -4092,48 +4093,43 @@ package body Why.Gen.Records is
             All_Field_Assocs (1 .. Index) := Field_Assocs;
 
             --  Insert dummy values for the fields that are not in the
-            --  aggregate. Those are fields not visible in the type and not
-            --  already present in the ancestor type.
+            --  aggregate.
 
-            for Comp of Get_Component_Set (Ty) loop
-               if not Component_Is_Present_In_Type (Ty, Comp)
-                 and then
-                   (No (Anc_Ty)
-                    or else No (Search_Component_In_Type (Anc_Ty, Comp)))
-               then
+            for Comp of Missing_Fields loop
+               pragma Assert (not Is_Type (Comp));
 
-                  pragma Assert (not Is_Type (Comp));
-
-                  Index := Index + 1;
-                  All_Field_Assocs (Index) :=
-                    New_Field_Association
-                      (Domain => Domain,
-                       Field  =>
-                         To_Why_Id
-                           (Comp, Rec => Ty, Relaxed_Init => Init_Wrapper),
-                       Value  =>
-                         (if Init_Wrapper
-                            or else SPARK_Definition.Has_Relaxed_Init
-                            (Etype (Comp))
-                          then Insert_Simple_Conversion
-                            (Ada_Node       => Empty,
-                             Domain         => Domain,
-                             Expr           => Why_Default_Value
-                               (EW_Term, Etype (Comp)),
-                             To             => EW_Abstract
-                               (Etype (Comp), Relaxed_Init => True),
-                             Force_No_Slide => True)
-                          else Why_Default_Value (EW_Term, Etype (Comp))));
-               end if;
+               Index := Index + 1;
+               All_Field_Assocs (Index) :=
+                 New_Field_Association
+                   (Domain => Domain,
+                    Field  =>
+                      To_Why_Id
+                        (Comp, Rec => Ty, Relaxed_Init => Init_Wrapper),
+                    Value  =>
+                      (if Init_Wrapper
+                       or else SPARK_Definition.Has_Relaxed_Init
+                         (Etype (Comp))
+                       then Insert_Simple_Conversion
+                         (Ada_Node       => Empty,
+                          Domain         => Domain,
+                          Expr           => Why_Default_Value
+                            (EW_Term, Etype (Comp)),
+                          To             => EW_Abstract
+                            (Etype (Comp), Relaxed_Init => True),
+                          Force_No_Slide => True)
+                       else Why_Default_Value (EW_Term, Etype (Comp))));
             end loop;
 
             if Is_Tagged_Type (Ty) then
-               All_Field_Assocs (Num_Fields) :=
+               Index := Index + 1;
+               All_Field_Assocs (Index) :=
                  New_Field_Association
                    (Domain => Domain,
                     Field  => E_Symb (Ty, WNE_Rec_Extension),
                     Value  => +E_Symb (Ty, WNE_Null_Extension));
             end if;
+
+            pragma Assert (Index = Num_Fields);
 
             Assoc := New_Field_Association
               (Domain => Domain,
@@ -4176,12 +4172,13 @@ package body Why.Gen.Records is
    end New_Ada_Record_Aggregate;
 
    function New_Ada_Record_Aggregate
-     (Ada_Node     : Node_Id := Empty;
-      Domain       : EW_Domain;
-      Discr_Assocs : W_Field_Association_Array;
-      Field_Assocs : W_Field_Association_Array;
-      Ty           : Entity_Id;
-      Init_Wrapper : Boolean := False)
+     (Ada_Node       : Node_Id := Empty;
+      Domain         : EW_Domain;
+      Discr_Assocs   : W_Field_Association_Array;
+      Field_Assocs   : W_Field_Association_Array;
+      Ty             : Entity_Id;
+      Init_Wrapper   : Boolean := False;
+      Missing_Fields : Component_Sets.Set := Component_Sets.Empty_Set)
       return W_Expr_Id
    is
       Discr_Expr : constant W_Expr_Id :=
@@ -4191,7 +4188,8 @@ package body Why.Gen.Records is
 
    begin
       return New_Ada_Record_Aggregate
-        (Ada_Node, Domain, Discr_Expr, Field_Assocs, Ty, Init_Wrapper);
+        (Ada_Node, Domain, Discr_Expr, Field_Assocs, Ty, Init_Wrapper,
+         Missing_Fields);
    end New_Ada_Record_Aggregate;
 
    ------------------------------------

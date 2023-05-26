@@ -1,5 +1,6 @@
 c45253a.adb:33:11: high: all paths in "C45253A" raise exceptions or do not terminate normally
 c45253a.adb:40:13: info: add a contract to analyze it separately from calling contexts
+c45253a.adb:40:13: info: implicit terminating annotation on "The_Delta" has been proved, subprogram will terminate
 c45253a.adb:40:13: info: local subprogram "The_Delta" only analyzed in the context of calls
 c45253a.adb:48:23: info: analyzing call to "The_Delta" in context
 c45253a.adb:49:07: info: assertion proved (CVC5: 1 VC)

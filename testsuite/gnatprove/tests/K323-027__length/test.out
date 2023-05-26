@@ -3,6 +3,8 @@ length.adb:5:07: info: initialization of "Res" proved
 length.adb:7:07: warning: statement has no effect
 length.adb:10:14: warning: this statement is never reached
 length.adb:16:07: warning: unused variable "X"
+length.ads:5:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 length.ads:6:20: info: postcondition proved (CVC5: 1 VC)
+length.ads:8:13: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
 length.ads:9:20: info: postcondition proved (CVC5: 1 VC)
 length.ads:16:20: info: postcondition proved (CVC5: 2 VC)

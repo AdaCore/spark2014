@@ -105,6 +105,7 @@ package body VC_Kinds is
 
          when VC_Postcondition
             | VC_Refined_Post
+            | VC_Exceptional_Case
             | VC_Contract_Case             => "682",
 
          --  CWE-843 Access of Resource Using Incompatible Type ('Type
@@ -350,6 +351,9 @@ package body VC_Kinds is
          when VC_Complete_Contract_Cases          =>
             return "Check that the cases of the contract cases aspect cover " &
               "the state space that is allowed by the precondition aspect.";
+         when VC_Exceptional_Case                 =>
+            return "Check that all cases of the exceptional cases evaluate " &
+              "to true on exceptional exits.";
          when VC_Loop_Invariant                   =>
             return "Check that the loop invariant evaluates to True on all " &
               "iterations of the loop.";
@@ -368,8 +372,9 @@ package body VC_Kinds is
             return "Check that the side-condition of a cut operation " &
               "evaluates to True.";
          when VC_Raise                            =>
-            return "Check that the raise statement or expression can never " &
-              "be reached.";
+            return "Check that raise expressions can never be reached and " &
+              "that all exceptions raised by raise statement and procedure " &
+              "calls are expected.";
          when VC_Feasible_Post                    =>
             return "Check that an abstract function or access-to-function " &
               "type is feasible.";
@@ -530,8 +535,6 @@ package body VC_Kinds is
           & " other non-volatile objects",
         when Warn_Function_Is_Valid =>
           "function Is_Valid is assumed to return True",
-        when Warn_Lemma_Procedure_No_Return =>
-          "non-returning lemma procedure cannot be instantiated automatically",
         when Warn_Pragma_Annotate_No_Check =>
           "no check message justified by this pragma",
         when Warn_Pragma_Annotate_Proved_Check =>
@@ -556,6 +559,11 @@ package body VC_Kinds is
         when Warn_Useless_Relaxed_Init_Obj =>
           "object annotated with Relaxed_Initialization cannot be"
           & " partially initialized",
+        when Warn_Useless_Always_Return_Fun =>
+          "functions are implicitly annotated with Always_Return",
+        when Warn_Useless_Always_Return_Lemma =>
+          "automatically instantiated lemmas are implicitly annotated with"
+           & " Always_Return",
         when Warn_Variant_Not_Recursive =>
           "no recursive call visible on subprogram with Subprogram_Variant",
 
@@ -665,6 +673,12 @@ package body VC_Kinds is
           & "annotated with an address clause whose value is the address of "
           & "another object",
          when Lim_Entry_Family => "entry families",
+         when Lim_Exceptional_Cases_Dispatch =>
+           "aspect ""Exceptional_Cases"" on dispatching operations",
+         when Lim_Exceptional_Cases_Ownership =>
+           "procedures with exceptional contracts and parameters of mode"
+          & " ""in out"" or ""out"" subjected to ownerhsip which might not be "
+          & "passed by reference",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "an extension aggregate whose ancestor part is a subtype mark",
          when Lim_Goto_Cross_Inv =>
@@ -683,6 +697,9 @@ package body VC_Kinds is
          when Lim_Limited_Type_From_Limited_With =>
            "the use of an incomplete view of a type coming from a limited"
           & " with",
+         when Lim_Loop_Inv_And_Handler =>
+           "a loop invariant in a list of statements with an exception "
+          & "handler",
          when Lim_Loop_With_Iterator_Filter =>
            "a loop with an iterator filter in its parameter specification",
          when Lim_Max_Array_Dimension =>
@@ -1238,6 +1255,7 @@ package body VC_Kinds is
              when VC_Contract_Case => "contract case",
              when VC_Disjoint_Contract_Cases => "disjoint contract cases",
              when VC_Complete_Contract_Cases => "complete contract cases",
+             when VC_Exceptional_Case => "exceptional case",
              when VC_Loop_Invariant => "loop invariant",
              when VC_Loop_Invariant_Init =>
                "loop invariant in first iteration",
@@ -1379,8 +1397,6 @@ package body VC_Kinds is
           "initialization of alias",
         when Warn_Function_Is_Valid =>
           "function Is_Valid always return True",
-        when Warn_Lemma_Procedure_No_Return =>
-          "lemma not instantiated automatically",
         when Warn_Pragma_Annotate_No_Check =>
           "no check message justified",
         when Warn_Pragma_Annotate_Proved_Check =>
@@ -1403,6 +1419,11 @@ package body VC_Kinds is
           "useless Relaxed_Initialization aspect on function result",
         when Warn_Useless_Relaxed_Init_Obj =>
           "useless Relaxed_Initialization aspect on object",
+        when Warn_Useless_Always_Return_Fun =>
+          "useless Always_Return annotation on function",
+        when Warn_Useless_Always_Return_Lemma =>
+          "useless Always_Return annotation on automatically instantiated"
+           & " lemma",
         when Warn_Variant_Not_Recursive =>
           "variant not recursive",
 

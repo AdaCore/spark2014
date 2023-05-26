@@ -1,4 +1,5 @@
 with Loop_Types; use Loop_Types;
+with SPARK.Big_Integers; use SPARK.Big_Integers;
 
 package body P with
   SPARK_Mode
@@ -14,16 +15,22 @@ is
            (for all M in B.Value .. Component_T'Last =>
               (if All_Smaller_Than_Max (B, M)
                then All_Smaller_Than_Max (L, M)));
+         pragma Loop_Variant (Decreases => Length (B));
          declare
             Prec : access List_Cell := B;
             Max  : constant Component_T := B.Value;
          begin
-            while B /= null and then B.Value <= Max loop
+            loop
+               B := B.Next;
+               exit when B = null or else B.Value > Max;
+               pragma Loop_Invariant (B /= null);
+               pragma Loop_Invariant (B.Value <= Max);
+               pragma Loop_Invariant (Length (B) < Length (B)'Loop_Entry);
                pragma Loop_Invariant
                  (for all M in Max .. Component_T'Last =>
                     (if All_Smaller_Than_Max (B, M)
                      then All_Smaller_Than_Max (L, M)));
-               B := B.Next;
+               pragma Loop_Variant (Decreases => Length (B));
             end loop;
             if B = null then
                return Prec;

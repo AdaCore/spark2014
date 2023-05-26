@@ -68,6 +68,7 @@ init_by_proof.adb:80:48: info: range check proved (CVC5: 4 VC)
 init_by_proof.adb:82:10: info: precondition proved (CVC5: 1 VC)
 init_by_proof.adb:84:12: info: initialization check proved (CVC5: 1 VC)
 init_by_proof.adb:85:12: medium: initialization check might fail
+nested_init_by_proof.adb:15:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
 nested_init_by_proof.adb:18:43: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:18:50: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:20:21: info: discriminant check proved (CVC5: 1 VC)

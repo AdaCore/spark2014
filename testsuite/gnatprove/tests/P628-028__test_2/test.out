@@ -7,6 +7,7 @@ node_a.adb:27:24: warning: assuming "Suspend_Forever" always returns
 node_a.adb:27:24: warning: assuming "Suspend_Forever" has no effect on global items
 node_a.adb:27:24: warning: no Global contract available for "Suspend_Forever"
 node_a.adb:27:24: warning: no returning annotation available for "Suspend_Forever"
+polyorb_hi-epoch.adb:46:16: info: implicit terminating annotation on "System_Startup_Time" has been proved, subprogram will terminate
 polyorb_hi-epoch.ads:40:08: info: flow dependencies proved
 polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved
 polyorb_hi-epoch.ads:44:11: info: data dependencies proved
@@ -22,13 +23,17 @@ polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected
 polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:37
 polyorb_hi-periodic_task.ads:71:09: info: nontermination of task proved (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:22
 polyorb_hi-periodic_task.ads:71:09: info: nontermination of task proved (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.ads:75:13: info: implicit terminating annotation on "Next_Deadline" has been proved, subprogram will terminate, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.ads:75:13: info: implicit terminating annotation on "Next_Deadline" has been proved, subprogram will terminate, in instantiation at polyorb_hi_generated-activity.ads:37
 polyorb_hi-suspenders.ads:46:08: info: flow dependencies proved
+polyorb_hi_generated-activity.ads:20:12: info: implicit terminating annotation on "RMAAadl_Task1_Job" has been proved, subprogram will terminate
 polyorb_hi_generated-activity.ads:22:03: warning: assuming "Block_Task" always returns
 polyorb_hi_generated-activity.ads:22:03: warning: assuming "Block_Task" has no effect on global items
 polyorb_hi_generated-activity.ads:22:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70
 polyorb_hi_generated-activity.ads:22:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70
 polyorb_hi_generated-activity.ads:22:03: warning: no Global contract available for "Block_Task"
 polyorb_hi_generated-activity.ads:22:03: warning: no returning annotation available for "Block_Task"
+polyorb_hi_generated-activity.ads:35:12: info: implicit terminating annotation on "RMAAadl_Task2_Job" has been proved, subprogram will terminate
 polyorb_hi_generated-activity.ads:37:03: warning: assuming "Block_Task" always returns
 polyorb_hi_generated-activity.ads:37:03: warning: assuming "Block_Task" has no effect on global items
 polyorb_hi_generated-activity.ads:37:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70

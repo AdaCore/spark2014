@@ -1,5 +1,7 @@
 others_in_assoc_2_dim.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
+others_in_assoc_2_dim.adb:3:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 others_in_assoc_2_dim.adb:4:13: info: implicit function contract might not be available on calls from enclosing unit
+others_in_assoc_2_dim.adb:4:13: info: implicit terminating annotation on "No" has been proved, subprogram will terminate
 others_in_assoc_2_dim.adb:7:44: info: length check proved (CVC5: 6 VC; Trivial: 1 VC)
 others_in_assoc_2_dim.adb:7:64: medium: range check might fail
 others_in_assoc_2_dim.adb:7:65: info: range check proved (CVC5: 2 VC)

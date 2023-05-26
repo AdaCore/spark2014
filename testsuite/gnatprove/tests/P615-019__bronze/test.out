@@ -6,6 +6,7 @@ my_package.adb:38:09: warning: unused assignment
 my_package.adb:42:04: warning: analyzing unreferenced procedure "Write_X_To_Same"
 my_package.adb:43:07: info: initialization of "Y" proved
 my_package.adb:49:04: warning: analyzing unreferenced function "Init_Result_Twice"
+my_package.adb:49:13: info: implicit terminating annotation on "Init_Result_Twice" has been proved, subprogram will terminate
 my_package.adb:50:07: warning: initialization of "Result" has no effect
 my_package.adb:56:26: info: initialization of "X" proved
 my_package.adb:61:04: warning: analyzing unreferenced procedure "Initialize_X"

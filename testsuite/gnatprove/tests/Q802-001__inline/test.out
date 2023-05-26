@@ -1,7 +1,12 @@
+inlined.ads:2:13: info: implicit terminating annotation on "F_2" has been proved, subprogram will terminate
 inlined.ads:3:14: info: postcondition proved (CVC5: 1 VC)
 inlined.ads:4:04: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
+inlined.ads:6:13: info: implicit terminating annotation on "F_1" has been proved, subprogram will terminate
+inlined.ads:9:13: info: implicit terminating annotation on "F_3" has been proved, subprogram will terminate
 inlined.ads:10:14: info: postcondition proved (CVC5: 1 VC)
 inlined.ads:11:04: medium: Inline_For_Proof or Logical_Equal annotation might be incorrect
+inlined.ads:15:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
+inlined.ads:19:13: info: implicit terminating annotation on "F_4" has been proved, subprogram will terminate
 inlined.ads:20:14: info: postcondition proved (CVC5: 1 VC)
 inlined.ads:21:04: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
 test_annotate.adb:6:19: info: assertion proved (CVC5: 1 VC)

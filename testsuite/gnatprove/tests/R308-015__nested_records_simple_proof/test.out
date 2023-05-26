@@ -1,12 +1,18 @@
+p.ads:16:10: info: implicit terminating annotation on "Create_Type_1" has been proved, subprogram will terminate
 p.ads:17:06: info: data dependencies proved
 p.ads:18:16: info: postcondition proved (CVC5: 8 VC)
+p.ads:35:10: info: implicit terminating annotation on "Create_Type_2" has been proved, subprogram will terminate
 p.ads:36:06: info: data dependencies proved
 p.ads:37:16: info: postcondition proved (CVC5: 5 VC)
+p.ads:52:10: info: implicit terminating annotation on "Create_Type_4" has been proved, subprogram will terminate
 p.ads:53:06: info: data dependencies proved
 p.ads:54:16: info: postcondition proved (CVC5: 4 VC)
+p.ads:67:10: info: implicit terminating annotation on "Create_Type_5" has been proved, subprogram will terminate
 p.ads:68:06: info: data dependencies proved
 p.ads:69:16: info: postcondition proved (CVC5: 5 VC)
+p.ads:82:10: info: implicit terminating annotation on "Create_Type_6" has been proved, subprogram will terminate
 p.ads:83:06: info: data dependencies proved
 p.ads:84:16: info: postcondition proved (CVC5: 4 VC)
+p.ads:102:10: info: implicit terminating annotation on "Create_Type_8" has been proved, subprogram will terminate
 p.ads:103:06: info: data dependencies proved
 p.ads:104:16: info: postcondition proved (CVC5: 8 VC)

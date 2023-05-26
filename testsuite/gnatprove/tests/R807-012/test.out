@@ -71,6 +71,7 @@ area_math.adb:285:33: info: loop invariant initialization proved (CVC5: 1 VC)
 area_math.adb:285:33: medium: loop invariant might not be preserved by an arbitrary iteration
 area_math.ads:15:07: info: range check proved (CVC5: 2 VC)
 area_math.ads:16:07: info: range check proved (CVC5: 2 VC)
+area_math.ads:20:13: info: implicit terminating annotation on "Is_Consistent" has been proved, subprogram will terminate
 area_math.ads:22:46: info: index check proved (CVC5: 2 VC)
 area_math.ads:22:61: info: index check proved (CVC5: 2 VC)
 area_math.ads:22:61: info: overflow check proved (CVC5: 2 VC)
@@ -80,8 +81,11 @@ area_math.ads:22:98: info: index check proved (CVC5: 2 VC)
 area_math.ads:24:46: info: index check proved (CVC5: 2 VC)
 area_math.ads:24:58: info: index check proved (CVC5: 2 VC)
 area_math.ads:26:24: info: predicate check proved (CVC5: 2 VC)
+area_math.ads:28:13: info: implicit terminating annotation on "E" has been proved, subprogram will terminate
+area_math.ads:32:13: info: implicit terminating annotation on overriding operator "<" has been proved, subprogram will terminate
 area_math.ads:33:50: info: index check proved (CVC5: 2 VC)
 area_math.ads:33:62: info: index check proved (CVC5: 2 VC)
+area_math.ads:46:13: info: implicit terminating annotation on overriding operator "not" has been proved, subprogram will terminate
 area_math.ads:48:22: info: overflow check proved (CVC5: 2 VC)
 area_math.ads:52:38: medium: postcondition might fail, cannot prove (B < "not"'Result) = (not B < E)
 area_math.ads:53:36: info: overflow check proved (CVC5: 2 VC)

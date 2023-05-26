@@ -78,6 +78,11 @@ project GNATprove is
 
       for Switches use ("-j0",
                         "--level", "1",
+                        "--no-default-gnatcheck-rules",
+                        "--infer-args", "--disable-issue-type MEMORY_LEAK_ADA",
+--                      "--infer-messages=-memory_leak_ada",
+-- Switch to activate once issue #434 of CodePeer is fixed, instead of the above
+-- use of --infer-args
                         "-gnatws");
    end CodePeer;
 

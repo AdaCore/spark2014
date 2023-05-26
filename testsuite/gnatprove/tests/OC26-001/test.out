@@ -119,6 +119,7 @@ cubedos-lib-xdr.ads:125:08: info: flow dependencies proved
 cubedos-lib-xdr.ads:127:19: info: division check proved (CVC5: 1 VC)
 cubedos-lib-xdr.ads:128:22: info: division check proved (CVC5: 1 VC)
 cubedos-lib-xdr.ads:131:14: info: postcondition proved (CVC5: 1 VC)
+cubedos-lib-xdr.ads:133:13: info: implicit terminating annotation on "Length_With_Padding" has been proved, subprogram will terminate
 cubedos-lib-xdr.ads:134:14: info: overflow check proved (CVC5: 2 VC)
 cubedos-lib-xdr.ads:134:14: info: range check proved (CVC5: 2 VC)
 cubedos-lib-xdr.ads:134:27: info: division check proved (CVC5: 1 VC)

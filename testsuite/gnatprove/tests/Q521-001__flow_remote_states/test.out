@@ -1,3 +1,4 @@
+pumpunit.adb:55:13: info: implicit terminating annotation on "current_variant" has been proved, subprogram will terminate
 pumpunit.adb:63:07: info: initialization of "sum" proved
 pumpunit.adb:73:07: info: no contextual analysis of "current_variant" (inside expression function)
 pumpunit.adb:81:11: info: initialization of "pump_one" constituent of "Children" proved
@@ -13,22 +14,31 @@ pumpunit.adb:147:68: info: initialization of "cur_pump" constituent of "Children
 pumpunit.adb:174:33: info: overflow check proved (CVC5: 2 VC)
 pumpunit.ads:8:04: info: flow dependencies proved
 pumpunit.ads:9:04: info: initial condition proved (CVC5: 1 VC)
+pumpunit.ads:15:13: info: implicit terminating annotation on "get_outstanding" has been proved, subprogram will terminate
 pumpunit.ads:16:07: info: data dependencies proved
 pumpunit.ads:17:07: info: flow dependencies proved
+pumpunit.ads:19:13: info: implicit terminating annotation on "get_total" has been proved, subprogram will terminate
 pumpunit.ads:20:07: info: data dependencies proved
 pumpunit.ads:21:07: info: flow dependencies proved
+pumpunit.ads:23:13: info: implicit terminating annotation on "get_cur_price" has been proved, subprogram will terminate
 pumpunit.ads:24:07: info: data dependencies proved
 pumpunit.ads:25:07: info: flow dependencies proved
+pumpunit.ads:27:13: info: implicit terminating annotation on "get_cur_resevoir" has been proved, subprogram will terminate
 pumpunit.ads:28:07: info: data dependencies proved
 pumpunit.ads:29:07: info: flow dependencies proved
+pumpunit.ads:31:13: info: implicit terminating annotation on "is_waiting" has been proved, subprogram will terminate
 pumpunit.ads:32:07: info: data dependencies proved
 pumpunit.ads:33:07: info: flow dependencies proved
+pumpunit.ads:35:13: info: implicit terminating annotation on "is_ready" has been proved, subprogram will terminate
 pumpunit.ads:36:07: info: data dependencies proved
 pumpunit.ads:37:07: info: flow dependencies proved
+pumpunit.ads:39:13: info: implicit terminating annotation on "is_pumping" has been proved, subprogram will terminate
 pumpunit.ads:40:07: info: data dependencies proved
 pumpunit.ads:41:07: info: flow dependencies proved
+pumpunit.ads:43:13: info: implicit terminating annotation on "is_base" has been proved, subprogram will terminate
 pumpunit.ads:44:07: info: data dependencies proved
 pumpunit.ads:45:07: info: flow dependencies proved
+pumpunit.ads:47:13: info: implicit terminating annotation on "till_invariant" has been proved, subprogram will terminate
 pumpunit.ads:55:07: info: data dependencies proved
 pumpunit.ads:56:07: info: flow dependencies proved
 pumpunit.ads:58:63: info: overflow check proved (CVC5: 2 VC)

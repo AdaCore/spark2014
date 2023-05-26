@@ -1,5 +1,9 @@
 lib.adb:9:19: medium: assertion might fail
+lib.ads:23:13: info: implicit terminating annotation on "Make_Array" has been proved, subprogram will terminate
 lib.ads:24:13: info: implicit function contract might not be available on calls from enclosing unit
+lib.ads:24:13: info: implicit terminating annotation on "Same" has been proved, subprogram will terminate
+main.adb:25:16: info: implicit terminating annotation on "Make_Array" has been proved, subprogram will terminate
+main.adb:28:19: info: implicit terminating annotation on "Get_Sixteenth" has been proved, subprogram will terminate
 main.adb:36:10: info: initialization of "A" proved
 main.adb:38:23: info: cannot unroll loop (local non-scalar declaration at line 40)
 main.adb:59:19: high: assertion might fail, cannot prove My_Package.Nested.Get_Sixteenth (A) = 1 (e.g. when A = (others => (F => 0)))

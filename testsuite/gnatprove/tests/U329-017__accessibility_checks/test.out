@@ -1,17 +1,21 @@
+test_accessibility.adb:9:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 test_accessibility.adb:12:45: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:12:56: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:14:13: info: function contract might not be available on calls from enclosing unit
+test_accessibility.adb:14:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_accessibility.adb:15:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:15:24: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:15:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:18:14: info: dynamic accessibility check proved (Trivial)
 test_accessibility.adb:18:14: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:21:13: info: function contract might not be available on calls from enclosing unit
+test_accessibility.adb:21:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 test_accessibility.adb:22:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:22:24: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:22:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:25:14: info: dynamic accessibility check proved (Trivial)
 test_accessibility.adb:25:14: info: null exclusion check proved (CVC5: 1 VC)
+test_accessibility.adb:28:13: info: implicit terminating annotation on "KO_1" has been proved, subprogram will terminate
 test_accessibility.adb:29:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:29:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:29:33: info: pointer dereference check proved (CVC5: 1 VC)
@@ -20,6 +24,7 @@ test_accessibility.adb:33:48: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:33:48: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:35:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:35:17: medium: dynamic accessibility check might fail
+test_accessibility.adb:39:13: info: implicit terminating annotation on "KO_2" has been proved, subprogram will terminate
 test_accessibility.adb:40:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:40:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:40:33: info: pointer dereference check proved (CVC5: 1 VC)
@@ -29,6 +34,7 @@ test_accessibility.adb:44:48: info: pointer dereference check proved (CVC5: 1 VC
 test_accessibility.adb:46:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:46:17: medium: dynamic accessibility check might fail
 test_accessibility.adb:46:21: info: null exclusion check proved (CVC5: 1 VC)
+test_accessibility.adb:50:13: info: implicit terminating annotation on "KO_3" has been proved, subprogram will terminate
 test_accessibility.adb:51:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:51:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:51:33: info: pointer dereference check proved (CVC5: 1 VC)
@@ -39,6 +45,7 @@ test_accessibility.adb:55:14: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:55:14: medium: dynamic accessibility check might fail
 test_accessibility.adb:55:18: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:58:13: info: function contract might not be available on calls from enclosing unit
+test_accessibility.adb:58:13: info: implicit terminating annotation on "KO_4" has been proved, subprogram will terminate
 test_accessibility.adb:59:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:59:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:59:33: info: pointer dereference check proved (CVC5: 1 VC)
@@ -48,6 +55,7 @@ test_accessibility.adb:61:45: info: pointer dereference check proved (CVC5: 1 VC
 test_accessibility.adb:63:14: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:63:14: medium: dynamic accessibility check might fail
 test_accessibility.adb:66:13: info: function contract might not be available on calls from enclosing unit
+test_accessibility.adb:66:13: info: implicit terminating annotation on "OK_1" has been proved, subprogram will terminate
 test_accessibility.adb:67:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:67:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:67:33: info: pointer dereference check proved (CVC5: 1 VC)
@@ -56,6 +64,7 @@ test_accessibility.adb:70:14: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:70:19: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:70:19: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:73:13: info: function contract might not be available on calls from enclosing unit
+test_accessibility.adb:73:13: info: implicit terminating annotation on "OK_2" has been proved, subprogram will terminate
 test_accessibility.adb:74:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:74:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility.adb:74:33: info: pointer dereference check proved (CVC5: 1 VC)

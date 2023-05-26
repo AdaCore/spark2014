@@ -12,3 +12,5 @@ use_private_types.ads:20:14: info: postcondition proved (CVC5: 1 VC)
 use_private_types.ads:23:14: info: postcondition proved (CVC5: 1 VC)
 use_private_types.ads:26:14: info: postcondition proved (CVC5: 1 VC)
 use_private_types.ads:29:14: info: postcondition proved (CVC5: 1 VC)
+use_private_types.ads:31:13: info: implicit terminating annotation on "D_Zero" has been proved, subprogram will terminate
+use_private_types.ads:33:13: info: implicit terminating annotation on "D_Zero" has been proved, subprogram will terminate

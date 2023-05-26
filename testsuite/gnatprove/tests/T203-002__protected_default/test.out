@@ -1,2 +1,3 @@
+p.ads:2:13: info: implicit terminating annotation on "Zero" has been proved, subprogram will terminate
 p.ads:3:17: info: postcondition proved (CVC5: 1 VC)
 p.ads:4:07: info: data dependencies proved

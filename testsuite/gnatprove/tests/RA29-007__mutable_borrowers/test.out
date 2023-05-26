@@ -1,4 +1,6 @@
+traversal.adb:11:13: info: implicit terminating annotation on "Get_Fst" has been proved, subprogram will terminate
 traversal.adb:11:69: info: pointer dereference check proved (CVC5: 1 VC)
+traversal.adb:14:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 traversal.adb:14:63: info: dynamic accessibility check proved (Trivial)
 traversal.adb:16:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 traversal.adb:17:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)

@@ -1,4 +1,6 @@
+cst.ads:9:13: info: implicit terminating annotation on "Get_Y" has been proved, subprogram will terminate
 use_cst.adb:6:16: info: implicit function contract might not be available on calls from enclosing unit
+use_cst.adb:6:16: info: implicit terminating annotation on "Local" has been proved, subprogram will terminate
 use_cst.adb:13:12: info: precondition proved (Trivial: 1 VC)
 use_cst.ads:4:14: warning: subprogram "P" has no effect
 use_indirect_cst.adb:5:14: warning: subprogram "Local" has no effect

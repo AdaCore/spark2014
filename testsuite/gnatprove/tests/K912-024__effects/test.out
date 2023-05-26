@@ -1,2 +1,5 @@
+pack.ads:4:14: info: implicit terminating annotation on "Get_X" has been proved, subprogram will terminate
+pack.ads:6:14: info: implicit terminating annotation on "X_Is_Positive" has been proved, subprogram will terminate
+pack.ads:8:14: info: implicit terminating annotation on "Greater_Than_X" has been proved, subprogram will terminate
 using.ads:5:14: warning: subprogram "P" has no effect
 using.ads:6:19: warning: precondition is always False (CVC5: 1 VC)

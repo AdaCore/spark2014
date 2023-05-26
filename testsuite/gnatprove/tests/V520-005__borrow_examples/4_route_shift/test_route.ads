@@ -81,17 +81,19 @@ package Test_Route with SPARK_Mode is
    function Nth_Point (R : access Route; N : Big_Positive) return not null access Point
    --  Borrows the point at position N in Route
    with
-     Pre  => N <= Length (R),
+     Subprogram_Variant => (Structural => R),
+     Pre                => N <= Length (R),
 
      --  The points of R are preserved but for the one at position N which is
      --  replaced by the new value of Nth_Point'Result. Just like the one for
      --  Rust, the contract here only cares about the X coordinate. Adding the
      --  Y coordinate wouldn't be more complicated.
 
-     Post => Length (At_End (R)) = Length (R)
-        and Nth_X (At_End (R), N) = At_End (Nth_Point'Result).X
-        and (for all I in Interval'(1, Length (R)) =>
-               (if I /= N then Nth_X (At_End (R), I) = Nth_X (R, I)));
+     Post               =>
+       Length (At_End (R)) = Length (R)
+         and Nth_X (At_End (R), N) = At_End (Nth_Point'Result).X
+         and (for all I in Interval'(1, Length (R)) =>
+                (if I /= N then Nth_X (At_End (R), I) = Nth_X (R, I)));
 
    procedure Shift_Nth_X (R : access Route; N : Big_Positive; S : Integer) with
    --  Shift the X coordinate of the point at position N by S

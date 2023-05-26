@@ -1,4 +1,6 @@
 dic.adb:4:12: medium: default initial condition might fail
+dic.adb:5:16: info: implicit terminating annotation on "Zero" has been proved, subprogram will terminate
+dic.adb:6:16: info: implicit terminating annotation on "Is_Zero" has been proved, subprogram will terminate
 dic.adb:8:51: info: in default value of private type at dic.adb:4
 dic.adb:8:51: info: range check proved (CVC5: 2 VC)
 dic.adb:16:19: info: assertion proved (CVC5: 1 VC)

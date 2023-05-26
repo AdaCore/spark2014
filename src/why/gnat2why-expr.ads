@@ -27,6 +27,7 @@ with Checked_Types;              use Checked_Types;
 with Common_Containers;          use Common_Containers;
 with Flow_Types;                 use Flow_Types;
 with Gnat2Why.Util;              use Gnat2Why.Util;
+with Nlists;                     use Nlists;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Util;                 use SPARK_Util;
@@ -326,6 +327,14 @@ package Gnat2Why.Expr is
    --  @param Initialized true term iff Expr is known to be initialized. If
    --     Expr has an initialization wrapper type, then should only be True if
    --     Expr is at least partially Initialized.
+
+   function Compute_Guard_For_Exceptions
+     (Choices : List_Id;
+      Exc_Id  : W_Identifier_Id;
+      Domain  : EW_Domain) return W_Expr_Id
+     with Pre =>
+       Nkind (First (Choices)) /= N_Others_Choice;
+   --  Compute the guard corresponding to an exceptional case
 
    function Compute_Is_Moved_Property
      (Expr     : W_Term_Id;
@@ -653,7 +662,8 @@ package Gnat2Why.Expr is
    function Transform_Pragma
      (Prag  : N_Pragma_Id;
       Force : Boolean)
-      return W_Prog_Id;
+      return W_Prog_Id
+     with Pre => not Is_Pragma_Assert_And_Cut (Prag);
    --  Returns the Why program for pragma.
    --  @param Prag The pragma to translate into Why3.
    --  @param Force True to force the translation of the pragma, for those
@@ -667,7 +677,7 @@ package Gnat2Why.Expr is
       Expr    : out N_Subexpr_Id;
       Runtime : out W_Prog_Id;
       Pred    : out W_Pred_Id);
-   --  Translates a pragma Check into Why3.
+   --  For a pragma Check, produces the components of its translation into Why3
    --  @param Stmt The pragma Check to translate.
    --  @param Force True to force the translation of the pragma, even for those
    --     pragmas normally translated elsewhere like preconditions and
@@ -681,7 +691,8 @@ package Gnat2Why.Expr is
    function Transform_Pragma_Check
      (Prag  : N_Pragma_Id;
       Force : Boolean)
-      return W_Prog_Id;
+      return W_Prog_Id
+     with Pre => not Is_Pragma_Assert_And_Cut (Prag);
    --  Returns the Why program for pragma Check. As most assertion pragmas
    --  (like Assert or Assume) are internally rewritten by semantic analysis
    --  into pragma Check, this is where these are translated.
@@ -698,11 +709,8 @@ package Gnat2Why.Expr is
       return  W_Prog_Id;
    --  Transform a simple return statement returning the expression Expr
 
-   function Transform_Statements_And_Declarations
-     (Stmts_And_Decls : List_Id)
-      return W_Prog_Id;
-   --  Transforms a list of statements and declarations into a Why expression.
-   --  An empty list is transformed into the void expression.
+   function Transform_Handled_Statements (N : Node_Id) return W_Prog_Id;
+   --  Transforms an handled list of statements into a Why expression
 
    procedure Transform_Statement_Or_Declaration_In_List
      (Stmt_Or_Decl :        Node_Id;
@@ -797,6 +805,14 @@ package Gnat2Why.Expr is
    --  transforming the expression node associated to the name in Map, in Expr.
    --  This is used to bind names for 'Old and 'Loop_Entry attribute reference
    --  to their value.
+
+   function Bind_From_Mapping_In_Prog
+     (Params : Transformation_Params;
+      Map    : Loop_Entry_Values;
+      Expr   : W_Prog_Id)
+      return W_Prog_Id;
+   --  Same as above but takes a pair of maps as provided for the 'Loop_Entry
+   --  attribute reference.
 
    function Bind_From_Mapping_In_Expr
      (Params : Transformation_Params;

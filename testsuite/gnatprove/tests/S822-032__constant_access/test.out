@@ -1,6 +1,7 @@
 pointers.adb:5:17: info: pointer dereference check proved (CVC5: 1 VC)
 pointers.adb:10:10: info: pointer dereference check proved (altergo: 1 VC)
 pointers.adb:15:10: info: pointer dereference check proved (altergo: 1 VC)
+pointers.ads:6:14: info: implicit terminating annotation on "Read_X" has been proved, subprogram will terminate
 pointers.ads:6:41: info: data dependencies proved
 pointers.ads:7:29: info: data dependencies proved
 pointers.ads:8:30: info: flow dependencies proved

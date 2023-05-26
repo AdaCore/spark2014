@@ -1,2 +1,3 @@
+f.adb:1:10: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 f.adb:3:12: info: range check proved (CVC5: 2 VC)
 f.adb:4:12: info: range check proved (CVC5: 2 VC)

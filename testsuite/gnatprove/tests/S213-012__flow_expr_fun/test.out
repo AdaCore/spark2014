@@ -1,7 +1,10 @@
 repro-a.ads:4:03: info: flow dependencies proved
+repro-a.ads:10:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
 repro-a.ads:13:06: info: data dependencies proved
+repro-a.ads:15:13: info: implicit terminating annotation on "Kind" has been proved, subprogram will terminate
 repro-a.ads:15:19: warning: unused variable "Word"
 repro-a.ads:17:06: info: data dependencies proved
+repro-a.ads:19:13: info: implicit terminating annotation on "Is_Undefined" has been proved, subprogram will terminate
 repro-a.ads:21:06: info: data dependencies proved
 repro-b.adb:6:07: warning: statement has no effect
 repro-b.ads:6:19: warning: unused initial value of "Word"

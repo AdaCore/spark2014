@@ -22,6 +22,7 @@ complex_arrays.adb:114:07: info: initialization of "Tmp" proved
 complex_arrays.adb:124:11: info: flow dependencies proved
 complex_arrays.adb:126:22: medium: postcondition might fail
 complex_arrays.adb:128:07: info: initialization of "Tmp" proved
+complex_arrays.adb:141:13: info: implicit terminating annotation on "Create_Step_Array" has been proved, subprogram will terminate
 complex_arrays.adb:142:19: info: postcondition proved (CVC5: 2 VC; Trivial: 2 VC)
 complex_arrays.adb:148:07: info: initialization of "Tmp" proved
 complex_arrays.adb:152:11: info: range check proved (CVC5: 2 VC)
@@ -35,6 +36,7 @@ complex_arrays.adb:163:13: info: loop invariant preservation proved (CVC5: 2 VC;
 complex_arrays.adb:163:21: info: range check proved (CVC5: 4 VC)
 complex_arrays.adb:164:36: info: index check proved (CVC5: 4 VC)
 complex_arrays.adb:165:36: info: index check proved (CVC5: 4 VC)
+complex_arrays.adb:171:13: info: implicit terminating annotation on "Use_Step_Array" has been proved, subprogram will terminate
 complex_arrays.adb:172:19: info: postcondition proved (CVC5: 1 VC)
 complex_arrays.adb:174:07: info: initialization of "Step" proved
 complex_arrays.adb:181:20: info: range check proved (CVC5: 4 VC)

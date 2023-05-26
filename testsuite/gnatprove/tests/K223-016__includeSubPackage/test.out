@@ -1,2 +1,4 @@
 base-annex.adb:4:16: info: overflow check proved (CVC5: 2 VC)
+base-annex.ads:2:13: info: implicit terminating annotation on "Mul" has been proved, subprogram will terminate
 base.adb:6:19: info: precondition proved (CVC5: 4 VC)
+base.ads:2:13: info: implicit terminating annotation on "Double" has been proved, subprogram will terminate

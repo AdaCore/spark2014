@@ -1,2 +1,3 @@
+forall.ads:4:13: info: implicit terminating annotation on "Get_One" has been proved, subprogram will terminate
 forall.ads:5:45: high: divide by zero might fail (e.g. when X = (others => 0))
 forall.ads:6:20: medium: postcondition might fail

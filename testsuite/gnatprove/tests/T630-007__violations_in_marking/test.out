@@ -1,29 +1,17 @@
 bad_access.adb:12:04: info: no contextual analysis of "Do_Something" (multiple returns)
 bad_access.adb:14:10: info: no contextual analysis of "Rand" (body not seen yet)
-bad_access.adb:14:10: warning: assuming "Rand" always returns
 bad_access.adb:14:10: warning: assuming "Rand" has no effect on global items
 bad_access.adb:14:10: warning: no Global contract available for "Rand"
-bad_access.adb:14:10: warning: no returning annotation available for "Rand"
-bad_access.adb:20:13: warning: assuming "Rand" always returns
 bad_access.adb:20:13: warning: assuming "Rand" has no effect on global items
 bad_access.adb:20:13: warning: no Global contract available for "Rand"
-bad_access.adb:20:13: warning: no returning annotation available for "Rand"
-bad_access.adb:28:13: warning: assuming "Rand" always returns
 bad_access.adb:28:13: warning: assuming "Rand" has no effect on global items
 bad_access.adb:28:13: warning: no Global contract available for "Rand"
-bad_access.adb:28:13: warning: no returning annotation available for "Rand"
-bad_access.adb:39:13: warning: assuming "Rand" always returns
 bad_access.adb:39:13: warning: assuming "Rand" has no effect on global items
 bad_access.adb:39:13: warning: no Global contract available for "Rand"
-bad_access.adb:39:13: warning: no returning annotation available for "Rand"
-bad_access.adb:51:13: warning: assuming "Rand" always returns
 bad_access.adb:51:13: warning: assuming "Rand" has no effect on global items
 bad_access.adb:51:13: warning: no Global contract available for "Rand"
-bad_access.adb:51:13: warning: no returning annotation available for "Rand"
-bad_access.adb:69:13: warning: assuming "Rand" always returns
 bad_access.adb:69:13: warning: assuming "Rand" has no effect on global items
 bad_access.adb:69:13: warning: no Global contract available for "Rand"
-bad_access.adb:69:13: warning: no returning annotation available for "Rand"
 bad_access.adb:95:18: error: "Id" is not allowed in SPARK
 bad_access.adb:95:18: error: "Id" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 bad_access.adb:95:18: error: violation of aspect SPARK_Mode at line 2
@@ -46,10 +34,8 @@ bad_inv_placement.adb:6:10: error: nested packages before loop-invariant is not 
 bad_inv_placement.adb:9:10: error: nested subprogram before loop-invariant is not yet supported
 bad_iterators.adb:30:27: error: iterator specification is not allowed in SPARK (SPARK RM 5.5.2)
 bad_iterators.adb:30:27: error: violation of aspect SPARK_Mode at line 3
-bad_iterators.adb:30:32: warning: assuming "Iterate" always returns
 bad_iterators.adb:30:32: warning: assuming "Iterate" has no effect on global items
 bad_iterators.adb:30:32: warning: no Global contract available for "Iterate"
-bad_iterators.adb:30:32: warning: no returning annotation available for "Iterate"
 bad_iterators.adb:31:33: error: loop on an iterator specification with an iterator filter is not yet supported
 bad_membership.adb:13:31: error: equality on access types is not allowed in SPARK
 bad_membership.adb:13:31: error: violation of aspect SPARK_Mode at line 1
@@ -71,6 +57,7 @@ case_prefix.adb:6:29: info: null exclusion check proved (CVC5: 1 VC)
 case_prefix.adb:7:04: medium: resource or memory leak might occur at end of scope
 case_prefix.adb:7:29: info: null exclusion check proved (CVC5: 1 VC)
 case_prefix.adb:9:13: info: implicit function contract might not be available on calls from enclosing unit
+case_prefix.adb:9:13: info: implicit terminating annotation on "Get_X" has been proved, subprogram will terminate
 case_prefix.adb:13:28: info: pointer dereference check proved (CVC5: 1 VC)
 case_prefix.adb:15:19: info: assertion proved (CVC5: 1 VC)
 case_prefix.adb:16:19: info: assertion proved (CVC5: 1 VC)
@@ -80,4 +67,8 @@ ext.ads:6:09: error: "T" is not allowed in SPARK (due to component of anonymous 
 ext.ads:6:09: error: "T" is not allowed in SPARK (due to component of anonymous access type)
 ext.ads:6:09: error: access to incomplete type "T_Acc" is required to be in SPARK
 ext.ads:6:09: error: access to incomplete type "T_Acc" is required to be in SPARK
+not_hardcoded.adb:3:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
+not_hardcoded.adb:7:19: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
+not_hardcoded.adb:13:22: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
+not_hardcoded.adb:21:25: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof

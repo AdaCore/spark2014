@@ -8,6 +8,7 @@ flight_manager.adb:16:43: info: division check proved (CVC5: 1 VC), in call inli
 flight_manager.adb:16:43: info: division check proved (CVC5: 1 VC), in call inlined at flight_manager.adb:43
 flight_manager.adb:20:07: info: no contextual analysis of "My_Abs" (multiple returns)
 flight_manager.adb:20:16: info: implicit function contract might not be available on calls from enclosing unit
+flight_manager.adb:20:16: info: implicit terminating annotation on "My_Abs" has been proved, subprogram will terminate
 flight_manager.adb:23:20: high: overflow check might fail, cannot prove upper bound for -I (e.g. when I = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: add precondition (-I in Integer) to subprogram at line 20]
 flight_manager.adb:42:07: info: analyzing call to "Adjust_Speed" in context
 flight_manager.adb:42:56: medium: overflow check might fail, cannot prove lower bound for Position_X - Target_X (e.g. when Position_X = Integer'First and Target_X = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Target_X >= 0 then Position_X >= Integer'First + Target_X else Position_X <= Integer'Last + Target_X) to subprogram at flight_manager.ads:7]
@@ -16,6 +17,7 @@ flight_manager.adb:43:56: medium: overflow check might fail, cannot prove lower 
 flight_manager.adb:45:14: medium: "Result.X_Speed" might not be initialized
 flight_manager.adb:45:14: medium: "Result.Y_Speed" might not be initialized
 flight_manager.ads:7:13: info: function contract might not be available on implicit recursive calls
+flight_manager.ads:7:13: info: implicit terminating annotation on "Set_Engine_Speed" has been proved, subprogram will terminate
 flight_manager.ads:11:14: medium: postcondition might fail, cannot prove ((Position_X + Set_Engine_Speed'Result.X_Speed) - Target_X) < (Position_X + Set_Engine_Speed'Result.X_Speed) (e.g. when Position_X = 1 and Set_Engine_Speed'Result = (X_Speed => -100, Y_Speed => -100) and Target_X = 0)
 flight_manager.ads:11:27: info: overflow check proved (CVC5: 2 VC)
 flight_manager.ads:11:62: medium: overflow check might fail, cannot prove lower bound for ((Position_X + Set_Engine_Speed'Result.X_Speed) - Target_X) (e.g. when Position_X = -2147483638 and Set_Engine_Speed'Result = (X_Speed => -10, Y_Speed => -100) and Target_X = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer]

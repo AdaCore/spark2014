@@ -1,2 +1,4 @@
 expr.adb:3:07: info: initialization of "R" proved
+expr.ads:2:13: info: implicit terminating annotation on "Echo" has been proved, subprogram will terminate
 expr.ads:3:17: info: postcondition proved (CVC5: 1 VC)
+expr.ads:5:13: info: implicit terminating annotation on "Echo2" has been proved, subprogram will terminate

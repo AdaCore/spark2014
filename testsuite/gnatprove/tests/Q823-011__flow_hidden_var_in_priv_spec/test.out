@@ -1,5 +1,6 @@
 communication.ads:4:03: info: flow dependencies proved
 communication.ads:8:04: error: indicator Part_Of is required in this context: constant with variable input "Max" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))
+extra.adb:6:16: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
 extra.adb:8:07: medium: "B" needs to be a constituent of some state abstraction
 extra.ads:1:54: warning: no procedure exists that can initialize abstract state "Extra.S"
 p-priv_child.ads:2:04: error: indicator Part_Of is required in this context: constant with variable input "C" is declared in the visible part of the private child "Priv_Child" (SPARK RM 7.2.6(3))
@@ -12,5 +13,6 @@ parent.ads:1:39: warning: no procedure exists that can initialize abstract state
 parent.ads:3:14: warning: subprogram "Foo" has no effect
 q.ads:1:34: warning: no procedure exists that can initialize abstract state "Q.State"
 q.ads:4:14: warning: subprogram "Dummy" has no effect
+q.ads:5:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 q.ads:7:04: error: indicator Part_Of is required in this context: constant with variable input "B" is declared in the private part of package "Q" (SPARK RM 7.2.6(2))
 gnatprove: error during flow analysis and proof

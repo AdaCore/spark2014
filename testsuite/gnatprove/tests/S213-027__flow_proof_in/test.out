@@ -1,5 +1,8 @@
 repro-b.ads:4:03: info: flow dependencies proved
+repro-b.ads:7:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 repro-b.ads:9:06: info: data dependencies proved
 repro.ads:6:03: info: flow dependencies proved
+repro.ads:13:13: info: implicit terminating annotation on "Get_Foo" has been proved, subprogram will terminate
 repro.ads:14:09: info: data dependencies proved
+repro.ads:16:13: info: implicit terminating annotation on "Condition" has been proved, subprogram will terminate
 repro.ads:17:09: info: data dependencies proved

@@ -1,3 +1,5 @@
+crash.adb:5:13: info: implicit terminating annotation on "Func_1" has been proved, subprogram will terminate
 crash.adb:8:07: info: initialization of "X_New" proved
 crash.adb:10:18: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 5 should mention X in a precondition]
+crash.adb:14:13: info: implicit terminating annotation on "Expression_Func" has been proved, subprogram will terminate
 crash.adb:16:08: info: no contextual analysis of "Func_1" (inside expression function)

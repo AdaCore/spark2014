@@ -241,6 +241,29 @@ package body Flow_Types is
       end case;
    end Hash;
 
+   function Hash (SC : Subprogram_Call) return Ada.Containers.Hash_Type is
+   begin
+      --  A single occurrence of an iterator_specification corresponds to
+      --  implicit calls of several subprograms, so we hash both the call node
+      --  and the subprogram entity (even though we could hash just the call
+      --  node and have collisions for the subprograms).
+
+      if Nkind (SC.N) = N_Iterator_Specification then
+         return Node_Hash (SC.N) + Node_Hash (SC.E);
+
+      --  For subprogram and entry calls it is enough to hash the call node,
+      --  because it uniquely determines the entity of the called subprogram.
+      --  Same for elaboration of nested packages.
+
+      else
+         pragma Assert (Nkind (SC.N) in N_Entry_Call_Statement
+                                      | N_Package_Declaration
+                                      | N_Subprogram_Call);
+
+         return Node_Hash (SC.N);
+      end if;
+   end Hash;
+
    -----------------------
    -- Direct_Mapping_Id --
    -----------------------

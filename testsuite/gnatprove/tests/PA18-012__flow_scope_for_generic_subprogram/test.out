@@ -4,5 +4,7 @@ memregions.adb:11:04: info: initialization of "Memory" constituent of "State" pr
 memregions.adb:18:23: info: unrolling loop
 memregions.adb:31:23: info: unrolling loop
 memregions.ads:5:04: info: flow dependencies proved
+memregions.ads:13:13: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
+memregions.ads:15:13: info: implicit terminating annotation on "Get_Index" has been proved, subprogram will terminate
 memregions.ads:17:07: info: data dependencies proved
 memregions.ads:24:07: info: data dependencies proved, in instantiation at main.adb:7

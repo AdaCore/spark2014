@@ -29,11 +29,15 @@ info_flow_tests.adb:60:26: info: range check proved (CVC5: 2 VC)
 info_flow_tests.adb:61:26: info: range check proved (CVC5: 2 VC)
 info_flow_tests.adb:69:11: info: data dependencies proved
 info_flow_tests.adb:71:16: info: implicit function contract might not be available on calls from enclosing unit
+info_flow_tests.adb:71:16: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
 info_flow_tests.adb:72:16: info: implicit function contract might not be available on calls from enclosing unit
+info_flow_tests.adb:72:16: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
 info_flow_tests.adb:72:54: medium: overflow check might fail, cannot prove upper bound for A + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 72 should mention A and X in a precondition]
 info_flow_tests.adb:73:16: info: implicit function contract might not be available on calls from enclosing unit
+info_flow_tests.adb:73:16: info: implicit terminating annotation on "F3" has been proved, subprogram will terminate
 info_flow_tests.adb:74:14: info: data dependencies proved
 info_flow_tests.adb:75:16: info: function contract might not be available on calls from enclosing unit
+info_flow_tests.adb:75:16: info: implicit terminating annotation on "F4" has been proved, subprogram will terminate
 info_flow_tests.adb:76:14: info: flow dependencies proved
 info_flow_tests.adb:79:14: warning: postcondition does not check the outcome of calling "F4"
 info_flow_tests.adb:79:14: warning: postcondition does not mention function result
@@ -55,11 +59,15 @@ info_flow_tests.adb:93:38: medium: overflow check might fail, cannot prove upper
 info_flow_tests.adb:93:43: medium: overflow check might fail, cannot prove upper bound for C1 + C2 + C3 + C4 + C5 + C6 + C7 [reason for check: result of addition must fit in a 32-bits machine integer]
 info_flow_tests.adb:100:09: info: data dependencies proved
 info_flow_tests.adb:102:16: info: implicit function contract might not be available on calls from enclosing unit
+info_flow_tests.adb:102:16: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
 info_flow_tests.adb:103:16: info: implicit function contract might not be available on calls from enclosing unit
+info_flow_tests.adb:103:16: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
 info_flow_tests.adb:103:54: medium: overflow check might fail, cannot prove upper bound for A + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 103 should mention A and X in a precondition]
 info_flow_tests.adb:104:16: info: implicit function contract might not be available on calls from enclosing unit
+info_flow_tests.adb:104:16: info: implicit terminating annotation on "F3" has been proved, subprogram will terminate
 info_flow_tests.adb:105:14: info: data dependencies proved
 info_flow_tests.adb:106:16: info: function contract might not be available on calls from enclosing unit
+info_flow_tests.adb:106:16: info: implicit terminating annotation on "F4" has been proved, subprogram will terminate
 info_flow_tests.adb:107:14: info: flow dependencies proved
 info_flow_tests.adb:110:14: warning: postcondition does not check the outcome of calling "F4"
 info_flow_tests.adb:110:14: warning: postcondition does not mention function result

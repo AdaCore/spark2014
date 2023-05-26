@@ -7,13 +7,16 @@ outer.adb:15:30: info: initialization of "Inner.Inner_State" constituent of "Out
 outer.adb:16:30: info: initialization of "Inner.Inner_State_2" constituent of "Outer.State" proved
 outer.adb:17:11: info: flow dependencies proved
 outer.adb:26:14: info: flow dependencies proved
+outer.adb:31:16: info: implicit terminating annotation on "Get_Inner_State" has been proved, subprogram will terminate
 outer.adb:32:14: info: data dependencies proved
 outer.adb:36:11: info: flow dependencies proved
 outer.adb:42:11: info: flow dependencies proved
 outer.adb:48:11: info: flow dependencies proved
+outer.adb:50:16: info: implicit terminating annotation on "Add" has been proved, subprogram will terminate
 outer.adb:50:58: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at line 50]
 outer.adb:60:32: info: initialization of "Nested_In_Body.Deep_State" constituent of "Inner.Inner_State" proved
 outer.adb:61:14: info: flow dependencies proved
+outer.adb:66:19: info: implicit terminating annotation on "Get_Deep_State" has been proved, subprogram will terminate
 outer.adb:67:17: info: data dependencies proved
 outer.adb:70:07: info: initialization of "Y" constituent of "Inner_State" proved
 outer.adb:71:07: info: initialization of "Z" constituent of "Inner_State_2" proved

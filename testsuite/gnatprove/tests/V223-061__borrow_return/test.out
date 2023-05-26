@@ -4,6 +4,7 @@ bar.adb:9:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 bar.adb:13:09: medium: pointer dereference check might fail (e.g. when Z = null) [possible fix: loop at line 7 should mention Z in a loop invariant]
 bar.adb:13:18: medium: pointer dereference check might fail (e.g. when Z = null) [possible fix: loop at line 7 should mention Z in a loop invariant]
 bar.adb:13:22: medium: overflow check might fail, cannot prove lower bound for Z.all * 2 (e.g. when Z.all = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 7 should mention Z in a loop invariant]
+blob.adb:3:10: info: implicit terminating annotation on "Blob" has been proved, subprogram will terminate
 blob.adb:5:04: medium: resource or memory leak might occur at end of scope
 blob.adb:6:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 blob.adb:8:09: info: pointer dereference check proved (CVC5: 1 VC)

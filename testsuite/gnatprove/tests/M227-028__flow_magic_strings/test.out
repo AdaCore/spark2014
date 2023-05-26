@@ -1,3 +1,5 @@
+other.ads:6:13: info: implicit terminating annotation on "Get_X" has been proved, subprogram will terminate
+other.ads:8:13: info: implicit terminating annotation on "Get_Y" has been proved, subprogram will terminate
 test.adb:9:04: warning: analyzing unreferenced procedure "Test_01"
 test.adb:17:11: info: flow dependencies proved
 test.adb:20:12: high: "other.x" must be listed in the Depends aspect of "Test_02" (SPARK RM 6.1.4(15))

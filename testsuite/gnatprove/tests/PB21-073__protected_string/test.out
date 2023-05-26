@@ -1,3 +1,4 @@
+p.ads:4:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 p.ads:6:07: info: range check proved (CVC5: 2 VC)
 p.ads:6:30: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 p.ads:9:13: info: range check proved (CVC5: 2 VC)

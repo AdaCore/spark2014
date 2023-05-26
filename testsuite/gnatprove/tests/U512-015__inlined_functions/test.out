@@ -1,7 +1,10 @@
 main.adb:6:13: info: add a contract to analyze it separately from calling contexts
+main.adb:6:13: info: implicit terminating annotation on "Create" has been proved, subprogram will terminate
 main.adb:6:13: info: local subprogram "Create" only analyzed in the context of calls
 main.adb:10:07: medium: initialization check might fail, in call inlined at main.adb:27 (e.g. when X.X'Initialized = False)
+main.adb:13:13: info: implicit terminating annotation on "Create2" has been proved, subprogram will terminate
 main.adb:20:13: info: add a contract to analyze it separately from calling contexts
+main.adb:20:13: info: implicit terminating annotation on "Create3" has been proved, subprogram will terminate
 main.adb:20:13: info: local subprogram "Create3" only analyzed in the context of calls
 main.adb:24:07: medium: initialization check might fail, in call inlined at main.adb:30 (e.g. when X.X'Initialized = False)
 main.adb:27:18: info: analyzing call to "Create" in context

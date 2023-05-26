@@ -1,0 +1,3 @@
+ownership.ads:5:16: error: ownership function shall be declared in same declaration list as input type
+ownership.ads:9:16: error: ownership function shall be declared in same declaration list as input type
+gnatprove: error during generation of Global contracts

@@ -1,6 +1,8 @@
+linear_search.adb:12:26: medium: implicit terminating annotation on "Search" could be incorrect, loop might be nonterminating
 linear_search.adb:19:21: info: range check proved (CVC5: 2 VC)
 linear_search.adb:23:14: high: "Res.At_Index" is not initialized
 Trace files' contents:
 linear_search.adb:9
 linear_search.adb:12
 linear_search.adb:22
+

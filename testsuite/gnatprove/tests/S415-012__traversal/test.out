@@ -1,7 +1,10 @@
+borrow.adb:9:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 borrow.adb:11:15: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 9 should mention X]
+borrow.adb:16:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 borrow.adb:17:38: info: precondition proved (Trivial: 1 VC)
 borrow.adb:17:44: info: precondition proved (Trivial: 1 VC)
 borrow.adb:19:18: medium: pointer dereference check might fail
+borrow.adb:22:16: info: implicit terminating annotation on "Get_2" has been proved, subprogram will terminate
 borrow.adb:23:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 borrow.adb:23:10: info: initialization of "X" proved
 borrow.adb:24:29: info: precondition proved (Trivial: 1 VC)
@@ -10,6 +13,7 @@ borrow.adb:26:18: medium: pointer dereference check might fail
 borrow.adb:29:26: info: precondition proved (Trivial: 1 VC)
 borrow.adb:29:32: info: precondition proved (Trivial: 1 VC)
 borrow.adb:31:08: medium: pointer dereference check might fail
+traversal_funcs.adb:9:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 traversal_funcs.adb:12:18: info: pointer dereference check proved (CVC5: 1 VC)
 traversal_funcs.adb:14:14: info: dynamic accessibility check proved (Trivial)
 traversal_funcs.adb:18:26: info: precondition proved (Trivial: 1 VC)

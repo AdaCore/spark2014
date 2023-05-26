@@ -41,4 +41,11 @@ package Gnat2Why.Expr.Loops is
    function Is_In_Loop_Initial_Statements return Boolean with Ghost;
    --  Return True when analyzing the initial statements of a loop
 
+   function Get_Flat_Statement_And_Declaration_List
+     (Stmts : List_Id) return Node_Lists.List;
+   --  Given a list of statements and declarations Stmts, returns the flattened
+   --  list that includes these statements and declarations, and recursively
+   --  all inner declarations and statements that appear in block statements
+   --  containing a loop invariant.
+
 end Gnat2Why.Expr.Loops;

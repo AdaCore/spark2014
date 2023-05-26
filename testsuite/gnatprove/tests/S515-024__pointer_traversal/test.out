@@ -1,5 +1,21 @@
+a.adb:10:06: warning: Always_Return annotation is useless
+a.adb:10:06: warning: function "Eq" has implicit Always_Return annotation
+a.adb:14:06: warning: Always_Return annotation is useless
+a.adb:14:06: warning: function "=" has implicit Always_Return annotation
+a.adb:27:04: warning: Always_Return annotation is useless
+a.adb:27:04: warning: function "Length" has implicit Always_Return annotation
 a.adb:30:07: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)))
 a.adb:30:07: error: violation of aspect SPARK_Mode at line 1
+a.adb:32:04: warning: Always_Return annotation is useless
+a.adb:32:04: warning: function "Get_Next" has implicit Always_Return annotation
+b.adb:10:06: warning: Always_Return annotation is useless
+b.adb:10:06: warning: function "Eq" has implicit Always_Return annotation
+b.adb:14:06: warning: Always_Return annotation is useless
+b.adb:14:06: warning: function "=" has implicit Always_Return annotation
+b.adb:27:04: warning: Always_Return annotation is useless
+b.adb:27:04: warning: function "Length" has implicit Always_Return annotation
 b.adb:30:07: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)))
 b.adb:30:07: error: violation of aspect SPARK_Mode at line 1
+b.adb:32:04: warning: Always_Return annotation is useless
+b.adb:32:04: warning: function "Get_Next" has implicit Always_Return annotation
 gnatprove: error during flow analysis and proof

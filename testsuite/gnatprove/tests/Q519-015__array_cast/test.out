@@ -4,6 +4,7 @@ cast_array.adb:10:35: medium: "result" might not be initialized
 cast_array.adb:10:42: info: index check proved (CVC5: 4 VC)
 cast_array.adb:10:59: info: index check proved (CVC5: 4 VC)
 cast_array.adb:12:14: medium: "result" might not be initialized
+cast_array.ads:9:13: info: implicit terminating annotation on "cast" has been proved, subprogram will terminate
 cast_array.ads:10:14: info: postcondition proved (CVC5: 1 VC)
 test.adb:15:25: info: range check proved (CVC5: 2 VC)
 test.adb:16:25: info: range check proved (CVC5: 2 VC)

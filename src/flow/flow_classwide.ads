@@ -35,8 +35,6 @@ package Flow_Classwide is
        and then Present (Controlling_Argument (N)))
    with Pre => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement;
    --  Checks if the given call node is dispatching
-   --
-   --  ??? O429-046 can entry calls be dispatching? I guess not...
 
    procedure Check_Classwide_Contracts (E : Entity_Id)
    with Pre => Nkind (E) in N_Entity and then

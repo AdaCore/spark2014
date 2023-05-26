@@ -20,10 +20,10 @@ pointer_eq.adb:9:19: error: equality on access types is not allowed in SPARK
 pointer_eq.adb:9:19: error: violation of aspect SPARK_Mode at line 1
 test_annotate.adb:1:11: warning: subprogram "Test_Annotate" has no effect
 test_annotate.adb:4:07: warning: this statement is never reached
-test_annotate.adb:5:10: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+test_annotate.adb:5:10: info: only expected exception raised (CVC5: 1 VC)
 test_annotate.adb:7:07: warning: this statement is never reached
-test_annotate.adb:8:10: info: raise statement or expression proved unreachable (CVC5: 1 VC)
-test_annotate.adb:11:10: info: raise statement or expression proved unreachable (CVC5: 1 VC)
-test_annotate.adb:18:10: info: raise statement or expression proved unreachable (CVC5: 1 VC)
-test_annotate.adb:23:10: info: raise statement or expression proved unreachable (CVC5: 1 VC)
+test_annotate.adb:8:10: info: only expected exception raised (CVC5: 1 VC)
+test_annotate.adb:11:10: info: only expected exception raised (CVC5: 1 VC)
+test_annotate.adb:18:10: info: only expected exception raised (CVC5: 1 VC)
+test_annotate.adb:23:10: info: only expected exception raised (CVC5: 1 VC)
 gnatprove: error during flow analysis and proof

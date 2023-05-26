@@ -1,6 +1,11 @@
+safety_pack.ads:9:13: info: implicit terminating annotation on "Dead_Band" has been proved, subprogram will terminate
 safety_pack.ads:15:16: info: float overflow check proved (CVC5: 1 VC)
 safety_pack.ads:17:16: info: float overflow check proved (CVC5: 1 VC)
+safety_pack.ads:23:13: info: implicit terminating annotation on "Saturate" has been proved, subprogram will terminate
+safety_pack.ads:36:13: info: implicit terminating annotation on "Saturate" has been proved, subprogram will terminate
+safety_pack.ads:49:13: info: implicit terminating annotation on "Truncate_To_T_Int16" has been proved, subprogram will terminate
 safety_pack.ads:55:21: info: range check proved (CVC5: 2 VC)
+safety_pack.ads:61:13: info: implicit terminating annotation on "Lift_Away_From_Zero" has been proved, subprogram will terminate
 safety_pack.ads:63:10: info: predicate check proved (CVC5: 1 VC)
 safety_pack.ads:65:10: info: predicate check proved (CVC5: 1 VC)
 safety_pack.ads:67:10: info: predicate check proved (CVC5: 1 VC)

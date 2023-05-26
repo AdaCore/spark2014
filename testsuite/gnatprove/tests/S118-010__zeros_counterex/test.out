@@ -11,4 +11,5 @@ math.adb:22:22: info: assertion proved (colibri: 1 VC)
 math.adb:25:26: info: float overflow check proved (colibri: 1 VC)
 math.adb:25:31: info: float overflow check proved (colibri: 1 VC)
 math.adb:26:26: info: float overflow check proved (colibri: 1 VC)
+math.ads:18:13: info: implicit terminating annotation on "Clarke_Transform" has been proved, subprogram will terminate
 math.ads:21:06: info: data dependencies proved

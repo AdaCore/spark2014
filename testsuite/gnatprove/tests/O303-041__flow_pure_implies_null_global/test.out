@@ -151,10 +151,8 @@ a.adb:5:04: info: in instantiation at a-ngrear.adb:745
 a.adb:5:04: info: in instantiation at a-ngrear.adb:750
 a.adb:5:04: info: local subprogram "Rotate" only analyzed in the context of calls
 a.adb:5:04: info: local subprogram "Swap" only analyzed in the context of calls
-a.adb:12:32: warning: assuming "Unit_Vector" always returns
 a.adb:12:32: warning: assuming "Unit_Vector" has no effect on global items
 a.adb:12:32: warning: no Global contract available for "Unit_Vector"
-a.adb:12:32: warning: no returning annotation available for "Unit_Vector"
 foo.adb:5:09: medium: precondition might fail [possible fix: subprogram at line 3 should mention N in a precondition]
 foo.adb:5:09: warning: assuming "Log" has no effect on global items
 foo.adb:5:09: warning: no Global contract available for "Log"

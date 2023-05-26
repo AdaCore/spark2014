@@ -1168,6 +1168,7 @@ package body Parser_Utilities is
         and then (NumSeparators <= Req_Num_Separators
                     and NumDigitsInField <= Max_Digits_In_Field)
       loop
+         pragma Loop_Variant (Increases => Ctr);
          pragma Loop_Invariant
            (Ctr < EndIdx and
             NumSeparators <= Req_Num_Separators and
@@ -1281,6 +1282,7 @@ package body Parser_Utilities is
                     and ByteTotal <= Max_Byte_Value
                     and NumDigitsInByte <= Max_Digits_Per_Byte)
       loop
+         pragma Loop_Variant (Increases => Ctr);
          pragma Loop_Invariant
            (Ctr < EndIdx and
             NumSeparators <= Req_Num_Separators and

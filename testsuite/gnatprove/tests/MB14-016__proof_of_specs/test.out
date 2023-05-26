@@ -1,3 +1,5 @@
 f.ads:3:08: info: flow dependencies proved
+f.ads:9:11: warning: Always_Return annotation is useless
+f.ads:9:11: warning: function "Dyn" has implicit Always_Return annotation
 p.ads:5:08: info: flow dependencies proved
 p.ads:10:14: medium: range check might fail, cannot prove lower bound for F.Dyn [reason for check: default component value must fit in the type] [possible fix: you should consider adding a postcondition to function Dyn or turning it into an expression function in its unit spec]

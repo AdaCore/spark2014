@@ -627,21 +627,6 @@ of a program:
   GNAT Target Runtime Directory`) should be set, so that GNATprove correctly
   interprets the behavior of the program at runtime.
 
-* [SPARK_STANDARD_LIBRARY]
-  Preconditions on subprograms in most standard units are not
-  specified. That's the case in particular for:
-
-  * arithmetic and conversion operators (including Time_Of) in
-    Ada.Execution_Time and Ada.Real_Time packages described in |SPARK|
-    Reference Manual 9.19; and
-
-  * arithmetic and conversion operators (including Time_Of) in Ada.Calendar
-    package.
-
-  See :ref:`SPARK Libraries` for a list of standard units where preconditions
-  have been specified. For others, the correctness of calls to standard
-  subprograms should be checked separately, by review or testing.
-
 * [SPARK_FLOATING_POINT]
   When using floating-point numbers, GNATprove relies on the :ref:`Semantics of
   Floating Point Operations` as defined in IEEE-754. The compiler, OS, and
@@ -684,10 +669,15 @@ of a program:
     ``Has_Element (Model (Container), M_Cursor)`` evaluates to True and ``E`` is
     the result of ``Element (Model (Container), M_Cursor)``.
 
-* [SPARK_TOOL_LIMITATIONS]
-  The list of :ref:`Tool Limitations that Impact Soundness` should be reviewed to
-  check that each is either not applicable to the project, or its effects are
-  understood and cannot lead to unsound analysis.
+* [SPARK_INITIALIZED_ATTRIBUTE]
+  GNATprove assumes that the ``Initialized`` attribute is not referenced in any
+  SPARK code that is executed. This assumption is necessary because evaluation
+  of the ``Initialized`` attribute during execution is based on
+  ``Valid_Scalars``, and ``Valid_Scalars`` sometimes evaluates to True on
+  uninitialized data. Note that, despite this assumption, it can be valuable
+  during testing to execute contracts and other ghost code that references the
+  ``Initialized`` attribute, as long as the executable code of the product
+  itself does not reference the ``Initialized`` attribute.
 
 * [SPARK_OVERRIDING_AND_TASKING]
   If there are overriding operations called using a dispatching call, then
@@ -697,7 +687,6 @@ of a program:
 
   * does not call protected entries,
   * does not suspend on suspection objects,
-  * does not access unsynchronised global objects,
   * does not lock protected objects with calls to protected subprograms,
   * does not call Ada.Task_Identification.Current_Task.
 

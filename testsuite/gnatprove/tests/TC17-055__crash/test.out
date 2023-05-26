@@ -1,5 +1,6 @@
 marching_cubes.adb:17:10: info: initialization of "Z" proved
 marching_cubes.adb:18:16: info: implicit function contract might not be available on calls from enclosing unit
+marching_cubes.adb:18:16: info: implicit terminating annotation on "Set_Z" has been proved, subprogram will terminate
 marching_cubes.adb:21:12: info: precondition proved (Trivial: 1 VC)
 marching_cubes.adb:22:23: info: overflow check proved (CVC5: 2 VC)
 marching_cubes.adb:22:27: info: cannot unroll loop (too many loop iterations)
@@ -9,6 +10,7 @@ marching_cubes_2.adb:5:50: info: initialization of "C" proved
 marching_cubes_2.adb:12:12: info: pointer dereference check proved (CVC5: 1 VC)
 marching_cubes_2.adb:20:10: info: initialization of "Z" proved
 marching_cubes_2.adb:21:16: info: implicit function contract might not be available on calls from enclosing unit
+marching_cubes_2.adb:21:16: info: implicit terminating annotation on "Set_Z" has been proved, subprogram will terminate
 marching_cubes_2.adb:24:12: info: precondition proved (Trivial: 1 VC)
 marching_cubes_2.adb:25:23: info: overflow check proved (CVC5: 2 VC)
 marching_cubes_2.adb:26:33: info: loop invariant initialization proved (Trivial: 1 VC)
@@ -21,6 +23,7 @@ marching_cubes_3.adb:5:50: info: initialization of "C" proved
 marching_cubes_3.adb:11:09: medium: resource or memory leak might occur [possible fix: precondition of subprogram at line 5 should mention A]
 marching_cubes_3.adb:18:10: info: initialization of "Z" proved
 marching_cubes_3.adb:19:16: info: implicit function contract might not be available on calls from enclosing unit
+marching_cubes_3.adb:19:16: info: implicit terminating annotation on "Set_Z" has been proved, subprogram will terminate
 marching_cubes_3.adb:22:12: info: precondition proved (Trivial: 1 VC)
 marching_cubes_3.adb:23:23: info: overflow check proved (CVC5: 2 VC)
 marching_cubes_3.adb:24:33: info: loop invariant initialization proved (Trivial: 1 VC)

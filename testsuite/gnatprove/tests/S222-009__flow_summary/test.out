@@ -8,27 +8,29 @@ depends_exercise.ads:10:41: info: initialization of "Stack_Pointer" proved
 depends_exercise.ads:11:11: info: flow dependencies proved
 depends_exercise.ads:14:11: info: data dependencies proved
 depends_exercise.ads:15:11: info: flow dependencies proved
+depends_exercise.ads:18:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
 depends_exercise.ads:19:11: info: data dependencies proved
 depends_exercise.ads:20:11: info: flow dependencies proved
+depends_exercise.ads:22:13: info: implicit terminating annotation on "Wait_X_Return_True" has been proved, subprogram will terminate
 depends_exercise.ads:23:11: info: flow dependencies proved
 Summary of SPARK analysis
 =========================
 
----------------------------------------------------------------------------------
-SPARK Analysis results        Total       Flow     Provers   Justified   Unproved
----------------------------------------------------------------------------------
-Data Dependencies                 3          3           .           .          .
-Flow Dependencies                 4          4           .           .          .
-Initialization                    2          2           .           .          .
-Non-Aliasing                      .          .           .           .          .
-Run-time Checks                   3          .    2 (CVC5)           .          1
-Assertions                        .          .           .           .          .
-Functional Contracts              .          .           .           .          .
-LSP Verification                  .          .           .           .          .
-Termination                       .          .           .           .          .
-Concurrency                       .          .           .           .          .
----------------------------------------------------------------------------------
-Total                            12    9 (75%)     2 (17%)           .     1 (8%)
+----------------------------------------------------------------------------------
+SPARK Analysis results        Total        Flow     Provers   Justified   Unproved
+----------------------------------------------------------------------------------
+Data Dependencies                 3           3           .           .          .
+Flow Dependencies                 4           4           .           .          .
+Initialization                    2           2           .           .          .
+Non-Aliasing                      .           .           .           .          .
+Run-time Checks                   3           .    2 (CVC5)           .          1
+Assertions                        .           .           .           .          .
+Functional Contracts              .           .           .           .          .
+LSP Verification                  .           .           .           .          .
+Termination                       2           2           .           .          .
+Concurrency                       .           .           .           .          .
+----------------------------------------------------------------------------------
+Total                            14    11 (79%)     2 (14%)           .     1 (7%)
 
 
 max steps used for successful proof: 1
@@ -40,10 +42,9 @@ absence of run-time errors of Depends_Exercise fully established
   Depends_Exercise.Initialize at depends_exercise.ads:9 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 absence of run-time errors of Depends_Exercise.Initialize fully established
   Depends_Exercise.Is_Full at depends_exercise.ads:18 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-effects on parameters and Global variables of Depends_Exercise.Is_Full fully established
 absence of run-time errors of Depends_Exercise.Is_Full fully established
   Depends_Exercise.Push at depends_exercise.ads:13 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and not proved, 1 checks out of 2 proved
 effects on parameters and Global variables of Depends_Exercise.Push fully established
   Depends_Exercise.Wait_X_Return_True at depends_exercise.ads:22 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (1 checks)
-effects on parameters and Global variables of Depends_Exercise.Wait_X_Return_True fully established
 absence of run-time errors of Depends_Exercise.Wait_X_Return_True fully established
+

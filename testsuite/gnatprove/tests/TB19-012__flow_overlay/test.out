@@ -17,4 +17,5 @@ p.ads:3:04: info: alignment of overlaid objects is compatible (Trivial)
 p.ads:3:04: info: object is suitable for aliasing via address clause (Trivial)
 p.ads:3:32: info: object is suitable for aliasing via address clause (Trivial)
 p.ads:3:32: info: types of aliased objects have the same size (Trivial)
+p.ads:4:13: info: implicit terminating annotation on "Zero" has been proved, subprogram will terminate
 p.ads:4:49: info: data dependencies proved

@@ -1,2 +1,4 @@
+terminating_generic.adb:20:16: info: implicit terminating annotation on "Consistency" has been proved, subprogram will terminate
 terminating_generic.adb:22:17: info: postcondition proved (CVC5: 1 VC)
+terminating_generic.adb:41:16: info: implicit terminating annotation on "Consistency" has been proved, subprogram will terminate
 terminating_generic.adb:43:17: info: postcondition proved (CVC5: 1 VC)

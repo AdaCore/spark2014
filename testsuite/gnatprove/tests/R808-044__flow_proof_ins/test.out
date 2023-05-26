@@ -1,9 +1,12 @@
 main.adb:1:17: warning: unused variable "X"
 main.adb:1:35: info: data dependencies proved
+main.adb:3:13: info: implicit terminating annotation on "Proof" has been proved, subprogram will terminate
 main.adb:4:09: info: data dependencies proved
 main.adb:7:09: info: data dependencies proved
+main.adb:12:13: info: implicit terminating annotation on "F_NOK" has been proved, subprogram will terminate
 main.adb:12:59: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
 main.adb:13:22: medium: precondition might fail
+main.adb:17:13: info: implicit terminating annotation on "F_OK" has been proved, subprogram will terminate
 main.adb:17:38: info: data dependencies proved
 main.adb:18:22: medium: precondition might fail
 main.adb:23:45: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))

@@ -5,6 +5,7 @@ main.adb:3:52: medium: in default initialization of component "KO1" at main.adb:
 main.adb:3:52: medium: in default value at main.adb:20
 main.adb:3:52: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]
 main.adb:4:16: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:4:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 main.adb:5:15: info: range check proved (CVC5: 2 VC)
 main.adb:7:52: info: in default initialization of component "OK2" at main.adb:15
 main.adb:7:52: info: in default value at main.adb:20
@@ -13,6 +14,7 @@ main.adb:7:52: medium: in default initialization of component "KO2" at main.adb:
 main.adb:7:52: medium: in default value at main.adb:20
 main.adb:7:52: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]
 main.adb:8:16: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:8:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 main.adb:9:15: info: range check proved (CVC5: 2 VC)
 main.adb:14:24: medium: in default value at main.adb:20
 main.adb:14:24: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default component value must fit in the type]
@@ -30,6 +32,8 @@ main.adb:27:54: medium: in default value at main.adb:51, in instantiation at mai
 main.adb:27:54: medium: in default value at main.adb:51, in instantiation at main.adb:57
 main.adb:27:54: medium: range check might fail, cannot prove lower bound for 0, in instantiation at main.adb:54 [reason for check: default value must fit in the type]
 main.adb:27:54: medium: range check might fail, cannot prove lower bound for 0, in instantiation at main.adb:55 [reason for check: default value must fit in the type]
+main.adb:28:19: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate, in instantiation at main.adb:54
+main.adb:28:19: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate, in instantiation at main.adb:55
 main.adb:29:18: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:54
 main.adb:29:18: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:55
 main.adb:41:27: medium: in default value at main.adb:51, in instantiation at main.adb:57
@@ -47,6 +51,7 @@ main.adb:61:52: medium: in default value at main.adb:82
 main.adb:61:52: medium: in default value of box association at main.adb:78
 main.adb:61:52: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]
 main.adb:62:16: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:62:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 main.adb:63:15: info: range check proved (CVC5: 2 VC)
 main.adb:65:52: info: in default value at main.adb:82
 main.adb:65:52: info: in default value of box association at main.adb:79
@@ -55,4 +60,5 @@ main.adb:65:52: medium: in default value at main.adb:82
 main.adb:65:52: medium: in default value of box association at main.adb:79
 main.adb:65:52: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]
 main.adb:66:16: info: implicit function contract might not be available on calls from enclosing unit
+main.adb:66:16: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
 main.adb:67:15: info: range check proved (CVC5: 2 VC)

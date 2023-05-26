@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Latin_1;      use Ada.Characters.Latin_1;
+with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;
 with Common_Iterators;            use Common_Iterators;
 with Errout;                      use Errout;
@@ -53,6 +54,176 @@ with Stand;                       use Stand;
 with Stringt;                     use Stringt;
 
 package body SPARK_Util is
+
+   --------------------
+   -- Exception_Sets --
+   --------------------
+
+   package body Exception_Sets is
+
+      --------------------
+      -- All_Exceptions --
+      --------------------
+
+      function All_Exceptions return Set is
+        (All_But => True, Exc_Set => Node_Sets.Empty_Set);
+
+      --------------
+      -- Contains --
+      --------------
+
+      function Contains (S : Set; E : E_Exception_Id) return Boolean is
+        (if S.All_But then not S.Exc_Set.Contains (E)
+         else S.Exc_Set.Contains (E));
+
+      ----------------
+      -- Difference --
+      ----------------
+
+      procedure Difference (Left : in out Set; Right : Set) is
+      begin
+         if Left.All_But and then Right.All_But then
+            declare
+               Left_Exc : constant Node_Sets.Set := Left.Exc_Set;
+            begin
+               Left.All_But := False;
+               Left.Exc_Set := Right.Exc_Set;
+               Left.Exc_Set.Difference (Left_Exc);
+            end;
+         elsif Right.All_But then
+            Left.Exc_Set.Intersection (Right.Exc_Set);
+         elsif Left.All_But then
+            Left.Exc_Set.Union (Right.Exc_Set);
+         else
+            Left.Exc_Set.Difference (Right.Exc_Set);
+         end if;
+      end Difference;
+
+      --------------
+      -- Disclose --
+      --------------
+
+      procedure Disclose
+        (S       : Set;
+         All_But : out Boolean;
+         Exc_Set : out Node_Sets.Set)
+      is
+      begin
+         All_But := S.All_But;
+         Exc_Set := S.Exc_Set;
+      end Disclose;
+
+      ---------------
+      -- Empty_Set --
+      ---------------
+
+      function Empty_Set return Set is
+        (All_But => False, Exc_Set => Node_Sets.Empty_Set);
+
+      -------------
+      -- Exactly --
+      -------------
+
+      function Exactly (E : E_Exception_Id) return Set is
+        (All_But => False, Exc_Set => Node_Sets.To_Set (E));
+
+      -------------
+      -- Exclude --
+      -------------
+
+      procedure Exclude (S : in out Set; E : E_Exception_Id) is
+      begin
+         if S.All_But then
+            S.Exc_Set.Include (E);
+         else
+            S.Exc_Set.Exclude (E);
+         end if;
+      end Exclude;
+
+      -------------
+      -- Include --
+      -------------
+
+      procedure Include (S : in out Set; E : E_Exception_Id) is
+      begin
+         if S.All_But then
+            S.Exc_Set.Exclude (E);
+         else
+            S.Exc_Set.Include (E);
+         end if;
+      end Include;
+
+      ------------------
+      -- Intersection --
+      ------------------
+
+      procedure Intersection (Left : in out Set; Right : Set) is
+      begin
+         if Left.All_But and then Right.All_But then
+            Left.Exc_Set.Union (Right.Exc_Set);
+         elsif Right.All_But then
+            Left.Exc_Set.Difference (Right.Exc_Set);
+         elsif Left.All_But then
+            declare
+               Left_Exc : constant Node_Sets.Set := Left.Exc_Set;
+            begin
+               Left := Right;
+               Left.Exc_Set.Difference (Left_Exc);
+            end;
+         else
+            Left.Exc_Set.Intersection (Right.Exc_Set);
+         end if;
+      end Intersection;
+
+      --------------
+      -- Is_Empty --
+      --------------
+
+      function Is_Empty (S : Set) return Boolean is
+      begin
+         return not S.All_But and then S.Exc_Set.Is_Empty;
+      end Is_Empty;
+
+      ---------------
+      -- Is_Subset --
+      ---------------
+
+      function Is_Subset (Left, Right : Set) return Boolean is
+      begin
+         if Left.All_But and then Right.All_But then
+            return Right.Exc_Set.Is_Subset (Left.Exc_Set);
+         elsif Left.All_But then
+            return False;
+         elsif Right.All_But then
+            return not Left.Exc_Set.Overlap (Right.Exc_Set);
+         else
+            return Left.Exc_Set.Is_Subset (Right.Exc_Set);
+         end if;
+      end Is_Subset;
+
+      -----------
+      -- Union --
+      -----------
+
+      procedure Union (Left : in out Set; Right : Set) is
+      begin
+         if Left.All_But and then Right.All_But then
+            Left.Exc_Set.Intersection (Right.Exc_Set);
+         elsif Left.All_But then
+            Left.Exc_Set.Difference (Right.Exc_Set);
+         elsif Right.All_But then
+            declare
+               Left_Exc : constant Node_Sets.Set := Left.Exc_Set;
+            begin
+               Left := Right;
+               Left.Exc_Set.Difference (Left_Exc);
+            end;
+         else
+            Left.Exc_Set.Union (Right.Exc_Set);
+         end if;
+      end Union;
+
+   end Exception_Sets;
 
    -----------------------
    -- Local Subprograms --
@@ -99,6 +270,37 @@ package body SPARK_Util is
    --  Map from an entity to all its overlay aliases. This map is filled during
    --  marking and queried (via a getter function) during flow and proof.
    --  ??? this could be a map from nodes to lists of nodes (not set of nodes)
+
+   Exceptions : Node_Sets.Set;
+   --  All exceptions visible from analyzed code
+
+   package Node_To_List_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Node_Lists.List,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Node_Lists."=");
+
+   Raise_To_Handlers_Map : Node_To_List_Maps.Map;
+   --  Map from statements that might raise exceptions to a list of handlers
+   --  that are reachable from this statement.
+
+   type Exceptions_And_Flag is record
+      Exceptions : Exception_Sets.Set;
+      Is_Blocked : Boolean;
+   end record;
+   --  Exception sets are associated to a flag which is used to make sure that
+   --  all exceptions have been collected before the set is used.
+
+   package Node_To_Exceptions is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Exceptions_And_Flag,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+
+   Raised_Exceptions : Node_To_Exceptions.Map;
+   --  Map from handlers to the set of exceptions that might end up in this
+   --  handler. It is used to handle reraise statements.
 
    ----------------------
    -- Set_Partial_View --
@@ -230,6 +432,21 @@ package body SPARK_Util is
       end if;
 
    end Overlay_Alias;
+
+   ------------------------
+   -- Register_Exception --
+   ------------------------
+
+   procedure Register_Exception (E : E_Exception_Id) is
+   begin
+      Exceptions.Include (E);
+   end Register_Exception;
+
+   --------------------
+   -- All_Exceptions --
+   --------------------
+
+   function All_Exceptions return Node_Sets.Set is (Exceptions);
 
    ---------------------------------
    -- Extra tables on expressions --
@@ -391,6 +608,24 @@ package body SPARK_Util is
      (Nkind (N) not in N_Expanded_Name | N_Identifier
       or else Ekind (Entity (N)) not in
         E_Variable | E_Out_Parameter | E_In_Out_Parameter);
+
+   -------------
+   -- By_Copy --
+   -------------
+
+   function By_Copy (Obj : Formal_Kind_Id) return Boolean is
+     (not By_Reference (Obj)
+      and then Is_By_Copy_Type (Etype (Obj)));
+
+   ------------------
+   -- By_Reference --
+   ------------------
+
+   function By_Reference (Obj : Formal_Kind_Id) return Boolean is
+     (Is_By_Reference_Type (Etype (Obj))
+      or else Is_Aliased (Obj)
+      or else (Ekind (Obj) = E_In_Parameter
+        and then Is_Access_Variable (Etype (Obj))));
 
    ----------------------
    -- Canonical_Entity --
@@ -810,6 +1045,120 @@ package body SPARK_Util is
       end case;
       pragma Annotate (Xcov, Exempt_Off);
    end Char_To_String_Representation;
+
+   --------------------------------
+   -- Collect_Reachable_Handlers --
+   --------------------------------
+
+   procedure Collect_Reachable_Handlers (Stmt : Node_Id) is
+      Scop     : Node_Id := Stmt;
+      Exc_Set  : Exception_Sets.Set := Get_Raised_Exceptions
+        (Stmt, Only_Handled => False);
+      Handlers : Node_Lists.List;
+
+   begin
+      --  Go up the parent chain to collect all the potentially reachable
+      --  handlers. Stop when Exc_Set is empty or the enclosing body is
+      --  reached.
+
+      if not Exc_Set.Is_Empty then
+         Outer : loop
+            --  If we are inside a handler, skip the enclosing handled sequence
+            --  of statements.
+
+            if Nkind (Scop) = N_Exception_Handler then
+               Scop := Parent (Scop);
+            end if;
+            Scop := Parent (Scop);
+
+            case Nkind (Scop) is
+
+               --  Stop the search if a body is found. Add the body to the list
+               --  if it handles some of the remaining exceptions.
+
+               when N_Entity_Body =>
+
+                  Exc_Set.Intersection
+                    (Get_Exceptions_For_Subp (Unique_Defining_Entity (Scop)));
+
+                  if not Exc_Set.Is_Empty then
+                     Handlers.Append (Scop);
+                  end if;
+
+                  exit Outer;
+
+               --  Go over the handlers to accumulate those which are reachable
+               --  from the current statement. The set of potentially raised
+               --  exceptions is reduced along the search. If all exceptions
+               --  have been encountered, the search is stopped.
+
+               when N_Handled_Sequence_Of_Statements =>
+                  declare
+                     L_Handlers : constant List_Id :=
+                       Exception_Handlers (Scop);
+                     Handler    : Node_Id;
+                  begin
+                     if Present (L_Handlers) then
+                        Handler := First (L_Handlers);
+                        loop
+                           declare
+                              Handler_Exc_Set : Exception_Sets.Set :=
+                                Get_Exceptions_From_Handler (Handler);
+                           begin
+                              Handler_Exc_Set.Intersection (Exc_Set);
+
+                              --  Handler can be reached from exceptions of
+                              --  Exc_Set. Append it to the list of reachable
+                              --  handlers. Also store the set of reachable
+                              --  exceptions in the Raised_Exceptions map.
+
+                              if not Handler_Exc_Set.Is_Empty then
+                                 Handlers.Append (Handler);
+                                 Exc_Set.Difference (Handler_Exc_Set);
+
+                                 declare
+                                    Position : Node_To_Exceptions.Cursor;
+                                    Inserted : Boolean;
+                                 begin
+                                    Raised_Exceptions.Insert
+                                      (Handler,
+                                       (Handler_Exc_Set,
+                                        Is_Blocked => False),
+                                       Position, Inserted);
+
+                                    if not Inserted then
+
+                                       --  Sanity checking, the exception
+                                       --  set should not have been used
+                                       --  yet.
+
+                                       if Raised_Exceptions
+                                         (Position).Is_Blocked
+                                       then
+                                          raise Program_Error;
+                                       end if;
+
+                                       Raised_Exceptions (Position).Exceptions.
+                                         Union (Handler_Exc_Set);
+                                    end if;
+                                 end;
+
+                                 exit when Exc_Set.Is_Empty;
+                              end if;
+                           end;
+                           Next (Handler);
+                           exit when No (Handler);
+                        end loop;
+                     end if;
+                  end;
+               when others =>
+                  null;
+            end case;
+         end loop Outer;
+      end if;
+
+      Raise_To_Handlers_Map.Insert (Stmt, Handlers);
+   end Collect_Reachable_Handlers;
 
    -----------------------------
    -- Comes_From_Declare_Expr --
@@ -1602,47 +1951,123 @@ package body SPARK_Util is
       return Results;
    end Generic_Actual_Subprograms;
 
-   ---------------------------------------------
-   -- Get_Flat_Statement_And_Declaration_List --
-   ---------------------------------------------
+   -----------------------------
+   -- Get_Exceptions_For_Subp --
+   -----------------------------
 
-   function Get_Flat_Statement_And_Declaration_List
-     (Stmts : List_Id) return Node_Lists.List
+   function Get_Exceptions_For_Subp
+     (Subp : Entity_Id) return Exception_Sets.Set
    is
-      Cur_Stmt   : Node_Id := Nlists.First (Stmts);
-      Flat_Stmts : Node_Lists.List;
-
+      Prag   : constant Node_Id := Get_Pragma (Subp, Pragma_Exceptional_Cases);
+      Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
    begin
-      while Present (Cur_Stmt) loop
-         case Nkind (Cur_Stmt) is
-            when N_Block_Statement =>
-               if Present (Declarations (Cur_Stmt)) then
-                  Append (Flat_Stmts,
-                          Get_Flat_Statement_And_Declaration_List
-                            (Declarations (Cur_Stmt)));
-               end if;
+      if No (Prag) then
+         return Result;
+      end if;
 
-               Append (Flat_Stmts,
-                       Get_Flat_Statement_And_Declaration_List
-                         (Statements (Handled_Statement_Sequence (Cur_Stmt))));
+      declare
+         Aggr     : constant Node_Id :=
+           Expression (First (Pragma_Argument_Associations (Prag)));
+         Exc_Case : Node_Id := Last (Component_Associations (Aggr));
+      begin
+         --  Collect exceptions in Prag. Start from the last case to look
+         --  for the others case first. Ignore cases with a statically False
+         --  postcondition.
 
-               --  Append the block statement itself as a marker for the end
-               --  of the corresponding scope. These statements should be
-               --  handled specially by every caller of this function, as they
-               --  duplicate the flattened statements. In the simplest case
-               --  they should just be ignored.
+         while Present (Exc_Case) loop
+            declare
+               Exc        : Node_Id := First (Choices (Exc_Case));
+               Post       : constant Node_Id := Expression (Exc_Case);
+               False_Post : constant Boolean :=
+                 Compile_Time_Known_Value (Post)
+                 and then Is_False (Expr_Value (Post));
+            begin
+               while Present (Exc) loop
+                  case Nkind (Exc) is
+                     when N_Others_Choice =>
+                        if not False_Post then
+                           pragma Assert (Result.Is_Empty);
+                           Result := Exception_Sets.All_Exceptions;
+                        end if;
 
-               Flat_Stmts.Append (Cur_Stmt);
+                     when N_Identifier
+                        | N_Expanded_Name
+                        =>
+                        if False_Post then
+                           Result.Exclude (Entity (Exc));
+                        else
+                           Result.Include (Entity (Exc));
+                        end if;
 
+                     when others =>
+                        raise Program_Error;
+                  end case;
+                  Next (Exc);
+               end loop;
+            end;
+
+            Prev (Exc_Case);
+         end loop;
+      end;
+      return Result;
+   end Get_Exceptions_For_Subp;
+
+   ---------------------------------
+   -- Get_Exceptions_From_Handler --
+   ---------------------------------
+
+   function Get_Exceptions_From_Handler
+     (N : N_Exception_Handler_Id)
+      return Exception_Sets.Set
+   is
+      Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
+      Exc    : Node_Id := First (Exception_Choices (N));
+   begin
+      while Present (Exc) loop
+         case Nkind (Exc) is
+            when N_Others_Choice =>
+               pragma Assert (Result.Is_Empty);
+               return Exception_Sets.All_Exceptions;
+            when N_Identifier
+               | N_Expanded_Name
+               =>
+               Result.Include (Entity (Exc));
             when others =>
-               Flat_Stmts.Append (Cur_Stmt);
+               raise Program_Error;
          end case;
-
-         Nlists.Next (Cur_Stmt);
+         Next (Exc);
       end loop;
 
-      return Flat_Stmts;
-   end Get_Flat_Statement_And_Declaration_List;
+      return Result;
+   end Get_Exceptions_From_Handler;
+
+   ----------------------------------
+   -- Get_Exceptions_From_Handlers --
+   ----------------------------------
+
+   function Get_Exceptions_From_Handlers
+     (N : N_Handled_Sequence_Of_Statements_Id)
+      return Exception_Sets.Set
+   is
+      Handlers : constant List_Id := Exception_Handlers (N);
+      Handler  : Node_Id;
+      Result   : Exception_Sets.Set := Exception_Sets.Empty_Set;
+   begin
+      if No (Handlers) then
+         return Result;
+      end if;
+
+      --  Traverse the handlers in reverse order to find the others case first
+
+      Handler := Last (Handlers);
+      loop
+         Result.Union (Get_Exceptions_From_Handler (Handler));
+         Prev (Handler);
+         exit when No (Handler);
+      end loop;
+
+      return Result;
+   end Get_Exceptions_From_Handlers;
 
    ----------------------------
    -- Get_Formal_From_Actual --
@@ -1658,6 +2083,57 @@ package body SPARK_Util is
       Find_Actual (Actual, Formal, Call);
       return Formal;
    end Get_Formal_From_Actual;
+
+   ----------------------------
+   -- Get_Handled_Exceptions --
+   ----------------------------
+
+   function Get_Handled_Exceptions (Stmt : Node_Id) return Exception_Sets.Set
+   is
+      function Is_Body_Or_Handler (N : Node_Id) return Boolean is
+        (Nkind (N) in N_Entity_Body
+                    | N_Handled_Sequence_Of_Statements
+                    | N_Exception_Handler);
+
+      function Enclosing_Handler is new
+        First_Parent_With_Property (Is_Body_Or_Handler);
+
+      Scop   : Node_Id := Stmt;
+      Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
+
+   begin
+      --  Traverse all the enclosing handlers and collect the handled
+      --  exceptions.
+
+      loop
+         --  Ignore the enclosing handled sequences of statement if we are in a
+         --  handler.
+
+         if Nkind (Scop) = N_Exception_Handler then
+            Scop := Parent (Scop);
+         end if;
+
+         Scop := Enclosing_Handler (Scop);
+
+         --  On handled sequences of statement, get the set of handled
+         --  exceptions.
+
+         if Nkind (Scop) = N_Handled_Sequence_Of_Statements then
+            Result.Union (Get_Exceptions_From_Handlers (Scop));
+
+         --  On subprogram bodies, get the expected exceptions from the
+         --  exceptional cases.
+
+         elsif Nkind (Scop) = N_Subprogram_Body then
+            Result.Union
+              (Get_Exceptions_For_Subp (Unique_Defining_Entity (Scop)));
+         end if;
+
+         exit when Nkind (Scop) in N_Entity_Body;
+      end loop;
+
+      return Result;
+   end Get_Handled_Exceptions;
 
    ----------------------------
    -- Get_Initialized_Object --
@@ -1790,6 +2266,74 @@ package body SPARK_Util is
 
       return Buf.Chars (2 .. Buf.Length - 1);
    end Get_Operator_Symbol;
+
+   ---------------------------
+   -- Get_Raised_Exceptions --
+   ---------------------------
+
+   function Get_Raised_Exceptions
+     (Stmt         : Node_Id;
+      Only_Handled : Boolean)
+      return  Exception_Sets.Set
+   is
+
+      function Is_Handler (N : Node_Id) return Boolean is
+        (Nkind (N) = N_Exception_Handler);
+
+      function Enclosing_Handler is new
+        First_Parent_With_Property (Is_Handler);
+
+      Result : Exception_Sets.Set;
+
+   begin
+      case Nkind (Stmt) is
+         when N_Procedure_Call_Statement =>
+            declare
+               Callee : constant Entity_Id := Get_Called_Entity (Stmt);
+            begin
+               Result := Get_Exceptions_For_Subp (Callee);
+            end;
+
+         when N_Raise_Statement =>
+            if Present (Name (Stmt)) then
+               Result := Exception_Sets.Exactly (Entity (Name (Stmt)));
+
+            --  For reraise statements, get the set of raised exceptions from
+            --  the Raised_Exceptions map. Also set the associated Is_Blocked
+            --  flag to True so we can make sure that no additional exception
+            --  is collected afterward.
+
+            else
+               declare
+                  Handler  : constant Node_Id := Enclosing_Handler (Stmt);
+                  Position : Node_To_Exceptions.Cursor;
+                  Inserted : Boolean;
+
+               begin
+                  Result := Exception_Sets.Empty_Set;
+                  Raised_Exceptions.Insert
+                    (Handler, (Result, True), Position, Inserted);
+
+                  if not Inserted then
+                     Raised_Exceptions (Position).Is_Blocked := True;
+                     Result := Raised_Exceptions (Position).Exceptions;
+                  end if;
+               end;
+            end if;
+
+         when N_Entry_Call_Statement =>
+            return Exception_Sets.Empty_Set;
+
+         when others =>
+            raise Program_Error;
+      end case;
+
+      if Only_Handled then
+            Result.Intersection (Get_Handled_Exceptions (Stmt));
+      end if;
+
+      return Result;
+   end Get_Raised_Exceptions;
 
    ---------------
    -- Get_Range --
@@ -1994,6 +2538,13 @@ package body SPARK_Util is
 
       return Params;
    end Get_Specialized_Parameters;
+
+   ------------------------------
+   -- Has_Exceptional_Contract --
+   ------------------------------
+
+   function Has_Exceptional_Contract (E : Entity_Id) return Boolean is
+     (not Get_Exceptions_For_Subp (E).Is_Empty);
 
    ------------------
    -- Has_Volatile --
@@ -2346,8 +2897,13 @@ package body SPARK_Util is
    function Is_Error_Signaling_Statement (N : Node_Id) return Boolean is
    begin
       case Nkind (N) is
-         when N_Raise_xxx_Error | N_Raise_Statement | N_Raise_Expression =>
+         when N_Raise_xxx_Error | N_Raise_Expression =>
             return True;
+
+         --  Only unhandled exceptions are considered to signal errors
+
+         when N_Raise_Statement =>
+            return not Might_Raise_Handled_Exceptions (N);
 
          when N_Pragma =>
             if Is_Pragma_Check (N, Name_Assert) then
@@ -2964,14 +3520,15 @@ package body SPARK_Util is
                | N_Simple_Return_Statement
                | N_Exit_Statement
                | N_Raise_xxx_Error
-               | N_Raise_Statement
             =>
                return True;
 
             --  A Goto statement could make us skip later updates on
             --  this path, return False.
 
-            when N_Goto_Statement =>
+            when N_Goto_Statement
+               | N_Raise_Statement
+            =>
                raise Goto_Found;
 
             when N_Case_Statement =>
@@ -3474,64 +4031,6 @@ package body SPARK_Util is
       end if;
    end May_Issue_Warning_On_Node;
 
-   ---------------------------
-   -- Value_Is_Never_Leaked --
-   ---------------------------
-
-   function Value_Is_Never_Leaked (Expr : N_Subexpr_Id) return Boolean is
-      Context : Node_Id := Parent (Expr);
-      Nested  : Boolean := False;
-
-   begin
-      --  Check that Expr is a part of the definition of a library level
-      --  constant.
-
-      loop
-         case Nkind (Context) is
-
-            --  The allocating expression appears on the rhs of a library level
-            --  constant declaration.
-
-            when N_Object_Declaration =>
-               declare
-                  Obj : constant Entity_Id := Defining_Identifier (Context);
-               begin
-                  return ((not Nested and then Ekind (Obj) = E_Constant)
-                          or else Is_Constant_In_SPARK (Obj))
-                    and then Is_Library_Level_Entity (Obj);
-               end;
-
-            --  The allocating expression is the expression of a type
-            --  conversion or a qualified expression.
-
-            when N_Qualified_Expression
-               | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
-               null;
-
-            --  The allocating expression occurs as the expression in another
-            --  initialized allocator.
-
-            when N_Allocator =>
-               Nested := True;
-
-            --  The allocating expression corresponds to a component value in
-            --  an aggregate.
-
-            when N_Aggregate
-               | N_Component_Association
-            =>
-               Nested := True;
-
-            when others =>
-               return False;
-         end case;
-
-         Context := Parent (Context);
-      end loop;
-   end Value_Is_Never_Leaked;
-
    ---------------------
    -- No_Deep_Updates --
    ---------------------
@@ -3718,7 +4217,8 @@ package body SPARK_Util is
                               exit when Nkind (Following) in
                                     N_Simple_Return_Statement
                                   | N_Extended_Return_Statement
-                                  | N_Raise_Statement;
+                                  or else Is_Error_Signaling_Statement
+                                    (Following);
                            end loop;
                         end;
                      end if;
@@ -4118,6 +4618,13 @@ package body SPARK_Util is
             raise Program_Error;
       end case;
    end Path_Contains_Traversal_Calls;
+
+   ------------------------
+   -- Reachable_Handlers --
+   ------------------------
+
+   function Reachable_Handlers (Stmt : Node_Id) return Node_Lists.List is
+      (Raise_To_Handlers_Map (Stmt));
 
    ----------------
    -- Real_Image --
@@ -5136,7 +5643,7 @@ package body SPARK_Util is
    exception
       when Goto_Found =>
          Explanation := To_Unbounded_String
-           ("a goto statement was found in the loop");
+           ("a goto or raise statement was found in the loop");
          Result := False;
    end Structurally_Decreases_In_Loop;
 
@@ -5261,6 +5768,64 @@ package body SPARK_Util is
          return Original_Record_Component (E);
       end if;
    end Unique_Component;
+
+   ---------------------------
+   -- Value_Is_Never_Leaked --
+   ---------------------------
+
+   function Value_Is_Never_Leaked (Expr : N_Subexpr_Id) return Boolean is
+      Context : Node_Id := Parent (Expr);
+      Nested  : Boolean := False;
+
+   begin
+      --  Check that Expr is a part of the definition of a library level
+      --  constant.
+
+      loop
+         case Nkind (Context) is
+
+            --  The allocating expression appears on the rhs of a library level
+            --  constant declaration.
+
+            when N_Object_Declaration =>
+               declare
+                  Obj : constant Entity_Id := Defining_Identifier (Context);
+               begin
+                  return ((not Nested and then Ekind (Obj) = E_Constant)
+                          or else Is_Constant_In_SPARK (Obj))
+                    and then Is_Library_Level_Entity (Obj);
+               end;
+
+            --  The allocating expression is the expression of a type
+            --  conversion or a qualified expression.
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               null;
+
+            --  The allocating expression occurs as the expression in another
+            --  initialized allocator.
+
+            when N_Allocator =>
+               Nested := True;
+
+            --  The allocating expression corresponds to a component value in
+            --  an aggregate.
+
+            when N_Aggregate
+               | N_Component_Association
+            =>
+               Nested := True;
+
+            when others =>
+               return False;
+         end case;
+
+         Context := Parent (Context);
+      end loop;
+   end Value_Is_Never_Leaked;
 
    ------------------------
    -- States_And_Objects --

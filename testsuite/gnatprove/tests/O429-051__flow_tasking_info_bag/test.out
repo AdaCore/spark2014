@@ -1,2 +1,4 @@
 p.adb:7:24: warning: statement has no effect
 p.adb:30:07: warning: initialization of "X" has no effect
+p.ads:8:16: info: implicit terminating annotation on "Func" has been proved, subprogram will terminate
+p.ads:9:16: info: implicit terminating annotation on "Func2" has been proved, subprogram will terminate

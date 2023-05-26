@@ -1,8 +1,11 @@
 ng.adb:5:13: info: add a contract to analyze it separately from calling contexts
+ng.adb:5:13: info: implicit terminating annotation on "Millisecs" has been proved, subprogram will terminate
 ng.adb:5:13: info: local subprogram "Millisecs" only analyzed in the context of calls
 ng.adb:11:13: info: add a contract to analyze it separately from calling contexts
+ng.adb:11:13: info: implicit terminating annotation on "NGClickTime" has been proved, subprogram will terminate
 ng.adb:11:13: info: local subprogram "NGClickTime" only analyzed in the context of calls
 ng.adb:17:13: info: add a contract to analyze it separately from calling contexts
+ng.adb:17:13: info: implicit terminating annotation on "NGRotations" has been proved, subprogram will terminate
 ng.adb:17:13: info: local subprogram "NGRotations" only analyzed in the context of calls
 ng.adb:29:07: info: initialization of "Success" proved
 ng.adb:30:07: info: initialization of "Result" proved
@@ -32,9 +35,14 @@ ng_v1.adb:20:15: info: initialization of "D1" proved
 ng_v1.adb:20:19: info: initialization of "D2" proved
 ng_v1.adb:30:23: medium: divide by zero might fail
 ng_v1.adb:33:53: medium: divide by zero might fail
+ng_v1.ads:24:13: info: implicit terminating annotation on "DistanceFromLastClickToLastUpdate" has been proved, subprogram will terminate
 ng_v1.ads:28:17: medium: postcondition might fail, cannot prove EstimatedGroundVelocity = (((WHCF * (ThisCount - PrevCount)) + ((WHCF * (ThisCount - PrevCount)) * (CurrTime - ThisTime)) / (ThisTime - PrevTime)) * 3600) / (CurrTime - PrevTime)
 ng_v1.ads:31:23: medium: divide by zero might fail
 ng_v1.ads:32:28: medium: divide by zero might fail
+ng_v2.adb:32:13: info: implicit terminating annotation on "DistanceSinceLastUpdate" has been proved, subprogram will terminate
+ng_v2.adb:35:13: info: implicit terminating annotation on "TimeFromLastClickToLastUpdate" has been proved, subprogram will terminate
+ng_v2.adb:38:13: info: implicit terminating annotation on "TimeSinceLastUpdate" has been proved, subprogram will terminate
+ng_v2.adb:44:13: info: implicit terminating annotation on "DistanceFromLastClickToLastUpdate" has been proved, subprogram will terminate
 ng_v2.adb:49:09: medium: divide by zero might fail [possible fix: precondition of subprogram at line 32 should mention CurrTime and PrevCount and ThisCount]
 ng_v2.adb:52:44: medium: precondition might fail [possible fix: subprogram at ng_v2.ads:8 should mention PrevTime and ThisTime in a precondition]
 ng_v2.adb:55:07: info: initialization of "T1" proved
@@ -43,5 +51,7 @@ ng_v2.adb:55:15: info: initialization of "D1" proved
 ng_v2.adb:55:19: info: initialization of "D2" proved
 ng_v2.adb:65:13: info: precondition proved (altergo: 1 VC)
 ng_v2.adb:68:53: medium: divide by zero might fail
+ng_v2.ads:8:13: info: implicit terminating annotation on "DistanceSinceLastClickBeforeLastUpdate" has been proved, subprogram will terminate
+ng_v2.ads:9:13: info: implicit terminating annotation on "TimeSinceLastClickBeforeLastUpdate" has been proved, subprogram will terminate
 ng_v2.ads:12:14: info: postcondition proved (Trivial: 1 VC; altergo: 1 VC)
 ng_v2.ads:14:67: medium: divide by zero might fail

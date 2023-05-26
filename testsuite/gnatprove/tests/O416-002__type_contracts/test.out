@@ -8,6 +8,7 @@ communications.adb:11:30: medium: range check might fail, cannot prove lower bou
 communications.adb:11:30: medium: range check might fail, cannot prove upper bound for A'Length
 communications.adb:13:17: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 communications.adb:13:20: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+communications.ads:10:13: info: implicit terminating annotation on "Create" has been proved, subprogram will terminate
 communications.ads:10:13: medium: invariant check might fail
 communications.ads:12:14: info: invariant check proved (Z3: 1 VC)
 communications.ads:12:31: warning: unused initial value of "Com"

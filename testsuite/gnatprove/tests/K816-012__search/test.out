@@ -22,6 +22,7 @@ search.ads:12:06: info: initialization of "Index2" proved
 search.ads:13:25: info: postcondition proved (CVC5: 2 VC)
 search.ads:13:50: medium: array index check might fail [reason for check: value must be a valid index into the array]
 search.ads:14:50: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at search.adb:19 should mention Index2 in a loop invariant]
+search.ads:16:12: info: implicit terminating annotation on "Check_Index" has been proved, subprogram will terminate
 search.ads:24:25: info: postcondition proved (CVC5: 3 VC)
 search.ads:24:53: info: index check proved (CVC5: 2 VC)
 search.ads:25:55: info: index check proved (CVC5: 2 VC)
