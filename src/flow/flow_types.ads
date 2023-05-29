@@ -650,9 +650,6 @@ package Flow_Types is
       --  True if an initial value is either imported (in or in out) or
       --  otherwise initialized.
 
-      Is_Function_Return           : Boolean;
-      --  True if this vertex models the returned value of a function
-
       Is_Global                    : Boolean;
       --  True if the imported or exported variable is a global
 
@@ -773,7 +770,6 @@ package Flow_Types is
                    Is_Default_Init                 => False,
                    Is_Loop_Entry                   => False,
                    Is_Initialized                  => False,
-                   Is_Function_Return              => False,
                    Is_Global                       => False,
                    Is_Import                       => False,
                    Is_Export                       => False,

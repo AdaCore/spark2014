@@ -703,11 +703,10 @@ package body Flow.Control_Flow_Graph.Utility is
         Get_Direct_Mapping_Id (Entire_Variable (F_Ent));
 
    begin
-      A.Error_Location     := E_Loc;
-      A.Is_Constant        :=
+      A.Error_Location := E_Loc;
+      A.Is_Constant    :=
         Ekind (Entire_Var) in E_In_Parameter | E_Loop_Parameter;
-      A.Is_Function_Return := Ekind (Entire_Var) = E_Function;
-      A.Mode               := Mode;
+      A.Mode           := Mode;
 
       case F_Ent.Variant is
          when Initial_Value =>
