@@ -110,6 +110,9 @@ package body Flow.Interprocedural is
 
                end case;
 
+            elsif A.Is_Call_Exception then
+               null;
+
             else
                --  We have a parameter which is neither a parameter, nor a
                --  global, nor an implicit global i.e. we have messed up in the

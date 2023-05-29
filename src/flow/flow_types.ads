@@ -569,7 +569,9 @@ package Flow_Types is
                                 Pretty_Print_Loop_Init,
                                 Pretty_Print_Record_Field,
                                 Pretty_Print_Entry_Barrier,
-                                Pretty_Print_Reclaim);
+                                Pretty_Print_Reclaim,
+                                Pretty_Print_Call_Exception,
+                                Pretty_Print_Param_Havoc);
 
    type Subprogram_Call is record
       N : Node_Id;    --  node of the subprogram call
@@ -684,6 +686,16 @@ package Flow_Types is
       --  True if this vertex models an implicit formal parameter of a
       --  subprogram.
 
+      Is_Call_Exception            : Boolean;
+      --  True if this vertex represents an exception raised within a called
+      --  subprogram.
+
+      Is_Param_Havoc               : Boolean;
+      --  True if this vertex represents havocing parameters of a call to
+      --  subprogram with Exceptional_Cases which are passed neither by-copy
+      --  nor by-reference and thus their value becomes unspecified when the
+      --  call raises an exception.
+
       Is_Neverending               : Boolean;
       --  True if this vertex models a loop that is detected as potentially
       --  nonreturning.
@@ -780,6 +792,8 @@ package Flow_Types is
                    Is_Discr_Or_Bounds_Parameter    => False,
                    Is_Global_Parameter             => False,
                    Is_Implicit_Parameter           => False,
+                   Is_Call_Exception               => False,
+                   Is_Param_Havoc                  => False,
                    Is_Neverending                  => False,
                    Is_Declaration_Node             => False,
                    Execution                       => Normal_Execution,

@@ -50,6 +50,14 @@ package body Flow.Control_Dependence_Graph is
                --  so we don't really lose anything.
                null;
 
+            --  Writes to parameters of mode OUT depend on the exception being
+            --  raised.
+
+            elsif FA.Atr (P).Is_Call_Exception then
+               pragma Assert (FA.Atr (V).Is_Parameter);
+               pragma Assert (FA.CFG.Get_Key (V).Variant = Out_View);
+               pragma Assert (FA.CDG.Get_Vertex (FA.Atr (V).Call_Vertex) = CV);
+
             else
                --  Bath, we have a problem
                raise Program_Error;
@@ -107,6 +115,64 @@ package body Flow.Control_Dependence_Graph is
 
                   FA.CDG.Clear_Vertex (V);
                   FA.CDG.Add_Edge (CV, V, EC_Default);
+               end;
+
+            elsif A.Is_Call_Exception then
+               declare
+                  Prev    : Flow_Graphs.Vertex_Id := V;
+                  In_Deps : Vertex_Sets.Set;
+               begin
+                  --  Collect incoming edges and remove them
+
+                  for In_Dep
+                    of FA.CDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
+                  loop
+                     In_Deps.Insert (In_Dep);
+                  end loop;
+
+                  for In_Dep of In_Deps loop
+                     FA.CDG.Remove_Edge (In_Dep, V);
+                  end loop;
+
+                  --  Add edges to the in-parameters (because the exact
+                  --  exception being raised depends on the input parameters)
+                  --  and to the call vertex (because when there are no input
+                  --  parameters then the exact exception depends on the call
+                  --  itself).
+
+                  loop
+                     Prev := FA.CFG.Parent (Prev);
+
+                     declare
+                        Prev_Atr : V_Attributes renames FA.Atr (Prev);
+                     begin
+                        if Prev_Atr.Is_Callsite then
+                           FA.CDG.Add_Edge (Prev, V, EC_Default);
+                           exit;
+
+                        elsif Prev_Atr.Is_Parameter then
+                           if FA.CFG.Get_Key (Prev).Variant = In_View then
+                              FA.CDG.Add_Edge (Prev, V, EC_Default);
+                           end if;
+
+                        elsif Prev_Atr.Is_Global_Parameter
+                          or else Prev_Atr.Is_Implicit_Parameter
+                        then
+                           pragma Assert
+                             (Prev_Atr.Parameter_Formal.Variant
+                                in In_View | Out_View);
+                           if Prev_Atr.Parameter_Formal.Variant = In_View then
+                              if Prev_Atr.Is_Assertion then
+                                 pragma Assert (Prev_Atr.Is_Global_Parameter);
+                              else
+                                 FA.CDG.Add_Edge (Prev, V, EC_Default);
+                              end if;
+                           end if;
+                        else
+                           raise Program_Error;
+                        end if;
+                     end;
+                  end loop;
                end;
             end if;
          end;

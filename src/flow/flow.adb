@@ -771,6 +771,14 @@ package body Flow is
          elsif A.Pretty_Print_Kind = Pretty_Print_Reclaim then
             Write_Str ("reclaim");
 
+         elsif A.Pretty_Print_Kind = Pretty_Print_Call_Exception then
+            Rv.Shape := Shape_Diamond;
+            Write_Str ("call exception");
+
+         elsif A.Pretty_Print_Kind = Pretty_Print_Param_Havoc then
+            Rv.Shape := Shape_Diamond;
+            Write_Str ("param havoc");
+
          elsif A.Pretty_Print_Kind /= Pretty_Print_Null then
             raise Program_Error;
 
