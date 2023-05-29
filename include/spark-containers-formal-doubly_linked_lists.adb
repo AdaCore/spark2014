@@ -30,16 +30,11 @@ with SPARK.Containers.Stable_Sorting; use SPARK.Containers.Stable_Sorting;
 
 with System; use type System.Address;
 
-with SPARK.Big_Integers;
-use SPARK.Big_Integers;
+with SPARK.Big_Integers; use SPARK.Big_Integers;
 
 package body SPARK.Containers.Formal.Doubly_Linked_Lists with
   SPARK_Mode => Off
 is
-   --  Convert Count_Type to Big_Interger
-
-   package Conversions is new Signed_Conversions (Int => Count_Type);
-   use Conversions;
 
    -----------------------
    -- Local Subprograms --
@@ -530,13 +525,13 @@ is
          Elem : Element_Type;
 
       begin
-         for Index in 1 .. M.Length (Container) loop
+         for Index in 1 .. M.Last (Container) loop
             Elem := Element (Container, Index);
 
             declare
                Found : Boolean := False;
             begin
-               for J in 1 .. M.Length (Left) loop
+               for J in 1 .. M.Last (Left) loop
                   if Element_Logic_Equal
                     (Element (Container, Index), Element (Left, J))
                   then
@@ -546,7 +541,7 @@ is
                end loop;
 
                if not Found then
-                  for J in 1 .. M.Length (Right) loop
+                  for J in 1 .. M.Last (Right) loop
                      if Element_Logic_Equal
                        (Element (Container, Index), Element (Right, J))
                      then
@@ -610,10 +605,10 @@ is
         (Left  : M.Sequence;
          Right : M.Sequence) return Boolean
       is
-         L : constant Count_Type := M.Length (Left);
+         L : constant M.Extended_Index := M.Last (Left);
 
       begin
-         if L /= M.Length (Right) then
+         if L /= M.Last (Right) then
             return False;
          end if;
 
@@ -639,7 +634,7 @@ is
          Y     : Positive_Count_Type) return Boolean
       is
       begin
-         if M.Length (Left) /= M.Length (Right)
+         if M.Last (Left) /= M.Last (Right)
            or else not Element_Logic_Equal
              (Element (Left, X), Element (Right, Y))
            or else not Element_Logic_Equal
@@ -648,7 +643,7 @@ is
             return False;
          end if;
 
-         for I in 1 .. M.Length (Left) loop
+         for I in 1 .. M.Last (Left) loop
             if I /= X and then I /= Y
               and then not Element_Logic_Equal
                 (Element (Left, I), Element (Right, I))
@@ -673,8 +668,8 @@ is
       begin
          for C of P_Left loop
             if not P.Has_Key (P_Right, C)
-              or else P.Get (P_Left,  C) > M.Length (M_Left)
-              or else P.Get (P_Right, C) > M.Length (M_Right)
+              or else P.Get (P_Left,  C) > M.Last (M_Left)
+              or else P.Get (P_Right, C) > M.Last (M_Right)
               or else not Element_Logic_Equal
                 (M.Get (M_Left,  P.Get (P_Left,  C)),
                  M.Get (M_Right, P.Get (P_Right, C)))
@@ -859,7 +854,7 @@ is
 
          while Position /= 0 loop
             R := P.Add (R, (Node => Position), I);
-            pragma Assert (P.Length (R) = To_Big_Integer (I));
+            pragma Assert (P.Length (R) = M.Big (I));
             Position := Container.Nodes (Position).Next;
             I := I + 1;
          end loop;
@@ -935,7 +930,7 @@ is
                E1 : Element_Type := Element (Container, 1);
 
             begin
-               for I in 2 .. M.Length (Container) loop
+               for I in 2 .. M.Last (Container) loop
                   declare
                      E2 : constant Element_Type := Element (Container, I);
 

@@ -3416,6 +3416,13 @@ package body SPARK_Definition is
                         Mark_Unsupported
                           (Lim_Access_To_Relaxed_Init_Subp, N);
 
+                     --  Subprograms which might raise exceptions can not be
+                     --  stored inside access types.
+
+                     elsif Has_Exceptional_Contract (Subp) then
+                        Mark_Unsupported
+                          (Lim_Access_To_Subp_With_Exc, N);
+
                      --  Subprogram with non-null Global contract (either
                      --  explicit or generated). Global accesses are allowed
                      --  for specialized actuals of functions annotated with
@@ -7062,15 +7069,11 @@ package body SPARK_Definition is
                if Ekind (Des_Ty) = E_Subprogram_Type then
                   declare
                      Profile : constant E_Subprogram_Type_Id := Des_Ty;
-                     Wrapper : constant Opt_Subprogram_Kind_Id :=
-                       Access_Subprogram_Wrapper (Profile);
 
                   begin
                      --  We do not support access to protected subprograms yet
 
-                     if Ekind (Base_Type (E)) in
-                           E_Access_Protected_Subprogram_Type
-                         | E_Anonymous_Access_Protected_Subprogram_Type
+                     if Is_Access_Protected_Subprogram_Type (Base_Type (E))
                      then
                         Mark_Unsupported (Lim_Access_Sub_Protected, E);
 
@@ -7084,22 +7087,7 @@ package body SPARK_Definition is
                      then
                         Mark_Unsupported (Lim_Access_Sub_Traversal, E);
 
-                     --  If the profile has a contract, it is located on a
-                     --  wrapper subprogram. We need to mark it to mark the
-                     --  contracts.
-                     --  ??? Messages on formal parameters of the wrapper seem
-                     --  to be incorrectly located on the access-to-subprogram
-                     --  type instead of on the corresponding formal of the
-                     --  profile.
-
-                     elsif Present (Wrapper) and then not In_SPARK (Wrapper)
-                     then
-                        Mark_Violation (E, From => Wrapper);
-
-                     --  Mark the profile type. If a wrapper subprogram exists,
-                     --  this should not lead to new violation, but we still
-                     --  need to mark the formals of the profile which are
-                     --  different entities than those of the wrapper.
+                     --  Mark the profile type
 
                      else
                         Mark_Subprogram_Entity (Profile);

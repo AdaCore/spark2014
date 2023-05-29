@@ -8,7 +8,7 @@ prove_all(opt=["-U", "-P", "Flow_Analysis/flow_analysis"])
 prove_all(opt=["-U", "-P", "Proof_Integrity/proof_integrity"])
 prove_all(opt=["-U", "-P", "State_Abstraction/state_abstraction"])
 prove_all(
-    steps=700,
+    steps=1000,
     opt=[
         "-U",
         "-P",

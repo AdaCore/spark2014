@@ -2648,18 +2648,6 @@ package body SPARK_Util is
         and then Str_Name (Str_Name'Last) in 's' | 'b';
    end In_SPARK_Library_Unit;
 
-   ------------------------------------------------
-   -- Is_Additional_Param_Of_Access_Subp_Wrapper --
-   ------------------------------------------------
-
-   function Is_Additional_Param_Of_Access_Subp_Wrapper
-     (E : Formal_Kind_Id)
-      return Boolean
-   is (Ekind (E) = E_In_Parameter
-       and then Is_Access_Subprogram_Type (Etype (E))
-       and then Scope (E) = Access_Subprogram_Wrapper
-       (Directly_Designated_Type (Etype (E))));
-
    -------------------------------------
    -- Is_Access_Attribute_Of_Function --
    -------------------------------------
@@ -4540,7 +4528,7 @@ package body SPARK_Util is
             Result := False;
             Explanation :=
               To_Unbounded_String
-                (Source_Name (X) &
+                (Source_Name (Y) &
                  " must be aliased for its alignment to be known");
             return;
          end if;

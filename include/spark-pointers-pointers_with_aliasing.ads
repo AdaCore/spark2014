@@ -63,6 +63,8 @@ is
       function Valid (M : Memory_Type; A : Address_Type) return Boolean renames
         Has_Key;
 
+      function Copy (O : Object) return Object is (O);
+
       function Object_Logic_Equal (Left, Right : Object) return Boolean with
         Ghost,
         Import,
@@ -137,7 +139,7 @@ is
          and then Allocates (Memory'Old, Memory, Only (Address (P)))
          and then Deallocates (Memory'Old, Memory, None)
          and then Writes (Memory'Old, Memory, None)
-         and then Object_Logic_Equal (Deref (P), O);
+         and then Object_Logic_Equal (Deref (P), Copy (O));
 
    --  Primitives for classical pointer functionalities. Deref will copy the
    --  designated value.
@@ -152,7 +154,7 @@ is
      Global => (In_Out => Memory),
      Pre    => Valid (Memory, Address (P)),
      Post   =>
-       Object_Logic_Equal (Get (Memory, Address (P)), O)
+       Object_Logic_Equal (Get (Memory, Address (P)), Copy (O))
          and then Allocates (Memory'Old, Memory, None)
          and then Deallocates (Memory'Old, Memory, None)
          and then Writes (Memory'Old, Memory, Only (Address (P)));

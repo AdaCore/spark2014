@@ -212,7 +212,7 @@ is
          Key       : Key_Type) return Boolean
       with
         Global => null,
-        Pre    => Lst <= K.Length (Container),
+        Pre    => Lst <= K.Last (Container),
         Post   =>
           K_Bigger_Than_Range'Result =
             (for all I in Fst .. Lst => K.Get (Container, I) < Key);
@@ -225,7 +225,7 @@ is
          Key       : Key_Type) return Boolean
       with
         Global => null,
-        Pre    => Lst <= K.Length (Container),
+        Pre    => Lst <= K.Last (Container),
         Post   =>
           K_Smaller_Than_Range'Result =
             (for all I in Fst .. Lst => Key < K.Get (Container, I));
@@ -237,18 +237,18 @@ is
          Position  : Count_Type) return Boolean
       with
         Global => null,
-        Pre    => Position - 1 <= K.Length (Container),
+        Pre    => Position - 1 <= K.Last (Container),
         Post   =>
           K_Is_Find'Result =
              ((if Position > 0 then
                   K_Bigger_Than_Range (Container, 1, Position - 1, Key))
 
             and
-              (if Position < K.Length (Container) then
+              (if Position < K.Last (Container) then
                   K_Smaller_Than_Range
                     (Container,
                      Position + 1,
-                     K.Length (Container),
+                     K.Last (Container),
                      Key)));
       pragma Annotate (GNATprove, Inline_For_Proof, K_Is_Find);
 
@@ -259,7 +259,7 @@ is
         Global => null,
         Post =>
           (if Find'Result > 0 then
-              Find'Result <= K.Length (Container)
+              Find'Result <= K.Last (Container)
                 and Equivalent_Keys (Key, K.Get (Container, Find'Result)));
 
       package P is new SPARK.Containers.Functional.Maps
@@ -322,7 +322,7 @@ is
         Ghost,
         Global => null,
         Post   =>
-          K.Length (Keys'Result) = Length (Container)
+          K.Last (Keys'Result) = Length (Container)
 
             --  It only contains keys contained in Model
 

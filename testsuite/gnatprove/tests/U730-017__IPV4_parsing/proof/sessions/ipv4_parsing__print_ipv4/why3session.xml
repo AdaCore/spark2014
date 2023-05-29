@@ -13,339 +13,339 @@
  <goal name="def&#39;vc" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
-  <proof prover="0"><result status="valid" steps="956"/></proof>
-  <proof prover="1"><result status="valid" steps="2383"/></proof>
-  <proof prover="2"><result status="valid" steps="772"/></proof>
+  <proof prover="0"><result status="valid" steps="971"/></proof>
+  <proof prover="1"><result status="valid" steps="1858"/></proof>
+  <proof prover="2"><result status="valid" steps="658"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="5845"/></proof>
-  <proof prover="2"><result status="valid" steps="802"/></proof>
+  <proof prover="1"><result status="valid" steps="4814"/></proof>
+  <proof prover="2"><result status="valid" steps="688"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><result status="valid" steps="345"/></proof>
-  <proof prover="1"><result status="valid" steps="3842"/></proof>
-  <proof prover="2"><result status="valid" steps="984"/></proof>
+  <proof prover="0"><result status="valid" steps="353"/></proof>
+  <proof prover="1"><result status="valid" steps="3098"/></proof>
+  <proof prover="2"><result status="valid" steps="840"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="0"><result status="valid" steps="345"/></proof>
-  <proof prover="1"><result status="valid" steps="3869"/></proof>
-  <proof prover="2"><result status="valid" steps="980"/></proof>
+  <proof prover="0"><result status="valid" steps="353"/></proof>
+  <proof prover="1"><result status="valid" steps="3125"/></proof>
+  <proof prover="2"><result status="valid" steps="836"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><result status="valid" steps="345"/></proof>
-  <proof prover="1"><result status="valid" steps="3889"/></proof>
-  <proof prover="2"><result status="valid" steps="980"/></proof>
+  <proof prover="0"><result status="valid" steps="353"/></proof>
+  <proof prover="1"><result status="valid" steps="3145"/></proof>
+  <proof prover="2"><result status="valid" steps="836"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="0"><result status="valid" steps="345"/></proof>
-  <proof prover="1"><result status="valid" steps="3877"/></proof>
-  <proof prover="2"><result status="valid" steps="996"/></proof>
+  <proof prover="0"><result status="valid" steps="353"/></proof>
+  <proof prover="1"><result status="valid" steps="3133"/></proof>
+  <proof prover="2"><result status="valid" steps="852"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="357"/></proof>
-  <proof prover="1"><result status="valid" steps="6155"/></proof>
-  <proof prover="2"><result status="valid" steps="18236"/></proof>
+  <proof prover="0"><result status="valid" steps="365"/></proof>
+  <proof prover="1"><result status="valid" steps="5411"/></proof>
+  <proof prover="2"><result status="valid" steps="17378"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="0"><result status="valid" steps="357"/></proof>
-  <proof prover="1"><result status="valid" steps="3755"/></proof>
-  <proof prover="2"><result status="valid" steps="2221"/></proof>
+  <proof prover="0"><result status="valid" steps="365"/></proof>
+  <proof prover="1"><result status="valid" steps="3230"/></proof>
+  <proof prover="2"><result status="valid" steps="2107"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="0"><result status="valid" steps="365"/></proof>
-  <proof prover="1"><result status="valid" steps="4045"/></proof>
-  <proof prover="2"><result status="valid" steps="3041"/></proof>
+  <proof prover="0"><result status="valid" steps="374"/></proof>
+  <proof prover="1"><result status="valid" steps="3520"/></proof>
+  <proof prover="2"><result status="valid" steps="2897"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="0"><result status="valid" steps="365"/></proof>
-  <proof prover="1"><result status="valid" steps="4054"/></proof>
-  <proof prover="2"><result status="valid" steps="3041"/></proof>
+  <proof prover="0"><result status="valid" steps="374"/></proof>
+  <proof prover="1"><result status="valid" steps="3529"/></proof>
+  <proof prover="2"><result status="valid" steps="2897"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="0"><result status="valid" steps="381"/></proof>
-  <proof prover="1"><result status="valid" steps="3920"/></proof>
-  <proof prover="2"><result status="valid" steps="2282"/></proof>
+  <proof prover="0"><result status="valid" steps="389"/></proof>
+  <proof prover="1"><result status="valid" steps="3395"/></proof>
+  <proof prover="2"><result status="valid" steps="2168"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="0"><result status="valid" steps="381"/></proof>
-  <proof prover="1"><result status="valid" steps="4570"/></proof>
-  <proof prover="2"><result status="valid" steps="3230"/></proof>
+  <proof prover="0"><result status="valid" steps="389"/></proof>
+  <proof prover="1"><result status="valid" steps="4045"/></proof>
+  <proof prover="2"><result status="valid" steps="3086"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
-  <proof prover="0"><result status="valid" steps="388"/></proof>
-  <proof prover="1"><result status="valid" steps="3905"/></proof>
-  <proof prover="2"><result status="valid" steps="2316"/></proof>
+  <proof prover="0"><result status="valid" steps="396"/></proof>
+  <proof prover="1"><result status="valid" steps="3380"/></proof>
+  <proof prover="2"><result status="valid" steps="2202"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
-  <proof prover="0"><result status="valid" steps="388"/></proof>
-  <proof prover="1"><result status="valid" steps="6673"/></proof>
-  <proof prover="2"><result status="valid" steps="18956"/></proof>
+  <proof prover="0"><result status="valid" steps="396"/></proof>
+  <proof prover="1"><result status="valid" steps="5929"/></proof>
+  <proof prover="2"><result status="valid" steps="18098"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="0"><result status="valid" steps="1294"/></proof>
-  <proof prover="1"><result status="valid" steps="4531"/></proof>
-  <proof prover="2"><result status="valid" steps="2442"/></proof>
+  <proof prover="0"><result status="valid" steps="1315"/></proof>
+  <proof prover="1"><result status="valid" steps="4035"/></proof>
+  <proof prover="2"><result status="valid" steps="2328"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="9727"/></proof>
-  <proof prover="2"><result status="valid" steps="2472"/></proof>
+  <proof prover="1"><result status="valid" steps="8726"/></proof>
+  <proof prover="2"><result status="valid" steps="2358"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
-  <proof prover="0"><result status="valid" steps="405"/></proof>
-  <proof prover="1"><result status="valid" steps="7167"/></proof>
-  <proof prover="2"><result status="valid" steps="3278"/></proof>
+  <proof prover="0"><result status="valid" steps="413"/></proof>
+  <proof prover="1"><result status="valid" steps="6453"/></proof>
+  <proof prover="2"><result status="valid" steps="3134"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
-  <proof prover="0"><result status="valid" steps="412"/></proof>
-  <proof prover="1"><result status="valid" steps="7700"/></proof>
-  <proof prover="2"><result status="valid" steps="19675"/></proof>
+  <proof prover="0"><result status="valid" steps="420"/></proof>
+  <proof prover="1"><result status="valid" steps="6986"/></proof>
+  <proof prover="2"><result status="valid" steps="18817"/></proof>
   </goal>
   <goal name="def&#39;vc.18" proved="true">
-  <proof prover="0"><result status="valid" steps="411"/></proof>
-  <proof prover="1"><result status="valid" steps="7734"/></proof>
-  <proof prover="2"><result status="valid" steps="19698"/></proof>
+  <proof prover="0"><result status="valid" steps="420"/></proof>
+  <proof prover="1"><result status="valid" steps="7020"/></proof>
+  <proof prover="2"><result status="valid" steps="18840"/></proof>
   </goal>
   <goal name="def&#39;vc.19" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
-  <proof prover="1"><result status="valid" steps="7708"/></proof>
-  <proof prover="2"><result status="valid" steps="19697"/></proof>
+  <proof prover="0"><result status="valid" steps="420"/></proof>
+  <proof prover="1"><result status="valid" steps="6994"/></proof>
+  <proof prover="2"><result status="valid" steps="18839"/></proof>
   </goal>
   <goal name="def&#39;vc.20" proved="true">
-  <proof prover="0"><result status="valid" steps="428"/></proof>
-  <proof prover="1"><result status="valid" steps="9958"/></proof>
-  <proof prover="2"><result status="valid" steps="23403"/></proof>
+  <proof prover="0"><result status="valid" steps="437"/></proof>
+  <proof prover="1"><result status="valid" steps="9244"/></proof>
+  <proof prover="2"><result status="valid" steps="22545"/></proof>
   </goal>
   <goal name="def&#39;vc.21" proved="true">
-  <proof prover="0"><result status="valid" steps="428"/></proof>
-  <proof prover="1"><result status="valid" steps="5032"/></proof>
-  <proof prover="2"><result status="valid" steps="2796"/></proof>
+  <proof prover="0"><result status="valid" steps="437"/></proof>
+  <proof prover="1"><result status="valid" steps="4536"/></proof>
+  <proof prover="2"><result status="valid" steps="2682"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
-  <proof prover="0"><result status="valid" steps="441"/></proof>
-  <proof prover="1"><result status="valid" steps="5324"/></proof>
-  <proof prover="2"><result status="valid" steps="3972"/></proof>
+  <proof prover="0"><result status="valid" steps="448"/></proof>
+  <proof prover="1"><result status="valid" steps="4828"/></proof>
+  <proof prover="2"><result status="valid" steps="3828"/></proof>
   </goal>
   <goal name="def&#39;vc.23" proved="true">
-  <proof prover="0"><result status="valid" steps="441"/></proof>
-  <proof prover="1"><result status="valid" steps="5329"/></proof>
-  <proof prover="2"><result status="valid" steps="3972"/></proof>
+  <proof prover="0"><result status="valid" steps="448"/></proof>
+  <proof prover="1"><result status="valid" steps="4833"/></proof>
+  <proof prover="2"><result status="valid" steps="3828"/></proof>
   </goal>
   <goal name="def&#39;vc.24" proved="true">
-  <proof prover="0"><result status="valid" steps="448"/></proof>
-  <proof prover="1"><result status="valid" steps="5195"/></proof>
-  <proof prover="2"><result status="valid" steps="2857"/></proof>
+  <proof prover="0"><result status="valid" steps="456"/></proof>
+  <proof prover="1"><result status="valid" steps="4699"/></proof>
+  <proof prover="2"><result status="valid" steps="2743"/></proof>
   </goal>
   <goal name="def&#39;vc.25" proved="true">
-  <proof prover="0"><result status="valid" steps="448"/></proof>
-  <proof prover="1"><result status="valid" steps="10462"/></proof>
-  <proof prover="2"><result status="valid" steps="23975"/></proof>
+  <proof prover="0"><result status="valid" steps="456"/></proof>
+  <proof prover="1"><result status="valid" steps="9748"/></proof>
+  <proof prover="2"><result status="valid" steps="23117"/></proof>
   </goal>
   <goal name="def&#39;vc.26" proved="true">
-  <proof prover="0"><result status="valid" steps="448"/></proof>
-  <proof prover="1"><result status="valid" steps="5180"/></proof>
-  <proof prover="2"><result status="valid" steps="2889"/></proof>
+  <proof prover="0"><result status="valid" steps="457"/></proof>
+  <proof prover="1"><result status="valid" steps="4684"/></proof>
+  <proof prover="2"><result status="valid" steps="2775"/></proof>
   </goal>
   <goal name="def&#39;vc.27" proved="true">
-  <proof prover="0"><result status="valid" steps="448"/></proof>
-  <proof prover="1"><result status="valid" steps="10595"/></proof>
-  <proof prover="2"><result status="valid" steps="24156"/></proof>
+  <proof prover="0"><result status="valid" steps="457"/></proof>
+  <proof prover="1"><result status="valid" steps="9881"/></proof>
+  <proof prover="2"><result status="valid" steps="23298"/></proof>
   </goal>
   <goal name="def&#39;vc.28" proved="true">
-  <proof prover="0"><result status="valid" steps="1590"/></proof>
-  <proof prover="1"><result status="valid" steps="5290"/></proof>
-  <proof prover="2"><result status="valid" steps="3007"/></proof>
+  <proof prover="0"><result status="valid" steps="1610"/></proof>
+  <proof prover="1"><result status="valid" steps="4794"/></proof>
+  <proof prover="2"><result status="valid" steps="2893"/></proof>
   </goal>
   <goal name="def&#39;vc.29" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="13299"/></proof>
-  <proof prover="2"><result status="valid" steps="3037"/></proof>
+  <proof prover="1"><result status="valid" steps="12298"/></proof>
+  <proof prover="2"><result status="valid" steps="2923"/></proof>
   </goal>
   <goal name="def&#39;vc.30" proved="true">
-  <proof prover="0"><result status="valid" steps="480"/></proof>
-  <proof prover="1"><result status="valid" steps="9481"/></proof>
-  <proof prover="2"><result status="valid" steps="4203"/></proof>
+  <proof prover="0"><result status="valid" steps="488"/></proof>
+  <proof prover="1"><result status="valid" steps="8767"/></proof>
+  <proof prover="2"><result status="valid" steps="4059"/></proof>
   </goal>
   <goal name="def&#39;vc.31" proved="true">
-  <proof prover="0"><result status="valid" steps="485"/></proof>
-  <proof prover="1"><result status="valid" steps="11177"/></proof>
-  <proof prover="2"><result status="valid" steps="24925"/></proof>
+  <proof prover="0"><result status="valid" steps="493"/></proof>
+  <proof prover="1"><result status="valid" steps="10463"/></proof>
+  <proof prover="2"><result status="valid" steps="24067"/></proof>
   </goal>
   <goal name="def&#39;vc.32" proved="true">
-  <proof prover="0"><result status="valid" steps="483"/></proof>
-  <proof prover="1"><result status="valid" steps="11210"/></proof>
-  <proof prover="2"><result status="valid" steps="24971"/></proof>
+  <proof prover="0"><result status="valid" steps="492"/></proof>
+  <proof prover="1"><result status="valid" steps="10496"/></proof>
+  <proof prover="2"><result status="valid" steps="24113"/></proof>
   </goal>
   <goal name="def&#39;vc.33" proved="true">
-  <proof prover="0"><result status="valid" steps="485"/></proof>
-  <proof prover="1"><result status="valid" steps="11185"/></proof>
-  <proof prover="2"><result status="valid" steps="24949"/></proof>
+  <proof prover="0"><result status="valid" steps="493"/></proof>
+  <proof prover="1"><result status="valid" steps="10471"/></proof>
+  <proof prover="2"><result status="valid" steps="24091"/></proof>
   </goal>
   <goal name="def&#39;vc.34" proved="true">
-  <proof prover="0"><result status="valid" steps="505"/></proof>
-  <proof prover="1"><result status="valid" steps="13435"/></proof>
-  <proof prover="2"><result status="valid" steps="28670"/></proof>
+  <proof prover="0"><result status="valid" steps="514"/></proof>
+  <proof prover="1"><result status="valid" steps="12721"/></proof>
+  <proof prover="2"><result status="valid" steps="27812"/></proof>
   </goal>
   <goal name="def&#39;vc.35" proved="true">
-  <proof prover="0"><result status="valid" steps="505"/></proof>
-  <proof prover="1"><result status="valid" steps="5791"/></proof>
-  <proof prover="2"><result status="valid" steps="3361"/></proof>
+  <proof prover="0"><result status="valid" steps="514"/></proof>
+  <proof prover="1"><result status="valid" steps="5295"/></proof>
+  <proof prover="2"><result status="valid" steps="3247"/></proof>
   </goal>
   <goal name="def&#39;vc.36" proved="true">
-  <proof prover="0"><result status="valid" steps="518"/></proof>
-  <proof prover="1"><result status="valid" steps="6083"/></proof>
-  <proof prover="2"><result status="valid" steps="4893"/></proof>
+  <proof prover="0"><result status="valid" steps="526"/></proof>
+  <proof prover="1"><result status="valid" steps="5587"/></proof>
+  <proof prover="2"><result status="valid" steps="4749"/></proof>
   </goal>
   <goal name="def&#39;vc.37" proved="true">
-  <proof prover="0"><result status="valid" steps="518"/></proof>
-  <proof prover="1"><result status="valid" steps="6088"/></proof>
-  <proof prover="2"><result status="valid" steps="4893"/></proof>
+  <proof prover="0"><result status="valid" steps="526"/></proof>
+  <proof prover="1"><result status="valid" steps="5592"/></proof>
+  <proof prover="2"><result status="valid" steps="4749"/></proof>
   </goal>
   <goal name="def&#39;vc.38" proved="true">
-  <proof prover="0"><result status="valid" steps="526"/></proof>
-  <proof prover="1"><result status="valid" steps="5954"/></proof>
-  <proof prover="2"><result status="valid" steps="3422"/></proof>
+  <proof prover="0"><result status="valid" steps="534"/></proof>
+  <proof prover="1"><result status="valid" steps="5458"/></proof>
+  <proof prover="2"><result status="valid" steps="3308"/></proof>
   </goal>
   <goal name="def&#39;vc.39" proved="true">
-  <proof prover="0"><result status="valid" steps="526"/></proof>
-  <proof prover="1"><result status="valid" steps="14011"/></proof>
-  <proof prover="2"><result status="valid" steps="29273"/></proof>
+  <proof prover="0"><result status="valid" steps="534"/></proof>
+  <proof prover="1"><result status="valid" steps="13297"/></proof>
+  <proof prover="2"><result status="valid" steps="28415"/></proof>
   </goal>
   <goal name="def&#39;vc.40" proved="true">
-  <proof prover="0"><result status="valid" steps="526"/></proof>
-  <proof prover="1"><result status="valid" steps="5939"/></proof>
-  <proof prover="2"><result status="valid" steps="3454"/></proof>
+  <proof prover="0"><result status="valid" steps="534"/></proof>
+  <proof prover="1"><result status="valid" steps="5443"/></proof>
+  <proof prover="2"><result status="valid" steps="3340"/></proof>
   </goal>
   <goal name="def&#39;vc.41" proved="true">
-  <proof prover="0"><result status="valid" steps="526"/></proof>
-  <proof prover="1"><result status="valid" steps="14148"/></proof>
-  <proof prover="2"><result status="valid" steps="29347"/></proof>
+  <proof prover="0"><result status="valid" steps="534"/></proof>
+  <proof prover="1"><result status="valid" steps="13434"/></proof>
+  <proof prover="2"><result status="valid" steps="28489"/></proof>
   </goal>
   <goal name="def&#39;vc.42" proved="true">
-  <proof prover="0"><result status="valid" steps="1939"/></proof>
-  <proof prover="1"><result status="valid" steps="6049"/></proof>
-  <proof prover="2"><result status="valid" steps="3572"/></proof>
+  <proof prover="0"><result status="valid" steps="1959"/></proof>
+  <proof prover="1"><result status="valid" steps="5553"/></proof>
+  <proof prover="2"><result status="valid" steps="3458"/></proof>
   </goal>
   <goal name="def&#39;vc.43" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
-  <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="3602"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid" steps="16006"/></proof>
+  <proof prover="2"><result status="valid" steps="3488"/></proof>
   </goal>
   <goal name="def&#39;vc.44" proved="true">
-  <proof prover="0"><result status="valid" steps="561"/></proof>
-  <proof prover="1"><result status="valid" steps="11925"/></proof>
-  <proof prover="2"><result status="valid" steps="5124"/></proof>
+  <proof prover="0"><result status="valid" steps="569"/></proof>
+  <proof prover="1"><result status="valid" steps="11211"/></proof>
+  <proof prover="2"><result status="valid" steps="4980"/></proof>
   </goal>
   <goal name="def&#39;vc.45" proved="true">
-  <proof prover="0"><result status="valid" steps="566"/></proof>
-  <proof prover="1"><result status="valid" steps="14780"/></proof>
-  <proof prover="2"><result status="valid" steps="30210"/></proof>
+  <proof prover="0"><result status="valid" steps="574"/></proof>
+  <proof prover="1"><result status="valid" steps="14066"/></proof>
+  <proof prover="2"><result status="valid" steps="29352"/></proof>
   </goal>
   <goal name="def&#39;vc.46" proved="true">
-  <proof prover="0"><result status="valid" steps="565"/></proof>
-  <proof prover="1"><result status="valid" steps="14811"/></proof>
-  <proof prover="2"><result status="valid" steps="30266"/></proof>
+  <proof prover="0"><result status="valid" steps="574"/></proof>
+  <proof prover="1"><result status="valid" steps="14097"/></proof>
+  <proof prover="2"><result status="valid" steps="29408"/></proof>
   </goal>
   <goal name="def&#39;vc.47" proved="true">
-  <proof prover="0"><result status="valid" steps="566"/></proof>
-  <proof prover="1"><result status="valid" steps="14788"/></proof>
-  <proof prover="2"><result status="valid" steps="30236"/></proof>
+  <proof prover="0"><result status="valid" steps="574"/></proof>
+  <proof prover="1"><result status="valid" steps="14074"/></proof>
+  <proof prover="2"><result status="valid" steps="29378"/></proof>
   </goal>
   <goal name="def&#39;vc.48" proved="true">
-  <proof prover="0"><result status="valid" steps="388"/></proof>
-  <proof prover="1"><result status="valid" steps="6704"/></proof>
-  <proof prover="2"><result status="valid" steps="3926"/></proof>
+  <proof prover="0"><result status="valid" steps="396"/></proof>
+  <proof prover="1"><result status="valid" steps="6208"/></proof>
+  <proof prover="2"><result status="valid" steps="3812"/></proof>
   </goal>
   <goal name="def&#39;vc.49" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="6546"/></proof>
-  <proof prover="2"><result status="valid" steps="3926"/></proof>
+  <proof prover="0"><result status="valid" steps="396"/></proof>
+  <proof prover="1"><result status="valid" steps="6050"/></proof>
+  <proof prover="2"><result status="valid" steps="3812"/></proof>
   </goal>
   <goal name="def&#39;vc.50" proved="true">
-  <proof prover="0"><result status="valid" steps="388"/></proof>
-  <proof prover="1"><result status="valid" steps="6796"/></proof>
-  <proof prover="2"><result status="valid" steps="3954"/></proof>
+  <proof prover="0"><result status="valid" steps="396"/></proof>
+  <proof prover="1"><result status="valid" steps="6300"/></proof>
+  <proof prover="2"><result status="valid" steps="3840"/></proof>
   </goal>
   <goal name="def&#39;vc.51" proved="true">
-  <proof prover="0"><result status="valid" steps="388"/></proof>
-  <proof prover="1"><result status="valid" steps="6799"/></proof>
-  <proof prover="2"><result status="valid" steps="3954"/></proof>
+  <proof prover="0"><result status="valid" steps="396"/></proof>
+  <proof prover="1"><result status="valid" steps="6303"/></proof>
+  <proof prover="2"><result status="valid" steps="3840"/></proof>
   </goal>
   <goal name="def&#39;vc.52" proved="true">
-  <proof prover="0"><result status="valid" steps="388"/></proof>
-  <proof prover="1"><result status="valid" steps="6709"/></proof>
-  <proof prover="2"><result status="valid" steps="3987"/></proof>
+  <proof prover="0"><result status="valid" steps="396"/></proof>
+  <proof prover="1"><result status="valid" steps="6213"/></proof>
+  <proof prover="2"><result status="valid" steps="3873"/></proof>
   </goal>
   <goal name="def&#39;vc.53" proved="true">
-  <proof prover="0"><result status="valid" steps="388"/></proof>
-  <proof prover="1"><result status="valid" steps="6967"/></proof>
-  <proof prover="2"><result status="valid" steps="3987"/></proof>
+  <proof prover="0"><result status="valid" steps="396"/></proof>
+  <proof prover="1"><result status="valid" steps="6471"/></proof>
+  <proof prover="2"><result status="valid" steps="3873"/></proof>
   </goal>
   <goal name="def&#39;vc.54" proved="true">
-  <proof prover="0"><result status="valid" steps="388"/></proof>
-  <proof prover="1"><result status="valid" steps="6694"/></proof>
-  <proof prover="2"><result status="valid" steps="4019"/></proof>
+  <proof prover="0"><result status="valid" steps="396"/></proof>
+  <proof prover="1"><result status="valid" steps="6198"/></proof>
+  <proof prover="2"><result status="valid" steps="3905"/></proof>
   </goal>
   <goal name="def&#39;vc.55" proved="true">
-  <proof prover="0"><result status="valid" steps="388"/></proof>
-  <proof prover="1"><result status="valid" steps="7069"/></proof>
-  <proof prover="2"><result status="valid" steps="4019"/></proof>
+  <proof prover="0"><result status="valid" steps="396"/></proof>
+  <proof prover="1"><result status="valid" steps="6573"/></proof>
+  <proof prover="2"><result status="valid" steps="3905"/></proof>
   </goal>
   <goal name="def&#39;vc.56" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="23253"/></proof>
-  <proof prover="2"><result status="valid" steps="59949"/></proof>
+  <proof prover="0"><result status="valid" steps="630"/></proof>
+  <proof prover="1"><result status="valid" steps="22539"/></proof>
+  <proof prover="2"><result status="valid" steps="63924"/></proof>
   </goal>
   <goal name="def&#39;vc.57" proved="true">
-  <proof prover="0"><result status="valid" steps="621"/></proof>
-  <proof prover="1"><result status="valid" steps="19617"/></proof>
-  <proof prover="2"><result status="valid" steps="58469"/></proof>
+  <proof prover="0"><result status="valid" steps="630"/></proof>
+  <proof prover="1"><result status="valid" steps="18903"/></proof>
+  <proof prover="2"><result status="valid" steps="53850"/></proof>
   </goal>
   <goal name="def&#39;vc.58" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="16972"/></proof>
-  <proof prover="2"><result status="valid" steps="7279"/></proof>
+  <proof prover="0"><result status="valid" steps="632"/></proof>
+  <proof prover="1"><result status="valid" steps="16476"/></proof>
+  <proof prover="2"><result status="valid" steps="7167"/></proof>
   </goal>
   <goal name="def&#39;vc.59" proved="true">
-  <proof prover="0"><result status="valid" steps="625"/></proof>
-  <proof prover="1"><result status="valid" steps="16977"/></proof>
-  <proof prover="2"><result status="valid" steps="7279"/></proof>
+  <proof prover="0"><result status="valid" steps="633"/></proof>
+  <proof prover="1"><result status="valid" steps="16481"/></proof>
+  <proof prover="2"><result status="valid" steps="7167"/></proof>
   </goal>
   <goal name="def&#39;vc.60" proved="true">
-  <proof prover="0"><result status="valid" steps="622"/></proof>
-  <proof prover="1"><result status="valid" steps="19820"/></proof>
-  <proof prover="2"><result status="valid" steps="58544"/></proof>
+  <proof prover="0"><result status="valid" steps="631"/></proof>
+  <proof prover="1"><result status="valid" steps="19106"/></proof>
+  <proof prover="2"><result status="valid" steps="57588"/></proof>
   </goal>
   <goal name="def&#39;vc.61" proved="true">
-  <proof prover="0"><result status="valid" steps="622"/></proof>
-  <proof prover="1"><result status="valid" steps="19821"/></proof>
-  <proof prover="2"><result status="valid" steps="58540"/></proof>
+  <proof prover="0"><result status="valid" steps="631"/></proof>
+  <proof prover="1"><result status="valid" steps="19107"/></proof>
+  <proof prover="2"><result status="valid" steps="57584"/></proof>
   </goal>
   <goal name="def&#39;vc.62" proved="true">
-  <proof prover="0"><result status="valid" steps="626"/></proof>
-  <proof prover="1"><result status="valid" steps="17007"/></proof>
-  <proof prover="2"><result status="valid" steps="59108"/></proof>
+  <proof prover="0"><result status="valid" steps="634"/></proof>
+  <proof prover="1"><result status="valid" steps="16511"/></proof>
+  <proof prover="2"><result status="valid" steps="64142"/></proof>
   </goal>
   <goal name="def&#39;vc.63" proved="true">
-  <proof prover="0"><result status="valid" steps="318"/></proof>
-  <proof prover="1"><result status="valid" steps="3117"/></proof>
-  <proof prover="2"><result status="valid" steps="7304"/></proof>
+  <proof prover="0"><result status="valid" steps="326"/></proof>
+  <proof prover="1"><result status="valid" steps="2621"/></proof>
+  <proof prover="2"><result status="valid" steps="7192"/></proof>
   </goal>
   <goal name="def&#39;vc.64" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="17002"/></proof>
-  <proof prover="2"><result status="valid" steps="7304"/></proof>
+  <proof prover="0"><result status="valid" steps="633"/></proof>
+  <proof prover="1"><result status="valid" steps="16506"/></proof>
+  <proof prover="2"><result status="valid" steps="7192"/></proof>
   </goal>
   <goal name="def&#39;vc.65" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="16998"/></proof>
-  <proof prover="2"><result status="valid" steps="7304"/></proof>
+  <proof prover="0"><result status="valid" steps="633"/></proof>
+  <proof prover="1"><result status="valid" steps="16502"/></proof>
+  <proof prover="2"><result status="valid" steps="7192"/></proof>
   </goal>
   <goal name="def&#39;vc.66" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="59671"/></proof>
-  <proof prover="2"><result status="valid" steps="152550"/></proof>
+  <proof prover="1"><result status="valid" steps="58480"/></proof>
+  <proof prover="2"><result status="valid" steps="153833"/></proof>
   </goal>
   <goal name="def&#39;vc.67" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -354,164 +354,164 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.69" proved="true">
-  <proof prover="0"><result status="valid" steps="628"/></proof>
-  <proof prover="1"><result status="valid" steps="17094"/></proof>
-  <proof prover="2"><result status="valid" steps="7378"/></proof>
+  <proof prover="0"><result status="valid" steps="636"/></proof>
+  <proof prover="1"><result status="valid" steps="16598"/></proof>
+  <proof prover="2"><result status="valid" steps="7266"/></proof>
   </goal>
   <goal name="def&#39;vc.70" proved="true">
-  <proof prover="0"><result status="valid" steps="628"/></proof>
-  <proof prover="1"><result status="valid" steps="17110"/></proof>
-  <proof prover="2"><result status="valid" steps="7408"/></proof>
+  <proof prover="0"><result status="valid" steps="637"/></proof>
+  <proof prover="1"><result status="valid" steps="16614"/></proof>
+  <proof prover="2"><result status="valid" steps="7296"/></proof>
   </goal>
   <goal name="def&#39;vc.71" proved="true">
-  <proof prover="0"><result status="valid" steps="628"/></proof>
-  <proof prover="1"><result status="valid" steps="17102"/></proof>
-  <proof prover="2"><result status="valid" steps="7386"/></proof>
+  <proof prover="0"><result status="valid" steps="636"/></proof>
+  <proof prover="1"><result status="valid" steps="16606"/></proof>
+  <proof prover="2"><result status="valid" steps="7274"/></proof>
   </goal>
   <goal name="def&#39;vc.72" proved="true">
-  <proof prover="0"><result status="valid" steps="630"/></proof>
-  <proof prover="1"><result status="valid" steps="26290"/></proof>
-  <proof prover="2"><result status="valid" steps="83493"/></proof>
+  <proof prover="0"><result status="valid" steps="638"/></proof>
+  <proof prover="1"><result status="valid" steps="25576"/></proof>
+  <proof prover="2"><result status="valid" steps="85943"/></proof>
   </goal>
   <goal name="def&#39;vc.73" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="26527"/></proof>
-  <proof prover="2"><result status="valid" steps="60497"/></proof>
+  <proof prover="0"><result status="valid" steps="658"/></proof>
+  <proof prover="1"><result status="valid" steps="25813"/></proof>
+  <proof prover="2"><result status="valid" steps="59641"/></proof>
   </goal>
   <goal name="def&#39;vc.74" proved="true">
-  <proof prover="0"><result status="valid" steps="649"/></proof>
-  <proof prover="1"><result status="valid" steps="26490"/></proof>
-  <proof prover="2"><result status="valid" steps="60345"/></proof>
+  <proof prover="0"><result status="valid" steps="658"/></proof>
+  <proof prover="1"><result status="valid" steps="25776"/></proof>
+  <proof prover="2"><result status="valid" steps="59489"/></proof>
   </goal>
   <goal name="def&#39;vc.75" proved="true">
-  <proof prover="0"><result status="valid" steps="652"/></proof>
-  <proof prover="1"><result status="valid" steps="26644"/></proof>
-  <proof prover="2"><result status="valid" steps="101950"/></proof>
+  <proof prover="0"><result status="valid" steps="660"/></proof>
+  <proof prover="1"><result status="valid" steps="25930"/></proof>
+  <proof prover="2"><result status="valid" steps="116370"/></proof>
   </goal>
   <goal name="def&#39;vc.76" proved="true">
-  <proof prover="0"><result status="valid" steps="639"/></proof>
-  <proof prover="1"><result status="valid" steps="17424"/></proof>
-  <proof prover="2"><result status="valid" steps="7865"/></proof>
+  <proof prover="0"><result status="valid" steps="648"/></proof>
+  <proof prover="1"><result status="valid" steps="16928"/></proof>
+  <proof prover="2"><result status="valid" steps="7753"/></proof>
   </goal>
   <goal name="def&#39;vc.77" proved="true">
-  <proof prover="0"><result status="valid" steps="634"/></proof>
-  <proof prover="1"><result status="valid" steps="26748"/></proof>
-  <proof prover="2"><result status="valid" steps="69988"/></proof>
+  <proof prover="0"><result status="valid" steps="642"/></proof>
+  <proof prover="1"><result status="valid" steps="26034"/></proof>
+  <proof prover="2"><result status="valid" steps="78457"/></proof>
   </goal>
   <goal name="def&#39;vc.78" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="26961"/></proof>
-  <proof prover="2"><result status="valid" steps="61277"/></proof>
+  <proof prover="0"><result status="valid" steps="669"/></proof>
+  <proof prover="1"><result status="valid" steps="26247"/></proof>
+  <proof prover="2"><result status="valid" steps="60423"/></proof>
   </goal>
   <goal name="def&#39;vc.79" proved="true">
-  <proof prover="0"><result status="valid" steps="660"/></proof>
-  <proof prover="1"><result status="valid" steps="27004"/></proof>
-  <proof prover="2"><result status="valid" steps="61085"/></proof>
+  <proof prover="0"><result status="valid" steps="669"/></proof>
+  <proof prover="1"><result status="valid" steps="26290"/></proof>
+  <proof prover="2"><result status="valid" steps="60231"/></proof>
   </goal>
   <goal name="def&#39;vc.80" proved="true">
-  <proof prover="0"><result status="valid" steps="663"/></proof>
-  <proof prover="1"><result status="valid" steps="27120"/></proof>
-  <proof prover="2"><result status="valid" steps="75010"/></proof>
+  <proof prover="0"><result status="valid" steps="671"/></proof>
+  <proof prover="1"><result status="valid" steps="26406"/></proof>
+  <proof prover="2"><result status="valid" steps="72122"/></proof>
   </goal>
   <goal name="def&#39;vc.81" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="17519"/></proof>
-  <proof prover="2"><result status="valid" steps="7935"/></proof>
+  <proof prover="0"><result status="valid" steps="655"/></proof>
+  <proof prover="1"><result status="valid" steps="17023"/></proof>
+  <proof prover="2"><result status="valid" steps="7823"/></proof>
   </goal>
   <goal name="def&#39;vc.82" proved="true">
-  <proof prover="0"><result status="valid" steps="637"/></proof>
-  <proof prover="1"><result status="valid" steps="27225"/></proof>
-  <proof prover="2"><result status="valid" steps="71887"/></proof>
+  <proof prover="0"><result status="valid" steps="646"/></proof>
+  <proof prover="1"><result status="valid" steps="26511"/></proof>
+  <proof prover="2"><result status="valid" steps="74156"/></proof>
   </goal>
   <goal name="def&#39;vc.83" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="27441"/></proof>
-  <proof prover="2"><result status="valid" steps="62061"/></proof>
+  <proof prover="0"><result status="valid" steps="678"/></proof>
+  <proof prover="1"><result status="valid" steps="26727"/></proof>
+  <proof prover="2"><result status="valid" steps="61205"/></proof>
   </goal>
   <goal name="def&#39;vc.84" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="27529"/></proof>
-  <proof prover="2"><result status="valid" steps="61829"/></proof>
+  <proof prover="0"><result status="valid" steps="678"/></proof>
+  <proof prover="1"><result status="valid" steps="26815"/></proof>
+  <proof prover="2"><result status="valid" steps="60973"/></proof>
   </goal>
   <goal name="def&#39;vc.85" proved="true">
-  <proof prover="0"><result status="valid" steps="652"/></proof>
-  <proof prover="1"><result status="valid" steps="27609"/></proof>
-  <proof prover="2"><result status="valid" steps="74736"/></proof>
+  <proof prover="0"><result status="valid" steps="660"/></proof>
+  <proof prover="1"><result status="valid" steps="26895"/></proof>
+  <proof prover="2"><result status="valid" steps="82045"/></proof>
   </goal>
   <goal name="def&#39;vc.86" proved="true">
-  <proof prover="0"><result status="valid" steps="652"/></proof>
-  <proof prover="1"><result status="valid" steps="17614"/></proof>
-  <proof prover="2"><result status="valid" steps="8005"/></proof>
+  <proof prover="0"><result status="valid" steps="660"/></proof>
+  <proof prover="1"><result status="valid" steps="17118"/></proof>
+  <proof prover="2"><result status="valid" steps="7893"/></proof>
   </goal>
   <goal name="def&#39;vc.87" proved="true">
-  <proof prover="0"><result status="valid" steps="653"/></proof>
-  <proof prover="1"><result status="valid" steps="22788"/></proof>
-  <proof prover="2"><result status="valid" steps="59449"/></proof>
+  <proof prover="0"><result status="valid" steps="661"/></proof>
+  <proof prover="1"><result status="valid" steps="22074"/></proof>
+  <proof prover="2"><result status="valid" steps="58593"/></proof>
   </goal>
   <goal name="def&#39;vc.88" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="23863"/></proof>
-  <proof prover="2"><result status="valid" steps="59903"/></proof>
+  <proof prover="0"><result status="valid" steps="2056"/></proof>
+  <proof prover="1"><result status="valid" steps="23149"/></proof>
+  <proof prover="2"><result status="valid" steps="59047"/></proof>
   </goal>
   <goal name="def&#39;vc.89" proved="true">
-  <proof prover="0"><result status="valid" steps="653"/></proof>
-  <proof prover="1"><result status="valid" steps="22803"/></proof>
-  <proof prover="2"><result status="valid" steps="12521"/></proof>
+  <proof prover="0"><result status="valid" steps="661"/></proof>
+  <proof prover="1"><result status="valid" steps="22089"/></proof>
+  <proof prover="2"><result status="valid" steps="12379"/></proof>
   </goal>
   <goal name="def&#39;vc.90" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="74565"/></proof>
+  <proof prover="0"><result status="valid" steps="661"/></proof>
+  <proof prover="1"><result status="valid" steps="27111"/></proof>
+  <proof prover="2"><result status="valid" steps="79984"/></proof>
   </goal>
   <goal name="def&#39;vc.91" proved="true">
-  <proof prover="0"><result status="valid" steps="653"/></proof>
-  <proof prover="1"><result status="valid" steps="27801"/></proof>
-  <proof prover="2"><result status="valid" steps="75900"/></proof>
+  <proof prover="0"><result status="valid" steps="661"/></proof>
+  <proof prover="1"><result status="valid" steps="27087"/></proof>
+  <proof prover="2"><result status="valid" steps="81274"/></proof>
   </goal>
   <goal name="def&#39;vc.92" proved="true">
-  <proof prover="0"><result status="valid" steps="653"/></proof>
-  <proof prover="1"><result status="valid" steps="27840"/></proof>
-  <proof prover="2"><result status="valid" steps="76084"/></proof>
+  <proof prover="0"><result status="valid" steps="661"/></proof>
+  <proof prover="1"><result status="valid" steps="27126"/></proof>
+  <proof prover="2"><result status="valid" steps="81507"/></proof>
   </goal>
   <goal name="def&#39;vc.93" proved="true">
-  <proof prover="0"><result status="valid" steps="653"/></proof>
-  <proof prover="1"><result status="valid" steps="27818"/></proof>
-  <proof prover="2"><result status="valid" steps="97855"/></proof>
+  <proof prover="0"><result status="valid" steps="661"/></proof>
+  <proof prover="1"><result status="valid" steps="27104"/></proof>
+  <proof prover="2"><result status="valid" steps="111469"/></proof>
   </goal>
   <goal name="def&#39;vc.94" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
-  <proof prover="1"><result status="valid" steps="27838"/></proof>
-  <proof prover="2"><result status="valid" steps="91146"/></proof>
+  <proof prover="0"><result status="valid" steps="661"/></proof>
+  <proof prover="1"><result status="valid" steps="27124"/></proof>
+  <proof prover="2"><result status="valid" steps="116046"/></proof>
   </goal>
   <goal name="def&#39;vc.95" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="77261"/></proof>
+  <proof prover="2"><result status="valid" steps="76547"/></proof>
   </goal>
   <goal name="def&#39;vc.96" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="77487"/></proof>
+  <proof prover="2"><result status="valid" steps="76731"/></proof>
   </goal>
   <goal name="def&#39;vc.97" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="131489"/></proof>
+  <proof prover="2"><result status="valid" steps="113968"/></proof>
   </goal>
   <goal name="def&#39;vc.98" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="103308"/></proof>
+  <proof prover="1"><result status="valid" steps="56133"/></proof>
+  <proof prover="2"><result status="valid" steps="98003"/></proof>
   </goal>
   <goal name="def&#39;vc.99" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="249443"/></proof>
+  <proof prover="2"><result status="valid" steps="212510"/></proof>
   </goal>
   <goal name="def&#39;vc.100" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="227033"/></proof>
+  <proof prover="2"><result status="valid" steps="179677"/></proof>
   </goal>
   <goal name="def&#39;vc.101" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -519,7 +519,7 @@
   <goal name="def&#39;vc.102" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="287065"/></proof>
+  <proof prover="2"><result status="valid" steps="136199"/></proof>
   </goal>
   <goal name="def&#39;vc.103" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -527,17 +527,17 @@
   <goal name="def&#39;vc.104" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="95984"/></proof>
+  <proof prover="2"><result status="valid" steps="111835"/></proof>
   </goal>
   <goal name="def&#39;vc.105" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="251219"/></proof>
+  <proof prover="2"><result status="valid" steps="521150"/></proof>
   </goal>
   <goal name="def&#39;vc.106" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="179081"/></proof>
+  <proof prover="2"><result status="valid" steps="209417"/></proof>
   </goal>
   <goal name="def&#39;vc.107" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -545,7 +545,7 @@
   <goal name="def&#39;vc.108" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="245433"/></proof>
+  <proof prover="2"><result status="valid" steps="157211"/></proof>
   </goal>
   <goal name="def&#39;vc.109" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -553,177 +553,177 @@
   <goal name="def&#39;vc.110" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="121015"/></proof>
+  <proof prover="2"><result status="valid" steps="117334"/></proof>
   </goal>
   <goal name="def&#39;vc.111" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="169382"/></proof>
+  <proof prover="2"><result status="valid" steps="290977"/></proof>
   </goal>
   <goal name="def&#39;vc.112" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="242639"/></proof>
+  <proof prover="2"><result status="valid" steps="278143"/></proof>
   </goal>
   <goal name="def&#39;vc.113" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.114" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="192960"/></proof>
+  <proof prover="2"><result status="valid" steps="353218"/></proof>
   </goal>
   <goal name="def&#39;vc.115" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.116" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="87103"/></proof>
+  <proof prover="2"><result status="valid" steps="101822"/></proof>
   </goal>
   <goal name="def&#39;vc.117" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="116031"/></proof>
+  <proof prover="2"><result status="valid" steps="196541"/></proof>
   </goal>
   <goal name="def&#39;vc.118" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="160057"/></proof>
+  <proof prover="2"><result status="valid" steps="161282"/></proof>
   </goal>
   <goal name="def&#39;vc.119" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.120" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="186679"/></proof>
+  <proof prover="2"><result status="valid" steps="200365"/></proof>
   </goal>
   <goal name="def&#39;vc.121" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.122" proved="true">
-  <proof prover="0"><result status="valid" steps="1625"/></proof>
-  <proof prover="1"><result status="valid" steps="27917"/></proof>
-  <proof prover="2"><result status="valid" steps="98312"/></proof>
+  <proof prover="0"><result status="valid" steps="1635"/></proof>
+  <proof prover="1"><result status="valid" steps="27203"/></proof>
+  <proof prover="2"><result status="valid" steps="97318"/></proof>
   </goal>
   <goal name="def&#39;vc.123" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="30529"/></proof>
-  <proof prover="2"><result status="valid" steps="94802"/></proof>
+  <proof prover="0"><result status="valid" steps="1708"/></proof>
+  <proof prover="1"><result status="valid" steps="29815"/></proof>
+  <proof prover="2"><result status="valid" steps="93811"/></proof>
   </goal>
   <goal name="def&#39;vc.124" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="22441"/></proof>
-  <proof prover="2"><result status="valid" steps="16524"/></proof>
+  <proof prover="0"><result status="valid" steps="658"/></proof>
+  <proof prover="1"><result status="valid" steps="21945"/></proof>
+  <proof prover="2"><result status="valid" steps="16382"/></proof>
   </goal>
   <goal name="def&#39;vc.125" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="22523"/></proof>
-  <proof prover="2"><result status="valid" steps="16629"/></proof>
+  <proof prover="0"><result status="valid" steps="676"/></proof>
+  <proof prover="1"><result status="valid" steps="22027"/></proof>
+  <proof prover="2"><result status="valid" steps="16487"/></proof>
   </goal>
   <goal name="def&#39;vc.126" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="22529"/></proof>
-  <proof prover="2"><result status="valid" steps="16633"/></proof>
+  <proof prover="0"><result status="valid" steps="668"/></proof>
+  <proof prover="1"><result status="valid" steps="22033"/></proof>
+  <proof prover="2"><result status="valid" steps="16491"/></proof>
   </goal>
   <goal name="def&#39;vc.127" proved="true">
-  <proof prover="0"><result status="valid" steps="805"/></proof>
-  <proof prover="1"><result status="valid" steps="22523"/></proof>
-  <proof prover="2"><result status="valid" steps="16629"/></proof>
+  <proof prover="0"><result status="valid" steps="813"/></proof>
+  <proof prover="1"><result status="valid" steps="22027"/></proof>
+  <proof prover="2"><result status="valid" steps="16487"/></proof>
   </goal>
   <goal name="def&#39;vc.128" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="16627"/></proof>
+  <proof prover="0"><result status="valid" steps="813"/></proof>
+  <proof prover="1"><result status="valid" steps="22033"/></proof>
+  <proof prover="2"><result status="valid" steps="16485"/></proof>
   </goal>
   <goal name="def&#39;vc.129" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="22523"/></proof>
-  <proof prover="2"><result status="valid" steps="16629"/></proof>
+  <proof prover="0"><result status="valid" steps="821"/></proof>
+  <proof prover="1"><result status="valid" steps="22027"/></proof>
+  <proof prover="2"><result status="valid" steps="16487"/></proof>
   </goal>
   <goal name="def&#39;vc.130" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
-  <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="16627"/></proof>
+  <proof prover="0"><result status="valid" steps="821"/></proof>
+  <proof prover="1"><result status="valid" steps="22033"/></proof>
+  <proof prover="2"><result status="valid" steps="16485"/></proof>
   </goal>
   <goal name="def&#39;vc.131" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="22529"/></proof>
-  <proof prover="2"><result status="valid" steps="16633"/></proof>
+  <proof prover="0"><result status="valid" steps="820"/></proof>
+  <proof prover="1"><result status="valid" steps="22033"/></proof>
+  <proof prover="2"><result status="valid" steps="16491"/></proof>
   </goal>
   <goal name="def&#39;vc.132" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.133" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="22259"/></proof>
-  <proof prover="2"><result status="valid" steps="81471"/></proof>
+  <proof prover="0"><result status="valid" steps="1446"/></proof>
+  <proof prover="1"><result status="valid" steps="21763"/></proof>
+  <proof prover="2"><result status="valid" steps="80577"/></proof>
   </goal>
   <goal name="def&#39;vc.134" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="27711"/></proof>
-  <proof prover="2"><result status="valid" steps="88457"/></proof>
+  <proof prover="0"><result status="valid" steps="2139"/></proof>
+  <proof prover="1"><result status="valid" steps="26997"/></proof>
+  <proof prover="2"><result status="valid" steps="87562"/></proof>
   </goal>
   <goal name="def&#39;vc.135" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="28456"/></proof>
-  <proof prover="2"><result status="valid" steps="89822"/></proof>
+  <proof prover="0"><result status="valid" steps="1449"/></proof>
+  <proof prover="1"><result status="valid" steps="27742"/></proof>
+  <proof prover="2"><result status="valid" steps="88926"/></proof>
   </goal>
   <goal name="def&#39;vc.136" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="50663"/></proof>
-  <proof prover="2"><result status="valid" steps="91043"/></proof>
+  <proof prover="0"><result status="valid" steps="1634"/></proof>
+  <proof prover="1"><result status="valid" steps="49592"/></proof>
+  <proof prover="2"><result status="valid" steps="90158"/></proof>
   </goal>
   <goal name="def&#39;vc.137" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="70571"/></proof>
-  <proof prover="2"><result status="valid" steps="93917"/></proof>
+  <proof prover="0"><result status="valid" steps="1542"/></proof>
+  <proof prover="1"><result status="valid" steps="69291"/></proof>
+  <proof prover="2"><result status="valid" steps="94609"/></proof>
   </goal>
   <goal name="def&#39;vc.138" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="100906"/></proof>
+  <proof prover="0"><result status="valid" steps="2111"/></proof>
+  <proof prover="1"><result status="valid" steps="70034"/></proof>
+  <proof prover="2"><result status="valid" steps="102246"/></proof>
   </goal>
   <goal name="def&#39;vc.139" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="113359"/></proof>
+  <proof prover="2"><result status="valid" steps="112612"/></proof>
   </goal>
   <goal name="def&#39;vc.140" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="107976"/></proof>
+  <proof prover="2"><result status="valid" steps="109353"/></proof>
   </goal>
   <goal name="def&#39;vc.141" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="172915"/></proof>
+  <proof prover="2"><result status="valid" steps="153256"/></proof>
   </goal>
   <goal name="def&#39;vc.142" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="173135"/></proof>
+  <proof prover="2"><result status="valid" steps="856080"/></proof>
   </goal>
   <goal name="def&#39;vc.143" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="93880"/></proof>
+  <proof prover="1"><result status="valid" steps="72500"/></proof>
+  <proof prover="2"><result status="valid" steps="94881"/></proof>
   </goal>
   <goal name="def&#39;vc.144" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="valid" steps="105074"/></proof>
+  <proof prover="2"><result status="valid" steps="108662"/></proof>
   </goal>
   <goal name="def&#39;vc.145" proved="true">
-  <proof prover="0"><result status="valid" steps="1564"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="2"><result status="valid" steps="199774"/></proof>
   </goal>
   <goal name="def&#39;vc.146" proved="true">
-  <proof prover="0"><result status="valid" steps="1555"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
-  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="2"><result status="valid" steps="341275"/></proof>
   </goal>
  </transf>
  </goal>

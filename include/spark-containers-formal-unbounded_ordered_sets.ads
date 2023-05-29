@@ -76,13 +76,6 @@ is
    pragma Assertion_Policy (Contract_Cases => Ignore);
    pragma Annotate (CodePeer, Skip_Analysis);
 
-   --  Convert Count_Type to Big_Interger
-
-   package Conversions is new Signed_Conversions (Int => Count_Type);
-
-   function Big (J : Count_Type) return Big_Integer renames
-     Conversions.To_Big_Integer;
-
    function Equivalent_Elements (Left, Right : Element_Type) return Boolean
    with
      Global => null,
@@ -204,7 +197,7 @@ is
          Item      : Element_Type) return Boolean
       with
         Global => null,
-        Pre    => Lst <= E.Length (Container),
+        Pre    => Lst <= E.Last (Container),
         Post   =>
           E_Bigger_Than_Range'Result =
             (for all I in Fst .. Lst => E.Get (Container, I) < Item);
@@ -217,7 +210,7 @@ is
          Item      : Element_Type) return Boolean
       with
         Global => null,
-        Pre    => Lst <= E.Length (Container),
+        Pre    => Lst <= E.Last (Container),
         Post   =>
           E_Smaller_Than_Range'Result =
             (for all I in Fst .. Lst => Item < E.Get (Container, I));
@@ -229,18 +222,18 @@ is
          Position  : Count_Type) return Boolean
       with
         Global => null,
-        Pre    => Position - 1 <= E.Length (Container),
+        Pre    => Position - 1 <= E.Last (Container),
         Post   =>
           E_Is_Find'Result =
 
             ((if Position > 0 then
                 E_Bigger_Than_Range (Container, 1, Position - 1, Item))
 
-             and (if Position < E.Length (Container) then
+             and (if Position < E.Last (Container) then
                     E_Smaller_Than_Range
                       (Container,
                        Position + 1,
-                       E.Length (Container),
+                       E.Last (Container),
                        Item)));
       pragma Annotate (GNATprove, Inline_For_Proof, E_Is_Find);
 
@@ -253,7 +246,7 @@ is
         Global => null,
         Post =>
           (if Find'Result > 0 then
-             Find'Result <= E.Length (Container)
+             Find'Result <= E.Last (Container)
                and Equivalent_Elements (Item, E.Get (Container, Find'Result)));
 
       function E_Elements_Equal
@@ -265,7 +258,7 @@ is
         Global => null,
         Post   =>
           E_Elements_Equal'Result =
-            (for all I in 1 .. E.Length (Left) =>
+            (for all I in 1 .. E.Last (Left) =>
               Find (Right, E.Get (Left, I)) > 0
                 and then E.Get (Right, Find (Right, E.Get (Left, I))) =
                          E.Get (Left, I));
@@ -280,7 +273,7 @@ is
         Global => null,
         Post   =>
           E_Elements_Included'Result =
-            (for all I in 1 .. E.Length (Left) =>
+            (for all I in 1 .. E.Last (Left) =>
                Find (Right, E.Get (Left, I)) > 0
                  and then Element_Logic_Equal
                     (E.Get (Right, Find (Right, E.Get (Left, I))),
@@ -297,7 +290,7 @@ is
         Global => null,
         Post   =>
           E_Elements_Included'Result =
-            (for all I in 1 .. E.Length (Left) =>
+            (for all I in 1 .. E.Last (Left) =>
               (if M.Contains (Model, E.Get (Left, I)) then
                  Find (Right, E.Get (Left, I)) > 0
                    and then Element_Logic_Equal
@@ -317,7 +310,7 @@ is
         Global => null,
         Post   =>
           E_Elements_Included'Result =
-            (for all I in 1 .. E.Length (Container) =>
+            (for all I in 1 .. E.Last (Container) =>
               (if M.Contains (Model, E.Get (Container, I)) then
                  Find (Left, E.Get (Container, I)) > 0
                    and then Element_Logic_Equal
@@ -433,7 +426,7 @@ is
 
         Ghost,
         Global => null,
-        Post   => M.Length (Model'Result) = Big (Length (Container));
+        Post   => M.Length (Model'Result) = E.Big (Length (Container));
 
       function Elements (Container : Set) return E.Sequence with
       --  The Elements sequence represents the underlying list structure of
@@ -443,7 +436,7 @@ is
         Ghost,
         Global => null,
         Post   =>
-          E.Length (Elements'Result) = Length (Container)
+          E.Last (Elements'Result) = Length (Container)
 
             --  It only contains keys contained in Model
 
@@ -1105,9 +1098,9 @@ is
        Length (Source) - Length (Target and Source) <=
          Count_Type'Last - Length (Target),
      Post   =>
-       Big (Length (Target)) = Big (Length (Target)'Old)
+       E.Big (Length (Target)) = E.Big (Length (Target)'Old)
          - M.Num_Overlaps (Model (Target)'Old, Model (Source))
-         + Big (Length (Source))
+         + E.Big (Length (Source))
 
          --  Elements already in Target are still in Target
 
@@ -1153,9 +1146,9 @@ is
      Global => null,
      Pre    => Length (Left) <= Count_Type'Last - Length (Right),
      Post   =>
-       Big (Length (Union'Result)) = Big (Length (Left))
+       E.Big (Length (Union'Result)) = E.Big (Length (Left))
          - M.Num_Overlaps (Model (Left), Model (Right))
-         + Big (Length (Right))
+         + E.Big (Length (Right))
 
          --  Elements of Left and Right are in the result of Union
 
@@ -1191,7 +1184,7 @@ is
    procedure Intersection (Target : in out Set; Source : Set) with
      Global => null,
      Post   =>
-       Big (Length (Target)) =
+       E.Big (Length (Target)) =
          M.Num_Overlaps (Model (Target)'Old, Model (Source))
 
          --  Elements of Target were already in Target
@@ -1226,7 +1219,7 @@ is
    function Intersection (Left, Right : Set) return Set with
      Global => null,
      Post   =>
-       Big (Length (Intersection'Result)) =
+       E.Big (Length (Intersection'Result)) =
          M.Num_Overlaps (Model (Left), Model (Right))
 
          --  Elements in the result of Intersection are in Left and Right
@@ -1254,7 +1247,7 @@ is
    procedure Difference (Target : in out Set; Source : Set) with
      Global => null,
      Post   =>
-       Big (Length (Target)) = Big (Length (Target)'Old) -
+       E.Big (Length (Target)) = E.Big (Length (Target)'Old) -
          M.Num_Overlaps (Model (Target)'Old, Model (Source))
 
          --  Elements of Target were already in Target
@@ -1289,7 +1282,7 @@ is
    function Difference (Left, Right : Set) return Set with
      Global => null,
      Post   =>
-       Big (Length (Difference'Result)) = Big (Length (Left)) -
+       E.Big (Length (Difference'Result)) = E.Big (Length (Left)) -
          M.Num_Overlaps (Model (Left), Model (Right))
 
          --  Elements of the result of Difference are in Left
@@ -1324,9 +1317,9 @@ is
        Length (Source) - Length (Target and Source) <=
          Count_Type'Last - Length (Target) + Length (Target and Source),
      Post   =>
-       Big (Length (Target)) = Big (Length (Target)'Old) -
+       E.Big (Length (Target)) = E.Big (Length (Target)'Old) -
          2 * M.Num_Overlaps (Model (Target)'Old, Model (Source)) +
-         Big (Length (Source))
+         E.Big (Length (Source))
 
          --  Elements of the difference were not both in Source and in Target
 
@@ -1363,9 +1356,9 @@ is
      Global => null,
      Pre    => Length (Left) <= Count_Type'Last - Length (Right),
      Post   =>
-       Big (Length (Symmetric_Difference'Result)) = Big (Length (Left)) -
+       E.Big (Length (Symmetric_Difference'Result)) = E.Big (Length (Left)) -
          2 * M.Num_Overlaps (Model (Left), Model (Right)) +
-         Big (Length (Right))
+         E.Big (Length (Right))
 
          --  Elements of the difference were not both in Left and Right
 
@@ -1635,7 +1628,7 @@ is
             Key       : Key_Type) return Boolean
          with
            Global => null,
-           Pre    => Lst <= E.Length (Container),
+           Pre    => Lst <= E.Last (Container),
            Post   =>
              E_Bigger_Than_Range'Result =
                (for all I in Fst .. Lst =>
@@ -1649,7 +1642,7 @@ is
             Key       : Key_Type) return Boolean
          with
            Global => null,
-           Pre    => Lst <= E.Length (Container),
+           Pre    => Lst <= E.Last (Container),
            Post   =>
              E_Smaller_Than_Range'Result =
                (for all I in Fst .. Lst =>
@@ -1662,18 +1655,18 @@ is
             Position  : Count_Type) return Boolean
          with
            Global => null,
-           Pre    => Position - 1 <= E.Length (Container),
+           Pre    => Position - 1 <= E.Last (Container),
            Post   =>
              E_Is_Find'Result =
 
                ((if Position > 0 then
                    E_Bigger_Than_Range (Container, 1, Position - 1, Key))
 
-                     and (if Position < E.Length (Container) then
+                     and (if Position < E.Last (Container) then
                         E_Smaller_Than_Range
                           (Container,
                            Position + 1,
-                           E.Length (Container),
+                           E.Last (Container),
                            Key)));
          pragma Annotate (GNATprove, Inline_For_Proof, E_Is_Find);
 
@@ -1686,7 +1679,7 @@ is
              Global                  => null,
              Post                    =>
                (if Find'Result > 0 then
-                  Find'Result <= E.Length (Container)
+                  Find'Result <= E.Last (Container)
                     and Equivalent_Keys
                       (Key, Generic_Keys.Key (E.Get (Container, Find'Result)))
                     and E_Is_Find (Container, Key, Find'Result));

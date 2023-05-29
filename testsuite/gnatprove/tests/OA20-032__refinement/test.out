@@ -123,7 +123,7 @@ patris.ads:249:16: info: postcondition proved (CVC5: 2 VC)
 patris.ads:255:06: info: data dependencies proved
 patris.ads:258:16: info: postcondition proved (CVC5: 2 VC)
 patris.ads:263:06: info: data dependencies proved
-patris.ads:264:14: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC)
+patris.ads:266:14: medium: postcondition might fail, cannot prove Valid_Configuration
 patris.ads:271:06: info: data dependencies proved
 patris.ads:273:14: info: postcondition proved (CVC5: 1 VC)
 patris.ads:276:07: info: initialization of "Redraw_Board" proved

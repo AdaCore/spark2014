@@ -31,5 +31,5 @@ test_bad.adb:185:09: warning: Always_Return annotation is useless
 test_bad.adb:185:09: warning: function "P" has implicit Always_Return annotation
 test_bad.adb:190:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test_bad.adb:196:17: info: postcondition proved (CVC5: 1 VC)
-test_bad.adb:201:17: info: postcondition proved (CVC5: 1 VC)
+test_bad.adb:201:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function P or turning it into an expression function in its unit spec]
 test_bad.adb:210:13: medium: implicit terminating annotation on "Lemma_Prove_P" could be incorrect, loop might be nonterminating

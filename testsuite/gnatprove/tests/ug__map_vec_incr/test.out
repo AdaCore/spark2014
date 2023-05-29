@@ -15,13 +15,12 @@ map_vec_incr.adb:18:24: info: range check proved
 map_vec_incr.adb:18:29: info: precondition proved
 map_vec_incr.adb:18:60: info: range check proved
 map_vec_incr.adb:18:63: info: overflow check proved
-map_vec_incr.adb:20:10: info: loop invariant preservation proved
 map_vec_incr.adb:20:10: info: loop invariant initialization proved
+map_vec_incr.adb:20:10: info: loop invariant preservation proved
 map_vec_incr.adb:21:12: info: precondition proved
 map_vec_incr.adb:21:24: info: range check proved
 map_vec_incr.adb:21:29: info: precondition proved
 map_vec_incr.adb:21:60: info: range check proved
 map_vec_incr.adb:22:07: info: precondition proved
-map_vec_incr.adb:22:27: info: range check proved
 map_vec_incr.adb:22:30: info: precondition proved
 map_vec_incr.adb:22:45: info: overflow check proved

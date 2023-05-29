@@ -82,7 +82,8 @@ is
    function Singleton (E : Element_Type) return Set with
      Global => null,
      Pre    => E /= No_Element,
-     Post   => (for all F in Singleton'Result => Element_Logic_Equal (F, E))
+     Post   => (for all F in Singleton'Result =>
+                  Element_Logic_Equal (F, Copy_Element (E)))
      and Contains (Singleton'Result, E);
 
    --  Elements implements simple set comprehension. It constructs the set of

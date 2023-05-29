@@ -1,6 +1,6 @@
 with Ada.Containers; use Ada.Containers;
 with SPARK.Containers.Functional.Vectors;
-
+with SPARK.Big_Integers; use SPARK.Big_Integers;
 procedure Bad_Annotate with SPARK_Mode is
    procedure Do_Something is null
      with Annotate => (GNATprove, Inline_For_Proof);

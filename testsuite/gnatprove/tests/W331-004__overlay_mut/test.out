@@ -1,0 +1,20 @@
+firstbyte.adb:13:17: info: initialization of "output" proved
+firstbyte.adb:15:08: info: alignment of overlaid objects is compatible (Trivial)
+firstbyte.adb:15:08: info: object is suitable for aliasing via address clause (Trivial)
+firstbyte.adb:15:64: info: object is suitable for aliasing via address clause (Trivial)
+firstbyte.adb:15:64: info: types of aliased objects have the same size (Trivial)
+firstbyte.adb:20:15: info: add a contract to analyze it separately from calling contexts
+firstbyte.adb:20:15: info: local subprogram "temp_function2" only analyzed in the context of calls
+firstbyte.adb:26:05: info: initialization of "Tmp" proved
+firstbyte.adb:29:03: info: precondition proved (Trivial: 1 VC)
+firstbyte.adb:31:03: info: analyzing call to "temp_function2" in context
+firstbyte_err.adb:13:17: info: initialization of "output" proved
+firstbyte_err.adb:15:08: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: input must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+firstbyte_err.adb:15:08: info: object is suitable for aliasing via address clause (Trivial)
+firstbyte_err.adb:15:64: info: object is suitable for aliasing via address clause (Trivial)
+firstbyte_err.adb:15:64: info: types of aliased objects have the same size (Trivial)
+firstbyte_err.adb:20:15: info: add a contract to analyze it separately from calling contexts
+firstbyte_err.adb:20:15: info: local subprogram "temp_function2" only analyzed in the context of calls
+firstbyte_err.adb:26:05: info: initialization of "Tmp" proved
+firstbyte_err.adb:29:03: info: precondition proved (Trivial: 1 VC)
+firstbyte_err.adb:31:03: info: analyzing call to "temp_function2" in context

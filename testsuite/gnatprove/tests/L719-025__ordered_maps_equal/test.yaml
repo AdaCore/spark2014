@@ -1,4 +1,4 @@
 prove_all:
-  steps: 1200
+  steps: 6000
   prover: ["z3", "cvc5", "altergo"]
   sparklib: True

@@ -1,5 +1,6 @@
 with SPARK.Containers.Functional.Vectors;
 with SPARK.Containers.Functional.Sets;
+with SPARK.Big_Integers; use SPARK.Big_Integers;
 with Ada.Containers; use Ada.Containers;
 
 package Tree_Model with SPARK_Mode is
@@ -29,7 +30,7 @@ package Tree_Model with SPARK_Mode is
       A : Sequence;
       K : Boolean := False;
    end record
-   with Predicate => Length (A) < Max;
+   with Predicate => Length (A) < Big_Integer'(Max);
    --  Type used to model the path from the root of a tree to a given node,
    --  which may or not be in the tree:
    --    - if a node is in the tree, the corresponding path will have K = True,

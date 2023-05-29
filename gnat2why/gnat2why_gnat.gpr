@@ -42,8 +42,7 @@ project GNAT2Why_GNAT is
          when "Devel" =>
             for Global_Configuration_Pragmas use "devel.adc";
          when "Coverage" =>
-            --  ??? currently coverage requires tampering checks to be disabled
-            for Global_Configuration_Pragmas use "coverage.adc";
+            null;
          when "Production" =>
             null;
       end case;

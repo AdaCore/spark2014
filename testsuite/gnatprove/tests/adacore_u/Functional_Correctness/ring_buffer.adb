@@ -5,7 +5,7 @@ package body Ring_Buffer with SPARK_Mode is
    Length  : Length_Range;
 
    function Valid_Model return Boolean is
-     (Length = Length_Range (My_Seq.Length (Model)) and then
+     (My_Seq.Big (Length) = My_Seq.Length (Model) and then
         (for all I in Content'Range =>
              (if I in First .. Integer'Min (First + Length - 1, Max_Size)
               then Content (I) = Get (Model, I - First + 1)
@@ -13,7 +13,7 @@ package body Ring_Buffer with SPARK_Mode is
               then Content (I) = Get (Model, I + Max_Size - First + 1))));
 
    function Valid_Model (M : Model_Type) return Boolean is
-     (Length = Length_Range (My_Seq.Length (M)) and then
+     (My_Seq.Big (Length) = My_Seq.Length (M) and then
         (for all I in Content'Range =>
              (if I in First .. Integer'Min (First + Length - 1, Max_Size)
               then Content (I) = Get (M, I - First + 1)
@@ -32,7 +32,7 @@ package body Ring_Buffer with SPARK_Mode is
         Integer'Min (Length + First - 1, Max_Size);
    begin
       for J in First .. C loop
-         pragma Loop_Invariant (Length_Range (My_Seq.Length (R)) = J - First);
+         pragma Loop_Invariant (My_Seq.Length (R) = My_Seq.Big (J - First));
          pragma Loop_Invariant
            (for all I in Content'Range =>
              (if I in First .. J - 1
@@ -41,7 +41,7 @@ package body Ring_Buffer with SPARK_Mode is
       end loop;
 
       for J in 1 .. First + Length - 1 - Max_Size loop
-         pragma Loop_Invariant (Length_Range (My_Seq.Length (R)) = C - First + J);
+         pragma Loop_Invariant (My_Seq.Length (R) = My_Seq.Big (C - First + J));
          pragma Loop_Invariant
            (for all I in Content'Range =>
               (if I in First .. Integer'Min (First + Length - 1, Max_Size)

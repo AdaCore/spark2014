@@ -4,8 +4,8 @@ x86.adb:30:22: info: initialization of "N1" proved
 x86.adb:30:22: info: initialization of "N1" proved, in call inlined at x86.adb:99
 x86.adb:31:22: info: initialization of "N2" proved
 x86.adb:31:22: info: initialization of "N2" proved, in call inlined at x86.adb:99
-x86.adb:36:40: medium: assertion might fail, in call inlined at x86.adb:99
-x86.adb:47:41: medium: assertion might fail, cannot prove var1 + N1 = var2 + N2, in call inlined at x86.adb:99 [possible fix: precondition of subprogram at x86.ads:19 should mention var1 and var2]
+x86.adb:36:40: info: assertion proved (CVC5: 1 VC; altergo: 1 VC), in call inlined at x86.adb:99
+x86.adb:45:37: medium: assertion might fail, cannot prove N1 in 0 .. var1_range_size, in call inlined at x86.adb:99
 x86.adb:50:22: info: assertion proved (altergo: 2 VC), in call inlined at x86.adb:99
 x86.adb:55:20: info: loop invariant initialization proved (CVC5: 1 VC), in call inlined at x86.adb:99
 x86.adb:55:20: medium: loop invariant might not be preserved by an arbitrary iteration, in call inlined at x86.adb:99 [possible fix: precondition of subprogram at x86.ads:19 should mention var1 and var2]
@@ -17,7 +17,7 @@ x86.adb:74:37: info: assertion proved (CVC5: 3 VC; altergo: 1 VC), in call inlin
 x86.adb:75:37: info: assertion proved (CVC5: 2 VC), in call inlined at x86.adb:99
 x86.adb:77:34: info: assertion proved (CVC5: 2 VC), in call inlined at x86.adb:99
 x86.adb:79:22: info: loop invariant initialization proved (CVC5: 1 VC), in call inlined at x86.adb:99
-x86.adb:79:22: info: loop invariant preservation proved (altergo: 1 VC), in call inlined at x86.adb:99
+x86.adb:79:47: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (var1 + N1 /= var2 + J), in call inlined at x86.adb:99 [possible fix: precondition of subprogram at x86.ads:19 should mention var1 and var2]
 x86.adb:82:19: info: assertion proved (CVC5: 1 VC), in call inlined at x86.adb:99
 x86.adb:83:31: info: assertion proved (Trivial: 1 VC; altergo: 1 VC), in call inlined at x86.adb:99
 x86.adb:87:31: info: assertion proved (CVC5: 1 VC), in call inlined at x86.adb:99

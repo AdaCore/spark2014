@@ -74,8 +74,8 @@ infoflow.adb:155:31: info: index check proved (CVC5: 2 VC)
 infoflow.adb:155:31: info: overflow check proved (CVC5: 2 VC)
 infoflow.adb:156:18: info: index check proved (CVC5: 2 VC)
 infoflow.adb:156:18: info: overflow check proved (CVC5: 2 VC)
-infoflow.adb:161:07: medium: precondition might fail, cannot prove H'First = 1
-infoflow.adb:163:07: medium: precondition might fail, cannot prove H'First = 1
+infoflow.adb:161:07: medium: precondition might fail, cannot prove H'First = 1 (e.g. when H_V1 = (0 => 0) and H_V1'First = 0 and H_V1'Last = 0)
+infoflow.adb:163:07: medium: precondition might fail, cannot prove H'First = 1 (e.g. when H_V2 = (0 => 0) and H_V2'First = 0 and H_V2'Last = 0)
 infoflow.adb:172:33: info: loop invariant initialization proved (CVC5: 1 VC)
 infoflow.adb:172:33: info: loop invariant preservation proved (CVC5: 1 VC)
 infoflow.adb:173:27: medium: "A_V1" might not be initialized

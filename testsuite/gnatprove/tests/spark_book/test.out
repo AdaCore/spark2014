@@ -1557,6 +1557,6 @@ workspaces.adb:5:48: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 workspaces.adb:7:26: info: division check proved (CVC5: 1 VC)
 workspaces.adb:7:30: info: cannot unroll loop (too many loop iterations)
 workspaces.adb:8:21: info: index check proved (CVC5: 2 VC)
-workspaces.adb:9:27: high: overflow check might fail, cannot prove upper bound for (Size + 1) (e.g. when Size = Positive'Last and Workspace'First = 1 and Workspace'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4]
+workspaces.adb:9:27: medium: overflow check might fail, cannot prove upper bound for (Size + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4]
 workspaces.adb:9:32: info: index check proved (CVC5: 2 VC)
 workspaces.ads:4:13: info: implicit terminating annotation on "Generate_Workspace" has been proved, subprogram will terminate

@@ -1,0 +1,6 @@
+main.adb:4:16: info: implicit terminating annotation on "Init" has been proved, subprogram will terminate
+main.adb:5:17: warning: subprogram "Foo" has no effect
+main.adb:16:16: info: implicit terminating annotation on "Init" has been proved, subprogram will terminate
+main.adb:17:17: warning: subprogram "Foo" has no effect
+main.adb:31:23: info: data dependencies proved
+main.adb:39:04: medium: terminating annotation on "Main" could be incorrect, call to "Bar" might be nonterminating

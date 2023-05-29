@@ -10,7 +10,7 @@ harness.adb:15:04: medium: precondition might fail
 harness.adb:16:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention Y in a precondition]
 harness.adb:17:04: medium: precondition might fail
 harness.adb:18:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention Z in a precondition]
-ring_buf.adb:15:37: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+ring_buf.adb:15:37: info: range check proved (CVC5: 1 VC)
 ring_buf.adb:16:28: info: range check proved (CVC5: 2 VC)
 ring_buf.adb:24:28: medium: range check might fail, cannot prove lower bound for R.Length - 1 [reason for check: result of subtraction must fit in the target type of the assignment]
 ring_buf.ads:38:13: info: implicit terminating annotation on "To_Model" has been proved, subprogram will terminate

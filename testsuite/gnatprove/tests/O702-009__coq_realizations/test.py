@@ -48,6 +48,7 @@ def compile_coq_files():
     files_to_be_compiled = [
         "BuiltIn.v",
         "HighOrd.v",
+        "WellFounded.v",
         os.path.join("int", "Int.v"),
         os.path.join("int", "Abs.v"),
         os.path.join("int", "ComputerDivision.v"),

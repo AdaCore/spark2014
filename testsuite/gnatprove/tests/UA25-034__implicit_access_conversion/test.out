@@ -6,93 +6,90 @@ main.adb:20:07: warning: assuming "DoStuff" has no effect on global items
 main.adb:20:07: warning: no Global contract available for "DoStuff"
 main.adb:20:07: warning: no returning annotation available for "DoStuff"
 main.adb:20:20: info: pointer dereference check proved (CVC5: 1 VC)
-spark-containers-formal-unbounded_vectors.ads:42:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:44:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:46:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:287:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:287:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:287:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:291:06: info: data dependencies proved, in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:294:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:294:13: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:326:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:327:08: info: dynamic accessibility check proved (Trivial), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:331:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:333:08: info: dynamic accessibility check proved (Trivial), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:353:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:353:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:377:41: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:419:72: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:453:41: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:488:49: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:536:49: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:559:49: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:601:49: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:666:28: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:666:57: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:794:23: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:830:14: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:989:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:989:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:992:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:992:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:1002:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at main.adb:7
-spark-containers-formal-unbounded_vectors.ads:1002:13: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:50:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:268:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:314:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:351:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:351:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:354:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:364:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:364:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:492:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:497:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:498:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:498:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-functional-vectors.ads:499:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.adb:85:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.adb:94:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.adb:103:10: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:111, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:111, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:111, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:111, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:111, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:111, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:111, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:111, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:111, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:94:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at spark-containers-formal-unbounded_vectors.ads:131, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:121:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:120, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:120, in instantiation at main.adb:7
-spark-containers-parameter_checks.ads:124:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:120, in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:43:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:45:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:47:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:306:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:306:13: info: implicit terminating annotation on "Iter_Model" has been proved, subprogram will terminate, in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:306:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:310:06: info: data dependencies proved, in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:313:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:313:13: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:345:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:346:08: info: dynamic accessibility check proved (Trivial), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:350:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate, in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:352:08: info: dynamic accessibility check proved (Trivial), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:372:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:372:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:396:41: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:438:72: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:472:41: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:507:49: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:555:49: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:578:49: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:618:49: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:683:28: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:683:57: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:801:23: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:837:14: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:996:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:996:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:999:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:999:13: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:1009:13: info: during checks for quantification at spark-containers-formal-unbounded_vectors.ads:83, in instantiation at main.adb:7
+spark-containers-formal-unbounded_vectors.ads:1009:13: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:50:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:112:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:112:13: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:129:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:130:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:212:39: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:271:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:317:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:354:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:367:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:367:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:493:57: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-functional-vectors.ads:494:31: info: predicate check proved (Trivial: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.adb:85:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.adb:94:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.adb:103:10: info: precondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:125, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:125, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:125, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:125, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:125, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:125, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:125, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:125, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:125, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at spark-containers-formal-unbounded_vectors.ads:145, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:121:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_vectors.ads:134, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:122:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:134, in instantiation at main.adb:7
+spark-containers-parameter_checks.ads:124:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:134, in instantiation at main.adb:7

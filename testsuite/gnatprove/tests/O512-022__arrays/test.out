@@ -2,7 +2,7 @@ arrays.adb:5:24: info: cannot unroll loop (too many loop iterations)
 arrays.adb:6:17: medium: overflow check might fail, cannot prove upper bound for S + X (J) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 5 should mention S in a loop invariant]
 arrays.adb:14:24: info: cannot unroll loop (too many loop iterations)
 arrays.adb:15:19: info: division check proved (CVC5: 1 VC)
-arrays.adb:16:20: medium: overflow check might fail, cannot prove upper bound for C + 1 (e.g. when C = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 14 should mention C in a loop invariant]
+arrays.adb:16:20: medium: overflow check might fail, cannot prove upper bound for C + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 14 should mention C in a loop invariant]
 arrays.adb:23:09: info: range check proved (CVC5: 2 VC)
 arrays.adb:23:17: info: overflow check proved (CVC5: 2 VC)
 arrays.adb:23:17: info: range check proved (CVC5: 2 VC)

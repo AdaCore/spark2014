@@ -2,10 +2,9 @@ init_vec_zero.adb:5:11: info: postcondition proved
 init_vec_zero.adb:5:62: info: precondition proved
 init_vec_zero.adb:5:74: info: range check proved
 init_vec_zero.adb:9:07: info: precondition proved
-init_vec_zero.adb:9:27: info: range check proved
-init_vec_zero.adb:10:30: info: loop invariant initialization proved
 init_vec_zero.adb:10:30: info: loop invariant preservation proved
-init_vec_zero.adb:11:30: info: loop invariant initialization proved
+init_vec_zero.adb:10:30: info: loop invariant initialization proved
 init_vec_zero.adb:11:30: info: loop invariant preservation proved
+init_vec_zero.adb:11:30: info: loop invariant initialization proved
 init_vec_zero.adb:11:67: info: precondition proved
 init_vec_zero.adb:11:79: info: range check proved

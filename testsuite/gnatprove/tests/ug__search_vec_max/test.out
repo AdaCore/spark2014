@@ -8,17 +8,16 @@ search_vec_max.adb:7:75: info: range check proved
 search_vec_max.adb:9:11: info: precondition proved
 search_vec_max.adb:16:10: info: precondition proved
 search_vec_max.adb:17:17: info: precondition proved
-search_vec_max.adb:18:17: info: range check proved
 search_vec_max.adb:20:30: info: loop invariant initialization proved
 search_vec_max.adb:20:30: info: loop invariant preservation proved
 search_vec_max.adb:20:67: info: precondition proved
 search_vec_max.adb:20:79: info: range check proved
-search_vec_max.adb:21:30: info: loop invariant preservation proved
 search_vec_max.adb:21:30: info: loop invariant initialization proved
+search_vec_max.adb:21:30: info: loop invariant preservation proved
 search_vec_max.adb:21:68: info: precondition proved
 search_vec_max.adb:21:80: info: range check proved
-search_vec_max.adb:22:30: info: loop invariant initialization proved
 search_vec_max.adb:22:30: info: loop invariant preservation proved
+search_vec_max.adb:22:30: info: loop invariant initialization proved
 search_vec_max.adb:23:30: info: precondition proved
-search_vec_max.adb:23:30: info: loop invariant initialization proved
 search_vec_max.adb:23:30: info: loop invariant preservation proved
+search_vec_max.adb:23:30: info: loop invariant initialization proved

@@ -10,10 +10,14 @@ infeasible_access_subp.adb:14:13: info: implicit terminating annotation on "G1" 
 infeasible_access_subp.adb:14:58: info: postcondition proved (CVC5: 1 VC)
 infeasible_access_subp.adb:16:13: info: implicit terminating annotation on "G2" has been proved, subprogram will terminate
 infeasible_access_subp.adb:16:58: info: postcondition proved (CVC5: 1 VC)
-infeasible_access_subp.adb:19:49: info: postcondition of source is strong enough to imply postcondition of target (CVC5: 1 VC)
-infeasible_access_subp.adb:19:51: info: null exclusion check proved (Trivial: 1 VC)
-infeasible_access_subp.adb:25:49: info: postcondition of source is strong enough to imply postcondition of target (CVC5: 1 VC)
-infeasible_access_subp.adb:25:51: info: null exclusion check proved (Trivial: 1 VC)
+infeasible_access_subp.adb:19:46: info: postcondition of source is strong enough to imply postcondition of target (CVC5: 1 VC)
+infeasible_access_subp.adb:19:48: info: null exclusion check proved (Trivial: 1 VC)
+infeasible_access_subp.adb:20:49: info: postcondition of source is strong enough to imply postcondition of target (CVC5: 1 VC)
+infeasible_access_subp.adb:20:51: info: null exclusion check proved (Trivial: 1 VC)
+infeasible_access_subp.adb:26:46: info: postcondition of source is strong enough to imply postcondition of target (CVC5: 1 VC)
+infeasible_access_subp.adb:26:48: info: null exclusion check proved (Trivial: 1 VC)
+infeasible_access_subp.adb:27:49: info: postcondition of source is strong enough to imply postcondition of target (CVC5: 1 VC)
+infeasible_access_subp.adb:27:51: info: null exclusion check proved (Trivial: 1 VC)
 test.adb:1:11: warning: subprogram "Test" has no effect
 test.adb:8:07: info: function contract feasibility proved (CVC5: 1 VC)
 test.adb:14:07: info: function contract feasibility proved (CVC5: 1 VC)

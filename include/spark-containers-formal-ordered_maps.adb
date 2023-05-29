@@ -29,21 +29,13 @@
 with Ada.Containers.Red_Black_Trees.Generic_Bounded_Operations;
 with Ada.Containers.Red_Black_Trees.Generic_Bounded_Keys;
 
-with SPARK.Big_Integers;
-use SPARK.Big_Integers;
+with SPARK.Big_Integers; use SPARK.Big_Integers;
 
 with System; use type System.Address;
 
 package body SPARK.Containers.Formal.Ordered_Maps with
   SPARK_Mode => Off
 is
-
-   --  Convert Count_Type to Big_Interger
-
-   package Conversions is new Signed_Conversions (Int => Count_Type);
-
-   function Big (J : Count_Type) return Big_Integer renames
-     Conversions.To_Big_Integer;
 
    -----------------------------
    -- Node Access Subprograms --
@@ -576,7 +568,7 @@ is
          Key       : Key_Type) return Count_Type
       is
       begin
-         for I in 1 .. K.Length (Container) loop
+         for I in 1 .. K.Last (Container) loop
             if Equivalent_Keys (Key, K.Get (Container, I)) then
                return I;
             elsif Key < K.Get (Container, I) then
@@ -621,8 +613,8 @@ is
             end if;
          end loop;
 
-         if Position < K.Length (Container) then
-            for I in Position + 1 .. K.Length (Container) loop
+         if Position < K.Last (Container) then
+            for I in Position + 1 .. K.Last (Container) loop
                if K.Get (Container, I) < Key then
                   return False;
                end if;
@@ -773,7 +765,7 @@ is
 
          while Position /= 0 loop
             R := P.Add (R, (Node => Position), I);
-            pragma Assert (P.Length (R) = Big (I));
+            pragma Assert (P.Length (R) = K.Big (I));
             Position := Tree_Operations.Next (Container.Content, Position);
             I := I + 1;
          end loop;

@@ -30,6 +30,7 @@ with SPARK.Containers.Functional.Vectors;
 with SPARK.Containers.Functional.Maps;
 with SPARK.Containers.Parameter_Checks;
 with SPARK.Containers.Types;       use SPARK.Containers.Types;
+with SPARK.Big_Integers;           use SPARK.Big_Integers;
 
 generic
    type Element_Type is private;
@@ -146,11 +147,11 @@ is
         Global => null,
         Post   =>
           M_Elements_In_Union'Result =
-            (for all I in 1 .. M.Length (Container) =>
-              (for some J in 1 .. M.Length (Left) =>
+            (for all I in 1 .. M.Last (Container) =>
+              (for some J in 1 .. M.Last (Left) =>
                  Element_Logic_Equal
                    (Element (Container, I), Element (Left, J)))
-              or (for some J in 1 .. M.Length (Right) =>
+              or (for some J in 1 .. M.Last (Right) =>
                     Element_Logic_Equal
                       (Element (Container, I), Element (Right, J))));
       pragma Annotate (GNATprove, Inline_For_Proof, M_Elements_In_Union);
@@ -166,7 +167,7 @@ is
       --  in the slide from R_Fst to R_Lst in Right.
       with
         Global => null,
-        Pre    => L_Lst <= M.Length (Left) and R_Lst <= M.Length (Right),
+        Pre    => L_Lst <= M.Last (Left) and R_Lst <= M.Last (Right),
         Post   =>
           M_Elements_Included'Result =
             (for all I in L_Fst .. L_Lst =>
@@ -182,15 +183,15 @@ is
         Global => null,
         Post   =>
           M_Elements_Reversed'Result =
-            (M.Length (Left) = M.Length (Right)
-              and (for all I in 1 .. M.Length (Left) =>
+            (M.Last (Left) = M.Last (Right)
+              and (for all I in 1 .. M.Last (Left) =>
                      Element_Logic_Equal
                        (Element (Left, I),
-                        Element (Right, M.Length (Left) - I + 1)))
-              and (for all I in 1 .. M.Length (Left) =>
+                        Element (Right, M.Last (Left) - I + 1)))
+              and (for all I in 1 .. M.Last (Left) =>
                      Element_Logic_Equal
                        (Element (Right, I),
-                        Element (Left, M.Length (Left) - I + 1))));
+                        Element (Left, M.Last (Left) - I + 1))));
       pragma Annotate (GNATprove, Inline_For_Proof, M_Elements_Reversed);
 
       function M_Elements_Swapped
@@ -201,10 +202,10 @@ is
       --  Elements stored at X and Y are reversed in Left and Right
       with
         Global => null,
-        Pre    => X <= M.Length (Left) and Y <= M.Length (Left),
+        Pre    => X <= M.Last (Left) and Y <= M.Last (Left),
         Post   =>
           M_Elements_Swapped'Result =
-            (M.Length (Left) = M.Length (Right)
+            (M.Last (Left) = M.Last (Right)
               and Element_Logic_Equal (Element (Left, X), Element (Right, Y))
               and Element_Logic_Equal (Element (Left, Y), Element (Right, X))
               and M.Equal_Except (Left, Right, X, Y));
@@ -324,7 +325,7 @@ is
 
         Ghost,
         Global => null,
-        Post   => M.Length (Model'Result) = Length (Container);
+        Post   => M.Last (Model'Result) = Length (Container);
 
       function Positions (Container : List) return P.Map with
       --  The Positions map is used to model cursors. It only contains valid
@@ -640,7 +641,7 @@ is
                    Right  => Model (Container),
                    Fst    => P.Get (Positions (Container)'Old, Before),
                    Lst    => Length (Container)'Old,
-                   Offset => Count)
+                   Offset => M.Big (Count))
 
             --  Container contains Count times New_Item after position Before
 
@@ -765,7 +766,7 @@ is
                    Right  => Model (Container),
                    Fst    => P.Get (Positions (Container), Position),
                    Lst    => Length (Container)'Old,
-                   Offset => Count)
+                   Offset => M.Big (Count))
 
             --  Container contains Count times New_Item after position Position
 
@@ -828,7 +829,7 @@ is
                 Right     => Model (Container),
                 Fst    => 1,
                 Lst    => Length (Container)'Old,
-                Offset => Count)
+                Offset => M.Big (Count))
 
          --  Container starts with Count times New_Item
 
@@ -994,7 +995,7 @@ is
                    Right  => Model (Container)'Old,
                    Fst    => P.Get (Positions (Container)'Old, Position'Old),
                    Lst    => Length (Container),
-                   Offset => Count)
+                   Offset => M.Big (Count))
 
             --  Count cursors have been removed from Container at Position
 
@@ -1045,7 +1046,7 @@ is
                    Right  => Model (Container)'Old,
                    Fst    => 1,
                    Lst    => Length (Container),
-                   Offset => Count)
+                   Offset => M.Big (Count))
 
             --  The first Count cursors have been removed from Container
 
@@ -1228,7 +1229,7 @@ is
                  Right  => Model (Target),
                  Fst    => P.Get (Positions (Target)'Old, Before),
                  Lst    => Length (Target)'Old,
-                 Offset => Length (Source)'Old)
+                 Offset => M.Big (Length (Source)'Old))
 
           --  Cursors have been inserted at position Before in Target
 
@@ -1702,8 +1703,8 @@ is
            Global => null,
            Post   =>
              M_Elements_Sorted'Result =
-               (for all I in 1 .. M.Length (Container) =>
-                 (for all J in I .. M.Length (Container) =>
+               (for all I in 1 .. M.Last (Container) =>
+                 (for all J in I .. M.Last (Container) =>
                    not (Element (Container, J) < Element (Container, I))));
          pragma Annotate (GNATprove, Inline_For_Proof, M_Elements_Sorted);
 

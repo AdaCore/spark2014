@@ -40,7 +40,7 @@ procedure Test_Borrow with SPARK_Mode is
      Import,
      Contract_Cases =>
        (Length (X) <= To_Big_Integer (Positive'Last) =>
-          To_Integer (Length (X)) = Integer (Length (Model'Result))
+          Length (X) = Length (Model'Result)
         and then (for all I in 1 .. To_Integer (Length (X)) =>
             Get (X, I) = Get (Model'Result, I)),
         others                                       =>

@@ -84,14 +84,11 @@ package Gnat2Why.Subprograms is
    --  related to the absence of run-time errors in E.
 
    procedure Generate_VCs_For_Subprogram
-     (E                      : Callable_Kind_Id;
-      Th                     : Theory_UC;
-      Prog_Name              : W_Identifier_Id;
-      Is_Access_Subp_Wrapper : Boolean := False);
+     (E          : Callable_Kind_Id;
+      Th         : Theory_UC;
+      Prog_Name  : W_Identifier_Id);
    --  Same as above except that it does not create its own theory but uses an
-   --  existing one. Is_Access_Subp_Wrapper should be True for wrappers of
-   --  access-to-subprogram types so a feasibility check is generated on
-   --  functions.
+   --  existing one.
 
    procedure Generate_VCs_For_Package_Elaboration (E : E_Package_Id);
    --  Generate Why code from which Why VC generator will generate all VCs
@@ -197,14 +194,13 @@ private
    --  Emit an axiom for the postcondition of E.
 
    procedure Generate_Subprogram_Program_Fun
-     (Th                     : Theory_UC;
-      Dispatch_Th            : Theory_UC := Empty_Theory;
-      E                      : Callable_Kind_Id;
-      Prog_Id                : W_Identifier_Id;
-      Spec_Binders           : Binder_Array := Binder_Array'(1 .. 0 => <>);
-      Is_Access_Subp_Wrapper : Boolean := False;
-      Specialization_Module  : Symbol := No_Symbol;
-      More_Reads             : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set);
+     (Th                    : Theory_UC;
+      Dispatch_Th           : Theory_UC := Empty_Theory;
+      E                     : Callable_Kind_Id;
+      Prog_Id               : W_Identifier_Id;
+      Spec_Binders          : Binder_Array := Binder_Array'(1 .. 0 => <>);
+      Specialization_Module : Symbol := No_Symbol;
+      More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set);
    --  @param Th theory in which the program functions should be declared
    --  @param Dispatch_Th if E is a dispatching operation, specific theory for
    --    its dispatch functions.
@@ -212,8 +208,6 @@ private
    --  @param Prog_Id name of the program function
    --  @param Spec_Binders special binders to be used in addition to normal
    --    binders for the subprogram.
-   --  @param Is_Access_Subp_Wrapper true if we are generating a function for
-   --    an access-to-subprogram type through its wrapper.
    --  @param Specialization_Module name of the specialization module in
    --    which the symbols are generated. It is empty if we are not generating
    --    code for a subprogram annotated with higher order specialization.
@@ -225,31 +219,24 @@ private
    --  be called before calling E's program function.
 
    procedure Generate_Axiom_For_Post
-     (Th                     : Theory_UC;
-      Dispatch_Th            : Theory_UC := Empty_Theory;
-      E                      : Callable_Kind_Id;
-      Spec_Binders           : Binder_Array := (1 .. 0 => <>);
-      Spec_Guard             : W_Pred_Id := True_Pred;
-      Is_Access_Subp_Wrapper : Boolean := False;
-      Specialization_Module  : Symbol := No_Symbol;
-      More_Reads             : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
-   with Pre => Is_Access_Subp_Wrapper
-     or else Ekind (E) = E_Subprogram_Type
+     (Th                    : Theory_UC;
+      Dispatch_Th           : Theory_UC := Empty_Theory;
+      E                     : Callable_Kind_Id;
+      Spec_Binders          : Binder_Array := (1 .. 0 => <>);
+      Spec_Guard            : W_Pred_Id := True_Pred;
+      Specialization_Module : Symbol := No_Symbol;
+      More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
+   with Pre => Ekind (E) = E_Subprogram_Type
      or else (Is_True_Boolean (+Spec_Guard) and Spec_Binders'Length = 0);
    --  @param Th theory in which the axioms should be generated
    --  @param Dispatch_Th if E is a dispatching operation, specific theory for
    --    its dispatch axioms.
    --  @param E entry or subprogram or subprogram type entity
-   --  @param Ent_For_Name entity to use to get the name of the logic Id for
-   --    E. It maybe different from E for subprogram types for which the
-   --    frontend introduces a wrapper if they have contracts.
    --  @param Spec_Binders specialized binders to be used in addition to normal
    --    binders for the subprogram.
    --  @param Spec_Guard specialized predicate which should be equivalent to
    --    the post of E. In the general case, this predicate is just True and
    --    the axiom states that the post always holds.
-   --  @param Is_Access_Subp_Wrapper true if we are generating axioms for
-   --    an access-to-subprogram type through its wrapper.
    --  @param Specialization_Module name of the specialization module in
    --    which the symbols are generated. It is empty if we are not generating
    --    code for a function annotated with higher order specialization.

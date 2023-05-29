@@ -731,9 +731,12 @@ only part of a program:
 * [ADA_PRIVATE_TYPES]
   Private types whose full view is not analyzed, yet are used in
   SPARK code, need to comply with the implicit or explicit contracts used by
-  GNATprove to analyze references to these types. This concerns private types
-  and private type extensions declared in a package with a
-  ``pragma SPARK_Mode (Off);`` in its private type.
+  GNATprove to analyze references to these types. This concerns:
+
+  * private types and private type extensions declared in a package with a
+    ``pragma SPARK_Mode (Off);`` in its private part,
+
+  * type completions in a non-SPARK package body.
 
   The (explicit or implicit) type contract to check is made up of:
 
@@ -819,8 +822,12 @@ only part of a program:
     unless the aliases introduced are compatible with assumption
     [SPARK_ALIASING_ADDRESS])
 
-  * the additional validity constraints for parameters at
-    the end of the subprogram as described in [ADA_EXTERNAL].
+  * parameter modes - in particular, parameters of
+    mode *in* which are not considered to be variable should not be modified,
+    including the values designated by their potential access-to-variable
+    subcomponents, and parameters of mode *out* which are not subjected to
+    relaxed initialization (see :ref:`Aspect Relaxed_Initialization`) should be
+    entirely initialized.
 
   Note that this also applies to subprograms which are called indirectly
   from SPARK code, either through a dispatching call or through a call to

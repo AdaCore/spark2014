@@ -3382,8 +3382,8 @@ package body Gnat2Why.Expr is
 
                --  Otherwise, we go through the expression if the actual is not
                --  an identifier, if aliasing can occur, if the formal has
-               --  asynchronous writers, or if it has a "by copy" type and
-               --  Subp might raise exceptions.
+               --  asynchronous writers, if it has a "by copy" type and Subp
+               --  might raise exceptions, or if the actual should be havoc'ed.
 
                else
                  (Present (Actual)
@@ -3391,6 +3391,7 @@ package body Gnat2Why.Expr is
                   and then not Aliasing
                   and then not
                     Has_Async_Writers (Direct_Mapping_Id (Formal))
+                  and then not Needs_Havoc
                   and then not (Exc_Exit and then By_Copy (Formal))));
 
             Subdomain     : constant EW_Domain :=
@@ -6013,33 +6014,14 @@ package body Gnat2Why.Expr is
                Do_Check => No_Checks));
       end;
 
-      --  Handle the initialization flag on the actual if any
+      --  We only have an initialization flag for scalars which are always
+      --  either by copy or by reference.
 
-      if Is_Simple_Actual (Actual) then
-         declare
-            Actual_Binder : constant Item_Type :=
-              Ada_Ent_To_Why.Element
-                (Symbol_Table, Entity (Actual));
-
-         begin
-            if Actual_Binder.Init.Present then
-
-               --  Assign the initialization flag if any. The parameter
-               --  might not be initialized.
-
-               Append
-                 (Store,
-                  New_Assignment
-                    (Ada_Node => Actual,
-                     Name     => Actual_Binder.Init.Id,
-                     Value    =>
-                       New_Any_Expr
-                         (Return_Type => EW_Bool_Type,
-                          Labels      => Symbol_Sets.Empty_Set),
-                     Typ      => EW_Bool_Type,
-                     Labels   => Symbol_Sets.Empty_Set));
-            end if;
-         end;
+      if Is_Simple_Actual (Actual)
+        and then Ada_Ent_To_Why.Element
+          (Symbol_Table, Entity (Actual)).Init.Present
+      then
+         raise Program_Error;
       end if;
 
       --  If discriminants are mutable we need to assume preservation
@@ -6050,9 +6032,9 @@ package body Gnat2Why.Expr is
         and then Pattern.Discrs.Binder.Mutable
       then
          declare
-            Discr_Name  : constant W_Identifier_Id :=
+            Discr_Name : constant W_Identifier_Id :=
               Pattern.Discrs.Binder.B_Name;
-            Assumption  : W_Pred_Id;
+            Assumption : W_Pred_Id;
          begin
             --  If the formal has mutable discriminants,
             --  store in Assumption that its discriminants
@@ -6478,7 +6460,9 @@ package body Gnat2Why.Expr is
                      New_Assignment
                        (Ada_Node => Actual,
                         Name     => Actual_Binder.Init.Id,
-                        Value    => +Pattern.Init.Id,
+                        Value    => New_Deref
+                          (Right => Pattern.Init.Id,
+                           Typ   => Get_Typ (Pattern.Init.Id)),
                         Typ      => EW_Bool_Type,
                         Labels   => Symbol_Sets.Empty_Set));
 
@@ -25040,18 +25024,10 @@ package body Gnat2Why.Expr is
       Selector : Selection_Kind := Why.Inter.Standard)
       return Boolean
    is
-      Subp : constant Entity_Id :=
-        (if Ekind (E) = E_Subprogram_Type
-           and then Present (Access_Subprogram_Wrapper (E))
-         then Access_Subprogram_Wrapper (E)
-         else E);
-      --  To retrieve the contract associated to a subprogram type, we need
-      --  to go through the associated wrapper.
-
       Has_Precondition : constant Boolean :=
-        Has_Contracts (Subp, Pragma_Precondition);
+        Has_Contracts (E, Pragma_Precondition);
       Has_Classwide_Or_Inherited_Precondition : constant Boolean :=
-        Has_Contracts (Subp, Pragma_Precondition,
+        Has_Contracts (E, Pragma_Precondition,
                        Classwide => True,
                        Inherited => True);
    begin

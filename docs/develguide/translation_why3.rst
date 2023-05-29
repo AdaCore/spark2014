@@ -4775,6 +4775,148 @@ variables it might contain cannot have been modified since the beginning of the
 subprogram. Recursive calls in nested packages declared anywhere else in the
 subprogram are not supported, and an unprovable check is generated instead.
 
+Exceptions
+^^^^^^^^^^
+All Ada exceptions are translated into a single Why3 exception called
+``Ada__exc`` and declared in ``Main``. This exception takes a mathematical
+integer as a parameter. The module ``Standard__ada_exceptions`` introduces
+a constant with a disctinct integer value per Ada exception visible form the
+analyzed unit (see ``SPARK_Util.Register_Exception`` and
+``Gnat2why.Decls.Translate_Exceptions``).  This constant which will be
+used to raise a particular Ada exception. As opposed to defining a Why3
+exception per Ada exception, this schema has the advantage of making it easy
+to translate a handler or an expectional case with the ``others`` choice
+(Why3 does not have an equivalent construct, so all the possible exceptions
+should be listed). As an example, consider the following Ada program:
+
+.. code-block:: ada
+
+   E : exception;
+
+   procedure Raise_E (B : Boolean) with
+     Exceptional_Cases => (others => B);
+
+   procedure Raise_E (B : Boolean) is
+   begin
+      if B then
+         raise E;
+      end if;
+   end Raise_E;
+
+The module ``Standard__ada_exceptions`` introduces a constant for the exception
+``E``. The raise statement in ``Raise_E`` is translated of a raise of the
+Why3 exception ``Ada__exc`` with the value ``main__e``. To check the exceptional
+cases, the body of ``Raise_E`` is enclosed in a try block. It catches
+``Ada__exc`` and checks that the specific postcondition holds before reraising
+the exception.
+
+.. code-block:: whyml
+
+  module Standard__ada_exceptions
+    val function main__e : int
+      ensures { result = (1 : int) }
+  end
+
+  (* Body of Raise_E *)
+  let def (_ : unit)
+    raises { Ada__exc }
+  =
+    try
+      try
+        if Main__raise_e__b.b then
+          raise Ada__exc Standard__ada_exceptions.main__e
+        else ();
+        raise Return__exc
+      with Return__exc -> ()
+      end;
+    with Ada__exc exc ->
+      assert { Main__raise_e__b.b = True };
+      raise Ada__exc exc
+    end
+
+Exception handlers are translated in a similar way. Unexpected exceptions,
+that is, exceptions which are neither handled in a handler nor mentioned in
+the Exceptional_Cases aspect of the enclosing procedure if any, are not
+translated as raises in Why3 but as ``absurd``, in order to prove that they
+never occur. For example, here is how the body of ``Raise_E`` would be
+translated if we removed the exceptional cases from its declaration:
+
+.. code-block:: whyml
+
+  (* Body of Raise_E *)
+  let def (_ : unit)
+  =
+    try
+      if Main__raise_e__b.b then
+        absurd
+      else ();
+      raise Return__exc
+    with Return__exc -> ()
+    end
+
+Calling a procedure annotated with exceptional cases can also raise an
+exception. The program function generated for such procedures uses the
+exceptional contracts of Why3 to specify the cases where an Ada exception
+might be raised. Here is the program function generated for ``Raise_E``:
+
+.. code-block:: whyml
+
+  val raise_e (param__b: bool) : unit
+    raises { Ada__exc exc -> param__b = True }
+
+When such a procedure is called, the exception ``Ada__exc`` is caught. If the
+Ada exception is expected, then the exception is raised again. Otherwise, an
+``absurd`` is generated to make sure that the path is never reached. As an
+example, consider the following procedure which calls ``Raise_E``:
+
+.. code-block:: ada
+
+   procedure Call_Raise_E (B : Boolean) is
+   begin
+      Raise_E (B);
+   exception
+      when E =>
+         pragma Assert (B);
+   end Call_Raise_E;
+
+Here is how it is translated into WhyMl. As the exceptional contract of
+``Raise_E`` does not specify which exception is raised, the use of ``absurd``
+in the else branch of the conditional will result in a failed verification
+condition. If post processing is required after the call to store the parameters
+back in particular, the post processing will be introduced before the exception
+is reraised after the call. Note that by-copy parameters are not copied back on
+exceptional exits. Parameters which are neither by-copy nor by-reference are
+simply havoc'ed. They should not be considered as initialized.
+
+.. code-block:: whyml
+
+  (* Body of Call_Raise_E *)
+  let def (_ : unit)
+  =
+    try
+      try
+        try
+          Main__raise_e___axiom.raise_e Main__call_raise_e__b.b
+        with Ada__exc exc ->
+          if exc = Standard__ada_exceptions.main__e then
+            raise Ada__exc exc
+          else absurd
+        end
+      with Ada__exc exc ->
+        if exc = Standard__ada_exceptions.main__e then
+          assert { Main__call_raise_e__b.b }
+        else ()
+      end;
+      raise Return__exc
+    with Return__exc -> ()
+    end
+
+This example also demonstrates the translation of exception handlers. Note that
+all Ada exceptions are caught independently of the actual choices in the Ada
+handler. If there are some expected Ada exceptions which should not have been
+caught, they are reraised in the else branch. It is not the case in this example
+as there are no other expected exceptions in ``Call_Raise_E``.
+
 Expressions
 -----------
 

@@ -694,8 +694,8 @@ is
          Right : E.Sequence) return Boolean
       is
       begin
-         for I in 1 .. E.Length (Left) loop
-            if not E.Contains (Right, 1, E.Length (Right), E.Get (Left, I))
+         for I in 1 .. E.Last (Left) loop
+            if not E.Contains (Right, 1, E.Last (Right), E.Get (Left, I))
             then
                return False;
             end if;
@@ -713,7 +713,7 @@ is
          Right : E.Sequence) return Boolean
       is
       begin
-         for I in 1 .. E.Length (Left) loop
+         for I in 1 .. E.Last (Left) loop
             declare
                J : constant Count_Type :=
                  E.Find (Right, E.Get (Left, I));
@@ -736,7 +736,7 @@ is
          Right : E.Sequence) return Boolean
       is
       begin
-         for I in 1 .. E.Length (Left) loop
+         for I in 1 .. E.Last (Left) loop
             declare
                Item : constant Element_Type := E.Get (Left, I);
             begin
@@ -765,7 +765,7 @@ is
          Right     : E.Sequence) return Boolean
       is
       begin
-         for I in 1 .. E.Length (Container) loop
+         for I in 1 .. E.Last (Container) loop
             declare
                Item : constant Element_Type := E.Get (Container, I);
             begin
@@ -814,8 +814,8 @@ is
             end if;
          end loop;
 
-         if Position < E.Length (Container) then
-            for I in Position + 1 .. E.Length (Container) loop
+         if Position < E.Last (Container) then
+            for I in Position + 1 .. E.Last (Container) loop
                if E.Get (Container, I) < Item then
                   return False;
                end if;
@@ -885,7 +885,7 @@ is
          Item      : Element_Type) return Count_Type
       is
       begin
-         for I in 1 .. E.Length (Container) loop
+         for I in 1 .. E.Last (Container) loop
             if Equivalent_Elements (Item, E.Get (Container, I)) then
                return I;
             end if;
@@ -913,8 +913,8 @@ is
       begin
          for C of P_Left loop
             if not P.Has_Key (P_Right, C)
-              or else P.Get (P_Left,  C) > E.Length (E_Left)
-              or else P.Get (P_Right, C) > E.Length (E_Right)
+              or else P.Get (P_Left,  C) > E.Last (E_Left)
+              or else P.Get (P_Right, C) > E.Last (E_Right)
               or else not Element_Logic_Equal
                 (E.Get (E_Left,  P.Get (P_Left,  C)),
                  E.Get (E_Right, P.Get (P_Right, C)))
@@ -941,8 +941,8 @@ is
          for C of P_Left loop
             if C /= Position
               and (not P.Has_Key (P_Right, C)
-                    or else P.Get (P_Left,  C) > E.Length (E_Left)
-                    or else P.Get (P_Right, C) > E.Length (E_Right)
+                    or else P.Get (P_Left,  C) > E.Last (E_Left)
+                    or else P.Get (P_Right, C) > E.Last (E_Right)
                     or else not Element_Logic_Equal
                      (E.Get (E_Left,  P.Get (P_Left,  C)),
                       E.Get (E_Right, P.Get (P_Right, C))))
@@ -1041,7 +1041,7 @@ is
 
          while Position /= 0 loop
             R := P.Add (R, (Node => Position), I);
-            pragma Assert (P.Length (R) = Big (I));
+            pragma Assert (P.Length (R) = E.Big (I));
             Position := Tree_Operations.Next (Container.Content.all, Position);
             I := I + 1;
          end loop;
@@ -1261,8 +1261,8 @@ is
                end if;
             end loop;
 
-            if Position < E.Length (Container) then
-               for I in Position + 1 .. E.Length (Container) loop
+            if Position < E.Last (Container) then
+               for I in Position + 1 .. E.Last (Container) loop
                   if Generic_Keys.Key (E.Get (Container, I)) < Key then
                      return False;
                   end if;
@@ -1299,7 +1299,7 @@ is
             Key       : Key_Type) return Count_Type
          is
          begin
-            for I in 1 .. E.Length (Container) loop
+            for I in 1 .. E.Last (Container) loop
                if Equivalent_Keys
                    (Key, Generic_Keys.Key (E.Get (Container, I)))
                then

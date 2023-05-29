@@ -523,10 +523,8 @@ package body Flow_Generated_Globals.Partial is
       end if;
 
       --  We register the following:
-      --  * subprograms which contain at least one loop that may not terminate
+      --  * subprograms which contain constructs that may not terminate
       --  * procedures annotated with No_Return
-      --  * subprograms which call predefined procedures with No_Return
-      --  * subprograms with calls via access-to-subprogram
 
       --  ??? This flag is only meaningful for functions, procedures, entries
       --  and non-library-level packages, but meaningless for tasks and
@@ -537,14 +535,9 @@ package body Flow_Generated_Globals.Partial is
          (FA.Kind = Kind_Package
           and then Entity_Body_In_SPARK (FA.Spec_Entity)))
           and then
-        (FA.Has_Potentially_Nonterminating_Loops
+        (not FA.Has_Only_Terminating_Constructs
            or else
-         No_Return (E)
-           or else
-         (for some Callee of FA.Direct_Calls =>
-             Ekind (Callee) = E_Subprogram_Type
-               or else
-             (Is_Ignored_Internal (Callee) and then No_Return (Callee))));
+         No_Return (E));
 
       Contr.No_Body := False;
 

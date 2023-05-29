@@ -1,5 +1,5 @@
 main.adb:5:20: info: initialization of "Y" proved
 main.adb:6:07: info: initialization of "Hi" proved
 main.adb:10:24: info: unrolling loop
-main.adb:11:17: medium: overflow check might fail, cannot prove lower bound for Y + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+main.adb:11:17: medium: overflow check might fail, cannot prove upper bound for Y + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 main.adb:16:04: info: precondition proved (Trivial: 1 VC)

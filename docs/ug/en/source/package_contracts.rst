@@ -558,6 +558,28 @@ can be written equivalently:
            Effective_Writes; state
            Effective_Reads; state
 
+Initialization of Volatile Variables and Variables with Address Clauses
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For volatile variables and imported variables with address clauses, |GNATprove|
+assumes that the object is initialized. The following code does not raise
+errors about access to uninitialized data, and is proved. It does, however,
+raise several warnings on the object ``Y`` with an address clause, as it is not
+a precisely supported address clause.
+
+.. code-block:: ada
+
+   X : Natural with Volatile;
+
+   subtype Even is Natural with Predicate => Even mod 2 = 0;
+
+   procedure Volatile_Init is
+      Y : Even with Address => System'To_Address (16#DEADBEAF#), Import;
+      Tmp : Integer := X;
+   begin
+      pragma Assert (Y mod 2 = 0);
+   end P;
+
 
 External State Abstraction
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

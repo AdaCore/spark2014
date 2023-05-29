@@ -74,7 +74,7 @@ victor_divmod_rules.adb:175:34: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:183:11: info: flow dependencies proved
 victor_divmod_rules.adb:184:45: high: divide by zero might fail (e.g. when Y = 0) [possible fix: use "and then" instead of "and" in precondition]
 victor_divmod_rules.adb:185:11: warning: postcondition does not check the outcome of calling "DivMod_16"
-victor_divmod_rules.adb:185:22: medium: postcondition might fail
+victor_divmod_rules.adb:185:22: info: postcondition proved (CVC5: 1 VC)
 victor_divmod_rules.adb:185:24: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:185:34: info: division check proved (CVC5: 1 VC)
 victor_divmod_rules.adb:193:11: info: flow dependencies proved

@@ -67,11 +67,16 @@ procedure Test_Hashed_Maps with SPARK_Mode is
       pragma Assert (Key (M, F) = 3);
    end Test;
 
-   M : aliased Map (100, Default_Modulus (100));
+   procedure Do_Test is
+      M : aliased Map (100, Default_Modulus (100));
+   begin
+      Insert (M, 1, 1);
+      Insert (M, 2, 2);
+      Insert (M, 3, 3);
+      Insert (M, 4, 4);
+      Test (M);
+   end;
+
 begin
-   Insert (M, 1, 1);
-   Insert (M, 2, 2);
-   Insert (M, 3, 3);
-   Insert (M, 4, 4);
-   Test (M);
+   null;
 end Test_Hashed_Maps;

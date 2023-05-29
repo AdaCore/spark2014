@@ -42,12 +42,12 @@
 --    which is not possible if cursors encapsulate an access to the underlying
 --    container.
 
-with SPARK.Big_Integers;     use SPARK.Big_Integers;
 with SPARK.Containers.Functional.Maps;
 with SPARK.Containers.Functional.Sets;
 with SPARK.Containers.Functional.Vectors;
 with SPARK.Containers.Parameter_Checks;
 with SPARK.Containers.Types; use SPARK.Containers.Types;
+with SPARK.Big_Integers;     use SPARK.Big_Integers;
 
 private with Ada.Containers.Hash_Tables;
 
@@ -100,13 +100,6 @@ is
    pragma Assertion_Policy (Post => Ignore);
    pragma Assertion_Policy (Contract_Cases => Ignore);
    pragma Annotate (CodePeer, Skip_Analysis);
-
-   --  Convert Count_Type to Big_Interger.
-
-   package Conversions is new Signed_Conversions (Int => Count_Type);
-
-   function Big (J : Count_Type) return Big_Integer renames
-     Conversions.To_Big_Integer;
 
    type Set (Capacity : Count_Type; Modulus : Hash_Type) is private with
      Iterable => (First       => First,
@@ -231,7 +224,7 @@ is
         Global => null,
         Post =>
           (if Find'Result > 0 then
-              Find'Result <= E.Length (Container)
+              Find'Result <= E.Last (Container)
                 and Equivalent_Elements
                       (Item, E.Get (Container, Find'Result)));
 
@@ -244,7 +237,7 @@ is
         Global => null,
         Post   =>
           E_Elements_Equal'Result =
-            (for all I in 1 .. E.Length (Left) =>
+            (for all I in 1 .. E.Last (Left) =>
               Find (Right, E.Get (Left, I)) > 0
                 and then E.Get (Right, Find (Right, E.Get (Left, I))) =
                          E.Get (Left, I));
@@ -259,7 +252,7 @@ is
         Global => null,
         Post   =>
           E_Elements_Included'Result =
-            (for all I in 1 .. E.Length (Left) =>
+            (for all I in 1 .. E.Last (Left) =>
               Find (Right, E.Get (Left, I)) > 0
                 and then Element_Logic_Equal
                    (E.Get (Right, Find (Right, E.Get (Left, I))),
@@ -276,7 +269,7 @@ is
         Global => null,
         Post   =>
           E_Elements_Included'Result =
-            (for all I in 1 .. E.Length (Left) =>
+            (for all I in 1 .. E.Last (Left) =>
               (if M.Contains (Model, E.Get (Left, I)) then
                   Find (Right, E.Get (Left, I)) > 0
                     and then Element_Logic_Equal
@@ -296,7 +289,7 @@ is
         Global => null,
         Post   =>
           E_Elements_Included'Result =
-            (for all I in 1 .. E.Length (Container) =>
+            (for all I in 1 .. E.Last (Container) =>
               (if M.Contains (Model, E.Get (Container, I)) then
                   Find (Left, E.Get (Container, I)) > 0
                     and then Element_Logic_Equal
@@ -382,7 +375,7 @@ is
 
         Ghost,
         Global => null,
-        Post   => M.Length (Model'Result) = Big (Length (Container));
+        Post   => M.Length (Model'Result) = E.Big (Length (Container));
 
       function Elements (Container : Set) return E.Sequence with
       --  The Elements sequence represents the underlying list structure of
@@ -392,7 +385,7 @@ is
         Ghost,
         Global => null,
         Post   =>
-          E.Length (Elements'Result) = Length (Container)
+          E.Last (Elements'Result) = Length (Container)
 
             --  It only contains keys contained in Model
 
@@ -1001,9 +994,9 @@ is
        Length (Source) - Length (Target and Source) <=
          Target.Capacity - Length (Target),
      Post   =>
-       Big (Length (Target)) = Big (Length (Target)'Old)
+       E.Big (Length (Target)) = E.Big (Length (Target)'Old)
          - M.Num_Overlaps (Model (Target)'Old, Model (Source))
-         + Big (Length (Source))
+         + E.Big (Length (Source))
 
          --  Elements already in Target are still in Target
 
@@ -1049,9 +1042,9 @@ is
      Global => null,
      Pre    => Length (Left) <= Count_Type'Last - Length (Right),
      Post   =>
-       Big (Length (Union'Result)) = Big (Length (Left))
+       E.Big (Length (Union'Result)) = E.Big (Length (Left))
          - M.Num_Overlaps (Model (Left), Model (Right))
-         + Big (Length (Right))
+         + E.Big (Length (Right))
 
          --  Elements of Left and Right are in the result of Union
 
@@ -1088,7 +1081,7 @@ is
    procedure Intersection (Target : in out Set; Source : Set) with
      Global => null,
      Post   =>
-       Big (Length (Target)) =
+       E.Big (Length (Target)) =
          M.Num_Overlaps (Model (Target)'Old, Model (Source))
 
          --  Elements of Target were already in Target
@@ -1124,7 +1117,7 @@ is
    function Intersection (Left, Right : Set) return Set with
      Global => null,
      Post   =>
-       Big (Length (Intersection'Result)) =
+       E.Big (Length (Intersection'Result)) =
          M.Num_Overlaps (Model (Left), Model (Right))
 
          --  Elements in the result of Intersection are in Left and Right
@@ -1154,7 +1147,7 @@ is
    procedure Difference (Target : in out Set; Source : Set) with
      Global => null,
      Post   =>
-       Big (Length (Target)) = Big (Length (Target)'Old) -
+       E.Big (Length (Target)) = E.Big (Length (Target)'Old) -
          M.Num_Overlaps (Model (Target)'Old, Model (Source))
 
          --  Elements of Target were already in Target
@@ -1190,7 +1183,7 @@ is
    function Difference (Left, Right : Set) return Set with
      Global => null,
      Post   =>
-       Big (Length (Difference'Result)) = Big (Length (Left)) -
+       E.Big (Length (Difference'Result)) = E.Big (Length (Left)) -
          M.Num_Overlaps (Model (Left), Model (Right))
 
          --  Elements of the result of Difference are in Left
@@ -1227,9 +1220,9 @@ is
        Length (Source) - Length (Target and Source) <=
          Target.Capacity - Length (Target) + Length (Target and Source),
      Post   =>
-       Big (Length (Target)) = Big (Length (Target)'Old) -
+       E.Big (Length (Target)) = E.Big (Length (Target)'Old) -
          2 * M.Num_Overlaps (Model (Target)'Old, Model (Source)) +
-         Big (Length (Source))
+         E.Big (Length (Source))
 
          --  Elements of the difference were not both in Source and in Target
 
@@ -1267,9 +1260,9 @@ is
      Global => null,
      Pre    => Length (Left) <= Count_Type'Last - Length (Right),
      Post   =>
-       Big (Length (Symmetric_Difference'Result)) = Big (Length (Left)) -
+       E.Big (Length (Symmetric_Difference'Result)) = E.Big (Length (Left)) -
          2 * M.Num_Overlaps (Model (Left), Model (Right)) +
-         Big (Length (Right))
+         E.Big (Length (Right))
 
          --  Elements of the difference were not both in Left and Right
 

@@ -1,5 +1,6 @@
 with Ada.Containers; use Ada.Containers;
 with SPARK.Containers.Functional.Vectors;
+with SPARK.Big_Integers; use SPARK.Big_Integers;
 
 package Ring_Buffer with SPARK_Mode is
    Max_Size : constant Natural := 100;
@@ -31,11 +32,11 @@ package Ring_Buffer with SPARK_Mode is
      Post => Valid_Model (Get_Model'Result);
 
    procedure Push_Last1 (E : Natural) with
-     Pre  => Length_Range (Length (Get_Model)) < Max_Size,
+     Pre  => Length (Get_Model) < Big (Max_Size),
      Post => Is_Append (Get_Model'Old, Get_Model, E);
 
    procedure Push_Last (E : Natural) with
-     Pre  => Valid_Model and Length_Range (Length (Model)) < Max_Size,
+     Pre  => Valid_Model and Length (Model) < Big (Max_Size),
      Post => Valid_Model and Is_Append (Model'Old, Model, E);
 
    procedure Pop_First (E : out Natural) with

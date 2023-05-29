@@ -231,7 +231,7 @@ p_max_array.adb:26:33: info: loop invariant preservation proved (CVC5: 1 VC)
 p_max_array.adb:26:39: info: overflow check proved (CVC5: 4 VC)
 p_max_array.adb:26:49: info: overflow check proved (CVC5: 4 VC)
 p_max_array.adb:28:13: info: loop invariant initialization proved (CVC5: 2 VC)
-p_max_array.adb:28:13: info: loop invariant preservation proved (CVC5: 1 VC; Z3: 1 VC)
+p_max_array.adb:28:13: info: loop invariant preservation proved (CVC5: 2 VC)
 p_max_array.adb:28:40: info: overflow check proved (CVC5: 4 VC)
 p_max_array.adb:29:24: info: index check proved (CVC5: 4 VC)
 p_max_array.adb:29:34: info: overflow check proved (CVC5: 4 VC)
@@ -296,12 +296,12 @@ p_max_array.ads:20:26: info: index check proved (CVC5: 2 VC)
 p_max_array.ads:20:36: info: overflow check proved (CVC5: 2 VC)
 p_max_array.ads:20:46: info: index check proved (CVC5: 2 VC)
 p_max_array.ads:20:46: info: overflow check proved (CVC5: 2 VC)
-ring_buffer.adb:8:36: info: range check proved (CVC5: 2 VC)
+ring_buffer.adb:8:35: info: predicate check proved (Trivial: 1 VC)
 ring_buffer.adb:11:34: info: precondition proved (CVC5: 2 VC)
 ring_buffer.adb:11:56: info: range check proved (CVC5: 2 VC)
 ring_buffer.adb:13:34: info: precondition proved (CVC5: 2 VC)
 ring_buffer.adb:13:67: info: range check proved (CVC5: 2 VC)
-ring_buffer.adb:16:36: info: range check proved (CVC5: 2 VC)
+ring_buffer.adb:16:35: info: predicate check proved (Trivial: 1 VC)
 ring_buffer.adb:19:34: info: precondition proved (CVC5: 2 VC)
 ring_buffer.adb:19:52: info: range check proved (CVC5: 2 VC)
 ring_buffer.adb:21:34: info: precondition proved (CVC5: 2 VC)
@@ -321,29 +321,31 @@ ring_buffer.adb:30:07: info: initialization of "R" proved
 ring_buffer.adb:32:16: info: range check proved (CVC5: 2 VC)
 ring_buffer.adb:35:33: info: loop invariant initialization proved (CVC5: 1 VC)
 ring_buffer.adb:35:33: info: loop invariant preservation proved (CVC5: 1 VC)
-ring_buffer.adb:35:53: info: range check proved (CVC5: 4 VC)
-ring_buffer.adb:35:70: info: overflow check proved (CVC5: 4 VC)
+ring_buffer.adb:35:39: info: predicate check proved (Trivial: 2 VC)
+ring_buffer.adb:35:67: info: overflow check proved (CVC5: 4 VC)
+ring_buffer.adb:35:67: info: range check proved (CVC5: 4 VC)
 ring_buffer.adb:37:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 ring_buffer.adb:37:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 ring_buffer.adb:38:34: info: overflow check proved (CVC5: 4 VC)
 ring_buffer.adb:39:34: info: precondition proved (CVC5: 4 VC)
 ring_buffer.adb:39:52: info: range check proved (CVC5: 4 VC)
-ring_buffer.adb:40:15: info: precondition proved (CVC5: 2 VC)
+ring_buffer.adb:40:15: info: precondition proved (CVC5: 1 VC)
 ring_buffer.adb:44:33: info: loop invariant initialization proved (CVC5: 1 VC)
 ring_buffer.adb:44:33: info: loop invariant preservation proved (CVC5: 1 VC)
-ring_buffer.adb:44:53: info: range check proved (CVC5: 4 VC)
-ring_buffer.adb:44:78: info: overflow check proved (CVC5: 4 VC)
+ring_buffer.adb:44:39: info: predicate check proved (Trivial: 2 VC)
+ring_buffer.adb:44:75: info: overflow check proved (CVC5: 4 VC)
+ring_buffer.adb:44:75: info: range check proved (CVC5: 4 VC)
 ring_buffer.adb:46:13: info: loop invariant initialization proved (CVC5: 2 VC; Trivial: 1 VC)
 ring_buffer.adb:46:13: info: loop invariant preservation proved (CVC5: 2 VC; Trivial: 1 VC)
 ring_buffer.adb:48:35: info: precondition proved (CVC5: 4 VC)
 ring_buffer.adb:48:53: info: range check proved (CVC5: 4 VC)
 ring_buffer.adb:50:35: info: precondition proved (CVC5: 4 VC)
 ring_buffer.adb:50:64: info: range check proved (CVC5: 4 VC)
-ring_buffer.adb:51:15: info: precondition proved (CVC5: 2 VC)
+ring_buffer.adb:51:15: info: precondition proved (CVC5: 1 VC)
 ring_buffer.adb:59:25: info: index check proved (CVC5: 2 VC)
 ring_buffer.adb:61:37: info: index check proved (CVC5: 2 VC)
 ring_buffer.adb:63:24: info: range check proved (CVC5: 2 VC)
-ring_buffer.adb:68:16: info: precondition proved (CVC5: 2 VC)
+ring_buffer.adb:68:16: info: precondition proved (CVC5: 1 VC)
 ring_buffer.adb:70:25: info: index check proved (CVC5: 2 VC)
 ring_buffer.adb:72:37: info: index check proved (CVC5: 2 VC)
 ring_buffer.adb:74:24: info: range check proved (CVC5: 2 VC)
@@ -352,33 +354,45 @@ ring_buffer.adb:81:24: info: range check proved (CVC5: 2 VC)
 ring_buffer.adb:83:25: info: range check proved (CVC5: 2 VC)
 ring_buffer.adb:90:17: info: add a contract to analyze it separately from calling contexts
 ring_buffer.adb:90:17: info: local subprogram "Update_Model" only analyzed in the context of calls
+ring_buffer.adb:92:19: info: predicate check proved (Trivial: 1 VC), in call inlined at ring_buffer.adb:106
+ring_buffer.adb:92:37: info: predicate check proved (Trivial: 1 VC), in call inlined at ring_buffer.adb:106
 ring_buffer.adb:93:22: info: precondition proved (CVC5: 2 VC), in call inlined at ring_buffer.adb:106
 ring_buffer.adb:99:27: info: range check proved (CVC5: 2 VC)
 ring_buffer.adb:101:28: info: range check proved (CVC5: 2 VC)
 ring_buffer.adb:106:07: info: analyzing call to "Update_Model" in context
-ring_buffer.ads:13:13: info: implicit terminating annotation on "Is_Append" has been proved, subprogram will terminate
-ring_buffer.ads:15:18: info: precondition proved (CVC5: 2 VC)
-ring_buffer.ads:17:13: info: implicit terminating annotation on "Is_Prepend" has been proved, subprogram will terminate
-ring_buffer.ads:19:18: info: precondition proved (CVC5: 2 VC)
-ring_buffer.ads:21:43: info: precondition proved (CVC5: 2 VC)
-ring_buffer.ads:21:52: info: range check proved (CVC5: 2 VC)
-ring_buffer.ads:21:57: info: precondition proved (CVC5: 2 VC)
-ring_buffer.ads:21:68: info: overflow check proved (CVC5: 2 VC)
-ring_buffer.ads:21:68: info: range check proved (CVC5: 2 VC)
-ring_buffer.ads:25:04: info: initialization of "Model" proved
-ring_buffer.ads:27:13: info: implicit terminating annotation on "Valid_Model" has been proved, subprogram will terminate
+ring_buffer.ads:14:13: info: implicit terminating annotation on "Is_Append" has been proved, subprogram will terminate
+ring_buffer.ads:15:25: info: predicate check proved (Trivial: 1 VC)
+ring_buffer.ads:15:39: info: predicate check proved (Trivial: 1 VC)
+ring_buffer.ads:15:53: info: predicate check proved (Trivial: 1 VC)
+ring_buffer.ads:16:18: info: precondition proved (CVC5: 2 VC)
+ring_buffer.ads:18:13: info: implicit terminating annotation on "Is_Prepend" has been proved, subprogram will terminate
+ring_buffer.ads:19:08: info: predicate check proved (Trivial: 1 VC)
+ring_buffer.ads:19:22: info: predicate check proved (Trivial: 1 VC)
+ring_buffer.ads:19:36: info: predicate check proved (Trivial: 1 VC)
+ring_buffer.ads:20:18: info: precondition proved (CVC5: 2 VC)
+ring_buffer.ads:22:43: info: precondition proved (CVC5: 2 VC)
+ring_buffer.ads:22:52: info: range check proved (CVC5: 2 VC)
+ring_buffer.ads:22:57: info: precondition proved (CVC5: 2 VC)
+ring_buffer.ads:22:68: info: overflow check proved (CVC5: 2 VC)
+ring_buffer.ads:22:68: info: range check proved (CVC5: 2 VC)
+ring_buffer.ads:26:04: info: initialization of "Model" proved
 ring_buffer.ads:28:13: info: implicit terminating annotation on "Valid_Model" has been proved, subprogram will terminate
-ring_buffer.ads:30:13: info: implicit terminating annotation on "Get_Model" has been proved, subprogram will terminate
-ring_buffer.ads:31:14: info: postcondition proved (CVC5: 1 VC)
-ring_buffer.ads:34:28: info: range check proved (CVC5: 2 VC)
-ring_buffer.ads:35:14: info: postcondition proved (CVC5: 3 VC)
-ring_buffer.ads:38:44: info: range check proved (CVC5: 2 VC)
-ring_buffer.ads:39:14: info: postcondition proved (CVC5: 6 VC; Trivial: 1 VC)
-ring_buffer.ads:41:25: info: initialization of "E" proved
-ring_buffer.ads:43:14: info: postcondition proved (CVC5: 6 VC; Trivial: 1 VC)
-ring_buffer.ads:49:24: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
-ring_buffer.ads:51:26: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
-ring_buffer.ads:52:26: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
+ring_buffer.ads:29:13: info: implicit terminating annotation on "Valid_Model" has been proved, subprogram will terminate
+ring_buffer.ads:31:13: info: implicit terminating annotation on "Get_Model" has been proved, subprogram will terminate
+ring_buffer.ads:32:14: info: postcondition proved (CVC5: 1 VC)
+ring_buffer.ads:35:14: info: predicate check proved (Trivial: 1 VC)
+ring_buffer.ads:36:14: info: postcondition proved (CVC5: 3 VC)
+ring_buffer.ads:39:30: info: predicate check proved (Trivial: 1 VC)
+ring_buffer.ads:40:14: info: postcondition proved (CVC5: 6 VC; Trivial: 1 VC)
+ring_buffer.ads:42:25: info: initialization of "E" proved
+ring_buffer.ads:43:30: info: predicate check proved (Trivial: 1 VC)
+ring_buffer.ads:43:47: info: predicate check proved (Trivial: 1 VC)
+ring_buffer.ads:44:14: info: postcondition proved (CVC5: 6 VC; Trivial: 1 VC)
+ring_buffer.ads:50:24: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
+ring_buffer.ads:52:07: info: predicate check proved (Trivial: 1 VC)
+ring_buffer.ads:52:24: info: predicate check proved (Trivial: 1 VC)
+ring_buffer.ads:52:26: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
+ring_buffer.ads:53:26: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
 spark-big_intervals.ads:44:13: info: during checks for quantification at spark-big_intervals.ads:36
 spark-big_intervals.ads:44:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 spark-big_intervals.ads:44:13: info: precondition proved (Trivial: 1 VC)
@@ -391,52 +405,49 @@ spark-big_intervals.ads:50:13: info: during checks for quantification at spark-b
 spark-big_intervals.ads:50:13: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate
 spark-big_intervals.ads:50:13: info: precondition proved (Trivial: 1 VC)
 spark-big_intervals.ads:51:17: info: predicate check proved (Trivial: 1 VC)
-spark-containers-functional-vectors.ads:50:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:60:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:62:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:64:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:268:52: info: overflow check proved (CVC5: 1 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:314:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:351:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:351:13: info: precondition proved (Trivial: 1 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:354:13: info: precondition proved (Trivial: 1 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:364:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:364:13: info: precondition proved (CVC5: 1 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:492:54: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:497:63: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:498:59: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:498:76: info: overflow check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-spark-containers-functional-vectors.ads:499:30: info: range check proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at ring_buffer.ads:8
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at ring_buffer.ads:8
+spark-containers-functional-vectors.ads:50:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:52:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:60:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:62:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:64:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:112:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:112:13: info: precondition proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:129:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:130:06: info: data dependencies proved, in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:212:39: info: precondition proved (CVC5: 2 VC), in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:271:52: info: overflow check proved (CVC5: 1 VC), in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:317:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:354:13: info: precondition proved (Trivial: 1 VC), in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Trivial: 1 VC), in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:367:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:367:13: info: precondition proved (CVC5: 1 VC), in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:493:57: info: predicate check proved (Trivial: 1 VC), in instantiation at ring_buffer.ads:9
+spark-containers-functional-vectors.ads:494:31: info: predicate check proved (Trivial: 1 VC), in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at ring_buffer.ads:9
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at ring_buffer.ads:9
 spark-conversions-float_conversions.ads:33:01: info: analyzing call to "Log2_Estimate" in context
 spark-conversions-float_conversions.ads:33:01: info: analyzing call to "Minus_Log2_Estimate" in context
 spark-conversions-float_conversions.ads:33:01: info: in instantiation at a-nbnbre.adb:256
@@ -469,7 +480,7 @@ spark-lemmas-floating_point_arithmetic.ads:245:13: info: implicit terminating an
 spark-lemmas-floating_point_arithmetic.ads:247:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:247:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:249:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:249:29: info: range check proved (colibri: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:249:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:249:33: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:249:33: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:254:13: info: implicit terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:39
@@ -477,7 +488,7 @@ spark-lemmas-floating_point_arithmetic.ads:254:13: info: implicit terminating an
 spark-lemmas-floating_point_arithmetic.ads:256:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:256:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:258:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:258:29: info: range check proved (colibri: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:258:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:258:33: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:258:33: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:262:13: info: implicit terminating annotation on "Is_Integer" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:39
@@ -736,46 +747,43 @@ spark-containers-functional-vectors.ads:54:19: info: terminating annotation on "
 spark-containers-functional-vectors.ads:60:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at use_vectors.ads:9
 spark-containers-functional-vectors.ads:62:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at use_vectors.ads:9
 spark-containers-functional-vectors.ads:64:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:104:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:104:13: info: precondition proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:123:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:124:06: info: data dependencies proved, in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:206:39: info: precondition proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:268:52: info: overflow check proved (CVC5: 1 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:314:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:351:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:351:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:112:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:112:13: info: precondition proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:129:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:130:06: info: data dependencies proved, in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:212:39: info: precondition proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:271:52: info: overflow check proved (CVC5: 1 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:317:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:354:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at use_vectors.ads:9
 spark-containers-functional-vectors.ads:354:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:364:13: info: during checks for quantification at spark-containers-functional-vectors.ads:79, in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:364:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:492:54: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:497:63: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:498:59: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:498:76: info: overflow check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-spark-containers-functional-vectors.ads:499:30: info: range check proved (CVC5: 2 VC), in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:326, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at use_vectors.ads:9
-spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:335, in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:357:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:357:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:367:13: info: during checks for quantification at spark-containers-functional-vectors.ads:88, in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:367:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:493:57: info: predicate check proved (Trivial: 1 VC), in instantiation at use_vectors.ads:9
+spark-containers-functional-vectors.ads:494:31: info: predicate check proved (Trivial: 1 VC), in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.adb:80:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:84:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:85:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:87:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:92:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:93:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:94:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:96:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:97:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:99:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:101:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:102:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at use_vectors.ads:9
+spark-containers-parameter_checks.ads:104:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:338, in instantiation at use_vectors.ads:9
 spark-conversions-float_conversions.ads:33:01: info: analyzing call to "Log2_Estimate" in context
 spark-conversions-float_conversions.ads:33:01: info: analyzing call to "Minus_Log2_Estimate" in context
 spark-conversions-float_conversions.ads:33:01: info: in instantiation at a-nbnbre.adb:256
@@ -808,7 +816,7 @@ spark-lemmas-floating_point_arithmetic.ads:245:13: info: implicit terminating an
 spark-lemmas-floating_point_arithmetic.ads:247:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:247:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:249:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:249:29: info: range check proved (colibri: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:249:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:249:33: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:249:33: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:254:13: info: implicit terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:39
@@ -816,7 +824,7 @@ spark-lemmas-floating_point_arithmetic.ads:254:13: info: implicit terminating an
 spark-lemmas-floating_point_arithmetic.ads:256:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:256:38: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:258:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-float_arithmetic.ads:39
-spark-lemmas-floating_point_arithmetic.ads:258:29: info: range check proved (colibri: 2 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
+spark-lemmas-floating_point_arithmetic.ads:258:29: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:258:33: info: range check proved (Trivial), in instantiation at spark-lemmas-float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:258:33: info: range check proved (Trivial), in instantiation at spark-lemmas-long_float_arithmetic.ads:39
 spark-lemmas-floating_point_arithmetic.ads:262:13: info: implicit terminating annotation on "Is_Integer" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:39
@@ -880,14 +888,15 @@ spark-tests-array_lemmas.ads:64:53: info: index check proved (CVC5: 2 VC)
 spark-tests-array_lemmas.ads:73:41: info: index check proved (CVC5: 2 VC)
 spark-tests-array_lemmas.ads:73:41: info: overflow check proved (CVC5: 2 VC)
 spark-tests-array_lemmas.ads:73:53: info: index check proved (CVC5: 2 VC)
-use_vectors.adb:5:07: info: initialization of "S" proved
-use_vectors.adb:8:15: info: precondition proved (CVC5: 4 VC)
-use_vectors.adb:9:33: info: loop invariant initialization proved (CVC5: 1 VC)
-use_vectors.adb:9:33: info: loop invariant preservation proved (CVC5: 1 VC)
-use_vectors.adb:11:13: info: loop invariant initialization proved (CVC5: 1 VC)
-use_vectors.adb:11:13: info: loop invariant preservation proved (CVC5: 1 VC)
-use_vectors.adb:11:36: info: precondition proved (CVC5: 4 VC)
-use_vectors.adb:11:44: info: range check proved (CVC5: 4 VC)
+use_vectors.adb:7:07: info: initialization of "S" proved
+use_vectors.adb:10:15: info: precondition proved (CVC5: 2 VC)
+use_vectors.adb:11:33: info: loop invariant initialization proved (CVC5: 1 VC)
+use_vectors.adb:11:33: info: loop invariant preservation proved (CVC5: 1 VC)
+use_vectors.adb:11:33: info: predicate check proved (Trivial: 2 VC)
+use_vectors.adb:13:13: info: loop invariant initialization proved (CVC5: 1 VC)
+use_vectors.adb:13:13: info: loop invariant preservation proved (CVC5: 1 VC)
+use_vectors.adb:13:36: info: precondition proved (CVC5: 4 VC)
+use_vectors.adb:13:44: info: range check proved (CVC5: 4 VC)
 use_vectors.ads:12:13: info: implicit terminating annotation on "Create" has been proved, subprogram will terminate
 use_vectors.ads:13:14: info: postcondition proved (CVC5: 1 VC)
 use_vectors.ads:14:17: info: precondition proved (CVC5: 2 VC)
