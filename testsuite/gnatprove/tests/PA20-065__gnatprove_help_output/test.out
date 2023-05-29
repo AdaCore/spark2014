@@ -77,6 +77,10 @@ gnatprove advanced switches:
  --memcached-server=host:portnumber
                       Specify a memcached instance that will be used for
                       caching of proof results.
+ --memcached-server=file:directory
+                      Use the fixed string "file" for part before the colon.
+                      The cache will be stored in the directory after the
+                      colon. Best for CI integration.
  --memlimit=nnn       Set the prover memory limit in MB. Use value 0 for
                       no limit (default when no level set)
  --no-global-generation
