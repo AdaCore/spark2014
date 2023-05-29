@@ -19,14 +19,14 @@ def test():
     anod_install("e3-for-testing", query_range=20)
     anod_install("gnatcov", query_range=20)
     anod_install("gprbuild", target="host", query_range=20)
-    anod_test("spark2014", qualifier="assertions,coverage")
+    anod_test("spark2014", qualifier="assertions,coverage,cleanup-mode=none")
 
 def test_large():
     anod_install("gcc", query_range=20)
     anod_install("e3-for-testing", query_range=20)
     anod_install("gnatcov", query_range=20)
     anod_install("gprbuild", target="host", query_range=20)
-    anod_test("spark2014", qualifier="assertions,only_large,coverage")
+    anod_test("spark2014", qualifier="assertions,only_large,coverage,cleanup-mode=none")
 
 def test_acats():
     anod_install("gcc", query_range=20)
