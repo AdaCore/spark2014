@@ -2020,9 +2020,9 @@ package body SPARK_Definition.Annotate is
 
    end Check_Iterable_Annotation;
 
-   ------------------------------
+   ------------------------------------
    -- Check_Logical_Equal_Annotation --
-   ------------------------------
+   ------------------------------------
 
    procedure Check_Logical_Equal_Annotation
      (Arg3_Exp : Node_Id; Prag : Node_Id)
@@ -2061,6 +2061,18 @@ package body SPARK_Definition.Annotate is
          Error_Msg_N_If
            ("Entity parameter of a pragma Logical_Equal shall return a"
             & " Boolean", E);
+         return;
+      elsif Has_Contracts (E, Pragma_Postcondition)
+        or else Has_Contracts (E, Pragma_Postcondition, Classwide => True)
+      then
+         Error_Msg_N_If
+           ("Entity parameter of a pragma Logical_Equal shall not have"
+            & " post-conditions", E);
+         return;
+      elsif Present (Get_Pragma (E, Pragma_Contract_Cases)) then
+         Error_Msg_N_If
+           ("Entity parameter of a pragma Logical_Equal shall not have"
+            & " contract cases", E);
          return;
       else
          declare
