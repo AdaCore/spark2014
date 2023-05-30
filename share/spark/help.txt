@@ -6,6 +6,8 @@ All main units in proj are analyzed by default. Switches to change this:
  -u [files]            Analyze only the given files
     [files]            Analyze given files and all dependencies
  -U                    Analyze all files (including unused) of all projects
+                       (can also be used with "--limit-*" switches to analyze
+                       all instances of a generic)
 
 gnatprove basic switches:
  -aP=p                 Add path p to project path
