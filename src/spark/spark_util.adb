@@ -1109,7 +1109,7 @@ package body SPARK_Util is
                      Handler    : Node_Id;
                   begin
                      if Present (L_Handlers) then
-                        Handler := First (L_Handlers);
+                        Handler := First_Non_Pragma (L_Handlers);
                         loop
                            declare
                               Handler_Exc_Set : Exception_Sets.Set :=
@@ -1156,7 +1156,7 @@ package body SPARK_Util is
                                  exit when Exc_Set.Is_Empty;
                               end if;
                            end;
-                           Next (Handler);
+                           Next_Non_Pragma (Handler);
                            exit when No (Handler);
                         end loop;
                      end if;
@@ -2077,10 +2077,10 @@ package body SPARK_Util is
 
       --  Traverse the handlers in reverse order to find the others case first
 
-      Handler := Last (Handlers);
+      Handler := Last_Non_Pragma (Handlers);
       loop
          Result.Union (Get_Exceptions_From_Handler (Handler));
-         Prev (Handler);
+         Prev_Non_Pragma (Handler);
          exit when No (Handler);
       end loop;
 
