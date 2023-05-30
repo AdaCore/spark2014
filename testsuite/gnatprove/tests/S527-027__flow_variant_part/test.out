@@ -1,11 +1,16 @@
-p.ads:4:22: error: default initialization cannot depend on variable input "V" (SPARK RM 4.4(2))
+p.ads:4:22: error: default initialization cannot depend on variable input "V" [E0007]
+p.ads:4:22: error: launch "gnatprove --explain=E0007" for more information
 p.ads:4:22: error: use instead a constant initialized to the expression with variable input
-p.ads:7:28: error: default initialization cannot depend on variable input "V" (SPARK RM 4.4(2))
+p.ads:7:28: error: default initialization cannot depend on variable input "V" [E0007]
+p.ads:7:28: error: launch "gnatprove --explain=E0007" for more information
 p.ads:7:28: error: use instead a constant initialized to the expression with variable input
-p.ads:10:34: error: default initialization cannot depend on variable input "V" (SPARK RM 4.4(2))
+p.ads:10:34: error: default initialization cannot depend on variable input "V" [E0007]
+p.ads:10:34: error: launch "gnatprove --explain=E0007" for more information
 p.ads:10:34: error: use instead a constant initialized to the expression with variable input
-q.ads:5:24: error: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
+q.ads:5:24: error: launch "gnatprove --explain=E0007" for more information
+q.ads:5:24: error: subtype constraint cannot depend on variable input "X" [E0007]
 q.ads:5:24: error: use instead a constant initialized to the expression with variable input
-q.ads:11:30: error: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
+q.ads:11:30: error: launch "gnatprove --explain=E0007" for more information
+q.ads:11:30: error: subtype constraint cannot depend on variable input "X" [E0007]
 q.ads:11:30: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof

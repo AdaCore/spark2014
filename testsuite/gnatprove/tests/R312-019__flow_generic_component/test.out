@@ -1,4 +1,5 @@
-gen_actual.adb:5:39: error: actual for formal object with mode in cannot depend on variable input "PO" (SPARK RM 4.4(2))
+gen_actual.adb:5:39: error: actual for formal object with mode in cannot depend on variable input "PO" [E0007]
+gen_actual.adb:5:39: error: launch "gnatprove --explain=E0007" for more information
 gen_actual.adb:5:39: error: use instead a constant initialized to the expression with variable input
 gen_actual.ads:4:16: info: implicit terminating annotation on "Fun" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof

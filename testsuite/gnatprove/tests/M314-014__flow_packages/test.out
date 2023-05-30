@@ -50,7 +50,8 @@ pkg_a.ads:12:04: low: initialization of "W" must be mentioned in the Initializes
 pkg_a.ads:13:04: info: initialization of "Q" proved
 pkg_b.adb:10:14: high: "Y" must be mentioned as an input of the Initializes aspect of "Pkg_B" (SPARK RM 7.1.5(11))
 pkg_b.ads:5:08: info: flow dependencies proved
-pkg_c.adb:15:12: high: cannot write "X" during elaboration of "Pkg_C" (SPARK RM 7.7.1(6))
+pkg_c.adb:15:12: high: cannot write "X" during elaboration of "Pkg_C" [E0008]
+pkg_c.adb:15:12: high: launch "gnatprove --explain=E0008" for more information
 pkg_c.ads:5:08: info: flow dependencies proved
 pkg_d.ads:4:06: info: flow dependencies proved
 pkg_d.ads:4:27: high: X must be initialized at elaboration

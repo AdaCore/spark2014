@@ -27,7 +27,8 @@ task_and_so_arrays.adb:11:35: warning: no Always_Terminates aspect available for
 task_and_so_arrays.ads:7:14: medium: the task might terminate, which is not allowed in SPARK
 task_and_so_arrays.ads:10:04: high: multiple tasks might suspend on suspension object "task_and_so_arrays.sos" (SPARK RM 9(11))
 task_and_so_arrays.ads:10:04: high: with task "task_and_so_arrays.ts"
-task_in_empty_arrays.ads:16:16: error: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
+task_in_empty_arrays.ads:16:16: error: launch "gnatprove --explain=E0007" for more information
+task_in_empty_arrays.ads:16:16: error: subtype constraint cannot depend on variable input "X" [E0007]
 task_in_empty_arrays.ads:16:16: error: use instead a constant initialized to the expression with variable input
 task_type_array_single_so.adb:7:07: warning: assuming "Suspend_Until_True" always terminates
 task_type_array_single_so.adb:7:07: warning: no Always_Terminates aspect available for "Suspend_Until_True"

@@ -1,5 +1,7 @@
-p.adb:11:23: error: actual for formal object with mode in cannot depend on variable input "X" (SPARK RM 4.4(2)), in instantiation at p.adb:16
+p.adb:11:23: error: actual for formal object with mode in cannot depend on variable input "X" [E0007], in instantiation at p.adb:16
+p.adb:11:23: error: launch "gnatprove --explain=E0007" for more information, in instantiation at p.adb:16
 p.adb:11:23: error: use instead a constant initialized to the expression with variable input, in instantiation at p.adb:16
-p.adb:15:26: error: actual for formal object with mode in cannot depend on variable input "X" (SPARK RM 4.4(2))
+p.adb:15:26: error: actual for formal object with mode in cannot depend on variable input "X" [E0007]
+p.adb:15:26: error: launch "gnatprove --explain=E0007" for more information
 p.adb:15:26: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof

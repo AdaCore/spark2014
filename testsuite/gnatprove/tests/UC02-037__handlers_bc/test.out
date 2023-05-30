@@ -1,17 +1,17 @@
-test_move.adb:50:14: error: object was moved at line 64
+test_move.adb:50:14: error: object was moved at line 64 [E0010]
 test_move.adb:50:14: error: return from "P2" with moved value for "X"
-test_move.adb:86:14: error: object was moved at line 100
+test_move.adb:86:14: error: object was moved at line 100 [E0010]
 test_move.adb:86:14: error: return from "P3" with moved value for "X"
-test_move.adb:121:14: error: object was moved at line 134
+test_move.adb:121:14: error: object was moved at line 134 [E0010]
 test_move.adb:121:14: error: return from "P4" with moved value for "Y"
 test_move.adb:157:14: warning: subprogram "Do_Not_Raise_E1" has no effect
-test_move.adb:191:14: error: object was moved at line 192
+test_move.adb:191:14: error: object was moved at line 192 [E0010]
 test_move.adb:191:14: error: return from "P6" with moved value for "X"
-test_move.adb:214:14: error: object was moved at line 220
+test_move.adb:214:14: error: object was moved at line 220 [E0010]
 test_move.adb:214:14: error: return from "P7" with moved value for "X"
-test_move.adb:238:14: error: object was moved at line 244
+test_move.adb:238:14: error: object was moved at line 244 [E0010]
 test_move.adb:238:14: error: return from "P8" with moved value for "X"
-test_move.adb:262:14: error: object was moved at line 268
+test_move.adb:262:14: error: object was moved at line 268 [E0010]
 test_move.adb:262:14: error: return from "P9" with moved value for "X"
 test_move.adb:297:19: warning: "X" is not modified, could be IN
 test_move.adb:303:12: warning: this statement is never reached
