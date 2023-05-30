@@ -4156,24 +4156,25 @@ package body SPARK_Definition is
             Mark_Violation (N, From => E);
          end if;
 
-      elsif Nkind (N) in N_Subprogram_Call
-        and then Present (Controlling_Argument (N))
-        and then Is_Hidden_Dispatching_Operation (E)
-      then
-         Mark_Violation
-           ("dispatching call on primitive of untagged private", N);
-
-      --  Warn about calls to predefined and imported subprograms with no
-      --  manually-written Global or Depends contracts. Exempt calls to pure
-      --  subprograms (because Pure acts as "Global => null").
-
       elsif Emit_Warning_Info_Messages and then SPARK_Pragma_Is (Opt.On) then
+
+         if Nkind (N) in N_Subprogram_Call
+           and then Present (Controlling_Argument (N))
+           and then Is_Hidden_Dispatching_Operation (E)
+         then
+            Mark_Violation
+              ("dispatching call on primitive of untagged private", N);
+         end if;
+
+         --  Warn about calls to predefined and imported subprograms with no
+         --  manually-written Global or Depends contracts. Exempt calls to
+         --  pure subprograms (because Pure acts as "Global => null").
 
          declare
             Might_Have_Flow_Assumptions : constant Boolean :=
               (Has_No_Body (E)
-                 or else (Is_Ignored_Internal (E)
-                            and then not Is_Ignored_Internal (N)))
+               or else (Is_Ignored_Internal (E)
+                 and then not Is_Ignored_Internal (N)))
               and then not Is_Unchecked_Conversion_Instance (E)
               and then not Is_Unchecked_Deallocation_Instance (E);
 
@@ -4195,26 +4196,27 @@ package body SPARK_Definition is
             end if;
          end;
 
-      --  On supported unchecked conversions to access types, emit warnings
-      --  stating that we assume the returned value to be valid and with no
-      --  harmful aliases. The warnings are also emitted on calls to
-      --  To_Pointer function from an instance of
-      --  System.Address_To_Access_Conversions, which performs the same
-      --  operation.
+         --  On supported unchecked conversions to access types, emit warnings
+         --  stating that we assume the returned value to be valid and with no
+         --  harmful aliases. The warnings are also emitted on calls to
+         --  To_Pointer function from an instance of
+         --  System.Address_To_Access_Conversions, which performs the same
+         --  operation.
 
-      elsif Is_System_Address_To_Access_Conversion (E)
-        or else (Is_Unchecked_Conversion_Instance (E)
-                 and then Has_Access_Type (Etype (E)))
-      then
-         Error_Msg_NE (Warning_Message (Warn_Address_To_Access), N, E);
-         if Is_Access_Constant (Etype (E)) then
-            Error_Msg_NE
-              ("\\potential aliases of the value returned by a call"
-               & " to & are assumed to be constant", N, E);
-         else
-            Error_Msg_NE
-              ("\\the value returned by a call to & is assumed to "
-               & "have no aliases", N, E);
+         if Is_System_Address_To_Access_Conversion (E)
+           or else (Is_Unchecked_Conversion_Instance (E)
+                    and then Has_Access_Type (Etype (E)))
+         then
+            Error_Msg_NE (Warning_Message (Warn_Address_To_Access), N, E);
+            if Is_Access_Constant (Etype (E)) then
+               Error_Msg_NE
+                 ("\\potential aliases of the value returned by a call"
+                  & " to & are assumed to be constant", N, E);
+            else
+               Error_Msg_NE
+                 ("\\the value returned by a call to & is assumed to "
+                  & "have no aliases", N, E);
+            end if;
          end if;
       end if;
 
