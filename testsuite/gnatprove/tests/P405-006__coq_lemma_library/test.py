@@ -38,4 +38,5 @@ prove_all(
     counterexample=False,
     #  We need to remove useless coq warning for Grammar extension
     filter_output=".*Grammar extension",
+    filter_sparklib=False,
 )

@@ -4,6 +4,3 @@ a.adb:22:49: info: range check proved (CVC5: 1 VC)
 a.adb:23:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 a.ads:9:14: warning: subprogram "Test" has no effect
 a.ads:13:14: warning: subprogram "Test_Float" has no effect
-spark-lemmas-unconstrained_array.ads:56:39: info: index check proved (CVC5: 2 VC), in instantiation at a.adb:7
-spark-lemmas-unconstrained_array.ads:56:46: info: overflow check proved (CVC5: 1 VC), in instantiation at a.adb:7
-spark-lemmas-unconstrained_array.ads:56:56: info: index check proved (CVC5: 2 VC), in instantiation at a.adb:7

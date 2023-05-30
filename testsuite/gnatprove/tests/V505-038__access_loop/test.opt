@@ -1,1 +1,1 @@
-ALL XFAIL crash in loop-of-access (V505-038)
+ALL XFAIL crash in loop-of-access (eng/spark/spark2014#115)

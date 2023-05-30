@@ -10,4 +10,4 @@ def replay():
 
 
 if __name__ == "__main__":
-    prove_all(replay=True, sparklib=True, no_fail=True)
+    prove_all(replay=True, sparklib=True, no_fail=True, filter_sparklib=False)

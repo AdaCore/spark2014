@@ -1,3 +1,4 @@
 prove_all:
   sparklib: True
   counterexample: False #runaway cvc5 process
+  filter_sparklib: False

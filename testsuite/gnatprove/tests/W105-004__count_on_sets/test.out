@@ -65,37 +65,6 @@ ho_sets.ads:40:43: info: null exclusion check proved (CVC5: 1 VC)
 ho_sets.ads:41:16: info: pointer dereference check proved (CVC5: 1 VC)
 ho_sets.ads:41:44: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:41:65: info: predicate check proved (Trivial: 1 VC)
-spark-containers-functional-sets.ads:52:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:54:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:56:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:89:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:89:13: info: precondition proved (Trivial: 1 VC), in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:326:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:326:13: info: precondition proved (CVC5: 1 VC), in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:335:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:335:13: info: precondition proved (Trivial: 1 VC), in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:341:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:341:13: info: precondition proved (CVC5: 2 VC), in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:349:13: info: during checks for quantification at spark-containers-functional-sets.ads:296, in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:349:13: info: precondition proved (Trivial: 1 VC), in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:365:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:388:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:388:13: info: precondition proved (Trivial: 1 VC), in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:391:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:391:13: info: precondition proved (Trivial: 1 VC), in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:397:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:397:13: info: precondition proved (CVC5: 1 VC), in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:404:13: info: during checks for quantification at spark-containers-functional-sets.ads:65, in instantiation at ho_sets.ads:5
-spark-containers-functional-sets.ads:404:13: info: precondition proved (CVC5: 1 VC), in instantiation at ho_sets.ads:5
-spark-containers-parameter_checks.ads:52:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at ho_sets.ads:5
-spark-containers-parameter_checks.ads:53:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at ho_sets.ads:5
-spark-containers-parameter_checks.ads:54:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at ho_sets.ads:5
-spark-containers-parameter_checks.ads:56:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at ho_sets.ads:5
-spark-containers-parameter_checks.ads:57:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at ho_sets.ads:5
-spark-containers-parameter_checks.ads:59:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at ho_sets.ads:5
-spark-containers-parameter_checks.ads:61:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at ho_sets.ads:5
-spark-containers-parameter_checks.ads:62:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:372, in instantiation at ho_sets.ads:5
-spark-containers-parameter_checks.ads:64:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-sets.ads:372, in instantiation at ho_sets.ads:5
 use_sets.adb:9:70: info: function contract feasibility proved (Trivial: 1 VC)
 use_sets.adb:13:14: info: postcondition proved (CVC5: 1 VC)
 use_sets.adb:13:14: info: predicate check proved (Trivial: 1 VC)

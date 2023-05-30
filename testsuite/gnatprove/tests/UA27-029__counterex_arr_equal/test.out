@@ -1,25 +1,38 @@
-arr_equal.adb:7:22: medium: assertion might fail [possible fix: subprogram at arr_equal.ads:5 should mention A in a precondition]
-arr_equal.adb:16:22: high: assertion might fail (e.g. when A = (0 => 0, 1 => 1, 2 => 1) and A'First = 0 and A'Last = 2) [possible fix: precondition of subprogram at arr_equal.ads:7 should mention A]
-arr_equal.adb:25:22: high: assertion might fail (e.g. when A = (0 => 0, others => 2) and A'First = 0 and A'Last = 2) [possible fix: precondition of subprogram at arr_equal.ads:10 should mention A]
-arr_equal.adb:34:22: high: assertion might fail (e.g. when A = (0 => 0, 1 => 1, 2 => 2) and A'First = 0 and A'Last = 2) [possible fix: precondition of subprogram at arr_equal.ads:13 should mention A]
-arr_equal.adb:43:22: high: assertion might fail (e.g. when A = (0 => 0, others => 3) and A'First = 0 and A'Last = 2) [possible fix: precondition of subprogram at arr_equal.ads:16 should mention A]
-arr_equal.adb:59:22: high: assertion might fail (e.g. when A = (9 => 2, 10 => 3, others => 4) and A'First = 8 and A'Last = 18) [possible fix: precondition of subprogram at arr_equal.ads:19 should mention A]
-arr_not_equal.adb:7:22: high: assertion might fail (e.g. when A'First = 0 and A'Last = -1) [possible fix: subprogram at arr_not_equal.ads:5 should mention A in a precondition]
-arr_not_equal.adb:16:22: high: assertion might fail (e.g. when A = (others => 1) and A'First = 0 and A'Last = 2) [possible fix: precondition of subprogram at arr_not_equal.ads:7 should mention A]
-arr_not_equal.adb:25:22: high: assertion might fail (e.g. when A = (others => 1) and A'First = 0 and A'Last = 2) [possible fix: precondition of subprogram at arr_not_equal.ads:10 should mention A]
-arr_not_equal.adb:34:22: high: assertion might fail (e.g. when A = (0 => 1, 1 => 2, 2 => 3) and A'First = 0 and A'Last = 2) [possible fix: precondition of subprogram at arr_not_equal.ads:13 should mention A]
-arr_not_equal.adb:43:22: high: assertion might fail (e.g. when A = (0 => 1, 1 => 2, 2 => 3) and A'First = 0 and A'Last = 2) [possible fix: precondition of subprogram at arr_not_equal.ads:16 should mention A]
+arr_equal.adb:7:22: high: assertion might fail (e.g. when A'First = 0 and A'Last = 0) [possible fix: subprogram at arr_equal.ads:5 should mention A in a precondition]
+arr_equal.adb:16:22: medium: assertion might fail [possible fix: precondition of subprogram at arr_equal.ads:7 should mention A]
+arr_equal.adb:25:22: medium: assertion might fail [possible fix: precondition of subprogram at arr_equal.ads:10 should mention A]
+arr_equal.adb:34:22: medium: assertion might fail [possible fix: precondition of subprogram at arr_equal.ads:13 should mention A]
+arr_equal.adb:43:22: medium: assertion might fail [possible fix: precondition of subprogram at arr_equal.ads:16 should mention A]
+arr_equal.adb:59:22: medium: assertion might fail [possible fix: precondition of subprogram at arr_equal.ads:19 should mention A]
+arr_equal.ads:5:13: info: implicit terminating annotation on "Empty" has been proved, subprogram will terminate
+arr_equal.ads:7:13: info: implicit terminating annotation on "All_Same_Values" has been proved, subprogram will terminate
+arr_equal.ads:10:13: info: implicit terminating annotation on "All_Same_Others" has been proved, subprogram will terminate
+arr_equal.ads:13:13: info: implicit terminating annotation on "All_Diff_Values" has been proved, subprogram will terminate
+arr_equal.ads:16:13: info: implicit terminating annotation on "All_Diff_Others" has been proved, subprogram will terminate
+arr_equal.ads:19:13: info: implicit terminating annotation on "Mix" has been proved, subprogram will terminate
+arr_not_equal.adb:7:22: medium: assertion might fail [possible fix: subprogram at arr_not_equal.ads:5 should mention A in a precondition]
+arr_not_equal.adb:16:22: medium: assertion might fail [possible fix: precondition of subprogram at arr_not_equal.ads:7 should mention A]
+arr_not_equal.adb:25:22: medium: assertion might fail [possible fix: precondition of subprogram at arr_not_equal.ads:10 should mention A]
+arr_not_equal.adb:34:22: medium: assertion might fail [possible fix: precondition of subprogram at arr_not_equal.ads:13 should mention A]
+arr_not_equal.adb:43:22: medium: assertion might fail [possible fix: precondition of subprogram at arr_not_equal.ads:16 should mention A]
 arr_not_equal.adb:59:22: medium: assertion might fail [possible fix: precondition of subprogram at arr_not_equal.ads:19 should mention A]
+arr_not_equal.ads:5:13: info: implicit terminating annotation on "Empty" has been proved, subprogram will terminate
+arr_not_equal.ads:7:13: info: implicit terminating annotation on "All_Same_Values" has been proved, subprogram will terminate
+arr_not_equal.ads:10:13: info: implicit terminating annotation on "All_Same_Others" has been proved, subprogram will terminate
+arr_not_equal.ads:13:13: info: implicit terminating annotation on "All_Diff_Values" has been proved, subprogram will terminate
+arr_not_equal.ads:16:13: info: implicit terminating annotation on "All_Diff_Others" has been proved, subprogram will terminate
+arr_not_equal.ads:19:13: info: implicit terminating annotation on "Mix" has been proved, subprogram will terminate
 palindrom.adb:6:28: info: range check proved (CVC5: 2 VC)
 palindrom.adb:9:34: info: overflow check proved (CVC5: 2 VC)
 palindrom.adb:9:44: info: overflow check proved (CVC5: 2 VC)
 palindrom.adb:9:49: info: division check proved (CVC5: 1 VC)
 palindrom.adb:11:29: info: index check proved (CVC5: 4 VC)
 palindrom.adb:11:38: info: index check proved (CVC5: 4 VC)
-palindrom.adb:12:15: high: overflow check might fail, cannot prove upper bound for I + 1 (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
+palindrom.adb:11:41: medium: implicit terminating annotation on "Palindrom" could be incorrect, loop might be nonterminating
+palindrom.adb:12:15: medium: overflow check might fail, cannot prove upper bound for I + 1 (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 palindrom.adb:13:15: info: overflow check proved (CVC5: 4 VC)
-palindrom.adb:14:31: high: loop invariant might fail in first iteration (e.g. when I = 2 and Stop = 1)
-palindrom.adb:14:31: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when I = 2 and Stop = 1)
+palindrom.adb:14:31: medium: loop invariant might fail in first iteration (e.g. when I = 2 and Stop = 1)
+palindrom.adb:14:31: medium: loop invariant might not be preserved by an arbitrary iteration (e.g. when I = 2 and Stop = 1)
 palindrom.adb:15:31: info: loop invariant initialization proved (CVC5: 2 VC)
 palindrom.adb:15:31: info: loop invariant preservation proved (CVC5: 2 VC)
 palindrom.adb:16:31: info: loop invariant initialization proved (CVC5: 1 VC)

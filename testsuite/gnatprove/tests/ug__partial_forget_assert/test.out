@@ -1,0 +1,20 @@
+partial_knowledge.adb:2:04: info: initialization of "Y" proved
+partial_knowledge.adb:3:04: info: initialization of "Z" proved
+partial_knowledge.adb:16:30: info: assertion proved
+partial_knowledge.adb:17:22: info: assertion proved
+partial_knowledge.adb:18:22: info: assertion proved
+partial_knowledge.adb:19:22: info: assertion proved
+
+partial_knowledge.adb:20:22: medium: assertion might fail
+   20 |      pragma Assert (Z = 1); -- Forgotten
+      |                     ^~~~~
+  e.g. when Z = 2
+  possible fix: add or complete related loop invariants or postconditions
+
+partial_knowledge.adb:21:22: medium: assertion might fail
+   21 |      pragma Assert (X < 2); -- Forgotten
+      |                     ^~~~~
+  e.g. when X = 2
+  possible fix: subprogram at line 1 should mention X in a precondition
+    1 |procedure Partial_Knowledge (X : Integer) is
+      |^ here

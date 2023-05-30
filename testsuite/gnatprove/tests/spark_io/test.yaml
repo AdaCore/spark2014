@@ -1,2 +1,4 @@
 large: True
 timeout: 1000
+prove_all:
+  filter_sparklib: False

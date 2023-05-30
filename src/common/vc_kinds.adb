@@ -638,6 +638,9 @@ package body VC_Kinds is
          when Lim_Array_Conv_Signed_Modular_Index =>
            "a conversion between array types if some matching index types"
           & " are not both signed or both modular",
+         when Lim_Assert_And_Cut_Meet_Inv =>
+            "a pragma Assert_And_Cut occurring immediately within a sequence"
+          & " of statements containing a Loop_Invariant",
          when Lim_Borrow_Traversal_First_Param =>
            "a borrowing traversal function whose first formal parameter does"
           & " not have an anonymous access-to-variable type",

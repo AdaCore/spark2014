@@ -3377,7 +3377,7 @@ package body SPARK_Util is
    -- Is_Pragma_Assert_And_Cut --
    ------------------------------
 
-   function Is_Pragma_Assert_And_Cut (N : N_Pragma_Id) return Boolean is
+   function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean is
       Orig : constant Node_Id := Original_Node (N);
    begin
       return Present (Orig)

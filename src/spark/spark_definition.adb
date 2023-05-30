@@ -925,19 +925,36 @@ package body SPARK_Definition is
          In_Handled  : Boolean;
          Goto_Labels : in out Node_Sets.Set;
          Inv_Found   : in out Boolean);
-      --  Checks that no non-scalar object declaration appears before the
-      --  last loop-invariant or variant in a loop's list of statements. Also
-      --  stores scalar objects declared before the last loop-invariant in
-      --  Loop_Entity_Set. Inv_Found is set to True when loop invariants or
-      --  loop variants have been found after the current statement in the
-      --  program. Goto_Labels contains the labels encountered while traversing
-      --  statements occurring after the loop invariant in the initial loop.
-      --  In_Handled is True if we are inside a handled sequence of statements
-      --  with handlers. Reject loop invariants in this case.
+      --  Checks that a loop contains no construct in Stmts that could pose
+      --  problem when re-ordering said loop for verification. Those constructs
+      --  are (1) any non-scalar object declarations occurring before the last
+      --  loop-invariant or variant within a loop's sequence of statement
+      --  (possibly deeply), (2) any loop-invariant or variant nested within
+      --  any exception-catching construct of the loop, (3) any goto statement
+      --  that cross over a loop invariant or variant, and (4) any
+      --  Assert_And_Cut pragma that occurs immediately within a sequence of
+      --  statements containing a loop-invariant or variant; with specific
+      --  exception of those occurring after the loop-invariant in a sequence
+      --  immediately containing a loop-invariant.
+      --  The procedure also adds scalar objects declared before the last
+      --  loop-invariant or variant to the Loop_Entity_Set for future
+      --  processing.
+      --  @param Stmts a sequence of statement within a loop
+      --  @param In_Handled whether Stmts is nested within a
+      --    sequence of statement with exception handlers.
+      --  @param Goto_Labels the labels occurring after the Stmts
+      --    in the loop and after the last loop-invariant or
+      --    variant. In case of success, updated by adding the labels of the
+      --    given sequence that are after the last loop-invariant or
+      --    variant.
+      --  @param Inv_Found whether the last loop-invariant or variant
+      --    has been found after the statement sequence in the loop.
+      --    Updated to True if it occurrs in Stmts.
 
       procedure Check_Loop_Invariant_Placement (Stmts : List_Id);
-      --  Same as above with Nested set to False and Goto_Labels initialized to
-      --  the empty set.
+      --  Same as above with missing parameters In_Handled, Goto_Labels, and
+      --  Inv_Found initialized by the value they are expected to have for the
+      --  statement sequence of a loop; respectively False, Empty_Set, False.
 
       procedure Check_Unrolled_Loop (Loop_Stmt : N_Loop_Statement_Id);
       --  If Loop_Stmt is candidate for loop unrolling, then mark all objects
@@ -990,7 +1007,9 @@ package body SPARK_Definition is
          Goto_Labels : in out Node_Sets.Set;
          Inv_Found   : in out Boolean)
       is
-         N : Node_Id := (if Present (Stmts) then Last (Stmts) else Empty);
+         N              : Node_Id :=
+           (if Present (Stmts) then Last (Stmts) else Empty);
+         Inv_Found_Save : constant Boolean := Inv_Found;
 
       begin
          while Present (N) loop
@@ -998,6 +1017,7 @@ package body SPARK_Definition is
             --  Search for invariants inside nested block statements
 
             if Nkind (N) = N_Block_Statement then
+
                Check_Loop_Invariant_Placement
                  (Statements (Handled_Statement_Sequence (N)),
                   In_Handled
@@ -1056,7 +1076,7 @@ package body SPARK_Definition is
                   =>
                      Mark_Unsupported (Lim_Subprogram_Before_Inv, N);
 
-                  --  Go inside if, case, exended return statements and
+                  --  Go inside if, case, extended return statements and
                   --  nested loops to check for absence of non-scalar
                   --  object declarations.
 
@@ -1120,6 +1140,30 @@ package body SPARK_Definition is
 
             Prev (N);
          end loop;
+
+         --  If the loop invariant is found within the statement list,
+         --  go over it again to mark pragma assert_and_cut as un-supported.
+
+         if not Inv_Found_Save and then Inv_Found
+         then
+
+            --  Pragmas Assert_And_Cut after loop-(in)variant in the same
+            --  immediately enclosing sequence are specifically supported,
+            --  so cut off error reporting as soon as we find a(n) (in)variant
+            --  immediately within the sequence.
+
+            N := First (Stmts);
+            while Present (N)
+              and then not Is_Pragma_Check (N, Name_Loop_Invariant)
+              and then not Is_Pragma (N, Pragma_Loop_Variant)
+            loop
+               if Is_Pragma_Assert_And_Cut (N) then
+                  Mark_Unsupported (Lim_Assert_And_Cut_Meet_Inv, N);
+               end if;
+               Next (N);
+            end loop;
+         end if;
+
       end Check_Loop_Invariant_Placement;
 
       ---------------------------------------

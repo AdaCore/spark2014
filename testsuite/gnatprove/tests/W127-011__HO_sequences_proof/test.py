@@ -11,5 +11,5 @@ def replay():
 
 if __name__ == "__main__":
     prove_all(
-        replay=True, sparklib=True, no_fail=False
+        replay=True, sparklib=True, no_fail=False, filter_sparklib=False
     )  # a lot of spurious flow checks currently

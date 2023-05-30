@@ -1,3 +1,0 @@
-
-gnatprove: test.gpr:3:23: could not create object directory obj/gnatprove
-when creating directory obj/gnatprove/: Permission denied
