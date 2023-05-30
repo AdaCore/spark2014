@@ -1,0 +1,11 @@
+project Exceptions_Bad_Init is
+
+   package Compiler is
+      for Switches ("Ada") use ("-gnat2020");
+   end Compiler;
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--report=fail");
+   end Prove;
+
+end Exceptions_Bad_Init;
