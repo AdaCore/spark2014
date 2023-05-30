@@ -418,7 +418,7 @@ package body SPARK_Definition is
    procedure Mark_Call                        (N : Node_Id) with
      Pre => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement;
 
-   procedure Mark_Address_Or_Name             (E : Entity_Id)
+   procedure Mark_Address                     (E : Entity_Id)
      with Pre => Ekind (E) in Object_Kind | E_Function | E_Procedure;
 
    procedure Mark_Component_Association       (N : N_Component_Association_Id);
@@ -2842,7 +2842,7 @@ package body SPARK_Definition is
    -- Mark_Address --
    ------------------
 
-   procedure Mark_Address_Or_Name (E : Entity_Id) is
+   procedure Mark_Address (E : Entity_Id) is
       Address      : constant Node_Id := Address_Clause (E);
       Address_Expr : constant Node_Id :=
         (if Present (Address) then Expression (Address) else Empty);
@@ -2891,8 +2891,7 @@ package body SPARK_Definition is
                   end if;
                else
                   Error_Msg_NE
-                    (Warning_Message (Warn_Assumed_Volatile_Properties),
-                     E, E);
+                    (Warning_Message (Warn_Assumed_Volatile_Properties), E, E);
                end if;
 
             elsif not Has_Volatile_Property (E, Pragma_Async_Readers)
@@ -2901,8 +2900,7 @@ package body SPARK_Definition is
               or else not Has_Volatile_Property (E, Pragma_Effective_Writes)
             then
                Error_Msg_NE
-                 (Warning_Message (Warn_Assumed_Volatile_Properties),
-                  E, E);
+                 (Warning_Message (Warn_Assumed_Volatile_Properties), E, E);
             end if;
 
             --  If E is variable in SPARK, emit a warning stating that
@@ -2921,8 +2919,7 @@ package body SPARK_Definition is
                    else not No_Caching_Enabled (E))
                then
                   Error_Msg_NE
-                    (Warning_Message (Warn_Indirect_Writes_To_Alias),
-                     E, E);
+                    (Warning_Message (Warn_Indirect_Writes_To_Alias), E, E);
                   Error_Msg_NE
                     ("\make sure that all overlapping objects have"
                      & " Async_Writers set to True",
@@ -2935,9 +2932,23 @@ package body SPARK_Definition is
 
             if not Is_Atomic (E) then
                Error_Msg_NE
-                 (Warning_Message (Warn_Address_Atomic),
-                  E, E);
+                 (Warning_Message (Warn_Address_Atomic), E, E);
             end if;
+
+            --  We emit a warning when the value read might not be valid. This
+            --  addresses assumption SPARK_EXTERNAL_VALID.
+
+            declare
+               Valid       : Boolean;
+               Explanation : Unbounded_String;
+            begin
+               Suitable_For_UC_Target
+                 (Retysp (Etype (E)), True, Valid, Explanation);
+
+               if not Valid then
+                  Error_Msg_NE (Warning_Message (Warn_Address_Valid), E, E);
+               end if;
+            end;
 
          --  The alias is supported by havocing aliased objects for each
          --  update. Check that we only accept cases we can handle that way.
@@ -3129,7 +3140,7 @@ package body SPARK_Definition is
             end if;
          end if;
       end;
-   end Mark_Address_Or_Name;
+   end Mark_Address;
 
    ---------------------------------------------
    -- Mark_Aspect_Clauses_And_Pragmas_In_List --
@@ -5125,9 +5136,9 @@ package body SPARK_Definition is
             end if;
          end if;
 
-         --  Also mark the Address clause or external name if any
+         --  Also mark the Address clause if any
 
-         Mark_Address_Or_Name (E);
+         Mark_Address (E);
       end Mark_Object_Entity;
 
       ---------------------------
@@ -9567,7 +9578,7 @@ package body SPARK_Definition is
          end;
 
          if Ekind (E) in E_Procedure | E_Function then
-            Mark_Address_Or_Name (E);
+            Mark_Address (E);
          end if;
       end if;
    end Mark_Subprogram_Declaration;

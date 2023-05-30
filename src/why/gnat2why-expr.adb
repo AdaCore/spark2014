@@ -17466,8 +17466,6 @@ package body Gnat2Why.Expr is
                --  In the case of a precisely supported address specificatiom,
                --  we emit a static check that the type of the object is OK
                --  for address clauses, and we havoc any potential aliases.
-               --  Otherwise, we emit a warning when the value read might not
-               --  be valid. This addresses assumption SPARK_EXTERNAL_VALID.
 
                if Present (Get_Address_Expr (Decl)) then
                   declare
