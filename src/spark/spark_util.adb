@@ -4097,7 +4097,8 @@ package body SPARK_Util is
 
                when N_Handled_Sequence_Of_Statements =>
                   declare
-                     Handler : Node_Id := First (Exception_Handlers (Stmt));
+                     Handler : Node_Id :=
+                       First_Non_Pragma (Exception_Handlers (Stmt));
                   begin
                      --  Must process handlers first, so that
                      --  vertices are inserted.
@@ -4106,7 +4107,7 @@ package body SPARK_Util is
                         Exit_Temp := Exit_Vertex;
                         Cache_For_Statement_List
                           (Statements (Handler), Depth + 1, Exit_Temp);
-                        Next (Handler);
+                        Next_Non_Pragma (Handler);
                      end loop;
 
                      Exit_Temp := Exit_Vertex;

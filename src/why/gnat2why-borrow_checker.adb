@@ -3173,9 +3173,6 @@ package body Gnat2Why.Borrow_Checker is
    ----------------
 
    procedure Check_Node (N : Node_Id) is
-
-   --  Start of processing for Check_Node
-
    begin
       case Nkind (N) is
          when N_Declaration =>
@@ -3240,25 +3237,22 @@ package body Gnat2Why.Borrow_Checker is
                Handler  : Node_Id;
                Save_Env : Perm_Env := Current_Perm_Env;
             begin
-               if Present (Handlers) then
-                  Handler := First (Handlers);
-                  loop
-                     declare
-                        Handler_Env : constant Perm_Env_Access :=
-                          Get (Current_Exc_Accumulators, Handler);
-                     begin
-                        if Handler_Env /= null then
-                           Remove (Current_Exc_Accumulators, Handler);
-                           Current_Perm_Env := Handler_Env.all;
-                           Check_List (Statements (Handler));
-                           Merge_Env (Current_Perm_Env, Save_Env);
-                        end if;
-                     end;
-                     Next (Handler);
-                     exit when No (Handler);
-                  end loop;
-                  Current_Perm_Env := Save_Env;
-               end if;
+               Handler := First_Non_Pragma (Handlers);
+               while Present (Handler) loop
+                  declare
+                     Handler_Env : constant Perm_Env_Access :=
+                       Get (Current_Exc_Accumulators, Handler);
+                  begin
+                     if Handler_Env /= null then
+                        Remove (Current_Exc_Accumulators, Handler);
+                        Current_Perm_Env := Handler_Env.all;
+                        Check_List (Statements (Handler));
+                        Merge_Env (Current_Perm_Env, Save_Env);
+                     end if;
+                  end;
+                  Next_Non_Pragma (Handler);
+               end loop;
+               Current_Perm_Env := Save_Env;
             end;
 
          when N_Pragma =>

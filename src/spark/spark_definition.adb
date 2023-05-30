@@ -8130,7 +8130,11 @@ package body SPARK_Definition is
 
       Handler := First (Exception_Handlers (N));
       while Present (Handler) loop
-         Mark_Exception_Handler (Handler);
+         if Nkind (Handler) = N_Pragma then
+            Mark_Pragma (Handler);
+         else
+            Mark_Exception_Handler (Handler);
+         end if;
          Next (Handler);
       end loop;
    end Mark_Handled_Statements;
