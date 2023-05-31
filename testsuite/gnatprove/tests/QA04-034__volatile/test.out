@@ -1,5 +1,6 @@
 hw-dbc-transfer_rings.adb:33:04: warning: assuming correct volatile properties for "Rings"
 hw-dbc-transfer_rings.adb:33:04: warning: assuming no concurrent accesses to non-atomic object "Rings"
+hw-dbc-transfer_rings.adb:33:04: warning: assuming valid reads from object "Rings"
 hw-dbc-transfer_rings.adb:33:04: warning: make sure that all overlapping objects have Async_Writers set to True
 hw-dbc-transfer_rings.adb:33:04: warning: writing to "Rings" is assumed to have no effects on other non-volatile objects
 hw-dbc-transfer_rings.adb:54:13: error: function "Get_Ring_Address" with output global "Rings" is not allowed in SPARK
