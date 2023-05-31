@@ -383,13 +383,9 @@ package VC_Kinds is
       Warn_Variant_Not_Recursive,
 
       --  Warnings guaranteed to be issued
-      Warn_Address_Atomic,
-      Warn_Address_Valid,
       Warn_Assumed_Always_Return,
       Warn_Assumed_Global_Null,
-      Warn_Assumed_Volatile_Properties,
-      Warn_Indirect_Writes_Through_Alias,
-      Warn_Indirect_Writes_To_Alias,
+      Warn_Imprecisely_Supported_Address,
 
       --  Warnings only issued when using switch --pedantic
       Warn_Image_Attribute_Length,
@@ -489,7 +485,7 @@ package VC_Kinds is
      Warn_Address_To_Access .. Warn_Variant_Not_Recursive;
 
    subtype Guaranteed_Warning_Kind is Misc_Warning_Kind range
-     Warn_Address_Atomic .. Warn_Indirect_Writes_To_Alias;
+     Warn_Assumed_Always_Return .. Warn_Imprecisely_Supported_Address;
 
    subtype Pedantic_Warning_Kind is Misc_Warning_Kind range
      Warn_Image_Attribute_Length .. Warn_Representation_Attribute_Value;
@@ -512,9 +508,6 @@ package VC_Kinds is
           "?aliased objects have different volatile properties",
         when Warn_Attribute_Valid =>
           "?attribute Valid is assumed to return True",
-        when Warn_Indirect_Writes_To_Alias =>
-          "?writing to & is assumed to have no effects on"
-          & " other non-volatile objects",
         when Warn_Initialization_To_Alias =>
           "?initialization of & is assumed to have no effects on"
           & " other non-volatile objects",
@@ -547,18 +540,14 @@ package VC_Kinds is
           "?no recursive call visible",
 
         --  Warnings guaranteed to be issued
-        when Warn_Address_Atomic =>
-          "?assuming no concurrent accesses to non-atomic object &",
-        when Warn_Address_Valid =>
-          "?assuming valid reads from object &",
         when Warn_Assumed_Always_Return =>
           "?no Always_Terminates aspect available for &",
         when Warn_Assumed_Global_Null =>
           "?no Global contract available for &",
-        when Warn_Assumed_Volatile_Properties =>
-          "?assuming correct volatile properties for &",
-        when Warn_Indirect_Writes_Through_Alias =>
-          "?indirect writes to & through a potential alias are ignored",
+        --  The warning message is customized depending on the assumptions that
+        --  need to be checked.
+        when Warn_Imprecisely_Supported_Address =>
+          raise Program_Error,
 
         --  Warnings only issued when using switch --pedantic
         when Warn_Image_Attribute_Length =>

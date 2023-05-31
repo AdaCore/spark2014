@@ -1,8 +1,6 @@
 display.adb:10:34: info: range check proved (CVC5: 2 VC)
-display.adb:20:04: warning: assuming correct volatile properties for "Port"
-display.adb:20:04: warning: assuming no concurrent accesses to non-atomic object "Port"
+display.adb:20:04: warning: address specification on "Port" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias
 display.adb:20:04: warning: make sure that all overlapping objects have Async_Writers set to True
-display.adb:20:04: warning: writing to "Port" is assumed to have no effects on other non-volatile objects
 display.adb:37:32: info: overflow check proved (CVC5: 2 VC)
 display.adb:48:07: info: justified that "Control" constituent of "LCD" is not set
 display.ads:10:06: info: data dependencies proved

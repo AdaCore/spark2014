@@ -1,5 +1,4 @@
-input_port.adb:7:04: warning: assuming correct volatile properties for "Inputs"
-input_port.adb:7:04: warning: assuming no concurrent accesses to non-atomic object "Inputs"
+input_port.adb:7:04: warning: address specification on "Inputs" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties
 input_port.ads:5:29: info: initialization of "Input_Value" proved
 input_port.ads:6:11: info: data dependencies proved
 input_port.ads:7:11: info: flow dependencies proved

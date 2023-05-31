@@ -1,4 +1,2 @@
-lb2.ads:18:04: warning: assuming correct volatile properties for "I"
-lb2.ads:18:04: warning: assuming no concurrent accesses to non-atomic object "I"
+lb2.ads:18:04: warning: address specification on "I" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias
 lb2.ads:18:04: warning: make sure that all overlapping objects have Async_Writers set to True
-lb2.ads:18:04: warning: writing to "I" is assumed to have no effects on other non-volatile objects

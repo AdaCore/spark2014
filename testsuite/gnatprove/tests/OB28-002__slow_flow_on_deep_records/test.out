@@ -1,8 +1,5 @@
-iommu.adb:9:04: warning: assuming correct volatile properties for "IOMMUs"
-iommu.adb:9:04: warning: assuming no concurrent accesses to non-atomic object "IOMMUs"
-iommu.adb:9:04: warning: assuming valid reads from object "IOMMUs"
+iommu.adb:9:04: warning: address specification on "IOMMUs" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads
 iommu.adb:9:04: warning: make sure that all overlapping objects have Async_Writers set to True
-iommu.adb:9:04: warning: writing to "IOMMUs" is assumed to have no effects on other non-volatile objects
 iommu.ads:389:13: error: nonvolatile function "Read_Version" with volatile input global "State" is not allowed in SPARK
 iommu.ads:389:13: error: violation of aspect SPARK_Mode at line 7
 iommu.ads:393:13: error: nonvolatile function "Read_Capability" with volatile input global "State" is not allowed in SPARK

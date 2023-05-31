@@ -2868,85 +2868,156 @@ package body SPARK_Definition is
          --  If we cannot determine which object the address of E references,
          --  the address clause will basically be ignored. We emit some
          --  warnings to help users locate the cases where review is needed.
+         --  The warning message is generated here instead of relying on
+         --  Warning_Message so that we generate a different message depending
+         --  of what needs to be checked during review.
 
          if not Supported_Alias then
 
-            --  Check whether E is annotated with some Volatile properties.
-            --  If it is not the case, issue a warning that we cannot
-            --  account for indirect writes. Otherwise, issue a warning that
-            --  we assume the stated volatile properties, if not all
-            --  properties are set. This partly addresses assumptions
-            --  SPARK_EXTERNAL and SPARK_ALIASING_ADDRESS.
-
-            if not Has_Volatile (E) then
-               if not No_Caching_Enabled (E) then
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Indirect_Writes_Through_Alias),
-                     E, E);
-                  if Is_Library_Level_Entity (E) then
-                     Error_Msg_NE
-                       ("\consider making & volatile and"
-                        & " annotating it with Async_Writers",
-                        E, E);
-                  end if;
-               else
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Assumed_Volatile_Properties), E, E);
-               end if;
-
-            elsif not Has_Volatile_Property (E, Pragma_Async_Readers)
-              or else not Has_Volatile_Property (E, Pragma_Async_Writers)
-              or else not Has_Volatile_Property (E, Pragma_Effective_Reads)
-              or else not Has_Volatile_Property (E, Pragma_Effective_Writes)
-            then
-               Error_Msg_NE
-                 (Warning_Message (Warn_Assumed_Volatile_Properties), E, E);
-            end if;
-
-            --  If E is variable in SPARK, emit a warning stating that
-            --  effects to other objects induced by writing to E are
-            --  ignored. This partly addresses assumptions
-            --  SPARK_ALIASING_ADDRESS.
-
-            if not E_Is_Constant then
-
-               --  If E has a volatile annotation with Async_Readers set to
-               --  False, writing to E cannot have any effects on other
-               --  variables. Do not emit the warning.
-
-               if (if Has_Volatile (E)
-                   then Has_Volatile_Property (E, Pragma_Async_Readers)
-                   else not No_Caching_Enabled (E))
-               then
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Indirect_Writes_To_Alias), E, E);
-                  Error_Msg_NE
-                    ("\make sure that all overlapping objects have"
-                     & " Async_Writers set to True",
-                     E, E);
-               end if;
-            end if;
-
-            --  We assume no concurrent accesses in case the object is not
-            --  atomic. This partly addresses assumptions SPARK_EXTERNAL.
-
-            if not Is_Atomic (E) then
-               Error_Msg_NE
-                 (Warning_Message (Warn_Address_Atomic), E, E);
-            end if;
-
-            --  We emit a warning when the value read might not be valid. This
-            --  addresses assumption SPARK_EXTERNAL_VALID.
-
             declare
-               Valid       : Boolean;
-               Explanation : Unbounded_String;
-            begin
-               Suitable_For_UC_Target
-                 (Retysp (Etype (E)), True, Valid, Explanation);
+               Indirect_To      : Boolean := False;
+               Indirect_Through : Boolean := False;
+               --  We generate a single warning message for indirect writes
+               --  through / to aliases. Use booleans to track what needs to be
+               --  generated.
 
-               if not Valid then
-                  Error_Msg_NE (Warning_Message (Warn_Address_Valid), E, E);
+               Warnings         : array (1 .. 4) of Unbounded_String;
+               Nb_Warn          : Natural := 0;
+               --  Parts of the warning message. There can be up to 4 parts:
+               --    * Missing atomic
+               --    * Volatile flavors
+               --    * Indirect writes
+               --    * Valid reads
+
+               Continuations    : array (1 .. 2) of Unbounded_String;
+               Nb_Cont          : Natural := 0;
+               --  Same as above but storing continuations
+
+            begin
+               --  We assume no concurrent accesses in case the object is not
+               --  atomic. This partly addresses assumptions SPARK_EXTERNAL.
+
+               if not Is_Atomic (E) then
+                  Nb_Warn := Nb_Warn + 1;
+                  Warnings (Nb_Warn) := To_Unbounded_String
+                    ("no concurrent accesses to non-atomic object");
+               end if;
+
+               --  Check whether E is annotated with some Volatile properties.
+               --  If it is not the case, issue a warning that we cannot
+               --  account for indirect writes. Otherwise, issue a warning that
+               --  we assume the stated volatile properties, if not all
+               --  properties are set. This partly addresses assumptions
+               --  SPARK_EXTERNAL and SPARK_ALIASING_ADDRESS.
+
+               if not Has_Volatile (E) and then not No_Caching_Enabled (E) then
+                  Indirect_Through := True;
+                  if Is_Library_Level_Entity (E) then
+                     Nb_Cont := Nb_Cont + 1;
+                     Continuations (Nb_Cont) := To_Unbounded_String
+                       ("consider making & volatile and"
+                        & " annotating it with Async_Writers");
+                  end if;
+               elsif (not Has_Volatile (E) and then No_Caching_Enabled (E))
+                 or else not Has_Volatile_Property (E, Pragma_Async_Readers)
+                 or else not Has_Volatile_Property (E, Pragma_Async_Writers)
+                 or else not Has_Volatile_Property (E, Pragma_Effective_Reads)
+                 or else not Has_Volatile_Property (E, Pragma_Effective_Writes)
+               then
+                  Nb_Warn := Nb_Warn + 1;
+                  Warnings (Nb_Warn) := To_Unbounded_String
+                    ("correct volatile properties");
+               end if;
+
+               --  If E is variable in SPARK, emit a warning stating that
+               --  effects to other objects induced by writing to E are
+               --  ignored. This partly addresses assumptions
+               --  SPARK_ALIASING_ADDRESS.
+
+               if not E_Is_Constant then
+
+                  --  If E has a volatile annotation with Async_Readers set to
+                  --  False, writing to E cannot have any effects on other
+                  --  variables. Do not emit the warning.
+
+                  if (if Has_Volatile (E)
+                      then Has_Volatile_Property (E, Pragma_Async_Readers)
+                      else not No_Caching_Enabled (E))
+                  then
+                     Indirect_To := True;
+                     Nb_Cont := Nb_Cont + 1;
+                     Continuations (Nb_Cont) := To_Unbounded_String
+                       ("make sure that all overlapping objects have"
+                        & " Async_Writers set to True");
+                  end if;
+               end if;
+
+               --  Reconstruct the warning about indirect writes
+
+               if Indirect_To or else Indirect_Through then
+                  declare
+                     Mode_Str : constant String :=
+                       (if Indirect_To and then Indirect_Through
+                        then "to or through"
+                        elsif Indirect_To then "to" else "through");
+                  begin
+                     Nb_Warn := Nb_Warn + 1;
+                     Warnings (Nb_Warn) := To_Unbounded_String
+                       ("no writes " & Mode_Str & " a potential alias");
+                  end;
+               end if;
+
+               --  We emit a warning when the value read might not be valid.
+               --  This addresses assumption SPARK_EXTERNAL_VALID.
+
+               declare
+                  Valid       : Boolean;
+                  Explanation : Unbounded_String;
+               begin
+                  Suitable_For_UC_Target
+                    (Retysp (Etype (E)), True, Valid, Explanation);
+
+                  if not Valid then
+                     Nb_Warn := Nb_Warn + 1;
+                     Warnings (Nb_Warn) := To_Unbounded_String ("valid reads");
+                  end if;
+               end;
+
+               --  Emit composite warning
+
+               if Nb_Warn > 0 then
+                  declare
+                     Msg : Unbounded_String;
+                  begin
+                     if Nb_Warn = 1 then
+                        Msg := Warnings (1);
+                     else
+                        if Nb_Warn = 2 then
+                           Msg := Msg & Warnings (1) & " ";
+                        else
+                           for I in 1 .. Nb_Warn - 1 loop
+                              Msg := Msg & Warnings (I) & ", ";
+                           end loop;
+                        end if;
+
+                        Msg := Msg & "and " & Warnings (Nb_Warn);
+                     end if;
+
+                     Error_Msg_NE
+                       ("?address specification on & is imprecisely supported:"
+                        & " assuming " & To_String (Msg), E, E);
+                  end;
+
+                  if Nb_Cont > 0 then
+                     declare
+                        Msg : constant String :=
+                          (if Nb_Cont = 1 then To_String (Continuations (1))
+                           else To_String (Continuations (1)) & " and " &
+                             To_String (Continuations (2)));
+                     begin
+                        Error_Msg_NE ('\' & Msg, E, E);
+                     end;
+                  end if;
                end if;
             end;
 

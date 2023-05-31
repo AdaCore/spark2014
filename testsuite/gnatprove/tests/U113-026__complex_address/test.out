@@ -1,8 +1,6 @@
 arrays.ads:17:04: warning: aliased objects must have the same volatility and atomic status
-arrays.ads:23:04: warning: assuming no concurrent accesses to non-atomic object "Arr_3"
-arrays.ads:23:04: warning: assuming valid reads from object "Arr_3"
+arrays.ads:23:04: warning: address specification on "Arr_3" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads
 arrays.ads:23:04: warning: make sure that all overlapping objects have Async_Writers set to True
-arrays.ads:23:04: warning: writing to "Arr_3" is assumed to have no effects on other non-volatile objects
 arrays.ads:25:26: warning: Program_Error will be raised at run time
 arrays.ads:25:26: warning: assuming "F" has no effect on global items
 arrays.ads:25:26: warning: cannot call "F" before body seen
