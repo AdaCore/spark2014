@@ -76,6 +76,10 @@ tool. You can set it manually in this case::
 Running GNATprove from the Command Line
 ---------------------------------------
 
+.. index::
+    single: -U; all files in project
+    single: -u
+
 We recommend running |GNATprove| from the command line using a project file, as
 follows::
 
@@ -171,7 +175,9 @@ and ``gold``, you can choose which analysis is performed:
 * In the default mode ``all``, |GNATprove| does both flow analysis and proof.
   The ``silver`` and ``gold`` modes are synonyms for this mode.
 
-.. index:: --limit-line; command-line usage
+.. index::
+   single: --limit-line; command-line usage
+   single: --limit-region
 
 Using the option ``--limit-line=`` one can limit proofs to a particular file
 and line of an Ada file. For example, if you want to prove only line 12 of
@@ -180,6 +186,10 @@ the call to |GNATprove|. Using ``--limit-region=`` one can limit proofs to a
 range of lines in a particular file. For example,
 ``--limit-region=example.adb:12:14`` will limit analysis to lines 12 to 14 in
 ``example.adb``.
+
+.. index::
+    single: --limit-subp
+    single: -U; analyze all instances
 
 Using the ``--limit-subp=`` option, one can limit the analysis to a particular
 subprogram. As an example, the option ``--limit-subp=example.ads:12`` limits
@@ -209,6 +219,9 @@ platform of the machine. The option ``-j`` activates parallel compilation and
 parallel proofs. With ``-jnnn``, at most nnn cores can be used in parallel.
 With the special value ``-j0``, at most N cores can be used in parallel, when
 N is the number of cores on the machine.
+
+.. index::
+    single: -U; speeding up
 
 .. note::
 
