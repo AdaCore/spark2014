@@ -146,7 +146,6 @@ package Why.Atree.Modules is
       String_Image_Type : W_Type_Id;
       Type_Of_Heap      : W_Type_Id;
       Spark_CE_Branch   : W_Identifier_Id;
-      No_Return         : W_Identifier_Id;
    end record;
 
    type M_Boolean_Init_Wrapper_Type is record

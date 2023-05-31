@@ -23811,25 +23811,6 @@ package body Gnat2Why.Expr is
                   end;
                end if;
 
-               --  If a procedure might not return, ignore the case where it
-               --  does not return after the call:
-               --
-               --    proc;
-               --    assume (no__return = False);
-
-               if Has_Might_Not_Return_Annotation (Subp) then
-                  Append
-                    (Call,
-                     New_Assume_Statement
-                       (Ada_Node => Stmt_Or_Decl,
-                        Pred     =>
-                          New_Comparison
-                            (Symbol => M_Integer.Bool_Eq,
-                             Left   => New_Deref (Right => +M_Main.No_Return,
-                                                  Typ   => EW_Bool_Type),
-                             Right  => False_Term)));
-               end if;
-
                --  Insert invariant check if needed
 
                if Subp_Needs_Invariant_Checks (Subp) then

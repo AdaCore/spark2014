@@ -14,7 +14,7 @@ main.adb:91:14: warning: subprogram "Bad_Call_3" has no effect
 main.adb:95:07: medium: call might not terminate [reason for check: procedure "Bad_Call_3" has an Always_Terminates aspect]
 main.adb:95:07: medium: terminating annotation on "Bad_Call_3" could be incorrect, call to "Do_Loop" might be nonterminating [possible fix: annotate "Do_Loop" with Always_Return]
 main.adb:98:04: warning: analyzing unreferenced function "Bad_Call_4"
-main.adb:100:07: medium: call might not terminate (e.g. when B = True) [reason for check: functions should always terminate in SPARK]
+main.adb:100:07: medium: call might not terminate [reason for check: functions should always terminate in SPARK]
 main.adb:100:07: medium: implicit terminating annotation on "Bad_Call_4" could be incorrect, call to "Do_Loop" might be nonterminating [possible fix: annotate "Do_Loop" with Always_Return]
 main.adb:107:17: warning: subprogram "Call" has no effect
 main.adb:108:17: warning: subprogram "Bad_Call" has no effect
