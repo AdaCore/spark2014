@@ -7987,6 +7987,68 @@ package body Flow.Control_Flow_Graph is
                      CM    => Connection_Map,
                      Nodes => NL,
                      Block => Excep_Cases_Block);
+
+            --  When an unhandled exception ocurrs, the values of actual
+            --  parameters passed by-reference will be transferred to the
+            --  caller; for other parameters it doesn't matter what values
+            --  they are assigned by the callee. In fact, we DON'T WANT these
+            --  values to be represented in the Depends contract (which we want
+            --  to describe the dependencies for a normal termination).
+            --
+            --  We can handle this with the following choices:
+            --  1) leave them unassigned, but this will cause silly checks
+            --     insisting on user to assign them according to the Depends
+            --     contract;
+            --  2) assign them according to the Depends contract, but this will
+            --     suppress messages about variables from the RHS of the
+            --     Depends clauses that otherwise would appear as unused;
+            --  3) assign them with a null dependency.
+            --
+            --  The last choice is not strictly right, but gives us exactly the
+            --  behaviour that we want. In particular, any explicit assignments
+            --  just before the raise statements will become flagged as unused.
+
+               if Present (Prag) then
+                  declare
+                     Formal  : Entity_Id;
+                     Var_Def : Flow_Id_Sets.Set;
+                     Scrub   : Flow_Graphs.Vertex_Id;
+
+                  begin
+                     Formal := First_Formal (FA.Spec_Entity);
+                     while Present (Formal) loop
+                        if Ekind (Formal) = E_In_Parameter
+                          and then not Is_Writable_Parameter (Formal)
+                        then
+                           null;
+                        elsif Is_Aliased (Formal)
+                          or else Is_By_Reference_Type (Etype (Formal))
+                        then
+                           null;
+                        else
+                           Var_Def.Union
+                             (Flatten_Variable (Formal, FA.B_Scope));
+                        end if;
+                        Next_Formal (Formal);
+                     end loop;
+
+                     Add_Vertex
+                       (FA,
+                        Make_Basic_Attributes
+                          (Var_Def    => Var_Def,
+                           Vertex_Ctx => The_Context.Vertex_Ctx,
+                           Print_Hint => Pretty_Print_Param_Scrub),
+                        Scrub);
+                     FA.Atr (Scrub).Is_Program_Node := False;
+
+                     Linkup (FA,
+                             Froms => Excep_Cases_Block.Standard_Exits,
+                             To    => Scrub);
+
+                     Excep_Cases_Block.Standard_Exits :=
+                       Vertex_Sets.To_Set (Scrub);
+                  end;
+               end if;
             end;
 
          when Kind_Task =>

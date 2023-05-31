@@ -786,6 +786,10 @@ package body Flow is
             Rv.Shape := Shape_Diamond;
             Write_Str ("param havoc");
 
+         elsif A.Pretty_Print_Kind = Pretty_Print_Param_Scrub then
+            Rv.Shape := Shape_None;
+            Write_Str ("param scrub");
+
          elsif A.Pretty_Print_Kind /= Pretty_Print_Null then
             raise Program_Error;
 

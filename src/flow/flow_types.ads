@@ -571,7 +571,8 @@ package Flow_Types is
                                 Pretty_Print_Entry_Barrier,
                                 Pretty_Print_Reclaim,
                                 Pretty_Print_Call_Exception,
-                                Pretty_Print_Param_Havoc);
+                                Pretty_Print_Param_Havoc,
+                                Pretty_Print_Param_Scrub);
 
    type Subprogram_Call is record
       N : Node_Id;    --  node of the subprogram call
