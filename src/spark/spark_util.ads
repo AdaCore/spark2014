@@ -1072,7 +1072,9 @@ package SPARK_Util is
    --  statement. Return all exception handlers which might be reached when
    --  jumping from Stmt. If the enclosing body might be exited, it will be the
    --  last elements of the list. If the statement does not raise any handled
-   --  exception, the list is empty.
+   --  exception, the list is empty. If Stmt is a ghost procedure call
+   --  occurring in non-ghost code, no exception can be handled, so the list is
+   --  empty.
 
    function By_Copy (Obj : Formal_Kind_Id) return Boolean;
    --  Return True if Obj is known to be passed by copy. In parameters of an
@@ -1158,7 +1160,8 @@ package SPARK_Util is
 
    function Get_Handled_Exceptions (Stmt : Node_Id) return Exception_Sets.Set;
    --  Retrieve all exceptions either handled by a handler above Stmt or
-   --  expected by the enclosing unit.
+   --  expected by the enclosing unit. If Stmt is a ghost procedure call
+   --  occurring in non-ghost code, no exception can be handled.
 
    function Get_Raised_Exceptions
      (Stmt         : Node_Id;

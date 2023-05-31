@@ -1300,6 +1300,18 @@ package body Flow_Error_Messages is
                return "";
             end if;
 
+         when VC_Raise =>
+            if Nkind (N) = N_Procedure_Call_Statement
+              and then Ekind (Get_Called_Entity (N)) = E_Procedure
+              and then Is_Ghost_Entity (Get_Called_Entity (N))
+              and then not Is_Ghost_Entity (E)
+            then
+               return "ghost procedure calls should not propagate exceptions"
+                 & " to non-ghost code";
+            else
+               return "";
+            end if;
+
          when VC_Index_Check =>
             return Value & " must be a valid index into the array";
 
