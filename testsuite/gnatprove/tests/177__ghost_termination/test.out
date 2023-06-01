@@ -4,14 +4,15 @@ ghost_termination.adb:38:10: info: conditional loop termination proved (CVC5: 1 
 ghost_termination.adb:44:39: info: data dependencies proved
 ghost_termination.adb:55:56: info: data dependencies proved
 ghost_termination.adb:60:10: info: conditional call termination proved (CVC5: 1 VC)
-ghost_termination.adb:66:40: info: data dependencies proved
-ghost_termination.adb:71:10: medium: call might not terminate [reason for check: ghost calls occurring inside non-ghost code should always terminate]
-ghost_termination.adb:77:42: info: data dependencies proved
-ghost_termination.adb:83:10: medium: call might not terminate [reason for check: ghost calls occurring inside non-ghost code should always terminate]
-ghost_termination.adb:89:04: info: function contract feasibility proved (CVC5: 1 VC)
-ghost_termination.adb:90:13: info: implicit terminating annotation on "Z" has been proved, subprogram will terminate
-ghost_termination.adb:92:14: info: null exclusion check proved (Trivial: 1 VC)
-ghost_termination.adb:94:43: info: data dependencies proved
-ghost_termination.adb:98:15: info: pointer dereference check proved (CVC5: 1 VC)
-ghost_termination.adb:101:40: info: data dependencies proved
-ghost_termination.adb:105:15: info: pointer dereference check proved (CVC5: 1 VC)
+ghost_termination.adb:62:10: info: assertion proved (CVC5: 1 VC)
+ghost_termination.adb:67:40: info: data dependencies proved
+ghost_termination.adb:72:10: medium: call might not terminate [reason for check: ghost calls occurring inside non-ghost code should always terminate]
+ghost_termination.adb:78:42: info: data dependencies proved
+ghost_termination.adb:84:10: medium: call might not terminate [reason for check: ghost calls occurring inside non-ghost code should always terminate]
+ghost_termination.adb:90:04: info: function contract feasibility proved (CVC5: 1 VC)
+ghost_termination.adb:91:13: info: implicit terminating annotation on "Z" has been proved, subprogram will terminate
+ghost_termination.adb:93:14: info: null exclusion check proved (Trivial: 1 VC)
+ghost_termination.adb:95:43: info: data dependencies proved
+ghost_termination.adb:99:15: info: pointer dereference check proved (CVC5: 1 VC)
+ghost_termination.adb:102:40: info: data dependencies proved
+ghost_termination.adb:106:15: info: pointer dereference check proved (CVC5: 1 VC)
