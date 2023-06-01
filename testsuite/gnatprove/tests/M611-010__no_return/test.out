@@ -1,2 +1,1 @@
 no_return.adb:20:10: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
-no_return.ads:6:14: warning: subprogram "P" has no effect

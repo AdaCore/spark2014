@@ -16,7 +16,6 @@ bad_spec_prag.ads:26:04: warning: use Always_Terminates instead
 bad.adb:10:07: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 bad.adb:11:07: warning: this statement is never reached
 bad.adb:17:10: info: only expected exception raised (CVC5: 1 VC), in instantiation at bad.adb:22
-bad.adb:22:14: high: all paths in "Call_Jump" raise exceptions or do not terminate normally
 bad.adb:26:07: medium: implicit terminating annotation on "Silent_Call_Jump" could be incorrect, call to "Call_Jump" might be nonterminating [possible fix: annotate "Call_Jump" with Always_Return]
 bad.adb:26:07: medium: unexpected exception might be raised
 bad.ads:5:13: high: all paths in "Call_Jump_Fun" raise exceptions or do not terminate normally
