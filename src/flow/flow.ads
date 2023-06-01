@@ -144,13 +144,16 @@ package Flow is
       --  The entity and scope (of the body and spec) of the analysed entity.
       --  The two scopes might be the same in some cases.
 
-      Start_Vertex      : Flow_Graphs.Vertex_Id;
-      Helper_End_Vertex : Flow_Graphs.Vertex_Id;
-      End_Vertex        : Flow_Graphs.Vertex_Id;
+      Start_Vertex           : Flow_Graphs.Vertex_Id;
+      Helper_End_Vertex      : Flow_Graphs.Vertex_Id;
+      Exceptional_End_Vertex : Flow_Graphs.Vertex_Id;
+      End_Vertex             : Flow_Graphs.Vertex_Id;
       --  The start, helper end and end vertices in the graphs. Start and end
-      --  are the obvious, and the helper end is used to indicate the end of
-      --  the procedure (i.e. returns jump here), but before postconditions
-      --  are checked.
+      --  are the obvious; the helper end indicates the end of the procedure
+      --  (i.e. returns jump here), but before postconditions are checked;
+      --  exceptional end is where the transfer go when an unhandled
+      --  exception is raised, i.e. Exceptional_Cases are checked, but
+      --  not postconditions.
 
       CFG                : Flow_Graphs.Graph;
       CFG_With_Dead_Code : Flow_Graphs.Graph;
@@ -260,12 +263,17 @@ package Flow is
    ----------------------------------------------------------------------
 
    procedure Print_Graph
-     (Filename          : String;
-      G                 : Flow_Graphs.Graph;
-      M                 : Attribute_Maps.Map;
-      Start_Vertex      : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
-      Helper_End_Vertex : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
-      End_Vertex        : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex);
+     (Filename               : String;
+      G                      : Flow_Graphs.Graph;
+      M                      : Attribute_Maps.Map;
+      Start_Vertex           : Flow_Graphs.Vertex_Id :=
+        Flow_Graphs.Null_Vertex;
+      Helper_End_Vertex      : Flow_Graphs.Vertex_Id :=
+        Flow_Graphs.Null_Vertex;
+      Exceptional_End_Vertex : Flow_Graphs.Vertex_Id :=
+        Flow_Graphs.Null_Vertex;
+      End_Vertex             : Flow_Graphs.Vertex_Id :=
+        Flow_Graphs.Null_Vertex);
    --  Write a dot and pdf file for the given graph.
 
    ----------------------------------------------------------------------

@@ -706,7 +706,20 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    with Pre => Nkind (N) = N_Handled_Sequence_Of_Statements;
-   --  Simply calls Process_Statement_List
+   --  Deals with handled sequence of statements, possibly with exception
+   --  handlers. We generate a CFG which looks like this:
+   --
+   --  stmt1
+   --  |
+   --  stmt2
+   --  |
+   --  stmt...
+   --  |
+   --  |         [handler1]   [handler2]   [hander...]
+   --  |         |            |            |
+   --
+   --  i.e. there might be multiple standard exits coming from the normal
+   --  execution and the exception handlers.
 
    procedure Do_If_Statement
      (N   : Node_Id;
@@ -2305,7 +2318,17 @@ package body Flow.Control_Flow_Graph is
       HStmts  : List_Id;
       Stmts   : constant List_Id := Statements (N);
    begin
+      --  Borrowers might be declared both in block statements and extended
+      --  return statements, but both these constructs include a handled
+      --  sequence of statements, so it is better to handle both of them here.
+
       Ctx.Borrow_Numbers.Append (Ctx.Borrowers.Length);
+
+      --  We first process exception handlers, so when a statement from the
+      --  handled sequence of statements raises an exception, it can be linked
+      --  straight to the exception handler. Otherwise, we would need to store
+      --  vertices where exceptions are raised and link them to vertices for
+      --  the handlers afterwards.
 
       --  We don't expect any meaningful pragma at the beginning of exception
       --  handlers.
@@ -2316,6 +2339,11 @@ package body Flow.Control_Flow_Graph is
          HStmts := Statements (Handler);
 
          Process_Statement_List (HStmts, FA, CM, Ctx);
+
+         --  It is more convenient to connect a raise statement with the node
+         --  of the exception handler and not with the list of its statements,
+         --  so move the connections.
+
          Move_Connections (CM,
                            Dst => Union_Id (Handler),
                            Src => Union_Id (HStmts));
@@ -2323,20 +2351,34 @@ package body Flow.Control_Flow_Graph is
          Next_Non_Pragma (Handler);
       end loop;
 
+      --  Now process the handed statements themselves
+
       Process_Statement_List (Stmts, FA, CM, Ctx);
       Move_Connections (CM,
                         Dst => Union_Id (N),
                         Src => Union_Id (Stmts));
 
+      --  Finally, combine standard exits of the normal execution and
+      --  exception handlers and forget about the handlers, since they can't
+      --  be referenced anymore.
+
       Handler := First_Non_Pragma (Exception_Handlers (N));
       while Present (Handler) loop
-         CM (Union_Id (N)).Standard_Exits.Union
-           (CM (Union_Id (Handler)).Standard_Exits);
+         declare
+            Handler_Connections : Connection_Maps.Cursor :=
+              CM.Find (Union_Id (Handler));
+         begin
+            CM (Union_Id (N)).Standard_Exits.Union
+              (CM (Handler_Connections).Standard_Exits);
 
-         CM.Delete (Union_Id (Handler));
+            CM.Delete (Handler_Connections);
+         end;
 
          Next_Non_Pragma (Handler);
       end loop;
+
+      --  Local borrowers cease to exist when exiting the handled sequence of
+      --  statements.
 
       Ctx.Borrow_Numbers.Delete_Last;
    end Do_Handled_Sequence_Of_Statements;
@@ -5343,9 +5385,9 @@ package body Flow.Control_Flow_Graph is
                Reclaim_Borrower (Decl, FA, Last => V);
             end loop;
 
-            --  Link the last vertex directly to the end vertex, i.e. bypass
-            --  evaluation of any postconditions.
-            Linkup (FA, From => V, To => FA.End_Vertex);
+            --  Link the last vertex directly to the exceptional end vertex,
+            --  i.e. bypass evaluation of any postconditions.
+            Linkup (FA, From => V, To => FA.Exceptional_End_Vertex);
          end if;
       end loop;
    end Do_Raise_Statement;
@@ -5494,9 +5536,9 @@ package body Flow.Control_Flow_Graph is
                Reclaim_Borrower (Decl, FA, Last => Reclaim);
             end loop;
 
-            --  Link the last vertex directly to the helper end vertex,
+            --  Link the last vertex directly to the exceptional end vertex,
             --  i.e. bypass evaluation of any postconditions.
-            Linkup (FA, From => Reclaim, To => FA.End_Vertex);
+            Linkup (FA, From => Reclaim, To => FA.Exceptional_End_Vertex);
          end if;
       end Handle_Exception;
 
@@ -7550,13 +7592,14 @@ package body Flow.Control_Flow_Graph is
    ------------
 
    procedure Create (FA : in out Flow_Analysis_Graphs) is
-      Connection_Map : Connection_Maps.Map := Connection_Maps.Empty_Map;
-      The_Context    : Context             := No_Context;
-      Init_Block     : Graph_Connections;
-      Precon_Block   : Graph_Connections;
-      Postcon_Block  : Graph_Connections;
-      Body_N         : Node_Id;
-      Spec_N         : Node_Id;
+      Connection_Map    : Connection_Maps.Map := Connection_Maps.Empty_Map;
+      The_Context       : Context             := No_Context;
+      Init_Block        : Graph_Connections;
+      Precon_Block      : Graph_Connections;
+      Postcon_Block     : Graph_Connections;
+      Excep_Cases_Block : Graph_Connections;
+      Body_N            : Node_Id;
+      Spec_N            : Node_Id;
 
    begin
       case FA.Kind is
@@ -7580,6 +7623,7 @@ package body Flow.Control_Flow_Graph is
       Add_Vertex (FA, (Null_Attributes with delta Error_Location => Body_N),
                   FA.Start_Vertex);
       Add_Vertex (FA, Null_Attributes, FA.Helper_End_Vertex);
+      Add_Vertex (FA, Null_Attributes, FA.Exceptional_End_Vertex);
       Add_Vertex (FA, Null_Attributes, FA.End_Vertex);
 
       --  Create the magic null export vertices: initial and final
@@ -7898,6 +7942,53 @@ package body Flow.Control_Flow_Graph is
                      Block => Postcon_Block);
             end;
 
+            --  Flowgraph for Exceptional_Cases. We pretend that clauses of the
+            --  Exceptional_Cases are executed sequentially, because this is a
+            --  good enough approximation. In general, we can't precisely tell
+            --  which clause will be executed anyway, e.g.:
+            --
+            --     procedure P
+            --       with Exceptional_Cases =>
+            --              (Constraint_Error => ...,
+            --              (Program_Error    => ...)
+            --     is
+            --        ...
+            --     exception
+            --        when others =>
+            --           raise;
+            --     end P;
+
+            declare
+               Prag : constant Node_Id :=
+                 Get_Pragma (FA.Spec_Entity, Pragma_Exceptional_Cases);
+               Aggr  : Node_Id;
+               Assoc : Node_Id;
+               Expr  : Node_Id;
+               NL    : Union_Lists.List;
+            begin
+               if Present (Prag) then
+                  Aggr :=
+                    Get_Pragma_Arg
+                      (First (Pragma_Argument_Associations (Prag)));
+
+                  Assoc := First (Component_Associations (Aggr));
+                  while Present (Assoc) loop
+                     Expr := Expression (Assoc);
+                     Do_Contract_Expression (Expr,
+                                             FA,
+                                             Connection_Map,
+                                             The_Context);
+                     NL.Append (Union_Id (Expr));
+                     Next (Assoc);
+                  end loop;
+               end if;
+
+               Join (FA    => FA,
+                     CM    => Connection_Map,
+                     Nodes => NL,
+                     Block => Excep_Cases_Block);
+            end;
+
          when Kind_Task =>
             --  No pre or post here
             null;
@@ -7945,6 +8036,12 @@ package body Flow.Control_Flow_Graph is
             Linkup (FA,
                     FA.Helper_End_Vertex,
                     Postcon_Block.Standard_Entry);
+            Linkup (FA,
+                    FA.Exceptional_End_Vertex,
+                    Excep_Cases_Block.Standard_Entry);
+            Linkup (FA,
+                    Excep_Cases_Block.Standard_Exits,
+                    FA.End_Vertex);
             Linkup (FA,
                     Postcon_Block.Standard_Exits,
                     FA.End_Vertex);

@@ -579,12 +579,13 @@ package body Flow is
 
    pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print_Graph
-     (Filename          : String;
-      G                 : Graph;
-      M                 : Attribute_Maps.Map;
-      Start_Vertex      : Vertex_Id := Null_Vertex;
-      Helper_End_Vertex : Vertex_Id := Null_Vertex;
-      End_Vertex        : Vertex_Id := Null_Vertex) is
+     (Filename               : String;
+      G                      : Graph;
+      M                      : Attribute_Maps.Map;
+      Start_Vertex           : Vertex_Id := Null_Vertex;
+      Helper_End_Vertex      : Vertex_Id := Null_Vertex;
+      Exceptional_End_Vertex : Vertex_Id := Null_Vertex;
+      End_Vertex             : Vertex_Id := Null_Vertex) is
 
       function NDI
         (G : Graph;
@@ -678,6 +679,12 @@ package body Flow is
 
          elsif V = Helper_End_Vertex then
             Write_Str ("helper end");
+            Rv.Shape := Shape_None;
+            Rv.Show  := G.In_Neighbour_Count (V) > 0 or else
+              G.Out_Neighbour_Count (V) > 0;
+
+         elsif V = Exceptional_End_Vertex then
+            Write_Str ("exceptional end");
             Rv.Shape := Shape_None;
             Rv.Show  := G.In_Neighbour_Count (V) > 0 or else
               G.Out_Neighbour_Count (V) > 0;
@@ -1241,13 +1248,15 @@ package body Flow is
                        Suffix    : String) is
       begin
          if Condition then
-            Print_Graph (Filename          =>
-                           To_String (FA.Base_Filename) & "_" & Suffix,
-                         G                 => Graph,
-                         M                 => FA.Atr,
-                         Start_Vertex      => FA.Start_Vertex,
-                         Helper_End_Vertex => FA.Helper_End_Vertex,
-                         End_Vertex        => FA.End_Vertex);
+            Print_Graph
+              (Filename               =>
+                 To_String (FA.Base_Filename) & "_" & Suffix,
+               G                      => Graph,
+               M                      => FA.Atr,
+               Start_Vertex           => FA.Start_Vertex,
+               Helper_End_Vertex      => FA.Helper_End_Vertex,
+               Exceptional_End_Vertex => FA.Exceptional_End_Vertex,
+               End_Vertex             => FA.End_Vertex);
          end if;
       end Debug;
 
@@ -1301,6 +1310,7 @@ package body Flow is
       FA.Spec_Entity                     := E;
       FA.Start_Vertex                    := Null_Vertex;
       FA.Helper_End_Vertex               := Null_Vertex;
+      FA.Exceptional_End_Vertex          := Null_Vertex;
       FA.End_Vertex                      := Null_Vertex;
       FA.CFG                             := Create;
       FA.DDG                             := Create;
