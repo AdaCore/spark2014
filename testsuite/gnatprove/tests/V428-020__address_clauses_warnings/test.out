@@ -1,12 +1,6 @@
-ext.ads:3:04: warning: assuming correct volatile properties for "C1"
-ext.ads:3:04: warning: assuming no concurrent accesses to non-atomic object "C1"
-ext.ads:11:04: warning: assuming correct volatile properties for "V1"
-ext.ads:11:04: warning: assuming no concurrent accesses to non-atomic object "V1"
+ext.ads:3:04: warning: address specification on "C1" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties
+ext.ads:11:04: warning: address specification on "V1" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias
 ext.ads:11:04: warning: make sure that all overlapping objects have Async_Writers set to True
-ext.ads:11:04: warning: writing to "V1" is assumed to have no effects on other non-volatile objects
-ext.ads:20:04: warning: assuming correct volatile properties for "V2"
-ext.ads:20:04: warning: assuming no concurrent accesses to non-atomic object "V2"
-ext.ads:28:04: warning: assuming correct volatile properties for "V3"
-ext.ads:28:04: warning: assuming no concurrent accesses to non-atomic object "V3"
-ext.ads:36:04: warning: assuming correct volatile properties for "C2"
-ext.ads:36:04: warning: assuming no concurrent accesses to non-atomic object "C2"
+ext.ads:20:04: warning: address specification on "V2" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties
+ext.ads:28:04: warning: address specification on "V3" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties
+ext.ads:36:04: warning: address specification on "C2" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties

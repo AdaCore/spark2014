@@ -105,11 +105,9 @@ hw-gfx-edid.ads:31:13: info: implicit terminating annotation on "Read_LE16" has 
 hw-gfx-edid.ads:38:13: info: implicit terminating annotation on "Compatible_Display" has been proved, subprogram will terminate
 hw-gfx-edid.ads:45:13: info: implicit terminating annotation on "Has_Preferred_Mode" has been proved, subprogram will terminate
 hw-gfx-edid.ads:65:13: info: implicit terminating annotation on "Preferred_Mode" has been proved, subprogram will terminate
-hw-gfx-framebuffer_filler.adb:25:04: warning: assuming no concurrent accesses to non-atomic object "MMIO"
-hw-gfx-framebuffer_filler.adb:25:04: warning: in instantiation at hw-mmio_range.adb:22
+hw-gfx-framebuffer_filler.adb:25:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias
 hw-gfx-framebuffer_filler.adb:25:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-framebuffer_filler.adb:25:04: warning: make sure that all overlapping objects have Async_Writers set to True
-hw-gfx-framebuffer_filler.adb:25:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
 hw-gfx-framebuffer_filler.adb:35:09: warning: this statement is never reached
 hw-gfx-framebuffer_filler.adb:36:47: warning: this statement is never reached
 hw-gfx-framebuffer_filler.adb:38:48: warning: this statement is never reached
@@ -723,16 +721,12 @@ hw-gfx-gma-power_and_clocks_ironlake.adb:50:19: warning: this statement is never
 hw-gfx-gma-power_and_clocks_ironlake.adb:51:14: warning: assuming "U_Delay" always terminates
 hw-gfx-gma-power_and_clocks_ironlake.adb:51:14: warning: no Always_Terminates aspect available for "U_Delay"
 hw-gfx-gma-power_and_clocks_ironlake.adb:51:14: warning: this statement is never reached
-hw-gfx-gma-registers.adb:41:04: warning: assuming no concurrent accesses to non-atomic object "MMIO"
-hw-gfx-gma-registers.adb:41:04: warning: in instantiation at hw-mmio_range.adb:22
+hw-gfx-gma-registers.adb:41:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads
 hw-gfx-gma-registers.adb:41:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-gma-registers.adb:41:04: warning: make sure that all overlapping objects have Async_Writers set to True
-hw-gfx-gma-registers.adb:41:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
-hw-gfx-gma-registers.adb:54:04: warning: assuming no concurrent accesses to non-atomic object "MMIO"
-hw-gfx-gma-registers.adb:54:04: warning: in instantiation at hw-mmio_range.adb:22
+hw-gfx-gma-registers.adb:54:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads
 hw-gfx-gma-registers.adb:54:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-gma-registers.adb:54:04: warning: make sure that all overlapping objects have Async_Writers set to True
-hw-gfx-gma-registers.adb:54:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
 hw-gfx-gma-registers.adb:71:13: info: implicit terminating annotation on "Fence_Lower_Idx" has been proved, subprogram will terminate
 hw-gfx-gma-registers.adb:73:13: info: implicit terminating annotation on "Fence_Upper_Idx" has been proved, subprogram will terminate
 hw-gfx-gma-registers.adb:92:07: info: initialization of "Reg32" proved
@@ -791,33 +785,21 @@ hw-gfx-gma-transcoder.adb:301:10: warning: this statement is never reached
 hw-gfx-gma-transcoder.adb:305:13: warning: this statement is never reached
 hw-gfx-gma-transcoder.ads:26:07: warning: unused initial value of "Scale"
 hw-gfx-gma-transcoder.ads:31:13: info: implicit terminating annotation on "BPC_Conf" has been proved, subprogram will terminate
-hw-gfx-gma.adb:68:04: warning: assuming no concurrent accesses to non-atomic object "MMIO"
-hw-gfx-gma.adb:68:04: warning: assuming no concurrent accesses to non-atomic object "MMIO"
-hw-gfx-gma.adb:68:04: warning: assuming no concurrent accesses to non-atomic object "MMIO"
+hw-gfx-gma.adb:68:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads
+hw-gfx-gma.adb:68:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads
+hw-gfx-gma.adb:68:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
-hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
-hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
-hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
-hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-dev.adb:28
-hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-dev.adb:28
-hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-dev.adb:28
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-dev.adb:28
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-dev.adb:28
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-dev.adb:28
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-mmconf.adb:36
-hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-mmconf.adb:36
-hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-mmconf.adb:38
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-mmconf.adb:38
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-mmconf.adb:40
-hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-mmconf.adb:40
 hw-gfx-gma.adb:68:04: warning: make sure that all overlapping objects have Async_Writers set to True
 hw-gfx-gma.adb:68:04: warning: make sure that all overlapping objects have Async_Writers set to True
 hw-gfx-gma.adb:68:04: warning: make sure that all overlapping objects have Async_Writers set to True
-hw-gfx-gma.adb:68:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
-hw-gfx-gma.adb:68:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
-hw-gfx-gma.adb:68:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
 hw-gfx-gma.adb:88:13: info: implicit terminating annotation on "PCH_RAWCLK_FREQ" has been proved, subprogram will terminate
 hw-gfx-gma.adb:99:07: info: initialization of "Success" proved
 hw-gfx-gma.adb:103:07: info: initialization of "Port_Cfg" proved

@@ -569,29 +569,18 @@ package body VC_Kinds is
           "no recursive call visible on subprogram with Subprogram_Variant",
 
         --  Warnings guaranteed to be issued
-        when Warn_Address_Atomic =>
-          "non-atomic object with an imprecisely supported address "
-          & "specification should not be accessed"
-          & " concurrently",
-        when Warn_Address_Valid =>
-          "reads of an object with an imprecisely supported address "
-          & "specification should be valid",
         when Warn_Assumed_Always_Return =>
           "no Always_Terminates aspect available for subprogram, "
           & "subprogram is assumed to always terminate",
         when Warn_Assumed_Global_Null =>
           "no Global contract available for subprogram, null is assumed",
-        when Warn_Assumed_Volatile_Properties =>
-          "volatile properties of an object with an imprecisely supported "
-          & "address specification should be correct",
-        when Warn_Indirect_Writes_Through_Alias =>
-          "indirect writes to object through a potential alias with an object"
-          & " with an imprecisely supported address specification"
-          & " are ignored",
-        when Warn_Indirect_Writes_To_Alias =>
-          "writing to an object with an imprecisely supported address"
-          & " specification is assumed to have no effects on "
-          & "other non-volatile objects",
+        when Warn_Imprecisely_Supported_Address =>
+          "object with an imprecisely supported address specification: "
+          & "non-atomic objects should not be accessed concurrently, "
+          & "volatile properties should be correct, "
+          & "indirect writes to object to and through potential aliases are "
+          & "ignored, and "
+          & "reads should be valid",
 
         --  Warnings only issued when using switch --pedantic
         when Warn_Image_Attribute_Length =>
@@ -1456,17 +1445,8 @@ package body VC_Kinds is
           "variant not recursive",
 
         --  Warnings guaranteed to be issued
-        when Warn_Address_Atomic =>
-          "imprecise Address without Atomic",
-        when Warn_Address_Valid =>
-          "imprecise Address and validity",
-        when Warn_Assumed_Volatile_Properties =>
-          "imprecise Address and volatile properties",
-        when Warn_Indirect_Writes_Through_Alias =>
-          "imprecise Address and indirect writes through "
-          & "alias",
-        when Warn_Indirect_Writes_To_Alias =>
-          "imprecise Address and indirect writes to alias",
+        when Warn_Imprecisely_Supported_Address =>
+          "imprecisely supported address specification",
         when Warn_Assumed_Always_Return =>
           "assumed Always_Terminates",
         when Warn_Assumed_Global_Null =>

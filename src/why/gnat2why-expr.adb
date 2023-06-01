@@ -17478,24 +17478,14 @@ package body Gnat2Why.Expr is
 
                      Valid       : Boolean;
                      Explanation : Unbounded_String;
+
                   begin
-
-                     Suitable_For_UC_Target
-                       (Retysp (Etype (Obj)), True, Valid, Explanation);
-
-                     --  A warning is emitted on imprecisely supported address
-                     --  specifications and external names.
-
-                     if not Supported_Alias then
-                        if not Valid then
-                           Error_Msg_NE
-                             (Warning_Message (Warn_Address_Valid), Obj, Obj);
-                        end if;
-
                      --  The check is needed only for overlays between two
                      --  SPARK objects.
 
-                     else
+                     if Supported_Alias then
+                        Suitable_For_UC_Target
+                          (Retysp (Etype (Obj)), True, Valid, Explanation);
                         Emit_Static_Proof_Result
                           (Decl, VC_UC_Target, Valid, Current_Subp,
                            Explanation => To_String (Explanation));

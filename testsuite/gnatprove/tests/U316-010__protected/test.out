@@ -1,14 +1,8 @@
-p.adb:4:10: warning: assuming no concurrent accesses to non-atomic object "A"
-p.adb:4:10: warning: assuming valid reads from object "A"
-p.adb:4:10: warning: indirect writes to "A" through a potential alias are ignored
+p.adb:4:10: warning: address specification on "A" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads
 p.adb:4:10: warning: make sure that all overlapping objects have Async_Writers set to True
-p.adb:4:10: warning: writing to "A" is assumed to have no effects on other non-volatile objects
 p.adb:6:12: warning: unused assignment
 p.adb:6:19: high: "A" is not initialized
-p.adb:9:10: warning: assuming no concurrent accesses to non-atomic object "A"
-p.adb:9:10: warning: assuming valid reads from object "A"
-p.adb:9:10: warning: indirect writes to "A" through a potential alias are ignored
+p.adb:9:10: warning: address specification on "A" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads
 p.adb:9:10: warning: make sure that all overlapping objects have Async_Writers set to True
-p.adb:9:10: warning: writing to "A" is assumed to have no effects on other non-volatile objects
 p.adb:11:19: high: "A" is not initialized
 p.ads:4:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate

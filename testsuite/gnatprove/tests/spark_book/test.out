@@ -531,21 +531,15 @@ dates.ads:67:13: info: implicit terminating annotation on "Maximum_Datetime" has
 dates.ads:71:13: info: implicit terminating annotation on "Minimum_Datetime" has been proved, subprogram will terminate
 dates.ads:76:13: info: implicit terminating annotation on "Is_Before" has been proved, subprogram will terminate
 dates.ads:78:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
-density_altitude-humidity_unit.adb:6:04: warning: assuming correct volatile properties for "Humid_Sensor"
-density_altitude-humidity_unit.adb:6:04: warning: assuming no concurrent accesses to non-atomic object "Humid_Sensor"
-density_altitude-humidity_unit.adb:6:04: warning: assuming valid reads from object "Humid_Sensor"
+density_altitude-humidity_unit.adb:6:04: warning: address specification on "Humid_Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads
 density_altitude-humidity_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-humidity_unit.ads:10:11: info: data dependencies proved
 density_altitude-humidity_unit.ads:11:11: info: flow dependencies proved
-density_altitude-pressure_unit.adb:6:04: warning: assuming correct volatile properties for "Press_Sensor"
-density_altitude-pressure_unit.adb:6:04: warning: assuming no concurrent accesses to non-atomic object "Press_Sensor"
-density_altitude-pressure_unit.adb:6:04: warning: assuming valid reads from object "Press_Sensor"
+density_altitude-pressure_unit.adb:6:04: warning: address specification on "Press_Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads
 density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-pressure_unit.ads:10:11: info: data dependencies proved
 density_altitude-pressure_unit.ads:11:11: info: flow dependencies proved
-density_altitude-temperature_unit.adb:6:04: warning: assuming correct volatile properties for "Temp_Sensor"
-density_altitude-temperature_unit.adb:6:04: warning: assuming no concurrent accesses to non-atomic object "Temp_Sensor"
-density_altitude-temperature_unit.adb:6:04: warning: assuming valid reads from object "Temp_Sensor"
+density_altitude-temperature_unit.adb:6:04: warning: address specification on "Temp_Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads
 density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-temperature_unit.ads:10:11: info: data dependencies proved
 density_altitude-temperature_unit.ads:11:11: info: flow dependencies proved
@@ -611,10 +605,8 @@ example.adb:24:04: info: initialization of "Modified" proved
 example.adb:28:23: info: only expected exception raised (CVC5: 1 VC)
 example.adb:29:04: info: analyzing call to "Bounded_Increment" in context
 example.adb:34:26: info: only expected exception raised (CVC5: 1 VC)
-external_test.adb:6:04: warning: assuming correct volatile properties for "Value"
-external_test.adb:6:04: warning: assuming no concurrent accesses to non-atomic object "Value"
+external_test.adb:6:04: warning: address specification on "Value" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias
 external_test.adb:6:04: warning: make sure that all overlapping objects have Async_Writers set to True
-external_test.adb:6:04: warning: writing to "Value" is assumed to have no effects on other non-volatile objects
 external_test.adb:16:12: warning: unused assignment
 external_test.ads:6:20: info: initialization of "Item" proved
 generic_examples.adb:4:35: info: exceptional case proved (Trivial: 1 VC)
@@ -753,10 +745,8 @@ interval.ads:9:09: info: invariant check proved on default value (CVC5: 1 VC)
 interval.ads:17:13: info: implicit terminating annotation on "Has_Valid_Order" has been proved, subprogram will terminate
 interval_tree.ads:5:05: info: flow dependencies proved
 interval_tree_wrapper.ads:6:07: info: flow dependencies proved
-led_display.adb:8:04: warning: assuming correct volatile properties for "Value"
-led_display.adb:8:04: warning: assuming no concurrent accesses to non-atomic object "Value"
+led_display.adb:8:04: warning: address specification on "Value" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias
 led_display.adb:8:04: warning: make sure that all overlapping objects have Async_Writers set to True
-led_display.adb:8:04: warning: writing to "Value" is assumed to have no effects on other non-volatile objects
 led_display.adb:24:41: info: initialization of "Value" constituent of "LED_State" proved
 led_display.ads:11:09: info: data dependencies proved
 lights.adb:5:07: info: initialization of "Result" proved
@@ -784,10 +774,8 @@ no_overflow.adb:7:14: info: range check proved (CVC5: 2 VC)
 no_overflow.adb:7:19: info: overflow check proved (CVC5: 2 VC)
 no_overflow.adb:7:24: info: division check proved (CVC5: 1 VC)
 no_overflow.ads:5:19: info: initialization of "C" proved
-numeric_display.ads:7:04: warning: assuming correct volatile properties for "Value"
-numeric_display.ads:7:04: warning: assuming no concurrent accesses to non-atomic object "Value"
+numeric_display.ads:7:04: warning: address specification on "Value" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias
 numeric_display.ads:7:04: warning: make sure that all overlapping objects have Async_Writers set to True
-numeric_display.ads:7:04: warning: writing to "Value" is assumed to have no effects on other non-volatile objects
 operator_overload.adb:10:13: info: add a contract to analyze it separately from calling contexts
 operator_overload.adb:10:13: info: implicit terminating annotation on "<=" has been proved, subprogram will terminate
 operator_overload.adb:10:13: info: local subprogram "<=" only analyzed in the context of calls
