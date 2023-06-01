@@ -1262,7 +1262,15 @@ package body Flow_Error_Messages is
 
       case Tag is
          when VC_Termination_Check =>
-            if Has_Implicit_Always_Return_Annotation (E) then
+            if Nkind (N) in N_Function_Call
+                          | N_Procedure_Call_Statement
+                          | N_Entry_Call_Statement
+              and then Is_Ghost_Entity (Get_Called_Entity (N))
+              and then not Is_Ghost_Entity (E)
+            then
+               return "ghost calls occurring inside non-ghost code "
+                 & "should always terminate";
+            elsif Has_Implicit_Always_Return_Annotation (E) then
                declare
                   E_Name : constant String :=
                     (if Ekind (E) = E_Package then "package elaboration"

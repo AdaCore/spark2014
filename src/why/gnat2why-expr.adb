@@ -21157,22 +21157,30 @@ package body Gnat2Why.Expr is
 
          --  Insert termination check if the enclosing subprogram has a dynamic
          --  termination condition.
+         --  As in general functions always terminate, this is only needed
+         --  for calls which cannot terminate (because they might hide
+         --  recursivity).
+         --  If the callee is ghost and not the caller, the check was done in
+         --  flow analysis. Do not duplicate it here.
 
-         if Present (Current_Subp)
-           and then Ekind (Current_Subp) in E_Procedure | E_Entry
+         if Ekind (Current_Subp) in E_Procedure | E_Entry
            and then Get_Termination_Condition (Current_Subp).Kind = Dynamic
            and then Call_Never_Terminates (Expr, Current_Subp)
+           and then not
+             (Is_Ghost_Entity (Subp)
+              and then not Is_Ghost_Entity (Current_Subp))
          then
             pragma Assert
               (Termination_Condition_Name /= Why_Empty);
 
             Prepend
-              (New_Located_Assert
-                 (Ada_Node   => Expr,
-                  Pred       => New_Not
-                    (Right => +Termination_Condition_Name),
-                  Reason     => VC_Termination_Check,
-                  Kind       => EW_Assert),
+              (New_Ignore
+                 (Prog => New_Located_Assert
+                      (Ada_Node => Expr,
+                       Pred     => New_Not
+                         (Right => +Termination_Condition_Name),
+                       Reason   => VC_Termination_Check,
+                       Kind     => EW_Assert)),
                T);
          end if;
       end if;
@@ -23834,42 +23842,49 @@ package body Gnat2Why.Expr is
                --  Generate termination checks if necessary
 
                declare
-                  Encl_Cond : constant Termination_Condition :=
+                  Encl_Cond  : constant Termination_Condition :=
                     Get_Termination_Condition (Current_Subp, Compute => True);
-                  Subp_Cond : constant Termination_Condition :=
+                  Subp_Cond  : constant Termination_Condition :=
                     Get_Termination_Condition (Subp, Compute => True);
+                  Ghost_Call : constant Boolean :=
+                    Is_Ghost_Entity (Subp)
+                    and then not Is_Ghost_Entity (Current_Subp);
 
                begin
                   --  If the enclosing subprogram has a dynamic termination
                   --  condition, termination checks are entirely done by
-                  --  proof. Of the call might unconditionally not terminate,
+                  --  proof. If the call might unconditionally not terminate,
                   --  check that the termination condition of the enclosing
                   --  subprogram evaluates to False.
+                  --  If the callee is ghost and not the caller, the check was
+                  --  done in flow analysis. Do not duplicate it here.
 
                   if Encl_Cond.Kind = Dynamic
                     and then
                       (Subp_Cond = (Static, False)
                        or else
                          Call_Never_Terminates (Stmt_Or_Decl, Current_Subp))
+                    and then not Ghost_Call
                   then
                      pragma Assert
                        (Termination_Condition_Name /= Why_Empty);
 
                      Prepend
-                       (New_Located_Assert
-                          (Ada_Node   => Stmt_Or_Decl,
-                           Pred       => New_Not
-                             (Right => +Termination_Condition_Name),
-                           Reason     => VC_Termination_Check,
-                           Kind       => EW_Assert),
+                       (New_Ignore
+                          (Prog => New_Located_Assert
+                               (Ada_Node   => Stmt_Or_Decl,
+                                Pred       => New_Not
+                                  (Right => +Termination_Condition_Name),
+                                Reason     => VC_Termination_Check,
+                                Kind       => EW_Assert)),
                         Call);
 
                   --  Check calls to subprograms with a dynamic termination
                   --  conditions. This shall also be done in subprograms which
-                  --  always terminate. Other checks are deferred to flow
-                  --  analysis.
+                  --  always terminate and when the callee is ghost and not the
+                  --  caller. Other checks are deferred to flow analysis.
 
-                  elsif Encl_Cond /= (Static, False)
+                  elsif (Encl_Cond /= (Static, False) or else Ghost_Call)
                     and then Subp_Cond.Kind = Dynamic
                   then
                      declare
@@ -23882,8 +23897,15 @@ package body Gnat2Why.Expr is
                              Progs    => Args,
                              Reason   => VC_Termination_Check,
                              Typ      => EW_Unit_Type);
+
                      begin
-                        if Encl_Cond.Kind = Dynamic  then
+                        --  Termination of ghost calls needs to be checked
+                        --  independently of the termination condition of the
+                        --  caller.
+
+                        if Encl_Cond.Kind = Dynamic
+                          and then not Ghost_Call
+                        then
                            Term_Check := New_Conditional
                              (Condition => +Termination_Condition_Name,
                               Then_Part => Term_Check);
