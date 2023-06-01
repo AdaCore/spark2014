@@ -1,12 +1,12 @@
 ghost_exceptions.adb:10:14: info: postcondition proved (CVC5: 1 VC)
 ghost_exceptions.adb:11:33: info: exceptional case proved (CVC5: 1 VC)
-ghost_exceptions.adb:20:28: high: "X" is not initialized in "Ghost_Caller" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "X" on all paths or make "X" an IN OUT parameter]
-ghost_exceptions.adb:20:28: warning: unused variable "X"
+ghost_exceptions.adb:20:14: high: all paths in "Ghost_Caller" raise exceptions or do not terminate normally
 ghost_exceptions.adb:20:57: info: data dependencies proved
 ghost_exceptions.adb:24:07: info: only expected exception raised (CVC5: 1 VC)
-ghost_exceptions.adb:30:35: info: initialization of "X" proved
-ghost_exceptions.adb:30:57: info: data dependencies proved
-ghost_exceptions.adb:34:07: info: only expected exception raised (CVC5: 1 VC)
-ghost_exceptions.adb:38:36: info: initialization of "X" proved
-ghost_exceptions.adb:38:58: info: data dependencies proved
-ghost_exceptions.adb:42:07: medium: unexpected exception might be raised [reason for check: ghost procedure calls should not propagate exceptions to non-ghost code] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec]
+ghost_exceptions.adb:25:07: info: assertion proved (CVC5: 1 VC)
+ghost_exceptions.adb:31:35: info: initialization of "X" proved
+ghost_exceptions.adb:31:57: info: data dependencies proved
+ghost_exceptions.adb:35:07: info: only expected exception raised (CVC5: 1 VC)
+ghost_exceptions.adb:39:36: info: initialization of "X" proved
+ghost_exceptions.adb:39:58: info: data dependencies proved
+ghost_exceptions.adb:43:07: medium: unexpected exception might be raised [reason for check: ghost procedure calls should not propagate exceptions to non-ghost code] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec]

@@ -22,6 +22,7 @@ procedure Ghost_Exceptions with SPARK_Mode is
    procedure Ghost_Caller (X : out Integer) is
    begin
       Conditional_Raise (True);
+      pragma Assert (False);
    exception
       when E =>
          X := 0;
