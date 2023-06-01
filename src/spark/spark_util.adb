@@ -1037,12 +1037,36 @@ package body SPARK_Util is
    --------------------------------
 
    procedure Collect_Reachable_Handlers (Stmt : Node_Id) is
+
+      function Is_Body (N : Node_Id) return Boolean is
+        (Nkind (N) in N_Entity_Body);
+
+      function Enclosing_Body is
+        new First_Parent_With_Property (Is_Body);
+
       Scop     : Node_Id := Stmt;
       Exc_Set  : Exception_Sets.Set := Get_Raised_Exceptions
         (Stmt, Only_Handled => False);
       Handlers : Node_Lists.List;
 
    begin
+      --  Ghost procedure calls shall never propagate exceptions to non-ghost
+      --  code.
+
+      if Nkind (Stmt) = N_Procedure_Call_Statement then
+         declare
+            Callee : constant Entity_Id := Get_Called_Entity (Stmt);
+            Caller : constant Entity_Id := Unique_Defining_Entity
+              (Enclosing_Body (Stmt));
+         begin
+            if Is_Ghost_Entity (Callee) and then not Is_Ghost_Entity (Caller)
+            then
+               Raise_To_Handlers_Map.Insert (Stmt, Handlers);
+               return;
+            end if;
+         end;
+      end if;
+
       --  Go up the parent chain to collect all the potentially reachable
       --  handlers. Stop when Exc_Set is empty or the enclosing body is
       --  reached.
@@ -2084,6 +2108,13 @@ package body SPARK_Util is
 
    function Get_Handled_Exceptions (Stmt : Node_Id) return Exception_Sets.Set
    is
+
+      function Is_Body (N : Node_Id) return Boolean is
+        (Nkind (N) in N_Entity_Body);
+
+      function Enclosing_Body is
+        new First_Parent_With_Property (Is_Body);
+
       function Is_Body_Or_Handler (N : Node_Id) return Boolean is
         (Nkind (N) in N_Entity_Body
                     | N_Handled_Sequence_Of_Statements
@@ -2096,6 +2127,22 @@ package body SPARK_Util is
       Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
 
    begin
+      --  Ghost procedure calls shall never propagate exceptions to non-ghost
+      --  code.
+
+      if Nkind (Stmt) = N_Procedure_Call_Statement then
+         declare
+            Callee : constant Entity_Id := Get_Called_Entity (Stmt);
+            Caller : constant Entity_Id := Unique_Defining_Entity
+              (Enclosing_Body (Stmt));
+         begin
+            if Is_Ghost_Entity (Callee) and then not Is_Ghost_Entity (Caller)
+            then
+               return Result;
+            end if;
+         end;
+      end if;
+
       --  Traverse all the enclosing handlers and collect the handled
       --  exceptions.
 
