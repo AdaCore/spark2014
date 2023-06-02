@@ -2,7 +2,8 @@ func.adb:1:10: info: implicit terminating annotation on "Func" has been proved, 
 func.adb:5:32: high: "C" is not initialized
 func.adb:5:38: medium: unexpected exception might be raised
 func.adb:5:63: high: "S" is not initialized
+func.adb:8:07: warning: this statement is never reached
 proc.adb:1:35: info: data dependencies proved
-proc.adb:2:04: warning: unused variable "S"
-proc.adb:3:04: warning: unused variable "C"
+proc.adb:8:22: high: "C" is not initialized
 proc.adb:8:22: medium: assertion might fail
+proc.adb:9:32: high: "S" is not initialized

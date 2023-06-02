@@ -512,7 +512,6 @@ package body Flow is
       Format_Item ("Is_Default_Init", Boolean'Image (A.Is_Default_Init));
       Format_Item ("Is_Loop_Entry", Boolean'Image (A.Is_Loop_Entry));
       Format_Item ("Is_Initialized", Boolean'Image (A.Is_Initialized));
-      Format_Item ("Is_Function_Return", Boolean'Image (A.Is_Function_Return));
       Format_Item ("Is_Global", Boolean'Image (A.Is_Global));
       Format_Item ("Is_Import", Boolean'Image (A.Is_Import));
       Format_Item ("Is_Export", Boolean'Image (A.Is_Export));
@@ -580,12 +579,13 @@ package body Flow is
 
    pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print_Graph
-     (Filename          : String;
-      G                 : Graph;
-      M                 : Attribute_Maps.Map;
-      Start_Vertex      : Vertex_Id := Null_Vertex;
-      Helper_End_Vertex : Vertex_Id := Null_Vertex;
-      End_Vertex        : Vertex_Id := Null_Vertex) is
+     (Filename               : String;
+      G                      : Graph;
+      M                      : Attribute_Maps.Map;
+      Start_Vertex           : Vertex_Id := Null_Vertex;
+      Helper_End_Vertex      : Vertex_Id := Null_Vertex;
+      Exceptional_End_Vertex : Vertex_Id := Null_Vertex;
+      End_Vertex             : Vertex_Id := Null_Vertex) is
 
       function NDI
         (G : Graph;
@@ -683,6 +683,12 @@ package body Flow is
             Rv.Show  := G.In_Neighbour_Count (V) > 0 or else
               G.Out_Neighbour_Count (V) > 0;
 
+         elsif V = Exceptional_End_Vertex then
+            Write_Str ("exceptional end");
+            Rv.Shape := Shape_None;
+            Rv.Show  := G.In_Neighbour_Count (V) > 0 or else
+              G.Out_Neighbour_Count (V) > 0;
+
          elsif V = End_Vertex then
             Write_Str ("end");
             Rv.Shape := Shape_None;
@@ -769,8 +775,20 @@ package body Flow is
                Get_Name_String
                  (Chars (Defining_Entity (Get_Direct_Mapping_Id (F)))));
 
-         elsif A.Pretty_Print_Kind = Pretty_Print_Borrow then
-            Write_Str ("borrow");
+         elsif A.Pretty_Print_Kind = Pretty_Print_Reclaim then
+            Write_Str ("reclaim");
+
+         elsif A.Pretty_Print_Kind = Pretty_Print_Call_Exception then
+            Rv.Shape := Shape_Diamond;
+            Write_Str ("call exception");
+
+         elsif A.Pretty_Print_Kind = Pretty_Print_Param_Havoc then
+            Rv.Shape := Shape_Diamond;
+            Write_Str ("param havoc");
+
+         elsif A.Pretty_Print_Kind = Pretty_Print_Param_Scrub then
+            Rv.Shape := Shape_None;
+            Write_Str ("param scrub");
 
          elsif A.Pretty_Print_Kind /= Pretty_Print_Null then
             raise Program_Error;
@@ -1234,13 +1252,15 @@ package body Flow is
                        Suffix    : String) is
       begin
          if Condition then
-            Print_Graph (Filename          =>
-                           To_String (FA.Base_Filename) & "_" & Suffix,
-                         G                 => Graph,
-                         M                 => FA.Atr,
-                         Start_Vertex      => FA.Start_Vertex,
-                         Helper_End_Vertex => FA.Helper_End_Vertex,
-                         End_Vertex        => FA.End_Vertex);
+            Print_Graph
+              (Filename               =>
+                 To_String (FA.Base_Filename) & "_" & Suffix,
+               G                      => Graph,
+               M                      => FA.Atr,
+               Start_Vertex           => FA.Start_Vertex,
+               Helper_End_Vertex      => FA.Helper_End_Vertex,
+               Exceptional_End_Vertex => FA.Exceptional_End_Vertex,
+               End_Vertex             => FA.End_Vertex);
          end if;
       end Debug;
 
@@ -1294,6 +1314,7 @@ package body Flow is
       FA.Spec_Entity                     := E;
       FA.Start_Vertex                    := Null_Vertex;
       FA.Helper_End_Vertex               := Null_Vertex;
+      FA.Exceptional_End_Vertex          := Null_Vertex;
       FA.End_Vertex                      := Null_Vertex;
       FA.CFG                             := Create;
       FA.DDG                             := Create;

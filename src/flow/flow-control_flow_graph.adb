@@ -559,6 +559,42 @@ package body Flow.Control_Flow_Graph is
    --  P will have IPFA set or not set, which changes how we fill in
    --  the dependencies. This decision is made in
    --  Control_Flow_Graph.Utility.
+   --
+   --  For calls to subprograms that might raise an exception, e.g.:
+   --
+   --     procedure P (A              : in  Integer;
+   --                  By_Copy        : out Integer;
+   --                  By_Reference   : out <limited record type>;
+   --                  By_Unspecified : out <record type>)
+   --     with Exceptional_Cases => ...;
+   --
+   --  when we produce a more complicated CFG:
+   --
+   --     call P
+   --     |
+   --     a_in := x
+   --     |
+   --     by_reference_out   := ...
+   --     |
+   --     <raise> ---## EXCEPTION RAISED ##----- <havoc>
+   --     |                                VD := {by_unspecified}
+   --     ## NORMAL TERMINATION ##               /  |  \
+   --     |                                     /   |   \
+   --     by_copy_out        := ...            /    |    \
+   --     |                                   /     |     \
+   --     by_unspecified_out := ...          /      |      \
+   --     |                                 /       |       \
+   --     {standard exit}                  /        |        \
+   --                                     /         |         \
+   --                               [reclaim1] [reclaim2] ... [reclaim all]
+   --                               |          |              |
+   --                               [handler1] [handler2] ... [exceptional_end]
+   --
+   --  i.e. parameters passed by reference (and globals) are written regardless
+   --  of exception being raised; parameters passed by copy are only written
+   --  when the callee terminates normally; parameters whose passing mode is
+   --  unspecified are written when the subprogram terminates normally and
+   --  unintialized when it raises an exception.
 
    procedure Do_Case_Statement
      (N   : Node_Id;
@@ -670,7 +706,20 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    with Pre => Nkind (N) = N_Handled_Sequence_Of_Statements;
-   --  Simply calls Process_Statement_List
+   --  Deals with handled sequence of statements, possibly with exception
+   --  handlers. We generate a CFG which looks like this:
+   --
+   --  stmt1
+   --  |
+   --  stmt2
+   --  |
+   --  stmt...
+   --  |
+   --  |         [handler1]   [handler2]   [hander...]
+   --  |         |            |            |
+   --
+   --  i.e. there might be multiple standard exits coming from the normal
+   --  execution and the exception handlers.
 
    procedure Do_If_Statement
      (N   : Node_Id;
@@ -724,19 +773,17 @@ package body Flow.Control_Flow_Graph is
    --  This will also update the information on variables modified by loops
    --  in Flow_Utility.
 
-   procedure Do_Null_Or_Raise_Statement
+   procedure Do_Null_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    with Pre => Nkind (N) in N_Null_Statement
-                          | N_Raise_Statement
-                          | N_Raise_xxx_Error
                           | N_Exception_Declaration
                           | N_Exception_Renaming_Declaration;
-   --  Deals with null and raise statements. We create a new vertex that has
-   --  control flow in from the top and leave from the bottom (nothing happens
-   --  in between). Exception declarations are treated like null statements.
+   --  Deals with null statements. We create a new vertex that has control flow
+   --  in from the top and leave from the bottom (nothing happens in between).
+   --  Exception declarations are treated like null statements.
 
    procedure Do_Object_Declaration
      (N   : Node_Id;
@@ -863,6 +910,22 @@ package body Flow.Control_Flow_Graph is
    --  Please also see Pragma_Relevant_To_Flow which decides which
    --  pragmas are important.
 
+   procedure Do_Raise_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   with Pre => Nkind (N) = N_Raise_Statement;
+   --  Deals with explicit raise statements
+
+   procedure Do_Raise_xxx_Error
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   with Pre => Nkind (N) in N_Raise_xxx_Error;
+--  Deals with implicit raise statements
+
    procedure Do_Simple_Return_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -916,17 +979,20 @@ package body Flow.Control_Flow_Graph is
    --  can check for use of uninitialized variables).
 
    procedure Process_Call_Actuals
-     (Callsite : Node_Id;
-      Ins      : in out Vertex_Lists.List;
-      Outs     : in out Vertex_Lists.List;
-      FA       : in out Flow_Analysis_Graphs;
-      CM       : in out Connection_Maps.Map;
-      Ctx      : in out Context)
+     (Callsite            : Node_Id;
+      Ins                 : in out Vertex_Lists.List;
+      Outs_By_Copy        : in out Vertex_Lists.List;
+      Outs_By_Reference   : in out Vertex_Lists.List;
+      Outs_By_Unspecified : in out Vertex_Lists.List;
+      FA                  : in out Flow_Analysis_Graphs;
+      CM                  : in out Connection_Maps.Map;
+      Ctx                 : in out Context)
    with Pre => Nkind (Callsite) in N_Procedure_Call_Statement |
                                    N_Entry_Call_Statement;
-   --  Similar to the above procedure, this deals with the actuals
-   --  provided in a subprogram call. The vertices are created but not
-   --  linked up; as above, they are appended to Ins and Outs.
+   --  Similar to Process_Subprogram_Globals, this deals with the actuals
+   --  provided in a subprogram call. The vertices are created but not linked
+   --  up; as above, they are appended to Ins and various variants of Outs,
+   --  depending on the parameter passing mechanism.
 
    use type Node_Lists.List;
 
@@ -2248,14 +2314,73 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      Stmts : constant List_Id := Statements (N);
+      Handler : Node_Id;
+      HStmts  : List_Id;
+      Stmts   : constant List_Id := Statements (N);
    begin
+      --  Borrowers might be declared both in block statements and extended
+      --  return statements, but both these constructs include a handled
+      --  sequence of statements, so it is better to handle both of them here.
+
       Ctx.Borrow_Numbers.Append (Ctx.Borrowers.Length);
+
+      --  We first process exception handlers, so when a statement from the
+      --  handled sequence of statements raises an exception, it can be linked
+      --  straight to the exception handler. Otherwise, we would need to store
+      --  vertices where exceptions are raised and link them to vertices for
+      --  the handlers afterwards.
+
+      --  We don't expect any meaningful pragma at the beginning of exception
+      --  handlers.
+
+      Handler := First_Non_Pragma (Exception_Handlers (N));
+
+      while Present (Handler) loop
+         HStmts := Statements (Handler);
+
+         Process_Statement_List (HStmts, FA, CM, Ctx);
+
+         --  It is more convenient to connect a raise statement with the node
+         --  of the exception handler and not with the list of its statements,
+         --  so move the connections.
+
+         Move_Connections (CM,
+                           Dst => Union_Id (Handler),
+                           Src => Union_Id (HStmts));
+
+         Next_Non_Pragma (Handler);
+      end loop;
+
+      --  Now process the handed statements themselves
+
       Process_Statement_List (Stmts, FA, CM, Ctx);
-      Ctx.Borrow_Numbers.Delete_Last;
       Move_Connections (CM,
                         Dst => Union_Id (N),
                         Src => Union_Id (Stmts));
+
+      --  Finally, combine standard exits of the normal execution and
+      --  exception handlers and forget about the handlers, since they can't
+      --  be referenced anymore.
+
+      Handler := First_Non_Pragma (Exception_Handlers (N));
+      while Present (Handler) loop
+         declare
+            Handler_Connections : Connection_Maps.Cursor :=
+              CM.Find (Union_Id (Handler));
+         begin
+            CM (Union_Id (N)).Standard_Exits.Union
+              (CM (Handler_Connections).Standard_Exits);
+
+            CM.Delete (Handler_Connections);
+         end;
+
+         Next_Non_Pragma (Handler);
+      end loop;
+
+      --  Local borrowers cease to exist when exiting the handled sequence of
+      --  statements.
+
+      Ctx.Borrow_Numbers.Delete_Last;
    end Do_Handled_Sequence_Of_Statements;
 
    ---------------------
@@ -3778,11 +3903,11 @@ package body Flow.Control_Flow_Graph is
       end if;
    end Do_Loop_Statement;
 
-   --------------------------------
-   -- Do_Null_Or_Raise_Statement --
-   --------------------------------
+   -----------------------
+   -- Do_Null_Statement --
+   -----------------------
 
-   procedure Do_Null_Or_Raise_Statement
+   procedure Do_Null_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
@@ -3798,12 +3923,10 @@ package body Flow.Control_Flow_Graph is
          Direct_Mapping_Id (N),
          Make_Aux_Vertex_Attributes
            (E_Loc     => N,
-            Execution => (if Nkind (N) in N_Raise_Statement | N_Raise_xxx_Error
-                          then Abnormal_Termination
-                          else Normal_Execution)),
+            Execution => Normal_Execution),
          V);
       CM.Insert (Union_Id (N), Trivial_Connection (V));
-   end Do_Null_Or_Raise_Statement;
+   end Do_Null_Statement;
 
    ---------------------------
    -- Do_Object_Declaration --
@@ -5144,6 +5267,159 @@ package body Flow.Control_Flow_Graph is
 
    end Do_Pragma;
 
+   ------------------------
+   -- Do_Raise_Statement --
+   ------------------------
+
+   procedure Do_Raise_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      V, V_Raise : Flow_Graphs.Vertex_Id;
+      Unused     : Boolean;
+
+      Par : Node_Id;
+      --  Iterator for finding the parent of the corresponding handler
+
+      Mark : Borrowers_Markers.Cursor;
+      --  Once we know which sequence_of_statements we will jump to, it will
+      --  point to the number of local borrowers at that point.
+
+      Top : Node_Lists.Cursor;
+      --  Iterator for the borrowers reclaimed when jumping with goto
+
+      Local_Handlers : constant Node_Lists.List := Reachable_Handlers (N);
+
+      Funcalls : Call_Sets.Set;
+
+   begin
+      --  If there are no local handlers, it is an abnormal execution. We don't
+      --  care if anything is read or called in the string_expressions.
+
+      if Local_Handlers.Is_Empty then
+         Add_Vertex (FA,
+                     Direct_Mapping_Id (N),
+                     Make_Aux_Vertex_Attributes
+                       (E_Loc     => N,
+                        Execution => Abnormal_Termination),
+                     V_Raise);
+
+      --  Otherwise, RAISE behaves like a GOTO statement
+
+      else
+         Collect_Functions_And_Read_Locked_POs
+           (N,
+            FA.B_Scope,
+            Function_Calls     => Funcalls,
+            Tasking            => FA.Tasking,
+            Generating_Globals => FA.Generating_Globals);
+
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (N),
+            Make_Sink_Vertex_Attributes
+              (Var_Use    =>
+                 (if Present (Expression (N)) then
+                    Get_All_Variables
+                      (Expression (N),
+                       Scope               => FA.B_Scope,
+                       Target_Name         => Null_Flow_Id,
+                      Use_Computed_Globals => not FA.Generating_Globals)
+                  else
+                    Flow_Id_Sets.Empty_Set),
+               Subp_Calls => Funcalls,
+               Vertex_Ctx => Ctx.Vertex_Ctx,
+               E_Loc      => N),
+            V_Raise);
+      end if;
+
+      CM.Insert (Union_Id (N),
+                 Graph_Connections'
+                   (Standard_Entry => V_Raise,
+                    Standard_Exits => Vertex_Sets.Empty_Set));
+
+      for Handler of Local_Handlers loop
+         V := V_Raise;
+
+         --  For exception that has a local handler we reclaim the borrowed
+         --  objects and record a jump to the exception handler.
+
+         if Nkind (Handler) = N_Exception_Handler then
+            --  Go up the tree until we find the parent of the
+            --  sequence_of_statements we are jumping to and move the cursor
+            --  at each block that we jump out from.
+
+            Mark := Ctx.Borrow_Numbers.Last;
+            Par  := N;
+
+            loop
+               Par := Parent (Par);
+               exit when Nkind (Par) = N_Handled_Sequence_Of_Statements
+                 and then List_Containing (Handler) = Exception_Handlers (Par);
+               if Nkind (Par) = N_Block_Statement then
+                  Borrowers_Markers.Previous (Mark);
+               end if;
+            end loop;
+
+            --  When borrowers go out of scope, we pop them from the stack and
+            --  assign back to the borrowed objects. This way we keep track of
+            --  anything that happened while they were borrowed.
+
+            Top := Ctx.Borrowers.Last;
+
+            for J in Ctx.Borrow_Numbers (Mark) + 1 .. Ctx.Borrowers.Length loop
+               Reclaim_Borrower (Ctx.Borrowers (Top), FA, Last => V);
+               Node_Lists.Previous (Top);
+            end loop;
+
+            Linkup (FA,
+                    From => V,
+                    To   => CM (Union_Id (Handler)).Standard_Entry);
+
+         --  Deal with exception that is only listed in Exceptional_Cases
+
+         else
+            for Decl of reverse Ctx.Borrowers loop
+               Reclaim_Borrower (Decl, FA, Last => V);
+            end loop;
+
+            --  Link the last vertex directly to the exceptional end vertex,
+            --  i.e. bypass evaluation of any postconditions.
+            Linkup (FA, From => V, To => FA.Exceptional_End_Vertex);
+         end if;
+      end loop;
+   end Do_Raise_Statement;
+
+   ------------------------
+   -- Do_Raise_xxx_Error --
+   ------------------------
+
+   procedure Do_Raise_xxx_Error
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      pragma Unreferenced (Ctx);
+      V : Flow_Graphs.Vertex_Id;
+   begin
+      --  We introduce a vertex V which has control entering from the top and
+      --  leaving from the bottom.
+      Add_Vertex
+        (FA,
+         Direct_Mapping_Id (N),
+         Make_Aux_Vertex_Attributes
+           (E_Loc     => N,
+            Execution => Abnormal_Termination),
+         V);
+      CM.Insert (Union_Id (N),
+                 Graph_Connections'
+                   (Standard_Entry => V,
+                    Standard_Exits => Vertex_Sets.Empty_Set));
+   end Do_Raise_xxx_Error;
+
    -----------------------
    -- Do_Call_Statement --
    -----------------------
@@ -5160,6 +5436,12 @@ package body Flow.Control_Flow_Graph is
       --  Sanity-check that callee is visible to the caller. This exercises the
       --  visibility machinery which otherwise is primarily used for constructs
       --  that are far less common, e.g. private types and Part_Ofs.
+
+      procedure Handle_Exception
+        (Branch  : Flow_Graphs.Vertex_Id;
+         Handler : Node_Id);
+      --  Transfer control from Branch to Handler when the called subprogram
+      --  raises an exception. In particular, reclaim local borrowers.
 
       ----------------------
       -- Check_Visibility --
@@ -5187,11 +5469,97 @@ package body Flow.Control_Flow_Graph is
          null;
       end Check_Visibility;
 
-      Ins  : Vertex_Lists.List;
-      Outs : Vertex_Lists.List;
+      ----------------------
+      -- Handle_Exception --
+      ----------------------
+
+      procedure Handle_Exception
+        (Branch  : Flow_Graphs.Vertex_Id;
+         Handler : Node_Id)
+      is
+         Reclaim : Flow_Graphs.Vertex_Id := Branch;
+         --  Pointer to the vertex for reclaiming a borrower when jumping to an
+         --  exception handler.
+
+         Mark : Borrowers_Markers.Cursor;
+         --  Once we know which sequence_of_statements we will jump to, it will
+         --  point to the number of local borrowers at that point.
+
+         Top : Node_Lists.Cursor;
+         --  Iterator for the borrowers reclaimed when jumping with raise
+
+         Par : Node_Id;
+         --  Iterator for finding the parent of the corresponding handler
+
+      begin
+         --  For exception that has a local handler we reclaim the borrowed
+         --  objects and record a jump to the exception handler.
+
+         if Nkind (Handler) = N_Exception_Handler then
+            --  Go up the tree until we find the parent of the
+            --  sequence_of_statements we are jumping to and move the cursor
+            --  at each block that we jump out from.
+
+            Mark := Ctx.Borrow_Numbers.Last;
+            Par  := N;
+
+            loop
+               Par := Parent (Par);
+               exit when Nkind (Par) = N_Handled_Sequence_Of_Statements
+                 and then List_Containing (Handler) = Exception_Handlers (Par);
+               if Nkind (Par) = N_Block_Statement then
+                  Borrowers_Markers.Previous (Mark);
+               end if;
+            end loop;
+
+            --  When borrowers go out of scope, we pop them from the stack and
+            --  assign back to the borrowed objects. This way we keep track of
+            --  anything that happened while they were borrowed.
+
+            Top := Ctx.Borrowers.Last;
+
+            for J in Ctx.Borrow_Numbers (Mark) + 1 .. Ctx.Borrowers.Length loop
+               Reclaim_Borrower (Ctx.Borrowers (Top), FA, Last => Reclaim);
+               Node_Lists.Previous (Top);
+            end loop;
+
+            Linkup (FA,
+                    From => Reclaim,
+                    To   => CM (Union_Id (Handler)).Standard_Entry);
+
+         --  For exception that is only listed in Exceptional_Cases we reclaim
+         --  the borrowers and jump to the helper end vertex, just like for a
+         --  return statement.
+
+         else
+            for Decl of reverse Ctx.Borrowers loop
+               Reclaim_Borrower (Decl, FA, Last => Reclaim);
+            end loop;
+
+            --  Link the last vertex directly to the exceptional end vertex,
+            --  i.e. bypass evaluation of any postconditions.
+            Linkup (FA, From => Reclaim, To => FA.Exceptional_End_Vertex);
+         end if;
+      end Handle_Exception;
+
+      Ins                 : Vertex_Lists.List;
+      Outs_By_Copy        : Vertex_Lists.List;
+      Outs_By_Reference   : Vertex_Lists.List;
+      Outs_By_Unspecified : Vertex_Lists.List;
 
       V : Flow_Graphs.Vertex_Id;
       C : Flow_Graphs.Cluster_Id;
+
+      Excp  : Flow_Graphs.Vertex_Id;
+      Havoc : Flow_Graphs.Vertex_Id;
+      --  Vertices for branching the control flow when the called subprogram
+      --  raises an exception and for havocing its parameters passed,
+      --  respectively.
+
+      Local_Handlers : constant Node_Lists.List :=
+        (if Nkind (N) = N_Procedure_Call_Statement
+         then Reachable_Handlers (N)
+         else Node_Lists.Empty_List);
 
       Vars_Used : Flow_Id_Sets.Set;
       Funcalls  : Call_Sets.Set;
@@ -5249,7 +5617,10 @@ package body Flow.Control_Flow_Graph is
 
       --  Deal with the subprogram's parameters
       Process_Call_Actuals (N,
-                            Ins, Outs,
+                            Ins,
+                            Outs_By_Copy,
+                            Outs_By_Reference,
+                            Outs_By_Unspecified,
                             FA, CM, Ctx);
 
       --  We process globals when:
@@ -5260,7 +5631,7 @@ package body Flow.Control_Flow_Graph is
       --  just like we do in Do_Subprogram_Call when processing function calls
       if Ekind (Called_Thing) /= E_Subprogram_Type then
          Process_Subprogram_Globals (N,
-                                     Ins, Outs,
+                                     Ins, Outs_By_Reference,
                                      FA, CM, Ctx);
       end if;
 
@@ -5309,10 +5680,14 @@ package body Flow.Control_Flow_Graph is
                      Vertex_Ctx                   => Ctx.Vertex_Ctx,
                      E_Loc                        => N),
                   V);
-               Outs.Append (V);
+               Outs_By_Reference.Append (V);
             end if;
          end;
-      elsif not Ins.Is_Empty and then Outs.Is_Empty then
+      elsif not Ins.Is_Empty
+        and then Outs_By_Copy.Is_Empty
+        and then Outs_By_Reference.Is_Empty
+        and then Outs_By_Unspecified.Is_Empty
+      then
          declare
             V : Flow_Graphs.Vertex_Id;
          begin
@@ -5327,7 +5702,7 @@ package body Flow.Control_Flow_Graph is
                   Vertex_Ctx                   => Ctx.Vertex_Ctx,
                   E_Loc                        => N),
                V);
-            Outs.Append (V);
+            Outs_By_Reference.Append (V);
          end;
       end if;
 
@@ -5337,14 +5712,55 @@ package body Flow.Control_Flow_Graph is
          --  Pointer to the previous vertex, initialized to V which goes first
 
       begin
-         --  Destructivelly append Outs at the end of Ins
-         Ins.Splice (Before => Vertex_Lists.No_Element,
-                     Source => Outs);
-
-         pragma Assert (Outs.Is_Empty);
-
-         --  Iterate over a list that now keeps first Ins and then Outs
          for Var of Ins loop
+            FA.CFG.Set_Cluster (Var, C);
+            FA.CFG.Add_Edge (Prev, Var, EC_Default);
+            Prev := Var;
+         end loop;
+
+         for Var of Outs_By_Reference loop
+            FA.CFG.Set_Cluster (Var, C);
+            FA.CFG.Add_Edge (Prev, Var, EC_Default);
+            Prev := Var;
+         end loop;
+
+         --  We only create vertices related to exception handlers when they
+         --  are actually needed, because with a degenerated graph like this:
+         --
+         --    call P
+         --    |
+         --    <raise>   ---   <havoc>
+         --    |
+         --
+         --  the <havoc> vertex with no out-edges would be recognized as
+         --  raising an exception, prunned and consequently the <raise>
+         --  vertex would be recognized as a branch preventing exception from
+         --  being raised. In turn, this would render all call statements as
+         --  effective, even those which have no effect at all.
+
+         if not Local_Handlers.Is_Empty then
+            Add_Vertex
+              (FA,
+               Make_Basic_Attributes
+                 (Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => N,
+                  Print_Hint => Pretty_Print_Call_Exception),
+               Excp);
+            FA.Atr (Excp).Is_Call_Exception := True;
+            FA.Atr (Excp).Is_Program_Node := False;
+            FA.CFG.Set_Cluster (Excp, C);
+            FA.CFG.Add_Edge (Prev, Excp, EC_Default);
+
+            Prev := Excp;
+         end if;
+
+         for Var of Outs_By_Copy loop
+            FA.CFG.Set_Cluster (Var, C);
+            FA.CFG.Add_Edge (Prev, Var, EC_Default);
+            Prev := Var;
+         end loop;
+
+         for Var of Outs_By_Unspecified loop
             FA.CFG.Set_Cluster (Var, C);
             FA.CFG.Add_Edge (Prev, Var, EC_Default);
             Prev := Var;
@@ -5372,6 +5788,38 @@ package body Flow.Control_Flow_Graph is
                Graph_Connections'
                  (Standard_Entry => V,
                   Standard_Exits => Vertex_Sets.To_Set (Prev)));
+
+            if not Local_Handlers.Is_Empty then
+               --  Create the <havoc> vertex and populate it with variables
+               --  that are actually havoced.
+
+               Add_Vertex
+                 (FA,
+                  Make_Basic_Attributes
+                    (Vertex_Ctx => Ctx.Vertex_Ctx,
+                     E_Loc      => N,
+                     Print_Hint => Pretty_Print_Param_Havoc),
+                  Havoc);
+               FA.Atr (Havoc).Is_Param_Havoc := True;
+               FA.Atr (Havoc).Is_Program_Node := False;
+               FA.CFG.Set_Cluster (Havoc, C);
+               FA.CFG.Add_Edge (Excp, Havoc, EC_Default);
+
+               for Out_By_Unspecified of Outs_By_Unspecified loop
+                  pragma Assert (FA.Atr (Out_By_Unspecified).Is_Parameter);
+                  pragma Assert
+                    (FA.CFG.Get_Key (Out_By_Unspecified).Variant = Out_View);
+
+                  FA.Atr (Havoc).Variables_Defined.Union
+                    (FA.Atr (Out_By_Unspecified).Variables_Defined);
+               end loop;
+
+               --  Connect havoc with exception handlers
+
+               for Handler of Local_Handlers loop
+                  Handle_Exception (Havoc, Handler);
+               end loop;
+            end if;
          end if;
       end;
 
@@ -5846,12 +6294,14 @@ package body Flow.Control_Flow_Graph is
    --------------------------
 
    procedure Process_Call_Actuals
-     (Callsite : Node_Id;
-      Ins      : in out Vertex_Lists.List;
-      Outs     : in out Vertex_Lists.List;
-      FA       : in out Flow_Analysis_Graphs;
-      CM       : in out Connection_Maps.Map;
-      Ctx      : in out Context)
+     (Callsite            : Node_Id;
+      Ins                 : in out Vertex_Lists.List;
+      Outs_By_Copy        : in out Vertex_Lists.List;
+      Outs_By_Reference   : in out Vertex_Lists.List;
+      Outs_By_Unspecified : in out Vertex_Lists.List;
+      FA                  : in out Flow_Analysis_Graphs;
+      CM                  : in out Connection_Maps.Map;
+      Ctx                 : in out Context)
    is
       pragma Unreferenced (CM);
 
@@ -5912,7 +6362,18 @@ package body Flow.Control_Flow_Graph is
                   Vertex_Ctx                   => Ctx.Vertex_Ctx,
                   E_Loc                        => Actual),
                V);
-            Outs.Append (V);
+
+            if Is_Aliased (Formal)
+              or else Is_By_Reference_Type (Etype (Formal))
+              or else (Ekind (Formal) = E_In_Parameter
+                       and then Is_Writable_Parameter (Formal))
+            then
+               Outs_By_Reference.Append (V);
+            elsif Is_By_Copy_Type (Etype (Formal)) then
+               Outs_By_Copy.Append (V);
+            else
+               Outs_By_Unspecified.Append (V);
+            end if;
          end if;
       end Handle_Parameter;
 
@@ -5969,7 +6430,7 @@ package body Flow.Control_Flow_Graph is
                         Vertex_Ctx  => Ctx.Vertex_Ctx,
                         E_Loc       => Callsite),
                      V);
-                  Outs.Append (V);
+                  Outs_By_Reference.Append (V);
                end if;
             end;
          else
@@ -6002,7 +6463,7 @@ package body Flow.Control_Flow_Graph is
                         Vertex_Ctx    => Ctx.Vertex_Ctx,
                         E_Loc         => Callsite),
                      V);
-                  Outs.Append (V);
+                  Outs_By_Reference.Append (V);
                end if;
             end;
          end if;
@@ -6091,7 +6552,7 @@ package body Flow.Control_Flow_Graph is
 
          when N_Exception_Declaration          |
               N_Exception_Renaming_Declaration =>
-            Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
+            Do_Null_Statement (N, FA, CM, Ctx);
 
          when N_Exit_Statement =>
             Do_Exit_Statement (N, FA, CM, Ctx);
@@ -6114,7 +6575,7 @@ package body Flow.Control_Flow_Graph is
             Do_Loop_Statement (N, FA, CM, Ctx);
 
          when N_Null_Statement =>
-            Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
+            Do_Null_Statement (N, FA, CM, Ctx);
 
          when N_Package_Body      |
               N_Package_Body_Stub =>
@@ -6148,9 +6609,11 @@ package body Flow.Control_Flow_Graph is
          when N_Pragma =>
             Do_Pragma (N, FA, CM, Ctx);
 
-         when N_Raise_Statement |
-              N_Raise_xxx_Error =>
-            Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
+         when N_Raise_Statement =>
+            Do_Raise_Statement (N, FA, CM, Ctx);
+
+         when N_Raise_xxx_Error =>
+            Do_Raise_xxx_Error (N, FA, CM, Ctx);
 
          when N_Simple_Return_Statement =>
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
@@ -6262,7 +6725,7 @@ package body Flow.Control_Flow_Graph is
            (Var_Def    => Flatten_Variable (Borrowed, FA.B_Scope),
             Var_Ex_Use => Flow_Id_Sets.To_Set (Borrower),
             Vertex_Ctx => No_Vertex_Context, --  ??? not sure about this
-            Print_Hint => Pretty_Print_Borrow,
+            Print_Hint => Pretty_Print_Reclaim,
             E_Loc      => Decl),
          V);
       FA.Atr (V).Is_Program_Node := False;
@@ -7129,13 +7592,14 @@ package body Flow.Control_Flow_Graph is
    ------------
 
    procedure Create (FA : in out Flow_Analysis_Graphs) is
-      Connection_Map : Connection_Maps.Map := Connection_Maps.Empty_Map;
-      The_Context    : Context             := No_Context;
-      Init_Block     : Graph_Connections;
-      Precon_Block   : Graph_Connections;
-      Postcon_Block  : Graph_Connections;
-      Body_N         : Node_Id;
-      Spec_N         : Node_Id;
+      Connection_Map    : Connection_Maps.Map := Connection_Maps.Empty_Map;
+      The_Context       : Context             := No_Context;
+      Init_Block        : Graph_Connections;
+      Precon_Block      : Graph_Connections;
+      Postcon_Block     : Graph_Connections;
+      Excep_Cases_Block : Graph_Connections;
+      Body_N            : Node_Id;
+      Spec_N            : Node_Id;
 
    begin
       case FA.Kind is
@@ -7159,6 +7623,7 @@ package body Flow.Control_Flow_Graph is
       Add_Vertex (FA, (Null_Attributes with delta Error_Location => Body_N),
                   FA.Start_Vertex);
       Add_Vertex (FA, Null_Attributes, FA.Helper_End_Vertex);
+      Add_Vertex (FA, Null_Attributes, FA.Exceptional_End_Vertex);
       Add_Vertex (FA, Null_Attributes, FA.End_Vertex);
 
       --  Create the magic null export vertices: initial and final
@@ -7477,6 +7942,115 @@ package body Flow.Control_Flow_Graph is
                      Block => Postcon_Block);
             end;
 
+            --  Flowgraph for Exceptional_Cases. We pretend that clauses of the
+            --  Exceptional_Cases are executed sequentially, because this is a
+            --  good enough approximation. In general, we can't precisely tell
+            --  which clause will be executed anyway, e.g.:
+            --
+            --     procedure P
+            --       with Exceptional_Cases =>
+            --              (Constraint_Error => ...,
+            --              (Program_Error    => ...)
+            --     is
+            --        ...
+            --     exception
+            --        when others =>
+            --           raise;
+            --     end P;
+
+            declare
+               Prag : constant Node_Id :=
+                 Get_Pragma (FA.Spec_Entity, Pragma_Exceptional_Cases);
+               Aggr  : Node_Id;
+               Assoc : Node_Id;
+               Expr  : Node_Id;
+               NL    : Union_Lists.List;
+            begin
+               if Present (Prag) then
+                  Aggr :=
+                    Get_Pragma_Arg
+                      (First (Pragma_Argument_Associations (Prag)));
+
+                  Assoc := First (Component_Associations (Aggr));
+                  while Present (Assoc) loop
+                     Expr := Expression (Assoc);
+                     Do_Contract_Expression (Expr,
+                                             FA,
+                                             Connection_Map,
+                                             The_Context);
+                     NL.Append (Union_Id (Expr));
+                     Next (Assoc);
+                  end loop;
+               end if;
+
+               Join (FA    => FA,
+                     CM    => Connection_Map,
+                     Nodes => NL,
+                     Block => Excep_Cases_Block);
+
+            --  When an unhandled exception ocurrs, the values of actual
+            --  parameters passed by-reference will be transferred to the
+            --  caller; for other parameters it doesn't matter what values
+            --  they are assigned by the callee. In fact, we DON'T WANT these
+            --  values to be represented in the Depends contract (which we want
+            --  to describe the dependencies for a normal termination).
+            --
+            --  We can handle this with the following choices:
+            --  1) leave them unassigned, but this will cause silly checks
+            --     insisting on user to assign them according to the Depends
+            --     contract;
+            --  2) assign them according to the Depends contract, but this will
+            --     suppress messages about variables from the RHS of the
+            --     Depends clauses that otherwise would appear as unused;
+            --  3) assign them with a null dependency.
+            --
+            --  The last choice is not strictly right, but gives us exactly the
+            --  behaviour that we want. In particular, any explicit assignments
+            --  just before the raise statements will become flagged as unused.
+
+               if Present (Prag) then
+                  declare
+                     Formal  : Entity_Id;
+                     Var_Def : Flow_Id_Sets.Set;
+                     Scrub   : Flow_Graphs.Vertex_Id;
+
+                  begin
+                     Formal := First_Formal (FA.Spec_Entity);
+                     while Present (Formal) loop
+                        if Ekind (Formal) = E_In_Parameter
+                          and then not Is_Writable_Parameter (Formal)
+                        then
+                           null;
+                        elsif Is_Aliased (Formal)
+                          or else Is_By_Reference_Type (Etype (Formal))
+                        then
+                           null;
+                        else
+                           Var_Def.Union
+                             (Flatten_Variable (Formal, FA.B_Scope));
+                        end if;
+                        Next_Formal (Formal);
+                     end loop;
+
+                     Add_Vertex
+                       (FA,
+                        Make_Basic_Attributes
+                          (Var_Def    => Var_Def,
+                           Vertex_Ctx => The_Context.Vertex_Ctx,
+                           Print_Hint => Pretty_Print_Param_Scrub),
+                        Scrub);
+                     FA.Atr (Scrub).Is_Program_Node := False;
+
+                     Linkup (FA,
+                             Froms => Excep_Cases_Block.Standard_Exits,
+                             To    => Scrub);
+
+                     Excep_Cases_Block.Standard_Exits :=
+                       Vertex_Sets.To_Set (Scrub);
+                  end;
+               end if;
+            end;
+
          when Kind_Task =>
             --  No pre or post here
             null;
@@ -7524,6 +8098,12 @@ package body Flow.Control_Flow_Graph is
             Linkup (FA,
                     FA.Helper_End_Vertex,
                     Postcon_Block.Standard_Entry);
+            Linkup (FA,
+                    FA.Exceptional_End_Vertex,
+                    Excep_Cases_Block.Standard_Entry);
+            Linkup (FA,
+                    Excep_Cases_Block.Standard_Exits,
+                    FA.End_Vertex);
             Linkup (FA,
                     Postcon_Block.Standard_Exits,
                     FA.End_Vertex);
