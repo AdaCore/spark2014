@@ -766,11 +766,66 @@ is left unchanged by a procedure, as is done in the example below:
       D (I) := (L => W'Length, Value => W);
    end Set;
 
-Note that, in general, |GNATprove| is not able to prove the `extensionality` of
-the logical equality. For example, it will not be able to prove that two arrays
+The actual interpretation of logical equality is highly dependent on the
+underlying model used for formal verification. However, the following
+properties are always valid, no matter the actual type on which a logical
+equality function applies:
+
+* Logical equality functions are equivalence relations, that is, they are
+  reflexive, symmetric, and transitive. This implies that such functions can
+  always be used to express that something is preserved as done above.
+
+* There is no way to tell the
+  difference between between two values which are logically equal. Said
+  otherwise, all |SPARK| compatible functions will return the same result on
+  logically equal inputs. Note that Ada functions which do not follow |SPARK|
+  assumptions may not, for example, if they compare the address of pointers
+  which are not modelled by |GNATprove|. Such functions should never be used
+  inside |SPARK| code as they can introduce soundness issues.
+
+* Logical equality is handled efficiently, in a builtin way, by the underlying
+  solvers. This is different from the regular Ada equality which is basically
+  handled as a function call, using potentially complex defining axioms (in
+  particular Ada equality over arrays involves quantifiers).
+
+.. note::
+
+  In Ada, copying an expression might not necessarily return a logically equal
+  value. This happens for example when a value is assigned into a variable or
+  returned by a function. Indeed, such copies might involve for example
+  sliding (for arrays) or a partial copy (for view conversions of tagged types).
+
+It might happen that the underlying model of values of an Ada type contain
+components which are not present in the Ada value. This makes it impossible to
+implement a comparison function in Ada which would compute logical equality on
+such types. This is the case in particular for arrays and discriminated
+records with variant parts. More precisely, logical equality can be implemented
+using the regular Ada equality for discrete types and fixed point types.
+For floating point types, both the value and the sign need to be compared
+(to tell the difference between +0.0 and -0.0). For pointers, as the address
+is not modeled in SPARK, it is enough to check for nullity and compare the
+designated value. Logical equality on untagged record with no variant parts can
+be achieved by comparing the components. For other composite types, it cannot
+be implemented and has to remain non-executable as in the example above.
+Additionally, a user can safely annotate a comparison function on private types
+whose full view is not in |SPARK| using the ``Logical_Equal`` annotation if it
+behaves as expected, namely, it is an equivalence relation, and there is no way,
+using the API provided in the public part of the enclosing package, to tell
+the difference between two values on which this function returns True.
+
+.. note::
+
+   For private types whose full view is not in |SPARK|, |GNATprove| will peek
+   inside the full view to try and determine whether or not to interpret the
+   primitive equality on such types as the logical equality.
+
+Note that, for types on which implementing the logical equality in Ada is
+impossible, |GNATprove| might not be able to prove that two Ada values are
+logically equal even if there is no way to tell the difference in |SPARK|.
+For example, it might not be able to prove that two arrays
 are logically equal even if they have the same bounds and the same value. It
-is because it is not necessarily true in the underlying Why3 model, where,
-for example, arrays have values outside of their bounds. Therefore, using an
+is because it is not necessarily true in the underlying model, where values
+outside of the array bounds are represented. Therefore, using an
 assumption to state that two objects which are equal-in-Ada are logically equal
 might introduce an unsoundness, in particular in the presence of slices. It is
 demonstrated in the example below where |GNATprove| can prove that two strings
