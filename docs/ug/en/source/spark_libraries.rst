@@ -970,12 +970,9 @@ particular:
 * Effects of most subprograms from ``Ada.Strings.Fixed`` are fully
   modeled through pre- and postconditions. Preconditions protect from
   exceptions specified in the Ada RM (A.4.3). Some procedures are not
-  annotated with preconditions and may raise ``Length_Error`` when
-  called with inconsistent parameters. They are detailed below.
-  Subprograms not fully annotated with postconditions include the
-  functions ``Count`` and procedures ``Move``, ``Replace_Slice``,
-  ``Insert``, ``Overwrite``, ``Delete``, ``Trim``, ``Head`` and
-  ``Tail``.
+  annotated with sufficient preconditions and may raise ``Length_Error`` when
+  called with inconsistent parameters. They are annotated with an exceptional
+  contract.
 
   Under their respective preconditions, the implementation of subprograms from
   ``Ada.Strings.Fixed`` is proven with |GNATprove| to be free from run-time

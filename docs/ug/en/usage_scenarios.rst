@@ -40,9 +40,10 @@ SPARK analysis can give strong guarantees that a program:
 SPARK can analyze either a complete program or :ref:`those parts that are marked
 as being subject to analysis<Identifying SPARK Code>`, but it can only be
 applied to code that follows :ref:`some restrictions designed to facilitate
-formal verification<Language Restrictions>`. In particular, handling of
-exceptions is not allowed and use of pointers should follow a strict ownership
-policy aiming at preventing aliasing of allocated data. Pointers and exceptions
+formal verification<Language Restrictions>`. In particular, tasking is
+restricted to the Ravenscar or Jorvik profiles and use of pointers should
+follow a strict ownership
+policy aiming at preventing aliasing of allocated data. Pointers and tasking
 are both features that, if supported completely, make formal verification, as
 done by SPARK, infeasible, either because of limitations of state-of-the-art
 technology or because of the disproportionate effort required from users to
@@ -262,6 +263,7 @@ Silver Level - Absence of Run-time Errors (AoRTE)
 -------------------------------------------------
 
 The goal of this level is to ensure that the program does not raise an
+unexpected
 exception at run time. Among other things, this guarantees that the control
 flow of the program cannot be circumvented by exploiting a buffer overflow,
 or integer overflow. This also ensures that
@@ -537,15 +539,6 @@ the complete list).
   common expression, which results in different executions depending on the
   order of evaluation of subexpressions chosen by the compiler.
 
-* Handling of exceptions is not permitted. Exception handling can create
-  complex and invisible control flows in a program, which increases the
-  likelihood of introducing errors during maintenance. What is more, when an
-  exception is raised, subprograms that are terminated abnormally leave their
-  variables in a possibly uninitialized or inconsistent state, in which data
-  invariants may be broken. This includes values of out parameters, which
-  additionally are not copied back when passed by copy, thus introducing a
-  dependency on the parameter mode chosen by the compiler.
-
 * The use of access types and allocators is restricted to pool specific
   access types and subjected to an ownership policy ensuring that a mutable
   memory cell has a single owner. In general, pointers can
@@ -595,7 +588,7 @@ With Proof Only
 |GNATprove| can be used to prove the complete absence of possible run-time
 errors corresponding to:
 
-* all possible explicit raising of exceptions in the program,
+* all possible explicit raising of unexpected exceptions in the program,
 
 * raising exception ``Constraint_Error`` at run time, and
 
@@ -1256,7 +1249,7 @@ description of the different modes):
   possible run-time errors corresponding to raising exception
   ``Constraint_Error`` at run time, all possible failures of assertions
   corresponding to raising exception ``Assert_Error`` at run time, and all
-  possible explicit raising of exceptions in the program.
+  possible explicit raising of unexpected exceptions in the program.
 
 The analysis of |GNATprove| can take into account characteristics of the target
 (size and alignment of standard scalar types, endianness) by specifying a
@@ -1360,7 +1353,7 @@ errors:
 
 * all possible reads of uninitialized data
 
-* all possible explicit raise of exceptions in the program
+* all possible explicit raise of unexpected exceptions in the program
 
 * all possible run-time errors except raising exception ``Storage_Error``,
   corresponding to raising exception ``Program_Error``, ``Constraint_Error`` or
@@ -1497,13 +1490,6 @@ Depending on the violation, it may be more or less easy to rewrite the code in
   to the call.
 
 * Controlled types cannot be rewritten easily.
-
-* Top-level exception handlers can be moved to a wrapper subprogram, which
-  calls the subprogram without handlers and handles the exceptions which may be
-  raised. The callee subprogram (and any callers) can thus be analyzed by
-  |GNATprove|, while the body of the wrapper subprogram is marked ``SPARK_Mode
-  => Off``. The same result can be obtained for exception handlers not at
-  top-level by first refactoring the corresponding block into a subprogram.
 
 .. _Using SPARK_Mode to Select or Exclude Code:
 
@@ -1781,8 +1767,8 @@ Restrictions (No_Secondary_Stack);``.
 To protect against heap exhaustion, a possible way is to encapsulate
 allocations in a wrapper that handles the possible ``Storage_Error`` exception
 and signals the failure of the allocation to the calling environment via a
-return type.  This wrapper needs to be marked with ``SPARK_Mode`` set to
-``Off``, because handling exceptions is currently not allowed in SPARK. The
+return type.  The verification of this wrapper cannot be effectively done with
+SPARK as the handler would be considered unreachable. The
 following example, inspired by `this Stackoverflow post
 <https://stackoverflow.com/questions/67806008/how-to-check-for-storage-error-in-spark-ada>`_
 shows such a wrapper, that returns an "invalid" pointer that can't be

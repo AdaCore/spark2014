@@ -35,6 +35,12 @@ objective:
   the expression function is used to generate a matching postcondition. See
   :ref:`Expression Functions`.
 
+* exceptional contract (``Exceptional_Cases``)
+
+  As a default, standard procedures are not considered to raise any exceptions
+  (``Exceptional_Cases => (others => False)``) and No_Return procedures
+  might raise any exception (``Exceptional_Cases => (others => True)``).
+
 * termination contract (``Always_Terminates``)
 
   The contract is generated from a body in SPARK and a default contract of
