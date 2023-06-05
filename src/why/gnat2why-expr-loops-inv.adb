@@ -1802,13 +1802,13 @@ package body Gnat2Why.Expr.Loops.Inv is
                After_Inv, In_Nested);
 
             declare
-               Handler : Node_Id := First (Exception_Handlers (N));
+               Handler : Node_Id := First_Non_Pragma (Exception_Handlers (N));
             begin
                while Present (Handler) loop
                   Process_Statement_List
                     (Statements (Handler), Loop_Writes, Relevant_Vertices,
                      After_Inv, In_Nested);
-                  Next (Handler);
+                  Next_Non_Pragma (Handler);
                end loop;
             end;
 

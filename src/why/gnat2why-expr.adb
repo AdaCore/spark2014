@@ -21220,9 +21220,31 @@ package body Gnat2Why.Expr is
               (Statements (Handler)),
             Body_Params.Phase));
 
-      Handlers       : constant List_Id := Exception_Handlers (N);
-      Core           : constant W_Prog_Id :=
+      function List_Length_Non_Pragma (L : List_Id) return Nat;
+      --  Similar to List_Length, but excluding pragma items
+      --  ??? this routine could be moved to the frontend
+
+      ----------------------------
+      -- List_Length_Non_Pragma --
+      ----------------------------
+
+      function List_Length_Non_Pragma (L : List_Id) return Nat is
+         Length : Nat := 0;
+         Item   : Node_Id := First_Non_Pragma (L);
+      begin
+         while Present (Item) loop
+            Length := Length + 1;
+            Next_Non_Pragma (Item);
+         end loop;
+         return Length;
+      end List_Length_Non_Pragma;
+
+      Handlers : constant List_Id := Exception_Handlers (N);
+      Core     : constant W_Prog_Id :=
         Transform_Statements_And_Declarations (Statements (N));
+
+   --  Start of processing for Transform_Handled_Statements
+
    begin
       if Present (Handlers) then
          declare
@@ -21231,14 +21253,14 @@ package body Gnat2Why.Expr is
             Exc_Id              : constant W_Identifier_Id :=
               New_Temp_Identifier (Base_Name => "exc", Typ => EW_Int_Type);
             Others_Present      : constant Boolean :=
-              Nkind (First (Exception_Choices (Last (Handlers)))) =
+              Nkind (First (Exception_Choices (Last_Non_Pragma (Handlers)))) =
                 N_Others_Choice;
-            Nb_Cases            : constant Integer :=
-              Natural (List_Length (Handlers));
+            Nb_Cases            : constant Positive :=
+              Natural (List_Length_Non_Pragma (Handlers));
             Elsif_Parts         : W_Expr_Array
               (2 .. Nb_Cases - (if Others_Present then 1 else 0));
             Else_Part           : W_Prog_Id;
-            Handler             : Node_Id := First (Handlers);
+            Handler             : Node_Id := First_Non_Pragma (Handlers);
             W_Handler           : W_Prog_Id;
             Handled_Exc         : constant Exception_Sets.Set :=
               Get_Exceptions_From_Handlers (N);
@@ -21256,7 +21278,7 @@ package body Gnat2Why.Expr is
             else
                --  Fill the Elsif_Parts if any
 
-               Next (Handler);
+               Next_Non_Pragma (Handler);
                if Elsif_Parts'Length > 0 then
                   for Num in Elsif_Parts'Range loop
                      Elsif_Parts (Num) := New_Elsif
@@ -21264,7 +21286,7 @@ package body Gnat2Why.Expr is
                           (Exception_Choices (Handler), Exc_Id, EW_Prog),
                         Then_Part => +Transform_Handler (Handler),
                         Domain    => EW_Prog);
-                     Next (Handler);
+                     Next_Non_Pragma (Handler);
                   end loop;
                end if;
 
@@ -21291,7 +21313,7 @@ package body Gnat2Why.Expr is
 
                --  Reconstruct the conditional
 
-               Handler := First (Handlers);
+               Handler := First_Non_Pragma (Handlers);
 
                W_Handler := New_Conditional
                     (Ada_Node    => N,

@@ -1104,62 +1104,57 @@ package body SPARK_Util is
 
                when N_Handled_Sequence_Of_Statements =>
                   declare
-                     L_Handlers : constant List_Id :=
-                       Exception_Handlers (Scop);
-                     Handler    : Node_Id;
+                     Handler : Node_Id;
                   begin
-                     if Present (L_Handlers) then
-                        Handler := First (L_Handlers);
-                        loop
-                           declare
-                              Handler_Exc_Set : Exception_Sets.Set :=
-                                Get_Exceptions_From_Handler (Handler);
-                           begin
-                              Handler_Exc_Set.Intersection (Exc_Set);
+                     Handler := First_Non_Pragma (Exception_Handlers (Scop));
+                     while Present (Handler) loop
+                        declare
+                           Handler_Exc_Set : Exception_Sets.Set :=
+                             Get_Exceptions_From_Handler (Handler);
+                        begin
+                           Handler_Exc_Set.Intersection (Exc_Set);
 
-                              --  Handler can be reached from exceptions of
-                              --  Exc_Set. Append it to the list of reachable
-                              --  handlers. Also store the set of reachable
-                              --  exceptions in the Raised_Exceptions map.
+                           --  Handler can be reached from exceptions of
+                           --  Exc_Set. Append it to the list of reachable
+                           --  handlers. Also store the set of reachable
+                           --  exceptions in the Raised_Exceptions map.
 
-                              if not Handler_Exc_Set.Is_Empty then
-                                 Handlers.Append (Handler);
-                                 Exc_Set.Difference (Handler_Exc_Set);
+                           if not Handler_Exc_Set.Is_Empty then
+                              Handlers.Append (Handler);
+                              Exc_Set.Difference (Handler_Exc_Set);
 
-                                 declare
-                                    Position : Node_To_Exceptions.Cursor;
-                                    Inserted : Boolean;
-                                 begin
-                                    Raised_Exceptions.Insert
-                                      (Handler,
-                                       (Handler_Exc_Set,
-                                        Is_Blocked => False),
-                                       Position, Inserted);
+                              declare
+                                 Position : Node_To_Exceptions.Cursor;
+                                 Inserted : Boolean;
+                              begin
+                                 Raised_Exceptions.Insert
+                                   (Handler,
+                                    (Handler_Exc_Set,
+                                     Is_Blocked => False),
+                                    Position, Inserted);
 
-                                    if not Inserted then
+                                 if not Inserted then
 
-                                       --  Sanity checking, the exception
-                                       --  set should not have been used
-                                       --  yet.
+                                    --  Sanity checking, the exception
+                                    --  set should not have been used
+                                    --  yet.
 
-                                       if Raised_Exceptions
-                                         (Position).Is_Blocked
-                                       then
-                                          raise Program_Error;
-                                       end if;
-
-                                       Raised_Exceptions (Position).Exceptions.
-                                         Union (Handler_Exc_Set);
+                                    if Raised_Exceptions
+                                      (Position).Is_Blocked
+                                    then
+                                       raise Program_Error;
                                     end if;
-                                 end;
 
-                                 exit when Exc_Set.Is_Empty;
-                              end if;
-                           end;
-                           Next (Handler);
-                           exit when No (Handler);
-                        end loop;
-                     end if;
+                                    Raised_Exceptions (Position).Exceptions.
+                                      Union (Handler_Exc_Set);
+                                 end if;
+                              end;
+
+                              exit when Exc_Set.Is_Empty;
+                           end if;
+                        end;
+                        Next_Non_Pragma (Handler);
+                     end loop;
                   end;
                when others =>
                   null;
@@ -2077,10 +2072,10 @@ package body SPARK_Util is
 
       --  Traverse the handlers in reverse order to find the others case first
 
-      Handler := Last (Handlers);
+      Handler := Last_Non_Pragma (Handlers);
       loop
          Result.Union (Get_Exceptions_From_Handler (Handler));
-         Prev (Handler);
+         Prev_Non_Pragma (Handler);
          exit when No (Handler);
       end loop;
 
@@ -4102,7 +4097,8 @@ package body SPARK_Util is
 
                when N_Handled_Sequence_Of_Statements =>
                   declare
-                     Handler : Node_Id := First (Exception_Handlers (Stmt));
+                     Handler : Node_Id :=
+                       First_Non_Pragma (Exception_Handlers (Stmt));
                   begin
                      --  Must process handlers first, so that
                      --  vertices are inserted.
@@ -4111,7 +4107,7 @@ package body SPARK_Util is
                         Exit_Temp := Exit_Vertex;
                         Cache_For_Statement_List
                           (Statements (Handler), Depth + 1, Exit_Temp);
-                        Next (Handler);
+                        Next_Non_Pragma (Handler);
                      end loop;
 
                      Exit_Temp := Exit_Vertex;
