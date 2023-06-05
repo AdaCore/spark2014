@@ -1,9 +1,4 @@
 
-exceptions_bad.adb:15:32: error: formal parameter of mode "in out" cannot appear in consequence of Exceptional_Cases
-   15 |        and then (for all I in A'Range =>
-      |                               ^ here
-  only parameters passed by reference are allowed
-
 exceptions_bad.adb:16:25: error: formal parameter of mode "in out" cannot appear in consequence of Exceptional_Cases
    16 |                        A (I) = (if I < Index then A'Old (I) + 1 else A'Old (I))));
       |                        ^ here
