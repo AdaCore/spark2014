@@ -852,16 +852,6 @@ package body SPARK_Util.Subprograms is
    function Includes_Current_Task (Calls : Node_Sets.Set) return Boolean is
       (for some Call of Calls => Is_RTE (Call, RE_Current_Task));
 
-   ----------------------------------
-   -- Has_Any_Returning_Annotation --
-   ----------------------------------
-
-   function Has_Any_Returning_Annotation (E : Entity_Id) return Boolean is
-     (Has_Always_Return_Annotation (E)
-      or else Has_Might_Not_Return_Annotation (E)
-      or else No_Return (E)
-      or else Get_Termination_Condition (E).Kind /= Unspecified);
-
    -------------------
    -- Has_Contracts --
    -------------------
@@ -944,7 +934,6 @@ package body SPARK_Util.Subprograms is
    function Is_Possibly_Nonreturning_Procedure (E : Entity_Id) return Boolean
    is
      (No_Return (E)
-      or else Has_Might_Not_Return_Annotation (E)
       or else Get_Termination_Condition (E) not in
           (Kind => Unspecified) | (Static, True));
 

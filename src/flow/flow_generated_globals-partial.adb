@@ -44,7 +44,6 @@ with Sem_Util;                         use Sem_Util;
 with Sinfo.Nodes;                      use Sinfo.Nodes;
 with Snames;                           use Snames;
 with SPARK_Definition;                 use SPARK_Definition;
-with SPARK_Definition.Annotate;        use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;           use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;           use SPARK_Util.Subprograms;
 with SPARK_Xrefs;                      use SPARK_Xrefs;
@@ -2042,8 +2041,8 @@ package body Flow_Generated_Globals.Partial is
          --  Terminating stuff, picked no matter if body is in SPARK
          Contr.Has_Terminate :=
            (if Is_Callable (E)
-            then Has_Always_Return_Annotation (E)
-              or else Has_Implicit_Always_Return_Annotation (E)
+              and then Ekind (E) /= E_Entry_Family
+            then Get_Termination_Condition (E) = (Static, True)
             else Meaningless);
 
          --  Subprogram_Variant stuff, picked no matter if body is in SPARK.

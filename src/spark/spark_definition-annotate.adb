@@ -2702,22 +2702,6 @@ package body SPARK_Definition.Annotate is
      (Ekind (E) = E_Function
       and then Logical_Eq_Annotations.Contains (E));
 
-   -------------------------------------
-   -- Has_Might_Not_Return_Annotation --
-   -------------------------------------
-
-   function Has_Might_Not_Return_Annotation (E : Entity_Id) return Boolean is
-     (Ekind (E) in E_Procedure | E_Generic_Procedure
-      and then
-
-      --  Simulate Might_Not_Return annotation for flow analysis
-
-        (declare
-           Term : constant Termination_Condition :=
-              Get_Termination_Condition (E);
-         begin
-           Term.Kind /= Unspecified and then Term /= (Static, True)));
-
    -----------------------------------
    -- Has_No_Wrap_Around_Annotation --
    -----------------------------------
