@@ -146,10 +146,11 @@ that a program:
 SPARK can analyze either a complete program or those parts that are marked
 as being subject to analysis, but it can only be
 applied to code that follows some restrictions designed to facilitate formal
-verification. In particular, handling of exceptions is not allowed and use of
+verification. In particular, tasking is restricted to the Ravenscar or Jorvik
+profiles and use of
 pointers should follow a strict ownership policy aiming at preventing aliasing
 of data allocated in the heap (pointers to the stack are not allowed). Pointers
-and exceptions are both features
+and tasking are both features
 that, if supported completely, make formal
 verification, as done by SPARK, infeasible, either because of limitations
 of state-of-the-art technology or because of the disproportionate effort
@@ -705,7 +706,6 @@ typically addressed, as detailed in the rest of this section.
 
    "Refactor use of access type", "Use references, addresses, or indexes in an array or a collection, refactor to follow ownership policy", "Use a private type, defined as access type in a private section marked ``SPARK_Mode Off``"
    "Side effect in function", "Transform function to a procedure with additional parameter for result", "Mark function body with ``SPARK_Mode Off`` and function spec with ``Global => null`` to hide side-effect"
-   "Exception handler", "Use result value to notify caller of error when recovery is required", "Split subprogram into functionality without exception handler, and wrapper with exception handler marked with ``SPARK_Mode Off``"
 
 In the following, we consider the error messages that are issued in each case.
 
@@ -808,81 +808,6 @@ value ``null`` and by excluding the body of ``Log`` from analysis:
       Log (X);
       return X + 1;
    end Increment_And_Log;
-
-.. rubric:: handler is not allowed in SPARK
-
-.. index:: Exception handlers
-
-This error is issued for exception handlers. For example:
-
-.. code-block:: ada
-
-   Not_Found : exception;
-
-   procedure Find_Before_Delim
-     (S        : String;
-      C, Delim : Character;
-      Found    : out Boolean;
-      Position : out Positive)
-   is
-   begin
-      for J in S'Range loop
-         if S(J) = Delim then
-            raise Not_Found;
-         elsif S(J) = C then
-            Position := J;
-            Found := True;
-            return;
-         end if;
-      end loop;
-      raise Not_Found;
-   exception             --<<--  VIOLATION
-      when Not_Found =>
-         Position := 1;
-         Found := False;
-   end Find_Before_Delim;
-
-A subprogram with an exception handler can usually be split between core
-functionality, which may raise exceptions but does not contain any exception
-handlers and thus can be analyzed, and a wrapper calling the core functionality,
-which contains the exception handler and is excluded from analysis. For
-example, we can modify the code above to perform the search for a character in
-function ``Find_Before_Delim``, which raises an exception if the desired
-character is not found before either the delimiter or the end of the string,
-and a procedure ``Find_Before_Delim``, which wraps the call to function
-``Find_Before_Delim``, as follows:
-
-.. code-block:: ada
-
-   Not_Found : exception;
-
-   function Find_Before_Delim (S : String; C, Delim : Character) return Positive is
-   begin
-      for J in S'Range loop
-         if S(J) = Delim then
-            raise Not_Found;
-         elsif S(J) = C then
-            return J;
-         end if;
-      end loop;
-      raise Not_Found;
-   end Find_Before_Delim;
-
-   procedure Find_Before_Delim
-     (S        : String;
-      C, Delim : Character;
-      Found    : out Boolean;
-      Position : out Positive)
-     with SPARK_Mode => Off
-   is
-   begin
-      Position := Find_Before_Delim (S, C, Delim);
-      Found := True;
-   exception
-      when Not_Found =>
-         Position := 1;
-         Found := False;
-   end Find_Before_Delim;
 
 .. rubric:: insufficient permission for "X"
 
@@ -2310,6 +2235,7 @@ Silver Level - Absence of Run-time Errors (AoRTE)
 .. index:: -gnatp switch (compiler)
 
 The goal of this level is to ensure that the program does not raise an
+unexpected
 exception at run time. Among other things, this guarantees that the control
 flow of the program cannot be circumvented by exploiting a buffer overflow,
 or integer overflow. This also ensures that
@@ -2321,10 +2247,10 @@ operations that would have triggered a run-time exception.
 .. index:: Assertion_Error
 
 GNATprove can be used to prove the complete absence of possible run-time
-errors corresponding to the explicit raising of exceptions in the
+errors corresponding to the explicit raising of unexpected exceptions in the
 program, raising the exception ``Constraint_Error`` at run time, and
-failures of assertions (corresponding to raising exception ``Assertion_Error`` at
-run time).
+failures of assertions (corresponding to raising exception ``Assertion_Error``
+at run time).
 
 .. index:: Precondition
 .. index:: Defensive code
