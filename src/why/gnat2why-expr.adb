@@ -10213,10 +10213,15 @@ package body Gnat2Why.Expr is
             Right_Arr => Expr2,
             Dim       => Positive (Number_Dimensions (Ty)));
       elsif Is_Access_Type (Ty) then
-         Result := New_Comparison
-           (Symbol => Why_Eq,
-            Left   => New_Pointer_Is_Null_Access (Ty, Expr1),
-            Right  => New_Pointer_Is_Null_Access (Ty, Expr2));
+         Result := New_And_Pred
+           (Left  => New_Comparison
+              (Symbol => Why_Eq,
+               Left   => New_Pointer_Is_Null_Access (Ty, Expr1),
+               Right  => New_Pointer_Is_Null_Access (Ty, Expr2)),
+            Right => New_Comparison
+              (Symbol => Why_Eq,
+               Left   => New_Pointer_Is_Moved_Access (Ty, Expr1),
+               Right  => New_Pointer_Is_Moved_Access (Ty, Expr2)));
 
          if Is_Anonymous_Access_Type (Ty) then
             Result := New_And_Pred
