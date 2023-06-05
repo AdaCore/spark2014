@@ -4240,15 +4240,16 @@ package body SPARK_Definition is
             Mark_Violation (N, From => E);
          end if;
 
-      elsif Emit_Warning_Info_Messages and then SPARK_Pragma_Is (Opt.On) then
+      elsif Nkind (N) in N_Subprogram_Call
+        and then Present (Controlling_Argument (N))
+        and then Is_Hidden_Dispatching_Operation (E)
+      then
+         Mark_Violation
+           ("dispatching call on primitive of untagged private", N);
 
-         if Nkind (N) in N_Subprogram_Call
-           and then Present (Controlling_Argument (N))
-           and then Is_Hidden_Dispatching_Operation (E)
-         then
-            Mark_Violation
-              ("dispatching call on primitive of untagged private", N);
-         end if;
+      --  Warn about assumptions, but only when the SPARK_Mode is On
+
+      elsif Emit_Warning_Info_Messages and then SPARK_Pragma_Is (Opt.On) then
 
          --  Warn about calls to predefined and imported subprograms with no
          --  manually-written Global or Depends contracts. Exempt calls to
