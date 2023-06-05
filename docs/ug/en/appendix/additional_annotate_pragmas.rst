@@ -728,6 +728,31 @@ Thanks to this postcondition, we can verify a program which borrows a part of
    pragma Assert (X.Next.Next.Val = 42);
    pragma Assert (X.Next.Next.Next.Val = 4);
 
+Postconditions of borrowing traversal functions systematically need to provide two
+properties: one specifying the result, and another specifying how the parameter is
+related to the borrower. This is generally redundant, as the nature of a pledge
+means the parameter/borrower relation always holds at the point of return of
+the function. For example, on the post of 'Tail', ``Tail'Result = null`` and
+``Tail'Result = L.Next`` repeat their respective pledge counterparts ``At_End_Borrow (L) = null``
+and ``At_End_Borrow (L).Next = At_End_Borrow (Tail'Result)``.
+
+The tool limit that redundancy by letting the user write only the parameter/borrower
+relation. Properties of the result are automatically derived by
+duplicating the post-condition, with calls to ``At_End_Borrow`` replaced by their
+arguments. This covers most (if not all) properties of the result,
+and additional properties of the result can be explicitly written if needed.
+This means we get equivalent behavior for function ``Tail``
+by writing the following more concise contract:
+
+.. code-block:: ada
+
+   function Tail (L : access List) return access List with
+     Contract_Cases =>
+       (L = null => At_End_Borrow (L) = null,
+        others   => At_End_Borrow (L).Val = L.Val
+          and At_End_Borrow (L).Next = At_End_Borrow (Tail'Result));
+
+
 Accessing the Logical Equality for a Type
 -----------------------------------------
 
