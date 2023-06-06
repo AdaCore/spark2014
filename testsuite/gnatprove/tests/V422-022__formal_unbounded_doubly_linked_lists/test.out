@@ -249,7 +249,7 @@ test_list.adb:338:07: info: precondition proved (CVC5: 2 VC)
 test_list.adb:341:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:343:22: medium: assertion might fail
 test_list.adb:343:46: info: precondition proved (CVC5: 2 VC)
-test_list.adb:345:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_list.adb:345:07: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible fix: call at line 341 should mention Position (for argument C) in a postcondition]
 test_list.adb:347:22: medium: assertion might fail
 test_list.adb:347:46: info: precondition proved (CVC5: 2 VC)
 test_list.adb:348:22: info: assertion proved (Z3: 1 VC)
@@ -298,7 +298,7 @@ test_list.adb:408:22: medium: assertion might fail
 test_list.adb:408:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.adb:409:22: medium: assertion might fail
 test_list.adb:409:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_list.adb:410:22: info: assertion proved (Z3: 1 VC)
+test_list.adb:410:22: medium: assertion might fail
 test_list.adb:410:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.adb:414:22: medium: assertion might fail [possible fix: call at line 401 should mention Position (for argument C) in a postcondition]
 test_list.adb:414:22: medium: precondition might fail [possible fix: call at line 401 should mention Position (for argument C) in a postcondition]
