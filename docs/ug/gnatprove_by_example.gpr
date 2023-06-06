@@ -108,6 +108,7 @@ aggregate project GNATprove_By_Example is
      "ug__logging_out_abstract/logging_out_abstract.gpr",
      "ug__logging_out/logging_out.gpr",
      "ug__logging_priv/logging_priv.gpr",
+     "ug__long__at_end_borrow/at_end_borrow.gpr",
      "ug__long__invariants/long_invariants.gpr",
      "ug__long__map_access_list_incr_copy/long_map_access_list_incr_copy.gpr",
      "ug__long__perm/long_perm.gpr",

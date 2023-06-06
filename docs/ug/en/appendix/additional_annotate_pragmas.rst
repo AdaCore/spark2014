@@ -474,48 +474,9 @@ Local borrowers are objects of an anonymous access-to-variable type. At their
 declaration, the ownership of (a part of) an existing data-structure is
 temporarily transferred to the new object. The borrowed data-structure
 will regain ownership afterward.
-
-During the lifetime of the borrower, the borrowed object can be modified
+During the lifetime of the borrower, the borrowed object can be accessed
 indirectly through the borrower. It is forbidden to modify or even read the
-borrowed object during the borrow. It can be problematic in some cases, for
-example if a borrower is modified inside a loop, as GNATprove will need
-information supplied in a loop invariant to know how the borrowed object and
-the borrower are related in the loop and after it.
-
-In assertions, we are still allowed to
-express properties over a borrowed object using a `pledge`. The notion of
-pledges was introduced by researchers from ETH Zurich to verify Rust programs
-(see https://2019.splashcon.org/details/splash-2019-oopsla/31/Leveraging-Rust-Types-for-Modular-Specification-and-Verification).
-Conceptually, a pledge is a property involving a borrower and/or the expression
-it borrows which is known to hold at the end of the borrow, no matter
-the modifications that may be done to the borrower. In |SPARK|, it is possible
-to refer to the value of a local borrower or a borrowed expression at the
-end of the borrow inside a regular assertion or contract, or as a parameter of
-a call to a lemma function, using a function
-annotated with the ``At_End_Borrow Annotate`` pragma:
-
-.. code-block:: ada
-
-   function At_End_Borrow (E : access constant T) return access constant T is
-     (E)
-   with Ghost,
-     Annotate => (GNATprove, At_End_Borrow);
-
-Note that the name of the function could be something other than
-``At_End_Borrow``, but the annotation must use the string ``At_End_Borrow``.
-|GNATprove| will check that a function associated with the ``At_End_Borrow``
-annotation is a ghost expression function which takes a single parameter of an
-access-to-constant type and returns it.
-
-When |GNATprove| encounters a call to such a function, it checks that the
-actual parameter of the call is rooted either at a local borrower or at an
-expression which is borrowed in the current scope. It will not interpret it as
-the current value of the expression, but rather as an imprecise value
-representing the value that the expression could have at the end of the borrow.
-As |GNATprove| does not do any forward look-ahead, nothing will be known about
-the value of a local borrower at the end of the borrow, but the tool will still
-be aware of the relation between this final value and the final value of the
-expression it borrows.
+borrowed object during the borrow.
 As an example, let us consider a recursive type of doubly-linked lists:
 
 .. code-block:: ada
@@ -527,7 +488,7 @@ As an example, let us consider a recursive type of doubly-linked lists:
        Next : List_Acc;
     end record;
 
-Using this type, let us construct a list ``X`` which stored the numbers form
+Using this type, let us construct a list ``X`` which stores the numbers from
 1 to 5:
 
 .. code-block:: ada
@@ -545,7 +506,8 @@ We can borrow the structure designated by ``X`` in a local borrower ``Y``:
    declare
       Y : access List := X;
    begin
-     ...
+      V := Y.Val; --  OK, ownership has been transferred to Y temporarily
+      V := X.Val; --  Illegal, X does not have ownership during the scope of Y
    end;
 
 While in the scope of ``Y``, the ownership of the list designated by ``X`` is
@@ -553,33 +515,70 @@ transferred to ``Y``, so that it is not allowed to access it from ``X``
 anymore. After the end of the declare block, ownership is restored to ``X``,
 which can again be accessed or modified directly.
 
-Let us now define a function that can be used to relate the values
-designated by ``X`` and ``Y`` at the end of the borrow:
+During the lifetime of the borrower, the borrowed object can be modified
+indirectly through the borrower. Therefore, when the borrower goes out of scope
+and ownership is transferred back to the borrowed object, |GNATprove| needs to
+reconstruct the new value of the borrowed object from the value of the borrower
+at the end of the borrow. In general, it can be done entirely automatically.
+However, it can happen that the exact relation between the values of the
+borrowed object and the borrower at the end of the borrow is lost by the tool.
+In particular, it is the case when the borrower is created inside a
+(traversal) function, as proof is modular on a per subprogram basis. It also
+happens when the borrower is modified inside a loop, as analysing loops involves
+cutpoints. In this case, |GNATprove| relies on the user to adequately
+describe the link between the values of the borrowed object and the borrower at
+the end of the borrow inside annotations - postconditions of traversal functions
+or loop invariants.
+
+To this effect, it is possible to refer to the value of a local borrower or a
+borrowed expression at the end of the borrow using a ghost identity function
+annotated with ``At_End_Borrow``. Calls to these functions are interpreted by
+the tool as markers of references to values at the end of the borrow:
 
 .. code-block:: ada
 
-   function At_End_Borrow (L : access constant List) return access constant List is
-     (L)
+   function At_End_Borrow (E : access constant List_Acc) return access constant List_Acc is
+     (E)
    with Ghost,
      Annotate => (GNATprove, At_End_Borrow);
 
-We can use this function to give properties that are known to hold during the
-scope of ``Y``. Since ``Y`` and ``X`` designate the same value, we can
-state in a pledge that the ``Val`` and ``Next`` components of ``X`` and ``Y``
-always match:
+Note that the name of the function could be something other than
+``At_End_Borrow``.
+|GNATprove| will check that a function associated with the ``At_End_Borrow``
+annotation is a ghost expression function which takes a single parameter of an
+access-to-constant type and returns it. ``At_End_Borrow`` functions can only be
+called inside regular assertions or contracts, or within a parameter of a call
+to a lemma subprogram.
+
+When |GNATprove| encounters a call to such a function, it checks that the
+actual parameter of the call is either a local borrower or an
+expression which is borrowed in the current scope. It does not interpret it as
+the current value of the expression, but rather as what is usually called a
+`prophecy variable` in the literature, namely, an imprecise value
+representing the value that the expression will have at the end of the borrow.
+As |GNATprove| does not do any look-ahead, nothing will be known about the
+actual value of a local borrower at the end of the borrow.
+However, the tool will still
+be aware of the relation between this final value and the final value of the
+expression it borrows. As an example, consider a local borrower ``Y`` of the
+list ``X`` as defined above. The ``At_End_Borrow`` function can be used
+to give properties that are known to hold during the scope of ``Y``.
+For example, since ``Y`` and ``X`` designate the same value, |GNATprove| can
+verify that no matter what happens during the scope of ``Y``, at the end of the
+borrow, the ``Val`` component of ``X`` will be the ``Val`` component of ``Y``:
 
 .. code-block:: ada
 
-      pragma Assert (At_End_Borrow (X).Val = At_End_Borrow (Y).Val);
-      pragma Assert (At_End_Borrow (X).Next = At_End_Borrow (Y).Next);
+   pragma Assert (At_End_Borrow (X).Val = At_End_Borrow (Y).Val);
 
 However, even though at the beginning of the declare block, the first value of
-``X`` is 1, it is not correct to assert that it will remain so inside a pledge:
+``X`` is 1, it is not correct to assert that it will necessarily be so at the
+end of the borrow:
 
 .. code-block:: ada
 
-      pragma Assert (Y.Val = 1);                 --  proved
-      pragma Assert (At_End_Borrow (X).Val = 1); --  incorrect
+   pragma Assert (Y.Val = 1);                 --  proved
+   pragma Assert (At_End_Borrow (X).Val = 1); --  incorrect
 
 Indeed, ``Y`` could be modified later so that ``X.Val`` is not 1 anymore:
 
@@ -592,12 +591,21 @@ Indeed, ``Y`` could be modified later so that ``X.Val`` is not 1 anymore:
    end;
    pragma Assert (X.Val = 2);
 
-Note that the pledge above is invalid even if ``Y.Val`` is `not` modified in the
-following statements. A pledge is a contract about what
-`is known to necessarily hold` in the
-scope of ``Y``, not what will happen in practice. The analysis performed by
+Note that the assertion above is invalid even if ``Y.Val`` is `not` modified in
+the following statements. It needs to be provable only from the information
+available at the assertion point, not knowing what will actually happen later
+in the scope of the borrow. The analysis performed by
 |GNATprove| remains a forward analysis, which is not impacted by
 statements occurring after the current one.
+
+.. note::
+
+   Since ``At_End_Borrow`` functions are identity functions, the current values
+   of the borrower and borrowed expression are used when executing assertions
+   containing prophecy variables. This is sound. Indeed, |GNATprove| will show
+   that the assertion holds for all possible modifications of the borrower. As
+   not modifying the borrower is a valid senario, this is enough to ensure that
+   the assertion necessarily evaluates to True at runtime.
 
 Let us now consider a case where ``X`` is not borrowed completely. In the
 declaration of ``Y``, we can decide to borrow only the last three elements of
@@ -610,20 +618,17 @@ the list:
    begin
       pragma Assert (At_End_Borrow (X.Next.Next).Val = At_End_Borrow (Y).Val);
       pragma Assert (At_End_Borrow (X.Next.Next) /= null);
+      -- Proved, this follows from the relationship between X and Y
 
       pragma Assert (At_End_Borrow (X.Next.Next.Val) = 3);
-      -- incorrect, X could be modified through Y
-
-      pragma Assert (At_End_Borrow (X.Next) /= null);
-      pragma Assert (At_End_Borrow (X).Val = 1);
-      -- rejected by the tool, X and X.Next are not part of a borrowed expression
+      -- Incorrect, X could be modified through Y
 
       X.Val := 42;
    end;
 
 Here, like in the previous example, we can state in a pledge that
 ``X.Next.Next.Val`` is ``Y.Val``, and then ``X.Next.Next`` cannot be set to
-null. We also cannot assume anything about the
+null. We cannot assume anything about the
 part of ``X`` designated by ``Y``, so we won't be able to prove that
 ``X.Next.Next.Val`` will remain 3. Note that we cannot get the value at the
 end of the borrow of an expression which is not borrowed in the current scope.
@@ -632,9 +637,12 @@ a result, calls to ``At_End_Borrow`` on them will be rejected by the tool.
 
 Inside the scope of ``Y``, it is possible to modify the variable ``Y`` itself,
 as opposed to modifying the structure it designates, so that it gives access to
-a subcomponent of the borrowed structure. It is called a reborrow. In case of
-reborrow, the pledge of the borrower is modified so that it
-relates the expression borrowed initially to the new borrower. For
+a subcomponent of the borrowed structure. It is called a `reborrow`. During a
+reborrow, the part of the structure designated by the borrower is reduced, so
+the prophecy variable giving the value of the borrower at the end of the
+borrow is reduced as well. The part of the borrowed expression which is no
+longer accessible through the borrower cannot be modified anymore for the
+rest of the borrow. It is said to be `frozen` and its final value is known. For
 example, let's use ``Y`` to borrow ``X`` entirely and then modify it to only
 designate ``X.Next.Next``:
 
@@ -643,7 +651,7 @@ designate ``X.Next.Next``:
    declare
       Y : access List := X;
    begin
-      Y := Y.Next.Next;
+      Y := Y.Next.Next; -- reborrow
 
       pragma Assert (At_End_Borrow (X).Next.Next /= null);
       pragma Assert (At_End_Borrow (X).Val = 1);
@@ -652,17 +660,16 @@ designate ``X.Next.Next``:
       pragma Assert (At_End_Borrow (X).Next.Next.Next /= null); --  incorrect
    end;
 
-After the assignment, the part of ``X`` still accessible from the borrower is
+After the reborrow, the part of ``X`` still accessible from the borrower is
 reduced, but since ``X`` was borrowed entirely to begin with, the ownership
 policy of |SPARK| still forbids direct access to any components of ``X`` while
-in the scope of ``Y``. As a result, we have a bit more information about the
+in the scope of ``Y``. As a result, we have more information about the
 final value of ``X`` than in the previous case. We still know that ``X``
 will hold at least three elements, that is ``X.Next.Next /= null``.
 Additionally, the first and second components of ``X`` are no longer accessible
 from ``Y``, and since they cannot be accessed directly through ``X``, we know
 that they will keep their current values. This is why we can now assert in a
 pledge that ``X.Val`` is 1 and ``X.Next.Val`` is 2.
-
 However, we still cannot know anything
 about the part of ``X`` still accessible from ``Y`` as these properties
 could be modified later in the borrow:
@@ -672,86 +679,97 @@ could be modified later in the borrow:
       Y.Val := 42;
       Y.Next := null;
 
-At_End_Borrow functions are also useful in postconditions of borrowing traversal
-functions. A borrowing traversal function is a function which returns a local
-borrower of its first parameter. As |GNATprove| works modularly on a per
-subprogram basis, it is necessary to specify the pledge of the result of such
-a function in its postcondition, or proof would not be able to recompute the
-value of the borrowed parameter after the returned borrower goes out of scope.
+As said earlier, in general, |GNATprove| can handle local borrows without
+any additional user written annotations. Therefore, ``At_End_Borrow`` functions
+are mostly useful at places where information is lost by the tool: in
+postconditions of borrowing traversal functions (which return a local
+borrower of their first parameter) and in loop invariants if the
+loop involves a reborrow (in this case the value of the borrower at the end
+of the borrow is modified inside the loop and needs to be described in the
+invariant). Let us consider the following example:
 
-As an example, we can define a ``Tail`` function which returns the ``Next``
-component of a list if there is one, and ``null`` otherwise:
+.. literalinclude:: /examples/ug__long__at_end_borrow/list_borrows.adb
+   :language: ada
+   :linenos:
 
-.. code-block:: ada
+The function ``Tail`` is a borrowing traversal function. It
+returns a local borrower of its parameter ``L``. As |GNATprove| works modularly
+on a per subprogram basis, it is necessary to specify in its postcondition how
+the value of the borrowed parameter ``L`` can be reconstructed from the value
+of the borrower ``Tail'Result`` at the end of the borrow. Otherwise, |GNATprove|
+would not be able to recompute the value of the borrowed parameter after the
+returned borrower goes out of scope in the caller.
 
-   function Tail (L : access List) return access List is
-   begin
-      if L = null then
-         return null;
-      else
-         return L.Next;
-      end if;
-   end Tail;
-
-In its postcondition, we want to consider the two cases, and, in each case,
+The ``Tail`` function returns the ``Next`` component of a list if there is one,
+and ``null`` otherwise. As pointer equality is not allowed in |SPARK|, we
+define our own equality function ``Eq`` which compares the elements of the list
+one by one. Note that the ``Get`` function indexes the list from the end (the
+first element of the list is accessed by ``Get (L, Length (L))``). This is
+done to avoid arithmetic in the recursive definition of ``Get`` as it slows
+the proofs down.
+In the postcondition of ``Tail``, we consider the two cases, and, in each case,
 specify both the value returned by the function and how the
 parameter ``L`` is related to the returned borrower:
 
-.. code-block:: ada
+* If ``L`` is ``null`` then ``Tail`` returns ``null`` and ``L`` will stay
+  ``null`` for the duration of the borrow.
+* Otherwise, ``Tail`` returns ``L.Next``, the first element of ``L`` will stay
+  as it was at the time of call, and the rest of ``L`` stays equal to the object
+  returned by ``Tail``.
 
-   function Tail (L : access List) return access List with
-     Contract_Cases =>
-       (L = null =>
-          Tail'Result = null and At_End_Borrow (L) = null,
-        others   => Tail'Result = L.Next
-          and At_End_Borrow (L).Val = L.Val
-          and At_End_Borrow (L).Next = At_End_Borrow (Tail'Result));
+Thanks to this postcondition, |GNATprove| can verify a program which borrows a
+part of ``L`` using the ``Tail`` function and modifies ``L`` through this
+borrower, as can be seen in the body of ``List_Borrows``.
 
-If ``L`` is ``null`` then ``Tail`` returns ``null`` and ``L`` will stay ``null``
-for the duration of the borrow. Otherwise, ``Tail`` returns ``L.Next``, the
-first element of ``L`` will stay as it was at the time of call, and the rest
-of ``L`` stays equal to the object returned by ``Tail``.
+Postconditions of borrowing traversal functions systematically need to provide
+two properties: one specifying the result, and another specifying how the
+parameter is related to the borrower. This is generally redundant, as by
+nature the parameter/borrower relation always holds at the
+point of return of the function.
+For example, on the post of ``Tail``, ``Eq (L.Next, Tail'Result)`` repeats
+``Eq (At_End_Borrow (L).Next, At_End_Borrow (Tail'Result))``.
 
-Thanks to this postcondition, we can verify a program which borrows a part of
-``L`` using the ``Tail`` function and modifies ``L`` through this borrower:
-
-.. code-block:: ada
-
-   declare
-      Y : access List := Tail (Tail (X));
-   begin
-      Y.Val := 42;
-   end;
-
-   pragma Assert (X.Val = 1);
-   pragma Assert (X.Next.Val = 2);
-   pragma Assert (X.Next.Next.Val = 42);
-   pragma Assert (X.Next.Next.Next.Val = 4);
-
-Postconditions of borrowing traversal functions systematically need to provide two
-properties: one specifying the result, and another specifying how the parameter is
-related to the borrower. This is generally redundant, as the nature of a pledge
-means the parameter/borrower relation always holds at the point of return of
-the function. For example, on the post of 'Tail', ``Tail'Result = null`` and
-``Tail'Result = L.Next`` repeat their respective pledge counterparts ``At_End_Borrow (L) = null``
-and ``At_End_Borrow (L).Next = At_End_Borrow (Tail'Result)``.
-
-The tool limit that redundancy by letting the user write only the parameter/borrower
-relation. Properties of the result are automatically derived by
-duplicating the post-condition, with calls to ``At_End_Borrow`` replaced by their
-arguments. This covers most (if not all) properties of the result,
+The tool limits that redundancy by letting the user write only the
+parameter/borrower relation. Properties of the result are automatically derived
+by duplicating the postcondition, with calls to ``At_End_Borrow`` replaced by
+their arguments. This covers most (if not all) properties of the result,
 and additional properties of the result can be explicitly written if needed.
 This means we get equivalent behavior for function ``Tail``
-by writing the following more concise contract:
+by removing the second conjunct of the postcondition.
 
-.. code-block:: ada
+``At_End_Borrow`` functions are also useful to write loop invariants in loops
+involving reborrows. This is exemplified in the ``Set_All_To_Zero`` procedure
+which traverses a list and sets all its elements to 0. The variable ``X``
+borrows the whole input list ``L`` at the beginning of the function. Inside the
+loop, ``X`` is used to modify the structure designated by ``L``. At the end of
+the procedure, ownership is transferred back to ``L`` automatically. To
+prove the postcondition of ``Set_All_To_Zero``, |GNATprove| needs to know
+precisely how to reconstruct the value of ``L`` at this point. As ``X`` is
+reborrowed in the loop, the relation between its value and the value of ``L`` at
+the end of the borrow (the end of the scope of ``X``) changes at each iteration.
+At the beginning of the loop, ``X`` is an alias of ``L``, so the value
+designated by ``L`` is equal to the value designated by ``X`` at the end of the
+borrow. At each iteration, an element is dropped from ``X``, so the value
+designated by the current value of ``X`` at the end of the borrow shrinks. At
+the same time, we get more information about the value designated by ``L`` at
+the end of the borrow as more and more elements are `frozen` and therefore
+definitely set to their current value, that is, 0.
 
-   function Tail (L : access List) return access List with
-     Contract_Cases =>
-       (L = null => At_End_Borrow (L) = null,
-        others   => At_End_Borrow (L).Val = L.Val
-          and At_End_Borrow (L).Next = At_End_Borrow (Tail'Result));
+Because proof uses cutpoints to reason about loops, it is necessary to supply
+all this information in a loop invariant. This is what is done in the body of
+``Set_All_To_Zero``. To help readability, a ghost variable ``C`` is introduced
+to count the number of iterations in the loop. The first invariant is a regular
+invariant, it maintains the value of ``C`` at each iteration. The two following
+ones are used to describe how ``L`` can be reconstructed from ``X`` at the
+end of the borrow: ``L`` will be made of ``C`` zeros followed by the final
+value of ``X``. Note that, in the invariant, no assumption is made about the
+changes that can be made to ``X`` during the rest of the borrow, there is no
+look ahead. Both ``Tail`` and ``Set_All_To_Zero`` can be entirely verified
+by |GNATprove|:
 
+.. literalinclude:: /examples/ug__long__at_end_borrow/test.out
+   :language: none
+   :linenos:
 
 Accessing the Logical Equality for a Type
 -----------------------------------------
