@@ -23627,6 +23627,11 @@ package body Gnat2Why.Expr is
                  (Return_Statement_Entity (Stmt_Or_Decl));
                Ret_Type   : constant W_Type_Id :=
                  Type_Of_Node (Subp);
+
+               --  Based on Ada RM 6.5, the type of the return object and the
+               --  result type of the function must be statically compatible,
+               --  so no check should be needed.
+
                Obj_Deref  : constant W_Prog_Id :=
                  +Insert_Simple_Conversion
                    (Domain => EW_Prog,
