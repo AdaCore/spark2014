@@ -277,8 +277,7 @@ local observer (see :ref:`Observing` and :ref:`Borrowing`). A check is generated
 variant is updated to designate a strict subcomponent of the structure it used
 to designate. Since, due to the :ref:`Memory Ownership Policy` of |SPARK|, the
 structure cannot contain cycles, it is enough to ensure that the loop cannot
-be executed an infinite number of times. A structural variant cannot be combined
-with other variants.
+be executed an infinite number of times.
 
 In the following example, we can verify that the ``while`` loop in the
 ``Set_All_To_Zero`` procedure terminates by stating that the local borrower
@@ -291,6 +290,14 @@ In the following example, we can verify that the ``while`` loop in the
 .. literalinclude:: /examples/ug__terminating_loops-structural/terminating_loops.adb
    :language: ada
    :linenos:
+
+Structural variants are subjects to a number of restrictions.
+They cannot be combined with other variants, and are checked according to
+a mostly syntactic criterion. When these restrictions cannot be followed,
+structural variants can be systematically replaced by a decreasing numeric
+variant providing the depth (or size) of the data structure, like function
+``Length`` in :ref:`Subprogram Variant`. Strictly speaking, structural variants are only required
+to define the function returning that metric.
 
 The fact that, at each iteration, the variable ``X`` is updated to designate a
 strict subcomponent of the structure it used to designate can
