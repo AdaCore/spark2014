@@ -935,8 +935,7 @@ actual parameter denoted by the variant designates a strict subcomponent of the
 formal parameter denoted the variant at the beggining of the call. Since,
 due to the :ref:`Memory Ownership Policy` of |SPARK|, the data-structures cannot
 contain cycles, it is enough to ensure that there will be no infinite
-chain of recursive calls. A structural variant cannot be combined with other
-variants.
+chain of recursive calls.
 
 In the following example, we can verify that the ``Length`` function on
 singly-linked lists terminates stating that the structure designated by its
@@ -952,6 +951,14 @@ be verified by |GNATprove|:
 
 .. literalinclude:: /examples/ug__recursive_subprograms-structural/test.out
    :language: none
+
+Structural variants are subjects to a number of restrictions.
+They cannot be combined with other variants, and are checked according to
+a mostly syntactic criterion. When these restrictions cannot be followed,
+structural variants can be systematically replaced by a decreasing numeric
+variant providing the depth (or size) of the data structure, like function
+``Length`` above. Strictly speaking, structural variants are only required
+to define the function returning that metric.
 
 To verify the termination of mutually recursive subprograms, all subprograms
 should be annotated with `compatible` variants. We say that two variants are
