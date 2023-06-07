@@ -45,8 +45,8 @@ list_borrows.adb:55:13: info: loop invariant initialization proved
 list_borrows.adb:55:13: info: loop invariant preservation proved
 list_borrows.adb:55:42: info: predicate check proved
 list_borrows.adb:55:46: info: predicate check proved
-list_borrows.adb:58:13: info: loop invariant preservation proved
 list_borrows.adb:58:13: info: loop invariant initialization proved
+list_borrows.adb:58:13: info: loop invariant preservation proved
 list_borrows.adb:59:21: info: predicate check proved
 list_borrows.adb:59:26: info: predicate check proved
 list_borrows.adb:60:23: info: precondition proved
@@ -60,38 +60,24 @@ list_borrows.adb:66:16: info: pointer dereference check proved
 list_borrows.adb:67:15: info: predicate check proved
 list_borrows.adb:67:17: info: predicate check proved
 list_borrows.adb:67:19: info: predicate check proved
-list_borrows.adb:71:04: info: initialization of "X" proved
 
 list_borrows.adb:71:04: medium: resource or memory leak might occur at end of scope
-   71 |   X : List_Acc;
-      |   ^~~~~~~~~~~~
-list_borrows.adb:73:06: info: absence of resource or memory leak proved
-list_borrows.adb:74:05: info: pointer dereference check proved
-list_borrows.adb:74:11: info: absence of resource or memory leak proved
-list_borrows.adb:75:05: info: pointer dereference check proved
-list_borrows.adb:75:10: info: pointer dereference check proved
-list_borrows.adb:75:16: info: absence of resource or memory leak proved
-list_borrows.adb:76:05: info: pointer dereference check proved
-list_borrows.adb:76:10: info: pointer dereference check proved
-list_borrows.adb:76:15: info: pointer dereference check proved
-list_borrows.adb:76:21: info: absence of resource or memory leak proved
-list_borrows.adb:77:05: info: pointer dereference check proved
-list_borrows.adb:77:10: info: pointer dereference check proved
-list_borrows.adb:77:15: info: pointer dereference check proved
-list_borrows.adb:77:20: info: pointer dereference check proved
-list_borrows.adb:77:26: info: absence of resource or memory leak proved
-list_borrows.adb:82:08: info: pointer dereference check proved
-list_borrows.adb:85:19: info: assertion proved
-list_borrows.adb:85:20: info: pointer dereference check proved
-list_borrows.adb:86:19: info: assertion proved
-list_borrows.adb:86:20: info: pointer dereference check proved
-list_borrows.adb:86:25: info: pointer dereference check proved
-list_borrows.adb:87:19: info: assertion proved
-list_borrows.adb:87:20: info: pointer dereference check proved
-list_borrows.adb:87:25: info: pointer dereference check proved
-list_borrows.adb:87:30: info: pointer dereference check proved
-list_borrows.adb:88:19: info: assertion proved
-list_borrows.adb:88:20: info: pointer dereference check proved
-list_borrows.adb:88:25: info: pointer dereference check proved
-list_borrows.adb:88:30: info: pointer dereference check proved
-list_borrows.adb:88:35: info: pointer dereference check proved
+   71>|   X : List_Acc :=
+   72 |     new List'(1, new List'(2, new List'(3, new List'(4, new List'(5, null)))));
+list_borrows.adb:75:33: info: pointer dereference check proved
+  in reconstructed value at the end of the borrow at list_borrows.adb:75
+list_borrows.adb:77:08: info: pointer dereference check proved
+list_borrows.adb:80:19: info: assertion proved
+list_borrows.adb:80:20: info: pointer dereference check proved
+list_borrows.adb:81:19: info: assertion proved
+list_borrows.adb:81:20: info: pointer dereference check proved
+list_borrows.adb:81:25: info: pointer dereference check proved
+list_borrows.adb:82:19: info: assertion proved
+list_borrows.adb:82:20: info: pointer dereference check proved
+list_borrows.adb:82:25: info: pointer dereference check proved
+list_borrows.adb:82:30: info: pointer dereference check proved
+list_borrows.adb:83:19: info: assertion proved
+list_borrows.adb:83:20: info: pointer dereference check proved
+list_borrows.adb:83:25: info: pointer dereference check proved
+list_borrows.adb:83:30: info: pointer dereference check proved
+list_borrows.adb:83:35: info: pointer dereference check proved
