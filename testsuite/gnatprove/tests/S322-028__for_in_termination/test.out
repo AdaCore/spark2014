@@ -37,9 +37,10 @@ bounded_table.ads:54:14: info: postcondition proved (CVC5: 4 VC), in instantiati
 bounded_table.ads:54:50: info: overflow check proved (CVC5: 2 VC), in instantiation at repro_main.adb:9
 bounded_table.ads:60:13: info: implicit terminating annotation on "Index_Of" has been proved, subprogram will terminate, in instantiation at repro_main.adb:9
 repro_main.adb:4:11: info: terminating annotation on "Repro_Main" has been proved, subprogram will terminate
-repro_main.adb:9:04: error: "Member" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
 repro_main.adb:9:04: error: instantiation error at bounded_table.ads:42
-repro_main.adb:9:04: error: unsupported recursive subprogram
+repro_main.adb:9:04: error: iteration primitive shall not be recursive, (including implicitly so)
+repro_main.adb:9:04: info: function contract might not be available on implicit recursive calls
+repro_main.adb:9:04: info: in instantiation at bounded_table.ads:42
 repro_main.adb:16:13: info: precondition proved (CVC5: 1 VC)
 repro_main.adb:17:13: info: precondition proved (CVC5: 1 VC)
 repro_main.adb:18:13: info: precondition proved (CVC5: 1 VC)

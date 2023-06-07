@@ -45,6 +45,7 @@ package Flow_Utility is
      (N                  : Node_Id;
       Scop               : Flow_Scope;
       Function_Calls     : in out Call_Sets.Set;
+      Proof_Dependencies : in out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
       Generating_Globals : Boolean)
    with Pre  => Present (N),

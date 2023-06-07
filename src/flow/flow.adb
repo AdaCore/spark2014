@@ -1080,6 +1080,23 @@ package body Flow is
             Write_Str ("}");
          end if;
 
+         if not A.Proof_Dependencies.Is_Empty then
+            Write_Str ("\nPD: {");
+            declare
+               First : Boolean := True;
+            begin
+               for E of A.Proof_Dependencies loop
+                  if First then
+                     First := False;
+                  else
+                     Write_Str (", ");
+                  end if;
+                  Sprint_Flow_Id (Direct_Mapping_Id (E));
+               end loop;
+            end;
+            Write_Str ("}");
+         end if;
+
          if not A.Variables_Defined.Is_Empty then
             Write_Str ("\nVD: {");
             declare

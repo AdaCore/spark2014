@@ -40,6 +40,7 @@ package Flow_Generated_Globals.ALI_Serialization is
                            EK_Task_Instance,
                            EK_Max_Queue_Length,
                            EK_Direct_Calls,
+                           EK_Proof_Dependencies,
                            EK_Part_Of,
                            EK_Flow_Scope);
    --  Kinds of the information stored between gnat2why phases, where the info
