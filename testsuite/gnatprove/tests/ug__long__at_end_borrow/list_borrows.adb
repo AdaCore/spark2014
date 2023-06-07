@@ -68,16 +68,11 @@ procedure List_Borrows with SPARK_Mode is
       end loop;
    end Set_All_To_Zero;
 
-   X : List_Acc;
+   X : List_Acc :=
+     new List'(1, new List'(2, new List'(3, new List'(4, new List'(5, null)))));
 begin
-   X := new List'(1, null);
-   X.Next := new List'(2, null);
-   X.Next.Next := new List'(3, null);
-   X.Next.Next.Next := new List'(4, null);
-   X.Next.Next.Next.Next := new List'(5, null);
-
    declare
-      Y : access List := Tail (Tail (X));
+      Y : access List := Tail (X.Next);
    begin
       Y.Val := 42;
    end;
