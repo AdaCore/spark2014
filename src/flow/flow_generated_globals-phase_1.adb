@@ -178,25 +178,25 @@ package body Flow_Generated_Globals.Phase_1 is
    -----------------------------
 
    procedure GG_Register_Global_Info
-     (E                : Entity_Id;
-      Local            : Boolean;
-      Is_Protected     : Boolean;
-      Is_Library_Level : Boolean;
-      Origin           : Globals_Origin_T;
+     (E                 : Entity_Id;
+      Local             : Boolean;
+      Is_Protected      : Boolean;
+      Is_Library_Level  : Boolean;
+      Origin            : Globals_Origin_T;
 
-      Globals          : Flow_Nodes;
+      Globals           : Flow_Nodes;
 
-      Local_Packages   : Node_Sets.Set;
-      Local_Variables  : Node_Sets.Set;
+      Local_Packages    : Node_Sets.Set;
+      Local_Variables   : Node_Sets.Set;
 
-      Entries_Called   : Entry_Call_Sets.Set;
-      Tasking          : Tasking_Info;
+      Entries_Called    : Entry_Call_Sets.Set;
+      Tasking           : Tasking_Info;
 
-      Has_Terminate    : Boolean;
-      Has_Subp_Variant : Boolean;
-      No_Body          : Boolean;
-      Nonreturning     : Boolean;
-      Nonblocking      : Boolean)
+      Always_Terminates : Boolean;
+      Has_Subp_Variant  : Boolean;
+      No_Body           : Boolean;
+      Nonreturning      : Boolean;
+      Nonblocking       : Boolean)
    is
       procedure Process_Volatiles_And_States
         (Objects    : Node_Sets.Set;
@@ -402,7 +402,7 @@ package body Flow_Generated_Globals.Phase_1 is
       then
          --  ??? use Is_Proper_Callee here
          if Ekind (E) /= E_Task_Type then
-            Serialize (Has_Terminate);
+            Serialize (Always_Terminates);
             Serialize (Has_Subp_Variant);
             Serialize (No_Body);
             Serialize (Nonreturning);

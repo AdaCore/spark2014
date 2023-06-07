@@ -169,9 +169,9 @@ package body Flow_Generated_Globals.Partial is
       --  what feeds into the closure/fold in phase 2 to actually work
       --  out what is going on.
 
-      Has_Terminate    : Boolean;
-      Has_Subp_Variant : Boolean;
-      No_Body          : Boolean;
+      Always_Terminates : Boolean;
+      Has_Subp_Variant  : Boolean;
+      No_Body           : Boolean;
       --  Only meaningful for subprograms and entries
 
       Nonreturning       : Boolean;
@@ -2039,7 +2039,7 @@ package body Flow_Generated_Globals.Partial is
          end case;
 
          --  Terminating stuff, picked no matter if body is in SPARK
-         Contr.Has_Terminate :=
+         Contr.Always_Terminates :=
            (if Is_Callable (E)
               and then Ekind (E) /= E_Entry_Family
             then Get_Termination_Condition (E) = (Static, True)
@@ -2662,27 +2662,27 @@ package body Flow_Generated_Globals.Partial is
                             EK_Proof_Dependencies);
 
          GG_Register_Global_Info
-           (E                => E,
-            Local            => not Is_Visible_From_Other_Units (E),
-            Is_Protected     => Ekind (E) in E_Function | E_Procedure
-                                 and then Ekind (Scope (E)) =
-                                          E_Protected_Type,
-            Is_Library_Level => Ekind (E) = E_Package
-                                 and then Is_Library_Level_Entity (E),
-            Origin           => Origin_Flow,      --  ??? dummy
-            Globals          => Contr.Globals,
+           (E                 => E,
+            Local             => not Is_Visible_From_Other_Units (E),
+            Is_Protected      => Ekind (E) in E_Function | E_Procedure
+                                   and then Ekind (Scope (E)) =
+                                            E_Protected_Type,
+            Is_Library_Level  => Ekind (E) = E_Package
+                                   and then Is_Library_Level_Entity (E),
+            Origin            => Origin_Flow,      --  ??? dummy
+            Globals           => Contr.Globals,
 
-            Local_Packages   => Contr.Local_Packages,
-            Local_Variables  => Contr.Local_Variables,
+            Local_Packages    => Contr.Local_Packages,
+            Local_Variables   => Contr.Local_Variables,
 
-            Has_Terminate    => Contr.Has_Terminate,
-            Has_Subp_Variant => Contr.Has_Subp_Variant,
-            No_Body          => Contr.No_Body,
-            Nonreturning     => Contr.Nonreturning,
-            Nonblocking      => Contr.Nonblocking,
+            Always_Terminates => Contr.Always_Terminates,
+            Has_Subp_Variant  => Contr.Has_Subp_Variant,
+            No_Body           => Contr.No_Body,
+            Nonreturning      => Contr.Nonreturning,
+            Nonblocking       => Contr.Nonblocking,
 
-            Entries_Called   => Contr.Entry_Calls,
-            Tasking          => Contr.Tasking);
+            Entries_Called    => Contr.Entry_Calls,
+            Tasking           => Contr.Tasking);
       end if;
 
    end Write_Contracts_To_ALI;

@@ -65,25 +65,25 @@ package Flow_Generated_Globals.Phase_1 is
    --  without caring if they are proof-only, definite or conditional.
 
    procedure GG_Register_Global_Info
-     (E                : Entity_Id;
-      Local            : Boolean;
-      Is_Protected     : Boolean;
-      Is_Library_Level : Boolean;
-      Origin           : Globals_Origin_T;
+     (E                 : Entity_Id;
+      Local             : Boolean;
+      Is_Protected      : Boolean;
+      Is_Library_Level  : Boolean;
+      Origin            : Globals_Origin_T;
 
-      Globals          : Flow_Nodes;
+      Globals           : Flow_Nodes;
 
-      Local_Packages   : Node_Sets.Set;
-      Local_Variables  : Node_Sets.Set;
+      Local_Packages    : Node_Sets.Set;
+      Local_Variables   : Node_Sets.Set;
 
-      Entries_Called   : Entry_Call_Sets.Set;
-      Tasking          : Tasking_Info;
+      Entries_Called    : Entry_Call_Sets.Set;
+      Tasking           : Tasking_Info;
 
-      Has_Terminate    : Boolean;
-      Has_Subp_Variant : Boolean;
-      No_Body          : Boolean;
-      Nonreturning     : Boolean;
-      Nonblocking      : Boolean)
+      Always_Terminates : Boolean;
+      Has_Subp_Variant  : Boolean;
+      No_Body           : Boolean;
+      Nonreturning      : Boolean;
+      Nonblocking       : Boolean)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Register information needed later to compute globals. It also stores

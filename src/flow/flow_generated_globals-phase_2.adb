@@ -1414,7 +1414,7 @@ package body Flow_Generated_Globals.Phase_2 is
                then
                   --  ??? use Is_Proper_Callee here
                   if V.Kind /= E_Task_Type then
-                     Serialize (V.Has_Terminate);
+                     Serialize (V.Always_Terminates);
                      Serialize (V.Has_Subp_Variant);
                      Serialize (V.No_Body);
                      Serialize (V.Nonreturning);
@@ -3368,12 +3368,13 @@ package body Flow_Generated_Globals.Phase_2 is
 
             for Callee of Generated_Calls (Caller) loop
 
-               --  If the callee is predefined or has a Terminating annotation,
-               --  do not analyze it.
+               --  If the callee is predefined or has explicit or implicit
+               --  Always_Terminates aspect, do not analyze it.
 
                if not Is_Predefined (Callee)
-                 and then (Phase_1_Info.Contains (Callee)
-                           and then not Phase_1_Info (Callee).Has_Terminate)
+                 and then
+                   (Phase_1_Info.Contains (Callee)
+                    and then not Phase_1_Info (Callee).Always_Terminates)
                then
 
                   --  Two first cases of Is_Potentially_Nonreturning_Internal
