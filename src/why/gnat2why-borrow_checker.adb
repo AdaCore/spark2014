@@ -3432,36 +3432,8 @@ package body Gnat2Why.Borrow_Checker is
       Key      : Variable_Maps.Key_Option := Get_First_Key (Current_Borrowers);
       Var      : Entity_Id;
       Borrowed : Node_Id;
-      B_Pledge : Entity_Id := Empty;
 
    begin
-      if not Expr.Is_Ent then
-
-         --  Search for a call to a function annotated with At_End_Borrow
-         --  either in the parents of Expr or inside Expr (as the function is
-         --  a traversal function, it can be part of a path).
-
-         declare
-            Call : Node_Id := Get_Observed_Or_Borrowed_Expr (Expr.Expr);
-         begin
-            while Present (Call)
-              and then
-                (Nkind (Call) /= N_Function_Call
-                 or else
-                   not Has_At_End_Borrow_Annotation (Get_Called_Entity (Call)))
-            loop
-               Call := Parent (Call);
-            end loop;
-
-            --  If we have found such a call, it is allowed to refer to the
-            --  expression borrowed by the associated borrower in the call.
-
-            if Present (Call) then
-               B_Pledge := Borrower_For_At_End_Borrow_Call (Call);
-            end if;
-         end;
-      end if;
-
       --  For every borrowed object, check that:
       --    * the borrowed expression is not a prefix of Expr
       --    * Expr is not a prefix of the borrowed expression.
@@ -3470,12 +3442,11 @@ package body Gnat2Why.Borrow_Checker is
          Var := Key.K;
          Borrowed := Get (Current_Borrowers, Var);
 
-         if (Is_Prefix_Or_Almost (Pref => Borrowed, Expr => Expr)
-             or else
-               (if Expr.Is_Ent then Get_Root_Object (Borrowed) = Expr.Ent
-                else Is_Prefix_Or_Almost
-                  (Get_Observed_Or_Borrowed_Expr (Expr.Expr), +Borrowed)))
-           and then Var /= B_Pledge
+         if Is_Prefix_Or_Almost (Pref => Borrowed, Expr => Expr)
+           or else
+             (if Expr.Is_Ent then Get_Root_Object (Borrowed) = Expr.Ent
+              else Is_Prefix_Or_Almost
+                (Get_Observed_Or_Borrowed_Expr (Expr.Expr), +Borrowed))
          then
             return Borrowed;
          end if;
@@ -5406,6 +5377,43 @@ package body Gnat2Why.Borrow_Checker is
       --  Identify the root type for the path
 
       Root := Unique_Entity_In_SPARK (Root);
+
+      --  Search for a call to a function annotated with At_End_Borrow
+      --  either in the parents of Expr or inside Expr (as the function is
+      --  a traversal function, it can be part of a path).
+
+      if not Expr.Is_Ent then
+         declare
+            Call   : Node_Id := Get_Observed_Or_Borrowed_Expr (Expr.Expr);
+            Brower : Entity_Id;
+         begin
+            loop
+               Call := Parent (Call);
+
+               if No (Call) or else Nkind (Call) not in N_Subexpr then
+                  exit;
+
+               --  If we have found such a call, do the permission checking on
+               --  the borrower instead. There might be no borrower if the call
+               --  is ill-formed.
+
+               elsif Nkind (Call) = N_Function_Call
+                 and then Has_At_End_Borrow_Annotation
+                   (Get_Called_Entity (Call))
+               then
+                  Brower := Borrower_For_At_End_Borrow_Call (Call);
+                  if Present (Brower) then
+                     Process_Path
+                       ((Is_Ent => True,
+                         Ent    => Borrower_For_At_End_Borrow_Call (Call),
+                         Loc    => Expr.Expr),
+                        Mode);
+                  end if;
+                  return;
+               end if;
+            end loop;
+         end;
+      end if;
 
       --  Check path was not borrowed
 
