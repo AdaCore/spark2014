@@ -21,10 +21,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                  use Atree;
-with Flow_Utility;           use Flow_Utility;
-with Sem_Aux;                use Sem_Aux;
-with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with Atree;                     use Atree;
+with Flow_Utility;              use Flow_Utility;
+with Sem_Aux;                   use Sem_Aux;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
+with SPARK_Util.Types;          use SPARK_Util.Types;
 
 package body Flow.Control_Flow_Graph.Utility is
 
@@ -75,6 +77,29 @@ package body Flow.Control_Flow_Graph.Utility is
          end if;
       end loop;
    end Add_Volatile_Effects;
+
+   -------------------------------
+   -- Get_Reclamation_Functions --
+   -------------------------------
+
+   function Get_Reclamation_Functions
+     (Typ : Type_Kind_Id)
+      return Node_Sets.Set
+   is
+      Result : Node_Sets.Set;
+   begin
+      for Part of Get_Reclaimed_Parts (Typ) loop
+         declare
+            Func : constant Entity_Id :=
+              Get_Reclamation_Check_Function (Part);
+         begin
+            if Present (Func) then
+               Result.Include (Func);
+            end if;
+         end;
+      end loop;
+      return Result;
+   end Get_Reclamation_Functions;
 
    ---------------------------
    -- Process_Discriminants --
@@ -702,10 +727,11 @@ package body Flow.Control_Flow_Graph.Utility is
    ------------------------------
 
    function Make_Variable_Attributes
-     (F_Ent : Flow_Id;
-      Mode  : Param_Mode;
-      E_Loc : Node_Or_Entity_Id := Empty;
-      S     : Flow_Scope := Null_Flow_Scope)
+     (F_Ent      : Flow_Id;
+      Mode       : Param_Mode;
+      Proof_Deps : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc      : Node_Or_Entity_Id := Empty;
+      S          : Flow_Scope        := Null_Flow_Scope)
       return V_Attributes
    is
       A          : V_Attributes       := Null_Attributes;
@@ -713,10 +739,11 @@ package body Flow.Control_Flow_Graph.Utility is
         Get_Direct_Mapping_Id (Entire_Variable (F_Ent));
 
    begin
-      A.Error_Location := E_Loc;
-      A.Is_Constant    :=
+      A.Error_Location     := E_Loc;
+      A.Is_Constant        :=
         Ekind (Entire_Var) in E_In_Parameter | E_Loop_Parameter;
-      A.Mode           := Mode;
+      A.Mode               := Mode;
+      A.Proof_Dependencies := Proof_Deps;
 
       case F_Ent.Variant is
          when Initial_Value =>
