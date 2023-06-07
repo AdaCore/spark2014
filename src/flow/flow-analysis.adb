@@ -6022,8 +6022,8 @@ package body Flow.Analysis is
                                           "Subprogram_Variant aspect",
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
-                              F1       => Direct_Mapping_Id (SC.E),
-                              FF1      => Direct_Mapping_Id (SC.E),
+                              F1       => Spec_Entity_Id,
+                              FF1      => Spec_Entity_Id,
                               Tag      => Subprogram_Termination,
                               Vertex   => V);
                         end if;
@@ -6082,8 +6082,7 @@ package body Flow.Analysis is
                              (FA       => FA,
                               Msg      => Check_Msg ("call to & might be " &
                                                      "nonterminating"),
-                              Fix      => "annotate & with " &
-                                          "Always_Return",
+                              Fix      => "annotate & with Always_Return",
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
                               F1       => Spec_Entity_Id,
