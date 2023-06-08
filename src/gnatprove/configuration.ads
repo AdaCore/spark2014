@@ -100,6 +100,7 @@ package Configuration is
       Debug_Trivial         : aliased Boolean;
       Debug_Prover_Errors   : aliased Boolean;
       Exclude_Line          : aliased GNAT.Strings.String_Access;
+      Explain               : aliased GNAT.Strings.String_Access;
       F                     : aliased Boolean;
       File_List             : String_Lists.List;
       --  The list of files to be compiled
@@ -254,6 +255,7 @@ package Configuration is
       --  prefix/share
       --  prefix/share/why3             - files that come with Why3
       --  prefix/share/spark/config     - various config files
+      --  prefix/share/spark/error_codes - documentation of errors/warnings
       --  prefix/share/spark/stdlib     - Why3 files of the stdlib
       --  prefix/share/spark/theories   - Why3 files for Ada theories
 
@@ -273,6 +275,8 @@ package Configuration is
         Compose (Share_Spark, "theories");
       Share_Spark_Config       : constant String :=
         Compose (Share_Spark, "config");
+      Share_Spark_Explain_Codes : constant String :=
+        Compose (Share_Spark, "explain_codes");
       Share_Spark_Runtimes     : constant String :=
         Compose (Share_Spark, "runtimes");
       Help_Msg_File            : constant String :=

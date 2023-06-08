@@ -1,4 +1,6 @@
-x.adb:5:15: high: cannot write "Text_IO.File_System" during elaboration of "X" (SPARK RM 7.7.1(6))
+x.adb:5:15: high: cannot write "Text_IO.File_System" during elaboration of "X" [E0008]
+x.adb:5:15: high: launch "gnatprove --explain=E0008" for more information
 x.ads:2:14: warning: subprogram "Dummy" has no effect
-y.adb:5:15: high: cannot write "Text_IO.File_System" during elaboration of "Y" (SPARK RM 7.7.1(6))
+y.adb:5:15: high: cannot write "Text_IO.File_System" during elaboration of "Y" [E0008]
+y.adb:5:15: high: launch "gnatprove --explain=E0008" for more information
 y.ads:2:14: warning: subprogram "Dummy" has no effect

@@ -1,2 +1,3 @@
-p.adb:5:25: error: effectively volatile type "Inner_Type" must be declared at library level (SPARK RM 7.1.3(3))
+p.adb:5:25: error: effectively volatile type "Inner_Type" must be declared at library level [E0001]
+p.adb:5:25: error: launch "gnatprove --explain=E0001" for more information
 gnatprove: error during generation of Global contracts

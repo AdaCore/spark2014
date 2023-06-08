@@ -616,12 +616,12 @@ package body Flow.Analysis.Sanity is
          is
          begin
             Error_Msg_Flow
-              (FA       => FA,
-               Msg      => Err_Desc & " cannot depend on variable input &",
-               SRM_Ref  => "4.4(2)",
-               N        => N,
-               Severity => Error_Kind,
-               F1       => Entire_Variable (F));
+              (FA           => FA,
+               Msg          => Err_Desc & " cannot depend on variable input &",
+               Explain_Code => 7,
+               N            => N,
+               Severity     => Error_Kind,
+               F1           => Entire_Variable (F));
             Error_Msg_Flow
               (FA           => FA,
                Msg          => "use instead a constant initialized to the "
@@ -1326,15 +1326,15 @@ package body Flow.Analysis.Sanity is
                   --  nothing about. This is always an illegal update.
 
                   Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "cannot write & during elaboration of &",
-                     SRM_Ref  => "7.7.1(6)",
-                     N        => Error_Location (FA.PDG, FA.Atr, V),
-                     Severity => High_Check_Kind,
-                     Tag      => Illegal_Update,
-                     F1       => Entire_Variable (Var),
-                     F2       => Direct_Mapping_Id (FA.Spec_Entity),
-                     Vertex   => V);
+                    (FA           => FA,
+                     Msg          => "cannot write & during elaboration of &",
+                     Explain_Code => 8,
+                     N            => Error_Location (FA.PDG, FA.Atr, V),
+                     Severity     => High_Check_Kind,
+                     Tag          => Illegal_Update,
+                     F1           => Entire_Variable (Var),
+                     F2           => Direct_Mapping_Id (FA.Spec_Entity),
+                     Vertex       => V);
 
                   Sane := False;
 
@@ -1363,16 +1363,16 @@ package body Flow.Analysis.Sanity is
                   then
                      if FA.Kind = Kind_Package then
                         Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => "cannot write & during" &
-                                       " elaboration of &",
-                           SRM_Ref  => "7.7.1(6)",
-                           N        => Error_Location (FA.PDG, FA.Atr, V),
-                           Severity => High_Check_Kind,
-                           Tag      => Illegal_Update,
-                           F1       => Var,
-                           F2       => Direct_Mapping_Id (FA.Spec_Entity),
-                           Vertex   => V);
+                          (FA           => FA,
+                           Msg          => "cannot write & during" &
+                                           " elaboration of &",
+                           Explain_Code => 8,
+                           N            => Error_Location (FA.PDG, FA.Atr, V),
+                           Severity     => High_Check_Kind,
+                           Tag          => Illegal_Update,
+                           F1           => Var,
+                           F2           => Direct_Mapping_Id (FA.Spec_Entity),
+                           Vertex       => V);
 
                      else
                         Error_Msg_Flow

@@ -121,6 +121,9 @@ package body Configuration is
    procedure Produce_List_Categories_Output;
    --  List information for all messages issued by the tool
 
+   procedure Produce_Explain_Output;
+   --  Print the explanation for the requested error/warning code
+
    function Check_gnateT_Switch (Tree : Project_Tree) return String;
    --  Try to compute the gnateT switch to be used for gnat2why. If there is
    --  a target and runtime set, but we can't compute the switch, a warning
@@ -658,7 +661,11 @@ package body Configuration is
          Define_Switch
            (Config,
             Version'Access,
-         Long_Switch => "--version");
+            Long_Switch => "--version");
+         Define_Switch
+           (Config,
+            Explain'Access,
+            Long_Switch => "--explain=");
       end if;
 
       if Mode in Project_Parsing | All_Switches | Global_Switches_Only then
@@ -1111,6 +1118,43 @@ package body Configuration is
    begin
       Ada.Text_IO.Put_Line (Standard_Error, "gnatprove: " & S);
    end Print_Errors;
+
+   ----------------------------
+   -- Produce_Explain_Output --
+   ----------------------------
+
+   procedure Produce_Explain_Output is
+      C : constant String :=
+        Ada.Characters.Handling.To_Upper (CL_Switches.Explain.all);
+   begin
+      --  Validate the format of C as a valid explain code
+
+      if C'Length /= 5
+        or else C (1) /= 'E'
+        or else (for some I in 2 .. 5 => C (I) not in '0' .. '9')
+      then
+         Abort_Msg ("error: wrong argument for --explain, " &
+                      "must be explain code of the form E0001",
+                    With_Help => False);
+      end if;
+
+      declare
+         Filename : constant String :=
+           Compose (SPARK_Install.Share_Spark_Explain_Codes, C, "md");
+         File     : File_Type;
+      begin
+         if not Exists (Filename) then
+            Abort_Msg ("error: wrong argument for --explain, " &
+                         C & " is not a valid explain code",
+                       With_Help => False);
+         end if;
+
+         Open (File, In_File, Filename);
+         while not End_Of_File (File) loop
+            Put_Line (Get_Line (File));
+         end loop;
+      end;
+   end Produce_Explain_Output;
 
    ------------------------------------
    -- Produce_List_Categories_Output --
@@ -2237,6 +2281,13 @@ package body Configuration is
 
       if CL_Switches.List_Categories then
          Produce_List_Categories_Output;
+         Succeed;
+      end if;
+
+      if CL_Switches.Explain /= null
+        and then CL_Switches.Explain.all /= ""
+      then
+         Produce_Explain_Output;
          Succeed;
       end if;
 

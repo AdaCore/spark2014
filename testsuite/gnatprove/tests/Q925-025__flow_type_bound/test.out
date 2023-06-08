@@ -1,3 +1,4 @@
-dyn.ads:5:18: error: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
+dyn.ads:5:18: error: launch "gnatprove --explain=E0007" for more information
+dyn.ads:5:18: error: subtype constraint cannot depend on variable input "X" [E0007]
 dyn.ads:5:18: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof

@@ -24,9 +24,11 @@ refined_state_illegal.ads:74:34: error: abstract state "S2" must be refined
 refined_state_illegal.ads:74:34: error: package body should have Refined_State for state "S2" with constituents
 refined_state_illegal.ads:74:34: error: state "S2" requires refinement
 refined_state_illegal.ads:98:07: error: "Pr_Var1" is declared in the private part of package "Pac8"
-refined_state_illegal.ads:98:07: error: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
+refined_state_illegal.ads:98:07: error: indicator Part_Of is required in this context [E0009]
+refined_state_illegal.ads:98:07: error: launch "gnatprove --explain=E0009" for more information
 refined_state_illegal.ads:99:07: error: "Pr_Var2" is declared in the private part of package "Pac8"
-refined_state_illegal.ads:99:07: error: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
+refined_state_illegal.ads:99:07: error: indicator Part_Of is required in this context [E0009]
+refined_state_illegal.ads:99:07: error: launch "gnatprove --explain=E0009" for more information
 refined_state_illegal.ads:125:34: error: abstract state "S2" must be refined
 refined_state_illegal.ads:125:34: error: package body should have Refined_State for state "S2" with constituents
 refined_state_illegal.ads:125:34: error: state "S2" requires refinement

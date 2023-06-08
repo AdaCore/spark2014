@@ -1,4 +1,4 @@
-ext.ads:6:13: error: object was moved at line 10
+ext.ads:6:13: error: object was moved at line 10 [E0010]
 ext.ads:6:13: error: return from "F" with moved value for "C"
 ext.ads:6:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
 test_access.adb:11:19: info: assertion proved (CVC5: 1 VC)

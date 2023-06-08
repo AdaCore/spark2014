@@ -1,5 +1,6 @@
 ghost_illegal_2.adb:16:14: error: ghost entity cannot appear in this context
-ghost_illegal_2.adb:31:14: error: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
+ghost_illegal_2.adb:31:14: error: launch "gnatprove --explain=E0004" for more information
+ghost_illegal_2.adb:31:14: error: volatile object cannot appear in this context [E0004]
 ghost_illegal_2.adb:50:10: error: ghost entity cannot appear in this context
 ghost_illegal_2.ads:14:04: error: ghost object "Vol_Ghost" cannot be volatile
 ghost_illegal_2.ads:31:32: error: as predicates are checked in membership tests, the type and its predicate must be both ghost

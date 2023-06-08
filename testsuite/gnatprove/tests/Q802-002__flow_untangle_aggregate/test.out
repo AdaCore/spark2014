@@ -1,3 +1,4 @@
 p.ads:12:26: info: range check proved (CVC5: 2 VC)
-p.ads:14:07: high: cannot write constant without variable input "Null_T" during elaboration of "P" (SPARK RM 7.7.1(6))
+p.ads:14:07: high: cannot write constant without variable input "Null_T" during elaboration of "P" [E0008]
+p.ads:14:07: high: launch "gnatprove --explain=E0008" for more information
 p.ads:14:30: info: discriminant check proved (CVC5: 1 VC)

@@ -2,7 +2,8 @@
 test.adb:7:06: error: dereference from "X" is not writable
     7 |   X.all := 0;
       |   ~~^~~
-  object was moved at line 4
+  object was moved at line 4 [E0010]
     4 |   Tmp : Int_Ptr := X; --  ownership of X is moved to Tmp
       |                    ^ here
+  launch "gnatprove --explain=E0010" for more information
 gnatprove: error during flow analysis and proof

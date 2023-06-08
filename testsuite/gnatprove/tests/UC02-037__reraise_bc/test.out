@@ -1,8 +1,8 @@
 test_reraise.adb:10:07: info: initialization of "Tmp" proved
-test_reraise.adb:43:14: error: object was moved at line 52
+test_reraise.adb:43:14: error: object was moved at line 52 [E0010]
 test_reraise.adb:43:14: error: return from "P2" with moved value for "X"
 test_reraise.adb:44:07: info: initialization of "Tmp" proved
-test_reraise.adb:79:14: error: object was moved at line 88
+test_reraise.adb:79:14: error: object was moved at line 88 [E0010]
 test_reraise.adb:79:14: error: return from "P3" with moved value for "X"
 test_reraise.adb:80:07: info: initialization of "Tmp" proved
 test_reraise.adb:115:07: info: initialization of "Tmp" proved
