@@ -783,8 +783,8 @@ package body SPARK_Util.Subprograms is
 
       if Present (Terminates_Pragma) then
          declare
-            Assocs : constant List_Id := Pragma_Argument_Associations
-              (Terminates_Pragma);
+            Assocs : constant List_Id :=
+              Pragma_Argument_Associations (Terminates_Pragma);
             Cond   : constant Node_Id :=
               (if No (Assocs) then Empty else Expression (First (Assocs)));
 

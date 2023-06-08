@@ -394,7 +394,7 @@ package body Flow_Generated_Globals.Phase_2 is
    --  See comment for Is_Directly_Nonreturning with Entity_Id as an input
 
    function Is_Directly_Nonreturning (E : Entity_Id) return Boolean is
-      (Is_Directly_Nonreturning (To_Entity_Name (E)));
+     (Is_Directly_Nonreturning (To_Entity_Name (E)));
 
    function Part_Of_Constituents (State : Entity_Name) return Name_Sets.Set
       with Pre => GG_Is_Abstract_State (State);
