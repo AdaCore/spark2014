@@ -5916,16 +5916,16 @@ package body Flow.Analysis is
       Spec_Entity_Id : constant Flow_Id :=
         Direct_Mapping_Id (FA.Spec_Entity);
 
-      Implicit_Annotation : constant Boolean :=
-        Has_Implicit_Always_Return_Annotation (FA.Spec_Entity);
+      Aspect : constant String :=
+        (if Has_Implicit_Always_Return_Annotation (FA.Spec_Entity)
+         then "implicit "
+         else "")
+        & "aspect Always_Terminates";
 
       Proved : Boolean := True;
 
       function Check_Msg (Reason : String) return String is
-        ((if Implicit_Annotation
-          then "implicit "
-          else "") &
-         "aspect Always_Terminates on & could be incorrect, " & Reason);
+        (Aspect & " on & could be incorrect, " & Reason);
 
    begin
       if Get_Termination_Condition (FA.Spec_Entity) = (Static, True) then
@@ -6098,10 +6098,7 @@ package body Flow.Analysis is
          then
             Error_Msg_Flow (FA       => FA,
                             Msg      =>
-                              (if Implicit_Annotation
-                               then "implicit "
-                               else "") &
-                              "aspect Always_Terminates on & has been proved, "
+                              Aspect & " on & has been proved, "
                               & "subprogram will terminate",
                             Severity => Info_Kind,
                             N        => FA.Spec_Entity,
