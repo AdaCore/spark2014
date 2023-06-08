@@ -332,12 +332,16 @@ package Flow_Generated_Globals.Phase_2 is
 
    function Calls_Potentially_Nonreturning_Subprogram (E : Entity_Id)
                                                        return Boolean
-   with Pre => Ekind (E) in E_Entry | E_Function | E_Package | E_Procedure;
+   with Pre => GG_Has_Been_Generated and then
+               Entity_In_SPARK (E) and then
+               Ekind (E) in E_Entry | E_Procedure;
    --  Returns True iff the E calls potentially nonreturning subprograms,
    --  trusting their Terminating annotations.
 
    function Is_Directly_Nonreturning (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in E_Entry | E_Function | E_Package | E_Procedure;
+   with Pre => GG_Has_Been_Generated and then
+               Entity_In_SPARK (E) and then
+               Ekind (E) in E_Entry | E_Procedure;
    --  Returns True iff E does not return directly because of a
    --  non-returning statement.
    --
