@@ -145,7 +145,7 @@ spark2014_large:
   when: manual
   variables:
     ANOD_ENTRY_POINT: test_large
-    ANOD_BUILDSPACE: spark2014-test-large-cov
+    ANOD_BUILDSPACE: spark2014-test-cov-large
 
 #################
 # Test of ACATS #
