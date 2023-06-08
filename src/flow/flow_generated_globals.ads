@@ -33,9 +33,9 @@ with Types;                              use Types;
 
 package Flow_Generated_Globals is
 
-   --  -------------------------------------
+   --  --------------------------------------
    --  -- Flow_Generated_Globals Algorithm --
-   --  -------------------------------------
+   --  --------------------------------------
    --
    --  This algorithm is applied to individual compilation units.
    --
@@ -66,7 +66,7 @@ package Flow_Generated_Globals is
    --
    --    * We collect potentially nonreturning subprograms.
    --
-   --    * We also collect subprograms with the Terminating annotation.
+   --    * We also collect subprograms with the Always_Terminates contract.
    --
    --  During the second pass:
    --
@@ -107,7 +107,7 @@ package Flow_Generated_Globals is
    --  * Volatile variables and external state abstractions
    --  * Nonblocking subprograms
    --  * Potentially nonreturning subprograms
-   --  * Subprograms with the Terminating annotation
+   --  * Subprograms with the Always_Terminates contract
    --  * Tasking-related information.
    --    - suspension objects that call suspends on
    --    - protected objects whose entries are called

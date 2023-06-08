@@ -2043,6 +2043,8 @@ package body Flow_Generated_Globals.Partial is
            (if Is_Callable (E)
               and then Ekind (E) /= E_Entry_Family
             then Get_Termination_Condition (E) = (Static, True)
+                   or else
+                 Get_Termination_Condition (E).Kind = Dynamic
             else Meaningless);
 
          --  Subprogram_Variant stuff, picked no matter if body is in SPARK.

@@ -1,4 +1,6 @@
 nest_in_proc.adb:4:17: warning: subprogram "Dummy" has no effect
 nest_in_proc.adb:8:17: warning: subprogram "Dummy" has no effect
+nest_in_proc.adb:14:18: medium: implicit terminating annotation on "Inner1" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nest_in_proc.adb:14:18: warning: statement has no effect
+nest_in_proc.adb:22:18: medium: implicit terminating annotation on "Inner2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nest_in_proc.adb:22:18: warning: statement has no effect

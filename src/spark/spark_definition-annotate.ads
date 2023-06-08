@@ -310,10 +310,6 @@ package SPARK_Definition.Annotate is
          when Intentional    => "intentional");
    --  Return the string representation of the supplied annotation
 
-   function Has_Always_Return_Annotation (E : Entity_Id) return Boolean;
-   --  Return True if a pragma Annotate Always_Return applies to the subprogram
-   --  E.
-
    function Has_Implicit_Always_Return_Annotation
      (E : Entity_Id) return Boolean;
    --  Return True if E has an implicit Always_Return annotation. The three

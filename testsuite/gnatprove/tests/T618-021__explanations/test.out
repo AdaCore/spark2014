@@ -4,7 +4,7 @@ inline.adb:16:20: medium: terminating annotation on "B" could be incorrect, "B" 
 inline.adb:21:20: medium: terminating annotation on "A" could be incorrect, "A" and "B" are mutually recursive [possible fix: annotate "A" and "B" with Subprogram_Variant aspects]
 mutually_recursive_nested_package.adb:1:10: info: implicit function contract might not be available on recursive calls
 mutually_recursive_nested_package.adb:1:10: info: implicit terminating annotation on "Mutually_Recursive_Nested_Package" has been proved, subprogram will terminate
-mutually_recursive_nested_package.adb:2:17: medium: implicit terminating annotation on "Mutually_Recursive_Nested_Package" could be incorrect, "P" and "Mutually_Recursive_Nested_Package" are mutually recursive [possible fix: annotate "P" and "Mutually_Recursive_Nested_Package" with Subprogram_Variant aspects]
+mutually_recursive_nested_package.adb:2:17: medium: implicit terminating annotation on "P" could be incorrect, "P" and "Mutually_Recursive_Nested_Package" are mutually recursive [possible fix: annotate "P" and "Mutually_Recursive_Nested_Package" with Subprogram_Variant aspects]
 mutually_recursive_nested_package.adb:2:17: warning: initialization of "X" has no effect
 nonterminating.adb:1:11: warning: subprogram "Nonterminating" has no effect
 nonterminating.adb:4:14: info: add a contract to analyze it separately from calling contexts

@@ -348,7 +348,7 @@ package Flow_Generated_Globals.Phase_2 is
                                                   return Boolean
    with Pre => GG_Has_Been_Generated and then
                Entity_In_SPARK (E) and then
-               Ekind (E) in E_Entry | E_Function | E_Package | E_Procedure;
+               Ekind (E) in E_Entry | E_Procedure;
    --  Returns True iff subprogram E is potentially nonreturning, i.e.
    --  * is a procedure annotated with pragma No_Return
    --  * contains possibly nonterminating loops
@@ -385,19 +385,6 @@ package Flow_Generated_Globals.Phase_2 is
    --         consider it to be returning
    --       - if the generic is instantiated with nonreturning subprograms, we
    --         consider it to be nonreturning.
-
-   function Is_Potentially_Nonreturning (E : Entity_Id) return Boolean
-   with Pre => GG_Has_Been_Generated and then
-               Entity_In_SPARK (E) and then
-               Ekind (E) in E_Entry | E_Function | E_Procedure | E_Package;
-   --  Returns True iff E is not annotated as terminating and is indeed
-   --  (potentially) nonreturning for some reason.
-   --
-   --  Note: if a subprogram is annotated as terminating then we trust that it
-   --  indeed terminates when called from other subprograms. If our analysis
-   --  thinks otherwise, we will issue a message but still trust the
-   --  user-provided annotation. This also counts for implicit terminating
-   --  annotations, such as on functions or automatically instantiated lemmas.
 
    function Tasking_Objects
      (Kind : Tasking_Owning_Kind;

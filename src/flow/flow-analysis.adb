@@ -5914,10 +5914,10 @@ package body Flow.Analysis is
         Subprograms.Enclosing_Subprogram (FA.Spec_Entity);
 
       Spec_Entity_Id : constant Flow_Id :=
-        Direct_Mapping_Id (Enclosing_Subp);
+        Direct_Mapping_Id (FA.Spec_Entity);
 
       Implicit_Annotation : constant Boolean :=
-        Has_Implicit_Always_Return_Annotation (Enclosing_Subp);
+        Has_Implicit_Always_Return_Annotation (FA.Spec_Entity);
 
       Proved : Boolean := True;
 
@@ -5928,9 +5928,7 @@ package body Flow.Analysis is
          "terminating annotation on & could be incorrect, " & Reason);
 
    begin
-      if Has_Always_Return_Annotation (Enclosing_Subp)
-        or else Implicit_Annotation
-      then
+      if Get_Termination_Condition (FA.Spec_Entity) = (Static, True) then
 
          --  If all paths in subprogram raise exceptions or, more importantly,
          --  call procedures with No_Return, then the CFG will be pruned. We
@@ -5963,16 +5961,12 @@ package body Flow.Analysis is
 
                   for SC of Atr.Subprogram_Calls loop
 
-                     --  If elaboration of the nested package is nonterminating
-                     --  then the current unit is nonterminating as well.
-                     --  We will complain when analysing the nested package
-                     --  itself.
+                     --  Elaboration of nested packages always terminates; deal
+                     --  with it early, because some of the routines used later
+                     --  rightly do not expect to be called with packages.
 
                      if Ekind (SC.E) = E_Package then
-
-                        if Is_Potentially_Nonreturning (SC.E) then
-                           Proved := False;
-                        end if;
+                        null;
 
                      elsif Ekind (SC.E) = E_Subprogram_Type then
 
@@ -6077,7 +6071,8 @@ package body Flow.Analysis is
                         --  Is_Potentially_Nonreturning is called in the first
                         --  place.
 
-                        if Is_Potentially_Nonreturning (SC.E)
+                        if Get_Termination_Condition (SC.E, Compute => True)
+                             /= (Static, True)
                           and then
                             (Calls_Potentially_Nonreturning_Subprogram (SC.E)
                              or else Is_Directly_Nonreturning (SC.E))

@@ -835,7 +835,7 @@ package body SPARK_Util.Subprograms is
             declare
                Value : constant Boolean :=
                  (if Ekind (E) in E_Subprogram_Type | E_Task_Type then False
-                  else not Is_Potentially_Nonreturning (E));
+                  else not Is_Potentially_Nonreturning_Internal (E));
             begin
                return (Static, Value);
             end;

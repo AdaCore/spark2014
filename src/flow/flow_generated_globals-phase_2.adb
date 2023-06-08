@@ -3450,14 +3450,6 @@ package body Flow_Generated_Globals.Phase_2 is
    is
      (Is_Potentially_Nonreturning_Internal (To_Entity_Name (E)));
 
-   ---------------------------------
-   -- Is_Potentially_Nonreturning --
-   ---------------------------------
-
-   function Is_Potentially_Nonreturning (E : Entity_Id) return Boolean is
-     (Get_Termination_Condition (E) /= (Static, True)
-      and then Is_Potentially_Nonreturning_Internal (E));
-
    ------------------
    -- Is_Recursive --
    ------------------

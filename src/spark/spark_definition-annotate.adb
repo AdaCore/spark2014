@@ -2646,20 +2646,6 @@ package body SPARK_Definition.Annotate is
    end Get_Reclamation_Check_Function;
 
    ----------------------------------
-   -- Has_Always_Return_Annotation --
-   ----------------------------------
-
-   function Has_Always_Return_Annotation (E : Entity_Id) return Boolean is
-   begin
-      --  Simulate Always_Return annotation for flow analysis
-
-      return (Ekind (E) = E_Package
-              and then Present (Get_Pragma (E, Pragma_Always_Terminates)))
-        or else (Ekind (E) in E_Entry | E_Procedure
-                 and then Get_Termination_Condition (E) = (Static, True));
-   end Has_Always_Return_Annotation;
-
-   ----------------------------------
    -- Has_At_End_Borrow_Annotation --
    ----------------------------------
 
