@@ -594,9 +594,10 @@ Indeed, ``Y`` could be modified later so that ``X.Val`` is not 1 anymore:
 Note that the assertion above is invalid even if ``Y.Val`` is `not` modified in
 the following statements. It needs to be provable only from the information
 available at the assertion point, not knowing what will actually happen later
-in the scope of the borrow. The analysis performed by
-|GNATprove| remains a forward analysis, which is not impacted by
-statements occurring after the current one.
+in the scope of the borrow. The analysis performed by |GNATprove| only
+considers those statements that occur before the assertion to be proved;
+|GNATprove| does not consider statements that occur later in the control flow.
+In other words, there is no lookahead when an assertion is to be proved.
 
 .. note::
 
