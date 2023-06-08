@@ -1,3 +1,5 @@
+private_no_is_null.ads:5:09: info: checks for ressource or memory reclamation will be unprovable
+private_no_is_null.ads:5:09: info: no reclamation function found for type with ownership "Pool_Specific_Access"
 private_tagged.ads:18:59: info: precondition proved (CVC5: 1 VC)
 test_borrow.adb:7:06: info: data dependencies proved
 test_borrow.adb:10:07: info: initialization of "B" proved

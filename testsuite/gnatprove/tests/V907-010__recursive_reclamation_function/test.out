@@ -1,3 +1,7 @@
+main.adb:5:12: info: checks for ressource or memory reclamation will be unprovable
+main.adb:5:12: info: no reclamation function found for type with ownership "Pool_Specific_Access"
 main.adb:20:13: error: ownership function shall be declared in same declaration list as input type
+main_indirect.adb:5:12: info: checks for ressource or memory reclamation will be unprovable
+main_indirect.adb:5:12: info: no reclamation function found for type with ownership "Pool_Specific_Access"
 main_indirect.adb:31:13: error: ownership function shall be declared in same declaration list as input type
 gnatprove: error during flow analysis and proof

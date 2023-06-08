@@ -377,6 +377,20 @@ package SPARK_Definition.Annotate is
      and then Needs_Reclamation (E);
    --  Retrieve the check function for a type which needs reclamation if any
 
+   function Get_Reclamation_Check_Function (E : Entity_Id) return Entity_Id
+   with Pre => Is_Type (E)
+     and then Has_Ownership_Annotation (E)
+     and then Needs_Reclamation (E);
+   --  Same as above but only returns the check function
+
+   function Get_Ownership_Function_From_Pragma
+     (N  : Node_Id;
+      Ty : Entity_Id) return Entity_Id
+   with Pre => Is_Pragma_Annotate_GNATprove (N);
+   --  Return the function F such that N is a pragma Annotate
+   --  (GNATprove,  Ownership, ..., F) and F and Ty have the same root type if
+   --  any.
+
    function Has_Automatic_Instantiation_Annotation
      (E : Entity_Id) return Boolean;
    --  Return True if a pragma Annotate Automatic_Instantiation applies to the

@@ -7961,6 +7961,49 @@ package body SPARK_Definition is
             end loop;
          end if;
 
+         --  If E is a private type with ownership which needs reclamation, go
+         --  over the following declarations to try and find its reclamation
+         --  function.
+
+         if Is_Type (E)
+           and then Is_Nouveau_Type (E)
+           and then Has_Ownership_Annotation (E)
+           and then Needs_Reclamation (E)
+           and then No (Get_Reclamation_Check_Function (E))
+         then
+            declare
+               Decl_Node : constant Node_Id := Declaration_Node (E);
+               Cur       : Node_Id;
+               Fun       : Entity_Id := Empty;
+            begin
+               if Is_List_Member (Decl_Node) then
+                  Cur := Next (Decl_Node);
+                  while Present (Cur) loop
+                     if Is_Pragma_Annotate_GNATprove (Cur) then
+                        Fun := Get_Ownership_Function_From_Pragma (Cur, E);
+                        if Present (Fun) then
+                           Queue_For_Marking (Fun);
+                           exit;
+                        end if;
+                     end if;
+                     Next (Cur);
+                  end loop;
+               end if;
+
+               if No (Fun)
+                 and then Emit_Warning_Info_Messages
+                 and then Debug.Debug_Flag_Underscore_F
+               then
+                  Error_Msg_NE
+                    ("info: ?no reclamation function found for type with "
+                     & "ownership &", E, E);
+                  Error_Msg_N
+                    ("\checks for ressource or memory reclamation will be"
+                     & " unprovable", E);
+               end if;
+            end;
+         end if;
+
          --  If E is a lemma procedure annotated with Automatic_Instantiation,
          --  also mark its associated function.
 
