@@ -283,7 +283,7 @@ package VC_Kinds is
       --  User provided an incorrect Refined_State contract
 
       Subprogram_Termination,
-      --  A subprogram with annotation Terminating may not terminate
+      --  A subprogram with aspect Always_Terminates may not terminate
 
       Uninitialized,
       --  Use of an uninitialized variable

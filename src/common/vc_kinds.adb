@@ -511,7 +511,7 @@ package body VC_Kinds is
          when Stable                                      =>
             "A loop with stable statement.",
          when Subprogram_Termination                      =>
-            "A subprogram with Terminating annotation may not terminate.",
+            "A subprogram with aspect Always_Terminates may not terminate.",
          when Uninitialized                               =>
             "Flow analysis has detected the use of an uninitialized variable.",
          when Unused_Global                               =>
@@ -1393,7 +1393,7 @@ package body VC_Kinds is
          when Stable                                      =>
             "loop with stable statement",
          when Subprogram_Termination                      =>
-            "subprogram marked Terminating may not terminate",
+            "subprogram with aspect Always_Terminates may not terminate",
          when Uninitialized                               =>
             "use of an uninitialized variable",
          when Unused_Global                               =>

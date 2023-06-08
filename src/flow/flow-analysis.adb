@@ -5925,7 +5925,7 @@ package body Flow.Analysis is
         ((if Implicit_Annotation
           then "implicit "
           else "") &
-         "terminating annotation on & could be incorrect, " & Reason);
+         "aspect Always_Terminates on & could be incorrect, " & Reason);
 
    begin
       if Get_Termination_Condition (FA.Spec_Entity) = (Static, True) then
@@ -6006,8 +6006,8 @@ package body Flow.Analysis is
                            Tag         => Subprogram_Termination,
                            Vertex      => V);
 
-                     --  If the analyzed subprogram, its terminating annotation
-                     --  cannot be trusted. A message is emitted if the
+                     --  If the analyzed subprogram, its Always_Terminates
+                     --  aspect cannot be trusted. A message is emitted if the
                      --  subprogram has no Subprogram_Variant aspect.
 
                      elsif SC.E = FA.Spec_Entity then
@@ -6031,13 +6031,12 @@ package body Flow.Analysis is
                      else
 
                         --  If the analyzed subprogram and the called
-                        --  subprogram are mutually recursive, both Terminating
-                        --  annotations cannot be trusted. A message is
-                        --  emitted if both subprograms have no
+                        --  subprogram are mutually recursive, both
+                        --  Always_Terminates aspects cannot be trusted. A
+                        --  message is emitted if both subprograms have no
                         --  Subprogram_Variant aspect. In case where
-                        --  FA.Spec_Entity is a nested package, we check
-                        --  the Subprogram_Variant of its enclosing
-                        --  subprogram.
+                        --  FA.Spec_Entity is a nested package, we check the
+                        --  Subprogram_Variant of its enclosing subprogram.
 
                         if Mutually_Recursive (FA.Spec_Entity, SC.E)
                           and then
@@ -6067,9 +6066,7 @@ package body Flow.Analysis is
                         --  If the called subprogram is potentially
                         --  nonreturning for a reason that is not recursion,
                         --  a message is emitted. In this case, the
-                        --  Terminating annotation is trusted. This is why
-                        --  Is_Potentially_Nonreturning is called in the first
-                        --  place.
+                        --  Always_Terminates aspect is trusted.
 
                         if Get_Termination_Condition (SC.E, Compute => True)
                              /= (Static, True)
@@ -6104,8 +6101,8 @@ package body Flow.Analysis is
                               (if Implicit_Annotation
                                then "implicit "
                                else "") &
-                              "terminating annotation on & has been proved, " &
-                              "subprogram will terminate",
+                              "aspect Always_Terminates on & has been proved, "
+                              & "subprogram will terminate",
                             Severity => Info_Kind,
                             N        => FA.Spec_Entity,
                             F1       => Spec_Entity_Id,

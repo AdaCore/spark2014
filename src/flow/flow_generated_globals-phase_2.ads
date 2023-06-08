@@ -336,7 +336,7 @@ package Flow_Generated_Globals.Phase_2 is
                Entity_In_SPARK (E) and then
                Ekind (E) in E_Entry | E_Procedure;
    --  Returns True iff the E calls potentially nonreturning subprograms,
-   --  trusting their Terminating annotations.
+   --  trusting their Always_Terminates aspects.
 
    function Is_Directly_Nonreturning (E : Entity_Id) return Boolean
    with Pre => GG_Has_Been_Generated and then
@@ -359,9 +359,8 @@ package Flow_Generated_Globals.Phase_2 is
    --  * is recursive
    --  * calls a potentially nonreturning subprogram.
    --
-   --  It does not take into account the Terminating annotation for subprogram
-   --  E which is taken into account by the function
-   --  Is_Potentially_Nonreturning.
+   --  It does not take into account the Always_Terminates aspect for
+   --  subprogram E itself.
    --
    --  This function relies on the work carried on in phase 1 where we register
    --  a subprogram as nonreturning if:
