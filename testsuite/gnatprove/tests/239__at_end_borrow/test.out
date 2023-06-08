@@ -1,0 +1,6 @@
+main.adb:7:13: info: implicit terminating annotation on "A" has been proved, subprogram will terminate
+main.adb:11:13: info: implicit terminating annotation on "Test" has been proved, subprogram will terminate
+main.adb:20:31: error: "Y" was borrowed at line 16
+main.adb:30:31: error: "Y" is not readable
+main.adb:30:31: error: object was moved at line 26
+gnatprove: error during flow analysis and proof
