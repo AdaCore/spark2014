@@ -1,3 +1,5 @@
+ownership.ads:2:09: info: checks for ressource or memory reclamation will be unprovable
+ownership.ads:2:09: info: no reclamation function found for type with ownership "T"
 ownership.ads:5:16: error: ownership function shall be declared in same declaration list as input type
 ownership.ads:9:16: error: ownership function shall be declared in same declaration list as input type
 gnatprove: error during flow analysis and proof

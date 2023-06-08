@@ -2569,9 +2569,61 @@ package body SPARK_Definition.Annotate is
    function Get_Lemmas_To_Specialize (E : Entity_Id) return Node_Sets.Set is
       (Higher_Order_Spec_Annotations.Element (E));
 
+   -------------------------------------------
+   -- Get_Ownership_Function_From_Pragma --
+   -------------------------------------------
+
+   function Get_Ownership_Function_From_Pragma
+     (N  : Node_Id;
+      Ty : Entity_Id) return Entity_Id
+   is
+      Number_Of_Pragma_Args : constant Nat :=
+        List_Length (Pragma_Argument_Associations (N));
+   begin
+      if Number_Of_Pragma_Args /= 4 then
+         return Empty;
+      end if;
+
+      declare
+         Arg2 : constant Node_Id :=
+           Next (First (Pragma_Argument_Associations (N)));
+         Arg4 : constant Node_Id := Next (Next (Arg2));
+         Name : constant String :=
+           Get_Name_String (Chars (Get_Pragma_Arg (Arg2)));
+         Exp  : constant Node_Id := Expression (Arg4);
+
+      begin
+         if Name /= "ownership"
+           or else Nkind (Exp) not in N_Has_Entity
+         then
+            return Empty;
+         end if;
+
+         declare
+            Fun : constant Entity_Id := Entity (Exp);
+         begin
+            if Ekind (Fun) = E_Function
+              and then Present (First_Formal (Fun))
+              and then Root_Type (Etype (First_Formal (Fun))) = Root_Type (Ty)
+            then
+               return Fun;
+            else
+               return Empty;
+            end if;
+         end;
+      end;
+   end Get_Ownership_Function_From_Pragma;
+
    ------------------------------------
    -- Get_Reclamation_Check_Function --
    ------------------------------------
+
+   function Get_Reclamation_Check_Function (E : Entity_Id) return Entity_Id is
+      use Node_To_Ownership_Maps;
+      R : constant Entity_Id := Root_Retysp (E);
+   begin
+      return Ownership_Annotations (R).Check_Function;
+   end Get_Reclamation_Check_Function;
 
    procedure Get_Reclamation_Check_Function
      (E              : Entity_Id;
