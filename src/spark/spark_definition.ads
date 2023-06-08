@@ -178,14 +178,6 @@ package SPARK_Definition is
    --  Returns True iff entity E is defined in loop before the invariants and
    --  thus may require a special translation. See gnat2why.ads for details.
 
-   procedure Mark_Iterable_Aspect
-     (Iterable_Aspect : N_Aspect_Specification_Id);
-   --  Mark functions mentioned in the Iterable aspect of a type.
-   --  ??? This function is currently public because it is used by
-   --  SPARK_Annotate, which is conceptually part of marking. We should
-   --  integrate SPARK_Annotate into Marking (via a child package?) to
-   --  avoid this internal call in the public API.
-
    procedure Mark_Standard_Package;
    --  Put marks on package Standard
 

@@ -454,6 +454,10 @@ package body SPARK_Definition is
    procedure Mark_Exception_Handler (N : N_Exception_Handler_Id);
    --  Mark an exception handler
 
+   procedure Mark_Iterable_Aspect
+     (Iterable_Aspect : N_Aspect_Specification_Id);
+   --  Mark functions mentioned in the Iterable aspect of a type
+
    procedure Mark_List (L : List_Id);
    --  Call Mark on all nodes in list L
 
@@ -4240,15 +4244,16 @@ package body SPARK_Definition is
             Mark_Violation (N, From => E);
          end if;
 
-      elsif Emit_Warning_Info_Messages and then SPARK_Pragma_Is (Opt.On) then
+      elsif Nkind (N) in N_Subprogram_Call
+        and then Present (Controlling_Argument (N))
+        and then Is_Hidden_Dispatching_Operation (E)
+      then
+         Mark_Violation
+           ("dispatching call on primitive of untagged private", N);
 
-         if Nkind (N) in N_Subprogram_Call
-           and then Present (Controlling_Argument (N))
-           and then Is_Hidden_Dispatching_Operation (E)
-         then
-            Mark_Violation
-              ("dispatching call on primitive of untagged private", N);
-         end if;
+      --  Warn about assumptions, but only when the SPARK_Mode is On
+
+      elsif Emit_Warning_Info_Messages and then SPARK_Pragma_Is (Opt.On) then
 
          --  Warn about calls to predefined and imported subprograms with no
          --  manually-written Global or Depends contracts. Exempt calls to
@@ -8296,9 +8301,8 @@ package body SPARK_Definition is
    procedure Mark_Iterable_Aspect
      (Iterable_Aspect : N_Aspect_Specification_Id)
    is
-
       procedure Mark_Iterable_Aspect_Function (N : Node_Id);
-      --  Mark individual association of iterable aspect.
+      --  Mark individual association of iterable aspect
 
       -----------------------------------
       -- Mark_Iterable_Aspect_Function --
@@ -8309,8 +8313,7 @@ package body SPARK_Definition is
            Ultimate_Alias (Entity (Expression (N)));
          Globals : Global_Flow_Ids;
       begin
-         if not In_SPARK (Ent)
-         then
+         if not In_SPARK (Ent) then
             Mark_Violation (N, From => Ent);
             return;
          end if;
@@ -8344,14 +8347,16 @@ package body SPARK_Definition is
 
       Iterable_Component_Assoc : constant List_Id :=
         Component_Associations (Expression (Iterable_Aspect));
-      Iterable_Field           : Node_Id := First (Iterable_Component_Assoc);
 
-      --  Start of processing for Mark_Iterable_Aspect
+      Iterable_Component : Node_Id;
+
+   --  Start of processing for Mark_Iterable_Aspect
 
    begin
-      while Present (Iterable_Field) loop
-         Mark_Iterable_Aspect_Function (Iterable_Field);
-         Next (Iterable_Field);
+      Iterable_Component := First (Iterable_Component_Assoc);
+      while Present (Iterable_Component) loop
+         Mark_Iterable_Aspect_Function (Iterable_Component);
+         Next (Iterable_Component);
       end loop;
    end Mark_Iterable_Aspect;
 
