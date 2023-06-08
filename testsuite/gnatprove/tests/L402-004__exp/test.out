@@ -1,6 +1,6 @@
 p.adb:3:07: medium: overflow check might fail, cannot prove upper bound for abs X [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
 p.adb:4:14: info: overflow check proved (CVC5: 2 VC)
-p.adb:5:14: info: float overflow check proved (colibri: 1 VC)
+p.adb:5:14: info: float overflow check proved (altergo: 1 VC)
 p.adb:6:12: medium: overflow check might fail, cannot prove upper bound for X ** 2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
 p.adb:7:14: info: overflow check proved (CVC5: 2 VC)
 p.adb:8:14: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at line 1 should mention Y in a precondition]

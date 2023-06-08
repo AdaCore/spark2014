@@ -29,9 +29,13 @@
           +-- goal def'vc.9: Trivial 1.0 (trivial)
           +-- goal def'vc.10: CVC5 0.0.7-gnatprove
   
-== Statistics per prover: number of proofs, time (minimum/maximum/average) in seconds ==
-  CVC5 0.0.7-gnatprove:   7   0.00   0.00   0.00
-  Trivial 1.0 (trivial):   2   0.00   0.00   0.00
+== Statistics per prover: number of proof attempts, successful ones, time (minimum/maximum/average) in seconds ==
+  CVC5 0.0.7-gnatprove          :     8     7   0.00   0.00   0.00
+  CVC5_CE 0.0.7-gnatprove       :     1     0   0.00   0.00   0.00
+  Trivial 1.0 (trivial)         :     2     2   0.00   0.00   0.00
+  Z3 4.5.1-gnatprove            :     1     0   0.00   0.00   0.00
+  altergo 1.30-gnatprove        :     1     0   0.00   0.00   0.00
+  colibri 2137                  :     1     0   0.00   0.00   0.00
   
 add.adb:5:16: info: overflow check proved (CVC5: 2 VC)
 add.ads:2:13: info: implicit aspect Always_Terminates on "AddTwo" has been proved, subprogram will terminate
