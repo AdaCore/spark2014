@@ -6079,7 +6079,8 @@ package body Flow.Analysis is
                              (FA       => FA,
                               Msg      => Check_Msg ("call to & might be " &
                                                      "nonterminating"),
-                              Fix      => "annotate & with Always_Return",
+                              Fix      =>
+                                "annotate & with aspect Always_Terminates",
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
                               F1       => Spec_Entity_Id,
