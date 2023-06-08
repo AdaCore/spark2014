@@ -5904,11 +5904,11 @@ package body Flow.Analysis is
       end loop;
    end Check_CAE_In_Preconditions;
 
-   ----------------------------------
-   -- Check_Terminating_Annotation --
-   ----------------------------------
+   -----------------------------
+   -- Check_Always_Terminates --
+   -----------------------------
 
-   procedure Check_Terminating_Annotation (FA : in out Flow_Analysis_Graphs) is
+   procedure Check_Always_Terminates (FA : in out Flow_Analysis_Graphs) is
 
       Enclosing_Subp : constant Entity_Id :=
         Subprograms.Enclosing_Subprogram (FA.Spec_Entity);
@@ -6112,7 +6112,7 @@ package body Flow.Analysis is
                             Tag      => Subprogram_Termination);
          end if;
       end if;
-   end Check_Terminating_Annotation;
+   end Check_Always_Terminates;
 
    ----------------------------------------
    -- Check_Constant_Global_Contracts --

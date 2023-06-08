@@ -195,10 +195,9 @@ package Flow.Analysis is
    --  Check that preconditions of protected operations only reference global
    --  variables that have Constant_After_Elaboration set.
 
-   procedure Check_Terminating_Annotation (FA : in out Flow_Analysis_Graphs)
+   procedure Check_Always_Terminates (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind in Kind_Subprogram | Kind_Package;
-   --  Checks if the terminating annotation is consistent with the results from
-   --  flow analysis, emits a message if not.
+   --  Checks the implicit or explicit aspect Always_Terminiates
 
    procedure Check_Constant_Global_Contracts (E : Entity_Id)
    with Pre => Ekind (E) in E_Function
