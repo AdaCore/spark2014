@@ -398,6 +398,14 @@ package SPARK_Util.Subprograms is
    --  lemma procedures), or computed by flow analysis if Compute is True. In
    --  the last two cases, the condition is necessarily static.
 
+   function Has_Implicit_Always_Terminates
+     (E : Entity_Id) return Boolean;
+   --  Return True if E has an implicit aspect Always_Terminates. The three
+   --  cases currently are:
+   --  - E is a function.
+   --  - E is a package.
+   --  - E is an automatically instantiated lemma.
+
    function Has_Contracts
      (E         : Entity_Id;
       Name      : Pragma_Id;

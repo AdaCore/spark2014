@@ -37,7 +37,6 @@ with Snames;                      use Snames;
 with Stand;                       use Stand;
 
 with Common_Iterators;            use Common_Iterators;
-with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
@@ -5917,7 +5916,7 @@ package body Flow.Analysis is
         Direct_Mapping_Id (FA.Spec_Entity);
 
       Aspect : constant String :=
-        (if Has_Implicit_Always_Return_Annotation (FA.Spec_Entity)
+        (if Has_Implicit_Always_Terminates (FA.Spec_Entity)
          then "implicit "
          else "")
         & "aspect Always_Terminates";

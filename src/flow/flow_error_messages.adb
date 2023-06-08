@@ -1311,7 +1311,7 @@ package body Flow_Error_Messages is
             then
                return "ghost calls occurring inside non-ghost code "
                  & "should always terminate";
-            elsif Has_Implicit_Always_Return_Annotation (E) then
+            elsif Has_Implicit_Always_Terminates (E) then
                declare
                   E_Name : constant String :=
                     (if Ekind (E) = E_Package then "package elaboration"

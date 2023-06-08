@@ -810,7 +810,7 @@ package body SPARK_Util.Subprograms is
       --  The Always_Terminates annotation is implicit on packages, functions,
       --  and lemmas.
 
-      elsif Has_Implicit_Always_Return_Annotation (E) then
+      elsif Has_Implicit_Always_Terminates (E) then
          return (Static, True);
 
       --  If E is directly in a package specification, get the annotation from
@@ -844,6 +844,16 @@ package body SPARK_Util.Subprograms is
          end if;
       end if;
    end Get_Termination_Condition;
+
+   ------------------------------------
+   -- Has_Implicit_Always_Terminates --
+   ------------------------------------
+
+   function Has_Implicit_Always_Terminates
+     (E : Entity_Id) return Boolean
+   is
+     (Ekind (E) in E_Function | E_Package
+        or else Has_Automatic_Instantiation_Annotation (E));
 
    ---------------------------
    -- Includes_Current_Task --

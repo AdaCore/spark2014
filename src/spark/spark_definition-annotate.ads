@@ -310,14 +310,6 @@ package SPARK_Definition.Annotate is
          when Intentional    => "intentional");
    --  Return the string representation of the supplied annotation
 
-   function Has_Implicit_Always_Return_Annotation
-     (E : Entity_Id) return Boolean;
-   --  Return True if E has an implicit Always_Return annotation. The three
-   --  cases currently are:
-   --  - E is a function.
-   --  - E is a package.
-   --  - E is an automatically instantiated lemma.
-
    function Has_At_End_Borrow_Annotation (E : Entity_Id) return Boolean;
    --  Return True if the function E is a function annotated with at_end_borrow
 

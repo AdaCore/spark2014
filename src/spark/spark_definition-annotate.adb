@@ -2670,16 +2670,6 @@ package body SPARK_Definition.Annotate is
    is
      (Higher_Order_Spec_Annotations.Contains (E));
 
-   -------------------------------------------
-   -- Has_Implicit_Always_Return_Annotation --
-   -------------------------------------------
-
-   function Has_Implicit_Always_Return_Annotation
-     (E : Entity_Id) return Boolean
-   is
-     (Ekind (E) in E_Function | E_Package
-        or else Has_Automatic_Instantiation_Annotation (E));
-
    -------------------------------
    -- Has_Logical_Eq_Annotation --
    -------------------------------
