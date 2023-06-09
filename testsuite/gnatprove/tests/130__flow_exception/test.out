@@ -67,7 +67,6 @@ effect1.adb:14:07: warning: statement has no effect
 effect1.adb:24:04: info: only expected exception raised (CVC5: 1 VC)
 effect2.adb:1:24: info: data dependencies proved
 effect2.adb:6:06: info: flow dependencies proved
-effect2.adb:7:06: warning: postcondition does not check the outcome of calling "P"
 effect2.adb:7:14: info: postcondition proved (CVC5: 1 VC)
 effect2.adb:8:33: info: exceptional case proved (CVC5: 1 VC)
 effect2.adb:17:35: info: initialization of "Y" proved
@@ -112,7 +111,6 @@ main0.adb:1:31: info: initialization of "Y" proved
 main0.adb:2:08: info: data dependencies proved
 main0.adb:2:32: info: postcondition proved (CVC5: 2 VC)
 main2.adb:6:06: info: flow dependencies proved
-main2.adb:7:06: warning: postcondition does not check the outcome of calling "P"
 main2.adb:7:14: info: postcondition proved (CVC5: 1 VC)
 main2.adb:8:33: info: exceptional case proved (CVC5: 1 VC)
 main2.adb:17:35: info: initialization of "Y" proved

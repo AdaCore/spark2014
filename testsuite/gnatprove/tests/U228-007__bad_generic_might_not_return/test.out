@@ -21,7 +21,6 @@ bad.adb:26:07: medium: unexpected exception might be raised
 bad.ads:5:13: high: all paths in "Call_Jump_Fun" raise exceptions or do not terminate normally
 bad.ads:9:38: medium: exceptional case might fail, in instantiation at bad.adb:22 [possible fix: subprogram at line 8 should mention B in a precondition]
 bad.ads:10:06: info: data dependencies proved, in instantiation at bad.adb:22
-bad.ads:11:06: warning: postcondition does not check the outcome of calling "Call_Jump_Gen"
 weird_inst.adb:6:14: info: terminating annotation on "RG_Inst" has been proved, subprogram will terminate
 pack.adb:11:10: high: precondition might fail, in instantiation at pack.adb:15
 pack.adb:11:10: medium: unexpected exception might be raised, in instantiation at pack.adb:15 [possible explanation: No_Return procedures have an implicit exceptional contract]
@@ -29,12 +28,9 @@ pack.adb:27:22: info: assertion proved (CVC5: 1 VC)
 pack.adb:36:10: high: precondition might fail, in instantiation at pack.adb:43
 pack.adb:36:10: medium: unexpected exception might be raised, in instantiation at pack.adb:43 [possible explanation: No_Return procedures have an implicit exceptional contract]
 pack.ads:8:06: info: data dependencies proved, in instantiation at pack.adb:15
-pack.ads:9:06: warning: postcondition does not check the outcome of calling "Call_Jump_Gen"
 pack.ads:9:14: info: postcondition proved (CVC5: 1 VC), in instantiation at pack.adb:15
 pack.ads:13:06: info: data dependencies proved
-pack.ads:14:06: warning: postcondition does not check the outcome of calling "Call_Jump"
 pack.ads:14:14: info: postcondition proved (CVC5: 1 VC)
 pack.ads:18:06: info: data dependencies proved
-pack.ads:22:06: warning: postcondition does not check the outcome of calling "Call_Jump2"
 pack.ads:22:14: info: postcondition proved (CVC5: 1 VC)
 pack.ads:30:06: info: data dependencies proved, in instantiation at pack.adb:43

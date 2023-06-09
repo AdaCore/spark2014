@@ -1,4 +1,3 @@
-bad_spec.ads:12:06: warning: postcondition does not check the outcome of calling "Call_Jump"
 bad_spec.ads:12:14: warning: useless postcondition, "Call_Jump" is marked No_Return
 bad_spec_prag.ads:4:04: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
 bad_spec_prag.ads:4:04: warning: use Always_Terminates instead
@@ -19,7 +18,6 @@ bad.adb:19:07: medium: unexpected exception might be raised
 bad.ads:5:13: high: all paths in "Call_Jump" raise exceptions or do not terminate normally
 bad.ads:7:14: high: all paths in "Call_Jump" raise exceptions or do not terminate normally
 bad.ads:9:06: info: data dependencies proved
-bad.ads:10:06: warning: postcondition does not check the outcome of calling "Call_Jump"
 bad.ads:12:13: info: implicit terminating annotation on "Silent_Call_Jump" has been proved, subprogram will terminate
 bad.ads:17:06: info: data dependencies proved
 weird.ads:9:14: info: terminating annotation on "R" has been proved, subprogram will terminate
@@ -29,9 +27,7 @@ pack.adb:20:22: info: assertion proved (CVC5: 1 VC)
 pack.adb:29:10: high: precondition might fail
 pack.adb:29:10: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 pack.ads:7:06: info: data dependencies proved
-pack.ads:8:06: warning: postcondition does not check the outcome of calling "Call_Jump"
 pack.ads:8:14: info: postcondition proved (CVC5: 1 VC)
 pack.ads:12:06: info: data dependencies proved
-pack.ads:16:06: warning: postcondition does not check the outcome of calling "Call_Jump2"
 pack.ads:16:14: info: postcondition proved (CVC5: 1 VC)
 pack.ads:23:06: info: data dependencies proved
