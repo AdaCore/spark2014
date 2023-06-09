@@ -2078,9 +2078,17 @@ package body SPARK_Definition.Annotate is
          declare
             First_Param : constant Formal_Kind_Id := First_Formal (E);
             Snd_Param   : constant Formal_Kind_Id := Next_Formal (First_Param);
+            First_Ty    : constant Type_Kind_Id := Etype (First_Param);
+            Snd_Ty      : constant Type_Kind_Id := Etype (Snd_Param);
 
          begin
-            if Etype (First_Param) /= Etype (Snd_Param) then
+            if First_Ty /= Snd_Ty
+              and then
+                (Ekind (First_Ty) not in E_Anonymous_Access_Type
+                 or else Ekind (Snd_Ty) not in E_Anonymous_Access_Type
+                 or else Directly_Designated_Type (First_Ty) /=
+                   Directly_Designated_Type (Snd_Ty))
+            then
                Error_Msg_N_If
                  ("both parameters of an equality function shall have the"
                   & " same subtype", E);
