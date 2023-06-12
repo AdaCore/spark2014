@@ -463,7 +463,7 @@ issues, this annotation can sometimes lead to a crash in GNATprove. It is the
 case for example when the definition of the function uses quantification over a
 container using the ``Iterable`` aspect.
 
-.. index:: Annotate; Pledge
+.. index:: Annotate; Prophecy Variable
 
 .. _Referring to a value at the end of a borrow:
 
@@ -627,7 +627,7 @@ the list:
       X.Val := 42;
    end;
 
-Here, like in the previous example, we can state in a pledge that
+Here, like in the previous example, we can state that, at the end of the borrow,
 ``X.Next.Next.Val`` is ``Y.Val``, and then ``X.Next.Next`` cannot be set to
 null. We cannot assume anything about the
 part of ``X`` designated by ``Y``, so we won't be able to prove that
@@ -669,8 +669,8 @@ final value of ``X`` than in the previous case. We still know that ``X``
 will hold at least three elements, that is ``X.Next.Next /= null``.
 Additionally, the first and second components of ``X`` are no longer accessible
 from ``Y``, and since they cannot be accessed directly through ``X``, we know
-that they will keep their current values. This is why we can now assert in a
-pledge that ``X.Val`` is 1 and ``X.Next.Val`` is 2.
+that they will keep their current values. This is why we can now assert that,
+at the end of the borrow,  ``X.Val`` is 1 and ``X.Next.Val`` is 2.
 However, we still cannot know anything
 about the part of ``X`` still accessible from ``Y`` as these properties
 could be modified later in the borrow:
