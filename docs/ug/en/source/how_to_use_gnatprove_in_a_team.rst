@@ -854,6 +854,10 @@ only part of a program:
   When the body of a function is not analyzed by GNATprove, its result should
   not depend on the address of parts of its parameters or global inputs unless
   it is annotated with ``Volatile_Function``.
+  When the body of a procedure is not analyzed by GNATprove, none of its
+  outputs should depend on the address of parts of its parameters or global
+  inputs unless the output is volatile for reading, or its value depends on an
+  input which is volatile for reading as stated in a Depends contract.
 
 * [ADA_STATE_ABSTRACTION]
   Units whose body is not analyzed, yet are used from SPARK code, need to
