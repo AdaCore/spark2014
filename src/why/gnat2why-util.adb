@@ -1707,7 +1707,8 @@ package body Gnat2Why.Util is
            and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
          then
             return
-              Type_Needs_Dynamic_Invariant (Component_Type (Ty_Ext), False);
+              Type_Needs_Dynamic_Invariant (Component_Type (Ty_Ext), False)
+              or else Is_Tagged_Type (Retysp (Component_Type (Ty_Ext)));
 
          elsif Is_Record_Type (Ty_Ext)
            or else Is_Incomplete_Or_Private_Type (Ty_Ext)
@@ -1729,7 +1730,8 @@ package body Gnat2Why.Util is
 
             for Comp of Get_Component_Set (Ty_Ext) loop
                if not Is_Type (Comp)
-                 and then Type_Needs_Dynamic_Invariant (Etype (Comp), False)
+                 and then (Type_Needs_Dynamic_Invariant (Etype (Comp), False)
+                           or else Is_Tagged_Type (Retysp (Etype (Comp))))
                then
                   return True;
                end if;

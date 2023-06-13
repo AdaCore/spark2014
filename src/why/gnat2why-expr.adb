@@ -5350,6 +5350,19 @@ package body Gnat2Why.Expr is
             New_Incompl_Acc  => New_Incompl_Acc,
             Expand_Incompl   => Expand_Incompl);
 
+         --  Components necessarily have the tag of their type
+
+         if Is_Tagged_Type (Retysp (C_Ty)) then
+            pragma Assert (not Is_Class_Wide_Type (Retysp (C_Ty)));
+            T_Comp := New_And_Pred
+              (T_Comp,
+               New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => +New_Tag_Access
+                    (Domain => EW_Term, Name => +C_Expr, Ty => Retysp (C_Ty)),
+                  Right  => +E_Symb (E => C_Ty, S => WNE_Tag)));
+         end if;
+
          return T_Comp;
       end Invariant_For_Comp;
 
