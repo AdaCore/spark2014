@@ -1215,12 +1215,21 @@ package SPARK_Util is
       --  or entities that have body.
 
       type Vertex_Kind is
-        (Plain, Loop_Init, Loop_Cond, Loop_Iter, Body_Entry, Body_Exit);
+        (Plain,
+         Block_Exit,
+         Loop_Init,
+         Loop_Cond,
+         Loop_Iter,
+         Body_Entry,
+         Body_Exit);
       --  Vertex kinds that can occur in the graph.
       --  * Plain vertices: either local declarations or non-loop statements.
       --    Those correspond to the execution from the start of the
       --    local declaration/statements, and the outgoing edges
       --    corresponds to all potential exit cases.
+      --  * Block_Exit vertices: represent the standard exit of a
+      --    block statement. Used for analysis that impacts post-processing
+      --    at end of scope.
       --  * Loop vertices: those correspond to the three distinguished
       --    parts of a loop statement.
       --    + Loop_Init: the initialization, before the loop starts.
@@ -1250,6 +1259,7 @@ package SPARK_Util is
           (case Vertex.Kind is
              when Plain =>
                 Nkind (Vertex.Node) not in N_Loop_Statement | N_Entity,
+             when Block_Exit => Nkind (Vertex.Node) in N_Block_Statement,
              when Loop_Init .. Loop_Iter =>
                 Vertex.Node in N_Loop_Statement_Id,
              when Body_Entry .. Body_Exit =>
