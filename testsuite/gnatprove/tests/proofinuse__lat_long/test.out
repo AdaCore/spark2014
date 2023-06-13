@@ -15,7 +15,7 @@ lat_long.ads:8:34: info: float overflow check proved (CVC5: 1 VC)
 lat_long.ads:13:13: info: implicit aspect Always_Terminates on "Cos" has been proved, subprogram will terminate
 lat_long.ads:15:40: medium: postcondition might fail, cannot prove Cos'Result >= 0.1
 lat_long.ads:17:13: info: implicit aspect Always_Terminates on "Sqrt" has been proved, subprogram will terminate
-lat_long.ads:18:26: medium: precondition might fail [possible fix: subprogram at line 17 should mention X in a precondition]
+lat_long.ads:18:26: high: precondition might fail (e.g. when X = -1.0) [possible fix: subprogram at line 17 should mention X in a precondition]
 lat_long.ads:28:13: info: implicit aspect Always_Terminates on "Distance" has been proved, subprogram will terminate
 lat_long.ads:29:14: info: postcondition proved (altergo: 1 VC)
 lat_long.ads:30:57: info: float overflow check proved (altergo: 1 VC)

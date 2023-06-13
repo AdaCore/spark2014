@@ -13,7 +13,7 @@ test.adb:40:14: high: overflow check might fail, cannot prove upper bound for B 
 test.adb:46:13: info: implicit aspect Always_Terminates on "Test_5" has been proved, subprogram will terminate
 test.adb:47:17: high: postcondition might fail (e.g. when Test_5'Result = 0)
 test.adb:55:13: info: implicit aspect Always_Terminates on "Test_6" has been proved, subprogram will terminate
-test.adb:56:17: medium: postcondition might fail
+test.adb:56:17: high: postcondition might fail (e.g. when Test_6'Result = 1.8460938E+0)
 test.adb:60:14: info: float overflow check proved (CVC5: 1 VC)
 test.adb:68:13: info: implicit aspect Always_Terminates on "Test_7" has been proved, subprogram will terminate
 test.adb:69:17: medium: postcondition might fail

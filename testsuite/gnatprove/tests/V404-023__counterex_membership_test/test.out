@@ -36,7 +36,7 @@ not_discrete.adb:281:22: high: assertion might fail (e.g. when Is_Same = True)
 not_discrete.adb:299:22: high: assertion might fail (e.g. when Is_Up = True)
 not_discrete.adb:317:22: high: assertion might fail (e.g. when Is_Up = True)
 not_discrete.adb:335:22: high: assertion might fail (e.g. when Is_Diff = True)
-not_discrete.adb:352:22: medium: assertion might fail
+not_discrete.adb:352:22: high: assertion might fail (e.g. when B = False)
 not_discrete.ads:13:13: info: implicit aspect Always_Terminates on "Record_Subtype" has been proved, subprogram will terminate
 not_discrete.ads:15:13: info: implicit aspect Always_Terminates on "Record_Subtypes" has been proved, subprogram will terminate
 not_discrete.ads:24:52: info: range check proved (CVC5: 2 VC)
